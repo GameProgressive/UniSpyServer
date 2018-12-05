@@ -1,7 +1,6 @@
 ﻿/*
+Author: Todd Hubers (http://www.alivate.com.au) 
 
-Author: Todd Hubers (http://www.alivate.com.au)
- 
 This is free and unencumbered software released into the public domain.
 
 Anyone is free to copy, modify, publish, use, compile, sell, or
