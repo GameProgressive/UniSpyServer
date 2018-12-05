@@ -8,6 +8,7 @@ namespace RetroSpyServer
 {
     public abstract class TemplateServer
     {
+        
 
     }
 }

@@ -10,9 +10,7 @@ namespace GameSpyLib.Gamespy.Net
     public class BufferDataToken
     {
         public readonly int BufferOffset;
-
         //public readonly int SendBufferOffset;
-
         public readonly int BufferBlockSize;
 
         /// <summary>
@@ -22,9 +20,8 @@ namespace GameSpyLib.Gamespy.Net
         /// <param name="BlockSize">The total size in the buffer allocated to this object</param>
         public BufferDataToken(int BufferOffset, int BlockSize)
         {
-            this.BufferBlockSize = BlockSize; //BlockSize / 2;
-            this.BufferOffset = BufferOffset;
-            //SendBufferOffset = BufferOffset + BlockSize;
+            this.BufferBlockSize = BlockSize; 
+            this.BufferOffset = BufferOffset;            
         }
     }
 }
