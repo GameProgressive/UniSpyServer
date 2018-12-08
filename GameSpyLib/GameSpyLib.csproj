@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Common\gsAssert.cs" />
     <Compile Include="Common\gsAvaliable.cs" />
+    <Compile Include="Common\gsPlatform.cs" />
     <Compile Include="Database\DatabaseDriver.cs" />
     <Compile Include="Database\DbConnectException.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />

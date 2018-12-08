@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Net.Sockets;
+using System.Net;
 
 namespace GameSpyLib.Common
 {
@@ -39,11 +40,19 @@ namespace GameSpyLib.Common
         /// to see if they should communicate with the backend
         /// </summary>
         GSIACResult __GSIACResult = GSIACResult.GSIACWaiting;
+        public int get_sockaddrin(string hostname, int port, IPEndPoint saddr)
+        {
+            return 1;
+        }
     }
     class AC
     {
         Socket sock;
-        
-
+        IPEndPoint address;
+        char[] packet=new char[64];
+        int packetLen;
+        ushort  sendTime;
+        int retryCount;
     }
+    
 }
