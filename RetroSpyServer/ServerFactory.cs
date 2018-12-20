@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace RetroSpyServer
 {
-    class Program
+    public class ServerFactory
     {
-        static void Main(string[] args)
-        {
-            ServerFactory Emulator = new ServerFactory();
-        }
+
     }
 }
