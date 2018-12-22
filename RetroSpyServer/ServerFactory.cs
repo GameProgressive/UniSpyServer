@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RetroSpyServer
 {
+    /// <summary>
+    /// a server factory that create the instance of  servers
+    /// </summary>
     public class ServerFactory
     {
 
