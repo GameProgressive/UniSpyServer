@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Globalization;
-using MySql.Data.MySqlClient;
-using System.Data.SQLite;
 
 namespace GameSpyLib.Database
 {
     public enum DatabaseEngine { Sqlite, Mysql, }
 
-    public class DatabaseDriver : IDisposable
+    public abstract class DatabaseDriver : IDisposable
     {
         /// <summary>
         /// Current DB Engine
@@ -40,7 +38,6 @@ namespace GameSpyLib.Database
 
         /// <summary>
         /// Gets the number of queries ran by this instance
-        /// 获得本实例询问次数
         /// </summary>
         public int NumQueries = 0;
 
@@ -58,10 +55,9 @@ namespace GameSpyLib.Database
         /// Constructor
         /// </summary>
         /// <param name="Engine">The string name, for the GetDatabaseEngine() method</param>
-        public DatabaseDriver(string ConnectionString)
+        public DatabaseDriver()
         {
-            // Set class variables, and create a new connection builder
-            Connection = new MySqlConnection(ConnectionString);
+
         }
 
         /// <summary>
@@ -125,19 +121,14 @@ namespace GameSpyLib.Database
         /// Creates a new command to be executed on the database
         /// </summary>
         /// <param name="QueryString"></param>
-        public DbCommand CreateCommand(string QueryString)
-        {
-            return new MySqlCommand(QueryString, Connection as MySqlConnection);
-        }
+        public abstract DbCommand CreateCommand(string QueryString);
 
         /// <summary>
         /// Creates a DbParameter using the current Database engine's Parameter object
         /// </summary>
         /// <returns></returns>
-        public DbParameter CreateParam()
-        {
-            return (new MySqlParameter() as DbParameter);
-        }
+        public abstract DbParameter CreateParam();
+
 
         /// <summary>
         /// Queries the database, and returns a result set
@@ -253,7 +244,6 @@ namespace GameSpyLib.Database
 
         /// <summary>
         /// Executes a command, and returns 1 row at a time until all rows are returned
-        /// 执行一个命令然后一次返回一行直到所有行返回完毕
         /// </summary>
         /// <param name="Command">The database command to execute the reader on</param>
         /// <returns></returns>
@@ -355,7 +345,6 @@ namespace GameSpyLib.Database
                     Command.Parameters.Add(Param);
 
                 // Execute command, and dispose of the command
-                //show the affected rows
                 return Command.ExecuteNonQuery();
             }
         }

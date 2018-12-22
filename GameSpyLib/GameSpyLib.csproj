@@ -74,6 +74,8 @@
   <ItemGroup>
     <Compile Include="Database\DatabaseDriver.cs" />
     <Compile Include="Database\DbConnectException.cs" />
+    <Compile Include="Database\MySqlDatabaseDriver.cs" />
+    <Compile Include="Database\SqliteDatabaseDriver.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\DateExtensions.cs" />
     <Compile Include="Extensions\DynamicLinq.cs" />
