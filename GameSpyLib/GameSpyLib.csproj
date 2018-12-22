@@ -95,6 +95,7 @@
     <Compile Include="Common\Logging\LogWriter.cs" />
     <Compile Include="NiceDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\GameSpyPresenceConnectionManager.cs" />
     <Compile Include="Server\TemplateServer.cs" />
   </ItemGroup>
   <ItemGroup>
