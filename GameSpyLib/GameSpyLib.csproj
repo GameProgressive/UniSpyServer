@@ -100,7 +100,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="GamespyDatabase.db" />
+    <None Include="SQLiteFile\GamespyDatabase.db" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
