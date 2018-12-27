@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using BattleSpy.Gamespy.Net;
 
-namespace GameSpyLib.Gamespy
+namespace GameSpyLib.Gamespy.Net
 {
     /// <summary>
     /// This class represents a packet recieved from and/or to be sent to

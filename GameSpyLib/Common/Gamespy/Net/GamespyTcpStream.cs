@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using GameSpyLib.Gamespy.Net;
 
-namespace GameSpyLib.Gamespy
+namespace GameSpyLib.Gamespy.Net
 {
     /// <summary>
     /// This object is used as a Network Stream wrapper for Gamespy TCP protocol,
@@ -255,12 +254,10 @@ namespace GameSpyLib.Gamespy
 
                 // Process Message
                 string received = RecvMessage.ToString();
-                if (received.EndsWith("final\\") || received.EndsWith("\x00\x00\x00\x00"))
-                {
-                    // tell our parent that we recieved a message
-                    RecvMessage.Clear(); // Clear old junk
-                    DataReceived(received);
-                }
+   
+                // tell our parent that we recieved a message
+                RecvMessage.Clear(); // Clear old junk
+                DataReceived(received);
             }
 
             // Begin receiving again

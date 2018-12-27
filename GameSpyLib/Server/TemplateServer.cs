@@ -8,22 +8,26 @@ namespace GameSpyLib.Server
 {
     public abstract class TemplateServer
     {
-        public  TemplateServer()
+        /// <summary>
+        /// Indicates whether this object has been disposed yet
+        /// </summary>
+        public bool IsDisposed { get; protected set; } = false;
+
+        public TemplateServer()
         {
 
         }
-        /// <summary>
-        /// start point of a server
-        /// </summary>
-        /// <param name="listeningIP">which ip should be listened</param>
-        /// <param name="listeningPort">which port should be listened</param>
-        public abstract void ServerInitial(string listeningIP, int listeningPort);
-        /// <summary>
-        /// connection to over server, exchange data.
-        /// </summary>
-        /// <param name="ServerName">the other server that data should be exchanged</param>
-        public abstract void ConnectionBridge(string ServerName);
-        
 
+        ~TemplateServer()
+        {
+            if (!IsDisposed)
+                Dispose();
+        }
+
+        /// <summary>
+        /// Releases all Objects held by this server. Will also
+        /// shutdown the server if its still running
+        /// </summary>
+        public abstract void Dispose();
     }
 }

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using GameSpyLib.Gamespy.Net;
 
-namespace GameSpyLib.Gamespy
+namespace GameSpyLib.Gamespy.Net
 {
     /// <summary>
     /// This class represents a high performance Async Tcp Socket wrapper
@@ -328,10 +326,11 @@ namespace GameSpyLib.Gamespy
                     // Alert the client that we are full
                     if (!String.IsNullOrEmpty(FullErrorMessage))
                     {
-                        byte[] buffer = Encoding.UTF8.GetBytes(
+                        /*byte[] buffer = Encoding.UTF8.GetBytes(
                             String.Format(@"\error\\err\0\fatal\\errmsg\{0}\id\1\final\", FullErrorMessage)
                         );
-                        AcceptEventArg.AcceptSocket.Send(buffer);
+                        AcceptEventArg.AcceptSocket.Send(buffer);*/
+                        OnAcceptFails(AcceptEventArg.AcceptSocket);
                     }
 
                     // Log so we can track this!
@@ -387,6 +386,8 @@ namespace GameSpyLib.Gamespy
         protected abstract void ProcessAccept(GamespyTcpStream Stream);
 
         protected abstract void OnException(Exception e);
+
+        protected abstract void OnAcceptFails(Socket socket);
     }
 	
 	public enum EnforceMode

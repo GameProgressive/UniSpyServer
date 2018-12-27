@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using BattleSpy.Gamespy.Net;
 
-namespace GameSpyLib.Gamespy
+namespace GameSpyLib.Gamespy.Net
 {
     /// <summary>
     /// Like the GamespyTcpSocket, this class represents a high perfomance
