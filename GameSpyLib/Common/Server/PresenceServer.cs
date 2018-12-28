@@ -56,12 +56,17 @@ namespace GameSpyLib.Server
             SendError(socket, 0, FullErrorMessage);
         }
 
+        protected void PrintReceivedDictToLogger(string req, Dictionary<string, string> dict)
+        {
+            Logger.Debug( String.Format("Received request {0} with content: {1}", req, String.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()) ) );
+        }
+
         /// <summary>
         /// Converts a recived parameter array from the client string to a keyValue pair dictionary
         /// </summary>
         /// <param name="parts">The array of data from the client</param>
         /// <returns></returns>
-        protected static Dictionary<string, string> ConvertToKeyValue(string[] parts)
+        protected Dictionary<string, string> ConvertToKeyValue(string[] parts)
         {
             Dictionary<string, string> Data = new Dictionary<string, string>();
             try
