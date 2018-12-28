@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using GameSpyLib;
 using GameSpyLib.Database;
 
@@ -13,6 +14,7 @@ namespace RetroSpyServer
         /// Indicates the version of the server
         /// </summary>
         //public static readonly Version Version = Version.Parse(Application.ProductVersion);
+        public static readonly string version = "0.1";
 
         /// <summary>
         /// Entry point for the RetroSpy Server program
@@ -20,12 +22,15 @@ namespace RetroSpyServer
         /// <param name="args">List of arguments passed to the application</param>
         static void Main(string[] args)
         {
-            Console.Title = "RetroSpy Server";
-
             //string version = String.Concat(Version.Major, ".", Version.Minor, ".", Version.Build);
-            string version = "0.1";
+            string path = Path.Combine(Environment.CurrentDirectory, "Logs");
 
-            Logger.Create(Environment.CurrentDirectory);
+            Console.Title = "RetroSpy Server " + version;
+
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+
+            Logger.Create(path);
 
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
@@ -49,8 +54,6 @@ namespace RetroSpyServer
 
                 while (Emulator.IsRunning())
                 {
-                    Console.Write("command>");
-
                     // Process console commands
                     string input = Console.ReadLine();
 
