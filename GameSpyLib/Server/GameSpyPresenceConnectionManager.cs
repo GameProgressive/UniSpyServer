@@ -8,6 +8,9 @@ namespace GameSpyLib.Server
 {
     class GameSpyPresenceConnectionManager : TemplateServer
     {
-
+        public override void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
