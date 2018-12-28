@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameSpyLib;
 using GameSpyLib.Database;
 using GameSpyLib.Server;
 using GameSpyLib.Network;
@@ -97,6 +98,7 @@ namespace RetroSpyServer
                      CreateUser(stream, dict);
                      break;
                 default:
+                    Logger.Debug("Received unknown request " + received[0]);
                     SendError(stream, 0, "An invalid request was sended.");
                     stream.Close(false);
                     break;
@@ -105,18 +107,21 @@ namespace RetroSpyServer
 
         private void SuggestUniqueNickname(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("uniquesearch", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
         }
 
         private void OnProfileList(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("profilelist", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
         }
 
         private void MatchProduct(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("pmatch", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
         }
@@ -128,6 +133,7 @@ namespace RetroSpyServer
         /// <param name="dict">The request that the stream sended</param>
         private void CreateUser(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("newuser", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
 
@@ -135,12 +141,14 @@ namespace RetroSpyServer
 
         private void OnOthersList(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("otherslist", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
         }
 
         private void ReverseBuddies(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("others", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
 
@@ -148,18 +156,21 @@ namespace RetroSpyServer
 
         private void SearchUser(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("search", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
         }
 
         private void CheckAccount(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("check", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
         }
 
         private void RetriveNicknames(TCPStream stream, Dictionary<string, string> dict)
         {
+            PrintReceivedDictToLogger("nicks", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
         }
@@ -184,8 +195,9 @@ namespace RetroSpyServer
                 else
                     stream.SendAsync(@"\vr\0\final\");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger.Error(ex);
                 SendError(stream, 4, "This request cannot be processed because of a database error.");
                 stream.Close();
             }

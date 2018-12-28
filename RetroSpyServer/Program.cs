@@ -1,4 +1,5 @@
 ﻿using System;
+using GameSpyLib;
 using GameSpyLib.Database;
 
 namespace RetroSpyServer
@@ -11,7 +12,7 @@ namespace RetroSpyServer
         /// <summary>
         /// Indicates the version of the server
         /// </summary>
-        private static readonly string ServerVersion = "0.1";
+        //public static readonly Version Version = Version.Parse(Application.ProductVersion);
 
         /// <summary>
         /// Entry point for the RetroSpy Server program
@@ -19,13 +20,21 @@ namespace RetroSpyServer
         /// <param name="args">List of arguments passed to the application</param>
         static void Main(string[] args)
         {
+            Console.Title = "RetroSpy Server";
+
+            //string version = String.Concat(Version.Major, ".", Version.Minor, ".", Version.Build);
+            string version = "0.1";
+
+            Logger.Create(Environment.CurrentDirectory);
+
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
             Console.WriteLine(@" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
             Console.WriteLine(@" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
             Console.WriteLine(@"                         |_|   |__/                            ");
+            Console.WriteLine("");
 
-            Console.WriteLine("\nRetroSpy Server version {0}.", ServerVersion);
+            Logger.Info("RetroSpy Server version " + version + ".");
 
             ServerFactory Emulator = new ServerFactory();
 
@@ -33,10 +42,10 @@ namespace RetroSpyServer
             {
                 Emulator.Create(DatabaseEngine.Sqlite, "Data Source=:memory:;Version=3;New=True");
 
-                Console.WriteLine("Starting GPSP at 127.0.0.1:29901...");
+                Logger.Info("Starting Presence Search Player Server at 127.0.0.1:29901..."); // TODO: Add config!
                 Emulator.StartServer("GPSP", "127.0.0.1", 29901, 100);
 
-                Console.WriteLine("Server started!");
+                Logger.Info("Server successfully started! Type \"help\" for a list of the avaiable commands.");
 
                 while (Emulator.IsRunning())
                 {
@@ -53,10 +62,12 @@ namespace RetroSpyServer
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Logger.Fatal(e);
             }
 
+            Logger.Info("Goodbye!");
             Emulator.Dispose();
+            Logger.Dispose();
         }
     }
 }
