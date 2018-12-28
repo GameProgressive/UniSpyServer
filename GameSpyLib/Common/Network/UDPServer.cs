@@ -116,6 +116,7 @@ namespace GameSpyLib.Network
             BufferManager.Dispose();
             MaxConnectionsEnforcer.Dispose();
             Listener.Dispose();
+            databaseDriver?.Dispose();
         }
 
         /// <summary>

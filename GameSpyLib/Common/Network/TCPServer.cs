@@ -174,6 +174,7 @@ namespace GameSpyLib.Network
             BufferManager?.Dispose();
             MaxConnectionsEnforcer?.Dispose();
             Listener?.Dispose();
+            databaseDriver?.Dispose();
         }
 
         /// <summary>
@@ -189,7 +190,7 @@ namespace GameSpyLib.Network
             // Stop accepting connections
             if (Listener.Connected)
                 Listener.Shutdown(SocketShutdown.Both);
-            
+
             // Close the listener
             Listener.Close();
         }
@@ -254,6 +255,8 @@ namespace GameSpyLib.Network
         /// </summary>
         protected async void StartAcceptAsync()
         {
+            if (!IsRunning) return;        
+
             // Fetch ourselves an available AcceptEventArg for the next connection
             SocketAsyncEventArgs AcceptEventArg;
             if (SocketAcceptPool.Count > 0)

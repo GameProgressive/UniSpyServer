@@ -61,6 +61,15 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
+        /// Default distructor
+        /// </summary>
+        ~TemplateServer()
+        {
+            if (!IsDisposed)
+                Dispose();
+        }
+
+        /// <summary>
         /// Stops the server
         /// </summary>
         public abstract void Stop();
