@@ -225,8 +225,13 @@ namespace GameSpyLib.Network
                 // Begin accepting a new connection
                 StartAcceptAsync();
 
+                UDPPacket packet = new UDPPacket(AcceptEventArg);
+
+                if (Logger.DebugSocket)
+                    Logger.Debug("UDP Operation " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""));
+
                 // Hand off processing to the parent
-                ProcessAccept(new UDPPacket(AcceptEventArg));
+                ProcessAccept(packet);
             }
             else
             {

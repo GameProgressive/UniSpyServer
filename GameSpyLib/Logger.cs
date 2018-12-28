@@ -6,24 +6,37 @@ using Serilog.Sinks.SystemConsole.Themes;
 
 namespace GameSpyLib
 {
+    /// <summary>
+    /// This class rapresents a Console and File logger
+    /// </summary>
     public class Logger
     {
+        /// <summary>
+        /// The Serilog logger
+        /// </summary>
         public static Serilog.Core.Logger logger { get; protected set; }
 
-        public static void Create(string rootPath)
-        {
-            if (!Directory.Exists(Path.Combine(rootPath, "Logs")))
-                Directory.CreateDirectory(Path.Combine(rootPath, "Logs"));
+        /// <summary>
+        /// If this is setted to true, all socket IO operations will be wrote into the debugger
+        /// Pariculary usefull when debugging GameSpy protocol
+        /// </summary>
+        public static bool DebugSocket { get; set; }
 
+        /// <summary>
+        /// Creates the Logger
+        /// </summary>
+        /// <param name="rootPath">Base folder to save the logs</param>
+        public static void Create(string logPath)
+        {
             logger = new LoggerConfiguration()
                      .MinimumLevel.Debug()
                      .WriteTo.Console(theme: AnsiConsoleTheme.Code)
-                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information).WriteTo.RollingFile(@"Logs\Info-{Date}.log"))
-                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug).WriteTo.RollingFile(@"Logs\Debug-{Date}.log"))
-                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning).WriteTo.RollingFile(@"Logs\Warning-{Date}.log"))
-                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error).WriteTo.RollingFile(@"Logs\Error-{Date}.log"))
-                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal).WriteTo.RollingFile(@"Logs\Fatal-{Date}.log"))
-                     .WriteTo.RollingFile(@"Logs\Verbose-{Date}.log")
+                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information).WriteTo.RollingFile(logPath + @"\Info-{Date}.log"))
+                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug).WriteTo.RollingFile(logPath + @"\Debug-{Date}.log"))
+                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning).WriteTo.RollingFile(logPath + @"\Warning-{Date}.log"))
+                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error).WriteTo.RollingFile(logPath + @"\Error-{Date}.log"))
+                     .WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal).WriteTo.RollingFile(logPath + @"\Fatal-{Date}.log"))
+                     .WriteTo.RollingFile(logPath + @"\Verbose-{Date}.log")
                      .CreateLogger();
         }
 

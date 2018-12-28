@@ -256,6 +256,9 @@ namespace GameSpyLib.Network
 
                 // Process Message
                 string received = RecvMessage.ToString();
+
+                if (Logger.DebugSocket)
+                    Logger.Debug("Received TCP data: " + received);
    
                 // tell our parent that we recieved a message
                 RecvMessage.Clear(); // Clear old junk
@@ -274,6 +277,9 @@ namespace GameSpyLib.Network
         {
             // Make sure the socket is still open
             if (SocketClosed) return;
+
+            if (Logger.DebugSocket)
+                Logger.Debug("Sending TCP data: " + message);
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
