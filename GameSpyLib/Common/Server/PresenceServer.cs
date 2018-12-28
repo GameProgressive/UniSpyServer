@@ -15,6 +15,17 @@ namespace GameSpyLib.Server
         /// <summary>
         /// Send a presence error
         /// </summary>
+        /// <param name="stream">The stream that will receive the error</param>
+        /// <param name="code">The error code</param>
+        /// <param name="error">A string containing the error</param>
+        protected void SendError(TCPStream stream, int code, string error)
+        {
+            stream.SendAsync(Encoding.UTF8.GetBytes(String.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
+        }
+
+        /// <summary>
+        /// Send a presence error
+        /// </summary>
         /// <param name="socket">The socket that will receive the error</param>
         /// <param name="code">The error code</param>
         /// <param name="error">A string containing the error</param>
