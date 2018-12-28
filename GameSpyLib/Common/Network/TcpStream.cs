@@ -4,17 +4,17 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace GameSpyLib.Gamespy.Net
+namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This object is used as a Network Stream wrapper for Gamespy TCP protocol,
+    /// This object is used as a Network Stream wrapper for a TCP protocol,
     /// </summary>
-    public class GamespyTcpStream : IDisposable
+    public class TCPStream : IDisposable
     {
         /// <summary>
         /// Our message recieved from the client connection. If the message is too long,
         /// it will be sent over multiple receive operations, so we store the message parts
-        /// here until we recieve the \final\ delimiter.
+        /// here
         /// </summary>
         protected StringBuilder RecvMessage = new StringBuilder(256);
 
@@ -40,9 +40,9 @@ namespace GameSpyLib.Gamespy.Net
         public Socket Connection;
 
         /// <summary>
-        /// Contains the GamespyTcpSocket that owns this object
+        /// Contains the TcpSocket that owns this object
         /// </summary>
-        public GamespyTcpSocket SocketManager { get; protected set; }
+        public TCPServer SocketManager { get; protected set; }
 
         /// <summary>
         /// Our AsycnEventArgs object for reading data
@@ -100,10 +100,12 @@ namespace GameSpyLib.Gamespy.Net
         private Object _lockObj = new Object();
 
         /// <summary>
-        /// Creates a new instance of GamespyTcpStream
+        /// Creates a new instance of TcpStream
         /// </summary>
+        /// <param name="Parent">The parent socket that creates this instance</param>
         /// <param name="ReadArgs"></param>
-        public GamespyTcpStream(GamespyTcpSocket Parent, SocketAsyncEventArgs ReadArgs, SocketAsyncEventArgs WritetArgs)
+        /// <param name="WritetArgs"></param>
+        public TCPStream(TCPServer Parent, SocketAsyncEventArgs ReadArgs, SocketAsyncEventArgs WritetArgs)
         {
             // Store our connection
             Connection = ReadArgs.AcceptSocket;
@@ -121,7 +123,7 @@ namespace GameSpyLib.Gamespy.Net
             Released = false;
         }
 
-        ~GamespyTcpStream()
+        ~TCPStream()
         {
             if (!SocketClosed)
                 Close();

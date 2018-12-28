@@ -11,6 +11,7 @@ namespace GameSpyLib.Database
         public SqliteDatabaseDriver(string ConnectionString)
         {
             Connection = new SQLiteConnection(ConnectionString);
+            DatabaseEngine = DatabaseEngine.Sqlite;
         }
 
         public override DbCommand CreateCommand(string QueryString)

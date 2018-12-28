@@ -9,7 +9,7 @@ namespace GameSpyLib.Database
         {
             // Set class variables, and create a new connection builder
             Connection = new MySqlConnection(ConnectionString);
-
+            DatabaseEngine = DatabaseEngine.Mysql;
         }
 
         public override DbCommand CreateCommand(string QueryString)

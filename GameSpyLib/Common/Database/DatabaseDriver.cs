@@ -52,15 +52,6 @@ namespace GameSpyLib.Database
         protected bool IsDisposed = false;
 
         /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="Engine">The string name, for the GetDatabaseEngine() method</param>
-        public DatabaseDriver()
-        {
-
-        }
-
-        /// <summary>
         /// Destructor
         /// </summary>
         ~DatabaseDriver()
@@ -499,7 +490,7 @@ namespace GameSpyLib.Database
         /// Converts a database string name to a DatabaseEngine type.
         /// </summary>
         /// <param name="Name"></param>
-        /// <returns></returns>
+        /// <returns>The current database engine</returns>
         public static DatabaseEngine GetDatabaseEngine(string Name)
         {
             return ((DatabaseEngine)Enum.Parse(typeof(DatabaseEngine), Name, true));

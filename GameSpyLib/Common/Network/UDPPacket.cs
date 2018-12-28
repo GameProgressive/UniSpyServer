@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace GameSpyLib.Gamespy.Net
+namespace GameSpyLib.Network
 {
     /// <summary>
     /// This class represents a packet recieved from and/or to be sent to
     /// a remote UDP connection. This class is essentially a wrapper for
     /// SocketAsyncEventArgs and Asynchronous reading and writing
     /// </summary>
-    public class GamespyUdpPacket
+    public class UDPPacket
     {
         /// <summary>
         /// Our AsycnEventArgs object for reading/writing data
@@ -20,7 +20,7 @@ namespace GameSpyLib.Gamespy.Net
         /// </summary>
         public byte[] BytesRecieved;
 
-        public GamespyUdpPacket(SocketAsyncEventArgs e)
+        public UDPPacket(SocketAsyncEventArgs e)
         {
             // Get our recived bytes
             BytesRecieved = new byte[e.BytesTransferred];
