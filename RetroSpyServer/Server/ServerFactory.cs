@@ -52,6 +52,8 @@ namespace RetroSpyServer
                     throw new Exception("Unknown database engine!");
             }
 
+            databaseDriver.Connect();
+
             // Add all servers
             servers.Add("GPSP", new GPSPServer(databaseDriver));
         }

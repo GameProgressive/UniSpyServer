@@ -97,7 +97,7 @@ namespace RetroSpyServer
                      CreateUser(stream, dict);
                      break;
                 default:
-                    SendError(stream.Connection, 0, "Invalid request");
+                    SendError(stream, 0, "An invalid request was sended.");
                     stream.Close(false);
                     break;
             }
@@ -160,12 +160,24 @@ namespace RetroSpyServer
         /// <param name="dict">The request that the stream sended</param>
         private void IsEmailValid(TCPStream stream, Dictionary<string, string> dict)
         {
-            if (dict["email"].Equals("spyguy@gamespy.com"))
+            if (!dict.ContainsKey("email"))
             {
-                stream.SendAsync(@"\vr\1\final\");
+                SendError(stream, 1, "There was an error parsing an incoming request.");
+                stream.Close();
             }
-            else
-                stream.SendAsync(@"\vr\0\final\");
+
+            try
+            {
+                if (databaseDriver.Query("SELECT id FROM profiles WHERE LOWER(email)=@P0", dict["email"].ToLowerInvariant()).Count != 0)
+                    stream.SendAsync(@"\vr\1\final\");
+                else
+                    stream.SendAsync(@"\vr\0\final\");
+            }
+            catch (Exception)
+            {
+                SendError(stream, 4, "This request cannot be processed because of a database error.");
+                stream.Close();
+            }
         }
     }
 }
