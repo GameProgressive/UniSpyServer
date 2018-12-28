@@ -105,17 +105,20 @@ namespace RetroSpyServer
 
         private void SuggestUniqueNickname(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
         }
 
         private void OnProfileList(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
         }
 
         private void MatchProduct(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
         }
 
         /// <summary>
@@ -125,32 +128,40 @@ namespace RetroSpyServer
         /// <param name="dict">The request that the stream sended</param>
         private void CreateUser(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
+
         }
 
         private void OnOthersList(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
         }
 
         private void ReverseBuddies(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
+
         }
 
         private void SearchUser(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
         }
 
         private void CheckAccount(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
         }
 
         private void RetriveNicknames(TCPStream stream, Dictionary<string, string> dict)
         {
-            throw new NotImplementedException();
+            SendError(stream, 0, "This request is not supported yet.");
+            stream.Close(false);
         }
 
         /// <summary>
@@ -168,7 +179,7 @@ namespace RetroSpyServer
 
             try
             {
-                if (databaseDriver.Query("SELECT id FROM profiles WHERE LOWER(email)=@P0", dict["email"].ToLowerInvariant()).Count != 0)
+                if (databaseDriver.Query("SELECT id FROM users WHERE LOWER(email)=@P0", dict["email"].ToLowerInvariant()).Count != 0)
                     stream.SendAsync(@"\vr\1\final\");
                 else
                     stream.SendAsync(@"\vr\0\final\");
