@@ -10,7 +10,14 @@ namespace RetroSpyServer
     {
         static void Main(string[] args)
         {
-            ServerFactory Emulator = new ServerFactory();
+            try
+            {
+                ServerFactory Emulator = new ServerFactory();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
     }
 }
