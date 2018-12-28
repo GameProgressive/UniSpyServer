@@ -54,6 +54,8 @@ namespace RetroSpyServer
 
             databaseDriver.Connect();
 
+            CreateDatabaseTables();
+
             // Add all servers
             servers.Add("GPSP", new GPSPServer(databaseDriver));
         }
@@ -162,6 +164,23 @@ namespace RetroSpyServer
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Creates the tables on the database
+        /// </summary>
+        private void CreateDatabaseTables()
+        {
+            databaseDriver.Query(
+                @"CREATE TABLE IF NOT EXISTS `users` (" +
+                @"`id` INTEGER(11) NOT NULL PRIMARY KEY," +
+                @"`email` VARCHAR(50) NOT NULL," +
+                @"`password` VARCHAR(32) NOT NULL," +
+                @"`status` INTEGER(1) NOT NULL DEFAULT '0'" +
+                @")"
+            );
+
+            databaseDriver.Query(@"INSERT INTO users(id, email, password, status) VALUES(1, 'spyguy@gamespy.com', '0000', 1)");
         }
     }
 }
