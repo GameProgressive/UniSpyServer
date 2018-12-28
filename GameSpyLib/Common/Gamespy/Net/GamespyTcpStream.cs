@@ -159,7 +159,7 @@ namespace GameSpyLib.Gamespy.Net
                     // Disconnect user
                     DisconnectEventCalled = true;
                     if (OnDisconnect != null)
-                        OnDisconnect();
+                        OnDisconnect(this);
                 }
             }
             catch(SocketException e)
@@ -216,7 +216,7 @@ namespace GameSpyLib.Gamespy.Net
             if (!DisconnectEventCalled && OnDisconnect != null)
             {
                 DisconnectEventCalled = true;
-                OnDisconnect();
+                OnDisconnect(this);
             }
         }
 
@@ -257,7 +257,7 @@ namespace GameSpyLib.Gamespy.Net
    
                 // tell our parent that we recieved a message
                 RecvMessage.Clear(); // Clear old junk
-                DataReceived(received);
+                DataReceived(this, received);
             }
 
             // Begin receiving again
