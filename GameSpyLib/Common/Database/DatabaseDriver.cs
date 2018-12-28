@@ -8,7 +8,7 @@ namespace GameSpyLib.Database
 {
     public enum DatabaseEngine { Sqlite, Mysql, }
 
-    public class DatabaseDriver : IDisposable
+    public abstract class DatabaseDriver : IDisposable
     {
         /// <summary>
         /// Current DB Engine
