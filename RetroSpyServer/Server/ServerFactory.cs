@@ -40,6 +40,7 @@ namespace RetroSpyServer
         /// <param name="engine">The database engine</param>
         public void Create(DatabaseEngine engine, string connectionString)
         {
+            //determine whichdatabase is using and create the database connection
             switch (engine)
             {
                 case DatabaseEngine.Mysql:

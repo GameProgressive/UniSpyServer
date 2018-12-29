@@ -45,6 +45,7 @@ namespace RetroSpyServer
 
             try
             {
+                //deside which database you want;
                 Emulator.Create(DatabaseEngine.Sqlite, "Data Source=:memory:;Version=3;New=True");
 
                 Logger.Info("Starting Presence Search Player Server at 127.0.0.1:29901..."); // TODO: Add config!

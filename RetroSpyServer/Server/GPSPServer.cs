@@ -63,40 +63,39 @@ namespace RetroSpyServer
         {
             string[] received = message.TrimStart('\\').Split('\\');
             Dictionary<string, string> dict = ConvertToKeyValue(received);
-            Enum.TryParse(received[0], out RequestsCheck request);
-
-            switch (request)
+            
+            switch (received[0])
             {
-                case RequestsCheck.valid:
-                     IsEmailValid(stream, dict);
-                     break;
-                case RequestsCheck.nicks:
-                     RetriveNicknames(stream, dict);
-                     break;
-                case RequestsCheck.check:
-                     CheckAccount(stream, dict);
-                     break;
-                case RequestsCheck.search:
-                     SearchUser(stream, dict);
-                     break;
-                case RequestsCheck.others:
-                     ReverseBuddies(stream, dict);
-                     break;
-                case RequestsCheck.otherslist:
-                     OnOthersList(stream, dict);
-                     break;
-                case RequestsCheck.uniquesearch:
-                     SuggestUniqueNickname(stream, dict);
-                     break;
-                case RequestsCheck.profilelist:
-                     OnProfileList(stream, dict);
-                     break;
-                case RequestsCheck.pmatch:
-                     MatchProduct(stream, dict);
-                     break;
-                case RequestsCheck.newuser:
-                     CreateUser(stream, dict);
-                     break;
+                case "valid":
+                    IsEmailValid(stream, dict);
+                    break;
+                case "nicks":
+                    RetriveNicknames(stream, dict);
+                    break;
+                case "check":
+                    CheckAccount(stream, dict);
+                    break;
+                case "search":
+                    SearchUser(stream, dict);
+                    break;
+                case "others":
+                    ReverseBuddies(stream, dict);
+                    break;
+                case "otherslist":
+                    OnOthersList(stream, dict);
+                    break;
+                case "uniquesearch":
+                    SuggestUniqueNickname(stream, dict);
+                    break;
+                case "profilelist":
+                    OnProfileList(stream, dict);
+                    break;
+                case "pmatch":
+                    MatchProduct(stream, dict);
+                    break;
+                case "newuser":
+                    CreateUser(stream, dict);
+                    break;
                 default:
                     Logger.Debug("Received unknown request " + received[0]);
                     SendError(stream, 0, "An invalid request was sended.");
@@ -104,6 +103,46 @@ namespace RetroSpyServer
                     break;
             }
         }
+        //Enum.TryParse(received[0], out RequestsCheck request);
+        //    switch (request)
+        //    {
+        //        case RequestsCheck.valid:
+        //             IsEmailValid(stream, dict);
+        //             break;
+        //        case RequestsCheck.nicks:
+        //             RetriveNicknames(stream, dict);
+        //             break;
+        //        case RequestsCheck.check:
+        //             CheckAccount(stream, dict);
+        //             break;
+        //        case RequestsCheck.search:
+        //             SearchUser(stream, dict);
+        //             break;
+        //        case RequestsCheck.others:
+        //             ReverseBuddies(stream, dict);
+        //             break;
+        //        case RequestsCheck.otherslist:
+        //             OnOthersList(stream, dict);
+        //             break;
+        //        case RequestsCheck.uniquesearch:
+        //             SuggestUniqueNickname(stream, dict);
+        //             break;
+        //        case RequestsCheck.profilelist:
+        //             OnProfileList(stream, dict);
+        //             break;
+        //        case RequestsCheck.pmatch:
+        //             MatchProduct(stream, dict);
+        //             break;
+        //        case RequestsCheck.newuser:
+        //             CreateUser(stream, dict);
+        //             break;
+        //        default:
+        //            Logger.Debug("Received unknown request " + received[0]);
+        //            SendError(stream, 0, "An invalid request was sended.");
+        //            stream.Close(false);
+        //            break;
+        //    }
+        //}
 
         private void SuggestUniqueNickname(TCPStream stream, Dictionary<string, string> dict)
         {

@@ -77,6 +77,7 @@ namespace GameSpyLib.Network
         /// </param>
         public TCPServer(DatabaseDriver databaseDriver) : base(databaseDriver)
         {
+
         }
 
         /// <summary>
