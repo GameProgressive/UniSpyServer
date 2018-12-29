@@ -108,7 +108,7 @@
     <Compile Include="Crc16.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Common\Logging\LogWriter.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="LogWriter.cs" />
     <Compile Include="NiceDictionary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

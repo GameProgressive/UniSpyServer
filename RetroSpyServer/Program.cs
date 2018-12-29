@@ -30,7 +30,7 @@ namespace RetroSpyServer
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            Logger.Create(path);
+            LogWriter.Create(path);
 
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
@@ -39,7 +39,7 @@ namespace RetroSpyServer
             Console.WriteLine(@"                         |_|   |__/                            ");
             Console.WriteLine("");
 
-            Logger.Info("RetroSpy Server version " + version + ".");
+            LogWriter.Info("RetroSpy Server version " + version + ".");
 
             ServerFactory Emulator = new ServerFactory();
 
@@ -48,10 +48,10 @@ namespace RetroSpyServer
                 //deside which database you want;
                 Emulator.Create(DatabaseEngine.Sqlite, "Data Source=:memory:;Version=3;New=True");
 
-                Logger.Info("Starting Presence Search Player Server at 127.0.0.1:29901..."); // TODO: Add config!
+                LogWriter.Info("Starting Presence Search Player Server at 127.0.0.1:29901..."); // TODO: Add config!
                 Emulator.StartServer("GPSP", "127.0.0.1", 29901, 100);
 
-                Logger.Info("Server successfully started! Type \"help\" for a list of the avaiable commands.");
+                LogWriter.Info("Server successfully started! Type \"help\" for a list of the avaiable commands.");
 
                 while (Emulator.IsRunning())
                 {
@@ -66,12 +66,12 @@ namespace RetroSpyServer
             }
             catch (Exception e)
             {
-                Logger.Fatal(e);
+                LogWriter.Fatal(e);
             }
 
-            Logger.Info("Goodbye!");
+            LogWriter.Info("Goodbye!");
             Emulator.Dispose();
-            Logger.Dispose();
+            LogWriter.Dispose();
         }
     }
 }

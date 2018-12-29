@@ -97,7 +97,7 @@ namespace RetroSpyServer
                     CreateUser(stream, dict);
                     break;
                 default:
-                    Logger.Debug("Received unknown request " + received[0]);
+                    LogWriter.Debug("Received unknown request " + received[0]);
                     SendError(stream, 0, "An invalid request was sended.");
                     stream.Close(false);
                     break;
@@ -236,7 +236,7 @@ namespace RetroSpyServer
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                LogWriter.Error(ex);
                 SendError(stream, 4, "This request cannot be processed because of a database error.");
                 stream.Close();
             }
