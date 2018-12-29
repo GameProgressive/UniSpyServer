@@ -2,6 +2,7 @@
 using System.IO;
 using GameSpyLib;
 using GameSpyLib.Database;
+using GameSpyLib.Logging;
 
 namespace RetroSpyServer
 {
@@ -30,7 +31,7 @@ namespace RetroSpyServer
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            LogWriter.Create(path);
+            LogWriter.Create(path, true);
 
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
@@ -45,7 +46,7 @@ namespace RetroSpyServer
 
             try
             {
-                //deside which database you want;
+                //decide which database you want
                 Emulator.Create(DatabaseEngine.Sqlite, "Data Source=:memory:;Version=3;New=True");
 
                 LogWriter.Info("Starting Presence Search Player Server at 127.0.0.1:29901..."); // TODO: Add config!

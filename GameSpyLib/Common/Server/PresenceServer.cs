@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GameSpyLib.Database;
 using GameSpyLib.Network;
+using GameSpyLib.Logging;
 
 namespace GameSpyLib.Server
 {

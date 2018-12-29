@@ -10,7 +10,7 @@ namespace GameSpyLib.Logging
     /// store LogMessage's into. Uses a Multi-Thread safe Queueing
     /// system, and provides full Asynchronous writing and flushing
     /// </summary>
-    public class LogWriter
+    public class OldLogWriter
     {
         /// <summary>
         /// Full path to the log file
@@ -47,7 +47,7 @@ namespace GameSpyLib.Logging
         ///     If <paramref name="Truncate"/> is true, The size of the file must be at least this size, 
         ///     in bytes, to truncate it
         /// </param>
-        public LogWriter(string FileLocation, bool Truncate = false, int TruncateLen = 2097152)
+        public OldLogWriter(string FileLocation, bool Truncate = false, int TruncateLen = 2097152)
         {
             // Test that we are able to open and write to the file
             LogFile = new FileInfo(FileLocation);
@@ -147,7 +147,7 @@ namespace GameSpyLib.Logging
         /// <summary>
         /// Destructor. Make sure we flush!
         /// </summary>
-        ~LogWriter()
+        ~OldLogWriter()
         {
             try {
                 LogStream?.Dispose();
