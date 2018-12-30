@@ -92,7 +92,7 @@ An instance of ```DatabaseDriver``` is present on each server, this istance is c
 of the argument passed in the Query function.
 
 ```CResultSet::GotoFirstRow``` it's no lenger required, since we can move to any row we want.
-```CResultSet::GetIntFromRow``` translates into ```databaseDriver.Query(....)[row]["column name"], column names are now **required**
+```CResultSet::GetIntFromRow``` translates into ```databaseDriver.Query(....)[row]["column name"]```, column names are now **required**
 
 ```WriteTCP``` gets translated into ```stream.SendAsync```
 
