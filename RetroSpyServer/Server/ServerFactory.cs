@@ -114,20 +114,28 @@ namespace RetroSpyServer
         /// Starts a specific server
         /// </summary>
         /// <param name="serverName">The specific server name</param>
-        /// <param name="ip">The IP that will be binded</param>
-        /// <param name="port">The port that will be binded</param>
+        /// <param name="defaultPort">A default port is no port is specified</param>
         /// <param name="maxConnections">Max number of connections</param>
-        public void StartServer(string serverName, int maxConnections)
-        {       
+        public void StartServer(string serverName, int defaultPort, int maxConnections)
+        {
+            string serverIP = "";
+            int serverPort = 0;
+
             serverName = serverName.ToUpper();
 
-            if (!XMLConfiguration.ServerConfig.ContainsKey(serverName))
+            if (XMLConfiguration.ServerConfig.ContainsKey(serverName))
             {
-                LogWriter.Log.Write("Unable to find configuration for server {0}", LogLevel.Error, serverName);
-                return;
+                serverIP = XMLConfiguration.ServerConfig[serverName].ip;
+                serverPort = XMLConfiguration.ServerConfig[serverName].port;
             }
 
-            LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Information, XMLConfiguration.ServerConfig[serverName].ip, XMLConfiguration.ServerConfig[serverName].port, serverName);
+            if (serverIP.Length < 1)
+                serverIP = XMLConfiguration.DefaultIP;
+
+            if (serverPort < 1)
+                serverPort = defaultPort;
+
+            LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Information, serverIP, serverPort, serverName);
 
             if (!servers.ContainsKey(serverName))
                 return;
@@ -135,7 +143,7 @@ namespace RetroSpyServer
             if (servers[serverName] == null)
                 return;
 
-            servers[serverName].Start(XMLConfiguration.ServerConfig[serverName].ip, XMLConfiguration.ServerConfig[serverName].port, maxConnections);
+            servers[serverName].Start(serverIP, serverPort, maxConnections);
         }
 
         /// <summary>

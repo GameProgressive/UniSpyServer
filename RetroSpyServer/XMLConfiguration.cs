@@ -6,20 +6,60 @@ using GameSpyLib.Database;
 
 namespace RetroSpyServer
 {
+    /// <summary>
+    /// This class rapresents the configuration of a server
+    /// </summary>
     public class ServerConfiguration
     {
+        /// <summary>
+        /// The IP that the server will bind
+        /// </summary>
         public string ip = "localhost";
+
+        /// <summary>
+        /// The port that the server will use
+        /// </summary>
         public int port = 0;
     };
 
+    /// <summary>
+    /// This class rapresents an XML configuration parser and saver
+    /// </summary>
     public class XMLConfiguration
     {
+        /// <summary>
+        /// Contains the database name
+        /// </summary>
         public static string DatabaseName { get; protected set; }
+
+        /// <summary>
+        /// Contains the IP of the database
+        /// </summary>
         public static string DatabaseHost { get; protected set; }
+
+        /// <summary>
+        /// Contains the username that will be used to login in the database
+        /// </summary>
         public static string DatabaseUsername { get; protected set; }
+
+        /// <summary>
+        /// Contains the password that will be used to login in the database
+        /// </summary>
         public static string DatabasePassword { get; protected set; }
+
+        /// <summary>
+        /// The type of the database that will be used
+        /// </summary>
         public static DatabaseEngine DatabaseType { get; protected set; }
+
+        /// <summary>
+        /// The port of the database the server will connect
+        /// </summary>
         public static int DatabasePort { get; protected set; }
+
+        /// <summary>
+        /// A default ip if no server IP is setted
+        /// </summary>
         public static string DefaultIP { get; protected set; }
 
         public static Dictionary<string, ServerConfiguration> ServerConfig { get; protected set; }
