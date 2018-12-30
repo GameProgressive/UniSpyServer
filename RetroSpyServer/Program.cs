@@ -55,7 +55,7 @@ namespace RetroSpyServer
                 }
                 else
                 {
-                    Emulator.Create(DatabaseEngine.Mysql, String.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", XMLConfiguration.DatabaseHost, XMLConfiguration.DatabaseUsername, XMLConfiguration.DatabaseUsername, XMLConfiguration.DatabasePassword, XMLConfiguration.DatabasePort));
+                    Emulator.Create(DatabaseEngine.Mysql, String.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", XMLConfiguration.DatabaseHost, XMLConfiguration.DatabaseName, XMLConfiguration.DatabaseUsername, XMLConfiguration.DatabasePassword, XMLConfiguration.DatabasePort));
                 }
 
                 Emulator.StartServer("GPSP", 29901, 100);
