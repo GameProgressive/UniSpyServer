@@ -31,7 +31,7 @@ namespace RetroSpyServer
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            LogWriter.Log = new LogWriter(String.Format(path + "{0}.log", DateTime.Now.ToLongDateString()));
+            LogWriter.Log = new LogWriter(String.Format(path + @"\{0}.log", DateTime.Now.ToLongDateString()));
 
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using System.IO;
 using System.Collections.Generic;
 using GameSpyLib.Logging;
 using GameSpyLib.Database;
@@ -74,6 +75,32 @@ namespace RetroSpyServer
 
         public static Dictionary<string, ServerConfiguration> ServerConfig { get; protected set; }
 
+        protected static void CreateBlankConfiguration()
+        {
+            try
+            {
+                StreamWriter file = new StreamWriter("RetroSpyServer.xml");
+
+                file.Write("<?xml version=\"1.0\"?>\n" +
+                    "<Configuration>\n" +
+                    "\t<Database type=\"sqlite\">" +
+                    "\t\t<Name>RetroSpy.db</Name> <!--In Sqlite is the Path, in MySQL is the database name -->\n" +
+                    "\t\t<!-- MySQL only -->\n" +
+                    "\t\t<Host></Host>\n" +
+                    "\t\t<Username>retrospy</Username>\n" +
+                    "\t\t<Password></Password>\n" +
+                    "\t</Database>\n\n" +
+                    "\t<DefaultIP>127.0.0.1</DefaultIP>\n" +
+                    "</Configuration>\n");
+
+                file.Close();
+            }
+            catch (Exception)
+            {
+                LogWriter.Log.Write("Unable to write configuration!", LogLevel.Error);
+            }
+        }
+
         public static void LoadConfiguration()
         {
             ServerConfig = new Dictionary<string, ServerConfiguration>();
@@ -87,7 +114,17 @@ namespace RetroSpyServer
             DefaultMaxConnections = 100;
 
             XmlDocument doc = new XmlDocument();
-            doc.Load("RetroSpyServer.xml");
+
+            try
+            {
+                doc.Load("RetroSpyServer.xml");
+            }
+            catch (Exception)
+            {
+                LogWriter.Log.Write("Unable to find configuration file, creating one...", LogLevel.Error);
+                CreateBlankConfiguration();
+                return;
+            }
 
             if (doc.ChildNodes.Count < 2 || doc.ChildNodes[0].Name != "xml" || doc.ChildNodes[1].Name != "Configuration")
             {
@@ -103,7 +140,7 @@ namespace RetroSpyServer
                     {
                         if (attr.Name == "type")
                         {
-                            switch (attr.InnerText)
+                            switch (attr.InnerText.ToLower())
                             {
                                 case "mysql":
                                     DatabaseType = DatabaseEngine.Mysql;
