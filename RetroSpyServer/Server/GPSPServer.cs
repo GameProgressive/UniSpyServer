@@ -21,7 +21,7 @@ namespace RetroSpyServer
         {
         }
 
-        enum RequestsCheck
+        /*enum RequestsCheck
         {
             valid,
             nicks,
@@ -33,7 +33,7 @@ namespace RetroSpyServer
             profilelist,
             pmatch,
             newuser
-        };
+        };*/
 
         /// <summary>
         /// This function is fired when an exception occour in the server
@@ -230,7 +230,7 @@ namespace RetroSpyServer
 
             try
             {
-                if (databaseDriver.Query("SELECT id FROM users WHERE LOWER(email)=@P0", dict["email"].ToLowerInvariant()).Count != 0)
+                if (databaseDriver.Query("SELECT userid FROM users WHERE LOWER(email)=@P0", dict["email"].ToLowerInvariant()).Count != 0)
                     stream.SendAsync(@"\vr\1\final\");
                 else
                     stream.SendAsync(@"\vr\0\final\");

@@ -202,7 +202,7 @@ namespace RetroSpyServer
         {
             databaseDriver.Query(
                 @"CREATE TABLE IF NOT EXISTS `users` (" +
-                @"`id` INTEGER(11) NOT NULL PRIMARY KEY," +
+                @"`userid` INTEGER(11) NOT NULL PRIMARY KEY," +
                 @"`email` VARCHAR(50) NOT NULL," +
                 @"`password` VARCHAR(32) NOT NULL," +
                 @"`status` INTEGER(1) NOT NULL DEFAULT '0'" +
