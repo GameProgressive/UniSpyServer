@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSpyLib", "GameSpyLib\Ga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroSpyServer", "RetroSpyServer\RetroSpyServer.csproj", "{8DF1A031-6966-43FE-8A3E-199B75CD5393}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common files", "Common files", "{23F365AE-997B-40B2-A90D-82479E489EE4}"
+	ProjectSection(SolutionItems) = preProject
+		CONVERTING C Plus Plus CODE TO CSharp CODE.MD = CONVERTING C Plus Plus CODE TO CSharp CODE.MD
+		README.MD = README.MD
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

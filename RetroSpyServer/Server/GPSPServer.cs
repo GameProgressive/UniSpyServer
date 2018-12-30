@@ -208,11 +208,98 @@ namespace RetroSpyServer
             stream.Close(false);
         }
 
+        // kou finish this !
         private void RetriveNicknames(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("nicks", dict);
             SendError(stream, 0, "This request is not supported yet.");
             stream.Close(false);
+
+/* Legacy C++ code to reimpliment 
+bool PSServer::OnSendNicks(mdk_socket stream, const char *buf, int)
+{
+	std::string email = "", pass = "", gamename = "", str = "";
+	bool bSendUnique = false;
+	size_t i = 0;
+	CResultSet *result = NULL;
+
+	// Get data from buffer
+
+	if (!get_gs_data(buf, email, "email"))
+		return false;
+
+	if (get_gs_data(buf, pass, "passenc"))
+	{
+		// Uncrypt the password
+		gs_pass_decode(pass);
+	}
+	else
+	{
+		if (!get_gs_data(buf, pass, "pass"))
+			return false;
+	}
+
+	if (get_gs_data(buf, gamename, "gamename"))
+		bSendUnique = true;
+
+	// Create the query and execute it
+	str = "SELECT profiles.nick, profiles.uniquenick FROM profiles INNER "
+		"JOIN users ON profiles.userid=users.userid WHERE users.email='";
+	if (!mdk_escape_query_string(m_lpDatabase, email))
+		return false;
+
+	str += email;
+	str += "' AND password='";
+	if (!mdk_escape_query_string(m_lpDatabase, pass))
+		return false;
+
+	str += pass;
+	str += "'";
+
+	result = new CResultSet();
+
+	if (!result->ExecuteQuery(m_lpDatabase, str))
+	{
+		delete result;
+		
+		WriteTCP(stream, "\\nr\\\\ndone\\final\\");
+		return false;
+	}
+	
+	if (!result->GotoFirstRow())
+	{
+		delete result;
+		
+		WriteTCP(stream, "\\nr\\\\ndone\\final\\");
+		return false;
+		
+	}
+
+	str = "\\nr\\" + std::to_string(result->GetTotalRows());
+
+	// Get all the nicks and store them
+	do
+	{
+		str += "\\nick\\";
+		str += result->GetStringFromRow(0);
+
+		if (bSendUnique)
+		{
+			str += "\\uniquenick\\";
+			str += result->GetStringFromRow(1);
+		}
+	} while(result->GotoNextRow());
+
+	str += "\\ndone\\final\\";
+
+	// Send to the socket
+	WriteTCP(stream, str);
+
+	delete result;
+
+	return true;
+}*/
+
         }
 
         /// <summary>
