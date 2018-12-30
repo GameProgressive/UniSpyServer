@@ -115,11 +115,10 @@ namespace RetroSpyServer
         /// </summary>
         /// <param name="serverName">The specific server name</param>
         /// <param name="defaultPort">A default port is no port is specified</param>
-        /// <param name="maxConnections">Max number of connections</param>
-        public void StartServer(string serverName, int defaultPort, int maxConnections)
+        public void StartServer(string serverName, int defaultPort)
         {
             string serverIP = "";
-            int serverPort = 0;
+            int serverPort = -1, maxConnections = -1;
 
             serverName = serverName.ToUpper();
 
@@ -127,6 +126,7 @@ namespace RetroSpyServer
             {
                 serverIP = XMLConfiguration.ServerConfig[serverName].ip;
                 serverPort = XMLConfiguration.ServerConfig[serverName].port;
+                maxConnections = XMLConfiguration.ServerConfig[serverName].maxConnections;
             }
 
             if (serverIP.Length < 1)
@@ -135,7 +135,11 @@ namespace RetroSpyServer
             if (serverPort < 1)
                 serverPort = defaultPort;
 
+            if (maxConnections < 1)
+                maxConnections = XMLConfiguration.DefaultMaxConnections;
+
             LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Information, serverIP, serverPort, serverName);
+            LogWriter.Log.Write("Maximum connections allowed for server {0} are {1}.", LogLevel.Information, serverName, maxConnections);
 
             if (!servers.ContainsKey(serverName))
                 return;

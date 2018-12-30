@@ -20,6 +20,11 @@ namespace RetroSpyServer
         /// The port that the server will use
         /// </summary>
         public int port = 0;
+
+        /// <summary>
+        /// Max connections avaiable for the server
+        /// </summary>
+        public int maxConnections = 0;
     };
 
     /// <summary>
@@ -62,6 +67,11 @@ namespace RetroSpyServer
         /// </summary>
         public static string DefaultIP { get; protected set; }
 
+        /// <summary>
+        /// Sets the max connection if it is not specified for the server
+        /// </summary>
+        public static int DefaultMaxConnections { get; protected set; }
+
         public static Dictionary<string, ServerConfiguration> ServerConfig { get; protected set; }
 
         public static void LoadConfiguration()
@@ -74,6 +84,7 @@ namespace RetroSpyServer
             DatabaseHost = DatabaseUsername = DatabasePassword = "";
             DatabasePort = 3306;
             DefaultIP = "localhost";
+            DefaultMaxConnections = 100;
 
             XmlDocument doc = new XmlDocument();
             doc.Load("RetroSpyServer.xml");
@@ -139,6 +150,18 @@ namespace RetroSpyServer
                     DefaultIP = node.InnerText;
                 }
 
+                else if (node.Name == "DefaultMaxConnections")
+                {
+                    int max = 0;
+                    if (!int.TryParse(node.InnerText, out max))
+                    {
+                        LogWriter.Log.Write("Unable to read default max connections! Defaulting to 100...", LogLevel.Warning);
+                        max = 100;
+                    }
+
+                    DefaultMaxConnections = max;
+                }
+
                 else if (node.Name == "LogLevel")
                 {
                     if (!Enum.TryParse<LogLevel>(node.InnerText, out LogWriter.Log.MiniumLogLevel))
@@ -182,7 +205,14 @@ namespace RetroSpyServer
 
                         else if (node2.Name == "Port")
                         {
-                            int.TryParse(node2.InnerText, out ServerConfig[realServerName].port);
+                            if (!int.TryParse(node2.InnerText, out ServerConfig[realServerName].port))
+                                ServerConfig[realServerName].port = -1;
+                        }
+
+                        else if (node2.Name == "MaxConnections")
+                        {
+                            if (!int.TryParse(node2.InnerText, out ServerConfig[realServerName].maxConnections))
+                                ServerConfig[realServerName].maxConnections = -1;
                         }
                     }
                 }
