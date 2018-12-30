@@ -56,6 +56,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\ServerFactory.cs" />
+    <Compile Include="XMLConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

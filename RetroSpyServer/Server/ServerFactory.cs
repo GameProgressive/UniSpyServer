@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net;
 using GameSpyLib.Database;
 using GameSpyLib.Network;
+using GameSpyLib.Logging;
 
 namespace RetroSpyServer
 {
@@ -53,9 +54,20 @@ namespace RetroSpyServer
                     throw new Exception("Unknown database engine!");
             }
 
-            databaseDriver.Connect();
+            try
+            {
+                databaseDriver.Connect();
+            }
+            catch (Exception ex)
+            {
+                LogWriter.Log.Write(ex.Message, LogLevel.Fatal);
+                Environment.Exit(0); // Without database the server cannot start
+            }
 
-            CreateDatabaseTables();
+            LogWriter.Log.Write("Successfully connected to the database!", LogLevel.Information);
+
+            if (engine == DatabaseEngine.Sqlite)
+                CreateDatabaseTables();
 
             // Add all servers
             servers.Add("GPSP", new GPSPServer(databaseDriver));

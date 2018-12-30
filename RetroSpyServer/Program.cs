@@ -31,7 +31,7 @@ namespace RetroSpyServer
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
-            LogWriter.Create(path, true);
+            LogWriter.Log = new LogWriter(String.Format(path + "{0}.log", DateTime.Now.ToLongDateString()));
 
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
@@ -40,19 +40,28 @@ namespace RetroSpyServer
             Console.WriteLine(@"                         |_|   |__/                            ");
             Console.WriteLine("");
 
-            LogWriter.Info("RetroSpy Server version " + version + ".");
+            LogWriter.Log.Write("RetroSpy Server version " + version + ".", LogLevel.Information);
+
+            XMLConfiguration.LoadConfiguration();
 
             ServerFactory Emulator = new ServerFactory();
 
             try
             {
-                //decide which database you want
-                Emulator.Create(DatabaseEngine.Sqlite, "Data Source=:memory:;Version=3;New=True");
+                // Decide which database you want
+                if (XMLConfiguration.DatabaseType == DatabaseEngine.Sqlite)
+                {
+                    Emulator.Create(DatabaseEngine.Sqlite, "Data Source=" + XMLConfiguration.DatabaseName + ";Version=3;New=False");
+                }
+                else
+                {
+                    Emulator.Create(DatabaseEngine.Mysql, String.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", XMLConfiguration.DatabaseHost, XMLConfiguration.DatabaseUsername, XMLConfiguration.DatabaseUsername, XMLConfiguration.DatabasePassword, XMLConfiguration.DatabasePort));
+                }
 
-                LogWriter.Info("Starting Presence Search Player Server at 127.0.0.1:29901..."); // TODO: Add config!
+                LogWriter.Log.Write("Starting Presence Search Player Server at {0}:{1}...", LogLevel.Information);
                 Emulator.StartServer("GPSP", "127.0.0.1", 29901, 100);
 
-                LogWriter.Info("Server successfully started! Type \"help\" for a list of the avaiable commands.");
+                LogWriter.Log.Write("Server successfully started! Type \"help\" for a list of the avaiable commands.", LogLevel.Information);
 
                 while (Emulator.IsRunning())
                 {
@@ -67,12 +76,12 @@ namespace RetroSpyServer
             }
             catch (Exception e)
             {
-                LogWriter.Fatal(e);
+                LogWriter.Log.Write(e.Message, LogLevel.Fatal);
             }
 
-            LogWriter.Info("Goodbye!");
+            LogWriter.Log.Write("Goodbye!", LogLevel.Information);
             Emulator.Dispose();
-            LogWriter.Dispose();
+            LogWriter.Log.Dispose();
         }
     }
 }
