@@ -117,9 +117,17 @@ namespace RetroSpyServer
         /// <param name="ip">The IP that will be binded</param>
         /// <param name="port">The port that will be binded</param>
         /// <param name="maxConnections">Max number of connections</param>
-        public void StartServer(string serverName, string ip, int port, int maxConnections)
-        {
+        public void StartServer(string serverName, int maxConnections)
+        {       
             serverName = serverName.ToUpper();
+
+            if (!XMLConfiguration.ServerConfig.ContainsKey(serverName))
+            {
+                LogWriter.Log.Write("Unable to find configuration for server {0}", LogLevel.Error, serverName);
+                return;
+            }
+
+            LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Information, XMLConfiguration.ServerConfig[serverName].ip, XMLConfiguration.ServerConfig[serverName].port, serverName);
 
             if (!servers.ContainsKey(serverName))
                 return;
@@ -127,7 +135,7 @@ namespace RetroSpyServer
             if (servers[serverName] == null)
                 return;
 
-            servers[serverName].Start(ip, port, maxConnections);
+            servers[serverName].Start(XMLConfiguration.ServerConfig[serverName].ip, XMLConfiguration.ServerConfig[serverName].port, maxConnections);
         }
 
         /// <summary>

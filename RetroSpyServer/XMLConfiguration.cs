@@ -1,10 +1,17 @@
 ﻿using System;
 using System.Xml;
+using System.Collections.Generic;
 using GameSpyLib.Logging;
 using GameSpyLib.Database;
 
 namespace RetroSpyServer
 {
+    public class ServerConfiguration
+    {
+        public string ip = "localhost";
+        public int port = 0;
+    };
+
     public class XMLConfiguration
     {
         public static string DatabaseName { get; protected set; }
@@ -15,8 +22,12 @@ namespace RetroSpyServer
         public static int DatabasePort { get; protected set; }
         public static string DefaultIP { get; protected set; }
 
+        public static Dictionary<string, ServerConfiguration> ServerConfig { get; protected set; }
+
         public static void LoadConfiguration()
         {
+            ServerConfig = new Dictionary<string, ServerConfiguration>();
+
             // Default values
             DatabaseType = DatabaseEngine.Sqlite;
             DatabaseName = ":memory:";
@@ -102,7 +113,37 @@ namespace RetroSpyServer
                     if (node.InnerText.Equals("true"))
                     {
                         LogWriter.Log.DebugSockets = true;
-                        LogWriter.Log.Write("Socket debugging is enabled!", LogLevel.Information);
+                        LogWriter.Log.Write("Socket debugging is enabled!", LogLevel.Debug);
+                    }
+                }
+
+                else if (node.Name == "Server")
+                {
+                    string realServerName = "";
+
+                    foreach (XmlAttribute attr in node.Attributes)
+                    {
+                        if (attr.Name == "name")
+                            realServerName = attr.InnerText.ToUpper();
+                    }
+
+                    if (realServerName.Length < 1)
+                        continue;
+
+                    if (!ServerConfig.ContainsKey(realServerName))
+                        ServerConfig.Add(realServerName, new ServerConfiguration());
+
+                    foreach (XmlNode node2 in node.ChildNodes)
+                    {
+                        if (node2.Name == "IP")
+                        {
+                            ServerConfig[realServerName].ip = node2.InnerText;
+                        }
+
+                        else if (node2.Name == "Port")
+                        {
+                            int.TryParse(node2.InnerText, out ServerConfig[realServerName].port);
+                        }
                     }
                 }
             }

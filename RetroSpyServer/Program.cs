@@ -58,8 +58,7 @@ namespace RetroSpyServer
                     Emulator.Create(DatabaseEngine.Mysql, String.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", XMLConfiguration.DatabaseHost, XMLConfiguration.DatabaseUsername, XMLConfiguration.DatabaseUsername, XMLConfiguration.DatabasePassword, XMLConfiguration.DatabasePort));
                 }
 
-                LogWriter.Log.Write("Starting Presence Search Player Server at {0}:{1}...", LogLevel.Information);
-                Emulator.StartServer("GPSP", "127.0.0.1", 29901, 100);
+                Emulator.StartServer("GPSP", 100);
 
                 LogWriter.Log.Write("Server successfully started! Type \"help\" for a list of the avaiable commands.", LogLevel.Information);
 
