@@ -99,8 +99,7 @@ namespace RetroSpyServer
                     break;
                 default:
                     LogWriter.Log.Write("Received unknown request " + received[0], LogLevel.Debug);
-                    SendError(stream, 0, "An invalid request was sended.");
-                    stream.Close(false);
+                    SendErrorAndFreeStream(stream, 0, "An invalid request was sended.");
                     break;
             }
         }
@@ -148,22 +147,19 @@ namespace RetroSpyServer
         private void SuggestUniqueNickname(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("uniquesearch", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
         private void OnProfileList(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("profilelist", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
         private void MatchProduct(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("pmatch", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
         /// <summary>
@@ -174,46 +170,38 @@ namespace RetroSpyServer
         private void CreateUser(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("newuser", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
-
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
         private void OnOthersList(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("otherslist", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
         private void ReverseBuddies(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("others", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
-
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
         private void SearchUser(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("search", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
         private void CheckAccount(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("check", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
         // kou finish this !
         private void RetriveNicknames(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("nicks", dict);
-            SendError(stream, 0, "This request is not supported yet.");
-            stream.Close(false);
+            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
 
 /* Legacy C++ code to reimpliment 
 bool PSServer::OnSendNicks(mdk_socket stream, const char *buf, int)
@@ -311,8 +299,8 @@ bool PSServer::OnSendNicks(mdk_socket stream, const char *buf, int)
         {
             if (!dict.ContainsKey("email"))
             {
-                SendError(stream, 1, "There was an error parsing an incoming request.");
-                stream.Close();
+                SendErrorAndFreeStream(stream, 1, "There was an error parsing an incoming request.");
+                return;
             }
 
             try
@@ -325,8 +313,7 @@ bool PSServer::OnSendNicks(mdk_socket stream, const char *buf, int)
             catch (Exception ex)
             {
                 LogWriter.Log.Write(ex.Message, LogLevel.Error);
-                SendError(stream, 4, "This request cannot be processed because of a database error.");
-                stream.Close();
+                SendErrorAndFreeStream(stream, 4, "This request cannot be processed because of a database error.");
             }
         }
     }

@@ -25,6 +25,19 @@ namespace GameSpyLib.Server
         }
 
         /// <summary>
+        /// This function sended the error to a stream and release it
+        /// </summary>
+        /// <param name="stream">The stream that will receive the error</param>
+        /// <param name="code">The error code</param>
+        /// <param name="error">A string containing the error</param>
+        protected void SendErrorAndFreeStream(TCPStream stream, int code, string error)
+        {
+            SendError(stream, code, error);
+            stream.Close();
+            Release(stream);
+        }
+
+        /// <summary>
         /// Send a presence error
         /// </summary>
         /// <param name="socket">The socket that will receive the error</param>
