@@ -1,95 +1,201 @@
 ﻿using System;
-using Serilog;
-using Serilog.Events;
-using Serilog.Sinks.SystemConsole.Themes;
+using System.IO;
+using System.Text;
+using System.Timers;
 
 namespace GameSpyLib.Logging
 {
+    public enum LogLevel
+    {
+        Debug,
+        Information,
+        Warning,
+        Error,
+        Fatal
+    };
+
     /// <summary>
-    /// This class writes the Log using Serilog
+    /// Provides an object wrapper for a file that is used to
+    /// store LogMessage's into. Uses a Multi-Thread safe Queueing
+    /// system, and provides full Asynchronous writing and flushing
     /// </summary>
-    public class LogWriter
+    public class LogWriter : IDisposable
     {
         /// <summary>
-        /// If this is setted to true, all socket IO operations will be wrote into the debugger
-        /// Pariculary usefull when debugging GameSpy protocol
+        /// Public istance of the LogWriter
         /// </summary>
-        public static bool DebugSocket { get; set; }
+        public static LogWriter Log = null;
 
         /// <summary>
-        /// Creates the Logger
+        /// Minium logging level that will be wrote
         /// </summary>
-        /// <param name="rootPath">Base folder to save the logs</param>
-        public static void Create(string logPath, bool debug)
+        public LogLevel MiniumLogLevel = LogLevel.Information;
+
+        /// <summary>
+        /// If this variable is setted to true, anything the server will send and receive will be logged
+        /// </summary>
+        public bool DebugSockets = false;
+
+        /// <summary>
+        /// Full path to the log file
+        /// </summary>
+        private FileInfo LogFile;
+
+        /// <summary>
+        /// The <see cref="StreamWriter"/> for our <paramref name="LogFile"/>
+        /// </summary>
+        private StreamWriter LogStream;
+
+        /// <summary>
+        /// Our midnight timer, to truncate the log file
+        /// </summary>
+        private Timer TruncateTimer;
+
+        /// <summary>
+        /// Our lock object, preventing race conditions
+        /// </summary>
+        private Object _sync = new Object();
+
+        /// <summary>
+        /// Provides a full sync lock between all isntances of this app
+        /// </summary>
+        private static Object _fullSync = new Object();
+
+        /// <summary>
+        /// Creates a new Log Writter instance
+        /// </summary>
+        /// <param name="FileLocation">The location of the logfile. If the file doesnt exist,
+        /// It will be created.</param>
+        /// <param name="Truncate">If set to true and the logfile is over XX size, it will be truncated to 0 length</param>
+        /// <param name="TruncateLen">
+        ///     If <paramref name="Truncate"/> is true, The size of the file must be at least this size, 
+        ///     in bytes, to truncate it
+        /// </param>
+        public LogWriter(string FileLocation, bool Truncate = false, int TruncateLen = 2097152)
         {
-            LoggerConfiguration cfg = new LoggerConfiguration();
+            // Test that we are able to open and write to the file
+            LogFile = new FileInfo(FileLocation);
+            FileStream fileStream = LogFile.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            LogStream = new StreamWriter(fileStream, Encoding.UTF8);
 
-            if (debug)
-                cfg.MinimumLevel.Debug();
-            else
-                cfg.MinimumLevel.Information();
+            // If the file is over 2MB, and we want to truncate big files
+            if (Truncate && LogFile.Length > TruncateLen)
+            {
+                LogStream.BaseStream.SetLength(0);
+                LogStream.BaseStream.Seek(0, SeekOrigin.Begin);
+                LogStream.Flush();
+            }
+            else if (LogFile.Length > 0)
+            {
+                // Seek to the end of the log file
+                LogStream.BaseStream.Seek(0, SeekOrigin.End);
+            }
 
-            cfg.WriteTo.Console(theme: AnsiConsoleTheme.Code);
-
-            // Note: For some reason Async logger thows some exceptions in Log.CloseAndFlush(), We will be use buffered RollingFile for now
-            /*cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information).WriteTo.Async(a => a.RollingFile(logPath + @"\RetroSpy-Info-{Date}.log", buffered: false)));
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug).WriteTo.Async(a => a.RollingFile(logPath + @"\RetroSpy-Debug-{Date}.log", buffered: false)));
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning).WriteTo.Async(a => a.RollingFile(logPath + @"\RetroSpy-Warning-{Date}.log", buffered: false)));
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error).WriteTo.Async(a => a.RollingFile(logPath + @"\RetroSpy-Error-{Date}.log", buffered: false)));
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal).WriteTo.Async(a => a.RollingFile(logPath + @"\RetroSpy-Fatal-{Date}.log", buffered: false)));*/
-
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Information).WriteTo.RollingFile(logPath + @"\RetroSpy-Info-{Date}.log", buffered: true));
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Debug).WriteTo.RollingFile(logPath + @"\RetroSpy-Debug-{Date}.log", buffered: true));
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Warning).WriteTo.RollingFile(logPath + @"\RetroSpy-Warning-{Date}.log", buffered: true));
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Error).WriteTo.RollingFile(logPath + @"\RetroSpy-Error-{Date}.log", buffered: true));
-            cfg.WriteTo.Logger(l => l.Filter.ByIncludingOnly(e => e.Level == LogEventLevel.Fatal).WriteTo.RollingFile(logPath + @"\RetroSpy-Fatal-{Date}.log", buffered: true));
-
-            Log.Logger = cfg.CreateLogger();
+            // 24 Truncate Timer
+            if (Truncate)
+            {
+                // Create Truncation Task
+                TimeSpan untilMidnight = DateTime.Today.AddDays(1) - DateTime.Now;
+                TruncateTimer = new Timer();
+                TruncateTimer.AutoReset = false; // Don't reset first time around!
+                TruncateTimer.Interval = untilMidnight.TotalMilliseconds;
+                TruncateTimer.Elapsed += TruncateTimer_Elapsed;
+                TruncateTimer.Start();
+            }
         }
 
-        public static void Dispose()
+        /// <summary>
+        /// Event called at midnight, to clear the log file
+        /// </summary>
+        private void TruncateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            Log.CloseAndFlush();
+            try
+            {
+                // Get next 24 hours
+                TruncateTimer.Interval = 24 * 60 * 60 * 1000;
+                TruncateTimer.Enabled = true;
+                TruncateTimer.Start();
+
+                // Only allow 1 thread at a time do these operations
+                lock (_sync)
+                {
+                    // Empty log
+                    LogStream.BaseStream.SetLength(0);
+                    LogStream.BaseStream.Seek(0, SeekOrigin.Begin);
+                    LogStream.Flush();
+                }
+
+                // Write to console
+                lock (_fullSync)
+                {
+                    // TODO! Rotate the file
+                    Console.SetCursorPosition(0, Console.CursorTop);
+                    Console.WriteLine("Clearing logfile: " + LogFile.Name);
+                    Console.WriteLine();
+                    //Console.Write("Cmd > ");
+                }
+            }
+            catch (Exception E)
+            {
+                Console.WriteLine(E.Message);
+            }
         }
 
-        public static void Debug(string msg)
+        /// <summary>
+        /// Adds a message to the queue, to be written to the log file
+        /// </summary>
+        /// <param name="message">The message to write to the log</param>
+        /// <param name="level">The level of the log</param>
+        public void Write(string message, LogLevel level)
         {
-            Log.Debug(msg);
+            if (level < MiniumLogLevel)
+                return;
+
+            // Only allow 1 thread at a time do these operations
+            lock (_sync)
+            {
+                Console.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
+                LogStream.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
+                LogStream.Flush();
+            }
         }
 
-        public static void Debug(Exception ex, string msg = "")
+        /// <summary>
+        /// Adds a message to the queue, to be written to the log file
+        /// </summary>
+        /// <param name="message">The message to write to the log</param>
+        /// <param name="level">The level of the log</param>
+        /// <param name="items">Extra items to be appended to the message</param>
+        public void Write(string message, LogLevel level, params object[] items)
         {
-            Log.Debug(ex, msg);
+            if (level < MiniumLogLevel)
+                return;
+
+            // Only allow 1 thread at a time do these operations
+            lock (_sync)
+            {
+                Console.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, String.Format(message, items), level.ToString()));
+                LogStream.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, String.Format(message, items), level.ToString()));
+                LogStream.Flush();
+            }
         }
 
-        public static void Warn(string msg)
+        /// <summary>
+        /// Destructor. Make sure we flush!
+        /// </summary>
+        ~LogWriter()
         {
-            Log.Warning(msg);
+            Dispose();
         }
 
-        public static void Error(string msg)
+        public void Dispose()
         {
-            Log.Error(msg);
-        }
-
-        public static void Error(Exception ex, string msg = "")
-        {
-            Log.Error(ex, msg);
-        }
-
-        public static void Fatal(string msg)
-        {
-            Log.Fatal(msg);
-        }
-
-        public static void Fatal(Exception ex, string msg = "")
-        {
-            Log.Fatal(ex, msg);
-        }
-
-        public static void Info(string msg)
-        {
-            Log.Information(msg);
+            try
+            {
+                LogStream?.Dispose();
+                TruncateTimer?.Dispose();
+            }
+            catch (ObjectDisposedException) { } // Ignore
         }
     }
 }

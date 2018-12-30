@@ -59,7 +59,7 @@ namespace GameSpyLib.Server
 
         protected void PrintReceivedDictToLogger(string req, Dictionary<string, string> dict)
         {
-            LogWriter.Debug( String.Format("Received request {0} with content: {1}", req, String.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()) ) );
+            LogWriter.Log.Write("Received request {0} with content: {1}", LogLevel.Debug, req, String.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()));
         }
 
         /// <summary>

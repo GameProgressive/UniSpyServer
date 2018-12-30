@@ -228,8 +228,8 @@ namespace GameSpyLib.Network
 
                 UDPPacket packet = new UDPPacket(AcceptEventArg);
 
-                if (LogWriter.DebugSocket)
-                    LogWriter.Debug("UDP Operation " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""));
+                if (LogWriter.Log.DebugSockets)
+                    LogWriter.Log.Write("UDP Operation " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
 
                 // Hand off processing to the parent
                 ProcessAccept(packet);
