@@ -32,6 +32,9 @@ namespace GameSpyLib.Server
         /// <param name="error">A string containing the error</param>
         protected void SendError(Socket socket, int code, string error)
         {
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write("Sending TCP data: {0}", LogLevel.Debug, String.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error));
+
             socket.Send(Encoding.UTF8.GetBytes(String.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
         }
 

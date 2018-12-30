@@ -309,6 +309,9 @@ namespace GameSpyLib.Network
             // Make sure the socket is still open
             if (SocketClosed) return;
 
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write("Sending TCP data: {0}", LogLevel.Debug, System.Text.Encoding.UTF8.GetString(message));
+
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
                 SendMessage.AddRange(message);
