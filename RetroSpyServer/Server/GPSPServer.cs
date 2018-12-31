@@ -64,7 +64,7 @@ namespace RetroSpyServer
         {
             string[] received = message.TrimStart('\\').Split('\\');
             Dictionary<string, string> dict = ConvertToKeyValue(received);
-            
+
             switch (received[0])
             {
                 case "valid":
@@ -103,46 +103,6 @@ namespace RetroSpyServer
                     break;
             }
         }
-        //Enum.TryParse(received[0], out RequestsCheck request);
-        //    switch (request)
-        //    {
-        //        case RequestsCheck.valid:
-        //             IsEmailValid(stream, dict);
-        //             break;
-        //        case RequestsCheck.nicks:
-        //             RetriveNicknames(stream, dict);
-        //             break;
-        //        case RequestsCheck.check:
-        //             CheckAccount(stream, dict);
-        //             break;
-        //        case RequestsCheck.search:
-        //             SearchUser(stream, dict);
-        //             break;
-        //        case RequestsCheck.others:
-        //             ReverseBuddies(stream, dict);
-        //             break;
-        //        case RequestsCheck.otherslist:
-        //             OnOthersList(stream, dict);
-        //             break;
-        //        case RequestsCheck.uniquesearch:
-        //             SuggestUniqueNickname(stream, dict);
-        //             break;
-        //        case RequestsCheck.profilelist:
-        //             OnProfileList(stream, dict);
-        //             break;
-        //        case RequestsCheck.pmatch:
-        //             MatchProduct(stream, dict);
-        //             break;
-        //        case RequestsCheck.newuser:
-        //             CreateUser(stream, dict);
-        //             break;
-        //        default:
-        //            Logger.Debug("Received unknown request " + received[0]);
-        //            SendError(stream, 0, "An invalid request was sended.");
-        //            stream.Close(false);
-        //            break;
-        //    }
-        //}
 
         private void SuggestUniqueNickname(TCPStream stream, Dictionary<string, string> dict)
         {
@@ -201,92 +161,110 @@ namespace RetroSpyServer
         private void RetriveNicknames(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("nicks", dict);
+            if (!dict.ContainsKey("niks"))
+            {
+                SendError(stream, 1, "Therewasanerrorparsingan incomingrequest.");
+                stream.Close();
+            }
+            try
+            {
+                if (databaseDriver.Query("SELECT profiles.nick, profiles.uniquenick FROM profiles INNER JOIN users ON profiles.userid=users.userid WHERE users.email=@P0", dict["nicks"].ToLowerInvariant()).Count != 0)
+                    stream.SendAsync(@"\vr\1\final\");
+                else
+                    stream.SendAsync(@"\vr\0\final");
+            }
+            catch (Exception ex)
+            {
+                LogWriter.Log.Write(ex.Message, LogLevel.Error);
+                SendError(stream, 4, "This request cannot be processed because of a databaseerror.");
+                stream.Close();
+            }
             SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
 
-/* Legacy C++ code to reimpliment 
-bool PSServer::OnSendNicks(mdk_socket stream, const char *buf, int)
-{
-	std::string email = "", pass = "", gamename = "", str = "";
-	bool bSendUnique = false;
-	size_t i = 0;
-	CResultSet *result = NULL;
+            /* Legacy C++ code to reimpliment 
+            bool PSServer::OnSendNicks(mdk_socket stream, const char *buf, int)
+            {
+                std::string email = "", pass = "", gamename = "", str = "";
+                bool bSendUnique = false;
+                size_t i = 0;
+                CResultSet *result = NULL;
 
-	// Get data from buffer
+                // Get data from buffer
 
-	if (!get_gs_data(buf, email, "email"))
-		return false;
+                if (!get_gs_data(buf, email, "email"))
+                    return false;
 
-	if (get_gs_data(buf, pass, "passenc"))
-	{
-		// Uncrypt the password
-		gs_pass_decode(pass);
-	}
-	else
-	{
-		if (!get_gs_data(buf, pass, "pass"))
-			return false;
-	}
+                if (get_gs_data(buf, pass, "passenc"))
+                {
+                    // Uncrypt the password
+                    gs_pass_decode(pass);
+                }
+                else
+                {
+                    if (!get_gs_data(buf, pass, "pass"))
+                        return false;
+                }
 
-	if (get_gs_data(buf, gamename, "gamename"))
-		bSendUnique = true;
+                if (get_gs_data(buf, gamename, "gamename"))
+                    bSendUnique = true;
 
-	// Create the query and execute it
-	str = "SELECT profiles.nick, profiles.uniquenick FROM profiles INNER "
-		"JOIN users ON profiles.userid=users.userid WHERE users.email='";
-	if (!mdk_escape_query_string(m_lpDatabase, email))
-		return false;
+                // Create the query and execute it
+                str = "SELECT profiles.nick, profiles.uniquenick FROM profiles INNER "
+                    "JOIN users ON profiles.userid=users.userid WHERE users.email='";
+                if (!mdk_escape_query_string(m_lpDatabase, email))
+                    return false;
 
-	str += email;
-	str += "' AND password='";
-	if (!mdk_escape_query_string(m_lpDatabase, pass))
-		return false;
+                str += email;
+                str += "' AND password='";
+                if (!mdk_escape_query_string(m_lpDatabase, pass))
+                    return false;
 
-	str += pass;
-	str += "'";
+                str += pass;
+                str += "'";
 
-	result = new CResultSet();
+                result = new CResultSet();
 
-	if (!result->ExecuteQuery(m_lpDatabase, str))
-	{
-		delete result;
-		
-		WriteTCP(stream, "\\nr\\\\ndone\\final\\");
-		return false;
-	}
-	
-	if (!result->GotoFirstRow())
-	{
-		delete result;
-		
-		WriteTCP(stream, "\\nr\\\\ndone\\final\\");
-		return false;
-		
-	}
+                if (!result->ExecuteQuery(m_lpDatabase, str))
+                {
+                    delete result;
 
-	str = "\\nr\\" + std::to_string(result->GetTotalRows());
+                    WriteTCP(stream, "\\nr\\\\ndone\\final\\");
+                    return false;
+                }
 
-	// Get all the nicks and store them
-	do
-	{
-		str += "\\nick\\";
-		str += result->GetStringFromRow(0);
+                if (!result->GotoFirstRow())
+                {
+                    delete result;
 
-		if (bSendUnique)
-		{
-			str += "\\uniquenick\\";
-			str += result->GetStringFromRow(1);
-		}
-	} while(result->GotoNextRow());
+                    WriteTCP(stream, "\\nr\\\\ndone\\final\\");
+                    return false;
 
-	str += "\\ndone\\final\\";
+                }
 
-	// Send to the socket
-	WriteTCP(stream, str);
+                str = "\\nr\\" + std::to_string(result->GetTotalRows());
 
-	delete result;
+                // Get all the nicks and store them
+                do
+                {
+                    str += "\\nick\\";
+                    str += result->GetStringFromRow(0);
 
-	return true;
-}*/
+                    if (bSendUnique)
+                    {
+                        str += "\\uniquenick\\";
+                        str += result->GetStringFromRow(1);
+                    }
+                } while(result->GotoNextRow());
+
+                str += "\\ndone\\final\\";
+
+                // Send to the socket
+                WriteTCP(stream, str);
+
+                delete result;
+
+                return true;
+            }*/
 
         }
 

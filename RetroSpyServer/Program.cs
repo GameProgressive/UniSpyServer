@@ -81,7 +81,7 @@ namespace RetroSpyServer
 
             LogWriter.Log.Write("Goodbye!", LogLevel.Information);
             Emulator.Dispose();
-            LogWriter.Log.Dispose();
+            LogWriter.Log.Dispose();            
         }
     }
 }
