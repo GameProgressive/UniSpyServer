@@ -157,34 +157,79 @@ namespace RetroSpyServer
             SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
 
-        // kou finish this !
         private void RetriveNicknames(TCPStream stream, Dictionary<string, string> dict)
         {
-            PrintReceivedDictToLogger("nicks", dict);
+            string password = "";
+            bool sendUniqueNick = false;
+
             if (!dict.ContainsKey("email"))
             {
-                SendError(stream, 1, "There was an error parsing an incoming request.");
-                stream.Close();
+                SendErrorAndFreeStream(stream, 1, "There was an error parsing an incoming request.");
+                return;
             }
+            
+            // First, we try to receive an encoded password
             if(!dict.ContainsKey("passenc"))
             {
-                SendError(stream, 1, "There was an error parsing an incoming request.");
-                // i dont knowhow to do this
+                // If the encoded password is not sended, we try receving the password in plain text
+                if (!dict.ContainsKey("pass"))
+                {
+                    // No password is specified, we cannot continue
+                    SendErrorAndFreeStream(stream, 1, "There was an error parsing an incoming request.");
+                    return;
+                }
+                else
+                {
+                    // Store the plain text password
+                    password = dict["pass"];
+                }
             }
+            else
+            {
+                // Store the decrypted password
+                password = GamespyUtils.DecodePassword(dict["passenc"]);
+            }
+
+            sendUniqueNick = dict.ContainsKey("gamename");
+
+            List<Dictionary<string, object>> queryResult = null;
+
             try
             {
-                if (databaseDriver.Query("SELECT profiles.nick, profiles.uniquenick FROM profiles INNER JOIN users ON profiles.userid=users.userid WHERE users.email=@P0", dict["nicks"].ToLowerInvariant()).Count != 0)
-                    stream.SendAsync(@"\vr\1\final\");
-                else
-                    stream.SendAsync(@"\vr\0\final");
+                queryResult = databaseDriver.Query("SELECT profiles.nick, profiles.uniquenick FROM profiles INNER JOIN users ON profiles.userid=users.userid WHERE LOWER(users.email)=@P0 AND LOWER(users.password)=@P1", dict["email"].ToLowerInvariant(), password.ToLowerInvariant());
             }
             catch (Exception ex)
             {
                 LogWriter.Log.Write(ex.Message, LogLevel.Error);
-                SendError(stream, 4, "This request cannot be processed because of a databaseerror.");
-                stream.Close();
+                SendErrorAndFreeStream(stream, 4, "This request cannot be processed because of a database error.");
+                return;
             }
-            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
+
+            if (queryResult.Count < 1)
+            {
+                stream.SendAsync(@"\nr\ndone\final\");
+                return;
+            }
+
+            // We will recycle the "password" variable by storing the response
+            // that we have to send to the stream. This is done for save memory space
+            // so we don't have to declare a new variable.
+            password = @"\nr\";
+
+            foreach (Dictionary<string, object> row in queryResult)
+            {
+                password += @"\nick\";
+                password += row["nick"];
+
+                if (sendUniqueNick)
+                {
+                    password += @"\uniquenick\";
+                    password += row["uniquenick"];
+                }
+            }
+
+            password += @"\ndone\final\";
+            stream.SendAsync(password);
 
             /* Legacy C++ code to reimpliment 
             bool PSServer::OnSendNicks(mdk_socket stream, const char *buf, int)

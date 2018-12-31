@@ -206,14 +206,51 @@ namespace RetroSpyServer
         {
             databaseDriver.Query(
                 @"CREATE TABLE IF NOT EXISTS `users` (" +
-                @"`userid` INTEGER(11) NOT NULL PRIMARY KEY," +
+                @"`userid` INTEGER(11) NOT NULL PRIMARY KEY AUTOINCREMENT," +
                 @"`email` VARCHAR(50) NOT NULL," +
                 @"`password` VARCHAR(32) NOT NULL," +
                 @"`status` INTEGER(1) NOT NULL DEFAULT '0'" +
                 @")"
             );
 
+            databaseDriver.Query(
+                @"CREATE TABLE IF NOT EXISTS `profiles` (" +
+                @"`profileid` INTEGER(11) NOT NULL PRIMARY KEY AUTOINCREMENT," +
+                @"`userid` INTEGER(11) NOT NULL DEFAULT '0'," +
+                @"`sesskey` INTEGER(11) NOT NULL," +
+                @"`uniquenick` VARCHAR(20) NOT NULL,"+
+                @"`nick` VARCHAR(30) NOT NULL," +
+                @"`firstname` VARCHAR(30) NOT NULL DEFAULT ''," +
+                @"`lastname` VARCHAR(30) NOT NULL DEFAULT ''," +
+                @"`publicmask` INTEGER(11) NOT NULL DEFAULT '0'," +
+                @"`deleted` INTEGER(1) NOT NULL DEFAULT '0'," +
+                @"`latitude` REAL NOT NULL  DEFAULT '0'," +
+                @"`longitude` REAL NOT NULL DEFAULT '0'," +
+                @"`aim` VARCHAT(50) NOT NULL DEFAULT '0'," +
+                @"`picture` INT(11) NOT NULL DEFAULT '0'," +
+                @"`occupationid` INT(11) NOT NULL DEFAULT '0'," +
+                @"`incomeid` INT(11) NOT NULL DEFUALT '0'," +
+                @"`industryid` INT(11) NOT NULL DEFAULT '0'," +
+                @"`marriedid` INT(11) NOT NULL DEFAULT '0'," +
+                @"`childcount` INT(11) NOT NULL DEFAULT '0'," +
+                @"`interests1` INT(11) NOT NULL DEFAULT '0'," +
+                @"`ownership1` INT(11) NOT  NULL DEFAULT '0'," +
+                @"`connectiontype` INT(11) NOT NULL DEFAULT '0'," +
+                @"`sex` VARCHAR(8) NOT NULL DEFAULT 'PAT'," +
+                @"`zipcode` VARCHAR(10) NOT NULL DEFAULT '00000'," +
+                @"`countrycode` VARCHAR(2) NOT NULL DEFAULT ''," +
+                @"`homepage` VARCHAR(75) NOT NULL DEFAULT ''," +
+                @"`birthday` INT(2) NOT NULL DEFAULT '0'," +
+                @"`birthmonth` INT(2) NOT NULL DEFAULT '0'," +
+                @"`birthyear` INT(4) NOT NULL DEFAULT '0'," +
+                @"`location` VARCHAR(127) NOT NULL DEFAULT ''," +
+                @"`icq` INT(11) NOT NULL DEFAULT '0'" +
+                @")"
+            );
+
             databaseDriver.Query(@"INSERT INTO users(id, email, password, status) VALUES(1, 'spyguy@gamespy.com', '0000', 1)");
+            databaseDriver.Query(@"INSERT INTO `profiles` (`profileid`, `userid`, `sesskey`, `uniquenick`, `nick`, `firstname`, `lastname`, `publicmask`, `deleted`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`) VALUES
+	(2, 1, NULL, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 40.7142, -74.0064, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0)");
         }
     }
 }
