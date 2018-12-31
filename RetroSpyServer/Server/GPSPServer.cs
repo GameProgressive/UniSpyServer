@@ -161,10 +161,15 @@ namespace RetroSpyServer
         private void RetriveNicknames(TCPStream stream, Dictionary<string, string> dict)
         {
             PrintReceivedDictToLogger("nicks", dict);
-            if (!dict.ContainsKey("niks"))
+            if (!dict.ContainsKey("email"))
             {
-                SendError(stream, 1, "Therewasanerrorparsingan incomingrequest.");
+                SendError(stream, 1, "There was an error parsing an incoming request.");
                 stream.Close();
+            }
+            if(!dict.ContainsKey("passenc"))
+            {
+                SendError(stream, 1, "There was an error parsing an incoming request.");
+                // i dont knowhow to do this
             }
             try
             {
