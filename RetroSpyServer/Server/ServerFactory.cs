@@ -212,7 +212,7 @@ namespace RetroSpyServer
                 @"`status` INTEGER(1) NOT NULL DEFAULT '0'" +
                 @")"
             );
-
+            //database creation has problems
             databaseDriver.Query(
                 @"CREATE TABLE IF NOT EXISTS `profiles` (" +
                 @"`profileid` INTEGER(11) NOT NULL PRIMARY KEY AUTOINCREMENT," +
