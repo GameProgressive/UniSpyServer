@@ -3,7 +3,7 @@ using System.IO;
 using GameSpyLib;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using System.Runtime.InteropServices;
+
 
 namespace RetroSpyServer
 {
@@ -12,8 +12,6 @@ namespace RetroSpyServer
     /// </summary>
     class Program
     {
-        [DllImport("msvcrt.dll")]
-        static extern bool system(string str);
         /// <summary>
         /// Indicates the version of the server
         /// </summary>
@@ -85,8 +83,8 @@ namespace RetroSpyServer
             LogWriter.Log.Write("Goodbye!", LogLevel.Information);
             Emulator.Dispose();
             LogWriter.Log.Dispose();
-            //pause the screen
-            system("pause");
+            //pause the screen            
+            Console.ReadKey();
 
         }
     }
