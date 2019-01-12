@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
 using GameSpyLib.Database;
 using GameSpyLib.Network;
 using GameSpyLib.Logging;
@@ -19,7 +17,7 @@ namespace GameSpyLib.Server
         /// <param name="stream">The stream that will receive the error</param>
         /// <param name="code">The error code</param>
         /// <param name="error">A string containing the error</param>
-        protected void SendError(TCPStream stream, int code, string error)
+        public static void SendError(TCPStream stream, int code, string error)
         {
             stream.SendAsync(Encoding.UTF8.GetBytes(String.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
         }
@@ -43,7 +41,7 @@ namespace GameSpyLib.Server
         /// <param name="socket">The socket that will receive the error</param>
         /// <param name="code">The error code</param>
         /// <param name="error">A string containing the error</param>
-        protected void SendError(Socket socket, int code, string error)
+        public static void SendError(Socket socket, int code, string error)
         {
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write("Sending TCP data: {0}", LogLevel.Debug, String.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error));
@@ -83,7 +81,7 @@ namespace GameSpyLib.Server
         /// </summary>
         /// <param name="parts">The array of data from the client</param>
         /// <returns></returns>
-        protected Dictionary<string, string> ConvertToKeyValue(string[] parts)
+        public static Dictionary<string, string> ConvertToKeyValue(string[] parts)
         {
             Dictionary<string, string> Data = new Dictionary<string, string>();
             try

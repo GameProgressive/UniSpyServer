@@ -92,6 +92,7 @@
     <Compile Include="Network\TemplateServer.cs" />
     <Compile Include="Network\UDPPacket.cs" />
     <Compile Include="Network\UDPServer.cs" />
+    <Compile Include="Random.cs" />
     <Compile Include="Server\PresenceServer.cs" />
     <Compile Include="Crc16.cs" />
     <Compile Include="Delegates.cs" />

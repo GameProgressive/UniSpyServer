@@ -35,7 +35,7 @@ namespace RetroSpyServer.Server
         protected override void ProcessAccept(TCPStream Stream)
         {
             long connectionId = Interlocked.Increment(ref ConnectionCounter);
-            /*GPCMClient client;
+            GPCMClient client;
 
             try
             {
@@ -48,7 +48,7 @@ namespace RetroSpyServer.Server
             {
                 Processing.TryRemove(connectionId, out client);
                 base.Release(Stream);
-            }*/
+            }
         }
     }
 }
