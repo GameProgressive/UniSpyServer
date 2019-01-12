@@ -86,7 +86,7 @@ namespace GameSpyLib.Network
                 SocketReadWritePool.Push(SockArg);
             }
 
-            // set public internals
+            // Set public internals
             Port = bindTo.Port;
             Address = bindTo.Address.ToString();
             IsRunning = true;
@@ -102,7 +102,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public override void Dispose()
         {
-            // no need to do this again
+            // No need to do this again
             if (IsDisposed) return;
             IsDisposed = true;
 
@@ -154,7 +154,7 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// Begins accepting a new Connection asynchronously
+        /// Begins accepting a new connection asynchronously
         /// </summary>
         protected async void StartAcceptAsync()
         {
@@ -178,7 +178,7 @@ namespace GameSpyLib.Network
                 // Begin accpetion connections
                 bool willRaiseEvent = Listener.ReceiveFromAsync(AcceptEventArg);
 
-                // If we wont raise event, that means a connection has already been accepted syncronously
+                // If we wont raise event, that means a connection has already been accepted synchronously
                 // and the Accept_Completed event will NOT be fired. So we manually call ProcessAccept
                 if (!willRaiseEvent)
                     IOComplete(this, AcceptEventArg);

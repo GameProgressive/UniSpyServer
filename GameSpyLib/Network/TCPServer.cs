@@ -81,12 +81,12 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// If set to True, new connections will be immediatly closed and ignored.
+        /// If set to True, new connections will be immediately closed and ignored.
         /// </summary>
         public bool IgnoreNewConnections { get; protected set; } = false;
 
         /// <summary>
-        /// Decostructor
+        /// Deconstructor
         /// </summary>
         ~TCPServer()
         {
@@ -120,7 +120,7 @@ namespace GameSpyLib.Network
             SocketReadWritePool = new SocketAsyncEventArgsPool(MaxNumConnections * 2);
 
             // Create our Buffer Manager for IO operations. 
-            // Always allocate double space, one for recieving, and another for sending
+            // Always allocate double space, one for receiving, and another for sending
             BufferManager = new BufferManager(MaxNumConnections * 2, BufferSizePerOperation);
 
             // Assign our Connection Accept SocketAsyncEventArgs object instances
@@ -141,7 +141,7 @@ namespace GameSpyLib.Network
                 SocketReadWritePool.Push(SockArg);
             }
 
-            // set public internals
+            // Set public internals
             IsRunning = true;
             Port = bindTo.Port;
             Address = bindTo.Address.ToString();
@@ -156,7 +156,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public override void Dispose()
         {
-            // no need to do this again
+            // No need to do this again
             if (IsDisposed) return;
             IsDisposed = true;
 
@@ -252,7 +252,7 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// Begins accepting a new Connection asynchronously
+        /// Begins accepting a new connection asynchronously
         /// </summary>
         protected async void StartAcceptAsync()
         {
@@ -289,7 +289,7 @@ namespace GameSpyLib.Network
                 // Begin accpetion connections
                 bool willRaiseEvent = Listener.AcceptAsync(AcceptEventArg);
 
-                // If we wont raise event, that means a connection has already been accepted syncronously
+                // If we wont raise event, that means a connection has already been accepted synchronously
                 // and the Accept_Completed event will NOT be fired. So we manually call ProcessAccept
                 if (!willRaiseEvent)
                     PrepareAccept(AcceptEventArg);
@@ -349,7 +349,7 @@ namespace GameSpyLib.Network
             // Begin accepting a new connection
             StartAcceptAsync();
 
-            // Grab a send/recieve object
+            // Grab a send/receive object
             SocketAsyncEventArgs ReadArgs = SocketReadWritePool.Pop();
             SocketAsyncEventArgs WriteArgs = SocketReadWritePool.Pop();
 

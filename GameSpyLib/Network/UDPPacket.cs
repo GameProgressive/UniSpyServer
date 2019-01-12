@@ -4,7 +4,7 @@ using System.Net.Sockets;
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This class represents a packet recieved from and/or to be sent to
+    /// This class represents a packet received from and/or to be sent to
     /// a remote UDP connection. This class is essentially a wrapper for
     /// SocketAsyncEventArgs and Asynchronous reading and writing
     /// </summary>
@@ -22,7 +22,7 @@ namespace GameSpyLib.Network
 
         public UDPPacket(SocketAsyncEventArgs e)
         {
-            // Get our recived bytes
+            // Get our received bytes
             BytesRecieved = new byte[e.BytesTransferred];
             BufferDataToken token = e.UserToken as BufferDataToken;
             Array.Copy(e.Buffer, token.BufferOffset, BytesRecieved, 0, e.BytesTransferred);

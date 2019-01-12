@@ -4,10 +4,11 @@ using GameSpyLib;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
 
+
 namespace RetroSpyServer
 {
     /// <summary>
-    /// This class rapresents a RetroSpy Server program
+    /// This class represents a RetroSpy Server program
     /// </summary>
     class Program
     {
@@ -61,7 +62,7 @@ namespace RetroSpyServer
                 Emulator.StartServer("GPSP", 29901);
                 Emulator.StartServer("GPCM", 29900);
 
-                LogWriter.Log.Write("Server successfully started! Type \"help\" for a list of the avaiable commands.", LogLevel.Information);
+                LogWriter.Log.Write("Server successfully started! Type \"help\" for a list of the available commands.", LogLevel.Information);
 
                 while (Emulator.IsRunning())
                 {
@@ -81,7 +82,10 @@ namespace RetroSpyServer
 
             LogWriter.Log.Write("Goodbye!", LogLevel.Information);
             Emulator.Dispose();
-            LogWriter.Log.Dispose();            
+            LogWriter.Log.Dispose();
+            // Pause the screen            
+            Console.ReadKey();
+
         }
     }
 }

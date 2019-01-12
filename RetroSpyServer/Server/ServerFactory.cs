@@ -28,7 +28,7 @@ namespace RetroSpyServer
         }
 
         /// <summary>
-        /// Default decostructor
+        /// Default deconstructor
         /// </summary>
         ~ServerFactory()
         {
@@ -41,7 +41,7 @@ namespace RetroSpyServer
         /// <param name="engine">The database engine</param>
         public void Create(DatabaseEngine engine, string connectionString)
         {
-            //determine whichdatabase is using and create the database connection
+            // Determine which database is using and create the database connection
             switch (engine)
             {
                 case DatabaseEngine.Mysql:
@@ -96,7 +96,7 @@ namespace RetroSpyServer
         }
 
         /// <summary>
-        /// Checks if a spefici server is running
+        /// Checks if a specific server is running
         /// </summary>
         /// <param name="serverName">The specific server name</param>
         /// <returns></returns>
@@ -114,7 +114,7 @@ namespace RetroSpyServer
         /// Starts a specific server
         /// </summary>
         /// <param name="serverName">The specific server name</param>
-        /// <param name="defaultPort">A default port is no port is specified</param>
+        /// <param name="defaultPort">A default port if no port is specified</param>
         public void StartServer(string serverName, int defaultPort)
         {
             string serverIP = "";
@@ -164,7 +164,7 @@ namespace RetroSpyServer
                 return;
 
             if (servers[serverName] == null)
-                return; // A server istance cannot be null
+                return; // A server instance cannot be null
 
             servers[serverName].Start(endPoint, maxConnections);
         }
@@ -212,7 +212,7 @@ namespace RetroSpyServer
                 @"`status` INTEGER(1) NOT NULL DEFAULT '0'" +
                 @")"
             );
-
+            //database creation has problems
             databaseDriver.Query(
                 @"CREATE TABLE IF NOT EXISTS `profiles` (" +
                 @"`profileid` INTEGER(11) NOT NULL PRIMARY KEY AUTOINCREMENT," +
