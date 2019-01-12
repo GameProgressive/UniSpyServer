@@ -29,7 +29,7 @@ namespace GameSpyLib.Gamespy
             }
             int length = key.Length;
             int num = validate.Length;
-            int num1 = (new Random()).Next();
+            int num1 = (new System.Random()).Next();
             for (int i = 0; i < numArray1.Length; i++)
             {
                 num1 = num1 * 214013 + 2531011;

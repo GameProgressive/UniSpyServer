@@ -37,7 +37,7 @@ namespace RetroSpyServer.Server
             long connectionId = Interlocked.Increment(ref ConnectionCounter);
             GPCMClient client;
 
-            try
+            /*try
             {
                 client = new GPCMClient(Stream, connectionId);
                 Processing.TryAdd(connectionId, client);
@@ -48,7 +48,7 @@ namespace RetroSpyServer.Server
             {
                 Processing.TryRemove(connectionId, out client);
                 base.Release(Stream);
-            }
+            }*/
         }
     }
 }

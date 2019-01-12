@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSpyLib", "GameSpyLib\GameSpyLib.csproj", "{C5F58EB7-E1B8-48C1-B4B0-0248ADB3887D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RetroSpyServer", "RetroSpyServer\RetroSpyServer.csproj", "{8DF1A031-6966-43FE-8A3E-199B75CD5393}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common files", "Common files", "{23F365AE-997B-40B2-A90D-82479E489EE4}"
 	ProjectSection(SolutionItems) = preProject
 		CONVERTING C Plus Plus CODE TO CSharp CODE.MD = CONVERTING C Plus Plus CODE TO CSharp CODE.MD
 		README.MD = README.MD
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameSpyLib", "GameSpyLib\GameSpyLib.csproj", "{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RetroSpyServer", "RetroSpyServer\RetroSpyServer.csproj", "{0B78D671-E09D-43BC-B3C9-060198749102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C5F58EB7-E1B8-48C1-B4B0-0248ADB3887D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5F58EB7-E1B8-48C1-B4B0-0248ADB3887D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5F58EB7-E1B8-48C1-B4B0-0248ADB3887D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5F58EB7-E1B8-48C1-B4B0-0248ADB3887D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8DF1A031-6966-43FE-8A3E-199B75CD5393}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8DF1A031-6966-43FE-8A3E-199B75CD5393}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8DF1A031-6966-43FE-8A3E-199B75CD5393}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8DF1A031-6966-43FE-8A3E-199B75CD5393}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B78D671-E09D-43BC-B3C9-060198749102}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B78D671-E09D-43BC-B3C9-060198749102}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B78D671-E09D-43BC-B3C9-060198749102}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B78D671-E09D-43BC-B3C9-060198749102}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
