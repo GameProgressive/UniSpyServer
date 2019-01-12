@@ -1,0 +1,52 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GameSpyLib
+{
+    public class Random
+    {
+        public enum StringType
+        {
+            Alpha,
+            AlphaNumeric
+        }
+        /// <summary>
+        /// Array of characters used in generating a signiture
+        /// </summary>
+        private static char[] AlphaChars = {
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+        };
+
+        /// <summary>
+        /// An array of Alpha Numeric characters used in generating a random string
+        /// </summary>
+        private static char[] AlphaNumChars = {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+                'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
+        };
+
+        public static string GenerateRandomString(int count, StringType type)
+        {
+            System.Random random = new System.Random((int)DateTime.Now.Ticks);
+
+            StringBuilder builder = new StringBuilder(count);
+
+            for (int i = 0; i < count; i++)
+            {
+                if (type == StringType.AlphaNumeric)
+                    builder.Append(AlphaNumChars[random.Next(AlphaNumChars.Length)]);
+                else
+                    builder.Append(AlphaChars[random.Next(AlphaChars.Length)]);
+            }
+
+            return builder.ToString();
+        }
+    }
+}
