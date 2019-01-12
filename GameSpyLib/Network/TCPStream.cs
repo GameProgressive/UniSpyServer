@@ -8,7 +8,7 @@ using GameSpyLib.Logging;
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This object is used as a Network Stream wrapper for a TCP protocol,
+    /// This object is used as a Network Stream wrapper for a TCP protocol
     /// </summary>
     public class TCPStream : IDisposable
     {
@@ -224,7 +224,7 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// Once data has been recived from the client, this method is called
+        /// Once data has been received from the client, this method is called
         /// to process the data. Once a message has been completed, the OnDataReceived
         /// event will be called
         /// </summary>
@@ -260,8 +260,8 @@ namespace GameSpyLib.Network
 
                 if (LogWriter.Log.DebugSockets)
                     LogWriter.Log.Write("Received TCP data: " + received, LogLevel.Debug);
-   
-                // tell our parent that we recieved a message
+
+                // Tell our parent that we received a message
                 RecvMessage.Clear(); // Clear old junk
                 DataReceived(this, received);
             }
@@ -373,10 +373,10 @@ namespace GameSpyLib.Network
                 Close();
             }
 
-            // If we wont raise the IO event, that means a connection sent the messsage syncronously
+            // If we wont raise the IO event, that means a connection sent the messsage synchronously
             if (!willRaiseEvent)
             {
-                // Remember, if we are here, data was sent Synchronously... IOComplete event is not called! 
+                // Remember, if we are here, data was sent synchronously... IOComplete event is not called! 
                 // First, Check for a closed conenction
                 if (WriteEventArgs.BytesTransferred == 0 || WriteEventArgs.SocketError != SocketError.Success)
                 {
@@ -423,7 +423,7 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// Event called when data has been recived from the client
+        /// Event called when data has been received from the client
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

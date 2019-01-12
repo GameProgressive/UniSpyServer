@@ -61,7 +61,7 @@ namespace GameSpyLib
         }
 
         /// <summary>
-        /// Builds the Crc table programatically with the given polynomial
+        /// Builds the Crc table programmatically with the given polynomial
         /// </summary>
         /// <param name="polynomial"></param>
         private void BuildCrcTable(ushort polynomial)

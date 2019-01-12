@@ -90,7 +90,7 @@ namespace GameSpyLib.Database
                 }
                 catch (Exception e)
                 {
-                    throw new DbConnectException("Unable to etablish database connection", e);
+                    throw new DbConnectException("Unable to establish a database connection.", e);
                 }
             }
         }

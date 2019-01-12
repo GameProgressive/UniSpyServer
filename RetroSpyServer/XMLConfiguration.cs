@@ -8,7 +8,7 @@ using GameSpyLib.Database;
 namespace RetroSpyServer
 {
     /// <summary>
-    /// This class rapresents the configuration of a server
+    /// This class represents the configuration of a server
     /// </summary>
     public class ServerConfiguration
     {
@@ -23,13 +23,13 @@ namespace RetroSpyServer
         public int port = 0;
 
         /// <summary>
-        /// Max connections avaiable for the server
+        /// Max connections available for the server
         /// </summary>
         public int maxConnections = 0;
     };
 
     /// <summary>
-    /// This class rapresents an XML configuration parser and saver
+    /// This class represents an XML configuration parser and saver
     /// </summary>
     public class XMLConfiguration
     {
@@ -64,7 +64,7 @@ namespace RetroSpyServer
         public static int DatabasePort { get; protected set; }
 
         /// <summary>
-        /// A default ip if no server IP is setted
+        /// A default IP if no server IP is setted
         /// </summary>
         public static string DefaultIP { get; protected set; }
 
