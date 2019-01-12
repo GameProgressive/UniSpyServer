@@ -191,5 +191,22 @@ namespace RetroSpyServer.Server
             Status = LoginStatus.Working;
             Stream.SendAsync(@"\lc\1\challenge\{0}\id\{1}\final\", GameSpyLib.Random.GenerateRandomString(10, GameSpyLib.Random.StringType.Alpha), serverID);
         }
+
+
+        public bool Equals(GPCMClient other)
+        {
+            if (other == null) return false;
+            return (UserID == other.UserID || Nickname == other.Nickname);
+        }
+
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as GPCMClient);
+        }
+
+        public override int GetHashCode()
+        {
+            return (int)UserID;
+        }
     }
 }
