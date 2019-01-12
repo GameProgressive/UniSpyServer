@@ -22,12 +22,12 @@ namespace GameSpyLib.Logging
     public class LogWriter : IDisposable
     {
         /// <summary>
-        /// Public istance of the LogWriter
+        /// Public instance of the LogWriter
         /// </summary>
         public static LogWriter Log = null;
 
         /// <summary>
-        /// Minium logging level that will be wrote
+        /// Minimum logging level that will be wrote
         /// </summary>
         public LogLevel MiniumLogLevel = LogLevel.Information;
 
@@ -57,12 +57,12 @@ namespace GameSpyLib.Logging
         private Object _sync = new Object();
 
         /// <summary>
-        /// Provides a full sync lock between all isntances of this app
+        /// Provides a full sync lock between all instances of this app
         /// </summary>
         private static Object _fullSync = new Object();
 
         /// <summary>
-        /// Creates a new Log Writter instance
+        /// Creates a new Log Writer instance
         /// </summary>
         /// <param name="FileLocation">The location of the logfile. If the file doesnt exist,
         /// It will be created.</param>

@@ -79,7 +79,7 @@ namespace GameSpyLib.Server
         }
 
         /// <summary>
-        /// Converts a recived parameter array from the client string to a keyValue pair dictionary
+        /// Converts a received parameter array from the client string to a keyValue pair dictionary
         /// </summary>
         /// <param name="parts">The array of data from the client</param>
         /// <returns></returns>

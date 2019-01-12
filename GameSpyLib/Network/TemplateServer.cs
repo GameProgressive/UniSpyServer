@@ -6,7 +6,7 @@ using GameSpyLib.Database;
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This class rapresents an implementable server
+    /// This class represents an implementable server
     /// </summary>
     public abstract class TemplateServer : IDisposable
     {
@@ -61,7 +61,7 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// Default distructor
+        /// Default destructor
         /// </summary>
         ~TemplateServer()
         {
