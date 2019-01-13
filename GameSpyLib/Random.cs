@@ -11,7 +11,8 @@ namespace GameSpyLib
         public enum StringType
         {
             Alpha,
-            AlphaNumeric
+            AlphaNumeric,
+            Hex
         }
         /// <summary>
         /// Array of characters used in generating a signiture
@@ -32,6 +33,14 @@ namespace GameSpyLib
                 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'
         };
 
+        /// <summary>
+        /// Array of Hex cahracters
+        /// </summary>
+        private static char[] HexChars = {
+                '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f'
+        };
+
         public static string GenerateRandomString(int count, StringType type)
         {
             System.Random random = new System.Random((int)DateTime.Now.Ticks);
@@ -40,10 +49,18 @@ namespace GameSpyLib
 
             for (int i = 0; i < count; i++)
             {
-                if (type == StringType.AlphaNumeric)
-                    builder.Append(AlphaNumChars[random.Next(AlphaNumChars.Length)]);
-                else
-                    builder.Append(AlphaChars[random.Next(AlphaChars.Length)]);
+                switch (type)
+                {
+                    case StringType.AlphaNumeric:
+                        builder.Append(AlphaNumChars[random.Next(AlphaNumChars.Length)]);
+                        break;
+                    default:
+                        builder.Append(AlphaChars[random.Next(AlphaChars.Length)]);
+                        break;
+                    case StringType.Hex:
+                        builder.Append(HexChars[random.Next(AlphaChars.Length)]);
+                        break;
+                }
             }
 
             return builder.ToString();

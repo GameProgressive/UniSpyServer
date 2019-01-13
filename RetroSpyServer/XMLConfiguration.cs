@@ -174,7 +174,7 @@ namespace RetroSpyServer
                             // Try to parse the database port, if it fails set it
                             // to default port 3306
                             int port = 0;
-                            if (!int.TryParse(node2.InnerText, out port))
+                            if (!int.TryParse(node2.InnerText, out port) || port < 1)
                                 port = 3306;
 
                             DatabasePort = port;

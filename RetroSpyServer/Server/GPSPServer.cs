@@ -62,10 +62,10 @@ namespace RetroSpyServer
         /// <param name="message">The message the stream sended</param>
         protected void ProcessDataReceived(TCPStream stream, string message)
         {
-            string[] received = message.TrimStart('\\').Split('\\');
-            Dictionary<string, string> dict = ConvertToKeyValue(received);
+            string[] recieved = message.TrimStart('\\').Split('\\');
+            Dictionary<string, string> dict = ConvertToKeyValue(recieved);
 
-            switch (received[0])
+            switch (recieved[0])
             {
                 case "valid":
                     IsEmailValid(stream, dict);
@@ -98,7 +98,7 @@ namespace RetroSpyServer
                     CreateUser(stream, dict);
                     break;
                 default:
-                    LogWriter.Log.Write("Received unknown request " + received[0], LogLevel.Debug);
+                    LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
                     SendErrorAndFreeStream(stream, 0, "An invalid request was sended.");
                     break;
             }
