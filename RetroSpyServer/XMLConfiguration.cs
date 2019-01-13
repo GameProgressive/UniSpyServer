@@ -83,7 +83,7 @@ namespace RetroSpyServer
 
                 file.Write("<?xml version=\"1.0\"?>\n" +
                     "<Configuration>\n" +
-                    "\t<Database type=\"sqlite\">" +
+                    "\t<Database type=\"sqlite\"\n>" +
                     "\t\t<Name>RetroSpy.db</Name> <!--In Sqlite is the Path, in MySQL is the database name -->\n" +
                     "\t\t<!-- MySQL only -->\n" +
                     "\t\t<Host></Host>\n" +
@@ -190,7 +190,7 @@ namespace RetroSpyServer
                 else if (node.Name == "DefaultMaxConnections")
                 {
                     int max = 0;
-                    if (!int.TryParse(node.InnerText, out max))
+                    if (!int.TryParse(node.InnerText, out max) || max < 1)
                     {
                         LogWriter.Log.Write("Unable to read default max connections! Defaulting to 100...", LogLevel.Warning);
                         max = 100;
@@ -242,13 +242,13 @@ namespace RetroSpyServer
 
                         else if (node2.Name == "Port")
                         {
-                            if (!int.TryParse(node2.InnerText, out ServerConfig[realServerName].port))
+                            if (!int.TryParse(node2.InnerText, out ServerConfig[realServerName].port) || ServerConfig[realServerName].port < 1)
                                 ServerConfig[realServerName].port = -1;
                         }
 
                         else if (node2.Name == "MaxConnections")
                         {
-                            if (!int.TryParse(node2.InnerText, out ServerConfig[realServerName].maxConnections))
+                            if (!int.TryParse(node2.InnerText, out ServerConfig[realServerName].maxConnections) || ServerConfig[realServerName].maxConnections < 1)
                                 ServerConfig[realServerName].maxConnections = -1;
                         }
                     }
