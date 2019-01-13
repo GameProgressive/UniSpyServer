@@ -117,7 +117,7 @@ namespace RetroSpyServer
 
             try
             {
-                doc.Load("RetroSpyServer.xml");
+                doc.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "RetroSpyServer.xml"));
             }
             catch (Exception)
             {
