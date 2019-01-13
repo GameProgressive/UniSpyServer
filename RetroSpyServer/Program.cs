@@ -48,7 +48,7 @@ namespace RetroSpyServer
             }
 
             //string version = String.Concat(Version.Major, ".", Version.Minor, ".", Version.Build);
-            string path = Path.Combine(Environment.CurrentDirectory, "Logs");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
 
             Console.Title = "RetroSpy Server " + version;
 
