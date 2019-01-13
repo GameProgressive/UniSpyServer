@@ -364,3 +364,9 @@ RetroSpyServer.xml
 *.exe
 *.out
 *.app
+
+*.db
+Logs\
+Logs/
+logs/
+
