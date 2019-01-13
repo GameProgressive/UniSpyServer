@@ -18,22 +18,32 @@ namespace RetroSpyServer
         //public static readonly Version Version = Version.Parse(Application.ProductVersion);
         public static readonly string version = "0.1";
 
+        public static string basePath { get; protected set; }
+
         /// <summary>
         /// Entry point for the RetroSpy Server program
         /// </summary>
         /// <param name="args">List of arguments passed to the application</param>
         static void Main(string[] args)
         {
-            bool NoConsoleInput = false;
+            bool NoConsoleInput = false, exceptInitPathArg = false;
+
+            basePath = AppDomain.CurrentDomain.BaseDirectory;
 
             // Argument switcher
             foreach (var argument in args)
             {
-                if (argument == "--help")
+                if (exceptInitPathArg)
+                {
+                    basePath = argument;
+                    exceptInitPathArg = false;
+                }
+                else if (argument == "--help")
                 {
                     Console.WriteLine("List of arguments avaiable:\n" +
                         "--help\tPrints this screen\n" +
-                        "----no-cli-input\tDisables console input, usefull for services\n"
+                        "--no-cli-input\tDisables console input, usefull for services\n" +
+                        "--init-path [path]\tUse a custom base path for load the configuration and save the logs"
                     );
 
                     // Close the program after --help
@@ -41,21 +51,28 @@ namespace RetroSpyServer
                 }
                 else if (argument == "--no-cli-input")
                     NoConsoleInput = true;
+                else if (argument == "--init-path")
+                    exceptInitPathArg = true;
                 else
                 {
                     Console.WriteLine("Unknown argument {0}", argument);
                 }
             }
 
+            if (exceptInitPathArg)
+            {
+                Console.WriteLine("The argument \"--init-path\" requires an argument!");
+                return;
+            }
+
             //string version = String.Concat(Version.Major, ".", Version.Minor, ".", Version.Build);
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
 
             Console.Title = "RetroSpy Server " + version;
 
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(basePath))
+                Directory.CreateDirectory(basePath);
 
-            LogWriter.Log = new LogWriter(String.Format(path + @"\{0}.log", DateTime.Now.ToLongDateString()));
+            LogWriter.Log = new LogWriter(String.Format(basePath + @"\{0}.log", DateTime.Now.ToLongDateString()));
 
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");

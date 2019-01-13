@@ -79,7 +79,7 @@ namespace RetroSpyServer
         {
             try
             {
-                StreamWriter file = new StreamWriter("RetroSpyServer.xml");
+                StreamWriter file = new StreamWriter(Path.Combine(Program.basePath, "RetroSpyServer.xml"));
 
                 file.Write("<?xml version=\"1.0\"?>\n" +
                     "<Configuration>\n" +
@@ -117,7 +117,7 @@ namespace RetroSpyServer
 
             try
             {
-                doc.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "RetroSpyServer.xml"));
+                doc.Load(Path.Combine(Program.basePath, "RetroSpyServer.xml"));
             }
             catch (Exception ex)
             {
