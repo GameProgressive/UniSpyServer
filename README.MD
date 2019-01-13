@@ -2,7 +2,7 @@
 
 RetroSpy is a GameSpy Project that aims to create GameSpy 2011/2012 services.
 
-The server is written in C++ and could be considered as the spiritual successor to OpenSpy Core since most of the modules are based from it.
+The server is written in C#, it's inspired by OpenSpy and it's a forked project of BattleSpy (The content inside GameSpyLib/).
 
 See the [wiki](https://github.com/GameProgressive/RetroSpyServer/wiki) for more information about compiling and creating a RetroSpy Server.
 
