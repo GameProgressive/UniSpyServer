@@ -161,8 +161,7 @@ namespace GameSpyLib.Network
                 {
                     // Disconnect user
                     DisconnectEventCalled = true;
-                    if (OnDisconnect != null)
-                        OnDisconnect(this);
+                    OnDisconnect?.Invoke(this);
                 }
             }
             catch(SocketException e)

@@ -39,10 +39,7 @@ namespace RetroSpyServer
         /// This function is fired when an exception occour in the server
         /// </summary>
         /// <param name="e">The exception to be thrown</param>
-        protected override void OnException(Exception e)
-        {
-            throw e;
-        }
+        protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
 
         /// <summary>
         /// This function is fired when a client is being accepted
@@ -340,7 +337,7 @@ namespace RetroSpyServer
             }
             catch (Exception ex)
             {
-                LogWriter.Log.Write(ex.Message, LogLevel.Error);
+                LogWriter.Log.WriteException(ex);
                 SendErrorAndFreeStream(stream, 4, "This request cannot be processed because of a database error.");
             }
         }

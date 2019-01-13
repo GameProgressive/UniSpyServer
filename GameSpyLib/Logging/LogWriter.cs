@@ -132,7 +132,6 @@ namespace GameSpyLib.Logging
                     Console.SetCursorPosition(0, Console.CursorTop);
                     Console.WriteLine("Clearing logfile: " + LogFile.Name);
                     Console.WriteLine();
-                    //Console.Write("Cmd > ");
                 }
             }
             catch (Exception E)
@@ -178,6 +177,15 @@ namespace GameSpyLib.Logging
                 LogStream.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, String.Format(message, items), level.ToString()));
                 LogStream.Flush();
             }
+        }
+
+        /// <summary>
+        /// Writes an Exception to the log file
+        /// </summary>
+        /// <param name="ex">The exception to write</param>
+        public void WriteException(Exception ex)
+        {
+            Write("Exception {0} (HRESULT: {1})\n{2}", LogLevel.Error, ex.Message, ex.HResult, ex.StackTrace);
         }
 
         /// <summary>

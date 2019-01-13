@@ -596,7 +596,7 @@ namespace RetroSpyServer.Server
             }
             catch (Exception e)
             {
-                LogWriter.Log.Write(e.Message, LogLevel.Error);
+                LogWriter.Log.WriteException(e);
             }
         }
 

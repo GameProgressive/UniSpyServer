@@ -128,7 +128,7 @@ namespace RetroSpyServer.Server
                         }
                         catch (Exception ex)
                         {
-                            LogWriter.Log.Write(ex.Message, LogLevel.Error);
+                            LogWriter.Log.WriteException(ex);
                             transaction.Rollback();
                         }
                     }
@@ -178,7 +178,7 @@ namespace RetroSpyServer.Server
             }
             catch (Exception e)
             {
-                throw e;
+                LogWriter.Log.WriteException(e);
             }
 
             // Update Connected Clients in the Database
@@ -207,9 +207,9 @@ namespace RetroSpyServer.Server
                     client.Disconnect(DisconnectReason.LoginTimedOut);
                     Processing.TryRemove(client.ConnectionId, out oldC);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    throw ex;
+                    LogWriter.Log.WriteException(e);
                 }
             }
             //else if (client.Status == LoginStatus.Completed)
@@ -301,8 +301,7 @@ namespace RetroSpyServer.Server
             }
             catch (Exception E)
             {
-                LogWriter.Log.Write("ERROR: [GpcmServer._OnSuccessfulLogin] Exception was thrown, Generating exception log." + E.Message, LogLevel.Error);
-               
+                LogWriter.Log.WriteException(E);
             }
         }
 
@@ -326,7 +325,7 @@ namespace RetroSpyServer.Server
             catch (Exception e)
             {
                 // Log the error
-                LogWriter.Log.Write("Exception in GPCM:ProcessAccept: " + e.ToString(), LogLevel.Warning);
+                LogWriter.Log.WriteException(e);
 
                 // Remove pending connection
                 Processing.TryRemove(connId, out client);

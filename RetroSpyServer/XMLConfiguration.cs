@@ -95,9 +95,9 @@ namespace RetroSpyServer
 
                 file.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                LogWriter.Log.Write("Unable to write configuration!", LogLevel.Error);
+                LogWriter.Log.WriteException(ex);
             }
         }
 
@@ -117,11 +117,13 @@ namespace RetroSpyServer
 
             try
             {
-                doc.Load("RetroSpyServer.xml");
+                doc.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "RetroSpyServer.xml"));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                LogWriter.Log.Write("Unable to find configuration file, creating one...", LogLevel.Error);
+                LogWriter.Log.WriteException(ex);
+                LogWriter.Log.Write("Creating configuration file...", LogLevel.Information);
+
                 CreateBlankConfiguration();
                 return;
             }

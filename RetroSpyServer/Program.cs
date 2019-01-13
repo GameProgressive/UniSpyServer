@@ -24,6 +24,29 @@ namespace RetroSpyServer
         /// <param name="args">List of arguments passed to the application</param>
         static void Main(string[] args)
         {
+            bool NoConsoleInput = false;
+
+            // Argument switcher
+            foreach (var argument in args)
+            {
+                if (argument == "--help")
+                {
+                    Console.WriteLine("List of arguments avaiable:\n" +
+                        "--help\tPrints this screen\n" +
+                        "----no-cli-input\tDisables console input, usefull for services\n"
+                    );
+
+                    // Close the program after --help
+                    return;
+                }
+                else if (argument == "--no-cli-input")
+                    NoConsoleInput = true;
+                else
+                {
+                    Console.WriteLine("Unknown argument {0}", argument);
+                }
+            }
+
             //string version = String.Concat(Version.Major, ".", Version.Minor, ".", Version.Build);
             string path = Path.Combine(Environment.CurrentDirectory, "Logs");
 
@@ -43,12 +66,14 @@ namespace RetroSpyServer
 
             LogWriter.Log.Write("RetroSpy Server version " + version + ".", LogLevel.Information);
 
-            XMLConfiguration.LoadConfiguration();
-
-            ServerFactory Emulator = new ServerFactory();
+            ServerFactory Emulator = null;
 
             try
             {
+                XMLConfiguration.LoadConfiguration();
+
+                Emulator = new ServerFactory();
+
                 // Decide which database you want
                 if (XMLConfiguration.DatabaseType == DatabaseEngine.Sqlite)
                 {
@@ -67,25 +92,32 @@ namespace RetroSpyServer
                 while (Emulator.IsRunning())
                 {
                     // Process console commands
-                    string input = Console.ReadLine();
+                    if (!NoConsoleInput)
+                    {                        
+                        string input = Console.ReadLine();
 
-                    if (input.Equals("exit"))
-                        Emulator.StopAllServers();
-                    else
-                        Console.WriteLine("Unknown command!");
+                        if (input.Equals("exit"))
+                            Emulator.StopAllServers();
+                        else
+                            Console.WriteLine("Unknown command!");
+                    }
                 }
             }
             catch (Exception e)
             {
-                LogWriter.Log.Write(e.Message, LogLevel.Fatal);
+                LogWriter.Log.WriteException(e);
             }
 
             LogWriter.Log.Write("Goodbye!", LogLevel.Information);
             Emulator.Dispose();
             LogWriter.Log.Dispose();
-            // Pause the screen            
-            Console.ReadKey();
 
+            // Pauses the screen
+            if (!NoConsoleInput)
+            {
+                Console.WriteLine("Press ENTER to exit...");
+                Console.ReadKey();
+            }
         }
     }
 }
