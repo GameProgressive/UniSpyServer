@@ -105,8 +105,16 @@ namespace GameSpyLib.Network
             Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             // Set Socket options
-            Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-            Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, false);
+            try
+            {
+                //NOTE: Both of this sockets options throws an error under Linux! For now I'm leaving this muted, but it should be fixed.
+                Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true); // Throws Operation not supported on Linux
+                Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, false); // Throws invalid argument on linux
+            } catch (Exception)
+            {
+//                Logging.LogWriter.Log.WriteException(ex);
+            }
+            
             Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
 
             // Bind to our port
