@@ -58,7 +58,7 @@ namespace GameSpyLib
                         builder.Append(AlphaChars[random.Next(AlphaChars.Length)]);
                         break;
                     case StringType.Hex:
-                        builder.Append(HexChars[random.Next(AlphaChars.Length)]);
+                        builder.Append(HexChars[random.Next(HexChars.Length)]);
                         break;
                 }
             }
