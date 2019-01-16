@@ -18,6 +18,13 @@ namespace RetroSpyServer.Server
         Completed,
         Disconnected
     }
+    
+    public enum PartnerIDS : uint
+    {
+        Gamespy = 0,
+        IGN = 10,
+        Nintendo = 11,
+    }
 
     public enum PlayerStatus : int
     {
@@ -33,6 +40,24 @@ namespace RetroSpyServer.Server
 
         /// <summary>
         /// The player is banned
+        /// </summary>
+        Banned
+    }
+
+    public enum UserStatus : int
+    {
+        /// <summary>
+        /// The user is created, but not verified
+        /// </summary>
+        Created,
+
+        /// <summary>
+        /// The user is verified, and can login
+        /// </summary>
+        Verified,
+
+        /// <summary>
+        /// The user id banned
         /// </summary>
         Banned
     }
@@ -118,7 +143,12 @@ namespace RetroSpyServer.Server
         /// <summary>
         /// The player information is not valid
         /// </summary>
-        InvalidPlayer
+        InvalidPlayer,
+
+        /// <summary>
+        /// The player account is not activated
+        /// </summary>
+        PlayerIsNotActivated
     }
 
     /// <summary>
@@ -134,7 +164,7 @@ namespace RetroSpyServer.Server
         /// <summary>
         /// Gets the current login status
         /// </summary>
-        public LoginStatus Status { get; protected set; }
+        public LoginStatus LoginStatus { get; protected set; }
 
         /// <summary>
         /// Indicates whether this player successfully completed the login process
@@ -155,6 +185,16 @@ namespace RetroSpyServer.Server
         /// The connected clients Email Address
         /// </summary>
         public string PlayerEmail { get; protected set; }
+
+        /// <summary>
+        /// The connected clients Authentication Token
+        /// </summary>
+        public string PlayerAuthToken { get; protected set; }
+
+        /// <summary>
+        /// The connected clients Unique Nick
+        /// </summary>
+        public string PlayerUniqueNick { get; protected set; }
 
         /// <summary>
         /// The connected clients country code
@@ -249,7 +289,7 @@ namespace RetroSpyServer.Server
             PlayerId = 0;
             RemoteEndPoint = (IPEndPoint)ConnectionStream.RemoteEndPoint;
             Disposed = false;
-            Status = LoginStatus.Connected;
+            LoginStatus = LoginStatus.Connected;
 
             // Set the connection ID
             this.ConnectionId = ConnectionId;
@@ -304,7 +344,7 @@ namespace RetroSpyServer.Server
             catch { }
 
             // Set status and log
-            if (Status == LoginStatus.Completed)
+            if (LoginStatus == LoginStatus.Completed)
             {
                 if (reason == DisconnectReason.NormalLogout)
                 {
@@ -330,7 +370,7 @@ namespace RetroSpyServer.Server
             }
 
             // Preapare to be unloaded from memory
-            Status = LoginStatus.Disconnected;
+            LoginStatus = LoginStatus.Disconnected;
             Dispose();
 
             // Call disconnect event
@@ -367,9 +407,12 @@ namespace RetroSpyServer.Server
                 case "logout":
                     Disconnect(DisconnectReason.NormalLogout);
                     break;
+                case "ka": // Keep-alive
+                    stream.SendAsync(@"\ka\final\");
+                    break;
                 default:
                     LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
-                    GameSpyLib.Server.PresenceServer.SendError(stream, 0, "An invalid request was sended.");
+                    PresenceServer.SendError(stream, 0, "An invalid request was sended.");
                     stream.Close();
                     break;
             }
@@ -399,7 +442,7 @@ namespace RetroSpyServer.Server
         public void SendServerChallenge(uint ServerID)
         {
             // Only send the login challenge once
-            if (Status != LoginStatus.Connected)
+            if (LoginStatus != LoginStatus.Connected)
             {
                 // Create an exception message
                 TimeSpan ts = DateTime.Now - Created;
@@ -413,7 +456,7 @@ namespace RetroSpyServer.Server
 
             // We send the client the challenge key
             ServerChallengeKey = GameSpyLib.Random.GenerateRandomString(10, GameSpyLib.Random.StringType.Alpha);
-            Status = LoginStatus.Processing;
+            LoginStatus = LoginStatus.Processing;
             Stream.SendAsync(@"\lc\1\challenge\{0}\id\{1}\final\", ServerChallengeKey, ServerID);
         }
 
@@ -424,52 +467,147 @@ namespace RetroSpyServer.Server
         /// </summary>
         public void ProcessLogin(Dictionary<string, string> Recv)
         {
+            uint partnerID = 0;
+
             // Make sure we have all the required data to process this login
-            if (!Recv.ContainsKey("uniquenick") || !Recv.ContainsKey("challenge") || !Recv.ContainsKey("response"))
+            if (!Recv.ContainsKey("challenge") || !Recv.ContainsKey("response"))
             {
-                GameSpyLib.Server.PresenceServer.SendError(Stream, 0, "Invalid response received from the client!");
+                PresenceServer.SendError(Stream, 0, "Invalid response received from the client!");
                 Disconnect(DisconnectReason.InvalidLoginQuery);
                 return;
+            }
+
+            // Parse the partnerid, required since it changes the challenge for Unique nick and User login
+            if (Recv.ContainsKey("partnerid"))
+            {
+                if (!uint.TryParse(Recv["partnerid"], out partnerID))
+                    partnerID = 0;
+            }
+
+            // Parse the 3 login types information
+            if (Recv.ContainsKey("uniquenick"))
+            {
+                PlayerUniqueNick = Recv["uniquenick"];
+            }
+            else if (Recv.ContainsKey("authtoken"))
+            {
+                PlayerAuthToken = Recv["authtoken"];
+            }
+            else if (Recv.ContainsKey("user"))
+            {
+                // "User" is <nickname>@<email>
+                string User = Recv["user"];
+                int Pos = User.IndexOf('@');
+                PlayerNick = User.Substring(0, Pos);
+                PlayerEmail = User.Substring(Pos + 1);
             }
 
             // Dispose connection after use
             try
             {
                 // Try and fetch the user from the database
-                Dictionary<string, object> User = DatabaseUtility.GetUser(databaseDriver, Recv["uniquenick"]);
-                if (User == null)
+                Dictionary<string, object> QueryResult;
+
+                try
                 {
-                    GameSpyLib.Server.PresenceServer.SendError(Stream, 265, "The uniquenick provided is incorrect!");
+                    if (PlayerUniqueNick != null)
+                        QueryResult = DatabaseUtility.GetUserFromUniqueNick(databaseDriver, Recv["uniquenick"]);
+                    else if (PlayerAuthToken != null)
+                    {
+                        //TODO! Add the database entry
+                        PresenceServer.SendError(Stream, 0, "AuthToken is not supported yet");
+                        return;
+                    }
+                    else
+                        QueryResult = DatabaseUtility.GetUserFromNickname(databaseDriver, PlayerEmail, PlayerNick);
+                }
+                catch (Exception)
+                {
+                    PresenceServer.SendError(Stream, 4, "This request cannot be processed because of a database error.");
+                    return;
+                }
+
+                if (QueryResult == null)
+                {
+                    if (PlayerUniqueNick != null)
+                        PresenceServer.SendError(Stream, 265, "The unique nickname provided is incorrect!");
+                    else
+                        PresenceServer.SendError(Stream, 265, "The nickname provided is incorrect!");
+
                     Disconnect(DisconnectReason.InvalidUsername);
                     return;
                 }
 
                 // Check if user is banned
                 PlayerStatus currentPlayerStatus;
+                UserStatus currentUserStatus;
 
-                if (!Enum.TryParse(User["status"].ToString(), out currentPlayerStatus))
+                if (!Enum.TryParse(QueryResult["status"].ToString(), out currentPlayerStatus))
                 {
-                    GameSpyLib.Server.PresenceServer.SendError(Stream, 265, "Invalid player data! Please contact an administrator.");
+                    PresenceServer.SendError(Stream, 265, "Invalid player data! Please contact an administrator.");
                     Disconnect(DisconnectReason.InvalidPlayer);
                     return;
                 }
 
+                if (!Enum.TryParse(QueryResult["userstatus"].ToString(), out currentUserStatus))
+                {
+                    PresenceServer.SendError(Stream, 265, "Invalid player data! Please contact an administrator.");
+                    Disconnect(DisconnectReason.InvalidPlayer);
+                    return;
+                }
+
+                // Check the status of the account.
+                // If the single profile is banned, the account or the player status
+
                 if (currentPlayerStatus == PlayerStatus.Banned)
                 {
-                    GameSpyLib.Server.PresenceServer.SendError(Stream, 265, "Your accout has been permanently suspended.");
+                    PresenceServer.SendError(Stream, 265, "Your profile has been permanently suspended.");
+                    Disconnect(DisconnectReason.PlayerIsBanned);
+                    return;
+                }
+
+                if (currentUserStatus == UserStatus.Created)
+                {
+                    PresenceServer.SendError(Stream, 265, "Your account is not verified. Please check your email inbox and verify the account.");
+                    Disconnect(DisconnectReason.PlayerIsBanned);
+                    return;
+                }
+
+                if (currentUserStatus == UserStatus.Banned)
+                {
+                    PresenceServer.SendError(Stream, 265, "Your account has been permanently suspended.");
                     Disconnect(DisconnectReason.PlayerIsBanned);
                     return;
                 }
 
                 // Set player variables
-                PlayerId = uint.Parse(User["profileid"].ToString());
-                PlayerNick = Recv["uniquenick"];
-                PlayerEmail = User["email"].ToString();
-                PlayerCountryCode = User["countrycode"].ToString();
-                PasswordHash = User["password"].ToString().ToLowerInvariant();
+                PlayerId = uint.Parse(QueryResult["profileid"].ToString());
+                PasswordHash = QueryResult["password"].ToString().ToLowerInvariant();
+                PlayerCountryCode = QueryResult["countrycode"].ToString();
+
+                string challengeData = "";
+
+                if (PlayerUniqueNick != null)
+                {
+                    PlayerEmail = QueryResult["email"].ToString();
+                    PlayerNick = QueryResult["nick"].ToString();
+                    challengeData = PlayerUniqueNick;
+                }
+                else if (PlayerAuthToken != null)
+                {
+                    PlayerEmail = QueryResult["email"].ToString();
+                    PlayerNick = QueryResult["nick"].ToString();
+                    PlayerUniqueNick = QueryResult["uniquenick"].ToString();
+                    challengeData = PlayerAuthToken;
+                }
+                else
+                {
+                    PlayerUniqueNick = QueryResult["uniquenick"].ToString();
+                    challengeData = Recv["user"];
+                }
 
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                if (Recv["response"] == GenerateProof(Recv["challenge"], ServerChallengeKey))
+                if (Recv["response"] == GenerateProof(Recv["challenge"], ServerChallengeKey, challengeData, PlayerAuthToken != null ? 0 : partnerID))
                 {
                     // Create session key
                     SessionKey = Crc.ComputeChecksum(PlayerNick);
@@ -478,17 +616,17 @@ namespace RetroSpyServer.Server
                     Stream.SendAsync(
                         @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         SessionKey,
-                        GenerateProof(ServerChallengeKey, Recv["challenge"]), // Do this again, Params are reversed!
+                        GenerateProof(ServerChallengeKey, Recv["challenge"], challengeData, PlayerAuthToken != null ? 0 : partnerID), // Do this again, Params are reversed!
                         PlayerId,
                         PlayerNick,
-                        GameSpyLib.Random.GenerateRandomString(24, GameSpyLib.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
+                        GameSpyLib.Random.GenerateRandomString(22, GameSpyLib.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
                     );
 
                     // Log Incoming Connections
                     LogWriter.Log.Write("Client Login:   {0} - {1} - {2}", LogLevel.Information, PlayerNick, PlayerId, RemoteEndPoint);
 
                     // Update status last, and call success login
-                    Status = LoginStatus.Completed;
+                    LoginStatus = LoginStatus.Completed;
                     CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(this);
                 }
@@ -605,7 +743,7 @@ namespace RetroSpyServer.Server
         /// </summary>
         public void SendKeepAlive()
         {
-            if (Status == LoginStatus.Completed)
+            if (LoginStatus == LoginStatus.Completed)
             {
                 // Try and send a Keep-Alive
                 try
@@ -628,16 +766,25 @@ namespace RetroSpyServer.Server
         /// </summary>
         /// <param name="challenge1">First challenge key</param>
         /// <param name="challenge2">Second challenge key</param>
+        /// <param name="userdata">The user data to append to the proof</param>
+        /// <param name="partnerid">The partnerid to append</param>
         /// <returns>
         ///     The proof verification MD5 hash string that can be compared to what the client sends,
-        ///     to verify that the users entered password matches the password in the database.
+        ///     to verify that the users entered password matches the specific user data in the database.
         /// </returns>
-        private string GenerateProof(string challenge1, string challenge2)
+        private string GenerateProof(string challenge1, string challenge2, string userdata, uint partnerid)
         {
+            string realUserData = userdata;
+
+            if (partnerid != (uint)PartnerIDS.Gamespy)
+            {
+                realUserData = string.Format("{0}@{1}", partnerid, userdata);
+            }
+
             // Generate our string to be hashed
             StringBuilder HashString = new StringBuilder(PasswordHash);
             HashString.Append(' ', 48); // 48 spaces
-            HashString.Append(PlayerNick);
+            HashString.Append(realUserData);
             HashString.Append(challenge1);
             HashString.Append(challenge2);
             HashString.Append(PasswordHash);

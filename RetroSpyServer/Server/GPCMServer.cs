@@ -200,7 +200,7 @@ namespace RetroSpyServer.Server
             GPCMClient oldC;
 
             // Remove all processing connections that are hanging
-            if (client.Status != LoginStatus.Completed && expireTime <= DateTime.Now)
+            if (client.LoginStatus != LoginStatus.Completed && expireTime <= DateTime.Now)
             {
                 try
                 {
