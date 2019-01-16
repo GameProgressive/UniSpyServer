@@ -381,6 +381,8 @@ namespace RetroSpyServer.Server
                 }
             }
 
+            DatabaseUtility.LogoutUser(databaseDriver, PlayerId);
+
             // Preapare to be unloaded from memory
             LoginStatus = LoginStatus.Disconnected;
             Dispose();
@@ -653,7 +655,7 @@ namespace RetroSpyServer.Server
                     LoginStatus = LoginStatus.Completed;
                     PlayerStatusString = "Online";
 
-                    DatabaseUtility.SetUserLogin(databaseDriver, PlayerId, SessionKey);
+                    DatabaseUtility.LoginUser(databaseDriver, PlayerId, SessionKey);
 
                     CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(this);

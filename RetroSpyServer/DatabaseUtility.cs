@@ -78,9 +78,14 @@ namespace RetroSpyServer
             databaseDriver.Execute("UPDATE profiles SET countrycode=@P0 WHERE `profileid`=@P1", Country, playerId);
         }
 
-        public static void SetUserLogin(DatabaseDriver databaseDriver, uint playerId, ushort sessionKey)
+        public static void LoginUser(DatabaseDriver databaseDriver, uint playerId, ushort sessionKey)
         {
             databaseDriver.Execute("UPDATE profiles SET status=1, sesskey=@P0 WHERE profileid=@P1", sessionKey, playerId);
+        }
+
+        public static void LogoutUser(DatabaseDriver databaseDriver, uint playerId)
+        {
+            databaseDriver.Execute("UPDATE profiles SET status=0, sesskey=NULL WHERE profileid=@P1", playerId);
         }
     }
 }
