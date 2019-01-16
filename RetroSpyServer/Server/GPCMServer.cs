@@ -114,21 +114,16 @@ namespace RetroSpyServer.Server
                                     continue;
 
                                 // Only update record under these two status'
-                                if (result.Status == LoginStatus.Completed && result.Status == LoginStatus.Disconnected)
+                                if (result.Status == LoginStatus.Completed || result.Status == LoginStatus.Disconnected)
                                 {
                                     // Update player record
                                     databaseDriver.Execute(
-                                        "UPDATE profiles SET status=@P3 lastip=@P0, lastonline=@P1 WHERE profileid=@P2",
+                                        "UPDATE profiles SET status=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2",
                                         result.Client.RemoteEndPoint.Address,
                                         timestamp,
                                         result.Client.PlayerId,
                                         result.Status == LoginStatus.Completed ? 1 : 0
                                     );
-
-                                    if (result.Status == LoginStatus.Completed)
-                                        databaseDriver.Execute("UPDATE profiles SET sesskey=@P0 WHERE profileid=@P1", result.Client.SessionKey, result.Client.PlayerId);
-                                    else
-                                        databaseDriver.Execute("UDPATE profiles SET sesskey=null WHERE profileid=@P0", result.Client.PlayerId);
                                 }
                             }
 

@@ -231,7 +231,8 @@ namespace RetroSpyServer.Server
         /// <summary>
         /// The users session key
         /// </summary>
-        public ushort SessionKey { get; protected set; }
+        private ushort SessionKey = 0;
+        //public ushort SessionKey { get; protected set; }
 
         /// <summary>
         /// The Servers challange key, sent when the client first connects.
@@ -642,7 +643,7 @@ namespace RetroSpyServer.Server
                 if (Recv["response"] == GenerateProof(Recv["challenge"], ServerChallengeKey, challengeData, PlayerAuthToken != null ? 0 : partnerID))
                 {
                     // Create session key
-                    SessionKey = Crc.ComputeChecksum(PlayerNick);
+                    SessionKey = Crc.ComputeChecksum(PlayerUniqueNick);
 
                     // Password is correct
                     Stream.SendAsync(

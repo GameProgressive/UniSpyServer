@@ -242,14 +242,16 @@ namespace RetroSpyServer.Server
                 @"`birthmonth` INTEGER(2) DEFAULT(0)," +
                 @"`birthyear` INTEGER(2) DEFAULT(0)," +
                 @"`location` VARCHAR(100) DEFAULT('')," +
-                @"`icq` INTEGER(8) DEFAULT(0)" +
-                @"`status` INTEGER(1) DEFAULT(0)" +
+                @"`icq` INTEGER(8) DEFAULT(0)," +
+                @"`status` INTEGER(1) DEFAULT(0)," +
+                @"`lastip` VARCHAR(16)," +
+                @"`lastonline` INTEGER" +
                 @")"
             );
 
             databaseDriver.Query(@"INSERT INTO users(id, email, password, status) VALUES(1, 'spyguy@gamespy.com', '4c3cbcadf7b8a9ae2932afc00560a0d6', 1)");
             databaseDriver.Query(@"INSERT INTO `profiles` (`profileid`, `userid`, `uniquenick`, `nick`, `firstname`, `lastname`, `publicmask`, `deleted`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`) VALUES
-	(2, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 40.7142, -74.0064, 'spyguy', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0)");
+	(1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 40.7142, -74.0064, 'spyguy', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0)");
         }
     }
 }
