@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using GameSpyLib.Database;
 using GameSpyLib.Network;
 using GameSpyLib.Logging;
 
-namespace RetroSpyServer
+namespace RetroSpyServer.Server
 {
     /// <summary>
     /// A factory that create the instance of servers
@@ -71,6 +68,7 @@ namespace RetroSpyServer
 
             // Add all servers
             servers.Add("GPSP", new GPSPServer(databaseDriver));
+            servers.Add("GPCM", new GPCMServer(databaseDriver));
         }
 
         /// <summary>
@@ -209,7 +207,7 @@ namespace RetroSpyServer
                 @"`userid` INTEGER PRIMARY KEY AUTOINCREMENT," +
                 @"`email` VARCHAR(50) NOT NULL," +
                 @"`password` VARCHAR(32) NOT NULL," +
-                @"`status` INTEGER(1) DEFAULT(0)" +
+                @"`userstatus` INTEGER(1) DEFAULT(0)" +
                 @")"
             );
 
@@ -245,12 +243,13 @@ namespace RetroSpyServer
                 @"`birthyear` INTEGER(2) DEFAULT(0)," +
                 @"`location` VARCHAR(100) DEFAULT('')," +
                 @"`icq` INTEGER(8) DEFAULT(0)" +
+                @"`status` INTEGER(1) DEFAULT(0)" +
                 @")"
             );
 
-            databaseDriver.Query(@"INSERT INTO users(id, email, password, status) VALUES(1, 'spyguy@gamespy.com', '0000', 1)");
-            databaseDriver.Query(@"INSERT INTO `profiles` (`profileid`, `userid`, `sesskey`, `uniquenick`, `nick`, `firstname`, `lastname`, `publicmask`, `deleted`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`) VALUES
-	(2, 1, NULL, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 40.7142, -74.0064, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0)");
+            databaseDriver.Query(@"INSERT INTO users(id, email, password, status) VALUES(1, 'spyguy@gamespy.com', '4c3cbcadf7b8a9ae2932afc00560a0d6', 1)");
+            databaseDriver.Query(@"INSERT INTO `profiles` (`profileid`, `userid`, `uniquenick`, `nick`, `firstname`, `lastname`, `publicmask`, `deleted`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`) VALUES
+	(2, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 40.7142, -74.0064, 'spyguy', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0)");
         }
     }
 }
