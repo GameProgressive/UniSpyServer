@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using GameSpyLib.Database;
+using System;
 
 namespace RetroSpyServer
 {
@@ -75,6 +76,11 @@ namespace RetroSpyServer
         public static void UpdateUser(DatabaseDriver databaseDriver, uint playerId, string Country)
         {
             databaseDriver.Execute("UPDATE profiles SET countrycode=@P0 WHERE `profileid`=@P1", Country, playerId);
+        }
+
+        public static void SetUserLogin(DatabaseDriver databaseDriver, uint playerId, ushort sessionKey)
+        {
+            databaseDriver.Execute("UPDATE profiles SET status=1, sesskey=@P0 WHERE profileid=@P1", sessionKey, playerId);
         }
     }
 }

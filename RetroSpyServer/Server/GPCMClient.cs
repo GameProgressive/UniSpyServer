@@ -207,6 +207,16 @@ namespace RetroSpyServer.Server
         private string PasswordHash;
 
         /// <summary>
+        /// The clients status
+        /// </summary>
+        public string PlayerStatusString { get; protected set; }
+
+        /// <summary>
+        /// The place where the client is currently
+        /// </summary>
+        public string PlayerLocation { get; protected set; }
+
+        /// <summary>
         /// The TcpClient's Endpoint
         /// </summary>
         public IPEndPoint RemoteEndPoint { get; protected set; }
@@ -286,6 +296,8 @@ namespace RetroSpyServer.Server
         {
             // Set default variable values
             PlayerNick = "Connecting...";
+            PlayerStatusString = "Offline";
+            PlayerLocation = "";
             PlayerId = 0;
             RemoteEndPoint = (IPEndPoint)ConnectionStream.RemoteEndPoint;
             Disposed = false;
@@ -407,6 +419,9 @@ namespace RetroSpyServer.Server
                 case "logout":
                     Disconnect(DisconnectReason.NormalLogout);
                     break;
+                case "status":
+                    UpdateStatus(PresenceServer.ConvertToKeyValue(recieved));
+                    break;
                 case "ka": // Keep-alive
                     stream.SendAsync(@"\ka\final\");
                     break;
@@ -416,6 +431,15 @@ namespace RetroSpyServer.Server
                     stream.Close();
                     break;
             }
+        }
+
+        private void UpdateStatus(Dictionary<string, string> dictionary)
+        {
+            if (dictionary.ContainsKey("statstring"))
+                PlayerStatusString = dictionary["statstring"];
+
+            if (dictionary.ContainsKey("locstring"))
+                PlayerLocation = dictionary["locstring"];
         }
 
         /// <summary>
@@ -627,6 +651,10 @@ namespace RetroSpyServer.Server
 
                     // Update status last, and call success login
                     LoginStatus = LoginStatus.Completed;
+                    PlayerStatusString = "Online";
+
+                    DatabaseUtility.SetUserLogin(databaseDriver, PlayerId, SessionKey);
+
                     CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(this);
                 }
@@ -644,7 +672,6 @@ namespace RetroSpyServer.Server
             {
                 LogWriter.Log.Write(ex.ToString(), LogLevel.Error);
                 Disconnect(DisconnectReason.GeneralError);
-                return;
             }
         }
 
