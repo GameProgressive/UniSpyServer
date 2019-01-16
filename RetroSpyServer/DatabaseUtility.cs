@@ -1,8 +1,6 @@
-﻿using System.Security.Cryptography;
-using System.Text;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GameSpyLib;
 using GameSpyLib.Database;
-using System;
 
 namespace RetroSpyServer
 {
@@ -25,27 +23,6 @@ namespace RetroSpyServer
             return (databaseDriver.Query("SELECT profileid FROM profiles WHERE `nickname`=@P0", Nick).Count != 0);
         }
 
-        private static string GetMd5Hash(MD5 md5Hash, string input)
-        {
-
-            // Convert the input string to a byte array and compute the hash.
-            byte[] data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-            // Create a new Stringbuilder to collect the bytes
-            // and create a string.
-            StringBuilder sBuilder = new StringBuilder();
-
-            // Loop through each byte of the hashed data 
-            // and format each one as a hexadecimal string.
-            for (int i = 0; i < data.Length; i++)
-            {
-                sBuilder.Append(data[i].ToString("x2"));
-            }
-
-            // Return the hexadecimal string.
-            return sBuilder.ToString();
-        }
-
         /// <summary>
         /// Creates a new Gamespy Account
         /// </summary>
@@ -59,8 +36,7 @@ namespace RetroSpyServer
         /// <returns>Returns the Player ID if sucessful, 0 otherwise</returns>
         public static uint CreateUser(DatabaseDriver databaseDriver, string Nick, string Pass, string Email, string Country, string UniqueNick)
         {
-            MD5 md5Hash = MD5.Create();
-            databaseDriver.Execute("INSERT INTO users(email, password) VALUES(@P0, @P1)", Email, GetMd5Hash(md5Hash, Pass));
+            databaseDriver.Execute("INSERT INTO users(email, password) VALUES(@P0, @P1)", Email, StringExtensions.GetMD5Hash(Pass));
             var Rows = databaseDriver.Query("SELECT userid FROM users WHERE email=@P0 and password=@P1", Email, Pass);
             if (Rows.Count < 1)
                 return 0;
