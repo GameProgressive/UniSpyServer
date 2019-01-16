@@ -11,7 +11,7 @@
  Target Server Version : 100214
  File Encoding         : 65001
 
- Date: 16/01/2019 22:38:27
+ Date: 16/01/2019 23:34:09
 */
 
 SET NAMES utf8mb4;
@@ -97,7 +97,6 @@ CREATE TABLE `profiles`  (
   `firstname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `lastname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `publicmask` int(11) NOT NULL DEFAULT 0,
-  `deleted` tinyint(1) NOT NULL DEFAULT 0,
   `latitude` float(10, 0) NOT NULL DEFAULT 0,
   `longitude` float(10, 0) NOT NULL DEFAULT 0,
   `aim` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0',
@@ -132,7 +131,7 @@ CREATE TABLE `profiles`  (
 -- ----------------------------
 -- Records of profiles
 -- ----------------------------
-INSERT INTO `profiles` VALUES (1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 0, '127.0.0.1', 1547674388);
+INSERT INTO `profiles` VALUES (1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 1, '127.0.0.1', 1547675381);
 
 -- ----------------------------
 -- Table structure for users
