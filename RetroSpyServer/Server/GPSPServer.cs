@@ -187,6 +187,8 @@ namespace RetroSpyServer.Server
                 password = GamespyUtils.DecodePassword(dict["passenc"]);
             }
 
+            password = StringExtensions.GetMD5Hash(password);
+
             sendUniqueNick = dict.ContainsKey("gamename");
 
             List<Dictionary<string, object>> queryResult = null;

@@ -110,6 +110,9 @@ namespace RetroSpyServer.Server
                             while (PlayerStatusQueue.TryDequeue(out result))
                             {
                                 // Skip if this player never finished logging in
+                                if (result.Client == null)
+                                    continue;
+
                                 if (!result.Client.CompletedLoginProcess)
                                     continue;
 
