@@ -70,6 +70,9 @@ namespace RetroSpyServer.Server
         /// </summary>
         public GPCMServer(DatabaseDriver databaseDriver) : base(databaseDriver)
         {
+            GPCMClient.OnDisconnect += GpcmClient_OnDisconnect;
+            GPCMClient.OnSuccessfulLogin += GpcmClient_OnSuccessfulLogin;
+
             // Setup timer. Every 15 seconds should be sufficient
             if (PollTimer == null || !PollTimer.Enabled)
             {
@@ -115,11 +118,17 @@ namespace RetroSpyServer.Server
                                 {
                                     // Update player record
                                     databaseDriver.Execute(
-                                        "UPDATE profiles SET lastip=@P0, lastonline=@P1 WHERE profileid=@P2",
+                                        "UPDATE profiles SET status=@P3 lastip=@P0, lastonline=@P1 WHERE profileid=@P2",
                                         result.Client.RemoteEndPoint.Address,
                                         timestamp,
-                                        result.Client.PlayerId
+                                        result.Client.PlayerId,
+                                        result.Status == LoginStatus.Completed ? 1 : 0
                                     );
+
+                                    if (result.Status == LoginStatus.Completed)
+                                        databaseDriver.Execute("UPDATE profiles SET sesskey=@P0 WHERE profileid=@P1", result.Client.SessionKey, result.Client.PlayerId);
+                                    else
+                                        databaseDriver.Execute("UDPATE profiles SET sesskey=null WHERE profileid=@P0", result.Client.PlayerId);
                                 }
                             }
 
@@ -155,7 +164,7 @@ namespace RetroSpyServer.Server
         public void Shutdown()
         {
             // Stop accepting new connections
-            base.IgnoreNewConnections = true;
+            IgnoreNewConnections = true;
             Exiting = true;
 
             // Discard the poll timer

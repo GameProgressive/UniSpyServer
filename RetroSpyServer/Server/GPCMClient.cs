@@ -231,7 +231,7 @@ namespace RetroSpyServer.Server
         /// <summary>
         /// The users session key
         /// </summary>
-        private ushort SessionKey;
+        public ushort SessionKey { get; protected set; }
 
         /// <summary>
         /// The Servers challange key, sent when the client first connects.
@@ -283,6 +283,12 @@ namespace RetroSpyServer.Server
         /// unless OnSuccessfulLogin event was fired first.
         /// </summary>
         public static event GpcmConnectionClosed OnDisconnect;
+
+        /// <summary>
+        /// Event fired when the client status or location is changed,
+        /// so the data could be notified to all clients
+        /// </summary>
+        public static event GpcmStatusChanged OnStatusChanged;
 
         private DatabaseDriver databaseDriver = null;
 
@@ -381,8 +387,6 @@ namespace RetroSpyServer.Server
                 }
             }
 
-            DatabaseUtility.LogoutUser(databaseDriver, PlayerId);
-
             // Preapare to be unloaded from memory
             LoginStatus = LoginStatus.Disconnected;
             Dispose();
@@ -437,11 +441,13 @@ namespace RetroSpyServer.Server
 
         private void UpdateStatus(Dictionary<string, string> dictionary)
         {
-            if (dictionary.ContainsKey("statstring"))
-                PlayerStatusString = dictionary["statstring"];
+            if (!dictionary.ContainsKey("statstring") || !dictionary.ContainsKey("locstring"))
+                return;
 
-            if (dictionary.ContainsKey("locstring"))
-                PlayerLocation = dictionary["locstring"];
+            PlayerStatusString = dictionary["statstring"];
+            PlayerLocation = dictionary["locstring"];
+
+            OnStatusChanged?.Invoke(this);
         }
 
         /// <summary>
@@ -654,8 +660,6 @@ namespace RetroSpyServer.Server
                     // Update status last, and call success login
                     LoginStatus = LoginStatus.Completed;
                     PlayerStatusString = "Online";
-
-                    DatabaseUtility.LoginUser(databaseDriver, PlayerId, SessionKey);
 
                     CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(this);

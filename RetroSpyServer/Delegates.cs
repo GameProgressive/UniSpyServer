@@ -7,4 +7,6 @@ namespace RetroSpyServer
     public delegate void GpspConnectionClosed(GPCMClient client);
 
     public delegate void GpcmConnectionClosed(GPCMClient client);
+
+    public delegate void GpcmStatusChanged(GPCMClient client);
 }
