@@ -221,7 +221,6 @@ namespace RetroSpyServer.Server
                 @"`firstname` VARCHAR(30) DEFAULT('')," +
                 @"`lastname` VARCHAR(30) DEFAULT('')," +
                 @"`publicmask` INTEGER(11) DEFAULT(0)," +
-                @"`deleted` INTEGER(1) DEFAULT(0)," +
                 @"`latitude` REAL," +
                 @"`longitude` REAL," +
                 @"`aim` VARCHAR(50) DEFAULT('')," +

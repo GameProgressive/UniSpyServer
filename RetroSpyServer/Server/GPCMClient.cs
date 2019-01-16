@@ -26,6 +26,13 @@ namespace RetroSpyServer.Server
         Nintendo = 11,
     }
 
+    public enum PlayerSexType : ushort
+    {
+        MALE,
+        FEMALE,
+        PAT
+    }
+
     public enum PlayerStatus : int
     {
         /// <summary>
@@ -41,7 +48,7 @@ namespace RetroSpyServer.Server
         /// <summary>
         /// The player is banned
         /// </summary>
-        Banned
+        Banned,
     }
 
     public enum UserStatus : int
@@ -214,7 +221,7 @@ namespace RetroSpyServer.Server
         /// <summary>
         /// The place where the client is currently
         /// </summary>
-        public string PlayerLocation { get; protected set; }
+        public string PlayerStatusLocation { get; protected set; }
 
         /// <summary>
         /// The TcpClient's Endpoint
@@ -233,6 +240,33 @@ namespace RetroSpyServer.Server
         /// </summary>
         private ushort SessionKey = 0;
         //public ushort SessionKey { get; protected set; }
+
+        public string PlayerFirstName { get; protected set; }
+        public string PlayerLastName { get; protected set; }
+        public int PlayerICQ { get; protected set; }
+        public string PlayerHomepage { get; protected set; }
+        public string PlayerZIPCode { get; protected set; }
+        public string PlayerLocation { get; protected set; }
+        public string PlayerAim { get; protected set; }
+
+        public int PlayerOccupation { get; protected set; }
+        public int PlayerIndustryID { get; protected set; }
+        public int PlayerIncomeID { get; protected set; }
+        public int PlayerMarried { get; protected set; }
+        public int PlayerChildCount { get; protected set; }
+        public int PlayerConnectionType { get; protected set; }
+        public int PlayerPicture { get; protected set; }
+        public int PlayerInterests { get; protected set; }
+        public int PlayerPublicMask { get; protected set; }
+
+        public ushort PlayerBirthday { get; protected set; }
+        public ushort PlayerBirthmonth { get; protected set; }
+        public ushort PlayerBirthyear { get; protected set; }
+
+        public PlayerSexType PlayerSex { get; protected set; }
+
+        public float PlayerLatitude { get; protected set; }
+        public float PlayerLongitude { get; protected set; }
 
         /// <summary>
         /// The Servers challange key, sent when the client first connects.
@@ -430,7 +464,7 @@ namespace RetroSpyServer.Server
                     UpdateStatus(PresenceServer.ConvertToKeyValue(recieved));
                     break;
                 case "ka": // Keep-alive
-                    stream.SendAsync(@"\ka\final\");
+                    SendKeepAlive();
                     break;
                 default:
                     LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
@@ -442,8 +476,16 @@ namespace RetroSpyServer.Server
 
         private void UpdateStatus(Dictionary<string, string> dictionary)
         {
-            if (!dictionary.ContainsKey("statstring") || !dictionary.ContainsKey("locstring"))
+            ushort testSK = 0;
+
+            if (!dictionary.ContainsKey("statstring") || !dictionary.ContainsKey("locstring") || !dictionary.ContainsKey("sesskey"))
                 return;
+
+            if (!ushort.TryParse(dictionary["sesskey"], out testSK))
+                return; // Invalid session key
+
+            if (testSK != SessionKey)
+                return; // Are you trying to update another user?
 
             PlayerStatusString = dictionary["statstring"];
             PlayerLocation = dictionary["locstring"];
@@ -618,6 +660,35 @@ namespace RetroSpyServer.Server
                 PasswordHash = QueryResult["password"].ToString().ToLowerInvariant();
                 PlayerCountryCode = QueryResult["countrycode"].ToString();
 
+                PlayerFirstName = QueryResult["firstname"].ToString();
+                PlayerLastName = QueryResult["lastname"].ToString();
+                PlayerICQ = int.Parse(QueryResult["icq"].ToString());
+                PlayerHomepage = QueryResult["homepage"].ToString();
+                PlayerZIPCode = QueryResult["zipcode"].ToString();
+                PlayerLocation = QueryResult["location"].ToString();
+                PlayerAim = QueryResult["aim"].ToString();
+                PlayerOccupation = int.Parse(QueryResult["occupationid"].ToString());
+                PlayerIndustryID = int.Parse(QueryResult["industryid"].ToString());
+                PlayerIncomeID = int.Parse(QueryResult["incomeid"].ToString());
+                PlayerMarried = int.Parse(QueryResult["marriedid"].ToString());
+                PlayerChildCount = int.Parse(QueryResult["childcount"].ToString());
+                PlayerConnectionType = int.Parse(QueryResult["connectiontype"].ToString());
+                PlayerPicture = int.Parse(QueryResult["picture"].ToString());
+                PlayerInterests = int.Parse(QueryResult["interests1"].ToString());
+                PlayerBirthday = ushort.Parse(QueryResult["birthday"].ToString());
+                PlayerBirthmonth = ushort.Parse(QueryResult["birthmonth"].ToString());
+                PlayerBirthyear = ushort.Parse(QueryResult["birthyear"].ToString());
+
+                PlayerSexType playerSexType;
+                if (!Enum.TryParse(QueryResult["sex"].ToString().ToUpper(), out playerSexType))
+                    PlayerSex = PlayerSexType.PAT;
+                else
+                    PlayerSex = playerSexType;
+
+                PlayerLatitude = float.Parse(QueryResult["latitude"].ToString());
+                PlayerLongitude = float.Parse(QueryResult["longitude"].ToString());
+                PlayerPublicMask = int.Parse(QueryResult["publicmask"].ToString());
+
                 string challengeData = "";
 
                 if (PlayerUniqueNick != null)
@@ -661,9 +732,11 @@ namespace RetroSpyServer.Server
                     // Update status last, and call success login
                     LoginStatus = LoginStatus.Completed;
                     PlayerStatusString = "Online";
+                    PlayerStatusLocation = "";
 
                     CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(this);
+                    OnStatusChanged?.Invoke(this);
                 }
                 else
                 {
@@ -679,6 +752,7 @@ namespace RetroSpyServer.Server
             {
                 LogWriter.Log.Write(ex.ToString(), LogLevel.Error);
                 Disconnect(DisconnectReason.GeneralError);
+                return;
             }
         }
 
@@ -687,11 +761,18 @@ namespace RetroSpyServer.Server
         /// </summary>
         private void SendProfile()
         {
+            // Since this is our profile, we have to see ALL informations that we can edit. This means that we don't need to send the Public Mask
+            // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
             Stream.SendAsync(
-                @"\pi\\profileid\{0}\nick\{1}\userid\{0}\email\{2}\sig\{3}\uniquenick\{1}\pid\0\firstname\\lastname\" +
-                @"\countrycode\{4}\birthday\16844722\lon\0.000000\lat\0.000000\loc\\id\{5}\\final\",
-                PlayerId, PlayerNick, PlayerEmail, GameSpyLib.Random.GenerateRandomString(33, GameSpyLib.Random.StringType.Hex), PlayerCountryCode, (ProfileSent ? "5" : "2")
-            );
+                @"\pi\\profileid\{0}\nick\{1}\uniquenick\{2}\email\{3}\firstname\{4}\lastname\{5}\icquin\{6}\" +
+                @"homepage\{7}\zipcode\{8}\countrycode\{9}\lon\{10}\lat\{11}\loc\{12}\birthday\{13}\sex\{14}\" +
+                @"aim\{15}\pic\{16}\occ\{17}\ind\{18}\inc\{19}\mar\{20}\chc\{21}\i1\{22}\o1\{23}\conn\{24}\" +
+                @"sig\{25}\id\{26}\mp\4\final\",
+                PlayerId, PlayerNick, PlayerUniqueNick, PlayerEmail, PlayerFirstName, PlayerLastName, PlayerICQ,
+                PlayerHomepage, PlayerZIPCode, PlayerCountryCode, PlayerLocation, PlayerLatitude, PlayerLongitude,
+                PlayerBirthday, PlayerSex, PlayerAim, PlayerPicture, PlayerOccupation, PlayerIndustryID, PlayerIncomeID, PlayerMarried,
+                PlayerChildCount, PlayerInterests, PlayerOccupation, PlayerConnectionType,
+                GameSpyLib.Random.GenerateRandomString(33, GameSpyLib.Random.StringType.Hex), (ProfileSent ? "5" : "2")); 
 
             // Set that we send the profile initially
             if (!ProfileSent) ProfileSent = true;

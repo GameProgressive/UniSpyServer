@@ -6,16 +6,24 @@ namespace RetroSpyServer
 {
     public class DatabaseUtility
     {
+        protected static Dictionary<string, object> GetUserDataReal(DatabaseDriver databaseDriver, string AppendFirst, string SecondAppend, string _P0, string _P1)
+        {
+            var Rows = databaseDriver.Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
+                "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
+                @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
+                @"profiles.birthyear, profiles.location, profiles.icq, profiles.status, users.password, users.userstatus " + AppendFirst +
+                " FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE " + SecondAppend, _P0, _P1);
+            return (Rows.Count == 0) ? null : Rows[0];
+        }
+
         public static Dictionary<string, object> GetUserFromUniqueNick(DatabaseDriver databaseDriver, string Unick)
         {
-            var Rows = databaseDriver.Query("SELECT profiles.profileid, users.password, profiles.countrycode, profiles.status, users.email, profiles.nick, users.userstatus FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE profiles.uniquenick=@P0", Unick);
-            return (Rows.Count == 0) ? null : Rows[0];
+            return GetUserDataReal(databaseDriver, ", profiles.nick, users.email ", "profiles.uniquenick=@P0", Unick, "");
         }
 
         public static Dictionary<string, object> GetUserFromNickname(DatabaseDriver databaseDriver, string Email, string Nick)
         {
-            var Rows = databaseDriver.Query("SELECT profiles.profileid, users.password, profiles.countrycode, profiles.status, profiles.uniquenick, users.userstatus FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE profiles.nick=@P0 AND users.email=@P1", Nick, Email);
-            return (Rows.Count == 0) ? null : Rows[0];
+            return GetUserDataReal(databaseDriver, ", profiles.uniquenick ", "profiles.nick=@P0 AND users.email=@P1", Nick, Email);
         }
 
         public static bool UserExists(DatabaseDriver databaseDriver, string Nick)
