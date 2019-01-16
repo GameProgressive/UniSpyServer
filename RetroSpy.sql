@@ -1,161 +1,155 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Versione server:              10.2.14-MariaDB - mariadb.org binary distribution
--- S.O. server:                  Win64
--- HeidiSQL Versione:            9.5.0.5196
--- --------------------------------------------------------
+/*
+ Navicat Premium Data Transfer
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+ Source Server         : localhost
+ Source Server Type    : MariaDB
+ Source Server Version : 100214
+ Source Host           : localhost:3306
+ Source Schema         : retrospy
 
+ Target Server Type    : MariaDB
+ Target Server Version : 100214
+ File Encoding         : 65001
 
--- Dump della struttura del database retrospy
-CREATE DATABASE IF NOT EXISTS `retrospy` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `retrospy`;
+ Date: 16/01/2019 22:38:27
+*/
 
--- Dump della struttura di tabella retrospy.addrequests
-CREATE TABLE IF NOT EXISTS `addrequests` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `profileid` int(10) unsigned NOT NULL DEFAULT 0,
-  `targetid` int(11) unsigned NOT NULL,
-  `syncrequested` varchar(255) NOT NULL DEFAULT '',
-  `reason` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK_addrequests_profiles` (`profileid`),
-  KEY `FK_addrequests_profiles_2` (`targetid`),
-  CONSTRAINT `FK_addrequests_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
-  CONSTRAINT `FK_addrequests_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
--- Dump dei dati della tabella retrospy.addrequests: ~0 rows (circa)
-DELETE FROM `addrequests`;
-/*!40000 ALTER TABLE `addrequests` DISABLE KEYS */;
-/*!40000 ALTER TABLE `addrequests` ENABLE KEYS */;
+-- ----------------------------
+-- Table structure for addrequests
+-- ----------------------------
+DROP TABLE IF EXISTS `addrequests`;
+CREATE TABLE `addrequests`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `profileid` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `targetid` int(11) UNSIGNED NOT NULL,
+  `syncrequested` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `reason` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `id`(`id`) USING BTREE,
+  INDEX `FK_addrequests_profiles`(`profileid`) USING BTREE,
+  INDEX `FK_addrequests_profiles_2`(`targetid`) USING BTREE,
+  CONSTRAINT `FK_addrequests_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_addrequests_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- Dump della struttura di tabella retrospy.blocked
-CREATE TABLE IF NOT EXISTS `blocked` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `targetid` int(10) unsigned NOT NULL,
-  `profileid` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK_blocked_profiles` (`profileid`),
-  KEY `FK_blocked_profiles_2` (`targetid`),
-  CONSTRAINT `FK_blocked_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
-  CONSTRAINT `FK_blocked_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Table structure for blocked
+-- ----------------------------
+DROP TABLE IF EXISTS `blocked`;
+CREATE TABLE `blocked`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `targetid` int(10) UNSIGNED NOT NULL,
+  `profileid` int(10) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `id`(`id`) USING BTREE,
+  INDEX `FK_blocked_profiles`(`profileid`) USING BTREE,
+  INDEX `FK_blocked_profiles_2`(`targetid`) USING BTREE,
+  CONSTRAINT `FK_blocked_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_blocked_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- Dump dei dati della tabella retrospy.blocked: ~0 rows (circa)
-DELETE FROM `blocked`;
-/*!40000 ALTER TABLE `blocked` DISABLE KEYS */;
-/*!40000 ALTER TABLE `blocked` ENABLE KEYS */;
+-- ----------------------------
+-- Table structure for friends
+-- ----------------------------
+DROP TABLE IF EXISTS `friends`;
+CREATE TABLE `friends`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `profileid` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `targetid` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `id`(`id`) USING BTREE,
+  INDEX `FK_friends_profiles`(`profileid`) USING BTREE,
+  INDEX `FK_friends_profiles_2`(`targetid`) USING BTREE,
+  CONSTRAINT `FK_friends_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_friends_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- Dump della struttura di tabella retrospy.friends
-CREATE TABLE IF NOT EXISTS `friends` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `profileid` int(10) unsigned NOT NULL DEFAULT 0,
-  `targetid` int(10) unsigned NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK_friends_profiles` (`profileid`),
-  KEY `FK_friends_profiles_2` (`targetid`),
-  CONSTRAINT `FK_friends_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
-  CONSTRAINT `FK_friends_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Table structure for messages
+-- ----------------------------
+DROP TABLE IF EXISTS `messages`;
+CREATE TABLE `messages`  (
+  `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `from` int(10) UNSIGNED NOT NULL,
+  `to` int(10) UNSIGNED NOT NULL,
+  `date` timestamp(0) NOT NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+  `message` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `id`(`id`) USING BTREE,
+  INDEX `FK_messages_profiles`(`from`) USING BTREE,
+  INDEX `FK_messages_profiles_2`(`to`) USING BTREE,
+  CONSTRAINT `FK_messages_profiles` FOREIGN KEY (`from`) REFERENCES `profiles` (`profileid`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT `FK_messages_profiles_2` FOREIGN KEY (`to`) REFERENCES `profiles` (`profileid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- Dump dei dati della tabella retrospy.friends: ~0 rows (circa)
-DELETE FROM `friends`;
-/*!40000 ALTER TABLE `friends` DISABLE KEYS */;
-/*!40000 ALTER TABLE `friends` ENABLE KEYS */;
-
--- Dump della struttura di tabella retrospy.messages
-CREATE TABLE IF NOT EXISTS `messages` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `from` int(10) unsigned NOT NULL,
-  `to` int(10) unsigned NOT NULL,
-  `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `message` varchar(200) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `FK_messages_profiles` (`from`),
-  KEY `FK_messages_profiles_2` (`to`),
-  CONSTRAINT `FK_messages_profiles` FOREIGN KEY (`from`) REFERENCES `profiles` (`profileid`),
-  CONSTRAINT `FK_messages_profiles_2` FOREIGN KEY (`to`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- Dump dei dati della tabella retrospy.messages: ~0 rows (circa)
-DELETE FROM `messages`;
-/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-/*!40000 ALTER TABLE `messages` ENABLE KEYS */;
-
--- Dump della struttura di tabella retrospy.profiles
-CREATE TABLE IF NOT EXISTS `profiles` (
-  `profileid` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `userid` int(11) unsigned NOT NULL DEFAULT 0,
-  `sesskey` int(11) DEFAULT NULL,
-  `uniquenick` varchar(20) NOT NULL DEFAULT '',
-  `nick` varchar(30) NOT NULL DEFAULT '',
-  `firstname` varchar(30) NOT NULL DEFAULT '',
-  `lastname` varchar(30) NOT NULL DEFAULT '',
+-- ----------------------------
+-- Table structure for profiles
+-- ----------------------------
+DROP TABLE IF EXISTS `profiles`;
+CREATE TABLE `profiles`  (
+  `profileid` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `userid` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `uniquenick` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `nick` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `firstname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `lastname` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
   `publicmask` int(11) NOT NULL DEFAULT 0,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
-  `latitude` float NOT NULL DEFAULT 0,
-  `longitude` float NOT NULL DEFAULT 0,
-  `aim` varchar(50) DEFAULT '0',
-  `picture` int(11) DEFAULT 0,
-  `occupationid` int(11) DEFAULT 0,
-  `incomeid` int(11) DEFAULT 0,
-  `industryid` int(11) DEFAULT 0,
-  `marriedid` int(11) DEFAULT 0,
-  `childcount` int(11) DEFAULT 0,
-  `interests1` int(11) DEFAULT 0,
-  `ownership1` int(11) DEFAULT 0,
-  `connectiontype` int(11) DEFAULT 0,
-  `sex` enum('MALE','FEMALE','PAT') DEFAULT 'PAT',
-  `zipcode` varchar(10) DEFAULT '00000',
-  `countrycode` varchar(2) DEFAULT '',
-  `homepage` varchar(75) DEFAULT '',
-  `birthday` int(2) DEFAULT 0,
-  `birthmonth` int(2) DEFAULT 0,
-  `birthyear` int(4) DEFAULT 0,
-  `location` varchar(127) DEFAULT '',
-  `icq` int(11) DEFAULT 0,
-  PRIMARY KEY (`profileid`),
-  UNIQUE KEY `profileid` (`profileid`),
-  UNIQUE KEY `uniquenick` (`uniquenick`),
-  UNIQUE KEY `sesskey` (`sesskey`),
-  KEY `FK_profiles_users` (`userid`),
-  CONSTRAINT `FK_profiles_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  `latitude` float(10, 0) NOT NULL DEFAULT 0,
+  `longitude` float(10, 0) NOT NULL DEFAULT 0,
+  `aim` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0',
+  `picture` int(11) NULL DEFAULT 0,
+  `occupationid` int(11) NULL DEFAULT 0,
+  `incomeid` int(11) NULL DEFAULT 0,
+  `industryid` int(11) NULL DEFAULT 0,
+  `marriedid` int(11) NULL DEFAULT 0,
+  `childcount` int(11) NULL DEFAULT 0,
+  `interests1` int(11) NULL DEFAULT 0,
+  `ownership1` int(11) NULL DEFAULT 0,
+  `connectiontype` int(11) NULL DEFAULT 0,
+  `sex` enum('MALE','FEMALE','PAT') CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'PAT',
+  `zipcode` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '00000',
+  `countrycode` varchar(2) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `homepage` varchar(75) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `birthday` int(2) NULL DEFAULT 0,
+  `birthmonth` int(2) NULL DEFAULT 0,
+  `birthyear` int(4) NULL DEFAULT 0,
+  `location` varchar(127) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '',
+  `icq` int(8) NULL DEFAULT 0,
+  `status` tinyint(4) NOT NULL DEFAULT 0,
+  `lastip` varchar(16) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '',
+  `lastonline` int(20) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`profileid`) USING BTREE,
+  UNIQUE INDEX `profileid`(`profileid`) USING BTREE,
+  UNIQUE INDEX `uniquenick`(`uniquenick`) USING BTREE,
+  INDEX `FK_profiles_users`(`userid`) USING BTREE,
+  CONSTRAINT `FK_profiles_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`) ON DELETE RESTRICT ON UPDATE RESTRICT
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- Dump dei dati della tabella retrospy.profiles: ~1 rows (circa)
-DELETE FROM `profiles`;
-/*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` (`profileid`, `userid`, `sesskey`, `uniquenick`, `nick`, `firstname`, `lastname`, `publicmask`, `deleted`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`) VALUES
-	(2, 1, NULL, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 40.7142, -74.0064, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0);
-/*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
+-- ----------------------------
+-- Records of profiles
+-- ----------------------------
+INSERT INTO `profiles` VALUES (1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 0, '127.0.0.1', 1547674388);
 
--- Dump della struttura di tabella retrospy.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `userid` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(50) NOT NULL,
-  `password` varchar(32) NOT NULL,
-  `status` smallint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`userid`),
-  UNIQUE KEY `userid` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+-- ----------------------------
+-- Table structure for users
+-- ----------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users`  (
+  `userid` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `email` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `userstatus` smallint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`userid`) USING BTREE,
+  UNIQUE INDEX `userid`(`userid`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
--- Dump dei dati della tabella retrospy.users: ~1 rows (circa)
-DELETE FROM `users`;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`userid`, `email`, `password`, `status`) VALUES
-	(1, 'spyguy@gamespy.com', '0000', 1);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+-- ----------------------------
+-- Records of users
+-- ----------------------------
+INSERT INTO `users` VALUES (1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1);
 
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+SET FOREIGN_KEY_CHECKS = 1;
