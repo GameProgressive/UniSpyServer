@@ -26,7 +26,8 @@ namespace RetroSpyServer
         static void Main(string[] args)
         {
             bool NoConsoleInput = false, exceptInitPathArg = false;
-
+			string logPath = "";
+			
             basePath = AppDomain.CurrentDomain.BaseDirectory;
 
             // Argument switcher
@@ -70,8 +71,13 @@ namespace RetroSpyServer
 
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
+			
+			logPath = basePath + @"\Logs\";
+			
+			if (!Directory.Exists(logPath))
+				Directory.CreateDirectory(logPath);
 
-            LogWriter.Log = new LogWriter(String.Format(basePath + @"\{0}.log", DateTime.Now.ToLongDateString()));
+            LogWriter.Log = new LogWriter(String.Format(logPath + @"{0}.log", DateTime.Now.ToLongDateString()));
 
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
