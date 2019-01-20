@@ -138,8 +138,10 @@ namespace RetroSpyServer.Server
 
         private void ReverseBuddies(TCPStream stream, Dictionary<string, string> dict)
         {
-            PrintReceivedDictToLogger("others", dict);
-            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
+            //            PrintReceivedDictToLogger("others", dict);
+            //            SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
+
+            stream.SendAsync(@"\others\\odone\final\");
         }
 
         private void SearchUser(TCPStream stream, Dictionary<string, string> dict)
