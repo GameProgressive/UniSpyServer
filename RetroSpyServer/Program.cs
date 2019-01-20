@@ -71,13 +71,13 @@ namespace RetroSpyServer
 
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
-			
-			logPath = basePath + @"\Logs\";
-			
-			if (!Directory.Exists(logPath))
-				Directory.CreateDirectory(logPath);
 
-            LogWriter.Log = new LogWriter(String.Format(logPath + @"{0}.log", DateTime.Now.ToLongDateString()));
+            logPath = basePath + @"/Logs/";
+
+            if (!Directory.Exists(logPath))
+                Directory.CreateDirectory(logPath);
+
+            LogWriter.Log = new LogWriter(String.Format(Path.Combine(logPath, "{0}.log"), DateTime.Now.ToLongDateString()));
 
             Console.WriteLine(@"  ___     _           ___             ___                      ");
             Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
