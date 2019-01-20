@@ -809,8 +809,14 @@ namespace RetroSpyServer.Server
                 return;
             }
 
-            uint targetPID = 0;
+            uint targetPID = 0, messID = 0;
             if (!uint.TryParse(dict["profileid"], out targetPID))
+            {
+                PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
+                return;
+            }
+
+            if (!uint.TryParse(dict["id"], out messID))
             {
                 PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
                 return;
@@ -822,13 +828,7 @@ namespace RetroSpyServer.Server
             // of another client
             if (targetPID != PlayerId)
             {
-                uint publicMask = 0, recvID = 0;
-
-                if (!uint.TryParse(dict["id"], out recvID))
-                {
-                    PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
-                    return;
-                }
+                uint publicMask = 0;
 
                 var Query = DatabaseUtility.GetProfileInfo(databaseDriver, targetPID);
                 if (Query == null)
@@ -840,7 +840,7 @@ namespace RetroSpyServer.Server
                 if (!uint.TryParse(Query["publicmask"].ToString(), out publicMask))
                     publicMask = (uint)PublicMasks.MASK_NONE;
 
-                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\id\{2}", Query["nick"].ToString(), Query["uniquenick"].ToString(), recvID);
+                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\id\{2}", Query["nick"].ToString(), Query["uniquenick"].ToString(), messID);
 
                 if (Query["email"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
                 {
@@ -940,7 +940,7 @@ namespace RetroSpyServer.Server
                 // Since this is our profile, we have to see ALL informations that we can edit. This means that we don't need to check the public masks for sending
                 // the data
 
-                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\email\{2}\id\{3}\pmask\{4}", PlayerNick, PlayerUniqueNick, PlayerEmail, (ProfileSent ? "5" : "2"), PlayerPublicMask);
+                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\email\{2}\id\{3}\pmask\{4}", PlayerNick, PlayerUniqueNick, PlayerEmail, /*(ProfileSent ? "5" : "2")*/ messID, PlayerPublicMask);
 
                 if (PlayerLastName.Length > 0)
                     datatoSend += @"\lastname\" + PlayerLastName;
