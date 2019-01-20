@@ -39,7 +39,7 @@ namespace RetroSpyServer.Server
         /// <summary>
         /// A Queue of player status updates we will make on the database in a batch update.
         /// </summary>
-        public static ConcurrentQueue<PlayerStatusUpdate> PlayerStatusQueue { get; private set; } = new ConcurrentQueue<PlayerStatusUpdate>();
+        public static ConcurrentQueue<GPCMClient> PlayerStatusQueue { get; private set; } = new ConcurrentQueue<GPCMClient>();
 
         /// <summary>
         /// Returns the number of players online
@@ -106,26 +106,25 @@ namespace RetroSpyServer.Server
 
                         {
                             long timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
-                            PlayerStatusUpdate result;
+                            GPCMClient result;
                             while (PlayerStatusQueue.TryDequeue(out result))
                             {
                                 // Skip if this player never finished logging in
-                                if (result.Client == null)
+                                if (result == null)
                                     continue;
 
-                                if (!result.Client.CompletedLoginProcess)
+                                if (!result.CompletedLoginProcess)
                                     continue;
 
                                 // Only update record under these two status'
-                                if (result.Status == LoginStatus.Completed || result.Status == LoginStatus.Disconnected)
                                 {
                                     // Update player record
                                     databaseDriver.Execute(
                                         "UPDATE profiles SET status=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2",
-                                        result.Client.RemoteEndPoint.Address,
+                                        result.RemoteEndPoint.Address,
                                         timestamp,
-                                        result.Client.PlayerId,
-                                        result.Status == LoginStatus.Completed ? 1 : 0
+                                        result.PlayerId,
+                                        (uint)result.PlayerStatus
                                     );
                                 }
                             }
@@ -266,8 +265,7 @@ namespace RetroSpyServer.Server
                     client.Dispose();
 
                 // Add player to database queue
-                var status = new PlayerStatusUpdate(client, LoginStatus.Disconnected);
-                PlayerStatusQueue.Enqueue(status);
+                PlayerStatusQueue.Enqueue(client);
             }
             catch (Exception e)
             {
@@ -302,8 +300,7 @@ namespace RetroSpyServer.Server
                     LogWriter.Log.Write("ERROR: [GpcmServer._OnSuccessfulLogin] Unable to add client to HashSet.", LogLevel.Error);
 
                 // Add player to database queue
-                var status = new PlayerStatusUpdate(client, LoginStatus.Completed);
-                PlayerStatusQueue.Enqueue(status);
+                PlayerStatusQueue.Enqueue(client);
             }
             catch (Exception E)
             {

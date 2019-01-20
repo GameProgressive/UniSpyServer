@@ -16,6 +16,16 @@ namespace RetroSpyServer
             return (Rows.Count == 0) ? null : Rows[0];
         }
 
+        public static Dictionary<string, object> GetProfileInfo(DatabaseDriver databaseDriver, uint id)
+        {
+            var Rows = databaseDriver.Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
+                "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
+                @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
+                @"profiles.birthyear, profiles.location, profiles.icq, profiles.status, profiles.nick, profiles.uniquenick, users.email FROM profiles " +
+                @"INNER JOIN users ON profiles.userid = users.userid WHERE profileid=@P0", id);
+            return (Rows.Count == 0) ? null : Rows[0];
+        }
+
         public static Dictionary<string, object> GetUserFromUniqueNick(DatabaseDriver databaseDriver, string Unick)
         {
             return GetUserDataReal(databaseDriver, ", profiles.nick, users.email ", "profiles.uniquenick=@P0", Unick, "");

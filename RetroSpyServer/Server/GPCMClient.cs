@@ -18,38 +18,6 @@ namespace RetroSpyServer.Server
         Completed,
         Disconnected
     }
-    
-    public enum PartnerIDS : uint
-    {
-        Gamespy = 0,
-        IGN = 10,
-        Nintendo = 11,
-    }
-
-    public enum PlayerSexType : ushort
-    {
-        MALE,
-        FEMALE,
-        PAT
-    }
-
-    public enum PlayerStatus : int
-    {
-        /// <summary>
-        /// The player is offline
-        /// </summary>
-        Offline,
-
-        /// <summary>
-        /// The player is online
-        /// </summary>
-        Online,
-
-        /// <summary>
-        /// The player is banned
-        /// </summary>
-        Banned,
-    }
 
     public enum UserStatus : int
     {
@@ -174,6 +142,11 @@ namespace RetroSpyServer.Server
         public LoginStatus LoginStatus { get; protected set; }
 
         /// <summary>
+        /// Gets the current status of the player
+        /// </summary>
+        public PlayerStatus PlayerStatus { get; protected set; }
+
+        /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
         public bool CompletedLoginProcess { get; protected set; } = false;
@@ -236,10 +209,14 @@ namespace RetroSpyServer.Server
         private bool ProfileSent = false;
 
         /// <summary>
+        /// This boolean checks if the client has received buddy information
+        /// </summary>
+        private bool BuddiesSent = false;
+
+        /// <summary>
         /// The users session key
         /// </summary>
         private ushort SessionKey = 0;
-        //public ushort SessionKey { get; protected set; }
 
         public string PlayerFirstName { get; protected set; }
         public string PlayerLastName { get; protected set; }
@@ -257,7 +234,8 @@ namespace RetroSpyServer.Server
         public int PlayerConnectionType { get; protected set; }
         public int PlayerPicture { get; protected set; }
         public int PlayerInterests { get; protected set; }
-        public int PlayerPublicMask { get; protected set; }
+        public uint PlayerPublicMask { get; protected set; }
+        public int PlayerOwnership { get; protected set; }
 
         public ushort PlayerBirthday { get; protected set; }
         public ushort PlayerBirthmonth { get; protected set; }
@@ -343,6 +321,7 @@ namespace RetroSpyServer.Server
             RemoteEndPoint = (IPEndPoint)ConnectionStream.RemoteEndPoint;
             Disposed = false;
             LoginStatus = LoginStatus.Connected;
+            PlayerStatus = PlayerStatus.Offline;
 
             // Set the connection ID
             this.ConnectionId = ConnectionId;
@@ -423,6 +402,7 @@ namespace RetroSpyServer.Server
             }
 
             // Preapare to be unloaded from memory
+            PlayerStatus = PlayerStatus.Offline;
             LoginStatus = LoginStatus.Disconnected;
             Dispose();
 
@@ -445,6 +425,9 @@ namespace RetroSpyServer.Server
             string[] recieved = message.TrimStart('\\').Split('\\');
             switch (recieved[0])
             {
+                case "inviteto":
+                    AddProducts(PresenceServer.ConvertToKeyValue(recieved));
+                    break;
                 case "newuser":
                     CreateNewUser(PresenceServer.ConvertToKeyValue(recieved));
                     break;
@@ -452,7 +435,7 @@ namespace RetroSpyServer.Server
                     ProcessLogin(PresenceServer.ConvertToKeyValue(recieved));
                     break;
                 case "getprofile":
-                    SendProfile();
+                    SendProfile(PresenceServer.ConvertToKeyValue(recieved));
                     break;
                 case "updatepro":
                     UpdateUser(PresenceServer.ConvertToKeyValue(recieved));
@@ -463,7 +446,7 @@ namespace RetroSpyServer.Server
                 case "status":
                     UpdateStatus(PresenceServer.ConvertToKeyValue(recieved));
                     break;
-                case "ka": // Keep-alive
+                case "ka":
                     SendKeepAlive();
                     break;
                 default:
@@ -472,6 +455,40 @@ namespace RetroSpyServer.Server
                     stream.Close();
                     break;
             }
+        }
+
+        private void AddProducts(Dictionary<string, string> dictionary)
+        {
+            ushort readedSessionKey = 0;
+
+            if (!dictionary.ContainsKey("products") || !dictionary.ContainsKey("sesskey"))
+                return;
+
+            if (!ushort.TryParse(dictionary["sesskey"], out readedSessionKey))
+                return;
+
+            if (readedSessionKey != SessionKey || readedSessionKey == 0)
+                return;
+            
+            /*
+            
+            string products = dictionary["products"];
+
+            int pos = products.find(',');
+
+            do
+            {
+                uint id = 0;
+                if (!uint.TryParse(products.substring(0, pos), out id)
+                    continue;
+
+                SupportedProducts.add(id);
+
+                products = products.substring(pos+1);
+                pos = products.find(',')
+            } while (pos != -1);
+
+            */ 
         }
 
         private void UpdateStatus(Dictionary<string, string> dictionary)
@@ -667,6 +684,7 @@ namespace RetroSpyServer.Server
                 PlayerZIPCode = QueryResult["zipcode"].ToString();
                 PlayerLocation = QueryResult["location"].ToString();
                 PlayerAim = QueryResult["aim"].ToString();
+                PlayerOwnership = int.Parse(QueryResult["ownership1"].ToString());
                 PlayerOccupation = int.Parse(QueryResult["occupationid"].ToString());
                 PlayerIndustryID = int.Parse(QueryResult["industryid"].ToString());
                 PlayerIncomeID = int.Parse(QueryResult["incomeid"].ToString());
@@ -687,7 +705,7 @@ namespace RetroSpyServer.Server
 
                 PlayerLatitude = float.Parse(QueryResult["latitude"].ToString());
                 PlayerLongitude = float.Parse(QueryResult["longitude"].ToString());
-                PlayerPublicMask = int.Parse(QueryResult["publicmask"].ToString());
+                PlayerPublicMask = uint.Parse(QueryResult["publicmask"].ToString());
 
                 string challengeData = "";
 
@@ -731,12 +749,15 @@ namespace RetroSpyServer.Server
 
                     // Update status last, and call success login
                     LoginStatus = LoginStatus.Completed;
+                    PlayerStatus = PlayerStatus.Online;
                     PlayerStatusString = "Online";
                     PlayerStatusLocation = "";
 
                     CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(this);
                     OnStatusChanged?.Invoke(this);
+
+                    SendBuddies();
                 }
                 else
                 {
@@ -757,25 +778,243 @@ namespace RetroSpyServer.Server
         }
 
         /// <summary>
+        /// This method is called when the server needs to send the buddies to the client
+        /// </summary>
+        private void SendBuddies()
+        {
+            if (BuddiesSent)
+                return;
+
+            /*Stream.SendAsync(
+                @"\bdy\1\list\2,\final\");
+
+            Stream.SendAsync(
+            //    @"\bm\100\f\2\msg\|s|0|ss|Offline\final\"
+            @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
+            );*/
+
+            Stream.SendAsync(@"\bdy\0\list\\final\");
+
+            BuddiesSent = true;
+        }
+
+        /// <summary>
         /// This method is called when the client requests for the Account profile
         /// </summary>
-        private void SendProfile()
+        private void SendProfile(Dictionary<string, string> dict)
         {
-            // Since this is our profile, we have to see ALL informations that we can edit. This means that we don't need to send the Public Mask
-            // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
-            Stream.SendAsync(
-                @"\pi\\profileid\{0}\nick\{1}\uniquenick\{2}\email\{3}\firstname\{4}\lastname\{5}\icquin\{6}\" +
-                @"homepage\{7}\zipcode\{8}\countrycode\{9}\lon\{10}\lat\{11}\loc\{12}\birthday\{13}\sex\{14}\" +
-                @"aim\{15}\pic\{16}\occ\{17}\ind\{18}\inc\{19}\mar\{20}\chc\{21}\i1\{22}\o1\{23}\conn\{24}\" +
-                @"sig\{25}\id\{26}\mp\4\final\",
-                PlayerId, PlayerNick, PlayerUniqueNick, PlayerEmail, PlayerFirstName, PlayerLastName, PlayerICQ,
-                PlayerHomepage, PlayerZIPCode, PlayerCountryCode, PlayerLocation, PlayerLatitude, PlayerLongitude,
-                PlayerBirthday, PlayerSex, PlayerAim, PlayerPicture, PlayerOccupation, PlayerIndustryID, PlayerIncomeID, PlayerMarried,
-                PlayerChildCount, PlayerInterests, PlayerOccupation, PlayerConnectionType,
-                GameSpyLib.Random.GenerateRandomString(33, GameSpyLib.Random.StringType.Hex), (ProfileSent ? "5" : "2")); 
+            if (!dict.ContainsKey("profileid"))
+            {
+                PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
+                return;
+            }
 
-            // Set that we send the profile initially
-            if (!ProfileSent) ProfileSent = true;
+            uint targetPID = 0;
+            if (!uint.TryParse(dict["profileid"], out targetPID))
+            {
+                PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
+                return;
+            }
+
+            string datatoSend = @"\pi\\profileid\" + targetPID + @"\mp\4";
+
+            // If the client want to access the public information
+            // of another client
+            if (targetPID != PlayerId)
+            {
+                uint publicMask = 0, recvID = 0;
+
+                if (!uint.TryParse(dict["id"], out recvID))
+                {
+                    PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
+                    return;
+                }
+
+                var Query = DatabaseUtility.GetProfileInfo(databaseDriver, targetPID);
+                if (Query == null)
+                {
+                    PresenceServer.SendError(Stream, 4, "Unable to get profile information.");
+                    return;
+                }
+
+                if (!uint.TryParse(Query["publicmask"].ToString(), out publicMask))
+                    publicMask = (uint)PublicMasks.MASK_NONE;
+
+                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\id\{2}", Query["nick"].ToString(), Query["uniquenick"].ToString(), recvID);
+
+                if (Query["email"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                {
+                    if ((publicMask & (uint)PublicMasks.MASK_EMAIL) > 0)
+                        datatoSend += @"\email\" + Query["email"].ToString();
+                }
+
+                if (Query["lastname"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\lastname\" + Query["lastname"].ToString();
+
+                if (Query["firstname"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\firstname\" + Query["firstname"].ToString();
+
+                if (int.Parse(Query["icq"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\icquin\" + int.Parse(Query["icq"].ToString());
+
+                if (PlayerHomepage.Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                {
+                    if ((publicMask & (uint)PublicMasks.MASK_HOMEPAGE) > 0)
+                        datatoSend += @"\homepage\" + Query["homepage"].ToString();
+                }
+
+                if (uint.Parse(Query["picture"].ToString()) != 0)
+                    datatoSend += @"\pic\" + uint.Parse(Query["Show"].ToString());
+
+                if (Query["aim"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\aim\" + Query["aim"].ToString();
+
+                if (int.Parse(Query["occupationid"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\occ\" + int.Parse(Query["occupationid"].ToString());
+
+                if (Query["zipcode"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                {
+                    if ((publicMask & (uint)PublicMasks.MASK_ZIPCODE) > 0)
+                        datatoSend += @"\zipcode\" + Query["zipcode"].ToString();
+                }
+
+                if (Query["countrycode"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                {
+                    if ((publicMask & (uint)PublicMasks.MASK_COUNTRYCODE) > 0)
+                        datatoSend += @"\countrycode\" + Query["countrycode"].ToString();
+                }
+
+                if (ushort.Parse(Query["birthday"].ToString()) > 0 && ushort.Parse(Query["birthmonth"].ToString()) > 0 && ushort.Parse(Query["birthyear"].ToString()) > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                {
+                    if ((publicMask & (uint)PublicMasks.MASK_BIRTHDAY) > 0)
+                        datatoSend += @"\birthday\" + (uint)((ushort.Parse(Query["birthday"].ToString()) << 24) | (ushort.Parse(Query["birthmonth"].ToString()) << 16) | ushort.Parse(Query["birthyear"].ToString()));
+                }
+
+                if (Query["location"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\loc\" + Query["location"].ToString();
+
+                if (publicMask != (uint)PublicMasks.MASK_NONE && (publicMask & (uint)PublicMasks.MASK_SEX) > 0)
+                {
+                    PlayerSexType sexType;
+                    if (Enum.TryParse(Query["sex"].ToString(), out sexType))
+                    {
+                        if (PlayerSex == PlayerSexType.FEMALE)
+                            datatoSend += @"\sex\1";
+                        else if (PlayerSex == PlayerSexType.MALE)
+                            datatoSend += @"\sex\0";
+                    }
+                }
+
+                if (float.Parse(Query["latitude"].ToString()) != 0.0f && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\lat\" + float.Parse(Query["latitude"].ToString());
+
+                if (float.Parse(Query["longitude"].ToString()) != 0.0f && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\lon\" + float.Parse(Query["longitude"].ToString());
+
+                if (int.Parse(Query["incomeid"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\inc\" + int.Parse(Query["incomeid"].ToString());
+
+                if (int.Parse(Query["industryid"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\ind\" + int.Parse(Query["industryid"].ToString());
+
+                if (int.Parse(Query["marriedid"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\mar\" + int.Parse(Query["marriedid"].ToString());
+
+                if (int.Parse(Query["childcount"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\chc\" + int.Parse(Query["childcount"].ToString());
+
+                if (int.Parse(Query["interests1"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\i1\" + int.Parse(Query["interests1"].ToString());
+
+                if (int.Parse(Query["ownership1"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\o1\" + int.Parse(Query["ownership1"].ToString());
+
+                if (int.Parse(Query["connectiontype"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                    datatoSend += @"\conn\" + int.Parse(Query["connectiontype"].ToString());
+
+                // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
+                datatoSend += @"\sig\" + GameSpyLib.Random.GenerateRandomString(33, GameSpyLib.Random.StringType.Hex) + @"\final\";
+            }
+            else
+            {
+                // Since this is our profile, we have to see ALL informations that we can edit. This means that we don't need to check the public masks for sending
+                // the data
+
+                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\email\{2}\id\{3}\pmask\{4}", PlayerNick, PlayerUniqueNick, PlayerEmail, (ProfileSent ? "5" : "2"), PlayerPublicMask);
+
+                if (PlayerLastName.Length > 0)
+                    datatoSend += @"\lastname\" + PlayerLastName;
+
+                if (PlayerFirstName.Length > 0)
+                    datatoSend += @"\firstname\" + PlayerFirstName;
+
+                if (PlayerICQ != 0)
+                    datatoSend += @"\icquin\" + PlayerICQ;
+
+                if (PlayerHomepage.Length > 0)
+                    datatoSend += @"\homepage\" + PlayerHomepage;
+
+                if (PlayerPicture != 0)
+                    datatoSend += @"\pic\" + PlayerPicture;
+
+                if (PlayerAim.Length > 0)
+                    datatoSend += @"\aim\" + PlayerAim;
+
+                if (PlayerOccupation != 0)
+                    datatoSend += @"\occ\" + PlayerOccupation;
+
+                if (PlayerZIPCode.Length > 0)
+                    datatoSend += @"\zipcode\" + PlayerZIPCode;
+
+                if (PlayerCountryCode.Length > 0)
+                    datatoSend += @"\countrycode\" + PlayerCountryCode;
+
+                if (PlayerBirthday > 0 && PlayerBirthmonth > 0 && PlayerBirthyear > 0)
+                    datatoSend += @"\birthday\" + (uint)((PlayerBirthday << 24) | (PlayerBirthmonth << 16) | PlayerBirthyear);
+
+                if (PlayerLocation.Length > 0)
+                    datatoSend += @"\loc\" + PlayerLocation;
+
+                if (PlayerSex == PlayerSexType.FEMALE)
+                    datatoSend += @"\sex\1";
+                else if (PlayerSex == PlayerSexType.MALE)
+                    datatoSend += @"\sex\0";
+
+                if (PlayerLatitude != 0.0f)
+                    datatoSend += @"\lat\" + PlayerLatitude;
+
+                if (PlayerLongitude != 0.0f)
+                    datatoSend += @"\lon\" + PlayerLongitude;
+
+                if (PlayerIncomeID != 0)
+                    datatoSend += @"\inc\" + PlayerIncomeID;
+
+                if (PlayerIndustryID != 0)
+                    datatoSend += @"\ind\" + PlayerIndustryID;
+
+                if (PlayerMarried != 0)
+                    datatoSend += @"\mar\" + PlayerMarried;
+
+                if (PlayerChildCount != 0)
+                    datatoSend += @"\chc\" + PlayerChildCount;
+
+                if (PlayerInterests != 0)
+                    datatoSend += @"\i1\" + PlayerInterests;
+
+                if (PlayerOwnership != 0)
+                    datatoSend += @"\o1\" + PlayerOwnership;
+
+                if (PlayerConnectionType != 0)
+                    datatoSend += @"\conn\" + PlayerConnectionType;
+
+                // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
+                datatoSend += @"\sig\" + GameSpyLib.Random.GenerateRandomString(33, GameSpyLib.Random.StringType.Hex) + @"\final\";
+
+                // Set that we send the profile initially
+                if (!ProfileSent) ProfileSent = true;
+            }
+
+            Stream.SendAsync(datatoSend);
         }
 
         #endregion Steps
@@ -891,7 +1130,7 @@ namespace RetroSpyServer.Server
         {
             string realUserData = userdata;
 
-            if (partnerid != (uint)PartnerIDS.Gamespy)
+            if (partnerid != (uint)PartnerID.Gamespy)
             {
                 realUserData = string.Format("{0}@{1}", partnerid, userdata);
             }
