@@ -205,8 +205,8 @@ namespace RetroSpyServer.Server
             databaseDriver.Query(
                 @"CREATE TABLE IF NOT EXISTS `users` (" +
                 @"`userid` INTEGER PRIMARY KEY AUTOINCREMENT," +
-                @"`email` VARCHAR(50) NOT NULL," +
-                @"`password` VARCHAR(32) NOT NULL," +
+                @"`email` TEXT NOT NULL," +
+                @"`password` TEXT NOT NULL," +
                 @"`userstatus` INTEGER(1) DEFAULT(0)" +
                 @")"
             );
@@ -214,36 +214,36 @@ namespace RetroSpyServer.Server
             databaseDriver.Query(
                 @"CREATE TABLE IF NOT EXISTS `profiles` (" +
                 @"`profileid` INTEGER PRIMARY KEY AUTOINCREMENT," +
-                @"`userid` INTEGER(11) NOT NULL," +
-                @"`sesskey` INTEGER(11) NOT NULL," +
-                @"`uniquenick` VARCHAR(20) NOT NULL,"+
-                @"`nick` VARCHAR(30) NOT NULL," +
-                @"`firstname` VARCHAR(30) DEFAULT('')," +
-                @"`lastname` VARCHAR(30) DEFAULT('')," +
-                @"`publicmask` INTEGER(11) DEFAULT(0)," +
+                @"`userid` INTEGER NOT NULL," +
+                @"`sesskey` INTEGER NOT NULL," +
+                @"`uniquenick` TEXT NOT NULL," +
+                @"`nick` TEXT NOT NULL," +
+                @"`firstname` TEXT DEFAULT('')," +
+                @"`lastname` TEXT DEFAULT('')," +
+                @"`publicmask` TEXT DEFAULT(0)," +
                 @"`latitude` REAL," +
                 @"`longitude` REAL," +
-                @"`aim` VARCHAR(50) DEFAULT('')," +
-                @"`picture` INTEGER(11) DEFAULT(0)," +
-                @"`occupationid` INTEGER(11) DEFAULT(0)," +
-                @"`incomeid` INTEGER(11) DEFUALT(0)," +
-                @"`industryid` INTEGER(11) DEFAULT(0)," +
-                @"`marriedid` INTEGER(11) DEFAULT(0)" +
-                @"`childcount` INTEGER(11) DEFAULT(0)," +
-                @"`interests1` INTEGER(11) DEFAULT(0)," +
-                @"`ownership1` INTEGER(11) DEFAULT(0)," +
-                @"`connectiontype` INTEGER(11) DEFAULT(0)," +
-                @"`sex` VARCHAR(8) DEFAULT('PAT')," +
-                @"`zipcode` VARCHAR(10) DEFAULT('00000')," +
-                @"`countrycode` VARCHAR(2) DEFAULT('')," +
-                @"`homepage` VARCHAR(75) DEFAULT('')," +
-                @"`birthday` INTEGER(2) DEFAULT(0)," +
-                @"`birthmonth` INTEGER(2) DEFAULT(0)," +
-                @"`birthyear` INTEGER(2) DEFAULT(0)," +
-                @"`location` VARCHAR(100) DEFAULT('')," +
-                @"`icq` INTEGER(8) DEFAULT(0)," +
-                @"`status` INTEGER(1) DEFAULT(0)," +
-                @"`lastip` VARCHAR(16)," +
+                @"`aim` TEXT DEFAULT('')," +
+                @"`picture` INTEGER DEFAULT(0)," +
+                @"`occupationid` INTEGER DEFAULT(0)," +
+                @"`incomeid` INTEGER DEFUALT(0)," +
+                @"`industryid` INTEGER DEFAULT(0)," +
+                @"`marriedid` INTEGER DEFAULT(0)" +
+                @"`childcount` INTEGER DEFAULT(0)," +
+                @"`interests1` INTEGER DEFAULT(0)," +
+                @"`ownership1` INTEGER DEFAULT(0)," +
+                @"`connectiontype` INTEGER DEFAULT(0)," +
+                @"`sex` TEXT DEFAULT('PAT')," +
+                @"`zipcode` TEXT DEFAULT('00000')," +
+                @"`countrycode` TEXT DEFAULT('')," +
+                @"`homepage` TEXT DEFAULT('')," +
+                @"`birthday` INTEGER DEFAULT(0)," +
+                @"`birthmonth` INTEGER DEFAULT(0)," +
+                @"`birthyear` INTEGER DEFAULT(0)," +
+                @"`location` TEXT DEFAULT('')," +
+                @"`icq` INTEGER DEFAULT(0)," +
+                @"`status` INTEGER DEFAULT(0)," +
+                @"`lastip` TEXT," +
                 @"`lastonline` INTEGER" +
                 @")"
             );
