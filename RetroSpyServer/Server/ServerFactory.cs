@@ -207,7 +207,7 @@ namespace RetroSpyServer.Server
                 @"`userid` INTEGER PRIMARY KEY AUTOINCREMENT," +
                 @"`email` TEXT NOT NULL," +
                 @"`password` TEXT NOT NULL," +
-                @"`userstatus` INTEGER(1) DEFAULT(0)" +
+                @"`userstatus` INTEGER DEFAULT(0)" +
                 @")"
             );
 
@@ -218,31 +218,31 @@ namespace RetroSpyServer.Server
                 @"`sesskey` INTEGER NOT NULL," +
                 @"`uniquenick` TEXT NOT NULL," +
                 @"`nick` TEXT NOT NULL," +
-                @"`firstname` TEXT DEFAULT('')," +
-                @"`lastname` TEXT DEFAULT('')," +
-                @"`publicmask` TEXT DEFAULT(0)," +
+                @"`firstname` TEXT DEFAULT NULL," +
+                @"`lastname` TEXT DEFAULT NULL," +
+                @"`publicmask` TEXT DEFAULT 0," +
                 @"`latitude` REAL," +
                 @"`longitude` REAL," +
-                @"`aim` TEXT DEFAULT('')," +
-                @"`picture` INTEGER DEFAULT(0)," +
-                @"`occupationid` INTEGER DEFAULT(0)," +
-                @"`incomeid` INTEGER DEFUALT(0)," +
-                @"`industryid` INTEGER DEFAULT(0)," +
-                @"`marriedid` INTEGER DEFAULT(0)" +
-                @"`childcount` INTEGER DEFAULT(0)," +
-                @"`interests1` INTEGER DEFAULT(0)," +
-                @"`ownership1` INTEGER DEFAULT(0)," +
-                @"`connectiontype` INTEGER DEFAULT(0)," +
+                @"`aim` TEXT DEFAULT NULL," +
+                @"`picture` INTEGER DEFAULT 0," +
+                @"`occupationid` INTEGER DEFAULT 0," +
+                @"`incomeid` INTEGER DEFUALT 0," +
+                @"`industryid` INTEGER DEFAULT 0," +
+                @"`marriedid` INTEGER DEFAULT 0" +
+                @"`childcount` INTEGER DEFAULT 0," +
+                @"`interests1` INTEGER DEFAULT 0," +
+                @"`ownership1` INTEGER DEFAULT 0," +
+                @"`connectiontype` INTEGER DEFAULT 0," +
                 @"`sex` TEXT DEFAULT('PAT')," +
                 @"`zipcode` TEXT DEFAULT('00000')," +
-                @"`countrycode` TEXT DEFAULT('')," +
-                @"`homepage` TEXT DEFAULT('')," +
-                @"`birthday` INTEGER DEFAULT(0)," +
-                @"`birthmonth` INTEGER DEFAULT(0)," +
-                @"`birthyear` INTEGER DEFAULT(0)," +
-                @"`location` TEXT DEFAULT('')," +
-                @"`icq` INTEGER DEFAULT(0)," +
-                @"`status` INTEGER DEFAULT(0)," +
+                @"`countrycode` TEXT DEFAULT NULL," +
+                @"`homepage` TEXT DEFAULT NULL," +
+                @"`birthday` INTEGER DEFAULT 0," +
+                @"`birthmonth` INTEGER DEFAULT 0," +
+                @"`birthyear` INTEGER DEFAULT 0," +
+                @"`location` TEXT DEFAULT NULL," +
+                @"`icq` INTEGER DEFAULT 0," +
+                @"`status` INTEGER DEFAULT 0," +
                 @"`lastip` TEXT," +
                 @"`lastonline` INTEGER" +
                 @")"
