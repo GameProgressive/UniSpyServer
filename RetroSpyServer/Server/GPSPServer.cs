@@ -126,6 +126,8 @@ namespace RetroSpyServer.Server
         /// <param name="dict">The request that the stream sended</param>
         private void CreateUser(TCPStream stream, Dictionary<string, string> dict)
         {
+            string UniqueNick;
+
             PrintReceivedDictToLogger("newuser", dict);
             SendErrorAndFreeStream(stream, 0, "This request is not supported yet.");
         }
