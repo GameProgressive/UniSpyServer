@@ -23,20 +23,22 @@ namespace RetroSpyServer
         /// Entry point for the RetroSpy Server program
         /// </summary>
         /// <param name="args">List of arguments passed to the application</param>
+        ///<param name="bool_InitPathArg">argument for Main()</param>
         static void Main(string[] args)
         {
-            bool NoConsoleInput = false, exceptInitPathArg = false;
-			string logPath = "";
-			
+            bool bool_ConsoleInput = false, bool_InitPathArg = false;//whether inputed args
+            string logPath = "";
+            Console.Title = "RetroSpy Server " + version;
             basePath = AppDomain.CurrentDomain.BaseDirectory;
 
             // Argument switcher
             foreach (var argument in args)
             {
-                if (exceptInitPathArg)
+                if (bool_InitPathArg)
+
                 {
                     basePath = argument;
-                    exceptInitPathArg = false;
+                    bool_InitPathArg = false;
                 }
                 else if (argument == "--help")
                 {
@@ -50,24 +52,23 @@ namespace RetroSpyServer
                     return;
                 }
                 else if (argument == "--no-cli-input")
-                    NoConsoleInput = true;
+                    bool_ConsoleInput = true;
                 else if (argument == "--init-path")
-                    exceptInitPathArg = true;
+                    bool_InitPathArg = true;
                 else
                 {
                     Console.WriteLine("Unknown argument {0}", argument);
                 }
             }
 
-            if (exceptInitPathArg)
+            if (bool_InitPathArg)
             {
                 Console.WriteLine("The argument \"--init-path\" requires an argument!");
                 return;
             }
 
-            //string version = String.Concat(Version.Major, ".", Version.Minor, ".", Version.Build);
 
-            Console.Title = "RetroSpy Server " + version;
+
 
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
@@ -109,13 +110,13 @@ namespace RetroSpyServer
                 Emulator.StartServer("GPSP", 29901);
                 Emulator.StartServer("GPCM", 29900);
 
-                LogWriter.Log.Write("Server successfully started! Type \"help\" for a list of the available commands.", LogLevel.Information);
-
+                LogWriter.Log.Write("Server successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Information);
+                //readkey from console
                 while (Emulator.IsRunning())
                 {
                     // Process console commands
-                    if (!NoConsoleInput)
-                    {                        
+                    if (!bool_ConsoleInput)
+                    {
                         string input = Console.ReadLine();
 
                         if (input.Equals("exit"))
@@ -135,7 +136,7 @@ namespace RetroSpyServer
             LogWriter.Log.Dispose();
 
             // Pauses the screen
-            if (!NoConsoleInput)
+            if (bool_ConsoleInput)
             {
                 Console.WriteLine("Press ENTER to exit...");
                 Console.ReadKey();
