@@ -61,7 +61,7 @@ namespace RetroSpyServer.Server
                 Environment.Exit(0); // Without database the server cannot start
             }
 
-            LogWriter.Log.Write("Successfully connected to the database!", LogLevel.Information);
+            LogWriter.Log.Write("Successfully connected to the database!", LogLevel.Info);
 
             //if (engine == DatabaseEngine.Sqlite)
             //    CreateDatabaseTables();
@@ -136,8 +136,8 @@ namespace RetroSpyServer.Server
             if (maxConnections < 1)
                 maxConnections = XMLConfiguration.DefaultMaxConnections;
 
-            LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Information, serverIP, serverPort, serverName);
-            LogWriter.Log.Write("Maximum connections allowed for server {0} are {1}.", LogLevel.Information, serverName, maxConnections);
+            LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Info,serverIP, serverPort, serverName);
+            LogWriter.Log.Write("Maximum connections allowed for server {0} are {1}.", LogLevel.Info, serverName, maxConnections);
 
             if (!servers.ContainsKey(serverName))
                 return;

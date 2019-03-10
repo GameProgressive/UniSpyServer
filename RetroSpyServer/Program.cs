@@ -87,7 +87,7 @@ namespace RetroSpyServer
             Console.WriteLine(@"                         |_|   |__/                            ");
             Console.WriteLine("");
 
-            LogWriter.Log.Write("RetroSpy Server version " + version + ".", LogLevel.Information);
+            LogWriter.Log.Write("RetroSpy Server version " + version + ".", LogLevel.Info);
 
             ServerFactory Emulator = null;
 
@@ -110,7 +110,7 @@ namespace RetroSpyServer
                 Emulator.StartServer("GPSP", 29901);
                 Emulator.StartServer("GPCM", 29900);
 
-                LogWriter.Log.Write("Server successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Information);
+                LogWriter.Log.Write("Server successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
                 //readkey from console
                 while (Emulator.IsRunning())
                 {
@@ -131,7 +131,7 @@ namespace RetroSpyServer
                 LogWriter.Log.WriteException(e);
             }
 
-            LogWriter.Log.Write("Goodbye!", LogLevel.Information);
+            LogWriter.Log.Write("Goodbye!", LogLevel.Info);
             Emulator.Dispose();
             LogWriter.Log.Dispose();
 

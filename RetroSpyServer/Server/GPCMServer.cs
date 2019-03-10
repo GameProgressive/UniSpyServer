@@ -292,7 +292,7 @@ namespace RetroSpyServer.Server
                 if (Clients.TryRemove(client.PlayerId, out oldC))
                 {
                     oldC.Disconnect(DisconnectReason.NewLoginDetected);
-                    LogWriter.Log.Write("Login Clash:   {0} - {1} - {2}", LogLevel.Information, client.PlayerNick, client.PlayerId, client.RemoteEndPoint);
+                    LogWriter.Log.Write("Login Clash:   {0} - {1} - {2}", LogLevel.Info, client.PlayerNick, client.PlayerId, client.RemoteEndPoint);
                 }
 
                 // Add current client to the dictionary

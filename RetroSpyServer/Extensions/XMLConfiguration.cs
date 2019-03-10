@@ -122,7 +122,7 @@ namespace RetroSpyServer
             catch (Exception ex)
             {
                 LogWriter.Log.WriteException(ex);
-                LogWriter.Log.Write("Creating configuration file...", LogLevel.Information);
+                LogWriter.Log.Write("Creating configuration file...", LogLevel.Info);
 
                 CreateBlankConfiguration();
                 return;
@@ -206,7 +206,7 @@ namespace RetroSpyServer
                     if (!Enum.TryParse<LogLevel>(node.InnerText, out LogWriter.Log.MiniumLogLevel))
                     {
                         LogWriter.Log.Write("Unable to set LogLevel! Defaulting to Information...", LogLevel.Warning);
-                        LogWriter.Log.MiniumLogLevel = LogLevel.Information;
+                        LogWriter.Log.MiniumLogLevel = LogLevel.Info;
                     }
                 }
 

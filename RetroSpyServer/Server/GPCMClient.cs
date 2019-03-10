@@ -376,7 +376,7 @@ namespace RetroSpyServer.Server
                 {
                     LogWriter.Log.Write(
                         "Client Logout:  {0} - {1} - {2}",
-                        LogLevel.Information,
+                        LogLevel.Info,
                         PlayerNick,
                         PlayerId,
                         RemoteEndPoint
@@ -386,7 +386,7 @@ namespace RetroSpyServer.Server
                 {
                     LogWriter.Log.Write(
                         "Client Disconnected:  {0} - {1} - {2}, Code={3}",
-                        LogLevel.Information,
+                        LogLevel.Info,
                         PlayerNick,
                         PlayerId,
                         RemoteEndPoint,
@@ -720,7 +720,7 @@ namespace RetroSpyServer.Server
                     );
 
                     // Log Incoming Connections
-                    LogWriter.Log.Write("Client Login:   {0} - {1} - {2}", LogLevel.Information, PlayerNick, PlayerId, RemoteEndPoint);
+                    LogWriter.Log.Write("Client Login:   {0} - {1} - {2}", LogLevel.Info, PlayerNick, PlayerId, RemoteEndPoint);
 
                     // Update status last, and call success login
                     LoginStatus = LoginStatus.Completed;
@@ -737,7 +737,7 @@ namespace RetroSpyServer.Server
                 else
                 {
                     // Log Incoming Connections
-                    LogWriter.Log.Write("Failed Login Attempt: {0} - {1} - {2}", LogLevel.Information, PlayerNick, PlayerId, RemoteEndPoint);
+                    LogWriter.Log.Write("Failed Login Attempt: {0} - {1} - {2}", LogLevel.Info, PlayerNick, PlayerId, RemoteEndPoint);
 
                     // Password is incorrect with database value
                     Stream.SendAsync(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
