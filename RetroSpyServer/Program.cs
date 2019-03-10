@@ -28,6 +28,7 @@ namespace RetroSpyServer
         ///<param name="bool_InitPathArg">argument for Main()</param>
         static void Main(string[] args)
         {
+            
             Console.WindowWidth = 100;
             bool bool_ConsoleInput = false, bool_InitPathArg = false;//whether inputed args
             string logPath = "";
