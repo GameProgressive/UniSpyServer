@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using GameSpyLib.Database;
 using GameSpyLib.Network;
-using GameSpyLib.Logging;
+using GameSpyLib.Log;
 
 namespace GameSpyLib.Server
 {

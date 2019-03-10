@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using GameSpyLib.Database;
-using GameSpyLib.Logging;
+using GameSpyLib.Log;
 using RetroSpyServer.Server;
 
 namespace RetroSpyServer

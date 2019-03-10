@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Timers;
 
-namespace GameSpyLib.Logging
+namespace GameSpyLib.Log
 {
     public enum LogLevel:int
     {

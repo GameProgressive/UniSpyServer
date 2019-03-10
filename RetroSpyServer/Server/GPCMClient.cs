@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using GameSpyLib;
-using GameSpyLib.Logging;
+using GameSpyLib.Log;
 using GameSpyLib.Network;
 using GameSpyLib.Server;
 using GameSpyLib.Database;

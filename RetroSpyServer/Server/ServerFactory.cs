@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using GameSpyLib.Database;
 using GameSpyLib.Network;
-using GameSpyLib.Logging;
+using GameSpyLib.Log;
 
 namespace RetroSpyServer.Server
 {

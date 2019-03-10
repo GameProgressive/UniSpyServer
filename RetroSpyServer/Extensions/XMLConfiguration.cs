@@ -2,7 +2,7 @@
 using System.Xml;
 using System.IO;
 using System.Collections.Generic;
-using GameSpyLib.Logging;
+using GameSpyLib.Log;
 using GameSpyLib.Database;
 
 namespace RetroSpyServer

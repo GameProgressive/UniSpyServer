@@ -4,7 +4,7 @@ using GameSpyLib;
 using GameSpyLib.Database;
 using GameSpyLib.Server;
 using GameSpyLib.Network;
-using GameSpyLib.Logging;
+using GameSpyLib.Log;
 
 namespace RetroSpyServer.Server
 {

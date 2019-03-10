@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using GameSpyLib.Database;
 using GameSpyLib.Network;
 using GameSpyLib.Server;
-using GameSpyLib.Logging;
+using GameSpyLib.Log;
 
 namespace RetroSpyServer.Server
 {

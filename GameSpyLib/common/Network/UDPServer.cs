@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using GameSpyLib.Database;
-using GameSpyLib.Logging;
+using GameSpyLib.Log;
 
 namespace GameSpyLib.Network
 {
