@@ -84,7 +84,7 @@ namespace RetroSpyServer
                 file.Write("<?xml version=\"1.0\"?>\n" +
                     "<Configuration>\n" +
                     "\t<Database type=\"sqlite\"\n>" +
-                    "\t\t<Name>RetroSpy.db</Name> <!--In Sqlite is the Path, in MySQL is the database name -->\n" +
+                    "\t\t<Name>sqlite_retrospy_server.db</Name> <!--In Sqlite is the Path, in MySQL is the database name -->\n" +
                     "\t\t<!-- MySQL only -->\n" +
                     "\t\t<Host></Host>\n" +
                     "\t\t<Username>retrospy</Username>\n" +

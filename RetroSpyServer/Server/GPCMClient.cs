@@ -25,12 +25,10 @@ namespace RetroSpyServer.Server
         /// The user is created, but not verified
         /// </summary>
         Created,
-
         /// <summary>
         /// The user is verified, and can login
         /// </summary>
         Verified,
-
         /// <summary>
         /// The user id banned
         /// </summary>
@@ -225,7 +223,6 @@ namespace RetroSpyServer.Server
         public string PlayerZIPCode { get; protected set; }
         public string PlayerLocation { get; protected set; }
         public string PlayerAim { get; protected set; }
-
         public int PlayerOccupation { get; protected set; }
         public int PlayerIndustryID { get; protected set; }
         public int PlayerIncomeID { get; protected set; }
@@ -236,13 +233,10 @@ namespace RetroSpyServer.Server
         public int PlayerInterests { get; protected set; }
         public uint PlayerPublicMask { get; protected set; }
         public int PlayerOwnership { get; protected set; }
-
         public ushort PlayerBirthday { get; protected set; }
         public ushort PlayerBirthmonth { get; protected set; }
         public ushort PlayerBirthyear { get; protected set; }
-
         public PlayerSexType PlayerSex { get; protected set; }
-
         public float PlayerLatitude { get; protected set; }
         public float PlayerLongitude { get; protected set; }
 
@@ -469,26 +463,7 @@ namespace RetroSpyServer.Server
 
             if (readedSessionKey != SessionKey || readedSessionKey == 0)
                 return;
-            
-            /*
-            
-            string products = dictionary["products"];
-
-            int pos = products.find(',');
-
-            do
-            {
-                uint id = 0;
-                if (!uint.TryParse(products.substring(0, pos), out id)
-                    continue;
-
-                SupportedProducts.add(id);
-
-                products = products.substring(pos+1);
-                pos = products.find(',')
-            } while (pos != -1);
-
-            */ 
+                       
         }
 
         private void UpdateStatus(Dictionary<string, string> dictionary)

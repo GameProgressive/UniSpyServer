@@ -63,8 +63,8 @@ namespace RetroSpyServer.Server
 
             LogWriter.Log.Write("Successfully connected to the database!", LogLevel.Information);
 
-            if (engine == DatabaseEngine.Sqlite)
-                CreateDatabaseTables();
+            //if (engine == DatabaseEngine.Sqlite)
+            //    CreateDatabaseTables();
 
             // Add all servers
             servers.Add("GPSP", new GPSPServer(databaseDriver));
@@ -200,57 +200,57 @@ namespace RetroSpyServer.Server
         /// <summary>
         /// Creates the tables on the database
         /// </summary>
-        private void CreateDatabaseTables()
-        {
-            databaseDriver.Query(
-                @"CREATE TABLE IF NOT EXISTS `users` (" +
-                @"`userid` INTEGER PRIMARY KEY AUTOINCREMENT," +
-                @"`email` TEXT NOT NULL," +
-                @"`password` TEXT NOT NULL," +
-                @"`userstatus` INTEGER DEFAULT(0)" +
-                @")"
-            );
+ //       private void CreateDatabaseTables()
+ //       {
+ //           databaseDriver.Query(
+ //               @"CREATE TABLE IF NOT EXISTS `users` (" +
+ //               @"`userid` INTEGER PRIMARY KEY AUTOINCREMENT," +
+ //               @"`email` TEXT NOT NULL," +
+ //               @"`password` TEXT NOT NULL," +
+ //               @"`userstatus` INTEGER DEFAULT(0)" +
+ //               @")"
+ //           );
 
-            databaseDriver.Query(
-                @"CREATE TABLE IF NOT EXISTS `profiles` (" +
-                @"`profileid` INTEGER PRIMARY KEY AUTOINCREMENT," +
-                @"`userid` INTEGER NOT NULL," +
-                @"`sesskey` INTEGER NOT NULL," +
-                @"`uniquenick` TEXT NOT NULL," +
-                @"`nick` TEXT NOT NULL," +
-                @"`firstname` TEXT DEFAULT NULL," +
-                @"`lastname` TEXT DEFAULT NULL," +
-                @"`publicmask` TEXT DEFAULT 0," +
-                @"`latitude` REAL," +
-                @"`longitude` REAL," +
-                @"`aim` TEXT DEFAULT NULL," +
-                @"`picture` INTEGER DEFAULT 0," +
-                @"`occupationid` INTEGER DEFAULT 0," +
-                @"`incomeid` INTEGER DEFUALT 0," +
-                @"`industryid` INTEGER DEFAULT 0," +
-                @"`marriedid` INTEGER DEFAULT 0" +
-                @"`childcount` INTEGER DEFAULT 0," +
-                @"`interests1` INTEGER DEFAULT 0," +
-                @"`ownership1` INTEGER DEFAULT 0," +
-                @"`connectiontype` INTEGER DEFAULT 0," +
-                @"`sex` TEXT DEFAULT('PAT')," +
-                @"`zipcode` TEXT DEFAULT('00000')," +
-                @"`countrycode` TEXT DEFAULT NULL," +
-                @"`homepage` TEXT DEFAULT NULL," +
-                @"`birthday` INTEGER DEFAULT 0," +
-                @"`birthmonth` INTEGER DEFAULT 0," +
-                @"`birthyear` INTEGER DEFAULT 0," +
-                @"`location` TEXT DEFAULT NULL," +
-                @"`icq` INTEGER DEFAULT 0," +
-                @"`status` INTEGER DEFAULT 0," +
-                @"`lastip` TEXT," +
-                @"`lastonline` INTEGER" +
-                @")"
-            );
+ //           databaseDriver.Query(
+ //               @"CREATE TABLE IF NOT EXISTS `profiles` (" +
+ //               @"`profileid` INTEGER PRIMARY KEY AUTOINCREMENT," +
+ //               @"`userid` INTEGER NOT NULL," +
+ //               @"`sesskey` INTEGER NOT NULL," +
+ //               @"`uniquenick` TEXT NOT NULL," +
+ //               @"`nick` TEXT NOT NULL," +
+ //               @"`firstname` TEXT DEFAULT NULL," +
+ //               @"`lastname` TEXT DEFAULT NULL," +
+ //               @"`publicmask` TEXT DEFAULT 0," +
+ //               @"`latitude` REAL," +
+ //               @"`longitude` REAL," +
+ //               @"`aim` TEXT DEFAULT NULL," +
+ //               @"`picture` INTEGER DEFAULT 0," +
+ //               @"`occupationid` INTEGER DEFAULT 0," +
+ //               @"`incomeid` INTEGER DEFUALT 0," +
+ //               @"`industryid` INTEGER DEFAULT 0," +
+ //               @"`marriedid` INTEGER DEFAULT 0" +
+ //               @"`childcount` INTEGER DEFAULT 0," +
+ //               @"`interests1` INTEGER DEFAULT 0," +
+ //               @"`ownership1` INTEGER DEFAULT 0," +
+ //               @"`connectiontype` INTEGER DEFAULT 0," +
+ //               @"`sex` TEXT DEFAULT('PAT')," +
+ //               @"`zipcode` TEXT DEFAULT('00000')," +
+ //               @"`countrycode` TEXT DEFAULT NULL," +
+ //               @"`homepage` TEXT DEFAULT NULL," +
+ //               @"`birthday` INTEGER DEFAULT 0," +
+ //               @"`birthmonth` INTEGER DEFAULT 0," +
+ //               @"`birthyear` INTEGER DEFAULT 0," +
+ //               @"`location` TEXT DEFAULT NULL," +
+ //               @"`icq` INTEGER DEFAULT 0," +
+ //               @"`status` INTEGER DEFAULT 0," +
+ //               @"`lastip` TEXT," +
+ //               @"`lastonline` INTEGER" +
+ //               @")"
+ //           );
 
-            databaseDriver.Query(@"INSERT INTO users(id, email, password, status) VALUES(1, 'spyguy@gamespy.com', '4c3cbcadf7b8a9ae2932afc00560a0d6', 1)");
-            databaseDriver.Query(@"INSERT INTO `profiles` (`profileid`, `userid`, `uniquenick`, `nick`, `firstname`, `lastname`, `publicmask`, `deleted`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`) VALUES
-	(1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 40.7142, -74.0064, 'spyguy', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0)");
-        }
+ //           databaseDriver.Query(@"INSERT INTO users(id, email, password, status) VALUES(1, 'spyguy@gamespy.com', '4c3cbcadf7b8a9ae2932afc00560a0d6', 1)");
+ //           databaseDriver.Query(@"INSERT INTO `profiles` (`profileid`, `userid`, `uniquenick`, `nick`, `firstname`, `lastname`, `publicmask`, `deleted`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`) VALUES
+	//(1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 0, 40.7142, -74.0064, 'spyguy', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0)");
+ //       }
     }
 }
