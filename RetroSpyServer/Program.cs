@@ -11,6 +11,8 @@ namespace RetroSpyServer
     /// </summary>
     class Program
     {
+
+        
         /// <summary>
         /// Indicates the version of the server
         /// </summary>
@@ -26,6 +28,7 @@ namespace RetroSpyServer
         ///<param name="bool_InitPathArg">argument for Main()</param>
         static void Main(string[] args)
         {
+            Console.WindowWidth = 100;
             bool bool_ConsoleInput = false, bool_InitPathArg = false;//whether inputed args
             string logPath = "";
             Console.Title = "RetroSpy Server " + version;
@@ -80,11 +83,11 @@ namespace RetroSpyServer
 
             LogWriter.Log = new LogWriter(String.Format(Path.Combine(logPath, "{0}.log"), DateTime.Now.ToLongDateString()));
 
-            Console.WriteLine(@"  ___     _           ___             ___                      ");
-            Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
-            Console.WriteLine(@" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
-            Console.WriteLine(@" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
-            Console.WriteLine(@"                         |_|   |__/                            ");
+            Console.WriteLine("\t"+@"  ___     _           ___             ___                      ");
+            Console.WriteLine("\t" + @" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
+            Console.WriteLine("\t" + @" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
+            Console.WriteLine("\t" + @" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
+            Console.WriteLine("\t" + @"                         |_|   |__/                            ");
             Console.WriteLine("");
 
             LogWriter.Log.Write("RetroSpy Server version " + version + ".", LogLevel.Info);
