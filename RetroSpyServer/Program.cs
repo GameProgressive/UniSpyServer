@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.IO;
 using GameSpyLib.Database;
 using GameSpyLib.Log;
@@ -21,6 +22,8 @@ namespace RetroSpyServer
 
         public static string basePath { get; protected set; }
 
+        public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
         /// <summary>
         /// Entry point for the RetroSpy Server program
         /// </summary>
@@ -28,8 +31,7 @@ namespace RetroSpyServer
         ///<param name="bool_InitPathArg">argument for Main()</param>
         static void Main(string[] args)
         {
-            
-            Console.WindowWidth = 100;
+            if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
             bool bool_ConsoleInput = false, bool_InitPathArg = false;//whether inputed args
             string logPath = "";
             Console.Title = "RetroSpy Server " + version;
@@ -46,7 +48,7 @@ namespace RetroSpyServer
                 }
                 else if (argument == "--help")
                 {
-                    Console.WriteLine("List of arguments avaiable:\n" +
+                    Console.WriteLine("List of arguments available:\n" +
                         "--help\tPrints this screen\n" +
                         "--no-cli-input\tDisables console input, usefull for services\n" +
                         "--init-path [path]\tUse a custom base path for load the configuration and save the logs"
