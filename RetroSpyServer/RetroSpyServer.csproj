@@ -4,9 +4,17 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <StartupObject>RetroSpyServer.Program</StartupObject>
-    <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ApplicationIcon></ApplicationIcon>
     <Win32Resource />
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Properties\Resources.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Properties\Resources.resx" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
@@ -14,6 +22,16 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GameSpyLib\GameSpyLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="SqliteDatabase\sqlite_retrospy_server.db">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
 </Project>
