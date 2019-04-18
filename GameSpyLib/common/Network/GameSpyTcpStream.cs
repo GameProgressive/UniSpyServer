@@ -3,19 +3,19 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using GameSpyLib.Log;
+using GameSpyLib.Network;
 
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This object is used as a Network Stream wrapper for a TCP protocol
+    /// This object is used as a Network Stream wrapper for Gamespy TCP protocol,
     /// </summary>
-    public class TCPStream : IDisposable
+    public class GamespyTcpStream : IDisposable
     {
         /// <summary>
         /// Our message recieved from the client connection. If the message is too long,
         /// it will be sent over multiple receive operations, so we store the message parts
-        /// here
+        /// here until we recieve the \final\ delimiter.
         /// </summary>
         protected StringBuilder RecvMessage = new StringBuilder(256);
 
@@ -41,9 +41,9 @@ namespace GameSpyLib.Network
         public Socket Connection;
 
         /// <summary>
-        /// Contains the TcpSocket that owns this object
+        /// Contains the GamespyTcpSocket that owns this object
         /// </summary>
-        public TCPServer SocketManager { get; protected set; }
+        public GamespyTcpSocket SocketManager { get; protected set; }
 
         /// <summary>
         /// Our AsycnEventArgs object for reading data
@@ -101,12 +101,10 @@ namespace GameSpyLib.Network
         private Object _lockObj = new Object();
 
         /// <summary>
-        /// Creates a new instance of TcpStream
+        /// Creates a new instance of GamespyTcpStream
         /// </summary>
-        /// <param name="Parent">The parent socket that creates this instance</param>
         /// <param name="ReadArgs"></param>
-        /// <param name="WritetArgs"></param>
-        public TCPStream(TCPServer Parent, SocketAsyncEventArgs ReadArgs, SocketAsyncEventArgs WritetArgs)
+        public GamespyTcpStream(GamespyTcpSocket Parent, SocketAsyncEventArgs ReadArgs, SocketAsyncEventArgs WritetArgs)
         {
             // Store our connection
             Connection = ReadArgs.AcceptSocket;
@@ -124,7 +122,7 @@ namespace GameSpyLib.Network
             Released = false;
         }
 
-        ~TCPStream()
+        ~GamespyTcpStream()
         {
             if (!SocketClosed)
                 Close();
@@ -155,16 +153,17 @@ namespace GameSpyLib.Network
                         ProcessReceive();
                 }
             }
-            catch(ObjectDisposedException)
+            catch (ObjectDisposedException)
             {
                 if (!DisconnectEventCalled)
                 {
                     // Disconnect user
                     DisconnectEventCalled = true;
-                    OnDisconnect?.Invoke(this);
+                    if (OnDisconnect != null)
+                        OnDisconnect();
                 }
             }
-            catch(SocketException e)
+            catch (SocketException e)
             {
                 HandleSocketError(e.SocketErrorCode);
             }
@@ -186,7 +185,7 @@ namespace GameSpyLib.Network
             // Do a shutdown before you close the socket
             try
             {
-                Connection.Shutdown(SocketShutdown.Both); 
+                Connection.Shutdown(SocketShutdown.Both);
             }
             catch (Exception) { }
             finally
@@ -207,23 +206,23 @@ namespace GameSpyLib.Network
                 WriteEventArgs.Dispose();
                 DisposedEventArgs = true;
             }
-			else
-			{
-				// Finally, release this stream so we can allow a new connection
-				SocketManager.Release(this);
-				Released = true;
-			}
+            else
+            {
+                // Finally, release this stream so we can allow a new connection
+                SocketManager.Release(this);
+                Released = true;
+            }
 
             // Call Disconnect Event
             if (!DisconnectEventCalled && OnDisconnect != null)
             {
                 DisconnectEventCalled = true;
-                OnDisconnect(this);
+                OnDisconnect();
             }
         }
 
         /// <summary>
-        /// Once data has been received from the client, this method is called
+        /// Once data has been recived from the client, this method is called
         /// to process the data. Once a message has been completed, the OnDataReceived
         /// event will be called
         /// </summary>
@@ -248,21 +247,22 @@ namespace GameSpyLib.Network
                 BufferDataToken token = ReadEventArgs.UserToken as BufferDataToken;
                 RecvMessage.Append(
                     Encoding.UTF8.GetString(
-                        ReadEventArgs.Buffer, 
-                        token.BufferOffset, 
+                        ReadEventArgs.Buffer,
+                        token.BufferOffset,
                         ReadEventArgs.BytesTransferred
                     )
                 );
 
                 // Process Message
                 string received = RecvMessage.ToString();
+                if (received.EndsWith("final\\") || received.EndsWith("\x00\x00\x00\x00"))
+                {
+                    Console.WriteLine("Received TCP data: " + received);
 
-                if (LogWriter.Log.DebugSockets)
-                    LogWriter.Log.Write("Received TCP data: " + received, LogLevel.Debug);
-
-                // Tell our parent that we received a message
-                RecvMessage.Clear(); // Clear old junk
-                DataReceived(this, received);
+                    // tell our parent that we recieved a message
+                    RecvMessage.Clear(); // Clear old junk
+                    DataReceived(received);
+                }
             }
 
             // Begin receiving again
@@ -278,8 +278,7 @@ namespace GameSpyLib.Network
             // Make sure the socket is still open
             if (SocketClosed) return;
 
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write("Sending TCP data: " + message, LogLevel.Debug);
+            Console.WriteLine("Sending TCP data: " + message);
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -308,8 +307,7 @@ namespace GameSpyLib.Network
             // Make sure the socket is still open
             if (SocketClosed) return;
 
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write("Sending TCP data: {0}", LogLevel.Debug, System.Text.Encoding.UTF8.GetString(message));
+            Console.WriteLine("Sending TCP data: {0}", System.Text.Encoding.UTF8.GetString(message));
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -372,10 +370,10 @@ namespace GameSpyLib.Network
                 Close();
             }
 
-            // If we wont raise the IO event, that means a connection sent the messsage synchronously
+            // If we wont raise the IO event, that means a connection sent the messsage syncronously
             if (!willRaiseEvent)
             {
-                // Remember, if we are here, data was sent synchronously... IOComplete event is not called! 
+                // Remember, if we are here, data was sent Synchronously... IOComplete event is not called! 
                 // First, Check for a closed conenction
                 if (WriteEventArgs.BytesTransferred == 0 || WriteEventArgs.SocketError != SocketError.Success)
                 {
@@ -422,7 +420,7 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// Event called when data has been received from the client
+        /// Event called when data has been recived from the client
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

@@ -1,18 +1,24 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
-using GameSpyLib.Database;
+using GameSpyLib.Network;
 
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This class represents an implementable high performance Async Tcp Socket wrapper
-    /// that is used to act as a base for all Tcp protocol
+    /// This class represents a high performance Async Tcp Socket wrapper
+    /// that is used to act as a base for all Gamespy protocol Tcp
     /// connections.
     /// </summary>
-    public abstract class TCPServer : TemplateServer
+    public abstract class GamespyTcpSocket : IDisposable
     {
+        /// <summary>
+        /// Max number of concurrent open and active connections. Increasing this number
+        /// will also increase the IO Buffer by <paramref name="BufferSizePerOperation"/> * 2
+        /// </summary>
+        protected readonly int MaxNumConnections;
 
         /// <summary>
         /// The initial size of the conccurent accept pool
@@ -29,6 +35,11 @@ namespace GameSpyLib.Network
         protected readonly int BufferSizePerOperation = 256;
 
         /// <summary>
+        /// Our Listening Socket
+        /// </summary>
+        protected Socket Listener;
+
+        /// <summary>
         /// Buffers for sockets are unmanaged by .NET, which means that
         /// memory will get fragmented because the GC can't touch these
         /// byte arrays. So we will manage our buffers manually
@@ -40,8 +51,8 @@ namespace GameSpyLib.Network
         /// clients from logging in at once.
         /// </summary>
         protected SemaphoreSlim MaxConnectionsEnforcer;
-		
-		/// <summary>
+
+        /// <summary>
         /// Determines where the MaxConnectionsEnforcer stops to wait for a spot to open, and allow
         /// the connecting client through.
         /// </summary>
@@ -69,52 +80,28 @@ namespace GameSpyLib.Network
         protected SocketAsyncEventArgsPool SocketReadWritePool;
 
         /// <summary>
-        /// Constructor
+        /// Indicates whether the socket is listening for connections
         /// </summary>
-        /// <param name="databaseDriver">
-        /// A connection to a database that could be used in the server.
-        /// Set this parameter to null if the server does not require a database connection.
-        /// </param>
-        public TCPServer(DatabaseDriver databaseDriver) : base(databaseDriver)
-        {
-
-        }
+        public bool IsListening { get; protected set; }
 
         /// <summary>
-        /// If set to True, new connections will be immediately closed and ignored.
+        /// If set to True, new connections will be immediatly closed and ignored.
         /// </summary>
         public bool IgnoreNewConnections { get; protected set; } = false;
 
         /// <summary>
-        /// Deconstructor
+        /// Indicates whether this object has been disposed yet
         /// </summary>
-        ~TCPServer()
-        {
-            if (!IsDisposed)
-                Dispose();
-        }
+        public bool IsDisposed { get; protected set; } = false;
 
-        /// <summary>
-        /// Starts a TCP server
-        /// </summary>
-        /// <param name="endPoint">The IP Endpoint to bind the server</param>
-        /// <param name="maxConnections">Max connections allowed</param>
-        public override void Start(IPEndPoint bindTo, int MaxConnections)
+        public GamespyTcpSocket(IPEndPoint bindTo, int MaxConnections)
         {
             // Create our Socket
             Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             // Set Socket options
-            try
-            {
-                //NOTE: Both of this sockets options throws an error under Linux! For now I'm leaving this muted, but it should be fixed.
-                Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true); // Throws Operation not supported on Linux
-                Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, false); // Throws invalid argument on linux
-            } catch (Exception)
-            {
-//                Logging.LogWriter.Log.WriteException(ex);
-            }
-            
+            Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
+            Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, false);
             Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
 
             // Bind to our port
@@ -128,7 +115,7 @@ namespace GameSpyLib.Network
             SocketReadWritePool = new SocketAsyncEventArgsPool(MaxNumConnections * 2);
 
             // Create our Buffer Manager for IO operations. 
-            // Always allocate double space, one for receiving, and another for sending
+            // Always allocate double space, one for recieving, and another for sending
             BufferManager = new BufferManager(MaxNumConnections * 2, BufferSizePerOperation);
 
             // Assign our Connection Accept SocketAsyncEventArgs object instances
@@ -149,27 +136,29 @@ namespace GameSpyLib.Network
                 SocketReadWritePool.Push(SockArg);
             }
 
-            // Set public internals
-            IsRunning = true;
-            Port = bindTo.Port;
-            Address = bindTo.Address.ToString();
+            // set public internals
+            IsListening = true;
+        }
 
-            // Start accepting sockets
-            StartAcceptAsync();
+        ~GamespyTcpSocket()
+        {
+            if (!IsDisposed)
+                Dispose();
         }
 
         /// <summary>
         /// Releases all Objects held by this socket. Will also
         /// shutdown the socket if its still running
         /// </summary>
-        public override void Dispose()
+        public void Dispose()
         {
-            // No need to do this again
+            // no need to do this again
             if (IsDisposed) return;
             IsDisposed = true;
 
             // Shutdown sockets
-            Stop();
+            if (IsListening)
+                ShutdownSocket();
 
             // Dispose all AcceptPool AysncEventArg objects
             while (SocketAcceptPool.Count > 0)
@@ -183,22 +172,24 @@ namespace GameSpyLib.Network
             BufferManager?.Dispose();
             MaxConnectionsEnforcer?.Dispose();
             Listener?.Dispose();
-            databaseDriver?.Dispose();
         }
 
         /// <summary>
         /// When called, this method will stop accepted and handling any and all
         /// connections. Dispose still needs to be called!
         /// </summary>
-        public override void Stop()
+        protected void ShutdownSocket()
         {
             // Only do this once
-            if (!IsRunning) return;
-            IsRunning = false;
+            if (!IsListening) return;
+            IsListening = false;
 
             // Stop accepting connections
-            if (Listener.Connected)
+            try
+            {
                 Listener.Shutdown(SocketShutdown.Both);
+            }
+            catch { }
 
             // Close the listener
             Listener.Close();
@@ -208,11 +199,11 @@ namespace GameSpyLib.Network
         /// Releases the Stream's SocketAsyncEventArgs back to the pool,
         /// and free's up another slot for a new client to connect
         /// </summary>
-        /// <param name="Stream">The TcpStream object that is being released.</param>
-        public void Release(TCPStream Stream)
+        /// <param name="Stream">The GamespyTcpStream object that is being released.</param>
+        public void Release(GamespyTcpStream Stream)
         {
             // If the stream has been released, then we stop here
-            if (!IsRunning || Stream.Released) return;
+            if (!IsListening || Stream.Released) return;
 
             // Make sure the connection is closed properly
             if (!Stream.SocketClosed)
@@ -223,7 +214,7 @@ namespace GameSpyLib.Network
 
             // To prevent cross instance releasing
             //if (!Object.ReferenceEquals(this, Stream.SocketManager))
-                //throw new ArgumentException("Cannot pass a GamespyTcpStream belonging to a different TcpSocket than this one.");
+            //throw new ArgumentException("Cannot pass a GamespyTcpStream belonging to a different TcpSocket than this one.");
 
             // If we are still registered for this event, then the EventArgs should
             // NEVER be disposed here, or we have an error to fix
@@ -260,12 +251,10 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// Begins accepting a new connection asynchronously
+        /// Begins accepting a new Connection asynchronously
         /// </summary>
         protected async void StartAcceptAsync()
         {
-            if (!IsRunning) return;        
-
             // Fetch ourselves an available AcceptEventArg for the next connection
             SocketAsyncEventArgs AcceptEventArg;
             if (SocketAcceptPool.Count > 0)
@@ -297,7 +286,7 @@ namespace GameSpyLib.Network
                 // Begin accpetion connections
                 bool willRaiseEvent = Listener.AcceptAsync(AcceptEventArg);
 
-                // If we wont raise event, that means a connection has already been accepted synchronously
+                // If we wont raise event, that means a connection has already been accepted syncronously
                 // and the Accept_Completed event will NOT be fired. So we manually call ProcessAccept
                 if (!willRaiseEvent)
                     PrepareAccept(AcceptEventArg);
@@ -335,12 +324,15 @@ namespace GameSpyLib.Network
                 if (!Success)
                 {
                     // If we arent even listening...
-                    if (!IsRunning) return;
+                    if (!IsListening) return;
 
                     // Alert the client that we are full
                     if (!String.IsNullOrEmpty(FullErrorMessage))
                     {
-                        OnAcceptFails(AcceptEventArg.AcceptSocket);
+                        byte[] buffer = Encoding.UTF8.GetBytes(
+                            String.Format(@"\error\\err\0\fatal\\errmsg\{0}\id\1\final\", FullErrorMessage)
+                        );
+                        AcceptEventArg.AcceptSocket.Send(buffer);
                     }
 
                     // Log so we can track this!
@@ -357,7 +349,7 @@ namespace GameSpyLib.Network
             // Begin accepting a new connection
             StartAcceptAsync();
 
-            // Grab a send/receive object
+            // Grab a send/recieve object
             SocketAsyncEventArgs ReadArgs = SocketReadWritePool.Pop();
             SocketAsyncEventArgs WriteArgs = SocketReadWritePool.Pop();
 
@@ -371,10 +363,10 @@ namespace GameSpyLib.Network
             SocketAcceptPool.Push(AcceptEventArg);
 
             // Hand off processing to the parent
-            TCPStream Stream = null;
+            GamespyTcpStream Stream = null;
             try
             {
-                Stream = new TCPStream(this, ReadArgs, WriteArgs);
+                Stream = new GamespyTcpStream(this, ReadArgs, WriteArgs);
                 ProcessAccept(Stream);
             }
             catch (Exception e)
@@ -392,23 +384,13 @@ namespace GameSpyLib.Network
         /// When a new connection is established, the parent class is responsible for
         /// processing the connected client
         /// </summary>
-        /// <param name="Stream">A TcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected abstract void ProcessAccept(TCPStream Stream);
+        /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
+        protected abstract void ProcessAccept(GamespyTcpStream Stream);
 
-        /// <summary>
-        /// This function is fired when an exception oncurrs
-        /// </summary>
-        /// <param name="e">The exception parameter</param>
         protected abstract void OnException(Exception e);
-
-        /// <summary>
-        /// If the server fails to accept a client, this function is fired
-        /// </summary>
-        /// <param name="socket">The socket that failed to be accepted</param>
-        protected abstract void OnAcceptFails(Socket socket);
     }
-	
-	public enum EnforceMode
+
+    public enum EnforceMode
     {
         BeforeAccept, DuringPrepare
     }

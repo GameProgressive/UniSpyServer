@@ -1,23 +1,38 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using GameSpyLib.Database;
-using GameSpyLib.Log;
+using GameSpyLib.Network;
 
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// Like the TCPServer, this class represents a high perfomance
-    /// implementable UDP server
+    /// Like the GamespyTcpSocket, this class represents a high perfomance
+    /// UDP socket server
     /// </summary>
-    public abstract class UDPServer : TemplateServer
+    public abstract class GamespyUdpSocket : IDisposable
     {
+        /// <summary>
+        /// Max number of concurrent open and active connections.
+        /// </summary>
+        protected readonly int MaxNumConnections;
+
         /// <summary>
         /// The amount of bytes each SocketAysncEventArgs object
         /// will get assigned to in the buffer manager.
         /// </summary>
         protected readonly int BufferSizePerEvent = 8192;
+
+        /// <summary>
+        /// Our Listening Socket
+        /// </summary>
+        protected Socket Listener;
+
+        /// <summary>
+        /// The port we are listening on
+        /// </summary>
+        public int Port { get; protected set; }
 
         /// <summary>
         /// Buffers for sockets are unmanaged by .NET, which means that
@@ -38,24 +53,19 @@ namespace GameSpyLib.Network
         protected SocketAsyncEventArgsPool SocketReadWritePool;
 
         /// <summary>
-        /// Constructor
+        /// Indicates whether the server is still running, and not in the process of shutting down
         /// </summary>
-        /// <param name="databaseDriver">
-        /// A connection to a database that could be used in the server.
-        /// Set this parameter to null if the server does not require a database connection.
-        /// </param>
-        public UDPServer(DatabaseDriver databaseDriver) : base(databaseDriver)
-        {
-        }
+        public bool IsRunning { get; protected set; }
 
         /// <summary>
-        /// Starts an UDP server
+        /// Indicates whether this object has been disposed yet
         /// </summary>
-        /// <param name="endPoint">The IP Endpoint to bind the server</param>
-        /// <param name="maxConnections">Max connections allowed</param>
-        public override void Start(IPEndPoint bindTo, int MaxConnections)
+        public bool IsDisposed { get; protected set; }
+
+        public GamespyUdpSocket(IPEndPoint bindTo, int MaxConnections)
         {
             // Create our Socket
+            this.Port = Port;
             Listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
             {
                 SendTimeout = 5000, // We have a limited pool, so we dont want to be locked often
@@ -86,28 +96,24 @@ namespace GameSpyLib.Network
                 SocketReadWritePool.Push(SockArg);
             }
 
-            // Set public internals
-            Port = bindTo.Port;
-            Address = bindTo.Address.ToString();
+            // set public internals
             IsRunning = true;
             IsDisposed = false;
-
-            // Start accepting sockets
-            StartAcceptAsync();
         }
 
         /// <summary>
         /// Releases all Objects held by this socket. Will also
         /// shutdown the socket if its still running
         /// </summary>
-        public override void Dispose()
+        public void Dispose()
         {
-            // No need to do this again
+            // no need to do this again
             if (IsDisposed) return;
             IsDisposed = true;
 
             // Shutdown sockets
-            Stop();
+            if (IsRunning)
+                ShutdownSocket();
 
             // Dispose all ReadWritePool AysncEventArg objects
             while (SocketReadWritePool.Count > 0)
@@ -117,22 +123,24 @@ namespace GameSpyLib.Network
             BufferManager.Dispose();
             MaxConnectionsEnforcer.Dispose();
             Listener.Dispose();
-            databaseDriver?.Dispose();
         }
 
         /// <summary>
         /// When called, this method will stop accepted and handling any and all
         /// connections. Dispose still needs to be called!
         /// </summary>
-        public override void Stop()
+        protected void ShutdownSocket()
         {
             // Only do this once
             if (!IsRunning) return;
             IsRunning = false;
 
             // Stop accepting connections
-            if (Listener.Connected)
+            try
+            {
                 Listener.Shutdown(SocketShutdown.Both);
+            }
+            catch { }
 
             // Close the listener
             Listener.Close();
@@ -142,7 +150,7 @@ namespace GameSpyLib.Network
         /// Releases the SocketAsyncEventArgs back to the pool,
         /// and free's up another slot for a new client to connect
         /// </summary>
-        /// <param name="e"></param>
+        /// <param name="Stream"></param>
         protected void Release(SocketAsyncEventArgs e)
         {
             // Get our ReadWrite AsyncEvent object back
@@ -154,7 +162,7 @@ namespace GameSpyLib.Network
         }
 
         /// <summary>
-        /// Begins accepting a new connection asynchronously
+        /// Begins accepting a new Connection asynchronously
         /// </summary>
         protected async void StartAcceptAsync()
         {
@@ -178,7 +186,7 @@ namespace GameSpyLib.Network
                 // Begin accpetion connections
                 bool willRaiseEvent = Listener.ReceiveFromAsync(AcceptEventArg);
 
-                // If we wont raise event, that means a connection has already been accepted synchronously
+                // If we wont raise event, that means a connection has already been accepted syncronously
                 // and the Accept_Completed event will NOT be fired. So we manually call ProcessAccept
                 if (!willRaiseEvent)
                     IOComplete(this, AcceptEventArg);
@@ -197,7 +205,7 @@ namespace GameSpyLib.Network
         /// Sends the specified packets data to the client, and releases the resources
         /// </summary>
         /// <param name="Packet"></param>
-        protected void ReplyAsync(UDPPacket Packet)
+        protected void ReplyAsync(GamespyUdpPacket Packet)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
@@ -223,13 +231,13 @@ namespace GameSpyLib.Network
                     return;
                 }
 
+                GamespyUdpPacket packet = new GamespyUdpPacket(AcceptEventArg);
+
+                Console.WriteLine("UDP Operation " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""));
+
+
                 // Begin accepting a new connection
                 StartAcceptAsync();
-
-                UDPPacket packet = new UDPPacket(AcceptEventArg);
-
-                if (LogWriter.Log.DebugSockets)
-                    LogWriter.Log.Write("UDP Operation " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
 
                 // Hand off processing to the parent
                 ProcessAccept(packet);
@@ -244,13 +252,9 @@ namespace GameSpyLib.Network
         /// When a new connection is established, the parent class is responsible for
         /// processing the connected client
         /// </summary>
-        /// <param name="Packet">A Udp Packet object that wraps the I/O AsyncEventArgs and socket</param>
-        protected abstract void ProcessAccept(UDPPacket Packet);
+        /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
+        protected abstract void ProcessAccept(GamespyUdpPacket Packet);
 
-        /// <summary>
-        /// This function is fired when an exception oncurrs
-        /// </summary>
-        /// <param name="e">The exception parameter</param>
         protected abstract void OnException(Exception e);
     }
 }
