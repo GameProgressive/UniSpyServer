@@ -2,8 +2,9 @@
 using System.Runtime.InteropServices;
 using System.IO;
 using GameSpyLib.Database;
-using GameSpyLib.Log;
-using RetroSpyServer.Server;
+using GameSpyLib.Logging;
+using RetroSpyServer.Servers;
+using RetroSpyServer.Application;
 
 namespace RetroSpyServer
 {
@@ -12,8 +13,6 @@ namespace RetroSpyServer
     /// </summary>
     class Program
     {
-
-        
         /// <summary>
         /// Indicates the version of the server
         /// </summary>
@@ -23,6 +22,8 @@ namespace RetroSpyServer
         public static string basePath { get; protected set; }
 
         public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+
+        private static ServerManager manager = null;
 
         /// <summary>
         /// Entry point for the RetroSpy Server program
@@ -73,9 +74,6 @@ namespace RetroSpyServer
                 return;
             }
 
-
-
-
             if (!Directory.Exists(basePath))
                 Directory.CreateDirectory(basePath);
 
@@ -84,7 +82,7 @@ namespace RetroSpyServer
             if (!Directory.Exists(logPath))
                 Directory.CreateDirectory(logPath);
 
-            LogWriter.Log = new LogWriter(String.Format(Path.Combine(logPath, "{0}.log"), DateTime.Now.ToLongDateString()));
+            LogWriter.Log = new LogWriter(string.Format(Path.Combine(logPath, "{0}.log"), DateTime.Now.ToLongDateString()));
 
             Console.WriteLine("\t"+@"  ___     _           ___             ___                      ");
             Console.WriteLine("\t" + @" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
@@ -95,30 +93,15 @@ namespace RetroSpyServer
 
             LogWriter.Log.Write("RetroSpy Server version " + version + ".", LogLevel.Info);
 
-            ServerFactory Emulator = null;
-
             try
             {
                 XMLConfiguration.LoadConfiguration();
 
-                Emulator = new ServerFactory();
-
-                // Decide which database you want
-                if (XMLConfiguration.DatabaseType == DatabaseEngine.Sqlite)
-                {
-                    Emulator.Create(DatabaseEngine.Sqlite, "Data Source=" + XMLConfiguration.DatabaseName + ";Version=3;New=False");
-                }
-                else
-                {
-                    Emulator.Create(DatabaseEngine.Mysql, String.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", XMLConfiguration.DatabaseHost, XMLConfiguration.DatabaseName, XMLConfiguration.DatabaseUsername, XMLConfiguration.DatabasePassword, XMLConfiguration.DatabasePort));
-                }
-
-                Emulator.StartServer("GPSP", 29901);
-                Emulator.StartServer("GPCM", 29900);
+                manager = new ServerManager();
 
                 LogWriter.Log.Write("Server successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
                 //readkey from console
-                while (Emulator.IsRunning())
+                while (manager != null && manager.IsRunning())
                 {
                     // Process console commands
                     if (!bool_ConsoleInput)
@@ -126,7 +109,7 @@ namespace RetroSpyServer
                         string input = Console.ReadLine();
 
                         if (input.Equals("exit"))
-                            Emulator.StopAllServers();
+                            manager.StopAllServers();
                         else
                             Console.WriteLine("Unknown command!");
                     }
@@ -138,7 +121,7 @@ namespace RetroSpyServer
             }
 
             LogWriter.Log.Write("Goodbye!", LogLevel.Info);
-            Emulator.Dispose();
+            manager?.Dispose();
             LogWriter.Log.Dispose();
 
             // Pauses the screen

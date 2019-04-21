@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <StartupObject>RetroSpyServer.Program</StartupObject>
     <ApplicationIcon></ApplicationIcon>
     <Win32Resource />
@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <Compile Remove="Properties\Resources.Designer.cs" />
+    <Compile Remove="Servers\GPCM\GPCMClient.cs" />
+    <Compile Remove="Servers\GPCM\GPCMServer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.109.2" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.110" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,13 +27,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="SqliteDatabase\sqlite_retrospy_server.db">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <None Include="Servers\GPCM\GPCMClient.cs" />
+    <None Include="Servers\GPCM\GPCMServer.cs" />
   </ItemGroup>
 
 </Project>

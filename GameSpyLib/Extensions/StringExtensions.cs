@@ -1,12 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Text;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace GameSpyLib
+namespace GameSpyLib.Extensions
 {
     public static class StringExtensions
     {

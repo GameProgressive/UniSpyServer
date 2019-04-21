@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Text;
+using System.Linq;
+using System.Collections.Generic;
+using System.Net.Sockets;
+using GameSpyLib.Network;
+using GameSpyLib.Logging;
 
-namespace GameSpyLib
+namespace GameSpyLib.Common
 {
     public static class GamespyUtils
     {
@@ -91,6 +96,57 @@ namespace GameSpyLib
             }
 
             return a;
+        }
+
+        /// <summary>
+        /// Converts a trimmed presence message from the client string to a keyValue pair dictionary
+        /// </summary>
+        /// <param name="parts">The array of data from the client</param>
+        /// <returns>A converted dictionary</returns>
+        public static Dictionary<string, string> ConvertGPResponseToKeyValue(string[] parts)
+        {
+            Dictionary<string, string> Data = new Dictionary<string, string>();
+            try
+            {
+                for (int i = 0; i < parts.Length; i += 2)
+                {
+                    if (!Data.ContainsKey(parts[i]))
+                        Data.Add(parts[i], parts[i + 1]);
+                }
+            }
+            catch (IndexOutOfRangeException) { }
+
+            return Data;
+        }
+
+        public static void PrintReceivedGPDictToLogger(string req, Dictionary<string, string> dict)
+        {
+            LogWriter.Log.Write("Received request {0} with content: {1}", LogLevel.Debug, req, string.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()));
+        }
+
+        /// <summary>
+        /// Send a presence error
+        /// </summary>
+        /// <param name="stream">The stream that will receive the error</param>
+        /// <param name="code">The error code</param>
+        /// <param name="error">A string containing the error</param>
+        public static void SendGPError(GamespyTcpStream stream, int code, string error)
+        {
+            stream.SendAsync(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
+        }
+
+        /// <summary>
+        /// Send a presence error
+        /// </summary>
+        /// <param name="socket">The socket that will receive the error</param>
+        /// <param name="code">The error code</param>
+        /// <param name="error">A string containing the error</param>
+        public static void SendGPError(Socket socket, int code, string error)
+        {
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write("Sending TCP data: {0}", LogLevel.Debug, string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error));
+
+            socket.Send(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
         }
     }
 }

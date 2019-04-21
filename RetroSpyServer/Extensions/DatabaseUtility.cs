@@ -1,11 +1,35 @@
-﻿using System.Collections.Generic;
-using GameSpyLib;
+﻿using System;
+using System.Collections.Generic;
+using GameSpyLib.Logging;
 using GameSpyLib.Database;
+using GameSpyLib.Extensions;
+using RetroSpyServer.Application;
 
-namespace RetroSpyServer
+namespace RetroSpyServer.Extensions
 {
     public class DatabaseUtility
     {
+        /// <summary>
+        /// This function creates a new MySQL database connection
+        /// </summary>
+        /// <returns>An instance of the connection or null if the connection could not be created</returns>
+        public static MySqlDatabaseDriver CreateNewMySQLConnection()
+        {
+            MySqlDatabaseDriver driver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", DatabaseConfiguration.host, DatabaseConfiguration.name, DatabaseConfiguration.username, DatabaseConfiguration.password, DatabaseConfiguration.port));
+
+            try
+            {
+                driver.Connect();
+            }
+            catch (Exception ex)
+            {
+                LogWriter.Log.Write(ex.Message, LogLevel.Fatal);
+                throw ex; // Without database the server cannot start
+            }
+
+            return driver;
+        }
+
         protected static Dictionary<string, object> GetUserDataReal(DatabaseDriver databaseDriver, string AppendFirst, string SecondAppend, string _P0, string _P1)
         {
             var Rows = databaseDriver.Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +

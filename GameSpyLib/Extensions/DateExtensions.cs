@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameSpyLib
+namespace GameSpyLib.Extensions
 {
     public static class DateExtensions
     {

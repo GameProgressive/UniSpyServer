@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace GameSpyLib
+namespace GameSpyLib.Extensions
 {
     public enum Crc16Mode : ushort
     {

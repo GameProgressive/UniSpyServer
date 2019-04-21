@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using GameSpyLib.Network;
+using GameSpyLib.Common;
 
 namespace GameSpyLib.Network
 {
@@ -159,8 +159,7 @@ namespace GameSpyLib.Network
                 {
                     // Disconnect user
                     DisconnectEventCalled = true;
-                    if (OnDisconnect != null)
-                        OnDisconnect();
+                    OnDisconnect?.Invoke(this);
                 }
             }
             catch (SocketException e)
@@ -217,7 +216,7 @@ namespace GameSpyLib.Network
             if (!DisconnectEventCalled && OnDisconnect != null)
             {
                 DisconnectEventCalled = true;
-                OnDisconnect();
+                OnDisconnect(this);
             }
         }
 
@@ -261,7 +260,7 @@ namespace GameSpyLib.Network
 
                     // tell our parent that we recieved a message
                     RecvMessage.Clear(); // Clear old junk
-                    DataReceived(received);
+                    DataReceived.Invoke(this, received);
                 }
             }
 

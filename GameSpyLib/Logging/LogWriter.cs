@@ -3,12 +3,11 @@ using System.IO;
 using System.Text;
 using System.Timers;
 
-namespace GameSpyLib.Log
+namespace GameSpyLib.Logging
 {
     public enum LogLevel:int
     {
         Debug,
-        //Information,
         Info,
         Warning,
         Error,
@@ -20,7 +19,7 @@ namespace GameSpyLib.Log
     /// store LogMessage's into. Uses a Multi-Thread safe Queueing
     /// system, and provides full Asynchronous writing and flushing
     /// </summary>
-    public class LogWriter : IDisposable
+    public  class LogWriter : IDisposable
     {
         /// <summary>
         /// Public instance of the LogWriter
@@ -55,12 +54,12 @@ namespace GameSpyLib.Log
         /// <summary>
         /// Our lock object, preventing race conditions
         /// </summary>
-        private Object _sync = new Object();
+        private object _sync = new object();
 
         /// <summary>
         /// Provides a full sync lock between all instances of this app
         /// </summary>
-        private static Object _fullSync = new Object();
+        private static object _fullSync = new object();
 
         /// <summary>
         /// Creates a new Log Writer instance
@@ -154,8 +153,8 @@ namespace GameSpyLib.Log
             // Only allow 1 thread at a time do these operations
             lock (_sync)
             {
-                Console.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
-                LogStream.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
+                Console.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
+                LogStream.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
                 LogStream.Flush();
             }
         }
@@ -174,8 +173,8 @@ namespace GameSpyLib.Log
             // Only allow 1 thread at a time do these operations
             lock (_sync)
             {
-                Console.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, String.Format(message, items), level.ToString()));
-                LogStream.WriteLine(String.Format("[{0}] [{2}]\t{1}", DateTime.Now, String.Format(message, items), level.ToString()));
+                Console.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, string.Format(message, items), level.ToString()));
+                LogStream.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, string.Format(message, items), level.ToString()));
                 LogStream.Flush();
             }
         }
@@ -201,6 +200,8 @@ namespace GameSpyLib.Log
         /// </summary>
         public void Dispose()
         {
+            LogStream.Close();
+
             try
             {
                 LogStream?.Dispose();

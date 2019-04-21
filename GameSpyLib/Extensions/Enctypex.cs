@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameSpyLib.Gamespy
+namespace GameSpyLib.Extensions
 {
     /// <remarks>
     /// I was never smart enough to recode this from the Open C source that Alugi made, instead

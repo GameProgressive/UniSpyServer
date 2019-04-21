@@ -1,12 +1,12 @@
-﻿using RetroSpyServer.Server;
+﻿using RetroSpyServer.Servers;
 
 namespace RetroSpyServer
 {
-    public delegate void ConnectionUpdate(GPCMClient client);
+    /*public delegate void ConnectionUpdate(GPCMClient client);
 
     public delegate void GpspConnectionClosed(GPCMClient client);
 
     public delegate void GpcmConnectionClosed(GPCMClient client);
 
-    public delegate void GpcmStatusChanged(GPCMClient client);
+    public delegate void GpcmStatusChanged(GPCMClient client);*/
 }

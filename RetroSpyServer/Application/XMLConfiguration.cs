@@ -2,66 +2,16 @@
 using System.Xml;
 using System.IO;
 using System.Collections.Generic;
-using GameSpyLib.Log;
+using GameSpyLib.Logging;
 using GameSpyLib.Database;
 
-namespace RetroSpyServer
+namespace RetroSpyServer.Application
 {
-    /// <summary>
-    /// This class represents the configuration of a server
-    /// </summary>
-    public class ServerConfiguration
-    {
-        /// <summary>
-        /// The IP that the server will bind
-        /// </summary>
-        public string ip = "localhost";
-
-        /// <summary>
-        /// The port that the server will use
-        /// </summary>
-        public int port = 0;
-
-        /// <summary>
-        /// Max connections available for the server
-        /// </summary>
-        public int maxConnections = 0;
-    };
-
     /// <summary>
     /// This class represents an XML configuration parser and saver
     /// </summary>
     public class XMLConfiguration
     {
-        /// <summary>
-        /// Contains the database name
-        /// </summary>
-        public static string DatabaseName { get; protected set; }
-
-        /// <summary>
-        /// Contains the IP of the database
-        /// </summary>
-        public static string DatabaseHost { get; protected set; }
-
-        /// <summary>
-        /// Contains the username that will be used to login in the database
-        /// </summary>
-        public static string DatabaseUsername { get; protected set; }
-
-        /// <summary>
-        /// Contains the password that will be used to login in the database
-        /// </summary>
-        public static string DatabasePassword { get; protected set; }
-
-        /// <summary>
-        /// The type of the database that will be used
-        /// </summary>
-        public static DatabaseEngine DatabaseType { get; protected set; }
-
-        /// <summary>
-        /// The port of the database the server will connect
-        /// </summary>
-        public static int DatabasePort { get; protected set; }
 
         /// <summary>
         /// A default IP if no server IP is setted
@@ -73,8 +23,16 @@ namespace RetroSpyServer
         /// </summary>
         public static int DefaultMaxConnections { get; protected set; }
 
+        /// <summary>
+        /// This dictionary contains all the configuration for all the servers
+        /// 
+        /// The key is the name of the server (like GPSP and GPCM)
+        /// </summary>
         public static Dictionary<string, ServerConfiguration> ServerConfig { get; protected set; }
 
+        /// <summary>
+        /// This function creates an empty configuration
+        /// </summary>
         protected static void CreateBlankConfiguration()
         {
             try
@@ -101,15 +59,14 @@ namespace RetroSpyServer
             }
         }
 
+        /// <summary>
+        /// Loads the configuration and store the values inside XMLConfiguration properties
+        /// </summary>
         public static void LoadConfiguration()
         {
             ServerConfig = new Dictionary<string, ServerConfiguration>();
 
             // Default values
-            DatabaseType = DatabaseEngine.Sqlite;
-            DatabaseName = ":memory:";
-            DatabaseHost = DatabaseUsername = DatabasePassword = "";
-            DatabasePort = 3306;
             DefaultIP = "localhost";
             DefaultMaxConnections = 100;
 
@@ -145,10 +102,10 @@ namespace RetroSpyServer
                             switch (attr.InnerText.ToLower())
                             {
                                 case "mysql":
-                                    DatabaseType = DatabaseEngine.Mysql;
+                                    DatabaseConfiguration.type = DatabaseEngine.Mysql;
                                     break;
                                 case "sqlite":
-                                    DatabaseType = DatabaseEngine.Sqlite;
+                                    DatabaseConfiguration.type = DatabaseEngine.Sqlite;
                                     break;
                                 default:
                                     LogWriter.Log.Write("Unknown database engine " + attr.InnerText + "! Defaulting Sqlite...", LogLevel.Warning);
@@ -160,16 +117,16 @@ namespace RetroSpyServer
                     foreach (XmlNode node2 in node.ChildNodes)
                     {
                         if (node2.Name == "Name")
-                            DatabaseName = node2.InnerText;
+                            DatabaseConfiguration.name = node2.InnerText;
 
                         else if (node2.Name == "Username")
-                            DatabaseUsername = node2.InnerText;
+                            DatabaseConfiguration.username = node2.InnerText;
 
                         else if (node2.Name == "Password")
-                            DatabasePassword = node2.InnerText;
+                            DatabaseConfiguration.password = node2.InnerText;
 
                         else if (node2.Name == "Host")
-                            DatabaseHost = node2.InnerText;
+                            DatabaseConfiguration.host = node2.InnerText;
 
                         else if (node2.Name == "Port")
                         {
@@ -179,7 +136,7 @@ namespace RetroSpyServer
                             if (!int.TryParse(node2.InnerText, out port) || port < 1)
                                 port = 3306;
 
-                            DatabasePort = port;
+                            DatabaseConfiguration.port = port;
                         }
                     }
                 }
@@ -203,7 +160,7 @@ namespace RetroSpyServer
 
                 else if (node.Name == "LogLevel")
                 {
-                    if (!Enum.TryParse<LogLevel>(node.InnerText, out LogWriter.Log.MiniumLogLevel))
+                    if (!Enum.TryParse(node.InnerText, out LogWriter.Log.MiniumLogLevel))
                     {
                         LogWriter.Log.Write("Unable to set LogLevel! Defaulting to Information...", LogLevel.Warning);
                         LogWriter.Log.MiniumLogLevel = LogLevel.Info;
@@ -212,9 +169,11 @@ namespace RetroSpyServer
 
                 else if (node.Name == "DebugSocket")
                 {
-                    if (node.InnerText.Equals("true"))
+                    if (!bool.TryParse(node.InnerText, out LogWriter.Log.DebugSockets))
+                        LogWriter.Log.DebugSockets = false;
+
+                    if (LogWriter.Log.DebugSockets)
                     {
-                        LogWriter.Log.DebugSockets = true;
                         LogWriter.Log.Write("Socket debugging is enabled!", LogLevel.Debug);
                     }
                 }
@@ -252,6 +211,12 @@ namespace RetroSpyServer
                         {
                             if (!int.TryParse(node2.InnerText, out ServerConfig[realServerName].maxConnections) || ServerConfig[realServerName].maxConnections < 1)
                                 ServerConfig[realServerName].maxConnections = -1;
+                        }
+
+                        else if (node2.Name == "Disable")
+                        {
+                            if (!bool.TryParse(node2.InnerText, out ServerConfig[realServerName].disable))
+                                ServerConfig[realServerName].disable = false;
                         }
                     }
                 }

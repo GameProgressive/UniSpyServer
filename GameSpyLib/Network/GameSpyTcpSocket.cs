@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using GameSpyLib.Network;
+using GameSpyLib.Logging;
 
 namespace GameSpyLib.Network
 {
@@ -67,7 +67,7 @@ namespace GameSpyLib.Network
         /// The error message to display if the server is full. Only works if ConnectionEnforceMode is set to DuringPrepare.
         /// If left empty, no message will be sent back to the client
         /// </summary>
-        protected string FullErrorMessage = String.Empty;
+        protected string FullErrorMessage = string.Empty;
 
         /// <summary>
         /// A pool of reusable SocketAsyncEventArgs objects for accept operations
@@ -327,16 +327,16 @@ namespace GameSpyLib.Network
                     if (!IsListening) return;
 
                     // Alert the client that we are full
-                    if (!String.IsNullOrEmpty(FullErrorMessage))
+                    if (!string.IsNullOrEmpty(FullErrorMessage))
                     {
                         byte[] buffer = Encoding.UTF8.GetBytes(
-                            String.Format(@"\error\\err\0\fatal\\errmsg\{0}\id\1\final\", FullErrorMessage)
+                            string.Format(@"\error\\err\0\fatal\\errmsg\{0}\id\1\final\", FullErrorMessage)
                         );
                         AcceptEventArg.AcceptSocket.Send(buffer);
                     }
 
                     // Log so we can track this!
-                    //Program.ErrorLog.Write("NOTICE: [GamespyTcpSocket.PrepareAccept] The Server is currently full! Rejecting connecting client.");
+                    LogWriter.Log.Write("The Server is currently full! Rejecting connecting client.", LogLevel.Info);
 
                     // Put the SAEA back in the pool.
                     AcceptEventArg.AcceptSocket.Close();
