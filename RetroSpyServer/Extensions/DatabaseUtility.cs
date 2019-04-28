@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GameSpyLib.Logging;
 using GameSpyLib.Database;
 using GameSpyLib.Extensions;
-using RetroSpyServer.Application;
+using RetroSpyServer.Config;
 
 namespace RetroSpyServer.Extensions
 {
@@ -15,7 +15,9 @@ namespace RetroSpyServer.Extensions
         /// <returns>An instance of the connection or null if the connection could not be created</returns>
         public static MySqlDatabaseDriver CreateNewMySQLConnection()
         {
-            MySqlDatabaseDriver driver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", DatabaseConfiguration.host, DatabaseConfiguration.name, DatabaseConfiguration.username, DatabaseConfiguration.password, DatabaseConfiguration.port));
+            DatabaseConfiguration cfg = Application.Config.GetXMLConfiguration().Database;
+
+            MySqlDatabaseDriver driver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", cfg.Hostname, cfg.Name, cfg.Username, cfg.Password, cfg.Port));
 
             try
             {

@@ -5,7 +5,7 @@ using System.Timers;
 
 namespace GameSpyLib.Logging
 {
-    public enum LogLevel:int
+    public enum LogLevel : int
     {
         Debug,
         Info,

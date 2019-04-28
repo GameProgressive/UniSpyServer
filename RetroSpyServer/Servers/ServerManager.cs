@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using GameSpyLib.Network;
+using RetroSpyServer.Config;
 using RetroSpyServer.Application;
 
 namespace RetroSpyServer.Servers
@@ -39,13 +38,15 @@ namespace RetroSpyServer.Servers
         /// <param name="engine">The database engine to create</param>
         public void Create()
         {
+            DatabaseConfiguration cfg = Application.Config.GetXMLConfiguration().Database;
+
             // Determine which database is using and create the database connection
-            switch (DatabaseConfiguration.type)
+            switch (cfg.Type)
             {
                 case DatabaseEngine.Mysql:
                     break; // We don't need to create the connection here because each server will automaticly create it's own MySQL connection.
                 case DatabaseEngine.Sqlite:
-                    databaseDriver = new SqliteDatabaseDriver("Data Source=" + DatabaseConfiguration.name + ";Version=3;New=False");
+                    databaseDriver = new SqliteDatabaseDriver("Data Source=" + cfg.Name + ";Version=3;New=False");
                     break;
                 default:
                     throw new Exception("Unknown database engine!");
@@ -110,41 +111,19 @@ namespace RetroSpyServer.Servers
         /// <param name="defaultPort">A default port if no port is specified</param>
         public void StartServer(string serverName, int defaultPort)
         {
-            string serverIP = "";
-            int serverPort = -1, maxConnections = -1;
+            ServerConfiguration cfg = Application.Config.GetServerConfiguration(serverName);
 
-            serverName = serverName.ToUpper();
+            int Port = cfg.Port;
+            if (Port == 0)
+                Port = defaultPort;
 
-            if (XMLConfiguration.ServerConfig.ContainsKey(serverName))
-            {
-
-                if (XMLConfiguration.ServerConfig[serverName].disable)
-                {
-                    LogWriter.Log.Write("Disabled server {0}", LogLevel.Info, serverName);
-                    return;
-                }
-
-                serverIP = XMLConfiguration.ServerConfig[serverName].ip;
-                serverPort = XMLConfiguration.ServerConfig[serverName].port;
-                maxConnections = XMLConfiguration.ServerConfig[serverName].maxConnections;
-            }
-
-            if (serverIP.Length < 1)
-                serverIP = XMLConfiguration.DefaultIP;
-
-            if (serverPort < 1)
-                serverPort = defaultPort;
-
-            if (maxConnections < 1)
-                maxConnections = XMLConfiguration.DefaultMaxConnections;
-
-            LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Info, serverIP, serverPort, serverName);
-            LogWriter.Log.Write("Maximum connections allowed for server {0} are {1}.", LogLevel.Info, serverName, maxConnections);
+            LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Info, cfg.Hostname, Port, serverName);
+            LogWriter.Log.Write("Maximum connections allowed for server {0} are {1}.", LogLevel.Info, serverName, cfg.MaxConnections);
 
             switch (serverName)
             {
                 case "GPSP":
-                    gpspServer = new GPSP.GPSPServer(databaseDriver, new IPEndPoint(IPAddress.Parse(serverIP), serverPort), maxConnections);
+                    gpspServer = new GPSP.GPSPServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
             }
         }

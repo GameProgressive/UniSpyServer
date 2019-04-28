@@ -95,7 +95,7 @@ namespace RetroSpyServer
 
             try
             {
-                XMLConfiguration.LoadConfiguration();
+                Application.Config.Load();
 
                 manager = new ServerManager();
 
