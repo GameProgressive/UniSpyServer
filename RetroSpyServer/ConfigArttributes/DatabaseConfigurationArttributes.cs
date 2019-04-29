@@ -16,6 +16,6 @@ namespace RetroSpyServer.Config
 
         public string Password;
 
-        public string Name;
+        public string Databasename;
     }
 }

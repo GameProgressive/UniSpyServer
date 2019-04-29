@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -33,6 +33,12 @@
   <ItemGroup>
     <None Include="Servers\GPCM\GPCMClient.cs" />
     <None Include="Servers\GPCM\GPCMServer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="BinaryFiles\RetroSpyServer.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
