@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <retrospy>
-  <database>
-    <Type>sqlite</Type>
+  <database Type="sqlite">    
     <Hostname></Hostname>
     <Port></Port>
     <Username></Username>
     <Password></Password>
     <Databasename></Databasename>
+  </database>
+
+  <database Type="mysql">
+    <Hostname></Hostname>
+    <Port></Port>
+    <Databasename></Databasename>
+    <Username></Username>
+    <Password></Password>
   </database>
 
   <Server Name="GPSP">
