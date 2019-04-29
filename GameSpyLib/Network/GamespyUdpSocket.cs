@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using GameSpyLib.Network;
+using GameSpyLib.Logging;
 
 namespace GameSpyLib.Network
 {
@@ -233,8 +232,8 @@ namespace GameSpyLib.Network
 
                 GamespyUdpPacket packet = new GamespyUdpPacket(AcceptEventArg);
 
-                Console.WriteLine("UDP Operation " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""));
-
+                if (LogWriter.Log.DebugSockets)
+                    LogWriter.Log.Write("UDP operation: " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
 
                 // Begin accepting a new connection
                 StartAcceptAsync();

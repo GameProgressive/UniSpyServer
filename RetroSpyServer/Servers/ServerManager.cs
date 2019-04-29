@@ -2,8 +2,7 @@
 using System.Net;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using RetroSpyServer.Config;
-using RetroSpyServer.Application;
+using RetroSpyServer.XMLConfig;
 
 namespace RetroSpyServer.Servers
 {
@@ -39,15 +38,15 @@ namespace RetroSpyServer.Servers
         /// <param name="engine">The database engine to create</param>
         public void Create()
         {
-            DatabaseConfigurationArttributes cfg = Application.ConfigManager.GetXMLConfiguration().Database;
+            DatabaseConfiguration databaseConfiguration = ConfigManager.Configuration.Database;
 
             // Determine which database is using and create the database connection
-            switch (cfg.Type)
+            switch (databaseConfiguration.Type)
             {
                 case DatabaseEngine.Mysql:
                     break; // We don't need to create the connection here because each server will automaticly create it's own MySQL connection.
                 case DatabaseEngine.Sqlite:
-                    databaseDriver = new SqliteDatabaseDriver("Data Source=" + cfg.Name + ";Version=3;New=False");
+                    databaseDriver = new SqliteDatabaseDriver("Data Source=" + databaseConfiguration.Name + ";Version=3;New=False");
                     break;
                 default:
                     throw new Exception("Unknown database engine!");
@@ -66,7 +65,10 @@ namespace RetroSpyServer.Servers
             LogWriter.Log.Write("Successfully connected to the database!", LogLevel.Info);
 
             // Add all servers
-            StartServer("GPSP", 29901);
+            foreach (ServerConfiguration cfg in ConfigManager.Configuration.Servers)
+            {
+                StartServer(cfg);
+            }
         }
 
         /// <summary>
@@ -84,19 +86,20 @@ namespace RetroSpyServer.Servers
         /// </summary>
         public void StopAllServers()
         {
-            StopServer("GPSP");
+            foreach (ServerConfiguration cfg in ConfigManager.Configuration.Servers)
+            {
+                StopServer(cfg);
+            }
         }
 
         /// <summary>
         /// Checks if a specific server is running
         /// </summary>
-        /// <param name="serverName">The specific server name</param>
+        /// <param name="cfg">The specific server configuration</param>
         /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
-        public bool IsServerRunning(string serverName)
+        public bool IsServerRunning(ServerConfiguration cfg)
         {
-            serverName = serverName.ToUpper();
-
-            switch (serverName)
+            switch (cfg.Name)
             {
                 case "GPSP":
                     return gpspServer != null && !gpspServer.IsDisposed;
@@ -108,20 +111,16 @@ namespace RetroSpyServer.Servers
         /// <summary>
         /// Starts a specific server
         /// </summary>
-        /// <param name="serverName">The specific server name</param>
-        /// <param name="defaultPort">A default port if no port is specified</param>
-        public void StartServer(string serverName, int defaultPort)
+        /// <param name="cfg">The configuration of the specific server to run</param>
+        public void StartServer(ServerConfiguration cfg)
         {
-            ServerConfigurationArttributes cfg = Application.ConfigManager.GetServerConfiguration(serverName);
+            if (cfg.Disabled)
+                return;
 
-            int Port = cfg.Port;
-            if (Port == 0)
-                Port = defaultPort;
+            LogWriter.Log.Write("Starting {2} server at {0}:{1}...", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
+            LogWriter.Log.Write("Maximum connections allowed for server {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
 
-            LogWriter.Log.Write("Starting {2} Player Server at {0}:{1}...", LogLevel.Info, cfg.Hostname, Port, serverName);
-            LogWriter.Log.Write("Maximum connections allowed for server {0} are {1}.", LogLevel.Info, serverName, cfg.MaxConnections);
-
-            switch (serverName)
+            switch (cfg.Name)
             {
                 case "GPSP":
                     gpspServer = new GPSP.GPSPServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
@@ -132,30 +131,15 @@ namespace RetroSpyServer.Servers
         /// <summary>
         /// Stop a specific server
         /// </summary>
-        /// <param name="serverName">The name of the server</param>
-        public void StopServer(string serverName)
+        /// <param name="cfg">The configuration of the specific server to stop</param>
+        public void StopServer(ServerConfiguration cfg)
         {
-            serverName = serverName.ToUpper();
-
-            switch (serverName)
+            switch (cfg.Name)
             {
                 case "GPSP":
                     gpspServer?.Dispose();
                     break;
             }
-        }
-
-
-        /// <summary>
-        /// Indicates if the server is running or not
-        /// </summary>
-        /// <returns>If any server is running it returns true, otherwise false</returns>
-        public bool IsRunning()
-        {
-            if (IsServerRunning("GPSP"))
-                return true;
-
-            return false;
         }
     }
 }

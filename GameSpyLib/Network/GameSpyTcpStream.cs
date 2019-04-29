@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using GameSpyLib.Common;
+using GameSpyLib.Logging;
 
 namespace GameSpyLib.Network
 {
@@ -254,14 +255,13 @@ namespace GameSpyLib.Network
 
                 // Process Message
                 string received = RecvMessage.ToString();
-                if (received.EndsWith("final\\") || received.EndsWith("\x00\x00\x00\x00"))
-                {
-                    Console.WriteLine("Received TCP data: " + received);
 
-                    // tell our parent that we recieved a message
-                    RecvMessage.Clear(); // Clear old junk
-                    DataReceived.Invoke(this, received);
-                }
+                if (LogWriter.Log.DebugSockets)
+                    LogWriter.Log.Write("Received TCP data: " + received, LogLevel.Debug);
+
+                // tell our parent that we recieved a message
+                RecvMessage.Clear(); // Clear old junk
+                DataReceived.Invoke(this, received);
             }
 
             // Begin receiving again
@@ -277,7 +277,8 @@ namespace GameSpyLib.Network
             // Make sure the socket is still open
             if (SocketClosed) return;
 
-            Console.WriteLine("Sending TCP data: " + message);
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write("Sending TCP data: " + message, LogLevel.Debug);
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -294,7 +295,7 @@ namespace GameSpyLib.Network
         /// <param name="items"></param>
         public void SendAsync(string message, params object[] items)
         {
-            SendAsync(String.Format(message, items));
+            SendAsync(string.Format(message, items));
         }
 
         /// <summary>
@@ -306,7 +307,8 @@ namespace GameSpyLib.Network
             // Make sure the socket is still open
             if (SocketClosed) return;
 
-            Console.WriteLine("Sending TCP data: {0}", System.Text.Encoding.UTF8.GetString(message));
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write("Sending TCP data: " + Encoding.UTF8.GetString(message), LogLevel.Debug);
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)

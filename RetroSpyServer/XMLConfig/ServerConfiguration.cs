@@ -1,12 +1,13 @@
 ﻿using System.Xml.Serialization;
 
-namespace RetroSpyServer.Config
+namespace RetroSpyServer.XMLConfig
 {
-    public class ServerConfigurationArttributes
+    public class ServerConfiguration
     {
-        public string Hostname;
-
+        [XmlAttribute]
         public string Name;
+
+        public string Hostname;
 
         public int MaxConnections;
 

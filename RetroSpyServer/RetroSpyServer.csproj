@@ -36,10 +36,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="BinaryFiles\RetroSpyServer.xml">
+    <None Update="RetroSpyServer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="BinaryFiles\sqlite_retrospy_server.db">
+    <None Update="sqlite_retrospy_server.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -100,9 +100,6 @@ namespace GameSpyLib.Network
             Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             // Set Socket options
-            //Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.DontLinger, true);
-            //Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Linger, false);
-
             Listener.LingerState = new LingerOption(enable: false, seconds: 0);
             Listener.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, true);
 

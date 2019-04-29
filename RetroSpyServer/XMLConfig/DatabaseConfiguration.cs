@@ -1,9 +1,9 @@
 ﻿using System.Xml.Serialization;
 using GameSpyLib.Database;
 
-namespace RetroSpyServer.Config
+namespace RetroSpyServer.XMLConfig
 {
-    public class DatabaseConfigurationArttributes
+    public class DatabaseConfiguration
     {
         [XmlAttribute]
         public DatabaseEngine Type;
@@ -16,6 +16,6 @@ namespace RetroSpyServer.Config
 
         public string Password;
 
-        public string Databasename;
+        public string Name;
     }
 }

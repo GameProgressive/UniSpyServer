@@ -102,6 +102,10 @@ namespace GameSpyLib.Logging
                 TruncateTimer.Elapsed += TruncateTimer_Elapsed;
                 TruncateTimer.Start();
             }
+
+#if DEBUG
+            DebugSockets = true;
+#endif
         }
 
         /// <summary>
@@ -185,7 +189,11 @@ namespace GameSpyLib.Logging
         /// <param name="ex">The exception to write</param>
         public void WriteException(Exception ex)
         {
-            Write("Exception {0} (HRESULT: {1})\n{2}", LogLevel.Error, ex.Message, ex.HResult, ex.StackTrace);
+            do
+            {
+                Write("{0} from {3} (HRESULT: {1})\n{2}", LogLevel.Error, ex.Message, ex.HResult, ex.StackTrace, ex.Source);
+                ex = ex.InnerException;
+            } while (ex != null);
         }
 
         /// <summary>

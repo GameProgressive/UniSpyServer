@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.IO;
-using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using RetroSpyServer.Servers;
-using RetroSpyServer.Application;
+using RetroSpyServer.XMLConfig;
 
 namespace RetroSpyServer
 {
@@ -19,11 +18,13 @@ namespace RetroSpyServer
         //public static readonly Version Version = Version.Parse(Application.ProductVersion);
         public static readonly string version = "0.1";
 
-        public static string basePath { get; protected set; }
+        public static string BasePath { get; protected set; }
 
         public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         private static ServerManager manager = null;
+
+        public static bool IsRunning = false;
 
         /// <summary>
         /// Entry point for the RetroSpy Server program
@@ -33,10 +34,17 @@ namespace RetroSpyServer
         static void Main(string[] args)
         {
             if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
-            bool bool_ConsoleInput = false, bool_InitPathArg = false;//whether inputed args
-            string logPath = "";
+
+            bool bool_ConsoleInput = true, bool_InitPathArg = false; // Whether inputed args
+            string logPath;
             Console.Title = "RetroSpy Server " + version;
-            basePath = AppDomain.CurrentDomain.BaseDirectory;
+            BasePath = AppDomain.CurrentDomain.BaseDirectory;
+
+            Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
+            {
+                e.Cancel = true;
+                IsRunning = false;
+            };
 
             // Argument switcher
             foreach (var argument in args)
@@ -44,7 +52,7 @@ namespace RetroSpyServer
                 if (bool_InitPathArg)
 
                 {
-                    basePath = argument;
+                    BasePath = argument;
                     bool_InitPathArg = false;
                 }
                 else if (argument == "--help")
@@ -59,7 +67,7 @@ namespace RetroSpyServer
                     return;
                 }
                 else if (argument == "--no-cli-input")
-                    bool_ConsoleInput = true;
+                    bool_ConsoleInput = false;
                 else if (argument == "--init-path")
                     bool_InitPathArg = true;
                 else
@@ -74,17 +82,17 @@ namespace RetroSpyServer
                 return;
             }
 
-            if (!Directory.Exists(basePath))
-                Directory.CreateDirectory(basePath);
+            if (!Directory.Exists(BasePath))
+                Directory.CreateDirectory(BasePath);
 
-            logPath = basePath + @"/Logs/";
+            logPath = BasePath + @"/Logs/";
 
             if (!Directory.Exists(logPath))
                 Directory.CreateDirectory(logPath);
 
             LogWriter.Log = new LogWriter(string.Format(Path.Combine(logPath, "{0}.log"), DateTime.Now.ToLongDateString()));
 
-            Console.WriteLine("\t"+@"  ___     _           ___             ___                      ");
+            Console.WriteLine("\t"+  @"  ___     _           ___             ___                      ");
             Console.WriteLine("\t" + @" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
             Console.WriteLine("\t" + @" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
             Console.WriteLine("\t" + @" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
@@ -95,28 +103,27 @@ namespace RetroSpyServer
 
             try
             {
-                try
-                {
-                    Application.ConfigManager.Load();
-                }
-                catch (Exception e)
-                {
-                    LogWriter.Log.Write(e.ToString(),LogLevel.Error);
-                }
+                ConfigManager.Load();
 
                 manager = new ServerManager();
 
                 LogWriter.Log.Write("Server successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
-                //readkey from console
-                while (manager != null && manager.IsRunning())
+                
+                IsRunning = true;
+
+                // Read key from console
+                while (IsRunning)
                 {
                     // Process console commands
-                    if (!bool_ConsoleInput)
+                    if (bool_ConsoleInput)
                     {
                         string input = Console.ReadLine();
 
                         if (input.Equals("exit"))
+                        {
                             manager.StopAllServers();
+                            IsRunning = false;
+                        }
                         else
                             Console.WriteLine("Unknown command!");
                     }
