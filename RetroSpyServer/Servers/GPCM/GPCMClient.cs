@@ -3,37 +3,16 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using GameSpyLib;
 using GameSpyLib.Logging;
-using GameSpyLib.Server;
 using GameSpyLib.Database;
+using GameSpyLib.Network;
+using GameSpyLib.Common;
+using GameSpyLib.Extensions;
+using RetroSpyServer.Application;
+using RetroSpyServer.Extensions;
 
-namespace RetroSpyServer.Servers
+namespace RetroSpyServer.Servers.GPCM
 {
-    public enum LoginStatus
-    {
-        Connected,
-        Processing,
-        Completed,
-        Disconnected
-    }
-
-    public enum UserStatus : int
-    {
-        /// <summary>
-        /// The user is created, but not verified
-        /// </summary>
-        Created,
-        /// <summary>
-        /// The user is verified, and can login
-        /// </summary>
-        Verified,
-        /// <summary>
-        /// The user id banned
-        /// </summary>
-        Banned
-    }
-
     public enum DisconnectReason : int
     {
         /// <summary>
@@ -265,13 +244,13 @@ namespace RetroSpyServer.Servers
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public TCPStream Stream { get; protected set; }
+        public GamespyTcpStream Stream { get; protected set; }
 
         /// <summary>
         /// The date time of when this connection was created. Used to disconnect user
         /// connections that hang
         /// </summary>
-        private DateTime ConnectionCreated = DateTime.Now;
+        //private DateTime ConnectionCreated = DateTime.Now;
 
         /// <summary>
         /// Our CRC16 object for generating Checksums
@@ -304,9 +283,11 @@ namespace RetroSpyServer.Servers
         /// Constructor
         /// </summary>
         /// <param name="ReadArgs">The Tcp Client connection</param>
-        public GPCMClient(TCPStream ConnectionStream, long ConnectionId, DatabaseDriver databaseDriver)
+        public GPCMClient(GamespyTcpStream ConnectionStream, long ConnectionId, DatabaseDriver driver)
         {
             // Set default variable values
+            databaseDriver = driver;
+
             PlayerNick = "Connecting...";
             PlayerStatusString = "Offline";
             PlayerLocation = "";
@@ -318,12 +299,12 @@ namespace RetroSpyServer.Servers
 
             // Set the connection ID
             this.ConnectionId = ConnectionId;
-            this.databaseDriver = databaseDriver;
+            databaseDriver = driver;
 
             // Create our Client Stream
             Stream = ConnectionStream;
-            Stream.OnDisconnect += OnStreamDisconnects;
-            Stream.DataReceived += OnDataReceived;
+            Stream.OnDisconnect += Stream_OnDisconnect;
+            Stream.DataReceived += Stream_DataReceived;
             Stream.BeginReceive();
         }
 
@@ -362,8 +343,8 @@ namespace RetroSpyServer.Servers
             // If connection is still alive, disconnect user
             try
             {
-                Stream.OnDisconnect -= OnStreamDisconnects;
-                Stream.DataReceived -= OnDataReceived;
+                Stream.OnDisconnect -= Stream_OnDisconnect;
+                Stream.DataReceived -= Stream_DataReceived;
                 Stream.Close(reason == DisconnectReason.ForcedServerShutdown);
             }
             catch { }
@@ -409,43 +390,39 @@ namespace RetroSpyServer.Servers
         /// Main listner loop. Keeps an open stream between the client and server while
         /// the client is logged in / playing
         /// </summary>
-        private void OnDataReceived(TCPStream stream, string message)
+        private void Stream_DataReceived(string message)
         {
-            if (stream != Stream)
-                return;
-
             // Read client message, and parse it into key value pairs
             string[] recieved = message.TrimStart('\\').Split('\\');
             switch (recieved[0])
             {
                 case "inviteto":
-                    AddProducts(PresenceServer.ConvertToKeyValue(recieved));
+                    AddProducts(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
                     break;
                 case "newuser":
-                    CreateNewUser(PresenceServer.ConvertToKeyValue(recieved));
+                    CreateNewUser(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
                     break;
                 case "login":
-                    ProcessLogin(PresenceServer.ConvertToKeyValue(recieved));
+                    ProcessLogin(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
                     break;
                 case "getprofile":
-                    SendProfile(PresenceServer.ConvertToKeyValue(recieved));
+                    SendProfile(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
                     break;
                 case "updatepro":
-                    UpdateUser(PresenceServer.ConvertToKeyValue(recieved));
+                    UpdateUser(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
                     break;
                 case "logout":
                     Disconnect(DisconnectReason.NormalLogout);
                     break;
                 case "status":
-                    UpdateStatus(PresenceServer.ConvertToKeyValue(recieved));
+                    UpdateStatus(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
                     break;
                 case "ka":
                     SendKeepAlive();
                     break;
                 default:
                     LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
-                    PresenceServer.SendError(stream, 0, "An invalid request was sended.");
-                    stream.Close();
+                    GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
                     break;
             }
         }
@@ -467,7 +444,7 @@ namespace RetroSpyServer.Servers
 
         private void UpdateStatus(Dictionary<string, string> dictionary)
         {
-            ushort testSK = 0;
+            ushort testSK;
 
             if (!dictionary.ContainsKey("statstring") || !dictionary.ContainsKey("locstring") || !dictionary.ContainsKey("sesskey"))
                 return;
@@ -487,11 +464,8 @@ namespace RetroSpyServer.Servers
         /// <summary>
         /// Event fired when the stream disconnects unexpectedly
         /// </summary>
-        private void OnStreamDisconnects(TCPStream stream)
+        private void Stream_OnDisconnect()
         {
-            if (stream != Stream)
-                return;
-
             Disconnect(DisconnectReason.Disconnected);
         }
 
@@ -521,7 +495,7 @@ namespace RetroSpyServer.Servers
             }
 
             // We send the client the challenge key
-            ServerChallengeKey = GameSpyLib.Random.GenerateRandomString(10, GameSpyLib.Random.StringType.Alpha);
+            ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
             LoginStatus = LoginStatus.Processing;
             Stream.SendAsync(@"\lc\1\challenge\{0}\id\{1}\final\", ServerChallengeKey, ServerID);
         }
@@ -538,7 +512,7 @@ namespace RetroSpyServer.Servers
             // Make sure we have all the required data to process this login
             if (!Recv.ContainsKey("challenge") || !Recv.ContainsKey("response"))
             {
-                PresenceServer.SendError(Stream, 0, "Invalid response received from the client!");
+                GamespyUtils.SendGPError(Stream, 0, "Invalid response received from the client!");
                 Disconnect(DisconnectReason.InvalidLoginQuery);
                 return;
             }
@@ -581,7 +555,7 @@ namespace RetroSpyServer.Servers
                     else if (PlayerAuthToken != null)
                     {
                         //TODO! Add the database entry
-                        PresenceServer.SendError(Stream, 0, "AuthToken is not supported yet");
+                        GamespyUtils.SendGPError(Stream, 0, "AuthToken is not supported yet");
                         return;
                     }
                     else
@@ -589,16 +563,16 @@ namespace RetroSpyServer.Servers
                 }
                 catch (Exception)
                 {
-                    PresenceServer.SendError(Stream, 4, "This request cannot be processed because of a database error.");
+                    GamespyUtils.SendGPError(Stream, 4, "This request cannot be processed because of a database error.");
                     return;
                 }
 
                 if (QueryResult == null)
                 {
                     if (PlayerUniqueNick != null)
-                        PresenceServer.SendError(Stream, 265, "The unique nickname provided is incorrect!");
+                        GamespyUtils.SendGPError(Stream, 265, "The unique nickname provided is incorrect!");
                     else
-                        PresenceServer.SendError(Stream, 265, "The nickname provided is incorrect!");
+                        GamespyUtils.SendGPError(Stream, 265, "The nickname provided is incorrect!");
 
                     Disconnect(DisconnectReason.InvalidUsername);
                     return;
@@ -610,14 +584,14 @@ namespace RetroSpyServer.Servers
 
                 if (!Enum.TryParse(QueryResult["status"].ToString(), out currentPlayerStatus))
                 {
-                    PresenceServer.SendError(Stream, 265, "Invalid player data! Please contact an administrator.");
+                    GamespyUtils.SendGPError(Stream, 265, "Invalid player data! Please contact an administrator.");
                     Disconnect(DisconnectReason.InvalidPlayer);
                     return;
                 }
 
                 if (!Enum.TryParse(QueryResult["userstatus"].ToString(), out currentUserStatus))
                 {
-                    PresenceServer.SendError(Stream, 265, "Invalid player data! Please contact an administrator.");
+                    GamespyUtils.SendGPError(Stream, 265, "Invalid player data! Please contact an administrator.");
                     Disconnect(DisconnectReason.InvalidPlayer);
                     return;
                 }
@@ -627,21 +601,21 @@ namespace RetroSpyServer.Servers
 
                 if (currentPlayerStatus == PlayerStatus.Banned)
                 {
-                    PresenceServer.SendError(Stream, 265, "Your profile has been permanently suspended.");
+                    GamespyUtils.SendGPError(Stream, 265, "Your profile has been permanently suspended.");
                     Disconnect(DisconnectReason.PlayerIsBanned);
                     return;
                 }
 
                 if (currentUserStatus == UserStatus.Created)
                 {
-                    PresenceServer.SendError(Stream, 265, "Your account is not verified. Please check your email inbox and verify the account.");
+                    GamespyUtils.SendGPError(Stream, 265, "Your account is not verified. Please check your email inbox and verify the account.");
                     Disconnect(DisconnectReason.PlayerIsBanned);
                     return;
                 }
 
                 if (currentUserStatus == UserStatus.Banned)
                 {
-                    PresenceServer.SendError(Stream, 265, "Your account has been permanently suspended.");
+                    GamespyUtils.SendGPError(Stream, 265, "Your account has been permanently suspended.");
                     Disconnect(DisconnectReason.PlayerIsBanned);
                     return;
                 }
@@ -715,7 +689,7 @@ namespace RetroSpyServer.Servers
                         GenerateProof(ServerChallengeKey, Recv["challenge"], challengeData, PlayerAuthToken != null ? 0 : partnerID), // Do this again, Params are reversed!
                         PlayerId,
                         PlayerNick,
-                        GameSpyLib.Random.GenerateRandomString(22, GameSpyLib.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
+                        GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
                     );
 
                     // Log Incoming Connections
@@ -779,20 +753,20 @@ namespace RetroSpyServer.Servers
         {
             if (!dict.ContainsKey("profileid"))
             {
-                PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(Stream, 1, "There was an error parsing an incoming request.");
                 return;
             }
 
-            uint targetPID = 0, messID = 0;
+            uint targetPID, messID;
             if (!uint.TryParse(dict["profileid"], out targetPID))
             {
-                PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(Stream, 1, "There was an error parsing an incoming request.");
                 return;
             }
 
             if (!uint.TryParse(dict["id"], out messID))
             {
-                PresenceServer.SendError(Stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(Stream, 1, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -802,12 +776,12 @@ namespace RetroSpyServer.Servers
             // of another client
             if (targetPID != PlayerId)
             {
-                uint publicMask = 0;
+                uint publicMask;
 
                 var Query = DatabaseUtility.GetProfileInfo(databaseDriver, targetPID);
                 if (Query == null)
                 {
-                    PresenceServer.SendError(Stream, 4, "Unable to get profile information.");
+                    GamespyUtils.SendGPError(Stream, 4, "Unable to get profile information.");
                     return;
                 }
 
@@ -872,9 +846,9 @@ namespace RetroSpyServer.Servers
                     PlayerSexType sexType;
                     if (Enum.TryParse(Query["sex"].ToString(), out sexType))
                     {
-                        if (PlayerSex == PlayerSexType.FEMALE)
+                        if (sexType == PlayerSexType.FEMALE)
                             datatoSend += @"\sex\1";
-                        else if (PlayerSex == PlayerSexType.MALE)
+                        else if (sexType == PlayerSexType.MALE)
                             datatoSend += @"\sex\0";
                     }
                 }
@@ -907,7 +881,7 @@ namespace RetroSpyServer.Servers
                     datatoSend += @"\conn\" + int.Parse(Query["connectiontype"].ToString());
 
                 // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
-                datatoSend += @"\sig\" + GameSpyLib.Random.GenerateRandomString(33, GameSpyLib.Random.StringType.Hex) + @"\final\";
+                datatoSend += @"\sig\" + GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex) + @"\final\";
             }
             else
             {
@@ -982,7 +956,7 @@ namespace RetroSpyServer.Servers
                     datatoSend += @"\conn\" + PlayerConnectionType;
 
                 // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
-                datatoSend += @"\sig\" + GameSpyLib.Random.GenerateRandomString(33, GameSpyLib.Random.StringType.Hex) + @"\final\";
+                datatoSend += @"\sig\" + GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex) + @"\final\";
 
                 // Set that we send the profile initially
                 if (!ProfileSent) ProfileSent = true;
@@ -1023,7 +997,7 @@ namespace RetroSpyServer.Servers
                 // Attempt to create account. If Pid is 0, then we couldnt create the account. TODO: Handle Unique Nickname
                 if ((PlayerId = DatabaseUtility.CreateUser(databaseDriver, Recv["nick"], Password, Recv["email"], Cc, Recv["nick"])) == 0)
                 {
-                    PresenceServer.SendError(Stream, 516, "An error oncurred while creating the account!");
+                    GamespyUtils.SendGPError(Stream, 516, "An error oncurred while creating the account!");
                     Disconnect(DisconnectReason.CreateFailedDatabaseError);
                     return;
                 }
@@ -1035,11 +1009,11 @@ namespace RetroSpyServer.Servers
                 // Check for invalid query params
                 if (e is KeyNotFoundException)
                 {
-                    PresenceServer.SendError(Stream, 516, "Invalid response received from the client!");
+                    GamespyUtils.SendGPError(Stream, 516, "Invalid response received from the client!");
                 }
                 else
                 {
-                    PresenceServer.SendError(Stream, 516, "An error oncurred while creating the account!");
+                    GamespyUtils.SendGPError(Stream, 516, "An error oncurred while creating the account!");
                     LogWriter.Log.Write("An error occured while trying to create a new User account :: " + e.Message, LogLevel.Error);
                 }
 

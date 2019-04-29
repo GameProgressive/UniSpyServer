@@ -99,7 +99,7 @@ namespace GameSpyLib.Network
         /// <summary>
         /// An object to lock onto
         /// </summary>
-        private Object _lockObj = new Object();
+        private object _lockObj = new object();
 
         /// <summary>
         /// Creates a new instance of GamespyTcpStream
@@ -160,7 +160,7 @@ namespace GameSpyLib.Network
                 {
                     // Disconnect user
                     DisconnectEventCalled = true;
-                    OnDisconnect?.Invoke(this);
+                    OnDisconnect?.Invoke();
                 }
             }
             catch (SocketException e)
@@ -217,7 +217,7 @@ namespace GameSpyLib.Network
             if (!DisconnectEventCalled && OnDisconnect != null)
             {
                 DisconnectEventCalled = true;
-                OnDisconnect(this);
+                OnDisconnect();
             }
         }
 
@@ -261,7 +261,7 @@ namespace GameSpyLib.Network
 
                 // tell our parent that we recieved a message
                 RecvMessage.Clear(); // Clear old junk
-                DataReceived.Invoke(this, received);
+                DataReceived.Invoke(received);
             }
 
             // Begin receiving again

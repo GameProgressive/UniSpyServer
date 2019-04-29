@@ -1,0 +1,343 @@
+﻿using System;
+using System.Collections.Generic;
+using GameSpyLib.Database;
+using GameSpyLib.Logging;
+using GameSpyLib.Network;
+using GameSpyLib.Common;
+using GameSpyLib.Extensions;
+using RetroSpyServer.Application;
+
+namespace RetroSpyServer.Servers.GPSP
+{
+    public class GPSPClient : IDisposable
+    {
+        /// <summary>
+        /// A unqie identifier for this connection
+        /// </summary>
+        public long ConnectionID;
+
+        /// <summary>
+        /// Indicates whether this object is disposed
+        /// </summary>
+        public bool Disposed { get; protected set; } = false;
+
+        /// <summary>
+        /// The clients socket network stream
+        /// </summary>
+        public GamespyTcpStream Stream { get; protected set; }
+
+        /// <summary>
+        /// Event fired when the connection is closed
+        /// </summary>
+        public static event GpspConnectionClosed OnDisconnect;
+
+        private DatabaseDriver databaseDriver;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="client"></param>
+        public GPSPClient(GamespyTcpStream client, long connectionId, DatabaseDriver driver)
+        {
+            databaseDriver = driver;
+
+            // Generate a unique name for this connection
+            ConnectionID = connectionId;
+
+            // Init a new client stream class
+            Stream = client;
+            Stream.OnDisconnect += () => Dispose();
+            Stream.DataReceived += (message) =>
+            {
+                // Read client message, and parse it into key value pairs
+                ProcessDataReceived(message);
+            };
+        }
+
+        /// <summary>
+        /// Destructor
+        /// </summary>
+        ~GPSPClient()
+        {
+            if (!Disposed)
+                Dispose();
+        }
+
+        public void Dispose()
+        {
+            // Only dispose once
+            if (Disposed) return;
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Dispose method to be called by the server
+        /// </summary>
+        public void Dispose(bool DisposeEventArgs = false)
+        {
+            // Only dispose once
+            if (Disposed) return;
+            Disposed = true;
+
+            // If connection is still alive, disconnect user
+            if (!Stream.SocketClosed)
+                Stream.Close(DisposeEventArgs);
+
+            // Call disconnect event
+            OnDisconnect?.Invoke(this);
+        }
+
+        /// <summary>
+        /// This is the primary method for fetching an accounts BF2 PID
+        /// </summary>
+        /// <param name="recvData"></param>
+        /*private void SendCheck(Dictionary<string, string> recvData)
+        {
+            // Make sure we have the needed data
+            if (!recvData.ContainsKey("nick"))
+            {
+                Stream.SendAsync(@"\error\\err\0\fatal\\errmsg\Invalid Query!\id\1\final\");
+                return;
+            }
+
+            // Try to get user data from database
+            try
+            {
+                using (GamespyDatabase Db = new GamespyDatabase())
+                {
+                    int pid = Db.GetPlayerId(recvData["nick"]);
+                    if (pid == 0)
+                        Stream.SendAsync(@"\error\\err\265\fatal\\errmsg\Username [{0}] doesn't exist!\id\1\final\", recvData["nick"]);
+                    else
+                        Stream.SendAsync(@"\cur\0\pid\{0}\final\", pid);
+                }
+            }
+            catch
+            {
+                Stream.SendAsync(@"\error\\err\265\fatal\\errmsg\Database service is Offline!\id\1\final\");
+                //Dispose();
+            }
+        }*/
+
+
+        /// <summary>
+        /// This function is fired when data is received from a stream
+        /// </summary>
+        /// <param name="stream">The stream that sended the data</param>
+        /// <param name="message">The message the stream sended</param>
+        protected void ProcessDataReceived(string message)
+        {
+            if (!message.EndsWith("\\final\\") || message[0] != '\\')
+            {
+                GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                return;
+            }
+
+            string[] recieved = message.TrimStart('\\').Split('\\');
+            Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
+
+            switch (recieved[0])
+            {
+                case "valid":
+                    IsEmailValid(Stream, dict);
+                    break;
+                case "nicks":
+                    RetriveNicknames(Stream, dict);
+                    break;
+                case "check":
+                    CheckAccount(Stream, dict);
+                    break;
+                case "search":
+                    SearchUser(Stream, dict);
+                    break;
+                case "others":
+                    ReverseBuddies(Stream, dict);
+                    break;
+                case "otherslist":
+                    OnOthersList(Stream, dict);
+                    break;
+                case "uniquesearch":
+                    SuggestUniqueNickname(Stream, dict);
+                    break;
+                case "profilelist":
+                    OnProfileList(Stream, dict);
+                    break;
+                case "pmatch":
+                    MatchProduct(Stream, dict);
+                    break;
+                case "newuser":
+                    CreateUser(Stream, dict);
+                    break;
+                default:
+                    LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
+                    GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                    break;
+            }
+        }
+
+        private void SuggestUniqueNickname(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("uniquesearch", dict);
+            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+        }
+
+        private void OnProfileList(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("profilelist", dict);
+            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+        }
+
+        private void MatchProduct(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
+            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+        }
+
+        /// <summary>
+        /// Creates an account
+        /// </summary>
+        /// <param name="stream">The stream that sended the data</param>
+        /// <param name="dict">The request that the stream sended</param>
+        private void CreateUser(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("newuser", dict);
+            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+        }
+
+        private void OnOthersList(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("otherslist", dict);
+            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+        }
+
+        private void ReverseBuddies(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
+            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+
+            // TODO: Please finis this function
+            //stream.SendAsync(@"\others\\odone\final\");
+        }
+
+        private void SearchUser(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("search", dict);
+            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+        }
+
+        private void CheckAccount(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("check", dict);
+            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+        }
+
+        /// <summary>
+        /// This method is requested by the client when logging in to fetch all the account
+        /// names that have the specified email address and password combination
+        /// </summary>
+        /// <param name="recvData"></param>
+        private void RetriveNicknames(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            string password;
+            bool sendUniqueNick;
+
+            if (!dict.ContainsKey("email"))
+            {
+                GamespyUtils.SendGPError(stream, 1, "There was an error parsing an incoming request.");
+                return;
+            }
+
+            // First, we try to receive an encoded password
+            if (!dict.ContainsKey("passenc"))
+            {
+                // If the encoded password is not sended, we try receiving the password in plain text
+                if (!dict.ContainsKey("pass"))
+                {
+                    // No password is specified, we cannot continue
+                    GamespyUtils.SendGPError(stream, 1, "There was an error parsing an incoming request.");
+                    return;
+                }
+                else
+                {
+                    // Store the plain text password
+                    password = dict["pass"];
+                }
+            }
+            else
+            {
+                // Store the decrypted password
+                password = GamespyUtils.DecodePassword(dict["passenc"]);
+            }
+
+            password = StringExtensions.GetMD5Hash(password);
+
+            sendUniqueNick = dict.ContainsKey("gamename");
+
+            List<Dictionary<string, object>> queryResult;
+
+            try
+            {
+                queryResult = databaseDriver.Query("SELECT profiles.nick, profiles.uniquenick FROM profiles INNER JOIN users ON profiles.userid=users.userid WHERE LOWER(users.email)=@P0 AND LOWER(users.password)=@P1", dict["email"].ToLowerInvariant(), password.ToLowerInvariant());
+            }
+            catch (Exception ex)
+            {
+                LogWriter.Log.Write(ex.Message, LogLevel.Error);
+                GamespyUtils.SendGPError(stream, 4, "This request cannot be processed because of a database error.");
+                return;
+            }
+
+            if (queryResult.Count < 1)
+            {
+                stream.SendAsync(@"\nr\ndone\final\");
+                return;
+            }
+
+            // We will recycle the "password" variable by storing the response
+            // that we have to send to the stream. This is done for save memory space
+            // so we don't have to declare a new variable.
+            password = @"\nr\";
+
+            foreach (Dictionary<string, object> row in queryResult)
+            {
+                password += @"\nick\";
+                password += row["nick"];
+
+                if (sendUniqueNick)
+                {
+                    password += @"\uniquenick\";
+                    password += row["uniquenick"];
+                }
+            }
+
+            password += @"\ndone\final\";
+            stream.SendAsync(password);
+        }
+
+        /// <summary>
+        /// Checks if a provided email is valid
+        /// </summary>
+        /// <param name="stream">The stream that sended the data</param>
+        /// <param name="dict">The request that the stream sended</param>
+        private void IsEmailValid(GamespyTcpStream stream, Dictionary<string, string> dict)
+        {
+            if (!dict.ContainsKey("email"))
+            {
+                GamespyUtils.SendGPError(stream, 1, "There was an error parsing an incoming request.");
+                return;
+            }
+
+            try
+            {
+                if (databaseDriver.Query("SELECT userid FROM users WHERE LOWER(email)=@P0", dict["email"].ToLowerInvariant()).Count != 0)
+                    stream.SendAsync(@"\vr\1\final\");
+                else
+                    stream.SendAsync(@"\vr\0\final\");
+            }
+            catch (Exception ex)
+            {
+                LogWriter.Log.WriteException(ex);
+                GamespyUtils.SendGPError(stream, 4, "This request cannot be processed because of a database error.");
+            }
+        }
+    }
+}

@@ -5,7 +5,7 @@ namespace GameSpyLib.Common
 {
     public delegate void OnExceptionEvent(Exception exception);
 
-    public delegate void DataRecivedEvent(GamespyTcpStream stream, string Message);
+    public delegate void DataRecivedEvent(string Message);
 
-    public delegate void ConnectionClosed(GamespyTcpStream stream);
+    public delegate void ConnectionClosed();
 }

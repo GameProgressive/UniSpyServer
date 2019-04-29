@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RetroSpyServer.Servers.GPCM
+﻿namespace RetroSpyServer.Servers.GPCM
 {
-    class LoginStatus
+    public enum LoginStatus
     {
+        Connected,
+        Processing,
+        Completed,
+        Disconnected
     }
 }

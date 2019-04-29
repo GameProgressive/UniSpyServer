@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using GameSpyLib.Database;
 using GameSpyLib.Network;
-using GameSpyLib.Server;
-using GameSpyLib.Log;
+using GameSpyLib.Logging;
+using RetroSpyServer.Extensions;
 
-namespace RetroSpyServer.Servers
+namespace RetroSpyServer.Servers.GPCM
 {
     /// <summary>
     /// This server emulates the Gamespy Client Manager Server on port 29900.
     /// This class is responsible for managing the login process.
     /// </summary>
-    public class GPCMServer : PresenceServer
+    public class GPCMServer : GamespyTcpSocket
     {
         /// <summary>
         /// Indicates the timeout of when a connecting client will be disconnected
@@ -65,11 +66,18 @@ namespace RetroSpyServer.Servers
         /// </summary>
         public bool Exiting { get; private set; } = false;
 
+        private DatabaseDriver databaseDriver;
+
         /// <summary>
         /// Creates a new instance of <see cref="GPCMServer"/>
         /// </summary>
-        public GPCMServer(DatabaseDriver databaseDriver) : base(databaseDriver)
+        public GPCMServer(IPEndPoint bindTo, int maxConnections, DatabaseDriver driver) : base(bindTo, maxConnections)
         {
+            if (driver == null)
+                databaseDriver = DatabaseUtility.CreateNewMySQLConnection();
+            else
+                databaseDriver = driver;
+
             GPCMClient.OnDisconnect += GpcmClient_OnDisconnect;
             GPCMClient.OnSuccessfulLogin += GpcmClient_OnSuccessfulLogin;
 
@@ -147,6 +155,8 @@ namespace RetroSpyServer.Servers
             // TODO: Change this
             //FullErrorMessage = Config.GetValue("Settings", "LoginServerFullMessage").Replace("\"", "");
             FullErrorMessage = "";
+
+            StartAcceptAsync();
         }
 
         ~GPCMServer()
@@ -163,6 +173,11 @@ namespace RetroSpyServer.Servers
             // Stop accepting new connections
             IgnoreNewConnections = true;
             Exiting = true;
+
+
+            // Unregister events so we dont get a shit ton of calls
+            GPCMClient.OnSuccessfulLogin -= GpcmClient_OnSuccessfulLogin;
+            GPCMClient.OnDisconnect -= GpcmClient_OnDisconnect;
 
             // Discard the poll timer
             PollTimer.Stop();
@@ -310,7 +325,7 @@ namespace RetroSpyServer.Servers
 
         protected override void OnException(Exception e) => LogWriter.Log.Write(e.Message, LogLevel.Error);
 
-        protected override void ProcessAccept(TCPStream Stream)
+        protected override void ProcessAccept(GamespyTcpStream Stream)
         {
             // Get our connection id
             long connId = Interlocked.Increment(ref ConnectionCounter);

@@ -15,6 +15,8 @@ namespace RetroSpyServer.Servers
 
         private GPSP.GPSPServer gpspServer = null;
 
+        private GPCM.GPCMServer gpcmServer = null;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -103,6 +105,8 @@ namespace RetroSpyServer.Servers
             {
                 case "GPSP":
                     return gpspServer != null && !gpspServer.IsDisposed;
+                case "GPCM":
+                    return gpcmServer != null && !gpcmServer.IsDisposed;
             }
 
             return false;
@@ -125,6 +129,9 @@ namespace RetroSpyServer.Servers
                 case "GPSP":
                     gpspServer = new GPSP.GPSPServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
+                case "GPCM":
+                    gpcmServer = new GPCM.GPCMServer(new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections, databaseDriver);
+                    break;
             }
         }
 
@@ -138,6 +145,9 @@ namespace RetroSpyServer.Servers
             {
                 case "GPSP":
                     gpspServer?.Dispose();
+                    break;
+                case "GPCM":
+                    gpcmServer?.Dispose();
                     break;
             }
         }

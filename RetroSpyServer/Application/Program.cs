@@ -105,6 +105,8 @@ namespace RetroSpyServer
             {
                 ConfigManager.Load();
 
+                LogWriter.Log.MiniumLogLevel = ConfigManager.Configuration.LogLevel;
+
                 manager = new ServerManager();
 
                 LogWriter.Log.Write("Server successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
