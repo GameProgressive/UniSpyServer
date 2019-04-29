@@ -92,10 +92,5 @@ namespace RetroSpyServer.Extensions
 
             return uint.Parse(Rows[0]["profileid"].ToString());
         }
-
-        public static void UpdateUser(DatabaseDriver databaseDriver, uint playerId, string Country)
-        {
-            databaseDriver.Execute("UPDATE profiles SET countrycode=@P0 WHERE `profileid`=@P1", Country, playerId);
-        }
     }
 }

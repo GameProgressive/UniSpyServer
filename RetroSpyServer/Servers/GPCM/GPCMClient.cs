@@ -209,7 +209,7 @@ namespace RetroSpyServer.Servers.GPCM
         public int PlayerConnectionType { get; protected set; }
         public int PlayerPicture { get; protected set; }
         public int PlayerInterests { get; protected set; }
-        public uint PlayerPublicMask { get; protected set; }
+        public PublicMasks PlayerPublicMask { get; protected set; }
         public int PlayerOwnership { get; protected set; }
         public ushort PlayerBirthday { get; protected set; }
         public ushort PlayerBirthmonth { get; protected set; }
@@ -326,6 +326,96 @@ namespace RetroSpyServer.Servers.GPCM
         {
             // Preapare to be unloaded from memory
             Disposed = true;
+        }
+
+        /// <summary>
+        /// Check if a date is correct
+        /// </summary>
+        /// <param name="day"></param>
+        /// <param name="month"></param>
+        /// <param name="year"></param>
+        /// <returns>True if the date is valid, otherwise false</returns>
+        protected bool IsValidDate(ushort day, ushort month, ushort year)
+        {
+            // Check for a blank.
+            /////////////////////
+            if ((day == 0) && (month == 0) && (year == 0))
+                return false;
+
+            // Validate the day of the month.
+            /////////////////////////////////
+            switch (month)
+            {
+                // No month.
+                ////////////
+                case 0:
+                    // Can't specify a day without a month.
+                    ///////////////////////////////////////
+                    if (day != 0)
+                        return false;
+                    break;
+
+                // 31-day month.
+                ////////////////
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    if (day > 31)
+                        return false;
+                    break;
+
+                // 30-day month.
+                ////////////////
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    if (day > 30)
+                        return false;
+                    break;
+
+                // 28/29-day month.
+                ///////////////////
+                case 2:
+                    // Leap year?
+                    /////////////
+                    if ((((year % 4) == 0) && ((year % 100) != 0)) || ((year % 400) == 0))
+                    {
+                        if (day > 29)
+                            return false;
+                    }
+                    else
+                    {
+                        if (day > 28)
+                            return false;
+                    }
+                    break;
+
+                // Invalid month.
+                /////////////////
+                default:
+                    return false;
+            }
+
+            // Check that the date is in the valid range.
+            /////////////////////////////////////////////
+            if (year < 1900)
+                return false;
+            if (year > 2079)
+                return false;
+            if (year == 2079)
+            {
+                if (month > 6)
+                    return false;
+                if ((month == 6) && (day > 6))
+                    return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -669,7 +759,12 @@ namespace RetroSpyServer.Servers.GPCM
 
                 PlayerLatitude = float.Parse(QueryResult["latitude"].ToString());
                 PlayerLongitude = float.Parse(QueryResult["longitude"].ToString());
-                PlayerPublicMask = uint.Parse(QueryResult["publicmask"].ToString());
+
+                PublicMasks mask;
+                if (!Enum.TryParse(QueryResult["publicmask"].ToString(), out mask))
+                    PlayerPublicMask = PublicMasks.MASK_ALL;
+                else
+                    PlayerPublicMask = mask;
 
                 string challengeData = "";
 
@@ -1046,9 +1141,331 @@ namespace RetroSpyServer.Servers.GPCM
         private void UpdateUser(Dictionary<string, string> Recv)
         {
             // Set clients country code
+            if (!Recv.ContainsKey("sesskey"))
+                return;
+
+            ushort ssk;
+            if (!ushort.TryParse(Recv["sesskey"], out ssk))
+                return;
+
+            if (ssk != SessionKey)
+                return;
+
+            string query = "UPDATE profiles SET";
+            object[] passData = new object[22] {
+                null, // publicmask : 0
+                null, // firstname
+                null, // lastname
+                null, // icq
+                null, // homepage
+                null, // zipcode
+                null, // countrycode
+                null, // birthday
+                null, // sex
+                null, // aim
+                null, // pic
+                null, // occ
+                null, // ind
+                null, // inc
+                null, // mar
+                null, // chc
+                null, // i1
+                null, // nick
+                null, // uniquenick
+                null, // Bithmonth
+                null, // Birthyear
+                null  // ProfileID
+            };
+
+            if (Recv.ContainsKey("publicmask"))
+            {
+                PublicMasks mask;
+                if (Enum.TryParse(Recv["publicmask"], out mask))
+                {
+                    if (PlayerPublicMask != mask)
+                    {
+                        query += ", publicmask=@P0";
+                        PlayerPublicMask = mask;
+                        passData[0] = mask;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("firstname"))
+            {
+                if (Recv["firstname"] != PlayerFirstName)
+                {
+                    query += ", firstname=@P1";
+                    PlayerFirstName = Recv["firstname"];
+                    passData[1] = PlayerFirstName;
+                }
+            }
+
+            if (Recv.ContainsKey("lastname"))
+            {
+                if (Recv["lastname"] != PlayerLastName)
+                {
+                    query += ", lastname=@P2";
+                    PlayerFirstName = Recv["lastname"];
+                    passData[2] = PlayerLastName;
+                }
+            }
+
+            if (Recv.ContainsKey("icquin"))
+            {
+                int icq = 0;
+
+                if (int.TryParse(Recv["icquin"], out icq))
+                {
+                    if (icq != PlayerICQ)
+                    {
+                        query += "icq=@P3 ";
+                        PlayerICQ = icq;
+                        passData[3] = icq;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("homepage"))
+            {
+                if (Recv["homepage"] != PlayerHomepage)
+                {
+                    query += ", homepage=@P4";
+                    PlayerHomepage = Recv["homepage"];
+                    passData[4] = PlayerHomepage;
+                }
+            }
+
+            if (Recv.ContainsKey("zipcode"))
+            {
+                if (Recv["zipcode"] != PlayerZIPCode)
+                {
+                    query += ", zipcode=@P5";
+                    PlayerZIPCode = Recv["zipcode"];
+                    passData[5] = PlayerZIPCode;
+                }
+            }
+
+            if (Recv.ContainsKey("countrycode"))
+            {
+                if (Recv["countrycode"] != PlayerCountryCode)
+                {
+                    query += ", countrycode=@P6";
+                    PlayerCountryCode = Recv["zipcode"];
+                    passData[6] = PlayerCountryCode;
+                }
+            }
+
+            if (Recv.ContainsKey("birthday"))
+            {
+                int date;
+                if (int.TryParse(Recv["birthday"], out date))
+                {
+                    ushort d = (ushort)((date >> 24) & 0xFF);
+                    ushort m = (ushort)((date >> 16) & 0xFF);
+                    ushort y = (ushort)(date & 0xFFFF);
+
+                    if (IsValidDate(d, m, y))
+                    {
+                        if (PlayerBirthday != d)
+                        {
+                            query += ", birthday=@P6";
+                            passData[6] = d;
+                            PlayerBirthday = d;
+                        }
+
+                        if (PlayerBirthmonth != m)
+                        {
+                            query += ", birthmonth=@P19";
+                            passData[19] = m;
+                            PlayerBirthmonth = m;
+                        }
+                        
+                        if (PlayerBirthyear != y)
+                        {
+                            query += ", birthyear=@P20";
+                            passData[20] = y;
+                            PlayerBirthyear = y;
+                        }
+                    }
+                }
+
+
+                if (Recv["countrycode"] != PlayerCountryCode)
+                {
+                    query += ", countrycode=@P7";
+                    PlayerCountryCode = Recv["zipcode"];
+                    passData[7] = PlayerCountryCode;
+                }
+            }
+
+
+            if (Recv.ContainsKey("sex"))
+            {
+                PlayerSexType sex;
+                if (Enum.TryParse(Recv["sex"], out sex))
+                {
+                    if (PlayerSex != sex)
+                    {
+                        query += "sex=@P8";
+                        PlayerSex = sex;
+
+                        if (PlayerSex == PlayerSexType.MALE)
+                            passData[8] = "MALE";
+                        else if (PlayerSex == PlayerSexType.FEMALE)
+                            passData[8] = "FEMALE";
+                        else
+                            passData[8] = "PAT";
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("aim"))
+            {
+                if (Recv["aim"] != PlayerAim)
+                {
+                    query += ", aim=@P9";
+                    PlayerAim = Recv["aim"];
+                    passData[9] = PlayerAim;
+                }
+            }
+
+            if (Recv.ContainsKey("pic"))
+            {
+                int pic = 0;
+
+                if (int.TryParse(Recv["pic"], out pic))
+                {
+                    if (pic != PlayerPicture)
+                    {
+                        query += ", picture=@P10";
+                        PlayerPicture = pic;
+                        passData[10] = pic;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("occ"))
+            {
+                int occ = 0;
+
+                if (int.TryParse(Recv["occ"], out occ))
+                {
+                    if (occ != PlayerOccupation)
+                    {
+                        query += ", occupationid=@P11";
+                        PlayerOccupation = occ;
+                        passData[11] = occ;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("ind"))
+            {
+                int ind = 0;
+
+                if (int.TryParse(Recv["ind"], out ind))
+                {
+                    if (ind != PlayerIndustryID)
+                    {
+                        query += ", industryid=@P12";
+                        PlayerIndustryID = ind;
+                        passData[12] = ind;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("inc"))
+            {
+                int inc = 0;
+
+                if (int.TryParse(Recv["inc"], out inc))
+                {
+                    if (inc != PlayerIncomeID)
+                    {
+                        query += ", industryid=@P13";
+                        PlayerIncomeID = inc;
+                        passData[13] = inc;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("mar"))
+            {
+                int mar = 0;
+
+                if (int.TryParse(Recv["mar"], out mar))
+                {
+                    if (mar != PlayerMarried)
+                    {
+                        query += ", marriedid=@P14";
+                        PlayerMarried = mar;
+                        passData[14] = mar;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("chc"))
+            {
+                int chc = 0;
+
+                if (int.TryParse(Recv["chc"], out chc))
+                {
+                    if (chc != PlayerChildCount)
+                    {
+                        query += ", childcount=@P15";
+                        PlayerChildCount = chc;
+                        passData[15] = chc;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("i1"))
+            {
+                int i1 = 0;
+
+                if (int.TryParse(Recv["i1"], out i1))
+                {
+                    if (i1 != PlayerInterests)
+                    {
+                        query += ", interests1=@P16";
+                        PlayerInterests = i1;
+                        passData[16] = i1;
+                    }
+                }
+            }
+
+            if (Recv.ContainsKey("nick"))
+            {
+                if (Recv["nick"] != PlayerNick)
+                {
+                    query += ", nick=@P17";
+                    PlayerNick = Recv["nick"];
+                    passData[17] = PlayerNick;
+                }
+            }
+
+            if (Recv.ContainsKey("uniquenick"))
+            {
+                if (Recv["uniquenick"] != PlayerUniqueNick)
+                {
+                    query += ", uniquenick=@P18";
+                    PlayerHomepage = Recv["uniquenick"];
+                    passData[18] = PlayerUniqueNick;
+                }
+            }
+
+            if (query == "UPDATE profiles SET")
+                return;
+
+            query = query.Replace("SET,", "SET");
+
+            passData[21] = PlayerId;
+            query += " WHERE `profileid`=@P21";
+
             try
             {
-                DatabaseUtility.UpdateUser(databaseDriver, PlayerId, Recv["countrycode"]);
+                databaseDriver.Query(query, passData);
             }
             catch (Exception e)
             {
