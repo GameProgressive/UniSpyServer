@@ -2,9 +2,11 @@
 
 namespace RetroSpyServer.Config
 {
-    public class ServerConfiguration
+    public class ServerConfigurationArttributes
     {
         public string Hostname;
+
+        public string Name;
 
         public int MaxConnections;
 

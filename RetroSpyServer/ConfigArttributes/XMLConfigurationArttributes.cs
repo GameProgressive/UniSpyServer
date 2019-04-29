@@ -4,11 +4,13 @@ using GameSpyLib.Logging;
 namespace RetroSpyServer.Config
 {
     [XmlRoot("RetroSpy", IsNullable = false)]
-    public class XMLConfiguration
+    public class XMLConfigurationArttributes
     {
-        public GPSPConfiguration GPSP;
+        public GPSPConfigurationArttributes GPSP;        
 
-        public DatabaseConfiguration Database;
+        public DatabaseConfigurationArttributes Database;
+
+        public ServerConfigurationArttributes[] Servers;
 
         public LogLevel LogLevel;
 

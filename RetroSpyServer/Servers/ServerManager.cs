@@ -22,6 +22,7 @@ namespace RetroSpyServer.Servers
         public ServerManager()
         {
             Create();
+            
         }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace RetroSpyServer.Servers
         /// <param name="engine">The database engine to create</param>
         public void Create()
         {
-            DatabaseConfiguration cfg = Application.Config.GetXMLConfiguration().Database;
+            DatabaseConfigurationArttributes cfg = Application.ConfigManager.GetXMLConfiguration().Database;
 
             // Determine which database is using and create the database connection
             switch (cfg.Type)
@@ -111,7 +112,7 @@ namespace RetroSpyServer.Servers
         /// <param name="defaultPort">A default port if no port is specified</param>
         public void StartServer(string serverName, int defaultPort)
         {
-            ServerConfiguration cfg = Application.Config.GetServerConfiguration(serverName);
+            ServerConfigurationArttributes cfg = Application.ConfigManager.GetServerConfiguration(serverName);
 
             int Port = cfg.Port;
             if (Port == 0)

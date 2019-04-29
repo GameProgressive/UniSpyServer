@@ -3,7 +3,7 @@ using GameSpyLib.Database;
 
 namespace RetroSpyServer.Config
 {
-    public class DatabaseConfiguration
+    public class DatabaseConfigurationArttributes
     {
         [XmlAttribute]
         public DatabaseEngine Type;

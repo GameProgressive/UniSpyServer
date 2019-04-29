@@ -95,7 +95,14 @@ namespace RetroSpyServer
 
             try
             {
-                Application.Config.Load();
+                try
+                {
+                    Application.ConfigManager.Load();
+                }
+                catch (Exception e)
+                {
+                    LogWriter.Log.Write(e.ToString(),LogLevel.Error);
+                }
 
                 manager = new ServerManager();
 

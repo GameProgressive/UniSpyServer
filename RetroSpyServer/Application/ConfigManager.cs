@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
-using System.Collections.Generic;
-using GameSpyLib.Logging;
-using GameSpyLib.Database;
 using RetroSpyServer.Config;
 
 namespace RetroSpyServer.Application
@@ -12,13 +8,14 @@ namespace RetroSpyServer.Application
     /// <summary>
     /// This class represents an XML configuration parser and saver
     /// </summary>
-    public class Config
+    public class ConfigManager
     {
-        private static XMLConfiguration XmlConfiguration = null;
+        private static XMLConfigurationArttributes XmlConfiguration = null;
 
-        private static ServerConfiguration DefaultServerConfiguration = null;
+        private static ServerConfigurationArttributes DefaultServerConfiguration = null;
 
-        public static XMLConfiguration GetXMLConfiguration()
+
+        public static XMLConfigurationArttributes GetXMLConfiguration()
         {
             return XmlConfiguration;
         }
@@ -27,11 +24,11 @@ namespace RetroSpyServer.Application
         {
             FileStream stream = new FileStream(Path.Combine(Program.basePath, "RetroSpyServer.xml"), FileMode.OpenOrCreate);
 
-            XmlSerializer serializer = new XmlSerializer(typeof(XMLConfiguration));
-            XmlConfiguration = (XMLConfiguration)serializer.Deserialize(stream);
+            XmlSerializer serializer = new XmlSerializer(typeof(XMLConfigurationArttributes));
+            XmlConfiguration = (XMLConfigurationArttributes)serializer.Deserialize(stream);
             stream.Close();
 
-            DefaultServerConfiguration = new ServerConfiguration
+            DefaultServerConfiguration = new ServerConfigurationArttributes
             {
                 Name = "Default",
                 Disabled = false,
@@ -47,19 +44,20 @@ namespace RetroSpyServer.Application
         {
             FileStream stream = new FileStream(Path.Combine(Program.basePath, "RetroSpyServer.xml"), FileMode.Create);
 
-            XmlSerializer serializer = new XmlSerializer(typeof(XMLConfiguration));
+            XmlSerializer serializer = new XmlSerializer(typeof(XMLConfigurationArttributes));
             serializer.Serialize(stream, XmlConfiguration);
             stream.Close();
 
             return true;
         }
 
-        public static ServerConfiguration GetServerConfiguration(string name)
+        public static ServerConfigurationArttributes GetServerConfiguration(string name)
         {
             if (XmlConfiguration.Servers == null)
                 return DefaultServerConfiguration;
 
-            foreach (ServerConfiguration cfg in XmlConfiguration.Servers)
+            //Check which servers are in the XML file
+            foreach (ServerConfigurationArttributes cfg in XmlConfiguration.Servers)
             {
                 if (cfg.Name.Equals(name.ToUpper()))
                     return cfg;
