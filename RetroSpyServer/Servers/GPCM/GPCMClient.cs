@@ -305,6 +305,7 @@ namespace RetroSpyServer.Servers.GPCM
             Stream = ConnectionStream;
             Stream.OnDisconnect += Stream_OnDisconnect;
             Stream.DataReceived += Stream_DataReceived;
+            Stream.IsMessageFinished += Stream_IsMessageFinished;
             Stream.BeginReceive();
         }
 
@@ -345,6 +346,7 @@ namespace RetroSpyServer.Servers.GPCM
             {
                 Stream.OnDisconnect -= Stream_OnDisconnect;
                 Stream.DataReceived -= Stream_DataReceived;
+                Stream.IsMessageFinished -= Stream_IsMessageFinished;
                 Stream.Close(reason == DisconnectReason.ForcedServerShutdown);
             }
             catch { }
@@ -386,12 +388,26 @@ namespace RetroSpyServer.Servers.GPCM
 
         #region Stream Callbacks
 
+        private bool Stream_IsMessageFinished(string message)
+        {
+            if (message.EndsWith("\\final\\"))
+                return true;
+
+            return false;
+        }
+
         /// <summary>
         /// Main listner loop. Keeps an open stream between the client and server while
         /// the client is logged in / playing
         /// </summary>
         private void Stream_DataReceived(string message)
         {
+            if (message[0] != '\\')
+            {
+                GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                return;
+            }
+
             // Read client message, and parse it into key value pairs
             string[] recieved = message.TrimStart('\\').Split('\\');
             switch (recieved[0])

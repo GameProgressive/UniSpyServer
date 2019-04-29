@@ -47,6 +47,15 @@ namespace RetroSpyServer.Servers.GPSP
             // Init a new client stream class
             Stream = client;
             Stream.OnDisconnect += () => Dispose();
+
+            Stream.IsMessageFinished += (string message) =>
+            {
+                if (message.EndsWith("\\final\\"))
+                    return true;
+
+                return false;
+            };
+
             Stream.DataReceived += (message) =>
             {
                 // Read client message, and parse it into key value pairs
@@ -127,7 +136,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// <param name="message">The message the stream sended</param>
         protected void ProcessDataReceived(string message)
         {
-            if (!message.EndsWith("\\final\\") || message[0] != '\\')
+            if (message[0] != '\\')
             {
                 GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
                 return;

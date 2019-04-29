@@ -18,13 +18,13 @@ namespace GameSpyLib.Network
         /// it will be sent over multiple receive operations, so we store the message parts
         /// here until we recieve the \final\ delimiter.
         /// </summary>
-        protected StringBuilder RecvMessage = new StringBuilder(256);
+        protected StringBuilder RecvMessage = new StringBuilder(4096);
 
         /// <summary>
         /// Our message to send to the client. If the message is too long, it will be sent
         /// over multiple write operations, so we store the message here until its all sent
         /// </summary>
-        protected List<byte> SendMessage = new List<byte>(256);
+        protected List<byte> SendMessage = new List<byte>(4096);
 
         /// <summary>
         /// The current send offset when sending asynchronously
@@ -40,6 +40,8 @@ namespace GameSpyLib.Network
         /// Our connected socket
         /// </summary>
         public Socket Connection;
+
+        protected int DataAttempt = 0;
 
         /// <summary>
         /// Contains the GamespyTcpSocket that owns this object
@@ -92,9 +94,14 @@ namespace GameSpyLib.Network
         public event DataRecivedEvent DataReceived;
 
         /// <summary>
-        /// Event fire when the remote connection is closed
+        /// Event fired when the remote connection is closed
         /// </summary>
         public event ConnectionClosed OnDisconnect;
+
+        /// <summary>
+        /// Event fired to check if the message is finished or not (required for gp* servers)
+        /// </summary>
+        public event MessageFinished IsMessageFinished;
 
         /// <summary>
         /// An object to lock onto
@@ -256,12 +263,28 @@ namespace GameSpyLib.Network
                 // Process Message
                 string received = RecvMessage.ToString();
 
-                if (LogWriter.Log.DebugSockets)
-                    LogWriter.Log.Write("Received TCP data: " + received, LogLevel.Debug);
+                if (DataAttempt < 5)
+                {
+                    if (IsMessageFinished.Invoke(received))
+                    {
+                        if (LogWriter.Log.DebugSockets)
+                            LogWriter.Log.Write("Received TCP data: " + received, LogLevel.Debug);
 
-                // tell our parent that we recieved a message
-                RecvMessage.Clear(); // Clear old junk
-                DataReceived.Invoke(received);
+                        DataAttempt = 0;
+
+                        // tell our parent that we recieved a message
+                        RecvMessage.Clear(); // Clear old junk
+                        DataReceived.Invoke(received);
+                    }
+
+                    DataAttempt++;
+                }
+                else
+                {
+                    // Looks like the client is sending a lot of data that is not valid
+                    LogWriter.Log.Write("TCP stream {0} is sending a lot of data! Connection closed.", LogLevel.Info, RemoteEndPoint);
+                    Close(false);
+                }
             }
 
             // Begin receiving again

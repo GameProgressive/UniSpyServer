@@ -1,5 +1,4 @@
 ﻿using System;
-using GameSpyLib.Network;
 
 namespace GameSpyLib.Common
 {
@@ -8,4 +7,6 @@ namespace GameSpyLib.Common
     public delegate void DataRecivedEvent(string Message);
 
     public delegate void ConnectionClosed();
+
+    public delegate bool MessageFinished(string Message);
 }
