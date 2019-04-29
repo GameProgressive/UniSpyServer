@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<retrospy>
+  <database>
+    <Type>sqlite</Type>
+    <Hostname></Hostname>
+    <Port></Port>
+    <Username></Username>
+    <Password></Password>
+    <Databasename></Databasename>
+  </database>
+
+  <Server Name="GPSP">
+    <Disabled>0</Disabled>
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>29901</Port>
+  </Server>
+
+
+
+</retrospy>
+
