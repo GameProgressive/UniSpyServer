@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RetroSpy>
+  <Database Type="Sqlite">
+  <!--Sqlite\Mysql-->
+    <Port>3306</Port>
+    <Hostname>127.0.0.1</Hostname>
+    <Username>retrospy</Username>
+    <Password>0000</Password>
+    <Databasename>sqlite_retrospy_server.db</Databasename>
+    <!--database name if you choose mysql then using mysql databasename-->
+  </Database>
+  <Servers Name="GPSP">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>29901</Port>
+    <Name>GPSP</Name>
+  </Servers>
+  <Servers Name="GPCM">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>29900</Port>
+    <Name>GPSP</Name>
+  </Servers>
+  <LogLevel>Debug</LogLevel><!--Debug,Info,Warning,Error,Fatal-->  
+</RetroSpy>
