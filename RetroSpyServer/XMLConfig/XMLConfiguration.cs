@@ -3,7 +3,7 @@ using GameSpyLib.Logging;
 
 namespace RetroSpyServer.XMLConfig
 {
-    [XmlRoot("RetroSpy", IsNullable = false)]
+    [XmlRoot("RetroSpy", IsNullable = false)]   
     public class XMLConfiguration
     {
         [XmlArray("Servers")]

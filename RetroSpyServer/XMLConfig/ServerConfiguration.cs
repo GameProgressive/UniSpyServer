@@ -11,8 +11,8 @@ namespace RetroSpyServer.XMLConfig
 
         public int MaxConnections;
 
-        public bool Disabled;
-
         public int Port;
+
+        //public bool Disabled;
     }
 }

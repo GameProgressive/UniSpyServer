@@ -46,6 +46,7 @@ namespace RetroSpyServer
                 IsRunning = false;
             };
 
+            #region Argument Setting
             // Argument switcher
             foreach (var argument in args)
             {
@@ -81,7 +82,9 @@ namespace RetroSpyServer
                 Console.WriteLine("The argument \"--init-path\" requires an argument!");
                 return;
             }
+            #endregion
 
+            #region Path Setting
             if (!Directory.Exists(BasePath))
                 Directory.CreateDirectory(BasePath);
 
@@ -89,6 +92,8 @@ namespace RetroSpyServer
 
             if (!Directory.Exists(logPath))
                 Directory.CreateDirectory(logPath);
+            #endregion
+
 
             LogWriter.Log = new LogWriter(string.Format(Path.Combine(logPath, "{0}.log"), DateTime.Now.ToLongDateString()));
 
@@ -104,9 +109,9 @@ namespace RetroSpyServer
             try
             {
                 ConfigManager.Load();
-
-                LogWriter.Log.MiniumLogLevel = ConfigManager.Configuration.LogLevel;
-
+                //set the loglevel to system
+                LogWriter.Log.MiniumLogLevel = ConfigManager.xmlConfiguration.LogLevel;
+                //create a instance of ServerManager class
                 manager = new ServerManager();
 
                 LogWriter.Log.Write("Server successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
@@ -136,9 +141,11 @@ namespace RetroSpyServer
                 LogWriter.Log.WriteException(e);
             }
 
+            #region Program Dispose
             LogWriter.Log.Write("Goodbye!", LogLevel.Info);
             manager?.Dispose();
             LogWriter.Log.Dispose();
+            #endregion
 
             // Pauses the screen
             if (bool_ConsoleInput)

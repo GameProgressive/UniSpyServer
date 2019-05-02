@@ -9,50 +9,57 @@ namespace RetroSpyServer.XMLConfig
     /// </summary>
     public class ConfigManager
     {
-        public static XMLConfiguration Configuration { get; protected set; }
+        public static XMLConfiguration xmlConfiguration { get; protected set; }
 
         public static bool Load()
         {
             // Load XML file
             {
-                FileStream stream = new FileStream(Path.Combine(Program.BasePath, "RetroSpyServer.xml"), FileMode.OpenOrCreate);
-                stream.Seek(0, SeekOrigin.Begin);
-
+                FileStream fstream = new FileStream(Path.Combine(Program.BasePath, "RetroSpyServer.xml"), FileMode.Open);
+                fstream.Seek(0, SeekOrigin.Begin);
+                //stream.Position = 0;
                 XmlSerializer serializer = new XmlSerializer(typeof(XMLConfiguration));
-                Configuration = (XMLConfiguration)serializer.Deserialize(stream);
-                stream.Close();
+                xmlConfiguration = (XMLConfiguration)serializer.Deserialize(fstream);
+
+                fstream.Close();
             }
 
             // Perform XML validation
             {
-                if (Configuration.Database == null)
+                if (xmlConfiguration.Database == null)
                 {
                     throw new Exception("Database configuration not specified!");
                 }
 
-                if (Configuration.Database.Type == GameSpyLib.Database.DatabaseEngine.Mysql)
+                if (xmlConfiguration.Database.Type == GameSpyLib.Database.DatabaseEngine.Mysql)
                 {
-                    if (Configuration.Database.Username.Length < 1 || 
-                        Configuration.Database.Hostname.Length < 1 || Configuration.Database.Name.Length < 1)
+                    if (xmlConfiguration.Database.Username.Length < 1 ||
+                        xmlConfiguration.Database.Hostname.Length < 1 || xmlConfiguration.Database.Databasename.Length < 1)
                     {
                         throw new Exception("Invalid database configuration!");
                     }
 
-                    if (Configuration.Database.Port < 1)
-                        Configuration.Database.Port = 3306;
+                    if (xmlConfiguration.Database.Port < 1)
+                        xmlConfiguration.Database.Port = 3306;
                 }
 
-                if (Configuration.Servers == null)
+                if (xmlConfiguration.Servers == null)
                 {
                     throw new Exception("Server configuration not specified!");
                 }
 
-                foreach (ServerConfiguration config in Configuration.Servers)
-                {
-                    if (config.Hostname.Length < 1 || config.MaxConnections < 1 || config.Port < 1 || config.Name.Length < 1)
-                        throw new Exception(string.Format("Invalid {0} configuration", config.Name));
+                
 
-                    config.Name = config.Name.ToUpperInvariant();
+                foreach (ServerConfiguration servercfg in xmlConfiguration.Servers)
+                {
+                    
+                    if (servercfg.Hostname.Length < 1 || 
+                        servercfg.MaxConnections < 1 || 
+                        servercfg.Port < 1 || 
+                        servercfg.Name.Length < 1)
+                        throw new Exception(string.Format("Invalid {0} configuration", servercfg.Name));
+
+                    servercfg.Name = servercfg.Name.ToUpperInvariant();
                 }
             }
 

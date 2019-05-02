@@ -40,7 +40,7 @@ namespace RetroSpyServer.Servers
         /// <param name="engine">The database engine to create</param>
         public void Create()
         {
-            DatabaseConfiguration databaseConfiguration = ConfigManager.Configuration.Database;
+            DatabaseConfiguration databaseConfiguration = ConfigManager.xmlConfiguration.Database;
 
             // Determine which database is using and create the database connection
             switch (databaseConfiguration.Type)
@@ -48,7 +48,7 @@ namespace RetroSpyServer.Servers
                 case DatabaseEngine.Mysql:
                     break; // We don't need to create the connection here because each server will automaticly create it's own MySQL connection.
                 case DatabaseEngine.Sqlite:
-                    databaseDriver = new SqliteDatabaseDriver("Data Source=" + databaseConfiguration.Name + ";Version=3;New=False");
+                    databaseDriver = new SqliteDatabaseDriver("Data Source=" + databaseConfiguration.Databasename + ";Version=3;New=False");
                     break;
                 default:
                     throw new Exception("Unknown database engine!");
@@ -67,7 +67,7 @@ namespace RetroSpyServer.Servers
             LogWriter.Log.Write("Successfully connected to the database!", LogLevel.Info);
 
             // Add all servers
-            foreach (ServerConfiguration cfg in ConfigManager.Configuration.Servers)
+            foreach (ServerConfiguration cfg in ConfigManager.xmlConfiguration.Servers)
             {
                 StartServer(cfg);
             }
@@ -88,7 +88,7 @@ namespace RetroSpyServer.Servers
         /// </summary>
         public void StopAllServers()
         {
-            foreach (ServerConfiguration cfg in ConfigManager.Configuration.Servers)
+            foreach (ServerConfiguration cfg in ConfigManager.xmlConfiguration.Servers)
             {
                 StopServer(cfg);
             }
@@ -118,11 +118,11 @@ namespace RetroSpyServer.Servers
         /// <param name="cfg">The configuration of the specific server to run</param>
         public void StartServer(ServerConfiguration cfg)
         {
-            if (cfg.Disabled)
-                return;
+            //if (cfg.Disabled)
+            //    return;
 
-            LogWriter.Log.Write("Starting {2} server at {0}:{1}...", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
-            LogWriter.Log.Write("Maximum connections allowed for server {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
+            LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
+            LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
 
             switch (cfg.Name)
             {
@@ -130,7 +130,7 @@ namespace RetroSpyServer.Servers
                     gpspServer = new GPSP.GPSPServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
                 case "GPCM":
-                    gpcmServer = new GPCM.GPCMServer(new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections, databaseDriver);
+                    gpcmServer = new GPCM.GPCMServer(databaseDriver,new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
             }
         }

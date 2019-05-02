@@ -71,7 +71,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// Creates a new instance of <see cref="GPCMServer"/>
         /// </summary>
-        public GPCMServer(IPEndPoint bindTo, int maxConnections, DatabaseDriver driver) : base(bindTo, maxConnections)
+        public GPCMServer(DatabaseDriver driver,IPEndPoint bindTo, int maxConnections) : base(bindTo, maxConnections)
         {
             if (driver == null)
                 databaseDriver = DatabaseUtility.CreateNewMySQLConnection();

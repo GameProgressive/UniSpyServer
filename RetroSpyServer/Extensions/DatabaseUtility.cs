@@ -15,9 +15,9 @@ namespace RetroSpyServer.Extensions
         /// <returns>An instance of the connection or null if the connection could not be created</returns>
         public static MySqlDatabaseDriver CreateNewMySQLConnection()
         {
-            DatabaseConfiguration cfg = ConfigManager.Configuration.Database;
+            DatabaseConfiguration cfg = ConfigManager.xmlConfiguration.Database;
 
-            MySqlDatabaseDriver driver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", cfg.Hostname, cfg.Name, cfg.Username, cfg.Password, cfg.Port));
+            MySqlDatabaseDriver driver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", cfg.Hostname, cfg.Databasename, cfg.Username, cfg.Password, cfg.Port));
 
             try
             {

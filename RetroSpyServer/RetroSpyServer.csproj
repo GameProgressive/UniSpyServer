@@ -29,6 +29,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Project Items\RetroSpyServer.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Project Items\sqlite_retrospy_server.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="RetroSpyServer.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
