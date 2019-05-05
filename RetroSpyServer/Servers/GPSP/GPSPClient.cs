@@ -6,6 +6,7 @@ using GameSpyLib.Network;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using RetroSpyServer.Application;
+using RetroSpyServer.Extensions;
 
 namespace RetroSpyServer.Servers.GPSP
 {
@@ -31,15 +32,17 @@ namespace RetroSpyServer.Servers.GPSP
         /// </summary>
         public static event GpspConnectionClosed OnDisconnect;
 
-        private DatabaseDriver databaseDriver;
-
+        // private DatabaseDriver databaseDriver;
+        private GPSPDBQuery gPSPDBQuery;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public GPSPClient(GamespyTcpStream client, long connectionId, DatabaseDriver driver)
+        public GPSPClient(GamespyTcpStream client, long connectionId, DatabaseDriver dbdriver)
         {
-            databaseDriver = driver;
+            //databaseDriver = driver;
+            //pass the dbdriver to GPSPDBQuery let GPSPDBQuery class hanle for us
+            gPSPDBQuery = new GPSPDBQuery(dbdriver);
 
             // Generate a unique name for this connection
             ConnectionID = connectionId;
@@ -286,7 +289,8 @@ namespace RetroSpyServer.Servers.GPSP
 
             try
             {
-                queryResult = databaseDriver.Query("SELECT profiles.nick, profiles.uniquenick FROM profiles INNER JOIN users ON profiles.userid=users.userid WHERE LOWER(users.email)=@P0 AND LOWER(users.password)=@P1", dict["email"].ToLowerInvariant(), password.ToLowerInvariant());
+                //get nicknames from GPSPDBQuery class
+                queryResult = gPSPDBQuery.RetriveNicknames(dict["email"],password);
             }
             catch (Exception ex)
             {
@@ -337,7 +341,7 @@ namespace RetroSpyServer.Servers.GPSP
 
             try
             {
-                if (databaseDriver.Query("SELECT userid FROM users WHERE LOWER(email)=@P0", dict["email"].ToLowerInvariant()).Count != 0)
+                if (gPSPDBQuery.IsEmailExists(dict["email"]))
                     stream.SendAsync(@"\vr\1\final\");
                 else
                     stream.SendAsync(@"\vr\0\final\");

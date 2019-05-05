@@ -42,8 +42,8 @@ namespace RetroSpyServer.XMLConfig
                     if (xmlConfiguration.Database.Port < 1)
                         xmlConfiguration.Database.Port = 3306;
                 }
-
-                if (xmlConfiguration.Servers == null)
+                //issue if servers config not exsit this will not throw an exception
+                if (xmlConfiguration.Servers == null || xmlConfiguration.Servers.Length<1)
                 {
                     throw new Exception("Server configuration not specified!");
                 }
