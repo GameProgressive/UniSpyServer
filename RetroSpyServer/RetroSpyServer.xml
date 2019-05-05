@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RetroSpy>
+  <Database Type="Sqlite">  
+    <Port>3306</Port>
+    <Hostname>127.0.0.1</Hostname>
+    <Username>retrospy</Username>
+    <Password>0000</Password>
+    <Databasename>sqlite_retrospy_server.db</Databasename>
+  </Database>
+  <Servers Name="GPSP">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>29901</Port>
+  </Servers>
+  <Servers Name="GPCM">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>29900</Port>
+  </Servers>
+  <LogLevel>Info</LogLevel>
+</RetroSpy>
