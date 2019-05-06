@@ -254,5 +254,27 @@ namespace GameSpyLib.Extensions
             return num;
         }
 
+        /// <summary>
+        /// Encrypts / Descrypts the CDKey Query String
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static string XOR(string s)
+        {
+            const string gamespy = "gamespy";
+            int length = s.Length;
+            char[] data = s.ToCharArray();
+            int index = 0;
+
+            for (int i = 0; length > 0; length--)
+            {
+                if (i >= gamespy.Length)
+                    i = 0;
+
+                data[index++] ^= gamespy[i++];
+            }
+
+            return new String(data);
+        }
     }
 }

@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Servers\CDKEY - 复制\**" />
+    <EmbeddedResource Remove="Servers\CDKEY - 复制\**" />
+    <None Remove="Servers\CDKEY - 复制\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Properties\Resources.Designer.cs" />
   </ItemGroup>
 
@@ -36,7 +42,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RetroSpyServer.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="sqlite_retrospy_server.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
