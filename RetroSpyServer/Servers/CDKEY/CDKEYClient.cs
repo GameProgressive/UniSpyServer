@@ -1,16 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Net;
 using GameSpyLib.Network;
+using GameSpyLib.Logging;
+using GameSpyLib.Extensions;
 namespace RetroSpyServer.Servers.CDKEY
 {
-    public class CDKEYClient:IDisposable
+    public class CDKEYClient
     {
-        public CDKEYClient(GamespyUdpPacket Packet)
+        public GamespyUdpPacket Packet { get; protected set; }
+        public CDKEYClient(string decryptedClientData)
         {
-
+            ProcessDataReceived(decryptedClientData);
         }
 
+        protected void ProcessDataReceived(string decryptedClientData)
+        {            
+            //implement checking sdk in the database
+        }
         /// <summary>
         /// Converts a received parameter array from the client string to a keyValue pair dictionary
         /// </summary>
@@ -31,6 +39,6 @@ namespace RetroSpyServer.Servers.CDKEY
             catch (IndexOutOfRangeException) { }
 
             return Dic;
-        }
+        }       
     }
 }

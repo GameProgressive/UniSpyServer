@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RetroSpy>
-  <Database Type="Sqlite">  
+  <Database Type="Mysql">  
     <Port>3306</Port>
     <Hostname>127.0.0.1</Hostname>
     <Username>retrospy</Username>
     <Password>0000</Password>
-    <Databasename>sqlite_retrospy_server.db</Databasename>
+    <Databasename>retrospy</Databasename>
   </Database>
 <Servers>
   <ServerConfiguration Name="GPSP">

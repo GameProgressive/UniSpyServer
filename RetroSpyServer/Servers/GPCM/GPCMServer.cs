@@ -73,9 +73,9 @@ namespace RetroSpyServer.Servers.GPCM
         /// </summary>
         public GPCMServer(DatabaseDriver driver,IPEndPoint bindTo, int maxConnections) : base(bindTo, maxConnections)
         {
-            if (driver == null)
-                databaseDriver = DatabaseUtility.CreateNewMySQLConnection();
-            else
+            //if (driver == null)
+            //    databaseDriver = GPCMDBQuery.CreateNewMySQLConnection();
+            //else
                 databaseDriver = driver;
 
             GPCMClient.OnDisconnect += GpcmClient_OnDisconnect;

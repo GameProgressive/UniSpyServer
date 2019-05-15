@@ -480,7 +480,7 @@ namespace RetroSpyServer.Servers.GPCM
 
         private bool Stream_IsMessageFinished(string message)
         {
-            if (message.EndsWith("\\final\\"))
+            if (message.EndsWith("\\final\\")) 
                 return true;
 
             return false;
@@ -657,7 +657,7 @@ namespace RetroSpyServer.Servers.GPCM
                 try
                 {
                     if (PlayerUniqueNick != null)
-                        QueryResult = DatabaseUtility.GetUserFromUniqueNick(databaseDriver, Recv["uniquenick"]);
+                        QueryResult = GPCMDBQuery.GetUserFromUniqueNick(databaseDriver, Recv["uniquenick"]);
                     else if (PlayerAuthToken != null)
                     {
                         //TODO! Add the database entry
@@ -665,7 +665,7 @@ namespace RetroSpyServer.Servers.GPCM
                         return;
                     }
                     else
-                        QueryResult = DatabaseUtility.GetUserFromNickname(databaseDriver, PlayerEmail, PlayerNick);
+                        QueryResult = GPCMDBQuery.GetUserFromNickname(databaseDriver, PlayerEmail, PlayerNick);
                 }
                 catch (Exception)
                 {
@@ -889,7 +889,7 @@ namespace RetroSpyServer.Servers.GPCM
             {
                 uint publicMask;
 
-                var Query = DatabaseUtility.GetProfileInfo(databaseDriver, targetPID);
+                var Query = GPCMDBQuery.GetProfileInfo(databaseDriver, targetPID);
                 if (Query == null)
                 {
                     GamespyUtils.SendGPError(Stream, 4, "Unable to get profile information.");
@@ -1091,7 +1091,7 @@ namespace RetroSpyServer.Servers.GPCM
             try
             {
                 // Check to see if user exists
-                if (DatabaseUtility.UserExists(databaseDriver, Recv["nick"]))
+                if (GPCMDBQuery.UserExists(databaseDriver, Recv["nick"]))
                 {
                     Stream.SendAsync(@"\error\\err\516\fatal\\errmsg\This account name is already in use!\id\1\final\");
                     Disconnect(DisconnectReason.CreateFailedUsernameExists);
@@ -1106,7 +1106,7 @@ namespace RetroSpyServer.Servers.GPCM
                     ? "US" : "US";
 
                 // Attempt to create account. If Pid is 0, then we couldnt create the account. TODO: Handle Unique Nickname
-                if ((PlayerId = DatabaseUtility.CreateUser(databaseDriver, Recv["nick"], Password, Recv["email"], Cc, Recv["nick"])) == 0)
+                if ((PlayerId = GPCMDBQuery.CreateUser(databaseDriver, Recv["nick"], Password, Recv["email"], Cc, Recv["nick"])) == 0)
                 {
                     GamespyUtils.SendGPError(Stream, 516, "An error oncurred while creating the account!");
                     Disconnect(DisconnectReason.CreateFailedDatabaseError);

@@ -9,14 +9,12 @@ using GameSpyLib.Logging;
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This object is used as a Network Stream wrapper for Gamespy TCP protocol,
+    /// This object is used as a Network Stream wrapper for Gamespy TCP protocol.
     /// </summary>
     public class GamespyTcpStream : IDisposable
     {
         /// <summary>
-        /// Our message recieved from the client connection. If the message is too long,
-        /// it will be sent over multiple receive operations, so we store the message parts
-        /// here until we recieve the \final\ delimiter.
+        ///The length of message that we can revieved.
         /// </summary>
         protected StringBuilder RecvMessage = new StringBuilder(4096);
 
@@ -24,7 +22,7 @@ namespace GameSpyLib.Network
         /// Our message to send to the client. If the message is too long, it will be sent
         /// over multiple write operations, so we store the message here until its all sent
         /// </summary>
-        protected List<byte> SendMessage = new List<byte>(4096);
+        protected List<byte> SendMessage = new List<byte>(256);
 
         /// <summary>
         /// The current send offset when sending asynchronously

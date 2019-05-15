@@ -8,7 +8,7 @@ namespace GameSpyLib.Network
 {
     /// <summary>
     /// Like the GamespyTcpSocket, this class represents a high perfomance
-    /// UDP socket server
+    /// User Datagram Protocol (UDP) Socket_DGRAM server
     /// </summary>
     public abstract class GamespyUdpSocket : IDisposable
     {
@@ -208,7 +208,7 @@ namespace GameSpyLib.Network
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
-
+            
             Listener.SendToAsync(Packet.AsyncEventArgs);
         }
 

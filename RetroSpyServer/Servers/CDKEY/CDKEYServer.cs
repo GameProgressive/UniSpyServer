@@ -12,7 +12,7 @@ namespace RetroSpyServer.Servers.CDKEY
     public class CDKEYServer : GamespyUdpSocket
     {
 
-        CDKEYClient cDKEYClient;
+        CDKEYClient cdkeyClient;
 
         /// <summary>
         /// 
@@ -44,7 +44,6 @@ namespace RetroSpyServer.Servers.CDKEY
         {
             // If we dont reply, we must manually release the EventArgs back to the pool
             bool replied = false;
-
             try
             {
                 // Decrypt message
@@ -54,19 +53,16 @@ namespace RetroSpyServer.Servers.CDKEY
                 // Ignore keep alive pings
                 if (!decrypted.StartsWith("ka"))
                 {
-                    Dictionary<string, string> recv = cDKEYClient.ConvertToKeyValue(decrypted.Split('\\'));
+                    Dictionary<string, string> recv = cdkeyClient.ConvertToKeyValue(decrypted.Split('\\'));
                     if (recv.ContainsKey("auth") && recv.ContainsKey("resp") && recv.ContainsKey("skey"))
                     {
-                        if (LogWriter.Log.DebugSockets)
-                        {
-                            LogWriter.Log.Write("CDKey Check Requested from: {0}:{1}", LogLevel.Debug,remote.Address, remote.Port);
-                        }                           
+                        LogWriter.Log.Write("CDKey Check Requested from: {0}:{1}", LogLevel.Debug, remote.Address, remote.Port);
 
                         // Normally you would check the CD key database for the CD key MD5, but we arent Gamespy, we dont care
-                        string reply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
+                        string cdkeyAvaliableReply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
 
                         // Set new packet contents, and send a reply
-                        Packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
+                        Packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(cdkeyAvaliableReply)));
                         base.ReplyAsync(Packet);
                         replied = true;
                     }
@@ -76,7 +72,7 @@ namespace RetroSpyServer.Servers.CDKEY
                     }
                     else
                     {
-                        LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug,decrypted);
+                        LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug, decrypted);
                     }
                 }
             }
@@ -91,7 +87,7 @@ namespace RetroSpyServer.Servers.CDKEY
                     base.Release(Packet.AsyncEventArgs);
             }
         }
-                     
+
 
         /// <summary>
         /// Closes the underlying socket

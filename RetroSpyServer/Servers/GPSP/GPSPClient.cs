@@ -34,6 +34,8 @@ namespace RetroSpyServer.Servers.GPSP
 
         // private DatabaseDriver databaseDriver;
         private GPSPDBQuery gPSPDBQuery;
+
+        string sendingBuffer;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -308,22 +310,24 @@ namespace RetroSpyServer.Servers.GPSP
             // We will recycle the "password" variable by storing the response
             // that we have to send to the stream. This is done for save memory space
             // so we don't have to declare a new variable.
-            password = @"\nr\";
-
+            
+            //password = @"\nr\";
+            sendingBuffer = @"\nr\";
             foreach (Dictionary<string, object> row in queryResult)
             {
-                password += @"\nick\";
-                password += row["nick"];
-
+               // password += @"\nick\";
+                sendingBuffer+= @"\nick\";
+              //  password += row["nick"];
+                sendingBuffer += row["nick"];
                 if (sendUniqueNick)
                 {
-                    password += @"\uniquenick\";
-                    password += row["uniquenick"];
+                    sendingBuffer += @"\uniquenick\";
+                    sendingBuffer += row["uniquenick"];
                 }
             }
 
-            password += @"\ndone\final\";
-            stream.SendAsync(password);
+            sendingBuffer += @"\ndone\final\";
+            stream.SendAsync(sendingBuffer);
         }
 
         /// <summary>
@@ -341,7 +345,7 @@ namespace RetroSpyServer.Servers.GPSP
 
             try
             {
-                if (gPSPDBQuery.IsEmailExists(dict["email"]))
+                if (gPSPDBQuery.IsEmailValid(dict["email"]))
                     stream.SendAsync(@"\vr\1\final\");
                 else
                     stream.SendAsync(@"\vr\0\final\");

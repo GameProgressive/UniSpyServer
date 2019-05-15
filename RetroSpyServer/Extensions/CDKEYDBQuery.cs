@@ -3,17 +3,16 @@ using GameSpyLib.Logging;
 using GameSpyLib.Database;
 using RetroSpyServer.XMLConfig;
 using System.Collections.Generic;
-
 namespace RetroSpyServer.Extensions
 {
-    public class GPSPDBQuery
+    public class CDKEYDBQuery
     {
         DatabaseDriver dbdriver = null;
-        public GPSPDBQuery()
+        public CDKEYDBQuery()
         {
             dbdriver = CreateNewMySQLConnection();
         }
-        public GPSPDBQuery(DatabaseDriver dbdriver)
+        public CDKEYDBQuery(DatabaseDriver dbdriver)
         {
             if (dbdriver == null)
                 this.dbdriver = CreateNewMySQLConnection();//this is Mysql method
@@ -29,11 +28,11 @@ namespace RetroSpyServer.Extensions
         {
             DatabaseConfiguration cfg = ConfigManager.xmlConfiguration.Database;
 
-            MySqlDatabaseDriver dbdriver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", cfg.Hostname, cfg.Databasename, cfg.Username, cfg.Password, cfg.Port));
+            MySqlDatabaseDriver driver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", cfg.Hostname, cfg.Databasename, cfg.Username, cfg.Password, cfg.Port));
 
             try
             {
-                dbdriver.Connect();
+                driver.Connect();
             }
             catch (Exception ex)
             {
@@ -41,19 +40,16 @@ namespace RetroSpyServer.Extensions
                 throw ex; // Without database the server cannot start
             }
 
-            return dbdriver;
+            return driver;
         }
-        public bool IsEmailValid(string Email)
-        {
-            if (dbdriver.Query("SELECT profileid FROM profiles WHERE `email`=@P0", Email).Count == 0)
-                return true;
-            else
-                return false;
 
-        }
-        public List<Dictionary<string, object>> RetriveNicknames(string email, string password)
+        /// <summary>
+        /// Checks the md5 of cdkey that client sending is validated in our database
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckCDKEYValidate()
         {
-            return dbdriver.Query("SELECT profiles.nick, profiles.uniquenick FROM profiles INNER JOIN users ON profiles.userid=users.userid WHERE LOWER(users.email)=@P0 AND LOWER(users.password)=@P1", email.ToLowerInvariant(), password.ToLowerInvariant());
+            return true;
         }
     }
 }

@@ -9,9 +9,8 @@ using GameSpyLib.Network;
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This class represents a packet recieved from and/or to be sent to
-    /// a remote UDP connection. This class is essentially a wrapper for
-    /// SocketAsyncEventArgs and Asynchronous reading and writing
+    /// This class represents a packet recieved from and/or to be sent to a remote UDP connection. 
+    /// This class is essentially a wrapper for SocketAsyncEventArgs and Asynchronous reading and writing
     /// </summary>
     public class GamespyUdpPacket
     {

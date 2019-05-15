@@ -7,8 +7,22 @@ using RetroSpyServer.XMLConfig;
 
 namespace RetroSpyServer.Extensions
 {
-    public class DatabaseUtility
+    public class GPCMDBQuery
     {
+        DatabaseDriver dbdriver = null;
+        public GPCMDBQuery()
+        {
+            dbdriver = CreateNewMySQLConnection();
+        }
+        public GPCMDBQuery(DatabaseDriver dbdriver)
+        {
+            if (dbdriver == null)
+                this.dbdriver = CreateNewMySQLConnection();//this is Mysql method
+            else
+                this.dbdriver = dbdriver;//this is SQLite method
+        }
+
+
         /// <summary>
         /// This function creates a new MySQL database connection
         /// </summary>

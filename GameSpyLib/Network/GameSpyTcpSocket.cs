@@ -9,8 +9,7 @@ namespace GameSpyLib.Network
 {
     /// <summary>
     /// This class represents a high performance Async Tcp Socket wrapper
-    /// that is used to act as a base for all Gamespy protocol Tcp
-    /// connections.
+    /// that is used to act as a base for all Gamespy tcp protocol (For example establishing the connection with the client.)
     /// </summary>
     public abstract class GamespyTcpSocket : IDisposable
     {
