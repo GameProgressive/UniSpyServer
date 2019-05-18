@@ -9,6 +9,7 @@ using GameSpyLib.Network;
 using GameSpyLib.Logging;
 using RetroSpyServer.Extensions;
 
+//GPCM represents GameSpy Connection Manager
 namespace RetroSpyServer.Servers.GPCM
 {
     /// <summary>

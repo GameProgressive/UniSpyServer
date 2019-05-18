@@ -6,43 +6,12 @@ using System.Collections.Generic;
 
 namespace RetroSpyServer.Extensions
 {
-    public class GPSPDBQuery
+    public class GPSPDBQuery:DBQueryBase
     {
-        DatabaseDriver dbdriver = null;
-        public GPSPDBQuery()
+        public GPSPDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
         {
-            dbdriver = CreateNewMySQLConnection();
-        }
-        public GPSPDBQuery(DatabaseDriver dbdriver)
-        {
-            if (dbdriver == null)
-                this.dbdriver = CreateNewMySQLConnection();//this is Mysql method
-            else
-                this.dbdriver = dbdriver;//this is SQLite method
         }
 
-        /// <summary>
-        /// This function creates a new MySQL database connection
-        /// </summary>
-        /// <returns>An instance of the connection or null if the connection could not be created</returns>
-        public MySqlDatabaseDriver CreateNewMySQLConnection()
-        {
-            DatabaseConfiguration cfg = ConfigManager.xmlConfiguration.Database;
-
-            MySqlDatabaseDriver dbdriver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", cfg.Hostname, cfg.Databasename, cfg.Username, cfg.Password, cfg.Port));
-
-            try
-            {
-                dbdriver.Connect();
-            }
-            catch (Exception ex)
-            {
-                LogWriter.Log.Write(ex.Message, LogLevel.Fatal);
-                throw ex; // Without database the server cannot start
-            }
-
-            return dbdriver;
-        }
         public bool IsEmailValid(string Email)
         {
             if (dbdriver.Query("SELECT profileid FROM profiles WHERE `email`=@P0", Email).Count == 0)
