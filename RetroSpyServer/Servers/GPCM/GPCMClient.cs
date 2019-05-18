@@ -498,39 +498,49 @@ namespace RetroSpyServer.Servers.GPCM
                 return;
             }
 
-            // Read client message, and parse it into key value pairs
-            string[] recieved = message.TrimStart('\\').Split('\\');
-            switch (recieved[0])
+            string[] submessage = message.Split("\\final\\");
+            
+            foreach (string command in submessage)
             {
-                case "inviteto":
-                    AddProducts(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
-                    break;
-                case "newuser":
-                    CreateNewUser(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
-                    break;
-                case "login":
-                    ProcessLogin(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
-                    break;
-                case "getprofile":
-                    SendProfile(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
-                    break;
-                case "updatepro":
-                    UpdateUser(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
-                    break;
-                case "logout":
-                    Disconnect(DisconnectReason.NormalLogout);
-                    break;
-                case "status":
-                    UpdateStatus(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
-                    break;
-                case "ka":
-                    SendKeepAlive();
-                    break;
-                default:
-                    LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
-                    GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
-                    break;
+                // Read client message, and parse it into key value pairs
+                string[] recieved = command.TrimStart('\\').Split('\\');
+
+                switch (recieved[0])
+                {
+                    case "inviteto":
+                        AddProducts(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
+                        break;
+                    case "newuser":
+                        CreateNewUser(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
+                        break;
+                    case "login":
+                        ProcessLogin(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
+                        break;
+                    case "getprofile":
+                        SendProfile(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
+                        break;
+                    case "updatepro":
+                        UpdateUser(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
+                        break;
+                    case "logout":
+                        Disconnect(DisconnectReason.NormalLogout);
+                        break;
+                    case "status":
+                        UpdateStatus(GamespyUtils.ConvertGPResponseToKeyValue(recieved));
+                        break;
+                    case "ka":
+                        SendKeepAlive();
+                        break;
+                    default:
+                        LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
+                        GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                        break;
+                }
             }
+            
+
+
+
         }
 
         private void AddProducts(Dictionary<string, string> dictionary)

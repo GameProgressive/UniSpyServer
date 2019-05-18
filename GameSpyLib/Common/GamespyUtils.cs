@@ -148,5 +148,55 @@ namespace GameSpyLib.Common
 
             socket.Send(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
         }
+
+        ///// <summary>
+        ///// Check a message sended by TCP whether have multiple commands
+        ///// </summary>
+        ///// <param name="message"></param>
+        ///// <returns></returns>
+        //public static int CheckGPMultiCommands(string message)
+        //{
+        //    string keyWord = @"\final\";
+        //    //set index to the start position, and count of commands to zero;
+        //    int index = 0;
+        //    int commandCount = 0;
+
+        //    while ((index = message.IndexOf(keyWord, index)) != -1)
+        //    {
+        //        //set index to position where the end index of the keyword:@"\final\" 
+        //        index = index + message.IndexOf(keyWord, index) + keyWord.Length;
+        //        //if a keyword:@"\final\" is found then count one;
+        //        commandCount++;
+        //    }
+
+        //    return commandCount;
+        //}
+        ///// <summary>
+        ///// Split multiple command send by single TCP stream and return the subcommand
+        ///// </summary>
+        ///// <param name="message"></param>
+        ///// <returns></returns>
+        //public static string[] SplitMultipleCommand(string message)
+        //{
+        //    string keyWord = @"\final\";
+        //    int preindex = 0;
+        //    int index = 0;
+        //    int commandCount = 0;
+        //    string[] submessage = new string[commandCount];
+        //    while ((index = message.IndexOf(keyWord, index)) != -1)
+        //    {
+        //        //set index to position where the end index of the keyword:@"\final\" 
+        //        index = index + message.IndexOf(keyWord, index) + keyWord.Length;
+        //        //set the substring when first keyword is found
+        //        submessage[commandCount-1] = message.Substring(preindex, index);
+        //        //set the preindex to the current index,
+        //        //when next time the index become the end of next keyword,
+        //        //the preindex will be the next start position.
+        //        preindex = index;
+        //        commandCount++;
+        //    }
+
+        //    return submessage;
+        //}
     }
 }

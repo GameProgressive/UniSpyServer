@@ -7,8 +7,8 @@ namespace GameSpyLib.Logging
 {
     public enum LogLevel : int
     {
-        Debug,
         Info,
+        Debug,
         Warning,
         Error,
         Fatal
@@ -34,7 +34,7 @@ namespace GameSpyLib.Logging
         /// <summary>
         /// If this variable is setted to true, anything the server will send and receive will be logged
         /// </summary>
-        public bool DebugSockets = false;
+        public bool DebugSockets = true;
 
         /// <summary>
         /// Full path to the log file
