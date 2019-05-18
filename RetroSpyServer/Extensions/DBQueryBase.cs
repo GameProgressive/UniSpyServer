@@ -8,12 +8,22 @@ namespace RetroSpyServer.Extensions
 {
     public class DBQueryBase
     {
-
+        //Create dbdriver so can be access from other class but just can set from this class
         public DatabaseDriver dbdriver { get; protected set; }
+
+        /// <summary>
+        /// If there is no DatabaseDriver argument are passed to the constructor,
+        /// then use MySQL method
+        /// </summary>
         public DBQueryBase()
         {
             dbdriver = CreateNewMySQLConnection();
         }
+        /// <summary>
+        /// If there is DatabaseDriver argument are passed to the constructor,
+        /// decide whether use Mysql or Sqlite method.
+        /// </summary>
+        /// <param name="dbdriver">DatabaseDriver argument</param>
         public DBQueryBase(DatabaseDriver dbdriver)
         {
             if (dbdriver == null)

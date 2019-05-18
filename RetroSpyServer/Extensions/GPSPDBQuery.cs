@@ -8,6 +8,9 @@ namespace RetroSpyServer.Extensions
 {
     public class GPSPDBQuery:DBQueryBase
     {
+        public GPSPDBQuery() : base()
+        {
+        }
         public GPSPDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
         {
         }

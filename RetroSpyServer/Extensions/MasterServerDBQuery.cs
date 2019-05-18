@@ -6,8 +6,17 @@ using System.Collections.Generic;
 
 namespace RetroSpyServer.Extensions
 {
-   public class MasterServerDBQuery:DBQueryBase
+    public class MasterServerDBQuery : DBQueryBase
     {
+        public MasterServerDBQuery() : base()
+        {
+        }
+        public MasterServerDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
+        {
+        }
+
+
+
 
     }
 }
