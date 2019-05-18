@@ -345,8 +345,11 @@ namespace RetroSpyServer.Servers.GPSP
 
             try
             {
-                if (gPSPDBQuery.IsEmailValid(dict["email"]))
-                    stream.SendAsync(@"\vr\1\final\");
+                if (GamespyUtils.IsEmailFormatCorrect(dict["email"]))
+                {
+                    if (gPSPDBQuery.IsEmailValid(dict["email"]))
+                        stream.SendAsync(@"\vr\1\final\");
+                }               
                 else
                     stream.SendAsync(@"\vr\0\final\");
             }
@@ -356,5 +359,6 @@ namespace RetroSpyServer.Servers.GPSP
                 GamespyUtils.SendGPError(stream, 4, "This request cannot be processed because of a database error.");
             }
         }
+
     }
 }

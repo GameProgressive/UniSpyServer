@@ -148,6 +148,28 @@ namespace GameSpyLib.Common
 
             socket.Send(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
         }
+        /// <summary>
+        /// Check the correctness of the email account format.
+        /// </summary>
+        /// <param name="email">email account</param>
+        /// <returns></returns>
+        public static bool IsEmailFormatCorrect(string email)
+        {
+            if (email.Contains('@'))
+            {
+                //a correct email format contains the postfix.
+                if (email.Contains(".cn") || email.Contains(".com") || email.Contains(".net"))
+                {
+                    //a correct email format can not contain #$%^&*()!
+                    if (!(email.Contains('#') && email.Contains('&') && email.Contains('$') && email.Contains('*') && email.Contains('(') && email.Contains(')') && email.Contains('!') && email.Contains('^')))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
 
         ///// <summary>
         ///// Check a message sended by TCP whether have multiple commands
