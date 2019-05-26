@@ -9,7 +9,7 @@ using GameSpyLib.Network;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using RetroSpyServer.Application;
-using RetroSpyServer.Extensions;
+using RetroSpyServer.DBQueries;
 
 namespace RetroSpyServer.Servers.GPCM
 {
@@ -157,7 +157,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public GamespyTcpStream Stream { get; protected set; }
+        public GameSpyTCPHandler Stream { get; protected set; }
 
         /// <summary>
         /// The date time of when this connection was created. Used to disconnect user
@@ -196,7 +196,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// Constructor
         /// </summary>
         /// <param name="ReadArgs">The Tcp Client connection</param>
-        public GPCMClient(GamespyTcpStream ConnectionStream, long ConnectionId, DatabaseDriver driver)
+        public GPCMClient(GameSpyTCPHandler ConnectionStream, long ConnectionId, DatabaseDriver driver)
         {
             // Set default variable values
              gPCMDBQuery = new GPCMDBQuery(driver);

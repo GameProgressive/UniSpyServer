@@ -1,9 +1,7 @@
-﻿using System;
-using GameSpyLib.Logging;
+﻿
 using GameSpyLib.Database;
-using RetroSpyServer.XMLConfig;
-using System.Collections.Generic;
-namespace RetroSpyServer.Extensions
+
+namespace RetroSpyServer.DBQueries
 {
     public class CDKEYDBQuery:DBQueryBase
     {

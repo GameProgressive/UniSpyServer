@@ -5,7 +5,7 @@ using GameSpyLib.Database;
 using GameSpyLib.Extensions;
 using RetroSpyServer.XMLConfig;
 
-namespace RetroSpyServer.Extensions
+namespace RetroSpyServer.DBQueries
 {
     public class GPCMDBQuery:DBQueryBase
     {

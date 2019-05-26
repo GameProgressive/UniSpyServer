@@ -130,9 +130,9 @@ namespace GameSpyLib.Common
         /// <param name="stream">The stream that will receive the error</param>
         /// <param name="code">The error code</param>
         /// <param name="error">A string containing the error</param>
-        public static void SendGPError(GamespyTcpStream stream, int code, string error)
+        public static void SendGPError(GameSpyTCPHandler handler, int code, string error)
         {
-            stream.SendAsync(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
+            handler.SendAsync(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
         }
 
         /// <summary>

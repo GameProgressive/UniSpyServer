@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Concurrent;
-using System.Threading;
 using System.Net;
+using System.Threading;
 using GameSpyLib.Database;
-using GameSpyLib.Network;
 using GameSpyLib.Logging;
-using RetroSpyServer.Extensions;
+using GameSpyLib.Network;
 
 namespace RetroSpyServer.Servers.GPSP
 {
-    public class GPSPServer : GamespyTcpSocket
+    public class GPSPServer : GameSpyTCPConnector
     {
 
         /// <summary>
@@ -69,8 +68,8 @@ namespace RetroSpyServer.Servers.GPSP
             GPSPClient.OnDisconnect -= GpspClient_OnDisconnect;
 
             // Disconnected all connected clients
-            foreach (GPSPClient C in Clients.Values)
-                C.Dispose(true);
+            foreach (GPSPClient c in Clients.Values)
+                c.Dispose(true);
 
             // clear clients
             Clients.Clear();
@@ -93,7 +92,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// for handling the processing
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected override void ProcessAccept(GamespyTcpStream Stream)
+        protected override void ProcessAccept(GameSpyTCPHandler Stream)
         {
             // Get our connection id
             long ConID = Interlocked.Increment(ref ConnectionCounter);
@@ -122,7 +121,7 @@ namespace RetroSpyServer.Servers.GPSP
         private void GpspClient_OnDisconnect(GPSPClient client)
         {
             // Release this stream's AsyncEventArgs to the object pool
-            Release(client.Stream);
+            Release(client.handler);
             if (Clients.TryRemove(client.ConnectionID, out client) && !client.Disposed)
                 client.Dispose();
         }

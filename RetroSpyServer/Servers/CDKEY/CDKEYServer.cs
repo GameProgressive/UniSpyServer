@@ -5,14 +5,14 @@ using System.Text;
 using GameSpyLib.Network;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using RetroSpyServer.Servers.CDKEY;
 using GameSpyLib.Extensions;
+
 namespace RetroSpyServer.Servers.CDKEY
 {
-    public class CDKEYServer : GamespyUdpSocket
+    public class CDKEYServer : GameSpyUDPConnector
     {
 
-        CDKEYClient cdkeyClient;
+        CDKEYClient m_cdkeyClient;
 
         /// <summary>
         /// 
@@ -40,20 +40,20 @@ namespace RetroSpyServer.Servers.CDKEY
         ///  \auth\ ... = authenticate cd key, this is what we care about
         ///  \disc\ ... = disconnect cd key, because there's checks if the cd key is in use, which we don't care about really, but we could if we wanted to
         /// </remarks>
-        protected override void ProcessAccept(GamespyUdpPacket Packet)
+        protected override void ProcessAccept(GameSpyUDPHandler handler)
         {
             // If we dont reply, we must manually release the EventArgs back to the pool
             bool replied = false;
             try
             {
                 // Decrypt message
-                IPEndPoint remote = (IPEndPoint)Packet.AsyncEventArgs.RemoteEndPoint;
-                string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(Packet.BytesRecieved)).Trim('\\');
+                IPEndPoint remote = (IPEndPoint)handler.AsyncEventArgs.RemoteEndPoint;
+                string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(handler.BytesRecieved)).Trim('\\');
 
                 // Ignore keep alive pings
                 if (!decrypted.StartsWith("ka"))
                 {
-                    Dictionary<string, string> recv = cdkeyClient.ConvertToKeyValue(decrypted.Split('\\'));
+                    Dictionary<string, string> recv = m_cdkeyClient.ConvertToKeyValue(decrypted.Split('\\'));
                     if (recv.ContainsKey("auth") && recv.ContainsKey("resp") && recv.ContainsKey("skey"))
                     {
                         LogWriter.Log.Write("CDKey Check Requested from: {0}:{1}", LogLevel.Debug, remote.Address, remote.Port);
@@ -62,8 +62,8 @@ namespace RetroSpyServer.Servers.CDKEY
                         string cdkeyAvaliableReply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
 
                         // Set new packet contents, and send a reply
-                        Packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(cdkeyAvaliableReply)));
-                        base.ReplyAsync(Packet);
+                        handler.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(cdkeyAvaliableReply)));
+                        base.ReplyAsync(handler);
                         replied = true;
                     }
                     else if (recv.ContainsKey("disc"))
@@ -84,7 +84,7 @@ namespace RetroSpyServer.Servers.CDKEY
             {
                 // Release so that we can pool the EventArgs to be used on another connection
                 if (!replied)
-                    base.Release(Packet.AsyncEventArgs);
+                    base.Release(handler.AsyncEventArgs);
             }
         }
 

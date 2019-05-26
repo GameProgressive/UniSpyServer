@@ -6,7 +6,7 @@ using GameSpyLib.Network;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using RetroSpyServer.Application;
-using RetroSpyServer.Extensions;
+using RetroSpyServer.DBQueries;
 
 namespace RetroSpyServer.Servers.GPSP
 {
@@ -25,7 +25,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public GamespyTcpStream Stream { get; protected set; }
+        public GameSpyTCPHandler handler { get; protected set; }
 
         /// <summary>
         /// Event fired when the connection is closed
@@ -40,7 +40,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public GPSPClient(GamespyTcpStream client, long connectionId, DatabaseDriver dbdriver)
+        public GPSPClient(GameSpyTCPHandler client, long connectionId, DatabaseDriver dbdriver)
         {
             //databaseDriver = driver;
             //pass the dbdriver to GPSPDBQuery let GPSPDBQuery class hanle for us
@@ -50,10 +50,10 @@ namespace RetroSpyServer.Servers.GPSP
             ConnectionID = connectionId;
 
             // Init a new client stream class
-            Stream = client;
-            Stream.OnDisconnect += () => Dispose();
+            handler = client;
+            handler.OnDisconnect += () => Dispose();
 
-            Stream.IsMessageFinished += (string message) =>
+            handler.IsMessageFinished += (string message) =>
             {
                 if (message.EndsWith("\\final\\"))
                     return true;
@@ -61,7 +61,7 @@ namespace RetroSpyServer.Servers.GPSP
                 return false;
             };
 
-            Stream.DataReceived += (message) =>
+            handler.DataReceived += (message) =>
             {
                 // Read client message, and parse it into key value pairs
                 ProcessDataReceived(message);
@@ -94,8 +94,8 @@ namespace RetroSpyServer.Servers.GPSP
             Disposed = true;
 
             // If connection is still alive, disconnect user
-            if (!Stream.SocketClosed)
-                Stream.Close(DisposeEventArgs);
+            if (!handler.SocketClosed)
+                handler.Close(DisposeEventArgs);
 
             // Call disconnect event
             OnDisconnect?.Invoke(this);
@@ -110,7 +110,7 @@ namespace RetroSpyServer.Servers.GPSP
             // Make sure we have the needed data
             if (!recvData.ContainsKey("nick"))
             {
-                Stream.SendAsync(@"\error\\err\0\fatal\\errmsg\Invalid Query!\id\1\final\");
+                handler.SendAsync(@"\error\\err\0\fatal\\errmsg\Invalid Query!\id\1\final\");
                 return;
             }
 
@@ -121,14 +121,14 @@ namespace RetroSpyServer.Servers.GPSP
                 {
                     int pid = Db.GetPlayerId(recvData["nick"]);
                     if (pid == 0)
-                        Stream.SendAsync(@"\error\\err\265\fatal\\errmsg\Username [{0}] doesn't exist!\id\1\final\", recvData["nick"]);
+                        handler.SendAsync(@"\error\\err\265\fatal\\errmsg\Username [{0}] doesn't exist!\id\1\final\", recvData["nick"]);
                     else
-                        Stream.SendAsync(@"\cur\0\pid\{0}\final\", pid);
+                        handler.SendAsync(@"\cur\0\pid\{0}\final\", pid);
                 }
             }
             catch
             {
-                Stream.SendAsync(@"\error\\err\265\fatal\\errmsg\Database service is Offline!\id\1\final\");
+                handler.SendAsync(@"\error\\err\265\fatal\\errmsg\Database service is Offline!\id\1\final\");
                 //Dispose();
             }
         }*/
@@ -143,7 +143,7 @@ namespace RetroSpyServer.Servers.GPSP
         {
             if (message[0] != '\\')
             {
-                GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                GamespyUtils.SendGPError(handler, 0, "An invalid request was sended.");
                 return;
             }
 
@@ -153,55 +153,55 @@ namespace RetroSpyServer.Servers.GPSP
             switch (recieved[0])
             {
                 case "valid":
-                    IsEmailValid(Stream, dict);
+                    IsEmailValid(handler, dict);
                     break;
                 case "nicks":
-                    RetriveNicknames(Stream, dict);
+                    RetriveNicknames(handler, dict);
                     break;
                 case "check":
-                    CheckAccount(Stream, dict);
+                    CheckAccount(handler, dict);
                     break;
                 case "search":
-                    SearchUser(Stream, dict);
+                    SearchUser(handler, dict);
                     break;
                 case "others":
-                    ReverseBuddies(Stream, dict);
+                    ReverseBuddies(handler, dict);
                     break;
                 case "otherslist":
-                    OnOthersList(Stream, dict);
+                    OnOthersList(handler, dict);
                     break;
                 case "uniquesearch":
-                    SuggestUniqueNickname(Stream, dict);
+                    SuggestUniqueNickname(handler, dict);
                     break;
                 case "profilelist":
-                    OnProfileList(Stream, dict);
+                    OnProfileList(handler, dict);
                     break;
                 case "pmatch":
-                    MatchProduct(Stream, dict);
+                    MatchProduct(handler, dict);
                     break;
                 case "newuser":
-                    CreateUser(Stream, dict);
+                    CreateUser(handler, dict);
                     break;
                 default:
                     LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
-                    GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                    GamespyUtils.SendGPError(handler, 0, "An invalid request was sended.");
                     break;
             }
         }
 
-        private void SuggestUniqueNickname(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void SuggestUniqueNickname(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("uniquesearch", dict);
             GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
         }
 
-        private void OnProfileList(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void OnProfileList(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("profilelist", dict);
             GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
         }
 
-        private void MatchProduct(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void MatchProduct(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
             GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
@@ -212,19 +212,19 @@ namespace RetroSpyServer.Servers.GPSP
         /// </summary>
         /// <param name="stream">The stream that sended the data</param>
         /// <param name="dict">The request that the stream sended</param>
-        private void CreateUser(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void CreateUser(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("newuser", dict);
             GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
         }
 
-        private void OnOthersList(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void OnOthersList(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("otherslist", dict);
             GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
         }
 
-        private void ReverseBuddies(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void ReverseBuddies(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
             GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
@@ -233,13 +233,13 @@ namespace RetroSpyServer.Servers.GPSP
             //stream.SendAsync(@"\others\\odone\final\");
         }
 
-        private void SearchUser(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void SearchUser(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("search", dict);
             GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
         }
 
-        private void CheckAccount(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void CheckAccount(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("check", dict);
             GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
@@ -250,7 +250,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// names that have the specified email address and password combination
         /// </summary>
         /// <param name="recvData"></param>
-        private void RetriveNicknames(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void RetriveNicknames(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             string password;
             bool sendUniqueNick;
@@ -292,7 +292,7 @@ namespace RetroSpyServer.Servers.GPSP
             try
             {
                 //get nicknames from GPSPDBQuery class
-                queryResult = gPSPDBQuery.RetriveNicknames(dict["email"],password);
+                queryResult = gPSPDBQuery.RetriveNicknames(dict["email"], password);
             }
             catch (Exception ex)
             {
@@ -310,14 +310,14 @@ namespace RetroSpyServer.Servers.GPSP
             // We will recycle the "password" variable by storing the response
             // that we have to send to the stream. This is done for save memory space
             // so we don't have to declare a new variable.
-            
+
             //password = @"\nr\";
             sendingBuffer = @"\nr\";
             foreach (Dictionary<string, object> row in queryResult)
             {
-               // password += @"\nick\";
-                sendingBuffer+= @"\nick\";
-              //  password += row["nick"];
+                // password += @"\nick\";
+                sendingBuffer += @"\nick\";
+                //  password += row["nick"];
                 sendingBuffer += row["nick"];
                 if (sendUniqueNick)
                 {
@@ -335,7 +335,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// </summary>
         /// <param name="stream">The stream that sended the data</param>
         /// <param name="dict">The request that the stream sended</param>
-        private void IsEmailValid(GamespyTcpStream stream, Dictionary<string, string> dict)
+        private void IsEmailValid(GameSpyTCPHandler stream, Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("email"))
             {
@@ -349,7 +349,8 @@ namespace RetroSpyServer.Servers.GPSP
                 {
                     if (gPSPDBQuery.IsEmailValid(dict["email"]))
                         stream.SendAsync(@"\vr\1\final\");
-                }               
+                        stream.Close();
+                }
                 else
                     stream.SendAsync(@"\vr\0\final\");
             }

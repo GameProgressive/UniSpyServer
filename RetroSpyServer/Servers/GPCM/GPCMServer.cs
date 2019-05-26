@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Collections.Concurrent;
 using GameSpyLib.Database;
-using GameSpyLib.Network;
 using GameSpyLib.Logging;
-using RetroSpyServer.Extensions;
+using GameSpyLib.Network;
 
 //GPCM represents GameSpy Connection Manager
 namespace RetroSpyServer.Servers.GPCM
@@ -16,7 +14,7 @@ namespace RetroSpyServer.Servers.GPCM
     /// This server emulates the Gamespy Client Manager Server on port 29900.
     /// This class is responsible for managing the login process.
     /// </summary>
-    public class GPCMServer : GamespyTcpSocket
+    public class GPCMServer : GameSpyTCPConnector
     {
         /// <summary>
         /// Indicates the timeout of when a connecting client will be disconnected
@@ -326,7 +324,7 @@ namespace RetroSpyServer.Servers.GPCM
 
         protected override void OnException(Exception e) => LogWriter.Log.Write(e.Message, LogLevel.Error);
 
-        protected override void ProcessAccept(GamespyTcpStream Stream)
+        protected override void ProcessAccept(GameSpyTCPHandler Stream)
         {
             // Get our connection id
             long connId = Interlocked.Increment(ref ConnectionCounter);

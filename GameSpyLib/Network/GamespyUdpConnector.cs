@@ -10,7 +10,7 @@ namespace GameSpyLib.Network
     /// Like the GamespyTcpSocket, this class represents a high perfomance
     /// User Datagram Protocol (UDP) Socket_DGRAM server
     /// </summary>
-    public abstract class GamespyUdpSocket : IDisposable
+    public abstract class GameSpyUDPConnector : IDisposable
     {
         /// <summary>
         /// Max number of concurrent open and active connections.
@@ -61,7 +61,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public bool IsDisposed { get; protected set; }
 
-        public GamespyUdpSocket(IPEndPoint bindTo, int MaxConnections)
+        public GameSpyUDPConnector(IPEndPoint bindTo, int MaxConnections)
         {
             // Create our Socket
             this.Port = Port;
@@ -204,12 +204,12 @@ namespace GameSpyLib.Network
         /// Sends the specified packets data to the client, and releases the resources
         /// </summary>
         /// <param name="Packet"></param>
-        protected void ReplyAsync(GamespyUdpPacket Packet)
+        protected void ReplyAsync(GameSpyUDPHandler handler)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
             
-            Listener.SendToAsync(Packet.AsyncEventArgs);
+            Listener.SendToAsync(handler.AsyncEventArgs);
         }
 
         /// <summary>
@@ -230,16 +230,16 @@ namespace GameSpyLib.Network
                     return;
                 }
 
-                GamespyUdpPacket packet = new GamespyUdpPacket(AcceptEventArg);
+                GameSpyUDPHandler handler = new GameSpyUDPHandler(AcceptEventArg);
 
                 if (LogWriter.Log.DebugSockets)
-                    LogWriter.Log.Write("UDP operation: " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
+                    LogWriter.Log.Write("UDP operation: " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(handler.BytesRecieved).Replace("-", ""), LogLevel.Debug);
 
                 // Begin accepting a new connection
                 StartAcceptAsync();
 
                 // Hand off processing to the parent
-                ProcessAccept(packet);
+                ProcessAccept(handler);
             }
             else
             {
@@ -252,7 +252,7 @@ namespace GameSpyLib.Network
         /// processing the connected client
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected abstract void ProcessAccept(GamespyUdpPacket Packet);
+        protected abstract void ProcessAccept(GameSpyUDPHandler handler);
 
         protected abstract void OnException(Exception e);
     }

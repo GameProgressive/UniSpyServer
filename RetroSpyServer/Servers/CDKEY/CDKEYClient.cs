@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Net;
 using GameSpyLib.Network;
-using GameSpyLib.Logging;
-using GameSpyLib.Extensions;
 namespace RetroSpyServer.Servers.CDKEY
 {
     public class CDKEYClient
     {
-        public GamespyUdpPacket Packet { get; protected set; }
+        public GameSpyUDPHandler handler { get; protected set; }
         public CDKEYClient(string decryptedClientData)
         {
             ProcessDataReceived(decryptedClientData);
