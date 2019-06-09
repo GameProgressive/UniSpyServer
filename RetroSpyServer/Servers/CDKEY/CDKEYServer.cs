@@ -12,10 +12,12 @@ namespace RetroSpyServer.Servers.CDKEY
     public class CDKEYServer : GameSpyUDPConnector
     {
 
-        CDKEYClient m_cdkeyClient;
+        private CDKEYClient m_cdkeyClient;
+
+        bool replied = false;
 
         /// <summary>
-        /// 
+        /// CDKEYServer
         /// </summary>
         /// <param name="dbdriver">if this server do not need databasedriver then do not handle this</param>
         /// <param name="bindTo">pass bind IP and Port in to CDKEYServer</param>
@@ -42,8 +44,23 @@ namespace RetroSpyServer.Servers.CDKEY
         /// </remarks>
         protected override void ProcessAccept(GameSpyUDPHandler handler)
         {
+            KeyCheckResponse(handler);
+        }
+
+
+        /// <summary>
+        /// Closes the underlying socket
+        /// </summary>
+        public void Shutdown()
+        {
+            base.ShutdownSocket();
+            base.Dispose();
+        }
+
+        public void KeyCheckResponse(GameSpyUDPHandler handler)
+        {
             // If we dont reply, we must manually release the EventArgs back to the pool
-            bool replied = false;
+            replied = false;
             try
             {
                 // Decrypt message
@@ -86,16 +103,6 @@ namespace RetroSpyServer.Servers.CDKEY
                 if (!replied)
                     base.Release(handler.AsyncEventArgs);
             }
-        }
-
-
-        /// <summary>
-        /// Closes the underlying socket
-        /// </summary>
-        public void Shutdown()
-        {
-            base.ShutdownSocket();
-            base.Dispose();
         }
     }
 }

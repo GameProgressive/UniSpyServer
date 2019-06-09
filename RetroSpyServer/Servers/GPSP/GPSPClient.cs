@@ -25,7 +25,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public GameSpyTCPHandler handler { get; protected set; }
+        public GameSpyTCPHandler Handler { get; set; }
 
         /// <summary>
         /// Event fired when the connection is closed
@@ -33,27 +33,27 @@ namespace RetroSpyServer.Servers.GPSP
         public static event GpspConnectionClosed OnDisconnect;
 
         // private DatabaseDriver databaseDriver;
-        private GPSPDBQuery gPSPDBQuery;
+        private GPSPDBQuery DBQuery;
 
         string sendingBuffer;
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public GPSPClient(GameSpyTCPHandler client, long connectionId, DatabaseDriver dbdriver)
+        public GPSPClient(GameSpyTCPHandler handler, long connectionId, DatabaseDriver dbdriver)
         {
             //databaseDriver = driver;
             //pass the dbdriver to GPSPDBQuery let GPSPDBQuery class hanle for us
-            gPSPDBQuery = new GPSPDBQuery(dbdriver);
+            DBQuery = new GPSPDBQuery(dbdriver);
 
             // Generate a unique name for this connection
             ConnectionID = connectionId;
 
             // Init a new client stream class
-            handler = client;
-            handler.OnDisconnect += () => Dispose();
+            Handler = handler;
+            Handler.OnDisconnect += () => Dispose();
 
-            handler.IsMessageFinished += (string message) =>
+            Handler.IsMessageFinished += (string message) =>
             {
                 if (message.EndsWith("\\final\\"))
                     return true;
@@ -61,7 +61,7 @@ namespace RetroSpyServer.Servers.GPSP
                 return false;
             };
 
-            handler.DataReceived += (message) =>
+            Handler.DataReceived += (message) =>
             {
                 // Read client message, and parse it into key value pairs
                 ProcessDataReceived(message);
@@ -94,8 +94,8 @@ namespace RetroSpyServer.Servers.GPSP
             Disposed = true;
 
             // If connection is still alive, disconnect user
-            if (!handler.SocketClosed)
-                handler.Close(DisposeEventArgs);
+            if (!Handler.SocketClosed)
+                Handler.Close(DisposeEventArgs);
 
             // Call disconnect event
             OnDisconnect?.Invoke(this);
@@ -143,7 +143,7 @@ namespace RetroSpyServer.Servers.GPSP
         {
             if (message[0] != '\\')
             {
-                GamespyUtils.SendGPError(handler, 0, "An invalid request was sended.");
+                GamespyUtils.SendGPError(Handler, 0, "An invalid request was sended.");
                 return;
             }
 
@@ -153,38 +153,38 @@ namespace RetroSpyServer.Servers.GPSP
             switch (recieved[0])
             {
                 case "valid":
-                    IsEmailValid(handler, dict);
+                    IsEmailValid(Handler, dict);
                     break;
                 case "nicks":
-                    RetriveNicknames(handler, dict);
+                    RetriveNicknames(Handler, dict);
                     break;
                 case "check":
-                    CheckAccount(handler, dict);
+                    CheckAccount(Handler, dict);
                     break;
                 case "search":
-                    SearchUser(handler, dict);
+                    SearchUser(Handler, dict);
                     break;
                 case "others":
-                    ReverseBuddies(handler, dict);
+                    ReverseBuddies(Handler, dict);
                     break;
                 case "otherslist":
-                    OnOthersList(handler, dict);
+                    OnOthersList(Handler, dict);
                     break;
                 case "uniquesearch":
-                    SuggestUniqueNickname(handler, dict);
+                    SuggestUniqueNickname(Handler, dict);
                     break;
                 case "profilelist":
-                    OnProfileList(handler, dict);
+                    OnProfileList(Handler, dict);
                     break;
                 case "pmatch":
-                    MatchProduct(handler, dict);
+                    MatchProduct(Handler, dict);
                     break;
                 case "newuser":
-                    CreateUser(handler, dict);
+                    CreateUser(Handler, dict);
                     break;
                 default:
                     LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
-                    GamespyUtils.SendGPError(handler, 0, "An invalid request was sended.");
+                    GamespyUtils.SendGPError(Handler, 0, "An invalid request was sended.");
                     break;
             }
         }
@@ -292,7 +292,7 @@ namespace RetroSpyServer.Servers.GPSP
             try
             {
                 //get nicknames from GPSPDBQuery class
-                queryResult = gPSPDBQuery.RetriveNicknames(dict["email"], password);
+                queryResult = DBQuery.RetriveNicknames(dict["email"], password);
             }
             catch (Exception ex)
             {
@@ -347,7 +347,7 @@ namespace RetroSpyServer.Servers.GPSP
             {
                 if (GamespyUtils.IsEmailFormatCorrect(dict["email"]))
                 {
-                    if (gPSPDBQuery.IsEmailValid(dict["email"]))
+                    if (DBQuery.IsEmailValid(dict["email"]))
                         stream.SendAsync(@"\vr\1\final\");
                         stream.Close();
                 }

@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common files", "Common file
 	ProjectSection(SolutionItems) = preProject
 		CONVERTING C Plus Plus CODE TO CSharp CODE.MD = CONVERTING C Plus Plus CODE TO CSharp CODE.MD
 		README.MD = README.MD
+		UdpProcess.txt = UdpProcess.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameSpyLib", "GameSpyLib\GameSpyLib.csproj", "{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}"

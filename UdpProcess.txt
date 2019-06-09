@@ -1,0 +1,36 @@
+×´Ì¬»ú
+
+EUdpProcess doProcess(....)
+{
+   do
+   {
+       switch(EUdpProcess)
+       {
+           case EWaitConnect:
+		   {
+		       udpProcessState = EConnecting;
+		       break;
+		   }
+
+		   case EConnecting:
+		   {
+		       break;
+		   }
+
+		   case EConnected:
+		   {
+		       break;
+		   }
+
+		   case EUdpRead:
+		   {
+		       break;
+		   }
+
+		   case EUdpWrite:
+		   {
+		       break;
+		   }
+       }
+   }while(udpProcess != eExit)
+}
