@@ -18,6 +18,11 @@
     <MaxConnections>255</MaxConnections>
     <Port>29900</Port>
   </ServerConfiguration>
+  <ServerConfiguration Name="CDKEY">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>29910</Port>
+  </ServerConfiguration>
 </Servers>
   <LogLevel>Info</LogLevel>
 </RetroSpy>

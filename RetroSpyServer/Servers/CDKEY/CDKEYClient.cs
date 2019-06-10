@@ -1,29 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameSpyLib.Network;
+using GameSpyLib.Database;
+using RetroSpyServer.DBQueries;
+using GameSpyLib.Logging;
 namespace RetroSpyServer.Servers.CDKEY
 {
     public class CDKEYClient
     {
-        private GameSpyUDPConnector connector;
-        public GameSpyUDPHandler handler { get; protected set; }
-        public CDKEYClient(string decryptedClientData)
+        private CDKEYDBQuery DBQuery;
+        
+        public CDKEYClient(DatabaseDriver dbdriver)
         {
-            ProcessDataReceived(decryptedClientData);
+            DBQuery = new CDKEYDBQuery(dbdriver);
         }
-
-        public CDKEYClient(GameSpyUDPConnector parent,GameSpyUDPHandler handler)
-        {
-            connector = parent;
-            this.handler = handler;
-
-        }
-
-        protected void ProcessDataReceived(string decryptedClientData)
-        {            
-            //implement checking sdk in the database
-        }
-
 
         /// <summary>
         /// Converts a received parameter array from the client string to a keyValue pair dictionary
@@ -45,6 +34,19 @@ namespace RetroSpyServer.Servers.CDKEY
             catch (IndexOutOfRangeException) { }
 
             return dict;
-        }       
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="str">MD5cdkey string</param>
+        /// <returns></returns>
+        public bool IsCDKeyValid(string str)
+        {
+            if (DBQuery.IsCDKeyValidate(str))
+                return true;
+            else
+                return false;
+        }
     }
 }

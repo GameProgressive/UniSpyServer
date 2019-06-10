@@ -3,7 +3,7 @@ using GameSpyLib.Database;
 
 namespace RetroSpyServer.DBQueries
 {
-    public class CDKEYDBQuery:DBQueryBase
+    public class CDKEYDBQuery : DBQueryBase
     {
         public CDKEYDBQuery() : base()
         {
@@ -12,7 +12,7 @@ namespace RetroSpyServer.DBQueries
         {
         }
 
-        public bool CheckCDKEYValidate()
+        public bool IsCDKeyValidate(string str)
         {
             //To Do
             return true;

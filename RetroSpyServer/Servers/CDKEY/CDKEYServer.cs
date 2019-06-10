@@ -13,7 +13,7 @@ namespace RetroSpyServer.Servers.CDKEY
     {
 
         private CDKEYClient m_cdkeyClient;
-
+   
         bool replied = false;
 
         /// <summary>
@@ -37,11 +37,7 @@ namespace RetroSpyServer.Servers.CDKEY
         /// <summary>
         /// Called when a connection comes in on the CDKey server
         /// </summary>
-        /// known messages
-        ///  \ka\ = keep alive from the game server every 20s, we don't care about this
-        ///  \auth\ ... = authenticate cd key, this is what we care about
-        ///  \disc\ ... = disconnect cd key, because there's checks if the cd key is in use, which we don't care about really, but we could if we wanted to
-        /// </remarks>
+        
         protected override void ProcessAccept(GameSpyUDPHandler handler)
         {
             KeyCheckResponse(handler);
@@ -57,6 +53,15 @@ namespace RetroSpyServer.Servers.CDKEY
             base.Dispose();
         }
 
+        /// <summary>
+        /// Check the cdkey validation and response
+        /// </summary>
+        /// <param name="handler"></param>
+        /// known messages
+        ///  \ka\ = keep alive from the game server every 20s, we don't care about this
+        ///  \auth\ ... = authenticate cd key, this is what we care about
+        ///  \disc\ ... = disconnect cd key, because there's checks if the cd key is in use, which we don't care about really, but we could if we wanted to
+        /// </remarks>
         public void KeyCheckResponse(GameSpyUDPHandler handler)
         {
             // If we dont reply, we must manually release the EventArgs back to the pool
@@ -71,17 +76,21 @@ namespace RetroSpyServer.Servers.CDKEY
                 if (!decrypted.StartsWith("ka"))
                 {
                     Dictionary<string, string> recv = m_cdkeyClient.ConvertToKeyValue(decrypted.Split('\\'));
+                    //check the cdkey commands in Dictionary<string, string> recv 
                     if (recv.ContainsKey("auth") && recv.ContainsKey("resp") && recv.ContainsKey("skey"))
                     {
                         LogWriter.Log.Write("CDKey Check Requested from: {0}:{1}", LogLevel.Debug, remote.Address, remote.Port);
+                        // cdkey check in database
+                        if (m_cdkeyClient.IsCDKeyValid(recv["skey"]))
+                        {
+                            // Normally you would check the CD key database for the CD key MD5, but we arent Gamespy, we dont care
+                            string cdkeyAvaliableReply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
 
-                        // Normally you would check the CD key database for the CD key MD5, but we arent Gamespy, we dont care
-                        string cdkeyAvaliableReply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
-
-                        // Set new packet contents, and send a reply
-                        handler.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(cdkeyAvaliableReply)));
-                        base.ReplyAsync(handler);
-                        replied = true;
+                            // Set new packet contents, and send a reply
+                            handler.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(cdkeyAvaliableReply)));
+                            base.ReplyAsync(handler);
+                            replied = true;
+                        }                       
                     }
                     else if (recv.ContainsKey("disc"))
                     {

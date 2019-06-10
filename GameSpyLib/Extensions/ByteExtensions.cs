@@ -18,14 +18,5 @@ namespace GameSpyLib.Extensions
             return result.ToString();
         }
 
-
-        public static byte[] GameNametoHex(string gamename)
-        {
-            //convert gamename to lower case
-            gamename = gamename.ToLower();
-            //return the hex byte array
-            return Encoding.ASCII.GetBytes(gamename);
-        }
-
     }
 }
