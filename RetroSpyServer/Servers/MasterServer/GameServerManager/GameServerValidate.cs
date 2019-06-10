@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RetroSpyServer.Servers.MasterServer
 {
-    public class ServerValidate
+    public class GameServerValidate
     {
         /// <summary>
         /// Our hardcoded Server Validation code
@@ -15,7 +15,7 @@ namespace RetroSpyServer.Servers.MasterServer
                 0x47, 0x62, 0x4d, 0x7a, 0x38, 0x41, 0x00
             };
 
-        public ServerValidate(byte[] clientChanllengeData)
+        public GameServerValidate(byte[] clientChanllengeData)
         {
             ServerValidateChanllenge(clientChanllengeData);
         }
