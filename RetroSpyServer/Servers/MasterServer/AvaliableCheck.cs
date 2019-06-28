@@ -61,6 +61,7 @@ namespace RetroSpyServer.Servers.MasterServer
         {
             byte[] uniqueId = new byte[4];
             Array.Copy(request, 1, uniqueId, 0, 4);
+            return null;
 
         }
         /// <summary>

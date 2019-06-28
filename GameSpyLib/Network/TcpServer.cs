@@ -11,7 +11,7 @@ namespace GameSpyLib.Network
     /// This class represents a high performance Async Tcp Socket wrapper
     /// that is used to act as a base for all Gamespy tcp protocol (For example establishing the connection with the client.)
     /// </summary>
-    public abstract class GameSpyTCPConnector : IDisposable
+    public abstract class TcpServer : IDisposable
     {
         /// <summary>
         /// Max number of concurrent open and active connections. Increasing this number
@@ -93,7 +93,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public bool IsDisposed { get; protected set; } = false;
 
-        public GameSpyTCPConnector(IPEndPoint bindTo, int MaxConnections)
+        public TcpServer(IPEndPoint bindTo, int MaxConnections)
         {
             // Create our Socket
             Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -138,7 +138,7 @@ namespace GameSpyLib.Network
             IsListening = true;
         }
 
-        ~GameSpyTCPConnector()
+        ~TcpServer()
         {
             if (!IsDisposed)
                 Dispose();
@@ -198,7 +198,7 @@ namespace GameSpyLib.Network
         /// and free's up another slot for a new client to connect
         /// </summary>
         /// <param name="Stream">The GamespyTcpStream object that is being released.</param>
-        public void Release(GameSpyTCPHandler Stream)
+        public void Release(TcpPacket Stream)
         {
             // If the stream has been released, then we stop here
             if (!IsListening || Stream.Released) return;
@@ -361,10 +361,10 @@ namespace GameSpyLib.Network
             SocketAcceptPool.Push(AcceptEventArg);
 
             // Hand off processing to the parent
-            GameSpyTCPHandler Stream = null;
+            TcpPacket Stream = null;
             try
             {
-                Stream = new GameSpyTCPHandler(this, ReadArgs, WriteArgs);
+                Stream = new TcpPacket(this, ReadArgs, WriteArgs);
                 ProcessAccept(Stream);
             }
             catch (Exception e)
@@ -383,7 +383,7 @@ namespace GameSpyLib.Network
         /// processing the connected client
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected abstract void ProcessAccept(GameSpyTCPHandler Stream);
+        protected abstract void ProcessAccept(TcpPacket Stream);
 
         protected abstract void OnException(Exception e);
     }

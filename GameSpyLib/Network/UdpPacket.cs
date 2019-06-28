@@ -7,7 +7,7 @@ namespace GameSpyLib.Network
     /// This class represents a packet recieved from and/or to be sent to a remote UDP connection. 
     /// This class is essentially a wrapper for SocketAsyncEventArgs and Asynchronous reading and writing
     /// </summary>
-    public class GameSpyUDPHandler
+    public class UdpPacket
     {
         /// <summary>
         /// Our AsycnEventArgs object for reading/writing data
@@ -19,7 +19,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public byte[] BytesRecieved;
 
-        public GameSpyUDPHandler(SocketAsyncEventArgs e)
+        public UdpPacket(SocketAsyncEventArgs e)
         {
             // Get our recived bytes
             BytesRecieved = new byte[e.BytesTransferred];

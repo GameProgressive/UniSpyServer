@@ -9,7 +9,7 @@ using GameSpyLib.Extensions;
 
 namespace RetroSpyServer.Servers.CDKEY
 {
-    public class CDKEYServer : GameSpyUDPConnector
+    public class CDKEYServer : UdpServer
     {
 
         private CDKEYClient m_cdkeyClient;
@@ -38,7 +38,7 @@ namespace RetroSpyServer.Servers.CDKEY
         /// Called when a connection comes in on the CDKey server
         /// </summary>
         
-        protected override void ProcessAccept(GameSpyUDPHandler handler)
+        protected override void ProcessAccept(UdpPacket handler)
         {
             KeyCheckResponse(handler);
         }
@@ -62,7 +62,7 @@ namespace RetroSpyServer.Servers.CDKEY
         ///  \auth\ ... = authenticate cd key, this is what we care about
         ///  \disc\ ... = disconnect cd key, because there's checks if the cd key is in use, which we don't care about really, but we could if we wanted to
         /// </remarks>
-        public void KeyCheckResponse(GameSpyUDPHandler handler)
+        public void KeyCheckResponse(UdpPacket handler)
         {
             // If we dont reply, we must manually release the EventArgs back to the pool
             replied = false;

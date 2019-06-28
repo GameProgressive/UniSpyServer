@@ -17,7 +17,7 @@ namespace RetroSpyServer.DBQueries
 
         public bool IsEmailValid(string Email)
         {
-            if (dbdriver.Query("SELECT profileid FROM profiles WHERE `email`=@P0", Email).Count == 0)
+            if (dbdriver.Query("SELECT userid FROM users WHERE `email`=@P0", Email).Count == 0)
                 return true;
             else
                 return false;

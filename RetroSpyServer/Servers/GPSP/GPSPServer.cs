@@ -8,7 +8,7 @@ using GameSpyLib.Network;
 
 namespace RetroSpyServer.Servers.GPSP
 {
-    public class GPSPServer : GameSpyTCPConnector
+    public class GPSPServer : TcpServer
     {
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// for handling the processing
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected override void ProcessAccept(GameSpyTCPHandler handler)
+        protected override void ProcessAccept(TcpPacket handler)
         {
             // Get our connection id
             long ConID = Interlocked.Increment(ref ConnectionCounter);

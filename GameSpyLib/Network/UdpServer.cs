@@ -10,7 +10,7 @@ namespace GameSpyLib.Network
     /// Like the GamespyTcpSocket, this class represents a high perfomance
     /// User Datagram Protocol (UDP) Socket_DGRAM server
     /// </summary>
-    public abstract class GameSpyUDPConnector : IDisposable
+    public abstract class UdpServer : IDisposable
     {
         /// <summary>
         /// Max number of concurrent open and active connections.
@@ -61,7 +61,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public bool IsDisposed { get; protected set; }
 
-        public GameSpyUDPConnector(IPEndPoint bindTo, int MaxConnections)
+        public UdpServer(IPEndPoint bindTo, int MaxConnections)
         {
             // Create our Socket
             this.Port = Port;
@@ -204,7 +204,7 @@ namespace GameSpyLib.Network
         /// Sends the specified packets data to the client, and releases the resources
         /// </summary>
         /// <param name="Packet"></param>
-        protected void ReplyAsync(GameSpyUDPHandler handler)
+        protected void ReplyAsync(UdpPacket handler)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
@@ -230,7 +230,7 @@ namespace GameSpyLib.Network
                     return;
                 }
 
-                GameSpyUDPHandler handler = new GameSpyUDPHandler(AcceptEventArg);
+                UdpPacket handler = new UdpPacket(AcceptEventArg);
 
                 if (LogWriter.Log.DebugSockets)
                     LogWriter.Log.Write("UDP operation: " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(handler.BytesRecieved).Replace("-", ""), LogLevel.Debug);
@@ -252,7 +252,7 @@ namespace GameSpyLib.Network
         /// processing the connected client
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected abstract void ProcessAccept(GameSpyUDPHandler handler);
+        protected abstract void ProcessAccept(UdpPacket handler);
 
         protected abstract void OnException(Exception e);
     }
