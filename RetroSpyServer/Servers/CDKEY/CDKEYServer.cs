@@ -13,7 +13,7 @@ namespace RetroSpyServer.Servers.CDKEY
     {
 
         private CDKEYClient m_cdkeyClient;
-   
+
         bool replied = false;
 
         /// <summary>
@@ -37,7 +37,6 @@ namespace RetroSpyServer.Servers.CDKEY
         /// <summary>
         /// Called when a connection comes in on the CDKey server
         /// </summary>
-        
         protected override void ProcessAccept(UdpPacket handler)
         {
             KeyCheckResponse(handler);
@@ -71,35 +70,23 @@ namespace RetroSpyServer.Servers.CDKEY
                 // Decrypt message
                 IPEndPoint remote = (IPEndPoint)handler.AsyncEventArgs.RemoteEndPoint;
                 string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(handler.BytesRecieved)).Trim('\\');
-
-                // Ignore keep alive pings
-                if (!decrypted.StartsWith("ka"))
+                string[] cdkeyrequest = decrypted.TrimStart('\\').Split('\\');
+                
+                switch (cdkeyrequest[0])
                 {
-                    Dictionary<string, string> recv = m_cdkeyClient.ConvertToKeyValue(decrypted.Split('\\'));
-                    //check the cdkey commands in Dictionary<string, string> recv 
-                    if (recv.ContainsKey("auth") && recv.ContainsKey("resp") && recv.ContainsKey("skey"))
-                    {
-                        LogWriter.Log.Write("CDKey Check Requested from: {0}:{1}", LogLevel.Debug, remote.Address, remote.Port);
-                        // cdkey check in database
-                        if (m_cdkeyClient.IsCDKeyValid(recv["skey"]))
-                        {
-                            // Normally you would check the CD key database for the CD key MD5, but we arent Gamespy, we dont care
-                            string cdkeyAvaliableReply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
-
-                            // Set new packet contents, and send a reply
-                            handler.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(cdkeyAvaliableReply)));
-                            base.ReplyAsync(handler);
-                            replied = true;
-                        }                       
-                    }
-                    else if (recv.ContainsKey("disc"))
-                    {
-                        // Handle, User disconnected from server
-                    }
-                    else
-                    {
-                        LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug, decrypted);
-                    }
+                    //keep client alive request, we skip this
+                    case "ka":
+                    case "auth":
+                    case "resp":
+                    case "skey":
+                        CheckCDKeyValidation(cdkeyrequest);
+                        break;
+                    case "disc":
+                        DisconnectRequest(cdkeyrequest);
+                        break;
+                    default:
+                        InvalidCDKeyRequest(cdkeyrequest);
+                        break;
                 }
             }
             catch (Exception e)
@@ -112,6 +99,30 @@ namespace RetroSpyServer.Servers.CDKEY
                 if (!replied)
                     base.Release(handler.AsyncEventArgs);
             }
+
+        }
+
+
+        void CheckCDKeyValidation(string[] recieved)
+        {
+            Dictionary<string, string> Recv = GameSpyLib.Common.GamespyUtils.ConvertGPResponseToKeyValue(recieved);
+            //check cdkey md5 in database
+
+        }
+
+
+        void DisconnectRequest(string[] recieved)
+        {
+            Dictionary<string, string> Recv = GameSpyLib.Common.GamespyUtils.ConvertGPResponseToKeyValue(recieved);
+            // Handle, User disconnected from server
+        }
+
+
+        void InvalidCDKeyRequest(string[] recieved)
+        {
+            //write down the data we recieved through UDP packet
+            LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug, recieved);
+
         }
     }
 }

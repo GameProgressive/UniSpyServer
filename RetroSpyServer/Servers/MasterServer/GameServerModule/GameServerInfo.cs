@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace MasterServer
+namespace RetroSpyServer.Servers.MasterServer
 {
     internal class NonFilterAttribute : Attribute
     {
