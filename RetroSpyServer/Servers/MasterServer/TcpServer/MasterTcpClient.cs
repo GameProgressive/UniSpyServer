@@ -13,7 +13,7 @@ using RetroSpyServer.Servers.MasterServer;
 
 namespace RetroSpyServer.Servers.MasterServer
 {
-    public class MasterTCPHandler
+    public class MasterTcpClient
     {
         /// <summary>
         /// A unqie identifier for this connection
@@ -28,7 +28,7 @@ namespace RetroSpyServer.Servers.MasterServer
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public GameSpyTCPHandler Stream { get; protected set; }
+        public TcpStream Stream { get; protected set; }
 
         /// <summary>
         /// Event fired when the connection is closed
@@ -39,7 +39,7 @@ namespace RetroSpyServer.Servers.MasterServer
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public MasterTCPHandler(GameSpyTCPHandler client, long connectionId)
+        public MasterTcpClient(TcpStream client, long connectionId)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionId;
@@ -63,7 +63,7 @@ namespace RetroSpyServer.Servers.MasterServer
         /// <summary>
         /// Destructor
         /// </summary>
-        ~MasterTCPHandler()
+        ~MasterTcpClient()
         {
             if (!Disposed)
                 Dispose(false);
@@ -149,7 +149,7 @@ namespace RetroSpyServer.Servers.MasterServer
             }
 
             // Execute query right here in memory
-            IQueryable<GameServerInfo> servers = MasterUDPServer.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
+            IQueryable<GameServer> servers = MasterUDPServer.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
             if (!String.IsNullOrWhiteSpace(filter))
             {
                 try
@@ -159,13 +159,13 @@ namespace RetroSpyServer.Servers.MasterServer
                 }
                 catch (Exception e)
                 {
-                    Program.ErrorLog.Write("ERROR: [PackServerList] " + e.Message);
-                    Program.ErrorLog.Write(" - Filter Used: " + filter);
+                    //Program.ErrorLog.Write("ERROR: [PackServerList] " + e.Message);
+                   // Program.ErrorLog.Write(" - Filter Used: " + filter);
                 }
             }
 
             // Add Servers
-            foreach (GameServerInfo server in servers)
+            foreach (GameServer server in servers)
             {
                 // Get port bytes
                 byte[] portBytes = BitConverter.GetBytes((ushort)server.QueryPort);
@@ -197,7 +197,7 @@ namespace RetroSpyServer.Servers.MasterServer
         /// <param name="server">The server we are fetching the field value from</param>
         /// <param name="fieldName">the field value we want</param>
         /// <returns></returns>
-        private static string GetField(GameServerInfo server, string fieldName)
+        private static string GetField(GameServer server, string fieldName)
         {
             object value = server.GetType().GetProperty(fieldName).GetValue(server, null);
             if (value == null)
@@ -255,7 +255,7 @@ namespace RetroSpyServer.Servers.MasterServer
 
         private static string FixFilterOperators(string filter)
         {
-            PropertyInfo[] properties = typeof(GameServerInfo).GetProperties();
+            PropertyInfo[] properties = typeof(GameServer).GetProperties();
             List<string> filterableProperties = new List<string>();
 
             // get all the properties that aren't "[NonFilter]"

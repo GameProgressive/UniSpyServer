@@ -157,7 +157,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public TcpPacket Stream { get; protected set; }
+        public TcpStream Stream { get; protected set; }
 
         /// <summary>
         /// The date time of when this connection was created. Used to disconnect user
@@ -196,7 +196,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// Constructor
         /// </summary>
         /// <param name="ReadArgs">The Tcp Client connection</param>
-        public GPCMClient(TcpPacket ConnectionStream, long ConnectionId, DatabaseDriver driver)
+        public GPCMClient(TcpStream ConnectionStream, long ConnectionId, DatabaseDriver driver)
         {
             // Set default variable values
              gPCMDBQuery = new GPCMDBQuery(driver);

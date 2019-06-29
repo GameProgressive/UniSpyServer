@@ -324,7 +324,7 @@ namespace RetroSpyServer.Servers.GPCM
 
         protected override void OnException(Exception e) => LogWriter.Log.Write(e.Message, LogLevel.Error);
 
-        protected override void ProcessAccept(TcpPacket Stream)
+        protected override void ProcessAccept(TcpStream stream)
         {
             // Get our connection id
             long connId = Interlocked.Increment(ref ConnectionCounter);
@@ -333,7 +333,7 @@ namespace RetroSpyServer.Servers.GPCM
             try
             {
                 // Create a new GpcmClient, passing the IO object for the TcpClientStream
-                client = new GPCMClient(Stream, connId, databaseDriver);
+                client = new GPCMClient(stream, connId, databaseDriver);
                 Processing.TryAdd(connId, client);
 
                 // Begin the asynchronous login process
@@ -348,7 +348,7 @@ namespace RetroSpyServer.Servers.GPCM
                 Processing.TryRemove(connId, out client);
 
                 // Release this stream so it can be used again
-                Release(Stream);
+                Release(stream);
             }
         }
     }

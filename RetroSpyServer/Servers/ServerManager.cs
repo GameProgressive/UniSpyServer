@@ -17,7 +17,7 @@ namespace RetroSpyServer.Servers
 
         private GPCM.GPCMServer gpcmServer = null;
 
-        private CDKEY.CDKEYServer cdkeyServer = null;
+        private CDKEY.CDKeyServer cdkeyServer = null;
         /// <summary>
         /// Constructor
         /// </summary>
@@ -136,7 +136,7 @@ namespace RetroSpyServer.Servers
                     gpcmServer = new GPCM.GPCMServer(databaseDriver,new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
                 case "CDKEY":
-                    cdkeyServer = new CDKEY.CDKEYServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                    cdkeyServer = new CDKEY.CDKeyServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
             }
         }

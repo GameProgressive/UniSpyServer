@@ -9,20 +9,20 @@ using GameSpyLib.Extensions;
 
 namespace RetroSpyServer.Servers.CDKEY
 {
-    public class CDKEYServer : UdpServer
+    public class CDKeyServer : UdpServer
     {
 
-        private CDKEYClient m_cdkeyClient;
+        private CDKeyHelper helper;// This class implements the functions of gamespy cdkey check
 
         bool replied = false;
 
         /// <summary>
-        /// CDKEYServer
+        /// CDKeyServer
         /// </summary>
         /// <param name="dbdriver">if this server do not need databasedriver then do not handle this</param>
-        /// <param name="bindTo">pass bind IP and Port in to CDKEYServer</param>
-        /// <param name="MaxConnections">The Max client connections CDKEYServer can handle</param>
-        public CDKEYServer(DatabaseDriver dbdriver, IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
+        /// <param name="bindTo">pass bind IP and Port in to CDKeyServer</param>
+        /// <param name="MaxConnections">The Max client connections CDKeyServer can handle</param>
+        public CDKeyServer(DatabaseDriver dbdriver, IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
         {
             // Start accepting remote connections
             base.StartAcceptAsync();
@@ -61,15 +61,15 @@ namespace RetroSpyServer.Servers.CDKEY
         ///  \auth\ ... = authenticate cd key, this is what we care about
         ///  \disc\ ... = disconnect cd key, because there's checks if the cd key is in use, which we don't care about really, but we could if we wanted to
         /// </remarks>
-        public void KeyCheckResponse(UdpPacket handler)
+        public void KeyCheckResponse(UdpPacket packet)
         {
             // If we dont reply, we must manually release the EventArgs back to the pool
             replied = false;
             try
             {
                 // Decrypt message
-                IPEndPoint remote = (IPEndPoint)handler.AsyncEventArgs.RemoteEndPoint;
-                string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(handler.BytesRecieved)).Trim('\\');
+                IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
+                string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(packet.BytesRecieved)).Trim('\\');
                 string[] cdkeyrequest = decrypted.TrimStart('\\').Split('\\');
                 
                 switch (cdkeyrequest[0])
@@ -97,7 +97,7 @@ namespace RetroSpyServer.Servers.CDKEY
             {
                 // Release so that we can pool the EventArgs to be used on another connection
                 if (!replied)
-                    base.Release(handler.AsyncEventArgs);
+                    base.Release(packet.AsyncEventArgs);
             }
 
         }

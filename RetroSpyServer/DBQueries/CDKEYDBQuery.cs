@@ -3,12 +3,12 @@ using GameSpyLib.Database;
 
 namespace RetroSpyServer.DBQueries
 {
-    public class CDKEYDBQuery : DBQueryBase
+    public class CDKeyDBQuery : DBQueryBase
     {
-        public CDKEYDBQuery() : base()
+        public CDKeyDBQuery() : base()
         {
         }
-        public CDKEYDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
+        public CDKeyDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
         {
         }
 

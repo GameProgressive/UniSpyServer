@@ -4,10 +4,11 @@ using System.Text;
 using GameSpyLib.Network;
 using System.Net;
 using GameSpyLib.Logging;
+using System.Collections.Concurrent;
 
 namespace RetroSpyServer.Servers.MasterServer
 {
-    public class MasterUDPServer : GameSpyUDPConnector
+    public class MasterUDPServer : UdpServer
     {
 
         /// <summary>
@@ -20,7 +21,10 @@ namespace RetroSpyServer.Servers.MasterServer
         ///   connections rather high.
         /// </remarks>
         public const int MaxConnections = 256;
-
+        /// <summary>
+        /// A List of all servers that have sent data to this master server, and are active in the last 30 seconds or so
+        /// </summary>
+        public static ConcurrentDictionary<string, GameServer> Servers = new ConcurrentDictionary<string, GameServer>();
 
         public MasterUDPServer(IPEndPoint bindTo, LogWriter DebugLog) : base(bindTo, MaxConnections)
         {
@@ -28,7 +32,7 @@ namespace RetroSpyServer.Servers.MasterServer
         /// <summary>
         /// Callback method for when the UDP Master socket recieves a connection
         /// </summary>
-        protected override void ProcessAccept(GameSpyUDPHandler handler)
+        protected override void ProcessAccept(UdpPacket packet)
         {
 
         }

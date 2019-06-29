@@ -7,7 +7,7 @@ namespace RetroSpyServer.Servers.MasterServer
     {
     }
 
-    public class GameServerInfo
+    public class GameServer
     {
         [NonFilter]
         public IPEndPoint AddressInfo { get; protected set; }
@@ -93,7 +93,7 @@ namespace RetroSpyServer.Servers.MasterServer
 
         #endregion
 
-        public GameServerInfo(IPEndPoint addressInfo)
+        public GameServer(IPEndPoint addressInfo)
         {
             AddressInfo = addressInfo;
         }

@@ -198,7 +198,7 @@ namespace GameSpyLib.Network
         /// and free's up another slot for a new client to connect
         /// </summary>
         /// <param name="Stream">The GamespyTcpStream object that is being released.</param>
-        public void Release(TcpPacket Stream)
+        public void Release(TcpStream Stream)
         {
             // If the stream has been released, then we stop here
             if (!IsListening || Stream.Released) return;
@@ -361,10 +361,10 @@ namespace GameSpyLib.Network
             SocketAcceptPool.Push(AcceptEventArg);
 
             // Hand off processing to the parent
-            TcpPacket Stream = null;
+            TcpStream Stream = null;
             try
             {
-                Stream = new TcpPacket(this, ReadArgs, WriteArgs);
+                Stream = new TcpStream(this, ReadArgs, WriteArgs);
                 ProcessAccept(Stream);
             }
             catch (Exception e)
@@ -383,7 +383,7 @@ namespace GameSpyLib.Network
         /// processing the connected client
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected abstract void ProcessAccept(TcpPacket Stream);
+        protected abstract void ProcessAccept(TcpStream Stream);
 
         protected abstract void OnException(Exception e);
     }

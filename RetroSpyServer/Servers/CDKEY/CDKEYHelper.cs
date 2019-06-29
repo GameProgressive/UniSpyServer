@@ -5,13 +5,17 @@ using RetroSpyServer.DBQueries;
 using GameSpyLib.Logging;
 namespace RetroSpyServer.Servers.CDKEY
 {
-    public class CDKEYClient
+    /// <summary>
+    /// This class contians gamespy cdkey check functions  which help cdkeyserver to finish the cdkey check. 
+    /// This class is used to simplify the functions in server class, separate the other utility function making  the main server logic clearer
+    /// </summary>
+    public class CDKeyHelper
     {
-        private CDKEYDBQuery DBQuery;
+        private CDKeyDBQuery DBQuery;
         
-        public CDKEYClient(DatabaseDriver dbdriver)
+        public CDKeyHelper(DatabaseDriver dbdriver)
         {
-            DBQuery = new CDKEYDBQuery(dbdriver);
+            DBQuery = new CDKeyDBQuery(dbdriver);
         }
 
         /// <summary>

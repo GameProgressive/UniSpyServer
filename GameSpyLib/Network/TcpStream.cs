@@ -11,7 +11,7 @@ namespace GameSpyLib.Network
     /// <summary>
     /// This object is used as a Network Stream wrapper for Gamespy TCP protocol.
     /// </summary>
-    public class TcpPacket : IDisposable
+    public class TcpStream : IDisposable
     {
         /// <summary>
         ///The length of message that we can revieved.
@@ -110,7 +110,7 @@ namespace GameSpyLib.Network
         /// Creates a new instance of GamespyTcpStream
         /// </summary>
         /// <param name="ReadArgs"></param>
-        public TcpPacket(TcpServer Parent, SocketAsyncEventArgs ReadArgs, SocketAsyncEventArgs WritetArgs)
+        public TcpStream(TcpServer Parent, SocketAsyncEventArgs ReadArgs, SocketAsyncEventArgs WritetArgs)
         {
             // Store our connection
             Connection = ReadArgs.AcceptSocket;
@@ -128,7 +128,7 @@ namespace GameSpyLib.Network
             Released = false;
         }
 
-        ~TcpPacket()
+        ~TcpStream()
         {
             if (!SocketClosed)
                 Close();

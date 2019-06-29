@@ -92,7 +92,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// for handling the processing
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected override void ProcessAccept(TcpPacket handler)
+        protected override void ProcessAccept(TcpStream stream)
         {
             // Get our connection id
             long ConID = Interlocked.Increment(ref ConnectionCounter);
@@ -101,11 +101,11 @@ namespace RetroSpyServer.Servers.GPSP
             try
             {
                 // Convert the TcpClient to a MasterClient
-                gpspClient = new GPSPClient(handler, ConID, databaseDriver);
+                gpspClient = new GPSPClient(stream, ConID, databaseDriver);
                 Clients.TryAdd(ConID, gpspClient);
 
                 // Start receiving data
-                handler.BeginReceive();
+                stream.BeginReceive();
             }
             catch
             {
@@ -121,7 +121,7 @@ namespace RetroSpyServer.Servers.GPSP
         private void GpspClient_OnDisconnect(GPSPClient client)
         {
             // Release this stream's AsyncEventArgs to the object pool
-            Release(client.Handler);
+            Release(client.Stream);
             if (Clients.TryRemove(client.ConnectionID, out client) && !client.Disposed)
                 client.Dispose();
         }
