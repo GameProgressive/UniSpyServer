@@ -188,7 +188,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// </summary>
         public static event GpcmStatusChanged OnStatusChanged;
 
-        private GPCMDBQuery gPCMDBQuery;
+        private GPCMDBQuery DBQuery;
 
         #endregion Variables
 
@@ -199,7 +199,7 @@ namespace RetroSpyServer.Servers.GPCM
         public GPCMClient(TcpStream ConnectionStream, long ConnectionId, DatabaseDriver driver)
         {
             // Set default variable values
-             gPCMDBQuery = new GPCMDBQuery(driver);
+             DBQuery = new GPCMDBQuery(driver);
 
             PlayerNick = "Connecting...";
             PlayerStatusString = "Offline";
@@ -395,7 +395,7 @@ namespace RetroSpyServer.Servers.GPCM
         {
             if (message.EndsWith("\\final\\"))
                 return true;
-
+            else
             return false;
         }
 
@@ -580,7 +580,7 @@ namespace RetroSpyServer.Servers.GPCM
                 try
                 {
                     if (PlayerUniqueNick != null)
-                        QueryResult = gPCMDBQuery.GetUserFromUniqueNick(Recv["uniquenick"]);
+                        QueryResult = DBQuery.GetUserFromUniqueNick(Recv["uniquenick"]);
                     else if (PlayerAuthToken != null)
                     {
                         //TODO! Add the database entry
@@ -588,7 +588,7 @@ namespace RetroSpyServer.Servers.GPCM
                         return;
                     }
                     else
-                        QueryResult = gPCMDBQuery.GetUserFromNickname(PlayerEmail, PlayerNick);
+                        QueryResult = DBQuery.GetUserFromNickname(PlayerEmail, PlayerNick);
                 }
                 catch (Exception)
                 {
@@ -812,7 +812,7 @@ namespace RetroSpyServer.Servers.GPCM
             {
                 uint publicMask;
 
-                var Query = gPCMDBQuery.GetProfileInfo(targetPID);
+                var Query = DBQuery.GetProfileInfo(targetPID);
                 if (Query == null)
                 {
                     GamespyUtils.SendGPError(Stream, 4, "Unable to get profile information.");
@@ -1015,7 +1015,7 @@ namespace RetroSpyServer.Servers.GPCM
             {
 
                 // Check to see if user exists
-                if (gPCMDBQuery.UserExists(Recv["nick"]))
+                if (DBQuery.UserExists(Recv["nick"]))
                 {
                     Stream.SendAsync(@"\error\\err\516\fatal\\errmsg\This account name is already in use!\id\1\final\");
                     Disconnect(DisconnectReason.CreateFailedUsernameExists);
@@ -1030,7 +1030,7 @@ namespace RetroSpyServer.Servers.GPCM
                     ? "US" : "US";
 
                 // Attempt to create account. If Pid is 0, then we couldnt create the account. TODO: Handle Unique Nickname
-                if ((PlayerId = gPCMDBQuery.CreateUser(Recv["nick"], Password, Recv["email"], Cc, Recv["nick"])) == 0)
+                if ((PlayerId = DBQuery.CreateUser(Recv["nick"], Password, Recv["email"], Cc, Recv["nick"])) == 0)
                 {
                     GamespyUtils.SendGPError(Stream, 516, "An error oncurred while creating the account!");
                     Disconnect(DisconnectReason.CreateFailedDatabaseError);
@@ -1389,7 +1389,7 @@ namespace RetroSpyServer.Servers.GPCM
 
             try
             {
-                gPCMDBQuery.Query(query, passData);
+                DBQuery.Query(query, passData);
             }
             catch (Exception e)
             {

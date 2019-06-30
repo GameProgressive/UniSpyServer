@@ -204,12 +204,12 @@ namespace GameSpyLib.Network
         /// Sends the specified packets data to the client, and releases the resources
         /// </summary>
         /// <param name="Packet"></param>
-        protected void ReplyAsync(UdpPacket handler)
+        public void ReplyAsync(UdpPacket Packet)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
             
-            Listener.SendToAsync(handler.AsyncEventArgs);
+            Listener.SendToAsync(Packet.AsyncEventArgs);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace GameSpyLib.Network
                     return;
                 }
 
-                UdpPacket handler = new UdpPacket(AcceptEventArg);
+                UdpPacket packet = new UdpPacket(AcceptEventArg);
 
                 if (LogWriter.Log.DebugSockets)
                     LogWriter.Log.Write("UDP operation: " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(handler.BytesRecieved).Replace("-", ""), LogLevel.Debug);
@@ -239,7 +239,7 @@ namespace GameSpyLib.Network
                 StartAcceptAsync();
 
                 // Hand off processing to the parent
-                ProcessAccept(handler);
+                ProcessAccept(packet);
             }
             else
             {
@@ -252,7 +252,7 @@ namespace GameSpyLib.Network
         /// processing the connected client
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected abstract void ProcessAccept(UdpPacket handler);
+        protected abstract void ProcessAccept(UdpPacket packet);
 
         protected abstract void OnException(Exception e);
     }

@@ -352,7 +352,11 @@ namespace RetroSpyServer.Servers.GPSP
                         stream.Close();
                 }
                 else
+                {
                     stream.SendAsync(@"\vr\0\final\");
+                    stream.Close();
+                }
+                    
             }
             catch (Exception ex)
             {
