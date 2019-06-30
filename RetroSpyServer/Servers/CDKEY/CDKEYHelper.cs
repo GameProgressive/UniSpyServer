@@ -19,29 +19,7 @@ namespace RetroSpyServer.Servers.CDKEY
         public CDKeyHelper(DatabaseDriver dbdriver)
         {
             DBQuery = new CDKeyDBQuery(dbdriver);
-        }
-
-        /// <summary>
-        /// Converts a received parameter array from the client string to a keyValue pair dictionary
-        /// </summary>
-        /// <param name="parts">The array of data from the client</param>
-        /// <returns></returns>
-        public Dictionary<string, string> ConvertToKeyValue(string[] parts)
-        {
-            Dictionary<string, string> dict = new NiceDictionary<string, string>();
-
-            try
-            {
-                for (int i = 0; i < parts.Length; i += 2)
-                {
-                    if (!dict.ContainsKey(parts[i]))
-                        dict.Add(parts[i], parts[i + 1]);
-                }
-            }
-            catch (IndexOutOfRangeException) { }
-
-            return dict;
-        }
+        }       
 
         /// <summary>
         /// 

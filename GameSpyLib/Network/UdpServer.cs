@@ -233,7 +233,7 @@ namespace GameSpyLib.Network
                 UdpPacket packet = new UdpPacket(AcceptEventArg);
 
                 if (LogWriter.Log.DebugSockets)
-                    LogWriter.Log.Write("UDP operation: " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(handler.BytesRecieved).Replace("-", ""), LogLevel.Debug);
+                    LogWriter.Log.Write("UDP operation: " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
 
                 // Begin accepting a new connection
                 StartAcceptAsync();

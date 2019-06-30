@@ -14,7 +14,6 @@ namespace RetroSpyServer.Servers.CDKEY
         #region Server Setup Phase
         private CDKeyHelper helper;// This class implements the functions of gamespy cdkey check       
         bool replied = false;
-
         /// <summary>
         /// CDKeyServer
         /// </summary>
@@ -23,6 +22,7 @@ namespace RetroSpyServer.Servers.CDKEY
         /// <param name="MaxConnections">The Max client connections CDKeyServer can handle</param>
         public CDKeyServer(DatabaseDriver dbdriver, IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
         {
+            helper = new CDKeyHelper(dbdriver);
             // Start accepting remote connections
             base.StartAcceptAsync();
         }

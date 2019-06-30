@@ -114,7 +114,7 @@ namespace RetroSpyServer
                 //create a instance of ServerManager class
                 manager = new ServerManager();
 
-                LogWriter.Log.Write("Server successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
+                LogWriter.Log.Write("Servers are successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
                 
                 IsRunning = true;
 
@@ -125,14 +125,20 @@ namespace RetroSpyServer
                     if (bool_ConsoleInput)
                     {
                         string input = Console.ReadLine();
-
-                        if (input.Equals("exit"))
+                        switch(input)
                         {
-                            manager.StopAllServers();
-                            IsRunning = false;
-                        }
-                        else
-                            Console.WriteLine("Unknown command!");
+                            case "exit":
+                                manager.StopAllServers();
+                                IsRunning = false;
+                                break;
+                            case "help":
+                                Console.WriteLine("--exit \t shutdown all servers and exit the RetroSpy emulator\n"+
+                                                               "other features are comming soon..\n" );
+                                break;
+                            default:
+                                Console.WriteLine("Unknown command!");
+                                break;
+                        }       
                     }
                 }
             }
@@ -153,6 +159,6 @@ namespace RetroSpyServer
                 Console.WriteLine("Press ENTER to exit...");
                 Console.ReadKey();
             }
-        }
+        }        
     }
 }
