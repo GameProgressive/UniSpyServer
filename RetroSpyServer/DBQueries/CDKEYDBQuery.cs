@@ -5,9 +5,7 @@ namespace RetroSpyServer.DBQueries
 {
     public class CDKeyDBQuery : DBQueryBase
     {
-        public CDKeyDBQuery() : base()
-        {
-        }
+
         public CDKeyDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
         {
         }

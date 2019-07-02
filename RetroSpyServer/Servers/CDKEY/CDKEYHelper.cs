@@ -5,6 +5,7 @@ using RetroSpyServer.DBQueries;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using GameSpyLib.Common;
+using GameSpyLib.Extensions;
 using System.Text;
 namespace RetroSpyServer.Servers.CDKEY
 {
@@ -32,38 +33,14 @@ namespace RetroSpyServer.Servers.CDKEY
             if (DBQuery.IsCDKeyValidate(recv["skey"]))
             {
                 string reply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
-                packet.SetBufferContents(Encoding.UTF8.GetBytes(Xor(reply)));
+                packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
                 server.ReplyAsync(packet);
             }
             else
             {
                 //TODO cdkey invalid response
-            }
-                
-        }
-
-        /// <summary>
-        /// Encrypts / Descrypts the CDKey Query String
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        private static string Xor(string s)
-        {
-            const string gamespy = "gamespy";
-            int length = s.Length;
-            char[] data = s.ToCharArray();
-            int index = 0;
-
-            for (int i = 0; length > 0; length--)
-            {
-                if (i >= gamespy.Length)
-                    i = 0;
-
-                data[index++] ^= gamespy[i++];
-            }
-
-            return new String(data);
-        }
+            }                
+        }       
 
     }
 }

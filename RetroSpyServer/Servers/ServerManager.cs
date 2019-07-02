@@ -47,6 +47,7 @@ namespace RetroSpyServer.Servers
             switch (databaseConfiguration.Type)
             {
                 case DatabaseEngine.Mysql:
+                    databaseDriver = null;// if using mysql we set this to null to make sure this value is null
                     break; // We don't need to create the connection here because each server will automaticly create it's own MySQL connection.
                 case DatabaseEngine.Sqlite:
                     databaseDriver = new SqliteDatabaseDriver("Data Source=" + databaseConfiguration.Databasename + ";Version=3;New=False");
@@ -65,7 +66,7 @@ namespace RetroSpyServer.Servers
                 throw ex;
             }
 
-            LogWriter.Log.Write("Successfully connected to the database!", LogLevel.Info);
+            LogWriter.Log.Write("Successfully connected to the {0} database!", LogLevel.Info, databaseConfiguration.Type);
 
             // Add all servers
             foreach (ServerConfiguration cfg in ConfigManager.xmlConfiguration.Servers)

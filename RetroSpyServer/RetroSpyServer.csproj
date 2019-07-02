@@ -9,8 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
     <Compile Remove="Servers\CDKEY - 复制\**" />
+    <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="Servers\CDKEY - 复制\**" />
+    <None Remove="Extensions\**" />
     <None Remove="Servers\CDKEY - 复制\**" />
   </ItemGroup>
 
@@ -31,7 +34,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
@@ -43,7 +45,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="RetroSpyServer.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="sqlite_retrospy_server.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

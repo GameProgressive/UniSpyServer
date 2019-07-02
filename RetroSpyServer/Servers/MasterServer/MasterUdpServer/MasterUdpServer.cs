@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GameSpyLib.Network;
 using System.Net;
-using GameSpyLib.Logging;
 using System.Collections.Concurrent;
+using GameSpyLib.Network;
+using GameSpyLib.Logging;
+
 
 namespace RetroSpyServer.Servers.MasterServer
 {
-    public class MasterUDPServer : UdpServer
+    public class MasterUdpServer
     {
-
         /// <summary>
         /// Max number of concurrent open and active connections.
         /// </summary>
@@ -26,18 +24,19 @@ namespace RetroSpyServer.Servers.MasterServer
         /// </summary>
         public static ConcurrentDictionary<string, GameServer> Servers = new ConcurrentDictionary<string, GameServer>();
 
-        public MasterUDPServer(IPEndPoint bindTo, LogWriter DebugLog) : base(bindTo, MaxConnections)
-        {
-        }
-        /// <summary>
-        /// Callback method for when the UDP Master socket recieves a connection
-        /// </summary>
-        protected override void ProcessAccept(UdpPacket packet)
-        {
+    //    public MasterUdpServer(IPEndPoint bindTo, int MaxConnection) : base(bindTo, MaxConnections)
+    //    {
+    //    }
+    //    /// <summary>
+    //    /// Callback method for when the UDP Master socket recieves a connection
+    //    /// </summary>
+    //    protected override void ProcessAccept(UdpPacket packet)
+    //    {
 
-        }
+    //    }
 
 
-        protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
+    //    protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
+
     }
 }

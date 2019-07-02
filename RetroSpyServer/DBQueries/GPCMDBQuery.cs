@@ -9,9 +9,7 @@ namespace RetroSpyServer.DBQueries
 {
     public class GPCMDBQuery:DBQueryBase
     {
-        public GPCMDBQuery():base()
-        {          
-        }
+
         /// <summary>
         /// Use DBQueryBase Constructor to create database connection for us
         /// </summary>

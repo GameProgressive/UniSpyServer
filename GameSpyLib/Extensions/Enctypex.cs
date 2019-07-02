@@ -276,5 +276,6 @@ namespace GameSpyLib.Extensions
 
             return new String(data);
         }
+
     }
 }

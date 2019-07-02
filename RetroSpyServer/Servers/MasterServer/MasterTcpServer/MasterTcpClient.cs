@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using GameSpyLib.Extensions;
 using GameSpyLib.Network;
 using RetroSpyServer.Application;
+using GameSpyLib.Logging;
 using RetroSpyServer.Servers.MasterServer;
 
 namespace RetroSpyServer.Servers.MasterServer
@@ -149,7 +150,7 @@ namespace RetroSpyServer.Servers.MasterServer
             }
 
             // Execute query right here in memory
-            IQueryable<GameServer> servers = MasterUDPServer.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
+            IQueryable<GameServer> servers = MasterUdpServer.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
             if (!String.IsNullOrWhiteSpace(filter))
             {
                 try
@@ -159,6 +160,7 @@ namespace RetroSpyServer.Servers.MasterServer
                 }
                 catch (Exception e)
                 {
+                    LogWriter.Log.WriteException(e);
                     //Program.ErrorLog.Write("ERROR: [PackServerList] " + e.Message);
                    // Program.ErrorLog.Write(" - Filter Used: " + filter);
                 }
