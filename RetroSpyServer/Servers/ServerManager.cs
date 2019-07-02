@@ -67,12 +67,14 @@ namespace RetroSpyServer.Servers
             }
 
             LogWriter.Log.Write("Successfully connected to the {0} database!", LogLevel.Info, databaseConfiguration.Type);
-
+            LogWriter.Log.Write("|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", LogLevel.Info, "-----------", "----------", "------", "--------------");
+            LogWriter.Log.Write("|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", LogLevel.Info, "Server Name","Host Name", "Port","Max Connection" );
             // Add all servers
             foreach (ServerConfiguration cfg in ConfigManager.xmlConfiguration.Servers)
             {
                 StartServer(cfg);
             }
+            LogWriter.Log.Write("|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", LogLevel.Info, "-----------", "----------", "------", "--------------");
         }
 
         /// <summary>
@@ -123,10 +125,10 @@ namespace RetroSpyServer.Servers
         public void StartServer(ServerConfiguration cfg)
         {
             //if (cfg.Disabled)
-            //    return;
-
-            LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
-            LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
+            //    return;            
+            //LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
+            //LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
+            LogWriter.Log.Write("|{0,-11}|{1,-10}|{2,-6}|{3,14}|", LogLevel.Info, cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
 
             switch (cfg.Name)
             {
