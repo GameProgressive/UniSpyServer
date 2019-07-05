@@ -1,4 +1,4 @@
-﻿namespace RetroSpyServer
+﻿namespace RetroSpyServer.Servers.GPCM.Enumerator
 {
     /// <summary>
     /// This enum rapresers the known Parter IDs, This value was setted to 0 when

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace RetroSpyServer.Servers.GPCM
+﻿namespace RetroSpyServer.Servers.GPCM.Enumerator
 {
     public enum DisconnectReason : int
     {

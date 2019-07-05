@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using GameSpyLib.Database;
 using RetroSpyServer.DBQueries;
-using GameSpyLib.Network;
 using GameSpyLib.Extensions;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
@@ -15,24 +12,16 @@ namespace RetroSpyServer.Servers.GPSP
     /// </summary>
     public class GPSPHelper
     {
-        // public DatabaseDriver databaseDriver;
-        public GPSPDBQuery DBQuery;
-        /// <summary>
-        /// Create a dbquery class for handle the database query
-        /// </summary>
-        /// <param name="dbdriver"></param>
-        public GPSPHelper(DatabaseDriver dbdriver)
-        {
-            DBQuery = new GPSPDBQuery(dbdriver);
-        }
-        public void RetriveNicknames(TcpStream stream, Dictionary<string, string> dict)
+        public static GPSPDBQuery DBQuery = null;
+
+        public static void RetriveNicknames(GPSPClient client, Dictionary<string, string> dict)
         {
             string password;
             bool sendUniqueNick;
 
             if (!dict.ContainsKey("email"))
             {
-                GamespyUtils.SendGPError(stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(client.Stream, 1, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -43,7 +32,7 @@ namespace RetroSpyServer.Servers.GPSP
                 if (!dict.ContainsKey("pass"))
                 {
                     // No password is specified, we cannot continue
-                    GamespyUtils.SendGPError(stream, 1, "There was an error parsing an incoming request.");
+                    GamespyUtils.SendGPError(client.Stream, 1, "There was an error parsing an incoming request.");
                     return;
                 }
                 else
@@ -72,28 +61,21 @@ namespace RetroSpyServer.Servers.GPSP
             catch (Exception ex)
             {
                 LogWriter.Log.Write(ex.Message, LogLevel.Error);
-                GamespyUtils.SendGPError(stream, 4, "This request cannot be processed because of a database error.");
+                GamespyUtils.SendGPError(client.Stream, 4, "This request cannot be processed because of a database error.");
                 return;
             }
 
             if (queryResult.Count < 1)
             {
-                stream.SendAsync(@"\nr\ndone\final\");
+                client.Stream.SendAsync(@"\nr\ndone\final\");
                 return;
             }
 
-            // We will recycle the "password" variable by storing the response
-            // that we have to send to the stream. This is done for save memory space
-            // so we don't have to declare a new variable.
-
-            //password = @"\nr\";
             string sendingBuffer;
             sendingBuffer = @"\nr\";
             foreach (Dictionary<string, object> row in queryResult)
             {
-                // password += @"\nick\";
                 sendingBuffer += @"\nick\";
-                //  password += row["nick"];
                 sendingBuffer += row["nick"];
                 if (sendUniqueNick)
                 {
@@ -103,13 +85,14 @@ namespace RetroSpyServer.Servers.GPSP
             }
 
             sendingBuffer += @"\ndone\final\";
-            stream.SendAsync(sendingBuffer);
+            client.Stream.SendAsync(sendingBuffer);
         }
-        public void IsEmailValid(TcpStream stream, Dictionary<string, string> dict)
+
+        public static void IsEmailValid(GPSPClient client, Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("email"))
             {
-                GamespyUtils.SendGPError(stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(client.Stream, 1, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -118,76 +101,80 @@ namespace RetroSpyServer.Servers.GPSP
                 if (GamespyUtils.IsEmailFormatCorrect(dict["email"]))
                 {
                     if (DBQuery.IsEmailValid(dict["email"]))
-                        stream.SendAsync(@"\vr\1\final\");
-                    stream.Close();
+                        client.Stream.SendAsync(@"\vr\1\final\");
+                    else
+                        client.Stream.SendAsync(@"\vr\0\final\");
+
+                    client.Stream.Close();
                 }
                 else
                 {
-                    stream.SendAsync(@"\vr\0\final\");
-                    stream.Close();
+                    client.Stream.SendAsync(@"\vr\0\final\");
+                    client.Stream.Close();
                 }
 
             }
             catch (Exception ex)
             {
                 LogWriter.Log.WriteException(ex);
-                GamespyUtils.SendGPError(stream, 4, "This request cannot be processed because of a database error.");
+                GamespyUtils.SendGPError(client.Stream, 4, "This request cannot be processed because of a database error.");
             }
         }
-        public void SuggestUniqueNickname(TcpStream stream, Dictionary<string, string> dict)
+
+        public static void SuggestUniqueNickname(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("uniquesearch", dict);
-            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public void OnProfileList(TcpStream stream, Dictionary<string, string> dict)
+        public static void OnProfileList(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("profilelist", dict);
-            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public void MatchProduct(TcpStream stream, Dictionary<string, string> dict)
+        public static void MatchProduct(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
-            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
         /// <summary>
         /// Creates an account
         /// </summary>
-        /// <param name="stream">The stream that sended the data</param>
+        /// <param name="client">The client that sended the data</param>
         /// <param name="dict">The request that the stream sended</param>
-        public void CreateUser(TcpStream stream, Dictionary<string, string> dict)
+        public static void CreateUser(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("newuser", dict);
-            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public void OnOthersList(TcpStream stream, Dictionary<string, string> dict)
+        public static void OnOthersList(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("otherslist", dict);
-            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public void ReverseBuddies(TcpStream stream, Dictionary<string, string> dict)
+        public static void ReverseBuddies(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
-            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
 
             // TODO: Please finis this function
             //stream.SendAsync(@"\others\\odone\final\");
         }
 
-        public void SearchUser(TcpStream stream, Dictionary<string, string> dict)
+        public static void SearchUser(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("search", dict);
-            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public void CheckAccount(TcpStream stream, Dictionary<string, string> dict)
+        public static void CheckAccount(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("check", dict);
-            GamespyUtils.SendGPError(stream, 0, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
     }
 }

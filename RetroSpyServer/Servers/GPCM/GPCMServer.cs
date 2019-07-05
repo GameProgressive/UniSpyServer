@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using RetroSpyServer.Servers.GPCM.Enumerator;
 
 //GPCM represents GameSpy Connection Manager
 namespace RetroSpyServer.Servers.GPCM
@@ -65,17 +66,13 @@ namespace RetroSpyServer.Servers.GPCM
         /// </summary>
         public bool Exiting { get; private set; } = false;
 
-        private DatabaseDriver databaseDriver;
-
         /// <summary>
         /// Creates a new instance of <see cref="GPCMServer"/>
         /// </summary>
         public GPCMServer(DatabaseDriver driver,IPEndPoint bindTo, int maxConnections) : base(bindTo, maxConnections)
         {
-            //if (driver == null)
-            //    databaseDriver = GPCMDBQuery.CreateNewMySQLConnection();
-            //else
-                databaseDriver = driver;
+
+            GPCMHelper.DBQuery = new DBQueries.GPCMDBQuery(driver);
 
             GPCMClient.OnDisconnect += GpcmClient_OnDisconnect;
             GPCMClient.OnSuccessfulLogin += GpcmClient_OnSuccessfulLogin;
@@ -106,43 +103,32 @@ namespace RetroSpyServer.Servers.GPCM
                     // Return if we are empty
                     if (PlayerStatusQueue.IsEmpty) return;
 
-                    // Open database connection
-                    using (var transaction = databaseDriver.BeginTransaction())
+                    var transaction = GPCMHelper.DBQuery.BeginTransaction();
+
+                    try
                     {
-                        try
+                        
 
+                        long timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
+                        GPCMClient result;
+                        while (PlayerStatusQueue.TryDequeue(out result))
                         {
-                            long timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
-                            GPCMClient result;
-                            while (PlayerStatusQueue.TryDequeue(out result))
-                            {
-                                // Skip if this player never finished logging in
-                                if (result == null)
-                                    continue;
+                            // Skip if this player never finished logging in
+                            if (result == null)
+                                continue;
 
-                                if (!result.CompletedLoginProcess)
-                                    continue;
+                            if (!result.CompletedLoginProcess)
+                                continue;
 
-                                // Only update record under these two status'
-                                {
-                                    // Update player record
-                                    databaseDriver.Execute(
-                                        "UPDATE profiles SET status=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2",
-                                        result.RemoteEndPoint.Address,
-                                        timestamp,
-                                        result.PlayerId,
-                                        (uint)result.PlayerStatus
-                                    );
-                                }
-                            }
-
-                            transaction.Commit();
+                            GPCMHelper.UpdateStatus(timestamp, result);
                         }
-                        catch (Exception ex)
-                        {
-                            LogWriter.Log.WriteException(ex);
-                            transaction.Rollback();
-                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogWriter.Log.WriteException(ex);
+                        transaction.Rollback();
                     }
                 };
                 StatusTimer.Start();
@@ -193,7 +179,7 @@ namespace RetroSpyServer.Servers.GPCM
             try
             {
                 // Set everyone's online session to 0
-                 databaseDriver.Execute("UPDATE profiles SET status=0, sesskey = NULL");
+                GPCMHelper.ResetStatusAndSessionKey();
             }
             catch (Exception e)
             {
@@ -202,6 +188,8 @@ namespace RetroSpyServer.Servers.GPCM
 
             // Update Connected Clients in the Database
             Clients.Clear();
+
+            GPCMHelper.DBQuery.Dispose();
 
             // Tell the base to dispose all free objects
             Dispose();
@@ -219,7 +207,7 @@ namespace RetroSpyServer.Servers.GPCM
             GPCMClient oldC;
 
             // Remove all processing connections that are hanging
-            if (client.LoginStatus != LoginStatus.Completed && expireTime <= DateTime.Now)
+            if (client.PlayerInfo.LoginStatus != LoginStatus.Completed && expireTime <= DateTime.Now)
             {
                 try
                 {
@@ -275,7 +263,7 @@ namespace RetroSpyServer.Servers.GPCM
             try
             {
                 // Remove client from online list
-                if (Clients.TryRemove(client.PlayerId, out client) && !client.Disposed)
+                if (Clients.TryRemove(client.PlayerInfo.PlayerId, out client) && !client.Disposed)
                     client.Dispose();
 
                 // Add player to database queue
@@ -303,14 +291,14 @@ namespace RetroSpyServer.Servers.GPCM
                 Processing.TryRemove(client.ConnectionId, out oldC);
 
                 // Check to see if the client is already logged in, if so disconnect the old user
-                if (Clients.TryRemove(client.PlayerId, out oldC))
+                if (Clients.TryRemove(client.PlayerInfo.PlayerId, out oldC))
                 {
                     oldC.Disconnect(DisconnectReason.NewLoginDetected);
-                    LogWriter.Log.Write("Login Clash:   {0} - {1} - {2}", LogLevel.Info, client.PlayerNick, client.PlayerId, client.RemoteEndPoint);
+                    LogWriter.Log.Write("Login Clash:   {0} - {1} - {2}", LogLevel.Info, client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
                 }
 
                 // Add current client to the dictionary
-                if (!Clients.TryAdd(client.PlayerId, client))
+                if (!Clients.TryAdd(client.PlayerInfo.PlayerId, client))
                     LogWriter.Log.Write("ERROR: [GpcmServer._OnSuccessfulLogin] Unable to add client to HashSet.", LogLevel.Error);
 
                 // Add player to database queue
@@ -333,7 +321,7 @@ namespace RetroSpyServer.Servers.GPCM
             try
             {
                 // Create a new GpcmClient, passing the IO object for the TcpClientStream
-                client = new GPCMClient(stream, connId, databaseDriver);
+                client = new GPCMClient(stream, connId);
                 Processing.TryAdd(connId, client);
 
                 // Begin the asynchronous login process

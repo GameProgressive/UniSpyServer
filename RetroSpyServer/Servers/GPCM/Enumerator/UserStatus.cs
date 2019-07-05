@@ -1,4 +1,4 @@
-﻿namespace RetroSpyServer.Servers.GPCM
+﻿namespace RetroSpyServer.Servers.GPCM.Enumerator
 {
     public enum UserStatus : int
     {

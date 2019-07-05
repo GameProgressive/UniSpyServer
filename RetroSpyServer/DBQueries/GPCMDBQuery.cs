@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.Logging;
+﻿using System.Collections.Generic;
 using GameSpyLib.Database;
 using GameSpyLib.Extensions;
-using RetroSpyServer.XMLConfig;
 
 namespace RetroSpyServer.DBQueries
 {
-    public class GPCMDBQuery:DBQueryBase
+    public class GPCMDBQuery : DBQueryBase
     {
 
         /// <summary>
@@ -20,7 +17,7 @@ namespace RetroSpyServer.DBQueries
 
         protected  Dictionary<string, object> GetUserDataReal(string AppendFirst, string SecondAppend, string _P0, string _P1)
         {
-            var Rows = base.dbdriver.Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
+            var Rows = Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
                 "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
                 @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
                 @"profiles.birthyear, profiles.location, profiles.icq, profiles.status, users.password, users.userstatus " + AppendFirst +
@@ -30,7 +27,7 @@ namespace RetroSpyServer.DBQueries
 
         public Dictionary<string, object> GetProfileInfo( uint id)
         {
-            var Rows = base.dbdriver.Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
+            var Rows = Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
                 "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
                 @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
                 @"profiles.birthyear, profiles.location, profiles.icq, profiles.status, profiles.nick, profiles.uniquenick, users.email FROM profiles " +
@@ -50,7 +47,7 @@ namespace RetroSpyServer.DBQueries
 
         public bool UserExists( string Nick)
         {
-            return (dbdriver.Query("SELECT profileid FROM profiles WHERE `nickname`=@P0", Nick).Count != 0);
+            return (Query("SELECT profileid FROM profiles WHERE `nickname`=@P0", Nick).Count != 0);
         }
 
         /// <summary>
@@ -66,19 +63,27 @@ namespace RetroSpyServer.DBQueries
         /// <returns>Returns the Player ID if sucessful, 0 otherwise</returns>
         public uint CreateUser( string Nick, string Pass, string Email, string Country, string UniqueNick)
         {
-            dbdriver.Execute("INSERT INTO users(email, password) VALUES(@P0, @P1)", Email, StringExtensions.GetMD5Hash(Pass));
-            var Rows = dbdriver.Query("SELECT userid FROM users WHERE email=@P0 and password=@P1", Email, Pass);
+            Execute("INSERT INTO users(email, password) VALUES(@P0, @P1)", Email, StringExtensions.GetMD5Hash(Pass));
+            var Rows = Query("SELECT userid FROM users WHERE email=@P0 and password=@P1", Email, Pass);
             if (Rows.Count < 1)
                 return 0;
 
-            dbdriver.Execute("INSERT INTO profiles(userid, nick, uniquenick, countrycode) VALUES(@P0, @P1, @P2, @P3)", Rows[0]["userid"], Nick, UniqueNick, Country);
-            Rows = dbdriver.Query("SELECT profileid FROM profiles WHERE uniquenick=@P0", UniqueNick);
+            Execute("INSERT INTO profiles(userid, nick, uniquenick, countrycode) VALUES(@P0, @P1, @P2, @P3)", Rows[0]["userid"], Nick, UniqueNick, Country);
+            Rows = Query("SELECT profileid FROM profiles WHERE uniquenick=@P0", UniqueNick);
             if (Rows.Count < 1)
                 return 0;
 
             return uint.Parse(Rows[0]["profileid"].ToString());
         }
 
-        
+        public void UpdateStatus(long timestamp, System.Net.IPAddress address, uint PlayerId, uint PlayerStatus)
+        {
+            Execute("UPDATE profiles SET status=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2", address, timestamp, PlayerId, PlayerStatus);
+        }
+
+        public void ResetStatusAndSessionKey()
+        {
+            Execute("UPDATE profiles SET status=0, sesskey = NULL");
+        }
     }
 }

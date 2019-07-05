@@ -4,12 +4,12 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using GameSpyLib.Logging;
-using GameSpyLib.Database;
 using GameSpyLib.Network;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using RetroSpyServer.Application;
-using RetroSpyServer.DBQueries;
+using RetroSpyServer.Servers.GPCM.Enumerator;
+using RetroSpyServer.Servers.GPCM.Structures;
 
 namespace RetroSpyServer.Servers.GPCM
 {
@@ -26,64 +26,9 @@ namespace RetroSpyServer.Servers.GPCM
         #region Variables
 
         /// <summary>
-        /// Gets the current login status
-        /// </summary>
-        public LoginStatus LoginStatus { get; protected set; }
-
-        /// <summary>
-        /// Gets the current status of the player
-        /// </summary>
-        public PlayerStatus PlayerStatus { get; protected set; }
-
-        /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
         public bool CompletedLoginProcess { get; protected set; } = false;
-
-        /// <summary>
-        /// The connected clients Player Id
-        /// </summary>
-        public uint PlayerId { get; protected set; }
-
-        /// <summary>
-        /// The connected clients Nick
-        /// </summary>
-        public string PlayerNick { get; protected set; }
-
-        /// <summary>
-        /// The connected clients Email Address
-        /// </summary>
-        public string PlayerEmail { get; protected set; }
-
-        /// <summary>
-        /// The connected clients Authentication Token
-        /// </summary>
-        public string PlayerAuthToken { get; protected set; }
-
-        /// <summary>
-        /// The connected clients Unique Nick
-        /// </summary>
-        public string PlayerUniqueNick { get; protected set; }
-
-        /// <summary>
-        /// The connected clients country code
-        /// </summary>
-        public string PlayerCountryCode { get; protected set; }
-
-        /// <summary>
-        /// The clients password, MD5 hashed from UTF8 bytes
-        /// </summary>
-        private string PasswordHash;
-
-        /// <summary>
-        /// The clients status
-        /// </summary>
-        public string PlayerStatusString { get; protected set; }
-
-        /// <summary>
-        /// The place where the client is currently
-        /// </summary>
-        public string PlayerStatusLocation { get; protected set; }
 
         /// <summary>
         /// The TcpClient's Endpoint
@@ -107,29 +52,6 @@ namespace RetroSpyServer.Servers.GPCM
         /// </summary>
         private ushort SessionKey = 0;
 
-        public string PlayerFirstName { get; protected set; }
-        public string PlayerLastName { get; protected set; }
-        public int PlayerICQ { get; protected set; }
-        public string PlayerHomepage { get; protected set; }
-        public string PlayerZIPCode { get; protected set; }
-        public string PlayerLocation { get; protected set; }
-        public string PlayerAim { get; protected set; }
-        public int PlayerOccupation { get; protected set; }
-        public int PlayerIndustryID { get; protected set; }
-        public int PlayerIncomeID { get; protected set; }
-        public int PlayerMarried { get; protected set; }
-        public int PlayerChildCount { get; protected set; }
-        public int PlayerConnectionType { get; protected set; }
-        public int PlayerPicture { get; protected set; }
-        public int PlayerInterests { get; protected set; }
-        public PublicMasks PlayerPublicMask { get; protected set; }
-        public int PlayerOwnership { get; protected set; }
-        public ushort PlayerBirthday { get; protected set; }
-        public ushort PlayerBirthmonth { get; protected set; }
-        public ushort PlayerBirthyear { get; protected set; }
-        public PlayerSexType PlayerSex { get; protected set; }
-        public float PlayerLatitude { get; protected set; }
-        public float PlayerLongitude { get; protected set; }
 
         /// <summary>
         /// The Servers challange key, sent when the client first connects.
@@ -188,7 +110,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// </summary>
         public static event GpcmStatusChanged OnStatusChanged;
 
-        private GPCMDBQuery DBQuery;
+        public GPCMPlayerInfo PlayerInfo { get; protected set; }
 
         #endregion Variables
 
@@ -196,24 +118,16 @@ namespace RetroSpyServer.Servers.GPCM
         /// Constructor
         /// </summary>
         /// <param name="ReadArgs">The Tcp Client connection</param>
-        public GPCMClient(TcpStream ConnectionStream, long ConnectionId, DatabaseDriver driver)
+        public GPCMClient(TcpStream ConnectionStream, long ConnectionId)
         {
-            // Set default variable values
-             DBQuery = new GPCMDBQuery(driver);
+            PlayerInfo = new GPCMPlayerInfo();
 
-            PlayerNick = "Connecting...";
-            PlayerStatusString = "Offline";
-            PlayerLocation = "";
-            PlayerId = 0;
             RemoteEndPoint = (IPEndPoint)ConnectionStream.RemoteEndPoint;
             Disposed = false;
-            LoginStatus = LoginStatus.Connected;
-            PlayerStatus = PlayerStatus.Offline;
 
             // Set the connection ID
             this.ConnectionId = ConnectionId;
             
-
             // Create our Client Stream
             Stream = ConnectionStream;
             Stream.OnDisconnect += Stream_OnDisconnect;
@@ -241,94 +155,21 @@ namespace RetroSpyServer.Servers.GPCM
             Disposed = true;
         }
 
-        /// <summary>
-        /// Check if a date is correct
-        /// </summary>
-        /// <param name="day"></param>
-        /// <param name="month"></param>
-        /// <param name="year"></param>
-        /// <returns>True if the date is valid, otherwise false</returns>
-        protected bool IsValidDate(ushort day, ushort month, ushort year)
+        public void SendServerChallenge(uint ServerID)
         {
-            // Check for a blank.
-            /////////////////////
-            if ((day == 0) && (month == 0) && (year == 0))
-                return false;
-
-            // Validate the day of the month.
-            /////////////////////////////////
-            switch (month)
+            // Only send the login challenge once
+            if (PlayerInfo.LoginStatus != LoginStatus.Connected)
             {
-                // No month.
-                ////////////
-                case 0:
-                    // Can't specify a day without a month.
-                    ///////////////////////////////////////
-                    if (day != 0)
-                        return false;
-                    break;
+                Disconnect(DisconnectReason.ClientChallengeAlreadySent);
 
-                // 31-day month.
-                ////////////////
-                case 1:
-                case 3:
-                case 5:
-                case 7:
-                case 8:
-                case 10:
-                case 12:
-                    if (day > 31)
-                        return false;
-                    break;
-
-                // 30-day month.
-                ////////////////
-                case 4:
-                case 6:
-                case 9:
-                case 11:
-                    if (day > 30)
-                        return false;
-                    break;
-
-                // 28/29-day month.
-                ///////////////////
-                case 2:
-                    // Leap year?
-                    /////////////
-                    if ((((year % 4) == 0) && ((year % 100) != 0)) || ((year % 400) == 0))
-                    {
-                        if (day > 29)
-                            return false;
-                    }
-                    else
-                    {
-                        if (day > 28)
-                            return false;
-                    }
-                    break;
-
-                // Invalid month.
-                /////////////////
-                default:
-                    return false;
+                // Throw the error
+                throw new Exception("The server challenge has already been sent. Cannot send another login challenge." + $"\tChallenge was sent \"{ts.ToString()}\" ago.");
             }
 
-            // Check that the date is in the valid range.
-            /////////////////////////////////////////////
-            if (year < 1900)
-                return false;
-            if (year > 2079)
-                return false;
-            if (year == 2079)
-            {
-                if (month > 6)
-                    return false;
-                if ((month == 6) && (day > 6))
-                    return false;
-            }
-
-            return true;
+            // We send the client the challenge key
+            ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
+            PlayerInfo.LoginStatus = LoginStatus.Processing;
+            Stream.SendAsync(@"\lc\1\challenge\{0}\id\{1}\final\", ServerChallengeKey, ServerID);
         }
 
         /// <summary>
@@ -502,32 +343,7 @@ namespace RetroSpyServer.Servers.GPCM
 
         #region Login Steps
 
-        /// <summary>
-        ///  This method starts off by sending a random string 10 characters
-        ///  in length, known as the Server challenge key. This is used by 
-        ///  the client to return a client challenge key, which is used
-        ///  to validate login information later.
-        ///  </summary>
-        public void SendServerChallenge(uint ServerID)
-        {
-            // Only send the login challenge once
-            if (LoginStatus != LoginStatus.Connected)
-            {
-                // Create an exception message
-                TimeSpan ts = DateTime.Now - Created;
 
-                // Disconnect user
-                Disconnect(DisconnectReason.ClientChallengeAlreadySent);
-
-                // Throw the error
-                throw new Exception("The server challenge has already been sent. Cannot send another login challenge." + $"\tChallenge was sent \"{ts.ToString()}\" ago.");
-            }
-
-            // We send the client the challenge key
-            ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
-            LoginStatus = LoginStatus.Processing;
-            Stream.SendAsync(@"\lc\1\challenge\{0}\id\{1}\final\", ServerChallengeKey, ServerID);
-        }
 
         /// <summary>
         /// This method verifies the login information sent by

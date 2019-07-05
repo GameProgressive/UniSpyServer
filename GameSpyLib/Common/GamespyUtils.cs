@@ -157,68 +157,104 @@ namespace GameSpyLib.Common
         {
             if (email.Contains('@'))
             {
-                //a correct email format contains the postfix.
-                if (email.Contains(".cn") || email.Contains(".com") || email.Contains(".net"))
+                //a correct email format can not contain #$%^&*()!
+                if (!(email.Contains('#') && email.Contains('&') && email.Contains('$') && email.Contains('*') && email.Contains('(') && email.Contains(')') && email.Contains('!') && email.Contains('^')))
                 {
-                    //a correct email format can not contain #$%^&*()!
-                    if (!(email.Contains('#') && email.Contains('&') && email.Contains('$') && email.Contains('*') && email.Contains('(') && email.Contains(')') && email.Contains('!') && email.Contains('^')))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
             return false;
         }
 
 
-        ///// <summary>
-        ///// Check a message sended by TCP whether have multiple commands
-        ///// </summary>
-        ///// <param name="message"></param>
-        ///// <returns></returns>
-        //public static int CheckGPMultiCommands(string message)
-        //{
-        //    string keyWord = @"\final\";
-        //    //set index to the start position, and count of commands to zero;
-        //    int index = 0;
-        //    int commandCount = 0;
+        /// <summary>
+        /// Check if a date is correct
+        /// </summary>
+        /// <param name="day"></param>
+        /// <param name="month"></param>
+        /// <param name="year"></param>
+        /// <returns>True if the date is valid, otherwise false</returns>
+        public static bool IsValidDate(ushort day, ushort month, ushort year)
+        {
+            // Check for a blank.
+            /////////////////////
+            if ((day == 0) && (month == 0) && (year == 0))
+                return false;
 
-        //    while ((index = message.IndexOf(keyWord, index)) != -1)
-        //    {
-        //        //set index to position where the end index of the keyword:@"\final\" 
-        //        index = index + message.IndexOf(keyWord, index) + keyWord.Length;
-        //        //if a keyword:@"\final\" is found then count one;
-        //        commandCount++;
-        //    }
+            // Validate the day of the month.
+            /////////////////////////////////
+            switch (month)
+            {
+                // No month.
+                ////////////
+                case 0:
+                    // Can't specify a day without a month.
+                    ///////////////////////////////////////
+                    if (day != 0)
+                        return false;
+                    break;
 
-        //    return commandCount;
-        //}
-        ///// <summary>
-        ///// Split multiple command send by single TCP stream and return the subcommand
-        ///// </summary>
-        ///// <param name="message"></param>
-        ///// <returns></returns>
-        //public static string[] SplitMultipleCommand(string message)
-        //{
-        //    string keyWord = @"\final\";
-        //    int preindex = 0;
-        //    int index = 0;
-        //    int commandCount = 0;
-        //    string[] submessage = new string[commandCount];
-        //    while ((index = message.IndexOf(keyWord, index)) != -1)
-        //    {
-        //        //set index to position where the end index of the keyword:@"\final\" 
-        //        index = index + message.IndexOf(keyWord, index) + keyWord.Length;
-        //        //set the substring when first keyword is found
-        //        submessage[commandCount-1] = message.Substring(preindex, index);
-        //        //set the preindex to the current index,
-        //        //when next time the index become the end of next keyword,
-        //        //the preindex will be the next start position.
-        //        preindex = index;
-        //        commandCount++;
-        //    }
+                // 31-day month.
+                ////////////////
+                case 1:
+                case 3:
+                case 5:
+                case 7:
+                case 8:
+                case 10:
+                case 12:
+                    if (day > 31)
+                        return false;
+                    break;
 
-        //    return submessage;
-        //}
+                // 30-day month.
+                ////////////////
+                case 4:
+                case 6:
+                case 9:
+                case 11:
+                    if (day > 30)
+                        return false;
+                    break;
+
+                // 28/29-day month.
+                ///////////////////
+                case 2:
+                    // Leap year?
+                    /////////////
+                    if ((((year % 4) == 0) && ((year % 100) != 0)) || ((year % 400) == 0))
+                    {
+                        if (day > 29)
+                            return false;
+                    }
+                    else
+                    {
+                        if (day > 28)
+                            return false;
+                    }
+                    break;
+
+                // Invalid month.
+                /////////////////
+                default:
+                    return false;
+            }
+
+            // Check that the date is in the valid range.
+            /////////////////////////////////////////////
+            if (year < 1900)
+                return false;
+            if (year > 2079)
+                return false;
+            if (year == 2079)
+            {
+                if (month > 6)
+                    return false;
+                if ((month == 6) && (day > 6))
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

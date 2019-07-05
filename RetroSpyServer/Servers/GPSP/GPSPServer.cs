@@ -26,8 +26,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// </summary>
         private static ConcurrentDictionary<long, GPSPClient> Clients = new ConcurrentDictionary<long, GPSPClient>();
 
-        private DatabaseDriver databaseDriver = null; 
-
+       
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -38,13 +37,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// </param>
         public GPSPServer(DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
         {
-            //if (databaseDriver == null)
-            //    this.databaseDriver = GPCMDBQuery.CreateNewMySQLConnection();
-            //else
-            this.databaseDriver = databaseDriver;
-
-
-
+            GPSPHelper.DBQuery = new DBQueries.GPSPDBQuery(databaseDriver);
 
             GPSPClient.OnDisconnect += GpspClient_OnDisconnect;
 
@@ -77,6 +70,8 @@ namespace RetroSpyServer.Servers.GPSP
             // Shutdown the listener socket
             ShutdownSocket();
 
+            GPSPHelper.DBQuery.Dispose();
+
             // Tell the base to dispose all free objects
             Dispose();
         }
@@ -100,7 +95,7 @@ namespace RetroSpyServer.Servers.GPSP
             try
             {
                 // Convert the TcpClient to a MasterClient
-                client = new GPSPClient(stream, ConID, databaseDriver);
+                client = new GPSPClient(stream, ConID);
                 Clients.TryAdd(ConID, client);
 
                 // Start receiving data

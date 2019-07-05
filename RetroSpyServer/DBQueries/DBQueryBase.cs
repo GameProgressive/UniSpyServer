@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.Database;
 using RetroSpyServer.XMLConfig;
@@ -6,10 +7,10 @@ using System.Collections.Generic;
 
 namespace RetroSpyServer.DBQueries
 {
-    public class DBQueryBase
+    public class DBQueryBase : IDisposable
     {
         //Create dbdriver so can be access from other class but just can set from this class
-        public DatabaseDriver dbdriver { get; protected set; }
+        private DatabaseDriver dbdriver = null;
                
         /// <summary>
         /// If there is DatabaseDriver argument are passed to the constructor,
@@ -24,11 +25,17 @@ namespace RetroSpyServer.DBQueries
                 this.dbdriver = dbdriver;//this is SQLite method
         }
 
+        public void Dispose()
+        {
+            dbdriver.Close();
+            dbdriver.Dispose();
+        }
+
         /// <summary>
         /// This function creates a new MySQL database connection
         /// </summary>
         /// <returns>An instance of the connection or null if the connection could not be created</returns>
-        public MySqlDatabaseDriver CreateNewMySQLConnection()
+        private MySqlDatabaseDriver CreateNewMySQLConnection()
         {
             DatabaseConfiguration cfg = ConfigManager.xmlConfiguration.Database;
 
@@ -46,9 +53,20 @@ namespace RetroSpyServer.DBQueries
 
             return driver;
         }
-        public List<Dictionary<string, object>> Query(string Sql, params object[] Items)
+
+        protected List<Dictionary<string, object>> Query(string Sql, params object[] Items)
         {
             return dbdriver.Query(Sql,Items);
+        }
+
+        protected int Execute(string Sql, params object[] Items)
+        {
+            return dbdriver.Execute(Sql, Items);
+        }
+
+        public DbTransaction BeginTransaction()
+        {
+            return dbdriver.BeginTransaction();
         }
     }
 }
