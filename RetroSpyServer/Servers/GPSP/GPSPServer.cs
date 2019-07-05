@@ -41,7 +41,7 @@ namespace RetroSpyServer.Servers.GPSP
             //if (databaseDriver == null)
             //    this.databaseDriver = GPCMDBQuery.CreateNewMySQLConnection();
             //else
-                this.databaseDriver = databaseDriver;
+            this.databaseDriver = databaseDriver;
 
 
 
@@ -96,13 +96,12 @@ namespace RetroSpyServer.Servers.GPSP
         {
             // Get our connection id
             long ConID = Interlocked.Increment(ref ConnectionCounter);
-            GPSPClient gpspClient;
-
+            GPSPClient client;
             try
             {
                 // Convert the TcpClient to a MasterClient
-                gpspClient = new GPSPClient(stream, ConID, databaseDriver);
-                Clients.TryAdd(ConID, gpspClient);
+                client = new GPSPClient(stream, ConID, databaseDriver);
+                Clients.TryAdd(ConID, client);
 
                 // Start receiving data
                 stream.BeginReceive();
@@ -110,7 +109,7 @@ namespace RetroSpyServer.Servers.GPSP
             catch
             {
                 // Remove pending connection
-                Clients.TryRemove(ConID, out gpspClient);
+                Clients.TryRemove(ConID, out client);
             }
         }
 
