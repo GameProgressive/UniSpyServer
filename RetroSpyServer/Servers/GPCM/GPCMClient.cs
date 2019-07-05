@@ -10,6 +10,7 @@ using GameSpyLib.Extensions;
 using RetroSpyServer.Application;
 using RetroSpyServer.Servers.GPCM.Enumerator;
 using RetroSpyServer.Servers.GPCM.Structures;
+using RetroSpyServer.DBQueries;
 
 namespace RetroSpyServer.Servers.GPCM
 {
@@ -111,6 +112,7 @@ namespace RetroSpyServer.Servers.GPCM
         public static event GpcmStatusChanged OnStatusChanged;
 
         public GPCMPlayerInfo PlayerInfo { get; protected set; }
+        
 
         #endregion Variables
 
@@ -163,7 +165,8 @@ namespace RetroSpyServer.Servers.GPCM
                 Disconnect(DisconnectReason.ClientChallengeAlreadySent);
 
                 // Throw the error
-                throw new Exception("The server challenge has already been sent. Cannot send another login challenge." + $"\tChallenge was sent \"{ts.ToString()}\" ago.");
+                //throw new Exception("The server challenge has already been sent. Cannot send another login challenge." + $"\tChallenge was sent \"{ts.ToString()}\" ago.");
+                //Undo this
             }
 
             // We send the client the challenge key
@@ -196,15 +199,15 @@ namespace RetroSpyServer.Servers.GPCM
             catch { }
 
             // Set status and log
-            if (LoginStatus == LoginStatus.Completed)
+            if (PlayerInfo.LoginStatus == LoginStatus.Completed)
             {
                 if (reason == DisconnectReason.NormalLogout)
                 {
                     LogWriter.Log.Write(
                         "Client Logout:  {0} - {1} - {2}",
                         LogLevel.Info,
-                        PlayerNick,
-                        PlayerId,
+                        PlayerInfo.PlayerNick,
+                        PlayerInfo.PlayerId,
                         RemoteEndPoint
                     );
                 }
@@ -213,8 +216,8 @@ namespace RetroSpyServer.Servers.GPCM
                     LogWriter.Log.Write(
                         "Client Disconnected:  {0} - {1} - {2}, Code={3}",
                         LogLevel.Info,
-                        PlayerNick,
-                        PlayerId,
+                        PlayerInfo.PlayerNick,
+                        PlayerInfo.PlayerId,
                         RemoteEndPoint,
                         Enum.GetName(typeof(DisconnectReason), reason)
                     );
@@ -222,8 +225,8 @@ namespace RetroSpyServer.Servers.GPCM
             }
 
             // Preapare to be unloaded from memory
-            PlayerStatus = PlayerStatus.Offline;
-            LoginStatus = LoginStatus.Disconnected;
+            PlayerInfo.PlayerStatus = PlayerStatus.Offline;
+            PlayerInfo.LoginStatus = LoginStatus.Disconnected;
             Dispose();
 
             // Call disconnect event
@@ -325,8 +328,8 @@ namespace RetroSpyServer.Servers.GPCM
             if (testSK != SessionKey)
                 return; // Are you trying to update another user?
 
-            PlayerStatusString = dictionary["statstring"];
-            PlayerLocation = dictionary["locstring"];
+            PlayerInfo.PlayerStatusString = dictionary["statstring"];
+            PlayerInfo.PlayerLocation = dictionary["locstring"];
 
             OnStatusChanged?.Invoke(this);
         }
@@ -372,19 +375,19 @@ namespace RetroSpyServer.Servers.GPCM
             // Parse the 3 login types information
             if (Recv.ContainsKey("uniquenick"))
             {
-                PlayerUniqueNick = Recv["uniquenick"];
+                PlayerInfo.PlayerUniqueNick = Recv["uniquenick"];
             }
             else if (Recv.ContainsKey("authtoken"))
             {
-                PlayerAuthToken = Recv["authtoken"];
+                PlayerInfo.PlayerAuthToken = Recv["authtoken"];
             }
             else if (Recv.ContainsKey("user"))
             {
                 // "User" is <nickname>@<email>
                 string User = Recv["user"];
                 int Pos = User.IndexOf('@');
-                PlayerNick = User.Substring(0, Pos);
-                PlayerEmail = User.Substring(Pos + 1);
+                PlayerInfo.PlayerNick = User.Substring(0, Pos);
+                PlayerInfo.PlayerEmail = User.Substring(Pos + 1);
             }
 
             // Dispose connection after use
@@ -395,16 +398,16 @@ namespace RetroSpyServer.Servers.GPCM
 
                 try
                 {
-                    if (PlayerUniqueNick != null)
-                        QueryResult = DBQuery.GetUserFromUniqueNick(Recv["uniquenick"]);
-                    else if (PlayerAuthToken != null)
+                    if (PlayerInfo.PlayerUniqueNick != null)
+                        QueryResult = GPCMHelper.DBQuery.GetUserFromUniqueNick(Recv["uniquenick"]);
+                    else if (PlayerInfo.PlayerAuthToken != null)
                     {
                         //TODO! Add the database entry
                         GamespyUtils.SendGPError(Stream, 0, "AuthToken is not supported yet");
                         return;
                     }
                     else
-                        QueryResult = DBQuery.GetUserFromNickname(PlayerEmail, PlayerNick);
+                        QueryResult = GPCMHelper.DBQuery.GetUserFromNickname(PlayerInfo.PlayerEmail, PlayerInfo.PlayerNick);
                 }
                 catch (Exception)
                 {
@@ -414,7 +417,7 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (QueryResult == null)
                 {
-                    if (PlayerUniqueNick != null)
+                    if (PlayerInfo.PlayerUniqueNick != null)
                         GamespyUtils.SendGPError(Stream, 265, "The unique nickname provided is incorrect!");
                     else
                         GamespyUtils.SendGPError(Stream, 265, "The nickname provided is incorrect!");
@@ -466,90 +469,90 @@ namespace RetroSpyServer.Servers.GPCM
                 }
 
                 // Set player variables
-                PlayerId = uint.Parse(QueryResult["profileid"].ToString());
-                PasswordHash = QueryResult["password"].ToString().ToLowerInvariant();
-                PlayerCountryCode = QueryResult["countrycode"].ToString();
+                PlayerInfo.PlayerId = uint.Parse(QueryResult["profileid"].ToString());
+                PlayerInfo.PasswordHash = QueryResult["password"].ToString().ToLowerInvariant();
+                PlayerInfo.PlayerCountryCode = QueryResult["countrycode"].ToString();
 
-                PlayerFirstName = QueryResult["firstname"].ToString();
-                PlayerLastName = QueryResult["lastname"].ToString();
-                PlayerICQ = int.Parse(QueryResult["icq"].ToString());
-                PlayerHomepage = QueryResult["homepage"].ToString();
-                PlayerZIPCode = QueryResult["zipcode"].ToString();
-                PlayerLocation = QueryResult["location"].ToString();
-                PlayerAim = QueryResult["aim"].ToString();
-                PlayerOwnership = int.Parse(QueryResult["ownership1"].ToString());
-                PlayerOccupation = int.Parse(QueryResult["occupationid"].ToString());
-                PlayerIndustryID = int.Parse(QueryResult["industryid"].ToString());
-                PlayerIncomeID = int.Parse(QueryResult["incomeid"].ToString());
-                PlayerMarried = int.Parse(QueryResult["marriedid"].ToString());
-                PlayerChildCount = int.Parse(QueryResult["childcount"].ToString());
-                PlayerConnectionType = int.Parse(QueryResult["connectiontype"].ToString());
-                PlayerPicture = int.Parse(QueryResult["picture"].ToString());
-                PlayerInterests = int.Parse(QueryResult["interests1"].ToString());
-                PlayerBirthday = ushort.Parse(QueryResult["birthday"].ToString());
-                PlayerBirthmonth = ushort.Parse(QueryResult["birthmonth"].ToString());
-                PlayerBirthyear = ushort.Parse(QueryResult["birthyear"].ToString());
+                PlayerInfo.PlayerFirstName = QueryResult["firstname"].ToString();
+                PlayerInfo.PlayerLastName = QueryResult["lastname"].ToString();
+                PlayerInfo.PlayerICQ = int.Parse(QueryResult["icq"].ToString());
+                PlayerInfo.PlayerHomepage = QueryResult["homepage"].ToString();
+                PlayerInfo.PlayerZIPCode = QueryResult["zipcode"].ToString();
+                PlayerInfo.PlayerLocation = QueryResult["location"].ToString();
+                PlayerInfo.PlayerAim = QueryResult["aim"].ToString();
+                PlayerInfo.PlayerOwnership = int.Parse(QueryResult["ownership1"].ToString());
+                PlayerInfo.PlayerOccupation = int.Parse(QueryResult["occupationid"].ToString());
+                PlayerInfo.PlayerIndustryID = int.Parse(QueryResult["industryid"].ToString());
+                PlayerInfo.PlayerIncomeID = int.Parse(QueryResult["incomeid"].ToString());
+                PlayerInfo.PlayerMarried = int.Parse(QueryResult["marriedid"].ToString());
+                PlayerInfo.PlayerChildCount = int.Parse(QueryResult["childcount"].ToString());
+                PlayerInfo.PlayerConnectionType = int.Parse(QueryResult["connectiontype"].ToString());
+                PlayerInfo.PlayerPicture = int.Parse(QueryResult["picture"].ToString());
+                PlayerInfo.PlayerInterests = int.Parse(QueryResult["interests1"].ToString());
+                PlayerInfo.PlayerBirthday = ushort.Parse(QueryResult["birthday"].ToString());
+                PlayerInfo.PlayerBirthmonth = ushort.Parse(QueryResult["birthmonth"].ToString());
+                PlayerInfo.PlayerBirthyear = ushort.Parse(QueryResult["birthyear"].ToString());
 
                 PlayerSexType playerSexType;
                 if (!Enum.TryParse(QueryResult["sex"].ToString().ToUpper(), out playerSexType))
-                    PlayerSex = PlayerSexType.PAT;
+                    PlayerInfo.PlayerSex = PlayerSexType.PAT;
                 else
-                    PlayerSex = playerSexType;
+                    PlayerInfo.PlayerSex = playerSexType;
 
-                PlayerLatitude = float.Parse(QueryResult["latitude"].ToString());
-                PlayerLongitude = float.Parse(QueryResult["longitude"].ToString());
+                PlayerInfo.PlayerLatitude = float.Parse(QueryResult["latitude"].ToString());
+                PlayerInfo.PlayerLongitude = float.Parse(QueryResult["longitude"].ToString());
 
                 PublicMasks mask;
                 if (!Enum.TryParse(QueryResult["publicmask"].ToString(), out mask))
-                    PlayerPublicMask = PublicMasks.MASK_ALL;
+                    PlayerInfo.PlayerPublicMask = PublicMasks.MASK_ALL;
                 else
-                    PlayerPublicMask = mask;
+                    PlayerInfo.PlayerPublicMask = mask;
 
                 string challengeData = "";
 
-                if (PlayerUniqueNick != null)
+                if (PlayerInfo.PlayerUniqueNick != null)
                 {
-                    PlayerEmail = QueryResult["email"].ToString();
-                    PlayerNick = QueryResult["nick"].ToString();
-                    challengeData = PlayerUniqueNick;
+                    PlayerInfo.PlayerEmail = QueryResult["email"].ToString();
+                    PlayerInfo.PlayerNick = QueryResult["nick"].ToString();
+                    challengeData = PlayerInfo.PlayerUniqueNick;
                 }
-                else if (PlayerAuthToken != null)
+                else if (PlayerInfo.PlayerAuthToken != null)
                 {
-                    PlayerEmail = QueryResult["email"].ToString();
-                    PlayerNick = QueryResult["nick"].ToString();
-                    PlayerUniqueNick = QueryResult["uniquenick"].ToString();
-                    challengeData = PlayerAuthToken;
+                    PlayerInfo.PlayerEmail = QueryResult["email"].ToString();
+                    PlayerInfo.PlayerNick = QueryResult["nick"].ToString();
+                    PlayerInfo.PlayerUniqueNick = QueryResult["uniquenick"].ToString();
+                    challengeData = PlayerInfo.PlayerAuthToken;
                 }
                 else
                 {
-                    PlayerUniqueNick = QueryResult["uniquenick"].ToString();
+                    PlayerInfo.PlayerUniqueNick = QueryResult["uniquenick"].ToString();
                     challengeData = Recv["user"];
                 }
 
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                if (Recv["response"] == GenerateProof(Recv["challenge"], ServerChallengeKey, challengeData, PlayerAuthToken != null ? 0 : partnerID))
+                if (Recv["response"] == GenerateProof(Recv["challenge"], ServerChallengeKey, challengeData, PlayerInfo.PlayerAuthToken != null ? 0 : partnerID))
                 {
                     // Create session key
-                    SessionKey = Crc.ComputeChecksum(PlayerUniqueNick);
+                    SessionKey = Crc.ComputeChecksum(PlayerInfo.PlayerUniqueNick);
 
                     // Password is correct
                     Stream.SendAsync(
                         @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         SessionKey,
-                        GenerateProof(ServerChallengeKey, Recv["challenge"], challengeData, PlayerAuthToken != null ? 0 : partnerID), // Do this again, Params are reversed!
-                        PlayerId,
-                        PlayerNick,
+                        GenerateProof(ServerChallengeKey, Recv["challenge"], challengeData, PlayerInfo.PlayerAuthToken != null ? 0 : partnerID), // Do this again, Params are reversed!
+                        PlayerInfo.PlayerId,
+                        PlayerInfo.PlayerNick,
                         GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
                     );
 
                     // Log Incoming Connections
-                    LogWriter.Log.Write("Client Login:   {0} - {1} - {2}", LogLevel.Info, PlayerNick, PlayerId, RemoteEndPoint);
+                    LogWriter.Log.Write("Client Login:   {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
 
                     // Update status last, and call success login
-                    LoginStatus = LoginStatus.Completed;
-                    PlayerStatus = PlayerStatus.Online;
-                    PlayerStatusString = "Online";
-                    PlayerStatusLocation = "";
+                    PlayerInfo.LoginStatus = LoginStatus.Completed;
+                    PlayerInfo.PlayerStatus = PlayerStatus.Online;
+                    PlayerInfo.PlayerStatusString = "Online";
+                    PlayerInfo.PlayerStatusLocation = "";
 
                     CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(this);
@@ -560,7 +563,7 @@ namespace RetroSpyServer.Servers.GPCM
                 else
                 {
                     // Log Incoming Connections
-                    LogWriter.Log.Write("Failed Login Attempt: {0} - {1} - {2}", LogLevel.Info, PlayerNick, PlayerId, RemoteEndPoint);
+                    LogWriter.Log.Write("Failed Login Attempt: {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
 
                     // Password is incorrect with database value
                     Stream.SendAsync(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
@@ -624,11 +627,11 @@ namespace RetroSpyServer.Servers.GPCM
 
             // If the client want to access the public information
             // of another client
-            if (targetPID != PlayerId)
+            if (targetPID != PlayerInfo.PlayerId)
             {
                 uint publicMask;
 
-                var Query = DBQuery.GetProfileInfo(targetPID);
+                var Query = GPCMHelper.DBQuery.GetProfileInfo(targetPID);
                 if (Query == null)
                 {
                     GamespyUtils.SendGPError(Stream, 4, "Unable to get profile information.");
@@ -655,7 +658,7 @@ namespace RetroSpyServer.Servers.GPCM
                 if (int.Parse(Query["icq"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
                     datatoSend += @"\icquin\" + int.Parse(Query["icq"].ToString());
 
-                if (PlayerHomepage.Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                if (PlayerInfo.PlayerHomepage.Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
                 {
                     if ((publicMask & (uint)PublicMasks.MASK_HOMEPAGE) > 0)
                         datatoSend += @"\homepage\" + Query["homepage"].ToString();
@@ -738,72 +741,78 @@ namespace RetroSpyServer.Servers.GPCM
                 // Since this is our profile, we have to see ALL informations that we can edit. This means that we don't need to check the public masks for sending
                 // the data
 
-                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\email\{2}\id\{3}\pmask\{4}", PlayerNick, PlayerUniqueNick, PlayerEmail, /*(ProfileSent ? "5" : "2")*/ messID, PlayerPublicMask);
+                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\email\{2}\id\{3}\pmask\{4}", 
+                                                                PlayerInfo.PlayerNick, 
+                                                                PlayerInfo.PlayerUniqueNick, 
+                                                                PlayerInfo.PlayerEmail,
+                                                                /*(ProfileSent ? "5" : "2")*/ messID, 
+                                                                PlayerInfo.PlayerPublicMask
+                                                                );
 
-                if (PlayerLastName.Length > 0)
-                    datatoSend += @"\lastname\" + PlayerLastName;
+                if (PlayerInfo.PlayerLastName.Length > 0)
+                    datatoSend += @"\lastname\" + PlayerInfo.PlayerLastName;
 
-                if (PlayerFirstName.Length > 0)
-                    datatoSend += @"\firstname\" + PlayerFirstName;
+                if (PlayerInfo.PlayerFirstName.Length > 0)
+                    datatoSend += @"\firstname\" + PlayerInfo.PlayerFirstName;
 
-                if (PlayerICQ != 0)
-                    datatoSend += @"\icquin\" + PlayerICQ;
+                if (PlayerInfo.PlayerICQ != 0)
+                    datatoSend += @"\icquin\" + PlayerInfo.PlayerICQ;
 
-                if (PlayerHomepage.Length > 0)
-                    datatoSend += @"\homepage\" + PlayerHomepage;
+                if (PlayerInfo.PlayerHomepage.Length > 0)
+                    datatoSend += @"\homepage\" + PlayerInfo.PlayerHomepage;
 
-                if (PlayerPicture != 0)
-                    datatoSend += @"\pic\" + PlayerPicture;
+                if (PlayerInfo.PlayerPicture != 0)
+                    datatoSend += @"\pic\" + PlayerInfo.PlayerPicture;
 
-                if (PlayerAim.Length > 0)
-                    datatoSend += @"\aim\" + PlayerAim;
+                if (PlayerInfo.PlayerAim.Length > 0)
+                    datatoSend += @"\aim\" + PlayerInfo.PlayerAim;
 
-                if (PlayerOccupation != 0)
-                    datatoSend += @"\occ\" + PlayerOccupation;
+                if (PlayerInfo.PlayerOccupation != 0)
+                    datatoSend += @"\occ\" + PlayerInfo.PlayerOccupation;
 
-                if (PlayerZIPCode.Length > 0)
-                    datatoSend += @"\zipcode\" + PlayerZIPCode;
+                if (PlayerInfo.PlayerZIPCode.Length > 0)
+                    datatoSend += @"\zipcode\" + PlayerInfo.PlayerZIPCode;
 
-                if (PlayerCountryCode.Length > 0)
-                    datatoSend += @"\countrycode\" + PlayerCountryCode;
+                if (PlayerInfo.PlayerCountryCode.Length > 0)
+                    datatoSend += @"\countrycode\" + PlayerInfo.PlayerCountryCode;
 
-                if (PlayerBirthday > 0 && PlayerBirthmonth > 0 && PlayerBirthyear > 0)
-                    datatoSend += @"\birthday\" + (uint)((PlayerBirthday << 24) | (PlayerBirthmonth << 16) | PlayerBirthyear);
+                if (PlayerInfo.PlayerBirthday > 0 && PlayerInfo.PlayerBirthmonth > 0 && PlayerInfo.PlayerBirthyear > 0)
+                    datatoSend += @"\birthday\" + (uint)((PlayerInfo.PlayerBirthday << 24) | (PlayerInfo.PlayerBirthmonth << 16) | PlayerInfo.PlayerBirthyear);
 
-                if (PlayerLocation.Length > 0)
-                    datatoSend += @"\loc\" + PlayerLocation;
+                if (PlayerInfo.PlayerLocation.Length > 0)
+                    datatoSend += @"\loc\" + PlayerInfo.PlayerLocation;
 
-                if (PlayerSex == PlayerSexType.FEMALE)
+                if (PlayerInfo.PlayerSex == PlayerSexType.FEMALE)
                     datatoSend += @"\sex\1";
-                else if (PlayerSex == PlayerSexType.MALE)
+                else if (PlayerInfo.PlayerSex == PlayerSexType.MALE)
                     datatoSend += @"\sex\0";
 
-                if (PlayerLatitude != 0.0f)
-                    datatoSend += @"\lat\" + PlayerLatitude;
+                if (PlayerInfo.PlayerLatitude != 0.0f)
+                    datatoSend += @"\lat\" + PlayerInfo.PlayerLatitude;
 
-                if (PlayerLongitude != 0.0f)
-                    datatoSend += @"\lon\" + PlayerLongitude;
+                if (PlayerInfo.PlayerLongitude != 0.0f)
+                    datatoSend += @"\lon\" + PlayerInfo.PlayerLongitude;
 
-                if (PlayerIncomeID != 0)
-                    datatoSend += @"\inc\" + PlayerIncomeID;
+                if (PlayerInfo.PlayerIncomeID != 0)
+                    datatoSend += @"\inc\" + PlayerInfo.PlayerIncomeID;
 
-                if (PlayerIndustryID != 0)
-                    datatoSend += @"\ind\" + PlayerIndustryID;
+                if (PlayerInfo.PlayerIndustryID != 0)
+                    datatoSend += @"\ind\" + PlayerInfo.PlayerIndustryID;
 
-                if (PlayerMarried != 0)
-                    datatoSend += @"\mar\" + PlayerMarried;
+                if (PlayerInfo.PlayerMarried != 0)
+                    datatoSend += @"\mar\" + PlayerInfo.PlayerMarried;
 
-                if (PlayerChildCount != 0)
-                    datatoSend += @"\chc\" + PlayerChildCount;
+                if (PlayerInfo.PlayerChildCount != 0)
+                    datatoSend += @"\chc\" + PlayerInfo.PlayerChildCount;
 
-                if (PlayerInterests != 0)
-                    datatoSend += @"\i1\" + PlayerInterests;
+                if (PlayerInfo.PlayerInterests != 0)
+                    datatoSend += @"\i1\" + PlayerInfo.PlayerInterests;
 
-                if (PlayerOwnership != 0)
-                    datatoSend += @"\o1\" + PlayerOwnership;
+                if (PlayerInfo.PlayerOwnership != 0)
+                    datatoSend += @"\o1\" + PlayerInfo.PlayerOwnership;
 
-                if (PlayerConnectionType != 0)
-                    datatoSend += @"\conn\" + PlayerConnectionType;
+                if (PlayerInfo.PlayerConnectionType != 0)
+                    datatoSend += @"\conn\" + PlayerInfo.PlayerConnectionType;
 
                 // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
                 datatoSend += @"\sig\" + GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex) + @"\final\";
@@ -831,7 +840,7 @@ namespace RetroSpyServer.Servers.GPCM
             {
 
                 // Check to see if user exists
-                if (DBQuery.UserExists(Recv["nick"]))
+                if (GPCMHelper.DBQuery.UserExists(Recv["nick"]))
                 {
                     Stream.SendAsync(@"\error\\err\516\fatal\\errmsg\This account name is already in use!\id\1\final\");
                     Disconnect(DisconnectReason.CreateFailedUsernameExists);
@@ -846,14 +855,14 @@ namespace RetroSpyServer.Servers.GPCM
                     ? "US" : "US";
 
                 // Attempt to create account. If Pid is 0, then we couldnt create the account. TODO: Handle Unique Nickname
-                if ((PlayerId = DBQuery.CreateUser(Recv["nick"], Password, Recv["email"], Cc, Recv["nick"])) == 0)
+                if ((PlayerInfo.PlayerId = GPCMHelper.DBQuery.CreateUser(Recv["nick"], Password, Recv["email"], Cc, Recv["nick"])) == 0)
                 {
                     GamespyUtils.SendGPError(Stream, 516, "An error oncurred while creating the account!");
                     Disconnect(DisconnectReason.CreateFailedDatabaseError);
                     return;
                 }
 
-                Stream.SendAsync(@"\nur\\userid\{0}\profileid\{0}\id\1\final\", PlayerId);
+                Stream.SendAsync(@"\nur\\userid\{0}\profileid\{0}\id\1\final\", PlayerInfo.PlayerId);
             }
             catch (Exception e)
             {
@@ -922,10 +931,10 @@ namespace RetroSpyServer.Servers.GPCM
                 PublicMasks mask;
                 if (Enum.TryParse(Recv["publicmask"], out mask))
                 {
-                    if (PlayerPublicMask != mask)
+                    if (PlayerInfo.PlayerPublicMask != mask)
                     {
                         query += ", publicmask=@P0";
-                        PlayerPublicMask = mask;
+                        PlayerInfo.PlayerPublicMask = mask;
                         passData[0] = mask;
                     }
                 }
@@ -933,21 +942,21 @@ namespace RetroSpyServer.Servers.GPCM
 
             if (Recv.ContainsKey("firstname"))
             {
-                if (Recv["firstname"] != PlayerFirstName)
+                if (Recv["firstname"] != PlayerInfo.PlayerFirstName)
                 {
                     query += ", firstname=@P1";
-                    PlayerFirstName = Recv["firstname"];
-                    passData[1] = PlayerFirstName;
+                    PlayerInfo.PlayerFirstName = Recv["firstname"];
+                    passData[1] = PlayerInfo.PlayerFirstName;
                 }
             }
 
             if (Recv.ContainsKey("lastname"))
             {
-                if (Recv["lastname"] != PlayerLastName)
+                if (Recv["lastname"] != PlayerInfo.PlayerLastName)
                 {
                     query += ", lastname=@P2";
-                    PlayerFirstName = Recv["lastname"];
-                    passData[2] = PlayerLastName;
+                    PlayerInfo.PlayerFirstName = Recv["lastname"];
+                    passData[2] = PlayerInfo.PlayerLastName;
                 }
             }
 
@@ -957,10 +966,10 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (int.TryParse(Recv["icquin"], out icq))
                 {
-                    if (icq != PlayerICQ)
+                    if (icq != PlayerInfo.PlayerICQ)
                     {
                         query += "icq=@P3 ";
-                        PlayerICQ = icq;
+                        PlayerInfo.PlayerICQ = icq;
                         passData[3] = icq;
                     }
                 }
@@ -968,31 +977,31 @@ namespace RetroSpyServer.Servers.GPCM
 
             if (Recv.ContainsKey("homepage"))
             {
-                if (Recv["homepage"] != PlayerHomepage)
+                if (Recv["homepage"] != PlayerInfo.PlayerHomepage)
                 {
                     query += ", homepage=@P4";
-                    PlayerHomepage = Recv["homepage"];
-                    passData[4] = PlayerHomepage;
+                    PlayerInfo.PlayerHomepage = Recv["homepage"];
+                    passData[4] = PlayerInfo.PlayerHomepage;
                 }
             }
 
             if (Recv.ContainsKey("zipcode"))
             {
-                if (Recv["zipcode"] != PlayerZIPCode)
+                if (Recv["zipcode"] != PlayerInfo.PlayerZIPCode)
                 {
                     query += ", zipcode=@P5";
-                    PlayerZIPCode = Recv["zipcode"];
-                    passData[5] = PlayerZIPCode;
+                    PlayerInfo.PlayerZIPCode = Recv["zipcode"];
+                    passData[5] = PlayerInfo.PlayerZIPCode;
                 }
             }
 
             if (Recv.ContainsKey("countrycode"))
             {
-                if (Recv["countrycode"] != PlayerCountryCode)
+                if (Recv["countrycode"] != PlayerInfo.PlayerCountryCode)
                 {
                     query += ", countrycode=@P6";
-                    PlayerCountryCode = Recv["zipcode"];
-                    passData[6] = PlayerCountryCode;
+                    PlayerInfo.PlayerCountryCode = Recv["zipcode"];
+                    passData[6] = PlayerInfo.PlayerCountryCode;
                 }
             }
 
@@ -1005,37 +1014,37 @@ namespace RetroSpyServer.Servers.GPCM
                     ushort m = (ushort)((date >> 16) & 0xFF);
                     ushort y = (ushort)(date & 0xFFFF);
 
-                    if (IsValidDate(d, m, y))
+                    if (GamespyUtils.IsValidDate(d, m, y))
                     {
-                        if (PlayerBirthday != d)
+                        if (PlayerInfo.PlayerBirthday != d)
                         {
                             query += ", birthday=@P6";
                             passData[6] = d;
-                            PlayerBirthday = d;
+                            PlayerInfo.PlayerBirthday = d;
                         }
 
-                        if (PlayerBirthmonth != m)
+                        if (PlayerInfo.PlayerBirthmonth != m)
                         {
                             query += ", birthmonth=@P19";
                             passData[19] = m;
-                            PlayerBirthmonth = m;
+                            PlayerInfo.PlayerBirthmonth = m;
                         }
 
-                        if (PlayerBirthyear != y)
+                        if (PlayerInfo.PlayerBirthyear != y)
                         {
                             query += ", birthyear=@P20";
                             passData[20] = y;
-                            PlayerBirthyear = y;
+                            PlayerInfo.PlayerBirthyear = y;
                         }
                     }
                 }
 
 
-                if (Recv["countrycode"] != PlayerCountryCode)
+                if (Recv["countrycode"] != PlayerInfo.PlayerCountryCode)
                 {
                     query += ", countrycode=@P7";
-                    PlayerCountryCode = Recv["zipcode"];
-                    passData[7] = PlayerCountryCode;
+                    PlayerInfo.PlayerCountryCode = Recv["zipcode"];
+                    passData[7] = PlayerInfo.PlayerCountryCode;
                 }
             }
 
@@ -1045,14 +1054,14 @@ namespace RetroSpyServer.Servers.GPCM
                 PlayerSexType sex;
                 if (Enum.TryParse(Recv["sex"], out sex))
                 {
-                    if (PlayerSex != sex)
+                    if (PlayerInfo.PlayerSex != sex)
                     {
                         query += "sex=@P8";
-                        PlayerSex = sex;
+                        PlayerInfo.PlayerSex = sex;
 
-                        if (PlayerSex == PlayerSexType.MALE)
+                        if (PlayerInfo.PlayerSex == PlayerSexType.MALE)
                             passData[8] = "MALE";
-                        else if (PlayerSex == PlayerSexType.FEMALE)
+                        else if (PlayerInfo.PlayerSex == PlayerSexType.FEMALE)
                             passData[8] = "FEMALE";
                         else
                             passData[8] = "PAT";
@@ -1062,11 +1071,11 @@ namespace RetroSpyServer.Servers.GPCM
 
             if (Recv.ContainsKey("aim"))
             {
-                if (Recv["aim"] != PlayerAim)
+                if (Recv["aim"] != PlayerInfo.PlayerAim)
                 {
                     query += ", aim=@P9";
-                    PlayerAim = Recv["aim"];
-                    passData[9] = PlayerAim;
+                    PlayerInfo.PlayerAim = Recv["aim"];
+                    passData[9] = PlayerInfo.PlayerAim;
                 }
             }
 
@@ -1076,10 +1085,10 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (int.TryParse(Recv["pic"], out pic))
                 {
-                    if (pic != PlayerPicture)
+                    if (pic != PlayerInfo.PlayerPicture)
                     {
                         query += ", picture=@P10";
-                        PlayerPicture = pic;
+                        PlayerInfo.PlayerPicture = pic;
                         passData[10] = pic;
                     }
                 }
@@ -1091,10 +1100,10 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (int.TryParse(Recv["occ"], out occ))
                 {
-                    if (occ != PlayerOccupation)
+                    if (occ != PlayerInfo.PlayerOccupation)
                     {
                         query += ", occupationid=@P11";
-                        PlayerOccupation = occ;
+                        PlayerInfo.PlayerOccupation = occ;
                         passData[11] = occ;
                     }
                 }
@@ -1106,10 +1115,10 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (int.TryParse(Recv["ind"], out ind))
                 {
-                    if (ind != PlayerIndustryID)
+                    if (ind != PlayerInfo.PlayerIndustryID)
                     {
                         query += ", industryid=@P12";
-                        PlayerIndustryID = ind;
+                        PlayerInfo.PlayerIndustryID = ind;
                         passData[12] = ind;
                     }
                 }
@@ -1121,10 +1130,10 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (int.TryParse(Recv["inc"], out inc))
                 {
-                    if (inc != PlayerIncomeID)
+                    if (inc != PlayerInfo.PlayerIncomeID)
                     {
                         query += ", industryid=@P13";
-                        PlayerIncomeID = inc;
+                        PlayerInfo.PlayerIncomeID = inc;
                         passData[13] = inc;
                     }
                 }
@@ -1136,10 +1145,10 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (int.TryParse(Recv["mar"], out mar))
                 {
-                    if (mar != PlayerMarried)
+                    if (mar != PlayerInfo.PlayerMarried)
                     {
                         query += ", marriedid=@P14";
-                        PlayerMarried = mar;
+                        PlayerInfo.PlayerMarried = mar;
                         passData[14] = mar;
                     }
                 }
@@ -1151,10 +1160,10 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (int.TryParse(Recv["chc"], out chc))
                 {
-                    if (chc != PlayerChildCount)
+                    if (chc != PlayerInfo.PlayerChildCount)
                     {
                         query += ", childcount=@P15";
-                        PlayerChildCount = chc;
+                        PlayerInfo.PlayerChildCount = chc;
                         passData[15] = chc;
                     }
                 }
@@ -1166,10 +1175,10 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (int.TryParse(Recv["i1"], out i1))
                 {
-                    if (i1 != PlayerInterests)
+                    if (i1 != PlayerInfo.PlayerInterests)
                     {
                         query += ", interests1=@P16";
-                        PlayerInterests = i1;
+                        PlayerInfo.PlayerInterests = i1;
                         passData[16] = i1;
                     }
                 }
@@ -1177,21 +1186,21 @@ namespace RetroSpyServer.Servers.GPCM
 
             if (Recv.ContainsKey("nick"))
             {
-                if (Recv["nick"] != PlayerNick)
+                if (Recv["nick"] != PlayerInfo.PlayerNick)
                 {
                     query += ", nick=@P17";
-                    PlayerNick = Recv["nick"];
-                    passData[17] = PlayerNick;
+                    PlayerInfo.PlayerNick = Recv["nick"];
+                    passData[17] = PlayerInfo.PlayerNick;
                 }
             }
 
             if (Recv.ContainsKey("uniquenick"))
             {
-                if (Recv["uniquenick"] != PlayerUniqueNick)
+                if (Recv["uniquenick"] != PlayerInfo.PlayerUniqueNick)
                 {
                     query += ", uniquenick=@P18";
-                    PlayerHomepage = Recv["uniquenick"];
-                    passData[18] = PlayerUniqueNick;
+                    PlayerInfo.PlayerHomepage = Recv["uniquenick"];
+                    passData[18] = PlayerInfo.PlayerUniqueNick;
                 }
             }
 
@@ -1200,12 +1209,13 @@ namespace RetroSpyServer.Servers.GPCM
 
             query = query.Replace("SET,", "SET");
 
-            passData[21] = PlayerId;
+            passData[21] = PlayerInfo.PlayerId;
             query += " WHERE `profileid`=@P21";
 
             try
             {
-                DBQuery.Query(query, passData);
+                //GPCMHelper.DBQuery.Query(query, passData);
+                //i just wanna this program run for debugging
             }
             catch (Exception e)
             {
@@ -1218,7 +1228,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// </summary>
         public void SendKeepAlive()
         {
-            if (LoginStatus == LoginStatus.Completed)
+            if (PlayerInfo.LoginStatus == LoginStatus.Completed)
             {
                 // Try and send a Keep-Alive
                 try
@@ -1257,12 +1267,12 @@ namespace RetroSpyServer.Servers.GPCM
             }
 
             // Generate our string to be hashed
-            StringBuilder HashString = new StringBuilder(PasswordHash);
+            StringBuilder HashString = new StringBuilder(PlayerInfo.PasswordHash);
             HashString.Append(' ', 48); // 48 spaces
             HashString.Append(realUserData);
             HashString.Append(challenge1);
             HashString.Append(challenge2);
-            HashString.Append(PasswordHash);
+            HashString.Append(PlayerInfo.PasswordHash);
             return HashString.ToString().GetMD5Hash();
         }
         #endregion
@@ -1270,7 +1280,7 @@ namespace RetroSpyServer.Servers.GPCM
         public bool Equals(GPCMClient other)
         {
             if (other == null) return false;
-            return (PlayerId == other.PlayerId || PlayerNick == other.PlayerNick);
+            return (PlayerInfo.PlayerId == other.PlayerInfo.PlayerId || PlayerInfo.PlayerNick == other.PlayerInfo.PlayerNick);
         }
 
         public override bool Equals(object obj)
@@ -1280,7 +1290,7 @@ namespace RetroSpyServer.Servers.GPCM
 
         public override int GetHashCode()
         {
-            return (int)PlayerId;
+            return (int)PlayerInfo.PlayerId;
         }
     }
 }
