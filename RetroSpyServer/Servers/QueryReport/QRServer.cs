@@ -60,6 +60,8 @@ namespace RetroSpyServer.Servers.QueryReport
             PollTimer = new Timer(5000);
             PollTimer.Elapsed += (s, e) => CheckServers();
             PollTimer.Start();
+
+            StartAcceptAsync();
         }
         /// <summary>
         /// Callback method for when the UDP Query Report socket recieves a connection
@@ -67,6 +69,13 @@ namespace RetroSpyServer.Servers.QueryReport
         protected override void ProcessAccept(UdpPacket packet)
         {
             IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
+
+            // Need at least 5 bytes
+            if (packet.BytesRecieved.Length < 5)
+            {
+                Release(packet.AsyncEventArgs);
+                return;
+            }
 
             Task.Run(() =>
             {

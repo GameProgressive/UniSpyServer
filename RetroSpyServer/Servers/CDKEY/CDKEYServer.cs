@@ -35,8 +35,8 @@ namespace RetroSpyServer.Servers.CDKey
         /// </summary>
         public void Shutdown()
         {
-            base.ShutdownSocket();
-            base.Dispose();
+            ShutdownSocket();
+            Dispose();
         }
         public void Release(UdpPacket packet)
         {
