@@ -6,14 +6,15 @@ using GameSpyLib.Network;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Extensions;
+using GameSpyLib.Common;
 
 namespace RetroSpyServer.Servers.CDKEY
 {
     public class CDKeyServer : UdpServer
     {
         #region Server Setup Phase
-        private CDKeyHelper helper;// This class implements the functions of gamespy cdkey check       
-        bool replied = false;
+
+        public bool replied = false;
         /// <summary>
         /// CDKeyServer
         /// </summary>
@@ -22,9 +23,9 @@ namespace RetroSpyServer.Servers.CDKEY
         /// <param name="MaxConnections">The Max client connections CDKeyServer can handle</param>
         public CDKeyServer(DatabaseDriver dbdriver, IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
         {
-            helper = new CDKeyHelper(dbdriver);
+            CDKeyHelper.DBQuery = new DBQueries.CDKeyDBQuery(dbdriver);
             // Start accepting remote connections
-            base.StartAcceptAsync();
+            StartAcceptAsync();
         }
         #endregion
 
@@ -37,7 +38,10 @@ namespace RetroSpyServer.Servers.CDKEY
             base.ShutdownSocket();
             base.Dispose();
         }
-
+        public void Release(UdpPacket packet)
+        {
+            Release(packet.AsyncEventArgs);
+        }
         /// <summary>
         /// This function is fired when an exception occour in the server
         /// </summary>
@@ -62,22 +66,23 @@ namespace RetroSpyServer.Servers.CDKEY
                 // Decrypt message
                 IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
                 string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(packet.BytesRecieved)).Trim('\\');
-                string[] cdkeyrequest = decrypted.TrimStart('\\').Split('\\');
+                string[] recieved = decrypted.TrimStart('\\').Split('\\');
+                Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
 
-                switch (cdkeyrequest[0])
+                switch (recieved[0])
                 {
                     //keep client alive request, we skip this
                     case "ka":
                     case "auth":
                     case "resp":
                     case "skey":
-                        CheckCDKeyValidation(packet, cdkeyrequest);
+                        CDKeyHelper.IsCDKeyValid(this, packet, dict);
                         break;
                     case "disc":
-                        DisconnectRequest(packet, cdkeyrequest);
+                        CDKeyHelper.DisconnectRequest(packet, dict);
                         break;
                     default:
-                        InvalidCDKeyRequest(packet, cdkeyrequest);
+                        CDKeyHelper.InvalidCDKeyRequest(this, packet, dict);
                         break;
                 }
             }
@@ -95,28 +100,8 @@ namespace RetroSpyServer.Servers.CDKEY
         }
         #endregion
 
-        #region GameSpy CDKey Functions
-        void CheckCDKeyValidation(UdpPacket packet, string[] recieved)
-        {
-            helper.IsCDKeyValid(this, packet, recieved);
-
-        }
-
-        void DisconnectRequest(UdpPacket packet, string[] recieved)
-        {            
-            // Handle, User disconnected from server
-        }
 
 
-        void InvalidCDKeyRequest(UdpPacket packet, string[] recieved)
-        {
-            LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug, recieved);
-            if (!replied)
-                base.Release(packet.AsyncEventArgs);
-            //write down the data we recieved through UDP packet         
-
-        }
-        #endregion
 
     }
 }

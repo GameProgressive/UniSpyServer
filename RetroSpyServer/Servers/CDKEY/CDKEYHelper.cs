@@ -15,21 +15,17 @@ namespace RetroSpyServer.Servers.CDKEY
     /// </summary>
     public class CDKeyHelper
     {
-        private CDKeyDBQuery DBQuery;
 
-        public CDKeyHelper(DatabaseDriver dbdriver)
-        {
-            DBQuery = new CDKeyDBQuery(dbdriver);
-        }       
+        public static CDKeyDBQuery DBQuery = null;
+       
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="str">MD5cdkey string</param>
         /// <returns></returns>
-        public void IsCDKeyValid(CDKeyServer server,UdpPacket packet, string[] str)
+        public static void IsCDKeyValid(CDKeyServer server,UdpPacket packet, Dictionary<string, string> recv)
         {
-            Dictionary<string, string> recv = GamespyUtils.ConvertGPResponseToKeyValue(str);
             if (DBQuery.IsCDKeyValidate(recv["skey"]))
             {
                 string reply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
@@ -38,9 +34,22 @@ namespace RetroSpyServer.Servers.CDKEY
             }
             else
             {
+                LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug, recv);
                 //TODO cdkey invalid response
             }                
-        }       
+        }
+        public static void DisconnectRequest(UdpPacket packet, Dictionary<string, string> recv)
+        {
+            // Handle, User disconnected from server
+        }
 
+        public static void InvalidCDKeyRequest(CDKeyServer server,UdpPacket packet, Dictionary<string, string> recv)
+        {
+            LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug, recv);
+            if (!server.replied)
+                server.Release(packet);
+            //write down the data we recieved through UDP packet         
+
+        }
     }
 }
