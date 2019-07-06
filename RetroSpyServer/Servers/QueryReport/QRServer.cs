@@ -116,7 +116,7 @@ namespace RetroSpyServer.Servers.QueryReport
                     if (!replied)
                         Release(packet.AsyncEventArgs);
                 }
-            }
+            });
         }
 
 
