@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameSpyLib.Database;
 using GameSpyLib.Extensions;
+using RetroSpyServer.Servers.GPCM.Structures;
 
 namespace RetroSpyServer.DBQueries
 {

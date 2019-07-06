@@ -17,9 +17,11 @@ namespace RetroSpyServer.Servers
 
         private GPCM.GPCMServer gpcmServer = null;
 
-        private CDKEY.CDKeyServer cdkeyServer = null;
+        private CDKey.CDKeyServer cdkeyServer = null;
 
-        private ServerBrowser.ServerBrowserServer sbServer = null;
+        private ServerBrowser.SBServer sbServer = null;
+
+        private QueryReport.QRServer qrServer = null;
 
         /// <summary>
         /// Constructor
@@ -118,6 +120,8 @@ namespace RetroSpyServer.Servers
                     return cdkeyServer != null && !cdkeyServer.IsDisposed;
                 case "SB":
                     return sbServer != null && !sbServer.IsDisposed;
+                case "QR":
+                    return qrServer != null && !qrServer.IsDisposed;
             }
 
             return false;
@@ -144,10 +148,13 @@ namespace RetroSpyServer.Servers
                     gpcmServer = new GPCM.GPCMServer(databaseDriver,new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
                 case "CDKEY":
-                    cdkeyServer = new CDKEY.CDKeyServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                    cdkeyServer = new CDKey.CDKeyServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
                 case "SB":
-                    sbServer = new ServerBrowser.ServerBrowserServer(new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                    sbServer = new ServerBrowser.SBServer(new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                    break;
+                case "QR":
+                    qrServer = new QueryReport.QRServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
             }
         }
@@ -171,6 +178,9 @@ namespace RetroSpyServer.Servers
                     break;
                 case "SB":
                     sbServer?.Dispose();
+                    break;
+                case "QR":
+                    qrServer?.Dispose();
                     break;
             }
         }

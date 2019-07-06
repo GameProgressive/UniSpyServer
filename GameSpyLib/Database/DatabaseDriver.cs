@@ -313,7 +313,7 @@ namespace GameSpyLib.Database
         public int Execute(string Sql)
         {
             // Create the SQL Command
-            using (DbCommand Command = this.CreateCommand(Sql))
+            using (DbCommand Command = CreateCommand(Sql))
                 return Command.ExecuteNonQuery();
         }
 
@@ -326,7 +326,7 @@ namespace GameSpyLib.Database
         public int Execute(string Sql, List<DbParameter> Params)
         {
             // Create the SQL Command
-            using (DbCommand Command = this.CreateCommand(Sql))
+            using (DbCommand Command = CreateCommand(Sql))
             {
                 // Increase Query Count
                 NumQueries++;
@@ -351,12 +351,12 @@ namespace GameSpyLib.Database
         public int Execute(string Sql, params object[] Items)
         {
             // Create the SQL Command
-            using (DbCommand Command = this.CreateCommand(Sql))
+            using (DbCommand Command = CreateCommand(Sql))
             {
                 // Add params
                 for (int i = 0; i < Items.Length; i++)
                 {
-                    DbParameter Param = this.CreateParam();
+                    DbParameter Param = CreateParam();
                     Param.ParameterName = "@P" + i;
                     Param.Value = Items[i];
                     Command.Parameters.Add(Param);
@@ -396,7 +396,7 @@ namespace GameSpyLib.Database
         public object ExecuteScalar(string Sql, List<DbParameter> Params)
         {
             // Create the SQL Command
-            using (DbCommand Command = this.CreateCommand(Sql))
+            using (DbCommand Command = CreateCommand(Sql))
             {
                 // Increase Query Count
                 NumQueries++;
@@ -420,12 +420,12 @@ namespace GameSpyLib.Database
         public object ExecuteScalar(string Sql, params object[] Items)
         {
             // Create the SQL Command
-            using (DbCommand Command = this.CreateCommand(Sql))
+            using (DbCommand Command = CreateCommand(Sql))
             {
                 // Add params
                 for (int i = 0; i < Items.Length; i++)
                 {
-                    DbParameter Param = this.CreateParam();
+                    DbParameter Param = CreateParam();
                     Param.ParameterName = "@P" + i;
                     Param.Value = Items[i];
                     Command.Parameters.Add(Param);
@@ -447,12 +447,12 @@ namespace GameSpyLib.Database
         public T ExecuteScalar<T>(string Sql, params object[] Items)
         {
             // Create the SQL Command
-            using (DbCommand Command = this.CreateCommand(Sql))
+            using (DbCommand Command = CreateCommand(Sql))
             {
                 // Add params
                 for (int i = 0; i < Items.Length; i++)
                 {
-                    DbParameter Param = this.CreateParam();
+                    DbParameter Param = CreateParam();
                     Param.ParameterName = "@P" + i;
                     Param.Value = Items[i];
                     Command.Parameters.Add(Param);

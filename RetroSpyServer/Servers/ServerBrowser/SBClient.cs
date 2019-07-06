@@ -2,8 +2,8 @@
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using RetroSpyServer.Application;
-using RetroSpyServer.Servers.MasterServer.GameServerInfo;
-using RetroSpyServer.Servers.MasterServer;
+using RetroSpyServer.Servers.QueryReport.GameServerInfo;
+using RetroSpyServer.Servers.QueryReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 
 namespace RetroSpyServer.Servers.ServerBrowser
 {
-    public class ServerBrowserClient
+    public class SBClient
     {
         /// <summary>
         /// A unqie identifier for this connection
@@ -41,7 +41,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public ServerBrowserClient(TcpStream stream, long connectionId)
+        public SBClient(TcpStream stream, long connectionId)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionId;
@@ -67,7 +67,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
         /// <summary>
         /// Destructor
         /// </summary>
-        ~ServerBrowserClient()
+        ~SBClient()
         {
             if (!Disposed)
                 Dispose(false);
@@ -152,8 +152,11 @@ namespace RetroSpyServer.Servers.ServerBrowser
                 data.AddRange(new byte[] { 0, 0 });
             }
 
+            // TODO: after implementing QueryReport, please touch this function again, this changes were done just to compile the server
+            throw new NotImplementedException("SB after QR2");
+            
             // Execute query right here in memory
-            IQueryable<GameServer> servers = MasterServer.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
+            /*IQueryable<GameServer> servers = QueryReport.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
             if (!String.IsNullOrWhiteSpace(filter))
             {
                 try
@@ -168,6 +171,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
                     // Program.ErrorLog.Write(" - Filter Used: " + filter);
                 }
             }
+
 
             // Add Servers
             foreach (GameServer server in servers)
@@ -193,7 +197,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
             }
 
             data.AddRange(new byte[] { 0, 255, 255, 255, 255 });
-            return data.ToArray();
+            return data.ToArray();*/
         }
 
         /// <summary>

@@ -12,5 +12,5 @@ namespace RetroSpyServer.Application
 
     public delegate void GpcmStatusChanged(GPCMClient client);
 
-    public delegate void SBConnectionClosed(ServerBrowserClient client);
+    public delegate void SBConnectionClosed(SBClient client);
 }

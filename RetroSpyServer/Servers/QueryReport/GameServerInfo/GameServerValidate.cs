@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RetroSpyServer.Servers.MasterServer.GameServerInfo
+namespace RetroSpyServer.Servers.QueryReport.GameServerInfo
 {
     public class GameServerValidate
     {

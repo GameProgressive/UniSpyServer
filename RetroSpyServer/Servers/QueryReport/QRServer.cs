@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using RetroSpyServer.Servers.MasterServer.GameServerInfo;
+using RetroSpyServer.Servers.QueryReport.GameServerInfo;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -17,9 +17,9 @@ using System.Timers;
 using GameSpyLib.Database;
 using RetroSpyServer.DBQueries;
 
-namespace RetroSpyServer.Servers.MasterServer
+namespace RetroSpyServer.Servers.QueryReport
 {
-    public class MasterServer : UdpServer
+    public class QRServer : UdpServer
     {
         /// <summary>
         /// Max number of concurrent open and active connections.
@@ -46,25 +46,77 @@ namespace RetroSpyServer.Servers.MasterServer
         /// </summary>
         public static int ServerTTL { get; protected set; }
 
-        public MasterServer(DatabaseDriver driver,IPEndPoint bindTo, int MaxConnection) : base(bindTo, MaxConnection)
+        public QRServer(DatabaseDriver driver,IPEndPoint bindTo, int MaxConnection) : base(bindTo, MaxConnection)
         {
-            MasterDBQuery.DBQuery = new DBQueries.GPCMDBQuery(driver);
+            QRHelper.DBQuery = new QRDBQuery(driver);
+
             //The Time for servers to remain in the serverlist since the last ping in seconds.
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
             //is busy and cant refresh the server's TTL right away
             ServerTTL = 30;
+
             // Setup timer. Remove servers who havent ping'd since ServerTTL
             PollTimer = new Timer(5000);
             PollTimer.Elapsed += (s, e) => CheckServers();
             PollTimer.Start();
         }
         /// <summary>
-        /// Callback method for when the UDP Master socket recieves a connection
+        /// Callback method for when the UDP Query Report socket recieves a connection
         /// </summary>
         protected override void ProcessAccept(UdpPacket packet)
         {
+            IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
 
+            Task.Run(() =>
+            {
+                // If we dont reply, we must manually release the EventArgs back to the pool
+                bool replied = false;
+                try
+                {
+                    // Decrypt message
+
+                    switch (packet.BytesRecieved[0])
+                    {
+                        // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
+                        // Perhaps it was present on an older version of GameSpy SDK
+                        /*case 0x01:
+                            QRHelper.HandleChallenge(this, packet);
+                            break;
+                        */
+
+                        case 0x03: // HEARTBEAT
+                            QRHelper.HeartbeatResponse(this, packet);
+                            break;
+
+                        case 0x05:
+                            QRHelper.EchoResponse(this, packet);
+                            break;
+
+                        case 0x08:
+                            QRHelper.KeepAlive(this, packet);
+                            break;
+
+                        case 0x09:
+                            AvaliableCheck.CheckForGameAvaliability(this, packet);
+                            break;
+
+                        default:
+                            LogWriter.Log.Write("Received unknown data ID: " + packet.BytesRecieved[0], LogLevel.Error);
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogWriter.Log.WriteException(e);
+                }
+                finally
+                {
+                    // Release so that we can pool the EventArgs to be used on another connection
+                    if (!replied)
+                        Release(packet.AsyncEventArgs);
+                }
+            }
         }
 
 
@@ -109,28 +161,27 @@ namespace RetroSpyServer.Servers.MasterServer
                 // things up alot if there are alot of rows to update
                 //using (DatabaseDriver Driver = new DatabaseDriver())
                 //using (DbTransaction Transaction = Driver.BeginTransaction())
-                    var transaction = MasterDBQuery.DBQuery.BeginTransaction();
+                var transaction = QRHelper.DBQuery.BeginTransaction();
+
                 {
                     try
                     {
                         foreach (GameServer server in ServersToRemove)
-                            Driver.UpdateServerOffline(server);
+                            QRHelper.UpdateServerOffline(server);
 
-                        Transaction.Commit();
+                        transaction.Commit();
                     }
                     catch
                     {
-                        Transaction.Rollback();
+                        transaction.Rollback();
                         throw;
                     }
                 }
             }
             catch (Exception e)
             {
-                Program.ErrorLog.Write("ERROR: [MasterDatabase.UpdateServerOffline] Unable to update servers status: " + e.Message);
+                LogWriter.Log.WriteException(e);
             }
         }
-       
-        
     }
 }

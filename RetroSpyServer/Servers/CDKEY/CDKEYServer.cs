@@ -8,7 +8,7 @@ using GameSpyLib.Logging;
 using GameSpyLib.Extensions;
 using GameSpyLib.Common;
 
-namespace RetroSpyServer.Servers.CDKEY
+namespace RetroSpyServer.Servers.CDKey
 {
     public class CDKeyServer : UdpServer
     {
@@ -94,7 +94,7 @@ namespace RetroSpyServer.Servers.CDKEY
             {
                 // Release so that we can pool the EventArgs to be used on another connection
                 if (!replied)
-                    base.Release(packet.AsyncEventArgs);
+                    Release(packet.AsyncEventArgs);
             }
 
         }

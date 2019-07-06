@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace RetroSpyServer.Servers.MasterServer.GameServerInfo
+namespace RetroSpyServer.Servers.QueryReport.GameServerInfo
 {
     internal class NonFilterAttribute : Attribute
     {
@@ -9,6 +9,9 @@ namespace RetroSpyServer.Servers.MasterServer.GameServerInfo
 
     public class GameServer
     {
+        [NonFilter]
+        public int DatabaseId { get; set; }
+
         [NonFilter]
         public IPEndPoint AddressInfo { get; protected set; }
 

@@ -7,7 +7,7 @@ using GameSpyLib.Network;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using System.Text;
-namespace RetroSpyServer.Servers.CDKEY
+namespace RetroSpyServer.Servers.CDKey
 {
     /// <summary>
     /// This class contians gamespy cdkey check functions  which help cdkeyserver to finish the cdkey check. 
@@ -28,7 +28,7 @@ namespace RetroSpyServer.Servers.CDKEY
         {
             if (DBQuery.IsCDKeyValidate(recv["skey"]))
             {
-                string reply = String.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
+                string reply = string.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
                 packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
                 server.ReplyAsync(packet);
             }
