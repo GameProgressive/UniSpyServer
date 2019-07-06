@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
- Source Server Type    : MariaDB
- Source Server Version : 100214
- Source Host           : localhost:3306
+ Source Server         : MariaDB 10
+ Source Server Type    : MySQL
+ Source Server Version : 100316
+ Source Host           : localhost:3316
  Source Schema         : retrospy
 
- Target Server Type    : MariaDB
- Target Server Version : 100214
+ Target Server Type    : MySQL
+ Target Server Version : 100316
  File Encoding         : 65001
 
- Date: 16/01/2019 23:34:09
+ Date: 06/07/2019 21:44:16
 */
 
 SET NAMES utf8mb4;
@@ -75,7 +75,7 @@ CREATE TABLE `messages`  (
   `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
   `from` int(10) UNSIGNED NOT NULL,
   `to` int(10) UNSIGNED NOT NULL,
-  `date` timestamp(0) NOT NULL DEFAULT current_timestamp ON UPDATE CURRENT_TIMESTAMP,
+  `date` timestamp(0) NOT NULL DEFAULT current_timestamp(0) ON UPDATE CURRENT_TIMESTAMP(0),
   `message` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `id`(`id`) USING BTREE,
@@ -131,7 +131,8 @@ CREATE TABLE `profiles`  (
 -- ----------------------------
 -- Records of profiles
 -- ----------------------------
-INSERT INTO `profiles` VALUES (1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 1, '127.0.0.1', 1547675381);
+INSERT INTO `profiles` VALUES (1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 0, '127.0.0.1', 1562442207);
+INSERT INTO `profiles` VALUES (2, 1, 'GBR358_SpyGuy', 'GBR358_SpyGuy', 'Spy', 'Guy', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, '127.0.0.1', 1562441613);
 
 -- ----------------------------
 -- Table structure for users

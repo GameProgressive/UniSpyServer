@@ -401,8 +401,9 @@ namespace RetroSpyServer.Servers.GPCM
                     else
                         QueryResult = GPCMHelper.DBQuery.GetUserFromNickname(PlayerInfo.PlayerEmail, PlayerInfo.PlayerNick);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    LogWriter.Log.WriteException(ex);
                     GamespyUtils.SendGPError(Stream, 4, "This request cannot be processed because of a database error.");
                     return;
                 }
