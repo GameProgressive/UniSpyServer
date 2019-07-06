@@ -7,8 +7,8 @@ namespace GameSpyLib.Logging
 {
     public enum LogLevel : int
     {
-        Info,
         Debug,
+        Info,        
         Warning,
         Error,
         Fatal
