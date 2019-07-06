@@ -43,17 +43,11 @@ namespace RetroSpyServer.Servers.GPSP
 
             // Init a new client stream class
             Stream = stream;
-            Stream.OnDisconnect += () => Dispose();
+            Stream.OnDisconnect +=Dispose;
             //determine whether gamespy request is finished
-            Stream.IsMessageFinished += (string message) =>
-            {
-                if (message.EndsWith("\\final\\"))
-                    return true;
-
-                return false;
-            };
+            Stream.IsMessageFinished += Stream_IsMessageFinished;
             // Read client message, and parse it into key value pairs
-            Stream.DataReceived += (message) =>ProcessDataReceived(message);
+            Stream.DataReceived += Stream_DataReceived;
             
         }
 
@@ -80,22 +74,39 @@ namespace RetroSpyServer.Servers.GPSP
         {
             // Only dispose once
             if (Disposed) return;
-            Disposed = true;
 
-            // If connection is still alive, disconnect user
-            if (!Stream.SocketClosed)
-                Stream.Close(DisposeEventArgs);
+            try
+            {
+                Stream.OnDisconnect -= Dispose;
+                //determine whether gamespy request is finished
+                Stream.IsMessageFinished -= Stream_IsMessageFinished;
+                // Read client message, and parse it into key value pairs
+                Stream.DataReceived -= Stream_DataReceived;
+                // If connection is still alive, disconnect user
+                if (!Stream.SocketClosed)
+                    Stream.Close(DisposeEventArgs);
+            }
+            catch { }
+
 
             // Call disconnect event
             OnDisconnect?.Invoke(this);
-        }     
 
+            Disposed = true;
+        }
+        private bool Stream_IsMessageFinished(string message)
+        {
+            if (message.EndsWith("\\final\\"))
+                return true;
+            else
+                return false;
+        }
         /// <summary>
         /// This function is fired when data is received from a stream
         /// </summary>
         /// <param name="stream">The stream that sended the data</param>
         /// <param name="message">The message the stream sended</param>
-        protected void ProcessDataReceived(string message)
+        protected void Stream_DataReceived(string message)
         {
             if (message[0] != '\\')
             {
