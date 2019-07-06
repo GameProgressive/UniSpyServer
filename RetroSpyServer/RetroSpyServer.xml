@@ -28,6 +28,11 @@
     <MaxConnections>255</MaxConnections>
     <Port>28910</Port>
   </ServerConfiguration>
+  <ServerConfiguration Name="QR">
+	<Hostname>127.0.0.1</Hostname>
+	<MaxConnections>255</MaxConnections>
+	<Port>27900</Port>
+  </ServerConfiguration>
 </Servers>
   <LogLevel>Info</LogLevel>
 </RetroSpy>
