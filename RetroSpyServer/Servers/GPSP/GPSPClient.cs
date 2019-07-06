@@ -111,46 +111,54 @@ namespace RetroSpyServer.Servers.GPSP
                 return;
             }
 
-            //split the command to key value pairs
-            string[] recieved = message.TrimStart('\\').Split('\\');
-            Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
-            //determin which command client is requested
-            switch (recieved[0])
+            string[] submessage = message.Split("\\final\\");
+
+            foreach (string command in submessage)
             {
-                case "valid":
-                    GPSPHelper.IsEmailValid(this, dict);
-                    break;
-                case "nicks":
-                    GPSPHelper.RetriveNicknames(this, dict);
-                    break;
-                case "check":
-                    GPSPHelper.CheckAccount(this, dict);
-                    break;
-                case "search":
-                    GPSPHelper.SearchUser(this, dict);
-                    break;
-                case "others":
-                    GPSPHelper.ReverseBuddies(this, dict);
-                    break;
-                case "otherslist":
-                    GPSPHelper.OnOthersList(this, dict);
-                    break;
-                case "uniquesearch":
-                    GPSPHelper.SuggestUniqueNickname(this, dict);
-                    break;
-                case "profilelist":
-                    GPSPHelper.OnProfileList(this, dict);
-                    break;
-                case "pmatch":
-                    GPSPHelper.MatchProduct(this, dict);
-                    break;
-                case "newuser":
-                    GPSPHelper.CreateUser(this, dict);
-                    break;
-                default:
-                    LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
-                    GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
-                    break;
+                if (command.Length < 1)
+                    continue;
+
+                // Read client message, and parse it into key value pairs
+                string[] recieved = command.TrimStart('\\').Split('\\');
+                Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
+
+                switch (recieved[0])
+                {
+                    case "valid":
+                        GPSPHelper.IsEmailValid(this, dict);
+                        break;
+                    case "nicks":
+                        GPSPHelper.RetriveNicknames(this, dict);
+                        break;
+                    case "check":
+                        GPSPHelper.CheckAccount(this, dict);
+                        break;
+                    case "search":
+                        GPSPHelper.SearchUser(this, dict);
+                        break;
+                    case "others":
+                        GPSPHelper.ReverseBuddies(this, dict);
+                        break;
+                    case "otherslist":
+                        GPSPHelper.OnOthersList(this, dict);
+                        break;
+                    case "uniquesearch":
+                        GPSPHelper.SuggestUniqueNickname(this, dict);
+                        break;
+                    case "profilelist":
+                        GPSPHelper.OnProfileList(this, dict);
+                        break;
+                    case "pmatch":
+                        GPSPHelper.MatchProduct(this, dict);
+                        break;
+                    case "newuser":
+                        GPSPHelper.CreateUser(this, dict);
+                        break;
+                    default:
+                        LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
+                        GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                        break;
+                }
             }
         }
     }
