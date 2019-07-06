@@ -523,7 +523,7 @@ namespace RetroSpyServer.Servers.GPCM
                 }
 
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                if (Recv["response"] == GenerateProof(Recv["challenge"], ServerChallengeKey, challengeData, PlayerInfo.PlayerAuthToken != null ? 0 : partnerID))
+                if (Recv["response"] == GenerateProof(Recv["challenge"], ServerChallengeKey, challengeData, PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID))
                 {
                     // Create session key
                     SessionKey = Crc.ComputeChecksum(PlayerInfo.PlayerUniqueNick);
@@ -532,7 +532,7 @@ namespace RetroSpyServer.Servers.GPCM
                     Stream.SendAsync(
                         @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         SessionKey,
-                        GenerateProof(ServerChallengeKey, Recv["challenge"], challengeData, PlayerInfo.PlayerAuthToken != null ? 0 : partnerID), // Do this again, Params are reversed!
+                        GenerateProof(ServerChallengeKey, Recv["challenge"], challengeData, PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID), // Do this again, Params are reversed!
                         PlayerInfo.PlayerId,
                         PlayerInfo.PlayerNick,
                         GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
