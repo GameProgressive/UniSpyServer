@@ -22,17 +22,17 @@ namespace RetroSpyServer.Servers.QueryReport
 
         public static void HeartbeatResponse(QRServer qRServer, UdpPacket packet)
         {
-            LogWriter.Log.Write("heartbeat response packets {}", LogLevel.Debug, packet.BytesRecieved.ToString());
+            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
         }
 
         public static void EchoResponse(QRServer qRServer, UdpPacket packet)
         {
-            LogWriter.Log.Write("echo response packets {}", LogLevel.Debug, packet.BytesRecieved.ToString());
+            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
         }
 
         public static void KeepAlive(QRServer qRServer, UdpPacket packet)
         {
-            LogWriter.Log.Write("keepalive response packets {}", LogLevel.Debug, packet.BytesRecieved.ToString());
+            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
         }
     }
 }

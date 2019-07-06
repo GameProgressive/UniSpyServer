@@ -12,8 +12,7 @@ namespace RetroSpyServer.Servers.QueryReport
 
     public class AvaliableCheck
     {
-        private static readonly byte[] AvailableReplyPrefix = { 0xfe, 0xfd, 0x09 };
-        private static readonly byte[] AvailableReplyPostfix = { 0x00, 0x00, 0x00 };
+        private static readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
 
         private static readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
         private static readonly byte AvailableCheckRequestPostfix = 0x00;
@@ -32,7 +31,7 @@ namespace RetroSpyServer.Servers.QueryReport
             }
 
             //postfix check
-            return request[request.Length] == AvailableCheckRequestPostfix;
+            return request[request.Length - 1] == AvailableCheckRequestPostfix;
         }
 
         public static void CheckForGameAvaliability(QRServer server, UdpPacket packet)
@@ -46,12 +45,13 @@ namespace RetroSpyServer.Servers.QueryReport
             //string gameName = GetGameName(packet.BytesRecieved);
 
             byte[] dataToSend = new byte[7];
-            AvailableReplyPrefix.CopyTo(dataToSend, 0);
-            AvailableReplyPostfix.CopyTo(dataToSend, 4);
-
+            AvailableReply.CopyTo(dataToSend, 0);
+            
             // NOTE: Change this if you want to make the server not avaliable.
-            dataToSend[3] = (byte)ServerAvaliability.Avaliable;
+            dataToSend[6] = (byte)ServerAvaliability.Avaliable;
 
+            packet.SetBufferContents(dataToSend);
+            server.ReplyAsync(packet);
         }
 
         /// <summary>
