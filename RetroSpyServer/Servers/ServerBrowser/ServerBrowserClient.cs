@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace RetroSpyServer.Servers.MasterServer.MasterTcp
+namespace RetroSpyServer.Servers.ServerBrowser
 {
     public class ServerBrowserClient
     {
@@ -35,7 +35,7 @@ namespace RetroSpyServer.Servers.MasterServer.MasterTcp
         /// <summary>
         /// Event fired when the connection is closed
         /// </summary>
-        public static event MstrConnectionClosed OnDisconnect;
+        public static event SBConnectionClosed OnDisconnect;
 
         /// <summary>
         /// Constructor
@@ -45,17 +45,16 @@ namespace RetroSpyServer.Servers.MasterServer.MasterTcp
         {
             // Generate a unique name for this connection
             ConnectionID = connectionId;
-
             // Init a new client stream class
             Stream = stream;
             Stream.OnDisconnect += Dispose;
             Stream.DataReceived += Stream_DataRecieved;
         }
 
-            protected void Stream_DataRecieved(string receivedData)
+            protected void Stream_DataRecieved(string received)
             {
                 // lets split up the message based on the delimiter
-                string[] messages = receivedData.Split(new string[] { "\x00\x00\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] messages = received.Split(new string[] { "\x00\x00\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string message in messages)
                 {
                     // Ignore Non-BF2 related queries
@@ -154,7 +153,7 @@ namespace RetroSpyServer.Servers.MasterServer.MasterTcp
             }
 
             // Execute query right here in memory
-            IQueryable<GameServer> servers = MasterUdpServer.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
+            IQueryable<GameServer> servers = MasterServer.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
             if (!String.IsNullOrWhiteSpace(filter))
             {
                 try

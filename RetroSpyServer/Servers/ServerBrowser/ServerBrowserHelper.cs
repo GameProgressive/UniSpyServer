@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RetroSpyServer.Servers.MasterServer.ServerBrowser
+namespace RetroSpyServer.Servers.ServerBrowser
 {
     /// <summary>
     /// This class contians gamespy master tcp server functions  which help cdkeyserver to finish the master tcp server functionality. 

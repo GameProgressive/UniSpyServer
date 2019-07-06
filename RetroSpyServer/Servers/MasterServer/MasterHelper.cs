@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RetroSpyServer.Servers.MasterServer.GameServerInfo;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,7 +9,8 @@ namespace RetroSpyServer.Servers.MasterServer
     /// This class contians gamespy master udp server functions  which help cdkeyserver to finish the master tcp server functionality. 
     /// This class is used to simplify the functions in server class, separate the other utility function making  the main server logic clearer
     /// </summary>
-    class MasterUdpHelper
+   public class MasterHelper
     {
+        
     }
 }

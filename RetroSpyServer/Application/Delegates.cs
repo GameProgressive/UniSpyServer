@@ -1,6 +1,6 @@
 ﻿using RetroSpyServer.Servers.GPSP;
 using RetroSpyServer.Servers.GPCM;
-using RetroSpyServer.Servers.MasterServer.MasterTcp;
+using RetroSpyServer.Servers.ServerBrowser;
 
 namespace RetroSpyServer.Application
 {
@@ -12,5 +12,5 @@ namespace RetroSpyServer.Application
 
     public delegate void GpcmStatusChanged(GPCMClient client);
 
-    public delegate void MstrConnectionClosed(ServerBrowserClient client);
+    public delegate void SBConnectionClosed(ServerBrowserClient client);
 }

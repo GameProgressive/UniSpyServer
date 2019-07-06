@@ -5,9 +5,9 @@ using System.Net;
 using System.Threading;
 using GameSpyLib.Network;
 using GameSpyLib.Logging;
-using RetroSpyServer.Servers.MasterServer.MasterTcp;
+using GameSpyLib.Database;
 
-namespace RetroSpyServer.Servers.MasterServer.ServerBrowser
+namespace RetroSpyServer.Servers.ServerBrowser
 {
     /// <summary>
     /// This class emulates the master.gamespy.com TCP server on port 28910.
@@ -15,12 +15,6 @@ namespace RetroSpyServer.Servers.MasterServer.ServerBrowser
     /// </summary>
     public class ServerBrowserServer : TcpServer
     {
-        /// <summary>
-        /// Max number of concurrent open and active connections.
-        /// </summary>
-        /// <remarks>Connections to the Master server are short lived</remarks>
-        public const int MaxConnections = 255;
-
         /// <summary>
         /// A connection counter, used to create unique connection id's
         /// </summary>
@@ -31,11 +25,11 @@ namespace RetroSpyServer.Servers.MasterServer.ServerBrowser
         /// </summary>
         private static ConcurrentDictionary<long, ServerBrowserClient> Clients = new ConcurrentDictionary<long, ServerBrowserClient>();
 
-        public ServerBrowserServer(IPEndPoint bindTo) : base(bindTo, MaxConnections)
+        public ServerBrowserServer(IPEndPoint bindTo,int MaxConnections) : base(bindTo, MaxConnections)
         {
             // Start accepting connections
-            ServerBrowserClient.OnDisconnect += MasterClient_OnDisconnect;
-            base.StartAcceptAsync();
+            ServerBrowserClient.OnDisconnect += ServerBrowserClient_OnDisconnect;
+            StartAcceptAsync();
         }
 
         /// <summary>
@@ -47,7 +41,7 @@ namespace RetroSpyServer.Servers.MasterServer.ServerBrowser
             base.IgnoreNewConnections = true;
 
             // Unregister events so we dont get a shit ton of calls
-            ServerBrowserClient.OnDisconnect -= MasterClient_OnDisconnect;
+            ServerBrowserClient.OnDisconnect -= ServerBrowserClient_OnDisconnect;
 
             // Disconnected all connected clients
             foreach (ServerBrowserClient client in Clients.Values)
@@ -57,10 +51,10 @@ namespace RetroSpyServer.Servers.MasterServer.ServerBrowser
             Clients.Clear();
 
             // Shutdown the listener socket
-            base.ShutdownSocket();
+            ShutdownSocket();
 
             // Tell the base to dispose all free objects
-            base.Dispose();
+            Dispose();
         }
 
         /// <summary>
@@ -110,7 +104,7 @@ namespace RetroSpyServer.Servers.MasterServer.ServerBrowser
         /// <summary>
         /// Callback for when a connection had disconnected
         /// </summary>
-        protected void MasterClient_OnDisconnect(ServerBrowserClient client)
+        protected void ServerBrowserClient_OnDisconnect(ServerBrowserClient client)
         {
             // Remove client, and call OnUpdate Event
             try
