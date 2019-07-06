@@ -158,11 +158,11 @@ namespace RetroSpyServer.Servers.GPSP
 
         public static void ReverseBuddies(GPSPClient client, Dictionary<string, string> dict)
         {
-            GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
-            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
+            /*GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");*/
 
             // TODO: Please finis this function
-            //stream.SendAsync(@"\others\\odone\final\");
+            client.Stream.SendAsync(@"\others\\odone\final\");
         }
 
         public static void SearchUser(GPSPClient client, Dictionary<string, string> dict)
