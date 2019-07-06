@@ -299,10 +299,6 @@ namespace RetroSpyServer.Servers.GPCM
                         break;
                 }
             }
-
-
-
-
         }
 
 

@@ -1,10 +1,10 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using RetroSpyServer.DBQueries;
 using RetroSpyServer.Servers.GPCM.Enumerator;
-using System;
-using System.Collections.Generic;
+using RetroSpyServer.Servers.GPCM.Structures;
 
 namespace RetroSpyServer.Servers.GPCM
 {
@@ -396,109 +396,85 @@ namespace RetroSpyServer.Servers.GPCM
             // of another client
             if (targetPID != client.PlayerInfo.PlayerId)
             {
-                uint publicMask;
-
-                var Query = GPCMHelper.DBQuery.GetProfileInfo(targetPID);
-                if (Query == null)
+                GPCMPlayerInfo playerInfo = DBQuery.GetProfileInfo(targetPID);
+                if (playerInfo == null)
                 {
                     GamespyUtils.SendGPError(client.Stream, 4, "Unable to get profile information.");
                     return;
                 }
 
-                if (!uint.TryParse(Query["publicmask"].ToString(), out publicMask))
-                    publicMask = (uint)PublicMasks.MASK_NONE;
+                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\id\{2}", playerInfo.PlayerNick, playerInfo.PlayerUniqueNick, messID);
 
-                datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\id\{2}", Query["nick"].ToString(), Query["uniquenick"].ToString(), messID);
+                if (playerInfo.PlayerEmail.Length > 0)
+                        datatoSend += @"\email\" + playerInfo.PlayerEmail;
 
-                if (Query["email"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
+                if (playerInfo.PlayerLastName.Length > 0)
+                    datatoSend += @"\lastname\" + playerInfo.PlayerLastName;
+
+                if (playerInfo.PlayerFirstName.Length > 0)
+                    datatoSend += @"\firstname\" + playerInfo.PlayerFirstName;
+
+                if (playerInfo.PlayerICQ != 0)
+                    datatoSend += @"\icquin\" + playerInfo.PlayerICQ;
+
+                if (playerInfo.PlayerHomepage.Length > 0)
+                    datatoSend += @"\homepage\" + playerInfo.PlayerHomepage;
+
+                if (playerInfo.PlayerPicture != 0)
+                    datatoSend += @"\pic\" + playerInfo.PlayerPicture;
+
+                if (playerInfo.PlayerAim.Length > 0)
+                    datatoSend += @"\aim\" + playerInfo.PlayerAim;
+
+                if (playerInfo.PlayerOccupation != 0)
+                    datatoSend += @"\occ\" + playerInfo.PlayerOccupation;
+
+                if (playerInfo.PlayerZIPCode.Length > 0)
+                    datatoSend += @"\zipcode\" + playerInfo.PlayerZIPCode;
+
+                if (playerInfo.PlayerCountryCode.Length > 0)
+                    datatoSend += @"\countrycode\" + playerInfo.PlayerCountryCode;
+
+                if (playerInfo.PlayerBirthday > 0 && playerInfo.PlayerBirthmonth > 0 && playerInfo.PlayerBirthyear > 0)
+                    datatoSend += @"\birthday\" + (uint)((playerInfo.PlayerBirthday << 24) | (playerInfo.PlayerBirthmonth << 16) | playerInfo.PlayerBirthyear);
+
+                if (playerInfo.PlayerLocation.Length > 0)
+                    datatoSend += @"\loc\" + playerInfo.PlayerLocation;
+
+                if (playerInfo.PlayerSex != PlayerSexType.PAT)
                 {
-                    if ((publicMask & (uint)PublicMasks.MASK_EMAIL) > 0)
-                        datatoSend += @"\email\" + Query["email"].ToString();
+                    if (playerInfo.PlayerSex == PlayerSexType.FEMALE)
+                        datatoSend += @"\sex\1";
+                    else if (playerInfo.PlayerSex == PlayerSexType.MALE)
+                        datatoSend += @"\sex\0";
                 }
 
-                if (Query["lastname"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\lastname\" + Query["lastname"].ToString();
+                if (playerInfo.PlayerLatitude != 0.0f)
+                    datatoSend += @"\lat\" + playerInfo.PlayerLatitude;
 
-                if (Query["firstname"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\firstname\" + Query["firstname"].ToString();
+                if (playerInfo.PlayerLongitude != 0.0f)
+                    datatoSend += @"\lon\" + playerInfo.PlayerLongitude;
 
-                if (int.Parse(Query["icq"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\icquin\" + int.Parse(Query["icq"].ToString());
+                if (playerInfo.PlayerIncomeID != 0)
+                    datatoSend += @"\inc\" + playerInfo.PlayerIncomeID;
 
-                if (client.PlayerInfo.PlayerHomepage.Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                {
-                    if ((publicMask & (uint)PublicMasks.MASK_HOMEPAGE) > 0)
-                        datatoSend += @"\homepage\" + Query["homepage"].ToString();
-                }
+                if (playerInfo.PlayerIndustryID != 0)
+                    datatoSend += @"\ind\" + playerInfo.PlayerIndustryID;
 
-                if (uint.Parse(Query["picture"].ToString()) != 0)
-                    datatoSend += @"\pic\" + uint.Parse(Query["Show"].ToString());
+                if (playerInfo.PlayerMarried != 0)
+                    datatoSend += @"\mar\" + playerInfo.PlayerMarried;
 
-                if (Query["aim"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\aim\" + Query["aim"].ToString();
+                if (playerInfo.PlayerChildCount != 0)
+                    datatoSend += @"\chc\" + playerInfo.PlayerChildCount;
 
-                if (int.Parse(Query["occupationid"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\occ\" + int.Parse(Query["occupationid"].ToString());
+                if (playerInfo.PlayerInterests != 0)
+                    datatoSend += @"\i1\" + playerInfo.PlayerInterests;
 
-                if (Query["zipcode"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                {
-                    if ((publicMask & (uint)PublicMasks.MASK_ZIPCODE) > 0)
-                        datatoSend += @"\zipcode\" + Query["zipcode"].ToString();
-                }
+                if (playerInfo.PlayerOwnership != 0)
+                    datatoSend += @"\o1\" + playerInfo.PlayerOwnership;
 
-                if (Query["countrycode"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                {
-                    if ((publicMask & (uint)PublicMasks.MASK_COUNTRYCODE) > 0)
-                        datatoSend += @"\countrycode\" + Query["countrycode"].ToString();
-                }
-
-                if (ushort.Parse(Query["birthday"].ToString()) > 0 && ushort.Parse(Query["birthmonth"].ToString()) > 0 && ushort.Parse(Query["birthyear"].ToString()) > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                {
-                    if ((publicMask & (uint)PublicMasks.MASK_BIRTHDAY) > 0)
-                        datatoSend += @"\birthday\" + (uint)((ushort.Parse(Query["birthday"].ToString()) << 24) | (ushort.Parse(Query["birthmonth"].ToString()) << 16) | ushort.Parse(Query["birthyear"].ToString()));
-                }
-
-                if (Query["location"].ToString().Length > 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\loc\" + Query["location"].ToString();
-
-                if (publicMask != (uint)PublicMasks.MASK_NONE && (publicMask & (uint)PublicMasks.MASK_SEX) > 0)
-                {
-                    PlayerSexType sexType;
-                    if (Enum.TryParse(Query["sex"].ToString(), out sexType))
-                    {
-                        if (sexType == PlayerSexType.FEMALE)
-                            datatoSend += @"\sex\1";
-                        else if (sexType == PlayerSexType.MALE)
-                            datatoSend += @"\sex\0";
-                    }
-                }
-
-                if (float.Parse(Query["latitude"].ToString()) != 0.0f && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\lat\" + float.Parse(Query["latitude"].ToString());
-
-                if (float.Parse(Query["longitude"].ToString()) != 0.0f && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\lon\" + float.Parse(Query["longitude"].ToString());
-
-                if (int.Parse(Query["incomeid"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\inc\" + int.Parse(Query["incomeid"].ToString());
-
-                if (int.Parse(Query["industryid"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\ind\" + int.Parse(Query["industryid"].ToString());
-
-                if (int.Parse(Query["marriedid"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\mar\" + int.Parse(Query["marriedid"].ToString());
-
-                if (int.Parse(Query["childcount"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\chc\" + int.Parse(Query["childcount"].ToString());
-
-                if (int.Parse(Query["interests1"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\i1\" + int.Parse(Query["interests1"].ToString());
-
-                if (int.Parse(Query["ownership1"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\o1\" + int.Parse(Query["ownership1"].ToString());
-
-                if (int.Parse(Query["connectiontype"].ToString()) != 0 && publicMask != (uint)PublicMasks.MASK_NONE)
-                    datatoSend += @"\conn\" + int.Parse(Query["connectiontype"].ToString());
+                if (playerInfo.PlayerConnectionType != 0)
+                    datatoSend += @"\conn\" + playerInfo.PlayerConnectionType;
 
                 // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
                 datatoSend += @"\sig\" + GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex) + @"\final\";
