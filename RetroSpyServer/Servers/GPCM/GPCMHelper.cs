@@ -29,15 +29,15 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// Updates the Users Country code when sent by the client
         /// </summary>
-        /// <param name="recv">Array of information sent by the server</param>
-        public static void UpdateUser(GPCMClient client,Dictionary<string, string> Recv)
+        /// <param name="dict">Array of information sent by the server</param>
+        public static void UpdateUser(GPCMClient client,Dictionary<string, string> dict)
         {
             // Set clients country code
-            if (!Recv.ContainsKey("sesskey"))
+            if (!dict.ContainsKey("sesskey"))
                 return;
 
             ushort ssk;
-            if (!ushort.TryParse(Recv["sesskey"], out ssk))
+            if (!ushort.TryParse(dict["sesskey"], out ssk))
                 return;
 
             if (ssk != client.SessionKey)
@@ -69,10 +69,10 @@ namespace RetroSpyServer.Servers.GPCM
                 null  // ProfileID
             };
 
-            if (Recv.ContainsKey("publicmask"))
+            if (dict.ContainsKey("publicmask"))
             {
                 PublicMasks mask;
-                if (Enum.TryParse(Recv["publicmask"], out mask))
+                if (Enum.TryParse(dict["publicmask"], out mask))
                 {
                     if (client.PlayerInfo.PlayerPublicMask != mask)
                     {
@@ -83,31 +83,31 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("firstname"))
+            if (dict.ContainsKey("firstname"))
             {
-                if (Recv["firstname"] != client.PlayerInfo.PlayerFirstName)
+                if (dict["firstname"] != client.PlayerInfo.PlayerFirstName)
                 {
                     query += ", firstname=@P1";
-                    client.PlayerInfo.PlayerFirstName = Recv["firstname"];
+                    client.PlayerInfo.PlayerFirstName = dict["firstname"];
                     passData[1] = client.PlayerInfo.PlayerFirstName;
                 }
             }
 
-            if (Recv.ContainsKey("lastname"))
+            if (dict.ContainsKey("lastname"))
             {
-                if (Recv["lastname"] != client.PlayerInfo.PlayerLastName)
+                if (dict["lastname"] != client.PlayerInfo.PlayerLastName)
                 {
                     query += ", lastname=@P2";
-                    client.PlayerInfo.PlayerFirstName = Recv["lastname"];
+                    client.PlayerInfo.PlayerFirstName = dict["lastname"];
                     passData[2] = client.PlayerInfo.PlayerLastName;
                 }
             }
 
-            if (Recv.ContainsKey("icquin"))
+            if (dict.ContainsKey("icquin"))
             {
                 int icq = 0;
 
-                if (int.TryParse(Recv["icquin"], out icq))
+                if (int.TryParse(dict["icquin"], out icq))
                 {
                     if (icq != client.PlayerInfo.PlayerICQ)
                     {
@@ -118,40 +118,40 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("homepage"))
+            if (dict.ContainsKey("homepage"))
             {
-                if (Recv["homepage"] != client.PlayerInfo.PlayerHomepage)
+                if (dict["homepage"] != client.PlayerInfo.PlayerHomepage)
                 {
                     query += ", homepage=@P4";
-                    client.PlayerInfo.PlayerHomepage = Recv["homepage"];
+                    client.PlayerInfo.PlayerHomepage = dict["homepage"];
                     passData[4] = client.PlayerInfo.PlayerHomepage;
                 }
             }
 
-            if (Recv.ContainsKey("zipcode"))
+            if (dict.ContainsKey("zipcode"))
             {
-                if (Recv["zipcode"] != client.PlayerInfo.PlayerZIPCode)
+                if (dict["zipcode"] != client.PlayerInfo.PlayerZIPCode)
                 {
                     query += ", zipcode=@P5";
-                    client.PlayerInfo.PlayerZIPCode = Recv["zipcode"];
+                    client.PlayerInfo.PlayerZIPCode = dict["zipcode"];
                     passData[5] = client.PlayerInfo.PlayerZIPCode;
                 }
             }
 
-            if (Recv.ContainsKey("countrycode"))
+            if (dict.ContainsKey("countrycode"))
             {
-                if (Recv["countrycode"] != client.PlayerInfo.PlayerCountryCode)
+                if (dict["countrycode"] != client.PlayerInfo.PlayerCountryCode)
                 {
                     query += ", countrycode=@P6";
-                    client.PlayerInfo.PlayerCountryCode = Recv["zipcode"];
+                    client.PlayerInfo.PlayerCountryCode = dict["zipcode"];
                     passData[6] = client.PlayerInfo.PlayerCountryCode;
                 }
             }
 
-            if (Recv.ContainsKey("birthday"))
+            if (dict.ContainsKey("birthday"))
             {
                 int date;
-                if (int.TryParse(Recv["birthday"], out date))
+                if (int.TryParse(dict["birthday"], out date))
                 {
                     ushort d = (ushort)((date >> 24) & 0xFF);
                     ushort m = (ushort)((date >> 16) & 0xFF);
@@ -183,19 +183,19 @@ namespace RetroSpyServer.Servers.GPCM
                 }
 
 
-                if (Recv["countrycode"] != client.PlayerInfo.PlayerCountryCode)
+                if (dict["countrycode"] != client.PlayerInfo.PlayerCountryCode)
                 {
                     query += ", countrycode=@P7";
-                    client.PlayerInfo.PlayerCountryCode = Recv["zipcode"];
+                    client.PlayerInfo.PlayerCountryCode = dict["zipcode"];
                     passData[7] = client.PlayerInfo.PlayerCountryCode;
                 }
             }
 
 
-            if (Recv.ContainsKey("sex"))
+            if (dict.ContainsKey("sex"))
             {
                 PlayerSexType sex;
-                if (Enum.TryParse(Recv["sex"], out sex))
+                if (Enum.TryParse(dict["sex"], out sex))
                 {
                     if (client.PlayerInfo.PlayerSex != sex)
                     {
@@ -212,21 +212,21 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("aim"))
+            if (dict.ContainsKey("aim"))
             {
-                if (Recv["aim"] != client.PlayerInfo.PlayerAim)
+                if (dict["aim"] != client.PlayerInfo.PlayerAim)
                 {
                     query += ", aim=@P9";
-                    client.PlayerInfo.PlayerAim = Recv["aim"];
+                    client.PlayerInfo.PlayerAim = dict["aim"];
                     passData[9] = client.PlayerInfo.PlayerAim;
                 }
             }
 
-            if (Recv.ContainsKey("pic"))
+            if (dict.ContainsKey("pic"))
             {
                 int pic = 0;
 
-                if (int.TryParse(Recv["pic"], out pic))
+                if (int.TryParse(dict["pic"], out pic))
                 {
                     if (pic != client.PlayerInfo.PlayerPicture)
                     {
@@ -237,11 +237,11 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("occ"))
+            if (dict.ContainsKey("occ"))
             {
                 int occ = 0;
 
-                if (int.TryParse(Recv["occ"], out occ))
+                if (int.TryParse(dict["occ"], out occ))
                 {
                     if (occ != client.PlayerInfo.PlayerOccupation)
                     {
@@ -252,11 +252,11 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("ind"))
+            if (dict.ContainsKey("ind"))
             {
                 int ind = 0;
 
-                if (int.TryParse(Recv["ind"], out ind))
+                if (int.TryParse(dict["ind"], out ind))
                 {
                     if (ind != client.PlayerInfo.PlayerIndustryID)
                     {
@@ -267,11 +267,11 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("inc"))
+            if (dict.ContainsKey("inc"))
             {
                 int inc = 0;
 
-                if (int.TryParse(Recv["inc"], out inc))
+                if (int.TryParse(dict["inc"], out inc))
                 {
                     if (inc != client.PlayerInfo.PlayerIncomeID)
                     {
@@ -282,11 +282,11 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("mar"))
+            if (dict.ContainsKey("mar"))
             {
                 int mar = 0;
 
-                if (int.TryParse(Recv["mar"], out mar))
+                if (int.TryParse(dict["mar"], out mar))
                 {
                     if (mar != client.PlayerInfo.PlayerMarried)
                     {
@@ -297,11 +297,11 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("chc"))
+            if (dict.ContainsKey("chc"))
             {
                 int chc = 0;
 
-                if (int.TryParse(Recv["chc"], out chc))
+                if (int.TryParse(dict["chc"], out chc))
                 {
                     if (chc != client.PlayerInfo.PlayerChildCount)
                     {
@@ -312,11 +312,11 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("i1"))
+            if (dict.ContainsKey("i1"))
             {
                 int i1 = 0;
 
-                if (int.TryParse(Recv["i1"], out i1))
+                if (int.TryParse(dict["i1"], out i1))
                 {
                     if (i1 != client.PlayerInfo.PlayerInterests)
                     {
@@ -327,22 +327,22 @@ namespace RetroSpyServer.Servers.GPCM
                 }
             }
 
-            if (Recv.ContainsKey("nick"))
+            if (dict.ContainsKey("nick"))
             {
-                if (Recv["nick"] != client.PlayerInfo.PlayerNick)
+                if (dict["nick"] != client.PlayerInfo.PlayerNick)
                 {
                     query += ", nick=@P17";
-                    client.PlayerInfo.PlayerNick = Recv["nick"];
+                    client.PlayerInfo.PlayerNick = dict["nick"];
                     passData[17] = client.PlayerInfo.PlayerNick;
                 }
             }
 
-            if (Recv.ContainsKey("uniquenick"))
+            if (dict.ContainsKey("uniquenick"))
             {
-                if (Recv["uniquenick"] != client.PlayerInfo.PlayerUniqueNick)
+                if (dict["uniquenick"] != client.PlayerInfo.PlayerUniqueNick)
                 {
                     query += ", uniquenick=@P18";
-                    client.PlayerInfo.PlayerHomepage = Recv["uniquenick"];
+                    client.PlayerInfo.PlayerHomepage = dict["uniquenick"];
                     passData[18] = client.PlayerInfo.PlayerUniqueNick;
                 }
             }
@@ -594,15 +594,15 @@ namespace RetroSpyServer.Servers.GPCM
         /// Whenever the "newuser" command is recieved, this method is called to
         /// add the new users information into the database
         /// </summary>
-        /// <param name="Recv">Array of parms sent by the server</param>
-        public static void CreateNewUser(GPCMClient client,Dictionary<string, string> Recv)
+        /// <param name="dict">Array of parms sent by the server</param>
+        public static void CreateNewUser(GPCMClient client,Dictionary<string, string> dict)
         {
             // Make sure the user doesnt exist already
             try
             {
 
                 // Check to see if user exists
-                if (GPCMHelper.DBQuery.UserExists(Recv["nick"]))
+                if (GPCMHelper.DBQuery.UserExists(dict["nick"]))
                 {
                     client.Stream.SendAsync(@"\error\\err\516\fatal\\errmsg\This account name is already in use!\id\1\final\");
                     client.Disconnect(DisconnectReason.CreateFailedUsernameExists);
@@ -610,14 +610,14 @@ namespace RetroSpyServer.Servers.GPCM
                 }
 
                 // We need to decode the Gamespy specific encoding for the password
-                string Password = GamespyUtils.DecodePassword(Recv["passwordenc"]);
+                string Password = GamespyUtils.DecodePassword(dict["passwordenc"]);
                 string Cc = (client.RemoteEndPoint.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
                     //? GeoIP.GetCountryCode(RemoteEndPoint.Address)
                     //: "US";
                     ? "US" : "US";
 
                 // Attempt to create account. If Pid is 0, then we couldnt create the account. TODO: Handle Unique Nickname
-                if ((client.PlayerInfo.PlayerId = GPCMHelper.DBQuery.CreateUser(Recv["nick"], Password, Recv["email"], Cc, Recv["nick"])) == 0)
+                if ((client.PlayerInfo.PlayerId = GPCMHelper.DBQuery.CreateUser(dict["nick"], Password, dict["email"], Cc, dict["nick"])) == 0)
                 {
                     GamespyUtils.SendGPError(client.Stream, 516, "An error oncurred while creating the account!");
                     client.Disconnect(DisconnectReason.CreateFailedDatabaseError);

@@ -25,6 +25,7 @@ namespace RetroSpyServer.Servers.NatNeg
         protected override void ProcessAccept(UdpPacket packet)
         {
             throw new NotImplementedException();
+            //TODO the natneg code here
         }
     }
 }

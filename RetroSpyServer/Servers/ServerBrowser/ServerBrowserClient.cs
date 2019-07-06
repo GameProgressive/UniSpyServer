@@ -1,4 +1,10 @@
-﻿using System;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using GameSpyLib.Network;
+using RetroSpyServer.Application;
+using RetroSpyServer.Servers.MasterServer.GameServerInfo;
+using RetroSpyServer.Servers.MasterServer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic;
@@ -6,15 +12,10 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
-using GameSpyLib.Extensions;
-using GameSpyLib.Network;
-using RetroSpyServer.Application;
-using GameSpyLib.Logging;
-using RetroSpyServer.Servers.MasterServer;
 
-namespace RetroSpyServer.Servers.MasterServer
+namespace RetroSpyServer.Servers.MasterServer.MasterTcp
 {
-    public class MasterTcpClient
+    public class ServerBrowserClient
     {
         /// <summary>
         /// A unqie identifier for this connection
@@ -40,15 +41,18 @@ namespace RetroSpyServer.Servers.MasterServer
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public MasterTcpClient(TcpStream client, long connectionId)
+        public ServerBrowserClient(TcpStream stream, long connectionId)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionId;
 
             // Init a new client stream class
-            Stream = client;
-            Stream.OnDisconnect += () => Dispose();
-            Stream.DataReceived += (receivedData) =>
+            Stream = stream;
+            Stream.OnDisconnect += Dispose;
+            Stream.DataReceived += Stream_DataRecieved;
+        }
+
+            protected void Stream_DataRecieved(string receivedData)
             {
                 // lets split up the message based on the delimiter
                 string[] messages = receivedData.Split(new string[] { "\x00\x00\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
@@ -57,14 +61,14 @@ namespace RetroSpyServer.Servers.MasterServer
                     // Ignore Non-BF2 related queries
                     if (message.StartsWith("battlefield2"))
                         ParseRequest(message);
-                }
-            };
+                }            
         }
+
 
         /// <summary>
         /// Destructor
         /// </summary>
-        ~MasterTcpClient()
+        ~ServerBrowserClient()
         {
             if (!Disposed)
                 Dispose(false);
@@ -162,7 +166,7 @@ namespace RetroSpyServer.Servers.MasterServer
                 {
                     LogWriter.Log.WriteException(e);
                     //Program.ErrorLog.Write("ERROR: [PackServerList] " + e.Message);
-                   // Program.ErrorLog.Write(" - Filter Used: " + filter);
+                    // Program.ErrorLog.Write(" - Filter Used: " + filter);
                 }
             }
 

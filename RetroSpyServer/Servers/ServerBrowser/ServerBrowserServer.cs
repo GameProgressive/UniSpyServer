@@ -5,21 +5,21 @@ using System.Net;
 using System.Threading;
 using GameSpyLib.Network;
 using GameSpyLib.Logging;
+using RetroSpyServer.Servers.MasterServer.MasterTcp;
 
-
-namespace RetroSpyServer.Servers.MasterServer
+namespace RetroSpyServer.Servers.MasterServer.ServerBrowser
 {
     /// <summary>
     /// This class emulates the master.gamespy.com TCP server on port 28910.
     /// This server is responisible for sending server lists to the online server browser in the game.
     /// </summary>
-    public class MasterTcpServer : TcpServer
+    public class ServerBrowserServer : TcpServer
     {
         /// <summary>
         /// Max number of concurrent open and active connections.
         /// </summary>
         /// <remarks>Connections to the Master server are short lived</remarks>
-        public const int MaxConnections = 100;
+        public const int MaxConnections = 255;
 
         /// <summary>
         /// A connection counter, used to create unique connection id's
@@ -29,12 +29,12 @@ namespace RetroSpyServer.Servers.MasterServer
         /// <summary>
         /// A List of sucessfully active connections (Name => Client Obj) on the MasterServer TCP line
         /// </summary>
-        private static ConcurrentDictionary<long, MasterTcpClient> Clients = new ConcurrentDictionary<long, MasterTcpClient>();
+        private static ConcurrentDictionary<long, ServerBrowserClient> Clients = new ConcurrentDictionary<long, ServerBrowserClient>();
 
-        public MasterTcpServer(IPEndPoint bindTo) : base(bindTo, MaxConnections)
+        public ServerBrowserServer(IPEndPoint bindTo) : base(bindTo, MaxConnections)
         {
             // Start accepting connections
-            MasterTcpClient.OnDisconnect += MasterClient_OnDisconnect;
+            ServerBrowserClient.OnDisconnect += MasterClient_OnDisconnect;
             base.StartAcceptAsync();
         }
 
@@ -47,10 +47,10 @@ namespace RetroSpyServer.Servers.MasterServer
             base.IgnoreNewConnections = true;
 
             // Unregister events so we dont get a shit ton of calls
-            MasterTcpClient.OnDisconnect -= MasterClient_OnDisconnect;
+            ServerBrowserClient.OnDisconnect -= MasterClient_OnDisconnect;
 
             // Disconnected all connected clients
-            foreach (MasterTcpClient client in Clients.Values)
+            foreach (ServerBrowserClient client in Clients.Values)
                 client.Dispose(true);
 
             // Update Connected Clients in the Database
@@ -71,14 +71,14 @@ namespace RetroSpyServer.Servers.MasterServer
         {
             // Get our connection id
             long ConID = Interlocked.Increment(ref ConnectionCounter);
-            MasterTcpClient client;
+            ServerBrowserClient client;
 
             // End the operation and display the received data on  
             // the console.
             try
             {
                 // Convert the TcpClient to a MasterClient
-                client = new MasterTcpClient(Stream, ConID);
+                client = new ServerBrowserClient(Stream, ConID);
                 Clients.TryAdd(client.ConnectionID, client);
 
                 // Start receiving data
@@ -110,7 +110,7 @@ namespace RetroSpyServer.Servers.MasterServer
         /// <summary>
         /// Callback for when a connection had disconnected
         /// </summary>
-        protected void MasterClient_OnDisconnect(MasterTcpClient client)
+        protected void MasterClient_OnDisconnect(ServerBrowserClient client)
         {
             // Remove client, and call OnUpdate Event
             try
