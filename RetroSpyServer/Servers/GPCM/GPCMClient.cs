@@ -387,9 +387,9 @@ namespace RetroSpyServer.Servers.GPCM
 
                 try
                 {
-                    if (PlayerInfo.PlayerUniqueNick != null)
+                    if (PlayerInfo.PlayerUniqueNick.Length > 0)
                         QueryResult = GPCMHelper.DBQuery.GetUserFromUniqueNick(Recv["uniquenick"]);
-                    else if (PlayerInfo.PlayerAuthToken != null)
+                    else if (PlayerInfo.PlayerAuthToken.Length > 0)
                     {
                         //TODO! Add the database entry
                         GamespyUtils.SendGPError(Stream, 0, "AuthToken is not supported yet");
@@ -406,7 +406,7 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (QueryResult == null)
                 {
-                    if (PlayerInfo.PlayerUniqueNick != null)
+                    if (PlayerInfo.PlayerUniqueNick.Length > 0)
                         GamespyUtils.SendGPError(Stream, 265, "The unique nickname provided is incorrect!");
                     else
                         GamespyUtils.SendGPError(Stream, 265, "The nickname provided is incorrect!");
@@ -499,13 +499,13 @@ namespace RetroSpyServer.Servers.GPCM
 
                 string challengeData = "";
 
-                if (PlayerInfo.PlayerUniqueNick != null)
+                if (PlayerInfo.PlayerUniqueNick.Length > 0)
                 {
                     PlayerInfo.PlayerEmail = QueryResult["email"].ToString();
                     PlayerInfo.PlayerNick = QueryResult["nick"].ToString();
                     challengeData = PlayerInfo.PlayerUniqueNick;
                 }
-                else if (PlayerInfo.PlayerAuthToken != null)
+                else if (PlayerInfo.PlayerAuthToken.Length > 0)
                 {
                     PlayerInfo.PlayerEmail = QueryResult["email"].ToString();
                     PlayerInfo.PlayerNick = QueryResult["nick"].ToString();
