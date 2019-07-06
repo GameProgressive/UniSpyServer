@@ -391,7 +391,7 @@ namespace RetroSpyServer.Servers.GPCM
                 try
                 {
                     if (PlayerInfo.PlayerUniqueNick.Length > 0)
-                        QueryResult = GPCMHelper.DBQuery.GetUserFromUniqueNick(Recv["uniquenick"]);
+                        QueryResult = GPCMHelper.DBQuery.GetUserFromUniqueNick(PlayerInfo.PlayerUniqueNick);
                     else if (PlayerInfo.PlayerAuthToken.Length > 0)
                     {
                         //TODO! Add the database entry
