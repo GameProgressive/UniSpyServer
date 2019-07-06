@@ -81,7 +81,7 @@ namespace RetroSpyServer.Servers.GPCM.Structures
         /// <summary>
         /// Gets the current login status
         /// </summary>
-        public LoginStatus LoginStatus = LoginStatus.Disconnected;
+        public LoginStatus LoginStatus = LoginStatus.Connected;
 
     }
 }
