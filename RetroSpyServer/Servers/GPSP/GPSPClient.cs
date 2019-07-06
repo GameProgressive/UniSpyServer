@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.Database;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using GameSpyLib.Common;
-using GameSpyLib.Extensions;
 using RetroSpyServer.Application;
-using RetroSpyServer.DBQueries;
+using System;
+using System.Collections.Generic;
 
 namespace RetroSpyServer.Servers.GPSP
 {

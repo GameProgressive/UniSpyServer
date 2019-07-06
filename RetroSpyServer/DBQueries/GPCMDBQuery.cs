@@ -85,5 +85,13 @@ namespace RetroSpyServer.DBQueries
         {
             Execute("UPDATE profiles SET status=0, sesskey = NULL");
         }
+
+        public void UpdateUserInfo(string query, object[] passData)
+        {          
+
+                Query(query, passData);
+
+           
+        }
     }
 }
