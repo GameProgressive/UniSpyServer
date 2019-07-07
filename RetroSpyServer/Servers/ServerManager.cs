@@ -25,6 +25,8 @@ namespace RetroSpyServer.Servers
 
         private NatNeg.NatNegServer nnServer = null;
 
+        private Stats.GStatsServer statsServer = null;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -126,6 +128,8 @@ namespace RetroSpyServer.Servers
                     return qrServer != null && !qrServer.IsDisposed;
                 case "NATNEG":
                     return nnServer != null && !nnServer.IsDisposed;
+                case "GSTATS":
+                    return statsServer != null && !statsServer.IsDisposed;
             }
 
             return false;
@@ -163,6 +167,9 @@ namespace RetroSpyServer.Servers
                 case "NATNEG":
                     nnServer = new NatNeg.NatNegServer(new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
+                case "GSTATS":
+                    statsServer = new Stats.GStatsServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                    break;
             }
         }
 
@@ -191,6 +198,9 @@ namespace RetroSpyServer.Servers
                     break;
                 case "NATNEG":
                     nnServer?.Dispose();
+                    break;
+                case "GSTATS":
+                    statsServer?.Dispose();
                     break;
             }
         }
