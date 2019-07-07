@@ -125,6 +125,9 @@ namespace RetroSpyServer
                     if (bool_ConsoleInput)
                     {
                         string input = Console.ReadLine();
+                        if (input.Length < 1)
+                            continue;
+
                         switch(input)
                         {
                             case "exit":
