@@ -642,7 +642,7 @@ namespace RetroSpyServer.Servers.GPCM
             HashString.Append(PlayerInfo.PasswordHash);
             return HashString.ToString().GetMD5Hash();
         }
-        #endregion
+
 
         public bool Equals(GPCMClient other)
         {
@@ -659,5 +659,6 @@ namespace RetroSpyServer.Servers.GPCM
         {
             return (int)PlayerInfo.PlayerId;
         }
+        #endregion
     }
 }

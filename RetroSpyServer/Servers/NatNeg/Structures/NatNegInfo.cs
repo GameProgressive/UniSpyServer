@@ -115,13 +115,21 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public static int NN_PREINIT_WAITING_FOR_MATCHUP = 1;
 
         public static int NN_PREINIT_READY = 2;
+
         public static int BASEPACKET_SIZE = 12;
+
         public static int BASEPACKET_TYPE_OFFSET = 7;
+
         public static int INITPACKET_SIZE = BASEPACKET_SIZE + 9;
+
         public static int INITPACKET_ADDRESS_OFFSET = BASEPACKET_SIZE + 3;
+
         public static int REPORTPACKET_SIZE = BASEPACKET_SIZE + 61;
+
         public static int CONNECTPACKET_SIZE = BASEPACKET_SIZE + 8;
+
         public static int PREINITPACKET_SIZE = BASEPACKET_SIZE + 6;
+
         public static int NNCookieType;
     }
 }

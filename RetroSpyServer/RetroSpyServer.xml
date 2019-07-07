@@ -33,6 +33,11 @@
 	<MaxConnections>255</MaxConnections>
 	<Port>27900</Port>
   </ServerConfiguration>
+  <ServerConfiguration Name="NATNEG">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>27901</Port>
+  </ServerConfiguration>
 </Servers>
   <LogLevel>Info</LogLevel>
 </RetroSpy>
