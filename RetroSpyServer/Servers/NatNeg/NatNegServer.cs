@@ -41,23 +41,23 @@ namespace RetroSpyServer.Servers.NatNeg
                 switch (packet.BytesRecieved[0])
                 {
 
-                    case 0x0F:
+                    case NatNegInfo.NN_PREINIT:
                         NatNegHelper.PreInitPacketResponse(this, packet);
                         break;
-                    case 0x00:
+                    case NatNegInfo.NN_INIT:
                         NatNegHelper.InitPacketResponse(this, packet);
                         break;
-                    case 0x0A:
+                    case NatNegInfo.NN_ADDRESS_CHECK:
                         NatNegHelper.AddressCheckResponse(this, packet);
                         break;
-                    case 0x0C:
+                    case NatNegInfo.NN_NATIFY_REQUEST:
                         NatNegHelper.NatifyResponse(this, packet);
                         break;
-                    case 0x07:
+                    case NatNegInfo.NN_CONNECT_PING:
                         break;
-                    case 0x09:
+                    case NatNegInfo.NN_BACKUP_ACK:
                         break;
-                    case 0x0D:
+                    case NatNegInfo.NN_REPORT:
                         NatNegHelper.ReportResponse(this, packet);
                         break;
                     default:
