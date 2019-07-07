@@ -83,8 +83,7 @@ namespace RetroSpyServer.Servers.QueryReport
                 bool replied = false;
                 try
                 {
-                    // Decrypt message
-
+                    
                     switch (packet.BytesRecieved[0])
                     {
                         // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.

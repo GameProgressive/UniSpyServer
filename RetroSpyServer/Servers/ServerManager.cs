@@ -23,6 +23,8 @@ namespace RetroSpyServer.Servers
 
         private QueryReport.QRServer qrServer = null;
 
+        private NatNeg.NatNegServer nnServer = null;
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -122,6 +124,8 @@ namespace RetroSpyServer.Servers
                     return sbServer != null && !sbServer.IsDisposed;
                 case "QR":
                     return qrServer != null && !qrServer.IsDisposed;
+                case "NATNEG":
+                    return nnServer != null && !nnServer.IsDisposed;
             }
 
             return false;
@@ -156,6 +160,9 @@ namespace RetroSpyServer.Servers
                 case "QR":
                     qrServer = new QueryReport.QRServer(databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
+                case "NATNEG":
+                    nnServer = new NatNeg.NatNegServer(new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                    break;
             }
         }
 
@@ -181,6 +188,9 @@ namespace RetroSpyServer.Servers
                     break;
                 case "QR":
                     qrServer?.Dispose();
+                    break;
+                case "NATNEG":
+                    nnServer?.Dispose();
                     break;
             }
         }
