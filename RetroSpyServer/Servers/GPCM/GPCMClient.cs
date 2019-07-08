@@ -535,7 +535,7 @@ namespace RetroSpyServer.Servers.GPCM
                     );
 
                     // Log Incoming Connections
-                    LogWriter.Log.Write("[GPCM] Client Login:   {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
+                    LogWriter.Log.Write("{3,-8} Client Login:   {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint,"[GPCM]");
 
                     // Update status last, and call success login
                     PlayerInfo.LoginStatus = LoginStatus.Completed;

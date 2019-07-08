@@ -18,8 +18,8 @@ namespace RetroSpyServer.Servers.NatNeg
         /// ,maybe NatNeg server dose not need connected to database.</param>
         /// <param name="bindTo"></param>
         /// <param name="MaxConnections"></param>
-        public NatNegServer(IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
-        {
+        public NatNegServer(string serverName,IPEndPoint bindTo, int MaxConnections) : base(serverName, bindTo, MaxConnections)
+        {            
             StartAcceptAsync();
         }
         protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
@@ -64,7 +64,8 @@ namespace RetroSpyServer.Servers.NatNeg
                         break;
                     default:
                         //LogWriter.Log.Write("Received unknown packet type: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Error);
-                        LogWriter.Log.Write("[NatNeg] received unknow data: " + Convert.ToString(packet.BytesRecieved[0],16), LogLevel.Error);
+                        //LogWriter.Log.Write("[NatNeg] received unknow data: " + Convert.ToString(packet.BytesRecieved[0],16), LogLevel.Error);
+                        LogWriter.Log.Write("{0,-8} [Recv] unknow data" , LogLevel.Error,ServerName);
                         break;
                 }
             }

@@ -25,7 +25,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
         /// </summary>
         private static ConcurrentDictionary<long, SBClient> Clients = new ConcurrentDictionary<long, SBClient>();
 
-        public SBServer(IPEndPoint bindTo,int MaxConnections) : base(bindTo, MaxConnections)
+        public SBServer(string serverName,IPEndPoint bindTo,int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
             // Start accepting connections
             SBClient.OnDisconnect += ServerBrowserClient_OnDisconnect;

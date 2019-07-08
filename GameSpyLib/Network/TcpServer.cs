@@ -93,8 +93,10 @@ namespace GameSpyLib.Network
         /// </summary>
         public bool IsDisposed { get; protected set; } = false;
 
-        public TcpServer(IPEndPoint bindTo, int MaxConnections)
+        public string ServerName;
+        public TcpServer(string serverName,IPEndPoint bindTo, int MaxConnections)
         {
+            ServerName = "[" + serverName + "]";
             // Create our Socket
             Listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 

@@ -21,7 +21,7 @@ namespace RetroSpyServer.Servers.CDKey
         /// <param name="dbdriver">if this server do not need databasedriver then do not handle this</param>
         /// <param name="bindTo">pass bind IP and Port in to CDKeyServer</param>
         /// <param name="MaxConnections">The Max client connections CDKeyServer can handle</param>
-        public CDKeyServer(DatabaseDriver dbdriver, IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
+        public CDKeyServer(string serverName, DatabaseDriver dbdriver, IPEndPoint bindTo, int MaxConnections) : base(serverName, bindTo, MaxConnections)
         {
             CDKeyHelper.DBQuery = new DBQueries.CDKeyDBQuery(dbdriver);
             // Start accepting remote connections

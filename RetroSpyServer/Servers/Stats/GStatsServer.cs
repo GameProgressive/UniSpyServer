@@ -36,7 +36,7 @@ namespace RetroSpyServer.Servers.Stats
         /// If the databaseDriver is null, then the server will attempt to create it's own connection
         /// otherwise it will use the specified connection
         /// </param>
-        public GStatsServer(DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
+        public GStatsServer(string serverName,DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
             GStatsHelper.DBQuery = new DBQueries.GSTATSDBQuery(databaseDriver);
 

@@ -61,9 +61,10 @@ namespace GameSpyLib.Network
         /// </summary>
         public bool IsDisposed { get; protected set; }
 
-
-        public UdpServer(IPEndPoint bindTo, int MaxConnections)
+        protected string ServerName;
+        public UdpServer(string serverName,IPEndPoint bindTo, int MaxConnections)
         {
+            ServerName = "["+serverName+"]";
             // Create our Socket
             this.Port = Port;
             Listener = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
@@ -211,7 +212,7 @@ namespace GameSpyLib.Network
             if (!IsRunning) return;
             
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write("[Send] UDP data: " + BitConverter.ToString(Packet.ByteReply), LogLevel.Debug);
+                LogWriter.Log.Write("{0,-8} [Send] UDP data: " + BitConverter.ToString(Packet.ByteReply),LogLevel.Debug,ServerName);
 
             Listener.SendToAsync(Packet.AsyncEventArgs);
         }
@@ -242,7 +243,7 @@ namespace GameSpyLib.Network
                 //        " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
 
                     if (LogWriter.Log.DebugSockets)
-                        LogWriter.Log.Write("[Recv] UDP data: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Debug);
+                        LogWriter.Log.Write("{0,-8} [Recv] UDP data: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Debug,ServerName);
 
                 // Begin accepting a new connection
                 StartAcceptAsync();

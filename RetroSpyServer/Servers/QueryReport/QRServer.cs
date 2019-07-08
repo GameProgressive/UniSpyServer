@@ -40,7 +40,7 @@ namespace RetroSpyServer.Servers.QueryReport
         /// </summary>
         public static int ServerTTL { get; protected set; }
 
-        public QRServer(DatabaseDriver driver,IPEndPoint bindTo, int MaxConnection) : base(bindTo, MaxConnection)
+        public QRServer(string serverName,DatabaseDriver driver,IPEndPoint bindTo, int MaxConnection) : base(serverName,bindTo, MaxConnection)
         {
             QRHelper.DBQuery = new QRDBQuery(driver);
 

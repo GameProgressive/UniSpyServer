@@ -69,7 +69,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// Creates a new instance of <see cref="GPCMServer"/>
         /// </summary>
-        public GPCMServer(DatabaseDriver driver,IPEndPoint bindTo, int maxConnections) : base(bindTo, maxConnections)
+        public GPCMServer(string serverName,DatabaseDriver driver,IPEndPoint bindTo, int maxConnections) : base(serverName,bindTo, maxConnections)
         {
 
             GPCMHelper.DBQuery = new DBQueries.GPCMDBQuery(driver);

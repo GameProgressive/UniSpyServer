@@ -35,7 +35,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// If the databaseDriver is null, then the server will attempt to create it's own connection
         /// otherwise it will use the specified connection
         /// </param>
-        public GPSPServer(DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(bindTo, MaxConnections)
+        public GPSPServer(string serverName,DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
             GPSPHelper.DBQuery = new DBQueries.GPSPDBQuery(databaseDriver);
 
