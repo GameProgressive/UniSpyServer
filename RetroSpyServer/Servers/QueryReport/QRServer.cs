@@ -104,7 +104,7 @@ namespace RetroSpyServer.Servers.QueryReport
                             break;
 
                         default:
-                            LogWriter.Log.Write("Received unknown data ID: " + packet.BytesRecieved[0], LogLevel.Error);
+                            LogWriter.Log.Write("[QR] received unknown data: " + packet.BytesRecieved[0], LogLevel.Error);
                             break;
                     }
                 }

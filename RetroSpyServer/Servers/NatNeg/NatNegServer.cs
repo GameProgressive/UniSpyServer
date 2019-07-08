@@ -64,9 +64,7 @@ namespace RetroSpyServer.Servers.NatNeg
                         break;
                     default:
                         //LogWriter.Log.Write("Received unknown packet type: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Error);
-                        LogWriter.Log.Write("Received unknown [NatNeg] packet", LogLevel.Error);
-                        packet.SetBufferContents(NNMagicData.MagicData);
-                        ReplyAsync(packet);
+                        LogWriter.Log.Write("[NatNeg] received unknow data: " + Convert.ToString(packet.BytesRecieved[0],16), LogLevel.Error);
                         break;
                 }
             }

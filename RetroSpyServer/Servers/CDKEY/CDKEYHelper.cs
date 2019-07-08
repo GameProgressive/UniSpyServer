@@ -45,11 +45,7 @@ namespace RetroSpyServer.Servers.CDKey
 
         public static void InvalidCDKeyRequest(CDKeyServer server,UdpPacket packet, Dictionary<string, string> recv)
         {
-            LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug, recv);
-            if (!server.replied)
-                server.Release(packet);
-            //write down the data we recieved through UDP packet         
-
+            LogWriter.Log.Write("[CDKey] recieved Incomplete or Invalid  data : {0}", LogLevel.Debug, recv);
         }
     }
 }

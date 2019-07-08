@@ -155,7 +155,7 @@ namespace RetroSpyServer.Servers.GPSP
                         GPSPHelper.CreateUser(this, dict);
                         break;
                     default:
-                        LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
+                        LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
                         GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
                         break;
                 }

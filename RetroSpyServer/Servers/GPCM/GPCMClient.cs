@@ -294,7 +294,7 @@ namespace RetroSpyServer.Servers.GPCM
                         SendKeepAlive();
                         break;
                     default:
-                        LogWriter.Log.Write("Received unknown request " + recieved[0], LogLevel.Debug);
+                        LogWriter.Log.Write("[GPCM] received unknown data " + recieved[0], LogLevel.Debug);
                         GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
                         break;
                 }
@@ -535,7 +535,7 @@ namespace RetroSpyServer.Servers.GPCM
                     );
 
                     // Log Incoming Connections
-                    LogWriter.Log.Write("Client Login:   {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
+                    LogWriter.Log.Write("[GPCM] Client Login:   {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
 
                     // Update status last, and call success login
                     PlayerInfo.LoginStatus = LoginStatus.Completed;
