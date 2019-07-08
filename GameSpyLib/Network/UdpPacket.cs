@@ -18,7 +18,10 @@ namespace GameSpyLib.Network
         /// An array of the bytes received in this packet
         /// </summary>
         public byte[] BytesRecieved;
-
+        /// <summary>
+        /// An array of the bytes we will reply
+        /// </summary>
+        public byte[] ByteReply;
         public UdpPacket(SocketAsyncEventArgs e)
         {
             // Get our recived bytes
@@ -44,6 +47,7 @@ namespace GameSpyLib.Network
 
             // Copy contents to buffer, then set buffer position
             Array.Copy(contents, 0, AsyncEventArgs.Buffer, token.BufferOffset, contents.Length);
+            ByteReply = contents;
             AsyncEventArgs.SetBuffer(token.BufferOffset, contents.Length);
             return contents.Length;
         }        

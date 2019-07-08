@@ -4,6 +4,8 @@ using GameSpyLib.Network;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using RetroSpyServer.Servers.NatNeg.Structures;
+using System.Net.Sockets;
+
 namespace RetroSpyServer.Servers.NatNeg
 {
     public class NatNegServer : UdpServer
@@ -41,39 +43,42 @@ namespace RetroSpyServer.Servers.NatNeg
                 switch (packet.BytesRecieved[0])
                 {
 
-                    case NatNegInfo.NN_PREINIT:
+                    case NNRequest.NN_PREINIT:
                         NatNegHelper.PreInitPacketResponse(this, packet);
                         break;
-                    case NatNegInfo.NN_INIT:
+                    case NNRequest.NN_INIT:
                         NatNegHelper.InitPacketResponse(this, packet);
                         break;
-                    case NatNegInfo.NN_ADDRESS_CHECK:
+                    case NNRequest.NN_ADDRESS_CHECK:
                         NatNegHelper.AddressCheckResponse(this, packet);
                         break;
-                    case NatNegInfo.NN_NATIFY_REQUEST:
+                    case NNRequest.NN_NATIFY_REQUEST:
                         NatNegHelper.NatifyResponse(this, packet);
                         break;
-                    case NatNegInfo.NN_CONNECT_PING:
+                    case NNRequest.NN_CONNECT_PING:
                         break;
-                    case NatNegInfo.NN_BACKUP_ACK:
+                    case NNRequest.NN_BACKUP_ACK:
                         break;
-                    case NatNegInfo.NN_REPORT:
+                    case NNRequest.NN_REPORT:
                         NatNegHelper.ReportResponse(this, packet);
                         break;
                     default:
-                        LogWriter.Log.Write("Received unknown packet type: " + packet.BytesRecieved[0], LogLevel.Error);
+                        //LogWriter.Log.Write("Received unknown packet type: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Error);
+                        LogWriter.Log.Write("Received unknown [NatNeg] packet", LogLevel.Error);
+                        packet.SetBufferContents(NNMagicData.MagicData);
+                        ReplyAsync(packet);
                         break;
-
-
                 }
             }
-            catch
-            { }
-
-
-
-
+            catch (Exception e)
+            {
+                LogWriter.Log.WriteException(e);
+            }
+            finally
+            {
+                if (replied == true)
+                    Release(packet.AsyncEventArgs);
+            }
         }
     }
-
 }

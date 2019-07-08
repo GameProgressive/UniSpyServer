@@ -266,7 +266,7 @@ namespace GameSpyLib.Network
                     if (IsMessageFinished.Invoke(received))
                     {
                         if (LogWriter.Log.DebugSockets)
-                            LogWriter.Log.Write("Received TCP data: " + received, LogLevel.Debug);
+                            LogWriter.Log.Write("[Recv] TCP data: " + received, LogLevel.Debug);
 
                         DataAttempt = 0;
 
@@ -299,7 +299,7 @@ namespace GameSpyLib.Network
             if (SocketClosed) return;
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write("Sending TCP data: " + message, LogLevel.Debug);
+                LogWriter.Log.Write("[Send] TCP data: " + message, LogLevel.Debug);
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)

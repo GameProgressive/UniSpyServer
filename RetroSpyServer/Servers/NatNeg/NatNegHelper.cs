@@ -1,41 +1,38 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Text;
-using GameSpyLib.Database;
+using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using RetroSpyServer.Servers.NatNeg.Structures;
 
 namespace RetroSpyServer.Servers.NatNeg
 {
     class NatNegHelper
     {
-        public NatNegHelper()
-        {
-
-        }
-
         internal static void PreInitPacketResponse(NatNegServer server, UdpPacket packet)
         {
-            throw new NotImplementedException();
+            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
+            //packet.SetBufferContents(NNMagicData.MagicData);
+            //server.ReplyAsync(packet);
         }
 
         internal static void InitPacketResponse(NatNegServer server, UdpPacket packet)
         {
-            throw new NotImplementedException();
+            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
         }
 
         internal static void AddressCheckResponse(NatNegServer server, UdpPacket packet)
         {
-            throw new NotImplementedException();
+            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
         }
 
         internal static void NatifyResponse(NatNegServer server, UdpPacket packet)
         {
-            throw new NotImplementedException();
+            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
         }
 
         internal static void ReportResponse(NatNegServer server, UdpPacket packet)
         {
-            throw new NotImplementedException();
+            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
         }
     }
 }

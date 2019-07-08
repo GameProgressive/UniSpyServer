@@ -6,8 +6,8 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 {
     public  class ReportPacket
     {
-        public  byte porttype;
-        public   byte clientindex;
+        public  byte portType;
+        public   byte clientIndex;
         public  byte negResult;
         public    NatType natType;
         public   NatMappingScheme natMappingScheme;

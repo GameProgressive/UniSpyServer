@@ -5,11 +5,13 @@ using System.Text;
 namespace RetroSpyServer.Servers.NatNeg.Enumerators
 {
 
-    enum NatifyPacket {
-        packet_map1a,
-        packet_map2,
-        packet_map3,
-        packet_map1b,
-        NUM_PACKETS };
+    enum NatifyPacket
+    {
+        PacketMap1a,
+        PacketMap2,
+        PacketMap3,
+        PacketMap1b,
+        NumPackets
+    };
 
 }

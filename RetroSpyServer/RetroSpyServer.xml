@@ -44,5 +44,5 @@
     <Port>29920</Port>
   </ServerConfiguration>
 </Servers>
-  <LogLevel>Info</LogLevel>
+  <LogLevel>Debug</LogLevel>
 </RetroSpy>

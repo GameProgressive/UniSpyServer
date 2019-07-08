@@ -6,7 +6,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 {
     public class PreinitPacket
     {
-        public byte clientindex;
+        public byte clientIndex;
         public byte state;
         public uint clientID;
     }

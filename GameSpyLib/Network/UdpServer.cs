@@ -61,6 +61,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public bool IsDisposed { get; protected set; }
 
+
         public UdpServer(IPEndPoint bindTo, int MaxConnections)
         {
             // Create our Socket
@@ -209,6 +210,9 @@ namespace GameSpyLib.Network
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
             
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write("[Send] UDP data: " + BitConverter.ToString(Packet.ByteReply), LogLevel.Debug);
+
             Listener.SendToAsync(Packet.AsyncEventArgs);
         }
 
@@ -232,8 +236,13 @@ namespace GameSpyLib.Network
 
                 UdpPacket packet = new UdpPacket(AcceptEventArg);
 
-                if (LogWriter.Log.DebugSockets)
-                    LogWriter.Log.Write("UDP operation: " + AcceptEventArg.LastOperation.ToString() + " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
+                //if (LogWriter.Log.DebugSockets)
+                //    LogWriter.Log.Write("UDP recieved: " + 
+                //        AcceptEventArg.LastOperation.ToString() + 
+                //        " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
+
+                    if (LogWriter.Log.DebugSockets)
+                        LogWriter.Log.Write("[Recv] UDP data: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Debug);
 
                 // Begin accepting a new connection
                 StartAcceptAsync();

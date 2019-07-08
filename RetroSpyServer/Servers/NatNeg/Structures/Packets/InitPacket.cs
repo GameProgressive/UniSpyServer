@@ -6,11 +6,10 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 {
     public class InitPacket
     {
-        public byte porttype;
-        public byte clientindex;
-        public byte usegameport;
-        public uint localip;
-        public ushort localport;
-
+        public byte portType;
+        public byte clientIndex;
+        public byte useGamePort;
+        public uint localIp;
+        public ushort localPort;
     }
 }

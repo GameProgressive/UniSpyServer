@@ -1,21 +1,15 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Database;
+using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using RetroSpyServer.DBQueries;
 using RetroSpyServer.Servers.QueryReport.GameServerInfo;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Net.Sockets;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Timers;
-using GameSpyLib.Database;
-using RetroSpyServer.DBQueries;
+using RetroSpyServer.Servers.QueryReport.Structures;
 
 namespace RetroSpyServer.Servers.QueryReport
 {
@@ -93,19 +87,19 @@ namespace RetroSpyServer.Servers.QueryReport
                             break;
                         */
 
-                        case 0x03: // HEARTBEAT
+                        case QRReuqest.HEART_BEAT: // HEARTBEAT
                             QRHelper.HeartbeatResponse(this, packet);
                             break;
 
-                        case 0x05:
+                        case QRReuqest.ECHO:
                             QRHelper.EchoResponse(this, packet);
                             break;
 
-                        case 0x08:
+                        case QRReuqest.KEEP_ALIVE:
                             QRHelper.KeepAlive(this, packet);
                             break;
 
-                        case 0x09:
+                        case QRReuqest.AVAILABLE_CHECK:
                             AvaliableCheck.CheckForGameAvaliability(this, packet);
                             break;
 
