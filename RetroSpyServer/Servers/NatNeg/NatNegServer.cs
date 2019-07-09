@@ -37,6 +37,12 @@ namespace RetroSpyServer.Servers.NatNeg
                 Release(packet.AsyncEventArgs);
                 return;
             }
+
+            //check if udp data is NatNeg format
+            if (NatNegHelper.IsNetNegData(packet) == false)
+                return;
+
+
             try
             {
 

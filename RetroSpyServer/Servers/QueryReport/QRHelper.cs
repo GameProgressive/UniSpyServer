@@ -22,17 +22,20 @@ namespace RetroSpyServer.Servers.QueryReport
 
         public static void HeartbeatResponse(QRServer qRServer, UdpPacket packet)
         {
-            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
+            LogWriter.Log.Write("[QR] No impliment function for Heartbeatpacket!", LogLevel.Debug);
+            //TODO
         }
 
         public static void EchoResponse(QRServer qRServer, UdpPacket packet)
         {
-            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
+            LogWriter.Log.Write("[QR] No impliment function for EchoPacket!", LogLevel.Debug);
+            //TODO
         }
 
         public static void KeepAlive(QRServer qRServer, UdpPacket packet)
         {
-            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
+            LogWriter.Log.Write("[QR] No impliment function for KeepAlivePacket!", LogLevel.Debug);
+            //TODO
         }
     }
 }
