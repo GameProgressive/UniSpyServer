@@ -43,7 +43,7 @@
     <MaxConnections>255</MaxConnections>
     <Port>29920</Port>
   </ServerConfiguration>
-  <ServerConfiguration Name="PEER">
+  <ServerConfiguration Name="CHAT">
     <Hostname>127.0.0.1</Hostname>
     <MaxConnections>255</MaxConnections>
     <Port>6667</Port>

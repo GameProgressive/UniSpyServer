@@ -5,10 +5,10 @@ using RetroSpyServer.DBQueries;
 
 namespace RetroSpyServer.Servers.PeerChat
 {
-    public class PeerChatHelper
+    public class ChatHelper
     {
 
-        public static PeerChatDBQuery DBQuery = null;
+        public static ChatDBQuery DBQuery = null;
 
     }
 }

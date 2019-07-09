@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace RetroSpyServer.Servers.PeerChat
 {
-        public class PeerChatClient : IDisposable
+        public class ChatClient : IDisposable
         {
             /// <summary>
             /// A unqie identifier for this connection
@@ -27,13 +27,13 @@ namespace RetroSpyServer.Servers.PeerChat
             /// <summary>
             /// Event fired when the connection is closed
             /// </summary>
-            public static event PeerChatConnectionClosed OnDisconnect;
+            public static event ChatConnectionClosed OnDisconnect;
 
             /// <summary>
             /// Constructor
             /// </summary>
             /// <param name="client"></param>
-            public PeerChatClient(TcpStream stream, long connectionId)
+            public ChatClient(TcpStream stream, long connectionId)
             {
                 // Generate a unique name for this connection
                 ConnectionID = connectionId;
@@ -51,7 +51,7 @@ namespace RetroSpyServer.Servers.PeerChat
             /// <summary>
             /// Destructor
             /// </summary>
-            ~PeerChatClient()
+            ~ChatClient()
             {
                 if (!Disposed)
                     Dispose();
@@ -102,7 +102,8 @@ namespace RetroSpyServer.Servers.PeerChat
             /// <param name="message">The message the stream sended</param>
             protected void Stream_DataReceived(string message)
             {
-                LogWriter.Log.Write("[PEERCHAT] Recv " + message, LogLevel.Error);
+                //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Error);
+                
             }
         }
     }

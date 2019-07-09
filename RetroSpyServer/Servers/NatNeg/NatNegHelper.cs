@@ -10,32 +10,31 @@ namespace RetroSpyServer.Servers.NatNeg
     {
         public static void PreInitPacketResponse(NatNegServer server, UdpPacket packet)
         {
-            LogWriter.Log.Write("[NATNEG] No impliment function for PreInitPacket!", LogLevel.Debug);
+            //LogWriter.Log.Write("[NATNEG] No impliment function for PreInitPacket!", LogLevel.Debug);
             //TODO
+            server.ReplyAsync(packet,packet.BytesRecieved);
         }
 
         public static void InitPacketResponse(NatNegServer server, UdpPacket packet)
         {
-            LogWriter.Log.Write("[NATNEG] No impliment function for InitPacket!", LogLevel.Debug);
-            //TODO
+            //LogWriter.Log.Write("[NATNEG] No impliment function for InitPacket!", LogLevel.Debug);
+            server.ReplyAsync(packet, packet.BytesRecieved);
         }
 
         public static void AddressCheckResponse(NatNegServer server, UdpPacket packet)
         {
-            LogWriter.Log.Write("[NATNEG] No impliment function for AddressCheckPacket!", LogLevel.Debug);
-            //TODO
+            //LogWriter.Log.Write("[NATNEG] No impliment function for AddressCheckPacket!", LogLevel.Debug);
+            server.ReplyAsync(packet, packet.BytesRecieved);
         }
 
         public static void NatifyResponse(NatNegServer server, UdpPacket packet)
         {
-            byte[] reply = { 0x02 };
-            server.ReplyAsync(packet,reply);
+            server.ReplyAsync(packet, packet.BytesRecieved);
         }
 
         public static void ReportResponse(NatNegServer server, UdpPacket packet)
         {
-            LogWriter.Log.Write("[NATNEG] No impliment function for ReportPacket!", LogLevel.Debug);
-            //TODO
+            server.ReplyAsync(packet, packet.BytesRecieved);
         }
 
         /// <summary>

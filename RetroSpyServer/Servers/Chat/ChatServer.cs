@@ -8,7 +8,7 @@ using GameSpyLib.Network;
 
 namespace RetroSpyServer.Servers.PeerChat
 {
-        public class PeerChatServer : TcpServer
+        public class ChatServer : TcpServer
         {
 
             /// <summary>
@@ -24,7 +24,7 @@ namespace RetroSpyServer.Servers.PeerChat
             /// <summary>
             /// A List of sucessfully active connections (Name => Client Obj) on the MasterServer TCP line
             /// </summary>
-            private static ConcurrentDictionary<long, PeerChatClient> Clients = new ConcurrentDictionary<long, PeerChatClient>();
+            private static ConcurrentDictionary<long, ChatClient> Clients = new ConcurrentDictionary<long, ChatClient>();
 
 
             /// <summary>
@@ -35,17 +35,17 @@ namespace RetroSpyServer.Servers.PeerChat
             /// If the databaseDriver is null, then the server will attempt to create it's own connection
             /// otherwise it will use the specified connection
             /// </param>
-            public PeerChatServer(string serverName, DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName, bindTo, MaxConnections)
+            public ChatServer(string serverName, DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName, bindTo, MaxConnections)
             {
-                PeerChatHelper.DBQuery = new DBQueries.PeerChatDBQuery(databaseDriver);
+                ChatHelper.DBQuery = new DBQueries.ChatDBQuery(databaseDriver);
 
-                PeerChatClient.OnDisconnect += PeerChatClient_OnDisconnect;
+                ChatClient.OnDisconnect += PeerChatClient_OnDisconnect;
 
                 // Begin accepting connections
                 StartAcceptAsync();
             }
 
-            ~PeerChatServer()
+            ~ChatServer()
             {
                 if (!Exiting)
                     Shutdown();
@@ -58,10 +58,10 @@ namespace RetroSpyServer.Servers.PeerChat
                 Exiting = true;
 
                 // Unregister events so we dont get a shit ton of calls
-                PeerChatClient.OnDisconnect -= PeerChatClient_OnDisconnect;
+                ChatClient.OnDisconnect -= PeerChatClient_OnDisconnect;
 
                 // Disconnected all connected clients
-                foreach (PeerChatClient c in Clients.Values)
+                foreach (ChatClient c in Clients.Values)
                     c.Dispose(true);
 
                 // clear clients
@@ -70,7 +70,7 @@ namespace RetroSpyServer.Servers.PeerChat
                 // Shutdown the listener socket
                 ShutdownSocket();
 
-                PeerChatHelper.DBQuery.Dispose();
+                ChatHelper.DBQuery.Dispose();
 
                 // Tell the base to dispose all free objects
                 Dispose();
@@ -91,11 +91,11 @@ namespace RetroSpyServer.Servers.PeerChat
             {
                 // Get our connection id
                 long ConID = Interlocked.Increment(ref ConnectionCounter);
-                PeerChatClient client;
+               ChatClient client;
                 try
                 {
                     // Convert the TcpClient to a MasterClient
-                    client = new PeerChatClient(stream, ConID);
+                    client = new ChatClient(stream, ConID);
                     Clients.TryAdd(ConID, client);
 
                     // Start receiving data
@@ -112,7 +112,7 @@ namespace RetroSpyServer.Servers.PeerChat
             /// Callback for when a connection had disconnected
             /// </summary>
             /// <param name="sender">The client object whom is disconnecting</param>
-            private void PeerChatClient_OnDisconnect(PeerChatClient client)
+            private void PeerChatClient_OnDisconnect(ChatClient client)
             {
                 // Release this stream's AsyncEventArgs to the object pool
                 Release(client.Stream);

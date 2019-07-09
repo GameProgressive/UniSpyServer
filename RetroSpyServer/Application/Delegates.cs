@@ -15,5 +15,5 @@ namespace RetroSpyServer.Application
 
     public delegate void SBConnectionClosed(SBClient client);
 
-    public delegate void PeerChatConnectionClosed(PeerChatClient client);
+    public delegate void ChatConnectionClosed(ChatClient client);
 }
