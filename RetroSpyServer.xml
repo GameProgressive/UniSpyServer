@@ -18,6 +18,36 @@
     <MaxConnections>255</MaxConnections>
     <Port>29900</Port>
   </ServerConfiguration>
+  <ServerConfiguration Name="CDKEY">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>29910</Port>
+  </ServerConfiguration>
+  <ServerConfiguration Name="SB">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>28910</Port>
+  </ServerConfiguration>
+  <ServerConfiguration Name="QR">
+	<Hostname>127.0.0.1</Hostname>
+	<MaxConnections>255</MaxConnections>
+	<Port>27900</Port>
+  </ServerConfiguration>
+  <ServerConfiguration Name="NATNEG">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>27901</Port>
+  </ServerConfiguration>
+  <ServerConfiguration Name="GSTATS">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>29920</Port>
+  </ServerConfiguration>
+  <ServerConfiguration Name="PEER">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>6667</Port>
+  </ServerConfiguration>
 </Servers>
-  <LogLevel>Info</LogLevel>
+  <LogLevel>Debug</LogLevel>
 </RetroSpy>
