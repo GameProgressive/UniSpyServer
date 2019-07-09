@@ -40,7 +40,7 @@ namespace RetroSpyServer.Servers.NatNeg
             try
             {
 
-                switch (packet.BytesRecieved[0])
+                switch (packet.BytesRecieved[7])
                 {
 
                     case NNRequest.NN_PREINIT:

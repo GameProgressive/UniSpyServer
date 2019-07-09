@@ -50,8 +50,8 @@ namespace RetroSpyServer.Servers.QueryReport
             // NOTE: Change this if you want to make the server not avaliable.
             dataToSend[6] = (byte)ServerAvaliability.Avaliable;
 
-            packet.SetBufferContents(dataToSend);
-            server.ReplyAsync(packet);
+            //packet.SetBufferContents(dataToSend);
+            server.ReplyAsync(packet, dataToSend);
         }
 
         /// <summary>

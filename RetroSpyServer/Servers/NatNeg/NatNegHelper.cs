@@ -27,7 +27,8 @@ namespace RetroSpyServer.Servers.NatNeg
 
         internal static void NatifyResponse(NatNegServer server, UdpPacket packet)
         {
-            LogWriter.Log.Write("heartbeat response packets " + packet.BytesRecieved.ToString(), LogLevel.Debug);
+            byte[] reply = { 0x02 };
+            server.ReplyAsync(packet,reply);
         }
 
         internal static void ReportResponse(NatNegServer server, UdpPacket packet)

@@ -29,8 +29,8 @@ namespace RetroSpyServer.Servers.CDKey
             if (DBQuery.IsCDKeyValidate(recv["skey"]))
             {
                 string reply = string.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
-                packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
-                server.ReplyAsync(packet);
+              //  packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
+                server.ReplyAsync(packet, Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
             }
             else
             {

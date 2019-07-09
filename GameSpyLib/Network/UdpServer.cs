@@ -51,6 +51,8 @@ namespace GameSpyLib.Network
         /// </summary>
         protected SocketAsyncEventArgsPool SocketReadWritePool;
 
+        protected UdpPacket Packet;
+        
         /// <summary>
         /// Indicates whether the server is still running, and not in the process of shutting down
         /// </summary>
@@ -206,15 +208,17 @@ namespace GameSpyLib.Network
         /// Sends the specified packets data to the client, and releases the resources
         /// </summary>
         /// <param name="Packet"></param>
-        public void ReplyAsync(UdpPacket Packet)
+        public void ReplyAsync(UdpPacket packet,byte[] message)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
-            
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write("{0,-8} [Send] UDP data: " + BitConverter.ToString(Packet.ByteReply),LogLevel.Debug,ServerName);
 
-            Listener.SendToAsync(Packet.AsyncEventArgs);
+            packet.SetBufferContents(message);
+
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write("{0,-8} [Send] UDP data: " + BitConverter.ToString(packet.ByteReply),LogLevel.Debug,ServerName);
+
+            Listener.SendToAsync(packet.AsyncEventArgs);
         }
 
         /// <summary>
