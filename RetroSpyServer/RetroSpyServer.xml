@@ -43,6 +43,11 @@
     <MaxConnections>255</MaxConnections>
     <Port>29920</Port>
   </ServerConfiguration>
+  <ServerConfiguration Name="PEER">
+    <Hostname>127.0.0.1</Hostname>
+    <MaxConnections>255</MaxConnections>
+    <Port>6667</Port>
+  </ServerConfiguration>
 </Servers>
   <LogLevel>Debug</LogLevel>
 </RetroSpy>

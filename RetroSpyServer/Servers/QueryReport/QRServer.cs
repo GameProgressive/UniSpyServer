@@ -40,6 +40,8 @@ namespace RetroSpyServer.Servers.QueryReport
         /// </summary>
         public static int ServerTTL { get; protected set; }
 
+        public bool Replied = false;
+
         public QRServer(string serverName,DatabaseDriver driver,IPEndPoint bindTo, int MaxConnection) : base(serverName,bindTo, MaxConnection)
         {
             QRHelper.DBQuery = new QRDBQuery(driver);
@@ -74,7 +76,7 @@ namespace RetroSpyServer.Servers.QueryReport
             Task.Run(() =>
             {
                 // If we dont reply, we must manually release the EventArgs back to the pool
-                bool replied = false;
+                Replied = false;
                 try
                 {
                     
@@ -114,8 +116,8 @@ namespace RetroSpyServer.Servers.QueryReport
                 }
                 finally
                 {
-                    // Release so that we can pool the EventArgs to be used on another connection
-                    if (!replied)
+                    //if we replied QR data we release packet so that the EventArgs can be used on another connection
+                    if (Replied==true)
                         Release(packet.AsyncEventArgs);
                 }
             });

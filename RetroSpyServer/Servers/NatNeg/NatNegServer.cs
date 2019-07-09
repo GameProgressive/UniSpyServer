@@ -10,7 +10,7 @@ namespace RetroSpyServer.Servers.NatNeg
 {
     public class NatNegServer : UdpServer
     {
-        private bool replied = false;
+        private bool Replied = false;
         /// <summary>
         /// 
         /// </summary>
@@ -27,8 +27,7 @@ namespace RetroSpyServer.Servers.NatNeg
 
         protected override void ProcessAccept(UdpPacket packet)
         {
-            // If we dont reply, we must manually release the EventArgs back to the pool
-            replied = false;
+            
             IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
 
             // Need at least 5 bytes
@@ -81,7 +80,7 @@ namespace RetroSpyServer.Servers.NatNeg
             }
             finally
             {
-                if (replied == true)
+                if (Replied == true)
                     Release(packet.AsyncEventArgs);
             }
         }

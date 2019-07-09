@@ -1,6 +1,7 @@
 ﻿using RetroSpyServer.Servers.GPSP;
 using RetroSpyServer.Servers.GPCM;
 using RetroSpyServer.Servers.ServerBrowser;
+using RetroSpyServer.Servers.PeerChat;
 
 namespace RetroSpyServer.Application
 {
@@ -13,4 +14,6 @@ namespace RetroSpyServer.Application
     public delegate void GpcmStatusChanged(GPCMClient client);
 
     public delegate void SBConnectionClosed(SBClient client);
+
+    public delegate void PeerChatConnectionClosed(PeerChatClient client);
 }
