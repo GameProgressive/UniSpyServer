@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using GameSpyLib.Logging;
 
@@ -207,12 +208,13 @@ namespace GameSpyLib.Network
         /// <summary>
         /// Sends the specified packets data to the client, and releases the resources
         /// </summary>
-        /// <param name="Packet"></param>
+        /// <param name="packet">the udp packet which will transfer byte to its own format</param>
+        /// <param name="message">the bytes that will be send to client</param>
         public void ReplyAsync(UdpPacket packet,byte[] message)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
-
+            
             packet.SetBufferContents(message);
 
             if (LogWriter.Log.DebugSockets)
@@ -220,6 +222,23 @@ namespace GameSpyLib.Network
 
             Listener.SendToAsync(packet.AsyncEventArgs);
         }
+        /// <summary>
+        /// Sends the specified packets data to the client, and releases the resources
+        /// </summary>
+        /// <param name="packet"> the udp packet which will be send</param>
+        /// <param name="message">the string that will be sended to client</param>
+        public void ReplyAsync(UdpPacket packet, string message)
+        {            
+            // If we are shutting down, dont receive again
+            if (!IsRunning) return;
+            packet.SetBufferContents(Encoding.UTF8.GetBytes(message));
+
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write("{0,-8} [Send] UDP data: " + BitConverter.ToString(packet.ByteReply), LogLevel.Debug, ServerName);
+
+            Listener.SendToAsync(packet.AsyncEventArgs);
+        }
+       
 
         /// <summary>
         /// Once a connection has been received, its handed off here to convert it into
@@ -239,12 +258,7 @@ namespace GameSpyLib.Network
                     return;
                 }
 
-                UdpPacket packet = new UdpPacket(AcceptEventArg);
-
-                //if (LogWriter.Log.DebugSockets)
-                //    LogWriter.Log.Write("UDP recieved: " + 
-                //        AcceptEventArg.LastOperation.ToString() + 
-                //        " : " + BitConverter.ToString(packet.BytesRecieved).Replace("-", ""), LogLevel.Debug);
+                UdpPacket packet = new UdpPacket(AcceptEventArg);               
 
                     if (LogWriter.Log.DebugSockets)
                         LogWriter.Log.Write("{0,-8} [Recv] UDP data: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Debug,ServerName);
@@ -265,7 +279,7 @@ namespace GameSpyLib.Network
         /// When a new connection is established, the parent class is responsible for
         /// processing the connected client
         /// </summary>
-        /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
+        /// <param name="packet">A udppacket object that wraps message in byte format</param>
         protected abstract void ProcessAccept(UdpPacket packet);
 
         protected abstract void OnException(Exception e);

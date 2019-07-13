@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Sockets;
+using System.Text;
 
 namespace GameSpyLib.Network
 {
@@ -50,6 +51,6 @@ namespace GameSpyLib.Network
             ByteReply = contents;
             AsyncEventArgs.SetBuffer(token.BufferOffset, contents.Length);
             return contents.Length;
-        }        
+        }
     }
 }
