@@ -26,7 +26,7 @@ namespace RetroSpyServer.Servers
         private NatNeg.NatNegServer nnServer = null;
 
         private Stats.GStatsServer statsServer = null;
-        private PeerChat.PeerChatServer peerChatServer = null;
+        private PeerChat.ChatServer peerChatServer = null;
 
         /// <summary>
         /// Constructor
@@ -131,7 +131,7 @@ namespace RetroSpyServer.Servers
                     return nnServer != null && !nnServer.IsDisposed;
                 case "GSTATS":
                     return statsServer != null && !statsServer.IsDisposed;
-                case "PEER":
+                case "CHAT":
                     return peerChatServer != null && !peerChatServer.IsDisposed;
             }
 
@@ -173,8 +173,8 @@ namespace RetroSpyServer.Servers
                 case "GSTATS":
                     statsServer = new Stats.GStatsServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
-                case "PEER":
-                    peerChatServer = new PeerChat.PeerChatServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                case "CHAT":
+                    peerChatServer = new PeerChat.ChatServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     break;
             }
         }
@@ -208,7 +208,7 @@ namespace RetroSpyServer.Servers
                 case "GSTATS":
                     statsServer?.Dispose();
                     break;
-                case "PEER":
+                case "CHAT":
                     peerChatServer?.Dispose();
                     break;
             }

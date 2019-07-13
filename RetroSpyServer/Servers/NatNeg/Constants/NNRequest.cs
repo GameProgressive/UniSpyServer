@@ -39,6 +39,6 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public const byte NN_PREINIT = 0x0F;
 
         public const byte NN_PREINIT_ACK = 0x10;
-
+       
     }
 }

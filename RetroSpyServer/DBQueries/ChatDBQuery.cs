@@ -5,9 +5,9 @@ using GameSpyLib.Database;
 
 namespace RetroSpyServer.DBQueries
 {
-    public class PeerChatDBQuery : DBQueryBase
+    public class ChatDBQuery : DBQueryBase
     {
-        public PeerChatDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
+        public ChatDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
         {
         }
     }

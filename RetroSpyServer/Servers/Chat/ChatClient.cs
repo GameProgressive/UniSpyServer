@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace RetroSpyServer.Servers.PeerChat
 {
-        public class PeerChatClient : IDisposable
+        public class ChatClient : IDisposable
         {
             /// <summary>
             /// A unqie identifier for this connection
@@ -27,13 +27,13 @@ namespace RetroSpyServer.Servers.PeerChat
             /// <summary>
             /// Event fired when the connection is closed
             /// </summary>
-            public static event PeerChatConnectionClosed OnDisconnect;
+            public static event ChatConnectionClosed OnDisconnect;
 
             /// <summary>
             /// Constructor
             /// </summary>
             /// <param name="client"></param>
-            public PeerChatClient(TcpStream stream, long connectionId)
+            public ChatClient(TcpStream stream, long connectionId)
             {
                 // Generate a unique name for this connection
                 ConnectionID = connectionId;
@@ -51,7 +51,7 @@ namespace RetroSpyServer.Servers.PeerChat
             /// <summary>
             /// Destructor
             /// </summary>
-            ~PeerChatClient()
+            ~ChatClient()
             {
                 if (!Disposed)
                     Dispose();
@@ -93,10 +93,7 @@ namespace RetroSpyServer.Servers.PeerChat
             }
             private bool Stream_IsMessageFinished(string message)
             {
-                if (message.EndsWith("\\final\\"))
-                    return true;
-                else
-                    return false;
+				return true;
             }
             /// <summary>
             /// This function is fired when data is received from a stream
@@ -105,34 +102,8 @@ namespace RetroSpyServer.Servers.PeerChat
             /// <param name="message">The message the stream sended</param>
             protected void Stream_DataReceived(string message)
             {
-                if (message[0] != '\\')
-                {
-                    GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
-                    return;
-                }
-
-                string[] submessage = message.Split("\\final\\");
-
-                foreach (string command in submessage)
-                {
-                    if (command.Length < 1)
-                        continue;
-
-                    // Read client message, and parse it into key value pairs
-                    string[] recieved = command.TrimStart('\\').Split('\\');
-                    Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
-
-                    switch (recieved[0])
-                    {
-                        case "valid":
-                            //PeerChatHelper.IsEmailValid(this, dict);                                         
-                            break;
-                        default:
-                            LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
-                            GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
-                            break;
-                    }
-                }
+            //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Error);
+            Stream.SendAsync("PING capricorn.goes.here :123456");
             }
         }
     }
