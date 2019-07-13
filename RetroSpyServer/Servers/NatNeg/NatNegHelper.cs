@@ -51,10 +51,7 @@ namespace RetroSpyServer.Servers.NatNeg
 
         public static void SaveNatNegPacket(NatNegServer server, UdpPacket upacket)
         {
-            for(int i=0;i<6;i++)
-            {
-                server._nnpacket.magic[i] = upacket.BytesRecieved[i];
-            }
+            
             server._nnpacket.version =upacket.BytesRecieved[6];
             server._nnpacket.packettype= upacket.BytesRecieved[7];
 

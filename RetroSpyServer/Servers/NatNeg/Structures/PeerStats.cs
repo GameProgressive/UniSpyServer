@@ -15,7 +15,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures.Packets
         int packets_in;
         int packets_out;
 
-       Address m_address;
+       //Address m_address;
        public  GameData from_game;
 
         bool disconnected;

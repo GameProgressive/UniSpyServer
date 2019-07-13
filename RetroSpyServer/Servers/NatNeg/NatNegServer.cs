@@ -13,7 +13,7 @@ namespace RetroSpyServer.Servers.NatNeg
 
         public bool _replied = false;
         
-        public NatNegPacket _nnpacket;
+        public NatNegPacket _nnpacket=null;
         public uint _cookie;
         public byte _clientIndex;
         public byte _clientVersion;
@@ -24,7 +24,7 @@ namespace RetroSpyServer.Servers.NatNeg
         public bool _got_natify_request;
         public bool _got_preinit;
         public bool _sent_connect;
-
+        public int _packetSize;
 
 
         /// <summary>
@@ -56,10 +56,9 @@ namespace RetroSpyServer.Servers.NatNeg
             //check if udp data is NatNeg format
             if (NatNegHelper.IsNetNegData(upacket) == false)
                 return;
-            //save what client send to natnegpacket
-            NatNegHelper.SaveNatNegPacket(this,upacket);
 
-            int packetSize = NatNegHelper.packetSizeFromType(_nnpacket.packettype);
+
+            _packetSize = NatNegHelper.packetSizeFromType(_nnpacket.packettype);
 
             try
             {
