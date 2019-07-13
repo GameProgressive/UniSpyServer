@@ -10,7 +10,23 @@ namespace RetroSpyServer.Servers.NatNeg
 {
     public class NatNegServer : UdpServer
     {
-        private bool Replied = false;
+
+        public bool _replied = false;
+        
+        public NatNegPacket _nnpacket;
+        public uint _cookie;
+        public byte _clientIndex;
+        public byte _clientVersion;
+        public byte _state;
+        public uint _clientID;
+        public bool _foundPartner;
+        public string _gamename;
+        public bool _got_natify_request;
+        public bool _got_preinit;
+        public bool _sent_connect;
+
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -25,47 +41,50 @@ namespace RetroSpyServer.Servers.NatNeg
         protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
 
 
-        protected override void ProcessAccept(UdpPacket packet)
+        protected override void ProcessAccept(UdpPacket upacket)
         {
             
-            IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
+            IPEndPoint remote = (IPEndPoint)upacket.AsyncEventArgs.RemoteEndPoint;
 
             // Need at least 5 bytes
-            if (packet.BytesRecieved.Length < 5)
+            if (upacket.BytesRecieved.Length < 5)
             {
-                Release(packet.AsyncEventArgs);
+                Release(upacket.AsyncEventArgs);
                 return;
             }
 
             //check if udp data is NatNeg format
-            if (NatNegHelper.IsNetNegData(packet) == false)
+            if (NatNegHelper.IsNetNegData(upacket) == false)
                 return;
+            //save what client send to natnegpacket
+            NatNegHelper.SaveNatNegPacket(this,upacket);
 
+            int packetSize = NatNegHelper.packetSizeFromType(_nnpacket.packettype);
 
             try
             {
 
-                switch (packet.BytesRecieved[7])
+                switch (upacket.BytesRecieved[7])
                 {
 
                     case NNRequest.NN_PREINIT:
-                        NatNegHelper.PreInitPacketResponse(this, packet);
+                        NatNegHelper.PreInitPacketResponse(this, upacket);
                         break;
                     case NNRequest.NN_INIT:
-                        NatNegHelper.InitPacketResponse(this, packet);
+                        NatNegHelper.InitPacketResponse(this, upacket);
                         break;
                     case NNRequest.NN_ADDRESS_CHECK:
-                        NatNegHelper.AddressCheckResponse(this, packet);
+                        NatNegHelper.AddressCheckResponse(this, upacket);
                         break;
                     case NNRequest.NN_NATIFY_REQUEST:
-                        NatNegHelper.NatifyResponse(this, packet);
+                        NatNegHelper.NatifyResponse(this,upacket);
                         break;
                     case NNRequest.NN_CONNECT_PING:
                         break;
                     case NNRequest.NN_BACKUP_ACK:
                         break;
                     case NNRequest.NN_REPORT:
-                        NatNegHelper.ReportResponse(this, packet);
+                        NatNegHelper.ReportResponse(this, upacket);
                         break;
                     default:
                         //LogWriter.Log.Write("Received unknown packet type: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Error);
@@ -80,8 +99,8 @@ namespace RetroSpyServer.Servers.NatNeg
             }
             finally
             {
-                if (Replied == true)
-                    Release(packet.AsyncEventArgs);
+                if (_replied == true)
+                    Release(upacket.AsyncEventArgs);
             }
         }
     }

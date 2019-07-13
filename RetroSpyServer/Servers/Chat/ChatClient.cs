@@ -102,8 +102,8 @@ namespace RetroSpyServer.Servers.PeerChat
             /// <param name="message">The message the stream sended</param>
             protected void Stream_DataReceived(string message)
             {
-                //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Error);
-                
+            //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Error);
+            Stream.SendAsync("PING capricorn.goes.here :123456");
             }
         }
     }

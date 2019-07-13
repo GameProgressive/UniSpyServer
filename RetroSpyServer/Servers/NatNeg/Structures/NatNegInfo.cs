@@ -53,11 +53,11 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 
         
 
-        public static int NN_PREINIT_WAITING_FOR_CLIENT = 0;
+        public const int NN_PREINIT_WAITING_FOR_CLIENT = 0;
 
-        public static int NN_PREINIT_WAITING_FOR_MATCHUP = 1;
+        public const int NN_PREINIT_WAITING_FOR_MATCHUP = 1;
 
-        public static int NN_PREINIT_READY = 2;
+        public const int NN_PREINIT_READY = 2;
 
         public const int BASEPACKET_SIZE = 12;
 

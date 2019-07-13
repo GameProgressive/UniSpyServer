@@ -12,7 +12,19 @@ namespace RetroSpyServer.Servers.NatNeg
         {
             //LogWriter.Log.Write("[NATNEG] No impliment function for PreInitPacket!", LogLevel.Debug);
             //TODO
+            //server._sent_connect = false;
+            //server._clientID = server._nnpacket.packet.Preinit.clientID;
+            //server._clientIndex = server._nnpacket.packet.Preinit.clientIndex;
+            //server._got_preinit = true;
+            //SetPreInitPacket(NatNegInfo.NN_PREINIT_READY);
+           
             server.ReplyAsync(packet,packet.BytesRecieved);
+        }
+
+        private static byte[] SetPreInitPacket(int nN_PREINIT_READY)
+        {
+            byte[] hello = { 0x08, 0x09 };
+            return hello;
         }
 
         public static void InitPacketResponse(NatNegServer server, UdpPacket packet)
@@ -37,6 +49,18 @@ namespace RetroSpyServer.Servers.NatNeg
             server.ReplyAsync(packet, packet.BytesRecieved);
         }
 
+        public static void SaveNatNegPacket(NatNegServer server, UdpPacket upacket)
+        {
+            for(int i=0;i<6;i++)
+            {
+                server._nnpacket.magic[i] = upacket.BytesRecieved[i];
+            }
+            server._nnpacket.version =upacket.BytesRecieved[6];
+            server._nnpacket.packettype= upacket.BytesRecieved[7];
+
+
+        }
+
         /// <summary>
         /// Check the incoming udp data is a NatNeg format data
         /// </summary>
@@ -58,6 +82,37 @@ namespace RetroSpyServer.Servers.NatNeg
                 return false;
 
             return true;
+        }
+
+        public static int packetSizeFromType(byte type)
+        {
+            int size = 0;
+            switch (type)
+            {
+                case NNRequest.NN_PREINIT:
+
+                case NNRequest.NN_PREINIT_ACK:
+                    size = NatNegInfo.PREINITPACKET_SIZE;
+                    break;
+                case NNRequest.NN_ADDRESS_REPLY:
+                case NNRequest.NN_NATIFY_REQUEST:
+                case NNRequest.NN_ERTTEST:
+                case NNRequest.NN_INIT:
+                case NNRequest.NN_INITACK:
+                    size = NatNegInfo.INITPACKET_SIZE;
+                    break;
+                case NNRequest.NN_CONNECT_ACK:
+                case NNRequest.NN_CONNECT_PING:
+                case NNRequest.NN_CONNECT:
+                    size = NatNegInfo.CONNECTPACKET_SIZE;
+                    break;
+                case NNRequest.NN_REPORT:
+                case NNRequest.NN_REPORT_ACK:
+                    size = NatNegInfo.REPORTPACKET_SIZE;
+                    break;
+
+            }
+            return size;
         }
     }
 }
