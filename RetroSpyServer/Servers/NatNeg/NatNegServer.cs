@@ -14,7 +14,6 @@ namespace RetroSpyServer.Servers.NatNeg
         public bool _replied = false;
 
         public NatNegPacket NNPacket;
-
         public uint Cookie;
         public byte ClientIndex;
         public byte ClientVersion;
@@ -23,7 +22,7 @@ namespace RetroSpyServer.Servers.NatNeg
         public bool FoundPartner;
         public string Gamename;
         public bool GotNatifyRequest;
-        public bool GotPreinit=false;
+        public bool GotPreinit = false;
         public bool SentConnect;
         public int PacketSize;
 
@@ -50,12 +49,12 @@ namespace RetroSpyServer.Servers.NatNeg
             if (IsCorrectNetNegPacket(packet) == false)
                 return;
             //copy data in udp packet to natnegpacket format prepare for reply data;
-
+            NNPacket = new NatNegPacket(packet.BytesRecieved);
             try
             {
 
                 switch (packet.BytesRecieved[7])
-                {                                      
+                {
                     case NNRequest.NN_INIT:
                         NatNegHelper.InitPacketResponse(this, packet);
                         break;
@@ -107,8 +106,8 @@ namespace RetroSpyServer.Servers.NatNeg
 
         }
 
-        
-        
+
+
     }
 
 }

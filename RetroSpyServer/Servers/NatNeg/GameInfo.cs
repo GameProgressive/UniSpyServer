@@ -6,19 +6,19 @@ namespace RetroSpyServer.Servers.NatNeg
 {
     public class GameInfo
     {
-        public int id;
-        public byte name;
-        public byte secretkey;
-        public ushort queryport;
-        public ushort backendflags;
-        public uint servicesdisabled;
-        public KeyData pushKeys;
-        public byte numPushKeys; //sb protocol sends as a byte so max of 255
+        public int ID;
+        public byte Name;
+        public byte Secretkey;
+        public ushort QueryPort;
+        public ushort BackendFlags;
+        public uint ServicesDisabled;
+        public KeyData PushKeys;
+        public byte NumPushKeys; //sb protocol sends as a byte so max of 255
     }
 
     public class KeyData
     {
-        public byte name;
-        public byte type;
+        public byte Name;
+        public byte Type;
     }
 }

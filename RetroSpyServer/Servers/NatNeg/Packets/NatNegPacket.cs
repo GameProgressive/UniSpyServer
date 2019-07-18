@@ -16,8 +16,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public byte version;
         public byte packettype;
         public int cookie;
-
-        public Packet packet;
+        public Packet packet = new Packet();
 
         public NatNegPacket(byte[] data)
         {
@@ -36,6 +35,12 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
             byte[] cookie = new byte[sizeof(int)];
             Array.Copy(data, 8, cookie, 0, 4);//00 - 00 - 03 - 09
             this.cookie = BitConverter.ToInt32(cookie);
+
+            //c# dont have enum and pointer so we must create 3 functions to assign
+            //all value into three classes variables.
+            CopyInitData();
+            CopyConnectData();
+            CopyReportData();
         }
 
         public void CopyInitData()
@@ -66,16 +71,10 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
             packet.Report.NegResult = RecData[15];
 
             byte[] tempNatType = ByteExtensions.SubBytes(RecData, 17, sizeof(int));
-
-            packet.Report.NatType =
-                (NatType)Enum.Parse(typeof(NatType),
-                Encoding.ASCII.GetString(tempNatType, 0, sizeof(int)));
+            packet.Report.NatType = (NatType)BitConverter.ToInt32(tempNatType,0);
 
             byte[] tempNatMappingScheme = ByteExtensions.SubBytes(RecData, 19, sizeof(int));
-
-            packet.Report.NatMappingScheme =
-                (NatMappingScheme)Enum.Parse(typeof(NatMappingScheme),
-                Encoding.ASCII.GetString(tempNatMappingScheme, 0, sizeof(int)));
+            packet.Report.NatMappingScheme = (NatMappingScheme)BitConverter.ToInt32(tempNatMappingScheme, 0);
 
             //get the gamename
             Array.Copy(RecData, 23, packet.Report.GameName, 0, 50);
@@ -85,10 +84,10 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
     public class Packet
     {
         //public PreinitPacket Preinit;
-        public InitPacket Init;
-        public ConnectPacket Connect;
-        public ReportPacket Report;
-        public PreinitPacket PreInit;
+        public InitPacket Init = new InitPacket();
+        public ConnectPacket Connect = new ConnectPacket();
+        public ReportPacket Report = new ReportPacket();
+        public PreinitPacket PreInit = new PreinitPacket();
     }
 
     public class PreinitPacket
