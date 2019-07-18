@@ -8,27 +8,12 @@ namespace RetroSpyServer.Servers.NatNeg
 {
     class NatNegHelper
     {
-        public static void PreInitPacketResponse(NatNegServer server, UdpPacket packet)
-        {
-            //LogWriter.Log.Write("[NATNEG] No impliment function for PreInitPacket!", LogLevel.Debug);
-            //TODO
-            //server._sent_connect = false;
-            //server._clientID = server._nnpacket.packet.Preinit.clientID;
-            //server._clientIndex = server._nnpacket.packet.Preinit.clientIndex;
-            //server._got_preinit = true;
-            //SetPreInitPacket(NatNegInfo.NN_PREINIT_READY);
-           
-            server.ReplyAsync(packet,packet.BytesRecieved);
-        }
-
-        private static byte[] SetPreInitPacket(int nN_PREINIT_READY)
-        {
-            byte[] hello = { 0x08, 0x09 };
-            return hello;
-        }
+          
 
         public static void InitPacketResponse(NatNegServer server, UdpPacket packet)
         {
+            NatNegPacket nnpacket = new NatNegPacket(packet.BytesRecieved);
+            if (nnpacket.version > 1 && nnpacket.packet.Init.PortType == 1)
             //LogWriter.Log.Write("[NATNEG] No impliment function for InitPacket!", LogLevel.Debug);
             server.ReplyAsync(packet, packet.BytesRecieved);
         }
@@ -51,9 +36,9 @@ namespace RetroSpyServer.Servers.NatNeg
 
         public static void SaveNatNegPacket(NatNegServer server, UdpPacket upacket)
         {
-            
-            server._nnpacket.version =upacket.BytesRecieved[6];
-            server._nnpacket.packettype= upacket.BytesRecieved[7];
+
+            //server._nnpacket.version = upacket.BytesRecieved[6];
+            //server._nnpacket.packettype = upacket.BytesRecieved[7];
 
 
         }
@@ -79,6 +64,11 @@ namespace RetroSpyServer.Servers.NatNeg
                 return false;
 
             return true;
+        }
+
+        public static void PingResponse(NatNegServer natNegServer, UdpPacket packet)
+        {
+            
         }
 
         public static int packetSizeFromType(byte type)
@@ -111,5 +101,6 @@ namespace RetroSpyServer.Servers.NatNeg
             }
             return size;
         }
+
     }
 }
