@@ -32,7 +32,9 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public static int PING_RETRY_COUNT = 7;
 
         public static int PARTNER_WAIT_TIME = 60000;
+
         public static int REPORT_RETRY_TIME = 500;
+
         public static int REPORT_RETRY_COUNT = 4;
 
 

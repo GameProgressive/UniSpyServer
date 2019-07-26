@@ -1,20 +1,40 @@
-﻿using System;
-using System.Text;
-using GameSpyLib.Logging;
-using GameSpyLib.Network;
+﻿using GameSpyLib.Network;
 using RetroSpyServer.Servers.NatNeg.Structures;
 
 namespace RetroSpyServer.Servers.NatNeg
 {
     class NatNegHelper
     {
-          
 
-        public static void InitPacketResponse(NatNegServer server, UdpPacket packet)
+        //public static void PreInitResponse(NatNegServer natNegServer, UdpPacket packet, NatNegPacket nnpacket)
+        //{            
+        //    ClientInfo clientInfo = new ClientInfo();
+        //    if (clientInfo.GotPreInit)
+        //        return;
+        //    clientInfo.ClientID = nnpacket.Packet.PreInit.ClientID;
+        //    clientInfo.ClientIndex = nnpacket.Packet.PreInit.ClientIndex;
+        //}
+
+
+        public static void InitPacketResponse(NatNegServer server, UdpPacket packet, NatNegPacket nnpacket)
         {
-            NatNegPacket nnpacket = new NatNegPacket(packet.BytesRecieved);
-            if (nnpacket.version > 1 && nnpacket.packet.Init.PortType == 1)
-            //LogWriter.Log.Write("[NATNEG] No impliment function for InitPacket!", LogLevel.Debug);
+            //when every time we add a client in to ClientInfo list, we have to add 1 on InstanceCount
+            ClientInfo clientInfo = new ClientInfo
+                (
+                nnpacket.Version,
+                nnpacket.Cookie,
+                nnpacket.Packet.Init.ClientIndex,
+                true,
+                server.InstanceCount++
+                );
+            server.ClientInfoList.Add(clientInfo);
+
+            //then we set the nnpacket that we recieved in to a reply format
+            nnpacket.PacketType = NNRequest.NN_INITACK;
+            byte[] replyPacket = nnpacket.NatNegInitFormat(NatNegInfo.INITPACKET_SIZE);
+
+
+            //we send the reply packet to client
             server.ReplyAsync(packet, packet.BytesRecieved);
         }
 
@@ -43,6 +63,8 @@ namespace RetroSpyServer.Servers.NatNeg
 
         }
 
+
+
         /// <summary>
         /// Check the incoming udp data is a NatNeg format data
         /// </summary>
@@ -66,12 +88,18 @@ namespace RetroSpyServer.Servers.NatNeg
             return true;
         }
 
-        public static void PingResponse(NatNegServer natNegServer, UdpPacket packet)
+        public static void NNConnectResponse(NatNegServer natNegServer, UdpPacket packet)
         {
-            
+            ClientInfo clientinfo = new ClientInfo();
+            clientinfo.GotConnectAck = true;
         }
 
-        public static int packetSizeFromType(byte type)
+        /// <summary>
+        /// Get repsonse packet size from natneg recieved packet type
+        /// </summary>
+        /// <param name="type">recieved packet type</param>
+        /// <returns></returns>
+        public static int GetResponsePacketSize(byte type)
         {
             int size = 0;
             switch (type)

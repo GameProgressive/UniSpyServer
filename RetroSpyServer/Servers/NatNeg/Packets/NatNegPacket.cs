@@ -12,11 +12,14 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
     public class NatNegPacket
     {
         private byte[] RecData;
-        public byte[] magic = NNMagicData.MagicData;
-        public byte version;
-        public byte packettype;
-        public int cookie;
-        public Packet packet = new Packet();
+        public byte[] Magic = NNMagicData.MagicData;
+        public byte Version;
+        public byte PacketType;
+        //store cookie in int format
+        public int Cookie;
+        //stores cookie in bytes format
+        public byte[] Byte_Cookie = new byte[sizeof(int)];
+        public Packet Packet = new Packet();
 
         public NatNegPacket(byte[] data)
         {
@@ -30,11 +33,12 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
             //00 - 00 - 00 - 00 - 00 - 00 - 00 - 00 - 00 - 00 - 
             //00 - 00 - 00
             RecData = data;
-            version = data[6];//04
-            packettype = data[7];//0C
+            Version = data[6];//04
+            PacketType = data[7];//0C
             byte[] cookie = new byte[sizeof(int)];
             Array.Copy(data, 8, cookie, 0, 4);//00 - 00 - 03 - 09
-            this.cookie = BitConverter.ToInt32(cookie);
+            Array.Copy(data, 8, Byte_Cookie, 0, 4);
+            Cookie = BitConverter.ToInt32(cookie);
 
             //c# dont have enum and pointer so we must create 3 functions to assign
             //all value into three classes variables.
@@ -45,40 +49,62 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 
         public void CopyInitData()
         {
-            packet.Init.PortType = RecData[13];//02
-            packet.Init.ClientIndex = RecData[14];//00
-            packet.Init.UseGamePort = RecData[15];//00
-            packet.Init.LocalIp
+            Packet.Init.PortType = RecData[13];//02
+            Packet.Init.ClientIndex = RecData[14];//00
+            Packet.Init.UseGamePort = RecData[15];//00
+            Packet.Init.LocalIp
                 = BitConverter.ToUInt32(ByteExtensions.SubBytes(RecData, 16, sizeof(uint)));//00 - 00 - 00 - 00
-            packet.Init.LocalPort
+            Packet.Init.LocalPort
                 = BitConverter.ToUInt16(ByteExtensions.SubBytes(RecData, 20, sizeof(ushort)));//00 - 00
         }
 
         public void CopyConnectData()
         {
-            packet.Connect.RemoteIP
+            Packet.Connect.RemoteIP
                 = BitConverter.ToUInt32(ByteExtensions.SubBytes(RecData, 13, sizeof(uint)));
-            packet.Connect.RemotePort
+            Packet.Connect.RemotePort
                     = BitConverter.ToUInt16(ByteExtensions.SubBytes(RecData, 17, sizeof(ushort)));
-            packet.Connect.GotYourData = RecData[19];
-            packet.Connect.Finished = RecData[20];
+            Packet.Connect.GotYourData = RecData[19];
+            Packet.Connect.Finished = RecData[20];
         }
 
         public void CopyReportData()
         {
-            packet.Report.PortType = RecData[13];
-            packet.Report.ClientIndex = RecData[14];
-            packet.Report.NegResult = RecData[15];
+            Packet.Report.PortType = RecData[13];
+            Packet.Report.ClientIndex = RecData[14];
+            Packet.Report.NegResult = RecData[15];
 
             byte[] tempNatType = ByteExtensions.SubBytes(RecData, 17, sizeof(int));
-            packet.Report.NatType = (NatType)BitConverter.ToInt32(tempNatType,0);
+            Packet.Report.NatType = (NatType)BitConverter.ToInt32(tempNatType, 0);
 
             byte[] tempNatMappingScheme = ByteExtensions.SubBytes(RecData, 19, sizeof(int));
-            packet.Report.NatMappingScheme = (NatMappingScheme)BitConverter.ToInt32(tempNatMappingScheme, 0);
+            Packet.Report.NatMappingScheme = (NatMappingScheme)BitConverter.ToInt32(tempNatMappingScheme, 0);
 
             //get the gamename
-            Array.Copy(RecData, 23, packet.Report.GameName, 0, 50);
+            Array.Copy(RecData, 23, Packet.Report.GameName, 0, 50);
         }
+
+        /// <summary>
+        /// Format the NatNeg packet to byte array ready for send back to client
+        /// </summary>
+        /// <param name="nnpacket"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public byte[] NatNegInitFormat(int size)
+        {
+            byte[] formatedNNPacket = new byte[size];
+            Array.Copy(Magic,0, formatedNNPacket,0,Magic.Length);
+            formatedNNPacket[6] = Version;
+            formatedNNPacket[7] = PacketType;
+            Array.Copy(Byte_Cookie, 0, formatedNNPacket, 8, 4);
+            return formatedNNPacket;
+        }
+
+        public byte[] GetCookieBytes()
+        {
+            return BitConverter.GetBytes(Cookie);
+        }
+
     }
 
     public class Packet
@@ -92,9 +118,9 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 
     public class PreinitPacket
     {
-        public byte clientIndex;
-        public byte state;
-        public uint clientID;
+        public byte ClientIndex;
+        public byte State;
+        public int ClientID;
     }
     public class InitPacket
     {

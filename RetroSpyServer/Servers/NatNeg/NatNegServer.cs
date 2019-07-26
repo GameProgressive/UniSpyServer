@@ -5,27 +5,20 @@ using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using RetroSpyServer.Servers.NatNeg.Structures;
 using System.Net.Sockets;
+using System.Collections.Generic;
 
 namespace RetroSpyServer.Servers.NatNeg
 {
     public class NatNegServer : UdpServer
     {
 
-        public bool _replied = false;
+        public bool Replied = false;
 
         public NatNegPacket NNPacket;
-        public uint Cookie;
-        public byte ClientIndex;
-        public byte ClientVersion;
-        public byte State;
-        public uint ClientID;
-        public bool FoundPartner;
-        public string Gamename;
-        public bool GotNatifyRequest;
-        public bool GotPreinit = false;
-        public bool SentConnect;
-        public int PacketSize;
 
+        public List<ClientInfo> ClientInfoList = new List<ClientInfo>();
+
+        public int InstanceCount=1;
 
         /// <summary>
         /// 
@@ -38,7 +31,7 @@ namespace RetroSpyServer.Servers.NatNeg
         {
             StartAcceptAsync();
         }
-        protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
+       
 
 
         protected override void ProcessAccept(UdpPacket packet)
@@ -49,14 +42,18 @@ namespace RetroSpyServer.Servers.NatNeg
             if (IsCorrectNetNegPacket(packet) == false)
                 return;
             //copy data in udp packet to natnegpacket format prepare for reply data;
-            NNPacket = new NatNegPacket(packet.BytesRecieved);
+            NatNegPacket nnpacket = new NatNegPacket(packet.BytesRecieved);
+
             try
             {
-
+                //BytesRecieved[7] is nnpacket.PacketType.
                 switch (packet.BytesRecieved[7])
                 {
+                    //case NNRequest.NN_PREINIT:
+                    //    NatNegHelper.PreInitResponse(this,packet,nnpacket);
+                    //    break;
                     case NNRequest.NN_INIT:
-                        NatNegHelper.InitPacketResponse(this, packet);
+                        NatNegHelper.InitPacketResponse(this, packet,nnpacket);
                         break;
                     case NNRequest.NN_ADDRESS_CHECK:
                         NatNegHelper.AddressCheckResponse(this, packet);
@@ -64,17 +61,16 @@ namespace RetroSpyServer.Servers.NatNeg
                     case NNRequest.NN_NATIFY_REQUEST:
                         NatNegHelper.NatifyResponse(this, packet);
                         break;
-                    //case NNRequest.NN_CONNECT_PING:
-                    //    NatNegHelper.PingResponse(this, packet);
-                    //    break;
-                    case NNRequest.NN_BACKUP_ACK:
+                    case NNRequest.NN_CONNECT_PING:
+                        NatNegHelper.NNConnectResponse(this, packet);
+                        break;
+                    case NNRequest.NN_CONNECT_ACK:
+                        NatNegHelper.NNConnectResponse(this, packet);
                         break;
                     case NNRequest.NN_REPORT:
                         NatNegHelper.ReportResponse(this, packet);
                         break;
-                    default:
-                        //LogWriter.Log.Write("Received unknown packet type: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Error);
-                        //LogWriter.Log.Write("[NatNeg] received unknow data: " + Convert.ToString(packet.BytesRecieved[0],16), LogLevel.Error);
+                    default:                       
                         LogWriter.Log.Write("{0,-8} [Recv] unknow data", LogLevel.Error, ServerName);
                         break;
                 }
@@ -85,7 +81,7 @@ namespace RetroSpyServer.Servers.NatNeg
             }
             finally
             {
-                if (_replied == true)
+                if (Replied == true)
                     Release(packet.AsyncEventArgs);
             }
         }
@@ -107,6 +103,7 @@ namespace RetroSpyServer.Servers.NatNeg
         }
 
 
+        protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
 
     }
 
