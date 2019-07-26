@@ -155,15 +155,7 @@ namespace GameSpyLib.Common
         /// <returns></returns>
         public static bool IsEmailFormatCorrect(string email)
         {
-            if (email.Contains('@'))
-            {
-                //a correct email format can not contain #$%^&*()!
-                if (!(email.Contains('#') && email.Contains('&') && email.Contains('$') && email.Contains('*') && email.Contains('(') && email.Contains(')') && email.Contains('!') && email.Contains('^')))
-                {
-                    return true;
-                }
-            }
-            return false;
+            return email.Any(ch => (!char.IsLetterOrDigit(ch) && ch != '@' && ch != '.'));
         }
 
 

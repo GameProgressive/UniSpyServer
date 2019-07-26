@@ -6,7 +6,13 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 {
     public static class NatNegInfo
     {
- 
+        public static bool HavePreInitData(byte version)
+        {
+            return version > 3;
+        }
+
+        public static readonly byte[] MagicData = { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0x82 };
+
         public static int FINISHED_NOERROR = 0;
 
         public static int FINISHED_ERROR_DEADBEAT_PARTNER = 1;
@@ -37,13 +43,6 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 
         public static int REPORT_RETRY_COUNT = 4;
 
-
-        public const int NN_PROTVER = 4;
-
-
-        //public static int NN_PROTVER 3
-        //public static int NN_PROTVER 2
-
         public const int NN_PT_GP = 0;
 
         public const int NN_PT_NN1 = 1;
@@ -52,28 +51,11 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 
         public const int NN_PT_NN3 = 3;
 
-
-        
-
         public const int NN_PREINIT_WAITING_FOR_CLIENT = 0;
 
         public const int NN_PREINIT_WAITING_FOR_MATCHUP = 1;
 
         public const int NN_PREINIT_READY = 2;
-
-        public const int BASEPACKET_SIZE = 12;
-
-        public const int BASEPACKET_TYPE_OFFSET = 7;
-
-        public const int INITPACKET_SIZE = BASEPACKET_SIZE + 9;
-
-        public const int INITPACKET_ADDRESS_OFFSET = BASEPACKET_SIZE + 3;
-
-        public const int REPORTPACKET_SIZE = BASEPACKET_SIZE + 61;
-
-        public const int CONNECTPACKET_SIZE = BASEPACKET_SIZE + 8;
-
-        public const int PREINITPACKET_SIZE = BASEPACKET_SIZE + 6;
 
         public static int NNCookieType;
     }

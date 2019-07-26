@@ -25,8 +25,7 @@ namespace GameSpyLib.Extensions
             Array.Copy(srcBytes, startIndex, temp, 0, length);
             return temp;
 
-
-            System.IO.MemoryStream bufferStream = new System.IO.MemoryStream();
+            /*System.IO.MemoryStream bufferStream = new System.IO.MemoryStream();
             byte[] returnByte = new byte[] { };
             if (srcBytes == null) { return returnByte; }
             if (startIndex < 0) { startIndex = 0; }
@@ -40,7 +39,7 @@ namespace GameSpyLib.Extensions
             }
             bufferStream.Close();
             bufferStream.Dispose();
-            return returnByte;
+            return returnByte;*/
         }
     }
 }
