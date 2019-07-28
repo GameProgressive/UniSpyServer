@@ -182,6 +182,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         {
             //The size is initially CommonInfo size
             int size = CommonInfo.Size;
+
             switch (Common.PacketType)
             {
                 case NatPacketType.PreInit:

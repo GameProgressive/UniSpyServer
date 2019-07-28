@@ -95,20 +95,20 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// An Event that is fired when the client successfully logs in.
         /// </summary>
-        public static event ConnectionUpdate OnSuccessfulLogin;
+        public static event GPCMConnectionUpdate OnSuccessfulLogin;
 
         /// <summary>
         /// Event fired when that remote connection logs out, or
         /// the socket gets disconnected. This event will not fire
         /// unless OnSuccessfulLogin event was fired first.
         /// </summary>
-        public static event GpcmConnectionClosed OnDisconnect;
+        public static event GPCMConnectionClosed OnDisconnect;
 
         /// <summary>
         /// Event fired when the client status or location is changed,
         /// so the data could be notified to all clients
         /// </summary>
-        public static event GpcmStatusChanged OnStatusChanged;
+        public static event GPCMStatusChanged OnStatusChanged;
 
         public GPCMPlayerInfo PlayerInfo { get; protected set; }
         

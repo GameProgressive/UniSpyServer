@@ -27,7 +27,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// <summary>
         /// Event fired when the connection is closed
         /// </summary>
-        public static event GpspConnectionClosed OnDisconnect;
+        public static event GPSPConnectionClosed OnDisconnected;
 
         /// <summary>
         /// Constructor
@@ -91,7 +91,7 @@ namespace RetroSpyServer.Servers.GPSP
 
 
             // Call disconnect event
-            OnDisconnect?.Invoke(this);
+            OnDisconnected?.Invoke(this);
 
             Disposed = true;
         }
