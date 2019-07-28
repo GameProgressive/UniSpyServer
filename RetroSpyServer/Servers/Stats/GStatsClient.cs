@@ -33,11 +33,14 @@ namespace RetroSpyServer.Servers.Stats
 
             // Init a new client stream class
             Stream = stream;
-            Stream.OnDisconnect += Dispose;
+
             //determine whether gamespy request is finished
-            Stream.IsMessageFinished += Stream_IsMessageFinished;
+            Stream.IsMessageFinished += IsMessageFinished;
+
             // Read client message, and parse it into key value pairs
-            Stream.DataReceived += Stream_DataReceived;
+            Stream.OnDataReceived += ProcessData;
+
+            Stream.OnDisconnected += Dispose;
 
         }
 
@@ -67,11 +70,11 @@ namespace RetroSpyServer.Servers.Stats
 
             try
             {
-                Stream.OnDisconnect -= Dispose;
+                Stream.OnDisconnected -= Dispose;
                 //determine whether gamespy request is finished
-                Stream.IsMessageFinished -= Stream_IsMessageFinished;
+                Stream.IsMessageFinished -= IsMessageFinished;
                 // Read client message, and parse it into key value pairs
-                Stream.DataReceived -= Stream_DataReceived;
+                Stream.OnDataReceived -= ProcessData;
                 // If connection is still alive, disconnect user
                 if (!Stream.SocketClosed)
                     Stream.Close(DisposeEventArgs);
@@ -81,7 +84,7 @@ namespace RetroSpyServer.Servers.Stats
             Disposed = true;
         }
 
-        private bool Stream_IsMessageFinished(string message)
+        private bool IsMessageFinished(string message)
         {
             if (message.EndsWith("\\final\\"))
                 return true;
@@ -93,7 +96,7 @@ namespace RetroSpyServer.Servers.Stats
         /// </summary>
         /// <param name="stream">The stream that sended the data</param>
         /// <param name="message">The message the stream sended</param>
-        protected void Stream_DataReceived(string message)
+        protected void ProcessData(string message)
         {
             
         }

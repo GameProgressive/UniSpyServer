@@ -89,12 +89,12 @@ namespace GameSpyLib.Network
         /// <summary>
         /// Event fired when a completed message has been received
         /// </summary>
-        public event DataRecivedEvent DataReceived;
+        public event DataRecivedEvent OnDataReceived;
 
         /// <summary>
         /// Event fired when the remote connection is closed
         /// </summary>
-        public event ConnectionClosed OnDisconnect;
+        public event ConnectionClosed OnDisconnected;
 
         /// <summary>
         /// Event fired to check if the message is finished or not (required for gp* servers)
@@ -165,7 +165,7 @@ namespace GameSpyLib.Network
                 {
                     // Disconnect user
                     DisconnectEventCalled = true;
-                    OnDisconnect?.Invoke();
+                    OnDisconnected?.Invoke();
                 }
             }
             catch (SocketException e)
@@ -219,10 +219,10 @@ namespace GameSpyLib.Network
             }
 
             // Call Disconnect Event
-            if (!DisconnectEventCalled && OnDisconnect != null)
+            if (!DisconnectEventCalled && OnDisconnected != null)
             {
                 DisconnectEventCalled = true;
-                OnDisconnect();
+                OnDisconnected();
             }
         }
 
@@ -272,7 +272,7 @@ namespace GameSpyLib.Network
 
                         // tell our parent that we recieved a message
                         RecvMessage.Clear(); // Clear old junk
-                        DataReceived.Invoke(received);
+                        OnDataReceived.Invoke(received);
                     }
 
                     DataAttempt++;

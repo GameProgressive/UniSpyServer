@@ -39,7 +39,7 @@ namespace RetroSpyServer.Servers.GPSP
         {
             GPSPHelper.DBQuery = new DBQueries.GPSPDBQuery(databaseDriver);
 
-            GPSPClient.OnDisconnect += GpspClient_OnDisconnect;
+            GPSPClient.OnDisconnect += ClientDisconnected;
 
             // Begin accepting connections
             StartAcceptAsync();
@@ -58,7 +58,7 @@ namespace RetroSpyServer.Servers.GPSP
             Exiting = true;
 
             // Unregister events so we dont get a shit ton of calls
-            GPSPClient.OnDisconnect -= GpspClient_OnDisconnect;
+            GPSPClient.OnDisconnect -= ClientDisconnected;
 
             // Disconnected all connected clients
             foreach (GPSPClient c in Clients.Values)
@@ -112,7 +112,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// Callback for when a connection had disconnected
         /// </summary>
         /// <param name="sender">The client object whom is disconnecting</param>
-        private void GpspClient_OnDisconnect(GPSPClient client)
+        private void ClientDisconnected(GPSPClient client)
         {
             // Release this stream's AsyncEventArgs to the object pool
             Release(client.Stream);

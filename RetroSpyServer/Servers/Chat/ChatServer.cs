@@ -39,7 +39,7 @@ namespace RetroSpyServer.Servers.PeerChat
             {
                 ChatHelper.DBQuery = new DBQueries.ChatDBQuery(databaseDriver);
 
-                ChatClient.OnDisconnect += PeerChatClient_OnDisconnect;
+                ChatClient.OnDisconnect += ClientDisconnected;
 
                 // Begin accepting connections
                 StartAcceptAsync();
@@ -58,7 +58,7 @@ namespace RetroSpyServer.Servers.PeerChat
                 Exiting = true;
 
                 // Unregister events so we dont get a shit ton of calls
-                ChatClient.OnDisconnect -= PeerChatClient_OnDisconnect;
+                ChatClient.OnDisconnect -= ClientDisconnected;
 
                 // Disconnected all connected clients
                 foreach (ChatClient c in Clients.Values)
@@ -112,7 +112,7 @@ namespace RetroSpyServer.Servers.PeerChat
             /// Callback for when a connection had disconnected
             /// </summary>
             /// <param name="sender">The client object whom is disconnecting</param>
-            private void PeerChatClient_OnDisconnect(ChatClient client)
+            private void ClientDisconnected(ChatClient client)
             {
                 // Release this stream's AsyncEventArgs to the object pool
                 Release(client.Stream);

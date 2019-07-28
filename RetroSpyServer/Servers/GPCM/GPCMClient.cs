@@ -134,9 +134,9 @@ namespace RetroSpyServer.Servers.GPCM
 
             // Create our Client Stream
             Stream = ConnectionStream;
-            Stream.OnDisconnect += Stream_OnDisconnect;
-            Stream.DataReceived += Stream_DataReceived;
-            Stream.IsMessageFinished += Stream_IsMessageFinished;
+            Stream.OnDisconnected += ClientDisconnected;
+            Stream.OnDataReceived += ProcessData;
+            Stream.IsMessageFinished += IsMessageFinished;
             Stream.BeginReceive();
         }
 
@@ -193,9 +193,13 @@ namespace RetroSpyServer.Servers.GPCM
             // If connection is still alive, disconnect user
             try
             {
-                Stream.OnDisconnect -= Stream_OnDisconnect;
-                Stream.DataReceived -= Stream_DataReceived;
-                Stream.IsMessageFinished -= Stream_IsMessageFinished;
+
+                Stream.OnDataReceived -= ProcessData;
+
+                Stream.IsMessageFinished -= IsMessageFinished;
+
+                Stream.OnDisconnected -= ClientDisconnected;
+
                 Stream.Close(reason == DisconnectReason.ForcedServerShutdown);
             }
             catch { }
@@ -237,7 +241,7 @@ namespace RetroSpyServer.Servers.GPCM
 
         #region Stream Callbacks
 
-        private bool Stream_IsMessageFinished(string message)
+        private bool IsMessageFinished(string message)
         {
             if (message.EndsWith("\\final\\"))
                 return true;
@@ -249,7 +253,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// Main listner loop. Keeps an open stream between the client and server while
         /// the client is logged in / playing
         /// </summary>
-        private void Stream_DataReceived(string message)
+        private void ProcessData(string message)
         {
             if (message[0] != '\\')
             {
@@ -325,7 +329,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// Event fired when the stream disconnects unexpectedly
         /// </summary>
-        private void Stream_OnDisconnect()
+        private void ClientDisconnected()
         {
             Disconnect(DisconnectReason.Disconnected);
         }

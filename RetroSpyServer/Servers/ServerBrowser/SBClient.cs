@@ -47,11 +47,11 @@ namespace RetroSpyServer.Servers.ServerBrowser
             ConnectionID = connectionId;
             // Init a new client stream class
             Stream = stream;
-            Stream.OnDisconnect += Dispose;
-            Stream.DataReceived += Stream_DataRecieved;
+            Stream.OnDisconnected += Dispose;
+            Stream.OnDataReceived += ProcessData;
         }
 
-            protected void Stream_DataRecieved(string received)
+            protected void ProcessData(string received)
             {
                 // lets split up the message based on the delimiter
                 string[] messages = received.Split(new string[] { "\x00\x00\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);

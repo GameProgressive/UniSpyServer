@@ -74,8 +74,9 @@ namespace RetroSpyServer.Servers.GPCM
 
             GPCMHelper.DBQuery = new DBQueries.GPCMDBQuery(driver);
 
-            GPCMClient.OnDisconnect += GpcmClient_OnDisconnect;
-            GPCMClient.OnSuccessfulLogin += GpcmClient_OnSuccessfulLogin;
+            GPCMClient.OnDisconnect += ClientDisconnected;
+
+            GPCMClient.OnSuccessfulLogin += ClientSuccessfulLogin;
 
             // Setup timer. Every 15 seconds should be sufficient
             if (PollTimer == null || !PollTimer.Enabled)
@@ -161,8 +162,8 @@ namespace RetroSpyServer.Servers.GPCM
 
 
             // Unregister events so we dont get a shit ton of calls
-            GPCMClient.OnSuccessfulLogin -= GpcmClient_OnSuccessfulLogin;
-            GPCMClient.OnDisconnect -= GpcmClient_OnDisconnect;
+            GPCMClient.OnSuccessfulLogin -= ClientSuccessfulLogin;
+            GPCMClient.OnDisconnect -= ClientDisconnected;
 
             // Discard the poll timer
             PollTimer.Stop();
@@ -254,7 +255,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// Callback for when a connection had disconnected
         /// </summary>
         /// <param name="client">The client object whom is disconnecting</param>
-        private void GpcmClient_OnDisconnect(GPCMClient client)
+        private void ClientDisconnected(GPCMClient client)
         {
             // If we are exiting, don't do anything here.
             if (Exiting) return;
@@ -279,7 +280,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// Callback for a successful login
         /// </summary>
         /// <param name="sender">The GpcmClient that is logged in</param>
-        private void GpcmClient_OnSuccessfulLogin(object sender)
+        private void ClientSuccessfulLogin(object sender)
         {
             // Wrap this in a try/catch
             try

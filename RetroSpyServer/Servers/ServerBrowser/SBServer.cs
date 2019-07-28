@@ -28,7 +28,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
         public SBServer(string serverName,IPEndPoint bindTo,int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
             // Start accepting connections
-            SBClient.OnDisconnect += ServerBrowserClient_OnDisconnect;
+            SBClient.OnDisconnect += ClientDisconnected;
             StartAcceptAsync();
         }
 
@@ -41,7 +41,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
             base.IgnoreNewConnections = true;
 
             // Unregister events so we dont get a shit ton of calls
-            SBClient.OnDisconnect -= ServerBrowserClient_OnDisconnect;
+            SBClient.OnDisconnect -= ClientDisconnected;
 
             // Disconnected all connected clients
             foreach (SBClient client in Clients.Values)
@@ -104,7 +104,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
         /// <summary>
         /// Callback for when a connection had disconnected
         /// </summary>
-        protected void ServerBrowserClient_OnDisconnect(SBClient client)
+        protected void ClientDisconnected(SBClient client)
         {
             // Remove client, and call OnUpdate Event
             try

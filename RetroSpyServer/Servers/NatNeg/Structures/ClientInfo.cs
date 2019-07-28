@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
 namespace RetroSpyServer.Servers.NatNeg
@@ -17,6 +18,12 @@ namespace RetroSpyServer.Servers.NatNeg
         public bool GotPreInit = false;
         public bool GotInit = false;
         public bool GotConnectAck = false;
+
+        // we can add the IPEndPoint information in to clientinfo as  
+        //clientinfo.remote= (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
+        //when we want to find a clientinfo in clientinfo list and we know where to send the clientinfo back
+        public IPEndPoint remote;
+
 
         //These two viraibles is only for server to determine the clientinfo
         public int SocketStatus;//socket status is representing a socket availability,in C# it is not need.

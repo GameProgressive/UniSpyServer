@@ -41,7 +41,7 @@ namespace RetroSpyServer.Servers.NatNeg
             //copy data in udp packet to natnegpacket format prepare for reply data;
             NatNegPacket nnpacket = new NatNegPacket();
 
-            if (!nnpacket.Set(packet.BytesRecieved))
+            if (!nnpacket.SetData(packet.BytesRecieved))
                 return;
 
             try
