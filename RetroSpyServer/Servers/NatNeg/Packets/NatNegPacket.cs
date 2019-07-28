@@ -18,7 +18,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 
         public bool SetData(byte[] data)
         {
-            if (data.Length < CommonInfo.ReplyPacketSize)
+            if (data.Length < CommonInfo.Size)
                 return false;
 
             if (!ByteExtensions.SubBytes(data, 0, magicDataLen).Equals(NatNegInfo.MagicData))
@@ -139,37 +139,37 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
 
         private void PrepareReplyPreInitData(byte[] replyBytes)
         {
-            replyBytes[CommonInfo.ReplyPacketSize] = PreInit.ClientIndex;
-            replyBytes[CommonInfo.ReplyPacketSize + 1] = PreInit.State;
-            BitConverter.GetBytes(PreInit.State).CopyTo(replyBytes, CommonInfo.ReplyPacketSize + 2);
+            replyBytes[CommonInfo.Size] = PreInit.ClientIndex;
+            replyBytes[CommonInfo.Size + 1] = PreInit.State;
+            BitConverter.GetBytes(PreInit.State).CopyTo(replyBytes, CommonInfo.Size + 2);
         }
 
         private void PrepareReplyInitData(byte[] replyBytes)
         {
-            replyBytes[CommonInfo.ReplyPacketSize] = Init.PortType;
-            replyBytes[CommonInfo.ReplyPacketSize + 1] = Init.ClientIndex;
-            replyBytes[CommonInfo.ReplyPacketSize + 2] = Init.UseGamePort;
-            BitConverter.GetBytes(Init.LocalIp).CopyTo(replyBytes, CommonInfo.ReplyPacketSize + 3);
-            BitConverter.GetBytes(Init.LocalPort).CopyTo(replyBytes, CommonInfo.ReplyPacketSize + 7);
+            replyBytes[CommonInfo.Size] = Init.PortType;
+            replyBytes[CommonInfo.Size + 1] = Init.ClientIndex;
+            replyBytes[CommonInfo.Size + 2] = Init.UseGamePort;
+            BitConverter.GetBytes(Init.LocalIp).CopyTo(replyBytes, CommonInfo.Size + 3);
+            BitConverter.GetBytes(Init.LocalPort).CopyTo(replyBytes, CommonInfo.Size + 7);
         }
 
         private void PrepareReplyConnectData(byte[] replyBytes)
         {
-            BitConverter.GetBytes(Connect.RemoteIP).CopyTo(replyBytes, CommonInfo.ReplyPacketSize);
-            BitConverter.GetBytes(Connect.RemotePort).CopyTo(replyBytes, CommonInfo.ReplyPacketSize + 4);
+            BitConverter.GetBytes(Connect.RemoteIP).CopyTo(replyBytes, CommonInfo.Size);
+            BitConverter.GetBytes(Connect.RemotePort).CopyTo(replyBytes, CommonInfo.Size + 4);
 
-            replyBytes[CommonInfo.ReplyPacketSize] = Connect.GotYourData;
-            replyBytes[CommonInfo.ReplyPacketSize + 1] = Connect.Finished;
+            replyBytes[CommonInfo.Size] = Connect.GotYourData;
+            replyBytes[CommonInfo.Size + 1] = Connect.Finished;
         }
 
         private void PrepareReplyReportData(byte[] replyBytes)
         {
-            replyBytes[CommonInfo.ReplyPacketSize] = Report.PortType;
-            replyBytes[CommonInfo.ReplyPacketSize + 1] = Report.ClientIndex;
-            replyBytes[CommonInfo.ReplyPacketSize + 2] = Report.NegResult;
-            BitConverter.GetBytes((int)Report.NatType).CopyTo(replyBytes, CommonInfo.ReplyPacketSize + 3);
-            BitConverter.GetBytes((int)Report.NatMappingScheme).CopyTo(replyBytes, CommonInfo.ReplyPacketSize + 7);
-            Report.GameName.CopyTo(replyBytes, CommonInfo.ReplyPacketSize + 11);
+            replyBytes[CommonInfo.Size] = Report.PortType;
+            replyBytes[CommonInfo.Size + 1] = Report.ClientIndex;
+            replyBytes[CommonInfo.Size + 2] = Report.NegResult;
+            BitConverter.GetBytes((int)Report.NatType).CopyTo(replyBytes, CommonInfo.Size + 3);
+            BitConverter.GetBytes((int)Report.NatMappingScheme).CopyTo(replyBytes, CommonInfo.Size + 7);
+            Report.GameName.CopyTo(replyBytes, CommonInfo.Size + 11);
         }
         #endregion
 
@@ -181,12 +181,12 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         private int GetReplyPacketSize()
         {
             //The size is initially CommonInfo size
-            int size = CommonInfo.ReplyPacketSize;
+            int size = CommonInfo.Size;
             switch (Common.PacketType)
             {
                 case NatPacketType.PreInit:
                 case NatPacketType.PreInitAck:
-                    size = PreinitPacket.ReplyPacketSize;
+                    size += PreinitPacket.PacketSize;
                     break;
                 case NatPacketType.AddressCheck:
                 case NatPacketType.NatifyRequest:
@@ -196,15 +196,15 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
                 case NatPacketType.InitAck:
                 case NatPacketType.ConnectAck:
                 case NatPacketType.ReportAck:
-                    size = InitPacket.ReplyPacketSize;
+                    size += InitPacket.PacketSize;
                     break;
 
                 case NatPacketType.ConnectPing:
                 case NatPacketType.Connect:
-                    size = ConnectPacket.ReplyPacketSize;
+                    size += ConnectPacket.PacketSize;
                     break;
                 case NatPacketType.Report:
-                    size = ReportPacket.ReplyPacketSize;
+                    size += ReportPacket.PacketSize;
                     break;
                 default:
                     break;
@@ -223,7 +223,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public NatPacketType PacketType;
         public int Cookie;
 
-        public static int ReplyPacketSize= NatNegInfo.MagicData.Length + 6; 
+        public static int Size= NatNegInfo.MagicData.Length + 6; 
     }
 
     public class PreinitPacket
@@ -232,7 +232,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public byte State;
         public int ClientID;
 
-        public static int ReplyPacketSize= CommonInfo.ReplyPacketSize+ 6; 
+        public static int PacketSize=  6; 
     }
 
     public class InitPacket
@@ -243,7 +243,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public uint LocalIp;
         public ushort LocalPort;
 
-        public static int ReplyPacketSize = CommonInfo.ReplyPacketSize+9; 
+        public static int PacketSize = 9; 
     }
 
     public class ReportPacket
@@ -255,7 +255,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public NatMappingScheme NatMappingScheme; //int
         public byte[] GameName = new byte[50];
 
-        public static int ReplyPacketSize = CommonInfo.ReplyPacketSize+ 61; 
+        public static int PacketSize =  61; 
     }
 
     public class ConnectPacket
@@ -265,7 +265,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
         public byte GotYourData;
         public byte Finished;
 
-        public static int ReplyPacketSize= CommonInfo.ReplyPacketSize+8; 
+        public static int PacketSize= 8; 
     }
 }
 #endregion
