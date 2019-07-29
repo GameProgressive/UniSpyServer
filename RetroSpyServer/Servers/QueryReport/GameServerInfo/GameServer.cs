@@ -9,11 +9,15 @@ namespace RetroSpyServer.Servers.QueryReport.GameServerInfo
 
     public class GameServer
     {
+        public GameServer(IPEndPoint remote)
+        {
+            Remote = remote;
+        }
         [NonFilter]
         public int DatabaseId { get; set; }
 
         [NonFilter]
-        public IPEndPoint AddressInfo { get; protected set; }
+        public IPEndPoint Remote { get; protected set; }
 
         [NonFilter]
         public bool IsValidated = false;
@@ -21,7 +25,7 @@ namespace RetroSpyServer.Servers.QueryReport.GameServerInfo
         [NonFilter]
         public int QueryPort
         {
-            get { return AddressInfo.Port; }
+            get { return Remote.Port; }
         }
 
         [NonFilter]
@@ -31,74 +35,71 @@ namespace RetroSpyServer.Servers.QueryReport.GameServerInfo
         public DateTime LastPing { get; set; }
 
         [NonFilter]
-        public string localip0 { get; set; }
+        public string LocalIp0 { get; set; }
 
         [NonFilter]
-        public string localip1 { get; set; }
+        public string localIp1 { get; set; }
 
         [NonFilter]
-        public int localport { get; set; }
+        public int LocalPort { get; set; }
 
         [NonFilter]
-        public bool natneg { get; set; }
+        public bool NatNeg { get; set; }
 
         [NonFilter]
-        public int statechanged { get; set; }
+        public int StateChanged { get; set; }
 
         #region Server Vars
 
-        public string country { get; set; }
-        public string hostname { get; set; }
-        public string gamename { get; set; }
-        public string gamever { get; set; }
-        public string mapname { get; set; }
-        public string gametype { get; set; }
-        public string gamevariant { get; set; }
-        public int numplayers { get; set; }
-        public int maxplayers { get; set; }
-        public string gamemode { get; set; }
-        public bool password { get; set; }
-        public int timelimit { get; set; }
-        public int roundtime { get; set; }
-        public int hostport { get; set; }
-        public bool game_dedicated { get; set; }
-        public bool game_ranked { get; set; }
-        public bool game_anticheat { get; set; }
-        public string game_os { get; set; }
-        public bool game_autorec { get; set; }
-        public string game_d_idx { get; set; }
-        public string game_d_dl { get; set; }
-        public bool game_voip { get; set; }
-        public bool game_autobalanced { get; set; }
-        public bool game_friendlyfire { get; set; }
-        public string game_tkmode { get; set; }
-        public double game_startdelay { get; set; }
-        public double game_spawntime { get; set; }
-        public string game_sponsortext { get; set; }
-        public string game_sponsorlogo_url { get; set; }
-        public string game_communitylogo_url { get; set; }
-        public int game_scorelimit { get; set; }
-        public double game_ticketratio { get; set; }
-        public double game_teamratio { get; set; }
-        public string game_team1 { get; set; }
-        public string game_team2 { get; set; }
-        public bool game_bots { get; set; }
-        public bool game_pure { get; set; }
-        public int game_mapsize { get; set; }
-        public bool game_globalunlocks { get; set; }
-        public double game_fps { get; set; }
-        public bool game_plasma { get; set; }
-        public int game_reservedslots { get; set; }
-        public double game_coopbotratio { get; set; }
-        public int game_coopbotcount { get; set; }
-        public int game_coopbotdiff { get; set; }
-        public bool game_novehicles { get; set; }
+        public string Country { get; set; }
+        public string HostName { get; set; }
+        public string GameName { get; set; }
+        public string Gamever { get; set; }
+        public string MapName { get; set; }
+        public string GameType { get; set; }
+        public string GameVariant { get; set; }
+        public int NumPlayers { get; set; }
+        public int MaxPlayers { get; set; }
+        public string GameMode { get; set; }
+        public bool Password { get; set; }
+        public int TimeLimit { get; set; }
+        public int RoundTime { get; set; }
+        public int HostPort { get; set; }
+        public bool GameDedicated { get; set; }
+        public bool GameRanked { get; set; }
+        public bool GameAnticheat { get; set; }
+        public string GameOS { get; set; }
+        public bool GameAutorec { get; set; }
+        public string GameDIdx { get; set; }
+        public string GameDDl { get; set; }
+        public bool GameVoip { get; set; }
+        public bool GameAutoBalanced { get; set; }
+        public bool GameFriendlyFire { get; set; }
+        public string GameTkMode { get; set; }
+        public double GameStartDelay { get; set; }
+        public double GameSpawnTime { get; set; }
+        public string GameSponsorText { get; set; }
+        public string GameSponsorLogoUrl { get; set; }
+        public string GameCommunityLogoUrl { get; set; }
+        public int GameScoreLimit { get; set; }
+        public double GameTicketRatio { get; set; }
+        public double GameTeamRatio { get; set; }
+        public string GameTeam1 { get; set; }
+        public string GameTeam2 { get; set; }
+        public bool GameBots { get; set; }
+        public bool GamePure { get; set; }
+        public int GameMapsize { get; set; }
+        public bool GameGlobalUnlocks { get; set; }
+        public double GameFps { get; set; }
+        public bool GamePlasma { get; set; }
+        public int GameReservedslots { get; set; }
+        public double GameCoopBotRatio { get; set; }
+        public int GameCoopBotCount { get; set; }
+        public int GameCoopBotDiff { get; set; }
+        public bool GameNoVehicles { get; set; }
 
         #endregion
 
-        public GameServer(IPEndPoint addressInfo)
-        {
-            AddressInfo = addressInfo;
-        }
+
     }
 }
