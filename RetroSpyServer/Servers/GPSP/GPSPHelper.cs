@@ -122,14 +122,25 @@ namespace RetroSpyServer.Servers.GPSP
             }
         }
 
+        /// <summary>
+        /// we just simply check the existance of the unique nickname in the database and suggest some numbered postfix nickname
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="dict"></param>
         public static void SuggestUniqueNickname(GPSPClient client, Dictionary<string, string> dict)
         {
+            //The multiple nick suggest correct response is like 
+            //@"\us\<number of suggested nick>\nick\<nick1>\nick\<nick2>\usdone\final\";
             string sendingBuffer;
-            sendingBuffer = @"\us\xiaojiuwo2\nick\1\usdone\final\";
-            client.Stream.SendAsync(sendingBuffer);
-
-            //GamespyUtils.PrintReceivedGPDictToLogger("uniquesearch", dict);
-            //GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
+            if (DBQuery.IsUniqueNickExist(dict["preferrednick"]))
+            {
+                sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
+                client.Stream.SendAsync(sendingBuffer);
+            }
+            else
+            {
+                GamespyUtils.SendGPError(client.Stream, 0, "The Nick is existed, please choose another name");
+            }   
         }
 
         public static void OnProfileList(GPSPClient client, Dictionary<string, string> dict)
