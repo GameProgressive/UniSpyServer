@@ -16,6 +16,7 @@ namespace RetroSpyServer.Servers.GPSP
 
         public static void RetriveNicknames(GPSPClient client, Dictionary<string, string> dict)
         {
+            //this method is not right plz check it
             string password;
             bool sendUniqueNick;
 
@@ -123,8 +124,12 @@ namespace RetroSpyServer.Servers.GPSP
 
         public static void SuggestUniqueNickname(GPSPClient client, Dictionary<string, string> dict)
         {
-            GamespyUtils.PrintReceivedGPDictToLogger("uniquesearch", dict);
-            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
+            string sendingBuffer;
+            sendingBuffer = @"\us\xiaojiuwo2\nick\1\usdone\final\";
+            client.Stream.SendAsync(sendingBuffer);
+
+            //GamespyUtils.PrintReceivedGPDictToLogger("uniquesearch", dict);
+            //GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
         public static void OnProfileList(GPSPClient client, Dictionary<string, string> dict)
