@@ -14,6 +14,11 @@ namespace RetroSpyServer.Servers.GPSP
     {
         public static GPSPDBQuery DBQuery = null;
 
+        /// <summary>
+        /// Get nickname through email and password
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="dict"></param>
         public static void SearchNicks(GPSPClient client, Dictionary<string, string> dict)
         {
             //this method is not right plz check it

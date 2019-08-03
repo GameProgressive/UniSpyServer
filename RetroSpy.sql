@@ -132,7 +132,7 @@ CREATE TABLE `profiles`  (
 -- Records of profiles
 -- ----------------------------
 INSERT INTO `profiles` VALUES (1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 0, '127.0.0.1', 1562442207);
-INSERT INTO `profiles` VALUES (2, 1, 'GBR358_SpyGuy', 'GBR358_SpyGuy', 'Spy', 'Guy', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, '127.0.0.1', 1562441613);
+INSERT INTO `profiles` VALUES (2, 2, 'SpyGuy2', 'SpyGuy2', 'Spy', 'Guy', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, '127.0.0.1', 1562441613);
 
 -- ----------------------------
 -- Table structure for users
@@ -151,5 +151,6 @@ CREATE TABLE `users`  (
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES (1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1);
+INSERT INTO `users` VALUES (2, 'spyguy2@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1);
 
 SET FOREIGN_KEY_CHECKS = 1;
