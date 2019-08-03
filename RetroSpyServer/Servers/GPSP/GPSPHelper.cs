@@ -14,7 +14,7 @@ namespace RetroSpyServer.Servers.GPSP
     {
         public static GPSPDBQuery DBQuery = null;
 
-        public static void RetriveNicknames(GPSPClient client, Dictionary<string, string> dict)
+        public static void SearchNicks(GPSPClient client, Dictionary<string, string> dict)
         {
             //this method is not right plz check it
             string password;
@@ -132,6 +132,11 @@ namespace RetroSpyServer.Servers.GPSP
             //The multiple nick suggest correct response is like 
             //@"\us\<number of suggested nick>\nick\<nick1>\nick\<nick2>\usdone\final\";
             string sendingBuffer;
+            if (dict.ContainsKey("preferrednick"))
+            {
+                GamespyUtils.SendGPError(client.Stream, 1, "There was an error parsing an incoming request.");
+                return;
+            }
             if (DBQuery.IsUniqueNickExist(dict["preferrednick"]))
             {
                 sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
@@ -143,14 +148,37 @@ namespace RetroSpyServer.Servers.GPSP
             }   
         }
 
+        public static void SearchProfileWithUniquenick(GPSPClient client, Dictionary<string, string> dict)
+        {
+            GamespyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
+            GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
+        }
+
         public static void OnProfileList(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("profilelist", dict);
             GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public static void MatchProduct(GPSPClient client, Dictionary<string, string> dict)
+        public static void SeachPlayers(GPSPClient client, Dictionary<string, string> dict)
         {
+            string sendingBuffer1,sendingBuffer2;
+            sendingBuffer1 = @"\psrdone\";
+            sendingBuffer2 = @"\psr\";
+            //there are two ways to send information back.
+
+            //First way: \psr\<profileid>\status\<status>\statuscode\<statuscode>\psrdone\final\
+
+            //this is a multiple command. you can contain mutiple \psr\........... in the Steam
+            //Second way:\psr\<profileid>\nick\<nick>\***multiple \psr\ command***\psrdone\final\
+            //<status> is like the introduction in a player homepage
+            //<statuscode> mean the status information is support or not the value should be as follows
+            //GP_NEW_STATUS_INFO_SUPPORTED = 0xC00,
+            //GP_NEW_STATUS_INFO_NOT_SUPPORTED = 0xC01
+
+
+            sendingBuffer2 += @"status\";
+
             GamespyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
             GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
@@ -166,13 +194,13 @@ namespace RetroSpyServer.Servers.GPSP
             GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public static void OnOthersList(GPSPClient client, Dictionary<string, string> dict)
+        public static void SearchOtherBuddyList(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("otherslist", dict);
             GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public static void ReverseBuddies(GPSPClient client, Dictionary<string, string> dict)
+        public static void SearchOtherBuddy(GPSPClient client, Dictionary<string, string> dict)
         {
             /*GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
             GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");*/
@@ -181,13 +209,13 @@ namespace RetroSpyServer.Servers.GPSP
             client.Stream.SendAsync(@"\others\\odone\final\");
         }
 
-        public static void SearchUser(GPSPClient client, Dictionary<string, string> dict)
+        public static void SearchProfile(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("search", dict);
             GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");
         }
 
-        public static void CheckAccount(GPSPClient client, Dictionary<string, string> dict)
+        public static void CheckProfileId(GPSPClient client, Dictionary<string, string> dict)
         {
             GamespyUtils.PrintReceivedGPDictToLogger("check", dict);
             GamespyUtils.SendGPError(client.Stream, 0, "This request is not supported yet.");

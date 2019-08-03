@@ -634,6 +634,25 @@ namespace RetroSpyServer.Servers.GPCM
                 return;
         }
 
+        /// <summary>
+        /// This method is called when the server needs to send the buddies to the client
+        /// </summary>
+        public static void SendBuddies(GPCMClient client)
+        {
+            if (client.BuddiesSent)
+                return;
 
+            /*Stream.SendAsync(
+                @"\bdy\1\list\2,\final\");
+
+            Stream.SendAsync(
+            //    @"\bm\100\f\2\msg\|s|0|ss|Offline\final\"
+            @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
+            );*/
+
+            client.Stream.SendAsync(@"\bdy\0\list\\final\");
+
+            client.BuddiesSent = true;
+        }
     }
 }

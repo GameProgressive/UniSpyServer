@@ -45,7 +45,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// This boolean checks if the client has received buddy information
         /// </summary>
-        private bool BuddiesSent = false;
+        public bool BuddiesSent = false;
 
         /// <summary>
         /// The users session key
@@ -550,7 +550,7 @@ namespace RetroSpyServer.Servers.GPCM
                     CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(this);
                     OnStatusChanged?.Invoke(this);
-                    SendBuddies();
+                    GPCMHelper.SendBuddies(this);
                 }
                 else
                 {
@@ -570,26 +570,7 @@ namespace RetroSpyServer.Servers.GPCM
             }
         }
 
-        /// <summary>
-        /// This method is called when the server needs to send the buddies to the client
-        /// </summary>
-        private void SendBuddies()
-        {
-            if (BuddiesSent)
-                return;
 
-            /*Stream.SendAsync(
-                @"\bdy\1\list\2,\final\");
-
-            Stream.SendAsync(
-            //    @"\bm\100\f\2\msg\|s|0|ss|Offline\final\"
-            @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
-            );*/
-
-            Stream.SendAsync(@"\bdy\0\list\\final\");
-
-            BuddiesSent = true;
-        }
         #endregion Steps
 
                     

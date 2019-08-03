@@ -128,23 +128,32 @@ namespace RetroSpyServer.Servers.GPSP
 
                 switch (recieved[0])
                 {
+                    case "search":
+                        GPSPHelper.SearchProfile(this, dict);
+                        break;
                     case "valid":
                         GPSPHelper.IsEmailValid(this, dict);
                         break;
                     case "nicks":
-                        GPSPHelper.RetriveNicknames(this, dict);
+                        GPSPHelper.SearchNicks(this, dict);
+                        break;
+                    case "pmatch":
+                        GPSPHelper.SeachPlayers(this, dict);
                         break;
                     case "check":
-                        GPSPHelper.CheckAccount(this, dict);
+                        GPSPHelper.CheckProfileId(this, dict);
                         break;
-                    case "search":
-                        GPSPHelper.SearchUser(this, dict);
+                    case "newuser":
+                        GPSPHelper.CreateUser(this, dict);
+                        break;
+                    case "searchunique":
+                        GPSPHelper.SearchProfileWithUniquenick(this, dict);
                         break;
                     case "others":
-                        GPSPHelper.ReverseBuddies(this, dict);
+                        GPSPHelper.SearchOtherBuddy(this, dict);
                         break;
                     case "otherslist":
-                        GPSPHelper.OnOthersList(this, dict);
+                        GPSPHelper.SearchOtherBuddyList(this, dict);
                         break;
                     case "uniquesearch":
                         GPSPHelper.SuggestUniqueNickname(this, dict);
@@ -152,12 +161,8 @@ namespace RetroSpyServer.Servers.GPSP
                     case "profilelist":
                         GPSPHelper.OnProfileList(this, dict);
                         break;
-                    case "pmatch":
-                        GPSPHelper.MatchProduct(this, dict);
-                        break;
-                    case "newuser":
-                        GPSPHelper.CreateUser(this, dict);
-                        break;
+
+
                     default:
                         LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
                         GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
