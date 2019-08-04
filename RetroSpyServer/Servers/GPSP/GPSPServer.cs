@@ -37,7 +37,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// </param>
         public GPSPServer(string serverName,DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
-            GPSPHelper.DBQuery = new DBQueries.GPSPDBQuery(databaseDriver);
+            GPSPHandler.DBQuery = new DBQueries.GPSPDBQuery(databaseDriver);
 
             GPSPClient.OnDisconnected += ClientDisconnected;
 
@@ -70,7 +70,7 @@ namespace RetroSpyServer.Servers.GPSP
             // Shutdown the listener socket
             ShutdownSocket();
 
-            GPSPHelper.DBQuery.Dispose();
+            GPSPHandler.DBQuery.Dispose();
 
             // Tell the base to dispose all free objects
             Dispose();

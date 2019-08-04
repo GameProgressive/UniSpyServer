@@ -8,7 +8,7 @@ namespace GameSpyLib.Logging
     public enum LogLevel : int
     {
         Debug,
-        Info,        
+        Info,
         Warning,
         Error,
         Fatal
@@ -19,7 +19,7 @@ namespace GameSpyLib.Logging
     /// store LogMessage's into. Uses a Multi-Thread safe Queueing
     /// system, and provides full Asynchronous writing and flushing
     /// </summary>
-    public  class LogWriter : IDisposable
+    public class LogWriter : IDisposable
     {
         /// <summary>
         /// Public instance of the LogWriter
@@ -70,9 +70,12 @@ namespace GameSpyLib.Logging
         /// <param name="TruncateLen">
         ///     If <paramref name="Truncate"/> is true, The size of the file must be at least this size, 
         ///     in bytes, to truncate it
-        /// </param>
-        public LogWriter(string FileLocation, bool Truncate = false, int TruncateLen = 2097152)
+        /// </param>1048576
+        public LogWriter(string FileLocation, bool Truncate = false, int TruncateLen = 1048576)
         {
+#if DEBUG
+            DebugSockets = true;
+#endif
             // Test that we are able to open and write to the file
             LogFile = new FileInfo(FileLocation);
             FileStream fileStream = LogFile.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
@@ -103,9 +106,7 @@ namespace GameSpyLib.Logging
                 TruncateTimer.Start();
             }
 
-#if DEBUG
-            DebugSockets = true;
-#endif
+
         }
 
         /// <summary>

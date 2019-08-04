@@ -129,37 +129,37 @@ namespace RetroSpyServer.Servers.GPSP
                 switch (recieved[0])
                 {
                     case "search":
-                        GPSPHelper.SearchProfile(this, dict);
+                        GPSPHandler.SearchProfile(this, dict);
                         break;
                     case "valid":
-                        GPSPHelper.IsEmailValid(this, dict);
+                        GPSPHandler.IsEmailValid(this, dict);
                         break;
                     case "nicks":
-                        GPSPHelper.SearchNicks(this, dict);
+                        GPSPHandler.SearchNicks(this, dict);
                         break;
                     case "pmatch":
-                        GPSPHelper.SeachPlayers(this, dict);
+                        GPSPHandler.SeachPlayers(this, dict);
                         break;
                     case "check":
-                        GPSPHelper.CheckProfileId(this, dict);
+                        GPSPHandler.CheckProfileId(this, dict);
                         break;
                     case "newuser":
-                        GPSPHelper.CreateUser(this, dict);
+                        GPSPHandler.CreateUser(this, dict);
                         break;
                     case "searchunique":
-                        GPSPHelper.SearchProfileWithUniquenick(this, dict);
+                        GPSPHandler.SearchProfileWithUniquenick(this, dict);
                         break;
                     case "others":
-                        GPSPHelper.SearchOtherBuddy(this, dict);
+                        GPSPHandler.SearchOtherBuddy(this, dict);
                         break;
                     case "otherslist":
-                        GPSPHelper.SearchOtherBuddyList(this, dict);
+                        GPSPHandler.SearchOtherBuddyList(this, dict);
                         break;
                     case "uniquesearch":
-                        GPSPHelper.SuggestUniqueNickname(this, dict);
+                        GPSPHandler.SuggestUniqueNickname(this, dict);
                         break;
                     case "profilelist":
-                        GPSPHelper.OnProfileList(this, dict);
+                        GPSPHandler.OnProfileList(this, dict);
                         break;
 
 

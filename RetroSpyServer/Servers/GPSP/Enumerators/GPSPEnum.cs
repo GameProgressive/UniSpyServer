@@ -19,4 +19,26 @@ namespace RetroSpyServer.Servers.GPSP.Enumerators
         MISCError,
         Count
     }
+
+    public enum GPSPNewUser
+    {
+        NewUser = 0x0200,
+        NewUserBadNick,
+        NewUserBadPassword,
+        NewUserUniquenickInvalid,
+        NewUserUniqueNickINUSE,
+    }
+
+    public enum GPErrorCode
+    {
+        General = 0x0000,
+        Parse,
+        NotLoggedIn,
+        BadSessionKey,
+        DatabaseError,
+        Network,
+        ForcedDisconnect,
+        ConnectionClose,
+        UdpLayer,
+    }
 }

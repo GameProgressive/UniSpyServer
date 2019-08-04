@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Database;
+using System;
 using System.Collections.Generic;
 
 namespace RetroSpyServer.DBQueries
@@ -19,7 +20,7 @@ namespace RetroSpyServer.DBQueries
         {
             return Query("SELECT profiles.nick, profiles.uniquenick FROM profiles " +
             "INNER JOIN users ON users.userid=profiles.userid " +
-            "WHERE LOWER(users.email)=@P0 AND LOWER(users.password)=@P1" ,
+            "WHERE LOWER(users.email)=@P0 AND LOWER(users.password)=@P1",
             email.ToLowerInvariant(), password.ToLowerInvariant());
 
         }
@@ -35,6 +36,19 @@ namespace RetroSpyServer.DBQueries
                 return false;
             else
                 return true;
+        }
+        public static int CreateUserWithUniquenick(Dictionary<string, string> dict)
+        {
+            //dict["nick"], dict["uniquenick"], dict["userid"], dict["email"],
+            //        dict["passenc"], dict["productID"], dict["namespaceid"], dict["partnerid"], dict["gamename"]
+
+            throw new NotImplementedException();
+        }
+        public static int CreateUser(Dictionary<string, string> dict)
+        {
+            int profileid=0;
+
+            return profileid;
         }
     }
 }

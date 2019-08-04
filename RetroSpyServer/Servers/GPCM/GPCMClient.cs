@@ -386,12 +386,12 @@ namespace RetroSpyServer.Servers.GPCM
             try
             {
                 // Try and fetch the user from the database
-                Dictionary<string, object> QueryResult;
+                Dictionary<string, object> queryResult;
 
                 try
                 {
                     if (PlayerInfo.PlayerUniqueNick.Length > 0)
-                        QueryResult = GPCMHelper.DBQuery.GetUserFromUniqueNick(PlayerInfo.PlayerUniqueNick);
+                        queryResult = GPCMHelper.DBQuery.GetUserFromUniqueNick(PlayerInfo.PlayerUniqueNick);
                     else if (PlayerInfo.PlayerAuthToken.Length > 0)
                     {
                         //TODO! Add the database entry
@@ -399,7 +399,7 @@ namespace RetroSpyServer.Servers.GPCM
                         return;
                     }
                     else
-                        QueryResult = GPCMHelper.DBQuery.GetUserFromNickname(PlayerInfo.PlayerEmail, PlayerInfo.PlayerNick);
+                        queryResult = GPCMHelper.DBQuery.GetUserFromNickname(PlayerInfo.PlayerEmail, PlayerInfo.PlayerNick);
                 }
                 catch (Exception ex)
                 {
@@ -408,7 +408,7 @@ namespace RetroSpyServer.Servers.GPCM
                     return;
                 }
 
-                if (QueryResult == null)
+                if (queryResult == null)
                 {
                     if (PlayerInfo.PlayerUniqueNick.Length > 0)
                         GamespyUtils.SendGPError(Stream, 265, "The unique nickname provided is incorrect!");
@@ -423,14 +423,14 @@ namespace RetroSpyServer.Servers.GPCM
                 PlayerStatus currentPlayerStatus;
                 UserStatus currentUserStatus;
 
-                if (!Enum.TryParse(QueryResult["status"].ToString(), out currentPlayerStatus))
+                if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
                 {
                     GamespyUtils.SendGPError(Stream, 265, "Invalid player data! Please contact an administrator.");
                     Disconnect(DisconnectReason.InvalidPlayer);
                     return;
                 }
 
-                if (!Enum.TryParse(QueryResult["userstatus"].ToString(), out currentUserStatus))
+                if (!Enum.TryParse(queryResult["userstatus"].ToString(), out currentUserStatus))
                 {
                     GamespyUtils.SendGPError(Stream, 265, "Invalid player data! Please contact an administrator.");
                     Disconnect(DisconnectReason.InvalidPlayer);
@@ -462,41 +462,41 @@ namespace RetroSpyServer.Servers.GPCM
                 }
 
                 // Set player variables
-                PlayerInfo.PlayerId = uint.Parse(QueryResult["profileid"].ToString());
-                PlayerInfo.PasswordHash = QueryResult["password"].ToString().ToLowerInvariant();
-                PlayerInfo.PlayerCountryCode = QueryResult["countrycode"].ToString();
+                PlayerInfo.PlayerId = uint.Parse(queryResult["profileid"].ToString());
+                PlayerInfo.PasswordHash = queryResult["password"].ToString().ToLowerInvariant();
+                PlayerInfo.PlayerCountryCode = queryResult["countrycode"].ToString();
 
-                PlayerInfo.PlayerFirstName = QueryResult["firstname"].ToString();
-                PlayerInfo.PlayerLastName = QueryResult["lastname"].ToString();
-                PlayerInfo.PlayerICQ = int.Parse(QueryResult["icq"].ToString());
-                PlayerInfo.PlayerHomepage = QueryResult["homepage"].ToString();
-                PlayerInfo.PlayerZIPCode = QueryResult["zipcode"].ToString();
-                PlayerInfo.PlayerLocation = QueryResult["location"].ToString();
-                PlayerInfo.PlayerAim = QueryResult["aim"].ToString();
-                PlayerInfo.PlayerOwnership = int.Parse(QueryResult["ownership1"].ToString());
-                PlayerInfo.PlayerOccupation = int.Parse(QueryResult["occupationid"].ToString());
-                PlayerInfo.PlayerIndustryID = int.Parse(QueryResult["industryid"].ToString());
-                PlayerInfo.PlayerIncomeID = int.Parse(QueryResult["incomeid"].ToString());
-                PlayerInfo.PlayerMarried = int.Parse(QueryResult["marriedid"].ToString());
-                PlayerInfo.PlayerChildCount = int.Parse(QueryResult["childcount"].ToString());
-                PlayerInfo.PlayerConnectionType = int.Parse(QueryResult["connectiontype"].ToString());
-                PlayerInfo.PlayerPicture = int.Parse(QueryResult["picture"].ToString());
-                PlayerInfo.PlayerInterests = int.Parse(QueryResult["interests1"].ToString());
-                PlayerInfo.PlayerBirthday = ushort.Parse(QueryResult["birthday"].ToString());
-                PlayerInfo.PlayerBirthmonth = ushort.Parse(QueryResult["birthmonth"].ToString());
-                PlayerInfo.PlayerBirthyear = ushort.Parse(QueryResult["birthyear"].ToString());
+                PlayerInfo.PlayerFirstName = queryResult["firstname"].ToString();
+                PlayerInfo.PlayerLastName = queryResult["lastname"].ToString();
+                PlayerInfo.PlayerICQ = int.Parse(queryResult["icq"].ToString());
+                PlayerInfo.PlayerHomepage = queryResult["homepage"].ToString();
+                PlayerInfo.PlayerZIPCode = queryResult["zipcode"].ToString();
+                PlayerInfo.PlayerLocation = queryResult["location"].ToString();
+                PlayerInfo.PlayerAim = queryResult["aim"].ToString();
+                PlayerInfo.PlayerOwnership = int.Parse(queryResult["ownership1"].ToString());
+                PlayerInfo.PlayerOccupation = int.Parse(queryResult["occupationid"].ToString());
+                PlayerInfo.PlayerIndustryID = int.Parse(queryResult["industryid"].ToString());
+                PlayerInfo.PlayerIncomeID = int.Parse(queryResult["incomeid"].ToString());
+                PlayerInfo.PlayerMarried = int.Parse(queryResult["marriedid"].ToString());
+                PlayerInfo.PlayerChildCount = int.Parse(queryResult["childcount"].ToString());
+                PlayerInfo.PlayerConnectionType = int.Parse(queryResult["connectiontype"].ToString());
+                PlayerInfo.PlayerPicture = int.Parse(queryResult["picture"].ToString());
+                PlayerInfo.PlayerInterests = int.Parse(queryResult["interests1"].ToString());
+                PlayerInfo.PlayerBirthday = ushort.Parse(queryResult["birthday"].ToString());
+                PlayerInfo.PlayerBirthmonth = ushort.Parse(queryResult["birthmonth"].ToString());
+                PlayerInfo.PlayerBirthyear = ushort.Parse(queryResult["birthyear"].ToString());
 
                 PlayerSexType playerSexType;
-                if (!Enum.TryParse(QueryResult["sex"].ToString().ToUpper(), out playerSexType))
+                if (!Enum.TryParse(queryResult["sex"].ToString().ToUpper(), out playerSexType))
                     PlayerInfo.PlayerSex = PlayerSexType.PAT;
                 else
                     PlayerInfo.PlayerSex = playerSexType;
 
-                PlayerInfo.PlayerLatitude = float.Parse(QueryResult["latitude"].ToString());
-                PlayerInfo.PlayerLongitude = float.Parse(QueryResult["longitude"].ToString());
+                PlayerInfo.PlayerLatitude = float.Parse(queryResult["latitude"].ToString());
+                PlayerInfo.PlayerLongitude = float.Parse(queryResult["longitude"].ToString());
 
                 PublicMasks mask;
-                if (!Enum.TryParse(QueryResult["publicmask"].ToString(), out mask))
+                if (!Enum.TryParse(queryResult["publicmask"].ToString(), out mask))
                     PlayerInfo.PlayerPublicMask = PublicMasks.MASK_ALL;
                 else
                     PlayerInfo.PlayerPublicMask = mask;
@@ -505,20 +505,20 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (PlayerInfo.PlayerUniqueNick.Length > 0)
                 {
-                    PlayerInfo.PlayerEmail = QueryResult["email"].ToString();
-                    PlayerInfo.PlayerNick = QueryResult["nick"].ToString();
+                    PlayerInfo.PlayerEmail = queryResult["email"].ToString();
+                    PlayerInfo.PlayerNick = queryResult["nick"].ToString();
                     challengeData = PlayerInfo.PlayerUniqueNick;
                 }
                 else if (PlayerInfo.PlayerAuthToken.Length > 0)
                 {
-                    PlayerInfo.PlayerEmail = QueryResult["email"].ToString();
-                    PlayerInfo.PlayerNick = QueryResult["nick"].ToString();
-                    PlayerInfo.PlayerUniqueNick = QueryResult["uniquenick"].ToString();
+                    PlayerInfo.PlayerEmail = queryResult["email"].ToString();
+                    PlayerInfo.PlayerNick = queryResult["nick"].ToString();
+                    PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
                     challengeData = PlayerInfo.PlayerAuthToken;
                 }
                 else
                 {
-                    PlayerInfo.PlayerUniqueNick = QueryResult["uniquenick"].ToString();
+                    PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
                     challengeData = Recv["user"];
                 }
 
