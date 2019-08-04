@@ -144,7 +144,7 @@ namespace RetroSpyServer.Servers.GPSP
                         GPSPHandler.CheckProfileId(this, dict);
                         break;
                     case "newuser":
-                        GPSPHandler.CreateUser(this, dict);
+                        GPSPHandler.NewUser(this, dict);
                         break;
                     case "searchunique":
                         GPSPHandler.SearchProfileWithUniquenick(this, dict);

@@ -23,11 +23,12 @@ namespace RetroSpyServer.Servers.GPSP
         public static void SearchNicks(GPSPClient client, Dictionary<string, string> dict)
         {
             //Check this method!!!
-            string password;          
+            string password;
             //if not recieved correct request we terminate
-            if (!GPSPHelper.IsSearchNicksContianAllKeys(dict, out password))
+            GPErrorCode error = GPSPHelper.IsSearchNicksContianAllKeys(dict, out password);
+            if (error!=GPErrorCode.NoError)
             {
-                GamespyUtils.SendGPError(client.Stream, 1, "Error recieving SearchNicks request.");
+                GamespyUtils.SendGPError(client.Stream, (int)error, "Error recieving SearchNicks request.");
                 return;
             }
 
@@ -114,11 +115,12 @@ namespace RetroSpyServer.Servers.GPSP
             //The multiple nick suggest correct response is like 
             //@"\us\<number of suggested nick>\nick\<nick1>\nick\<nick2>\usdone\final\";
             string sendingBuffer;
-            if (dict.ContainsKey("preferrednick"))
+            if (!dict.ContainsKey("preferrednick"))
             {
-                GamespyUtils.SendGPError(client.Stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(client.Stream, (int)GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
+
             if (DBQuery.IsUniqueNickExist(dict["preferrednick"]))
             {
                 sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
@@ -126,7 +128,7 @@ namespace RetroSpyServer.Servers.GPSP
             }
             else
             {
-                GamespyUtils.SendGPError(client.Stream, 0, "The Nick is existed, please choose another name");
+                GamespyUtils.SendGPError(client.Stream, (int)GPErrorCode.General, "The Nick is existed, please choose another name");
             }
         }
 
@@ -170,7 +172,7 @@ namespace RetroSpyServer.Servers.GPSP
         /// </summary>
         /// <param name="client">The client that sended the data</param>
         /// <param name="dict">The request that the stream sended</param>
-        public static void CreateUser(GPSPClient client, Dictionary<string, string> dict)
+        public static void NewUser(GPSPClient client, Dictionary<string, string> dict)
         {
             //if there do not recieved right <key,value> pairs we send error
             if (!GPSPHelper.IsCreateUserContainAllKeys(dict))

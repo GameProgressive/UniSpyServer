@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
+using RetroSpyServer.Servers.GPSP.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -49,12 +50,12 @@ namespace RetroSpyServer.Servers.GPSP
             }
             return true;
         }
-        public static bool IsSearchNicksContianAllKeys(Dictionary<string, string> dict,out string password)
+        public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict,out string password)
         {
             if (!dict.ContainsKey("email"))
             {
                 password = null;
-                    return false;
+                    return GPErrorCode.Parse;
             }
 
             // First, we try to receive an encoded password
@@ -65,14 +66,14 @@ namespace RetroSpyServer.Servers.GPSP
                 {
                     // No password is specified, we cannot continue  
                     password = null;
-                    return false;
+                    return GPErrorCode.Parse;
                 }
                 else
                 {
                     password = GamespyUtils.DecodePassword(dict["pass"]);
                     // encrypt password
                     password = StringExtensions.GetMD5Hash(password);
-                    return true;
+                    return GPErrorCode.NoError;
                 }
             }
             else
@@ -82,7 +83,7 @@ namespace RetroSpyServer.Servers.GPSP
                 password = GamespyUtils.DecodePassword(dict["passenc"]);
                 password = StringExtensions.GetMD5Hash(password);
                 //password = dict["passenc"];
-                return true;
+                return GPErrorCode.NoError;
             }
         }
     }
