@@ -5,6 +5,7 @@ using GameSpyLib.Logging;
 using RetroSpyServer.DBQueries;
 using RetroSpyServer.Servers.GPCM.Enumerator;
 using RetroSpyServer.Servers.GPCM.Structures;
+using RetroSpyServer.Servers.GPSP.Enumerators;
 
 namespace RetroSpyServer.Servers.GPCM
 {
@@ -373,20 +374,20 @@ namespace RetroSpyServer.Servers.GPCM
         {
             if (!dict.ContainsKey("profileid"))
             {
-                GamespyUtils.SendGPError(client.Stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             uint targetPID, messID;
             if (!uint.TryParse(dict["profileid"], out targetPID))
             {
-                GamespyUtils.SendGPError(client.Stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             if (!uint.TryParse(dict["id"], out messID))
             {
-                GamespyUtils.SendGPError(client.Stream, 1, "There was an error parsing an incoming request.");
+                GamespyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -595,7 +596,7 @@ namespace RetroSpyServer.Servers.GPCM
                 // Attempt to create account. If Pid is 0, then we couldnt create the account. TODO: Handle Unique Nickname
                 if ((client.PlayerInfo.PlayerId = GPCMHelper.DBQuery.CreateUser(dict["nick"], Password, dict["email"], Cc, dict["nick"])) == 0)
                 {
-                    GamespyUtils.SendGPError(client.Stream, 516, "An error oncurred while creating the account!");
+                    GamespyUtils.SendGPError(client.Stream, GPErrorCode.NewUserUniquenickINUSE, "An error oncurred while creating the account!");
                     client.Disconnect(DisconnectReason.CreateFailedDatabaseError);
                     return;
                 }
@@ -607,11 +608,11 @@ namespace RetroSpyServer.Servers.GPCM
                 // Check for invalid query params
                 if (e is KeyNotFoundException)
                 {
-                    GamespyUtils.SendGPError(client.Stream, 516, "Invalid response received from the client!");
+                    GamespyUtils.SendGPError(client.Stream, GPErrorCode.NewUserUniquenickINUSE, "Invalid response received from the client!");
                 }
                 else
                 {
-                    GamespyUtils.SendGPError(client.Stream, 516, "An error oncurred while creating the account!");
+                    GamespyUtils.SendGPError(client.Stream, GPErrorCode.NewUserUniquenickINUSE, "An error oncurred while creating the account!");
                     LogWriter.Log.Write("An error occured while trying to create a new User account :: " + e.Message, LogLevel.Error);
                 }
 

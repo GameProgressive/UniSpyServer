@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RetroSpyServer.Servers.GPSP.Enumerators
 {
-    public enum GPSPEnum : uint
+    public enum GPEnum : uint
     {
         // Callbacks
         ////////////
@@ -198,7 +198,7 @@ namespace RetroSpyServer.Servers.GPSP.Enumerators
         NewStatusInfoSupported = 0xC00,
         NewStatusInfoNotSupported = 0xC01
     }
-    public enum GPSPResult : int
+    public enum GPSPResult : uint
     {
         NoError,
         MemoryError,
@@ -207,15 +207,6 @@ namespace RetroSpyServer.Servers.GPSP.Enumerators
         ServerError,
         MISCError,
         Count
-    }
-
-    public enum GPSPNewUser : uint
-    {
-        NewUser = 0x0200,
-        NewUserBadNick,
-        NewUserBadPassword,
-        NewUserUniquenickInvalid,
-        NewUserUniqueNickINUSE,
     }
 
     public enum GPErrorCode : uint

@@ -2,6 +2,7 @@
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using RetroSpyServer.Application;
+using RetroSpyServer.Servers.GPSP.Enumerators;
 using System;
 using System.Collections.Generic;
 
@@ -111,7 +112,7 @@ namespace RetroSpyServer.Servers.GPSP
         {
             if (message[0] != '\\')
             {
-                GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                GamespyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
                 return;
             }
 
@@ -165,7 +166,7 @@ namespace RetroSpyServer.Servers.GPSP
 
                     default:
                         LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
-                        GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                        GamespyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
                         break;
                 }
             }

@@ -132,24 +132,11 @@ namespace GameSpyLib.Common
         /// <param name="stream">The stream that will receive the error</param>
         /// <param name="code">The error code</param>
         /// <param name="error">A string containing the error</param>
-        public static void SendGPError(TcpStream stream, int errorCode, string error)
+        public static void SendGPError(TcpStream stream,object errorCode, string error)
         {
-            stream.SendAsync(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", errorCode, error)));
+            stream.SendAsync(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", (uint)errorCode, error)));
         }
 
-        /// <summary>
-        /// Send a presence error
-        /// </summary>
-        /// <param name="socket">The socket that will receive the error</param>
-        /// <param name="code">The error code</param>
-        /// <param name="error">A string containing the error</param>
-        public static void SendGPError(Socket socket, int code, string error)
-        {
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write("Sending TCP data: {0}", LogLevel.Debug, string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error));
-
-            socket.Send(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", code, error)));
-        }
         /// <summary>
         /// Check the correctness of the email account format.
         /// </summary>

@@ -5,6 +5,7 @@ using GameSpyLib.Network;
 using RetroSpyServer.Application;
 using RetroSpyServer.Servers.GPCM.Enumerator;
 using RetroSpyServer.Servers.GPCM.Structures;
+using RetroSpyServer.Servers.GPSP.Enumerators;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -257,7 +258,7 @@ namespace RetroSpyServer.Servers.GPCM
         {
             if (message[0] != '\\')
             {
-                GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                GamespyUtils.SendGPError(Stream,GPErrorCode.General, "An invalid request was sended.");
                 return;
             }
 
@@ -299,7 +300,7 @@ namespace RetroSpyServer.Servers.GPCM
                         break;
                     default:
                         LogWriter.Log.Write("[GPCM] received unknown data " + recieved[0], LogLevel.Debug);
-                        GamespyUtils.SendGPError(Stream, 0, "An invalid request was sended.");
+                        GamespyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
                         break;
                 }
             }
@@ -352,7 +353,7 @@ namespace RetroSpyServer.Servers.GPCM
             // Make sure we have all the required data to process this login
             if (!Recv.ContainsKey("challenge") || !Recv.ContainsKey("response"))
             {
-                GamespyUtils.SendGPError(Stream, 0, "Invalid response received from the client!");
+                GamespyUtils.SendGPError(Stream, GPErrorCode.General, "Invalid response received from the client!");
                 Disconnect(DisconnectReason.InvalidLoginQuery);
                 return;
             }
@@ -395,7 +396,7 @@ namespace RetroSpyServer.Servers.GPCM
                     else if (PlayerInfo.PlayerAuthToken.Length > 0)
                     {
                         //TODO! Add the database entry
-                        GamespyUtils.SendGPError(Stream, 0, "AuthToken is not supported yet");
+                        GamespyUtils.SendGPError(Stream, GPErrorCode.General, "AuthToken is not supported yet");
                         return;
                     }
                     else
@@ -404,16 +405,16 @@ namespace RetroSpyServer.Servers.GPCM
                 catch (Exception ex)
                 {
                     LogWriter.Log.WriteException(ex);
-                    GamespyUtils.SendGPError(Stream, 4, "This request cannot be processed because of a database error.");
+                    GamespyUtils.SendGPError(Stream, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
                     return;
                 }
 
                 if (queryResult == null)
                 {
                     if (PlayerInfo.PlayerUniqueNick.Length > 0)
-                        GamespyUtils.SendGPError(Stream, 265, "The unique nickname provided is incorrect!");
+                        GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "The uniquenick provided is incorrect!");
                     else
-                        GamespyUtils.SendGPError(Stream, 265, "The nickname provided is incorrect!");
+                        GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "The nick provided is incorrect!");
 
                     Disconnect(DisconnectReason.InvalidUsername);
                     return;
@@ -425,14 +426,14 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
                 {
-                    GamespyUtils.SendGPError(Stream, 265, "Invalid player data! Please contact an administrator.");
+                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
                     Disconnect(DisconnectReason.InvalidPlayer);
                     return;
                 }
 
                 if (!Enum.TryParse(queryResult["userstatus"].ToString(), out currentUserStatus))
                 {
-                    GamespyUtils.SendGPError(Stream, 265, "Invalid player data! Please contact an administrator.");
+                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
                     Disconnect(DisconnectReason.InvalidPlayer);
                     return;
                 }
@@ -442,21 +443,21 @@ namespace RetroSpyServer.Servers.GPCM
 
                 if (currentPlayerStatus == PlayerStatus.Banned)
                 {
-                    GamespyUtils.SendGPError(Stream, 265, "Your profile has been permanently suspended.");
+                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Your profile has been permanently suspended.");
                     Disconnect(DisconnectReason.PlayerIsBanned);
                     return;
                 }
 
                 if (currentUserStatus == UserStatus.Created)
                 {
-                    GamespyUtils.SendGPError(Stream, 265, "Your account is not verified. Please check your email inbox and verify the account.");
+                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Your account is not verified. Please check your email inbox and verify the account.");
                     Disconnect(DisconnectReason.PlayerIsBanned);
                     return;
                 }
 
                 if (currentUserStatus == UserStatus.Banned)
                 {
-                    GamespyUtils.SendGPError(Stream, 265, "Your account has been permanently suspended.");
+                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Your account has been permanently suspended.");
                     Disconnect(DisconnectReason.PlayerIsBanned);
                     return;
                 }

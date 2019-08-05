@@ -9,46 +9,46 @@ namespace RetroSpyServer.Servers.GPSP
 {
     public static class GPSPHelper
     {
-        public static bool IsCreateUserContainAllKeys(Dictionary<string, string> dict)
+        public static GPErrorCode IsCreateUserContainAllKeys(Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("nick"))
             {
-                return false;
+                return GPErrorCode.Parse;
             }
             if (!dict.ContainsKey("email"))
             {
-                return false;
+                return GPErrorCode.Parse;
             }
             if (!dict.ContainsKey("passenc"))
             {
                 if (!dict.ContainsKey("pass"))
                 {
-                    return false;
+                    return GPErrorCode.Parse;
                 }
             }
 
             if (!dict.ContainsKey("productID"))
             {
-                return false;
+                return GPErrorCode.Parse;
             }
             if (!dict.ContainsKey("namespaceid"))
             {
-                return false;
+                return GPErrorCode.Parse;
             }
             if (!dict.ContainsKey("uniquenick"))
             {
-                return false;
+                return GPErrorCode.Parse;
             }
             if (!dict.ContainsKey("partnerid"))
             {
 
-                return false;
+                return GPErrorCode.Parse;
             }
             if (!dict.ContainsKey("gamename"))
             {
-                return false;
+                return GPErrorCode.Parse;
             }
-            return true;
+            return GPErrorCode.NoError;
         }
         public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict,out string password)
         {
