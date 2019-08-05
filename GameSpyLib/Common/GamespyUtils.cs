@@ -193,7 +193,17 @@ namespace GameSpyLib.Common
             //return email.Any(ch => (!char.IsLetterOrDigit(ch) && ch != '@' && ch != '.'));
 
         }
-
+        /// <summary>
+        /// Check is the format of nick or uniquenick are correct
+        /// </summary>
+        /// <param name="nick"></param>
+        /// <returns></returns>
+        public static bool IsNickOrUniquenickFormatCorrect(string nick)
+        {
+            string pattern = @"^[a - zA - Z][a - zA - Z0 - 9]{ 5,11}$&quot" ;
+            Regex regex = new Regex(pattern);
+            return regex.IsMatch(nick);
+        }
 
         /// <summary>
         /// Check if a date is correct

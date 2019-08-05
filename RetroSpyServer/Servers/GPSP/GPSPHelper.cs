@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
+using RetroSpyServer.DBQueries;
 using RetroSpyServer.Servers.GPSP.Enumerators;
 using System;
 using System.Collections.Generic;
@@ -9,13 +10,13 @@ namespace RetroSpyServer.Servers.GPSP
 {
     public static class GPSPHelper
     {
-        public static GPErrorCode IsCreateUserContainAllKeys(Dictionary<string, string> dict)
+        public static GPErrorCode IsNewUserContainAllKeys(Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("nick"))
             {
                 return GPErrorCode.Parse;
             }
-            if (!dict.ContainsKey("email"))
+            if (!dict.ContainsKey("email") || !GamespyUtils.IsEmailFormatCorrect(dict["email"]))
             {
                 return GPErrorCode.Parse;
             }
@@ -50,12 +51,38 @@ namespace RetroSpyServer.Servers.GPSP
             }
             return GPErrorCode.NoError;
         }
-        public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict,out string password)
+        /// <summary>
+        /// First we need to check the format of email,nick,uniquenick is correct 
+        /// and search uniquenick to find if a account is existed
+        /// </summary>
+        /// <returns></returns>
+        public static GPErrorCode IsEmailNickUniquenickValied(Dictionary<string, string> dict, GPSPDBQuery dbquery)
+        {
+            if (!GamespyUtils.IsNickOrUniquenickFormatCorrect(dict["nick"]))
+            {
+                return GPErrorCode.NewUserBadNick;
+            }
+            if (!GamespyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
+            {
+                return GPErrorCode.NewUserUniquenickInvalid;
+            }
+            else
+            {
+                if (dbquery.IsUniqueNickExist(dict["uniquenick"]))
+                {
+                    return GPErrorCode.NewUserUniquenickInUse;
+                }               
+            }
+            return GPErrorCode.NoError;
+        }
+
+
+        public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict, out string password)
         {
             if (!dict.ContainsKey("email"))
             {
                 password = null;
-                    return GPErrorCode.Parse;
+                return GPErrorCode.Parse;
             }
 
             // First, we try to receive an encoded password

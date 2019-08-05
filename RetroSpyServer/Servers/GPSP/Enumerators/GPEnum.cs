@@ -243,7 +243,7 @@ namespace RetroSpyServer.Servers.GPSP.Enumerators
         NewUserBadNick,
         NewUserBadPasswords,
         NewUserUniquenickInvalid,
-        NewUserUniquenickINUSE,
+        NewUserUniquenickInUse,
 
         // Updateui.
         ////////////

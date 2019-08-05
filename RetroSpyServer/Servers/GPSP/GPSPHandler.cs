@@ -174,29 +174,40 @@ namespace RetroSpyServer.Servers.GPSP
         /// <param name="dict">The request that the stream sended</param>
         public static void NewUser(GPSPClient client, Dictionary<string, string> dict)
         {
-            GPErrorCode error = GPSPHelper.IsCreateUserContainAllKeys(dict);
+            GPErrorCode error = GPSPHelper.IsNewUserContainAllKeys(dict);
             //if there do not recieved right <key,value> pairs we send error
-
             if (error!=GPErrorCode.NoError)
             {
-                GamespyUtils.SendGPError(client.Stream, error, "Error recieving request.");
+                GamespyUtils.SendGPError(client.Stream, error, "Error recieving request. Please check the input!");
+                return;
+            }
+            //Check the nick and uniquenick is formated correct and uniquenick is existed in database
+            string sendingBuffer;
+            error = GPSPHelper.IsEmailNickUniquenickValied(dict,DBQuery);            
+            if (error != GPErrorCode.NoError)
+            {               
+                sendingBuffer = string.Format(@"\nur\{0}\final\", error);
+                client.Stream.SendAsync(sendingBuffer);
                 return;
             }
 
-
-            if (dict["uniquenick"] != null)
+            //we get the userid in database and store the new account into database
+            int userid = DBQuery.GetuseridFromEmail(dict["email"]);
+            if (dict["uniquenick"] =="")
             {
-                GPSPDBQuery.CreateUserWithUniquenick(dict);
+                DBQuery.CreateUserWithNick(dict["nick"],dict["uniquenick"],userid.ToString());
+               int pid= DBQuery.GetprofileidFromEmail(dict["email"]);
+                client.Stream.SendAsync(@"\nur\0\pid\{0}", pid);
             }
             else
-            {
-                GPSPDBQuery.CreateUser(dict);
+            {                
+                DBQuery.CreateUserWithUniquenick(dict["nick"],userid.ToString());
+                int pid = DBQuery.GetprofileidFromEmail(dict["email"]);
+                client.Stream.SendAsync(@"\nur\0\pid\{0}", pid);
             }
 
-
-
             GamespyUtils.PrintReceivedGPDictToLogger("newuser", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is finish yet.");
         }
 
         public static void SearchOtherBuddyList(GPSPClient client, Dictionary<string, string> dict)
@@ -207,11 +218,13 @@ namespace RetroSpyServer.Servers.GPSP
 
         public static void SearchOtherBuddy(GPSPClient client, Dictionary<string, string> dict)
         {
-            /*GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");*/
+           
 
             // TODO: Please finis this function
             client.Stream.SendAsync(@"\others\\odone\final\");
+
+            GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
+            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
         public static void SearchProfile(GPSPClient client, Dictionary<string, string> dict)

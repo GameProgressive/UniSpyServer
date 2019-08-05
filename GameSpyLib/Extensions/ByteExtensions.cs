@@ -23,23 +23,7 @@ namespace GameSpyLib.Extensions
         {
             byte[] temp = new byte[length];
             Array.Copy(srcBytes, startIndex, temp, 0, length);
-            return temp;
-
-            /*System.IO.MemoryStream bufferStream = new System.IO.MemoryStream();
-            byte[] returnByte = new byte[] { };
-            if (srcBytes == null) { return returnByte; }
-            if (startIndex < 0) { startIndex = 0; }
-            if (startIndex < srcBytes.Length)
-            {
-                if (length < 1 || length > srcBytes.Length - startIndex) { length = srcBytes.Length - startIndex; }
-                bufferStream.Write(srcBytes, startIndex, length);
-                returnByte = bufferStream.ToArray();
-                bufferStream.SetLength(0);
-                bufferStream.Position = 0;
-            }
-            bufferStream.Close();
-            bufferStream.Dispose();
-            return returnByte;*/
+            return temp;           
         }
     }
 }
