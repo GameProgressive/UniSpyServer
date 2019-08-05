@@ -62,17 +62,22 @@ namespace RetroSpyServer.Servers.GPSP
             {
                 return GPErrorCode.NewUserBadNick;
             }
-            if (!GamespyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
+            if (dict["uniquenick"] != "")
             {
-                return GPErrorCode.NewUserUniquenickInvalid;
-            }
-            else
-            {
-                if (dbquery.IsUniqueNickExist(dict["uniquenick"]))
+                if (!GamespyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
                 {
-                    return GPErrorCode.NewUserUniquenickInUse;
-                }               
+                    return GPErrorCode.NewUserUniquenickInvalid;
+                }
+                else
+                {
+                    if (dbquery.IsUniqueNickExist(dict["uniquenick"]))
+                    {
+                        return GPErrorCode.NewUserUniquenickInUse;
+                    }
+                }
             }
+
+           
             return GPErrorCode.NoError;
         }
 

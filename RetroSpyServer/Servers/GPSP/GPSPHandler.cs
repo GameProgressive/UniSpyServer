@@ -197,17 +197,17 @@ namespace RetroSpyServer.Servers.GPSP
             {
                 DBQuery.CreateUserWithNick(dict["nick"],dict["uniquenick"],userid.ToString());
                int pid= DBQuery.GetprofileidFromEmail(dict["email"]);
-                client.Stream.SendAsync(@"\nur\0\pid\{0}", pid);
+                client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
             }
             else
             {                
                 DBQuery.CreateUserWithUniquenick(dict["nick"],userid.ToString());
                 int pid = DBQuery.GetprofileidFromEmail(dict["email"]);
-                client.Stream.SendAsync(@"\nur\0\pid\{0}", pid);
+                client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
             }
 
-            GamespyUtils.PrintReceivedGPDictToLogger("newuser", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is finish yet.");
+ //           GamespyUtils.PrintReceivedGPDictToLogger("newuser", dict);
+ //           GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is finish yet.");
         }
 
         public static void SearchOtherBuddyList(GPSPClient client, Dictionary<string, string> dict)

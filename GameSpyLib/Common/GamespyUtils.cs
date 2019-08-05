@@ -200,7 +200,7 @@ namespace GameSpyLib.Common
         /// <returns></returns>
         public static bool IsNickOrUniquenickFormatCorrect(string nick)
         {
-            string pattern = @"^[a - zA - Z][a - zA - Z0 - 9]{ 5,11}$&quot" ;
+            string pattern = @"^\w+$";
             Regex regex = new Regex(pattern);
             return regex.IsMatch(nick);
         }

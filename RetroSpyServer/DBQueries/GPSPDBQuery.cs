@@ -44,26 +44,50 @@ namespace RetroSpyServer.DBQueries
         }        
         public int GetuseridFromEmail(string email)
         {
-           return (int)Query("SELECT userid FROM users WHERE email=@P0", email)[0]["userid"];
+            int userid;
+            List<Dictionary<string, object>> temp = Query("SELECT userid FROM users WHERE email=@P0", email);
+            if (temp.Count > 0)
+            {
+                userid = (int)temp[0]["userid"];
+                return userid;
+            }
+            else
+            {
+                //ToDo Finish this add account in database and return a userid
+                userid = 0;
+                return userid;
+            }
         }
         public int GetprofileidFromEmail(string email)
-        {            
-            return (int)Query("SELECT profileid FROM profiles " +
+        {
+            int profileid;
+            List<Dictionary<string, object>> temp = Query("SELECT profileid FROM profiles " +
                 "INNER JOIN users ON users.userid=profiles.userid " +
-                "WHERE WHERE LOWER(users.email)=@P0", email)[0]["profileid"];
-
+                "WHERE LOWER(users.email)=@P0", email);
+            if (temp.Count > 0)
+            {
+                profileid = (int)temp[0]["profileid"];
+                return profileid;
+            }
+            else
+            {
+                //todo
+                profileid = 1;
+                return profileid;
+                throw new NotImplementedException();
+            }
         }
         public int CreateUserWithUniquenick(string nick,string userid)
         {
             //dict["nick"], dict["uniquenick"], dict["userid"], dict["email"],
             //        dict["passenc"], dict["productID"], dict["namespaceid"], dict["partnerid"], dict["gamename"]            
-
+            int profileid = 1;
             return profileid;
             throw new NotImplementedException();
         }
         public int CreateUserWithNick(string nick,string uniquenick,string userid)
         {
-            int profileid = 0;
+            int profileid = 1;
 
             return profileid;
             throw new NotImplementedException();
