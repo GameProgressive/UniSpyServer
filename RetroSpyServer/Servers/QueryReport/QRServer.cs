@@ -42,9 +42,9 @@ namespace RetroSpyServer.Servers.QueryReport
 
         public bool Replied = false;
 
-        public QRServer(string serverName,DatabaseDriver driver,IPEndPoint bindTo, int MaxConnection) : base(serverName,bindTo, MaxConnection)
+        public QRServer(string serverName, DatabaseDriver driver, IPEndPoint bindTo, int MaxConnection) : base(serverName, bindTo, MaxConnection)
         {
-            QRHelper.DBQuery = new QRDBQuery(driver);
+            QRHandler.DBQuery = new QRDBQuery(driver);
 
             //The Time for servers to remain in the serverlist since the last ping in seconds.
             //This value must be greater than 20 seconds, as that is the ping rate of the server
@@ -74,53 +74,43 @@ namespace RetroSpyServer.Servers.QueryReport
             }
 
             Task.Run(() =>
-            {
-                // If we dont reply, we must manually release the EventArgs back to the pool
-                Replied = false;
-                try
-                {
-                    
-                    switch (packet.BytesRecieved[0])
-                    {
-                        // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
-                        // Perhaps it was present on an older version of GameSpy SDK
-                        /*case 0x01:
-                            QRHelper.HandleChallenge(this, packet);
-                            break;
-                        */
-
-                        case QRReuqest.HEART_BEAT: // HEARTBEAT
-                            QRHelper.HeartbeatResponse(this, packet);
-                            break;
-
-                        case QRReuqest.ECHO:
-                            QRHelper.EchoResponse(this, packet);
-                            break;
-
-                        case QRReuqest.KEEP_ALIVE:
-                            QRHelper.KeepAlive(this, packet);
-                            break;
-
-                        case QRReuqest.AVAILABLE_CHECK:
-                            AvaliableCheck.CheckForGameAvaliability(this, packet);
-                            break;
-
-                        default:
-                            LogWriter.Log.Write("[QR] received unknown data: " + packet.BytesRecieved[0], LogLevel.Error);
-                            break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    LogWriter.Log.WriteException(e);
-                }
-                finally
-                {
-                    //if we replied QR data we release packet so that the EventArgs can be used on another connection
-                    if (Replied==true)
-                        Release(packet.AsyncEventArgs);
-                }
-            });
+{
+    // If we dont reply, we must manually release the EventArgs back to the pool
+    Replied = false;
+    try
+    {
+        switch (packet.BytesRecieved[0])
+        {
+            // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
+            // Perhaps it was present on an older version of GameSpy SDK
+            case QRGameServerRequest.Challenge:
+                GameServerHandler.ServerChallengeResponse(this, packet);
+                break;
+            case QRClientRequest.Heartbeat: // HEARTBEAT
+                QRHandler.HeartbeatResponse(this, packet);
+                break;
+            case QRClientRequest.KeepAlive:
+                QRHandler.KeepAlive(this, packet);
+                break;
+            case QRClientRequest.Avaliable:
+                AvaliableCheckHandler.GameAvaliabilityCheck(this, packet);
+                break;
+            default:
+                LogWriter.Log.Write("[QR] received unknown data: ", LogLevel.Error);
+                break;
+        }
+    }
+    catch (Exception e)
+    {
+        LogWriter.Log.WriteException(e);
+    }
+    finally
+    {
+        //if we replied QR data we release packet so that the EventArgs can be used on another connection
+        if (Replied == true)
+            Release(packet.AsyncEventArgs);
+    }
+});
         }
 
 
@@ -144,13 +134,13 @@ namespace RetroSpyServer.Servers.QueryReport
                 if (Servers.TryGetValue(key, out value))
                 {
                     if (value.LastPing < DateTime.Now - span)
-                    {                       
-                        LogWriter.Log.Write("Removing Server for Expired Ping: " + key,LogLevel.Debug);
+                    {
+                        LogWriter.Log.Write("Removing Server for Expired Ping: " + key, LogLevel.Debug);
                         if (Servers.TryRemove(key, out value))
                             ServersToRemove.Add(value);
                         else
                             LogWriter.Log.Write("[MasterServer.CheckServers] Unable to remove server from server list: " + key, LogLevel.Error);
-                            
+
                     }
                 }
             }
@@ -165,14 +155,13 @@ namespace RetroSpyServer.Servers.QueryReport
                 // things up alot if there are alot of rows to update
                 //using (DatabaseDriver Driver = new DatabaseDriver())
                 //using (DbTransaction Transaction = Driver.BeginTransaction())
-                var transaction = QRHelper.DBQuery.BeginTransaction();
+                var transaction = QRHandler.DBQuery.BeginTransaction();
 
                 {
                     try
                     {
                         foreach (GameServer server in ServersToRemove)
-                            QRHelper.UpdateServerOffline(server);
-
+                            QRHandler.UpdateServerOffline(server);
                         transaction.Commit();
                     }
                     catch

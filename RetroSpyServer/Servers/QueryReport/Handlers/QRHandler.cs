@@ -11,7 +11,7 @@ namespace RetroSpyServer.Servers.QueryReport
     /// This class contians gamespy master udp server functions  which help cdkeyserver to finish the master tcp server functionality. 
     /// This class is used to simplify the functions in server class, separate the other utility function making  the main server logic clearer
     /// </summary>
-   public class QRHelper
+   public class QRHandler
    {
         public static QRDBQuery DBQuery = null;
 
@@ -26,16 +26,12 @@ namespace RetroSpyServer.Servers.QueryReport
             //TODO
         }
 
-        public static void EchoResponse(QRServer qRServer, UdpPacket packet)
-        {
-            LogWriter.Log.Write("[QR] No impliment function for EchoPacket!", LogLevel.Debug);
-            //TODO
-        }
-
         public static void KeepAlive(QRServer qRServer, UdpPacket packet)
         {
             LogWriter.Log.Write("[QR] No impliment function for KeepAlivePacket!", LogLevel.Debug);
             //TODO
         }
+
+
     }
 }

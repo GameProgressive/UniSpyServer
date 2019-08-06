@@ -9,8 +9,10 @@ namespace RetroSpyServer.Servers.QueryReport
         PermanentUnavaliable = 0x01,
         TemporarilyUnavaliable = 0x02,
     };
-
-    public class AvaliableCheck
+    /// <summary>
+    /// AvaliableCheckHandler
+    /// </summary>
+    public class AvaliableCheckHandler
     {
         private static readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
 
@@ -34,7 +36,7 @@ namespace RetroSpyServer.Servers.QueryReport
             return request[request.Length - 1] == AvailableCheckRequestPostfix;
         }
 
-        public static void CheckForGameAvaliability(QRServer server, UdpPacket packet)
+        public static void GameAvaliabilityCheck(QRServer server, UdpPacket packet)
         {
             if (!IsClientRequestValid(packet.BytesRecieved))
             {
@@ -59,9 +61,9 @@ namespace RetroSpyServer.Servers.QueryReport
         /// </summary>
         /// <param name="avaliableCheckRequest"></param>
         /// <returns></returns>
-        private static string GetGameName(byte[] avaliableCheckRequest)
+        private static string GetGameName(byte[] recv)
         {
-            string tempRequest = Encoding.Default.GetString(avaliableCheckRequest);
+            string tempRequest = Encoding.Default.GetString(recv);
             ////delete the frist 6 bytes and last byte
             string gameNameInGameSpy = tempRequest.Substring(5, tempRequest.Length - 6);
             return gameNameInGameSpy;
