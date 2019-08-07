@@ -218,13 +218,14 @@ namespace RetroSpyServer.Servers.GPSP
 
         public static void SearchOtherBuddy(GPSPClient client, Dictionary<string, string> dict)
         {
-           
+
 
             // TODO: Please finis this function
-            client.Stream.SendAsync(@"\others\\odone\final\");
+            string sendingbuffer = @"\otherslist\odone\";
+            client.Stream.SendAsync(sendingbuffer);
 
-            GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            //GamespyUtils.PrintReceivedGPDictToLogger("others", dict);
+            //GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
         public static void SearchProfile(GPSPClient client, Dictionary<string, string> dict)

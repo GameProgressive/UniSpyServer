@@ -211,22 +211,23 @@ namespace RetroSpyServer.Servers.GPCM
                 if (reason == DisconnectReason.NormalLogout)
                 {
                     LogWriter.Log.Write(
-                        "Client Logout:  {0} - {1} - {2}",
+                        "{3,-8} [Logout] {0} - {1} - {2}",
                         LogLevel.Info,
                         PlayerInfo.PlayerNick,
                         PlayerInfo.PlayerId,
-                        RemoteEndPoint
+                        RemoteEndPoint, "[GPCM]"
                     );
                 }
                 else if (reason != DisconnectReason.ForcedServerShutdown)
                 {
                     LogWriter.Log.Write(
-                        "Client Disconnected:  {0} - {1} - {2}, Code={3}",
+                        "{6,-8} [Disconnected] {0} - {1} - {2}, Code={3}",
                         LogLevel.Info,
                         PlayerInfo.PlayerNick,
                         PlayerInfo.PlayerId,
                         RemoteEndPoint,
-                        Enum.GetName(typeof(DisconnectReason), reason)
+                        Enum.GetName(typeof(DisconnectReason), reason),
+                        "[GPCM]"
                     );
                 }
             }
@@ -540,7 +541,7 @@ namespace RetroSpyServer.Servers.GPCM
                     );
 
                     // Log Incoming Connections
-                    LogWriter.Log.Write("{3,-8} Client Login:   {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint,"[GPCM]");
+                    LogWriter.Log.Write("{3,-8} [Login] {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint,"[GPCM]");
 
                     // Update status last, and call success login
                     PlayerInfo.LoginStatus = LoginStatus.Completed;
