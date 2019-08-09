@@ -118,6 +118,20 @@ namespace RetroSpyServer.Servers.GPSP
                 return GPErrorCode.NoError;
             }
         }
+
+        public static void EncodePassword(Dictionary<string,string> dict)
+        {
+            if (dict.ContainsKey("passenc"))
+            {
+                //we do nothing with encoded password
+                return;
+            }
+            else
+            {
+                string passenc = StringExtensions.GetMD5Hash(dict["pass"]);
+                dict.Add("passenc",passenc);
+            }
+        }
     }
 
 

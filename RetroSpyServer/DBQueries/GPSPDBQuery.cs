@@ -54,7 +54,7 @@ namespace RetroSpyServer.DBQueries
             else
             {
                 //ToDo Finish this add account in database and return a userid
-                Query("INSERT INTO users(email,password,userstatus) VALUES (@P0, @P1, 1)", dict["email"], dict["passenc"]);
+                Execute("INSERT INTO users(email,password,userstatus) VALUES (@P0, @P1, 1)", dict["email"], dict["passenc"]);
 
                 userid =(uint) Query("SELECT userid FROM users WHERE email=@P0", dict["email"])[0]["userid"];
                 
@@ -87,14 +87,14 @@ namespace RetroSpyServer.DBQueries
         {
             if (dict["uniquenick"] == "")
             {
-                Query("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1,)", userid, dict["nick"]);
+                Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1,)", userid, dict["nick"]);
                 uint profileid = (uint)Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid)[0]["profileid"];
                 return profileid;
 
             }
             else
             {
-                Query("INSERT INTO profiles(userid,uniquenick,nick) VALUES (@P0,@P1,@P2)", userid, dict["uniquenick"], dict["nick"]);
+                Execute("INSERT INTO profiles(userid,uniquenick,nick) VALUES (@P0,@P1,@P2)", userid, dict["uniquenick"], dict["nick"]);
                 uint profileid = (uint)Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.uniquenick=@P1 AND profiles.userid = @P2", dict["nick"], dict["uniquenick"], userid)[0]["profileid"];
                 return profileid;
             }

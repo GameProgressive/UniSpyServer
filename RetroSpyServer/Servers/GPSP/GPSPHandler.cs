@@ -190,6 +190,8 @@ namespace RetroSpyServer.Servers.GPSP
                 client.Stream.SendAsync(sendingBuffer);
                 return;
             }
+            //if the password is plaintext we encoded.
+            GPSPHelper.EncodePassword(dict);
             //we get the userid in database. If no userid found according to email we create one 
             //and store the new account into database.
             uint userid = DBQuery.GetuseridFromEmail(dict);
