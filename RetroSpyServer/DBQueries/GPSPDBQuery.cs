@@ -21,13 +21,12 @@ namespace RetroSpyServer.DBQueries
             return Query("SELECT userid FROM users WHERE `email`=@P0", email).Count > 0;
         }
 
-        public List<Dictionary<string, object>> RetriveNicknames(string email, string password)
-        {
-            
+        public List<Dictionary<string, object>> RetriveNicknames(Dictionary<string,string> dict)
+        {            
             return Query("SELECT profiles.nick, profiles.uniquenick FROM profiles " +
             "INNER JOIN users ON users.userid=profiles.userid " +
             "WHERE LOWER(users.email)=@P0 AND LOWER(users.password)=@P1",
-            email.ToLowerInvariant(), password.ToLowerInvariant());            
+            dict["email"].ToLowerInvariant(), dict["passenc"].ToLowerInvariant());
         }
         /// <summary>
         /// If a nick is exist in database return userid, if not exist creating one and return userid.
@@ -80,9 +79,6 @@ namespace RetroSpyServer.DBQueries
                 throw new NotImplementedException();
             }
         }
-
-
-
         public uint CreateUserWithNickOrUniquenick(Dictionary<string,string> dict,uint userid)
         {
             if (dict["uniquenick"] == "")

@@ -77,16 +77,15 @@ namespace RetroSpyServer.Servers.GPSP
                 }
             }
 
-           
+
             return GPErrorCode.NoError;
         }
 
-
-        public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict, out string password)
+        public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("email"))
             {
-                password = null;
+
                 return GPErrorCode.Parse;
             }
 
@@ -96,44 +95,34 @@ namespace RetroSpyServer.Servers.GPSP
                 // If the encoded password is not sended, we try receiving the password in plain text
                 if (!dict.ContainsKey("pass"))
                 {
-                    // No password is specified, we cannot continue  
-                    password = null;
+                    // No password is specified, we cannot continue                   
                     return GPErrorCode.Parse;
                 }
-                else
-                {
-                    password = GamespyUtils.DecodePassword(dict["pass"]);
-                    // encrypt password
-                    password = StringExtensions.GetMD5Hash(password);
-                    return GPErrorCode.NoError;
-                }
             }
-            else
-            {
-
-                // Store the decrypted password
-                password = GamespyUtils.DecodePassword(dict["passenc"]);
-                password = StringExtensions.GetMD5Hash(password);
-                //password = dict["passenc"];
-                return GPErrorCode.NoError;
-            }
+            return GPErrorCode.NoError;
         }
 
-        public static void EncodePassword(Dictionary<string,string> dict)
+        /// <summary>
+        ///  Format the password for our database storage
+        /// </summary>
+        /// <param name="dict"></param>
+        public static void ProessPassword(Dictionary<string, string> dict)
         {
             if (dict.ContainsKey("passenc"))
             {
                 //we do nothing with encoded password
-                return;
+                string password;
+                password = GamespyUtils.DecodePassword(dict["passenc"]);
+                dict["passenc"] = StringExtensions.GetMD5Hash(password);
+
             }
             else
             {
-                string passenc = StringExtensions.GetMD5Hash(dict["pass"]);
-                dict.Add("passenc",passenc);
+                string password;
+                password = GamespyUtils.DecodePassword(dict["pass"]);
+                dict["pass"] = StringExtensions.GetMD5Hash(password);
+                dict.Add("passenc", password);
             }
         }
     }
-
-
-
 }

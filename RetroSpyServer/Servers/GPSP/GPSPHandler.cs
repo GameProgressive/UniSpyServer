@@ -22,10 +22,10 @@ namespace RetroSpyServer.Servers.GPSP
         /// <param name="dict"></param>
         public static void SearchNicks(GPSPClient client, Dictionary<string, string> dict)
         {
-            //Check this method!!!
-            string password;
+            //Format the password for our database storage
+            GPSPHelper.ProessPassword(dict);
             //if not recieved correct request we terminate
-            GPErrorCode error = GPSPHelper.IsSearchNicksContianAllKeys(dict, out password);
+            GPErrorCode error = GPSPHelper.IsSearchNicksContianAllKeys(dict);
             if (error!=GPErrorCode.NoError)
             {
                 GamespyUtils.SendGPError(client.Stream, (int)error, "Error recieving SearchNicks request.");
@@ -39,7 +39,7 @@ namespace RetroSpyServer.Servers.GPSP
             try
             {
                 //get nicknames from GPSPDBQuery class
-                queryResult = DBQuery.RetriveNicknames(dict["email"], password);
+                queryResult = DBQuery.RetriveNicknames(dict);
             }
             catch (Exception ex)
             {
@@ -121,7 +121,7 @@ namespace RetroSpyServer.Servers.GPSP
                 return;
             }
 
-            if (DBQuery.IsUniqueNickExist(dict["preferrednick"]))
+            if (!DBQuery.IsUniqueNickExist(dict["preferrednick"]))
             {
                 sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
                 client.Stream.SendAsync(sendingBuffer);
@@ -168,12 +168,14 @@ namespace RetroSpyServer.Servers.GPSP
         }
 
         /// <summary>
-        /// Creates an account
+        /// Creates an account and use new account to login
         /// </summary>
         /// <param name="client">The client that sended the data</param>
         /// <param name="dict">The request that the stream sended</param>
         public static void NewUser(GPSPClient client, Dictionary<string, string> dict)
         {
+            //Format the password for our database storage
+            GPSPHelper.ProessPassword(dict);
             GPErrorCode error = GPSPHelper.IsNewUserContainAllKeys(dict);
             //if there do not recieved right <key,value> pairs we send error
             if (error!=GPErrorCode.NoError)
@@ -190,8 +192,7 @@ namespace RetroSpyServer.Servers.GPSP
                 client.Stream.SendAsync(sendingBuffer);
                 return;
             }
-            //if the password is plaintext we encoded.
-            GPSPHelper.EncodePassword(dict);
+
             //we get the userid in database. If no userid found according to email we create one 
             //and store the new account into database.
             uint userid = DBQuery.GetuseridFromEmail(dict);
