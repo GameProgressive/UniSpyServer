@@ -30,7 +30,7 @@ namespace RetroSpyServer.DBQueries
             email.ToLowerInvariant(), password.ToLowerInvariant());            
         }
         /// <summary>
-        /// If a nick is exist in database return false
+        /// If a nick is exist in database return userid, if not exist creating one and return userid.
         /// </summary>
         /// <param name="nick"></param>
         /// <returns></returns>
@@ -38,35 +38,38 @@ namespace RetroSpyServer.DBQueries
         {
             //uniquenick existed 
             if (Query("SELECT profileid FROM profiles WHERE uniquenick=@P0", uniquenick).Count > 0)
-                return false;
-            else
                 return true;
+            else
+                return false;
         }        
-        public int GetuseridFromEmail(string email)
+        public uint GetuseridFromEmail(Dictionary<string,string>dict)
         {
-            int userid;
-            List<Dictionary<string, object>> temp = Query("SELECT userid FROM users WHERE email=@P0", email);
+            uint userid;
+            List<Dictionary<string, object>> temp = Query("SELECT userid FROM users WHERE email=@P0", dict["email"]);
             if (temp.Count > 0)
             {
-                userid = (int)temp[0]["userid"];
+                userid = (uint)temp[0]["userid"];
                 return userid;
             }
             else
             {
                 //ToDo Finish this add account in database and return a userid
-                userid = 0;
+                Query("INSERT INTO users(email,password,userstatus) VALUES (@P0, @P1, 1)", dict["email"], dict["passenc"]);
+
+                userid =(uint) Query("SELECT userid FROM users WHERE email=@P0", dict["email"])[0]["userid"];
+                
                 return userid;
             }
         }
-        public int GetprofileidFromEmail(string email)
+        public uint GetprofileidFromEmail(string email)
         {
-            int profileid;
+            uint profileid;
             List<Dictionary<string, object>> temp = Query("SELECT profileid FROM profiles " +
                 "INNER JOIN users ON users.userid=profiles.userid " +
                 "WHERE LOWER(users.email)=@P0", email);
             if (temp.Count > 0)
             {
-                profileid = (int)temp[0]["profileid"];
+                profileid = (uint)temp[0]["profileid"];
                 return profileid;
             }
             else
@@ -77,22 +80,27 @@ namespace RetroSpyServer.DBQueries
                 throw new NotImplementedException();
             }
         }
-        public int CreateUserWithUniquenick(string nick,string userid)
+
+
+
+        public uint CreateUserWithNickOrUniquenick(Dictionary<string,string> dict,uint userid)
         {
+            if (dict["uniquenick"] == "")
+            {
+                Query("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1,)", userid, dict["nick"]);
+                uint profileid = (uint)Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid)[0]["profileid"];
+                return profileid;
+
+            }
+            else
+            {
+                Query("INSERT INTO profiles(userid,uniquenick,nick) VALUES (@P0,@P1,@P2)", userid, dict["uniquenick"], dict["nick"]);
+                uint profileid = (uint)Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.uniquenick=@P1 AND profiles.userid = @P2", dict["nick"], dict["uniquenick"], userid)[0]["profileid"];
+                return profileid;
+            }
             //dict["nick"], dict["uniquenick"], dict["userid"], dict["email"],
-            //        dict["passenc"], dict["productID"], dict["namespaceid"], dict["partnerid"], dict["gamename"]            
-            int profileid = 1;
-            return profileid;
-            throw new NotImplementedException();
+            //        dict["passenc"], dict["productID"], dict["namespaceid"], dict["partnerid"], dict["gamename"]    
+            
         }
-        public int CreateUserWithNick(string nick,string uniquenick,string userid)
-        {
-            int profileid = 1;
-
-            return profileid;
-            throw new NotImplementedException();
-        }
-
-
     }
 }

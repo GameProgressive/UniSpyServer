@@ -186,28 +186,18 @@ namespace RetroSpyServer.Servers.GPSP
             error = GPSPHelper.IsEmailNickUniquenickValied(dict,DBQuery);            
             if (error != GPErrorCode.NoError)
             {               
-                sendingBuffer = string.Format(@"\nur\{0}\final\", error);
+                sendingBuffer = string.Format(@"\nur\{0}\final\", (int)error);
                 client.Stream.SendAsync(sendingBuffer);
                 return;
             }
+            //we get the userid in database. If no userid found according to email we create one 
+            //and store the new account into database.
+            uint userid = DBQuery.GetuseridFromEmail(dict);
+            //create a profile according to userid
+            uint pid = DBQuery.CreateUserWithNickOrUniquenick(dict,userid);           
+            //Finally we send the create correct to client
+            client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
 
-            //we get the userid in database and store the new account into database
-            int userid = DBQuery.GetuseridFromEmail(dict["email"]);
-            if (dict["uniquenick"] =="")
-            {
-                DBQuery.CreateUserWithNick(dict["nick"],dict["uniquenick"],userid.ToString());
-               int pid= DBQuery.GetprofileidFromEmail(dict["email"]);
-                client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
-            }
-            else
-            {                
-                DBQuery.CreateUserWithUniquenick(dict["nick"],userid.ToString());
-                int pid = DBQuery.GetprofileidFromEmail(dict["email"]);
-                client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
-            }
-
- //           GamespyUtils.PrintReceivedGPDictToLogger("newuser", dict);
- //           GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is finish yet.");
         }
 
         public static void SearchOtherBuddyList(GPSPClient client, Dictionary<string, string> dict)
