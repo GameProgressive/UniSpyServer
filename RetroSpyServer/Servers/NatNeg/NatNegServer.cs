@@ -40,7 +40,6 @@ namespace RetroSpyServer.Servers.NatNeg
 
             //copy data in udp packet to natnegpacket format prepare for reply data;
             NatNegPacket nnpacket = new NatNegPacket();
-
             if (!nnpacket.SetData(packet.BytesRecieved))
                 return;
 
@@ -50,22 +49,22 @@ namespace RetroSpyServer.Servers.NatNeg
                 switch (nnpacket.Common.PacketType)
                 {
                     case Enumerators.NatPacketType.PreInit:
-                         NatNegHelper.PreInitResponse(this, packet, nnpacket);
+                         NatNegHandler.PreInitResponse(this, packet, nnpacket);
                          break;
                     case Enumerators.NatPacketType.Init:
-                        NatNegHelper.InitPacketResponse(this, packet,nnpacket);
+                        NatNegHandler.InitResponse(this, packet,nnpacket);
                         break;
                     case Enumerators.NatPacketType.AddressCheck:
-                        NatNegHelper.AddressCheckResponse(this, packet, nnpacket);
+                        NatNegHandler.AddressCheckResponse(this, packet, nnpacket);
                         break;
                     case Enumerators.NatPacketType.NatifyRequest:
-                        NatNegHelper.NatifyResponse(this, packet, nnpacket);
+                        NatNegHandler.NatifyResponse(this, packet, nnpacket);
                         break;
                     case Enumerators.NatPacketType.ConnectAck:
-                        NatNegHelper.NNConnectResponse(this, packet, nnpacket);
+                        NatNegHandler.ConnectResponse(this, packet, nnpacket);
                         break;
                     case Enumerators.NatPacketType.Report:
-                        NatNegHelper.ReportResponse(this, packet, nnpacket);
+                        NatNegHandler.ReportResponse(this, packet, nnpacket);
                         break;
                     default:                       
                         LogWriter.Log.Write("{0,-8} [Recv] unknow data", LogLevel.Error, ServerName);
