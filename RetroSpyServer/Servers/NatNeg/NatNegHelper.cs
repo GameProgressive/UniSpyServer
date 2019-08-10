@@ -47,7 +47,8 @@ namespace RetroSpyServer.Servers.NatNeg
 
         public static void NatifyResponse(NatNegServer server, UdpPacket packet, NatNegPacket nnpacket)
         {
-            LogWriter.Log.Write("[NATNEG] No impliment function for NatifyResponse!", LogLevel.Debug);
+            //LogWriter.Log.Write("[NATNEG] No impliment function for NatifyResponse!", LogLevel.Debug);
+            server.ReplyAsync(packet, nnpacket.ToBytes());
             //server.ReplyAsync(packet, packet.BytesRecieved);
         }
 

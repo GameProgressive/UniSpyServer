@@ -21,15 +21,17 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
             if (data.Length < CommonInfo.Size)
                 return false;
 
-            if (!ByteExtensions.SubBytes(data, 0, magicDataLen).Equals(NatNegInfo.MagicData))
+            byte[] sub = ByteExtensions.SubBytes(data, 0, magicDataLen);
+            //bool isEqual = Array.Equals(sub, NatNegInfo.MagicData);
+            if (sub[0]!=NatNegInfo.MagicData[0]||sub[1]!=NatNegInfo.MagicData[1]||sub[2]!=NatNegInfo.MagicData[2])
                 return false;
 
             if (data[magicDataLen + 2] < 0 || data[magicDataLen + 2] > (byte)NatPacketType.PreInitAck)
                 return false;
 
-            Common.Version = data[magicDataLen + 1];
-            Common.PacketType = (NatPacketType)data[magicDataLen + 2];
-            Common.Cookie = BitConverter.ToInt32(ByteExtensions.SubBytes(data, magicDataLen + 3, 4));
+            Common.Version = data[magicDataLen];
+            Common.PacketType = (NatPacketType)data[magicDataLen+1];
+            Common.Cookie = BitConverter.ToInt32(ByteExtensions.SubBytes(data, magicDataLen+2, 4));
                         
             switch (Common.PacketType)
             {
@@ -116,6 +118,8 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
                     break;
                 case NatPacketType.AddressReply:
                 case NatPacketType.NatifyRequest:
+                    PrepareReplyNatifyData(TempBytes);
+                    break;
                 case NatPacketType.ErtTest:
                 case NatPacketType.Init:
                 case NatPacketType.InitAck:
@@ -170,6 +174,15 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
             BitConverter.GetBytes((int)Report.NatType).CopyTo(replyBytes, CommonInfo.Size + 3);
             BitConverter.GetBytes((int)Report.NatMappingScheme).CopyTo(replyBytes, CommonInfo.Size + 7);
             Report.GameName.CopyTo(replyBytes, CommonInfo.Size + 11);
+        }
+
+        private void PrepareReplyNatifyData(byte[] replyBytes)
+        {
+            replyBytes[CommonInfo.Size] = Init.PortType;
+            replyBytes[CommonInfo.Size + 1] = Init.ClientIndex;
+            replyBytes[CommonInfo.Size + 2] = Init.UseGamePort;
+            BitConverter.GetBytes(Init.LocalIp).CopyTo(replyBytes, CommonInfo.Size + 3);
+            BitConverter.GetBytes(Init.LocalPort).CopyTo(replyBytes, CommonInfo.Size + 7);
         }
         #endregion
 

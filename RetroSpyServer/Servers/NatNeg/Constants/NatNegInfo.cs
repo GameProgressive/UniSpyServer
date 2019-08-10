@@ -11,7 +11,7 @@ namespace RetroSpyServer.Servers.NatNeg.Structures
             return version > 3;
         }
 
-        public static readonly byte[] MagicData = { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0x82 };
+        public static readonly byte[] MagicData = { 0xFD, 0xFC, 0x1E, 0x66, 0x6A, 0xB2 };
 
         public static int FinishedNoError = 0;
 
