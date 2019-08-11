@@ -72,7 +72,6 @@ namespace RetroSpyServer.Servers.NatNeg
             TempBytes[CommonInfo.Size + 2] = nnpacket.Init.UseGamePort;
             BitConverter.GetBytes(nnpacket.Init.LocalIp).CopyTo(TempBytes, CommonInfo.Size + 3);
             BitConverter.GetBytes(nnpacket.Init.LocalPort).CopyTo(TempBytes, CommonInfo.Size + 7);
-
             server.ReplyAsync(packet, TempBytes);
         }
 

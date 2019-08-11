@@ -6,6 +6,8 @@ using GameSpyLib.Logging;
 using RetroSpyServer.Servers.NatNeg.Structures;
 using System.Net.Sockets;
 using System.Collections.Generic;
+using RetroSpyServer.Servers.NatNeg.Enumerators;
+using System.Threading.Tasks;
 
 namespace RetroSpyServer.Servers.NatNeg
 {
@@ -18,7 +20,7 @@ namespace RetroSpyServer.Servers.NatNeg
 
         public List<ClientInfo> ClientInfoList = new List<ClientInfo>();
 
-        public int InstanceCount=1;
+        public int InstanceCount = 1;
 
         /// <summary>
         /// 
@@ -31,57 +33,60 @@ namespace RetroSpyServer.Servers.NatNeg
         {
             StartAcceptAsync();
         }
-       
+
 
 
         protected override void ProcessAccept(UdpPacket packet)
         {
             IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
 
-            //copy data in udp packet to natnegpacket format prepare for reply data;
-            NatNegPacket nnpacket = new NatNegPacket();
-            if (!nnpacket.SetData(packet.BytesRecieved))
-                return;
 
-            try
+            Task.Run(() =>
             {
-                //BytesRecieved[7] is nnpacket.PacketType.
-                switch (nnpacket.Common.PacketType)
+                //copy data in udp packet to natnegpacket format prepare for reply data;
+                NatNegPacket nnpacket = new NatNegPacket();
+                if (!nnpacket.SetData(packet.BytesRecieved))
+                    return;
+
+                try
                 {
-                    case Enumerators.NatPacketType.PreInit:
-                         NatNegHandler.PreInitResponse(this, packet, nnpacket);
-                         break;
-                    case Enumerators.NatPacketType.Init:
-                        NatNegHandler.InitResponse(this, packet,nnpacket);
-                        break;
-                    case Enumerators.NatPacketType.AddressCheck:
-                        NatNegHandler.AddressCheckResponse(this, packet, nnpacket);
-                        break;
-                    case Enumerators.NatPacketType.NatifyRequest:
-                        NatNegHandler.NatifyResponse(this, packet, nnpacket);
-                        break;
-                    case Enumerators.NatPacketType.ConnectAck:
-                        NatNegHandler.ConnectResponse(this, packet, nnpacket);
-                        break;
-                    case Enumerators.NatPacketType.Report:
-                        NatNegHandler.ReportResponse(this, packet, nnpacket);
-                        break;
-                    default:                       
-                        LogWriter.Log.Write("{0,-8} [Recv] unknow data", LogLevel.Error, ServerName);
-                        break;
+                    //BytesRecieved[7] is nnpacket.PacketType.
+                    switch (nnpacket.Common.PacketType)
+                    {
+                        case NatPacketType.PreInit:
+                            NatNegHandler.PreInitResponse(this, packet, nnpacket);
+                            break;
+                        case NatPacketType.Init:
+                            NatNegHandler.InitResponse(this, packet, nnpacket);
+                            break;
+                        case NatPacketType.AddressCheck:
+                            NatNegHandler.AddressCheckResponse(this, packet, nnpacket);
+                            break;
+                        case NatPacketType.NatifyRequest:
+                            NatNegHandler.NatifyResponse(this, packet, nnpacket);
+                            break;
+                        case NatPacketType.ConnectAck:
+                            NatNegHandler.ConnectResponse(this, packet, nnpacket);
+                            break;
+                        case NatPacketType.Report:
+                            NatNegHandler.ReportResponse(this, packet, nnpacket);
+                            break;
+                        default:
+                            LogWriter.Log.Write("{0,-8} [Recv] unknow data", LogLevel.Error, ServerName);
+                            break;
+                    }
                 }
-            }
-            catch (Exception e)
-            {
-                LogWriter.Log.WriteException(e);
-            }
-            finally
-            {
-                if (Replied == true)
-                    Release(packet.AsyncEventArgs);
-            }
+                catch (Exception e)
+                {
+                    LogWriter.Log.WriteException(e);
+                }
+                finally
+                {
+                    if (Replied == true)
+                        Release(packet.AsyncEventArgs);
+                }
+            });
         }
-
         protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
 
     }
