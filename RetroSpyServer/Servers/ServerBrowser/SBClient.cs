@@ -59,7 +59,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
                 {
                     // Ignore Non-BF2 related queries
                     if (message.StartsWith("battlefield2"))
-                        SBHelper.ParseRequest(this,message);
+                        SBHandler.ParseRequest(this,message);
                 }            
         }
 
