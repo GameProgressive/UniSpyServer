@@ -35,7 +35,7 @@ namespace RetroSpyServer
         {
             if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
 
-            bool bool_ConsoleInput = true, bool_InitPathArg = false; // Whether inputed args
+            bool bool_ConsoleInput = false, bool_InitPathArg = false; // Whether inputed args
             string logPath;
             Console.Title = "RetroSpy Server " + version;
             BasePath = AppDomain.CurrentDomain.BaseDirectory;
