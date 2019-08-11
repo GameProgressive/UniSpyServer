@@ -95,7 +95,7 @@ namespace RetroSpyServer
             #endregion
 
 
-            LogWriter.Log = new LogWriter(string.Format(Path.Combine(logPath, "{0}.log"), DateTime.Now.ToLongDateString()));
+            LogWriter.Log = new LogWriter(string.Format(Path.Combine(logPath, "retrospy_{0}.log"), DateTime.Now.ToString("yyyy-MM-dd__HH_mm_ss")));
 
             Console.WriteLine("\t"+  @"  ___     _           ___             ___                      ");
             Console.WriteLine("\t" + @" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
