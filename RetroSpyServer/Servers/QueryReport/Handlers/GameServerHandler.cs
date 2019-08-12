@@ -19,7 +19,9 @@ namespace RetroSpyServer.Servers.QueryReport.GameServerInfo
 
         public static void ServerChallengeResponse(QRServer qRServer, UdpPacket packet)
         {
-            throw new NotImplementedException();
+            byte[] challenge = new byte[90];
+            byte[] buffer = packet.BytesRecieved;
+            int blen = 0;            
         }
     }
 }

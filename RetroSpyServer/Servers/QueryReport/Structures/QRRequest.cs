@@ -25,11 +25,11 @@ namespace RetroSpyServer.Servers.QueryReport.Structures
     public static class QRGameServerRequest
     {
         public const byte Query = 0x00; //S -> C
-       public const byte Challenge = 0x01; //S -> C
-       public const byte Echo = 0x02; //S -> C (purpose..?)
-      public const byte AddressError = 0x04; //S -> C
-      public const byte ClientMessage = 0x06; //S -> C
-       public const byte RequireIPVerify = 0x09; //S -> C
-       public const byte ClientRegistered = 0x0A; //S -> C
+        public const byte Challenge = 0x01; //S -> C
+        public const byte Echo = 0x02; //S -> C (purpose..?)
+        public const byte AddressError = 0x04; //S -> C
+        public const byte ClientMessage = 0x06; //S -> C
+        public const byte RequireIPVerify = 0x09; //S -> C
+        public const byte ClientRegistered = 0x0A; //S -> C
     }
 }
