@@ -16,7 +16,7 @@ namespace RetroSpyServer
         /// Indicates the version of the server
         /// </summary>
         //public static readonly Version Version = Version.Parse(Application.ProductVersion);
-        public static readonly string version = "0.1";
+        public static readonly string version = "0.5";
 
         public static string BasePath { get; protected set; }
 
@@ -118,32 +118,28 @@ namespace RetroSpyServer
                 
                 IsRunning = true;
 
-                // Read key from console
+                //Read key from console
                 while (IsRunning)
                 {
                     // Process console commands
-                    if (bool_ConsoleInput)
-                    {
+                    //if (bool_ConsoleInput)
+                    //{
                         string input = Console.ReadLine();
-                        if (input.Length < 1)
-                            continue;
-
-                        switch(input)
+                        switch (input)
                         {
                             case "exit":
                                 manager.StopAllServers();
                                 IsRunning = false;
                                 break;
                             case "help":
-                                Console.WriteLine("--exit \t shutdown all servers and exit the RetroSpy emulator\n"+
-                                                               "other features are comming soon..\n" );
+                                Console.WriteLine("--exit \t shutdown all servers and exit the RetroSpy emulator\n" +
+                                                               "other features are comming soon..\n");
                                 break;
                             default:
                                 Console.WriteLine("Unknown command!");
                                 break;
-                        }       
-                    }
-                }
+                        }
+                    }                
             }
             catch (Exception e)
             {
