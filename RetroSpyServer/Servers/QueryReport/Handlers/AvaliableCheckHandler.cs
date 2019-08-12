@@ -53,7 +53,7 @@ namespace RetroSpyServer.Servers.QueryReport
             dataToSend[6] = (byte)ServerAvaliability.Avaliable;
 
             //packet.SetBufferContents(dataToSend);
-            server.ReplyAsync(packet, dataToSend);
+            server.SendAsync(packet, dataToSend);
         }
 
         /// <summary>

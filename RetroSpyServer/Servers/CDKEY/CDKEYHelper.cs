@@ -30,11 +30,11 @@ namespace RetroSpyServer.Servers.CDKey
             {
                 string reply = string.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
               //  packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
-                server.ReplyAsync(packet, Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
+                server.SendAsync(packet, Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
             }
             else
             {
-                LogWriter.Log.Write("Incomplete or Invalid CDKey Packet Received: {0}", LogLevel.Debug, recv);
+                LogWriter.Log.Write( LogLevel.Debug, "Incomplete or Invalid CDKey Packet Received: {0}", recv);
                 //TODO cdkey invalid response
             }                
         }
@@ -45,7 +45,7 @@ namespace RetroSpyServer.Servers.CDKey
 
         public static void InvalidCDKeyRequest(CDKeyServer server,UdpPacket packet, Dictionary<string, string> recv)
         {
-            LogWriter.Log.Write("[CDKey] recieved Incomplete or Invalid  data : {0}", LogLevel.Debug, recv);
+            LogWriter.Log.Write(LogLevel.Debug, "[CDKey] recieved Incomplete or Invalid  data : {0}", recv);
         }
     }
 }

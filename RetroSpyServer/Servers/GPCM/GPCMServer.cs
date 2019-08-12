@@ -272,7 +272,7 @@ namespace RetroSpyServer.Servers.GPCM
             }
             catch (Exception e)
             {
-                LogWriter.Log.Write("An Error occured at [GpcmServer._OnDisconnect] : Generating Exception Log {0}", LogLevel.Error, e.ToString());
+                LogWriter.Log.Write( LogLevel.Error, "An Error occured at [GpcmServer._OnDisconnect] : Generating Exception Log {0}", e.ToString());
             }
         }
 
@@ -295,7 +295,7 @@ namespace RetroSpyServer.Servers.GPCM
                 if (Clients.TryRemove(client.PlayerInfo.PlayerId, out oldC))
                 {
                     oldC.Disconnect(DisconnectReason.NewLoginDetected);
-                    LogWriter.Log.Write("Login Clash:   {0} - {1} - {2}", LogLevel.Info, client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    LogWriter.Log.Write( LogLevel.Info, "Login Clash:   {0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
                 }
 
                 // Add current client to the dictionary

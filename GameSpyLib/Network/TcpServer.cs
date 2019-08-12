@@ -93,7 +93,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public bool IsDisposed { get; protected set; } = false;
 
-        public string ServerName;
+        public string ServerName { get; protected set; }
         public TcpServer(string serverName,IPEndPoint bindTo, int MaxConnections)
         {
             ServerName = "[" + serverName + "]";

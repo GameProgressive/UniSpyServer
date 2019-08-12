@@ -27,7 +27,7 @@ namespace RetroSpyServer.Servers.QueryReport
             }
             catch (Exception e)
             {
-                LogWriter.Log.Write("[GeoIP] {0}" ,LogLevel.Warning ,e.Message);
+                LogWriter.Log.Write(LogLevel.Warning, "[GeoIP] {0}", e.Message);
             }
         }
 

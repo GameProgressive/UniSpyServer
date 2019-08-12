@@ -95,7 +95,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
 
                 // Report error
 
-                LogWriter.Log.Write("NOTICE: An Error occured at [MstrServer.AcceptClient] : {0}", LogLevel.Error, e.ToString());
+                LogWriter.Log.Write( LogLevel.Error, "[SB] : An Error occured at : {0}", e.ToString());
 
                 //ExceptionHandler.GenerateExceptionLog(e);
             }
@@ -118,7 +118,7 @@ namespace RetroSpyServer.Servers.ServerBrowser
             }
             catch (Exception e)
             {
-                LogWriter.Log.Write("NOTICE:An Error occured at [MasterTCPServer_OnDisconnect] : {0}", LogLevel.Error, e.ToString());
+                LogWriter.Log.Write(LogLevel.Error, "[SB]: An Error occured at : {0}", e.ToString());
             }
         }
 

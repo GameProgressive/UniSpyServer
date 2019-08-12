@@ -112,8 +112,9 @@ namespace RetroSpyServer.Servers.GPCM
         public static event GPCMStatusChanged OnStatusChanged;
 
         public GPCMPlayerInfo PlayerInfo { get; protected set; }
-        
 
+        
+        
         #endregion Variables
 
         /// <summary>
@@ -211,23 +212,24 @@ namespace RetroSpyServer.Servers.GPCM
                 if (reason == DisconnectReason.NormalLogout)
                 {
                     LogWriter.Log.Write(
-                        "{3,-8} [Logout] {0} - {1} - {2}",
                         LogLevel.Info,
+                        "{0,-8} [Logout] {1} - {2} - {3}",
+                        Stream.ServerName,
                         PlayerInfo.PlayerNick,
                         PlayerInfo.PlayerId,
-                        RemoteEndPoint, "[GPCM]"
+                        RemoteEndPoint
                     );
                 }
                 else if (reason != DisconnectReason.ForcedServerShutdown)
                 {
                     LogWriter.Log.Write(
-                        "{6,-8} [Disconnected] {0} - {1} - {2}, Code={3}",
                         LogLevel.Info,
+                        "{0,-8} [Disconnected] {1} - {2} - {3}, Code={4}",
+                        Stream.ServerName,
                         PlayerInfo.PlayerNick,
                         PlayerInfo.PlayerId,
                         RemoteEndPoint,
-                        Enum.GetName(typeof(DisconnectReason), reason),
-                        "[GPCM]"
+                        Enum.GetName(typeof(DisconnectReason), reason)                        
                     );
                 }
             }
@@ -541,8 +543,8 @@ namespace RetroSpyServer.Servers.GPCM
                     );
 
                     // Log Incoming Connections
-                    LogWriter.Log.Write("{3,-8} [Login] {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint,"[GPCM]");
-
+                    //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] {1} - {2} - {3}", Stream.ServerName, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
+                    Stream.ToLog(LogLevel.Info, "Login", "Success", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
                     // Update status last, and call success login
                     PlayerInfo.LoginStatus = LoginStatus.Completed;
                     PlayerInfo.PlayerStatus = PlayerStatus.Online;
@@ -557,8 +559,8 @@ namespace RetroSpyServer.Servers.GPCM
                 else
                 {
                     // Log Incoming Connections
-                    LogWriter.Log.Write("Failed Login Attempt: {0} - {1} - {2}", LogLevel.Info, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
-
+                    //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] Failed: {1} - {2} - {3}", Stream.ServerName, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
+                    Stream.ToLog(LogLevel.Info, "Login", "Failed", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
                     // Password is incorrect with database value
                     Stream.SendAsync(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
                     Disconnect(DisconnectReason.InvalidPassword);

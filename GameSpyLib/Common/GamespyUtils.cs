@@ -123,7 +123,7 @@ namespace GameSpyLib.Common
 
         public static void PrintReceivedGPDictToLogger(string req, Dictionary<string, string> dict)
         {
-            LogWriter.Log.Write("Received request {0} with content: {1}", LogLevel.Debug, req, string.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()));
+            LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}",  req, string.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()));
         }
 
         /// <summary>

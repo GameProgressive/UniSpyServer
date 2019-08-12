@@ -170,7 +170,7 @@ namespace GameSpyLib.Logging
         /// <param name="message">The message to write to the log</param>
         /// <param name="level">The level of the log</param>
         /// <param name="items">Extra items to be appended to the message</param>
-        public void Write(string message, LogLevel level, params object[] items)
+        public void Write(LogLevel level,string message, params object[] items)
         {
             if (level < MiniumLogLevel)
                 return;
@@ -178,8 +178,10 @@ namespace GameSpyLib.Logging
             // Only allow 1 thread at a time do these operations
             lock (_sync)
             {
-                Console.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, string.Format(message, items), level.ToString()));
-                LogStream.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, string.Format(message, items), level.ToString()));
+                string temp1 = string.Format(message, items);
+                string temp2 = string.Format("[{0}] [{1}]\t{2}", DateTime.Now, level.ToString(), temp1);
+                Console.WriteLine(temp2);
+                LogStream.WriteLine(temp2);
                 LogStream.Flush();
             }
         }
@@ -192,7 +194,7 @@ namespace GameSpyLib.Logging
         {
             do
             {
-                Write("{0} from {3} (HRESULT: {1})\n{2}", LogLevel.Error, ex.Message, ex.HResult, ex.StackTrace, ex.Source);
+                Write(LogLevel.Error,"{0} from {3} (HRESULT: {1})\n{2}", ex.Message, ex.HResult, ex.StackTrace, ex.Source);
                 ex = ex.InnerException;
             } while (ex != null);
         }

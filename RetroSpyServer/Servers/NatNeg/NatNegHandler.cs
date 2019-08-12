@@ -39,7 +39,7 @@ namespace RetroSpyServer.Servers.NatNeg
             BitConverter.GetBytes(nnpacket.Init.LocalIp).CopyTo(TempBytes, CommonInfo.Size + 3);
             BitConverter.GetBytes(nnpacket.Init.LocalPort).CopyTo(TempBytes, CommonInfo.Size + 7);
             //we send the reply packet to client
-            server.ReplyAsync(packet, TempBytes);
+            server.SendAsync(packet, TempBytes);
         }
 
         public static void AddressCheckResponse(NatNegServer server, UdpPacket packet, NatNegPacket nnpacket)
@@ -55,7 +55,7 @@ namespace RetroSpyServer.Servers.NatNeg
             TempBytes[CommonInfo.Size] = (byte)NatPacketType.AddressReply;
             BitConverter.GetBytes(nnpacket.Init.LocalIp).CopyTo(TempBytes, CommonInfo.Size + 3);
             BitConverter.GetBytes(nnpacket.Init.LocalPort).CopyTo(TempBytes, CommonInfo.Size + 7);
-            server.ReplyAsync(packet, TempBytes);
+            server.SendAsync(packet, TempBytes);
         }
 
         public static void NatifyResponse(NatNegServer server, UdpPacket packet, NatNegPacket nnpacket)
@@ -72,7 +72,7 @@ namespace RetroSpyServer.Servers.NatNeg
             TempBytes[CommonInfo.Size + 2] = nnpacket.Init.UseGamePort;
             BitConverter.GetBytes(nnpacket.Init.LocalIp).CopyTo(TempBytes, CommonInfo.Size + 3);
             BitConverter.GetBytes(nnpacket.Init.LocalPort).CopyTo(TempBytes, CommonInfo.Size + 7);
-            server.ReplyAsync(packet, TempBytes);
+            server.SendAsync(packet, TempBytes);
         }
 
         public static void ReportResponse(NatNegServer server, UdpPacket packet, NatNegPacket nnpacket)
@@ -89,7 +89,7 @@ namespace RetroSpyServer.Servers.NatNeg
             BitConverter.GetBytes((int)nnpacket.Report.NatType).CopyTo(TempBytes, CommonInfo.Size + 3);
             BitConverter.GetBytes((int)nnpacket.Report.NatMappingScheme).CopyTo(TempBytes, CommonInfo.Size + 7);
             nnpacket.Report.GameName.CopyTo(TempBytes, CommonInfo.Size + 11);
-            server.ReplyAsync(packet, TempBytes);
+            server.SendAsync(packet, TempBytes);
         }
 
 
@@ -107,7 +107,7 @@ namespace RetroSpyServer.Servers.NatNeg
 
             TempBytes[CommonInfo.Size] = nnpacket.Connect.GotYourData;
             TempBytes[CommonInfo.Size + 1] = nnpacket.Connect.Finished;
-            server.ReplyAsync(packet, TempBytes);
+            server.SendAsync(packet, TempBytes);
         }
 
     }

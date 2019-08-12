@@ -210,15 +210,15 @@ namespace GameSpyLib.Network
         /// </summary>
         /// <param name="packet">the udp packet which will transfer byte to its own format</param>
         /// <param name="message">the bytes that will be send to client</param>
-        public void ReplyAsync(UdpPacket packet,byte[] message)
+        public void SendAsync(UdpPacket packet,byte[] message)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
             
             packet.SetBufferContents(message);
-
+            string tempSendMsg = BitConverter.ToString(packet.ByteReply);
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write("{0,-8} [Send] UDP data: " + BitConverter.ToString(packet.ByteReply),LogLevel.Debug,ServerName);
+                LogWriter.Log.Write(LogLevel.Debug, "{0,-8} [Send] UDP data: {1}", ServerName, tempSendMsg);
 
             Listener.SendToAsync(packet.AsyncEventArgs);
         }
@@ -232,9 +232,9 @@ namespace GameSpyLib.Network
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
             packet.SetBufferContents(Encoding.UTF8.GetBytes(message));
-
+            
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write("{0,-8} [Send] UDP data: " + BitConverter.ToString(packet.ByteReply), LogLevel.Debug, ServerName);
+                LogWriter.Log.Write(LogLevel.Debug, "{0,-8} [Send] UDP data: {1}", ServerName, message);
 
             Listener.SendToAsync(packet.AsyncEventArgs);
         }
@@ -258,10 +258,10 @@ namespace GameSpyLib.Network
                     return;
                 }
 
-                UdpPacket packet = new UdpPacket(AcceptEventArg);               
+                UdpPacket packet = new UdpPacket(AcceptEventArg);
 
                     if (LogWriter.Log.DebugSockets)
-                        LogWriter.Log.Write("{0,-8} [Recv] UDP data: " + BitConverter.ToString(packet.BytesRecieved), LogLevel.Debug,ServerName);
+                        LogWriter.Log.Write( LogLevel.Debug, "{0,-8} [Recv] UDP data: {1}", ServerName, BitConverter.ToString(packet.BytesRecieved));
 
                 // Begin accepting a new connection
                 StartAcceptAsync();

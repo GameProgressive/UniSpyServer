@@ -72,7 +72,7 @@ namespace RetroSpyServer.Servers.NatNeg
                             NatNegHandler.ReportResponse(this, packet, nnpacket);
                             break;
                         default:
-                            LogWriter.Log.Write("{0,-8} [Recv] unknow data", LogLevel.Error, ServerName);
+                            LogWriter.Log.Write( LogLevel.Error, "{0,-8} [Recv] unknow data", ServerName);
                             break;
                     }
                 }
