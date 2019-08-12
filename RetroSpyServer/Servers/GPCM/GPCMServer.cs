@@ -7,6 +7,7 @@ using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using RetroSpyServer.Servers.GPCM.Enumerator;
+using RetroSpyServer.Servers.GPCM.Handler;
 
 //GPCM represents GameSpy Connection Manager
 namespace RetroSpyServer.Servers.GPCM
@@ -72,7 +73,7 @@ namespace RetroSpyServer.Servers.GPCM
         public GPCMServer(string serverName,DatabaseDriver driver,IPEndPoint bindTo, int maxConnections) : base(serverName,bindTo, maxConnections)
         {
 
-            GPCMHelper.DBQuery = new DBQueries.GPCMDBQuery(driver);
+            GPCMHandler.DBQuery = new DBQueries.GPCMDBQuery(driver);
 
             GPCMClient.OnDisconnect += ClientDisconnected;
 
@@ -86,7 +87,7 @@ namespace RetroSpyServer.Servers.GPCM
                 {
                     // Send keep alive to all connected clients
                     if (Clients.Count > 0)
-                        Parallel.ForEach(Clients.Values, client => client.SendKeepAlive());
+                        Parallel.ForEach(Clients.Values, client => KAHandler.SendKeepAlive(client));
 
                     // Disconnect hanging connections
                     if (Processing.Count > 0)
@@ -104,7 +105,7 @@ namespace RetroSpyServer.Servers.GPCM
                     // Return if we are empty
                     if (PlayerStatusQueue.IsEmpty) return;
 
-                    var transaction = GPCMHelper.DBQuery.BeginTransaction();
+                    var transaction = GPCMHandler.DBQuery.BeginTransaction();
 
                     try
                     {
@@ -121,7 +122,7 @@ namespace RetroSpyServer.Servers.GPCM
                             if (!result.CompletedLoginProcess)
                                 continue;
 
-                            GPCMHelper.UpdateStatus(timestamp, result);
+                            GPCMHandler.UpdateStatus(timestamp, result);
                         }
 
                         transaction.Commit();
@@ -180,7 +181,7 @@ namespace RetroSpyServer.Servers.GPCM
             try
             {
                 // Set everyone's online session to 0
-                GPCMHelper.ResetStatusAndSessionKey();
+                GPCMHandler.ResetStatusAndSessionKey();
             }
             catch (Exception e)
             {
@@ -190,7 +191,7 @@ namespace RetroSpyServer.Servers.GPCM
             // Update Connected Clients in the Database
             Clients.Clear();
 
-            GPCMHelper.DBQuery.Dispose();
+            GPCMHandler.DBQuery.Dispose();
 
             // Tell the base to dispose all free objects
             Dispose();

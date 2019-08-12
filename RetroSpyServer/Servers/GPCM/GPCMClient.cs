@@ -4,6 +4,7 @@ using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using RetroSpyServer.Application;
 using RetroSpyServer.Servers.GPCM.Enumerator;
+using RetroSpyServer.Servers.GPCM.Handler;
 using RetroSpyServer.Servers.GPCM.Structures;
 using RetroSpyServer.Servers.GPSP.Enumerators;
 using System;
@@ -29,7 +30,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
-        public bool CompletedLoginProcess { get; protected set; } = false;
+        public bool CompletedLoginProcess { get; set; } = false;
 
         /// <summary>
         /// The TcpClient's Endpoint
@@ -51,7 +52,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// The users session key
         /// </summary>
-        public ushort SessionKey {get; protected set;}
+        public ushort SessionKey {get; set;}
 
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// This is used as part of the hash used to "proove" to the client
         /// that the password in our database matches what the user enters
         /// </summary>
-        private string ServerChallengeKey;
+        public string ServerChallengeKey;
 
         /// <summary>
         /// Variable that determines if the client is disconnected,
@@ -278,28 +279,25 @@ namespace RetroSpyServer.Servers.GPCM
                 switch (recieved[0])
                 {
                     case "inviteto":
-                        GPCMHelper.AddProducts(this,dict);
-                        break;
-                    case "newuser":
-                        GPCMHelper.CreateNewUser(this,dict);
-                        break;
+                        InviteToHandler.AddProducts(this,dict);
+                        break;                    
                     case "login":
-                        ProcessLogin(dict);
+                        LoginHandler.ProcessLogin(this,dict,OnSuccessfulLogin,OnStatusChanged);
                         break;
                     case "getprofile":
-                        GPCMHelper.SendProfile(this,dict);
+                        GetProfileHandler.SendProfile(this,dict);
                         break;
                     case "updatepro":
-                        GPCMHelper.UpdateUser(this, dict);
+                        UpdateProHandler.UpdateUser(this, dict);
                         break;
                     case "logout":
                         Disconnect(DisconnectReason.NormalLogout);
                         break;
                     case "status":
-                        UpdateStatus(dict);
+                        StatusHandler.UpdateStatus(this, dict, OnStatusChanged);
                         break;
                     case "ka":
-                        SendKeepAlive();
+                        KAHandler.SendKeepAlive(this);
                         break;
                     default:
                         LogWriter.Log.Write("[GPCM] received unknown data " + recieved[0], LogLevel.Debug);
@@ -311,24 +309,6 @@ namespace RetroSpyServer.Servers.GPCM
 
 
 
-        private void UpdateStatus(Dictionary<string, string> dictionary)
-        {
-            ushort testSK;
-
-            if (!dictionary.ContainsKey("statstring") || !dictionary.ContainsKey("locstring") || !dictionary.ContainsKey("sesskey"))
-                return;
-
-            if (!ushort.TryParse(dictionary["sesskey"], out testSK))
-                return; // Invalid session key
-
-            if (testSK != SessionKey)
-                return; // Are you trying to update another user?
-
-            PlayerInfo.PlayerStatusString = dictionary["statstring"];
-            PlayerInfo.PlayerLocation = dictionary["locstring"];
-
-            OnStatusChanged?.Invoke(this);
-        }
 
         /// <summary>
         /// Event fired when the stream disconnects unexpectedly
@@ -344,294 +324,14 @@ namespace RetroSpyServer.Servers.GPCM
 
 
 
-        /// <summary>
-        /// This method verifies the login information sent by
-        /// the client, and returns encrypted data for the client
-        /// to verify as well
-        /// </summary>
-        public void ProcessLogin(Dictionary<string, string> Recv)
-        {
-            uint partnerID = 0;
-
-            // Make sure we have all the required data to process this login
-            if (!Recv.ContainsKey("challenge") || !Recv.ContainsKey("response"))
-            {
-                GamespyUtils.SendGPError(Stream, GPErrorCode.General, "Invalid response received from the client!");
-                Disconnect(DisconnectReason.InvalidLoginQuery);
-                return;
-            }
-
-            // Parse the partnerid, required since it changes the challenge for Unique nick and User login
-            if (Recv.ContainsKey("partnerid"))
-            {
-                if (!uint.TryParse(Recv["partnerid"], out partnerID))
-                    partnerID = 0;
-            }
-
-            // Parse the 3 login types information
-            if (Recv.ContainsKey("uniquenick"))
-            {
-                PlayerInfo.PlayerUniqueNick = Recv["uniquenick"];
-            }
-            else if (Recv.ContainsKey("authtoken"))
-            {
-                PlayerInfo.PlayerAuthToken = Recv["authtoken"];
-            }
-            else if (Recv.ContainsKey("user"))
-            {
-                // "User" is <nickname>@<email>
-                string User = Recv["user"];
-                int Pos = User.IndexOf('@');
-                PlayerInfo.PlayerNick = User.Substring(0, Pos);
-                PlayerInfo.PlayerEmail = User.Substring(Pos + 1);
-            }
-
-            // Dispose connection after use
-            try
-            {
-                // Try and fetch the user from the database
-                Dictionary<string, object> queryResult;
-
-                try
-                {
-                    if (PlayerInfo.PlayerUniqueNick.Length > 0)
-                        queryResult = GPCMHelper.DBQuery.GetUserFromUniqueNick(PlayerInfo.PlayerUniqueNick);
-                    else if (PlayerInfo.PlayerAuthToken.Length > 0)
-                    {
-                        //TODO! Add the database entry
-                        GamespyUtils.SendGPError(Stream, GPErrorCode.General, "AuthToken is not supported yet");
-                        return;
-                    }
-                    else
-                        queryResult = GPCMHelper.DBQuery.GetUserFromNickname(PlayerInfo.PlayerEmail, PlayerInfo.PlayerNick);
-                }
-                catch (Exception ex)
-                {
-                    LogWriter.Log.WriteException(ex);
-                    GamespyUtils.SendGPError(Stream, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
-                    return;
-                }
-
-                if (queryResult == null)
-                {
-                    if (PlayerInfo.PlayerUniqueNick.Length > 0)
-                        GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "The uniquenick provided is incorrect!");
-                    else
-                        GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "The nick provided is incorrect!");
-
-                    Disconnect(DisconnectReason.InvalidUsername);
-                    return;
-                }
-
-                // Check if user is banned
-                PlayerStatus currentPlayerStatus;
-                UserStatus currentUserStatus;
-
-                if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
-                {
-                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
-                    Disconnect(DisconnectReason.InvalidPlayer);
-                    return;
-                }
-
-                if (!Enum.TryParse(queryResult["userstatus"].ToString(), out currentUserStatus))
-                {
-                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
-                    Disconnect(DisconnectReason.InvalidPlayer);
-                    return;
-                }
-
-                // Check the status of the account.
-                // If the single profile is banned, the account or the player status
-
-                if (currentPlayerStatus == PlayerStatus.Banned)
-                {
-                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Your profile has been permanently suspended.");
-                    Disconnect(DisconnectReason.PlayerIsBanned);
-                    return;
-                }
-
-                if (currentUserStatus == UserStatus.Created)
-                {
-                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Your account is not verified. Please check your email inbox and verify the account.");
-                    Disconnect(DisconnectReason.PlayerIsBanned);
-                    return;
-                }
-
-                if (currentUserStatus == UserStatus.Banned)
-                {
-                    GamespyUtils.SendGPError(Stream, GPErrorCode.LoginBadUniquenick, "Your account has been permanently suspended.");
-                    Disconnect(DisconnectReason.PlayerIsBanned);
-                    return;
-                }
-
-                // Set player variables
-                PlayerInfo.PlayerId = uint.Parse(queryResult["profileid"].ToString());
-                PlayerInfo.PasswordHash = queryResult["password"].ToString().ToLowerInvariant();
-                PlayerInfo.PlayerCountryCode = queryResult["countrycode"].ToString();
-
-                PlayerInfo.PlayerFirstName = queryResult["firstname"].ToString();
-                PlayerInfo.PlayerLastName = queryResult["lastname"].ToString();
-                PlayerInfo.PlayerICQ = int.Parse(queryResult["icq"].ToString());
-                PlayerInfo.PlayerHomepage = queryResult["homepage"].ToString();
-                PlayerInfo.PlayerZIPCode = queryResult["zipcode"].ToString();
-                PlayerInfo.PlayerLocation = queryResult["location"].ToString();
-                PlayerInfo.PlayerAim = queryResult["aim"].ToString();
-                PlayerInfo.PlayerOwnership = int.Parse(queryResult["ownership1"].ToString());
-                PlayerInfo.PlayerOccupation = int.Parse(queryResult["occupationid"].ToString());
-                PlayerInfo.PlayerIndustryID = int.Parse(queryResult["industryid"].ToString());
-                PlayerInfo.PlayerIncomeID = int.Parse(queryResult["incomeid"].ToString());
-                PlayerInfo.PlayerMarried = int.Parse(queryResult["marriedid"].ToString());
-                PlayerInfo.PlayerChildCount = int.Parse(queryResult["childcount"].ToString());
-                PlayerInfo.PlayerConnectionType = int.Parse(queryResult["connectiontype"].ToString());
-                PlayerInfo.PlayerPicture = int.Parse(queryResult["picture"].ToString());
-                PlayerInfo.PlayerInterests = int.Parse(queryResult["interests1"].ToString());
-                PlayerInfo.PlayerBirthday = ushort.Parse(queryResult["birthday"].ToString());
-                PlayerInfo.PlayerBirthmonth = ushort.Parse(queryResult["birthmonth"].ToString());
-                PlayerInfo.PlayerBirthyear = ushort.Parse(queryResult["birthyear"].ToString());
-
-                PlayerSexType playerSexType;
-                if (!Enum.TryParse(queryResult["sex"].ToString().ToUpper(), out playerSexType))
-                    PlayerInfo.PlayerSex = PlayerSexType.PAT;
-                else
-                    PlayerInfo.PlayerSex = playerSexType;
-
-                PlayerInfo.PlayerLatitude = float.Parse(queryResult["latitude"].ToString());
-                PlayerInfo.PlayerLongitude = float.Parse(queryResult["longitude"].ToString());
-
-                PublicMasks mask;
-                if (!Enum.TryParse(queryResult["publicmask"].ToString(), out mask))
-                    PlayerInfo.PlayerPublicMask = PublicMasks.MASK_ALL;
-                else
-                    PlayerInfo.PlayerPublicMask = mask;
-
-                string challengeData = "";
-
-                if (PlayerInfo.PlayerUniqueNick.Length > 0)
-                {
-                    PlayerInfo.PlayerEmail = queryResult["email"].ToString();
-                    PlayerInfo.PlayerNick = queryResult["nick"].ToString();
-                    challengeData = PlayerInfo.PlayerUniqueNick;
-                }
-                else if (PlayerInfo.PlayerAuthToken.Length > 0)
-                {
-                    PlayerInfo.PlayerEmail = queryResult["email"].ToString();
-                    PlayerInfo.PlayerNick = queryResult["nick"].ToString();
-                    PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
-                    challengeData = PlayerInfo.PlayerAuthToken;
-                }
-                else
-                {
-                    PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
-                    challengeData = Recv["user"];
-                }
-
-                // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                if (Recv["response"] == GenerateProof(Recv["challenge"], ServerChallengeKey, challengeData, PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID))
-                {
-                    // Create session key
-                    SessionKey = Crc.ComputeChecksum(PlayerInfo.PlayerUniqueNick);
-
-                    // Password is correct
-                    Stream.SendAsync(
-                        @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
-                        SessionKey,
-                        GenerateProof(ServerChallengeKey, Recv["challenge"], challengeData, PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID), // Do this again, Params are reversed!
-                        PlayerInfo.PlayerId,
-                        PlayerInfo.PlayerNick,
-                        GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
-                    );
-
-                    // Log Incoming Connections
-                    //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] {1} - {2} - {3}", Stream.ServerName, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
-                    Stream.ToLog(LogLevel.Info, "Login", "Success", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
-                    // Update status last, and call success login
-                    PlayerInfo.LoginStatus = LoginStatus.Completed;
-                    PlayerInfo.PlayerStatus = PlayerStatus.Online;
-                    PlayerInfo.PlayerStatusString = "Online";
-                    PlayerInfo.PlayerStatusLocation = "";
-
-                    CompletedLoginProcess = true;
-                    OnSuccessfulLogin?.Invoke(this);
-                    OnStatusChanged?.Invoke(this);
-                    GPCMHelper.SendBuddies(this);
-                }
-                else
-                {
-                    // Log Incoming Connections
-                    //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] Failed: {1} - {2} - {3}", Stream.ServerName, PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
-                    Stream.ToLog(LogLevel.Info, "Login", "Failed", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
-                    // Password is incorrect with database value
-                    Stream.SendAsync(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
-                    Disconnect(DisconnectReason.InvalidPassword);
-                }
-            }
-            catch (Exception ex)
-            {
-                LogWriter.Log.Write(ex.ToString(), LogLevel.Error);
-                Disconnect(DisconnectReason.GeneralError);
-                return;
-            }
-        }
-
+      
 
         #endregion Steps
 
-                    
-
-        /// <summary>
-        /// Polls the connection, and checks for drops
-        /// </summary>
-        public void SendKeepAlive()
-        {
-            if (PlayerInfo.LoginStatus == LoginStatus.Completed)
-            {
-                // Try and send a Keep-Alive
-                try
-                {
-                    Stream.SendAsync(@"\ka\\final\");
-                }
-                catch
-                {
-                    Disconnect(DisconnectReason.KeepAliveFailed);
-                }
-            }
-        }
+                          
 
 
-
-        #region Misc Methods
-
-        /// <summary>
-        /// Generates an MD5 hash, which is used to verify the clients login information
-        /// </summary>
-        /// <param name="challenge1">First challenge key</param>
-        /// <param name="challenge2">Second challenge key</param>
-        /// <param name="userdata">The user data to append to the proof</param>
-        /// <param name="partnerid">The partnerid to append</param>
-        /// <returns>
-        ///     The proof verification MD5 hash string that can be compared to what the client sends,
-        ///     to verify that the users entered password matches the specific user data in the database.
-        /// </returns>
-        private string GenerateProof(string challenge1, string challenge2, string userdata, uint partnerid)
-        {
-            string realUserData = userdata;
-
-            if (partnerid != (uint)PartnerID.Gamespy)
-            {
-                realUserData = string.Format("{0}@{1}", partnerid, userdata);
-            }
-
-            // Generate our string to be hashed
-            StringBuilder HashString = new StringBuilder(PlayerInfo.PasswordHash);
-            HashString.Append(' ', 48); // 48 spaces
-            HashString.Append(realUserData);
-            HashString.Append(challenge1);
-            HashString.Append(challenge2);
-            HashString.Append(PlayerInfo.PasswordHash);
-            return HashString.ToString().GetMD5Hash();
-        }
-
+        
 
         public bool Equals(GPCMClient other)
         {
@@ -648,6 +348,6 @@ namespace RetroSpyServer.Servers.GPCM
         {
             return (int)PlayerInfo.PlayerId;
         }
-        #endregion
+ 
     }
 }
