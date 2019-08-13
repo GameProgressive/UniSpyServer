@@ -51,6 +51,7 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                 null, // Birthyear
                 null  // ProfileID
             };
+            
 
             if (dict.ContainsKey("publicmask"))
             {
@@ -68,6 +69,7 @@ namespace RetroSpyServer.Servers.GPCM.Handler
 
             if (dict.ContainsKey("firstname"))
             {
+              
                 if (dict["firstname"] != client.PlayerInfo.PlayerFirstName)
                 {
                     query += ", firstname=@P1";
@@ -121,15 +123,15 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                 }
             }
 
-            if (dict.ContainsKey("countrycode"))
-            {
-                if (dict["countrycode"] != client.PlayerInfo.PlayerCountryCode)
-                {
-                    query += ", countrycode=@P6";
-                    client.PlayerInfo.PlayerCountryCode = dict["zipcode"];
-                    passData[6] = client.PlayerInfo.PlayerCountryCode;
-                }
-            }
+            //if (dict.ContainsKey("countrycode"))
+            //{
+            //    if (dict["countrycode"] != client.PlayerInfo.PlayerCountryCode)
+            //    {
+            //        query += ", countrycode=@P6";
+            //        client.PlayerInfo.PlayerCountryCode = dict["zipcode"];
+            //        passData[6] = client.PlayerInfo.PlayerCountryCode;
+            //    }
+            //}
 
             if (dict.ContainsKey("birthday"))
             {
@@ -165,13 +167,15 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                     }
                 }
 
-
-                if (dict["countrycode"] != client.PlayerInfo.PlayerCountryCode)
+                if (dict.ContainsKey("countrycode"))
                 {
-                    query += ", countrycode=@P7";
-                    client.PlayerInfo.PlayerCountryCode = dict["zipcode"];
-                    passData[7] = client.PlayerInfo.PlayerCountryCode;
-                }
+                    if (dict["countrycode"] != client.PlayerInfo.PlayerCountryCode)
+                    {
+                        query += ", countrycode=@P7";
+                        client.PlayerInfo.PlayerCountryCode = dict["zipcode"];
+                        passData[7] = client.PlayerInfo.PlayerCountryCode;
+                    }
+                }                
             }
 
 

@@ -76,8 +76,8 @@ namespace RetroSpyServer.Servers.GPCM
             @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
             );*/
 
-            client.Stream.SendAsync(@"\bdy\0\list\\final\");
-
+            //client.Stream.SendAsync(@"\bdy\0\list\\final\");
+            client.Stream.SendAsync(@"\bdy\1\list\2,\final\");
             client.BuddiesSent = true;
         }
 

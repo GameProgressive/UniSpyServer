@@ -1,8 +1,8 @@
 -- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               10.3.12-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win64
--- HeidiSQL Version:             9.4.0.5125
+-- 主机:                           127.0.0.1
+-- 服务器版本:                        10.3.12-MariaDB - mariadb.org binary distribution
+-- 服务器操作系统:                      Win64
+-- HeidiSQL 版本:                  9.4.0.5125
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -12,11 +12,11 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Dumping database structure for retrospy
+-- 导出 retrospy 的数据库结构
 CREATE DATABASE IF NOT EXISTS `retrospy` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `retrospy`;
 
--- Dumping structure for table retrospy.addrequests
+-- 导出  表 retrospy.addrequests 结构
 CREATE TABLE IF NOT EXISTS `addrequests` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(10) unsigned NOT NULL DEFAULT 0,
@@ -31,11 +31,11 @@ CREATE TABLE IF NOT EXISTS `addrequests` (
   CONSTRAINT `FK_addrequests_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy.addrequests: ~0 rows (approximately)
+-- 正在导出表  retrospy.addrequests 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `addrequests` DISABLE KEYS */;
 /*!40000 ALTER TABLE `addrequests` ENABLE KEYS */;
 
--- Dumping structure for table retrospy.blocked
+-- 导出  表 retrospy.blocked 结构
 CREATE TABLE IF NOT EXISTS `blocked` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `targetid` int(10) unsigned NOT NULL,
@@ -48,11 +48,11 @@ CREATE TABLE IF NOT EXISTS `blocked` (
   CONSTRAINT `FK_blocked_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy.blocked: ~0 rows (approximately)
+-- 正在导出表  retrospy.blocked 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `blocked` DISABLE KEYS */;
 /*!40000 ALTER TABLE `blocked` ENABLE KEYS */;
 
--- Dumping structure for table retrospy.friends
+-- 导出  表 retrospy.friends 结构
 CREATE TABLE IF NOT EXISTS `friends` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(10) unsigned NOT NULL DEFAULT 0,
@@ -65,11 +65,11 @@ CREATE TABLE IF NOT EXISTS `friends` (
   CONSTRAINT `FK_friends_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy.friends: ~0 rows (approximately)
+-- 正在导出表  retrospy.friends 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `friends` DISABLE KEYS */;
 /*!40000 ALTER TABLE `friends` ENABLE KEYS */;
 
--- Dumping structure for table retrospy.games
+-- 导出  表 retrospy.games 结构
 CREATE TABLE IF NOT EXISTS `games` (
   `id` int(11) NOT NULL,
   `gamename` text NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
--- Dumping data for table retrospy.games: 2,799 rows
+-- 正在导出表  retrospy.games 的数据：2,799 rows
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
 INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, `backendflags`, `disabledservices`, `keylist`, `keytypelist`) VALUES
 	(2, 'blood2', 'jUOF0p', 'Blood II', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
@@ -2887,7 +2887,7 @@ INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, 
 	(1, 'bgate', '2ozFrM', 'Baldur\'s Gate', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1');
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 
--- Dumping structure for table retrospy.gamestatus
+-- 导出  表 retrospy.gamestatus 结构
 CREATE TABLE IF NOT EXISTS `gamestatus` (
   `id` int(3) NOT NULL AUTO_INCREMENT,
   `gamename` varchar(30) NOT NULL,
@@ -2901,11 +2901,11 @@ CREATE TABLE IF NOT EXISTS `gamestatus` (
   KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Dumping data for table retrospy.gamestatus: ~0 rows (approximately)
+-- 正在导出表  retrospy.gamestatus 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `gamestatus` DISABLE KEYS */;
 /*!40000 ALTER TABLE `gamestatus` ENABLE KEYS */;
 
--- Dumping structure for table retrospy.grouplist
+-- 导出  表 retrospy.grouplist 结构
 CREATE TABLE IF NOT EXISTS `grouplist` (
   `gameid` int(11) NOT NULL,
   `groupid` int(11) NOT NULL AUTO_INCREMENT,
@@ -2920,7 +2920,7 @@ CREATE TABLE IF NOT EXISTS `grouplist` (
   PRIMARY KEY (`groupid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2400 DEFAULT CHARSET=latin1;
 
--- Dumping data for table retrospy.grouplist: 1,691 rows
+-- 正在导出表  retrospy.grouplist 的数据：1,691 rows
 /*!40000 ALTER TABLE `grouplist` DISABLE KEYS */;
 INSERT INTO `grouplist` (`gameid`, `groupid`, `maxwaiting`, `name`, `numplayers`, `numservers`, `numwaiting`, `other`, `password`, `updatetime`) VALUES
 	(0, 1369, 100, 'TestGroupRoom', 0, 0, 0, '\\test\\4', 0, 0),
@@ -4616,7 +4616,7 @@ INSERT INTO `grouplist` (`gameid`, `groupid`, `maxwaiting`, `name`, `numplayers`
 	(1003, 2399, 600, 'Lobby 2', 0, 0, 0, '\\minrating\\0\\maxrating\\10000\\maxplayers\\600\\neversoft\\0', 0, 0);
 /*!40000 ALTER TABLE `grouplist` ENABLE KEYS */;
 
--- Dumping structure for table retrospy.messages
+-- 导出  表 retrospy.messages 结构
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `from` int(10) unsigned NOT NULL,
@@ -4631,15 +4631,30 @@ CREATE TABLE IF NOT EXISTS `messages` (
   CONSTRAINT `FK_messages_profiles_2` FOREIGN KEY (`to`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy.messages: ~0 rows (approximately)
+-- 正在导出表  retrospy.messages 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 
--- Dumping structure for table retrospy.profiles
+-- 导出  表 retrospy.namespace 结构
+CREATE TABLE IF NOT EXISTS `namespace` (
+  `profileid` int(11) unsigned NOT NULL,
+  `namespaceid` int(11) unsigned NOT NULL,
+  `partnerid` int(11) unsigned NOT NULL,
+  `uniquenick` varchar(50) DEFAULT NULL,
+  KEY `FK1_profile_profileid` (`profileid`),
+  CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- 正在导出表  retrospy.namespace 的数据：~0 rows (大约)
+/*!40000 ALTER TABLE `namespace` DISABLE KEYS */;
+INSERT INTO `namespace` (`profileid`, `namespaceid`, `partnerid`, `uniquenick`) VALUES
+	(1, 1, 0, 'spyguy');
+/*!40000 ALTER TABLE `namespace` ENABLE KEYS */;
+
+-- 导出  表 retrospy.profiles 结构
 CREATE TABLE IF NOT EXISTS `profiles` (
   `profileid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(11) unsigned NOT NULL DEFAULT 0,
-  `uniquenick` varchar(20) NOT NULL DEFAULT '',
   `nick` varchar(30) NOT NULL DEFAULT '',
   `firstname` varchar(30) NOT NULL DEFAULT '',
   `lastname` varchar(30) NOT NULL DEFAULT '',
@@ -4670,18 +4685,17 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `lastonline` int(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`profileid`) USING BTREE,
   UNIQUE KEY `profileid` (`profileid`) USING BTREE,
-  UNIQUE KEY `uniquenick` (`uniquenick`) USING BTREE,
   KEY `FK_profiles_users` (`userid`) USING BTREE,
   CONSTRAINT `FK_profiles_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy.profiles: ~1 rows (approximately)
+-- 正在导出表  retrospy.profiles 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` (`profileid`, `userid`, `uniquenick`, `nick`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`, `status`, `lastip`, `lastonline`) VALUES
-	(1, 1, 'SpyGuy', 'SpyGuy', 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 0, '127.0.0.1', 1562442207);
+INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`, `status`, `lastip`, `lastonline`) VALUES
+	(1, 1, 'retrospy', 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 0, '127.0.0.1', 1562442207);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 
--- Dumping structure for table retrospy.users
+-- 导出  表 retrospy.users 结构
 CREATE TABLE IF NOT EXISTS `users` (
   `userid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
@@ -4707,7 +4721,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `userid` (`userid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy.users: ~1 rows (approximately)
+-- 正在导出表  retrospy.users 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`userid`, `email`, `password`, `userstatus`, `createddate`, `useddate`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `emailverified`, `adminrights`, `deleted`) VALUES
 	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9', 1, '2019-08-11 09:07:27', '0000-00-00 00:00:00', '0', '0', '0', 0, 0, 0, '0', 0, '0', 0, 0, 0, 0, 0);

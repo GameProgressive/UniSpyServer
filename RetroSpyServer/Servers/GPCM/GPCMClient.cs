@@ -52,7 +52,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <summary>
         /// The users session key
         /// </summary>
-        public ushort SessionKey {get; set;}
+        public ushort SessionKey { get; set; }
 
 
         /// <summary>
@@ -114,8 +114,8 @@ namespace RetroSpyServer.Servers.GPCM
 
         public GPCMPlayerInfo PlayerInfo { get; protected set; }
 
-        
-        
+
+
         #endregion Variables
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace RetroSpyServer.Servers.GPCM
         /// <param name="ReadArgs">The Tcp Client connection</param>
         public GPCMClient(TcpStream ConnectionStream, long ConnectionId)
         {
-           
+
             PlayerInfo = new GPCMPlayerInfo();
 
             RemoteEndPoint = (IPEndPoint)ConnectionStream.RemoteEndPoint;
@@ -170,7 +170,7 @@ namespace RetroSpyServer.Servers.GPCM
                 Disconnect(DisconnectReason.ClientChallengeAlreadySent);
 
                 // Throw the error                
-                LogWriter.Log.Write("The server challenge has already been sent. Cannot send another login challenge.",LogLevel.Warning);    
+                LogWriter.Log.Write("The server challenge has already been sent. Cannot send another login challenge.", LogLevel.Warning);
 
             }
 
@@ -212,26 +212,31 @@ namespace RetroSpyServer.Servers.GPCM
             {
                 if (reason == DisconnectReason.NormalLogout)
                 {
-                    LogWriter.Log.Write(
-                        LogLevel.Info,
-                        "{0,-8} [Logout] {1} - {2} - {3}",
-                        Stream.ServerName,
-                        PlayerInfo.PlayerNick,
-                        PlayerInfo.PlayerId,
-                        RemoteEndPoint
-                    );
+                    Stream.ToLog(LogLevel.Info, "Logout", "", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
+                    //LogWriter.Log.Write(
+                    //    LogLevel.Info,
+                    //    "{0,-8} [Logout] {1} - {2} - {3}",
+                    //    Stream.ServerName,
+
+                    //);
                 }
                 else if (reason != DisconnectReason.ForcedServerShutdown)
                 {
-                    LogWriter.Log.Write(
+                    Stream.ToLog(
                         LogLevel.Info,
-                        "{0,-8} [Disconnected] {1} - {2} - {3}, Code={4}",
-                        Stream.ServerName,
+                        "Disconnected", "",
+                        "{0} - {1} - {2}, Code={3}",
                         PlayerInfo.PlayerNick,
                         PlayerInfo.PlayerId,
                         RemoteEndPoint,
-                        Enum.GetName(typeof(DisconnectReason), reason)                        
-                    );
+                        Enum.GetName(typeof(DisconnectReason), reason));
+
+                    //LogWriter.Log.Write(
+                    //    LogLevel.Info,
+                    //    "{0,-8} [Disconnected] {1} - {2} - {3}, Code={4}",
+                    //    Stream.ServerName,
+
+                    //);
                 }
             }
 
@@ -251,7 +256,7 @@ namespace RetroSpyServer.Servers.GPCM
             if (message.EndsWith("\\final\\"))
                 return true;
             else
-            return false;
+                return false;
         }
 
         /// <summary>
@@ -262,7 +267,7 @@ namespace RetroSpyServer.Servers.GPCM
         {
             if (message[0] != '\\')
             {
-                GamespyUtils.SendGPError(Stream,GPErrorCode.General, "An invalid request was sended.");
+                GamespyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
                 return;
             }
 
@@ -279,13 +284,19 @@ namespace RetroSpyServer.Servers.GPCM
                 switch (recieved[0])
                 {
                     case "inviteto":
-                        InviteToHandler.AddProducts(this,dict);
-                        break;                    
+                        InviteToHandler.AddProducts(this, dict);
+                        break;
                     case "login":
-                        LoginHandler.ProcessLogin(this,dict,OnSuccessfulLogin,OnStatusChanged);
+                        LoginHandler.ProcessLogin(this, dict, OnSuccessfulLogin, OnStatusChanged);
                         break;
                     case "getprofile":
-                        GetProfileHandler.SendProfile(this,dict);
+                        GetProfileHandler.SendProfile(this, dict);
+                        break;
+                    case "addbuddy":
+                        AddBuddyHandler.Addfriends(this, dict);
+                        break;
+                    case "updateui":
+                        UpdateUiHandler.UpdateUi(this, dict);
                         break;
                     case "updatepro":
                         UpdateProHandler.UpdateUser(this, dict);
@@ -307,9 +318,6 @@ namespace RetroSpyServer.Servers.GPCM
             }
         }
 
-
-
-
         /// <summary>
         /// Event fired when the stream disconnects unexpectedly
         /// </summary>
@@ -324,14 +332,14 @@ namespace RetroSpyServer.Servers.GPCM
 
 
 
-      
+
 
         #endregion Steps
 
-                          
 
 
-        
+
+
 
         public bool Equals(GPCMClient other)
         {
@@ -348,6 +356,6 @@ namespace RetroSpyServer.Servers.GPCM
         {
             return (int)PlayerInfo.PlayerId;
         }
- 
+
     }
 }
