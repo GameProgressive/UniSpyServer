@@ -6,7 +6,6 @@ using RetroSpyServer.Servers.GPCM.Enumerator;
 using RetroSpyServer.Servers.GPSP.Enumerators;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace RetroSpyServer.Servers.GPCM.Handler
 {
@@ -141,7 +140,6 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                 client.PlayerInfo.PlayerId = uint.Parse(queryResult["profileid"].ToString());
                 client.PlayerInfo.PasswordHash = queryResult["password"].ToString().ToLowerInvariant();
                 client.PlayerInfo.PlayerCountryCode = queryResult["countrycode"].ToString();
-
                 client.PlayerInfo.PlayerFirstName = queryResult["firstname"].ToString();
                 client.PlayerInfo.PlayerLastName = queryResult["lastname"].ToString();
                 client.PlayerInfo.PlayerICQ = int.Parse(queryResult["icq"].ToString());
@@ -199,7 +197,7 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                 }
 
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                if (Recv["response"] == GPCMHelper.GenerateProof(Recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
+                if (Recv["response"] == GPCMHandler.GenerateProof(Recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
                 {
                     // Create session key
                     client.SessionKey = Crc.ComputeChecksum(client.PlayerInfo.PlayerUniqueNick);
@@ -208,7 +206,7 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                     client.Stream.SendAsync(
                         @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         client.SessionKey,
-                        GPCMHelper.GenerateProof(client.ServerChallengeKey, Recv["challenge"], challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo), // Do this again, Params are reversed!
+                        GPCMHandler.GenerateProof(client.ServerChallengeKey, Recv["challenge"], challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo), // Do this again, Params are reversed!
                         client.PlayerInfo.PlayerId,
                         client.PlayerInfo.PlayerNick,
                         GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
@@ -226,7 +224,7 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                     client.CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(client);
                     OnStatusChanged?.Invoke(client);
-                    GPCMHelper.SendBuddies(client);
+                    GPCMHandler.SendBuddies(client);
                 }
                 else
                 {

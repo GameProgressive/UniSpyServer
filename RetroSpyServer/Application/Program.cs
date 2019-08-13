@@ -35,7 +35,11 @@ namespace RetroSpyServer
         {
             if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
 
-            bool bool_ConsoleInput = false, bool_InitPathArg = false; // Whether inputed args
+            //you can choose whether accept command input.
+            bool IsConsoleInputAvailable = false;
+            // Whether accept  args input.
+            bool IsInitPathArgAvailable = false; 
+
             string logPath;
             Console.Title = "RetroSpy Server " + version;
             BasePath = AppDomain.CurrentDomain.BaseDirectory;
@@ -50,11 +54,11 @@ namespace RetroSpyServer
             // Argument switcher
             foreach (var argument in args)
             {
-                if (bool_InitPathArg)
+                if (IsInitPathArgAvailable)
 
                 {
                     BasePath = argument;
-                    bool_InitPathArg = false;
+                    IsInitPathArgAvailable = false;
                 }
                 else if (argument == "--help")
                 {
@@ -68,16 +72,16 @@ namespace RetroSpyServer
                     return;
                 }
                 else if (argument == "--no-cli-input")
-                    bool_ConsoleInput = false;
+                    IsConsoleInputAvailable = false;
                 else if (argument == "--init-path")
-                    bool_InitPathArg = true;
+                    IsInitPathArgAvailable = true;
                 else
                 {
                     Console.WriteLine("Unknown argument {0}", argument);
                 }
             }
 
-            if (bool_InitPathArg)
+            if (IsInitPathArgAvailable)
             {
                 Console.WriteLine("The argument \"--init-path\" requires an argument!");
                 return;
@@ -113,51 +117,54 @@ namespace RetroSpyServer
                 LogWriter.Log.MiniumLogLevel = ConfigManager.xmlConfiguration.LogLevel;
                 //create a instance of ServerManager class
                 manager = new ServerManager();
-
-                LogWriter.Log.Write("Servers are successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
-                
                 IsRunning = true;
-
-                //Read key from console
-                while (IsRunning)
-                {
-                    // Process console commands
-                    //if (bool_ConsoleInput)
-                    //{
-                        string input = Console.ReadLine();
-                        switch (input)
-                        {
-                            case "exit":
-                                manager.StopAllServers();
-                                IsRunning = false;
-                                break;
-                            case "help":
-                                Console.WriteLine("--exit \t shutdown all servers and exit the RetroSpy emulator\n" +
-                                                               "other features are comming soon..\n");
-                                break;
-                            default:
-                                Console.WriteLine("Unknown command!");
-                                break;
-                        }
-                    }                
             }
             catch (Exception e)
             {
                 LogWriter.Log.WriteException(e);
             }
 
+            if (IsConsoleInputAvailable)
+            {
+                LogWriter.Log.Write("Servers are successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
+                //Read key from console
+                while (IsRunning)
+                {
+                    // Process console commands
+                    //if (bool_ConsoleInput)
+                    //{
+                    string input = Console.ReadLine();
+                    switch (input)
+                    {
+                        case "exit":
+                            manager.StopAllServers();
+                            IsRunning = false;
+                            break;
+                        case "help":
+                            Console.WriteLine("--exit \t shutdown all servers and exit the RetroSpy emulator\n" +
+                                                           "other features are comming soon..\n");
+                            break;
+                        default:
+                            Console.WriteLine("Unknown command!");
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                // Pauses the screen
+                LogWriter.Log.Write("Servers are successfully started! ", LogLevel.Info);
+                Console.WriteLine("Press ENTER to exit...");
+                Console.ReadKey();
+            }
             #region Program Dispose
             LogWriter.Log.Write("Goodbye!", LogLevel.Info);
             manager?.Dispose();
             LogWriter.Log.Dispose();
             #endregion
 
-            // Pauses the screen
-            if (bool_ConsoleInput)
-            {
-                Console.WriteLine("Press ENTER to exit...");
-                Console.ReadKey();
-            }
+     
+
         }        
     }
 }
