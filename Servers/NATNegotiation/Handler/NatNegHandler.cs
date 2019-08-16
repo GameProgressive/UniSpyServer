@@ -1,10 +1,11 @@
 ﻿using GameSpyLib.Network;
 using GameSpyLib.Logging;
 using RetroSpyServer.Servers.NatNeg.Structures;
-using RetroSpyServer.Servers.NatNeg.Enumerators;
+using NATNegotiation.Enumerator;
 using System;
+using NATNegotiation.Structure;
 
-namespace RetroSpyServer.Servers.NatNeg
+namespace NATNegotiation
 {
     public class NatNegHandler
     {

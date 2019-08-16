@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using RetroSpyServer.Servers.NatNeg.Enumerators;
 using System.Threading.Tasks;
 
-namespace RetroSpyServer.Servers.NatNeg
+namespace NATNegotiation
 {
     public class NatNegServer : UdpServer
     {

@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using System.IO;
 using GameSpyLib.Logging;
-using RetroSpyServer.Servers;
-using RetroSpyServer.XMLConfig;
+using GameSpyLib.XMLConfig;
+using Chat;
 
 namespace RetroSpyServer
 {

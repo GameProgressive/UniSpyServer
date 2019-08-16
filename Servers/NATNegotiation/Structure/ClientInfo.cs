@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace RetroSpyServer.Servers.NatNeg
+namespace NATNegotiation.Structure
 {
     public class ClientInfo
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RetroSpyServer.Servers.NatNeg.Enumerators
+namespace NATNegotiation.Enumerator
 {
 
     public enum NatPacketType : byte

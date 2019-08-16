@@ -2,9 +2,9 @@
 using System.Net;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using RetroSpyServer.XMLConfig;
+using GameSpyLib.XMLConfig;
 
-namespace RetroSpyServer.Servers
+namespace NATNegotiation
 {
     /// <summary>
     /// A factory that create the instance of servers
@@ -13,20 +13,9 @@ namespace RetroSpyServer.Servers
     {
         private DatabaseDriver databaseDriver = null;
 
-        private GPSP.GPSPServer gpspServer = null;
-
-        private GPCM.GPCMServer gpcmServer = null;
-
-        private CDKey.CDKeyServer cdkeyServer = null;
-
-        private ServerBrowser.SBServer sbServer = null;
-
-        private QueryReport.QRServer qrServer = null;
-
         private NatNeg.NatNegServer nnServer = null;
 
-        private Stats.GStatsServer statsServer = null;
-        private PeerChat.ChatServer peerChatServer = null;
+        
 
         /// <summary>
         /// Constructor

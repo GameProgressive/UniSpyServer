@@ -9,8 +9,4 @@
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handler\" />
-  </ItemGroup>
-
 </Project>

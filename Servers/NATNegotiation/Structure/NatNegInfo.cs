@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RetroSpyServer.Servers.NatNeg.Structures
+namespace NATNegotiation.Structure
 {
     public static class NatNegInfo
     {
