@@ -1,12 +1,11 @@
-﻿using System;
-using System.Net;
+﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using GameSpyLib.Database;
-using GameSpyLib.Logging;
+using NATNegotiation.Enumerator;
+using NATNegotiation.Structure;
 using RetroSpyServer.Servers.NatNeg.Structures;
-using System.Net.Sockets;
+using System;
 using System.Collections.Generic;
-using RetroSpyServer.Servers.NatNeg.Enumerators;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace NATNegotiation

@@ -3,9 +3,7 @@ using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Threading;
 
 namespace StatsAndTracking
@@ -38,7 +36,7 @@ namespace StatsAndTracking
         /// </param>
         public GStatsServer(string serverName,DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
-            GStatsHelper.DBQuery = new DBQueries.GSTATSDBQuery(databaseDriver);
+            GStatsHandler.DBQuery = new GSTATSDBQuery(databaseDriver);
 
             // Begin accepting connections
             StartAcceptAsync();
@@ -66,7 +64,7 @@ namespace StatsAndTracking
             // Shutdown the listener socket
             ShutdownSocket();
 
-            GStatsHelper.DBQuery.Dispose();
+            GStatsHandler.DBQuery.Dispose();
 
             // Tell the base to dispose all free objects
             Dispose();

@@ -1,6 +1,7 @@
-﻿using RetroSpyServer.Servers.NatNeg.Enumerators;
-using System;
+﻿using System;
 using GameSpyLib.Extensions;
+using NATNegotiation.Enumerator;
+using NATNegotiation.Structure;
 
 namespace RetroSpyServer.Servers.NatNeg.Structures
 {
