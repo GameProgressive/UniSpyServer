@@ -2,8 +2,8 @@
 using System.Runtime.InteropServices;
 using System.IO;
 using GameSpyLib.Logging;
-using RetroSpyServer.Servers;
-using RetroSpyServer.XMLConfig;
+using PresenceConnectionManager;
+using GameSpyLib.XMLConfig;
 
 namespace RetroSpyServer
 {
@@ -38,7 +38,7 @@ namespace RetroSpyServer
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;
             // Whether accept  args input.
-            bool IsInitPathArgAvailable = false; 
+            bool IsInitPathArgAvailable = false;
 
             string logPath;
             Console.Title = "RetroSpy Server " + version;
@@ -101,7 +101,7 @@ namespace RetroSpyServer
 
             LogWriter.Log = new LogWriter(string.Format(Path.Combine(logPath, "retrospy_{0}.log"), DateTime.Now.ToString("yyyy-MM-dd__HH_mm_ss")));
 
-            Console.WriteLine("\t"+  @"  ___     _           ___             ___                      ");
+            Console.WriteLine("\t" + @"  ___     _           ___             ___                      ");
             Console.WriteLine("\t" + @" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
             Console.WriteLine("\t" + @" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
             Console.WriteLine("\t" + @" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
@@ -163,8 +163,8 @@ namespace RetroSpyServer
             LogWriter.Log.Dispose();
             #endregion
 
-     
 
-        }        
+
+        }
     }
 }

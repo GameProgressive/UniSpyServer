@@ -2,10 +2,8 @@
 using System.Runtime.InteropServices;
 using System.IO;
 using GameSpyLib.Logging;
-using RetroSpyServer.Servers;
-using RetroSpyServer.XMLConfig;
-
-namespace RetroSpyServer
+using GameSpyLib.XMLConfig;
+namespace CDKey.Application
 {
     /// <summary>
     /// This class represents a RetroSpy Server program

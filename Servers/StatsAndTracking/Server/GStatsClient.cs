@@ -1,13 +1,11 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
-using GameSpyLib.Network;
-using RetroSpyServer.Application;
+﻿using GameSpyLib.Network;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace RetroSpyServer.Servers.PeerChat
+namespace StatsAndTracking
 {
-    public class ChatClient : IDisposable
+    public class GStatsClient : IDisposable
     {
         /// <summary>
         /// A unqie identifier for this connection
@@ -15,38 +13,33 @@ namespace RetroSpyServer.Servers.PeerChat
         public long ConnectionID;
 
         /// <summary>
-        /// Indicates whether this object is disposed
-        /// </summary>
-        public bool Disposed { get; protected set; } = false;
-
-        /// <summary>
         /// The clients socket network stream
         /// </summary>
         public TcpStream Stream { get; set; }
 
         /// <summary>
-        /// Event fired when the connection is closed
+        /// Indicates whether this object is disposed
         /// </summary>
-        public static event ChatConnectionClosed OnDisconnect;
+        public bool Disposed { get; protected set; } = false;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public ChatClient(TcpStream stream, long connectionId)
+        public GStatsClient(TcpStream stream, long connectionId)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionId;
 
             // Init a new client stream class
             Stream = stream;
+
             //determine whether gamespy request is finished
             Stream.IsMessageFinished += IsMessageFinished;
 
             // Read client message, and parse it into key value pairs
             Stream.OnDataReceived += ProcessData;
 
-            //Dispose stream when a client is disconnected
             Stream.OnDisconnected += Dispose;
 
         }
@@ -54,7 +47,7 @@ namespace RetroSpyServer.Servers.PeerChat
         /// <summary>
         /// Destructor
         /// </summary>
-        ~ChatClient()
+        ~GStatsClient()
         {
             if (!Disposed)
                 Dispose();
@@ -88,29 +81,24 @@ namespace RetroSpyServer.Servers.PeerChat
             }
             catch { }
 
-
-            // Call disconnect event
-            OnDisconnect?.Invoke(this);
-
             Disposed = true;
         }
+
         private bool IsMessageFinished(string message)
         {
-            return true;
+            if (message.EndsWith("\\final\\"))
+                return true;
+            else
+                return false;
         }
         /// <summary>
         /// This function is fired when data is received from a stream
         /// </summary>
         /// <param name="stream">The stream that sended the data</param>
         /// <param name="message">The message the stream sended</param>
-        protected void ProcessData(string data)
+        protected void ProcessData(string message)
         {
-            string[] temp = data.Trim(' ').Split(' ');
-
-            //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Error);
-            //Stream.SendAsync("PING capricorn.goes.here :123456");
-            ChatHandler.Crypt(this, temp);
+            
         }
     }
 }
-
