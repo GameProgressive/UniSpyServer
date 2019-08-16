@@ -120,7 +120,7 @@ namespace CDKey.Application
 
             switch (cfg.Name)
             {
-                case "CDKey":
+                case "CDKEY":
                     cdkeyServer = new CDKeyServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                     LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
                     break;
