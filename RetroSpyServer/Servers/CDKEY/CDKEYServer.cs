@@ -67,7 +67,7 @@ namespace RetroSpyServer.Servers.CDKey
                 IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
                 string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(packet.BytesRecieved)).Trim('\\');
                 string[] recieved = decrypted.TrimStart('\\').Split('\\');
-                Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
+                Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 
                 switch (recieved[0])
                 {

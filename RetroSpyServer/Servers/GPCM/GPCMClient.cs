@@ -267,7 +267,7 @@ namespace RetroSpyServer.Servers.GPCM
         {
             if (message[0] != '\\')
             {
-                GamespyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
+                GameSpyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
                 return;
             }
 
@@ -280,7 +280,7 @@ namespace RetroSpyServer.Servers.GPCM
 
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
-                Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
+                Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
                 switch (recieved[0])
                 {
                     case "inviteto":
@@ -312,7 +312,7 @@ namespace RetroSpyServer.Servers.GPCM
                         break;
                     default:
                         LogWriter.Log.Write("[GPCM] received unknown data " + recieved[0], LogLevel.Debug);
-                        GamespyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
+                        GameSpyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
                         break;
                 }
             }

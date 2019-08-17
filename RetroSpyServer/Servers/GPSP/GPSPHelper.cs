@@ -16,7 +16,7 @@ namespace RetroSpyServer.Servers.GPSP
             {
                 return GPErrorCode.Parse;
             }
-            if (!dict.ContainsKey("email") || !GamespyUtils.IsEmailFormatCorrect(dict["email"]))
+            if (!dict.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(dict["email"]))
             {
                 return GPErrorCode.Parse;
             }
@@ -58,13 +58,13 @@ namespace RetroSpyServer.Servers.GPSP
         /// <returns></returns>
         public static GPErrorCode IsEmailNickUniquenickValied(Dictionary<string, string> dict, GPSPDBQuery dbquery)
         {
-            if (!GamespyUtils.IsNickOrUniquenickFormatCorrect(dict["nick"]))
+            if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["nick"]))
             {
                 return GPErrorCode.NewUserBadNick;
             }
             if (dict["uniquenick"] != "")
             {
-                if (!GamespyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
+                if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
                 {
                     return GPErrorCode.NewUserUniquenickInvalid;
                 }
@@ -112,14 +112,14 @@ namespace RetroSpyServer.Servers.GPSP
             {
                 //we do nothing with encoded password
                 string password;
-                password = GamespyUtils.DecodePassword(dict["passenc"]);
+                password = GameSpyUtils.DecodePassword(dict["passenc"]);
                 dict["passenc"] = StringExtensions.GetMD5Hash(password);
 
             }
             else
             {
                 string password;
-                password = GamespyUtils.DecodePassword(dict["pass"]);
+                password = GameSpyUtils.DecodePassword(dict["pass"]);
                 dict["pass"] = StringExtensions.GetMD5Hash(password);
                 dict.Add("passenc", password);
             }

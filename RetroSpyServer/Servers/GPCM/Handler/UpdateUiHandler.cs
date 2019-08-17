@@ -8,8 +8,8 @@ namespace RetroSpyServer.Servers.GPCM.Handler
     {
         public static void UpdateUi(GPCMClient client, Dictionary<string, string> dict)
         {
-            GamespyUtils.PrintReceivedGPDictToLogger("profilelist", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.PrintReceivedGPDictToLogger("profilelist", dict);
+            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
     }

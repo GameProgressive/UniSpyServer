@@ -142,7 +142,7 @@ namespace PresenceConnectionManager.Handler
                     ushort m = (ushort)((date >> 16) & 0xFF);
                     ushort y = (ushort)(date & 0xFFFF);
 
-                    if (GamespyUtils.IsValidDate(d, m, y))
+                    if (GameSpyUtils.IsValidDate(d, m, y))
                     {
                         if (client.PlayerInfo.PlayerBirthday != d)
                         {

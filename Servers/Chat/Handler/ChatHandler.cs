@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using RetroSpyServer.DBQueries;
+using GameSpyLib.Database;
+using Chat.DBQueries;
 using static GameSpyLib.Common.Random;
 
 namespace Chat

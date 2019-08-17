@@ -58,7 +58,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDKey", "Servers\CDKey\CDKe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SAKEPersistentStorage", "Servers\SAKEPersistentStorage\SAKEPersistentStorage.csproj", "{8BDC4E73-BB0D-4D8C-A74B-A1252BCC68D8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServer", "WebServer", "{2DA97CF8-C7FF-4DBD-B6CD-E82987BA9B4F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServers", "WebServers", "{2DA97CF8-C7FF-4DBD-B6CD-E82987BA9B4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

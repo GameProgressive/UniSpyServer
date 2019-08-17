@@ -112,7 +112,7 @@ namespace RetroSpyServer.Servers.GPSP
         {
             if (message[0] != '\\')
             {
-                GamespyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
+                GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
                 return;
             }
 
@@ -125,7 +125,7 @@ namespace RetroSpyServer.Servers.GPSP
 
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
-                Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
+                Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 
                 switch (recieved[0])
                 {
@@ -166,7 +166,7 @@ namespace RetroSpyServer.Servers.GPSP
 
                     default:
                         LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
-                        GamespyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
+                        GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
                         break;
                 }
             }

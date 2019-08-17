@@ -5,6 +5,7 @@ using System.Threading;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using PresenceSearchPlayer.Handler;
 
 namespace PresenceSearchPlayer
 {

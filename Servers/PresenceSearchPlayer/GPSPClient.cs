@@ -4,6 +4,7 @@ using GameSpyLib.Network;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
+using PresenceSearchPlayer.Handler;
 
 namespace PresenceSearchPlayer
 {
@@ -111,7 +112,7 @@ namespace PresenceSearchPlayer
         {
             if (message[0] != '\\')
             {
-                GamespyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
+                GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
                 return;
             }
 
@@ -124,48 +125,48 @@ namespace PresenceSearchPlayer
 
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
-                Dictionary<string, string> dict = GamespyUtils.ConvertGPResponseToKeyValue(recieved);
+                Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 
                 switch (recieved[0])
                 {
                     case "search":
-                        GPSPHandler.SearchProfile(this, dict);
+                        SearchHandler.SearchProfile(this, dict);
                         break;
                     case "valid":
-                        GPSPHandler.IsEmailValid(this, dict);
+                        ValidHandler.IsEmailValid(this, dict);
                         break;
                     case "nicks":
-                        GPSPHandler.SearchNicks(this, dict);
+                        NickHandler.SearchNicks(this, dict);
                         break;
                     case "pmatch":
-                        GPSPHandler.SeachPlayers(this, dict);
+                        PmatchHandler.SeachPlayers(this, dict);
                         break;
                     case "check":
-                        GPSPHandler.CheckProfileId(this, dict);
+                        CheckHandler.CheckProfileId(this, dict);
                         break;
                     case "newuser":
-                        GPSPHandler.NewUser(this, dict);
+                        NewUserHandler.NewUser(this, dict);
                         break;
                     case "searchunique":
-                        GPSPHandler.SearchProfileWithUniquenick(this, dict);
+                        SearchUniqueHandler.SearchProfileWithUniquenick(this, dict);
                         break;
                     case "others":
-                        GPSPHandler.SearchOtherBuddy(this, dict);
+                        OthersHandler.SearchOtherBuddy(this, dict);
                         break;
                     case "otherslist":
-                        GPSPHandler.SearchOtherBuddyList(this, dict);
+                        OthersListHandler.SearchOtherBuddyList(this, dict);
                         break;
                     case "uniquesearch":
-                        GPSPHandler.SuggestUniqueNickname(this, dict);
+                        UniqueSearchHandler.SuggestUniqueNickname(this, dict);
                         break;
                     case "profilelist":
-                        GPSPHandler.OnProfileList(this, dict);
+                        ProfileListHandler.OnProfileList(this, dict);
                         break;
 
 
                     default:
                         LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
-                        GamespyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
+                        GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
                         break;
                 }
             }

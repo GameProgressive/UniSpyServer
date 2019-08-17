@@ -17,20 +17,20 @@ namespace RetroSpyServer.Servers.GPCM.Handler
         {
             if (!dict.ContainsKey("profileid"))
             {
-                GamespyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             uint targetPID, messID;
             if (!uint.TryParse(dict["profileid"], out targetPID))
             {
-                GamespyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             if (!uint.TryParse(dict["id"], out messID))
             {
-                GamespyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                 GPCMPlayerInfo playerInfo = GPCMHandler.DBQuery.GetProfileInfo(targetPID);
                 if (playerInfo == null)
                 {
-                    GamespyUtils.SendGPError(client.Stream, 4, "Unable to get profile information.");
+                    GameSpyUtils.SendGPError(client.Stream, 4, "Unable to get profile information.");
                     return;
                 }
 

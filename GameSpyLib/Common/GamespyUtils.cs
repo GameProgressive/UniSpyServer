@@ -10,7 +10,7 @@ using System.Globalization;
 
 namespace GameSpyLib.Common
 {
-    public static class GamespyUtils
+    public static class GameSpyUtils
     {
         /// <summary>
         /// Encodes a password to Gamespy format

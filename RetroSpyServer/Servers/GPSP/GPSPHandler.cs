@@ -28,7 +28,7 @@ namespace RetroSpyServer.Servers.GPSP
             GPErrorCode error = GPSPHelper.IsSearchNicksContianAllKeys(dict);
             if (error!=GPErrorCode.NoError)
             {
-                GamespyUtils.SendGPError(client.Stream, (int)error, "Error recieving SearchNicks request.");
+                GameSpyUtils.SendGPError(client.Stream, (int)error, "Error recieving SearchNicks request.");
                 return;
             }
 
@@ -44,13 +44,13 @@ namespace RetroSpyServer.Servers.GPSP
             catch (Exception ex)
             {
                 LogWriter.Log.Write(ex.Message, LogLevel.Error);
-                GamespyUtils.SendGPError(client.Stream,GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
+                GameSpyUtils.SendGPError(client.Stream,GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
                 return;
             }
 
             if (queryResult.Count < 1)
             {
-                GamespyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No match found !");
+                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No match found !");
                // client.Stream.SendAsync(@"\nr\ndone\final\");
                 return;
             }
@@ -76,13 +76,13 @@ namespace RetroSpyServer.Servers.GPSP
         {
             if (!dict.ContainsKey("email"))
             {
-                GamespyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             try
             {
-                if (GamespyUtils.IsEmailFormatCorrect(dict["email"]))
+                if (GameSpyUtils.IsEmailFormatCorrect(dict["email"]))
                 {
                     if (DBQuery.IsEmailValid(dict["email"]))
                         client.Stream.SendAsync(@"\vr\1\final\");
@@ -101,7 +101,7 @@ namespace RetroSpyServer.Servers.GPSP
             catch (Exception ex)
             {
                 LogWriter.Log.WriteException(ex);
-                GamespyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
+                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
             }
         }
 
@@ -117,7 +117,7 @@ namespace RetroSpyServer.Servers.GPSP
             string sendingBuffer;
             if (!dict.ContainsKey("preferrednick"))
             {
-                GamespyUtils.SendGPError(client.Stream,GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client.Stream,GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -128,20 +128,20 @@ namespace RetroSpyServer.Servers.GPSP
             }
             else
             {
-                GamespyUtils.SendGPError(client.Stream,GPErrorCode.General, "The Nick is existed, please choose another name");
+                GameSpyUtils.SendGPError(client.Stream,GPErrorCode.General, "The Nick is existed, please choose another name");
             }
         }
 
         public static void SearchProfileWithUniquenick(GPSPClient client, Dictionary<string, string> dict)
         {
-            GamespyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
+            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
         public static void OnProfileList(GPSPClient client, Dictionary<string, string> dict)
         {
-            GamespyUtils.PrintReceivedGPDictToLogger("profilelist", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.PrintReceivedGPDictToLogger("profilelist", dict);
+            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
         public static void SeachPlayers(GPSPClient client, Dictionary<string, string> dict)
@@ -163,8 +163,8 @@ namespace RetroSpyServer.Servers.GPSP
 
             sendingBuffer2 += @"status\";
 
-            GamespyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.PrintReceivedGPDictToLogger("pmatch", dict);
+            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace RetroSpyServer.Servers.GPSP
             //if there do not recieved right <key,value> pairs we send error
             if (error!=GPErrorCode.NoError)
             {
-                GamespyUtils.SendGPError(client.Stream, error, "Error recieving request. Please check the input!");
+                GameSpyUtils.SendGPError(client.Stream, error, "Error recieving request. Please check the input!");
                 return;
             }
             //Check the nick and uniquenick is formated correct and uniquenick is existed in database
@@ -205,8 +205,8 @@ namespace RetroSpyServer.Servers.GPSP
 
         public static void SearchOtherBuddyList(GPSPClient client, Dictionary<string, string> dict)
         {
-            GamespyUtils.PrintReceivedGPDictToLogger("otherslist", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.PrintReceivedGPDictToLogger("otherslist", dict);
+            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
         public static void SearchOtherBuddy(GPSPClient client, Dictionary<string, string> dict)
@@ -223,14 +223,14 @@ namespace RetroSpyServer.Servers.GPSP
 
         public static void SearchProfile(GPSPClient client, Dictionary<string, string> dict)
         {
-            GamespyUtils.PrintReceivedGPDictToLogger("search", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.PrintReceivedGPDictToLogger("search", dict);
+            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
         public static void CheckProfileId(GPSPClient client, Dictionary<string, string> dict)
         {
-            GamespyUtils.PrintReceivedGPDictToLogger("check", dict);
-            GamespyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.PrintReceivedGPDictToLogger("check", dict);
+            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
     }
 }
