@@ -5,7 +5,7 @@ using GameSpyLib.Logging;
 using PresenceConnectionManager;
 using GameSpyLib.XMLConfig;
 
-namespace RetroSpyServer
+namespace PresenceConnectionManager.Application
 {
     /// <summary>
     /// This class represents a RetroSpy Server program

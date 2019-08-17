@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
-using QueryReport;
 
 namespace QueryReport
 {

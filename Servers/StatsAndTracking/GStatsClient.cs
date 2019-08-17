@@ -83,7 +83,6 @@ namespace StatsAndTracking
 
             Disposed = true;
         }
-
         private bool IsMessageFinished(string message)
         {
             if (message.EndsWith("\\final\\"))
