@@ -118,5 +118,10 @@ namespace PresenceSearchPlayer
             //        dict["passenc"], dict["productID"], dict["namespaceid"], dict["partnerid"], dict["gamename"]    
             
         }
+
+        public List<Dictionary<string, object>> GetProfileFromEmail(Dictionary<string, string> dict)
+        {
+            return Query("SELECT profiles.profileid, nick, uniquenick, lastname, firstname, email, namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE users.email = @P0 GROUP BY nick", dict["email"]);
+        }
     }
 }
