@@ -7,7 +7,7 @@ using System.Text;
 namespace PresenceSearchPlayer.Handler
 {
     public class SearchHandler
-    {        
+    {
         public static void SearchUsers(GPSPClient client, Dictionary<string, string> dict)
         {
             //string sendingbuffer = "\\bsr\\1\\nick\\mycrysis\\uniquenick\\1\\namespaceid\\0\\firstname\\jiangheng\\lastname\\kou\\email\\koujiangheng@live.cn\\bsrdone\\0\\final\\";
@@ -22,41 +22,27 @@ namespace PresenceSearchPlayer.Handler
             //    return;
             //}
 
-            if (dict["profileid"] != "0")
+            //we only need uniquenick to search a profile
+            error = SearchWithUniquenick(dict, out sendingBuffer);
+            if (error != GPErrorCode.NoError)
             {
-                List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.GetProfileFromProfileid(dict);
-                if (temp.Count < 1)
-                {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No math found!");
-                    return;
-                }
-                sendingBuffer = 
-                    string.Format(@"\bsr\{0}\nick\{1}\uniquenick{2}\namespaceid\{3}\firstname\{4}\lastname\{5}\email\{6}\bsrdone\0\final\",
-                    dict["profileid"],temp[0]["nick"],temp[0]["uniquenick"],temp[0]["namespaceid"],temp[0]["firstname"],temp[0]["lastname"],temp[0]["email"]);
-
-                client.Stream.SendAsync(sendingBuffer);
-                return;
-            }
-
-            //if there is no profileid, we only need uniquenick
-            if (dict.ContainsKey("uniquenick")&&dict["uniquenick"] != "0")
-            {
-                //TODO
-                List<Dictionary<string,object>> temp = GPSPHandler.DBQuery.GetProfileFromUniquenick(dict);
-                if (temp.Count < 1)
-                {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No math found!");
-                    return;
-                }
-                sendingBuffer =
-                    string.Format(@"\bsr\{0}\nick\{1}\uniquenick{2}\namespaceid\{3}\firstname\{4}\lastname\{5}\email\{6}\bsrdone\0\final\",
-                    temp[0]["profileid"], temp[0]["nick"], temp[0]["uniquenick"], temp[0]["namespaceid"], temp[0]["firstname"], temp[0]["lastname"], temp[0]["email"]);
-                client.Stream.SendAsync(sendingBuffer);
-                return;
+                GameSpyUtils.SendGPError(client.Stream, error, sendingBuffer);
             }
             else
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There is something missing in your search information");
+                client.Stream.SendAsync(sendingBuffer);
+                return;
+            }
+            //exist nick and email which can identify multiple profiles 
+            //you have to add \more\bsr\******\final\
+            error = SearchWithNickEmail(dict, out sendingBuffer);
+           if (error != GPErrorCode.NoError)
+            {
+                GameSpyUtils.SendGPError(client.Stream, error, sendingBuffer);
+            }
+            else
+            {
+                client.Stream.SendAsync(sendingBuffer);
             }
 
             //we need full information to find a player.
@@ -94,9 +80,58 @@ namespace PresenceSearchPlayer.Handler
         }
 
 
-        private static void SearchWithUniquenick(Dictionary<string, string> dict)
+        private static GPErrorCode SearchWithUniquenick(Dictionary<string, string> dict, out string sendingBuffer)
         {
-            //dict["nick"], dict["uniquenick"]; dict["email"] dict["namespaceid"] dict["partnerid"]
+            if (dict.ContainsKey("uniquenick") && dict["uniquenick"] != "0")
+            {
+                //TODO
+                List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.GetProfileFromUniquenick(dict);
+                if (temp.Count < 1)
+                {
+                    sendingBuffer = "No math found!";
+                    return GPErrorCode.DatabaseError;
+                }
+                sendingBuffer =
+                    string.Format(@"\bsr\{0}\nick\{1}\uniquenick\{2}\namespaceid\{3}\firstname\{4}\lastname\{5}\email\{6}\bsrdone\\final\",
+                    temp[0]["profileid"], temp[0]["nick"], temp[0]["uniquenick"], temp[0]["namespaceid"], temp[0]["firstname"], temp[0]["lastname"], temp[0]["email"]);
+                return GPErrorCode.NoError;
+            }
+            sendingBuffer = "No uniquenick found in the request!";
+            return GPErrorCode.Parse;
+        }
+
+        private static GPErrorCode SearchWithNickEmail(Dictionary<string, string> dict, out string sendingBuffer)
+        {
+            if (dict["email"] != "0" && dict["nick"] != "0'")
+            {
+                List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.GetProfileFromNickEmail(dict);
+                if (temp.Count < 1)
+                {
+                    sendingBuffer = "No math found!";
+                    return GPErrorCode.DatabaseError;
+                }
+                if (temp.Count == 1)//we only have one profile
+                {
+                    sendingBuffer =
+                   string.Format(@"\bsr\{0}\nick\{1}\uniquenick\{2}\namespaceid\{3}\firstname\{4}\lastname\{5}\email\{6}\bsrdone\\final\",
+                   temp[0]["profileid"], temp[0]["nick"], temp[0]["uniquenick"], temp[0]["namespaceid"], temp[0]["firstname"], temp[0]["lastname"], temp[0]["email"]);
+                    return GPErrorCode.NoError;
+                }
+                if (temp.Count >1)//we have multiple profiles 
+                {
+                    sendingBuffer = @"\";
+                    foreach (Dictionary<string, object> profile in temp)
+                    {
+                        sendingBuffer += string.Format(
+                            @"more\bsr\{0}\nick\{1}\uniquenick\{2}\namespaceid\{3}\firstname\{4}\lastname\{5}\email\{6}\",
+                            profile["profileid"], profile["nick"], profile["uniquenick"], profile["namespaceid"], profile["firstname"], profile["lastname"], profile["email"]);
+                    }
+                    sendingBuffer += @"bsrdone\final\";
+                    return GPErrorCode.NoError;
+                }
+            }
+            sendingBuffer = "Parse error in nick or email";
+            return GPErrorCode.Parse;
         }
     }
 }
