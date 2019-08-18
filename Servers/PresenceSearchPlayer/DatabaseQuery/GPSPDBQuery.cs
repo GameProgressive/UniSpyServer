@@ -108,7 +108,7 @@ namespace PresenceSearchPlayer
 
         public uint CreateUserWithNick(Dictionary<string, string> dict, uint userid)
         {
-            Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1,)", userid, dict["nick"]);
+            Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, dict["nick"]);
             uint profileid = (uint)Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid)[0]["profileid"];
             return profileid;
         }

@@ -50,9 +50,6 @@ namespace PresenceSearchPlayer.Handler
                 pid = GPSPHandler.DBQuery.CreateUserWithUnique(dict, userid);
                 client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
             }
-            //Finally we send the create correct to client
-            
-
         }
     }
 }
