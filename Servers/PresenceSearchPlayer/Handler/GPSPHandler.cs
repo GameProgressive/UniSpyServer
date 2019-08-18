@@ -74,7 +74,7 @@ namespace PresenceSearchPlayer.Handler
                 }
                 else
                 {
-                    if (dbquery.IsUniqueNickExist(dict["uniquenick"]))
+                    if (dbquery.IsUniqueNickExist(dict))
                     {
                         return GPErrorCode.NewUserUniquenickInUse;
                     }

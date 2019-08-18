@@ -59,7 +59,6 @@ namespace PresenceSearchPlayer.Handler
                 if (error != GPErrorCode.NoError)
                 {
                     GameSpyUtils.SendGPError(client.Stream, error, sendingBuffer);
-
                 }
                 else
                 {
@@ -67,6 +66,7 @@ namespace PresenceSearchPlayer.Handler
                 }
                 return;
             }
+            //if above 3 functions not excuted then it must be parsing error
             GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There is a parse error in request!");
 
             //last one we search with email this may get few profile so we can not return GPErrorCode
@@ -86,7 +86,11 @@ namespace PresenceSearchPlayer.Handler
             //\bsrdone\more\<more>\final\
             //\bsr\
         }
-
+        /// <summary>
+        /// whether can be use when user not logged in
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <returns></returns>
         private static GPErrorCode IsLogIn(Dictionary<string, string> dict)
         {
             if (dict["sesskey"] == "0" || dict["profileid"] == "0")
@@ -96,7 +100,12 @@ namespace PresenceSearchPlayer.Handler
             return GPErrorCode.NoError;
         }
 
-
+        /// <summary>
+        /// search with uniquenick
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="sendingBuffer"></param>
+        /// <returns></returns>
         private static GPErrorCode SearchWithUniquenick(Dictionary<string, string> dict, out string sendingBuffer)
         {
             if (dict.ContainsKey("uniquenick") && dict["uniquenick"] != "0")
@@ -116,7 +125,12 @@ namespace PresenceSearchPlayer.Handler
             sendingBuffer = "No uniquenick found in the request!";
             return GPErrorCode.Parse;
         }
-
+        /// <summary>
+        /// search with nick and email
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="sendingBuffer"></param>
+        /// <returns></returns>
         private static GPErrorCode SearchWithNickEmail(Dictionary<string, string> dict, out string sendingBuffer)
         {
             if (dict["email"] != "0" && dict["nick"] != "0'")

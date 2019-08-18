@@ -38,12 +38,21 @@ namespace PresenceSearchPlayer.Handler
             //and store the new account into database.
             uint userid = GPSPHandler.DBQuery.GetuseridFromEmail(dict);
             //create a profile according to userid
-            uint pid = GPSPHandler.DBQuery.CreateUserWithNickOrUniquenick(dict, userid);
+            uint pid;// profileid in database
+            if (dict["uniquenick"] == "")
+            {
+                pid = GPSPHandler.DBQuery.CreateUserWithNick(dict, userid);
+                string message = string.Format("User created pid:{0} but missing unique nickname, please go to rspy.org update uniquenick", pid);
+                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.NewUserUniquenickInvalid, message);
+            }
+            else
+            {
+                pid = GPSPHandler.DBQuery.CreateUserWithUnique(dict, userid);
+                client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
+            }
             //Finally we send the create correct to client
-            client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
+            
 
         }
-
-
     }
 }
