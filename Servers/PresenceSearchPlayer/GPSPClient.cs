@@ -130,7 +130,7 @@ namespace PresenceSearchPlayer
                 switch (recieved[0])
                 {
                     case "search":
-                        SearchHandler.SearchProfile(this, dict);
+                        SearchHandler.SearchUsers(this, dict);
                         break;
                     case "valid":
                         ValidHandler.IsEmailValid(this, dict);

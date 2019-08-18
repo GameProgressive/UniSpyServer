@@ -9,6 +9,11 @@ namespace PresenceSearchPlayer.Handler
 {
     class ValidHandler
     {
+        /// <summary>
+        /// check if a email is exist in database
+        /// </summary>
+        /// <param name="client"></param>
+        /// <param name="dict"></param>
         public static void IsEmailValid(GPSPClient client, Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("email"))

@@ -22,12 +22,16 @@ namespace PresenceSearchPlayer
         }
 
         public List<Dictionary<string, object>> RetriveNicknames(Dictionary<string,string> dict)
-        {            
-            return Query("SELECT profiles.nick, profiles.uniquenick FROM profiles " +
-            "INNER JOIN users ON users.userid=profiles.userid " +
-            "WHERE LOWER(users.email)=@P0 AND LOWER(users.password)=@P1",
-            dict["email"].ToLowerInvariant(), dict["passenc"].ToLowerInvariant());
+        {
+            return Query("SELECT profiles.nick, namespace.uniquenick FROM profiles,namespace,users WHERE users.email=@P0 AND users.password=@P1 GROUP BY nick", dict["email"], dict["passenc"]);
+           
         }
+
+        public List<Dictionary<string, object>> GetProfileFromProfileid(Dictionary<string,string> dict)
+        {
+            return Query("SELECT nick,uniquenick,lastname,firstname,email,namespaceid FROM profiles,users,namespace WHERE profiles.profileid=@P0", dict["profileid"]);
+       }
+
         /// <summary>
         /// If a nick is exist in database return userid, if not exist creating one and return userid.
         /// </summary>
@@ -60,6 +64,12 @@ namespace PresenceSearchPlayer
                 return userid;
             }
         }
+
+        public List<Dictionary<string,object>> GetProfileFromUniquenick(Dictionary<string, string> dict)
+        {
+           return Query("SELECT profiles.profileid,nick,uniquenick,lastname,firstname,email,namespaceid FROM profiles,users,namespace WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1", dict["uniquenick"], dict["namespaceid"]);
+        }
+
         public uint GetprofileidFromEmail(string email)
         {
             uint profileid;

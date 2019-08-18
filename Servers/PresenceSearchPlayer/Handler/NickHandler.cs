@@ -5,8 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+/////////////////////////Finished/////////////////////////////////
 namespace PresenceSearchPlayer.Handler
 {
+
+    /// <summary>
+    /// Uses a nick to find how many uniquenick is in this nick
+    /// </summary>
     public class NickHandler
     {
 
@@ -27,8 +32,6 @@ namespace PresenceSearchPlayer.Handler
                 return;
             }
 
-            bool sendUniqueNick = dict.ContainsKey("gamename");
-
             List<Dictionary<string, object>> queryResult;
 
             try
@@ -46,7 +49,6 @@ namespace PresenceSearchPlayer.Handler
             if (queryResult.Count < 1)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No match found !");
-                // client.Stream.SendAsync(@"\nr\ndone\final\");
                 return;
             }
 
@@ -56,11 +58,9 @@ namespace PresenceSearchPlayer.Handler
             {
                 sendingBuffer += @"\nick\";
                 sendingBuffer += row["nick"];
-                if (sendUniqueNick)
-                {
-                    sendingBuffer += @"\uniquenick\";
-                    sendingBuffer += row["uniquenick"];
-                }
+                sendingBuffer += @"\uniquenick\";
+                sendingBuffer += row["uniquenick"];
+
             }
 
             sendingBuffer += @"\ndone\final\";
