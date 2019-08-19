@@ -21,6 +21,15 @@ namespace PresenceSearchPlayer
             return Query("SELECT userid FROM users WHERE `email`=@P0", email).Count > 0;
         }
 
+        public  List<Dictionary<string, object>> GetProfileidFromNickEmailPassword(Dictionary<string, string> dict)
+        {
+            return Query("SELECT profileid FROM profiles " +
+                " INNER JOIN users ON users.userid=profiles.userid " +
+                " WHERE users.email=@P0 AND " +
+                "users.password = @P1 AND " +
+                "profiles.nick = @P2", dict["email"], dict["passenc"], dict["nick"]);
+        }
+
         public List<Dictionary<string, object>> RetriveNicknames(Dictionary<string, string> dict)
         {
             return Query("SELECT profiles.nick, namespace.uniquenick FROM profiles,namespace,users WHERE users.email=@P0 AND users.password=@P1 GROUP BY nick", dict["email"], dict["passenc"]);
@@ -108,9 +117,18 @@ namespace PresenceSearchPlayer
 
         public uint CreateUserWithNick(Dictionary<string, string> dict, uint userid)
         {
-            Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, dict["nick"]);
-            uint profileid = (uint)Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid)[0]["profileid"];
-            return profileid;
+            //this may have problems
+            bool isProfileExist = Query("SELECT profileid FROM users WHERE userid = @P0 AND nick=@P1",userid,dict["nick"]).Count>0;
+            if (isProfileExist)
+            {
+                return 0;
+            }
+            else
+            {
+                Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, dict["nick"]);
+                uint profileid = (uint)Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid)[0]["profileid"];
+                return profileid;
+            }            
         }
         public uint CreateUserWithUnique(Dictionary<string, string> dict, uint userid)
         {

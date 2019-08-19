@@ -42,13 +42,29 @@ namespace PresenceSearchPlayer.Handler
             if (dict["uniquenick"] == "")
             {
                 pid = GPSPHandler.DBQuery.CreateUserWithNick(dict, userid);
-                string message = string.Format("User created pid:{0} but missing unique nickname, please go to rspy.org update uniquenick", pid);
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.NewUserUniquenickInvalid, message);
+                //if user's nick name is exist we can not continue;
+                if (pid == 0)
+                {
+                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "Nick is registered, please use another one.");
+                }
+                else
+                {
+                    string message = string.Format("User created pid:{0} but missing unique nickname, please go to rspy.org update uniquenick", pid);
+                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.NewUserUniquenickInvalid, message);
+                }                
             }
             else
             {
-                pid = GPSPHandler.DBQuery.CreateUserWithUnique(dict, userid);
-                client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
+                pid = GPSPHandler.DBQuery.CreateUserWithNick(dict, userid);
+                //if user's nick name is exist we can not continue;
+                if (pid == 0)
+                {
+                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "Nick is registered, please use another one.");
+                }
+                else
+                {                    
+                    client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
+                }
             }
         }
     }
