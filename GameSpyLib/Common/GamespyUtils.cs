@@ -294,5 +294,19 @@ namespace GameSpyLib.Common
 
             return true;
         }
+        public static bool IsNumber(string strNumber)
+        {
+            Regex objNotNumberPattern = new Regex("[^0-9.-]");
+            Regex objTwoDotPattern = new Regex("[0-9]*[.][0-9]*[.][0-9]*");
+            Regex objTwoMinusPattern = new Regex("[0-9]*[-][0-9]*[-][0-9]*");
+            string strValidRealPattern = "^([-]|[.]|[-.]|[0-9])[0-9]*[.]*[0-9]+$";
+            string strValidIntegerPattern = "^([-]|[0-9])[0-9]*$";
+            Regex objNumberPattern = new Regex("(" + strValidRealPattern + ")|(" + strValidIntegerPattern + ")");
+
+            return !objNotNumberPattern.IsMatch(strNumber) &&
+                   !objTwoDotPattern.IsMatch(strNumber) &&
+                   !objTwoMinusPattern.IsMatch(strNumber) &&
+                   objNumberPattern.IsMatch(strNumber);
+        }
     }
 }

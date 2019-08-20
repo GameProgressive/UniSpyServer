@@ -39,51 +39,51 @@ namespace NATNegotiation
             IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
 
 
-            Task.Run(() =>
-            {
+            //Task.Run(() =>
+            //{
 
-                if (packet.BytesRecieved.Length < 6)
-                    return;
-                BasePacket basePacket = new BasePacket(packet.BytesRecieved);
-                try
+            if (packet.BytesRecieved.Length < 6)
+                return;
+            BasePacket basePacket = new BasePacket(packet.BytesRecieved);
+            try
+            {
+                //BytesRecieved[7] is nnpacket.PacketType.
+                switch (basePacket.PacketType)
                 {
-                    //BytesRecieved[7] is nnpacket.PacketType.
-                    switch (basePacket.PacketType)
-                    {
-                        case NatPacketType.PreInit:
-                            //NatNegHandler.PreInitResponse(this, packet, nnpacket);
-                            break;
-                        case NatPacketType.Init:
-                            InitHandler.InitResponse(this, packet);
-                            break;
-                        case NatPacketType.AddressCheck:
-                            AddressHandler.AddressCheckResponse(this, packet);
-                            break;
-                        case NatPacketType.NatifyRequest:
-                            NatifyHandler.NatifyResponse(this, packet);
-                            break;
-                        case NatPacketType.ConnectAck:
-                            ConnectHandler.ConnectResponse(this, packet);
-                            break;
-                        case NatPacketType.Report:
-                            ReportHandler.ReportResponse(this, packet);
-                            break;
-                        default:
-                            LogWriter.Log.Write(LogLevel.Error, "{0,-8} [Recv] unknow data", ServerName);
-                            break;
-                    }
+                    case NatPacketType.PreInit:
+                        //NatNegHandler.PreInitResponse(this, packet, nnpacket);
+                        break;
+                    case NatPacketType.Init:
+                        InitHandler.InitResponse(this, packet);
+                        break;
+                    case NatPacketType.AddressCheck:
+                        AddressHandler.AddressCheckResponse(this, packet);
+                        break;
+                    case NatPacketType.NatifyRequest:
+                        NatifyHandler.NatifyResponse(this, packet);
+                        break;
+                    case NatPacketType.ConnectAck:
+                        ConnectHandler.ConnectResponse(this, packet);
+                        break;
+                    case NatPacketType.Report:
+                        ReportHandler.ReportResponse(this, packet);
+                        break;
+                    default:
+                        LogWriter.Log.Write(LogLevel.Error, "{0,-8} [Recv] unknow data", ServerName);
+                        break;
                 }
-                catch (Exception e)
-                {
-                    LogWriter.Log.WriteException(e);
-                }
-                finally
-                {
-                    if (Replied == true)
-                        Release(packet.AsyncEventArgs);
-                }
-            });
+            }
+            catch (Exception e)
+            {
+                LogWriter.Log.WriteException(e);
+            }
+            finally
+            {
+                if (Replied == true)
+                    Release(packet.AsyncEventArgs);
+            }
         }
+            //});
         protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
 
     }

@@ -139,7 +139,7 @@ namespace PresenceSearchPlayer
                         NickHandler.SearchNicks(this, dict);
                         break;
                     case "pmatch":
-                        PmatchHandler.SeachPlayers(this, dict);
+                        PmatchHandler.PlayerMatch(this, dict);
                         break;
                     case "check":
                         CheckHandler.CheckProfileId(this, dict);
