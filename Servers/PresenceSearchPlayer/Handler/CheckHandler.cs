@@ -19,6 +19,7 @@ namespace PresenceSearchPlayer.Handler
             //check is request recieved correct and convert password into our MD5 type
             bool isContiansAllKey = dict.ContainsKey("nick") && dict.ContainsKey("email") && (dict.ContainsKey("passenc") || dict.ContainsKey("pass"));
             bool isEmailCorrect = GameSpyUtils.IsEmailFormatCorrect(dict["email"]);
+
             if (isContiansAllKey&& isEmailCorrect)
             {
                 GPSPHandler.ProessPassword(dict);

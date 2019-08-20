@@ -1,8 +1,9 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using NATNegotiation.Enumerator;
+using NATNegotiation.Handler;
 using NATNegotiation.Structure;
-using RetroSpyServer.Servers.NatNeg.Structures;
+using NATNegotiation.Structure.Packet;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -14,8 +15,6 @@ namespace NATNegotiation
     {
 
         public bool Replied = false;
-
-        public NatNegPacket NNPacket;
 
         public List<ClientInfo> ClientInfoList = new List<ClientInfo>();
 
@@ -42,36 +41,35 @@ namespace NATNegotiation
 
             Task.Run(() =>
             {
-                //copy data in udp packet to natnegpacket format prepare for reply data;
-                NatNegPacket nnpacket = new NatNegPacket();
-                if (!nnpacket.SetData(packet.BytesRecieved))
-                    return;
 
+                if (packet.BytesRecieved.Length < 6)
+                    return;
+                BasePacket basePacket = new BasePacket(packet.BytesRecieved);
                 try
                 {
                     //BytesRecieved[7] is nnpacket.PacketType.
-                    switch (nnpacket.Common.PacketType)
+                    switch (basePacket.PacketType)
                     {
                         case NatPacketType.PreInit:
-                            NatNegHandler.PreInitResponse(this, packet, nnpacket);
+                            //NatNegHandler.PreInitResponse(this, packet, nnpacket);
                             break;
                         case NatPacketType.Init:
-                            NatNegHandler.InitResponse(this, packet, nnpacket);
+                            InitHandler.InitResponse(this, packet);
                             break;
                         case NatPacketType.AddressCheck:
-                            NatNegHandler.AddressCheckResponse(this, packet, nnpacket);
+                            AddressHandler.AddressCheckResponse(this, packet);
                             break;
                         case NatPacketType.NatifyRequest:
-                            NatNegHandler.NatifyResponse(this, packet, nnpacket);
+                            NatifyHandler.NatifyResponse(this, packet);
                             break;
                         case NatPacketType.ConnectAck:
-                            NatNegHandler.ConnectResponse(this, packet, nnpacket);
+                            ConnectHandler.ConnectResponse(this, packet);
                             break;
                         case NatPacketType.Report:
-                            NatNegHandler.ReportResponse(this, packet, nnpacket);
+                            ReportHandler.ReportResponse(this, packet);
                             break;
                         default:
-                            LogWriter.Log.Write( LogLevel.Error, "{0,-8} [Recv] unknow data", ServerName);
+                            LogWriter.Log.Write(LogLevel.Error, "{0,-8} [Recv] unknow data", ServerName);
                             break;
                     }
                 }
