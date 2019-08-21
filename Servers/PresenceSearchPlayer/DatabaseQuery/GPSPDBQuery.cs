@@ -30,6 +30,20 @@ namespace PresenceSearchPlayer
                 "profiles.nick = @P2", dict["email"], dict["passenc"], dict["nick"]);
         }
 
+        public List<Dictionary<string, object>> GetOtherBuddyList(Dictionary<string, string> dict, string pid)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal List<Dictionary<string,object>> GetOtherBuddy(Dictionary<string, string> dict)
+        {
+            return Query("SELECT profiles.nick,firstname,lastname,uniquenick " +
+                "FROM profiles inner join namespace on namespace.profileid=profiles.profileid " +
+                "INNER JOIN users ON users.userid = profiles.userid  " +
+                "WHERE namespace.profileid = @P0 AND namespace.namespaceid=@P1",
+                dict["profileid"],dict["namespaceid"]);
+        }
+
         public List<Dictionary<string, object>> RetriveNicknames(Dictionary<string, string> dict)
         {
             return Query("SELECT profiles.nick, namespace.uniquenick FROM profiles,namespace,users WHERE users.email=@P0 AND users.password=@P1 GROUP BY nick", dict["email"], dict["passenc"]);
@@ -46,7 +60,7 @@ namespace PresenceSearchPlayer
         /// </summary>
         /// <param name="nick"></param>
         /// <returns></returns>
-        public bool IsUniqueNickExist(Dictionary<string, string> dict)
+        public bool IsUniqueNickExistForNewUser(Dictionary<string, string> dict)
         {
             //uniquenick existed 
             //if (Query("SELECT profileid FROM profiles WHERE uniquenick=@P0", uniquenick).Count > 0)
@@ -54,6 +68,17 @@ namespace PresenceSearchPlayer
                     "namespace.uniquenick = @P0 AND namespace.namespaceid = @P1 " +
                     "AND namespace.partnerid =@P2 AND namespace.productid=@P3 " +
                     "AND users.email = @P4 AND profiles.nick = @P5", dict["uniquenick"], dict["namespaceid"], dict["partnerid"], dict["productID"], dict["email"], dict["nick"]).Count > 0;
+
+            if (isUniquenickExist)
+                return true;
+            else
+                return false;
+        }
+        public bool IsUniqueNickExistForSuggest(Dictionary<string, string> dict)
+        {
+            bool isUniquenickExist = Query("SELECT uniquenick FROM namespace " +
+                 "WHERE uniquenick=@P0 AND namespaceid=@P1 AND gamename = @P2", 
+                dict["preferrednick"], dict["namespaceid"], dict["gamename"]).Count > 0;
 
             if (isUniquenickExist)
                 return true;

@@ -10,8 +10,33 @@ namespace PresenceSearchPlayer.Handler
     {
         public static void SearchOtherBuddyList(GPSPClient client, Dictionary<string, string> dict)
         {
-            GameSpyUtils.PrintReceivedGPDictToLogger("otherslist", dict);
-            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
+            //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
+
+            string[] opids = dict["opids"].TrimStart('|').Split('|');
+            // response: @"\otherslist\o\<o>\uniquenick\<uniquenick>\oldone\final\";
+            string sendingBuffer = @"\otherslist\";
+            foreach (string pid in opids)
+            {
+                List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.GetOtherBuddyList(dict, pid);
+                if (temp.Count == 0)
+                {
+                    continue;
+                }
+                else
+                {
+                    sendingBuffer += string.Format(@"o\{0}\uniquenick\{1}\", temp[0]["profileid"], temp[0]["uniquenick"]);
+                }
+            }
+            sendingBuffer += @"oldone\final\";
+
+            client.Stream.SendAsync(sendingBuffer);
+
+
+
+
+            //GameSpyUtils.PrintReceivedGPDictToLogger("otherslist", dict);
+            //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
         }
 
 

@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer.Handler
                 return;
             }
 
-            if (!GPSPHandler.DBQuery.IsUniqueNickExist(dict))
+            if (!GPSPHandler.DBQuery.IsUniqueNickExistForSuggest(dict))
             {
                 sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
                 client.Stream.SendAsync(sendingBuffer);
