@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
 
 namespace QueryReport.Handler
 {
-    public class GameServerHandler
+    public class ChallengeHandler
     {
         /// <summary>
         /// Our hardcoded Server Validation code
@@ -19,9 +17,10 @@ namespace QueryReport.Handler
 
         public static void ServerChallengeResponse(QRServer qRServer, UdpPacket packet)
         {
+            LogWriter.Log.Write("[QR] No impliment function for ServerChallengeResponse!", LogLevel.Debug);
             byte[] challenge = new byte[90];
             byte[] buffer = packet.BytesRecieved;
-            int blen = 0;            
+            int blen = 0;
         }
     }
 }

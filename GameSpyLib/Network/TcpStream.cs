@@ -106,14 +106,12 @@ namespace GameSpyLib.Network
         /// </summary>
         private object _lockObj = new object();
 
-        public string ServerName { get; protected set; }
         /// <summary>
         /// Creates a new instance of GamespyTcpStream
         /// </summary>
         /// <param name="ReadArgs"></param>
         public TcpStream(TcpServer Parent, SocketAsyncEventArgs ReadArgs, SocketAsyncEventArgs WritetArgs)
-        {
-            ServerName = Parent.ServerName;
+        {            
             // Store our connection
             Connection = ReadArgs.AcceptSocket;
             SocketManager = Parent;
@@ -268,7 +266,7 @@ namespace GameSpyLib.Network
                     if (IsMessageFinished.Invoke(received))
                     {
                         if (LogWriter.Log.DebugSockets)
-                            LogWriter.Log.Write(LogLevel.Debug, "{0,-8} [Recv] TCP data: {1}" ,SocketManager.ServerName, received);
+                            LogWriter.Log.Write(LogLevel.Debug, "{0} [Recv] TCP data: {1}" ,SocketManager.ServerName, received);
 
                         DataAttempt = 0;
 
@@ -301,7 +299,7 @@ namespace GameSpyLib.Network
             if (SocketClosed) return;
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write( LogLevel.Debug, "{0,-8} [Send] TCP data: {1}" , SocketManager.ServerName, message);
+                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}" , SocketManager.ServerName, message);
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -331,7 +329,7 @@ namespace GameSpyLib.Network
             if (SocketClosed) return;
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write( LogLevel.Debug, "{0,-8} [Send] TCP data: {1}", SocketManager.ServerName, Encoding.UTF8.GetString(message));
+                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}", SocketManager.ServerName, Encoding.UTF8.GetString(message));
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -474,7 +472,7 @@ namespace GameSpyLib.Network
         public void ToLog(LogLevel level, string status, string statusinfo,string message,params object[] items)
         {
             string temp1 = string.Format(message, items);
-            string temp2 = string.Format("{0,-8} [{1}] {2}: {3}",ServerName, status,statusinfo, temp1);
+            string temp2 = string.Format("{0} [{1}] {2}: {3}",SocketManager.ServerName, status,statusinfo, temp1);
             LogWriter.Log.Write(LogLevel.Debug, temp2);
         }
     }

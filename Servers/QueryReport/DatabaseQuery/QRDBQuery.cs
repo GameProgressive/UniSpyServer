@@ -14,7 +14,7 @@ namespace QueryReport
         /// Sets a server's online status in the database
         /// </summary>
         /// <param name="server"></param>
-        public void UpdateServerOffline(GameServer server)
+        public void UpdateServerOffline(DedicatedServer server)
         {
             // Check if server exists in database
             if (server.DatabaseId > 0)

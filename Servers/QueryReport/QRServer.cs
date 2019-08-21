@@ -27,7 +27,7 @@ namespace QueryReport
         /// <summary>
         /// A List of all servers that have sent data to this master server, and are active in the last 30 seconds or so
         /// </summary>
-        public static ConcurrentDictionary<string, GameServer> Servers = new ConcurrentDictionary<string, GameServer>();
+        public static ConcurrentDictionary<string, DedicatedServer> Servers = new ConcurrentDictionary<string, DedicatedServer>();
 
         /// <summary>
         /// A timer that is used to Poll all the servers, and remove inactive servers from the server list
@@ -73,44 +73,42 @@ namespace QueryReport
                 return;
             }
 
-            Task.Run(() =>
-{
-    // If we dont reply, we must manually release the EventArgs back to the pool
-    Replied = false;
-    try
-    {
-        switch (packet.BytesRecieved[0])
-        {
-            // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
-            // Perhaps it was present on an older version of GameSpy SDK
-            case QRGameServerRequest.Challenge:
-                GameServerHandler.ServerChallengeResponse(this, packet);
-                break;
-            case QRClientRequest.Heartbeat: // HEARTBEAT
-                QRHandler.HeartbeatResponse(this, packet);
-                break;
-            case QRClientRequest.KeepAlive:
-                QRHandler.KeepAlive(this, packet);
-                break;
-            case QRClientRequest.Avaliable:
-                AvaliableCheckHandler.GameAvaliabilityCheck(this, packet);
-                break;
-            default:
-                LogWriter.Log.Write("[QR] received unknown data: ", LogLevel.Error);
-                break;
-        }
-    }
-    catch (Exception e)
-    {
-        LogWriter.Log.WriteException(e);
-    }
-    finally
-    {
-        //if we replied QR data we release packet so that the EventArgs can be used on another connection
-        if (Replied == true)
-            Release(packet.AsyncEventArgs);
-    }
-});
+            // If we dont reply, we must manually release the EventArgs back to the pool
+            Replied = false;
+            try
+            {
+                switch (packet.BytesRecieved[0])
+                {
+                    // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
+                    // Perhaps it was present on an older version of GameSpy SDK
+                    case QRGameServerRequest.Challenge:
+                        ChallengeHandler.ServerChallengeResponse(this, packet);
+                        break;
+                    case QRClientRequest.Heartbeat: // HEARTBEAT
+                        HeartBeatHandler.HeartbeatResponse(this, packet);
+                        break;
+                    case QRClientRequest.KeepAlive:
+                        KeepAliveHandler.KeepAliveResponse(this, packet);
+                        break;
+                    case QRClientRequest.Avaliable:
+                        AvaliableCheckHandler.BackendAvaliabilityResponse(this, packet);
+                        break;
+                    default:
+                        LogWriter.Log.Write("[QR] [Recv] unknown data: ", LogLevel.Error);
+                        break;
+                }
+            }
+            catch (Exception e)
+            {
+                LogWriter.Log.WriteException(e);
+            }
+            finally
+            {
+                //if we replied QR data we release packet so that the EventArgs can be used on another connection
+                if (Replied == true)
+                    Release(packet.AsyncEventArgs);
+            }
+
         }
 
 
@@ -124,13 +122,13 @@ namespace QueryReport
         protected void CheckServers()
         {
             // Create a list of servers to update in the database
-            List<GameServer> ServersToRemove = new List<GameServer>();
+            List<DedicatedServer> ServersToRemove = new List<DedicatedServer>();
             var span = TimeSpan.FromSeconds(ServerTTL);
 
             // Remove servers that havent talked to us in awhile from the server list
             foreach (string key in Servers.Keys)
             {
-                GameServer value;
+                DedicatedServer value;
                 if (Servers.TryGetValue(key, out value))
                 {
                     if (value.LastPing < DateTime.Now - span)
@@ -160,7 +158,7 @@ namespace QueryReport
                 {
                     try
                     {
-                        foreach (GameServer server in ServersToRemove)
+                        foreach (DedicatedServer server in ServersToRemove)
                             QRHandler.UpdateServerOffline(server);
                         transaction.Commit();
                     }

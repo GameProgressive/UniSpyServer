@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using QueryReport.GameServerInfo;
+using System;
+using System.Collections.Generic;
 
 namespace QueryReport.Handler
 {
@@ -12,28 +14,10 @@ namespace QueryReport.Handler
    {
         public static QRDBQuery DBQuery = null;
 
-        public static void UpdateServerOffline(GameServer server)
+        public static void UpdateServerOffline(DedicatedServer server)
         {
             DBQuery.UpdateServerOffline(server);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="qRServer"></param>
-        /// <param name="packet"></param>
-        public static void HeartbeatResponse(QRServer qRServer, UdpPacket packet)
-        {
-            LogWriter.Log.Write("[QR] No impliment function for Heartbeatpacket!", LogLevel.Debug);
-            //TODO
-        }
-
-        public static void KeepAlive(QRServer qRServer, UdpPacket packet)
-        {
-            LogWriter.Log.Write("[QR] No impliment function for KeepAlivePacket!", LogLevel.Debug);
-            //TODO
-        }
-
+        }       
 
     }
 }

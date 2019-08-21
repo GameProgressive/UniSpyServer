@@ -218,7 +218,7 @@ namespace GameSpyLib.Network
             packet.SetBufferContents(message);
             string tempSendMsg = BitConverter.ToString(packet.ByteReply);
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0,-8} [Send] UDP data: {1}", ServerName, tempSendMsg);
+                LogWriter.Log.Write(LogLevel.Debug, "{0} [Send] UDP data: {1}", ServerName, tempSendMsg);
 
             Listener.SendToAsync(packet.AsyncEventArgs);
         }
@@ -234,7 +234,7 @@ namespace GameSpyLib.Network
             packet.SetBufferContents(Encoding.UTF8.GetBytes(message));
             
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0,-8} [Send] UDP data: {1}", ServerName, message);
+                LogWriter.Log.Write(LogLevel.Debug, "{0} [Send] UDP data: {1}", ServerName, message);
 
             Listener.SendToAsync(packet.AsyncEventArgs);
         }
@@ -261,7 +261,7 @@ namespace GameSpyLib.Network
                 UdpPacket packet = new UdpPacket(AcceptEventArg);
 
                     if (LogWriter.Log.DebugSockets)
-                        LogWriter.Log.Write( LogLevel.Debug, "{0,-8} [Recv] UDP data: {1}", ServerName, BitConverter.ToString(packet.BytesRecieved));
+                        LogWriter.Log.Write( LogLevel.Debug, "{0} [Recv] UDP data: {1}", ServerName, BitConverter.ToString(packet.BytesRecieved));
 
                 // Begin accepting a new connection
                 StartAcceptAsync();

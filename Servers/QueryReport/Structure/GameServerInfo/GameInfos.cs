@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace QueryReport.GameServerInfo
 {
@@ -63,7 +61,7 @@ namespace QueryReport.GameServerInfo
 
     public class QRServerList
     {
-        public GameInfo Game= new GameInfo();
+        public GameInfo Game = new GameInfo();
         public byte Filter;
         public List<ServerList> ServerList = new List<ServerList>();
         public int NumServers;
