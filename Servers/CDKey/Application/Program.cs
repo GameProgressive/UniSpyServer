@@ -124,7 +124,7 @@ namespace CDKey.Application
 
             if (IsConsoleInputAvailable)
             {
-                LogWriter.Log.Write("Servers are successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
+                LogWriter.Log.Write("Server is successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
                 //Read key from console
                 while (IsRunning)
                 {
@@ -151,7 +151,7 @@ namespace CDKey.Application
             else
             {
                 // Pauses the screen
-                LogWriter.Log.Write("Servers are successfully started! ", LogLevel.Info);
+                LogWriter.Log.Write("Server is successfully started! ", LogLevel.Info);
                 Console.WriteLine("Press ENTER to exit...");
                 Console.ReadLine();
             }
