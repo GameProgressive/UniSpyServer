@@ -32,7 +32,7 @@ namespace PresenceSearchPlayer
 
         public List<Dictionary<string, object>> GetOtherBuddyList(Dictionary<string, string> dict, string pid)
         {
-            throw new NotImplementedException();
+            return Query("SELECT profileid,uniquenick FROM namespace WHERE profileid = @P0 AND namespaceid =@P1 AND gamename=@P2 ", pid, dict["namespaceid"], dict["gamename"]);
         }
 
         internal List<Dictionary<string,object>> GetOtherBuddy(Dictionary<string, string> dict)
