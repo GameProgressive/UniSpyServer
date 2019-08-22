@@ -50,7 +50,6 @@ namespace QueryReport.GameServerInfo
         public int StateChanged { get; set; }
 
         #region Server Vars
-
         public string Country { get; set; }
         public string HostName { get; set; }
         public string GameName { get; set; }

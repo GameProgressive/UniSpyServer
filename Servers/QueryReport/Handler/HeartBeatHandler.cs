@@ -6,7 +6,7 @@ namespace QueryReport.Handler
     public class HeartBeatHandler
     {
         /// <summary>
-        /// 
+        /// Client or server information come in
         /// </summary>
         /// <param name="qRServer"></param>
         /// <param name="packet"></param>

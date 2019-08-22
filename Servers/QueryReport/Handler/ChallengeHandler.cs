@@ -1,5 +1,7 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using QueryReport.Structures;
+using System;
 
 namespace QueryReport.Handler
 {
@@ -15,12 +17,20 @@ namespace QueryReport.Handler
             };
 
 
-        public static void ServerChallengeResponse(QRServer qRServer, UdpPacket packet)
+        public static void ServerChallengeResponse(QRServer server, UdpPacket packet)
         {
-            LogWriter.Log.Write("[QR] No impliment function for ServerChallengeResponse!", LogLevel.Debug);
+           
             byte[] challenge = new byte[90];
-            byte[] buffer = packet.BytesRecieved;
+
             int blen = 0;
+            byte[] sendingbuffer = new byte[7];
+            sendingbuffer[0] = QR.QRMagic1;
+            sendingbuffer[1] = QR.QRMagic2;
+            sendingbuffer[2] = QRGameServerRequest.ClientRegistered;
+            Array.Copy(packet.BytesRecieved, 1, sendingbuffer, 3, 4);
+            server.SendAsync(packet, sendingbuffer);
+            
+            LogWriter.Log.Write("[QR] No impliment function for ServerChallengeResponse!", LogLevel.Debug);
         }
     }
 }

@@ -17,7 +17,9 @@ namespace QueryReport.Handler
             //So we add it to response
             Array.Copy(packet.BytesRecieved, 1, sendingBuffer, 3, 4);
             server.SendAsync(packet, sendingBuffer);
-            //LogWriter.Log.Write("[QR] No impliment function for KeepAlivePacket!", LogLevel.Debug);
+            //We should keep the dedicated server in our server list
+            //TODO
+            LogWriter.Log.Write("[QR] Not finish function for KeepAlivePacket!", LogLevel.Debug);
         }
     }
 }
