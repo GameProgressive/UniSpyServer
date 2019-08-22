@@ -27,7 +27,7 @@ namespace QueryReport
         /// <summary>
         /// A List of all servers that have sent data to this master server, and are active in the last 30 seconds or so
         /// </summary>
-        public static ConcurrentDictionary<string, DedicatedServer> Servers = new ConcurrentDictionary<string, DedicatedServer>();
+        public static ConcurrentDictionary<string, GameServer> Servers = new ConcurrentDictionary<string, GameServer>();
 
         /// <summary>
         /// A timer that is used to Poll all the servers, and remove inactive servers from the server list
@@ -122,22 +122,22 @@ namespace QueryReport
         protected void CheckServers()
         {
             // Create a list of servers to update in the database
-            List<DedicatedServer> ServersToRemove = new List<DedicatedServer>();
+            List<GameServer> ServersToRemove = new List<GameServer>();
             var span = TimeSpan.FromSeconds(ServerTTL);
 
             // Remove servers that havent talked to us in awhile from the server list
             foreach (string key in Servers.Keys)
             {
-                DedicatedServer value;
-                if (Servers.TryGetValue(key, out value))
+                GameServer gameServer;
+                if (Servers.TryGetValue(key, out gameServer))
                 {
-                    if (value.LastPing < DateTime.Now - span)
+                    if (gameServer.LastPing < DateTime.Now - span)
                     {
-                        LogWriter.Log.Write("Removing Server for Expired Ping: " + key, LogLevel.Debug);
-                        if (Servers.TryRemove(key, out value))
-                            ServersToRemove.Add(value);
+                        LogWriter.Log.Write("[QR] Removing Server for Expired Ping: " + key, LogLevel.Debug);
+                        if (Servers.TryRemove(key, out gameServer))
+                            ServersToRemove.Add(gameServer);
                         else
-                            LogWriter.Log.Write("[MasterServer.CheckServers] Unable to remove server from server list: " + key, LogLevel.Error);
+                            LogWriter.Log.Write("[QR] Unable to remove server from server list: " + key, LogLevel.Error);
 
                     }
                 }
@@ -158,8 +158,8 @@ namespace QueryReport
                 {
                     try
                     {
-                        foreach (DedicatedServer server in ServersToRemove)
-                            QRHandler.UpdateServerOffline(server);
+                        foreach (GameServer server in ServersToRemove)
+                            QRHandler.DBQuery.UpdateServerOffline(server);
                         transaction.Commit();
                     }
                     catch

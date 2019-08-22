@@ -13,11 +13,7 @@ namespace QueryReport.Handler
     public class QRHandler
    {
         public static QRDBQuery DBQuery = null;
-
-        public static void UpdateServerOffline(GameServer server)
-        {
-            DBQuery.UpdateServerOffline(server);
-        }
+               
 
         public static string HeartBeatChallengeGen()
         {
