@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Database;
 using QueryReport.GameServerInfo;
 using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace QueryReport
 {
@@ -14,7 +16,7 @@ namespace QueryReport
         /// Sets a server's online status in the database
         /// </summary>
         /// <param name="server"></param>
-        public void UpdateServerOffline(DedicatedServer server)
+        public void UpdateServerOffline(GameServer server)
         {
             // Check if server exists in database
             if (server.DatabaseId > 0)
@@ -23,6 +25,11 @@ namespace QueryReport
                 string query = "UPDATE server SET online=0, lastseen=@P0 WHERE id=@P1";
                 Execute(query, new DateTimeOffset(server.LastRefreshed).ToUnixTimeSeconds(), server.DatabaseId);
             }
+        }
+
+        internal bool FetchPlasmaServer(object address, object port)
+        {
+            throw new NotImplementedException();
         }
     }
 }

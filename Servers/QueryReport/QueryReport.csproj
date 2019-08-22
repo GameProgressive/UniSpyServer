@@ -13,4 +13,10 @@
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="GeoLite2-Country.mmdb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

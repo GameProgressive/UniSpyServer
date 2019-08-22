@@ -14,10 +14,15 @@ namespace QueryReport.Handler
    {
         public static QRDBQuery DBQuery = null;
 
-        public static void UpdateServerOffline(DedicatedServer server)
+        public static void UpdateServerOffline(GameServer server)
         {
             DBQuery.UpdateServerOffline(server);
-        }       
-        
+        }
+
+        public static string HeartBeatChallengeGen()
+        {
+            return "";
+        }
+
     }
 }

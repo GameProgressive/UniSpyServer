@@ -10,6 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common files", "Common files", "{ECCAE4E3-FA3F-4756-84F1-C695FBF7FC76}"
 	ProjectSection(SolutionItems) = preProject
 		Common files\CONVERTING C Plus Plus CODE TO CSharp CODE.MD = Common files\CONVERTING C Plus Plus CODE TO CSharp CODE.MD
+		Servers\QueryReport\GeoLite2-Country.mmdb = Servers\QueryReport\GeoLite2-Country.mmdb
 		Common files\RetroSpy.sql = Common files\RetroSpy.sql
 		Common files\retrospy_full.sql = Common files\retrospy_full.sql
 		Common files\RetroSpyServer.xml = Common files\RetroSpyServer.xml
