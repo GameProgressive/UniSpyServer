@@ -79,6 +79,9 @@ namespace QueryReport
             {
                 switch (packet.BytesRecieved[0])
                 {
+                    case QRClientRequest.Avaliable:
+                        AvaliableCheckHandler.BackendAvaliabilityResponse(this, packet);
+                        break;
                     // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
                     // Perhaps it was present on an older version of GameSpy SDK
                     case QRGameServerRequest.Challenge:
@@ -89,10 +92,7 @@ namespace QueryReport
                         break;
                     case QRClientRequest.KeepAlive:
                         KeepAliveHandler.KeepAliveResponse(this, packet);
-                        break;
-                    case QRClientRequest.Avaliable:
-                        AvaliableCheckHandler.BackendAvaliabilityResponse(this, packet);
-                        break;
+                        break;                    
                     default:
                         LogWriter.Log.Write("[QR] [Recv] unknown data: ", LogLevel.Error);
                         break;

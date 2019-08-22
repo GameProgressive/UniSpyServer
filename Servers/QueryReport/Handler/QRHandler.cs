@@ -18,6 +18,6 @@ namespace QueryReport.Handler
         {
             DBQuery.UpdateServerOffline(server);
         }       
-
+        
     }
 }
