@@ -12,7 +12,7 @@ namespace QueryReport.Handler
             byte[] sendingBuffer = new byte[7];
             sendingBuffer[0] = QR.QRMagic1;
             sendingBuffer[1] = QR.QRMagic2;
-            sendingBuffer[2] = QRClientRequest.KeepAlive;
+            sendingBuffer[2] = QRClient.KeepAlive;
             //According to SDK we know the instant key is from packet.BytesRecieved[1] to packet.BytesRecieved[4]
             //So we add it to response
             Array.Copy(packet.BytesRecieved, 1, sendingBuffer, 3, 4);

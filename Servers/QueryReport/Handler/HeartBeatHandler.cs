@@ -1,7 +1,9 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using QueryReport.GameServerInfo;
+using QueryReport.Structures;
 using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
@@ -19,7 +21,13 @@ namespace QueryReport.Handler
         public static void HeartbeatResponse(QRServer server, UdpPacket packet)
         {
             IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
-            string recvData = Encoding.UTF8.GetString(packet.BytesRecieved);
+            byte[] recvKeys = new byte[4];
+            //we copy 4 bytes information prepare for reply 
+            Array.Copy(packet.BytesRecieved, 1, recvKeys, 0, 4);
+
+
+            byte[] restData = packet.BytesRecieved.Skip(5).ToArray();
+            string recvData = Encoding.UTF8.GetString(restData);
             string[] dataFrag;
             string serverData, playerData, teamData;
             if (IsServerDataValid(recvData, out dataFrag))
@@ -31,7 +39,10 @@ namespace QueryReport.Handler
             else
             {
                 //we revieved a wrong data, we have to send challege to game server
+                byte[] sendingBuffer = GenerateChallenge(recvKeys);
 
+                server.SendAsync(packet, sendingBuffer);
+                server.Replied = true;
                 LogWriter.Log.Write(LogLevel.Debug, "[QR] [HeartBeat] Invalid Server Data Received From {0}:{1}-{2}", remote.Address, remote.Port, dataFrag[0]);
                 return;
             }
@@ -42,18 +53,15 @@ namespace QueryReport.Handler
 
             GameServer gameServer = new GameServer(remote);
             // set the country based off ip address if its IPv4
-           
+
             //we set the server variables
             SetServerVariables(gameServer, serverDataFrag, remote);
-
-
-
 
             LogWriter.Log.Write("[QR] No impliment function for Heartbeatpacket!", LogLevel.Debug);
             //TODO
         }
 
-        private static void SetServerVariables(GameServer gameServer, string[] serverDataFrag,IPEndPoint remote)
+        private static void SetServerVariables(GameServer gameServer, string[] serverDataFrag, IPEndPoint remote)
         {
             gameServer.Country = (remote.Address.AddressFamily == AddressFamily.InterNetwork)
                ? GeoIP.GetCountryCode(remote.Address).ToUpperInvariant()
@@ -69,7 +77,7 @@ namespace QueryReport.Handler
             }
         }
 
-        public static bool IsServerDataValid(string recvData, out string[] dataFrag)
+        private static bool IsServerDataValid(string recvData, out string[] dataFrag)
         {
             dataFrag = recvData.Split(new string[] { "\x00\x00\x00", "\x00\x00\x02" }, StringSplitOptions.None);
             if (dataFrag.Length != 3 && !recvData.EndsWith("\x00\x00"))
@@ -82,6 +90,18 @@ namespace QueryReport.Handler
                 return true;
             }
         }
-
+        private static byte[] GenerateChallenge(byte[] recvKeys)
+        {
+            byte[] sendingbuffer = new byte[23];
+            sendingbuffer[0] = QR.QRMagic1;
+            sendingbuffer[1] = QR.QRMagic2;
+            sendingbuffer[2] = QRGameServer.Challenge;
+            Array.Copy(recvKeys, 0, sendingbuffer, 3, 4);
+            //hard coded challenge, we will make it dynamic later
+            byte[] challenge = {0x44, 0x3d, 0x73,0x7e, 0x6a, 0x59, 0x30, 0x30, 0x37, 0x43, 0x39, 0x35, 0x41, 0x42, 0x42, 0x35, 0x37, 0x34,
+                                                0x43, 0x43, 0x00};
+            Array.Copy(challenge, 0, sendingbuffer, 7, challenge.Length);
+            return sendingbuffer;
+        }
     }
 }

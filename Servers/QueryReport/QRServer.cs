@@ -42,6 +42,10 @@ namespace QueryReport
 
         public bool Replied = false;
 
+        public bool IsChallengeSent = false;
+
+        public bool HasInstantKey = false;
+
         public QRServer(string serverName, DatabaseDriver driver, IPEndPoint bindTo, int MaxConnection) : base(serverName, bindTo, MaxConnection)
         {
             QRHandler.DBQuery = new QRDBQuery(driver);
@@ -79,18 +83,18 @@ namespace QueryReport
             {
                 switch (packet.BytesRecieved[0])
                 {
-                    case QRClientRequest.Avaliable:
+                    case QRClient.Avaliable:
                         AvaliableCheckHandler.BackendAvaliabilityResponse(this, packet);
                         break;
                     // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
                     // Perhaps it was present on an older version of GameSpy SDK
-                    case QRGameServerRequest.Challenge:
+                    case QRGameServer.Challenge:
                         ChallengeHandler.ServerChallengeResponse(this, packet);
                         break;
-                    case QRClientRequest.Heartbeat: // HEARTBEAT
+                    case QRClient.Heartbeat: // HEARTBEAT
                         HeartBeatHandler.HeartbeatResponse(this, packet);
                         break;
-                    case QRClientRequest.KeepAlive:
+                    case QRClient.KeepAlive:
                         KeepAliveHandler.KeepAliveResponse(this, packet);
                         break;                    
                     default:

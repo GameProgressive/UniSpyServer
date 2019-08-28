@@ -1,5 +1,8 @@
 ﻿using GameSpyLib.Network;
+using QueryReport;
+using QueryReport.GameServerInfo;
 using System;
+using System.Linq;
 
 namespace ServerBrowser
 {
@@ -39,16 +42,23 @@ namespace ServerBrowser
             Stream.OnDataReceived += ProcessData;
         }
 
-            protected void ProcessData(string received)
+        protected void ProcessData(string received)
+        {
+            // lets split up the message based on the delimiter
+            string[] messages = received.Split(new string[] { "\x00\x00\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string message in messages)
             {
-                // lets split up the message based on the delimiter
-                string[] messages = received.Split(new string[] { "\x00\x00\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string message in messages)
-                {
-                    // Ignore Non-BF2 related queries
-                    if (message.StartsWith("battlefield2"))
-                        SBHandler.ParseRequest(this,message);
-                }            
+                // Ignore Non-BF2 related queries
+                if (message.StartsWith("battlefield2"))
+                    SBHandler.ParseRequest(this, message);
+            }
+            //we get the server list from query report server
+            IQueryable<GameServer> servers = 
+                QRServer.Servers.ToList().Select(x => x.Value).Where(x => x.IsValidated).AsQueryable();
+
+
+
+
         }
 
 
@@ -87,6 +97,6 @@ namespace ServerBrowser
                 OnDisconnect(this);
         }
 
-      
+
     }
 }

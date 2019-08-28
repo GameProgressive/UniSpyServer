@@ -21,13 +21,16 @@ namespace QueryReport.Handler
         {
            
             byte[] challenge = new byte[90];
+            byte[] instancekey = new byte[4];
 
-            int blen = 0;
+            Array.Copy(packet.BytesRecieved, 1, instancekey, 0, 4);         
+
             byte[] sendingbuffer = new byte[7];
             sendingbuffer[0] = QR.QRMagic1;
             sendingbuffer[1] = QR.QRMagic2;
-            sendingbuffer[2] = QRGameServerRequest.ClientRegistered;
-            Array.Copy(packet.BytesRecieved, 1, sendingbuffer, 3, 4);
+            sendingbuffer[2] = QRGameServer.ClientRegistered;
+            Array.Copy(instancekey, 0, sendingbuffer, 3, 4);
+
             server.SendAsync(packet, sendingbuffer);
             
             LogWriter.Log.Write("[QR] No impliment function for ServerChallengeResponse!", LogLevel.Debug);

@@ -14,7 +14,7 @@ namespace QueryReport.Structures
         public const int QRPingTime = 120;
         public const int ChallengeLenth = 20;
     }
-    public static class QRClientRequest
+    public static class QRClient
     {
         public const byte Heartbeat = 0x03;//C -> S
         public const byte EchoResponse = 0x05; // 0x05, not 0x03 (order) | C -> S
@@ -22,7 +22,7 @@ namespace QueryReport.Structures
         public const byte KeepAlive = 0x08; //S -> C | C -> S
         public const byte Avaliable = 0x09; //C -> S
     }
-    public static class QRGameServerRequest
+    public static class QRGameServer
     {
         public const byte Query = 0x00; //S -> C
         public const byte Challenge = 0x01; //S -> C
