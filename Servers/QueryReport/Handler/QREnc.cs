@@ -30,7 +30,7 @@ namespace QueryReport.Handler
             byte[] enctmp = new byte[256];
             byte[] tmp = new byte[66];
             byte x, y, z, a, b;
-            byte[] p;
+            //byte[] p;
             byte[] enctype1_data =
         {
                 0x01,0xba,0xfa,0xb2,0x51,0x00,0x54,0x80,0x75,0x16,0x8e,0x8e,0x02,0x08,0x36,
@@ -63,7 +63,7 @@ namespace QueryReport.Handler
                 enctmp[i] = (byte)i;
             }
             a = 0; b = 0;
-            for (i = 0;src[i]==0; i++)
+            for (i = 0;src[i]!=0; i++)
             {
                 a += (byte)(src[i] +1);
                 x = enctmp[a];
@@ -74,7 +74,7 @@ namespace QueryReport.Handler
                 tmp[i] = (byte)(src[i] ^ enctmp[(x + y) & 0xff]);
 
             }
-            for (size = i; size % 3==0; size++)
+            for (size = i; size % 3!=0; size++)
             {
                 tmp[size] = 0;
             }

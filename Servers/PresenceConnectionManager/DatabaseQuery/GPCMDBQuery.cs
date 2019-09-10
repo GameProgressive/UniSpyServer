@@ -147,9 +147,9 @@ namespace PresenceConnectionManager
             return playerInfo;
         }
 
-        public  Dictionary<string, object> GetUserFromUniqueNick(string Unick)
+        public  Dictionary<string, object> GetUserFromUniqueNick(string uniquenick)
         {
-            return GetUserDataReal(", profiles.nick, users.email ", "profiles.uniquenick=@P0", Unick, "");
+            return GetUserDataReal(", profiles.nick, users.email ", "profiles.uniquenick=@P0", uniquenick, "");
         }
 
         public Dictionary<string, object> GetUserFromNickname(string Email, string Nick)

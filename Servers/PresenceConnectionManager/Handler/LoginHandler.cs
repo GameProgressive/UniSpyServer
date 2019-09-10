@@ -19,42 +19,50 @@ namespace PresenceConnectionManager.Handler
         /// the client, and returns encrypted data for the client
         /// to verify as well
         /// </summary>
-        public static void ProcessLogin(GPCMClient client,Dictionary<string, string> Recv, GPCMConnectionUpdate OnSuccessfulLogin, GPCMStatusChanged OnStatusChanged)
+        public static void ProcessLogin(GPCMClient client,Dictionary<string, string> recv, GPCMConnectionUpdate OnSuccessfulLogin, GPCMStatusChanged OnStatusChanged)
         {
             uint partnerID = 0;
-
             // Make sure we have all the required data to process this login
-            if (!Recv.ContainsKey("challenge") || !Recv.ContainsKey("response"))
+            //if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
+            //{
+            //    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "Invalid response received from the client!");
+            //    client.Disconnect(DisconnectReason.InvalidLoginQuery);
+            //    return;
+            //}
+            if (IsContainAllKeys(recv) != GPErrorCode.NoError)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "Invalid response received from the client!");
                 client.Disconnect(DisconnectReason.InvalidLoginQuery);
                 return;
             }
 
-            // Parse the partnerid, required since it changes the challenge for Unique nick and User login
-            if (Recv.ContainsKey("partnerid"))
-            {
-                if (!uint.TryParse(Recv["partnerid"], out partnerID))
-                    partnerID = 0;
-            }
 
-            // Parse the 3 login types information
-            if (Recv.ContainsKey("uniquenick"))
-            {
-                client.PlayerInfo.PlayerUniqueNick = Recv["uniquenick"];
-            }
-            else if (Recv.ContainsKey("authtoken"))
-            {
-                client.PlayerInfo.PlayerAuthToken = Recv["authtoken"];
-            }
-            else if (Recv.ContainsKey("user"))
-            {
-                // "User" is <nickname>@<email>
-                string User = Recv["user"];
-                int Pos = User.IndexOf('@');
-                client.PlayerInfo.PlayerNick = User.Substring(0, Pos);
-                client.PlayerInfo.PlayerEmail = User.Substring(Pos + 1);
-            }
+            // Parse the partnerid, required since it changes the challenge for Unique nick and User login
+            ParseRequestToPlayerInfo(client,recv,ref partnerID);
+
+            //if (recv.ContainsKey("partnerid"))
+            //{
+            //    if (!uint.TryParse(recv["partnerid"], out partnerID))
+            //        partnerID = 0;
+            //}
+
+            //// Parse the 3 login types information
+            //if (recv.ContainsKey("uniquenick"))
+            //{
+            //    client.PlayerInfo.PlayerUniqueNick = recv["uniquenick"];
+            //}
+            //else if (recv.ContainsKey("authtoken"))
+            //{
+            //    client.PlayerInfo.PlayerAuthToken = recv["authtoken"];
+            //}
+            //else if (recv.ContainsKey("user"))
+            //{
+            //    // "User" is <nickname>@<email>
+            //    string User = recv["user"];
+            //    int Pos = User.IndexOf('@');
+            //    client.PlayerInfo.PlayerNick = User.Substring(0, Pos);
+            //    client.PlayerInfo.PlayerEmail = User.Substring(Pos + 1);
+            //}
 
             // Dispose connection after use
             try
@@ -192,11 +200,11 @@ namespace PresenceConnectionManager.Handler
                 else
                 {
                     client.PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
-                    challengeData = Recv["user"];
+                    challengeData = recv["user"];
                 }
 
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                if (Recv["response"] == GPCMHandler.GenerateProof(Recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
+                if (recv["response"] == GPCMHandler.GenerateProof(recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
                 {
                     // Create session key
                     client.SessionKey = Crc.ComputeChecksum(client.PlayerInfo.PlayerUniqueNick);
@@ -205,7 +213,7 @@ namespace PresenceConnectionManager.Handler
                     client.Stream.SendAsync(
                         @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         client.SessionKey,
-                        GPCMHandler.GenerateProof(client.ServerChallengeKey, Recv["challenge"], challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo), // Do this again, Params are reversed!
+                        GPCMHandler.GenerateProof(client.ServerChallengeKey, recv["challenge"], challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo), // Do this again, Params are reversed!
                         client.PlayerInfo.PlayerId,
                         client.PlayerInfo.PlayerNick,
                         GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
@@ -240,6 +248,47 @@ namespace PresenceConnectionManager.Handler
                 LogWriter.Log.Write(ex.ToString(), LogLevel.Error);
                 client.Disconnect(DisconnectReason.GeneralError);
                 return;
+            }
+        }
+
+        private static GPErrorCode IsContainAllKeys( Dictionary<string, string> recv)
+        {
+            // Make sure we have all the required data to process this login
+            if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
+            {
+                return GPErrorCode.Parse;
+            }
+            else
+            {
+                return GPErrorCode.NoError;
+            }
+        }
+
+        private static void ParseRequestToPlayerInfo(GPCMClient client,Dictionary<string, string> recv, ref uint partnerID)
+        {
+            
+            if (recv.ContainsKey("partnerid"))
+            {
+                if (!uint.TryParse(recv["partnerid"],out partnerID))
+                    partnerID = 0;
+            }
+
+            // Parse the 3 login types information
+            if (recv.ContainsKey("uniquenick"))
+            {
+                client.PlayerInfo.PlayerUniqueNick = recv["uniquenick"];
+            }
+            else if (recv.ContainsKey("authtoken"))
+            {
+                client.PlayerInfo.PlayerAuthToken = recv["authtoken"];
+            }
+            else if (recv.ContainsKey("user"))
+            {
+                // "User" is <nickname>@<email>
+                string User = recv["user"];
+                int Pos = User.IndexOf('@');
+                client.PlayerInfo.PlayerNick = User.Substring(0, Pos);
+                client.PlayerInfo.PlayerEmail = User.Substring(Pos + 1);
             }
         }
     }
