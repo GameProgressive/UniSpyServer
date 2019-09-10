@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler
 {
-   public  class LoginHandler
+    public class LoginHandler
     {
         /// <summary>
         /// Our CRC16 object for generating Checksums
@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Handler
         /// the client, and returns encrypted data for the client
         /// to verify as well
         /// </summary>
-        public static void ProcessLogin(GPCMClient client,Dictionary<string, string> recv, GPCMConnectionUpdate OnSuccessfulLogin, GPCMStatusChanged OnStatusChanged)
+        public static void ProcessLogin(GPCMClient client, Dictionary<string, string> recv, GPCMConnectionUpdate OnSuccessfulLogin, GPCMStatusChanged OnStatusChanged)
         {
             uint partnerID = 0;
             // Make sure we have all the required data to process this login
@@ -38,31 +38,8 @@ namespace PresenceConnectionManager.Handler
 
 
             // Parse the partnerid, required since it changes the challenge for Unique nick and User login
-            ParseRequestToPlayerInfo(client,recv,ref partnerID);
+            ParseRequestToPlayerInfo(client, recv, ref partnerID);
 
-            //if (recv.ContainsKey("partnerid"))
-            //{
-            //    if (!uint.TryParse(recv["partnerid"], out partnerID))
-            //        partnerID = 0;
-            //}
-
-            //// Parse the 3 login types information
-            //if (recv.ContainsKey("uniquenick"))
-            //{
-            //    client.PlayerInfo.PlayerUniqueNick = recv["uniquenick"];
-            //}
-            //else if (recv.ContainsKey("authtoken"))
-            //{
-            //    client.PlayerInfo.PlayerAuthToken = recv["authtoken"];
-            //}
-            //else if (recv.ContainsKey("user"))
-            //{
-            //    // "User" is <nickname>@<email>
-            //    string User = recv["user"];
-            //    int Pos = User.IndexOf('@');
-            //    client.PlayerInfo.PlayerNick = User.Substring(0, Pos);
-            //    client.PlayerInfo.PlayerEmail = User.Substring(Pos + 1);
-            //}
 
             // Dispose connection after use
             try
@@ -102,106 +79,17 @@ namespace PresenceConnectionManager.Handler
                 }
 
                 // Check if user is banned
-                PlayerStatus currentPlayerStatus;
-                UserStatus currentUserStatus;
-
-                if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
+                string msg;
+                DisconnectReason reason;
+                GPErrorCode error = CheckUsersAccountAvailability(queryResult, out msg, out reason);
+                if (error != GPErrorCode.NoError)
                 {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
-                    client.Disconnect(DisconnectReason.InvalidPlayer);
+                    GameSpyUtils.SendGPError(client.Stream, error, msg);
+                    client.Disconnect(reason);
                     return;
                 }
-
-                if (!Enum.TryParse(queryResult["userstatus"].ToString(), out currentUserStatus))
-                {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
-                    client.Disconnect(DisconnectReason.InvalidPlayer);
-                    return;
-                }
-
-                // Check the status of the account.
-                // If the single profile is banned, the account or the player status
-
-                if (currentPlayerStatus == PlayerStatus.Banned)
-                {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your profile has been permanently suspended.");
-                    client.Disconnect(DisconnectReason.PlayerIsBanned);
-                    return;
-                }
-
-                if (currentUserStatus == UserStatus.Created)
-                {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your account is not verified. Please check your email inbox and verify the account.");
-                    client.Disconnect(DisconnectReason.PlayerIsBanned);
-                    return;
-                }
-
-                if (currentUserStatus == UserStatus.Banned)
-                {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your account has been permanently suspended.");
-                    client.Disconnect(DisconnectReason.PlayerIsBanned);
-                    return;
-                }
-
-                // Set player variables
-                client.PlayerInfo.PlayerId = uint.Parse(queryResult["profileid"].ToString());
-                client.PlayerInfo.PasswordHash = queryResult["password"].ToString().ToLowerInvariant();
-                client.PlayerInfo.PlayerCountryCode = queryResult["countrycode"].ToString();
-                client.PlayerInfo.PlayerFirstName = queryResult["firstname"].ToString();
-                client.PlayerInfo.PlayerLastName = queryResult["lastname"].ToString();
-                client.PlayerInfo.PlayerICQ = int.Parse(queryResult["icq"].ToString());
-                client.PlayerInfo.PlayerHomepage = queryResult["homepage"].ToString();
-                client.PlayerInfo.PlayerZIPCode = queryResult["zipcode"].ToString();
-                client.PlayerInfo.PlayerLocation = queryResult["location"].ToString();
-                client.PlayerInfo.PlayerAim = queryResult["aim"].ToString();
-                client.PlayerInfo.PlayerOwnership = int.Parse(queryResult["ownership1"].ToString());
-                client.PlayerInfo.PlayerOccupation = int.Parse(queryResult["occupationid"].ToString());
-                client.PlayerInfo.PlayerIndustryID = int.Parse(queryResult["industryid"].ToString());
-                client.PlayerInfo.PlayerIncomeID = int.Parse(queryResult["incomeid"].ToString());
-                client.PlayerInfo.PlayerMarried = int.Parse(queryResult["marriedid"].ToString());
-                client.PlayerInfo.PlayerChildCount = int.Parse(queryResult["childcount"].ToString());
-                client.PlayerInfo.PlayerConnectionType = int.Parse(queryResult["connectiontype"].ToString());
-                client.PlayerInfo.PlayerPicture = int.Parse(queryResult["picture"].ToString());
-                client.PlayerInfo.PlayerInterests = int.Parse(queryResult["interests1"].ToString());
-                client.PlayerInfo.PlayerBirthday = ushort.Parse(queryResult["birthday"].ToString());
-                client.PlayerInfo.PlayerBirthmonth = ushort.Parse(queryResult["birthmonth"].ToString());
-                client.PlayerInfo.PlayerBirthyear = ushort.Parse(queryResult["birthyear"].ToString());
-
-                PlayerSexType playerSexType;
-                if (!Enum.TryParse(queryResult["sex"].ToString().ToUpper(), out playerSexType))
-                    client.PlayerInfo.PlayerSex = PlayerSexType.PAT;
-                else
-                    client.PlayerInfo.PlayerSex = playerSexType;
-
-                client.PlayerInfo.PlayerLatitude = float.Parse(queryResult["latitude"].ToString());
-                client.PlayerInfo.PlayerLongitude = float.Parse(queryResult["longitude"].ToString());
-
-                PublicMasks mask;
-                if (!Enum.TryParse(queryResult["publicmask"].ToString(), out mask))
-                    client.PlayerInfo.PlayerPublicMask = PublicMasks.MASK_ALL;
-                else
-                    client.PlayerInfo.PlayerPublicMask = mask;
-
-                string challengeData = "";
-
-                if (client.PlayerInfo.PlayerUniqueNick.Length > 0)
-                {
-                    client.PlayerInfo.PlayerEmail = queryResult["email"].ToString();
-                    client.PlayerInfo.PlayerNick = queryResult["nick"].ToString();
-                    challengeData = client.PlayerInfo.PlayerUniqueNick;
-                }
-                else if (client.PlayerInfo.PlayerAuthToken.Length > 0)
-                {
-                    client.PlayerInfo.PlayerEmail = queryResult["email"].ToString();
-                    client.PlayerInfo.PlayerNick = queryResult["nick"].ToString();
-                    client.PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
-                    challengeData = client.PlayerInfo.PlayerAuthToken;
-                }
-                else
-                {
-                    client.PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
-                    challengeData = recv["user"];
-                }
+                // we finally set the player variables and return challengeData
+                string challengeData = SetPlayerInfo(client, queryResult,recv);   
 
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
                 if (recv["response"] == GPCMHandler.GenerateProof(recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
@@ -251,7 +139,7 @@ namespace PresenceConnectionManager.Handler
             }
         }
 
-        private static GPErrorCode IsContainAllKeys( Dictionary<string, string> recv)
+        private static GPErrorCode IsContainAllKeys(Dictionary<string, string> recv)
         {
             // Make sure we have all the required data to process this login
             if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
@@ -264,13 +152,13 @@ namespace PresenceConnectionManager.Handler
             }
         }
 
-        private static void ParseRequestToPlayerInfo(GPCMClient client,Dictionary<string, string> recv, ref uint partnerID)
+        private static void ParseRequestToPlayerInfo(GPCMClient client, Dictionary<string, string> recv, ref uint partnerID)
         {
-            
+
             if (recv.ContainsKey("partnerid"))
             {
-                if (!uint.TryParse(recv["partnerid"],out partnerID))
-                    partnerID = 0;
+                partnerID = Convert.ToUInt32(recv["partnerid"]);
+                //partnerID = 0;
             }
 
             // Parse the 3 login types information
@@ -285,11 +173,134 @@ namespace PresenceConnectionManager.Handler
             else if (recv.ContainsKey("user"))
             {
                 // "User" is <nickname>@<email>
-                string User = recv["user"];
-                int Pos = User.IndexOf('@');
-                client.PlayerInfo.PlayerNick = User.Substring(0, Pos);
-                client.PlayerInfo.PlayerEmail = User.Substring(Pos + 1);
+                string user = recv["user"];
+                int Pos = user.IndexOf('@');
+                client.PlayerInfo.PlayerNick = user.Substring(0, Pos);
+                client.PlayerInfo.PlayerEmail = user.Substring(Pos + 1);
             }
+        }
+
+        private static GPErrorCode CheckUsersAccountAvailability(Dictionary<string, object> queryResult, out string msg, out DisconnectReason reason)
+        {
+            PlayerStatus currentPlayerStatus;
+            UserStatus currentUserStatus;
+
+            if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
+            {
+                msg = "Invalid player data! Please contact an administrator.";
+                reason = DisconnectReason.InvalidPlayer;
+                return GPErrorCode.LoginBadUniquenick;
+                //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
+                //client.Disconnect(DisconnectReason.InvalidPlayer);
+            }
+            if (!Enum.TryParse(queryResult["userstatus"].ToString(), out currentUserStatus))
+            {
+                msg = "Invalid player data! Please contact an administrator.";
+                reason = DisconnectReason.InvalidPlayer;
+                return GPErrorCode.LoginBadUniquenick;
+                //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
+                //client.Disconnect(DisconnectReason.InvalidPlayer);
+                //return;
+            }
+            // Check the status of the account.
+            // If the single profile is banned, the account or the player status
+            if (currentPlayerStatus == PlayerStatus.Banned)
+            {
+                msg = "Your profile has been permanently suspended.";
+                reason = DisconnectReason.PlayerIsBanned;
+                return GPErrorCode.LoginBadUniquenick;
+                //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your profile has been permanently suspended.");
+                //client.Disconnect(DisconnectReason.PlayerIsBanned);
+                //return;
+            }
+            if (currentUserStatus == UserStatus.Created)
+            {
+                msg = "Your account is not verified. Please check your email inbox and verify the account.";
+                reason = DisconnectReason.PlayerIsBanned;
+                return GPErrorCode.LoginBadUniquenick;
+
+                //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your account is not verified. Please check your email inbox and verify the account.");
+                //client.Disconnect(DisconnectReason.PlayerIsBanned);
+                //return;
+            }
+            if (currentUserStatus == UserStatus.Banned)
+            {
+                msg = "Your account has been permanently suspended.";
+                reason = DisconnectReason.PlayerIsBanned;
+                return GPErrorCode.LoginBadUniquenick;
+                //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your account has been permanently suspended.");
+                //client.Disconnect(DisconnectReason.PlayerIsBanned);
+                //return;
+            }
+
+            msg = "No error";
+            reason = DisconnectReason.NormalLogout;
+            return GPErrorCode.NoError;
+        }
+
+        private static string SetPlayerInfo(GPCMClient client, Dictionary<string, object> queryResult, Dictionary<string, string> recv)
+        {
+            client.PlayerInfo.PlayerId = uint.Parse(queryResult["profileid"].ToString());
+            client.PlayerInfo.PasswordHash = queryResult["password"].ToString().ToLowerInvariant();
+            client.PlayerInfo.PlayerCountryCode = queryResult["countrycode"].ToString();
+            client.PlayerInfo.PlayerFirstName = queryResult["firstname"].ToString();
+            client.PlayerInfo.PlayerLastName = queryResult["lastname"].ToString();
+            client.PlayerInfo.PlayerICQ = int.Parse(queryResult["icq"].ToString());
+            client.PlayerInfo.PlayerHomepage = queryResult["homepage"].ToString();
+            client.PlayerInfo.PlayerZIPCode = queryResult["zipcode"].ToString();
+            client.PlayerInfo.PlayerLocation = queryResult["location"].ToString();
+            client.PlayerInfo.PlayerAim = queryResult["aim"].ToString();
+            client.PlayerInfo.PlayerOwnership = int.Parse(queryResult["ownership1"].ToString());
+            client.PlayerInfo.PlayerOccupation = int.Parse(queryResult["occupationid"].ToString());
+            client.PlayerInfo.PlayerIndustryID = int.Parse(queryResult["industryid"].ToString());
+            client.PlayerInfo.PlayerIncomeID = int.Parse(queryResult["incomeid"].ToString());
+            client.PlayerInfo.PlayerMarried = int.Parse(queryResult["marriedid"].ToString());
+            client.PlayerInfo.PlayerChildCount = int.Parse(queryResult["childcount"].ToString());
+            client.PlayerInfo.PlayerConnectionType = int.Parse(queryResult["connectiontype"].ToString());
+            client.PlayerInfo.PlayerPicture = int.Parse(queryResult["picture"].ToString());
+            client.PlayerInfo.PlayerInterests = int.Parse(queryResult["interests1"].ToString());
+            client.PlayerInfo.PlayerBirthday = ushort.Parse(queryResult["birthday"].ToString());
+            client.PlayerInfo.PlayerBirthmonth = ushort.Parse(queryResult["birthmonth"].ToString());
+            client.PlayerInfo.PlayerBirthyear = ushort.Parse(queryResult["birthyear"].ToString());
+
+            PlayerSexType playerSexType;
+            if (!Enum.TryParse(queryResult["sex"].ToString().ToUpper(), out playerSexType))
+                client.PlayerInfo.PlayerSex = PlayerSexType.PAT;
+            else
+                client.PlayerInfo.PlayerSex = playerSexType;
+
+            client.PlayerInfo.PlayerLatitude = float.Parse(queryResult["latitude"].ToString());
+            client.PlayerInfo.PlayerLongitude = float.Parse(queryResult["longitude"].ToString());
+
+            PublicMasks mask;
+            if (!Enum.TryParse(queryResult["publicmask"].ToString(), out mask))
+                client.PlayerInfo.PlayerPublicMask = PublicMasks.MASK_ALL;
+            else
+                client.PlayerInfo.PlayerPublicMask = mask;
+            string challengeData;
+
+            if (client.PlayerInfo.PlayerUniqueNick.Length > 0)
+            {
+                client.PlayerInfo.PlayerEmail = queryResult["email"].ToString();
+                client.PlayerInfo.PlayerNick = queryResult["nick"].ToString();
+                challengeData = client.PlayerInfo.PlayerUniqueNick;
+                return challengeData;
+            }
+            else if (client.PlayerInfo.PlayerAuthToken.Length > 0)
+            {
+                client.PlayerInfo.PlayerEmail = queryResult["email"].ToString();
+                client.PlayerInfo.PlayerNick = queryResult["nick"].ToString();
+                client.PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
+                challengeData = client.PlayerInfo.PlayerAuthToken;
+                return challengeData;
+            }
+            else
+            {
+                client.PlayerInfo.PlayerUniqueNick = queryResult["uniquenick"].ToString();
+                challengeData = recv["user"];
+                return challengeData;
+            }
+
         }
     }
 
