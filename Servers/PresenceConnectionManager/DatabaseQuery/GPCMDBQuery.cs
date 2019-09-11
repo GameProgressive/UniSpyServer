@@ -18,23 +18,36 @@ namespace PresenceConnectionManager
         {
         }
 
+
+        
         protected Dictionary<string, object> GetUserDataReal(string AppendFirst, string SecondAppend, string _P0, string _P1)
         {
             var Rows = Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
                 "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
                 @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
-                @"profiles.birthyear, profiles.location, profiles.icq, profiles.status, users.password, users.userstatus " + AppendFirst +
+                @"profiles.birthyear, profiles.location, profiles.icq, profiles.profilestatus, users.password, users.userstatus " + AppendFirst +
                 " FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE " + SecondAppend, _P0, _P1);
             return (Rows.Count == 0) ? null : Rows[0];
         }
 
-        public GPCMPlayerInfo GetProfileInfo(uint id)
+        /// <summary>
+        /// The user profile you searched must be accurate, 
+        /// because it contains uniquenick, 
+        /// we know that there may be multiple uniquenicks with different namespaceid productid partnerid under a nick,
+        /// so we determine the unique namespaceid productid partnerid based on the incoming sesskey to determine uniquenick
+        /// </summary>
+        /// <param name="profileid"></param>
+        /// <returns></returns>
+        public GPCMPlayerInfo GetProfileInfo(uint profileid)
         {
-            var Rows = Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
-                "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
-                @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
-                @"profiles.birthyear, profiles.location, profiles.icq, profiles.status, profiles.nick, profiles.uniquenick, users.email FROM profiles " +
-                @"INNER JOIN users ON profiles.userid = users.userid WHERE profileid=@P0", id);
+            //var Rows = Query("SELECT profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
+            //    "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
+            //    @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
+            //    @"profiles.birthyear, profiles.location, profiles.icq, profiles.profilestatus, profiles.nick, namespace.uniquenick, users.email FROM profiles " +
+            //    @"INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE profiles.profileid=@P0", profileid);
+            var Rows= Query("SELECT * FROM profiles " +
+                @"INNER JOIN users ON users.userid = profiles.userid "+
+                @"INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE profiles.profileid=@P0", profileid);
             if (Rows.Count == 0)
                 return null;
 
@@ -163,15 +176,17 @@ namespace PresenceConnectionManager
             }
         }
 
-        public Dictionary<string, object> GetUserFromUniqueNick(Dictionary<string, string> dict)
+        public List<Dictionary<string, object>> GetUserFromUniqueNick(Dictionary<string, string> dict)
         {
-            return Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,"
+            return Query(@"SELECT profiles.profileid, profiles.nick, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,"
              + @"profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,"
              + @" profiles.marriedid, profiles.childcount, profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, "
              + @"profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, "
-             + @"profiles.location, profiles.icq, profiles.statuscode, users.password, users.userstatus "
+             + @"profiles.location, profiles.icq, profiles.profilestatus, users.email, users.password, users.userstatus "
              + @"FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  "
-             + @"WHERE namespace.uniquenick = @P0 AND users.email=@P1", dict["uniquenick"], dict["email"])[0];
+             + @"WHERE namespace.uniquenick = @P0 AND namespace.productid = @P1 AND namespace.partnerid = @P2 AND namespace.gamename = @P3"
+                , dict["uniquenick"],dict["productid"],dict["partnerid"],dict["gamename"]);
+            
         }
 
         public Dictionary<string, object> GetUserFromNickname(Dictionary<string, string> dict)
@@ -225,6 +240,20 @@ namespace PresenceConnectionManager
         {
             Execute("UPDATE profiles SET profilestatus=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2", address, timestamp, PlayerId, PlayerStatus);
         }
+        /// <summary>
+        /// update sessionkey in database, when we are going to get someone's profile
+        /// we first find uniquenick by search profileid and namespaceid and productid and partnerid  
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="sesskey"></param>
+        /// <param name="player"></param>
+        public void UpdateSessionKey(Dictionary<string, string> dict, ushort sesskey, GPCMPlayerInfo player)
+        {
+           Dictionary<string, object> temp = Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND partnerid = @P2 AND productid=@P3 AND gamename = @P4",player.PlayerId,dict["namespaceid"],dict["partnerid"],dict["productID"])[0];
+            uint id = Convert.ToUInt32(temp);
+            Execute("UPDATE namespace SET sesskey = @P0 WHERE id = @P1 ", sesskey,id);
+        }
+
 
         public void ResetStatusAndSessionKey()
         {

@@ -45,12 +45,23 @@ namespace PresenceConnectionManager.Handler
             try
             {
                 // Try and fetch the user from the database
+                List<Dictionary<string, object>> queryResult0;
                 Dictionary<string, object> queryResult;
 
                 try
                 {
                     if (client.PlayerInfo.PlayerUniqueNick.Length > 0)
-                        queryResult = GPCMHandler.DBQuery.GetUserFromUniqueNick(recv);
+                    {
+                        queryResult0 = GPCMHandler.DBQuery.GetUserFromUniqueNick(recv);
+                        if (queryResult0.Count > 0)
+                        {
+                            queryResult = queryResult0[0];
+                        }
+                        else
+                        {
+                            queryResult = null;
+                        }
+                    }
                     else if (client.PlayerInfo.PlayerAuthToken.Length > 0)
                     {
                         //TODO! Add the database entry
@@ -89,13 +100,17 @@ namespace PresenceConnectionManager.Handler
                     return;
                 }
                 // we finally set the player variables and return challengeData
-                string challengeData = SetPlayerInfo(client, queryResult,recv);   
+                string challengeData = SetPlayerInfo(client, queryResult, recv);
 
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
                 if (recv["response"] == GPCMHandler.GenerateProof(recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
                 {
                     // Create session key
                     client.SessionKey = Crc.ComputeChecksum(client.PlayerInfo.PlayerUniqueNick);
+                    
+                    //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
+                    //access to the sesskey to find the uniquenick for particular game
+                    GPCMHandler.DBQuery.UpdateSessionKey(recv, client.SessionKey,client.PlayerInfo);
 
                     // Password is correct
                     client.Stream.SendAsync(

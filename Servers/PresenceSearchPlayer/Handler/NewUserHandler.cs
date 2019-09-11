@@ -42,10 +42,10 @@ namespace PresenceSearchPlayer.Handler
             if (dict["uniquenick"] == "")
             {
                 pid = GPSPHandler.DBQuery.CreateUserWithNick(dict, userid);
-                //if user's nick name is exist we can not continue;
+                //if user's information is exist we can not continue;
                 if (pid == 0)
                 {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "Nick is registered, please use another one.");
+                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "Nick or uniquenick is registered, please use another one.");
                 }
                 else
                 {

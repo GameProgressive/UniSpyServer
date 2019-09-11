@@ -60,6 +60,7 @@ namespace PresenceConnectionManager
         /// </summary>
         public static void SendBuddies(GPCMClient client)
         {
+            //TODO
             if (client.BuddiesSent)
                 return;
 
@@ -72,7 +73,8 @@ namespace PresenceConnectionManager
             );*/
 
             //client.Stream.SendAsync(@"\bdy\0\list\\final\");
-            client.Stream.SendAsync(@"\bdy\1\list\2,\final\");
+            
+            client.Stream.SendAsync(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
             client.BuddiesSent = true;
         }
 

@@ -72,7 +72,7 @@ namespace PresenceConnectionManager.Structures
         public PlayerSexType PlayerSex = PlayerSexType.PAT;
         public float PlayerLatitude = 0.0f;
         public float PlayerLongitude = 0.0f;
-
+        
         /// <summary>
         /// Gets the current status of the player
         /// </summary>

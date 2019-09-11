@@ -21,7 +21,7 @@ namespace PresenceSearchPlayer
             return Query("SELECT userid FROM users WHERE `email`=@P0", email).Count > 0;
         }
 
-        public  List<Dictionary<string, object>> GetProfileidFromNickEmailPassword(Dictionary<string, string> dict)
+        public List<Dictionary<string, object>> GetProfileidFromNickEmailPassword(Dictionary<string, string> dict)
         {
             return Query("SELECT profileid FROM profiles " +
                 " INNER JOIN users ON users.userid=profiles.userid " +
@@ -35,13 +35,13 @@ namespace PresenceSearchPlayer
             return Query("SELECT profileid,uniquenick FROM namespace WHERE profileid = @P0 AND namespaceid =@P1 AND gamename=@P2 ", pid, dict["namespaceid"], dict["gamename"]);
         }
 
-        internal List<Dictionary<string,object>> GetOtherBuddy(Dictionary<string, string> dict)
+        internal List<Dictionary<string, object>> GetOtherBuddy(Dictionary<string, string> dict)
         {
-            return Query("SELECT profiles.nick,firstname,lastname,uniquenick " +
+            return Query("SELECT profiles.nick,profiles.firstname,profiles.lastname,namespace.uniquenick, users.email " +
                 "FROM profiles inner join namespace on namespace.profileid=profiles.profileid " +
                 "INNER JOIN users ON users.userid = profiles.userid  " +
                 "WHERE namespace.profileid = @P0 AND namespace.namespaceid=@P1",
-                dict["profileid"],dict["namespaceid"]);
+                dict["profileid"], dict["namespaceid"]);
         }
 
         public List<Dictionary<string, object>> RetriveNicknames(Dictionary<string, string> dict)
@@ -77,7 +77,7 @@ namespace PresenceSearchPlayer
         public bool IsUniqueNickExistForSuggest(Dictionary<string, string> dict)
         {
             bool isUniquenickExist = Query("SELECT uniquenick FROM namespace " +
-                 "WHERE uniquenick=@P0 AND namespaceid=@P1 AND gamename = @P2", 
+                 "WHERE uniquenick=@P0 AND namespaceid=@P1 AND gamename = @P2",
                 dict["preferrednick"], dict["namespaceid"], dict["gamename"]).Count > 0;
 
             if (isUniquenickExist)
@@ -143,17 +143,34 @@ namespace PresenceSearchPlayer
         public uint CreateUserWithNick(Dictionary<string, string> dict, uint userid)
         {
             //this may have problems
-            bool isProfileExist = Query("SELECT profileid FROM users WHERE userid = @P0 AND nick=@P1",userid,dict["nick"]).Count>0;
-            if (isProfileExist)
+            List<Dictionary<string, object>> temp = Query("SELECT profiles.profileid FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE users.userid = @P0 AND profiles.nick=@P1", userid, dict["nick"]);
+            uint pid = Convert.ToUInt32(temp[0]["profileid"]);
+            bool ispidExist = temp.Count > 0;
+            //if profileid exist we check namespaceid gamename partnerid on namespace table and create information on namespace table
+            if (ispidExist)
             {
-                return 0;
+                // we check if the information in namespace is exist
+                List<Dictionary<string, object>> temp2 = Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND partnerid = @P2 AND productid = @P3 ", pid , dict["namespaceid"],dict["partnerid"],dict["productID"]);
+                              //if the information is exist in namespace we return 0
+                if (temp2.Count > 0)
+                {
+                    return 0;
+                }
+                else
+                {
+                    //added the information to namespace table;
+                    Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename) VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
+                    return pid;
+                }
             }
             else
             {
+                //if the profileid is not exist we create one and update the information on namespaceid
                 Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, dict["nick"]);
                 uint profileid = (uint)Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid)[0]["profileid"];
+                Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerID"], dict["productid"], dict["gamename"]);
                 return profileid;
-            }            
+            }
         }
         public uint CreateUserWithUnique(Dictionary<string, string> dict, uint userid)
         {
