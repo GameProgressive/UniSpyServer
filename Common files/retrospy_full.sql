@@ -68,14 +68,16 @@ CREATE TABLE IF NOT EXISTS `friends` (
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `FK_friends_profiles` (`profileid`) USING BTREE,
   KEY `FK_friends_profiles_2` (`targetid`) USING BTREE,
-  KEY `FK3_namespace_namespaceid` (`productid`),
-  CONSTRAINT `FK3_namespace_namespaceid` FOREIGN KEY (`productid`) REFERENCES `namespace` (`productid`),
+  KEY `FK3_namespace_productid` (`productid`),
+  CONSTRAINT `FK3_namespace_productid` FOREIGN KEY (`productid`) REFERENCES `namespace` (`productid`),
   CONSTRAINT `FK_friends_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
   CONSTRAINT `FK_friends_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table retrospy2.friends: ~0 rows (approximately)
 /*!40000 ALTER TABLE `friends` DISABLE KEYS */;
+INSERT INTO `friends` (`id`, `profileid`, `targetid`, `namespaceid`, `productid`) VALUES
+	(1, 8, 1, 1, 0);
 /*!40000 ALTER TABLE `friends` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.games
@@ -89,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   `disabledservices` int(11) NOT NULL DEFAULT 0 COMMENT '1 = unavailable, 2 = temporarily unavailble, else available',
   `keylist` text NOT NULL,
   `keytypelist` text NOT NULL,
-  PRIMARY KEY (`id`)
+  KEY `gamename` (`gamename`(1000))
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- Dumping data for table retrospy2.games: 2,799 rows
@@ -2896,24 +2898,6 @@ INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, 
 	(1, 'bgate', '2ozFrM', 'Baldur\'s Gate', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1');
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 
--- Dumping structure for table retrospy2.gamestatus
-CREATE TABLE IF NOT EXISTS `gamestatus` (
-  `id` int(3) NOT NULL AUTO_INCREMENT,
-  `gamename` varchar(30) NOT NULL,
-  `queryport` int(5) NOT NULL,
-  `disabledservices` text NOT NULL,
-  `backendflags` int(11) NOT NULL,
-  `secretkey` varchar(64) NOT NULL,
-  `keylist` text NOT NULL,
-  `keytypelist` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Dumping data for table retrospy2.gamestatus: ~0 rows (approximately)
-/*!40000 ALTER TABLE `gamestatus` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gamestatus` ENABLE KEYS */;
-
 -- Dumping structure for table retrospy2.grouplist
 CREATE TABLE IF NOT EXISTS `grouplist` (
   `gameid` int(11) NOT NULL,
@@ -4652,19 +4636,21 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   `uniquenick` varchar(50) DEFAULT NULL,
   `partnerid` int(11) unsigned NOT NULL,
   `productid` int(11) unsigned NOT NULL,
+  `gamename` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK1_profile_profileid` (`profileid`),
   KEY `productid` (`productid`),
   KEY `namespaceid` (`namespaceid`),
   CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
--- Dumping data for table retrospy2.namespace: ~3 rows (approximately)
+-- Dumping data for table retrospy2.namespace: ~4 rows (approximately)
 /*!40000 ALTER TABLE `namespace` DISABLE KEYS */;
-INSERT INTO `namespace` (`id`, `profileid`, `namespaceid`, `uniquenick`, `partnerid`, `productid`) VALUES
-	(1, 1, 1, 'spyguy', 0, 0),
-	(3, 1, 1, 'spyguy2', 0, 0),
-	(4, 9, 1, 'xiaojiuwo', 0, 0);
+INSERT INTO `namespace` (`id`, `profileid`, `namespaceid`, `uniquenick`, `partnerid`, `productid`, `gamename`) VALUES
+	(1, 1, 1, 'spyguy', 0, 0, 'gmtest'),
+	(3, 1, 1, 'spyguy2', 0, 0, 'gmtest'),
+	(4, 9, 2, 'xiaojiuwo', 0, 0, 'gmtest'),
+	(5, 13, 1, 'xiaojiuwo', 0, 0, 'gmtest');
 /*!40000 ALTER TABLE `namespace` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.profiles
@@ -4672,6 +4658,7 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `profileid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(11) unsigned NOT NULL DEFAULT 0,
   `nick` varchar(30) NOT NULL DEFAULT '',
+  `profilestatus` int(11) unsigned NOT NULL DEFAULT 0,
   `firstname` varchar(30) NOT NULL DEFAULT '',
   `lastname` varchar(30) NOT NULL DEFAULT '',
   `publicmask` int(11) NOT NULL DEFAULT 0,
@@ -4696,24 +4683,23 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `birthyear` int(4) DEFAULT 0,
   `location` varchar(127) DEFAULT '',
   `icq` int(8) DEFAULT 0,
-  `status` tinyint(4) NOT NULL DEFAULT 0,
+  `statusstring` varchar(50) NOT NULL DEFAULT 'RetroSpy',
   `lastip` varchar(16) NOT NULL DEFAULT '',
   `lastonline` int(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`profileid`) USING BTREE,
   UNIQUE KEY `profileid` (`profileid`) USING BTREE,
   KEY `FK_profiles_users` (`userid`) USING BTREE,
   CONSTRAINT `FK_profiles_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy2.profiles: ~6 rows (approximately)
+-- Dumping data for table retrospy2.profiles: ~5 rows (approximately)
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`, `status`, `lastip`, `lastonline`) VALUES
-	(1, 1, 'retrospy', 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 0, '127.0.0.1', 1562442207),
-	(8, 1, 'mycrysis', 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, '', 0),
-	(9, 6, 'mycrysis', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, '', 0),
-	(10, 6, 'mycrysis', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, '', 0),
-	(11, 6, 'MyCrysis', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, '', 0),
-	(12, 6, 'MyCrysis', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, '', 0);
+INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `profilestatus`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`, `statusstring`, `lastip`, `lastonline`) VALUES
+	(1, 1, 'retrospy', 0, 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 'RetroSpy', '127.0.0.1', 1562442207),
+	(8, 1, 'mycrysis', 0, 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0),
+	(9, 6, 'mycrysis', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0),
+	(12, 6, 'MyCrysis', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0),
+	(13, 7, 'mycrysis', 1, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '127.0.0.1', 1568163313);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.users
@@ -4740,13 +4726,14 @@ CREATE TABLE IF NOT EXISTS `users` (
   `deleted` tinyint(4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`userid`) USING BTREE,
   UNIQUE KEY `userid` (`userid`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy2.users: ~2 rows (approximately)
+-- Dumping data for table retrospy2.users: ~3 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`userid`, `email`, `password`, `userstatus`, `createddate`, `useddate`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `emailverified`, `adminrights`, `deleted`) VALUES
 	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1, '2019-08-11 09:07:27', '0000-00-00 00:00:00', '0', '0', '0', 0, 0, 0, '0', 0, '0', 0, 0, 0, 0, 0),
-	(6, 'xiaojiuwo@gamespy.com', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 07:27:29', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0);
+	(6, 'xiaojiuwo@gamespy.com', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 07:27:29', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0),
+	(7, 'koujiangheng@live.cn', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 11:18:29', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

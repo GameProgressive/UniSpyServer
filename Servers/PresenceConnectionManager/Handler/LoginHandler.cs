@@ -50,7 +50,7 @@ namespace PresenceConnectionManager.Handler
                 try
                 {
                     if (client.PlayerInfo.PlayerUniqueNick.Length > 0)
-                        queryResult = GPCMHandler.DBQuery.GetUserFromUniqueNick(client.PlayerInfo.PlayerUniqueNick);
+                        queryResult = GPCMHandler.DBQuery.GetUserFromUniqueNick(recv);
                     else if (client.PlayerInfo.PlayerAuthToken.Length > 0)
                     {
                         //TODO! Add the database entry
@@ -58,7 +58,7 @@ namespace PresenceConnectionManager.Handler
                         return;
                     }
                     else
-                        queryResult = GPCMHandler.DBQuery.GetUserFromNickname(client.PlayerInfo.PlayerEmail, client.PlayerInfo.PlayerNick);
+                        queryResult = GPCMHandler.DBQuery.GetUserFromNickname(recv);
                 }
                 catch (Exception ex)
                 {
@@ -175,6 +175,12 @@ namespace PresenceConnectionManager.Handler
                 // "User" is <nickname>@<email>
                 string user = recv["user"];
                 int Pos = user.IndexOf('@');
+                //we add the nick and email to dictionary
+                string nick = user.Substring(0, Pos);
+                string email = user.Substring(Pos + 1);
+                recv.Add("nick", nick);
+                recv.Add("email", email);
+
                 client.PlayerInfo.PlayerNick = user.Substring(0, Pos);
                 client.PlayerInfo.PlayerEmail = user.Substring(Pos + 1);
             }
@@ -185,7 +191,7 @@ namespace PresenceConnectionManager.Handler
             PlayerStatus currentPlayerStatus;
             UserStatus currentUserStatus;
 
-            if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
+            if (!Enum.TryParse(queryResult["profilestatus"].ToString(), out currentPlayerStatus))
             {
                 msg = "Invalid player data! Please contact an administrator.";
                 reason = DisconnectReason.InvalidPlayer;

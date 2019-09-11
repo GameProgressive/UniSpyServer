@@ -18,7 +18,7 @@ namespace PresenceConnectionManager
         {
         }
 
-        protected  Dictionary<string, object> GetUserDataReal(string AppendFirst, string SecondAppend, string _P0, string _P1)
+        protected Dictionary<string, object> GetUserDataReal(string AppendFirst, string SecondAppend, string _P0, string _P1)
         {
             var Rows = Query("SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
                 "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
@@ -147,14 +147,47 @@ namespace PresenceConnectionManager
             return playerInfo;
         }
 
-        public  Dictionary<string, object> GetUserFromUniqueNick(string uniquenick)
+        public bool IsUniquenickExist(GPCMPlayerInfo player)
         {
-            return GetUserDataReal(", profiles.nick, users.email ", "profiles.uniquenick=@P0", uniquenick, "");
+            //first we check if this guy exists.
+            List<Dictionary<string, object>> temp = Query(@"SELECT namespace.profileid FROM namespace INNER JOIN profiles ON" +
+               @" profiles.profileid = namespace.profileid INNER JOIN users ON profiles.userid=users.userid" +
+               @" WHERE users.email = @P0 AND users.password = @P1 AND namespace.uniquenick = @P2", player.PlayerEmail, player.PasswordHash, player.PlayerUniqueNick);
+            if (temp.Count > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
-        public Dictionary<string, object> GetUserFromNickname(string Email, string Nick)
+        public Dictionary<string, object> GetUserFromUniqueNick(Dictionary<string, string> dict)
         {
-            return GetUserDataReal(", profiles.uniquenick ", "profiles.nick=@P0 AND users.email=@P1", Nick, Email);
+            return Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,"
+             + @"profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,"
+             + @" profiles.marriedid, profiles.childcount, profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, "
+             + @"profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, "
+             + @"profiles.location, profiles.icq, profiles.statuscode, users.password, users.userstatus "
+             + @"FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  "
+             + @"WHERE namespace.uniquenick = @P0 AND users.email=@P1", dict["uniquenick"], dict["email"])[0];
+        }
+
+        public Dictionary<string, object> GetUserFromNickname(Dictionary<string, string> dict)
+        {
+            return Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
+                + @"profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, "
+                + @"profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex,profiles.zipcode, profiles.countrycode, profiles.homepage, "
+                + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icq, profiles.profilestatus, users.password, users.userstatus, namespace.uniquenick"
+                + @" FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid "
+                + @"WHERE  namespace.partnerid = @P0  AND"
+                + @" namespace.gamename = @P1 AND "
+                + @"profiles.nick = @P2 AND"
+                + @" users.email=@P3", dict["partnerid"], dict["gamename"], dict["nick"], dict["email"])[0];
+
+            //
+            //return GetUserDataReal(", profiles.uniquenick ", "profiles.nick=@P0 AND users.email=@P1", Nick, Email);
         }
 
         public bool UserExists(string Nick)
@@ -190,7 +223,7 @@ namespace PresenceConnectionManager
 
         public void UpdateStatus(long timestamp, System.Net.IPAddress address, uint PlayerId, uint PlayerStatus)
         {
-            Execute("UPDATE profiles SET status=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2", address, timestamp, PlayerId, PlayerStatus);
+            Execute("UPDATE profiles SET profilestatus=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2", address, timestamp, PlayerId, PlayerStatus);
         }
 
         public void ResetStatusAndSessionKey()

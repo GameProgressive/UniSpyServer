@@ -98,7 +98,7 @@ namespace RetroSpyServer.Servers.GPCM.Handler
                 PlayerStatus currentPlayerStatus;
                 UserStatus currentUserStatus;
 
-                if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
+                if (!Enum.TryParse(queryResult["profilestatus"].ToString(), out currentPlayerStatus))
                 {
                     GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
                     client.Disconnect(DisconnectReason.InvalidPlayer);
