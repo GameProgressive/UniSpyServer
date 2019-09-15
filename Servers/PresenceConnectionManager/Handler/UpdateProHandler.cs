@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler
     public class UpdateProHandler
     {
         /// <summary>
-        /// Updates the Users Country code when sent by the client
+        /// Updates profiles
         /// </summary>
         /// <param name="dict">Array of information sent by the server</param>
         public static void UpdateUser(GPCMClient client, Dictionary<string, string> dict)

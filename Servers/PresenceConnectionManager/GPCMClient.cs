@@ -289,6 +289,9 @@ namespace PresenceConnectionManager
                     case "addbuddy":
                         AddBuddyHandler.Addfriends(this, dict);
                         break;
+                    case "delbuddy":
+                        DelBuddyHandler.Handle(this,dict);
+                        break;
                     case "updateui":
                         UpdateUiHandler.UpdateUi(this, dict);
                         break;

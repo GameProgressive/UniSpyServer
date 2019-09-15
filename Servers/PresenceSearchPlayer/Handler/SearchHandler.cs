@@ -135,15 +135,17 @@ namespace PresenceSearchPlayer.Handler
         {
             if (dict["email"] != "0" && dict["nick"] != "0'")
             {
-                Dictionary<string, object> temp = GPSPHandler.DBQuery.GetProfileFromNickEmail(dict)[0];
-                if (temp.Count < 1)
+                var temp = GPSPHandler.DBQuery.GetProfileFromNickEmail(dict);
+                
+                if (temp==null)
                 {
                     sendingBuffer = "No math found!";
                     return GPErrorCode.DatabaseError;
                 }
+                
                 sendingBuffer =
                string.Format(@"\bsr\{0}\nick\{1}\uniquenick\{2}\namespaceid\{3}\firstname\{4}\lastname\{5}\email\{6}\bsrdone\\final\",
-               temp["profileid"], temp["nick"], temp["uniquenick"], temp["namespaceid"], temp["firstname"], temp["lastname"], temp["email"]);
+               temp[0]["profileid"], temp[0]["nick"], temp[0]["uniquenick"], temp[0]["namespaceid"], temp[0]["firstname"], temp[0]["lastname"], temp[0]["email"]);
                 return GPErrorCode.NoError;
 
             }

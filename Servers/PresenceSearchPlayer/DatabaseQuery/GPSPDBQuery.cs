@@ -107,7 +107,8 @@ namespace PresenceSearchPlayer
 
         internal List<Dictionary<string, object>> GetProfileFromNickEmail(Dictionary<string, string> dict)
         {
-            return Query("SELECT profiles.profileid,nick,uniquenick,lastname,firstname,email,namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE users.email = @P0 AND profiles.nick = @P1", dict["email"], dict["nick"]);
+            var queryResult= Query("SELECT profiles.profileid,nick,uniquenick,lastname,firstname,email,namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE users.email = @P0 AND profiles.nick = @P1", dict["email"], dict["nick"]);
+            return (queryResult.Count == 0) ? null : queryResult;
         }
 
         /// <summary>

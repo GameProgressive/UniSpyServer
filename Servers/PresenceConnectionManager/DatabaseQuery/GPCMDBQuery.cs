@@ -191,7 +191,7 @@ namespace PresenceConnectionManager
 
         public Dictionary<string, object> GetUserFromNickname(Dictionary<string, string> dict)
         {
-            return Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
+            var queryResult = Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
                 + @"profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, "
                 + @"profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex,profiles.zipcode, profiles.countrycode, profiles.homepage, "
                 + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icq, profiles.profilestatus, users.password, users.userstatus, namespace.uniquenick"
@@ -199,7 +199,9 @@ namespace PresenceConnectionManager
                 + @"WHERE  namespace.partnerid = @P0  AND"
                 + @" namespace.gamename = @P1 AND "
                 + @"profiles.nick = @P2 AND"
-                + @" users.email=@P3", dict["partnerid"], dict["gamename"], dict["nick"], dict["email"])[0];
+                + @" users.email=@P3", dict["partnerid"], dict["gamename"], dict["nick"], dict["email"]);
+
+            return (queryResult.Count == 0) ? null : queryResult[0];
 
             //
             //return GetUserDataReal(", profiles.uniquenick ", "profiles.nick=@P0 AND users.email=@P1", Nick, Email);
