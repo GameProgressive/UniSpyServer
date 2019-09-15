@@ -249,8 +249,8 @@ namespace PresenceConnectionManager
         /// <param name="player"></param>
         public void UpdateSessionKey(Dictionary<string, string> dict, ushort sesskey, GPCMPlayerInfo player)
         {
-           Dictionary<string, object> temp = Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND partnerid = @P2 AND productid=@P3 AND gamename = @P4",player.PlayerId,dict["namespaceid"],dict["partnerid"],dict["productID"])[0];
-            uint id = Convert.ToUInt32(temp);
+           Dictionary<string, object> temp = Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND partnerid = @P2 AND productid=@P3 AND gamename = @P4",player.PlayerId,dict["namespaceid"],dict["partnerid"],dict["productid"],dict["gamename"])[0];
+            uint id = Convert.ToUInt32(temp["id"]);
             Execute("UPDATE namespace SET sesskey = @P0 WHERE id = @P1 ", sesskey,id);
         }
 
