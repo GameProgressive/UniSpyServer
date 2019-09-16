@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Structures;
 using System;
@@ -47,7 +48,7 @@ namespace PresenceConnectionManager.Handler
             // of another client
             if (targetPID != client.PlayerInfo.PlayerId)
             {
-                GPCMPlayerInfo playerInfo = GPCMHandler.DBQuery.GetProfileInfo(targetPID);
+                GPCMPlayerInfo playerInfo = GetProfileQuery.GetProfileInfo(targetPID);
                 if (playerInfo == null)
                 {
                     GameSpyUtils.SendGPError(client.Stream, 4, "Unable to get profile information.");

@@ -162,8 +162,6 @@ namespace PresenceSearchPlayer
                     case "profilelist":
                         ProfileListHandler.OnProfileList(this, dict);
                         break;
-
-
                     default:
                         LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
                         GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");

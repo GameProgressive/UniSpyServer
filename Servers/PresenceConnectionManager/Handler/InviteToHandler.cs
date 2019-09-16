@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler
 {
     public class InviteToHandler
     {
-        public static GPCMDBQuery DBQuery = null;
+        //public static GPCMDBQuery DBQuery = null;
         public static void AddProducts(GPCMClient client, Dictionary<string, string> dictionary)
         {
             ushort readedSessionKey = 0;

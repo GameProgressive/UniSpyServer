@@ -54,12 +54,12 @@ namespace GameSpyLib.Database
             return driver;
         }
 
-        protected List<Dictionary<string, object>> Query(string Sql, params object[] Items)
+        public List<Dictionary<string, object>> Query(string Sql, params object[] Items)
         {
             return dbdriver.Query(Sql,Items);
         }
 
-        protected int Execute(string Sql, params object[] Items)
+        public int Execute(string Sql, params object[] Items)
         {
             return dbdriver.Execute(Sql, Items);
         }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler;
 
@@ -67,13 +68,17 @@ namespace PresenceConnectionManager
         /// </summary>
         public bool Exiting { get; private set; } = false;
 
+
+        public static DBQueryBase DB;
         /// <summary>
         /// Creates a new instance of <see cref="GPCMClient"/>
         /// </summary>
         public GPCMServer(string serverName,DatabaseDriver driver,IPEndPoint bindTo, int maxConnections) : base(serverName,bindTo, maxConnections)
         {
 
-            GPCMHandler.DBQuery = new GPCMDBQuery(driver);
+            //GPCMHandler.DBQuery = new GPCMDBQuery(driver);
+
+            DB = new DBQueryBase(driver);
 
             GPCMClient.OnDisconnect += ClientDisconnected;
 
@@ -105,7 +110,7 @@ namespace PresenceConnectionManager
                     // Return if we are empty
                     if (PlayerStatusQueue.IsEmpty) return;
 
-                    var transaction = GPCMHandler.DBQuery.BeginTransaction();
+                    var transaction =DB.BeginTransaction();
 
                     try
                     {
@@ -122,7 +127,8 @@ namespace PresenceConnectionManager
                             if (!result.CompletedLoginProcess)
                                 continue;
 
-                            GPCMHandler.UpdateStatus(timestamp, result);
+                            LoginQuery.UpdateStatus(timestamp, result.RemoteEndPoint.Address, result.PlayerInfo.PlayerId, (uint)result.PlayerInfo.PlayerStatus);
+
                         }
 
                         transaction.Commit();
@@ -181,7 +187,7 @@ namespace PresenceConnectionManager
             try
             {
                 // Set everyone's online session to 0
-                GPCMHandler.ResetStatusAndSessionKey();
+                LoginQuery.ResetStatusAndSessionKey();
             }
             catch (Exception e)
             {
@@ -191,7 +197,7 @@ namespace PresenceConnectionManager
             // Update Connected Clients in the Database
             Clients.Clear();
 
-            GPCMHandler.DBQuery.Dispose();
+            DB.Dispose();
 
             // Tell the base to dispose all free objects
             Dispose();

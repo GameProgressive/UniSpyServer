@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
+using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -344,7 +345,7 @@ namespace PresenceConnectionManager.Handler
 
             try
             {
-                GPCMHandler.DBQuery.UpdateUserInfo(query, passData);
+                UpdateProQuery.UpdateUserInfo(query, passData);
             }
             catch (Exception e)
             {

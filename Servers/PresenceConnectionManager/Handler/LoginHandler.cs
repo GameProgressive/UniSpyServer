@@ -2,9 +2,12 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Application;
+using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Structures;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace PresenceConnectionManager.Handler
 {
@@ -52,7 +55,7 @@ namespace PresenceConnectionManager.Handler
                 {
                     if (client.PlayerInfo.PlayerUniqueNick.Length > 0)
                     {
-                        queryResult0 = GPCMHandler.DBQuery.GetUserFromUniqueNick(recv);
+                        queryResult0 = LoginQuery.GetUserFromUniqueNick(recv);
                         if (queryResult0.Count > 0)
                         {
                             queryResult = queryResult0[0];
@@ -69,7 +72,7 @@ namespace PresenceConnectionManager.Handler
                         return;
                     }
                     else
-                        queryResult = GPCMHandler.DBQuery.GetUserFromNickname(recv);
+                        queryResult = LoginQuery.GetUserFromNickname(recv);
                 }
                 catch (Exception ex)
                 {
@@ -103,23 +106,24 @@ namespace PresenceConnectionManager.Handler
                 string challengeData = SetPlayerInfo(client, queryResult, recv);
 
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                if (recv["response"] == GPCMHandler.GenerateProof(recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
+                if (recv["response"] == GenerateProof(recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
                 {
                     // Create session key
                     client.SessionKey = Crc.ComputeChecksum(client.PlayerInfo.PlayerUniqueNick);
                     
                     //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
                     //access to the sesskey to find the uniquenick for particular game
-                    GPCMHandler.DBQuery.UpdateSessionKey(recv, client.SessionKey,client.PlayerInfo);
+                   LoginQuery.UpdateSessionKey(recv, client.SessionKey,client.PlayerInfo);
 
                     // Password is correct
                     client.Stream.SendAsync(
                         @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         client.SessionKey,
-                        GPCMHandler.GenerateProof(client.ServerChallengeKey, recv["challenge"], challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo), // Do this again, Params are reversed!
+                        GenerateProof(client.ServerChallengeKey, recv["challenge"], challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo), // Do this again, Params are reversed!
                         client.PlayerInfo.PlayerId,
                         client.PlayerInfo.PlayerNick,
-                        GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) // Generate LT whatever that is (some sort of random string, 22 chars long)
+                        // Generate LT whatever that is (some sort of random string, 22 chars long)
+                        GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) 
                     );
 
                     // Log Incoming Connections
@@ -134,7 +138,7 @@ namespace PresenceConnectionManager.Handler
                     client.CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(client);
                     OnStatusChanged?.Invoke(client);
-                    GPCMHandler.SendBuddies(client);
+                  SendBuddiesHandler.Handle(client);
                 }
                 else
                 {
@@ -322,6 +326,36 @@ namespace PresenceConnectionManager.Handler
                 return challengeData;
             }
 
+        }
+
+        /// <summary>
+        /// Generates an MD5 hash, which is used to verify the clients login information
+        /// </summary>
+        /// <param name="challenge1">First challenge key</param>
+        /// <param name="challenge2">Second challenge key</param>
+        /// <param name="userdata">The user data to append to the proof</param>
+        /// <param name="partnerid">The partnerid to append</param>
+        /// <returns>
+        ///     The proof verification MD5 hash string that can be compared to what the client sends,
+        ///     to verify that the users entered password matches the specific user data in the database.
+        /// </returns>
+        private static string GenerateProof(string challenge1, string challenge2, string userdata, uint partnerid, GPCMPlayerInfo playerinfo)
+        {
+            string realUserData = userdata;
+
+            if (partnerid != (uint)PartnerID.Gamespy)
+            {
+                realUserData = string.Format("{0}@{1}", partnerid, userdata);
+            }
+
+            // Generate our string to be hashed
+            StringBuilder HashString = new StringBuilder(playerinfo.PasswordHash);
+            HashString.Append(' ', 48); // 48 spaces
+            HashString.Append(realUserData);
+            HashString.Append(challenge1);
+            HashString.Append(challenge2);
+            HashString.Append(playerinfo.PasswordHash);
+            return HashString.ToString().GetMD5Hash();
         }
     }
 
