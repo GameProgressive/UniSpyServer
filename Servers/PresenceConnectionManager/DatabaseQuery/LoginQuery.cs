@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.DatabaseQuery
              + @"profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,"
              + @" profiles.marriedid, profiles.childcount, profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, "
              + @"profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, "
-             + @"profiles.location, profiles.icq, profiles.profilestatus, users.email, users.password, users.userstatus "
+             + @"profiles.location, profiles.icq, profiles.status, users.email, users.password, users.userstatus "
              + @"FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  "
              + @"WHERE namespace.uniquenick = @P0 AND namespace.productid = @P1 AND namespace.partnerid = @P2 AND namespace.gamename = @P3"
                 , dict["uniquenick"], dict["productid"], dict["partnerid"], dict["gamename"]);
@@ -24,7 +24,7 @@ namespace PresenceConnectionManager.DatabaseQuery
             var queryResult = GPCMServer.DB.Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
                 + @"profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, "
                 + @"profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex,profiles.zipcode, profiles.countrycode, profiles.homepage, "
-                + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icq, profiles.profilestatus, users.password, users.userstatus, namespace.uniquenick"
+                + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icq, profiles.status, users.password, users.userstatus, namespace.uniquenick"
                 + @" FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid "
                 + @"WHERE  namespace.partnerid = @P0  AND"
                 + @" namespace.gamename = @P1 AND "
@@ -52,12 +52,12 @@ namespace PresenceConnectionManager.DatabaseQuery
 
         public static void UpdateStatus(long timestamp, System.Net.IPAddress address, uint PlayerId, uint PlayerStatus)
         {
-            GPCMServer.DB.Execute("UPDATE profiles SET profilestatus=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2", address, timestamp, PlayerId, PlayerStatus);
+            GPCMServer.DB.Execute("UPDATE profiles SET status=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2", address, timestamp, PlayerId, PlayerStatus);
         }
 
         public static void ResetStatusAndSessionKey()
         {
-            GPCMServer.DB.Execute("UPDATE profiles SET profilestatus=0, sesskey = NULL");
+            GPCMServer.DB.Execute("UPDATE profiles SET status=0, sesskey = NULL");
         }
     }
 }

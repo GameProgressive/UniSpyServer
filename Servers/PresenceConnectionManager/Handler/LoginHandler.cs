@@ -138,7 +138,7 @@ namespace PresenceConnectionManager.Handler
                     client.CompletedLoginProcess = true;
                     OnSuccessfulLogin?.Invoke(client);
                     OnStatusChanged?.Invoke(client);
-                  SendBuddiesHandler.Handle(client);
+                  SendBuddiesHandler.HandleSendBuddies(client,recv);
                 }
                 else
                 {
@@ -210,7 +210,7 @@ namespace PresenceConnectionManager.Handler
             PlayerStatus currentPlayerStatus;
             UserStatus currentUserStatus;
 
-            if (!Enum.TryParse(queryResult["profilestatus"].ToString(), out currentPlayerStatus))
+            if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
             {
                 msg = "Invalid player data! Please contact an administrator.";
                 reason = DisconnectReason.InvalidPlayer;

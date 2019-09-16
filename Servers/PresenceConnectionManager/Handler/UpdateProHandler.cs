@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
@@ -13,15 +14,15 @@ namespace PresenceConnectionManager.Handler
         /// <summary>
         /// Updates profiles
         /// </summary>
-        /// <param name="dict">Array of information sent by the server</param>
-        public static void UpdateUser(GPCMClient client, Dictionary<string, string> dict)
+        /// <param name="recv">Array of information sent by the server</param>
+        public static void UpdateUser(GPCMClient client, Dictionary<string, string> recv)
         {
             // Set clients country code
-            if (!dict.ContainsKey("sesskey"))
+            if (!recv.ContainsKey("sesskey"))
                 return;
 
             ushort ssk;
-            if (!ushort.TryParse(dict["sesskey"], out ssk))
+            if (!ushort.TryParse(recv["sesskey"], out ssk))
                 return;
 
             if (ssk != client.SessionKey)
@@ -54,10 +55,10 @@ namespace PresenceConnectionManager.Handler
             };
             
 
-            if (dict.ContainsKey("publicmask"))
+            if (recv.ContainsKey("publicmask"))
             {
                 PublicMasks mask;
-                if (Enum.TryParse(dict["publicmask"], out mask))
+                if (Enum.TryParse(recv["publicmask"], out mask))
                 {
                     if (client.PlayerInfo.PlayerPublicMask != mask)
                     {
@@ -68,32 +69,32 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("firstname"))
+            if (recv.ContainsKey("firstname"))
             {
               
-                if (dict["firstname"] != client.PlayerInfo.PlayerFirstName)
+                if (recv["firstname"] != client.PlayerInfo.PlayerFirstName)
                 {
                     query += ", firstname=@P1";
-                    client.PlayerInfo.PlayerFirstName = dict["firstname"];
+                    client.PlayerInfo.PlayerFirstName = recv["firstname"];
                     passData[1] = client.PlayerInfo.PlayerFirstName;
                 }
             }
 
-            if (dict.ContainsKey("lastname"))
+            if (recv.ContainsKey("lastname"))
             {
-                if (dict["lastname"] != client.PlayerInfo.PlayerLastName)
+                if (recv["lastname"] != client.PlayerInfo.PlayerLastName)
                 {
                     query += ", lastname=@P2";
-                    client.PlayerInfo.PlayerFirstName = dict["lastname"];
+                    client.PlayerInfo.PlayerFirstName = recv["lastname"];
                     passData[2] = client.PlayerInfo.PlayerLastName;
                 }
             }
 
-            if (dict.ContainsKey("icquin"))
+            if (recv.ContainsKey("icquin"))
             {
                 int icq = 0;
 
-                if (int.TryParse(dict["icquin"], out icq))
+                if (int.TryParse(recv["icquin"], out icq))
                 {
                     if (icq != client.PlayerInfo.PlayerICQ)
                     {
@@ -104,40 +105,40 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("homepage"))
+            if (recv.ContainsKey("homepage"))
             {
-                if (dict["homepage"] != client.PlayerInfo.PlayerHomepage)
+                if (recv["homepage"] != client.PlayerInfo.PlayerHomepage)
                 {
                     query += ", homepage=@P4";
-                    client.PlayerInfo.PlayerHomepage = dict["homepage"];
+                    client.PlayerInfo.PlayerHomepage = recv["homepage"];
                     passData[4] = client.PlayerInfo.PlayerHomepage;
                 }
             }
 
-            if (dict.ContainsKey("zipcode"))
+            if (recv.ContainsKey("zipcode"))
             {
-                if (dict["zipcode"] != client.PlayerInfo.PlayerZIPCode)
+                if (recv["zipcode"] != client.PlayerInfo.PlayerZIPCode)
                 {
                     query += ", zipcode=@P5";
-                    client.PlayerInfo.PlayerZIPCode = dict["zipcode"];
+                    client.PlayerInfo.PlayerZIPCode = recv["zipcode"];
                     passData[5] = client.PlayerInfo.PlayerZIPCode;
                 }
             }
 
-            //if (dict.ContainsKey("countrycode"))
+            //if (recv.ContainsKey("countrycode"))
             //{
-            //    if (dict["countrycode"] != client.PlayerInfo.PlayerCountryCode)
+            //    if (recv["countrycode"] != client.PlayerInfo.PlayerCountryCode)
             //    {
             //        query += ", countrycode=@P6";
-            //        client.PlayerInfo.PlayerCountryCode = dict["zipcode"];
+            //        client.PlayerInfo.PlayerCountryCode = recv["zipcode"];
             //        passData[6] = client.PlayerInfo.PlayerCountryCode;
             //    }
             //}
 
-            if (dict.ContainsKey("birthday"))
+            if (recv.ContainsKey("birthday"))
             {
                 int date;
-                if (int.TryParse(dict["birthday"], out date))
+                if (int.TryParse(recv["birthday"], out date))
                 {
                     ushort d = (ushort)((date >> 24) & 0xFF);
                     ushort m = (ushort)((date >> 16) & 0xFF);
@@ -168,22 +169,22 @@ namespace PresenceConnectionManager.Handler
                     }
                 }
 
-                if (dict.ContainsKey("countrycode"))
+                if (recv.ContainsKey("countrycode"))
                 {
-                    if (dict["countrycode"] != client.PlayerInfo.PlayerCountryCode)
+                    if (recv["countrycode"] != client.PlayerInfo.PlayerCountryCode)
                     {
                         query += ", countrycode=@P7";
-                        client.PlayerInfo.PlayerCountryCode = dict["zipcode"];
+                        client.PlayerInfo.PlayerCountryCode = recv["zipcode"];
                         passData[7] = client.PlayerInfo.PlayerCountryCode;
                     }
                 }                
             }
 
 
-            if (dict.ContainsKey("sex"))
+            if (recv.ContainsKey("sex"))
             {
                 PlayerSexType sex;
-                if (Enum.TryParse(dict["sex"], out sex))
+                if (Enum.TryParse(recv["sex"], out sex))
                 {
                     if (client.PlayerInfo.PlayerSex != sex)
                     {
@@ -200,21 +201,21 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("aim"))
+            if (recv.ContainsKey("aim"))
             {
-                if (dict["aim"] != client.PlayerInfo.PlayerAim)
+                if (recv["aim"] != client.PlayerInfo.PlayerAim)
                 {
                     query += ", aim=@P9";
-                    client.PlayerInfo.PlayerAim = dict["aim"];
+                    client.PlayerInfo.PlayerAim = recv["aim"];
                     passData[9] = client.PlayerInfo.PlayerAim;
                 }
             }
 
-            if (dict.ContainsKey("pic"))
+            if (recv.ContainsKey("pic"))
             {
                 int pic = 0;
 
-                if (int.TryParse(dict["pic"], out pic))
+                if (int.TryParse(recv["pic"], out pic))
                 {
                     if (pic != client.PlayerInfo.PlayerPicture)
                     {
@@ -225,11 +226,11 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("occ"))
+            if (recv.ContainsKey("occ"))
             {
                 int occ = 0;
 
-                if (int.TryParse(dict["occ"], out occ))
+                if (int.TryParse(recv["occ"], out occ))
                 {
                     if (occ != client.PlayerInfo.PlayerOccupation)
                     {
@@ -240,11 +241,11 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("ind"))
+            if (recv.ContainsKey("ind"))
             {
                 int ind = 0;
 
-                if (int.TryParse(dict["ind"], out ind))
+                if (int.TryParse(recv["ind"], out ind))
                 {
                     if (ind != client.PlayerInfo.PlayerIndustryID)
                     {
@@ -255,11 +256,11 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("inc"))
+            if (recv.ContainsKey("inc"))
             {
                 int inc = 0;
 
-                if (int.TryParse(dict["inc"], out inc))
+                if (int.TryParse(recv["inc"], out inc))
                 {
                     if (inc != client.PlayerInfo.PlayerIncomeID)
                     {
@@ -270,11 +271,11 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("mar"))
+            if (recv.ContainsKey("mar"))
             {
                 int mar = 0;
 
-                if (int.TryParse(dict["mar"], out mar))
+                if (int.TryParse(recv["mar"], out mar))
                 {
                     if (mar != client.PlayerInfo.PlayerMarried)
                     {
@@ -285,11 +286,11 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("chc"))
+            if (recv.ContainsKey("chc"))
             {
                 int chc = 0;
 
-                if (int.TryParse(dict["chc"], out chc))
+                if (int.TryParse(recv["chc"], out chc))
                 {
                     if (chc != client.PlayerInfo.PlayerChildCount)
                     {
@@ -300,11 +301,11 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("i1"))
+            if (recv.ContainsKey("i1"))
             {
                 int i1 = 0;
 
-                if (int.TryParse(dict["i1"], out i1))
+                if (int.TryParse(recv["i1"], out i1))
                 {
                     if (i1 != client.PlayerInfo.PlayerInterests)
                     {
@@ -315,22 +316,22 @@ namespace PresenceConnectionManager.Handler
                 }
             }
 
-            if (dict.ContainsKey("nick"))
+            if (recv.ContainsKey("nick"))
             {
-                if (dict["nick"] != client.PlayerInfo.PlayerNick)
+                if (recv["nick"] != client.PlayerInfo.PlayerNick)
                 {
                     query += ", nick=@P17";
-                    client.PlayerInfo.PlayerNick = dict["nick"];
+                    client.PlayerInfo.PlayerNick = recv["nick"];
                     passData[17] = client.PlayerInfo.PlayerNick;
                 }
             }
 
-            if (dict.ContainsKey("uniquenick"))
+            if (recv.ContainsKey("uniquenick"))
             {
-                if (dict["uniquenick"] != client.PlayerInfo.PlayerUniqueNick)
+                if (recv["uniquenick"] != client.PlayerInfo.PlayerUniqueNick)
                 {
                     query += ", uniquenick=@P18";
-                    client.PlayerInfo.PlayerHomepage = dict["uniquenick"];
+                    client.PlayerInfo.PlayerHomepage = recv["uniquenick"];
                     passData[18] = client.PlayerInfo.PlayerUniqueNick;
                 }
             }

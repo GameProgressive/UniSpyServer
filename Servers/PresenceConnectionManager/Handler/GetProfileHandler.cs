@@ -13,30 +13,30 @@ namespace PresenceConnectionManager.Handler
         /// <summary>
         /// This method is called when the client requests for the Account profile
         /// </summary>
-        public static void SendProfile(GPCMClient client, Dictionary<string, string> dict)
+        public static void SendProfile(GPCMClient client, Dictionary<string, string> recv)
         {
             // \getprofile\\sesskey\19150\profileid\2\id\2\final\
             //profileid is 
 
-            if (!dict.ContainsKey("profileid"))
+            if (!recv.ContainsKey("profileid"))
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             uint targetPID, messID, sesskey;
-            if (!uint.TryParse(dict["profileid"], out targetPID))
+            if (!uint.TryParse(recv["profileid"], out targetPID))
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
-            if (!uint.TryParse(dict["id"], out messID))
+            if (!uint.TryParse(recv["id"], out messID))
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
-            if (!uint.TryParse(dict["sesskey"], out sesskey))
+            if (!uint.TryParse(recv["sesskey"], out sesskey))
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;

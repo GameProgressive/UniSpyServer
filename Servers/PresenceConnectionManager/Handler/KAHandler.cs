@@ -1,5 +1,5 @@
 ﻿using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager;
+
 namespace PresenceConnectionManager.Handler
 {
     public class KAHandler

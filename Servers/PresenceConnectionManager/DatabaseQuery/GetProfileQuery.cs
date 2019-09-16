@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.DatabaseQuery
             //var Rows = Query("SELECT profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
             //    "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
             //    @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
-            //    @"profiles.birthyear, profiles.location, profiles.icq, profiles.profilestatus, profiles.nick, namespace.uniquenick, users.email FROM profiles " +
+            //    @"profiles.birthyear, profiles.location, profiles.icq, profiles.status, profiles.nick, namespace.uniquenick, users.email FROM profiles " +
             //    @"INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE profiles.profileid=@P0", profileid);
             var Rows = GPCMServer.DB.Query("SELECT * FROM profiles " +
                 @"INNER JOIN users ON users.userid = profiles.userid " +

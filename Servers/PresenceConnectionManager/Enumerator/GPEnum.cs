@@ -163,7 +163,7 @@ namespace PresenceConnectionManager.Enumerator
         TransferDone,            // ***
         TransferCancelled,       // ***
         TransferLostConnection, // ***
-       TransferError,           // ***
+        TransferError,           // ***
         TransferThrottle,  // arg->num == Bps
         FileBegin,
         FileProgress,  // arg->num == numBytes
@@ -196,7 +196,30 @@ namespace PresenceConnectionManager.Enumerator
         SlienceAll = 0xFFFFFFFF,
 
         NewStatusInfoSupported = 0xC00,
-        NewStatusInfoNotSupported = 0xC01
+        NewStatusInfoNotSupported = 0xC01,
+
+            //BM status
+        BmMessage = 1,
+        BmRquest = 2,
+        BmReply = 3, // only used on the backend
+        BmAuth = 4,
+        BmUTM = 5,
+        BmRevoke = 6,  // remote buddy removed from local list
+        BmStatus = 100,
+        BmInvite = 101,
+        BmPing = 102,
+        BmPong = 103,
+        BmKeysRequest = 104,
+        BmKeysReply = 105,
+        BmFileSendRequest = 200,
+        BmFileSendReply = 201,
+        BmFileBegin = 202,
+        BmFileEnd = 203,
+        BmFileData = 204,
+        BmFile_SKIP = 205,
+        BmFileTransferThrottle = 206,
+        BmFileTransferCancel = 207,
+        BmFileTransferKeepAlive = 208,
     }
     public enum GPSPResult : uint
     {

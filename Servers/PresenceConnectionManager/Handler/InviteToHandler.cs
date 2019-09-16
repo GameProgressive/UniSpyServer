@@ -8,14 +8,14 @@ namespace PresenceConnectionManager.Handler
     public class InviteToHandler
     {
         //public static GPCMDBQuery DBQuery = null;
-        public static void AddProducts(GPCMClient client, Dictionary<string, string> dictionary)
+        public static void AddProducts(GPCMClient client, Dictionary<string, string> recv)
         {
             ushort readedSessionKey = 0;
 
-            if (!dictionary.ContainsKey("products") || !dictionary.ContainsKey("sesskey"))
+            if (!recv.ContainsKey("products") || !recv.ContainsKey("sesskey"))
                 return;
 
-            if (!ushort.TryParse(dictionary["sesskey"], out readedSessionKey))
+            if (!ushort.TryParse(recv["sesskey"], out readedSessionKey))
                 return;
 
             if (readedSessionKey != client.SessionKey || readedSessionKey == 0)
