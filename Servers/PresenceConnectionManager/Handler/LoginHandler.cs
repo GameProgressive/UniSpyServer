@@ -48,22 +48,14 @@ namespace PresenceConnectionManager.Handler
             try
             {
                 // Try and fetch the user from the database
-                List<Dictionary<string, object>> queryResult0;
+
                 Dictionary<string, object> queryResult;
 
                 try
                 {
                     if (client.PlayerInfo.PlayerUniqueNick.Length > 0)
                     {
-                        queryResult0 = LoginQuery.GetUserFromUniqueNick(recv);
-                        if (queryResult0.Count > 0)
-                        {
-                            queryResult = queryResult0[0];
-                        }
-                        else
-                        {
-                            queryResult = null;
-                        }
+                        queryResult = LoginQuery.GetUserFromUniqueNick(recv);
                     }
                     else if (client.PlayerInfo.PlayerAuthToken.Length > 0)
                     {
@@ -81,13 +73,18 @@ namespace PresenceConnectionManager.Handler
                     return;
                 }
 
+                //if no match found we disconnect the game
                 if (queryResult == null)
                 {
                     if (client.PlayerInfo.PlayerUniqueNick.Length > 0)
+                    {
                         GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "The uniquenick provided is incorrect!");
-                    else
-                        GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "The nick provided is incorrect!");
+                    }
 
+                    else
+                    {
+                        GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "The nick provided is incorrect!");
+                    }
                     client.Disconnect(DisconnectReason.InvalidUsername);
                     return;
                 }
@@ -102,50 +99,51 @@ namespace PresenceConnectionManager.Handler
                     client.Disconnect(reason);
                     return;
                 }
+
                 // we finally set the player variables and return challengeData
                 string challengeData = SetPlayerInfo(client, queryResult, recv);
-
+                string sendingBuffer;
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
                 if (recv["response"] == GenerateProof(recv["challenge"], client.ServerChallengeKey, challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo))
                 {
                     // Create session key
                     client.SessionKey = Crc.ComputeChecksum(client.PlayerInfo.PlayerUniqueNick);
-                    
+
                     //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
                     //access to the sesskey to find the uniquenick for particular game
-                   LoginQuery.UpdateSessionKey(recv, client.SessionKey,client.PlayerInfo);
+                    LoginQuery.UpdateSessionKey(recv, client.SessionKey, client.PlayerInfo);
 
                     // Password is correct
-                    client.Stream.SendAsync(
-                        @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
+                    sendingBuffer = string.Format(@"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         client.SessionKey,
                         GenerateProof(client.ServerChallengeKey, recv["challenge"], challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo), // Do this again, Params are reversed!
                         client.PlayerInfo.PlayerId,
                         client.PlayerInfo.PlayerNick,
                         // Generate LT whatever that is (some sort of random string, 22 chars long)
-                        GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex) 
-                    );
+                        GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex)
+                        );
+                    //Send response to client
+                    client.Stream.SendAsync(sendingBuffer);
 
                     // Log Incoming Connections
                     //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] {1} - {2} - {3}", client.Stream.ServerName, client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, RemoteEndPoint);
-                    client.Stream.ToLog(LogLevel.Info, "Login", "Success", "{0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    client.Stream.ToLog(LogLevel.Info, "Login", "Success", "Nick:{0} - Profileid:{1} - IP:{2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
                     // Update status last, and call success login
                     client.PlayerInfo.LoginStatus = LoginStatus.Completed;
                     client.PlayerInfo.PlayerStatus = PlayerStatus.Online;
                     client.PlayerInfo.PlayerStatusString = "Online";
                     client.PlayerInfo.PlayerStatusLocation = "";
-
                     client.CompletedLoginProcess = true;
+
                     OnSuccessfulLogin?.Invoke(client);
                     OnStatusChanged?.Invoke(client);
-                  SendBuddiesHandler.HandleSendBuddies(client,recv);
+                    SendBuddiesHandler.HandleSendBuddies(client, recv);
                 }
                 else
                 {
-                    // Log Incoming Connections
-                    //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] Failed: {1} - {2} - {3}", client.Stream.ServerName, client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, RemoteEndPoint);
+                    // Log Incoming Connection
                     client.Stream.ToLog(LogLevel.Info, "Login", "Failed", "{0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
-                    // Password is incorrect with database value
+                    // Password is incorrect with database value.
                     client.Stream.SendAsync(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
                     client.Disconnect(DisconnectReason.InvalidPassword);
                 }
