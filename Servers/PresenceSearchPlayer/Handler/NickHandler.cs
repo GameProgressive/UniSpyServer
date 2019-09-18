@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
+using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace PresenceSearchPlayer.Handler
             //Format the password for our database storage
             GPSPHandler.ProessPassword(dict);
             //if not recieved correct request we terminate
-            GPErrorCode error = GPSPHandler.IsSearchNicksContianAllKeys(dict);
+            GPErrorCode error = IsSearchNicksContianAllKeys(dict);
             if (error != GPErrorCode.NoError)
             {
                 GameSpyUtils.SendGPError(client.Stream, (int)error, "Error recieving SearchNicks request.");
@@ -37,7 +38,7 @@ namespace PresenceSearchPlayer.Handler
             try
             {
                 //get nicknames from GPSPDBQuery class
-                queryResult = GPSPHandler.DBQuery.RetriveNicknames(dict);
+                queryResult = NickQuery.RetriveNicknames(dict);
             }
             catch (Exception ex)
             {
@@ -65,6 +66,27 @@ namespace PresenceSearchPlayer.Handler
 
             sendingBuffer += @"\ndone\final\";
             client.Stream.SendAsync(sendingBuffer);
+        }
+
+        public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict)
+        {
+            if (!dict.ContainsKey("email"))
+            {
+
+                return GPErrorCode.Parse;
+            }
+
+            // First, we try to receive an encoded password
+            if (!dict.ContainsKey("passenc"))
+            {
+                // If the encoded password is not sended, we try receiving the password in plain text
+                if (!dict.ContainsKey("pass"))
+                {
+                    // No password is specified, we cannot continue                   
+                    return GPErrorCode.Parse;
+                }
+            }
+            return GPErrorCode.NoError;
         }
     }
 }

@@ -67,7 +67,7 @@ namespace CDKey
                 IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
                 string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(packet.BytesRecieved)).Trim('\\');
                 string[] recieved = decrypted.TrimStart('\\').Split('\\');
-                Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
+                Dictionary<string, string> recv = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 
                 switch (recieved[0])
                 {
@@ -76,13 +76,13 @@ namespace CDKey
                     case "auth":
                     case "resp":
                     case "skey":
-                        CDKeyHandler.IsCDKeyValid(this, packet, dict);
+                        CDKeyHandler.IsCDKeyValid(this, packet, recv);
                         break;
                     case "disc":
-                        CDKeyHandler.DisconnectRequest(packet, dict);
+                        CDKeyHandler.DisconnectRequest(packet, recv);
                         break;
                     default:
-                        CDKeyHandler.InvalidCDKeyRequest(this, packet, dict);
+                        CDKeyHandler.InvalidCDKeyRequest(this, packet, recv);
                         break;
                 }
             }

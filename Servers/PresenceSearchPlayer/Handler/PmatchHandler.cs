@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 
@@ -11,7 +12,7 @@ namespace PresenceSearchPlayer.Handler
             string sendingBuffer;
             if (IsContainAllKey(dict))
             {
-                List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.PlayerMatch(dict);
+                List<Dictionary<string, object>> temp = PmatchQuery.PlayerMatch(dict);
                 if (temp.Count == 1)
                 {
                     sendingBuffer = string.Format(@"\psr\status\{0}\nick\{1}\statuscode\{2}",

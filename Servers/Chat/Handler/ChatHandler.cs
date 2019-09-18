@@ -30,5 +30,14 @@ namespace Chat
         {
             throw new NotImplementedException();
         }
+        public static void CommandSwitch(Dictionary<string,string>recv)
+        {
+            switch ()
+            {
+
+            }
+        }
+
     }
+   
 }

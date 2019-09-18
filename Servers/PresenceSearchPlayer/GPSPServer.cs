@@ -27,7 +27,7 @@ namespace PresenceSearchPlayer
         /// </summary>
         private static ConcurrentDictionary<long, GPSPClient> Clients = new ConcurrentDictionary<long, GPSPClient>();
 
-       
+        public static DBQueryBase DB;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -38,7 +38,9 @@ namespace PresenceSearchPlayer
         /// </param>
         public GPSPServer(string serverName,DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
-            GPSPHandler.DBQuery = new GPSPDBQuery(databaseDriver);
+            //GPSPHandler.DBQuery = new GPSPDBQuery(databaseDriver);
+
+            DB = new DBQueryBase(databaseDriver);
 
             GPSPClient.OnDisconnected += ClientDisconnected;
 
@@ -71,7 +73,7 @@ namespace PresenceSearchPlayer
             // Shutdown the listener socket
             ShutdownSocket();
 
-            GPSPHandler.DBQuery.Dispose();
+            DB.Dispose();
 
             // Tell the base to dispose all free objects
             Dispose();

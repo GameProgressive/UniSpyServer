@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,8 @@ namespace PresenceSearchPlayer.Handler
 {
     public class OthersHandler
     {
+        public static object OthersList { get; private set; }
+
         /// <summary>
         /// Get profiles that have you on their buddy(friend) list.
         /// </summary>
@@ -18,8 +21,8 @@ namespace PresenceSearchPlayer.Handler
             // TODO: Please finis this function
             //others\sesskey\profileid\namespace\
             string sendingbuffer; //= @"\others\o\nick\<>\uniquenick\<>\first\<>\last\<>\email\<>\odone\";
-            List<Dictionary<string,object>> temp = GPSPHandler.DBQuery.GetOtherBuddy(dict);
-            if (temp.Count < 0)
+            List<Dictionary<string,object>> temp = OthersQuery.GetOtherBuddy(dict);
+            if (temp == null)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No Math Found");
                 return;

@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -24,14 +25,14 @@ namespace PresenceSearchPlayer.Handler
                 return;
             }
 
-            if (!GPSPHandler.DBQuery.IsUniqueNickExistForSuggest(dict))
+            if (UniqueSearchQuery.IsUniqueNickExist(dict))
             {
-                sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
-                client.Stream.SendAsync(sendingBuffer);
+                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "The Nick is existed, please choose another name");
             }
             else
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "The Nick is existed, please choose another name");
+                sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
+                client.Stream.SendAsync(sendingBuffer);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
+using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace PresenceSearchPlayer.Handler
             {
                 if (GameSpyUtils.IsEmailFormatCorrect(dict["email"]))
                 {
-                    if (GPSPHandler.DBQuery.IsEmailValid(dict["email"]))
+                    if (ValidQuery.IsEmailValid(dict["email"]))
                         client.Stream.SendAsync(@"\vr\1\final\");
                     else
                         client.Stream.SendAsync(@"\vr\0\final\");

@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -111,7 +112,7 @@ namespace PresenceSearchPlayer.Handler
             if (dict.ContainsKey("uniquenick") && dict["uniquenick"] != "0")
             {
                 //TODO
-                List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.GetProfileFromUniquenick(dict);
+                List<Dictionary<string, object>> temp =SearchQuery.GetProfileFromUniquenick(dict);
                 if (temp.Count < 1)
                 {
                     sendingBuffer = "No math found!";
@@ -135,7 +136,7 @@ namespace PresenceSearchPlayer.Handler
         {
             if (dict["email"] != "0" && dict["nick"] != "0'")
             {
-                var temp = GPSPHandler.DBQuery.GetProfileFromNickEmail(dict);
+                var temp = SearchQuery.GetProfileFromNickEmail(dict);
                 
                 if (temp==null)
                 {
@@ -162,7 +163,7 @@ namespace PresenceSearchPlayer.Handler
         {
             if (dict["email"] != "0")
             {
-                List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.GetProfileFromEmail(dict);
+                List<Dictionary<string, object>> temp = SearchQuery.GetProfileFromEmail(dict);
                 if (temp.Count > 0)//we have multiple profiles 
                 {
                     if (dict.ContainsKey("skip"))

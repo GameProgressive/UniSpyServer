@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 
@@ -33,7 +34,7 @@ namespace PresenceSearchPlayer.Handler
             //Search pid in our database and return whether exist
             uint pid;
             string sendingBuffer;
-            List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.GetProfileidFromNickEmailPassword(dict);
+            List<Dictionary<string, object>> temp = CheckQuery.GetProfileidFromNickEmailPassword(dict);
             if (temp.Count == 1)
             {
                 pid = System.Convert.ToUInt32(temp[0]["profileid"]);

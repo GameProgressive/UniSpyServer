@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace PresenceSearchPlayer.Handler
             string sendingBuffer = @"\otherslist\";
             foreach (string pid in opids)
             {
-                List<Dictionary<string, object>> temp = GPSPHandler.DBQuery.GetOtherBuddyList(dict, pid);
-                if (temp.Count == 0)
+                List<Dictionary<string, object>> temp = OthersListQuery.GetOtherBuddyList(dict, pid);
+                if (temp==null)
                 {
                     continue;
                 }
@@ -28,6 +29,7 @@ namespace PresenceSearchPlayer.Handler
                     sendingBuffer += string.Format(@"o\{0}\uniquenick\{1}\", temp[0]["profileid"], temp[0]["uniquenick"]);
                 }
             }
+
             sendingBuffer += @"oldone\final\";
 
             client.Stream.SendAsync(sendingBuffer);
