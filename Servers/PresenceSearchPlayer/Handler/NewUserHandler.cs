@@ -27,7 +27,7 @@ namespace PresenceSearchPlayer.Handler
             }
             //Check the nick and uniquenick is formated correct and uniquenick is existed in database
             string sendingBuffer;
-            error = IsEmailNickUniquenickValied(dict, GPSPHandler.DBQuery);
+            error = IsEmailNickUniquenickValied(dict);
             if (error != GPErrorCode.NoError)
             {
                 sendingBuffer = string.Format(@"\nur\{0}\final\", (int)error);
@@ -37,7 +37,7 @@ namespace PresenceSearchPlayer.Handler
 
             //we get the userid in database. If no userid found according to email we create one 
             //and store the new account into database.
-            
+
             if (dict["uniquenick"] == "")
             {
                 CreateUserWithoutUniquenick(dict, client);
@@ -96,7 +96,7 @@ namespace PresenceSearchPlayer.Handler
         /// and search uniquenick to find if a account is existed
         /// </summary>
         /// <returns></returns>
-        public static GPErrorCode IsEmailNickUniquenickValied(Dictionary<string, string> dict, GPSPDBQuery dbquery)
+        public static GPErrorCode IsEmailNickUniquenickValied(Dictionary<string, string> dict)
         {
             if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["nick"]))
             {
@@ -122,21 +122,21 @@ namespace PresenceSearchPlayer.Handler
         }
 
 
-        public static void CreateUserWithUniquenick(Dictionary<string,string>dict,GPSPClient client)
+        public static void CreateUserWithUniquenick(Dictionary<string, string> dict, GPSPClient client)
         {
             uint userid = NewUserQuery.GetUseridFromEmail(dict);
             //create a profile according to userid
-            uint pid;// profileid in database
-           Dictionary<string, object> queryResult;
-            queryResult = NewUserQuery.CreateUserWithNick(dict, userid);
+            int pid;// profileid in database
+            
+            pid = NewUserQuery.CreateUserWithNick(dict, userid);
             //if user's nick name is exist we can not continue;
-            if (queryResult == null)
+            if (pid == -1)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "Nick is registered, please use another one.");
             }
             else
             {
-                pid = (uint)queryResult["profileid"];
+
                 client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", pid);
             }
         }
@@ -145,18 +145,16 @@ namespace PresenceSearchPlayer.Handler
         {
             uint userid = NewUserQuery.GetUseridFromEmail(dict);
             //create a profile according to userid
-            uint pid;// profileid in database
-            Dictionary<string, object> queryResult;
+            int pid;// profileid in database
 
-            queryResult = NewUserQuery.CreateUserWithNick(dict, userid);
+            pid = NewUserQuery.CreateUserWithNick(dict, userid);
             //if user's information is exist we can not continue;
-            if (queryResult == null)
+            if (pid == -1)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "Nick or uniquenick is registered, please use another one.");
             }
             else
             {
-                pid = (uint)queryResult["profileid"];
                 string message = string.Format("User created pid:{0} but missing unique nickname, please go to rspy.org update uniquenick", pid);
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.NewUserUniquenickInvalid, message);
             }

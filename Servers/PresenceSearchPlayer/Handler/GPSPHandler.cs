@@ -12,12 +12,7 @@ namespace PresenceSearchPlayer.Handler
     /// This class contians common functions which helps server. 
     /// </summary>
     public class GPSPHandler
-    {
-        public static GPSPDBQuery DBQuery = null; 
-        
-
-       
-
+    {   
         /// <summary>
         ///  Format the password for our database storage
         /// </summary>

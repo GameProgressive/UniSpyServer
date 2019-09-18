@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameSpyLib.Logging;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -47,47 +48,66 @@ namespace PresenceSearchPlayer.DatabaseQuery
             }
         }
 
-
-        public static Dictionary<string,object> CreateUserWithNick(Dictionary<string, string> dict, uint userid)
+        /// <summary>
+        /// create account
+        /// </summary>
+        /// <param name="dict"></param>
+        /// <param name="userid"></param>
+        /// <returns>if user existed we returns -1 otherwise return profileid</returns>
+        public static int CreateUserWithNick(Dictionary<string, string> dict, uint userid)
         {
             //we check is there exit a profile
             var result = GPSPServer.DB.Query("SELECT profiles.profileid FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE users.userid = @P0 AND profiles.nick=@P1", userid, dict["nick"]);
 
             uint pid = Convert.ToUInt32(result[0]["profileid"]);
             //if the profile is not exist we create one and update the information on namespaceid     
-            if (result == null)
-            {                
-                //create profile
-                GPSPServer.DB.Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, dict["nick"]);
-                //get the profileid
-                var resultList = GPSPServer.DB.Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid);
-                //update data in namespace
-                //if (dict.ContainsKey("productID")&&!dict.ContainsKey("gamename")&&!dict.ContainsKey("partnerid")&&!dict.ContainsKey("namespaceid"))
-                //{
-                //    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,uniquenick,productid VALUES (@P0,@P1,@P2)", pid, dict["uniquenick"], dict["productID"]);
-                //}
-                //else
-                GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
-                //return profileid.
-                return resultList[0];                
-            }
-            else
-            //if profileid exist we check namespaceid gamename partnerid on namespace table and create information on namespace table
+            try
             {
-                // we check if the information in namespace is exist
-                var resultList = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND partnerid = @P2 AND productid = @P3 AND uniquenick = @P4 ", pid, dict["namespaceid"], dict["partnerid"], dict["productID"], dict["uniquenick"]);
-                //if the information is exist in namespace we return 0
-                if (resultList.Count==0)
+                if (result == null)
                 {
-                    //added the information to namespace table;
-                    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename) VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
-                    return result[0];
+
+                    //create profile
+                    GPSPServer.DB.Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, dict["nick"]);
+                    //get the profileid
+                    var resultList = GPSPServer.DB.Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid);
+                    //update data in namespace
+                    //if (dict.ContainsKey("productID")&&!dict.ContainsKey("gamename")&&!dict.ContainsKey("partnerid")&&!dict.ContainsKey("namespaceid"))
+                    //{
+                    //    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,uniquenick,productid VALUES (@P0,@P1,@P2)", pid, dict["uniquenick"], dict["productID"]);
+                    //}
+                    //else
+                    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
+                    //return profileid.
+                    return (int)resultList[0]["profileid"];
+
+
+
+
                 }
                 else
+                //if profileid exist we check namespaceid gamename partnerid on namespace table and create information on namespace table
                 {
-                   
-                    return null;
+                    // we check if the information in namespace is exist
+                    var resultList = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND partnerid = @P2 AND productid = @P3 AND uniquenick = @P4 ", pid, dict["namespaceid"], dict["partnerid"], dict["productID"], dict["uniquenick"]);
+                    //if the information is exist in namespace we return 0
+                    if (resultList.Count == 0)
+                    {
+                        //added the information to namespace table;
+                        GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename) VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
+                        return (int)resultList[0]["profileid"];
+                    }
+                    else
+                    {
+
+                        return -1;
+                    }
+
                 }
+            }
+            catch (Exception e)
+            {
+                LogWriter.Log.WriteException(e);
+                return -1;
             }
         }
 
