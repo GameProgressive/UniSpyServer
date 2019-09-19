@@ -38,7 +38,7 @@ namespace PresenceSearchPlayer.Handler
             //we get the userid in database. If no userid found according to email we create one 
             //and store the new account into database.
 
-            if (dict["uniquenick"] == "")
+            if (!dict.ContainsKey("uniquenick")||dict["uniquenick"] == "")
             {
                 CreateUserWithoutUniquenick(dict, client);
             }
@@ -71,23 +71,23 @@ namespace PresenceSearchPlayer.Handler
             {
                 return GPErrorCode.Parse;
             }
-            if (!dict.ContainsKey("namespaceid"))
-            {
-                return GPErrorCode.Parse;
-            }
-            if (!dict.ContainsKey("uniquenick"))
-            {
-                return GPErrorCode.Parse;
-            }
-            if (!dict.ContainsKey("partnerid"))
-            {
+            //if (!dict.ContainsKey("namespaceid"))
+            //{
+            //    return GPErrorCode.Parse;
+            //}
+            //if (!dict.ContainsKey("uniquenick"))
+            //{
+            //    return GPErrorCode.Parse;
+            //}
+            //if (!dict.ContainsKey("partnerid"))
+            //{
 
-                return GPErrorCode.Parse;
-            }
-            if (!dict.ContainsKey("gamename"))
-            {
-                return GPErrorCode.Parse;
-            }
+            //    return GPErrorCode.Parse;
+            //}
+            //if (!dict.ContainsKey("gamename"))
+            //{
+            //    return GPErrorCode.Parse;
+            //}
             return GPErrorCode.NoError;
         }
 
@@ -102,7 +102,7 @@ namespace PresenceSearchPlayer.Handler
             {
                 return GPErrorCode.NewUserBadNick;
             }
-            if (dict["uniquenick"] != "")
+            if (dict.ContainsKey("uniquenick")&&dict["uniquenick"] != "")
             {
                 if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
                 {

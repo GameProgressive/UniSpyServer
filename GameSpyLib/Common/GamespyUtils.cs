@@ -36,17 +36,17 @@ namespace GameSpyLib.Common
         /// </summary>
         /// <param name="Password"></param>
         /// <returns></returns>
-        public static string DecodePassword(string Password)
+        public static string DecodePassword(string password)
         {
             // Convert Gamespy Base64 to Standard Base 64
-            StringBuilder builder = new StringBuilder(Password);
+            StringBuilder builder = new StringBuilder(password);
             builder.Replace('_', '=');
             builder.Replace('[', '+');
             builder.Replace(']', '/');
 
             // Decode passsword
-            byte[] PasswordBytes = Convert.FromBase64String(builder.ToString());
-            return Encoding.UTF8.GetString(GsPassEncode(PasswordBytes));
+            byte[] passwordBytes = Convert.FromBase64String(builder.ToString());
+            return Encoding.UTF8.GetString(GsPassEncode(passwordBytes));
         }
 
         /// <summary>

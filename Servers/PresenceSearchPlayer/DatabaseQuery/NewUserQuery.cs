@@ -57,48 +57,51 @@ namespace PresenceSearchPlayer.DatabaseQuery
         public static int CreateUserWithNick(Dictionary<string, string> dict, uint userid)
         {
             //we check is there exit a profile
-            var result = GPSPServer.DB.Query("SELECT profiles.profileid FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE users.userid = @P0 AND profiles.nick=@P1", userid, dict["nick"]);
+            var result0 = GPSPServer.DB.Query("SELECT profiles.profileid FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE users.userid = @P0 AND profiles.nick=@P1", userid, dict["nick"]);
 
-            uint pid = Convert.ToUInt32(result[0]["profileid"]);
+            uint pid;
             //if the profile is not exist we create one and update the information on namespaceid     
             try
             {
-                if (result == null)
+                if (result0.Count==0)
                 {
 
                     //create profile
                     GPSPServer.DB.Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, dict["nick"]);
                     //get the profileid
-                    var resultList = GPSPServer.DB.Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid);
+                    var result1 = GPSPServer.DB.Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid);
+                    pid = Convert.ToUInt32(result1[0]["profileid"]);
                     //update data in namespace
                     //if (dict.ContainsKey("productID")&&!dict.ContainsKey("gamename")&&!dict.ContainsKey("partnerid")&&!dict.ContainsKey("namespaceid"))
                     //{
                     //    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,uniquenick,productid VALUES (@P0,@P1,@P2)", pid, dict["uniquenick"], dict["productID"]);
                     //}
                     //else
-                    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
+                    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,productid) VALUES (@P0,@P1)", pid, dict["productID"]);
+                    var result2 = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productID"]);
+                    UpdateOtherInfo((uint)result2[0]["id"], dict);
                     //return profileid.
-                    return (int)resultList[0]["profileid"];
-
-
-
-
+                    return (int)result1[0]["profileid"];
                 }
                 else
                 //if profileid exist we check namespaceid gamename partnerid on namespace table and create information on namespace table
                 {
+                    pid = Convert.ToUInt32(result0[0]["profileid"]);
                     // we check if the information in namespace is exist
-                    var resultList = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND partnerid = @P2 AND productid = @P3 AND uniquenick = @P4 ", pid, dict["namespaceid"], dict["partnerid"], dict["productID"], dict["uniquenick"]);
+                    var result2 = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productID"]);
                     //if the information is exist in namespace we return 0
-                    if (resultList.Count == 0)
+                   
+                    if (result2.Count == 0)
                     {
                         //added the information to namespace table;
-                        GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename) VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
-                        return (int)resultList[0]["profileid"];
+                        //GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename) VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
+                        GPSPServer.DB.Execute("INSERT INTO namespace(profileid,productid) VALUES (@P0,@P1)", pid, dict["productID"]);
+                        var result3= GPSPServer.DB.Query("SELECT id,profileid FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productID"]);
+                        UpdateOtherInfo((uint)result3[0]["id"], dict);
+                        return (int)result3[0]["profileid"];
                     }
                     else
                     {
-
                         return -1;
                     }
 
@@ -110,6 +113,24 @@ namespace PresenceSearchPlayer.DatabaseQuery
                 return -1;
             }
         }
-
+        public static void UpdateOtherInfo(uint id,Dictionary<string,string> dict)
+        {
+            if (dict.ContainsKey("uniquenick"))
+            {
+                GPSPServer.DB.Execute("UPDATE namespace(partnerid) VALUES (@P0) WHERE id = @P1", dict["uniquenick"], id);
+            }
+            if (dict.ContainsKey("partnerid"))
+            {
+                GPSPServer.DB.Execute("UPDATE namespace(partnerid) VALUES (@P0) WHERE id = @P1", dict["partnerid"],id);
+            }
+            if (dict.ContainsKey("namespaceid"))
+            {
+                GPSPServer.DB.Execute("UPDATE namespace(namespaceid) VALUES (@P0) WHERE id = @P1", dict["namespaceid"], id);
+            }
+            if (dict.ContainsKey("gamename"))
+            {
+                GPSPServer.DB.Execute("UPDATE namespace(gamename) VALUES (@P0) WHERE id = @P1", dict["gamename"], id);
+            }
+        }
     }
 }
