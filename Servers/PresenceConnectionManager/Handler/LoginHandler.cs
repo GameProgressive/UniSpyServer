@@ -64,7 +64,7 @@ namespace PresenceConnectionManager.Handler
                         return;
                     }
                     else
-                        queryResult = LoginQuery.GetUserFromNickname(recv);
+                        queryResult = LoginQuery.GetUserFromNickAndEmail(recv);
                 }
                 catch (Exception ex)
                 {

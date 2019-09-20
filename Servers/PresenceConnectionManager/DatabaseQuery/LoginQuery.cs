@@ -9,18 +9,20 @@ namespace PresenceConnectionManager.DatabaseQuery
     {
         public static Dictionary<string, object> GetUserFromUniqueNick(Dictionary<string, string> dict)
         {
-            var result= GPCMServer.DB.Query(@"SELECT profiles.profileid, profiles.nick, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,"
-             + @"profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,"
-             + @" profiles.marriedid, profiles.childcount, profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, "
-             + @"profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, "
-             + @"profiles.location, profiles.icq, profiles.status, users.email, users.password, users.userstatus "
-             + @"FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  "
-             + @"WHERE namespace.uniquenick = @P0 AND namespace.productid = @P1 AND namespace.partnerid = @P2 AND namespace.gamename = @P3"
-                , dict["uniquenick"], dict["productid"], dict["partnerid"], dict["gamename"]);
+            var result = GPCMServer.DB.Query(
+                @"SELECT profiles.profileid, profiles.nick, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,
+                 profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,
+                 profiles.marriedid, profiles.childcount, profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, 
+                 profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, 
+                 profiles.location, profiles.icq, profiles.status, users.email, users.password, users.userstatus 
+                 FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
+                 WHERE namespace.uniquenick = @P0 AND namespace.productid = @P1 AND namespace.partnerid = @P2 AND namespace.gamename = @P3"
+                 , dict["uniquenick"], dict["productid"], dict["partnerid"], dict["gamename"]
+                 );
             return (result.Count == 0) ? null : result[0];
         }
 
-        public static Dictionary<string, object> GetUserFromNickname(Dictionary<string, string> dict)
+        public static Dictionary<string, object> GetUserFromNickAndEmail(Dictionary<string, string> dict)
         {
             var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
                 + @"profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, "
@@ -30,10 +32,9 @@ namespace PresenceConnectionManager.DatabaseQuery
                 + @"WHERE  namespace.partnerid = @P0  AND"
                 + @" namespace.gamename = @P1 AND "
                 + @"profiles.nick = @P2 AND"
-                + @" users.email=@P3", dict["partnerid"], dict["gamename"], dict["nick"], dict["email"]);
+                + @" users.email=@P3 AND namespace.productid = @P4", dict["partnerid"], dict["gamename"], dict["nick"], dict["email"], dict["productID"]);
 
-            return (result.Count == 0) ? null : result[0];            //
-            //return GetUserDataReal(", profiles.uniquenick ", "profiles.nick=@P0 AND users.email=@P1", Nick, Email);
+            return (result.Count == 0) ? null : result[0];
         }
 
         /// <summary>
