@@ -64,14 +64,14 @@ namespace PresenceSearchPlayer
             }
 
             LogWriter.Log.Write(LogLevel.Info, "Successfully connected to the {0} database!", databaseConfiguration.Type);
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", "-----------", "----------", "------", "--------------");
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", "Server Name", "Host Name", "Port", "Max Connection");
+            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,-14}|", "-----------", "--------------", "------", "--------------");
+            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,-14}|", "Server Name", "Host Name", "Port", "Max Connection");
             // Add all servers
             foreach (ServerConfiguration cfg in ConfigManager.xmlConfiguration.Servers)
             {
                 StartServer(cfg);
             }
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", "-----------", "----------", "------", "--------------");
+            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,-14}|", "-----------", "--------------", "------", "--------------");
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace PresenceSearchPlayer
             {
                 case "GPSP":
                     gpspServer = new GPSPServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
-                    LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
+                    LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
                     break;
 
             }

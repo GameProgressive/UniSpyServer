@@ -134,9 +134,8 @@ namespace GameSpyLib.Common
                 //we do nothing with encoded password                
                 password = DecodePassword(dict["passenc"]);
                 dict["passenc"] = StringExtensions.GetMD5Hash(password);
-
             }
-            else
+            if (dict.ContainsKey("pass"))
             {
                 password = dict["pass"];
                 dict["pass"] = StringExtensions.GetMD5Hash(password);
@@ -147,7 +146,7 @@ namespace GameSpyLib.Common
 
         public static void PrintReceivedGPDictToLogger(string req, Dictionary<string, string> dict)
         {
-            LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}",  req, string.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()));
+            LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}", req, string.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()));
         }
 
         /// <summary>
@@ -156,7 +155,7 @@ namespace GameSpyLib.Common
         /// <param name="stream">The stream that will receive the error</param>
         /// <param name="code">The error code</param>
         /// <param name="error">A string containing the error</param>
-        public static void SendGPError(TcpStream stream,object errorCode, string error)
+        public static void SendGPError(TcpStream stream, object errorCode, string error)
         {
             stream.SendAsync(Encoding.UTF8.GetBytes(string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", (uint)errorCode, error)));
         }

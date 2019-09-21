@@ -5,8 +5,13 @@ using System.Text;
 
 namespace PresenceConnectionManager.DatabaseQuery
 {
+    //login request will have different key,value pairs
+    //some have dict["uniquenick"], dict["productid"], dict["partnerid"], dict["gamename"]
+    //some have firewall,port
+    //some have partnerid,namespaceid,port,productid,gamename,sdkrevision
     public class LoginQuery
     {
+        
         public static Dictionary<string, object> GetUserFromUniqueNick(Dictionary<string, string> dict)
         {
             var result = GPCMServer.DB.Query(

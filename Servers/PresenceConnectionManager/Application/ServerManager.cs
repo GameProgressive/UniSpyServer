@@ -66,21 +66,19 @@ namespace PresenceConnectionManager
             }
 
             LogWriter.Log.Write(LogLevel.Info, "Successfully connected to the {0} database!", databaseConfiguration.Type);
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", "-----------", "----------", "------", "--------------");
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", "Server Name", "Host Name", "Port", "Max Connection");
+            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,-14}|", "-----------", "--------------", "------", "--------------");
+            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,-14}|", "Server Name", "Host Name", "Port", "Max Connection");
             // Add all servers
             foreach (ServerConfiguration cfg in ConfigManager.xmlConfiguration.Servers)
             {
-                if(cfg.Name=="GPCM")
-                    StartServer(cfg);
+                StartServer(cfg);
             }
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,-14}|", "-----------", "----------", "------", "--------------");
+            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,-14}|", "-----------", "--------------", "------", "--------------");
         }
-
-        /// <summary>
-        /// Free all resources created by the server factory
-        /// </summary>
-        public void Dispose()
+            /// <summary>
+            /// Free all resources created by the server factory
+            /// </summary>
+            public void Dispose()
         {
             StopAllServers();
 
@@ -118,9 +116,14 @@ namespace PresenceConnectionManager
             //    return;            
             //LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
             //LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-10}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
-            gpcmServer = new GPCMServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+            switch (cfg.Name)
+            {
+                case "GPCM":
+                    gpcmServer = new GPCMServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                    LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
+                    break;
 
+            }
         }
 
 
