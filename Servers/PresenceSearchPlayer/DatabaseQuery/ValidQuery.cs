@@ -11,9 +11,10 @@ namespace PresenceSearchPlayer.DatabaseQuery
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public static bool IsEmailValid(string email)
+        public static bool IsEmailValid(Dictionary<string,string> dict)
         {
-            return GPSPServer.DB.Query("SELECT userid FROM users WHERE `email`=@P0", email).Count > 0;
+            var result =  GPSPServer.DB.Query("SELECT userid FROM users WHERE `email`=@P0", dict["email"]);
+             return (result.Count == 0) ? false : true;
         }
     }
 }
