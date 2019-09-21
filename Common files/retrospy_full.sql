@@ -4641,7 +4641,7 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   `namespaceid` int(11) unsigned DEFAULT NULL,
   `uniquenick` varchar(50) DEFAULT NULL,
   `partnerid` int(11) unsigned DEFAULT NULL,
-  `productid` int(11) unsigned NOT NULL,
+  `productid` int(11) unsigned DEFAULT NULL,
   `gamename` text DEFAULT NULL,
   `sesskey` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -4655,7 +4655,7 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
 
--- Dumping data for table retrospy2.namespace: ~8 rows (approximately)
+-- Dumping data for table retrospy2.namespace: ~9 rows (approximately)
 /*!40000 ALTER TABLE `namespace` DISABLE KEYS */;
 INSERT INTO `namespace` (`id`, `profileid`, `namespaceid`, `uniquenick`, `partnerid`, `productid`, `gamename`, `sesskey`) VALUES
 	(1, 1, 1, 'spyguy', 0, 0, 'gmtest', NULL),
@@ -4717,7 +4717,7 @@ INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `status`, `firstname`, `l
 	(8, 1, 'MyCrysis', 0, 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
 	(9, 6, 'MyCrysis', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
 	(12, 6, 'MyCrysis', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
-	(13, 7, 'MyCrysis', 0, 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '127.0.0.1', 0, 1568897857, 0),
+	(13, 7, 'MyCrysis', 0, 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '127.0.0.1', 0, 1569061040, 0),
 	(14, 7, 'xiaojiuwo', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 

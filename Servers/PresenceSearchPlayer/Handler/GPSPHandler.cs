@@ -17,23 +17,6 @@ namespace PresenceSearchPlayer.Handler
         ///  Format the password for our database storage
         /// </summary>
         /// <param name="dict"></param>
-        public static void ProessPassword(Dictionary<string, string> dict)
-        {
-            string password;
-            if (dict.ContainsKey("passenc"))
-            {
-                //we do nothing with encoded password                
-                password = GameSpyUtils.DecodePassword(dict["passenc"]);
-                dict["passenc"] = StringExtensions.GetMD5Hash(password);
-
-            }
-            else
-            {
-                password = dict["pass"];
-                //password = GameSpyUtils.DecodePassword(dict["pass"]);
-                dict["pass"] = StringExtensions.GetMD5Hash(password);
-                dict.Add("passenc", dict["pass"]);
-            }
-        }
+        
     }
 }

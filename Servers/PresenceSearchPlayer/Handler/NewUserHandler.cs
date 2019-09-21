@@ -16,8 +16,7 @@ namespace PresenceSearchPlayer.Handler
         /// <param name="dict">The request that the stream sended</param>
         public static void NewUser(GPSPClient client, Dictionary<string, string> dict)
         {
-            //Format the password for our database storage
-            GPSPHandler.ProessPassword(dict);
+            //Format the password for our database storage           
             GPErrorCode error = IsNewUserContainAllKeys(dict);
             //if there do not recieved right <key,value> pairs we send error
             if (error != GPErrorCode.NoError)

@@ -21,11 +21,7 @@ namespace PresenceSearchPlayer.Handler
             bool isContiansAllKey = dict.ContainsKey("nick") && dict.ContainsKey("email") && (dict.ContainsKey("passenc") || dict.ContainsKey("pass"));
             bool isEmailCorrect = GameSpyUtils.IsEmailFormatCorrect(dict["email"]);
 
-            if (isContiansAllKey&& isEmailCorrect)
-            {
-                GPSPHandler.ProessPassword(dict);
-            }
-            else
+            if (!isContiansAllKey&&! isEmailCorrect)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "Parsing error, please check input");
                 return;

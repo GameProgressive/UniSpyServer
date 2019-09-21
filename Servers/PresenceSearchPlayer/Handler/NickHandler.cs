@@ -24,7 +24,6 @@ namespace PresenceSearchPlayer.Handler
         public static void SearchNicks(GPSPClient client, Dictionary<string, string> dict)
         {
             //Format the password for our database storage
-            GPSPHandler.ProessPassword(dict);
             //if not recieved correct request we terminate
             GPErrorCode error = IsSearchNicksContianAllKeys(dict);
             if (error != GPErrorCode.NoError)

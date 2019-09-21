@@ -7,6 +7,7 @@ using GameSpyLib.Network;
 using GameSpyLib.Logging;
 using System.Text.RegularExpressions;
 using System.Globalization;
+using GameSpyLib.Extensions;
 
 namespace GameSpyLib.Common
 {
@@ -107,19 +108,42 @@ namespace GameSpyLib.Common
         /// <returns>A converted dictionary</returns>
         public static Dictionary<string, string> ConvertGPResponseToKeyValue(string[] parts)
         {
-            Dictionary<string, string> Data = new Dictionary<string, string>();
+            Dictionary<string, string> data = new Dictionary<string, string>();
             try
             {
                 for (int i = 0; i < parts.Length; i += 2)
                 {
-                    if (!Data.ContainsKey(parts[i]))
-                        Data.Add(parts[i].ToLower(), parts[i + 1]);//Some game send uppercase key to us, so we have to deal with it
+                    if (!data.ContainsKey(parts[i]))
+                        data.Add(parts[i].ToLower(), parts[i + 1]);//Some game send uppercase key to us, so we have to deal with it
                 }
             }
             catch (IndexOutOfRangeException) { }
+            ProessPasswordInRetroSpyWay(data);
 
-            return Data;
+            return data;
         }
+        /// <summary>
+        /// Encode password in our way, so we do not need to care about the encoding method of password
+        /// </summary>
+        /// <param name="dict"></param>
+        public static void ProessPasswordInRetroSpyWay(Dictionary<string, string> dict)
+        {
+            string password;
+            if (dict.ContainsKey("passenc"))
+            {
+                //we do nothing with encoded password                
+                password = DecodePassword(dict["passenc"]);
+                dict["passenc"] = StringExtensions.GetMD5Hash(password);
+
+            }
+            else
+            {
+                password = dict["pass"];
+                dict["pass"] = StringExtensions.GetMD5Hash(password);
+                dict.Add("passenc", dict["pass"]);
+            }
+        }
+
 
         public static void PrintReceivedGPDictToLogger(string req, Dictionary<string, string> dict)
         {
