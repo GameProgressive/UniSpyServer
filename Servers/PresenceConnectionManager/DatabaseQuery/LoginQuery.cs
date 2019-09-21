@@ -32,7 +32,7 @@ namespace PresenceConnectionManager.DatabaseQuery
                 + @"WHERE  namespace.partnerid = @P0  AND"
                 + @" namespace.gamename = @P1 AND "
                 + @"profiles.nick = @P2 AND"
-                + @" users.email=@P3 AND namespace.productid = @P4", dict["partnerid"], dict["gamename"], dict["nick"], dict["email"], dict["productID"]);
+                + @" users.email=@P3 AND namespace.productid = @P4", dict["partnerid"], dict["gamename"], dict["nick"], dict["email"], dict["productid"]);
 
             return (result.Count == 0) ? null : result[0];
         }

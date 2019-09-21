@@ -19,7 +19,7 @@ namespace PresenceSearchPlayer.DatabaseQuery
             bool isUniquenickExist = GPSPServer.DB.Query("SELECT namespace.profileid FROM namespace,users,profiles WHERE " +
                     "namespace.uniquenick = @P0 AND namespace.namespaceid = @P1 " +
                     "AND namespace.partnerid =@P2 AND namespace.productid=@P3 " +
-                    "AND users.email = @P4 AND profiles.nick = @P5", dict["uniquenick"], dict["namespaceid"], dict["partnerid"], dict["productID"], dict["email"], dict["nick"]).Count > 0;
+                    "AND users.email = @P4 AND profiles.nick = @P5", dict["uniquenick"], dict["namespaceid"], dict["partnerid"], dict["productid"], dict["email"], dict["nick"]).Count > 0;
 
             if (isUniquenickExist)
                 return true;
@@ -77,8 +77,8 @@ namespace PresenceSearchPlayer.DatabaseQuery
                     //    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,uniquenick,productid VALUES (@P0,@P1,@P2)", pid, dict["uniquenick"], dict["productID"]);
                     //}
                     //else
-                    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,productid) VALUES (@P0,@P1)", pid, dict["productID"]);
-                    var result2 = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productID"]);
+                    GPSPServer.DB.Execute("INSERT INTO namespace(profileid,productid) VALUES (@P0,@P1)", pid, dict["productid"]);
+                    var result2 = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productid"]);
                     UpdateOtherInfo((uint)result2[0]["id"], dict);
                     //return profileid.
                     return (int)result1[0]["profileid"];
@@ -88,15 +88,15 @@ namespace PresenceSearchPlayer.DatabaseQuery
                 {
                     pid = Convert.ToUInt32(result0[0]["profileid"]);
                     // we check if the information in namespace is exist
-                    var result2 = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productID"]);
+                    var result2 = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productid"]);
                     //if the information is exist in namespace we return 0
                    
                     if (result2.Count == 0)
                     {
                         //added the information to namespace table;
                         //GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick,partnerid,productid,gamename) VALUES (@P0,@P1,@P2,@P3,@P4,@P5)", pid, dict["namespaceid"], dict["uniquenick"], dict["partnerid"], dict["productID"], dict["gamename"]);
-                        GPSPServer.DB.Execute("INSERT INTO namespace(profileid,productid) VALUES (@P0,@P1)", pid, dict["productID"]);
-                        var result3= GPSPServer.DB.Query("SELECT id,profileid FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productID"]);
+                        GPSPServer.DB.Execute("INSERT INTO namespace(profileid,productid) VALUES (@P0,@P1)", pid, dict["productid"]);
+                        var result3= GPSPServer.DB.Query("SELECT id,profileid FROM namespace WHERE profileid = @P0 AND productid = @P1", pid, dict["productid"]);
                         UpdateOtherInfo((uint)result3[0]["id"], dict);
                         return (int)result3[0]["profileid"];
                     }

@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.DatabaseQuery
             return GPSPServer.DB.Query("SELECT profiles.nick,profiles.statuscode,profiles.statusstring FROM profiles " +
                 "INNER  JOIN namespace ON namespace.profileid = profiles.profileid " +
                 "WHERE namespace.productid = @P0 AND profiles.profileid = @P1 ",
-                dict["productID"], dict["profileid"]);
+                dict["productid"], dict["profileid"]);
         }
 
     }

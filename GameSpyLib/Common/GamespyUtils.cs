@@ -113,7 +113,7 @@ namespace GameSpyLib.Common
                 for (int i = 0; i < parts.Length; i += 2)
                 {
                     if (!Data.ContainsKey(parts[i]))
-                        Data.Add(parts[i], parts[i + 1]);
+                        Data.Add(parts[i].ToLower(), parts[i + 1]);//Some game send uppercase key to us, so we have to deal with it
                 }
             }
             catch (IndexOutOfRangeException) { }

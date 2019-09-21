@@ -67,7 +67,7 @@ namespace PresenceSearchPlayer.Handler
                 }
             }
 
-            if (!dict.ContainsKey("productID"))
+            if (!dict.ContainsKey("productid"))
             {
                 return GPErrorCode.Parse;
             }

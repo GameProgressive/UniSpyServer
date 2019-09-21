@@ -264,7 +264,7 @@ namespace PresenceConnectionManager
                 GameSpyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
                 return;
             }
-
+            
             string[] submessage = message.Split("\\final\\");
 
             foreach (string command in submessage)
