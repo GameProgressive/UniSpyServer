@@ -15,8 +15,9 @@ namespace GameSpyLib.XMLConfig
         {
             // Load XML file
             {
-                
-                FileStream fstream = new FileStream(@"../../../../RetroSpyServer.xml", FileMode.Open); 
+                string path1 = @"..";
+                string fullpath = Path.Combine(path1, path1, path1, path1, "RetroSpyServer.xml");
+                FileStream fstream = new FileStream(fullpath, FileMode.Open); 
                 //FileStream fstream = new FileStream(Path.Combine(Program.BasePath, "RetroSpyServer.xml"), FileMode.Open);
                 fstream.Seek(0, SeekOrigin.Begin);
                 //stream.Position = 0;
