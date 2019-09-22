@@ -15,12 +15,12 @@ namespace GameSpyLib.XMLConfig
         {
             // Load XML file
             {
-                string currentPath = @".";
-                string previouPath = @"..";
+                DirectoryInfo info = new DirectoryInfo(Environment.CurrentDirectory);
                 
-                string fullpath = Path.Combine(currentPath, previouPath, previouPath, previouPath, previouPath, @"RetroSpyServer.xml");
-               
-                FileStream fstream = new FileStream(fullpath, FileMode.Open); 
+                String xmlpath = info.Parent.Parent.Parent.Parent.FullName;
+                string fullpath = Path.Combine(xmlpath, @"RetroSpyServer.xml");
+
+                FileStream fstream = new FileStream(fullpath, FileMode.Open);
                 //FileStream fstream = new FileStream(Path.Combine(Program.BasePath, "RetroSpyServer.xml"), FileMode.Open);
                 fstream.Seek(0, SeekOrigin.Begin);
                 //stream.Position = 0;
@@ -48,19 +48,19 @@ namespace GameSpyLib.XMLConfig
                         xmlConfiguration.Database.Port = 3306;
                 }
                 //issue if servers config not exsit this will not throw an exception
-                if (xmlConfiguration.Servers == null || xmlConfiguration.Servers.Length<1)
+                if (xmlConfiguration.Servers == null || xmlConfiguration.Servers.Length < 1)
                 {
                     throw new Exception("Server configuration not specified!");
                 }
 
-                
+
 
                 foreach (ServerConfiguration servercfg in xmlConfiguration.Servers)
                 {
-                    
-                    if (servercfg.Hostname.Length < 1 || 
-                        servercfg.MaxConnections < 1 || 
-                        servercfg.Port < 1 || 
+
+                    if (servercfg.Hostname.Length < 1 ||
+                        servercfg.MaxConnections < 1 ||
+                        servercfg.Port < 1 ||
                         servercfg.Name.Length < 1)
                         throw new Exception(string.Format("Invalid {0} configuration", servercfg.Name));
 
