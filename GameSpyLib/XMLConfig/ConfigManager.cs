@@ -20,8 +20,9 @@ namespace GameSpyLib.XMLConfig
                 String xmlpath = info.Parent.Parent.Parent.Parent.FullName;
                 string fullpath = Path.Combine(xmlpath, @"RetroSpyServer.xml");
 
-                FileStream fstream = new FileStream(fullpath, FileMode.Open);
-                //FileStream fstream = new FileStream(Path.Combine(Program.BasePath, "RetroSpyServer.xml"), FileMode.Open);
+                FileStream fstream = File.OpenRead(fullpath);
+                //FileStream fstream = new FileStream(fullpath, FileMode.Open,FileAccess.Read,FileShare.ReadWrite);
+
                 fstream.Seek(0, SeekOrigin.Begin);
                 //stream.Position = 0;
                 XmlSerializer serializer = new XmlSerializer(typeof(XMLConfiguration));
