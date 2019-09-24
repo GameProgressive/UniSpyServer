@@ -117,21 +117,21 @@ namespace PresenceConnectionManager
         /// Constructor
         /// </summary>
         /// <param name="ReadArgs">The Tcp Client connection</param>
-        public GPCMClient(TcpStream ConnectionStream, long ConnectionId)
+        public GPCMClient(TcpStream stream, long connectionId)
         {
 
             PlayerInfo = new GPCMPlayerInfo();
 
-            RemoteEndPoint = (IPEndPoint)ConnectionStream.RemoteEndPoint;
+            RemoteEndPoint = (IPEndPoint)stream.RemoteEndPoint;
             Disposed = false;
 
             // Set the connection ID
-            this.ConnectionId = ConnectionId;
+            ConnectionId = connectionId;
 
             SessionKey = 0;
 
             // Create our Client Stream
-            Stream = ConnectionStream;
+            Stream = stream;
             Stream.OnDisconnected += ClientDisconnected;
             Stream.OnDataReceived += ProcessData;
             Stream.IsMessageFinished += IsMessageFinished;
@@ -303,6 +303,9 @@ namespace PresenceConnectionManager
                         break;
                     case "status":
                         StatusHandler.UpdateStatus(this, dict, OnStatusChanged);
+                        break;
+                    case "newuser":
+                        NewUserHandler.NewUser(this,dict);
                         break;
                     case "ka":
                         KAHandler.SendKeepAlive(this);

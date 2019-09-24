@@ -15,11 +15,11 @@ namespace StatsAndTracking
         /// </summary>
         private static long ConnectionCounter = 0;
 
-
         /// <summary>
         /// Indicates whether we are closing the server down
         /// </summary>
         public bool Exiting { get; private set; } = false;
+        public string ServerChallengeKey { get; private set; }
 
         /// <summary>
         /// A List of sucessfully active connections (Name => Client Obj) on the MasterServer TCP line
@@ -92,7 +92,7 @@ namespace StatsAndTracking
                 // Convert the TcpClient to a MasterClient
                 client = new GStatsClient(stream, ConID);
                 Clients.TryAdd(ConID, client);
-
+                client.SendServerChallenge();
                 // Start receiving data
                 stream.BeginReceive();
             }
@@ -102,6 +102,6 @@ namespace StatsAndTracking
                 Clients.TryRemove(ConID, out client);
             }
         }
-
+        
     }
 }

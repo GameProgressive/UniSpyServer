@@ -277,5 +277,9 @@ namespace GameSpyLib.Extensions
             return new String(data);
         }
 
+        public static string GstatsChallengeEnc(string str, int encType)
+        {
+            return "";
+        }
     }
 }

@@ -32,10 +32,10 @@ namespace Chat
         }
         public static void CommandSwitch(Dictionary<string,string>recv)
         {
-            switch ()
-            {
+            //switch ()
+            //{
 
-            }
+            //}
         }
 
     }

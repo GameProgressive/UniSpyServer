@@ -1,11 +1,9 @@
 ﻿using GameSpyLib.Common;
-using PresenceSearchPlayer.DatabaseQuery;
-using PresenceSearchPlayer.Enumerator;
-using System;
+using PresenceConnectionManager.DatabaseQuery;
+using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
-using System.Text;
 
-namespace PresenceSearchPlayer.Handler
+namespace PresenceConnectionManager.Handler
 {
     public class NewUserHandler
     {
@@ -14,7 +12,7 @@ namespace PresenceSearchPlayer.Handler
         /// </summary>
         /// <param name="client">The client that sended the data</param>
         /// <param name="dict">The request that the stream sended</param>
-        public static void NewUser(GPSPClient client, Dictionary<string, string> dict)
+        public static void NewUser(GPCMClient client, Dictionary<string, string> dict)
         {
             //Format the password for our database storage           
             GPErrorCode error = IsRequestContainAllKeys(dict);

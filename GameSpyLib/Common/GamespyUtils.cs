@@ -141,6 +141,12 @@ namespace GameSpyLib.Common
                 dict["pass"] = StringExtensions.GetMD5Hash(password);
                 dict.Add("passenc", dict["pass"]);
             }
+            if (dict.ContainsKey("password"))
+            {
+                password = dict["password"];
+                dict["password"] = StringExtensions.GetMD5Hash(password);
+                dict.Add("passenc", dict["password"]);
+            }
         }
 
 

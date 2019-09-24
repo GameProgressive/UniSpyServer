@@ -21,6 +21,7 @@ namespace StatsAndTracking
         /// Indicates whether this object is disposed
         /// </summary>
         public bool Disposed { get; protected set; } = false;
+        public string ServerChallengeKey { get; private set; }
 
         /// <summary>
         /// Constructor
@@ -98,6 +99,14 @@ namespace StatsAndTracking
         protected void ProcessData(string message)
         {
             
+        }
+
+        public void SendServerChallenge()
+        {
+            ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
+            //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
+            //sendingBuffer = xor(sendingBuffer);
+            Stream.SendAsync(@"\challenge\{0}\final\", ServerChallengeKey);
         }
     }
 }
