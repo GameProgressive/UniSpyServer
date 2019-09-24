@@ -106,7 +106,7 @@ namespace PresenceSearchPlayer.DatabaseQuery
 
         public static bool CreateSubprofileOnTableNamespace(Dictionary<string, string> dict, int profileid)
         {
-            var result = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND uniquenick = @P2", profileid, dict["namespaceid"], dict["uniquenick"]);
+            var result = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1", profileid, dict["namespaceid"]);
             if (result .Count==0)
             {
                 GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick) VALUES (@P0,@P1,@P2)", profileid, dict["namespaceid"], dict["uniquenick"]);

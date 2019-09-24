@@ -21,38 +21,21 @@ namespace PresenceConnectionManager.DatabaseQuery
                  profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, 
                  profiles.location, profiles.icq, profiles.status, users.email, users.password, users.userstatus 
                  FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
-                 WHERE namespace.uniquenick = @P0 AND namespace.productid = @P1 AND namespace.partnerid = @P2 AND namespace.gamename = @P3"
-                 , dict["uniquenick"], dict["productid"], dict["partnerid"], dict["gamename"]
+                 WHERE namespace.uniquenick = @P0 AND namespace.namespace = @P1"
+                 , dict["uniquenick"], dict["namespaceid"]
                  );
             return (result.Count == 0) ? null : result[0];
         }
 
         public static Dictionary<string, object> GetUserFromNickAndEmail(Dictionary<string, string> dict)
         {
-            if (dict.ContainsKey("partnerid") && dict.ContainsKey("gamename") && dict.ContainsKey("productid"))
-            {
                 var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
                 + @"profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, "
                 + @"profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex,profiles.zipcode, profiles.countrycode, profiles.homepage, "
                 + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icq, profiles.status, users.password, users.userstatus, namespace.uniquenick"
                 + @" FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid "
-                + @"WHERE  namespace.partnerid = @P0  AND"
-                + @" namespace.gamename = @P1 AND "
-                + @"profiles.nick = @P2 AND"
-                + @" users.email=@P3 AND namespace.productid = @P4", dict["partnerid"], dict["gamename"], dict["nick"], dict["email"], dict["productid"]);
-                return (result.Count == 0) ? null : result[0];
-            }
-            else
-            {
-                var result = GPCMServer.DB.Query(@" SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,
-                    profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, 
-                    profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex,profiles.zipcode, profiles.countrycode, profiles.homepage, 
-                    profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icq, profiles.status, users.password, users.userstatus, namespace.uniquenick
-                    FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE profiles.nick=@P0 AND users.email=@P1",dict["nick"],dict["email"]);
-                return (result.Count == 0) ? null : result[0];
-            }
-
-         
+                + @"WHERE  namespace.namespaceid = @P0  AND profiles.nick = @P1 AND  users.email=@P2",  dict["namespaceid"], dict["nick"], dict["email"]);
+                return (result.Count == 0) ? null : result[0];         
         }
 
         /// <summary>
@@ -64,21 +47,9 @@ namespace PresenceConnectionManager.DatabaseQuery
         /// <param name="player"></param>
         public static void UpdateSessionKey(Dictionary<string, string> dict, ushort sesskey, GPCMPlayerInfo player)
         {
-            if (dict.ContainsKey("namespaceid") && dict.ContainsKey("productid") && dict.ContainsKey("partnerid") && dict.ContainsKey("gamename"))
-            {
-                Dictionary<string, object> temp = GPCMServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND partnerid = @P2 AND productid=@P3 AND gamename = @P4", player.PlayerId, dict["namespaceid"], dict["partnerid"], dict["productid"], dict["gamename"])[0];
+                Dictionary<string, object> temp = GPCMServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 ", player.PlayerId, dict["namespaceid"])[0];
                 uint id = Convert.ToUInt32(temp["id"]);
-                GPCMServer.DB.Execute("UPDATE namespace SET sesskey = @P0 WHERE id = @P1 ", sesskey, id);
-            }
-            else
-
-            {
-                Dictionary<string, object> temp = GPCMServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0", player.PlayerId)[0];
-                uint id = Convert.ToUInt32(temp["id"]);
-                GPCMServer.DB.Execute("UPDATE namespace SET sesskey = @P0 WHERE id = @P1 ", sesskey, id);
-            }
-           
-            
+                GPCMServer.DB.Execute("UPDATE namespace SET sesskey = @P0 WHERE id = @P1 ", sesskey, id);  
         }
 
 

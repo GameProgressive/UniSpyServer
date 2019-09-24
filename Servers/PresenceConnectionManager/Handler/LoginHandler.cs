@@ -158,8 +158,31 @@ namespace PresenceConnectionManager.Handler
 
         private static GPErrorCode IsContainAllKeys(Dictionary<string, string> recv)
         {
-            // Make sure we have all the required data to process this login
-            if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
+            if (!recv.ContainsKey("namespaceid"))
+            {
+                recv.Add("namespaceid", "0");
+            }
+            if (recv.ContainsKey("user"))
+            {
+                // "User" is <nickname>@<email>
+                string user = recv["user"];
+                int Pos = user.IndexOf('@');
+                //we add the nick and email to dictionary
+                string nick = user.Substring(0, Pos);
+                string email = user.Substring(Pos + 1);
+                recv.Add("nick", nick);
+                recv.Add("email", email);
+            }
+            //    if (!recv.ContainsKey("uniquenick"))
+            //{
+            //    string email = recv["email"];
+            //    int Pos = email.IndexOf('@');
+            //    //we add the nick and email to dictionary
+            //    string uniquenick = email.Substring(0, Pos);
+            //    recv.Add("uniquenick", uniquenick);
+            //}
+                // Make sure we have all the required data to process this login
+                if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
             {
                 return GPErrorCode.Parse;
             }
@@ -167,6 +190,7 @@ namespace PresenceConnectionManager.Handler
             {
                 return GPErrorCode.NoError;
             }
+            
         }
 
         private static void ParseRequestToPlayerInfo(GPCMClient client, Dictionary<string, string> recv, ref uint partnerID)
@@ -190,16 +214,16 @@ namespace PresenceConnectionManager.Handler
             else if (recv.ContainsKey("user"))
             {
                 // "User" is <nickname>@<email>
-                string user = recv["user"];
-                int Pos = user.IndexOf('@');
-                //we add the nick and email to dictionary
-                string nick = user.Substring(0, Pos);
-                string email = user.Substring(Pos + 1);
-                recv.Add("nick", nick);
-                recv.Add("email", email);
+                //string user = recv["user"];
+                //int Pos = user.IndexOf('@');
+                ////we add the nick and email to dictionary
+                //string nick = user.Substring(0, Pos);
+                //string email = user.Substring(Pos + 1);
+                //recv.Add("nick", nick);
+                //recv.Add("email", email);
 
-                client.PlayerInfo.PlayerNick = user.Substring(0, Pos);
-                client.PlayerInfo.PlayerEmail = user.Substring(Pos + 1);
+                client.PlayerInfo.PlayerNick = recv["nick"];
+                client.PlayerInfo.PlayerEmail = recv["email"];
             }
         }
 
