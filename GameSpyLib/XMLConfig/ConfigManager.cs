@@ -15,12 +15,11 @@ namespace GameSpyLib.XMLConfig
         {
             // Load XML file
             {
-                DirectoryInfo info = new DirectoryInfo(Environment.CurrentDirectory);
+                //DirectoryInfo info = new DirectoryInfo(Environment.CurrentDirectory);
                 
-                String xmlpath = info.Parent.Parent.Parent.Parent.FullName;
-                string fullpath = Path.Combine(xmlpath, @"RetroSpyServer.xml");
-
-                FileStream fstream = File.OpenRead(fullpath);
+                //String xmlpath = info.Parent.Parent.Parent.Parent.FullName;
+                //string fullpath = Path.Combine(xmlpath, @"RetroSpyServer.xml");
+                FileStream fstream = File.OpenRead(@"RetroSpyServer.xml");
                 //FileStream fstream = new FileStream(fullpath, FileMode.Open,FileAccess.Read,FileShare.Read);
 
                 fstream.Seek(0, SeekOrigin.Begin);
