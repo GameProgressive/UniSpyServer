@@ -126,46 +126,52 @@ namespace PresenceSearchPlayer
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
                 Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
-
-                switch (recieved[0])
+                try
                 {
-                    case "search":
-                        SearchHandler.SearchUsers(this, dict);
-                        break;
-                    case "valid":
-                        ValidHandler.IsEmailValid(this, dict);
-                        break;
-                    case "nicks":
-                        NickHandler.SearchNicks(this, dict);
-                        break;
-                    case "pmatch":
-                        PmatchHandler.PlayerMatch(this, dict);
-                        break;
-                    case "check":
-                        CheckHandler.CheckProfileId(this, dict);
-                        break;
-                    case "newuser":
-                        NewUserHandler.NewUser(this, dict);
-                        break;
-                    case "searchunique":
-                        SearchUniqueHandler.SearchProfileWithUniquenick(this, dict);
-                        break;
-                    case "others":
-                        OthersHandler.SearchOtherBuddy(this, dict);
-                        break;
-                    case "otherslist":
-                        OthersListHandler.SearchOtherBuddyList(this, dict);
-                        break;
-                    case "uniquesearch":
-                        UniqueSearchHandler.SuggestUniqueNickname(this, dict);
-                        break;
-                    case "profilelist":
-                        ProfileListHandler.OnProfileList(this, dict);
-                        break;
-                    default:
-                        LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
-                        GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
-                        break;
+                    switch (recieved[0])
+                    {
+                        case "search":
+                            SearchHandler.SearchUsers(this, dict);
+                            break;
+                        case "valid":
+                            ValidHandler.IsEmailValid(this, dict);
+                            break;
+                        case "nicks":
+                            NickHandler.SearchNicks(this, dict);
+                            break;
+                        case "pmatch":
+                            PmatchHandler.PlayerMatch(this, dict);
+                            break;
+                        case "check":
+                            CheckHandler.CheckProfileId(this, dict);
+                            break;
+                        case "newuser":
+                            NewUserHandler.NewUser(this, dict);
+                            break;
+                        case "searchunique":
+                            SearchUniqueHandler.SearchProfileWithUniquenick(this, dict);
+                            break;
+                        case "others":
+                            OthersHandler.SearchOtherBuddy(this, dict);
+                            break;
+                        case "otherslist":
+                            OthersListHandler.SearchOtherBuddyList(this, dict);
+                            break;
+                        case "uniquesearch":
+                            UniqueSearchHandler.SuggestUniqueNickname(this, dict);
+                            break;
+                        case "profilelist":
+                            ProfileListHandler.OnProfileList(this, dict);
+                            break;
+                        default:
+                            LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
+                            GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
+                            break;
+                    }
+                }
+                catch (Exception e)
+                {
+                    LogWriter.Log.WriteException(e);
                 }
             }
         }

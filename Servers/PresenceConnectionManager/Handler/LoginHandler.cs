@@ -118,7 +118,7 @@ namespace PresenceConnectionManager.Handler
                         client.SessionKey,
                         GenerateProof(client.ServerChallengeKey, recv["challenge"], challengeData, client.PlayerInfo.PlayerAuthToken.Length > 0 ? 0 : partnerID, client.PlayerInfo), // Do this again, Params are reversed!
                         client.PlayerInfo.PlayerId,
-                        client.PlayerInfo.PlayerNick,
+                        client.PlayerInfo.PlayerUniqueNick,
                         // Generate LT whatever that is (some sort of random string, 22 chars long)
                         GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex)
                         );

@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.DatabaseQuery
                  profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, 
                  profiles.location, profiles.icq, profiles.status, users.email, users.password, users.userstatus 
                  FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
-                 WHERE namespace.uniquenick = @P0 AND namespace.namespace = @P1"
+                 WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1"
                  , dict["uniquenick"], dict["namespaceid"]
                  );
             return (result.Count == 0) ? null : result[0];
