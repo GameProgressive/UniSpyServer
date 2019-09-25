@@ -8,7 +8,8 @@ namespace StatsAndTracking.Extension
     {
         public static string XCode(string plaintext, int enctype)
         {
-
+           
+            return "";
         }
     }
 }
