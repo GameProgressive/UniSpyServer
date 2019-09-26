@@ -15,6 +15,8 @@ namespace PresenceConnectionManager.Handler
         /// </summary>
         public static void SendProfile(GPCMClient client, Dictionary<string, string> recv)
         {
+            //TODO
+
             // \getprofile\\sesskey\19150\profileid\2\id\2\final\
             //profileid is 
 
@@ -42,7 +44,7 @@ namespace PresenceConnectionManager.Handler
                 return;
             }
 
-            string datatoSend = @"\pi\\profileid\" + targetPID + @"\mp\4";
+            string datatoSend = @"\pi\profileid\" + targetPID + @"\mp\4";
 
             // If the client want to access the public information
             // of another client

@@ -21,7 +21,7 @@ namespace PresenceSearchPlayer.Handler
             // TODO: Please finis this function
             //others\sesskey\profileid\namespace\
             string sendingbuffer; //= @"\others\o\nick\<>\uniquenick\<>\first\<>\last\<>\email\<>\odone\";
-            List<Dictionary<string,object>> temp = OthersQuery.GetOtherBuddy(dict);
+            var temp = OthersQuery.GetOtherBuddy(dict);
             if (temp == null)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No Math Found");

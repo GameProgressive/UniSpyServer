@@ -28,13 +28,11 @@ namespace PresenceSearchPlayer.Handler
             }
 
             //Search pid in our database and return whether exist
-            uint pid;
             string sendingBuffer;
-            List<Dictionary<string, object>> temp = CheckQuery.GetProfileidFromNickEmailPassword(dict);
-            if (temp.Count == 1)
-            {
-                pid = System.Convert.ToUInt32(temp[0]["profileid"]);
-                sendingBuffer = string.Format(@"\cur\pid\{0}\final\", pid);
+            int profileid = CheckQuery.GetProfileidFromNickEmailPassword(dict);
+            if (profileid != 1)
+            {                
+                sendingBuffer = string.Format(@"\cur\0\pid\{0}\final\", profileid);
                 client.Stream.SendAsync(sendingBuffer);
             }
             else

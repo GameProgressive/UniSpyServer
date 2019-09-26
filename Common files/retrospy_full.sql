@@ -4651,26 +4651,14 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   KEY `partnerid` (`partnerid`),
   KEY `uniquenick` (`uniquenick`),
   CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
 
--- Dumping data for table retrospy2.namespace: ~13 rows (approximately)
+-- Dumping data for table retrospy2.namespace: ~3 rows (approximately)
 /*!40000 ALTER TABLE `namespace` DISABLE KEYS */;
 INSERT INTO `namespace` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `sesskey`, `firewall`, `port`) VALUES
-	(1, 1, 'spyguy', 1, 0, 0, 'gmtest', NULL, NULL, NULL),
-	(3, 1, 'spyguy2', 1, 0, 0, 'gmtest', NULL, NULL, NULL),
-	(6, 13, 'xiaojiuwo2', 95, 95, 13429, 'capricorn', 16714, NULL, NULL),
-	(7, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', 19150, NULL, NULL),
-	(8, 13, 'koujiangheng', 1, 0, 0, 'gmtest', NULL, NULL, NULL),
-	(9, 13, 'koujiangheng3', 1, 0, 0, 'gmtest', NULL, NULL, NULL),
-	(10, 13, '', 1, 0, 722, 'gmtest', NULL, NULL, NULL),
-	(11, 13, '', 1, 0, 0, 'gmtest', NULL, NULL, NULL),
-	(12, 14, NULL, 0, NULL, 722, NULL, NULL, NULL, NULL),
-	(13, 8, NULL, 1, 0, 60, 'gslive', 0, NULL, NULL),
 	(20, 21, 'wormsforts', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL),
 	(21, 22, 'wf12', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL),
-	(22, 23, NULL, 0, NULL, 337, NULL, 0, NULL, NULL),
-	(23, 25, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, NULL, NULL),
-	(24, 26, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, NULL, NULL);
+	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', 19150, NULL, NULL);
 /*!40000 ALTER TABLE `namespace` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.profiles
@@ -4678,7 +4666,8 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `profileid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `userid` int(11) unsigned NOT NULL DEFAULT 0,
   `nick` varchar(30) NOT NULL DEFAULT '',
-  `status` int(11) unsigned NOT NULL DEFAULT 0,
+  `statuscode` tinyint(3) unsigned DEFAULT 0,
+  `status` varchar(50) NOT NULL DEFAULT 'RetroSpy',
   `firstname` varchar(30) NOT NULL DEFAULT '',
   `lastname` varchar(30) NOT NULL DEFAULT '',
   `publicmask` int(11) NOT NULL DEFAULT 0,
@@ -4703,9 +4692,7 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `birthyear` int(4) DEFAULT 0,
   `location` varchar(127) DEFAULT '',
   `icq` int(8) DEFAULT 0,
-  `statusstring` varchar(50) NOT NULL DEFAULT 'RetroSpy',
   `lastip` varchar(16) NOT NULL DEFAULT '',
-  `port` int(10) unsigned NOT NULL DEFAULT 0,
   `lastonline` int(20) NOT NULL DEFAULT 0,
   `quietflags` int(20) NOT NULL DEFAULT 0,
   PRIMARY KEY (`profileid`) USING BTREE,
@@ -4714,21 +4701,21 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   CONSTRAINT `FK_profiles_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy2.profiles: ~10 rows (approximately)
+-- Dumping data for table retrospy2.profiles: ~12 rows (approximately)
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `status`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`, `statusstring`, `lastip`, `port`, `lastonline`, `quietflags`) VALUES
-	(1, 1, 'retrospy', 0, 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 'RetroSpy', '127.0.0.1', 0, 1562442207, 0),
-	(8, 1, 'MyCrysis', 1, 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '91.52.99.231', 0, 1569066920, 0),
-	(9, 6, 'MyCrysis', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
-	(12, 6, 'MyCrysis', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
-	(13, 7, 'MyCrysis', 1, '', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, 'RetroSpy', '127.0.0.1', 0, 1569119354, 0),
-	(14, 7, 'xiaojiuwo', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
-	(16, 9, 'worms3d', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
-	(21, 13, 'wormsforts', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
-	(22, 14, 'wf12', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
-	(23, 15, 'a8', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '91.52.101.171', 0, 1569239729, 0),
-	(25, 7, 'gptest', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0),
-	(26, 6, 'gptest', 0, '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 'RetroSpy', '', 0, 0, 0);
+INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `statuscode`, `status`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icq`, `lastip`, `lastonline`, `quietflags`) VALUES
+	(1, 1, 'retrospy', 0, 'RetroSpy', 'Spy', 'Guy', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, '127.0.0.1', 1562442207, 0),
+	(8, 1, 'MyCrysis', 0, 'RetroSpy', 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '91.52.99.231', 1569066920, 0),
+	(9, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
+	(12, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
+	(13, 7, 'MyCrysis', 0, 'RetroSpy', '', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1569533714, 0),
+	(14, 7, 'xiaojiuwo', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
+	(16, 9, 'worms3d', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
+	(21, 13, 'wormsforts', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
+	(22, 14, 'wf12', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
+	(23, 15, 'a8', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '91.52.101.171', 1569239729, 0),
+	(25, 7, 'gptest', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
+	(26, 6, 'gptest', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1569288967, 0);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.users
@@ -4757,7 +4744,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   UNIQUE KEY `userid` (`userid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
--- Dumping data for table retrospy2.users: ~7 rows (approximately)
+-- Dumping data for table retrospy2.users: ~6 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`userid`, `email`, `password`, `userstatus`, `createddate`, `useddate`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `emailverified`, `adminrights`, `deleted`) VALUES
 	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1, '2019-08-11 09:07:27', '0000-00-00 00:00:00', '0', '0', '0', 0, 0, 0, '0', 0, '0', 0, 0, 0, 0, 0),

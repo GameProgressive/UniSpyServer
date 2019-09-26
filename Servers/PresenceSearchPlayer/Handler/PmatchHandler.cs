@@ -8,15 +8,15 @@ namespace PresenceSearchPlayer.Handler
     public class PmatchHandler
     {
         public static void PlayerMatch(GPSPClient client, Dictionary<string, string> dict)
-        {
+        { //pmath\\sesskey\\profileid\\productid\\
             string sendingBuffer;
             if (IsContainAllKey(dict))
             {
                 List<Dictionary<string, object>> temp = PmatchQuery.PlayerMatch(dict);
                 if (temp.Count == 1)
                 {
-                    sendingBuffer = string.Format(@"\psr\status\{0}\nick\{1}\statuscode\{2}",
-                        temp[0]["statussting"], temp[0]["nick"], temp[0]["statuscode"]);
+                    sendingBuffer = string.Format(@"\psr\status\{0}\nick\{1}\statuscode\{2}\final\",
+                        temp[0]["status"], temp[0]["nick"], temp[0]["statuscode"]);
                     client.Stream.SendAsync(sendingBuffer);
                 }
                 else

@@ -150,9 +150,9 @@ namespace GameSpyLib.Common
         }
 
 
-        public static void PrintReceivedGPDictToLogger(string req, Dictionary<string, string> dict)
+        public static void PrintReceivedGPDictToLogger(string command, Dictionary<string, string> dict)
         {
-            LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}", req, string.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()));
+            LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}", command, string.Join(";", dict.Select(x => x.Key + "=" + x.Value).ToArray()));
         }
 
         /// <summary>

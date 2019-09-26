@@ -8,6 +8,7 @@ namespace PresenceConnectionManager.Handler
 
         public static void UpdateStatus(GPCMClient client,Dictionary<string, string> recv, GPCMStatusChanged OnStatusChanged)
         {
+            //TODO
             ushort testSK;
 
             if (!recv.ContainsKey("statstring") || !recv.ContainsKey("locstring") || !recv.ContainsKey("sesskey"))

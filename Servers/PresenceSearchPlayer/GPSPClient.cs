@@ -159,10 +159,7 @@ namespace PresenceSearchPlayer
                             break;
                         case "uniquesearch":
                             UniqueSearchHandler.SuggestUniqueNickname(this, dict);
-                            break;
-                        case "profilelist":
-                            ProfileListHandler.OnProfileList(this, dict);
-                            break;
+                            break;                       
                         default:
                             LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
                             GameSpyUtils.PrintReceivedGPDictToLogger(recieved[0],dict);
