@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Network;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Network;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -98,15 +99,21 @@ namespace StatsAndTracking
         /// <param name="message">The message the stream sended</param>
         protected void ProcessData(string message)
         {
+            string request = GameSpyLib.Extensions.Enctypex.XorEncoding(message, 1);
+            string[] recieved = request.TrimStart('\\').Split('\\');
+            Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
             
         }
 
         public void SendServerChallenge()
         {
-            ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
+            //38byte
+            ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(38, GameSpyLib.Common.Random.StringType.Alpha);
             //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
             //sendingBuffer = xor(sendingBuffer);
-            Stream.SendAsync(@"\challenge\{0}\final\", ServerChallengeKey);
+            string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
+            sendingBuffer = GameSpyLib.Extensions.Enctypex.XorEncoding(sendingBuffer,1);
+            Stream.SendAsync(sendingBuffer);
         }
     }
 }

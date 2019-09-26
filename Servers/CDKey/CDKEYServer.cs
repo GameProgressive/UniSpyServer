@@ -65,7 +65,7 @@ namespace CDKey
             {
                 // Decrypt message
                 IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
-                string decrypted = Enctypex.XOR(Encoding.UTF8.GetString(packet.BytesRecieved)).Trim('\\');
+                string decrypted = Enctypex.XorEncoding(packet.BytesRecieved,0).Trim('\\');
                 string[] recieved = decrypted.TrimStart('\\').Split('\\');
                 Dictionary<string, string> recv = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 

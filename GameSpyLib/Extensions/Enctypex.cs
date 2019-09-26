@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace GameSpyLib.Extensions
 {
@@ -274,12 +275,100 @@ namespace GameSpyLib.Extensions
                 data[index++] ^= gamespy[i++];
             }
 
-            return new String(data);
+            return new string(data);
         }
 
-        public static string GstatsChallengeEnc(string str, int encType)
+        /// <summary>
+        /// simple xor encoding for Gstats
+        /// </summary>
+        /// <param name="plaintext"></param>
+        /// <param name="enctype"></param>
+        /// <returns></returns>
+        public static string XorEncoding(string plaintext, int enctype)
         {
-            return "";
+            string enc0 = "gamespy";
+            string enc1 = "GameSpy3D";// '\0','a','m','e','S','p','y','3','D','\0'
+            string enc2 = "Industries";// { '\0', 'n', 'd', 'u', 's', 't', 'r', 'i', 'e', 's', '\0' }
+            string enc3 = "ProjectAphex";// { '\0','r','o','j','e','c','t','A','p','h','e','x','\0'}
+            string statsfile = "gstats.dat";
+
+            int length = plaintext.Length;
+            char[] data = plaintext.ToCharArray();
+            int index = 0;
+            string temp;
+            if (enctype == 0)
+            {
+                temp = enc0;
+            }
+            else if (enctype == 1)
+            {
+                temp = enc1;
+            }
+            else if (enctype == 2)
+            {
+                temp = enc2;
+            }
+            else
+            {
+                temp = enc3;
+            }
+
+            for (int i = 0; length > 0; length--)
+            {
+                if (i >= temp.Length)
+                    i = 0;
+
+                data[index++] ^= temp[i++];
+            }
+
+            return new string(data);
         }
+        /// <summary>
+        /// simple xor encoding for Gstats
+        /// </summary>
+        /// <param name="plaintext"></param>
+        /// <param name="enctype"></param>
+        /// <returns></returns>
+        public static string XorEncoding(byte[] plainByte, int enctype)
+        {
+            string plaintext = Encoding.UTF8.GetString(plainByte);
+            string enc0 = "gamespy";
+            string enc1 = "GameSpy3D";// '\0','a','m','e','S','p','y','3','D','\0'
+            string enc2 = "Industries";// { '\0', 'n', 'd', 'u', 's', 't', 'r', 'i', 'e', 's', '\0' }
+            string enc3 = "ProjectAphex";// { '\0','r','o','j','e','c','t','A','p','h','e','x','\0'}
+            string statsfile = "gstats.dat";
+
+            int length = plaintext.Length;
+            char[] data = plaintext.ToCharArray();
+            int index = 0;
+            string temp;
+            if (enctype == 0)
+            {
+                temp = enc0;
+            }
+            else if (enctype == 1)
+            {
+                temp = enc1;
+            }
+            else if (enctype == 2)
+            {
+                temp = enc2;
+            }
+            else
+            {
+                temp = enc3;
+            }
+
+            for (int i = 0; length > 0; length--)
+            {
+                if (i >= temp.Length)
+                    i = 0;
+
+                data[index++] ^= temp[i++];
+            }
+
+            return new string(data);
+        }
+
     }
 }
