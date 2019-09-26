@@ -165,6 +165,7 @@ namespace PresenceSearchPlayer
                             break;
                         default:
                             LogWriter.Log.Write("[GPSP] received unknown data " + recieved[0], LogLevel.Debug);
+                            GameSpyUtils.PrintReceivedGPDictToLogger(recieved[0],dict);
                             GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
                             break;
                     }

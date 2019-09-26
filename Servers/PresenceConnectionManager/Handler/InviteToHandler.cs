@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager;
+using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,18 +9,26 @@ namespace PresenceConnectionManager.Handler
     public class InviteToHandler
     {
         //public static GPCMDBQuery DBQuery = null;
-        public static void AddProducts(GPCMClient client, Dictionary<string, string> recv)
+        public static void AddFriends(GPCMClient client, Dictionary<string, string> recv)
         {
-            ushort readedSessionKey = 0;
+           GPErrorCode error =  IsContainAllKeys(recv);
+            if (error != GPErrorCode.NoError)
+            {
+                GameSpyLib.Common.GameSpyUtils.SendGPError(client.Stream, error, "Parsing error in request");
+            }
 
+
+        }
+        public static GPErrorCode IsContainAllKeys(Dictionary<string,string> recv)
+        {
             if (!recv.ContainsKey("products") || !recv.ContainsKey("sesskey"))
-                return;
+                return GPErrorCode.Parse;
 
-            if (!ushort.TryParse(recv["sesskey"], out readedSessionKey))
-                return;
+            if (!recv.ContainsKey("sesskey"))
+                return GPErrorCode.Parse ;
 
-            if (readedSessionKey != client.SessionKey || readedSessionKey == 0)
-                return;
+            return GPErrorCode.NoError;
+           
         }
     }
 }

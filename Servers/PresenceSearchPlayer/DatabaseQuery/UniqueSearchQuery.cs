@@ -9,8 +9,8 @@ namespace PresenceSearchPlayer.DatabaseQuery
         public static bool IsUniqueNickExist(Dictionary<string, string> dict)
         {
             var result = GPSPServer.DB.Query("SELECT uniquenick FROM namespace " +
-                 "WHERE uniquenick=@P0 AND namespaceid=@P1 AND gamename = @P2",
-                dict["preferrednick"], dict["namespaceid"], dict["gamename"]);
+                 "WHERE uniquenick=@P0 AND namespaceid=@P1",
+                dict["preferrednick"], dict["namespaceid"]);
 
             if (result==null)
                 return true;

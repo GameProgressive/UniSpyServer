@@ -19,7 +19,8 @@ namespace PresenceSearchPlayer.Handler
             //The multiple nick suggest correct response is like 
             //@"\us\<number of suggested nick>\nick\<nick1>\nick\<nick2>\usdone\final\";
             string sendingBuffer;
-            if (!dict.ContainsKey("preferrednick"))
+            GPErrorCode error = IsContainAllKeys(dict);
+            if (error!=GPErrorCode.NoError)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
@@ -36,6 +37,15 @@ namespace PresenceSearchPlayer.Handler
             }
         }
 
-
+        public static GPErrorCode IsContainAllKeys(Dictionary<string,string> dict)
+        {
+            if (!dict.ContainsKey("preferrednick"))
+                return GPErrorCode.Parse;
+            if (!dict.ContainsKey("namespaceid"))
+            {
+                dict.Add("namespaceid", "0");
+            }
+            return GPErrorCode.NoError;
+        }
     }
 }

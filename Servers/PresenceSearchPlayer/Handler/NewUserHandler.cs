@@ -17,16 +17,16 @@ namespace PresenceSearchPlayer.Handler
         public static void NewUser(GPSPClient client, Dictionary<string, string> dict)
         {
             //Format the password for our database storage           
-            GPErrorCode error = IsRequestContainAllKeys(dict);
+            GPErrorCode error = IsContainAllKeys(dict);
             //if there do not recieved right <key,value> pairs we send error
             if (error != GPErrorCode.NoError)
             {
                 GameSpyUtils.SendGPError(client.Stream, error, "Error recieving request. Please check the input!");
                 return;
             }
-
             //Check the nick and uniquenick is formated correct and uniquenick is existed in database
             string sendingBuffer;
+            PreProcessRequest(dict);
             error = IsEmailNickUniquenickValied(dict);
             if (error != GPErrorCode.NoError)
             {
@@ -36,7 +36,7 @@ namespace PresenceSearchPlayer.Handler
             }
 
             //if the request did not contain uniquenick and namespaceid we use our way to create it.
-            PreProcessRequest(dict);
+
             //we get the userid in database. If no userid found according to email we create one 
             //and store the new account into database.
             int profileid = CreateAccount(dict);
@@ -53,7 +53,7 @@ namespace PresenceSearchPlayer.Handler
         }
 
 
-        public static GPErrorCode IsRequestContainAllKeys(Dictionary<string, string> dict)
+        public static GPErrorCode IsContainAllKeys(Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("nick"))
             {
@@ -89,11 +89,11 @@ namespace PresenceSearchPlayer.Handler
             {
                 return GPErrorCode.NewUserBadNick;
             }
-            if (dict.ContainsKey("uniquenick"))
+            if (dict.ContainsKey("uniquenick")&&dict["uniquenick"]!="")
             {
                 if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
                 {
-                    return GPErrorCode.NewUserUniquenickInvalid;
+                    return GPErrorCode.NewUserUniquenickInUse;
                 }
             }
             return GPErrorCode.NoError;

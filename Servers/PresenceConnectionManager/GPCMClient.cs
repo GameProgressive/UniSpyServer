@@ -271,14 +271,14 @@ namespace PresenceConnectionManager
             {
                 if (command.Length < 1)
                     continue;
-
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
                 Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
+
                 switch (recieved[0])
                 {
                     case "inviteto":
-                        InviteToHandler.AddProducts(this, dict);
+                        InviteToHandler.AddFriends(this, dict);
                         break;
                     case "login":
                         LoginHandler.ProcessLogin(this, dict, OnSuccessfulLogin, OnStatusChanged);
@@ -297,6 +297,9 @@ namespace PresenceConnectionManager
                         break;
                     case "updatepro":
                         UpdateProHandler.UpdateUser(this, dict);
+                        break;
+                    case "registernick":
+                        RegisterNickHandler.RegisterNick(this, dict);
                         break;
                     case "logout":
                         Disconnect(DisconnectReason.NormalLogout);
