@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace StatsAndTracking
 {
-    public class GStatsServer : TCPServer
+    public class GStatsServer : TcpServer
     {
         /// <summary>
         /// A connection counter, used to create unique connection id's
@@ -26,6 +26,8 @@ namespace StatsAndTracking
         /// </summary>
         private static ConcurrentDictionary<long, GStatsClient> Clients = new ConcurrentDictionary<long, GStatsClient>();
 
+        public static DBQueryBase DB;
+
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -36,8 +38,8 @@ namespace StatsAndTracking
         /// </param>
         public GStatsServer(string serverName,DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
-            GStatsHandler.DBQuery = new GSTATSDBQuery(databaseDriver);
-
+            //GStatsHandler.DBQuery = new GSTATSDBQuery(databaseDriver);
+            DB = new DBQueryBase(databaseDriver);
             // Begin accepting connections
             StartAcceptAsync();
         }
@@ -85,13 +87,13 @@ namespace StatsAndTracking
         protected override void ProcessAccept(TCPStream stream)
         {
             // Get our connection id
-            long ConID = Interlocked.Increment(ref ConnectionCounter);
+            long conid = Interlocked.Increment(ref ConnectionCounter);
             GStatsClient client;
             try
             {
                 // Convert the TcpClient to a MasterClient
-                client = new GStatsClient(stream, ConID);
-                Clients.TryAdd(ConID, client);
+                client = new GStatsClient(stream, conid);
+                Clients.TryAdd(conid, client);
                 client.SendServerChallenge();
                 // Start receiving data
                 stream.BeginReceive();
@@ -99,7 +101,7 @@ namespace StatsAndTracking
             catch
             {
                 // Remove pending connection
-                Clients.TryRemove(ConID, out client);
+                Clients.TryRemove(conid, out client);
             }
         }
         

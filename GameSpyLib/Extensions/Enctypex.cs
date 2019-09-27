@@ -279,9 +279,12 @@ namespace GameSpyLib.Extensions
         }
 
         /// <summary>
-        /// simple xor encoding for Gstats
+        /// simple xor encoding for Gstats,GPSP,GPCM
         /// </summary>
         /// <param name="plaintext"></param>
+        /// <param name ="enc0">default encryption string used in GPSP,GPCM</param>
+        /// <param name ="enc1">used in GStats</param>
+        /// <param name ="enc2">used in GStats</param>
         /// <param name="enctype"></param>
         /// <returns></returns>
         public static string XorEncoding(string plaintext, int enctype)

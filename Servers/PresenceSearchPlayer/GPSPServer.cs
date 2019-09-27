@@ -1,14 +1,15 @@
-﻿using GameSpyLib.Database;
-using GameSpyLib.Logging;
-using GameSpyLib.Network;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Net;
 using System.Threading;
+using GameSpyLib.Database;
+using GameSpyLib.Logging;
+using GameSpyLib.Network;
+using PresenceSearchPlayer.Handler;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPServer : TCPServer
+    public class GPSPServer : TcpServer
     {
 
         /// <summary>

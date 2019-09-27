@@ -17,7 +17,7 @@ namespace PresenceConnectionManager
     /// This server emulates the Gamespy Client Manager Server on port 29900.
     /// This class is responsible for managing the login process.
     /// </summary>
-    public class GPCMServer : TCPServer
+    public class GPCMServer : TcpServer
     {
         /// <summary>
         /// Indicates the timeout of when a connecting client will be disconnected

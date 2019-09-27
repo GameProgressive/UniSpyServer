@@ -2,6 +2,7 @@
 using GameSpyLib.Network;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace StatsAndTracking
@@ -91,6 +92,7 @@ namespace StatsAndTracking
                 return true;
             else
                 return false;
+
         }
         /// <summary>
         /// This function is fired when data is received from a stream
@@ -99,10 +101,18 @@ namespace StatsAndTracking
         /// <param name="message">The message the stream sended</param>
         protected void ProcessData(string message)
         {
-            string request = GameSpyLib.Extensions.Enctypex.XorEncoding(message, 1);
-            string[] recieved = request.TrimStart('\\').Split('\\');
+           
+            message = message.Replace(@"\final\", "");
+            string decodedmsg = GameSpyLib.Extensions.Enctypex.XorEncoding(message, 1);
+            if (decodedmsg[0] != '\\')
+            {
+                return;
+            }
+            string[] recieved = decodedmsg.TrimStart('\\').Split('\\');
             Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
-            
+
+            CommandSwitcher.Switch(this, dict);
+
         }
 
         public void SendServerChallenge()
@@ -111,8 +121,9 @@ namespace StatsAndTracking
             ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(38, GameSpyLib.Common.Random.StringType.Alpha);
             //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
             //sendingBuffer = xor(sendingBuffer);
-            string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
-            sendingBuffer = GameSpyLib.Extensions.Enctypex.XorEncoding(sendingBuffer,1);
+            string sendingBuffer = string.Format(@"\challenge\{0}", ServerChallengeKey);
+            sendingBuffer = GameSpyLib.Extensions.Enctypex.XorEncoding(sendingBuffer, 1);
+            sendingBuffer+= @"\final\";
             Stream.SendAsync(sendingBuffer);
         }
     }
