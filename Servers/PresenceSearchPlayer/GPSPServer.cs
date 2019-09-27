@@ -1,15 +1,14 @@
-﻿using System;
+﻿using GameSpyLib.Database;
+using GameSpyLib.Logging;
+using GameSpyLib.Network;
+using System;
 using System.Collections.Concurrent;
 using System.Net;
 using System.Threading;
-using GameSpyLib.Database;
-using GameSpyLib.Logging;
-using GameSpyLib.Network;
-using PresenceSearchPlayer.Handler;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPServer : TcpServer
+    public class GPSPServer : TCPServer
     {
 
         /// <summary>
@@ -90,7 +89,7 @@ namespace PresenceSearchPlayer
         /// for handling the processing
         /// </summary>
         /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected override void ProcessAccept(TcpStream stream)
+        protected override void ProcessAccept(TCPStream stream)
         {
             // Get our connection id
             long ConID = Interlocked.Increment(ref ConnectionCounter);

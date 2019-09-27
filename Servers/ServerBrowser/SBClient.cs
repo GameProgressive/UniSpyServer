@@ -21,7 +21,7 @@ namespace ServerBrowser
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public TcpStream Stream { get; protected set; }
+        public TCPStream Stream { get; protected set; }
 
         /// <summary>
         /// Event fired when the connection is closed
@@ -32,7 +32,7 @@ namespace ServerBrowser
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public SBClient(TcpStream stream, long connectionId)
+        public SBClient(TCPStream stream, long connectionId)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionId;

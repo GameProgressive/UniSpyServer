@@ -76,7 +76,7 @@ namespace PresenceConnectionManager
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public TcpStream Stream { get; protected set; }
+        public TCPStream Stream { get; protected set; }
 
         /// <summary>
         /// The date time of when this connection was created. Used to disconnect user
@@ -117,7 +117,7 @@ namespace PresenceConnectionManager
         /// Constructor
         /// </summary>
         /// <param name="ReadArgs">The Tcp Client connection</param>
-        public GPCMClient(TcpStream stream, long connectionId)
+        public GPCMClient(TCPStream stream, long connectionId)
         {
 
             PlayerInfo = new GPCMPlayerInfo();
@@ -208,11 +208,6 @@ namespace PresenceConnectionManager
                 if (reason == DisconnectReason.NormalLogout)
                 {
                     Stream.ToLog(LogLevel.Info, "Logout", "", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
-                    //LogWriter.Log.Write(
-                    //    LogLevel.Info,
-                    //    "{0,-8} [Logout] {1} - {2} - {3}",
-                    //    Stream.ServerName,
-                    //);
                 }
                 else if (reason != DisconnectReason.ForcedServerShutdown)
                 {
@@ -265,9 +260,9 @@ namespace PresenceConnectionManager
                 return;
             }
             
-            string[] submessage = message.Split("\\final\\");
+            string[] commands = message.Split("\\final\\");
 
-            foreach (string command in submessage)
+            foreach (string command in commands)
             {
                 if (command.Length < 1)
                     continue;
@@ -275,49 +270,7 @@ namespace PresenceConnectionManager
                 string[] recieved = command.TrimStart('\\').Split('\\');
                 Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 
-                switch (recieved[0])
-                {
-                    case "inviteto":
-                        InviteToHandler.AddFriends(this, dict);
-                        break;
-                    case "login":
-                        LoginHandler.ProcessLogin(this, dict, OnSuccessfulLogin, OnStatusChanged);
-                        break;
-                    case "getprofile":
-                        GetProfileHandler.SendProfile(this, dict);
-                        break;
-                    case "addbuddy":
-                        AddBuddyHandler.Addfriends(this, dict);
-                        break;
-                    case "delbuddy":
-                        DelBuddyHandler.Handle(this,dict);
-                        break;
-                    case "updateui":
-                        UpdateUiHandler.UpdateUi(this, dict);
-                        break;
-                    case "updatepro":
-                        UpdateProHandler.UpdateUser(this, dict);
-                        break;
-                    case "registernick":
-                        RegisterNickHandler.RegisterNick(this, dict);
-                        break;
-                    case "logout":
-                        Disconnect(DisconnectReason.NormalLogout);
-                        break;
-                    case "status":
-                        StatusHandler.UpdateStatus(this, dict, OnStatusChanged);
-                        break;
-                    case "newuser":
-                        NewUserHandler.NewUser(this,dict);
-                        break;
-                    case "ka":
-                        KAHandler.SendKeepAlive(this);
-                        break;
-                    default:
-                        LogWriter.Log.Write("[GPCM] received unknown data " + recieved[0], LogLevel.Debug);
-                        GameSpyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
-                        break;
-                }
+                CommandSwitcher.Switch(this,dict,OnSuccessfulLogin,OnStatusChanged);
             }
         }
 
@@ -330,19 +283,6 @@ namespace PresenceConnectionManager
         }
 
         #endregion Stream Callbacks
-
-        #region Login Steps
-
-
-
-
-
-        #endregion Steps
-
-
-
-
-
 
         public bool Equals(GPCMClient other)
         {

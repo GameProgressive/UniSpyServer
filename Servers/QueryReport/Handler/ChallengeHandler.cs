@@ -17,7 +17,7 @@ namespace QueryReport.Handler
             };
 
 
-        public static void ServerChallengeResponse(QRServer server, UdpPacket packet)
+        public static void ServerChallengeResponse(QRServer server, UDPPacket packet)
         {
            
             byte[] challenge = new byte[90];

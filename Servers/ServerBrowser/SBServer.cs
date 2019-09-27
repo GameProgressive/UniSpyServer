@@ -13,7 +13,7 @@ namespace ServerBrowser
     /// This class emulates the master.gamespy.com TCP server on port 28910.
     /// This server is responisible for sending server lists to the online server browser in the game.
     /// </summary>
-    public class SBServer : TcpServer
+    public class SBServer : TCPServer
     {
         /// <summary>
         /// A connection counter, used to create unique connection id's
@@ -61,7 +61,7 @@ namespace ServerBrowser
         /// Accepts a TcpClient, and begin the serverlist fetching process for the client. 
         /// This method is executed when the user updates his server browser ingame
         /// </summary>
-        protected override void ProcessAccept(TcpStream Stream)
+        protected override void ProcessAccept(TCPStream Stream)
         {
             // Get our connection id
             long ConID = Interlocked.Increment(ref ConnectionCounter);

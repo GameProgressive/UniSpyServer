@@ -5,7 +5,7 @@ namespace NATNegotiation.Handler
 {
     public class ConnectHandler
     {
-        public static void ConnectResponse(NatNegServer server, UdpPacket packet)
+        public static void ConnectResponse(NatNegServer server, UDPPacket packet)
         {
             ConnectPacket connectPacket = new ConnectPacket(packet.BytesRecieved);
            byte[] sendingBuffer= connectPacket.CreateReplyPacket();

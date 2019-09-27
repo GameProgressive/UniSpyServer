@@ -22,7 +22,7 @@ namespace Chat
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public TcpStream Stream { get; set; }
+        public TCPStream Stream { get; set; }
 
         /// <summary>
         /// Event fired when the connection is closed
@@ -33,7 +33,7 @@ namespace Chat
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public ChatClient(TcpStream stream, long connectionId)
+        public ChatClient(TCPStream stream, long connectionId)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionId;

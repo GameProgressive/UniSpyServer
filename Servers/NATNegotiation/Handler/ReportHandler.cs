@@ -8,7 +8,7 @@ namespace NATNegotiation.Handler
 {
     public class ReportHandler
     {
-        public static void ReportResponse(NatNegServer server, UdpPacket packet)
+        public static void ReportResponse(NatNegServer server, UDPPacket packet)
         {
             ReportPacket reportPacket = new ReportPacket(packet.BytesRecieved);
            

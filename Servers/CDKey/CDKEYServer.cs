@@ -10,7 +10,7 @@ using GameSpyLib.Common;
 
 namespace CDKey
 {
-    public class CDKeyServer : UdpServer
+    public class CDKeyServer : UDPServer
     {
         #region Server Setup Phase
 
@@ -38,7 +38,7 @@ namespace CDKey
             ShutdownSocket();
             Dispose();
         }
-        public void Release(UdpPacket packet)
+        public void Release(UDPPacket packet)
         {
             Release(packet.AsyncEventArgs);
         }
@@ -57,7 +57,7 @@ namespace CDKey
         ///  \auth\ ... = authenticate cd key, this is what we care about
         ///  \disc\ ... = disconnect cd key, because there's checks if the cd key is in use, which we don't care about really, but we could if we wanted to
         /// </summary>
-        protected override void ProcessAccept(UdpPacket packet)
+        protected override void ProcessAccept(UDPPacket packet)
         {
             // If we dont reply, we must manually release the EventArgs back to the pool
             replied = false;

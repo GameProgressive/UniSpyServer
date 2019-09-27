@@ -5,7 +5,7 @@ namespace NATNegotiation.Handler
 {
     class AddressHandler
     {
-        public static void AddressCheckResponse(NatNegServer server, UdpPacket packet)
+        public static void AddressCheckResponse(NatNegServer server, UDPPacket packet)
         {
             InitPacket initPacket = new InitPacket(packet.BytesRecieved);
             byte[] sendingBuffer = initPacket.CreateReplyPacket();

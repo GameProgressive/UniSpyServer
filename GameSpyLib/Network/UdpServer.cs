@@ -11,7 +11,7 @@ namespace GameSpyLib.Network
     /// Like the GamespyTcpSocket, this class represents a high perfomance
     /// User Datagram Protocol (UDP) Socket_DGRAM server
     /// </summary>
-    public abstract class UdpServer : IDisposable
+    public abstract class UDPServer : IDisposable
     {
         /// <summary>
         /// Max number of concurrent open and active connections.
@@ -52,7 +52,7 @@ namespace GameSpyLib.Network
         /// </summary>
         protected SocketAsyncEventArgsPool SocketReadWritePool;
 
-        protected UdpPacket Packet;
+        protected UDPPacket Packet;
         
         /// <summary>
         /// Indicates whether the server is still running, and not in the process of shutting down
@@ -65,7 +65,7 @@ namespace GameSpyLib.Network
         public bool IsDisposed { get; protected set; }
 
         protected string ServerName;
-        public UdpServer(string serverName,IPEndPoint bindTo, int MaxConnections)
+        public UDPServer(string serverName,IPEndPoint bindTo, int MaxConnections)
         {
             ServerName = "["+serverName+"]";
             // Create our Socket
@@ -210,7 +210,7 @@ namespace GameSpyLib.Network
         /// </summary>
         /// <param name="packet">the udp packet which will transfer byte to its own format</param>
         /// <param name="message">the bytes that will be send to client</param>
-        public void SendAsync(UdpPacket packet,byte[] message)
+        public void SendAsync(UDPPacket packet,byte[] message)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
@@ -227,7 +227,7 @@ namespace GameSpyLib.Network
         /// </summary>
         /// <param name="packet"> the udp packet which will be send</param>
         /// <param name="message">the string that will be sended to client</param>
-        public void ReplyAsync(UdpPacket packet, string message)
+        public void ReplyAsync(UDPPacket packet, string message)
         {            
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
@@ -258,7 +258,7 @@ namespace GameSpyLib.Network
                     return;
                 }
 
-                UdpPacket packet = new UdpPacket(AcceptEventArg);
+                UDPPacket packet = new UDPPacket(AcceptEventArg);
 
                     if (LogWriter.Log.DebugSockets)
                         LogWriter.Log.Write( LogLevel.Debug, "{0} [Recv] UDP data: {1}", ServerName, BitConverter.ToString(packet.BytesRecieved));
@@ -280,7 +280,7 @@ namespace GameSpyLib.Network
         /// processing the connected client
         /// </summary>
         /// <param name="packet">A udppacket object that wraps message in byte format</param>
-        protected abstract void ProcessAccept(UdpPacket packet);
+        protected abstract void ProcessAccept(UDPPacket packet);
 
         protected abstract void OnException(Exception e);
     }

@@ -17,7 +17,7 @@ namespace PresenceConnectionManager
     /// This server emulates the Gamespy Client Manager Server on port 29900.
     /// This class is responsible for managing the login process.
     /// </summary>
-    public class GPCMServer : TcpServer
+    public class GPCMServer : TCPServer
     {
         /// <summary>
         /// Indicates the timeout of when a connecting client will be disconnected
@@ -73,7 +73,7 @@ namespace PresenceConnectionManager
         /// <summary>
         /// Creates a new instance of <see cref="GPCMClient"/>
         /// </summary>
-        public GPCMServer(string serverName,DatabaseDriver driver,IPEndPoint bindTo, int maxConnections) : base(serverName,bindTo, maxConnections)
+        public GPCMServer(string serverName, DatabaseDriver driver, IPEndPoint bindTo, int maxConnections) : base(serverName, bindTo, maxConnections)
         {
 
             //GPCMHandler.DBQuery = new GPCMDBQuery(driver);
@@ -110,12 +110,10 @@ namespace PresenceConnectionManager
                     // Return if we are empty
                     if (PlayerStatusQueue.IsEmpty) return;
 
-                    var transaction =DB.BeginTransaction();
+                    //var transaction =DB.BeginTransaction();
 
                     try
                     {
-                        
-
                         long timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
                         GPCMClient result;
                         while (PlayerStatusQueue.TryDequeue(out result))
@@ -126,17 +124,14 @@ namespace PresenceConnectionManager
 
                             if (!result.CompletedLoginProcess)
                                 continue;
-
                             LoginQuery.UpdateStatus(timestamp, result.RemoteEndPoint.Address, result.PlayerInfo.PlayerId, (uint)result.PlayerInfo.PlayerStatus);
-
                         }
-
-                        transaction.Commit();
+                        //transaction.Commit();
                     }
                     catch (Exception ex)
                     {
                         LogWriter.Log.WriteException(ex);
-                        transaction.Rollback();
+                        // transaction.Rollback();
                     }
                 };
                 StatusTimer.Start();
@@ -279,7 +274,7 @@ namespace PresenceConnectionManager
             }
             catch (Exception e)
             {
-                LogWriter.Log.Write( LogLevel.Error, "An Error occured at [GPCMClient._OnDisconnect] : Generating Exception Log {0}", e.ToString());
+                LogWriter.Log.Write(LogLevel.Error, "An Error occured at [GPCMClient._OnDisconnect] : Generating Exception Log {0}", e.ToString());
             }
         }
 
@@ -302,7 +297,7 @@ namespace PresenceConnectionManager
                 if (Clients.TryRemove(client.PlayerInfo.PlayerId, out oldC))
                 {
                     oldC.Disconnect(DisconnectReason.NewLoginDetected);
-                    LogWriter.Log.Write( LogLevel.Info, "Login Clash:   {0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    LogWriter.Log.Write(LogLevel.Info, "Login Clash:   {0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
                 }
 
                 // Add current client to the dictionary
@@ -320,7 +315,7 @@ namespace PresenceConnectionManager
 
         protected override void OnException(Exception e) => LogWriter.Log.Write(e.Message, LogLevel.Error);
 
-        protected override void ProcessAccept(TcpStream stream)
+        protected override void ProcessAccept(TCPStream stream)
         {
             // Get our connection id
             long connId = Interlocked.Increment(ref ConnectionCounter);

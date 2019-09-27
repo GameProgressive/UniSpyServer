@@ -36,7 +36,7 @@ namespace QueryReport.Handler
             return request[request.Length - 1] == AvailableCheckRequestPostfix;
         }
 
-        public static void BackendAvaliabilityResponse(QRServer server, UdpPacket packet)
+        public static void BackendAvaliabilityResponse(QRServer server, UDPPacket packet)
         {
             if (!IsClientRequestValid(packet.BytesRecieved))
             {

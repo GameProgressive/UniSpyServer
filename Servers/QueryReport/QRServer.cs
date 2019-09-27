@@ -13,7 +13,7 @@ using System.Timers;
 
 namespace QueryReport
 {
-    public class QRServer : UdpServer
+    public class QRServer : UDPServer
     {
         /// <summary>
         /// Max number of concurrent open and active connections.
@@ -66,7 +66,7 @@ namespace QueryReport
         /// <summary>
         /// Callback method for when the UDP Query Report socket recieves a connection
         /// </summary>
-        protected override void ProcessAccept(UdpPacket packet)
+        protected override void ProcessAccept(UDPPacket packet)
         {
             IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
 

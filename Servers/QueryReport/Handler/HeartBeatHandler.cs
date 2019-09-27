@@ -18,7 +18,7 @@ namespace QueryReport.Handler
         /// </summary>
         /// <param name="server"></param>
         /// <param name="packet"></param>
-        public static void HeartbeatResponse(QRServer server, UdpPacket packet)
+        public static void HeartbeatResponse(QRServer server, UDPPacket packet)
         {
             IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
             byte[] recvKeys = new byte[4];

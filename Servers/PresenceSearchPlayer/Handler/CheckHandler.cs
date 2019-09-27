@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Handler
         /// </summary>
         /// <param name="client"></param>
         /// <param name="dict"></param>
-        public static void CheckProfileId(GPSPClient client, Dictionary<string, string> dict)
+        public static void CheckProfileid(GPSPClient client, Dictionary<string, string> dict)
         {
             // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
             //\cur\pid\<pid>\final

@@ -16,7 +16,7 @@ namespace StatsAndTracking
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public TcpStream Stream { get; set; }
+        public TCPStream Stream { get; set; }
 
         /// <summary>
         /// Indicates whether this object is disposed
@@ -28,7 +28,7 @@ namespace StatsAndTracking
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public GStatsClient(TcpStream stream, long connectionId)
+        public GStatsClient(TCPStream stream, long connectionId)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionId;

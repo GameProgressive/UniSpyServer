@@ -7,7 +7,7 @@ namespace QueryReport.Handler
 {
     public class KeepAliveHandler
     {
-        public static void KeepAliveResponse(QRServer server, UdpPacket packet)
+        public static void KeepAliveResponse(QRServer server, UDPPacket packet)
         {
             byte[] sendingBuffer = new byte[7];
             sendingBuffer[0] = QR.QRMagic1;

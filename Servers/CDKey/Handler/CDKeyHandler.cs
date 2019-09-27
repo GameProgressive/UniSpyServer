@@ -20,7 +20,7 @@ namespace CDKey
         /// </summary>
         /// <param name="str">MD5cdkey string</param>
         /// <returns></returns>
-        public static void IsCDKeyValid(CDKeyServer server,UdpPacket packet, Dictionary<string, string> recv)
+        public static void IsCDKeyValid(CDKeyServer server,UDPPacket packet, Dictionary<string, string> recv)
         {
             if (DBQuery.IsCDKeyValidate(recv["skey"]))
             {
@@ -34,12 +34,12 @@ namespace CDKey
                 //TODO cdkey invalid response
             }                
         }
-        public static void DisconnectRequest(UdpPacket packet, Dictionary<string, string> recv)
+        public static void DisconnectRequest(UDPPacket packet, Dictionary<string, string> recv)
         {
             // Handle, User disconnected from server
         }
 
-        public static void InvalidCDKeyRequest(CDKeyServer server,UdpPacket packet, Dictionary<string, string> recv)
+        public static void InvalidCDKeyRequest(CDKeyServer server,UDPPacket packet, Dictionary<string, string> recv)
         {
             LogWriter.Log.Write(LogLevel.Debug, "[CDKey] recieved Incomplete or Invalid  data : {0}", recv);
         }

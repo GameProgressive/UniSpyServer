@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NATNegotiation
 {
-    public class NatNegServer : UdpServer
+    public class NatNegServer : UDPServer
     {
 
         public bool Replied = false;
@@ -34,7 +34,7 @@ namespace NATNegotiation
 
 
 
-        protected override void ProcessAccept(UdpPacket packet)
+        protected override void ProcessAccept(UDPPacket packet)
         {
             IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
 
