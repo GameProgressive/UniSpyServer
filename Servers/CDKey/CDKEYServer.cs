@@ -1,12 +1,11 @@
-﻿using System;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Database;
+using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using GameSpyLib.Network.UDP;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Text;
-using GameSpyLib.Network;
-using GameSpyLib.Database;
-using GameSpyLib.Logging;
-using GameSpyLib.Extensions;
-using GameSpyLib.Common;
 
 namespace CDKey
 {

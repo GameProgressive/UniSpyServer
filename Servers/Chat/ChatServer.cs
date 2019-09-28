@@ -6,9 +6,10 @@ using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using Chat.DBQueries;
+using GameSpyLib.Network.TCP;
 
 namespace Chat
-{
+{                                
         public class ChatServer : TCPServer
         {
 

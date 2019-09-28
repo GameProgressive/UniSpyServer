@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using GameSpyLib.Network;
+using GameSpyLib.Network.UDP;
 
 namespace QueryReport.Handler
 {

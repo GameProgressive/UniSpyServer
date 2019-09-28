@@ -5,8 +5,9 @@ using System.Net.Sockets;
 using System.Text;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
+using GameSpyLib.Network.Component;
 
-namespace GameSpyLib.Network
+namespace GameSpyLib.Network.TCP
 {
     /// <summary>
     /// This object is used as a Network Stream wrapper for Gamespy TCP protocol.

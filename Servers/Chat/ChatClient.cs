@@ -4,6 +4,7 @@ using GameSpyLib.Network;
 using Chat.Application;
 using System;
 using System.Collections.Generic;
+using GameSpyLib.Network.TCP;
 
 namespace Chat
 {

@@ -1,8 +1,5 @@
-﻿using GameSpyLib.Network;
+﻿using GameSpyLib.Network.UDP;
 using NATNegotiation.Structure.Packet;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NATNegotiation.Handler
 {

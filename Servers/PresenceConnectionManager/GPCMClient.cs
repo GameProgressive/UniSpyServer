@@ -2,6 +2,7 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using GameSpyLib.Network.TCP;
 using PresenceConnectionManager.Application;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Structures;
@@ -19,7 +20,7 @@ namespace PresenceConnectionManager
     /// </summary>
     public class GPCMClient : TCPClientBase, IDisposable, IEquatable<GPCMClient>
     {
-        #region Variables
+
 
         /// <summary>
         /// Indicates whether this player successfully completed the login process
@@ -69,9 +70,6 @@ namespace PresenceConnectionManager
         public GPCMPlayerInfo PlayerInfo { get; protected set; }
 
 
-
-        #endregion Variables
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -100,7 +98,7 @@ namespace PresenceConnectionManager
         /// Disposes of the client object. The connection is no longer
         /// closed here and the DisconnectByReason even is NO LONGER fired
         /// </summary>
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
             if (Disposed) return;
             try

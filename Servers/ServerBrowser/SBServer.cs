@@ -6,6 +6,7 @@ using System.Threading;
 using GameSpyLib.Network;
 using GameSpyLib.Logging;
 using GameSpyLib.Database;
+using GameSpyLib.Network.TCP;
 
 namespace ServerBrowser
 {

@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using GameSpyLib.Network;
+using GameSpyLib.Network.TCP;
 using System;
 using System.Collections.Concurrent;
 using System.Net;

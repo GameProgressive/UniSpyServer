@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 
-namespace GameSpyLib.Network
+namespace GameSpyLib.Network.TCP
 {
     public abstract class TCPClientBase:IDisposable
     {
@@ -24,7 +24,7 @@ namespace GameSpyLib.Network
         /// This is used as part of the hash used to "proove" to the client
         /// that the password in our database matches what the user enters
         /// </summary>
-        public string ServerChallengeKey;
+        public string ServerChallengeKey { get; protected set; }
 
         /// <summary>
         /// The TCPClient's Endpoint
@@ -74,7 +74,25 @@ namespace GameSpyLib.Network
             LogWriter.Log.Write(LogLevel.Debug, temp2);
         }
 
-        public abstract void Dispose();
+        protected virtual void Dispose(bool disposing)
+        {
+            if (Disposed) return;
+            //dispose managed resources
+            if (disposing)
+            {
+                //wirte dispose method for child class
+                if (!Stream.SocketClosed)
+                    Stream.Close(true);
+            }
+
+            Disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 
 }

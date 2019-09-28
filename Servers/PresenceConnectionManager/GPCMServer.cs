@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using GameSpyLib.Network.TCP;
 using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Sockets;
 
-namespace GameSpyLib.Network
+namespace GameSpyLib.Network.Component
 {
     /// <summary>
     /// This class represents a thread safe pool of SocketAsyncEventArgs objects

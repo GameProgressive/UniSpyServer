@@ -2,7 +2,7 @@
 using System.Collections.Concurrent;
 using System.Net.Sockets;
 
-namespace GameSpyLib.Network
+namespace GameSpyLib.Network.Component
 {
     /// <summary>
     /// This class creates a single large buffer which can be divided up 

@@ -1,8 +1,9 @@
-﻿using System;
+﻿using GameSpyLib.Network.Component;
+using System;
 using System.Net.Sockets;
 using System.Text;
 
-namespace GameSpyLib.Network
+namespace GameSpyLib.Network.UDP
 {
     /// <summary>
     /// This class represents a packet recieved from and/or to be sent to a remote UDP connection. 

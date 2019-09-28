@@ -4,8 +4,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using GameSpyLib.Logging;
+using GameSpyLib.Network.Component;
 
-namespace GameSpyLib.Network
+namespace GameSpyLib.Network.TCP
 {
     /// <summary>
     /// This class represents a high performance Async Tcp Socket wrapper

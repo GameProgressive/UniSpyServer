@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Network;
+using GameSpyLib.Network.TCP;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;

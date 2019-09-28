@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using GameSpyLib.Network.UDP;
 using QueryReport.GameServerInfo;
 using QueryReport.Structures;
 using System;

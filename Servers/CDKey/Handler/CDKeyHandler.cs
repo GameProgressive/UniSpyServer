@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using GameSpyLib.Network.UDP;
 using System.Collections.Generic;
 using System.Text;
 namespace CDKey

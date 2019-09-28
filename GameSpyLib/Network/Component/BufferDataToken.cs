@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameSpyLib.Network
+namespace GameSpyLib.Network.Component
 {
     public class BufferDataToken
     {

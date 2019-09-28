@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using GameSpyLib.Network.UDP;
 using NATNegotiation.Enumerator;
 using NATNegotiation.Handler;
 using NATNegotiation.Structure;

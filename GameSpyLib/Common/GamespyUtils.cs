@@ -8,6 +8,7 @@ using GameSpyLib.Logging;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using GameSpyLib.Extensions;
+using GameSpyLib.Network.TCP;
 
 namespace GameSpyLib.Common
 {

@@ -4,8 +4,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using GameSpyLib.Logging;
+using GameSpyLib.Network.Component;
 
-namespace GameSpyLib.Network
+namespace GameSpyLib.Network.UDP
 {
     /// <summary>
     /// Like the GamespyTcpSocket, this class represents a high perfomance

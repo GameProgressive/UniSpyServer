@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Network;
+using GameSpyLib.Network.TCP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,7 +129,7 @@ namespace StatsAndTracking
             sendingBuffer+= @"\final\";
             Stream.SendAsync(sendingBuffer);
         }
-        public void Response(string sendingBuffer)
+        public void Send(string sendingBuffer)
         {
             sendingBuffer = Enctypex.XorEncoding(sendingBuffer, 1);
             Stream.SendAsync(sendingBuffer);

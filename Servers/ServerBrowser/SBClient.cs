@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Network;
+using GameSpyLib.Network.TCP;
 using QueryReport;
 using QueryReport.GameServerInfo;
 using System;
