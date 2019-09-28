@@ -113,7 +113,6 @@ namespace GameSpyLib.Network.UDP
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
         /// <summary>
         /// Override this method to create own Dispose method
