@@ -20,7 +20,8 @@ namespace StatsAndTracking
                         AuthHandler.SendSessionKey(client, recv);
                         break;
                     case "authp":
-                        AuthPHandler.AuthPlayer(client, recv);
+                        AuthpHandler.AuthPlayer(client, recv);
+                        break;
                     default:
                         LogWriter.Log.Write("[GSTAS] received unknown data " + command, LogLevel.Debug);
                         break;

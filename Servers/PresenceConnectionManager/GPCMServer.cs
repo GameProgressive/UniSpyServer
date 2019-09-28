@@ -17,7 +17,7 @@ namespace PresenceConnectionManager
     /// This server emulates the Gamespy Client Manager Server on port 29900.
     /// This class is responsible for managing the login process.
     /// </summary>
-    public class GPCMServer : TcpServer
+    public class GPCMServer : TCPServer
     {
         /// <summary>
         /// Indicates the timeout of when a connecting client will be disconnected
@@ -94,7 +94,7 @@ namespace PresenceConnectionManager
                     if (Clients.Count > 0)
                         Parallel.ForEach(Clients.Values, client => KAHandler.SendKeepAlive(client));
 
-                    // Disconnect hanging connections
+                    // DisconnectByReason hanging connections
                     if (Processing.Count > 0)
                         Parallel.ForEach(Processing.Values, client => CheckTimeout(client));
                 };
@@ -175,8 +175,8 @@ namespace PresenceConnectionManager
 
             // Disconnected all connected clients
             Console.WriteLine("Disconnecting all users...");
-            Parallel.ForEach(Clients.Values, client => client.Disconnect(DisconnectReason.ForcedServerShutdown));
-            Parallel.ForEach(Processing.Values, client => client.Disconnect(DisconnectReason.ForcedServerShutdown));
+            Parallel.ForEach(Clients.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
+            Parallel.ForEach(Processing.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
 
             // Update the database
             try
@@ -214,8 +214,8 @@ namespace PresenceConnectionManager
             {
                 try
                 {
-                    client.Disconnect(DisconnectReason.LoginTimedOut);
-                    Processing.TryRemove(client.ConnectionId, out oldC);
+                    client.DisconnectByReason(DisconnectReason.LoginTimedOut);
+                    Processing.TryRemove(client.ConnectionID, out oldC);
                 }
                 catch (Exception e)
                 {
@@ -247,7 +247,7 @@ namespace PresenceConnectionManager
         {
             if (Clients.ContainsKey(playerId))
             {
-                Clients[playerId].Disconnect(DisconnectReason.ForcedLogout);
+                Clients[playerId].DisconnectByReason(DisconnectReason.ForcedLogout);
                 return true;
             }
             return false;
@@ -267,7 +267,8 @@ namespace PresenceConnectionManager
             {
                 // Remove client from online list
                 if (Clients.TryRemove(client.PlayerInfo.PlayerId, out client) && !client.Disposed)
-                    client.Dispose();
+                    
+                client.DisconnectByReason(DisconnectReason.NormalLogout);
 
                 // Add player to database queue
                 PlayerStatusQueue.Enqueue(client);
@@ -291,12 +292,12 @@ namespace PresenceConnectionManager
                 GPCMClient client = sender as GPCMClient;
 
                 // Remove connection from processing
-                Processing.TryRemove(client.ConnectionId, out oldC);
+                Processing.TryRemove(client.ConnectionID, out oldC);
 
                 // Check to see if the client is already logged in, if so disconnect the old user
                 if (Clients.TryRemove(client.PlayerInfo.PlayerId, out oldC))
                 {
-                    oldC.Disconnect(DisconnectReason.NewLoginDetected);
+                    oldC.DisconnectByReason(DisconnectReason.NewLoginDetected);
                     LogWriter.Log.Write(LogLevel.Info, "Login Clash:   {0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
                 }
 

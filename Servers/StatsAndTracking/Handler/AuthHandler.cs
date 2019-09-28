@@ -13,7 +13,7 @@ namespace StatsAndTracking.Handler
             string sendingBuffer = string.Format(@"\sesskey\{0}",dict["response"]);
             sendingBuffer = Enctypex.XorEncoding(sendingBuffer,1);
             sendingBuffer += @"\final\";
-            client.Stream.SendAsync(sendingBuffer);
+            client.Response(sendingBuffer);
 
         }
     }

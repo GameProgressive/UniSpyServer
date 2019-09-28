@@ -9,7 +9,7 @@ using PresenceSearchPlayer.Handler;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPServer : TcpServer
+    public class GPSPServer : TCPServer
     {
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace PresenceSearchPlayer
             GPSPClient.OnDisconnected -= ClientDisconnected;
 
             // Disconnected all connected clients
-            foreach (GPSPClient c in Clients.Values)
-                c.Dispose(true);
+            foreach (GPSPClient client in Clients.Values)
+                client.Dispose();
 
             // clear clients
             Clients.Clear();

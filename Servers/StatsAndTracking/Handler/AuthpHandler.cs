@@ -8,8 +8,7 @@ namespace StatsAndTracking.Handler
     {
         public static void AuthPlayer(GStatsClient client,Dictionary<string,string> dict)
         {
-
-
+          
         }
     }
 }

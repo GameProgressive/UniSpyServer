@@ -18,7 +18,7 @@ namespace PresenceConnectionManager.Handler
                 }
                 catch
                 {
-                    client.Disconnect(DisconnectReason.KeepAliveFailed);
+                    client.DisconnectByReason(DisconnectReason.KeepAliveFailed);
                 }
             }
         }

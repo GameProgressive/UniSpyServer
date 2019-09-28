@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Extensions;
 using GameSpyLib.Network;
 using System;
 using System.Collections.Generic;
@@ -17,22 +18,23 @@ namespace StatsAndTracking
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public TCPStream Stream { get; set; }
+        private TCPStream Stream;
 
         /// <summary>
         /// Indicates whether this object is disposed
         /// </summary>
         public bool Disposed { get; protected set; } = false;
+
         public string ServerChallengeKey { get; private set; }
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public GStatsClient(TCPStream stream, long connectionId)
+        public GStatsClient(TCPStream stream, long connectionid)
         {
             // Generate a unique name for this connection
-            ConnectionID = connectionId;
+            ConnectionID = connectionid;
 
             // Init a new client stream class
             Stream = stream;
@@ -124,6 +126,11 @@ namespace StatsAndTracking
             string sendingBuffer = string.Format(@"\challenge\{0}", ServerChallengeKey);
             sendingBuffer = GameSpyLib.Extensions.Enctypex.XorEncoding(sendingBuffer, 1);
             sendingBuffer+= @"\final\";
+            Stream.SendAsync(sendingBuffer);
+        }
+        public void Response(string sendingBuffer)
+        {
+            sendingBuffer = Enctypex.XorEncoding(sendingBuffer, 1);
             Stream.SendAsync(sendingBuffer);
         }
     }

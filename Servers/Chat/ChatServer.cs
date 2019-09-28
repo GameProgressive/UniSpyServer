@@ -9,7 +9,7 @@ using Chat.DBQueries;
 
 namespace Chat
 {
-        public class ChatServer : TcpServer
+        public class ChatServer : TCPServer
         {
 
             /// <summary>

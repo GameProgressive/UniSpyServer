@@ -4,7 +4,6 @@ using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using PresenceConnectionManager.Application;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler;
 using PresenceConnectionManager.Structures;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,7 @@ namespace PresenceConnectionManager
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    public class GPCMClient : IDisposable, IEquatable<GPCMClient>
+    public class GPCMClient : TCPClientBase, IDisposable, IEquatable<GPCMClient>
     {
         #region Variables
 
@@ -26,11 +25,6 @@ namespace PresenceConnectionManager
         /// Indicates whether this player successfully completed the login process
         /// </summary>
         public bool CompletedLoginProcess { get; set; } = false;
-
-        /// <summary>
-        /// The TcpClient's Endpoint
-        /// </summary>
-        public IPEndPoint RemoteEndPoint { get; protected set; }
 
         /// <summary>
         /// The profile id parameter that is sent back to the client is initially 2, 
@@ -45,44 +39,9 @@ namespace PresenceConnectionManager
         public bool BuddiesSent = false;
 
         /// <summary>
-        /// The users session key
-        /// </summary>
-        public ushort SessionKey { get; set; }
-
-
-        /// <summary>
-        /// The Servers challange key, sent when the client first connects.
-        /// This is used as part of the hash used to "proove" to the client
-        /// that the password in our database matches what the user enters
-        /// </summary>
-        public string ServerChallengeKey;
-
-        /// <summary>
-        /// Variable that determines if the client is disconnected,
-        /// and this object can be cleared from memory
-        /// </summary>
-        public bool Disposed { get; protected set; }
-
-        /// <summary>
-        /// Indicates the connection ID for this connection
-        /// </summary>
-        public long ConnectionId { get; protected set; }
-
-        /// <summary>
         /// Indicates the date and time this connection was created
         /// </summary>
         public readonly DateTime Created = DateTime.Now;
-
-        /// <summary>
-        /// The clients socket network stream
-        /// </summary>
-        public TCPStream Stream { get; protected set; }
-
-        /// <summary>
-        /// The date time of when this connection was created. Used to disconnect user
-        /// connections that hang
-        /// </summary>
-        //private DateTime ConnectionCreated = DateTime.Now;
 
         /// <summary>
         /// Our CRC16 object for generating Checksums
@@ -117,24 +76,14 @@ namespace PresenceConnectionManager
         /// Constructor
         /// </summary>
         /// <param name="ReadArgs">The Tcp Client connection</param>
-        public GPCMClient(TCPStream stream, long connectionId)
+        public GPCMClient(TCPStream stream, long connectionid) : base(stream, connectionid)
         {
 
             PlayerInfo = new GPCMPlayerInfo();
 
-            RemoteEndPoint = (IPEndPoint)stream.RemoteEndPoint;
-            Disposed = false;
-
-            // Set the connection ID
-            ConnectionId = connectionId;
-
-            SessionKey = 0;
-
-            // Create our Client Stream
-            Stream = stream;
-            Stream.OnDisconnected += ClientDisconnected;
             Stream.OnDataReceived += ProcessData;
             Stream.IsMessageFinished += IsMessageFinished;
+            Stream.OnDisconnected += ClientDisconnected;
             Stream.BeginReceive();
         }
 
@@ -149,30 +98,78 @@ namespace PresenceConnectionManager
 
         /// <summary>
         /// Disposes of the client object. The connection is no longer
-        /// closed here and the Disconnect even is NO LONGER fired
+        /// closed here and the DisconnectByReason even is NO LONGER fired
         /// </summary>
-        public void Dispose()
+        public override void Dispose()
         {
+            if (Disposed) return;
+            try
+            {
+
+                Stream.OnDataReceived -= ProcessData;
+
+                Stream.IsMessageFinished -= IsMessageFinished;
+
+                Stream.OnDisconnected -= ClientDisconnected;
+
+                if (!Stream.SocketClosed)
+                    Stream.Close(true);
+            }
+            catch { }
             // Preapare to be unloaded from memory
             Disposed = true;
         }
 
-        public void SendServerChallenge(uint ServerID)
+        public override void SendServerChallenge(uint serverID)
         {
             // Only send the login challenge once
             if (PlayerInfo.LoginStatus != LoginStatus.Connected)
             {
-                Disconnect(DisconnectReason.ClientChallengeAlreadySent);
+                DisconnectByReason(DisconnectReason.ClientChallengeAlreadySent);
 
                 // Throw the error                
                 LogWriter.Log.Write("The server challenge has already been sent. Cannot send another login challenge.", LogLevel.Warning);
-
             }
 
             // We send the client the challenge key
             ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
             PlayerInfo.LoginStatus = LoginStatus.Processing;
-            Stream.SendAsync(@"\lc\1\challenge\{0}\id\{1}\final\", ServerChallengeKey, ServerID);
+            Stream.SendAsync(@"\lc\1\challenge\{0}\id\{1}\final\", ServerChallengeKey, serverID);
+        }
+
+
+
+        /// <summary>
+        /// Main listner loop. Keeps an open stream between the client and server while
+        /// the client is logged in / playing
+        /// </summary>
+        protected override void ProcessData(string message)
+        {
+            if (message[0] != '\\')
+            {
+                GameSpyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
+                return;
+            }
+            string[] commands = message.Split("\\final\\");
+
+            foreach (string command in commands)
+            {
+                if (command.Length < 1)
+                    continue;
+                // Read client message, and parse it into key value pairs
+                string[] recieved = command.TrimStart('\\').Split('\\');
+                Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
+
+                CommandSwitcher.Switch(this, dict, OnSuccessfulLogin, OnStatusChanged);
+            }
+        }
+
+        /// <summary>
+        /// Event fired when the stream disconnects unexpectedly
+        /// </summary>
+        protected override void ClientDisconnected()
+        {
+            DisconnectByReason(DisconnectReason.Disconnected);
         }
 
         /// <summary>
@@ -186,32 +183,32 @@ namespace PresenceConnectionManager
         /// the OnDisconect event will still be called, but the EventArgs objects will NOT be returned to the IO pool. 
         /// You should only set to <see cref="DisconnectReason.ForcedServerShutdown"/> for a planned server shutdown.
         /// </remarks>
-        public void Disconnect(DisconnectReason reason)
+        public void DisconnectByReason(DisconnectReason reason)
         {
             // If connection is still alive, disconnect user
-            try
-            {
+            //try
+            //{
 
-                Stream.OnDataReceived -= ProcessData;
+            //    Stream.OnDataReceived -= ProcessData;
 
-                Stream.IsMessageFinished -= IsMessageFinished;
+            //    Stream.IsMessageFinished -= IsMessageFinished;
 
-                Stream.OnDisconnected -= ClientDisconnected;
+            //    Stream.OnDisconnected -= ClientDisconnected;
 
-                Stream.Close(reason == DisconnectReason.ForcedServerShutdown);
-            }
-            catch { }
-
+            //    Stream.Close(reason == DisconnectReason.ForcedServerShutdown);
+            //}
+            //catch { }
+            Dispose();
             // Set status and log
             if (PlayerInfo.LoginStatus == LoginStatus.Completed)
             {
                 if (reason == DisconnectReason.NormalLogout)
                 {
-                    Stream.ToLog(LogLevel.Info, "Logout", "", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
+                    ToLog(LogLevel.Info, "Logout", "", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
                 }
                 else if (reason != DisconnectReason.ForcedServerShutdown)
                 {
-                    Stream.ToLog(
+                    ToLog(
                         LogLevel.Info,
                         "Disconnected", "",
                         "{0} - {1} - {2}, Code={3}",
@@ -219,69 +216,17 @@ namespace PresenceConnectionManager
                         PlayerInfo.PlayerId,
                         RemoteEndPoint,
                         Enum.GetName(typeof(DisconnectReason), reason));
-
-                    //LogWriter.Log.Write(
-                    //    LogLevel.Info,
-                    //    "{0,-8} [Disconnected] {1} - {2} - {3}, Code={4}",
-                    //    Stream.ServerName,
-
-                    //);
                 }
             }
 
             // Preapare to be unloaded from memory
             PlayerInfo.PlayerStatus = PlayerStatus.Offline;
             PlayerInfo.LoginStatus = LoginStatus.Disconnected;
-            Dispose();
+            
 
             // Call disconnect event
             OnDisconnect?.Invoke(this);
         }
-
-        #region Stream Callbacks
-
-        private bool IsMessageFinished(string message)
-        {
-            if (message.EndsWith("\\final\\"))
-                return true;
-            else
-                return false;
-        }
-
-        /// <summary>
-        /// Main listner loop. Keeps an open stream between the client and server while
-        /// the client is logged in / playing
-        /// </summary>
-        private void ProcessData(string message)
-        {
-            if (message[0] != '\\')
-            {
-                GameSpyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
-                return;
-            }            
-            string[] commands = message.Split("\\final\\");
-
-            foreach (string command in commands)
-            {
-                if (command.Length < 1)
-                    continue;
-                // Read client message, and parse it into key value pairs
-                string[] recieved = command.TrimStart('\\').Split('\\');
-                Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
-
-                CommandSwitcher.Switch(this,dict,OnSuccessfulLogin,OnStatusChanged);
-            }
-        }
-
-        /// <summary>
-        /// Event fired when the stream disconnects unexpectedly
-        /// </summary>
-        private void ClientDisconnected()
-        {
-            Disconnect(DisconnectReason.Disconnected);
-        }
-
-        #endregion Stream Callbacks
 
         public bool Equals(GPCMClient other)
         {
@@ -289,15 +234,19 @@ namespace PresenceConnectionManager
             return (PlayerInfo.PlayerId == other.PlayerInfo.PlayerId || PlayerInfo.PlayerNick == other.PlayerInfo.PlayerNick);
         }
 
-        public override bool Equals(object obj)
+        public override void Send(string sendingBuffer)
         {
-            return Equals(obj as GPCMClient);
+            Stream.SendAsync(sendingBuffer);
         }
+        //public override bool Equals(object obj)
+        //{
+        //    return Equals(obj as GPCMClient);
+        //}
 
-        public override int GetHashCode()
-        {
-            return (int)PlayerInfo.PlayerId;
-        }
+        //public override int GetHashCode()
+        //{
+        //    return (int)PlayerInfo.PlayerId;
+        //}
 
     }
 }

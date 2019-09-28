@@ -469,11 +469,11 @@ namespace GameSpyLib.Network
             }
         }
 
-        public void ToLog(LogLevel level, string status, string statusinfo,string message,params object[] items)
-        {
-            string temp1 = string.Format(message, items);
-            string temp2 = string.Format("{0} [{1}] {2}: {3}",SocketManager.ServerName, status,statusinfo, temp1);
-            LogWriter.Log.Write(LogLevel.Debug, temp2);
-        }
+        //public void ToLog(LogLevel level, string status, string statusinfo,string message,params object[] items)
+        //{
+        //    string temp1 = string.Format(message, items);
+        //    string temp2 = string.Format("{0} [{1}] {2}: {3}",SocketManager.ServerName, status,statusinfo, temp1);
+        //    LogWriter.Log.Write(LogLevel.Debug, temp2);
+        
     }
 }

@@ -29,13 +29,13 @@ namespace PresenceConnectionManager.Handler
             //if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
             //{
             //    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "Invalid response received from the client!");
-            //    client.Disconnect(DisconnectReason.InvalidLoginQuery);
+            //    client.DisconnectByReason(DisconnectReason.InvalidLoginQuery);
             //    return;
             //}
             if (IsContainAllKeys(recv) != GPErrorCode.NoError)
             {
                 GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "Invalid response received from the client!");
-                client.Disconnect(DisconnectReason.InvalidLoginQuery);
+                client.DisconnectByReason(DisconnectReason.InvalidLoginQuery);
                 return;
             }
 
@@ -85,7 +85,7 @@ namespace PresenceConnectionManager.Handler
                     {
                         GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "The nick provided is incorrect!");
                     }
-                    client.Disconnect(DisconnectReason.InvalidUsername);
+                    client.DisconnectByReason(DisconnectReason.InvalidUsername);
                     return;
                 }
 
@@ -96,7 +96,7 @@ namespace PresenceConnectionManager.Handler
                 if (error != GPErrorCode.NoError)
                 {
                     GameSpyUtils.SendGPError(client.Stream, error, msg);
-                    client.Disconnect(reason);
+                    client.DisconnectByReason(reason);
                     return;
                 }
 
@@ -127,7 +127,7 @@ namespace PresenceConnectionManager.Handler
 
                     // Log Incoming Connections
                     //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] {1} - {2} - {3}", client.Stream.ServerName, client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, RemoteEndPoint);
-                    client.Stream.ToLog(LogLevel.Info, "Login", "Success", "Nick:{0} - Profileid:{1} - IP:{2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    client.ToLog(LogLevel.Info, "Login", "Success", "Nick:{0} - Profileid:{1} - IP:{2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
                     // Update status last, and call success login
                     client.PlayerInfo.LoginStatus = LoginStatus.Completed;
                     client.PlayerInfo.PlayerStatus = PlayerStatus.Online;
@@ -142,16 +142,16 @@ namespace PresenceConnectionManager.Handler
                 else
                 {
                     // Log Incoming Connection
-                    client.Stream.ToLog(LogLevel.Info, "Login", "Failed", "{0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    client.ToLog(LogLevel.Info, "Login", "Failed", "{0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
                     // Password is incorrect with database value.
                     client.Stream.SendAsync(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
-                    client.Disconnect(DisconnectReason.InvalidPassword);
+                    client.DisconnectByReason(DisconnectReason.InvalidPassword);
                 }
             }
             catch (Exception ex)
             {
                 LogWriter.Log.Write(ex.ToString(), LogLevel.Error);
-                client.Disconnect(DisconnectReason.GeneralError);
+                client.DisconnectByReason(DisconnectReason.GeneralError);
                 return;
             }
         }
@@ -232,13 +232,13 @@ namespace PresenceConnectionManager.Handler
             PlayerStatus currentPlayerStatus;
             UserStatus currentUserStatus;
 
-            if (!Enum.TryParse(queryResult["status"].ToString(), out currentPlayerStatus))
+            if (!Enum.TryParse(queryResult["statuscode"].ToString(), out currentPlayerStatus))
             {
                 msg = "Invalid player data! Please contact an administrator.";
                 reason = DisconnectReason.InvalidPlayer;
                 return GPErrorCode.LoginBadUniquenick;
                 //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
-                //client.Disconnect(DisconnectReason.InvalidPlayer);
+                //client.DisconnectByReason(DisconnectReason.InvalidPlayer);
             }
             if (!Enum.TryParse(queryResult["userstatus"].ToString(), out currentUserStatus))
             {
@@ -246,7 +246,7 @@ namespace PresenceConnectionManager.Handler
                 reason = DisconnectReason.InvalidPlayer;
                 return GPErrorCode.LoginBadUniquenick;
                 //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
-                //client.Disconnect(DisconnectReason.InvalidPlayer);
+                //client.DisconnectByReason(DisconnectReason.InvalidPlayer);
                 //return;
             }
             // Check the status of the account.
@@ -257,7 +257,7 @@ namespace PresenceConnectionManager.Handler
                 reason = DisconnectReason.PlayerIsBanned;
                 return GPErrorCode.LoginBadUniquenick;
                 //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your profile has been permanently suspended.");
-                //client.Disconnect(DisconnectReason.PlayerIsBanned);
+                //client.DisconnectByReason(DisconnectReason.PlayerIsBanned);
                 //return;
             }
             if (currentUserStatus == UserStatus.Created)
@@ -267,7 +267,7 @@ namespace PresenceConnectionManager.Handler
                 return GPErrorCode.LoginBadUniquenick;
 
                 //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your account is not verified. Please check your email inbox and verify the account.");
-                //client.Disconnect(DisconnectReason.PlayerIsBanned);
+                //client.DisconnectByReason(DisconnectReason.PlayerIsBanned);
                 //return;
             }
             if (currentUserStatus == UserStatus.Banned)
@@ -276,7 +276,7 @@ namespace PresenceConnectionManager.Handler
                 reason = DisconnectReason.PlayerIsBanned;
                 return GPErrorCode.LoginBadUniquenick;
                 //GameSpyUtils.SendGPError(client.Stream, GPErrorCode.LoginBadUniquenick, "Your account has been permanently suspended.");
-                //client.Disconnect(DisconnectReason.PlayerIsBanned);
+                //client.DisconnectByReason(DisconnectReason.PlayerIsBanned);
                 //return;
             }
 

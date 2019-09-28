@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace StatsAndTracking
 {
-    public class GStatsServer : TcpServer
+    public class GStatsServer : TCPServer
     {
         /// <summary>
         /// A connection counter, used to create unique connection id's

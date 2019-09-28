@@ -32,7 +32,7 @@ namespace PresenceConnectionManager.DatabaseQuery
                 var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
                 + @"profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, "
                 + @"profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex,profiles.zipcode, profiles.countrycode, profiles.homepage, "
-                + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icq, profiles.status, users.password, users.userstatus, namespace.uniquenick"
+                + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icq,profiles.statuscode, users.password, users.userstatus, namespace.uniquenick"
                 + @" FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid "
                 + @"WHERE  namespace.namespaceid = @P0  AND profiles.nick = @P1 AND  users.email=@P2",  dict["namespaceid"], dict["nick"], dict["email"]);
                 return (result.Count == 0) ? null : result[0];         

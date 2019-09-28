@@ -43,7 +43,7 @@ namespace PresenceConnectionManager
                         RegisterNickHandler.RegisterNick(client, recv);
                         break;
                     case "logout":
-                        client.Disconnect(DisconnectReason.NormalLogout);
+                        client.DisconnectByReason(DisconnectReason.NormalLogout);
                         break;
                     case "status":
                         StatusHandler.UpdateStatus(client, recv, OnStatusChanged);
