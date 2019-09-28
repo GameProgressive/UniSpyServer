@@ -14,7 +14,6 @@ namespace StatsAndTracking.Handler
             sendingBuffer = Enctypex.XorEncoding(sendingBuffer,1);
             sendingBuffer += @"\final\";
             client.Send(sendingBuffer);
-
         }
     }
 }

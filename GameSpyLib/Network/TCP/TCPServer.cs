@@ -92,10 +92,10 @@ namespace GameSpyLib.Network.TCP
         /// <summary>
         /// Indicates whether this object has been disposed yet
         /// </summary>
-        public bool IsDisposed { get; protected set; } = false;
+        public bool Disposed { get; protected set; } = false;
 
         public string ServerName { get; protected set; }
-        public TCPServer(string serverName,IPEndPoint bindTo, int MaxConnections)
+        public TCPServer(string serverName, IPEndPoint bindTo, int MaxConnections)
         {
             ServerName = "[" + serverName + "]";
             // Create our Socket
@@ -143,7 +143,7 @@ namespace GameSpyLib.Network.TCP
 
         ~TCPServer()
         {
-            if (!IsDisposed)
+            if (!Disposed)
                 Dispose();
         }
 
@@ -153,28 +153,36 @@ namespace GameSpyLib.Network.TCP
         /// </summary>
         public void Dispose()
         {
-            // no need to do this again
-            if (IsDisposed) return;
-            IsDisposed = true;
+            Dispose(true);
+            GC.SuppressFinalize(this);
 
-            // Shutdown sockets
-            if (IsListening)
-                ShutdownSocket();
-
-            // Dispose all AcceptPool AysncEventArg objects
-            while (SocketAcceptPool.Count > 0)
-                SocketAcceptPool.Pop().Dispose();
-
-            // Dispose all ReadWritePool AysncEventArg objects
-            while (SocketReadWritePool.Count > 0)
-                SocketReadWritePool.Pop().Dispose();
-
-            // Dispose the buffer manager after disposing all EventArgs
-            BufferManager?.Dispose();
-            MaxConnectionsEnforcer?.Dispose();
-            Listener?.Dispose();
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            // no need to do this again
+            if (Disposed) return;
+            // Shutdown sockets
+            if (disposing)
+            {
+                if (IsListening)
+                    ShutdownSocket();
+
+                // Dispose all AcceptPool AysncEventArg objects
+                while (SocketAcceptPool.Count > 0)
+                    SocketAcceptPool.Pop().Dispose();
+
+                // Dispose all ReadWritePool AysncEventArg objects
+                while (SocketReadWritePool.Count > 0)
+                    SocketReadWritePool.Pop().Dispose();
+
+                // Dispose the buffer manager after disposing all EventArgs
+                BufferManager?.Dispose();
+                MaxConnectionsEnforcer?.Dispose();
+                Listener?.Dispose();               
+            }
+            Disposed = true;
+        }
         /// <summary>
         /// When called, this method will stop accepted and handling any and all
         /// connections. Dispose still needs to be called!

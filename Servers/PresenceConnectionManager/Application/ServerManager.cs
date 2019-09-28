@@ -103,7 +103,7 @@ namespace PresenceConnectionManager
         /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
         public bool IsServerRunning(ServerConfiguration cfg)
         {
-            return gpcmServer != null && !gpcmServer.IsDisposed;
+            return gpcmServer != null && !gpcmServer.Disposed;
         }
 
         /// <summary>

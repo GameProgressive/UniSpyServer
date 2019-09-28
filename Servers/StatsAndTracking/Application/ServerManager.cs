@@ -102,7 +102,7 @@ namespace StatsAndTracking
         /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
         public bool IsServerRunning(ServerConfiguration cfg)
         {
-            return statsServer != null && !statsServer.IsDisposed;
+            return statsServer != null && !statsServer.Disposed;
         }
 
         /// <summary>
