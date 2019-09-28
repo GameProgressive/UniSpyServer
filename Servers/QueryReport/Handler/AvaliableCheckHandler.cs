@@ -54,7 +54,7 @@ namespace QueryReport.Handler
             dataToSend[6] = (byte)ServerAvaliability.Avaliable;
 
             //packet.SetBufferContents(dataToSend);
-            server.SendAsync(packet, dataToSend);
+            server.Send(packet, dataToSend);
         }
 
         /// <summary>

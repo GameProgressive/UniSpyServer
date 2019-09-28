@@ -26,8 +26,8 @@ namespace CDKey
             if (DBQuery.IsCDKeyValidate(recv["skey"]))
             {
                 string reply = string.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
-              //  packet.SetBufferContents(Encoding.UTF8.GetBytes(Enctypex.XOR(reply)));
-                server.SendAsync(packet, Encoding.UTF8.GetBytes(Enctypex.XorEncoding(reply,0)));
+
+                server.Send(packet, Enctypex.XorEncoding(reply,0));
             }
             else
             {

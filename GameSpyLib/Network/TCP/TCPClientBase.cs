@@ -31,6 +31,11 @@ namespace GameSpyLib.Network.TCP
         /// </summary>
         public IPEndPoint RemoteEndPoint { get; protected set; }
 
+        /// <summary>
+        /// Indicates whether this object is disposed
+        /// </summary>
+        public bool Disposed { get; protected set; } = false;
+
         protected TCPClientBase(TCPStream stream, long connectionid)
         {
             // Set the connection ID
@@ -44,10 +49,10 @@ namespace GameSpyLib.Network.TCP
             RemoteEndPoint = (IPEndPoint)stream.RemoteEndPoint;
         }
 
-        /// <summary>
-        /// Indicates whether this object is disposed
-        /// </summary>
-        public bool Disposed { get; protected set; } = false;
+        ~TCPClientBase()
+        {
+            Dispose(false);
+        }
 
         /// <summary>
         /// The users session key
@@ -61,6 +66,10 @@ namespace GameSpyLib.Network.TCP
                 return false;
         }
         protected abstract void ProcessData(string message);
+        /// <summary>
+        /// Send function for each server
+        /// </summary>
+        /// <param name="sendingBuffer"></param>
         public abstract void Send(string sendingBuffer);
 
         public abstract void SendServerChallenge(uint serverID);
@@ -84,6 +93,7 @@ namespace GameSpyLib.Network.TCP
                 if (!Stream.SocketClosed)
                     Stream.Close(true);
             }
+            //dispose unmanaged resources
 
             Disposed = true;
         }

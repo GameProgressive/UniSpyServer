@@ -101,17 +101,24 @@ namespace PresenceConnectionManager
         protected override void Dispose(bool disposing)
         {
             if (Disposed) return;
+
             try
             {
+                if (disposing)
+                {
+                    Stream.OnDataReceived -= ProcessData;
 
-                Stream.OnDataReceived -= ProcessData;
+                    Stream.IsMessageFinished -= IsMessageFinished;
 
-                Stream.IsMessageFinished -= IsMessageFinished;
+                    Stream.OnDisconnected -= ClientDisconnected;
 
-                Stream.OnDisconnected -= ClientDisconnected;
-
-                if (!Stream.SocketClosed)
-                    Stream.Close(true);
+                    if (!Stream.SocketClosed)
+                        Stream.Close(true);
+                }
+                if (PlayerInfo != null)
+                {
+                    PlayerInfo = null;
+                }
             }
             catch { }
             // Preapare to be unloaded from memory
@@ -183,20 +190,7 @@ namespace PresenceConnectionManager
         /// </remarks>
         public void DisconnectByReason(DisconnectReason reason)
         {
-            // If connection is still alive, disconnect user
-            //try
-            //{
-
-            //    Stream.OnDataReceived -= ProcessData;
-
-            //    Stream.IsMessageFinished -= IsMessageFinished;
-
-            //    Stream.OnDisconnected -= ClientDisconnected;
-
-            //    Stream.Close(reason == DisconnectReason.ForcedServerShutdown);
-            //}
-            //catch { }
-            Dispose();
+           
             // Set status and log
             if (PlayerInfo.LoginStatus == LoginStatus.Completed)
             {
@@ -220,7 +214,8 @@ namespace PresenceConnectionManager
             // Preapare to be unloaded from memory
             PlayerInfo.PlayerStatus = PlayerStatus.Offline;
             PlayerInfo.LoginStatus = LoginStatus.Disconnected;
-            
+
+            Dispose();
 
             // Call disconnect event
             OnDisconnect?.Invoke(this);

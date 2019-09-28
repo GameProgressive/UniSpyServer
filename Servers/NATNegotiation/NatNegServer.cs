@@ -84,7 +84,6 @@ namespace NATNegotiation
                     Release(packet.AsyncEventArgs);
             }
         }
-            //});
         protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
 
     }

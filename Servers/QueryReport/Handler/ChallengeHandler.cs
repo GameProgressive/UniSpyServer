@@ -32,7 +32,7 @@ namespace QueryReport.Handler
             sendingbuffer[2] = QRGameServer.ClientRegistered;
             Array.Copy(instancekey, 0, sendingbuffer, 3, 4);
 
-            server.SendAsync(packet, sendingbuffer);
+            server.Send(packet, sendingbuffer);
             
             LogWriter.Log.Write("[QR] No impliment function for ServerChallengeResponse!", LogLevel.Debug);
         }

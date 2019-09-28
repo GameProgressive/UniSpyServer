@@ -8,22 +8,7 @@ using System.Collections.Generic;
 namespace PresenceSearchPlayer
 {
     public class GPSPClient :TCPClientBase, IDisposable
-    {
-        /// <summary>
-        /// A unqie identifier for this connection
-        /// </summary>
-        public long ConnectionID;
-
-        /// <summary>
-        /// Indicates whether this object is disposed
-        /// </summary>
-        public bool Disposed { get; protected set; } = false;
-
-        /// <summary>
-        /// The clients socket network stream
-        /// </summary>
-        public TCPStream Stream { get; set; }
-
+    {    
         /// <summary>
         /// Event fired when the connection is closed
         /// </summary>
@@ -64,22 +49,24 @@ namespace PresenceSearchPlayer
         /// <summary>
         /// Dispose method to be called by the server
         /// </summary>
-        public override void Dispose()
+        protected override void Dispose(bool disposing)
         {
             // Only dispose once
             if (Disposed) return;
 
             try
             {
-               
-                //determine whether gamespy request is finished
-                Stream.IsMessageFinished -= IsMessageFinished;
-                // Read client message, and parse it into key value pairs
-                Stream.OnDataReceived -= ProcessData;
-                // If connection is still alive, disconnect user
-                Stream.OnDisconnected -= ClientDisconnected;
-                if (!Stream.SocketClosed)
-                    Stream.Close(true);
+                if (disposing)
+                {
+                    //determine whether gamespy request is finished
+                    Stream.IsMessageFinished -= IsMessageFinished;
+                    // Read client message, and parse it into key value pairs
+                    Stream.OnDataReceived -= ProcessData;
+                    // If connection is still alive, disconnect user
+                    Stream.OnDisconnected -= ClientDisconnected;
+                    if (!Stream.SocketClosed)
+                        Stream.Close(true);
+                }               
             }
             catch { }
 

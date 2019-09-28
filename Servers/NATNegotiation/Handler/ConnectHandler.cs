@@ -10,7 +10,7 @@ namespace NATNegotiation.Handler
         {
             ConnectPacket connectPacket = new ConnectPacket(packet.BytesRecieved);
            byte[] sendingBuffer= connectPacket.CreateReplyPacket();
-            server.SendAsync(packet, sendingBuffer);
+            server.Send(packet, sendingBuffer);
         }
     }
 }

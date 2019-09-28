@@ -42,7 +42,7 @@ namespace QueryReport.Handler
                 //we revieved a wrong data, we have to send challege to game server
                 byte[] sendingBuffer = GenerateChallenge(recvKeys);
 
-                server.SendAsync(packet, sendingBuffer);
+                server.Send(packet, sendingBuffer);
                 server.Replied = true;
                 LogWriter.Log.Write(LogLevel.Debug, "[QR] [HeartBeat] Invalid Server Data Received From {0}:{1}-{2}", remote.Address, remote.Port, dataFrag[0]);
                 return;

@@ -10,7 +10,7 @@ namespace NATNegotiation.Handler
             ReportPacket reportPacket = new ReportPacket(packet.BytesRecieved);
            
             byte[] sendingBuffer = reportPacket.CreateReplyPacket();
-            server.SendAsync(packet, sendingBuffer);
+            server.Send(packet, sendingBuffer);
         }
     }
 }

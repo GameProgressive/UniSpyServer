@@ -112,24 +112,41 @@ namespace GameSpyLib.Network.UDP
         /// </summary>
         public void Dispose()
         {
-            // no need to do this again
-            if (IsDisposed) return;
-            IsDisposed = true;
-
-            // Shutdown sockets
-            if (IsRunning)
-                ShutdownSocket();
-
-            // Dispose all ReadWritePool AysncEventArg objects
-            while (SocketReadWritePool.Count > 0)
-                SocketReadWritePool.Pop().Dispose();
-
-            // Dispose the buffer manager after disposing all EventArgs
-            BufferManager.Dispose();
-            MaxConnectionsEnforcer.Dispose();
-            Listener.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
+        /// <summary>
+        /// Override this method to create own Dispose method
+        /// </summary>
+        /// <param name="disposing"></param>
+        protected virtual void Dispose(bool disposing)
+        {
+            try
+            {
+                if (disposing)
+                {
+                    // no need to do this again
+                    if (IsDisposed) return;
 
+
+                    // Shutdown sockets
+                    if (IsRunning)
+                        ShutdownSocket();
+
+                    // Dispose all ReadWritePool AysncEventArg objects
+                    while (SocketReadWritePool.Count > 0)
+                        SocketReadWritePool.Pop().Dispose();
+
+                    // Dispose the buffer manager after disposing all EventArgs
+                    BufferManager.Dispose();
+                    MaxConnectionsEnforcer.Dispose();
+                    Listener.Dispose();
+
+                    IsDisposed = true;
+                }
+            }
+            catch { }
+        }
         /// <summary>
         /// When called, this method will stop accepted and handling any and all
         /// connections. Dispose still needs to be called!
@@ -211,7 +228,7 @@ namespace GameSpyLib.Network.UDP
         /// </summary>
         /// <param name="packet">the udp packet which will transfer byte to its own format</param>
         /// <param name="message">the bytes that will be send to client</param>
-        public void SendAsync(UDPPacket packet,byte[] message)
+        protected void SendAsync(UDPPacket packet,byte[] message)
         {
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
@@ -228,7 +245,7 @@ namespace GameSpyLib.Network.UDP
         /// </summary>
         /// <param name="packet"> the udp packet which will be send</param>
         /// <param name="message">the string that will be sended to client</param>
-        public void ReplyAsync(UDPPacket packet, string message)
+        public void SendAsync(UDPPacket packet, string message)
         {            
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
@@ -284,5 +301,21 @@ namespace GameSpyLib.Network.UDP
         protected abstract void ProcessAccept(UDPPacket packet);
 
         protected abstract void OnException(Exception e);
+
+        /// <summary>
+        /// Different gamespy server will have different sending method, every instance has to override the send method to create his sending method
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <param name="message"></param>
+        public virtual void Send(UDPPacket packet, string message)
+        {
+            SendAsync(packet, message);
+            //Check This correctness
+            Release(packet.AsyncEventArgs);
+        }
+        public virtual void Send(UDPPacket packet, byte[] message)
+        {
+            SendAsync(packet,message);
+        }
     }
 }

@@ -11,9 +11,9 @@ namespace CDKey
 {
     public class CDKeyServer : UDPServer
     {
-        #region Server Setup Phase
 
-        public bool replied = false;
+
+        public bool Replied = false;
         /// <summary>
         /// CDKeyServer
         /// </summary>
@@ -26,9 +26,8 @@ namespace CDKey
             // Start accepting remote connections
             StartAcceptAsync();
         }
-        #endregion
 
-        #region Server Functions
+
         /// <summary>
         /// Closes the underlying socket
         /// </summary>
@@ -37,18 +36,13 @@ namespace CDKey
             ShutdownSocket();
             Dispose();
         }
-        public void Release(UDPPacket packet)
-        {
-            Release(packet.AsyncEventArgs);
-        }
+
         /// <summary>
         /// This function is fired when an exception occour in the server
         /// </summary>
         /// <param name="e">The exception to be thrown</param>
         protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
-        #endregion
 
-        #region Client Request Handle
         /// <summary>
         ///  Called when a connection comes in on the CDKey server
         ///  known messages
@@ -59,12 +53,12 @@ namespace CDKey
         protected override void ProcessAccept(UDPPacket packet)
         {
             // If we dont reply, we must manually release the EventArgs back to the pool
-            replied = false;
+            Replied = false;
             try
             {
                 // Decrypt message
                 IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
-                string decrypted = Enctypex.XorEncoding(packet.BytesRecieved,0).Trim('\\');
+                string decrypted = Enctypex.XorEncoding(packet.BytesRecieved, 0).Trim('\\');
                 string[] recieved = decrypted.TrimStart('\\').Split('\\');
                 Dictionary<string, string> recv = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 
@@ -92,15 +86,10 @@ namespace CDKey
             finally
             {
                 // Release so that we can pool the EventArgs to be used on another connection
-                if (!replied)
+                if (!Replied)
                     Release(packet.AsyncEventArgs);
             }
 
         }
-        #endregion
-
-
-
-
     }
 }
