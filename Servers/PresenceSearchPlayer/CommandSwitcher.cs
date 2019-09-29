@@ -52,7 +52,7 @@ namespace PresenceSearchPlayer
                     default:
                         LogWriter.Log.Write("[GPSP] received unknown data " + command, LogLevel.Debug);
                         GameSpyUtils.PrintReceivedGPDictToLogger(command, recv);
-                        GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "An invalid request was sended.");
+                        GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "An invalid request was sended.");
                         break;
                 }
             }

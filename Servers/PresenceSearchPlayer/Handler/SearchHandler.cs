@@ -29,7 +29,7 @@ namespace PresenceSearchPlayer.Handler
                 error = SearchWithUniquenick(dict, out sendingBuffer);
                 if (error != GPErrorCode.NoError)
                 {
-                    GameSpyUtils.SendGPError(client.Stream, error, sendingBuffer);
+                    GameSpyUtils.SendGPError(client, error, sendingBuffer);
                 }
                 else
                 {
@@ -45,7 +45,7 @@ namespace PresenceSearchPlayer.Handler
                 error = SearchWithNickEmail(dict, out sendingBuffer);
                 if (error != GPErrorCode.NoError)
                 {
-                    GameSpyUtils.SendGPError(client.Stream, error, sendingBuffer);
+                    GameSpyUtils.SendGPError(client, error, sendingBuffer);
                 }
                 else
                 {
@@ -59,7 +59,7 @@ namespace PresenceSearchPlayer.Handler
                 error = SearchWithEmail(dict, out sendingBuffer);
                 if (error != GPErrorCode.NoError)
                 {
-                    GameSpyUtils.SendGPError(client.Stream, error, sendingBuffer);
+                    GameSpyUtils.SendGPError(client, error, sendingBuffer);
                 }
                 else
                 {
@@ -68,7 +68,7 @@ namespace PresenceSearchPlayer.Handler
                 return;
             }
             //if above 3 functions not excuted then it must be parsing error
-            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There is a parse error in request!");
+            GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There is a parse error in request!");
 
             //last one we search with email this may get few profile so we can not return GPErrorCode
             //SearchWithEmail(client,dict );

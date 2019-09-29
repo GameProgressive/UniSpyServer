@@ -23,7 +23,7 @@ namespace PresenceSearchPlayer.Handler
 
             if (!isContiansAllKey&&! isEmailCorrect)
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "Parsing error, please check input");
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "Parsing error, please check input");
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace PresenceSearchPlayer.Handler
             else
             {
                 sendingBuffer = "No math found";
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, sendingBuffer);
+                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, sendingBuffer);
             }
         }
     }

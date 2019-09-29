@@ -22,13 +22,13 @@ namespace PresenceSearchPlayer.Handler
             GPErrorCode error = IsContainAllKeys(dict);
             if (error!=GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             if (UniqueSearchQuery.IsUniqueNickExist(dict))
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "The Nick is existed, please choose another name");
+                GameSpyUtils.SendGPError(client, GPErrorCode.General, "The Nick is existed, please choose another name");
             }
             else
             {

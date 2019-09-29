@@ -21,7 +21,7 @@ namespace PresenceSearchPlayer.Handler
                 }
                 else
                 {
-                    GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No match found!");
+                    GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "No match found!");
                 }
 
             }

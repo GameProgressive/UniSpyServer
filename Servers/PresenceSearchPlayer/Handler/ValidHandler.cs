@@ -19,7 +19,7 @@ namespace PresenceSearchPlayer.Handler
         {
             if (!dict.ContainsKey("email"))
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -44,7 +44,7 @@ namespace PresenceSearchPlayer.Handler
             catch (Exception ex)
             {
                 LogWriter.Log.WriteException(ex);
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
             }
         }
     }

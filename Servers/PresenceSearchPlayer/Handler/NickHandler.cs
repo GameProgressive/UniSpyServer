@@ -28,7 +28,7 @@ namespace PresenceSearchPlayer.Handler
             GPErrorCode error = IsSearchNicksContianAllKeys(dict);
             if (error != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client.Stream, (int)error, "Error recieving SearchNicks request.");
+                GameSpyUtils.SendGPError(client, (int)error, "Error recieving SearchNicks request.");
                 return;
             }
 
@@ -42,13 +42,13 @@ namespace PresenceSearchPlayer.Handler
             catch (Exception ex)
             {
                 LogWriter.Log.Write(ex.Message, LogLevel.Error);
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
                 return;
             }
 
             if (queryResult.Count < 1)
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No match found !");
+                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "No match found !");
                 return;
             }
 

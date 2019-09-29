@@ -86,7 +86,7 @@ namespace PresenceSearchPlayer
         {
             if (message[0] != '\\')
             {
-                GameSpyUtils.SendGPError(Stream, GPErrorCode.Parse, "An invalid request was sended.");
+                GameSpyUtils.SendGPError(this, GPErrorCode.Parse, "An invalid request was sended.");
                 return;
             }
 

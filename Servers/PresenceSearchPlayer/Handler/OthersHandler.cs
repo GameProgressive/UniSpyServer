@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer.Handler
             var temp = OthersQuery.GetOtherBuddy(dict);
             if (temp == null)
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "No Math Found");
+                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "No Math Found");
                 return;
             }
             if (temp.Count == 1)
@@ -45,7 +45,7 @@ namespace PresenceSearchPlayer.Handler
             }
            
             GameSpyUtils.PrintReceivedGPDictToLogger("others", dict);
-            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.SendGPError(client, GPErrorCode.General, "This request is not supported yet.");
         }
 
     }

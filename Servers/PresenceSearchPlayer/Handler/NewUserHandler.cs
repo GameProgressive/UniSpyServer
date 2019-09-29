@@ -21,7 +21,7 @@ namespace PresenceSearchPlayer.Handler
             //if there do not recieved right <key,value> pairs we send error
             if (error != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client.Stream, error, "Error recieving request. Please check the input!");
+                GameSpyUtils.SendGPError(client, error, "Error recieving request. Please check the input!");
                 return;
             }
             //Check the nick and uniquenick is formated correct and uniquenick is existed in database
@@ -43,7 +43,7 @@ namespace PresenceSearchPlayer.Handler
 
             if (profileid == -1)
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.DatabaseError, "Account is existed, please use another one.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "Account is existed, please use another one.");
             }
             else
             {

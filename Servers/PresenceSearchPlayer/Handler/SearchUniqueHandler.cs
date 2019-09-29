@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Handler
         public static void SearchProfileWithUniquenick(GPSPClient client, Dictionary<string, string> dict)
         {
             GameSpyUtils.PrintReceivedGPDictToLogger("searchunique", dict);
-            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.SendGPError(client, GPErrorCode.General, "This request is not supported yet.");
         }
     }
 }
