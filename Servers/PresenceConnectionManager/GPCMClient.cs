@@ -115,10 +115,10 @@ namespace PresenceConnectionManager
                     if (!Stream.SocketClosed)
                         Stream.Close(true);
                 }
-                if (PlayerInfo != null)
-                {
-                    PlayerInfo = null;
-                }
+                //if (PlayerInfo != null)
+                //{
+                //    PlayerInfo = null;
+                //}
             }
             catch { }
             // Preapare to be unloaded from memory

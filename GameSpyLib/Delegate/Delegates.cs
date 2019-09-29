@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameSpyLib.Common
+namespace GameSpyLib.Delegate
 {
     public delegate void OnExceptionEvent(Exception exception);
 

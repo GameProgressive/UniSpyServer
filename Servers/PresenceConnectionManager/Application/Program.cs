@@ -22,7 +22,7 @@ namespace PresenceConnectionManager.Application
 
         public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
-        private static ServerManager manager = null;
+        private static ServerManager Manager = null;
 
         public static bool IsRunning = false;
 
@@ -40,8 +40,6 @@ namespace PresenceConnectionManager.Application
             // Whether accept  args input.
             bool IsInitPathArgAvailable = false;
 
-            string logPath;
-            Console.Title = "RetroSpy Server " + version;
             BasePath = AppDomain.CurrentDomain.BaseDirectory;
 
             Console.CancelKeyPress += delegate (object sender, ConsoleCancelEventArgs e)
@@ -88,35 +86,11 @@ namespace PresenceConnectionManager.Application
             }
             #endregion
 
-            #region Path Setting
-            if (!Directory.Exists(BasePath))
-                Directory.CreateDirectory(BasePath);
-
-            logPath = BasePath + @"/Logs/";
-
-            if (!Directory.Exists(logPath))
-                Directory.CreateDirectory(logPath);
-            #endregion
-
-
-            LogWriter.Log = new LogWriter(string.Format(Path.Combine(logPath, "retrospy_{0}.log"), DateTime.Now.ToString("yyyy-MM-dd__HH_mm_ss")));
-
-            Console.WriteLine("\t" + @"  ___     _           ___             ___                      ");
-            Console.WriteLine("\t" + @" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
-            Console.WriteLine("\t" + @" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
-            Console.WriteLine("\t" + @" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
-            Console.WriteLine("\t" + @"                         |_|   |__/                            ");
-            Console.WriteLine("");
-
-            LogWriter.Log.Write("RetroSpy Server version " + version + ".", LogLevel.Info);
 
             try
             {
-                ConfigManager.Load();
-                //set the loglevel to system
-                LogWriter.Log.MiniumLogLevel = ConfigManager.xmlConfiguration.LogLevel;
                 //create a instance of ServerManager class
-                manager = new ServerManager();
+                Manager = new ServerManager("GPCM");
                 IsRunning = true;
             }
             catch (Exception e)
@@ -137,7 +111,7 @@ namespace PresenceConnectionManager.Application
                     switch (input)
                     {
                         case "exit":
-                            manager.StopAllServers();
+                            Manager.Dispose();
                             IsRunning = false;
                             break;
                         case "help":
@@ -152,14 +126,13 @@ namespace PresenceConnectionManager.Application
             }
             else
             {
-                // Pauses the screen
-                LogWriter.Log.Write("Server is successfully started! ", LogLevel.Info);
+                // Pauses the screen                
                 Console.WriteLine("Press ENTER to exit...");
                 Console.ReadLine();
             }
             #region Program Dispose
             LogWriter.Log.Write("Goodbye!", LogLevel.Info);
-            manager?.Dispose();
+            Manager?.Dispose();
             LogWriter.Log.Dispose();
             #endregion
 
