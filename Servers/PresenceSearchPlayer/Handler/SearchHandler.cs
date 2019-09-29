@@ -33,7 +33,7 @@ namespace PresenceSearchPlayer.Handler
                 }
                 else
                 {
-                    client.Stream.SendAsync(sendingBuffer);                  
+                    client.Send(sendingBuffer);                  
                 }
                 return;
             }
@@ -49,7 +49,7 @@ namespace PresenceSearchPlayer.Handler
                 }
                 else
                 {
-                    client.Stream.SendAsync(sendingBuffer);
+                    client.Send(sendingBuffer);
                 }
                 return;
             }
@@ -63,7 +63,7 @@ namespace PresenceSearchPlayer.Handler
                 }
                 else
                 {
-                    client.Stream.SendAsync(sendingBuffer);
+                    client.Send(sendingBuffer);
                 }
                 return;
             }

@@ -33,7 +33,7 @@ namespace PresenceSearchPlayer.Handler
             else
             {
                 sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
-                client.Stream.SendAsync(sendingBuffer);
+                client.Send(sendingBuffer);
             }
         }
 

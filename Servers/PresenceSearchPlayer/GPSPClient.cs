@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPClient :TCPClientBase, IDisposable
+    public class GPSPClient :TCPClientBase
     {    
         /// <summary>
         /// Event fired when the connection is closed

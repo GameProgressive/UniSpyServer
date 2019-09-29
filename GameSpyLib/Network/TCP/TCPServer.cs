@@ -143,8 +143,7 @@ namespace GameSpyLib.Network.TCP
 
         ~TCPServer()
         {
-            if (!Disposed)
-                Dispose();
+            Dispose(false);
         }
 
         /// <summary>
@@ -154,7 +153,6 @@ namespace GameSpyLib.Network.TCP
         public void Dispose()
         {
             Dispose(true);
-
         }
 
         protected virtual void Dispose(bool disposing)

@@ -21,7 +21,7 @@ namespace ServerBrowser
         /// Takes a message sent through the Stream and sends back a respose
         /// </summary>
         /// <param name="message"></param>
-        public static void ParseRequest(SBClient client,string message)
+        public static void ParseRequest(SBClient client, string message)
         {
             string[] data = message.Split(new char[] { '\x00' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -31,15 +31,14 @@ namespace ServerBrowser
             string[] fields = data[3].Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Send the encrypted serverlist to the client
-            byte[] unencryptedServerList = PackServerList(client,filter, fields);
-            client.Stream.SendAsync(
-                Enctypex.Encode(
+            byte[] unencryptedServerList = PackServerList(client, filter, fields);
+            string sendingBuffer = Encoding.UTF8.GetString(Enctypex.Encode(
                     Encoding.UTF8.GetBytes("hW6m9a"), // Battlfield 2 Handoff Key
                     Encoding.UTF8.GetBytes(validate),
                     unencryptedServerList,
-                    unencryptedServerList.LongLength
-                )
-            );
+                    unencryptedServerList.LongLength)
+                );
+            client.Send(sendingBuffer);
         }
 
         /// <summary>
@@ -48,7 +47,7 @@ namespace ServerBrowser
         /// <param name="filter"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        private static byte[] PackServerList(SBClient client,string filter, string[] fields)
+        private static byte[] PackServerList(SBClient client, string filter, string[] fields)
         {
             IPEndPoint remoteEndPoint = ((IPEndPoint)client.Stream.RemoteEndPoint);
 

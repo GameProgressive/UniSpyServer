@@ -31,9 +31,9 @@ namespace PresenceConnectionManager.Handler
             @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
             );*/
             
-            client.Stream.SendAsync(@"\bdy\1\list\13\final\");
-            client.Stream.SendAsync(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
-            client.Stream.SendAsync(@"\bm\100\f\13\msg\1|signed|1");
+            client.Send(@"\bdy\1\list\13\final\");
+            client.Send(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
+            client.Send(@"\bm\100\f\13\msg\1|signed|1");
 
             return;
            
@@ -48,7 +48,7 @@ namespace PresenceConnectionManager.Handler
                 profileidArray += pids[i].ToString();
             }
             sendingBuffer = string.Format(@"\bdy\{0}\list\{1}\final\", numBuddies,profileidArray);
-            client.Stream.SendAsync(sendingBuffer);
+            client.Send(sendingBuffer);
             
 
         }

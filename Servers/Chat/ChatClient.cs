@@ -8,23 +8,8 @@ using GameSpyLib.Network.TCP;
 
 namespace Chat
 {
-    public class ChatClient : IDisposable
+    public class ChatClient : TCPClientBase
     {
-        /// <summary>
-        /// A unqie identifier for this connection
-        /// </summary>
-        public long ConnectionID;
-
-        /// <summary>
-        /// Indicates whether this object is disposed
-        /// </summary>
-        public bool Disposed { get; protected set; } = false;
-
-        /// <summary>
-        /// The clients socket network stream
-        /// </summary>
-        public TCPStream Stream { get; set; }
-
         /// <summary>
         /// Event fired when the connection is closed
         /// </summary>
@@ -34,10 +19,10 @@ namespace Chat
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public ChatClient(TCPStream stream, long connectionId)
+        public ChatClient(TCPStream stream, long connectionid) : base(stream, connectionid)
         {
             // Generate a unique name for this connection
-            ConnectionID = connectionId;
+            ConnectionID = connectionid;
 
             // Init a new client stream class
             Stream = stream;
@@ -57,60 +42,65 @@ namespace Chat
         /// </summary>
         ~ChatClient()
         {
-            if (!Disposed)
-                Dispose();
+                Dispose(false);
         }
 
-        public void Dispose()
-        {
-            // Only dispose once
-            if (Disposed) return;
-            Dispose(false);
-        }
 
         /// <summary>
         /// Dispose method to be called by the server
         /// </summary>
-        public void Dispose(bool DisposeEventArgs = false)
+        protected override void Dispose(bool disposing)
         {
             // Only dispose once
             if (Disposed) return;
 
             try
             {
-                Stream.OnDisconnected -= Dispose;
-                //determine whether gamespy request is finished
-                Stream.IsMessageFinished -= IsMessageFinished;
-                // Read client message, and parse it into key value pairs
-                Stream.OnDataReceived -= ProcessData;
-                // If connection is still alive, disconnect user
+                if(disposing)
+                {
+                    Stream.OnDisconnected -= Dispose;
+                    //determine whether gamespy request is finished
+                    Stream.IsMessageFinished -= IsMessageFinished;
+                    // Read client message, and parse it into key value pairs
+                    Stream.OnDataReceived -= ProcessData;
+                    // If connection is still alive, disconnect user
+                }
                 if (!Stream.SocketClosed)
-                    Stream.Close(DisposeEventArgs);
+                    Stream.Close(true);
             }
             catch { }
-
-
             // Call disconnect event
             OnDisconnect?.Invoke(this);
 
             Disposed = true;
-        }
-        private bool IsMessageFinished(string message)
-        {
-            return true;
         }
         /// <summary>
         /// This function is fired when data is received from a stream
         /// </summary>
         /// <param name="stream">The stream that sended the data</param>
         /// <param name="message">The message the stream sended</param>
-        protected void ProcessData(string data)
+        protected override void ProcessData(string message)
         {
-            string[] temp = data.Trim(' ').Split(' ');
+            string[] temp = message.Trim(' ').Split(' ');
 
             //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Error);
             //Stream.SendAsync("PING capricorn.goes.here :123456");
             ChatHandler.Crypt(this, temp);
+        }
+
+        public override void Send(string sendingBuffer)
+        {
+            Stream.SendAsync(sendingBuffer);
+        }
+
+        public override void SendServerChallenge(uint serverID)
+        {
+            //no challenge on Chat server
+        }
+
+        protected override void ClientDisconnected()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace PresenceConnectionManager.Handler
             {
                  RegisterNickQuery.UpdateUniquenick(dict);              
                     sendingBuffer = @"\rn\final\";
-                    client.Stream.SendAsync(sendingBuffer);              
+                    client.Send(sendingBuffer);              
             } 
             catch (Exception e)
             {

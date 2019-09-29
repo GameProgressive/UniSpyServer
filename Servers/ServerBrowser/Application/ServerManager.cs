@@ -24,6 +24,10 @@ namespace ServerBrowser
             Create();
 
         }
+        public ServerManager(string serverName)
+        { 
+        
+        }
 
         /// <summary>
         /// Default deconstructor
@@ -112,12 +116,6 @@ namespace ServerBrowser
         /// <param name="cfg">The configuration of the specific server to run</param>
         public void StartServer(ServerConfiguration cfg)
         {
-            //if (cfg.Disabled)
-            //    return;            
-            //LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
-            //LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
-
-
             switch (cfg.Name)
             {
                 case "SB":

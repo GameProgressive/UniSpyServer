@@ -64,7 +64,7 @@ namespace Chat
 
                 // Disconnected all connected clients
                 foreach (ChatClient c in Clients.Values)
-                    c.Dispose(true);
+                    c.Dispose();
 
                 // clear clients
                 Clients.Clear();

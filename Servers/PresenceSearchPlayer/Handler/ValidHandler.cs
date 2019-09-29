@@ -28,15 +28,15 @@ namespace PresenceSearchPlayer.Handler
                 if (GameSpyUtils.IsEmailFormatCorrect(dict["email"]))
                 {
                     if (ValidQuery.IsEmailValid(dict))
-                        client.Stream.SendAsync(@"\vr\1\final\");
+                        client.Send(@"\vr\1\final\");
                     else
-                        client.Stream.SendAsync(@"\vr\0\final\");
+                        client.Send(@"\vr\0\final\");
 
                     client.Stream.Close();
                 }
                 else
                 {
-                    client.Stream.SendAsync(@"\vr\0\final\");
+                    client.Send(@"\vr\0\final\");
                     client.Stream.Close();
                 }
 

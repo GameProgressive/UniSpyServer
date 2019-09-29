@@ -32,7 +32,7 @@ namespace PresenceSearchPlayer.Handler
 
             sendingBuffer += @"oldone\final\";
 
-            client.Stream.SendAsync(sendingBuffer);
+            client.Send(sendingBuffer);
 
 
 

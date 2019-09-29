@@ -90,11 +90,10 @@ namespace GameSpyLib.Network.TCP
             if (disposing)
             {
                 //wirte dispose method for child class
-                if (!Stream.SocketClosed)
-                    Stream.Close(true);
             }
             //dispose unmanaged resources
-
+            if (!Stream.SocketClosed)
+                Stream.Close(true);
             Disposed = true;
         }
 

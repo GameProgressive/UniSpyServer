@@ -17,7 +17,7 @@ namespace PresenceSearchPlayer.Handler
                 {
                     sendingBuffer = string.Format(@"\psr\status\{0}\nick\{1}\statuscode\{2}\final\",
                         temp[0]["status"], temp[0]["nick"], temp[0]["statuscode"]);
-                    client.Stream.SendAsync(sendingBuffer);
+                    client.Send(sendingBuffer);
                 }
                 else
                 {

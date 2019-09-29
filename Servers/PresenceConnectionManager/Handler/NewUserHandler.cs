@@ -29,7 +29,7 @@ namespace PresenceConnectionManager.Handler
             if (error != GPErrorCode.NoError)
             {
                 sendingBuffer = string.Format(@"\nur\{0}\final\", (int)error);
-                client.Stream.SendAsync(sendingBuffer);
+                client.Send(sendingBuffer);
                 return;
             }
 
@@ -45,7 +45,8 @@ namespace PresenceConnectionManager.Handler
             }
             else
             {
-                client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", profileid);
+                sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", profileid);
+                client.Send(sendingBuffer);
             }
 
         }

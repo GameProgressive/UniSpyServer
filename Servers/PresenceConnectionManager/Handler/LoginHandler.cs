@@ -123,7 +123,7 @@ namespace PresenceConnectionManager.Handler
                         GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex)
                         );
                     //Send response to client
-                    client.Stream.SendAsync(sendingBuffer);
+                    client.Send(sendingBuffer);
 
                     // Log Incoming Connections
                     //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] {1} - {2} - {3}", client.Stream.ServerName, client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, RemoteEndPoint);
@@ -144,7 +144,7 @@ namespace PresenceConnectionManager.Handler
                     // Log Incoming Connection
                     client.ToLog(LogLevel.Info, "Login", "Failed", "{0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
                     // Password is incorrect with database value.
-                    client.Stream.SendAsync(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
+                    client.Send(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
                     client.DisconnectByReason(DisconnectReason.InvalidPassword);
                 }
             }

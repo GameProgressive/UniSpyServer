@@ -46,7 +46,7 @@ namespace ServerBrowser
 
             // Disconnected all connected clients
             foreach (SBClient client in Clients.Values)
-                client.Dispose(true);
+                client.Dispose();
 
             // Update Connected Clients in the Database
             Clients.Clear();
