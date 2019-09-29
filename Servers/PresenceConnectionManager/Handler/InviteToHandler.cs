@@ -14,7 +14,7 @@ namespace PresenceConnectionManager.Handler
            GPErrorCode error =  IsContainAllKeys(recv);
             if (error != GPErrorCode.NoError)
             {
-                GameSpyLib.Common.GameSpyUtils.SendGPError(client.Stream, error, "Parsing error in request");
+                GameSpyLib.Common.GameSpyUtils.SendGPError(client, error, "Parsing error in request");
             }
 
 

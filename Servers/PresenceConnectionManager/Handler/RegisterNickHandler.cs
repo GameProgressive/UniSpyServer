@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Handler
             GPErrorCode error = IsContainAllKeys(dict);
             if(error!=GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client.Stream,error,"Parsing error");
+                GameSpyUtils.SendGPError(client,error,"Parsing error");
                 return;
             }
             string sendingBuffer;

@@ -11,6 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common files", "Common file
 		Servers\QueryReport\GeoLite2-Country.mmdb = Servers\QueryReport\GeoLite2-Country.mmdb
 		Common files\RetroSpy.sql = Common files\RetroSpy.sql
 		Common files\retrospy_full.sql = Common files\retrospy_full.sql
+		Common files\RetroSpy_Logo.ico = Common files\RetroSpy_Logo.ico
 		Common files\RetroSpyServer.xml = Common files\RetroSpyServer.xml
 		Common files\sqlite_retrospy_server.db = Common files\sqlite_retrospy_server.db
 	EndProjectSection

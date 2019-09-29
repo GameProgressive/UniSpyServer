@@ -22,25 +22,25 @@ namespace PresenceConnectionManager.Handler
 
             if (!recv.ContainsKey("profileid"))
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             uint targetPID, messID, sesskey;
             if (!uint.TryParse(recv["profileid"], out targetPID))
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             if (!uint.TryParse(recv["id"], out messID))
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
             if (!uint.TryParse(recv["sesskey"], out sesskey))
             {
-                GameSpyUtils.SendGPError(client.Stream, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -53,7 +53,7 @@ namespace PresenceConnectionManager.Handler
                 GPCMPlayerInfo playerInfo = GetProfileQuery.GetProfileInfo(targetPID);
                 if (playerInfo == null)
                 {
-                    GameSpyUtils.SendGPError(client.Stream, 4, "Unable to get profile information.");
+                    GameSpyUtils.SendGPError(client, 4, "Unable to get profile information.");
                     return;
                 }
 
@@ -218,7 +218,7 @@ namespace PresenceConnectionManager.Handler
                 if (!client.ProfileSent) client.ProfileSent = true;
             }
 
-            client.Stream.SendAsync(datatoSend);
+            client.Send(datatoSend);
         }
     }
 }

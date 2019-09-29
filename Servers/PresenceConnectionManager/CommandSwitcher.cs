@@ -56,7 +56,7 @@ namespace PresenceConnectionManager
                         break;
                     default:
                         LogWriter.Log.Write("[GPCM] received unknown data " + command, LogLevel.Debug);
-                        GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "An invalid request was sended.");
+                        GameSpyUtils.SendGPError(client, GPErrorCode.General, "An invalid request was sended.");
                         break;
                 }
             }

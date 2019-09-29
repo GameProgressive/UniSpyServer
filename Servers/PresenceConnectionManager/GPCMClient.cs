@@ -152,7 +152,7 @@ namespace PresenceConnectionManager
         {
             if (message[0] != '\\')
             {
-                GameSpyUtils.SendGPError(Stream, GPErrorCode.General, "An invalid request was sended.");
+                GameSpyUtils.SendGPError(this, GPErrorCode.General, "An invalid request was sended.");
                 return;
             }
             string[] commands = message.Split("\\final\\");

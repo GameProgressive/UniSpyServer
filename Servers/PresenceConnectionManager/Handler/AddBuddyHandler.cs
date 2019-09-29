@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler
         public static void Addfriends(GPCMClient client,Dictionary<string,string> recv)
         {
             GameSpyUtils.PrintReceivedGPDictToLogger("profilelist", recv);
-            GameSpyUtils.SendGPError(client.Stream, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.SendGPError(client, GPErrorCode.General, "This request is not supported yet.");
         }
     }
 }

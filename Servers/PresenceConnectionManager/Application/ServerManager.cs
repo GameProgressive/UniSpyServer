@@ -17,6 +17,10 @@ namespace PresenceConnectionManager
 
         private GPCMServer gpcmServer = null;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="serverName">Server name in XML config file</param>
         public ServerManager(string serverName) : base(serverName)
         {
         }

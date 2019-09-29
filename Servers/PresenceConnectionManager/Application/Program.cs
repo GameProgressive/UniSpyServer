@@ -12,12 +12,8 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     class Program
     {
-        /// <summary>
-        /// Indicates the version of the server
-        /// </summary>
-        //public static readonly Version Version = Version.Parse(Application.ProductVersion);
-        public static readonly string version = "0.5";
 
+        
         public static string BasePath { get; protected set; }
 
         public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
@@ -91,6 +87,7 @@ namespace PresenceConnectionManager.Application
             {
                 //create a instance of ServerManager class
                 Manager = new ServerManager("GPCM");
+                Console.Title = "RetroSpy Server " + Manager.Version;
                 IsRunning = true;
             }
             catch (Exception e)

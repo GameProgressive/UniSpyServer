@@ -2,9 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
-    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <StartupObject></StartupObject>
+    <ApplicationIcon>Pictures\RetroSpy_Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
 </Project>
