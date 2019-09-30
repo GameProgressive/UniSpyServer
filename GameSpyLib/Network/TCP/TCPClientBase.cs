@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using System;
 using System.Collections.Generic;
@@ -100,6 +101,17 @@ namespace GameSpyLib.Network.TCP
         public void Dispose()
         {
             Dispose(true);
+        }
+
+        protected virtual string RequstFormatConversion(string message)
+        {
+            message = message.Replace('-', '\\');
+            int pos = message.IndexesOf("\\")[1];
+            if (message.Substring(pos, pos + 1) != "\\")
+            {
+                message = message.Insert(pos, "\\");
+            }
+            return message;
         }
     }
 

@@ -150,11 +150,15 @@ namespace PresenceConnectionManager
         /// </summary>
         protected override void ProcessData(string message)
         {
+            message = @"\login\challenge\vPDHxA0ao3zoxIoerwUXqnzOxKNwLjcr\user\retrospy@spyguy@gamespy.com\response\dfe01830be5d0aae911eb25c3e01a729\port-13075\productid\10618\gamename\fsw10hpc\namespaceid\0\sdkrevision\1\id\1\final\";
+            message = base.RequstFormatConversion(message);
+
             if (message[0] != '\\')
             {
                 GameSpyUtils.SendGPError(this, GPErrorCode.General, "An invalid request was sended.");
                 return;
             }
+            
             string[] commands = message.Split("\\final\\");
 
             foreach (string command in commands)
@@ -163,6 +167,7 @@ namespace PresenceConnectionManager
                     continue;
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
+               
                 Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 
                 CommandSwitcher.Switch(this, dict, OnSuccessfulLogin, OnStatusChanged);
@@ -240,6 +245,6 @@ namespace PresenceConnectionManager
         //{
         //    return (int)PlayerInfo.PlayerId;
         //}
-
+       
     }
 }
