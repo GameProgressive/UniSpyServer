@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Application
     class Program
     {
 
-        
+        public static readonly string ServerName = "GPCM";
         public static string BasePath { get; protected set; }
 
         public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
@@ -86,7 +86,7 @@ namespace PresenceConnectionManager.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager("GPCM");
+                Manager = new ServerManager(ServerName);
                 Console.Title = "RetroSpy Server " + Manager.Version;
                 IsRunning = true;
             }

@@ -145,6 +145,10 @@ namespace PresenceSearchPlayer.DatabaseQuery
             {
                 GPSPServer.DB.Execute("UPDATE namespace SET port = @P0 WHERE id = @P1", dict["port"], id);
             }
+            if(dict.ContainsKey("cdkeyenc"))
+            {
+                GPSPServer.DB.Execute("UPDATE namepace SET cdkeyenc = @P0 WHERE id = @P1", dict["cdkeyenc"], id);
+            }
         }
     }
 }
