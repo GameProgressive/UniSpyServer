@@ -150,7 +150,7 @@ namespace PresenceConnectionManager
         /// </summary>
         protected override void ProcessData(string message)
         {
-            message = @"\login\challenge\vPDHxA0ao3zoxIoerwUXqnzOxKNwLjcr\user\retrospy@spyguy@gamespy.com\response\dfe01830be5d0aae911eb25c3e01a729\port-13075\productid\10618\gamename\fsw10hpc\namespaceid\0\sdkrevision\1\id\1\final\";
+            //message = @"\login\challenge\vPDHxA0ao3zoxIoerwUXqnzOxKNwLjcr\user\retrospy@spyguy@gamespy.com\response\dfe01830be5d0aae911eb25c3e01a729\port-13075\productid\10618\gamename\fsw10hpc\namespaceid\0\sdkrevision\1\id\1\final\";
             message = base.RequstFormatConversion(message);
 
             if (message[0] != '\\')
