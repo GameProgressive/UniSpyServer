@@ -217,12 +217,7 @@ namespace GameSpyLib.Common
             {
                 return false;
             }
-
-
-
-
             //return email.Any(ch => (!char.IsLetterOrDigit(ch) && ch != '@' && ch != '.'));
-
         }
         /// <summary>
         /// Check is the format of nick or uniquenick are correct

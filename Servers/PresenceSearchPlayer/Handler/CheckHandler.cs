@@ -19,18 +19,23 @@ namespace PresenceSearchPlayer.Handler
             //\cur\pid\<pid>\final
             //check is request recieved correct and convert password into our MD5 type
             bool isContiansAllKey = dict.ContainsKey("nick") && dict.ContainsKey("email") && (dict.ContainsKey("passenc") || dict.ContainsKey("pass"));
-            bool isEmailCorrect = GameSpyUtils.IsEmailFormatCorrect(dict["email"]);
-
-            if (!isContiansAllKey&&! isEmailCorrect)
+            if (!isContiansAllKey )
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "Parsing error, please check input");
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "Parsing error, please check input.");
                 return;
             }
+            bool isEmailCorrect = GameSpyUtils.IsEmailFormatCorrect(dict["email"]);
+            if (!isEmailCorrect)
+            {
+                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "Email format not correct.");
+                return;
+            }
+
 
             //Search pid in our database and return whether exist
             string sendingBuffer;
             int profileid = CheckQuery.GetProfileidFromNickEmailPassword(dict);
-            if (profileid != 1)
+            if (profileid != -1)
             {                
                 sendingBuffer = string.Format(@"\cur\0\pid\{0}\final\", profileid);
                 client.Stream.SendAsync(sendingBuffer);

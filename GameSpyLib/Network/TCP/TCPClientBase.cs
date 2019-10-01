@@ -107,7 +107,9 @@ namespace GameSpyLib.Network.TCP
         {
             message = message.Replace('-', '\\');
             int pos = message.IndexesOf("\\")[1];
-            if (message.Substring(pos, pos + 1) != "\\")
+            string temp = message.Substring(pos, 2);
+            
+            if (message.Substring(pos, 2) != "\\\\")
             {
                 message = message.Insert(pos, "\\");
             }

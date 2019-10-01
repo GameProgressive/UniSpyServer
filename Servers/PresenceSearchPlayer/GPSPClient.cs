@@ -84,6 +84,8 @@ namespace PresenceSearchPlayer
         /// <param name="message">The message the stream sended</param>
         protected override void ProcessData(string message)
         {
+            //message=@"\check\nick\FridiNaTor\email\fridij2007@icloud.com\pass\Clockwor1\gamename\fsw10hpc\final\";
+            message = RequstFormatConversion(message);
             if (message[0] != '\\')
             {
                 GameSpyUtils.SendGPError(this, GPErrorCode.Parse, "An invalid request was sended.");
