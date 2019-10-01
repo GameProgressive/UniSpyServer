@@ -18,7 +18,7 @@ namespace Chat
             string serverKey = GenerateRandomString(17, StringType.AlphaNumeric);
             string clientKey = GenerateRandomString(17, StringType.AlphaNumeric); 
             string sendingBuffer = string.Format(":s {0} * {1}{2}\r\n", 705,serverKey,clientKey);
-            client.Stream.SendAsync(sendingBuffer);
+            client.Send(sendingBuffer);
         }
 
         internal static void WallOps(ChatClient chatClient, string[] recieved)

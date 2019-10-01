@@ -1,7 +1,6 @@
-﻿using GameSpyLib.Network;
-using GameSpyLib.Network.TCP;
+﻿using GameSpyLib.Network.TCP;
 using QueryReport;
-using QueryReport.GameServerInfo;
+using QueryReport.DedicatedServerData;
 using System;
 using System.Linq;
 
@@ -55,22 +54,19 @@ namespace ServerBrowser
             if (Disposed) return;
 
             // Preapare to be unloaded from memory
+            if (disposing)
+            {
+                Stream.OnDisconnected -= ClientDisconnected;
+                Stream.OnDataReceived -= ProcessData;
+                // If connection is still alive, disconnect user
+                if (!Stream.SocketClosed)
+                    Stream.Dispose();
 
-
-            // If connection is still alive, disconnect user
-            if (!Stream.SocketClosed)
-                Stream.Close(true);
-
-            // Call disconnect event
-            if (OnDisconnect != null)
-                OnDisconnect(this);
-
+                // Call disconnect event
+                if (OnDisconnect != null)
+                    OnDisconnect(this);
+            }
             Disposed = true;
-        }
-
-        public override void Send(string sendingBuffer)
-        {
-            Stream.SendAsync(sendingBuffer);
         }
 
         public override void SendServerChallenge(uint serverID)

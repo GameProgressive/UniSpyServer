@@ -199,10 +199,12 @@ namespace GameSpyLib.Common
             }
             catch (RegexMatchTimeoutException e)
             {
+                LogWriter.Log.WriteException(e);
                 return false;
             }
             catch (ArgumentException e)
             {
+                LogWriter.Log.WriteException(e);
                 return false;
             }
 

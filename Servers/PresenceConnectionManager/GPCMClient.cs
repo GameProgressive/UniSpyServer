@@ -113,7 +113,7 @@ namespace PresenceConnectionManager
                     Stream.OnDisconnected -= ClientDisconnected;
 
                     if (!Stream.SocketClosed)
-                        Stream.Close(true);
+                        Stream.Dispose();
                 }
                 //if (PlayerInfo != null)
                 //{

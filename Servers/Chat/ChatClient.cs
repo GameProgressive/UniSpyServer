@@ -66,7 +66,7 @@ namespace Chat
                     // If connection is still alive, disconnect user
                 }
                 if (!Stream.SocketClosed)
-                    Stream.Close(true);
+                    Stream.Dispose();
             }
             catch { }
             // Call disconnect event
@@ -86,11 +86,6 @@ namespace Chat
             //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Error);
             //Stream.SendAsync("PING capricorn.goes.here :123456");
             ChatHandler.Crypt(this, temp);
-        }
-
-        public override void Send(string sendingBuffer)
-        {
-            Stream.SendAsync(sendingBuffer);
         }
 
         public override void SendServerChallenge(uint serverID)

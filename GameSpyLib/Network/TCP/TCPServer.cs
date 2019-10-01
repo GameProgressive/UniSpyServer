@@ -206,15 +206,15 @@ namespace GameSpyLib.Network.TCP
         /// and free's up another slot for a new client to connect
         /// </summary>
         /// <param name="Stream">The GamespyTcpStream object that is being released.</param>
-        public void Release(TCPStream Stream)
+        public void Release(TCPStream stream)
         {
             // If the stream has been released, then we stop here
-            if (!IsListening || Stream.Released) return;
+            if (!IsListening || stream.Released) return;
 
             // Make sure the connection is closed properly
-            if (!Stream.SocketClosed)
+            if (!stream.SocketClosed)
             {
-                Stream.Close();
+                stream.Dispose();
                 return;
             }
 
@@ -224,11 +224,11 @@ namespace GameSpyLib.Network.TCP
 
             // If we are still registered for this event, then the EventArgs should
             // NEVER be disposed here, or we have an error to fix
-            if (Stream.DisposedEventArgs)
+            if (stream.Disposed)
             {
                 // Dispose old buffer tokens
-                BufferManager.ReleaseBuffer(Stream.ReadEventArgs);
-                BufferManager.ReleaseBuffer(Stream.WriteEventArgs);
+                BufferManager.ReleaseBuffer(stream.ReadEventArgs);
+                BufferManager.ReleaseBuffer(stream.WriteEventArgs);
 
                 // Create new Read Event Args
                 SocketAsyncEventArgs SockArgR = new SocketAsyncEventArgs();
@@ -243,12 +243,12 @@ namespace GameSpyLib.Network.TCP
             else
             {
                 // Set null's
-                Stream.ReadEventArgs.AcceptSocket = null;
-                Stream.WriteEventArgs.AcceptSocket = null;
+                stream.ReadEventArgs.AcceptSocket = null;
+                stream.WriteEventArgs.AcceptSocket = null;
 
                 // Get our ReadWrite AsyncEvent object back
-                SocketReadWritePool.Push(Stream.ReadEventArgs);
-                SocketReadWritePool.Push(Stream.WriteEventArgs);
+                SocketReadWritePool.Push(stream.ReadEventArgs);
+                SocketReadWritePool.Push(stream.WriteEventArgs);
             }
 
             // Now that we have another set of AsyncEventArgs, we can

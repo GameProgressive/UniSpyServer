@@ -116,8 +116,9 @@ namespace Chat
             /// <param name="sender">The client object whom is disconnecting</param>
             private void ClientDisconnected(ChatClient client)
             {
-                // Release this stream's AsyncEventArgs to the object pool
-                Release(client.Stream);
+            // Release this stream's AsyncEventArgs to the object pool
+            //Release(client.Stream);
+            client.Dispose();
                 if (Clients.TryRemove(client.ConnectionID, out client) && !client.Disposed)
                     client.Dispose();
             }

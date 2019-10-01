@@ -18,7 +18,7 @@ namespace GameSpyLib.Network.TCP
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        protected TCPStream Stream;
+        public TCPStream Stream { get; protected set; }
 
         /// <summary>
         /// The Servers challange key, sent when the client first connects.
@@ -83,7 +83,14 @@ namespace GameSpyLib.Network.TCP
 
         public abstract void SendServerChallenge(uint serverID);
 
+
+
         protected abstract void ClientDisconnected();
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -92,17 +99,14 @@ namespace GameSpyLib.Network.TCP
             if (disposing)
             {
                 //wirte dispose method for child class
+                if (!Stream.SocketClosed)
+                    Stream.Dispose();
             }
             //dispose unmanaged resources
-            if (!Stream.SocketClosed)
-                Stream.Close(true);
+
             Disposed = true;
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-        }
 
         protected virtual string RequstFormatConversion(string message)
         {

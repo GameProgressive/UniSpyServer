@@ -65,7 +65,7 @@ namespace PresenceSearchPlayer
                     // If connection is still alive, disconnect user
                     Stream.OnDisconnected -= ClientDisconnected;
                     if (!Stream.SocketClosed)
-                        Stream.Close(true);
+                        Stream.Dispose();
                 }               
             }
             catch { }
@@ -107,14 +107,10 @@ namespace PresenceSearchPlayer
             }
         }
 
-        public override void Send(string sendingBuffer)
-        {
-            Stream.SendAsync(sendingBuffer);
-        }
 
         public override void SendServerChallenge(uint serverID)
         {
-            throw new NotImplementedException();
+            //
         }
 
         protected override void ClientDisconnected()

@@ -85,7 +85,7 @@ namespace GameSpyLib.Network.TCP
         /// Indicates whether the EventArgs objects were disposed by request
         /// <remarks>This should NEVER be true unless we are shutting down the server!!!</remarks>
         /// </summary>
-        public bool DisposedEventArgs { get; protected set; }
+        public bool Disposed { get; protected set; }
 
         /// <summary>
         /// Event fired when a completed message has been received
@@ -125,20 +125,18 @@ namespace GameSpyLib.Network.TCP
             ReadEventArgs = ReadArgs;
             WriteEventArgs = WritetArgs;
             SocketClosed = false;
-            DisposedEventArgs = false;
+            Disposed = false;
             Released = false;
         }
 
         ~TCPStream()
         {
-            if (!SocketClosed)
-                Close();
+            Dispose(false);
         }
 
         public void Dispose()
         {
-            if (!SocketClosed)
-                Close();
+            Dispose(true);
         }
 
         /// <summary>
@@ -182,11 +180,11 @@ namespace GameSpyLib.Network.TCP
         /// If true, the EventArg objects will be disposed instead of being re-added to 
         /// the IO pool. This should NEVER be set to true unless we are shutting down the server!
         /// </param>
-        public void Close(bool DisposeEventArgs = false)
+        private void Dispose(bool disposing)
         {
             // Set that the socket is being closed once, and properly
             if (SocketClosed) return;
-            SocketClosed = true;
+
 
             // Do a shutdown before you close the socket
             try
@@ -206,11 +204,11 @@ namespace GameSpyLib.Network.TCP
             }
 
             // If we need to dispose out EventArgs
-            if (DisposeEventArgs)
+            if (disposing)
             {
                 ReadEventArgs.Dispose();
                 WriteEventArgs.Dispose();
-                DisposedEventArgs = true;
+                Disposed = true;
             }
             else
             {
@@ -225,6 +223,7 @@ namespace GameSpyLib.Network.TCP
                 DisconnectEventCalled = true;
                 OnDisconnected();
             }
+            SocketClosed = true;
         }
 
         /// <summary>
@@ -244,7 +243,7 @@ namespace GameSpyLib.Network.TCP
             // Force disconnect (Specifically for Gpsp, whom will spam empty connections)
             if (ReadEventArgs.BytesTransferred == 0)
             {
-                Close();
+                Dispose();
                 return;
             }
             else
@@ -282,7 +281,7 @@ namespace GameSpyLib.Network.TCP
                 {
                     // Looks like the client is sending a lot of data that is not valid
                     LogWriter.Log.Write(LogLevel.Info, "TCP stream {0} is sending a lot of data! Connection closed.",  RemoteEndPoint);
-                    Close(false);
+                    Dispose(false);
                 }
             }
 
@@ -390,7 +389,7 @@ namespace GameSpyLib.Network.TCP
             catch (ObjectDisposedException)
             {
                 WaitingOnAsync = false;
-                Close();
+                Dispose();
             }
 
             // If we wont raise the IO event, that means a connection sent the messsage syncronously
@@ -400,7 +399,7 @@ namespace GameSpyLib.Network.TCP
                 // First, Check for a closed conenction
                 if (WriteEventArgs.BytesTransferred == 0 || WriteEventArgs.SocketError != SocketError.Success)
                 {
-                    Close();
+                    Dispose();
                     return;
                 }
                 // Append to the offset
@@ -419,7 +418,7 @@ namespace GameSpyLib.Network.TCP
             if (socketError != SocketError.Success)
             {
                 if (!SocketClosed)
-                    Close();
+                    Dispose();
             }
 
             /* Error Handle Here
@@ -458,7 +457,7 @@ namespace GameSpyLib.Network.TCP
                     // Check for a closed conenction
                     if (e.BytesTransferred == 0 || WriteEventArgs.SocketError != SocketError.Success)
                     {
-                        Close();
+                        Dispose();
                         return;
                     }
 

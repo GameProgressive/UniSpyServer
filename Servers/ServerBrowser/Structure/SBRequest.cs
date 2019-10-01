@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ServerBrowser.Structures
+namespace ServerBrowser.Structure
 {
     public class SBRequest
     {

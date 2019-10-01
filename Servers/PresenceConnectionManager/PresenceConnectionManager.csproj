@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <StartupObject></StartupObject>
-    <ApplicationIcon>RetroSpy_Logo.ico</ApplicationIcon>
+    <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
     <NoWin32Manifest>true</NoWin32Manifest>
   </PropertyGroup>
 

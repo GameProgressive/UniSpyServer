@@ -26,7 +26,7 @@ namespace ServerBrowser
         /// </summary>
         private static ConcurrentDictionary<long, SBClient> Clients = new ConcurrentDictionary<long, SBClient>();
 
-        public SBServer(string serverName,IPEndPoint bindTo,int MaxConnections) : base(serverName,bindTo, MaxConnections)
+        public SBServer(string serverName, DatabaseDriver driver, IPEndPoint bindTo,int MaxConnections) : base(serverName,bindTo, MaxConnections)
         {
             // Start accepting connections
             SBClient.OnDisconnect += ClientDisconnected;
@@ -111,8 +111,7 @@ namespace ServerBrowser
             try
             {
                 // Release this stream's AsyncEventArgs to the object pool
-                base.Release(client.Stream);
-
+               Release(client.Stream);
                 // Remove client from online list
                 if (Clients.TryRemove(client.ConnectionID, out client) && !client.Disposed)
                     client.Dispose();

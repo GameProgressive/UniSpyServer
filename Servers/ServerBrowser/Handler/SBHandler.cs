@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Extensions;
-using QueryReport.GameServerInfo;
-using ServerBrowser;
+using QueryReport.DedicatedServerData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +48,7 @@ namespace ServerBrowser
         /// <returns></returns>
         private static byte[] PackServerList(SBClient client, string filter, string[] fields)
         {
-            IPEndPoint remoteEndPoint = ((IPEndPoint)client.Stream.RemoteEndPoint);
+            IPEndPoint remoteEndPoint = ((IPEndPoint)client.RemoteEndPoint);
 
             byte fieldsCount = (byte)fields.Length;
             byte[] ipBytes = remoteEndPoint.Address.GetAddressBytes();

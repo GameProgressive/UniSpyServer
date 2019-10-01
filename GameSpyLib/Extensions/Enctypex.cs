@@ -293,7 +293,7 @@ namespace GameSpyLib.Extensions
             string enc1 = "GameSpy3D";// '\0','a','m','e','S','p','y','3','D','\0'
             string enc2 = "Industries";// { '\0', 'n', 'd', 'u', 's', 't', 'r', 'i', 'e', 's', '\0' }
             string enc3 = "ProjectAphex";// { '\0','r','o','j','e','c','t','A','p','h','e','x','\0'}
-            string statsfile = "gstats.dat";
+            //string statsfile = "gstats.dat";
 
             int length = plaintext.Length;
             char[] data = plaintext.ToCharArray();

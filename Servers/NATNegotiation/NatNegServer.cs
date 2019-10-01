@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Database;
+using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using GameSpyLib.Network.UDP;
 using NATNegotiation.Enumerator;
@@ -28,7 +29,7 @@ namespace NATNegotiation
         /// ,maybe NatNeg server dose not need connected to database.</param>
         /// <param name="bindTo"></param>
         /// <param name="MaxConnections"></param>
-        public NatNegServer(string serverName, IPEndPoint bindTo, int MaxConnections) : base(serverName, bindTo, MaxConnections)
+        public NatNegServer(string serverName, DatabaseDriver databaseDriver,IPEndPoint bindTo, int MaxConnections) : base(serverName, bindTo, MaxConnections)
         {
             StartAcceptAsync();
         }

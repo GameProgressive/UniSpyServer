@@ -15,7 +15,7 @@ namespace PresenceConnectionManager
     {
         private DatabaseDriver databaseDriver = null;
 
-        private GPCMServer gpcmServer = null;
+        private GPCMServer Server = null;
 
         /// <summary>
         /// Constructor
@@ -33,7 +33,7 @@ namespace PresenceConnectionManager
 
         public override bool IsServerRunning()
         {
-            return gpcmServer != null && !gpcmServer.Disposed;
+            return Server != null && !Server.Disposed;
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace PresenceConnectionManager
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":
-                gpcmServer = new GPCMServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
+                Server = new GPCMServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
             }
         }
@@ -60,8 +60,8 @@ namespace PresenceConnectionManager
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to stop</param>
         protected override void StopServer()
-        {            
-                gpcmServer?.Dispose();
+        {
+            Server?.Dispose();
         }
     }
 }

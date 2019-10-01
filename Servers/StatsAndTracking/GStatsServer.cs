@@ -58,7 +58,7 @@ namespace StatsAndTracking
 
             // Disconnected all connected clients
             foreach (GStatsClient c in Clients.Values)
-                c.Dispose(true);
+                c.Dispose();
 
             // clear clients
             Clients.Clear();
@@ -94,7 +94,7 @@ namespace StatsAndTracking
                 // Convert the TcpClient to a MasterClient
                 client = new GStatsClient(stream, conid);
                 Clients.TryAdd(conid, client);
-                client.SendServerChallenge();
+                client.SendServerChallenge(1);
                 // Start receiving data
                 stream.BeginReceive();
             }
