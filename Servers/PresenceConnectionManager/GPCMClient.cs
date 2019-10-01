@@ -139,7 +139,7 @@ namespace PresenceConnectionManager
             // We send the client the challenge key
             ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
             PlayerInfo.LoginStatus = LoginStatus.Processing;
-            Stream.SendAsync(@"\lc\1\challenge\{0}\id\{1}\final\", ServerChallengeKey, serverID);
+            Send(@"\lc\1\challenge\{0}\id\{1}\final\", ServerChallengeKey, serverID);
         }
 
 
@@ -158,7 +158,7 @@ namespace PresenceConnectionManager
                 GameSpyUtils.SendGPError(this, GPErrorCode.General, "An invalid request was sended.");
                 return;
             }
-            
+
             string[] commands = message.Split("\\final\\");
 
             foreach (string command in commands)
@@ -167,7 +167,7 @@ namespace PresenceConnectionManager
                     continue;
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
-               
+
                 Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
 
                 CommandSwitcher.Switch(this, dict, OnSuccessfulLogin, OnStatusChanged);
@@ -195,21 +195,21 @@ namespace PresenceConnectionManager
         /// </remarks>
         public void DisconnectByReason(DisconnectReason reason)
         {
-           
             // Set status and log
             if (PlayerInfo.LoginStatus == LoginStatus.Completed)
             {
                 if (reason == DisconnectReason.NormalLogout)
                 {
-                    ToLog(LogLevel.Info, "Logout", "", "{0} - {1} - {2}", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint);
+                    StatusToLog("Logout", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint, Enum.GetName(typeof(DisconnectReason), reason));
                 }
                 else if (reason != DisconnectReason.ForcedServerShutdown)
                 {
-                    ToLog(
-                        LogLevel.Info,
-                        "Disconnected", "",
-                        "{0} - {1} - {2}, Code={3}",
-                        PlayerInfo.PlayerNick,
+                    //statusString = string.Format(@"[Disconnected!] Nick: {0} - PID: {1} - IP: {2} - Reason: {3}",
+                    //    PlayerInfo.PlayerNick,
+                    //    PlayerInfo.PlayerId,
+                    //    RemoteEndPoint,
+                    //    Enum.GetName(typeof(DisconnectReason), reason));
+                    StatusToLog("Disconnected", PlayerInfo.PlayerNick,
                         PlayerInfo.PlayerId,
                         RemoteEndPoint,
                         Enum.GetName(typeof(DisconnectReason), reason));
@@ -232,10 +232,13 @@ namespace PresenceConnectionManager
             return (PlayerInfo.PlayerId == other.PlayerInfo.PlayerId || PlayerInfo.PlayerNick == other.PlayerInfo.PlayerNick);
         }
 
-        public override void Send(string sendingBuffer)
+        public void StatusToLog(string status,string nick,uint pid,IPEndPoint remote,string reason)
         {
-            Stream.SendAsync(sendingBuffer);
+            string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
+            LogWriter.Log.Write(LogLevel.Info, Stream.Server.ServerName+ statusString);
         }
+
+
         //public override bool Equals(object obj)
         //{
         //    return Equals(obj as GPCMClient);
@@ -245,6 +248,6 @@ namespace PresenceConnectionManager
         //{
         //    return (int)PlayerInfo.PlayerId;
         //}
-       
+
     }
 }

@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Logging;
-using GameSpyLib.Network;
 using GameSpyLib.Network.UDP;
-using QueryReport.Structures;
+using QueryReport.Structure;
 using System;
 
 namespace QueryReport.Handler

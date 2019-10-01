@@ -124,10 +124,10 @@ namespace PresenceConnectionManager.Handler
                         );
                     //Send response to client
                     client.Send(sendingBuffer);
-
                     // Log Incoming Connections
                     //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] {1} - {2} - {3}", client.ServerName, client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, RemoteEndPoint);
-                    client.ToLog(LogLevel.Info, "Login", "Success", "Nick:{0} - Profileid:{1} - IP:{2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    //string statusString = string.Format(" [Login Success!] Nick:{0} - Profileid:{1} - IP:{2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    client.StatusToLog("Login Success", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint,null);
                     // Update status last, and call success login
                     client.PlayerInfo.LoginStatus = LoginStatus.Completed;
                     client.PlayerInfo.PlayerStatus = PlayerStatus.Online;
@@ -142,7 +142,8 @@ namespace PresenceConnectionManager.Handler
                 else
                 {
                     // Log Incoming Connection
-                    client.ToLog(LogLevel.Info, "Login", "Failed", "{0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    string statusString = string.Format(@"[Login Failed!] Nick:{0} - Profileid:{1} - IP:{2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
+                    client.ToLog(LogLevel.Info, statusString);
                     // Password is incorrect with database value.
                     client.Send(@"\error\\err\260\fatal\\errmsg\The password provided is incorrect.\id\1\final\");
                     client.DisconnectByReason(DisconnectReason.InvalidPassword);

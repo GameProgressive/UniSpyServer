@@ -344,5 +344,6 @@ namespace PresenceConnectionManager
                 Release(stream);
             }
         }
+
     }
 }

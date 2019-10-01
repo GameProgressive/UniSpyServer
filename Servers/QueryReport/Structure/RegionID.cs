@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryReport.GameServerInfo
+namespace QueryReport.Structure
 {
     public static class RegionID
     {

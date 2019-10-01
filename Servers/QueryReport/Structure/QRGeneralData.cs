@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace QueryReport.GameServerInfo
+namespace QueryReport.Structure
 {
     public class GameInfo
     {
@@ -13,11 +13,6 @@ namespace QueryReport.GameServerInfo
         public KeyData KeyData = new KeyData();
         public byte NumPushKeys;
 
-        public void SetGameInfo(byte[] recv)
-        {
-
-        }
-
     }
 
     public class KeyData
@@ -29,7 +24,7 @@ namespace QueryReport.GameServerInfo
 
     public class ModInfo
     {
-        public byte[] Name = new byte[128];
+        public string Name ;
         public byte[] Description = new byte[128];
     }
 

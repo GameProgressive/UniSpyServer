@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryReport.Structures
+namespace QueryReport.Structure
 {
     public static class QR
     {

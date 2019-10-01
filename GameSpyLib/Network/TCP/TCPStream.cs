@@ -45,7 +45,7 @@ namespace GameSpyLib.Network.TCP
         /// <summary>
         /// Contains the GamespyTcpSocket that owns this object
         /// </summary>
-        public TCPServer SocketManager { get; protected set; }
+        public TCPServer Server { get; protected set; }
 
         /// <summary>
         /// Our AsycnEventArgs object for reading data
@@ -72,7 +72,7 @@ namespace GameSpyLib.Network.TCP
         public bool SocketClosed { get; protected set; }
 
         /// <summary>
-        /// Indicates whether this stream has been released to the SocketManager
+        /// Indicates whether this stream has been released to the Server
         /// </summary>
         public bool Released { get; protected set; }
 
@@ -115,7 +115,7 @@ namespace GameSpyLib.Network.TCP
         {            
             // Store our connection
             Connection = ReadArgs.AcceptSocket;
-            SocketManager = Parent;
+            Server = Parent;
 
             // Create our IO event callbacks
             ReadArgs.Completed += IOComplete;
@@ -215,7 +215,7 @@ namespace GameSpyLib.Network.TCP
             else
             {
                 // Finally, release this stream so we can allow a new connection
-                SocketManager.Release(this);
+                Server.Release(this);
                 Released = true;
             }
 
@@ -267,7 +267,7 @@ namespace GameSpyLib.Network.TCP
                     if (IsMessageFinished.Invoke(received))
                     {
                         if (LogWriter.Log.DebugSockets)
-                            LogWriter.Log.Write(LogLevel.Debug, "{0} [Recv] TCP data: {1}" ,SocketManager.ServerName, received);
+                            LogWriter.Log.Write(LogLevel.Debug, "{0} [Recv] TCP data: {1}" ,Server.ServerName, received);
 
                         DataAttempt = 0;
 
@@ -300,7 +300,7 @@ namespace GameSpyLib.Network.TCP
             if (SocketClosed) return;
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}" , SocketManager.ServerName, message);
+                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}" , Server.ServerName, message);
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -330,7 +330,7 @@ namespace GameSpyLib.Network.TCP
             if (SocketClosed) return;
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}", SocketManager.ServerName, Encoding.UTF8.GetString(message));
+                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}", Server.ServerName, Encoding.UTF8.GetString(message));
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -473,7 +473,7 @@ namespace GameSpyLib.Network.TCP
         //public void ToLog(LogLevel level, string status, string statusinfo,string message,params object[] items)
         //{
         //    string temp1 = string.Format(message, items);
-        //    string temp2 = string.Format("{0} [{1}] {2}: {3}",SocketManager.ServerName, status,statusinfo, temp1);
+        //    string temp2 = string.Format("{0} [{1}] {2}: {3}",Server.ServerName, status,statusinfo, temp1);
         //    LogWriter.Log.Write(LogLevel.Debug, temp2);
         
     }

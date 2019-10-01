@@ -1,15 +1,13 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using GameSpyLib.Network;
 using GameSpyLib.Network.UDP;
-using QueryReport.GameServerInfo;
+using QueryReport.DedicatedServerData;
 using QueryReport.Handler;
-using QueryReport.Structures;
+using QueryReport.Structure;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace QueryReport
@@ -39,7 +37,7 @@ namespace QueryReport
         /// The Time for servers are to remain in the serverlist since the last ping.
         /// Once this value is surpassed, server is presumed offline and is removed
         /// </summary>
-        public static int ServerTTL { get; protected set; }
+        public static int ServerTTL { get; protected set; } = 30;
 
         public bool Replied = false;
 
@@ -55,7 +53,7 @@ namespace QueryReport
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
             //is busy and cant refresh the server's TTL right away
-            ServerTTL = 30;
+            
 
             // Setup timer. Remove servers who havent ping'd since ServerTTL
             PollTimer = new Timer(5000);

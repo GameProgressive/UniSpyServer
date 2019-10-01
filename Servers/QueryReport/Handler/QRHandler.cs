@@ -1,10 +1,4 @@
-﻿using GameSpyLib.Logging;
-using GameSpyLib.Network;
-using QueryReport.GameServerInfo;
-using System;
-using System.Collections.Generic;
-
-namespace QueryReport.Handler
+﻿namespace QueryReport.Handler
 {
     /// <summary>
     /// This class contians gamespy master udp server functions  which help cdkeyserver to finish the master tcp server functionality. 

@@ -53,7 +53,7 @@ namespace GameSpyLib.Network.UDP
         /// </summary>
         protected SocketAsyncEventArgsPool SocketReadWritePool;
 
-        protected UDPPacket Packet;
+        //protected UDPPacket Packet;
         
         /// <summary>
         /// Indicates whether the server is still running, and not in the process of shutting down
@@ -244,7 +244,7 @@ namespace GameSpyLib.Network.UDP
         /// </summary>
         /// <param name="packet"> the udp packet which will be send</param>
         /// <param name="message">the string that will be sended to client</param>
-        public void SendAsync(UDPPacket packet, string message)
+        protected void SendAsync(UDPPacket packet, string message)
         {            
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
@@ -315,6 +315,11 @@ namespace GameSpyLib.Network.UDP
         public virtual void Send(UDPPacket packet, byte[] message)
         {
             SendAsync(packet,message);
+        }
+        public virtual void ToLog(LogLevel level, string message, params object[] items)
+        {
+            message = ServerName + " " + message;
+            LogWriter.Log.Write(level, message, items);
         }
     }
 }

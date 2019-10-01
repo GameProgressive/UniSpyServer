@@ -8,7 +8,7 @@ using System.Text;
 
 namespace GameSpyLib.Network.TCP
 {
-    public abstract class TCPClientBase:IDisposable
+    public abstract class TCPClientBase : IDisposable
     {
         /// <summary>
         /// A unqie identifier for this connection
@@ -18,7 +18,7 @@ namespace GameSpyLib.Network.TCP
         /// <summary>
         /// The clients socket network stream
         /// </summary>
-        public TCPStream Stream { get; protected set; }
+        protected TCPStream Stream;
 
         /// <summary>
         /// The Servers challange key, sent when the client first connects.
@@ -71,18 +71,19 @@ namespace GameSpyLib.Network.TCP
         /// Send function for each server
         /// </summary>
         /// <param name="sendingBuffer"></param>
-        public abstract void Send(string sendingBuffer);
+        public virtual void Send(string sendingBuffer, params object[] items)
+        {
+            Stream.SendAsync(sendingBuffer, items);
+        }
+        public virtual void ToLog(LogLevel level, string message)
+        {
+            message = Stream.Server.ServerName + message;
+            LogWriter.Log.Write(level, message);
+        }
 
         public abstract void SendServerChallenge(uint serverID);
 
         protected abstract void ClientDisconnected();
-
-        public virtual void ToLog(LogLevel level, string status, string statusinfo, string message, params object[] items)
-        {
-            string temp1 = string.Format(message, items);
-            string temp2 = string.Format("{0} [{1}] {2}: {3}", Stream.SocketManager.ServerName, status, statusinfo, temp1);
-            LogWriter.Log.Write(LogLevel.Debug, temp2);
-        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -108,7 +109,7 @@ namespace GameSpyLib.Network.TCP
             message = message.Replace('-', '\\');
             int pos = message.IndexesOf("\\")[1];
             string temp = message.Substring(pos, 2);
-            
+
             if (message.Substring(pos, 2) != "\\\\")
             {
                 message = message.Insert(pos, "\\");

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Net;
 
-namespace QueryReport.GameServerInfo
+namespace QueryReport.DedicatedServerData
 {
-    internal class NonFilterAttribute : Attribute
+    /// <summary>
+    /// This is How BattleSpy implement the Server information
+    /// </summary>
+    public class NonFilterAttribute : Attribute
     {
     }
 

@@ -1,8 +1,6 @@
 ﻿using GameSpyLib.Database;
-using QueryReport.GameServerInfo;
+using QueryReport.DedicatedServerData;
 using System;
-using System.Collections.Generic;
-using System.Net;
 
 namespace QueryReport
 {
