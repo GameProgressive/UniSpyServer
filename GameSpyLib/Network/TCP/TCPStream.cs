@@ -197,10 +197,12 @@ namespace GameSpyLib.Network.TCP
                 // Unregister for vents
                 ReadEventArgs.Completed -= IOComplete;
                 WriteEventArgs.Completed -= IOComplete;
-
-                // Close the connection
-                Connection.Close();
-                Connection = null;
+                if (Connection != null)
+                {
+                    // Close the connection
+                    Connection.Close();
+                    Connection = null;
+                }
             }
 
             // If we need to dispose out EventArgs

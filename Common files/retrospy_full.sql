@@ -4651,14 +4651,15 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   KEY `partnerid` (`partnerid`),
   KEY `uniquenick` (`uniquenick`),
   CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 
--- Dumping data for table retrospy2.namespace: ~3 rows (approximately)
+-- Dumping data for table retrospy2.namespace: ~4 rows (approximately)
 /*!40000 ALTER TABLE `namespace` DISABLE KEYS */;
 INSERT INTO `namespace` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `sesskey`, `firewall`, `port`) VALUES
 	(20, 21, 'wormsforts', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL),
 	(21, 22, 'wf12', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL),
-	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', 19150, NULL, NULL);
+	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', 19150, NULL, NULL),
+	(41, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', 19150, NULL, NULL);
 /*!40000 ALTER TABLE `namespace` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.profiles
@@ -4708,7 +4709,7 @@ INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `statuscode`, `status`, `
 	(8, 1, 'MyCrysis', 0, 'RetroSpy', 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '91.52.99.231', 1569066920, 0),
 	(9, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(12, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
-	(13, 7, 'MyCrysis', 0, 'RetroSpy', '', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1569533714, 0),
+	(13, 7, 'MyCrysis', 0, '0', '', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1569940527, 0),
 	(14, 7, 'xiaojiuwo', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(16, 9, 'worms3d', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(21, 13, 'wormsforts', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),

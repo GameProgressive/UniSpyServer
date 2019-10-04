@@ -109,7 +109,9 @@ namespace GameSpyLib.Network.TCP
 
         protected virtual string RequstFormatConversion(string message)
         {
+            message = message.Replace(@"\-", @"\");
             message = message.Replace('-', '\\');
+
             int pos = message.IndexesOf("\\")[1];
             string temp = message.Substring(pos, 2);
 

@@ -94,10 +94,10 @@ namespace PresenceSearchPlayer.Handler
         /// <returns></returns>
         private static GPErrorCode IsLogIn(Dictionary<string, string> dict)
         {
-            if (dict["sesskey"] == "0" || dict["profileid"] == "0")
-            {
-                return GPErrorCode.General;
-            }
+            //if (dict["sesskey"] == "0" || dict["profileid"] == "0")
+            //{
+            //    return GPErrorCode.General;
+            //}
             return GPErrorCode.NoError;
         }
 
@@ -164,6 +164,11 @@ namespace PresenceSearchPlayer.Handler
             if (dict["email"] != "0")
             {
                 List<Dictionary<string, object>> temp = SearchQuery.GetProfileFromEmail(dict);
+                if (temp == null)
+                {
+                    sendingBuffer = "No match found!";
+                    return GPErrorCode.DatabaseError;
+                }
                 if (temp.Count > 0)//we have multiple profiles 
                 {
                     if (dict.ContainsKey("skip"))

@@ -84,7 +84,7 @@ namespace PresenceSearchPlayer
         /// <param name="message">The message the stream sended</param>
         protected override void ProcessData(string message)
         {
-            //message=@"\check\nick\FridiNaTor\email\fridij2007@icloud.com\pass\Clockwor1\gamename\fsw10hpc\final\";
+            message= @"\search\sesskey\0\profileid\0\namespaceid\1\email\f1racinggamev2@gmail.com\gamename\conflictsopc\final\";
             message = RequstFormatConversion(message);
             if (message[0] != '\\')
             {
