@@ -14,7 +14,6 @@ namespace PresenceConnectionManager
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private DatabaseDriver databaseDriver = null;
 
         private ChatServer Server = null;
 

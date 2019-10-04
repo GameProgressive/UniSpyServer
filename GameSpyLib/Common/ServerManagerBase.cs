@@ -15,7 +15,7 @@ namespace GameSpyLib.Common
         public string LogPath { get; protected set; }
         public string ServerName { get; protected set; }
 
-        private DatabaseDriver databaseDriver = null;
+        protected DatabaseDriver databaseDriver = null;
 
         protected bool Disposed = false;
         public ServerManagerBase(string serverName)

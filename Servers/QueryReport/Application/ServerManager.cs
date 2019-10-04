@@ -11,7 +11,7 @@ namespace QueryReport
     /// </summary>
     public class ServerManager :ServerManagerBase, IDisposable
     {
-        private DatabaseDriver databaseDriver = null;
+
 
         private QRServer Server = null;
 

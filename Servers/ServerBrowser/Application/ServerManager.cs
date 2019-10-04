@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private DatabaseDriver databaseDriver = null;
+
 
         private SBServer Server = null;
 

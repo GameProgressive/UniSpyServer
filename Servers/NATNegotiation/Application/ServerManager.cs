@@ -13,7 +13,6 @@ namespace PresenceConnectionManager
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private DatabaseDriver databaseDriver = null;
 
         private NatNegServer Server = null;
 
