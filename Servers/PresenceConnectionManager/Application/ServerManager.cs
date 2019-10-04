@@ -42,13 +42,8 @@ namespace PresenceConnectionManager
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(ServerConfiguration cfg)
         {
-            //if (cfg.Disabled)
-            //    return;            
-            //LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
-            //LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
             if (cfg.Name == ServerName)
             {
-                // case "GPCM":
                 Server = new GPCMServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
             }

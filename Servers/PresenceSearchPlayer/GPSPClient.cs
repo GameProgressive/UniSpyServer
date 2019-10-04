@@ -116,6 +116,6 @@ namespace PresenceSearchPlayer
         protected override void ClientDisconnected()
         {
             Dispose();
-        }
+        }        
     }
 }

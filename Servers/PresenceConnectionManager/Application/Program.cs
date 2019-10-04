@@ -15,7 +15,6 @@ namespace PresenceConnectionManager.Application
 
         public static readonly string ServerName = "GPCM";
         public static string BasePath { get; protected set; }
-
         public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         private static ServerManager Manager = null;
@@ -127,13 +126,10 @@ namespace PresenceConnectionManager.Application
                 Console.WriteLine("Press ENTER to exit...");
                 Console.ReadLine();
             }
-            #region Program Dispose
+
             LogWriter.Log.Write("Goodbye!", LogLevel.Info);
             Manager?.Dispose();
             LogWriter.Log.Dispose();
-            #endregion
-
-
 
         }
     }

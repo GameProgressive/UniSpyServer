@@ -84,7 +84,6 @@ namespace GameSpyLib.Network.TCP
         public abstract void SendServerChallenge(uint serverID);
 
 
-
         protected abstract void ClientDisconnected();
 
         public void Dispose()
