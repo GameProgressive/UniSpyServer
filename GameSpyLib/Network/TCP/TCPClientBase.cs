@@ -77,7 +77,7 @@ namespace GameSpyLib.Network.TCP
         }
         public virtual void ToLog(LogLevel level, string message)
         {
-            message = Stream.Server.ServerName + message;
+            message = Stream.SocketManager.ServerName + message;
             LogWriter.Log.Write(level, message);
         }
 

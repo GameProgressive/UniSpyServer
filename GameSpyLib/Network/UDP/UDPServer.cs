@@ -53,7 +53,7 @@ namespace GameSpyLib.Network.UDP
         /// </summary>
         protected SocketAsyncEventArgsPool SocketReadWritePool;
 
-        protected UDPPacket Packet;
+        //protected UDPPacket Packet;
         
         /// <summary>
         /// Indicates whether the server is still running, and not in the process of shutting down
@@ -63,7 +63,7 @@ namespace GameSpyLib.Network.UDP
         /// <summary>
         /// Indicates whether this object has been disposed yet
         /// </summary>
-        public bool IsDisposed { get; protected set; }
+        public bool Disposed { get; protected set; }
 
         protected string ServerName;
         public UDPServer(string serverName,IPEndPoint bindTo, int MaxConnections)
@@ -103,7 +103,7 @@ namespace GameSpyLib.Network.UDP
 
             // set public internals
             IsRunning = true;
-            IsDisposed = false;
+            Disposed = false;
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace GameSpyLib.Network.UDP
                 if (disposing)
                 {
                     // no need to do this again
-                    if (IsDisposed) return;
+                    if (Disposed) return;
 
 
                     // Shutdown sockets
@@ -142,7 +142,7 @@ namespace GameSpyLib.Network.UDP
                     MaxConnectionsEnforcer.Dispose();
                     Listener.Dispose();
 
-                    IsDisposed = true;
+                    Disposed = true;
                 }
             }
             catch { }

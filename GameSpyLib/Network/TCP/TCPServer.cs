@@ -92,7 +92,7 @@ namespace GameSpyLib.Network.TCP
         /// <summary>
         /// Indicates whether this object has been disposed yet
         /// </summary>
-        public bool IsDisposed { get; protected set; } = false;
+        public bool Disposed { get; protected set; } = false;
 
         public string ServerName { get; protected set; }
         public TCPServer(string serverName,IPEndPoint bindTo, int MaxConnections)
@@ -143,7 +143,7 @@ namespace GameSpyLib.Network.TCP
 
         ~TCPServer()
         {
-            if (!IsDisposed)
+            if (!Disposed)
                 Dispose();
         }
 
@@ -154,8 +154,8 @@ namespace GameSpyLib.Network.TCP
         public void Dispose()
         {
             // no need to do this again
-            if (IsDisposed) return;
-            IsDisposed = true;
+            if (Disposed) return;
+            Disposed = true;
 
             // Shutdown sockets
             if (IsListening)

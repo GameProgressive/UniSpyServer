@@ -4,6 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using GameSpyLib.Common;
+using GameSpyLib.Delegate;
 using GameSpyLib.Logging;
 using GameSpyLib.Network.Component;
 

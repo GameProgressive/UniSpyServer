@@ -104,8 +104,7 @@ namespace PresenceConnectionManager
 
             try
             {
-                if (disposing)
-                {
+
                     Stream.OnDataReceived -= ProcessData;
 
                     Stream.IsMessageFinished -= IsMessageFinished;
@@ -114,11 +113,7 @@ namespace PresenceConnectionManager
 
                     if (!Stream.SocketClosed)
                         Stream.Dispose();
-                }
-                //if (PlayerInfo != null)
-                //{
-                //    PlayerInfo = null;
-                //}
+
             }
             catch { }
             // Preapare to be unloaded from memory
@@ -235,7 +230,7 @@ namespace PresenceConnectionManager
         public void StatusToLog(string status,string nick,uint pid,IPEndPoint remote,string reason)
         {
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
-            LogWriter.Log.Write(LogLevel.Info, Stream.Server.ServerName+ statusString);
+            LogWriter.Log.Write(LogLevel.Info, Stream.SocketManager.ServerName+ statusString);
         }
 
 
