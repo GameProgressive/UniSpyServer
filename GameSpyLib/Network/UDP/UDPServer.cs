@@ -53,7 +53,7 @@ namespace GameSpyLib.Network.UDP
         /// </summary>
         protected SocketAsyncEventArgsPool SocketReadWritePool;
 
-        //protected UDPPacket Packet;
+        protected UDPPacket Packet;
         
         /// <summary>
         /// Indicates whether the server is still running, and not in the process of shutting down
@@ -63,7 +63,7 @@ namespace GameSpyLib.Network.UDP
         /// <summary>
         /// Indicates whether this object has been disposed yet
         /// </summary>
-        public bool Disposed { get; protected set; }
+        public bool IsDisposed { get; protected set; }
 
         protected string ServerName;
         public UDPServer(string serverName,IPEndPoint bindTo, int MaxConnections)
@@ -103,7 +103,7 @@ namespace GameSpyLib.Network.UDP
 
             // set public internals
             IsRunning = true;
-            Disposed = false;
+            IsDisposed = false;
         }
 
         /// <summary>
@@ -113,6 +113,7 @@ namespace GameSpyLib.Network.UDP
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
         /// <summary>
         /// Override this method to create own Dispose method
@@ -125,7 +126,7 @@ namespace GameSpyLib.Network.UDP
                 if (disposing)
                 {
                     // no need to do this again
-                    if (Disposed) return;
+                    if (IsDisposed) return;
 
 
                     // Shutdown sockets
@@ -141,7 +142,7 @@ namespace GameSpyLib.Network.UDP
                     MaxConnectionsEnforcer.Dispose();
                     Listener.Dispose();
 
-                    Disposed = true;
+                    IsDisposed = true;
                 }
             }
             catch { }
@@ -244,7 +245,7 @@ namespace GameSpyLib.Network.UDP
         /// </summary>
         /// <param name="packet"> the udp packet which will be send</param>
         /// <param name="message">the string that will be sended to client</param>
-        protected void SendAsync(UDPPacket packet, string message)
+        public void SendAsync(UDPPacket packet, string message)
         {            
             // If we are shutting down, dont receive again
             if (!IsRunning) return;
@@ -315,11 +316,6 @@ namespace GameSpyLib.Network.UDP
         public virtual void Send(UDPPacket packet, byte[] message)
         {
             SendAsync(packet,message);
-        }
-        public virtual void ToLog(LogLevel level, string message, params object[] items)
-        {
-            message = ServerName + " " + message;
-            LogWriter.Log.Write(level, message, items);
         }
     }
 }

@@ -92,10 +92,10 @@ namespace GameSpyLib.Network.TCP
         /// <summary>
         /// Indicates whether this object has been disposed yet
         /// </summary>
-        public bool Disposed { get; protected set; } = false;
+        public bool IsDisposed { get; protected set; } = false;
 
         public string ServerName { get; protected set; }
-        public TCPServer(string serverName, IPEndPoint bindTo, int MaxConnections)
+        public TCPServer(string serverName,IPEndPoint bindTo, int MaxConnections)
         {
             ServerName = "[" + serverName + "]";
             // Create our Socket
@@ -143,7 +143,8 @@ namespace GameSpyLib.Network.TCP
 
         ~TCPServer()
         {
-            Dispose(false);
+            if (!IsDisposed)
+                Dispose();
         }
 
         /// <summary>
@@ -152,34 +153,28 @@ namespace GameSpyLib.Network.TCP
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
             // no need to do this again
-            if (Disposed) return;
+            if (IsDisposed) return;
+            IsDisposed = true;
+
             // Shutdown sockets
-            if (disposing)
-            {
-                if (IsListening)
-                    ShutdownSocket();
+            if (IsListening)
+                ShutdownSocket();
 
-                // Dispose all AcceptPool AysncEventArg objects
-                while (SocketAcceptPool.Count > 0)
-                    SocketAcceptPool.Pop().Dispose();
+            // Dispose all AcceptPool AysncEventArg objects
+            while (SocketAcceptPool.Count > 0)
+                SocketAcceptPool.Pop().Dispose();
 
-                // Dispose all ReadWritePool AysncEventArg objects
-                while (SocketReadWritePool.Count > 0)
-                    SocketReadWritePool.Pop().Dispose();
+            // Dispose all ReadWritePool AysncEventArg objects
+            while (SocketReadWritePool.Count > 0)
+                SocketReadWritePool.Pop().Dispose();
 
-                // Dispose the buffer manager after disposing all EventArgs
-                BufferManager?.Dispose();
-                MaxConnectionsEnforcer?.Dispose();
-                Listener?.Dispose();               
-            }
-            Disposed = true;
+            // Dispose the buffer manager after disposing all EventArgs
+            BufferManager?.Dispose();
+            MaxConnectionsEnforcer?.Dispose();
+            Listener?.Dispose();
         }
+
         /// <summary>
         /// When called, this method will stop accepted and handling any and all
         /// connections. Dispose still needs to be called!
@@ -206,15 +201,15 @@ namespace GameSpyLib.Network.TCP
         /// and free's up another slot for a new client to connect
         /// </summary>
         /// <param name="Stream">The GamespyTcpStream object that is being released.</param>
-        public void Release(TCPStream stream)
+        public void Release(TCPStream Stream)
         {
             // If the stream has been released, then we stop here
-            if (!IsListening || stream.Released) return;
+            if (!IsListening || Stream.Released) return;
 
             // Make sure the connection is closed properly
-            if (!stream.SocketClosed)
+            if (!Stream.SocketClosed)
             {
-                stream.Dispose();
+                Stream.Close();
                 return;
             }
 
@@ -224,11 +219,11 @@ namespace GameSpyLib.Network.TCP
 
             // If we are still registered for this event, then the EventArgs should
             // NEVER be disposed here, or we have an error to fix
-            if (stream.Disposed)
+            if (Stream.DisposedEventArgs)
             {
                 // Dispose old buffer tokens
-                BufferManager.ReleaseBuffer(stream.ReadEventArgs);
-                BufferManager.ReleaseBuffer(stream.WriteEventArgs);
+                BufferManager.ReleaseBuffer(Stream.ReadEventArgs);
+                BufferManager.ReleaseBuffer(Stream.WriteEventArgs);
 
                 // Create new Read Event Args
                 SocketAsyncEventArgs SockArgR = new SocketAsyncEventArgs();
@@ -243,12 +238,12 @@ namespace GameSpyLib.Network.TCP
             else
             {
                 // Set null's
-                stream.ReadEventArgs.AcceptSocket = null;
-                stream.WriteEventArgs.AcceptSocket = null;
+                Stream.ReadEventArgs.AcceptSocket = null;
+                Stream.WriteEventArgs.AcceptSocket = null;
 
                 // Get our ReadWrite AsyncEvent object back
-                SocketReadWritePool.Push(stream.ReadEventArgs);
-                SocketReadWritePool.Push(stream.WriteEventArgs);
+                SocketReadWritePool.Push(Stream.ReadEventArgs);
+                SocketReadWritePool.Push(Stream.WriteEventArgs);
             }
 
             // Now that we have another set of AsyncEventArgs, we can

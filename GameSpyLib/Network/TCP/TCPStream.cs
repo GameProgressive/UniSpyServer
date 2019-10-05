@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using GameSpyLib.Delegate;
+using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.Network.Component;
 
@@ -45,7 +45,7 @@ namespace GameSpyLib.Network.TCP
         /// <summary>
         /// Contains the GamespyTcpSocket that owns this object
         /// </summary>
-        public TCPServer Server { get; protected set; }
+        public TCPServer SocketManager { get; protected set; }
 
         /// <summary>
         /// Our AsycnEventArgs object for reading data
@@ -72,7 +72,7 @@ namespace GameSpyLib.Network.TCP
         public bool SocketClosed { get; protected set; }
 
         /// <summary>
-        /// Indicates whether this stream has been released to the Server
+        /// Indicates whether this stream has been released to the SocketManager
         /// </summary>
         public bool Released { get; protected set; }
 
@@ -85,7 +85,7 @@ namespace GameSpyLib.Network.TCP
         /// Indicates whether the EventArgs objects were disposed by request
         /// <remarks>This should NEVER be true unless we are shutting down the server!!!</remarks>
         /// </summary>
-        public bool Disposed { get; protected set; }
+        public bool DisposedEventArgs { get; protected set; }
 
         /// <summary>
         /// Event fired when a completed message has been received
@@ -115,7 +115,7 @@ namespace GameSpyLib.Network.TCP
         {            
             // Store our connection
             Connection = ReadArgs.AcceptSocket;
-            Server = Parent;
+            SocketManager = Parent;
 
             // Create our IO event callbacks
             ReadArgs.Completed += IOComplete;
@@ -125,18 +125,20 @@ namespace GameSpyLib.Network.TCP
             ReadEventArgs = ReadArgs;
             WriteEventArgs = WritetArgs;
             SocketClosed = false;
-            Disposed = false;
+            DisposedEventArgs = false;
             Released = false;
         }
 
         ~TCPStream()
         {
-            Dispose(false);
+            if (!SocketClosed)
+                Close();
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            if (!SocketClosed)
+                Close();
         }
 
         /// <summary>
@@ -180,11 +182,11 @@ namespace GameSpyLib.Network.TCP
         /// If true, the EventArg objects will be disposed instead of being re-added to 
         /// the IO pool. This should NEVER be set to true unless we are shutting down the server!
         /// </param>
-        private void Dispose(bool disposing)
+        public void Close(bool DisposeEventArgs = false)
         {
             // Set that the socket is being closed once, and properly
             if (SocketClosed) return;
-
+            SocketClosed = true;
 
             // Do a shutdown before you close the socket
             try
@@ -197,25 +199,23 @@ namespace GameSpyLib.Network.TCP
                 // Unregister for vents
                 ReadEventArgs.Completed -= IOComplete;
                 WriteEventArgs.Completed -= IOComplete;
-                if (Connection != null)
-                {
-                    // Close the connection
-                    Connection.Close();
-                    Connection = null;
-                }
+
+                // Close the connection
+                Connection.Close();
+                Connection = null;
             }
 
             // If we need to dispose out EventArgs
-            if (disposing)
+            if (DisposeEventArgs)
             {
                 ReadEventArgs.Dispose();
                 WriteEventArgs.Dispose();
-                Disposed = true;
+                DisposedEventArgs = true;
             }
             else
             {
                 // Finally, release this stream so we can allow a new connection
-                Server.Release(this);
+                SocketManager.Release(this);
                 Released = true;
             }
 
@@ -225,7 +225,6 @@ namespace GameSpyLib.Network.TCP
                 DisconnectEventCalled = true;
                 OnDisconnected();
             }
-            SocketClosed = true;
         }
 
         /// <summary>
@@ -245,7 +244,7 @@ namespace GameSpyLib.Network.TCP
             // Force disconnect (Specifically for Gpsp, whom will spam empty connections)
             if (ReadEventArgs.BytesTransferred == 0)
             {
-                Dispose();
+                Close();
                 return;
             }
             else
@@ -268,7 +267,7 @@ namespace GameSpyLib.Network.TCP
                     if (IsMessageFinished.Invoke(received))
                     {
                         if (LogWriter.Log.DebugSockets)
-                            LogWriter.Log.Write(LogLevel.Debug, "{0} [Recv] TCP data: {1}" ,Server.ServerName, received);
+                            LogWriter.Log.Write(LogLevel.Debug, "{0} [Recv] TCP data: {1}" ,SocketManager.ServerName, received);
 
                         DataAttempt = 0;
 
@@ -283,7 +282,7 @@ namespace GameSpyLib.Network.TCP
                 {
                     // Looks like the client is sending a lot of data that is not valid
                     LogWriter.Log.Write(LogLevel.Info, "TCP stream {0} is sending a lot of data! Connection closed.",  RemoteEndPoint);
-                    Dispose(false);
+                    Close(false);
                 }
             }
 
@@ -301,7 +300,7 @@ namespace GameSpyLib.Network.TCP
             if (SocketClosed) return;
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}" , Server.ServerName, message);
+                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}" , SocketManager.ServerName, message);
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -331,7 +330,7 @@ namespace GameSpyLib.Network.TCP
             if (SocketClosed) return;
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}", Server.ServerName, Encoding.UTF8.GetString(message));
+                LogWriter.Log.Write( LogLevel.Debug, "{0} [Send] TCP data: {1}", SocketManager.ServerName, Encoding.UTF8.GetString(message));
 
             // Create a lock, so we don't add a message while the old one is being cleared
             lock (_lockObj)
@@ -391,7 +390,7 @@ namespace GameSpyLib.Network.TCP
             catch (ObjectDisposedException)
             {
                 WaitingOnAsync = false;
-                Dispose();
+                Close();
             }
 
             // If we wont raise the IO event, that means a connection sent the messsage syncronously
@@ -401,7 +400,7 @@ namespace GameSpyLib.Network.TCP
                 // First, Check for a closed conenction
                 if (WriteEventArgs.BytesTransferred == 0 || WriteEventArgs.SocketError != SocketError.Success)
                 {
-                    Dispose();
+                    Close();
                     return;
                 }
                 // Append to the offset
@@ -420,7 +419,7 @@ namespace GameSpyLib.Network.TCP
             if (socketError != SocketError.Success)
             {
                 if (!SocketClosed)
-                    Dispose();
+                    Close();
             }
 
             /* Error Handle Here
@@ -459,7 +458,7 @@ namespace GameSpyLib.Network.TCP
                     // Check for a closed conenction
                     if (e.BytesTransferred == 0 || WriteEventArgs.SocketError != SocketError.Success)
                     {
-                        Dispose();
+                        Close();
                         return;
                     }
 
@@ -474,7 +473,7 @@ namespace GameSpyLib.Network.TCP
         //public void ToLog(LogLevel level, string status, string statusinfo,string message,params object[] items)
         //{
         //    string temp1 = string.Format(message, items);
-        //    string temp2 = string.Format("{0} [{1}] {2}: {3}",Server.ServerName, status,statusinfo, temp1);
+        //    string temp2 = string.Format("{0} [{1}] {2}: {3}",SocketManager.ServerName, status,statusinfo, temp1);
         //    LogWriter.Log.Write(LogLevel.Debug, temp2);
         
     }
