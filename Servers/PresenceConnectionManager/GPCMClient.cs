@@ -98,29 +98,32 @@ namespace PresenceConnectionManager
         /// Disposes of the client object. The connection is no longer
         /// closed here and the DisconnectByReason even is NO LONGER fired
         /// </summary>
-        protected override void Dispose(bool disposing)
+        public override void Dispose(bool disposing)
         {
             if (Disposed) return;
 
+            if (disposing)
+            {
+                //Dispose manage resource
+            }
+            //Dispose unmanage resource 
             try
             {
+                Stream.OnDataReceived -= ProcessData;
 
-                    Stream.OnDataReceived -= ProcessData;
+                Stream.IsMessageFinished -= IsMessageFinished;
 
-                    Stream.IsMessageFinished -= IsMessageFinished;
+                Stream.OnDisconnected -= ClientDisconnected;
 
-                    Stream.OnDisconnected -= ClientDisconnected;
-
-                    if (!Stream.SocketClosed)
-                        Stream.Dispose();
-
+                if (!Stream.SocketClosed)
+                    Stream.Close();
             }
             catch { }
             // Preapare to be unloaded from memory
             Disposed = true;
         }
 
-        public override void SendServerChallenge(uint serverID)
+        public void SendServerChallenge(uint serverID)
         {
             // Only send the login challenge once
             if (PlayerInfo.LoginStatus != LoginStatus.Connected)
@@ -145,7 +148,7 @@ namespace PresenceConnectionManager
         /// </summary>
         protected override void ProcessData(string message)
         {
-            //message = @"\login\challenge\LEkbomcJUlqqAfFaIyr52kNapq1Mfsxr\user\FridiNaTor@fridij2007@icloud.com\response\566bceb0e1c8cd680e9b6e90102d6577\port-8889\productid\10618\gamename\fsw10hpc\namespaceid\0\sdkrevision\1\id\1\final\";
+            //message = @"\login\\challenge\l73Iv120dsOnQIA5hCBIqQSkojR191hy\user\retrospy@spyguy@gamespy.com\response\05d45e1b1bf6fbe6b6590785ec8dbe70\port\-9805\productid\10469\gamename\conflictsopc\namespaceid\1\id\1\final\";
             message = RequstFormatConversion(message);
 
             if (message[0] != '\\')
@@ -227,10 +230,10 @@ namespace PresenceConnectionManager
             return (PlayerInfo.PlayerId == other.PlayerInfo.PlayerId || PlayerInfo.PlayerNick == other.PlayerInfo.PlayerNick);
         }
 
-        public void StatusToLog(string status,string nick,uint pid,IPEndPoint remote,string reason)
+        public void StatusToLog(string status, string nick, uint pid, IPEndPoint remote, string reason)
         {
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
-            LogWriter.Log.Write(LogLevel.Info, Stream.SocketManager.ServerName+ statusString);
+            LogWriter.Log.Write(LogLevel.Info, Stream.SocketManager.ServerName + statusString);
         }
 
 

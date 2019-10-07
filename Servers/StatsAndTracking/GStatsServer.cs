@@ -94,7 +94,7 @@ namespace StatsAndTracking
                 // Convert the TcpClient to a MasterClient
                 client = new GStatsClient(stream, conid);
                 Clients.TryAdd(conid, client);
-                client.SendServerChallenge(1);
+                client.SendServerChallenge();
                 // Start receiving data
                 stream.BeginReceive();
             }

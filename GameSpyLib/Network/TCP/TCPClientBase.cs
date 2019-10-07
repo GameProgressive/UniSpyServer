@@ -81,26 +81,27 @@ namespace GameSpyLib.Network.TCP
             LogWriter.Log.Write(level, message);
         }
 
-        public abstract void SendServerChallenge(uint serverID);
-
 
         protected abstract void ClientDisconnected();
 
         public void Dispose()
         {
+            if (Disposed) return;
             Dispose(true);
         }
-
-        protected virtual void Dispose(bool disposing)
+        
+        public virtual void Dispose(bool disposing=false)
         {
             if (Disposed) return;
-            //dispose managed resources
-            if (disposing)
+           
+            if(disposing)
             {
-                //wirte dispose method for child class
-                if (!Stream.SocketClosed)
-                    Stream.Dispose();
+                //dispose managed resources
             }
+            //wirte dispose method for child class
+            if (!Stream.SocketClosed)
+                Stream.Close();
+
             //dispose unmanaged resources
 
             Disposed = true;

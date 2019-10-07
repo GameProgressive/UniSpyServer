@@ -21,15 +21,15 @@ CREATE TABLE IF NOT EXISTS `addrequests` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(10) unsigned NOT NULL DEFAULT 0,
   `targetid` int(11) unsigned NOT NULL,
-  `productid` int(11) unsigned NOT NULL,
+  `namespaceid` int(11) unsigned NOT NULL,
   `syncrequested` varchar(255) NOT NULL DEFAULT '',
   `reason` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `FK_addrequests_profiles` (`profileid`) USING BTREE,
   KEY `FK_addrequests_profiles_2` (`targetid`) USING BTREE,
-  KEY `FK_addrequests_namespace` (`productid`),
-  CONSTRAINT `FK_addrequests_namespace` FOREIGN KEY (`productid`) REFERENCES `namespace` (`productid`),
+  KEY `FK3_namespaceid` (`namespaceid`),
+  CONSTRAINT `FK3_namespaceid` FOREIGN KEY (`namespaceid`) REFERENCES `namespace` (`namespaceid`),
   CONSTRAINT `FK_addrequests_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
   CONSTRAINT `FK_addrequests_profiles_2` FOREIGN KEY (`targetid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -42,14 +42,12 @@ CREATE TABLE IF NOT EXISTS `addrequests` (
 CREATE TABLE IF NOT EXISTS `blocked` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(11) unsigned NOT NULL,
-  `productid` int(11) unsigned NOT NULL,
   `namespaceid` int(11) unsigned NOT NULL,
+  `productid` int(11) unsigned NOT NULL,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `FK_blocked_namespace` (`profileid`),
-  KEY `FK_blocked_namespace_2` (`productid`),
   KEY `FK_blocked_namespace_3` (`namespaceid`),
   CONSTRAINT `FK_blocked_namespace` FOREIGN KEY (`profileid`) REFERENCES `namespace` (`profileid`),
-  CONSTRAINT `FK_blocked_namespace_2` FOREIGN KEY (`productid`) REFERENCES `namespace` (`productid`),
   CONSTRAINT `FK_blocked_namespace_3` FOREIGN KEY (`namespaceid`) REFERENCES `namespace` (`namespaceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
@@ -63,9 +61,6 @@ CREATE TABLE IF NOT EXISTS `friends` (
   `profileid` int(11) unsigned NOT NULL,
   `targetid` int(11) unsigned NOT NULL,
   `namespaceid` int(11) unsigned DEFAULT NULL,
-  `productid` int(11) unsigned NOT NULL,
-  `partnerid` int(11) unsigned NOT NULL,
-  `gamename` text NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `FK_friends_profiles` (`profileid`) USING BTREE,
@@ -92,8 +87,7 @@ CREATE TABLE IF NOT EXISTS `games` (
   `keylist` text NOT NULL,
   `keytypelist` text NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `gamename` (`gamename`(255))
+  UNIQUE KEY `id` (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- Dumping data for table retrospy2.games: 2,799 rows
@@ -4635,31 +4629,29 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(11) unsigned NOT NULL,
   `uniquenick` varchar(50) DEFAULT NULL,
-  `namespaceid` int(11) unsigned DEFAULT NULL,
+  `namespaceid` int(11) unsigned NOT NULL DEFAULT 0,
   `partnerid` int(11) unsigned DEFAULT NULL,
   `productid` int(11) unsigned DEFAULT NULL,
   `gamename` text DEFAULT NULL,
+  `cdkeyenc` varchar(50) DEFAULT NULL,
   `sesskey` int(11) unsigned DEFAULT NULL,
   `firewall` int(10) unsigned DEFAULT NULL,
   `port` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `FK1_profile_profileid` (`profileid`),
-  KEY `productid` (`productid`),
   KEY `namespaceid` (`namespaceid`),
-  KEY `gamename` (`gamename`(3072)),
-  KEY `partnerid` (`partnerid`),
   KEY `uniquenick` (`uniquenick`),
   CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table retrospy2.namespace: ~4 rows (approximately)
 /*!40000 ALTER TABLE `namespace` DISABLE KEYS */;
-INSERT INTO `namespace` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `sesskey`, `firewall`, `port`) VALUES
-	(20, 21, 'wormsforts', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL),
-	(21, 22, 'wf12', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL),
-	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', 19150, NULL, NULL),
-	(41, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', 19150, NULL, NULL);
+INSERT INTO `namespace` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `cdkeyenc`, `sesskey`, `firewall`, `port`) VALUES
+	(20, 21, 'wormsforts', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL, NULL),
+	(21, 22, 'wf12', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL, NULL),
+	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', NULL, 19150, NULL, NULL),
+	(41, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, 19150, NULL, NULL);
 /*!40000 ALTER TABLE `namespace` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.profiles
@@ -4709,7 +4701,7 @@ INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `statuscode`, `status`, `
 	(8, 1, 'MyCrysis', 0, 'RetroSpy', 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '91.52.99.231', 1569066920, 0),
 	(9, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(12, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
-	(13, 7, 'MyCrysis', 0, '0', '', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1569940527, 0),
+	(13, 7, 'MyCrysis', 0, 'RetroSpy', '', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1570240313, 0),
 	(14, 7, 'xiaojiuwo', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(16, 9, 'worms3d', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(21, 13, 'wormsforts', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),

@@ -48,14 +48,13 @@ namespace ServerBrowser
         /// <summary>
         /// Dispose method to be called by the server
         /// </summary>
-        protected override void Dispose(bool disposing)
+        public override void Dispose(bool disposing)
         {
             // Only dispose once
             if (Disposed) return;
 
             // Preapare to be unloaded from memory
-            if (disposing)
-            {
+
                 Stream.OnDisconnected -= ClientDisconnected;
                 Stream.OnDataReceived -= ProcessData;
                 // If connection is still alive, disconnect user
@@ -65,14 +64,11 @@ namespace ServerBrowser
                 // Call disconnect event
                 if (OnDisconnect != null)
                     OnDisconnect(this);
-            }
+
             Disposed = true;
         }
 
-        public override void SendServerChallenge(uint serverID)
-        {
-            throw new NotImplementedException();
-        }
+
 
         protected override void ClientDisconnected()
         {

@@ -49,24 +49,23 @@ namespace Chat
         /// <summary>
         /// Dispose method to be called by the server
         /// </summary>
-        protected override void Dispose(bool disposing)
+        public override void Dispose(bool disposing)
         {
             // Only dispose once
             if (Disposed) return;
 
             try
             {
-                if(disposing)
-                {
+
                     Stream.OnDisconnected -= Dispose;
                     //determine whether gamespy request is finished
                     Stream.IsMessageFinished -= IsMessageFinished;
                     // Read client message, and parse it into key value pairs
                     Stream.OnDataReceived -= ProcessData;
                     // If connection is still alive, disconnect user
-                }
+
                 if (!Stream.SocketClosed)
-                    Stream.Dispose();
+                    Stream.Close();
             }
             catch { }
             // Call disconnect event
@@ -86,11 +85,6 @@ namespace Chat
             //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Error);
             //Stream.SendAsync("PING capricorn.goes.here :123456");
             ChatHandler.Crypt(this, temp);
-        }
-
-        public override void SendServerChallenge(uint serverID)
-        {
-            //no challenge on Chat server
         }
 
         protected override void ClientDisconnected()

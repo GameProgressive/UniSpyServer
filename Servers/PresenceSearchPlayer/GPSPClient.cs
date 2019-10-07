@@ -7,8 +7,8 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPClient :TCPClientBase
-    {    
+    public class GPSPClient : TCPClientBase
+    {
         /// <summary>
         /// Event fired when the connection is closed
         /// </summary>
@@ -18,7 +18,7 @@ namespace PresenceSearchPlayer
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public GPSPClient(TCPStream stream, long connectionid):base(stream,connectionid)
+        public GPSPClient(TCPStream stream, long connectionid) : base(stream, connectionid)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionid;
@@ -43,30 +43,30 @@ namespace PresenceSearchPlayer
         ~GPSPClient()
         {
             if (!Disposed)
-                Dispose();
+                Dispose(false);
         }
 
         /// <summary>
         /// Dispose method to be called by the server
         /// </summary>
-        protected override void Dispose(bool disposing)
+        public override void Dispose(bool disposing)
         {
             // Only dispose once
             if (Disposed) return;
-
-            try
+            if (disposing)
             {
-                if (disposing)
-                {
-                    //determine whether gamespy request is finished
-                    Stream.IsMessageFinished -= IsMessageFinished;
-                    // Read client message, and parse it into key value pairs
-                    Stream.OnDataReceived -= ProcessData;
-                    // If connection is still alive, disconnect user
-                    Stream.OnDisconnected -= ClientDisconnected;
-                    if (!Stream.SocketClosed)
-                        Stream.Dispose();
-                }               
+                //dispose manage resource here
+            }
+            try
+            {                    //determine whether gamespy request is finished
+                Stream.IsMessageFinished -= IsMessageFinished;
+                // Read client message, and parse it into key value pairs
+                Stream.OnDataReceived -= ProcessData;
+                // If connection is still alive, disconnect user
+                Stream.OnDisconnected -= ClientDisconnected;
+
+                if (!Stream.SocketClosed)
+                    Stream.Close();
             }
             catch { }
 
@@ -84,7 +84,7 @@ namespace PresenceSearchPlayer
         /// <param name="message">The message the stream sended</param>
         protected override void ProcessData(string message)
         {
-            message= @"\search\sesskey\0\profileid\0\namespaceid\1\email\f1racinggamev2@gmail.com\gamename\conflictsopc\final\";
+            //message= @"\search\sesskey\0\profileid\0\namespaceid\1\email\f1racinggamev2@gmail.com\gamename\conflictsopc\final\";
             message = RequstFormatConversion(message);
             if (message[0] != '\\')
             {
@@ -107,15 +107,9 @@ namespace PresenceSearchPlayer
             }
         }
 
-
-        public override void SendServerChallenge(uint serverID)
-        {
-            //
-        }
-
         protected override void ClientDisconnected()
         {
             Dispose();
-        }        
+        }
     }
 }

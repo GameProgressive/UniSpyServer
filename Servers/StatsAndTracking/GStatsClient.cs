@@ -9,13 +9,13 @@ using System.Text;
 
 namespace StatsAndTracking
 {
-    public class GStatsClient :TCPClientBase, IDisposable
+    public class GStatsClient : TCPClientBase, IDisposable
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="client"></param>
-        public GStatsClient(TCPStream stream, long connectionid):base(stream,connectionid)
+        public GStatsClient(TCPStream stream, long connectionid) : base(stream, connectionid)
         {
             // Generate a unique name for this connection
             ConnectionID = connectionid;
@@ -36,27 +36,27 @@ namespace StatsAndTracking
         /// <summary>
         /// Dispose method to be called by the server
         /// </summary>
-        protected override void Dispose(bool disposing)
+        public override void Dispose(bool disposing = false)
         {
             // Only dispose once
             if (Disposed) return;
 
+            if (disposing)
+            {
+
+            }
             try
             {
-                if (disposing)
-                {
-                    Stream.OnDisconnected -= Dispose;
-                    //determine whether gamespy request is finished
-                    Stream.IsMessageFinished -= IsMessageFinished;
-                    // Read client message, and parse it into key value pairs
-                    Stream.OnDataReceived -= ProcessData;
-                    // If connection is still alive, disconnect user
-                    if (!Stream.SocketClosed)
-                        Stream.Dispose();
-                }
+                Stream.OnDisconnected -= Dispose;
+                //determine whether gamespy request is finished
+                Stream.IsMessageFinished -= IsMessageFinished;
+                // Read client message, and parse it into key value pairs
+                Stream.OnDataReceived -= ProcessData;
+                // If connection is still alive, disconnect user
+                if (!Stream.SocketClosed)
+                    Stream.Close();
             }
             catch { }
-
             Disposed = true;
         }
 
@@ -81,7 +81,7 @@ namespace StatsAndTracking
 
         }
 
-        public override void SendServerChallenge(uint serverID)
+        public void SendServerChallenge()
         {
             //38byte
             ServerChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(38, GameSpyLib.Common.Random.StringType.Alpha);

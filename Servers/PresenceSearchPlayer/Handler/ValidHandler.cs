@@ -32,12 +32,12 @@ namespace PresenceSearchPlayer.Handler
                     else
                         client.Send(@"\vr\0\final\");
 
-                    client.Stream.Dispose();
+                    //client.Stream.Dispose();
                 }
                 else
                 {
                     client.Send(@"\vr\0\final\");
-                    client.Stream.Dispose();
+                    //client.Stream.Dispose();
                 }
 
             }

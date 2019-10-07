@@ -80,10 +80,9 @@ namespace PresenceConnectionManager.Handler
                     {
                         GameSpyUtils.SendGPError(client, GPErrorCode.LoginBadUniquenick, "The uniquenick provided is incorrect!");
                     }
-
                     else
                     {
-                        GameSpyUtils.SendGPError(client, GPErrorCode.LoginBadUniquenick, "The nick provided is incorrect!");
+                        GameSpyUtils.SendGPError(client, GPErrorCode.LoginBadUniquenick, "The information provided is incorrect!");
                     }
                     client.DisconnectByReason(DisconnectReason.InvalidUsername);
                     return;
