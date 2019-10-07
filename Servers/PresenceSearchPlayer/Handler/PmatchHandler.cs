@@ -7,7 +7,7 @@ namespace PresenceSearchPlayer.Handler
 {
     public class PmatchHandler
     {
-        public static void PlayerMatch(GPSPClient client, Dictionary<string, string> dict)
+        public static void PlayerMatch(GPSPSession session, Dictionary<string, string> dict)
         { //pmath\\sesskey\\profileid\\productid\\
             string sendingBuffer;
             if (IsContainAllKey(dict))
@@ -17,11 +17,11 @@ namespace PresenceSearchPlayer.Handler
                 {
                     sendingBuffer = string.Format(@"\psr\status\{0}\nick\{1}\statuscode\{2}\final\",
                         temp[0]["status"], temp[0]["nick"], temp[0]["statuscode"]);
-                    client.Send(sendingBuffer);
+                    session.SendAsync(sendingBuffer);
                 }
                 else
                 {
-                    GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "No match found!");
+                    GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "No match found!");
                 }
 
             }

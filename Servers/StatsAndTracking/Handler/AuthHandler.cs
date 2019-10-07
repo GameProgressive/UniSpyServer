@@ -8,12 +8,12 @@ namespace StatsAndTracking.Handler
 {
     public class AuthHandler
     {
-        public static void SendSessionKey(GStatsClient client, Dictionary<string, string> dict)
+        public static void SendSessionKey(GstatsSession session, Dictionary<string, string> dict)
         {
             string sendingBuffer = string.Format(@"\sesskey\{0}",dict["response"]);
             sendingBuffer = Enctypex.XorEncoding(sendingBuffer,1);
             sendingBuffer += @"\final\";
-            client.Send(sendingBuffer);
+            session.SendAsync(sendingBuffer);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Handler
 {
     public class SearchHandler
     {
-        public static void SearchUsers(GPSPClient client, Dictionary<string, string> dict)
+        public static void SearchUsers(GPSPSession client, Dictionary<string, string> dict)
         {
             //string sendingbuffer = "\\bsr\\1\\nick\\mycrysis\\uniquenick\\1\\namespaceid\\0\\firstname\\jiangheng\\lastname\\kou\\email\\koujiangheng@live.cn\\bsrdone\\0\\final\\";
             //client.Stream.SendAsync(sendingbuffer);

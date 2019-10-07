@@ -19,16 +19,16 @@ namespace PresenceSearchPlayer.Handler
         /// <summary>
         /// Get nickname through email and password
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="session"></param>
         /// <param name="dict"></param>
-        public static void SearchNicks(GPSPClient client, Dictionary<string, string> dict)
+        public static void SearchNicks(GPSPSession session, Dictionary<string, string> dict)
         {
             //Format the password for our database storage
             //if not recieved correct request we terminate
             GPErrorCode error = IsSearchNicksContianAllKeys(dict);
             if (error != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client, (int)error, "Error recieving SearchNicks request.");
+                GameSpyUtils.SendGPError(session, (int)error, "Error recieving SearchNicks request.");
                 return;
             }
 
@@ -42,13 +42,13 @@ namespace PresenceSearchPlayer.Handler
             catch (Exception ex)
             {
                 LogWriter.Log.Write(ex.Message, LogLevel.Error);
-                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
+                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
                 return;
             }
 
             if (queryResult.Count < 1)
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "No match found !");
+                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "No match found !");
                 return;
             }
 
@@ -64,7 +64,7 @@ namespace PresenceSearchPlayer.Handler
             }
 
             sendingBuffer += @"\ndone\final\";
-            client.Stream.SendAsync(sendingBuffer);
+            session.SendAsync(sendingBuffer);
         }
 
         public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict)

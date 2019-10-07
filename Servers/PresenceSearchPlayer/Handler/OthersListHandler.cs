@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Handler
 {
     class OthersListHandler
     {
-        public static void SearchOtherBuddyList(GPSPClient client, Dictionary<string, string> dict)
+        public static void SearchOtherBuddyList(GPSPSession session, Dictionary<string, string> dict)
         {
             //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
             //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
@@ -32,7 +32,7 @@ namespace PresenceSearchPlayer.Handler
 
             sendingBuffer += @"oldone\final\";
 
-            client.Send(sendingBuffer);
+            session.SendAsync(sendingBuffer);
 
 
 

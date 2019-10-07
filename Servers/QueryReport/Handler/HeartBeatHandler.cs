@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Logging;
-using GameSpyLib.Network.UDP;
 using QueryReport.DedicatedServerData;
 using QueryReport.Structure;
 using System;

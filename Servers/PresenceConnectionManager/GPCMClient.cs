@@ -116,7 +116,7 @@ namespace PresenceConnectionManager
                 Stream.OnDisconnected -= ClientDisconnected;
 
                 if (!Stream.SocketClosed)
-                    Stream.Close();
+                    Stream.ReleaseForOtherConnection();
             }
             catch { }
             // Preapare to be unloaded from memory

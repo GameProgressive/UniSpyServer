@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer
 {
     public class CommandSwitcher
     {
-        public static void Switch(GPSPClient client,Dictionary<string,string> recv)
+        public static void Switch(GPSPSession session, Dictionary<string, string> recv)
         {
             string command = recv.Keys.First();
             try
@@ -20,39 +20,39 @@ namespace PresenceSearchPlayer
                 switch (command)
                 {
                     case "search":
-                        SearchHandler.SearchUsers(client, recv);
+                        SearchHandler.SearchUsers(session, recv);
                         break;
                     case "valid":
-                        ValidHandler.IsEmailValid(client, recv);
+                        ValidHandler.IsEmailValid(session, recv);
                         break;
                     case "nicks":
-                        NickHandler.SearchNicks(client, recv);
+                        NickHandler.SearchNicks(session, recv);
                         break;
                     case "pmatch":
-                        PmatchHandler.PlayerMatch(client, recv);
+                        PmatchHandler.PlayerMatch(session, recv);
                         break;
                     case "check":
-                        CheckHandler.CheckProfileid(client, recv);
+                        CheckHandler.CheckProfileid(session, recv);
                         break;
                     case "newuser":
-                        NewUserHandler.NewUser(client, recv);
+                        NewUserHandler.NewUser(session, recv);
                         break;
                     case "searchunique":
-                        SearchUniqueHandler.SearchProfileWithUniquenick(client, recv);
+                        SearchUniqueHandler.SearchProfileWithUniquenick(session, recv);
                         break;
                     case "others":
-                        OthersHandler.SearchOtherBuddy(client, recv);
+                        OthersHandler.SearchOtherBuddy(session, recv);
                         break;
                     case "otherslist":
-                        OthersListHandler.SearchOtherBuddyList(client, recv);
+                        OthersListHandler.SearchOtherBuddyList(session, recv);
                         break;
                     case "uniquesearch":
-                        UniqueSearchHandler.SuggestUniqueNickname(client, recv);
+                        UniqueSearchHandler.SuggestUniqueNickname(session, recv);
                         break;
                     default:
-                        LogWriter.Log.Write("[GPSP] received unknown data " + command, LogLevel.Debug);
+                        session.Server.ToLog("received unknown data." + command);
                         GameSpyUtils.PrintReceivedGPDictToLogger(command, recv);
-                        GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "An invalid request was sended.");
+                        GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "An invalid request was sended.");
                         break;
                 }
             }

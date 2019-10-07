@@ -56,7 +56,6 @@ namespace GameSpyLib.XMLConfig
                 {
 
                     if (servercfg.Hostname.Length < 1 ||
-                        servercfg.MaxConnections < 1 ||
                         servercfg.Port < 1 ||
                         servercfg.Name.Length < 1)
                         throw new Exception(string.Format("Invalid {0} configuration", servercfg.Name));

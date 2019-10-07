@@ -60,7 +60,8 @@ namespace PresenceConnectionManager.DatabaseQuery
 
         public static void ResetStatusAndSessionKey()
         {
-            GPCMServer.DB.Execute("UPDATE profiles SET status=0, sesskey = NULL");
+            GPCMServer.DB.Execute("UPDATE profiles SET status=0");
+            GPCMServer.DB.Execute("UPDATE namespace SET sesskey = NULL");
         }
     }
 }

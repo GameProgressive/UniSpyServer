@@ -9,7 +9,6 @@ namespace StatsAndTracking.Misc
         public static bool VerifyResponse(Dictionary<string, string> dict)
         {
             throw new NotImplementedException();
-            return false;
         }      
 
         //        static char* value_for_key(const char* s, const char* key)

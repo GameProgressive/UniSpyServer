@@ -61,9 +61,8 @@ namespace ServerBrowser
                 if (!Stream.SocketClosed)
                     Stream.Dispose();
 
-                // Call disconnect event
-                if (OnDisconnect != null)
-                    OnDisconnect(this);
+            // Call disconnect event
+            OnDisconnect?.Invoke(this);
 
             Disposed = true;
         }

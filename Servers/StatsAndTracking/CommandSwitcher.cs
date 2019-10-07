@@ -9,7 +9,7 @@ namespace StatsAndTracking
 {
     public class CommandSwitcher
     {
-        public static void Switch(GStatsClient client, Dictionary<string, string> recv)
+        public static void Switch(GstatsSession session, Dictionary<string, string> recv)
         {
             string command = recv.Keys.First();
             try
@@ -17,13 +17,13 @@ namespace StatsAndTracking
                 switch (command)
                 {
                     case "auth":
-                        AuthHandler.SendSessionKey(client, recv);
+                        AuthHandler.SendSessionKey(session, recv);
                         break;
                     case "authp":
-                        AuthpHandler.AuthPlayer(client, recv);
+                        AuthpHandler.AuthPlayer(session, recv);
                         break;
                     default:
-                        LogWriter.Log.Write("[GSTAS] received unknown data " + command, LogLevel.Debug);
+                        session.Server.ToLog("received unknown data " + command);
                         break;
                 }
             }

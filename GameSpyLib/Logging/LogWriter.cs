@@ -39,17 +39,17 @@ namespace GameSpyLib.Logging
         /// <summary>
         /// Full path to the log file
         /// </summary>
-        private FileInfo LogFile;
+        private FileInfo _logFile;
 
         /// <summary>
         /// The <see cref="StreamWriter"/> for  <paramref name="LogFile"/>
         /// </summary>
-        private StreamWriter LogStream;
+        private StreamWriter _logStream;
 
         /// <summary>
         /// Our midnight timer, to truncate the log file
         /// </summary>
-        private Timer TruncateTimer;
+        private Timer _truncateTimer;
 
         /// <summary>
         /// Our lock object, preventing race conditions
@@ -61,6 +61,7 @@ namespace GameSpyLib.Logging
         /// </summary>
         private static object _fullSync = new object();
 
+        private bool _disposed;
         /// <summary>
         /// Creates a new Log Writer instance
         /// </summary>
@@ -76,22 +77,23 @@ namespace GameSpyLib.Logging
 #if DEBUG
             DebugSockets = true;
 #endif
+            _disposed = false;
             // Test that we are able to open and write to the file
-            LogFile = new FileInfo(FileLocation);
-            FileStream fileStream = LogFile.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
-            LogStream = new StreamWriter(fileStream, Encoding.UTF8);
+            _logFile = new FileInfo(FileLocation);
+            FileStream fileStream = _logFile.Open(FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            _logStream = new StreamWriter(fileStream, Encoding.UTF8);
 
             // If the file is over 2MB, and we want to truncate big files
-            if (Truncate && LogFile.Length > TruncateLen)
+            if (Truncate && _logFile.Length > TruncateLen)
             {
-                LogStream.BaseStream.SetLength(0);
-                LogStream.BaseStream.Seek(0, SeekOrigin.Begin);
-                LogStream.Flush();
+                _logStream.BaseStream.SetLength(0);
+                _logStream.BaseStream.Seek(0, SeekOrigin.Begin);
+                _logStream.Flush();
             }
-            else if (LogFile.Length > 0)
+            else if (_logFile.Length > 0)
             {
                 // Seek to the end of the log file
-                LogStream.BaseStream.Seek(0, SeekOrigin.End);
+                _logStream.BaseStream.Seek(0, SeekOrigin.End);
             }
 
             // 24 Truncate Timer
@@ -99,11 +101,11 @@ namespace GameSpyLib.Logging
             {
                 // Create Truncation Task
                 TimeSpan untilMidnight = DateTime.Today.AddDays(1) - DateTime.Now;
-                TruncateTimer = new Timer();
-                TruncateTimer.AutoReset = false; // Don't reset first time around!
-                TruncateTimer.Interval = untilMidnight.TotalMilliseconds;
-                TruncateTimer.Elapsed += TruncateTimer_Elapsed;
-                TruncateTimer.Start();
+                _truncateTimer = new Timer();
+                _truncateTimer.AutoReset = false; // Don't reset first time around!
+                _truncateTimer.Interval = untilMidnight.TotalMilliseconds;
+                _truncateTimer.Elapsed += _truncateTimer_Elapsed;
+                _truncateTimer.Start();
             }
 
 
@@ -112,22 +114,22 @@ namespace GameSpyLib.Logging
         /// <summary>
         /// Event called at midnight, to clear the log file
         /// </summary>
-        private void TruncateTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void _truncateTimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             try
             {
                 // Get next 24 hours
-                TruncateTimer.Interval = 24 * 60 * 60 * 1000;
-                TruncateTimer.Enabled = true;
-                TruncateTimer.Start();
+                _truncateTimer.Interval = 24 * 60 * 60 * 1000;
+                _truncateTimer.Enabled = true;
+                _truncateTimer.Start();
 
                 // Only allow 1 thread at a time do these operations
                 lock (_sync)
                 {
                     // Empty log
-                    LogStream.BaseStream.SetLength(0);
-                    LogStream.BaseStream.Seek(0, SeekOrigin.Begin);
-                    LogStream.Flush();
+                    _logStream.BaseStream.SetLength(0);
+                    _logStream.BaseStream.Seek(0, SeekOrigin.Begin);
+                    _logStream.Flush();
                 }
 
                 // Write to console
@@ -135,7 +137,7 @@ namespace GameSpyLib.Logging
                 {
                     // TODO! Rotate the file
                     Console.SetCursorPosition(0, Console.CursorTop);
-                    Console.WriteLine("Clearing logfile: " + LogFile.Name);
+                    Console.WriteLine("Clearing logfile: " + _logFile.Name);
                     Console.WriteLine();
                 }
             }
@@ -159,8 +161,8 @@ namespace GameSpyLib.Logging
             lock (_sync)
             {
                 Console.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
-                LogStream.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
-                LogStream.Flush();
+                _logStream.WriteLine(string.Format("[{0}] [{2}]\t{1}", DateTime.Now, message, level.ToString()));
+                _logStream.Flush();
             }
         }
 
@@ -181,8 +183,8 @@ namespace GameSpyLib.Logging
                 string temp1 = string.Format(message, items);
                 string temp2 = string.Format("[{0}] [{1}]\t{2}", DateTime.Now, level.ToString(), temp1);
                 Console.WriteLine(temp2);
-                LogStream.WriteLine(temp2);
-                LogStream.Flush();
+                _logStream.WriteLine(temp2);
+                _logStream.Flush();
             }
         }
 
@@ -204,21 +206,26 @@ namespace GameSpyLib.Logging
         /// </summary>
         ~LogWriter()
         {
-            Dispose();
+            Dispose(false);
         }
         /// <summary>
         /// free resource created by this class
         /// </summary>
         public void Dispose()
         {
-            LogStream.Close();
-
-            try
+            Dispose(true);
+        }
+        private void Dispose(bool disposingManageResource)
+        {
+            if (_disposed) return;
+            _disposed = true;
+            if(disposingManageResource)
             {
-                LogStream?.Dispose();
-                TruncateTimer?.Dispose();
-            }
-            catch (ObjectDisposedException) { } // Ignore
+                
+            }     
+                _logStream?.Close();
+                _logStream?.Dispose();
+                _truncateTimer?.Dispose();
         }
     }
 }

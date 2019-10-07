@@ -1,14 +1,12 @@
-﻿using System;
-using System.Text;
-using System.Linq;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using GameSpyLib.Network;
+﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using System.Text.RegularExpressions;
+using GameSpyLib.Network;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
-using GameSpyLib.Extensions;
-using GameSpyLib.Network.TCP;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GameSpyLib.Common
 {
@@ -162,10 +160,10 @@ namespace GameSpyLib.Common
         /// <param name="stream">The stream that will receive the error</param>
         /// <param name="code">The error code</param>
         /// <param name="error">A string containing the error</param>
-        public static void SendGPError(TCPClientBase client, object errorCode, string error)
+        public static void SendGPError(TcpSession session, object errorCode, string error)
         {
             string sendingBuffer = string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", (uint)errorCode, error);
-            client.Send(sendingBuffer);
+            session.SendAsync(sendingBuffer);
         }
 
         /// <summary>

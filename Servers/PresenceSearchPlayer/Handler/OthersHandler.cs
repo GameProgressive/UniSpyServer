@@ -14,9 +14,9 @@ namespace PresenceSearchPlayer.Handler
         /// <summary>
         /// Get profiles that have you on their buddy(friend) list.
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="session"></param>
         /// <param name="dict"></param>
-        public static void SearchOtherBuddy(GPSPClient client, Dictionary<string, string> dict)
+        public static void SearchOtherBuddy(GPSPSession session, Dictionary<string, string> dict)
         {
             // TODO: Please finis this function
             //others\sesskey\profileid\namespace\
@@ -24,13 +24,13 @@ namespace PresenceSearchPlayer.Handler
             var temp = OthersQuery.GetOtherBuddy(dict);
             if (temp == null)
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "No Math Found");
+                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "No Math Found");
                 return;
             }
             if (temp.Count == 1)
             {
                 sendingbuffer = string.Format(@"\others\o\nick\{0}\uniquenick\{1}\first\{2}\last\{3}\email\{4}\odone\final\",temp[0]["nick"],temp[0]["uniquenick"],temp[0]["firstname"],temp[0]["lastname"],temp[0]["email"]);
-                client.Stream.SendAsync(sendingbuffer);
+                session.SendAsync(sendingbuffer);
                 return;
             }
             if(temp.Count>1)
@@ -40,12 +40,12 @@ namespace PresenceSearchPlayer.Handler
                 {
                     sendingbuffer += string.Format(@"o\nick\{0}\uniquenick\{1}\first\{1}\last\{2}\email\{3}\",info["nick"],info["uniquenick"],info["firstname"],info["lastname"],info["email"]);
                 }
-                client.Stream.SendAsync(sendingbuffer);
+                session.SendAsync(sendingbuffer);
                 return;
             }
            
             GameSpyUtils.PrintReceivedGPDictToLogger("others", dict);
-            GameSpyUtils.SendGPError(client, GPErrorCode.General, "This request is not supported yet.");
+            GameSpyUtils.SendGPError(session, GPErrorCode.General, "This request is not supported yet.");
         }
 
     }

@@ -11,9 +11,9 @@ namespace PresenceSearchPlayer.Handler
         /// <summary>
         /// Validates a user's info, without logging into the account.
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="session"></param>
         /// <param name="dict"></param>
-        public static void CheckProfileid(GPSPClient client, Dictionary<string, string> dict)
+        public static void CheckProfileid(GPSPSession session, Dictionary<string, string> dict)
         {
             // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
             //\cur\pid\<pid>\final
@@ -21,13 +21,13 @@ namespace PresenceSearchPlayer.Handler
             bool isContiansAllKey = dict.ContainsKey("nick") && dict.ContainsKey("email") && (dict.ContainsKey("passenc") || dict.ContainsKey("pass"));
             if (!isContiansAllKey )
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "Parsing error, please check input.");
+                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "Parsing error, please check input.");
                 return;
             }
             bool isEmailCorrect = GameSpyUtils.IsEmailFormatCorrect(dict["email"]);
             if (!isEmailCorrect)
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "Email format not correct.");
+                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "Email format not correct.");
                 return;
             }
 
@@ -38,12 +38,12 @@ namespace PresenceSearchPlayer.Handler
             if (profileid != -1)
             {                
                 sendingBuffer = string.Format(@"\cur\0\pid\{0}\final\", profileid);
-                client.Stream.SendAsync(sendingBuffer);
+                session.SendAsync(sendingBuffer);
             }
             else
             {
                 sendingBuffer = "No math found";
-                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, sendingBuffer);
+                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, sendingBuffer);
             }
         }
     }

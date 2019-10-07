@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using GameSpyLib.Network.UDP;
 using QueryReport.DedicatedServerData;
 using QueryReport.Handler;
 using QueryReport.Structure;
@@ -12,7 +11,7 @@ using System.Timers;
 
 namespace QueryReport
 {
-    public class QRServer : UDPServer
+    public class QRServer : UdpServer
     {
         /// <summary>
         /// Max number of concurrent open and active connections.

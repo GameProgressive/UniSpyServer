@@ -65,7 +65,7 @@ namespace Chat
                     // If connection is still alive, disconnect user
 
                 if (!Stream.SocketClosed)
-                    Stream.Close();
+                    Stream.ReleaseForOtherConnection();
             }
             catch { }
             // Call disconnect event

@@ -26,17 +26,6 @@ namespace PresenceSearchPlayer
         }
 
         /// <summary>
-        /// Checks if a specific server is running
-        /// </summary>
-        /// <param name="cfg">The specific server configuration</param>
-        /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
-
-        public override bool IsServerRunning()
-        {
-            return Server != null && !Server.Disposed;
-        }
-
-        /// <summary>
         /// Starts a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
@@ -49,8 +38,8 @@ namespace PresenceSearchPlayer
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":
-                Server = new GStatsServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
-                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
+                Server = new GStatsServer(cfg.Name, databaseDriver,IPAddress.Parse(cfg.Hostname), cfg.Port);
+                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
 
@@ -61,7 +50,7 @@ namespace PresenceSearchPlayer
         /// <param name="cfg">The configuration of the specific server to stop</param>
         protected override void StopServer()
         {
-            Server?.Dispose();
+            Server?.Stop();
         }
     }
 }

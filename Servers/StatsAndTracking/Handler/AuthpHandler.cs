@@ -6,7 +6,7 @@ namespace StatsAndTracking.Handler
 {
     public class AuthpHandler
     {
-        public static void AuthPlayer(GStatsClient client,Dictionary<string,string> dict)
+        public static void AuthPlayer(GstatsSession session,Dictionary<string,string> dict)
         {
           
         }

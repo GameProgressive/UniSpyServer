@@ -14,7 +14,7 @@ namespace PresenceSearchPlayer.Handler
         /// </summary>
         /// <param name="client">The client that sended the data</param>
         /// <param name="dict">The request that the stream sended</param>
-        public static void NewUser(GPSPClient client, Dictionary<string, string> dict)
+        public static void NewUser(GPSPSession client, Dictionary<string, string> dict)
         {
             //Format the password for our database storage           
             GPErrorCode error = IsContainAllKeys(dict);
@@ -31,7 +31,7 @@ namespace PresenceSearchPlayer.Handler
             if (error != GPErrorCode.NoError)
             {
                 sendingBuffer = string.Format(@"\nur\{0}\final\", (int)error);
-                client.Stream.SendAsync(sendingBuffer);
+                client.SendAsync(sendingBuffer);
                 return;
             }
 
@@ -47,13 +47,15 @@ namespace PresenceSearchPlayer.Handler
             }
             else
             {
-                client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", profileid);
+                //client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", profileid);
+                sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", profileid);
+                client.SendAsync(sendingBuffer);
             }
 
         }
 
 
-        public static GPErrorCode IsContainAllKeys(Dictionary<string, string> dict)
+        private static GPErrorCode IsContainAllKeys(Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("nick"))
             {
@@ -83,7 +85,7 @@ namespace PresenceSearchPlayer.Handler
         /// and search uniquenick to find if a account is existed
         /// </summary>
         /// <returns></returns>
-        public static GPErrorCode IsEmailNickUniquenickValied(Dictionary<string, string> dict)
+        private static GPErrorCode IsEmailNickUniquenickValied(Dictionary<string, string> dict)
         {
             if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["nick"]))
             {
@@ -99,7 +101,7 @@ namespace PresenceSearchPlayer.Handler
             return GPErrorCode.NoError;
         }
 
-        public static void PreProcessRequest(Dictionary<string, string> dict)
+        private static void PreProcessRequest(Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("uniquenick"))
             {
@@ -114,7 +116,7 @@ namespace PresenceSearchPlayer.Handler
                 dict.Add("namespaceid", "0");
             }
         }
-        public static string CreateUniquenickInRequest(Dictionary<string, string> dict)
+        private static string CreateUniquenickInRequest(Dictionary<string, string> dict)
         {
             string user = dict["email"];
             int Pos = user.IndexOf('@');
@@ -128,7 +130,7 @@ namespace PresenceSearchPlayer.Handler
         /// </summary>
         /// <param name="dict"></param>
         /// <returns>return profileid, if profile exsit returns -1</returns>
-        public static int CreateAccount(Dictionary<string, string> dict)
+        private static int CreateAccount(Dictionary<string, string> dict)
         {
 
             //check is user exist in users table, if not exist we create

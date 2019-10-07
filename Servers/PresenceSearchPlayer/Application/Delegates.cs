@@ -3,5 +3,5 @@
 
 namespace PresenceSearchPlayer
 {
-    public delegate void GPSPConnectionClosed(GPSPClient client);  
+    public delegate void GPSPConnectionClosed(GPSPSession session);
 }

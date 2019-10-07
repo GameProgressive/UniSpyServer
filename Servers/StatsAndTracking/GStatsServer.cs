@@ -1,33 +1,17 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Logging;
-using GameSpyLib.Network.TCP;
+using GameSpyLib.Network;
 using System;
-using System.Collections.Concurrent;
 using System.Net;
-using System.Threading;
+using System.Net.Sockets;
 
 namespace StatsAndTracking
 {
-    public class GStatsServer : TCPServer
+    public class GStatsServer : TcpServer
     {
-        /// <summary>
-        /// A connection counter, used to create unique connection id's
-        /// </summary>
-        private static long ConnectionCounter = 0;
+        public static DatabaseDriver DB;
 
-        /// <summary>
-        /// Indicates whether we are closing the server down
-        /// </summary>
-        public bool Exiting { get; private set; } = false;
-        public string ServerChallengeKey { get; private set; }
-
-        /// <summary>
-        /// A List of sucessfully active connections (Name => Client Obj) on the MasterServer TCP line
-        /// </summary>
-        private static ConcurrentDictionary<long, GStatsClient> Clients = new ConcurrentDictionary<long, GStatsClient>();
-
-        public static DBQueryBase DB;
-
+        public bool Disposed = false;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -36,74 +20,49 @@ namespace StatsAndTracking
         /// If the databaseDriver is null, then the server will attempt to create it's own connection
         /// otherwise it will use the specified connection
         /// </param>
-        public GStatsServer(string serverName,DatabaseDriver databaseDriver, IPEndPoint bindTo, int MaxConnections) : base(serverName,bindTo, MaxConnections)
+        public GStatsServer(string serverName,DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName,address, port)
         {
             //GStatsHandler.DBQuery = new GSTATSDBQuery(databaseDriver);
-            DB = new DBQueryBase(databaseDriver);
+            DB = databaseDriver;
             // Begin accepting connections
-            StartAcceptAsync();
+            Start();
         }
 
         ~GStatsServer()
         {
-            if (!Exiting)
-                Shutdown();
+            Dispose(false);
         }
 
-        public void Shutdown()
+        protected override TcpSession CreateSession() { return new GstatsSession(this); }
+
+        protected override void OnError(SocketError error)
         {
-            // Stop accepting new connections
-            IgnoreNewConnections = true;
-            Exiting = true;
-
-            // Disconnected all connected clients
-            foreach (GStatsClient c in Clients.Values)
-                c.Dispose();
-
-            // clear clients
-            Clients.Clear();
-
-            // Shutdown the listener socket
-            ShutdownSocket();
-
-            GStatsHandler.DBQuery.Dispose();
-
-            // Tell the base to dispose all free objects
-            Dispose();
+            string errorMsg = Enum.GetName(typeof(SocketError), error);
+            LogWriter.Log.Write(errorMsg, LogLevel.Error);
         }
 
-        /// <summary>
-        /// This function is fired when an exception occour in the server
-        /// </summary>
-        /// <param name="e">The exception to be thrown</param>
-        protected override void OnException(Exception e) => LogWriter.Log.WriteException(e);
-
-
-        /// <summary>
-        /// When a new connection is established, we the parent class are responsible
-        /// for handling the processing
-        /// </summary>
-        /// <param name="Stream">A GamespyTcpStream object that wraps the I/O AsyncEventArgs and socket</param>
-        protected override void ProcessAccept(TCPStream stream)
+        protected override void Dispose(bool disposingManagedResources)
         {
-            // Get our connection id
-            long conid = Interlocked.Increment(ref ConnectionCounter);
-            GStatsClient client;
-            try
+            if (disposingManagedResources)
             {
-                // Convert the TcpClient to a MasterClient
-                client = new GStatsClient(stream, conid);
-                Clients.TryAdd(conid, client);
-                client.SendServerChallenge();
-                // Start receiving data
-                stream.BeginReceive();
+
             }
-            catch
-            {
-                // Remove pending connection
-                Clients.TryRemove(conid, out client);
-            }
+            DB.Close();
+            DB?.Dispose();
+            DB = null;
+
+            base.Dispose(disposingManagedResources);
         }
-        
+
+        public string SendServerChallenge()
+        {
+            //38byte
+            string serverChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(38, GameSpyLib.Common.Random.StringType.Alpha);
+            //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
+            //sendingBuffer = xor(sendingBuffer);
+            string sendingBuffer = string.Format(@"\challenge\{0}", serverChallengeKey);
+            sendingBuffer = GameSpyLib.Extensions.Enctypex.XorEncoding(sendingBuffer, 1);
+            return sendingBuffer;
+        }
     }
 }
