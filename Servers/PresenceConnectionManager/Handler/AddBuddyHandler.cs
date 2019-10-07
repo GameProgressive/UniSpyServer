@@ -1,0 +1,15 @@
+﻿using GameSpyLib.Common;
+using PresenceConnectionManager.Enumerator;
+using System.Collections.Generic;
+
+namespace PresenceConnectionManager.Handler
+{
+    public class AddBuddyHandler
+    {
+        public static void Addfriends(GPCMClient client,Dictionary<string,string> recv)
+        {
+            GameSpyUtils.PrintReceivedGPDictToLogger("profilelist", recv);
+            GameSpyUtils.SendGPError(client, GPErrorCode.General, "This request is not supported yet.");
+        }
+    }
+}

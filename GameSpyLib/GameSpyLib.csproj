@@ -1,19 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
     <ApplicationIcon></ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="common\Log - 复制\**" />
-    <EmbeddedResource Remove="common\Log - 复制\**" />
-    <None Remove="common\Log - 复制\**" />
+    <PackageReference Include="MySql.Data" Version="8.0.17" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.111" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.15" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.109.2" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
 </Project>
