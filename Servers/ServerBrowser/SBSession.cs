@@ -2,9 +2,9 @@
 
 namespace ServerBrowser
 {
-    public class SBSession : TcpSession
+    public class SBSession : TemplateTcpSession
     {
-        public SBSession(TcpServer server) : base(server)
+        public SBSession(TemplateTcpServer server) : base(server)
         {
         }
     }

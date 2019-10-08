@@ -4,26 +4,28 @@ using System.Text;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Network;
+using GameSpyLib.Logging;
 
 namespace StatsAndTracking
 {
-    public class GstatsSession : TcpSession
+    public class GstatsSession : TemplateTcpSession
     {
-        public GstatsSession(TcpServer server) : base(server)
+        public GstatsSession(TemplateTcpServer server) : base(server)
         {
             DisconnectAfterSend = true;
         }
+
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             if (size > 2048)
             {
-                Server.ToLog("Client spam, ignored!");
+                LogInfo("Client spam, ignored!");
                 return;
             }
 
             string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             message = message.Replace(@"\final\", "");
-            string decodedmsg = GameSpyLib.Extensions.Enctypex.XorEncoding(message, 1);
+            string decodedmsg = Enctypex.XorEncoding(message, 1);
             if (decodedmsg[0] != '\\')
             {
                 return;
@@ -43,11 +45,11 @@ namespace StatsAndTracking
         protected override void OnDisconnected()
         {
 
-            Server.ToLog($"Id [{Id}] disconnected!");
+            LogInfo($"Id [{Id}] disconnected!");
         }
         protected override void OnConnected()
         {
-            Server.ToLog($"Id [{Id}] connected!");
+            LogInfo($"Id [{Id}] connected!");
         }
 
         public string RequstFormatConversion(string message)
@@ -63,6 +65,11 @@ namespace StatsAndTracking
                 message = message.Insert(pos, "\\");
             }
             return message;
+        }
+
+        protected void LogInfo(string message)
+        {
+            LogWriter.Log.Write(LogLevel.Info, "{0} {1}", ServerName, message);
         }
 
     }

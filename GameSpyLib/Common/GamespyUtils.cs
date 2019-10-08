@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using GameSpyLib.Network;
+using NetCoreServer;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

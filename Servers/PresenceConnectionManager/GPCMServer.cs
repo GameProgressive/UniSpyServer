@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using GameSpyLib.Network.TCP;
 using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler;
@@ -18,7 +17,7 @@ namespace PresenceConnectionManager
     /// This server emulates the Gamespy Client Manager Server on port 29900.
     /// This class is responsible for managing the login process.
     /// </summary>
-    public class GPCMServer : TCPServer
+    public class GPCMServer : TemplateTcpServer
     {
         /// <summary>
         /// Indicates the timeout of when a connecting client will be disconnected

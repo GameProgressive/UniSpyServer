@@ -1,13 +1,14 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using NetCoreServer;
 using System;
 using System.Net;
 using System.Net.Sockets;
 
 namespace StatsAndTracking
 {
-    public class GStatsServer : TcpServer
+    public class GStatsServer : TemplateTcpServer
     {
         public static DatabaseDriver DB;
 
@@ -34,12 +35,6 @@ namespace StatsAndTracking
         }
 
         protected override TcpSession CreateSession() { return new GstatsSession(this); }
-
-        protected override void OnError(SocketError error)
-        {
-            string errorMsg = Enum.GetName(typeof(SocketError), error);
-            LogWriter.Log.Write(errorMsg, LogLevel.Error);
-        }
 
         protected override void Dispose(bool disposingManagedResources)
         {

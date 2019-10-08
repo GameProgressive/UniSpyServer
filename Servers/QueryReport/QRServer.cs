@@ -14,7 +14,7 @@ using System.Text;
 
 namespace QueryReport
 {
-    public class QRServer : UdpServer
+    public class QRServer : TemplateUdpServer
     {
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace QueryReport
 
         public static DatabaseDriver DB;
 
-        public QRServer(string serverName, DatabaseDriver databaseDriver, IPAddress address,int port) : base(serverName, address, port)
+        public QRServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
             DB = databaseDriver;
             Start();
@@ -60,6 +60,7 @@ namespace QueryReport
             // Start receive datagrams
             ReceiveAsync();
         }
+
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             // Need at least 5 bytes
@@ -68,6 +69,8 @@ namespace QueryReport
                 return;
             }
             //string message = Encoding.ASCII.GetString(buffer, 0, (int)size);
+
+            base.OnReceived(endpoint, buffer, offset, size); // This logs the data we received
 
             byte[] message = new byte[(int)size];
             Array.Copy(buffer, 0, message, 0, (int)size);
@@ -99,7 +102,6 @@ namespace QueryReport
             {
                 LogWriter.Log.WriteException(e);
             }
-
         }
 
         protected override void OnSent(EndPoint endpoint, long sent)
@@ -107,13 +109,5 @@ namespace QueryReport
             // Continue receive datagrams
             ReceiveAsync();
         }
-
-        protected override void OnError(SocketError error)
-        {
-            string errorMsg = Enum.GetName(typeof(SocketError), error);
-            LogWriter.Log.Write(errorMsg, LogLevel.Error);
-        }
-
-      
     }
 }

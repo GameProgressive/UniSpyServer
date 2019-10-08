@@ -18,7 +18,7 @@ namespace PresenceConnectionManager
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    public class GPCMClient : TCPClientBase, IEquatable<GPCMClient>
+    public class GPCMClient : TemplateTcpSession, IEquatable<GPCMClient>
     {
 
 

@@ -50,7 +50,7 @@ namespace PresenceSearchPlayer
                         UniqueSearchHandler.SuggestUniqueNickname(session, recv);
                         break;
                     default:
-                        session.Server.ToLog("received unknown data." + command);
+                        LogWriter.Log.Write(LogLevel.Info, "{0} Receoved unknown data: {1}", session.Server, command);
                         GameSpyUtils.PrintReceivedGPDictToLogger(command, recv);
                         GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "An invalid request was sended.");
                         break;

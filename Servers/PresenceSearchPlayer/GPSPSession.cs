@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
@@ -7,10 +8,9 @@ using System.Text;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPSession : TcpSession
+    public class GPSPSession : TemplateTcpSession
     {
-
-        public GPSPSession(TcpServer server) : base(server)
+        public GPSPSession(GPSPServer server) : base(server)
         {
             DisconnectAfterSend = true;
         }
@@ -19,7 +19,7 @@ namespace PresenceSearchPlayer
         {
             if (size > 2048)
             {
-                Server.ToLog("Client spam, ignored!");
+                LogInfoMessage("Client spam, ignored!");
                 return;
             }
 
@@ -44,16 +44,17 @@ namespace PresenceSearchPlayer
 
                 CommandSwitcher.Switch(this, dict);
             }
+
+            base.OnReceived(buffer, offset, size);
         }
 
         protected override void OnDisconnected()
         {
-            
-           Server.ToLog($"[Disc] Id [{Id}]");
+            LogInfoMessage($"[Disc] Id [{Id}]");
         }
         protected override void OnConnected()
         {
-            Server.ToLog($"[Conn] Id [{Id}]");
+            LogInfoMessage($"[Conn] Id [{Id}]");
         }
 
         public string RequstFormatConversion(string message)
@@ -69,6 +70,11 @@ namespace PresenceSearchPlayer
                 message = message.Insert(pos, "\\");
             }
             return message;
+        }
+
+        public void LogInfoMessage(string message)
+        {
+            LogWriter.Log.Write(LogLevel.Info, "{0} {1}", ServerName, message);
         }
     }
 }

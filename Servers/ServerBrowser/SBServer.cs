@@ -13,7 +13,7 @@ namespace ServerBrowser
     /// This class emulates the master.gamespy.com TCP server on port 28910.
     /// This server is responisible for sending server lists to the online server browser in the game.
     /// </summary>
-    public class SBServer : TcpServer
+    public class SBServer : TemplateTcpServer
     {
        
         public static DatabaseDriver DB;
