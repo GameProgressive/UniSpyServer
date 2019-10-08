@@ -17,15 +17,15 @@ namespace QueryReport.Handler
         /// </summary>
         /// <param name="server"></param>
         /// <param name="packet"></param>
-        public static void HeartbeatResponse(QRServer server, UDPPacket packet)
+        public static void HeartbeatResponse(QRServer server, byte[] buffer)
         {
-            IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
+          
             byte[] recvKeys = new byte[4];
             //we copy 4 bytes information prepare for reply 
-            Array.Copy(packet.BytesRecieved, 1, recvKeys, 0, 4);
+            Array.Copy(buffer, 1, recvKeys, 0, 4);
 
 
-            byte[] restData = packet.BytesRecieved.Skip(5).ToArray();
+            byte[] restData = buffer.Skip(5).ToArray();
             string recvData = Encoding.UTF8.GetString(restData);
             string[] dataFrag;
             string serverData, playerData, teamData;
@@ -40,27 +40,27 @@ namespace QueryReport.Handler
                 //we revieved a wrong data, we have to send challege to game server
                 byte[] sendingBuffer = GenerateChallenge(recvKeys);
 
-                server.Send(packet, sendingBuffer);
-                server.Replied = true;
-                LogWriter.Log.Write(LogLevel.Debug, "[QR] [HeartBeat] Invalid Server Data Received From {0}:{1}-{2}", remote.Address, remote.Port, dataFrag[0]);
+                server.SendAsync(server.Endpoint, sendingBuffer);
+
+                LogWriter.Log.Write(LogLevel.Debug, "[QR] [HeartBeat] Invalid Server Data Received From {0}:{1}-{2}", server.Endpoint.Address, server.Endpoint.Port, dataFrag[0]);
                 return;
             }
             // We only care about the server data
             string[] serverDataFrag = serverData.Split(new string[] { "\x00" }, StringSplitOptions.None);
-            LogWriter.Log.Write(LogLevel.Debug, "[QR] [HeartBeat] Data received From {0}:{1}", remote.Address, remote.Port);
+            LogWriter.Log.Write(LogLevel.Debug, "[QR] [HeartBeat] Data received From {0}:{1}", server.Endpoint.Address, server.Endpoint.Port);
             LogWriter.Log.Write(LogLevel.Debug, "[QR] [HeartBeat] server info:{0} \t player info:{1} \t team info:{2}", serverData, playerData, teamData);
 
-            GameServer gameServer = new GameServer(remote);
+            GameServerData gameServer = new GameServerData(server.Endpoint);
             // set the country based off ip address if its IPv4
 
             //we set the server variables
-            SetServerVariables(gameServer, serverDataFrag, remote);
+            SetServerVariables(gameServer, serverDataFrag, server.Endpoint);
 
             LogWriter.Log.Write("[QR] No impliment function for Heartbeatpacket!", LogLevel.Debug);
             //TODO
         }
 
-        private static void SetServerVariables(GameServer gameServer, string[] serverDataFrag, IPEndPoint remote)
+        private static void SetServerVariables(GameServerData gameServer, string[] serverDataFrag, IPEndPoint remote)
         {
             gameServer.Country = (remote.Address.AddressFamily == AddressFamily.InterNetwork)
                ? GeoIP.GetCountryCode(remote.Address).ToUpperInvariant()
@@ -69,7 +69,7 @@ namespace QueryReport.Handler
             for (int i = 0; i < serverDataFrag.Length - 1; i += 2)
             {
                 //Fetch the properties
-                PropertyInfo property = typeof(GameServer).GetProperty(serverDataFrag[i]);
+                PropertyInfo property = typeof(GameServerData).GetProperty(serverDataFrag[i]);
                 if (property == null)
                     continue;
 

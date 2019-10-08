@@ -10,9 +10,9 @@ namespace QueryReport.DedicatedServerData
     {
     }
 
-    public class GameServer
+    public class GameServerData
     {
-        public GameServer(IPEndPoint remote)
+        public GameServerData(IPEndPoint remote)
         {
             Remote = remote;
         }

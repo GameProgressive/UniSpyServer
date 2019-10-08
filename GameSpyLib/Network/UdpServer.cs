@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GameSpyLib.Logging;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
@@ -13,18 +14,20 @@ namespace GameSpyLib.Network
     /// <remarks>Thread-safe</remarks>
     public class UdpServer : IDisposable
     {
+
+        public string ServerName;
         /// <summary>
         /// Initialize UDP server with a given IP address and port number
         /// </summary>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public UdpServer(IPAddress address, int port) : this(new IPEndPoint(address, port)) {}
+        public UdpServer(string serverName,IPAddress address, int port) : this(new IPEndPoint(address, port)) { ServerName = '['+serverName+']'; }
         /// <summary>
         /// Initialize UDP server with a given IP address and port number
         /// </summary>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public UdpServer(string address, int port) : this(new IPEndPoint(IPAddress.Parse(address), port)) {}
+        public UdpServer(string serverName,string address, int port) : this(new IPEndPoint(IPAddress.Parse(address), port)) { ServerName = '[' + serverName + ']'; }
         /// <summary>
         /// Initialize UDP server with a given IP endpoint
         /// </summary>
@@ -435,6 +438,9 @@ namespace GameSpyLib.Network
             // Try to send the main buffer
             TrySend();
 
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write(LogLevel.Debug, "{0} [Send] TCP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+
             return true;
         }
 
@@ -479,6 +485,9 @@ namespace GameSpyLib.Network
                     // Update statistic
                     DatagramsReceived++;
                     BytesReceived += received;
+
+                    if (LogWriter.Log.DebugSockets)
+                        LogWriter.Log.Write(LogLevel.Debug, "{0} [Recv] UDP data: {1}", ServerName, received);
 
                     // Call the datagram received handler
                     OnReceived(endpoint, buffer, offset, size);
@@ -625,6 +634,9 @@ namespace GameSpyLib.Network
                 DatagramsReceived++;
                 BytesReceived += size;
 
+                if (LogWriter.Log.DebugSockets)
+                    LogWriter.Log.Write(LogLevel.Debug, "{0} [Send] TCP data: {1}", ServerName, Encoding.UTF8.GetString(e.Buffer,0,(int)size));
+
                 // Call the datagram received handler
                 OnReceived(e.RemoteEndPoint, _receiveBuffer.Data, 0, size);
 
@@ -712,7 +724,11 @@ namespace GameSpyLib.Network
         /// </summary>
         /// <param name="error">Socket error code</param>
         protected virtual void OnError(SocketError error) {}
-
+       
+        public void ToLog(string message)
+        {
+            LogWriter.Log.Write(ServerName + " " + message, LogLevel.Info);
+        }
         #endregion
 
         #region Error handling

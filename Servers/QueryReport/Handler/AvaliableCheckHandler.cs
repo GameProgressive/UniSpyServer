@@ -35,9 +35,9 @@ namespace QueryReport.Handler
             return request[request.Length - 1] == AvailableCheckRequestPostfix;
         }
 
-        public static void BackendAvaliabilityResponse(QRServer server, UDPPacket packet)
+        public static void BackendAvaliabilityResponse(QRServer server,byte[] buffer)
         {
-            if (!IsClientRequestValid(packet.BytesRecieved))
+            if (!IsClientRequestValid(buffer))
             {
                 // ???
                 return;
@@ -45,14 +45,14 @@ namespace QueryReport.Handler
 
             //string gameName = GetGameName(packet.BytesRecieved);
 
-            byte[] dataToSend = new byte[7];
-            AvailableReply.CopyTo(dataToSend, 0);
-            
+            byte[] sendingBuffer = new byte[7];
+            AvailableReply.CopyTo(sendingBuffer, 0);
+
             // NOTE: Change this if you want to make the server not avaliable.
-            dataToSend[6] = (byte)ServerAvaliability.Avaliable;
+            sendingBuffer[6] = (byte)ServerAvaliability.Avaliable;
 
             //packet.SetBufferContents(dataToSend);
-            server.Send(packet, dataToSend);
+            server.SendAsync(server.Endpoint, sendingBuffer);
         }
 
         /// <summary>

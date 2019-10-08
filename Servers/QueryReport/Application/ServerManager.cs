@@ -9,7 +9,7 @@ namespace QueryReport
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ServerManager :ServerManagerBase, IDisposable
+    public class ServerManager : ServerManagerBase
     {
 
 
@@ -21,17 +21,6 @@ namespace QueryReport
         /// <param name="serverName">Server name in XML config file</param>
         public ServerManager(string serverName) : base(serverName)
         {
-        }
-
-        /// <summary>
-        /// Checks if a specific server is running
-        /// </summary>
-        /// <param name="cfg">The specific server configuration</param>
-        /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
-
-        public override bool IsServerRunning()
-        {
-            return Server != null && !Server.Disposed;
         }
 
         /// <summary>
@@ -47,8 +36,8 @@ namespace QueryReport
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":
-                Server = new QRServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
-                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
+                Server = new QRServer(cfg.Name, databaseDriver, IPAddress.Parse(cfg.Hostname), cfg.Port);
+                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
 

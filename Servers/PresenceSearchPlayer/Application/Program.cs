@@ -11,9 +11,9 @@ namespace PresenceSearchPlayer
         public static readonly string ServerName = "GPSP";
         public static string BasePath { get; protected set; }
 
-        public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        //public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
-        private static ServerManager Manager = null;
+        private static ServerManager _manager = null;
 
         public static bool IsRunning = false;
 
@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer
         ///<param name="bool_InitPathArg">argument for Main()</param>
         static void Main(string[] args)
         {
-            if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
+            //if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
 
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;
@@ -81,8 +81,8 @@ namespace PresenceSearchPlayer
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(ServerName);
-                Console.Title = "RetroSpy Server " + Manager.Version;
+                _manager = new ServerManager(ServerName);
+                Console.Title = "RetroSpy Server " + _manager.Version;
                 IsRunning = true;
             }
             catch (Exception e)
@@ -103,7 +103,7 @@ namespace PresenceSearchPlayer
                     switch (input)
                     {
                         case "exit":
-                            Manager.Dispose();
+                            _manager.Dispose();
                             IsRunning = false;
                             break;
                         case "help":
@@ -124,7 +124,7 @@ namespace PresenceSearchPlayer
             }
             #region Program Dispose
             LogWriter.Log.Write("Goodbye!", LogLevel.Info);
-            Manager?.Dispose();
+            _manager?.Dispose();
             LogWriter.Log.Dispose();
             #endregion
 
