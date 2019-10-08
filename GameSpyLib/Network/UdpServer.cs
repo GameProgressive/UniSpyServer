@@ -486,9 +486,6 @@ namespace GameSpyLib.Network
                     DatagramsReceived++;
                     BytesReceived += received;
 
-                    if (LogWriter.Log.DebugSockets)
-                        LogWriter.Log.Write(LogLevel.Debug, "{0} [Recv] UDP data: {1}", ServerName, received);
-
                     // Call the datagram received handler
                     OnReceived(endpoint, buffer, offset, size);
                 }
@@ -635,7 +632,7 @@ namespace GameSpyLib.Network
                 BytesReceived += size;
 
                 if (LogWriter.Log.DebugSockets)
-                    LogWriter.Log.Write(LogLevel.Debug, "{0} [Send] TCP data: {1}", ServerName, Encoding.UTF8.GetString(e.Buffer,0,(int)size));
+                    LogWriter.Log.Write(LogLevel.Debug, "{0} [Recv] TCP data: {1}", ServerName, Encoding.UTF8.GetString(e.Buffer,0,(int)size));
 
                 // Call the datagram received handler
                 OnReceived(e.RemoteEndPoint, _receiveBuffer.Data, 0, size);
@@ -727,8 +724,15 @@ namespace GameSpyLib.Network
        
         public void ToLog(string message)
         {
-            LogWriter.Log.Write(ServerName + " " + message, LogLevel.Info);
+            ToLog(message, LogLevel.Info);
         }
+
+        public void ToLog(string message, LogLevel level)
+        {
+            LogWriter.Log.Write(ServerName + " " + message, level);
+        }
+
+
         #endregion
 
         #region Error handling

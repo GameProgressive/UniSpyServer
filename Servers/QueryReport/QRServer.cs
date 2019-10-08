@@ -39,7 +39,7 @@ namespace QueryReport
 
         public static DatabaseDriver DB;
 
-        public QRServer(string serverName, DatabaseDriver databaseDriver, IPAddress address,int port) : base(serverName, address, port)
+        public QRServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
             DB = databaseDriver;
             Start();
@@ -47,7 +47,7 @@ namespace QueryReport
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
             //is busy and cant refresh the server's TTL right away
-            
+
 
             // Setup timer. Remove servers who havent ping'd since ServerTTL
             PollTimer = new Timer(5000);
@@ -63,8 +63,8 @@ namespace QueryReport
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             // Need at least 5 bytes
-            if (size < 5&&size>2048)
-            {               
+            if (size < 5 && size > 2048)
+            {
                 return;
             }
             //string message = Encoding.ASCII.GetString(buffer, 0, (int)size);
@@ -91,7 +91,8 @@ namespace QueryReport
                         KeepAliveHandler.KeepAliveResponse(this, message);
                         break;
                     default:
-                        LogWriter.Log.Write("[QR] [Recv] unknown data: ", LogLevel.Error);
+                        string errorMsg = string.Format("unknown data: {0}", Encoding.UTF8.GetString(message));
+                        ToLog(errorMsg, LogLevel.Error);
                         break;
                 }
             }
@@ -114,6 +115,6 @@ namespace QueryReport
             LogWriter.Log.Write(errorMsg, LogLevel.Error);
         }
 
-      
+
     }
 }
