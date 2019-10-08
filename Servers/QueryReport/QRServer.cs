@@ -95,7 +95,7 @@ namespace QueryReport
                         break;
                     default:
                         string errorMsg = string.Format("unknown data: {0}", Encoding.UTF8.GetString(message));
-                        ToLog(errorMsg, LogLevel.Error);
+                        LogWriter.Log.Write(LogLevel.Error, "{0} {1}", ServerName, message);
                         break;
                 }
             }

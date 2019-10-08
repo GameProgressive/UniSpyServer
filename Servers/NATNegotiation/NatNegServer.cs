@@ -12,7 +12,7 @@ using System.Text;
 
 namespace NATNegotiation
 {
-    public class NatNegServer : UdpServer
+    public class NatNegServer : TemplateUdpServer
     {
 
         public bool Replied = false;
@@ -40,10 +40,13 @@ namespace NATNegotiation
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            Console.WriteLine("Incoming: " + Encoding.UTF8.GetString(buffer, (int)offset, (int)size));
-
             if (size < 6 && size > 2048)
-            { return; }
+            {
+                return;
+            }
+
+            base.OnReceived(endpoint, buffer, offset, size);
+
             byte[] message = new byte[(int)size];
             Array.Copy(buffer, 0, message, 0, (int)size);
 
@@ -87,14 +90,6 @@ namespace NATNegotiation
             // Continue receive datagrams
             ReceiveAsync();
         }
-
-        protected override void OnError(SocketError error)
-        {
-            string errorMsg = Enum.GetName(typeof(SocketError), error);
-            LogWriter.Log.Write(errorMsg, LogLevel.Error);
-        }
-
-
 
         protected override void ProcessAccept(UDPPacket packet)
         {
