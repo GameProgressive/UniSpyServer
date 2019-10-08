@@ -20,7 +20,7 @@ namespace ServerBrowser
         /// Takes a message sent through the Stream and sends back a respose
         /// </summary>
         /// <param name="message"></param>
-        public static void ParseRequest(SBClient client, string message)
+        public static void ParseRequest(SBSession session, string message)
         {
             string[] data = message.Split(new char[] { '\x00' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -30,14 +30,14 @@ namespace ServerBrowser
             string[] fields = data[3].Split(new char[] { '\\' }, StringSplitOptions.RemoveEmptyEntries);
 
             // Send the encrypted serverlist to the client
-            byte[] unencryptedServerList = PackServerList(client, filter, fields);
+            byte[] unencryptedServerList = PackServerList(session, filter, fields);
             string sendingBuffer = Encoding.UTF8.GetString(Enctypex.Encode(
                     Encoding.UTF8.GetBytes("hW6m9a"), // Battlfield 2 Handoff Key
                     Encoding.UTF8.GetBytes(validate),
                     unencryptedServerList,
                     unencryptedServerList.LongLength)
                 );
-            client.Send(sendingBuffer);
+            session.SendAsync(sendingBuffer);
         }
 
         /// <summary>
@@ -46,12 +46,10 @@ namespace ServerBrowser
         /// <param name="filter"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        private static byte[] PackServerList(SBClient client, string filter, string[] fields)
+        private static byte[] PackServerList(SBSession session, string filter, string[] fields)
         {
-            IPEndPoint remoteEndPoint = ((IPEndPoint)client.RemoteEndPoint);
-
             byte fieldsCount = (byte)fields.Length;
-            byte[] ipBytes = remoteEndPoint.Address.GetAddressBytes();
+            byte[] ipBytes = session.Server.Endpoint.Address.GetAddressBytes();
             byte[] value2 = BitConverter.GetBytes((ushort)6500);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(value2, 0, value2.Length);
