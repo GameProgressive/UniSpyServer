@@ -79,6 +79,12 @@ namespace GameSpyLib.Network
 
             return returnValue;
         }
+        /// <summary>
+        /// Our method to receive message and print in the console
+        /// </summary>
+        /// <param name="recv">message we recieved</param>
+        protected virtual void OnReceived(string message)
+        { }
 
         /// <summary>
         /// Handle buffer received notification
@@ -92,8 +98,15 @@ namespace GameSpyLib.Network
         /// </remarks>
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
+            if (size > 2048)
+            {
+                ToLog("[Spam] client spam we ignored!");
+                return;
+            }
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, Encoding.UTF8.GetString(buffer, 0, (int)size));
+
+            OnReceived(Encoding.UTF8.GetString(buffer, 0, (int)size));
         }
 
         protected override void OnConnected()
@@ -122,6 +135,11 @@ namespace GameSpyLib.Network
             string errorMsg = string.Format("Received unknown data: {0}", text);
             GameSpyUtils.PrintReceivedGPDictToLogger(recv);
             ToLog(errorMsg);
+        }
+
+        public virtual void UnknownDataRecived(Dictionary<string, string> recv)
+        {
+            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
         }
 
         public virtual string RequstFormatConversion(string message)

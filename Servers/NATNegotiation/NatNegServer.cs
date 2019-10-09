@@ -14,13 +14,6 @@ namespace NATNegotiation
 {
     public class NatNegServer : TemplateUdpServer
     {
-
-        public bool Replied = false;
-
-        public List<ClientInfo> ClientInfoList = new List<ClientInfo>();
-
-        public int InstanceCount = 1;
-
         /// <summary>
         /// 
         /// </summary>
@@ -33,18 +26,9 @@ namespace NATNegotiation
 
         }
 
-        protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
+        protected override void OnReceived(EndPoint endpoint, byte[] message)
         {
-            if (size < 6 && size > 2048)
-            {
-                return;
-            }
-
-            base.OnReceived(endpoint, buffer, offset, size);
-
-            byte[] message = new byte[(int)size];
-            Array.Copy(buffer, 0, message, 0, (int)size);
-
+            
             BasePacket basePacket = new BasePacket(message);
             try
             {

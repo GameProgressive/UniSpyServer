@@ -5,10 +5,8 @@ using GameSpyLib.Database;
 
 namespace Chat.DBQueries
 {
-    public class ChatDBQuery : DBQueryBase
+    public class ChatDBQuery  
     {
-        public ChatDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
-        {
-        }
+
     }
 }

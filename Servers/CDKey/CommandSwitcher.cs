@@ -1,29 +1,32 @@
 ﻿using GameSpyLib.Logging;
-using StatsAndTracking.Handler;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 
-namespace StatsAndTracking
+namespace CDKey
 {
     public class CommandSwitcher
     {
-        public static void Switch(GstatsSession session, Dictionary<string, string> recv)
+        public static void Switch(CDKeyServer server, EndPoint endPoint, Dictionary<string, string> recv)
         {
-            string command = recv.Keys.First();
+
             try
             {
-                switch (command)
+                switch (recv.Values.First())
                 {
+                    //keep client alive request, we skip this
+                    case "ka":
                     case "auth":
-                        AuthHandler.SendSessionKey(session, recv);
+                    case "resp":
+                    case "skey":
+                        CDKeyHandler.IsCDKeyValid(server, endPoint, recv);
                         break;
-                    case "authp":
-                        AuthpHandler.AuthPlayer(session, recv);
+                    case "disc":
                         break;
                     default:
-                        session.UnknownDataRecived(recv);
+                        server.UnknownDataRecived(recv);
                         break;
                 }
             }

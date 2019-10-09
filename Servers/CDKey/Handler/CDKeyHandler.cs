@@ -1,9 +1,7 @@
 ﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using GameSpyLib.Network;
-using GameSpyLib.Network.UDP;
 using System.Collections.Generic;
-using System.Text;
+using System.Net;
 namespace CDKey
 {
     /// <summary>
@@ -12,37 +10,25 @@ namespace CDKey
     /// </summary>
     public class CDKeyHandler
     {
-
-        public static CDKeyDBQuery DBQuery = null;
-       
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="str">MD5cdkey string</param>
         /// <returns></returns>
-        public static void IsCDKeyValid(CDKeyServer server,UDPPacket packet, Dictionary<string, string> recv)
+        public static void IsCDKeyValid(CDKeyServer server,EndPoint endPoint, Dictionary<string, string> recv)
         {
-            if (DBQuery.IsCDKeyValidate(recv["skey"]))
-            {
-                string reply = string.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
+            //if (DBQuery.IsCDKeyValidate(recv["skey"]))
+            //{
+            //    string reply = string.Format(@"\uok\\cd\{0}\skey\{1}", recv["resp"].Substring(0, 32), recv["skey"]);
 
-                server.Send(packet, Enctypex.XorEncoding(reply,0));
-            }
-            else
-            {
-                LogWriter.Log.Write( LogLevel.Debug, "Incomplete or Invalid CDKey Packet Received: {0}", recv);
-                //TODO cdkey invalid response
-            }                
-        }
-        public static void DisconnectRequest(UDPPacket packet, Dictionary<string, string> recv)
-        {
-            // Handle, User disconnected from server
+            //    server.SendAsync(endPoint, Enctypex.XorEncoding(reply,0));
+            //}
+            //else
+            //{
+            //    LogWriter.Log.Write( LogLevel.Debug, "Incomplete or Invalid CDKey Packet Received: {0}", recv);
+            //    //TODO cdkey invalid response
+            //}                
         }
 
-        public static void InvalidCDKeyRequest(CDKeyServer server,UDPPacket packet, Dictionary<string, string> recv)
-        {
-            LogWriter.Log.Write(LogLevel.Debug, "[CDKey] recieved Incomplete or Invalid  data : {0}", recv);
-        }
     }
 }

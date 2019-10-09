@@ -5,6 +5,7 @@ using GameSpyLib.Logging;
 using System.Net;
 using System.Net.Sockets;
 using System.Collections.Generic;
+using GameSpyLib.Common;
 
 namespace GameSpyLib.Network
 {
@@ -102,6 +103,10 @@ namespace GameSpyLib.Network
             ReceiveAsync();
         }
 
+        protected virtual void OnReceived(EndPoint endPoint, byte[] message)
+        { 
+        
+        }
         /// <summary>
         /// Handle datagram received notification
         /// </summary>
@@ -115,8 +120,17 @@ namespace GameSpyLib.Network
         /// </remarks>
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
+            // Need at least 5 bytes
+            if (size < 5 && size > 2048)
+            {
+                return;
+            }
+            byte[] temp = new byte[(int)size];
+            Array.Copy(buffer, 0, temp, 0, (int)size);
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer, 0, (int)size));
+
+            OnReceived(endpoint, temp);
         }
 
         public virtual void ToLog(string text)
@@ -134,6 +148,6 @@ namespace GameSpyLib.Network
             string buffer = Encoding.UTF8.GetString(text, 0, text.Length);
             string errorMsg = string.Format("[unknow] {0}", buffer);
             ToLog(errorMsg);
-        }
+        }       
     }
 }

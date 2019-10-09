@@ -5,10 +5,8 @@ using GameSpyLib.Database;
 
 namespace StatsAndTracking
 {
-    public class GSTATSDBQuery : DBQueryBase
+    public class GSTATSDBQuery
     {
-        public GSTATSDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
-        {
-        }
+       
     }
 }

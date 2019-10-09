@@ -17,7 +17,7 @@ namespace QueryReport.Handler
         /// </summary>
         /// <param name="server"></param>
         /// <param name="packet"></param>
-        public static void HeartbeatResponse(QRServer server, byte[] buffer)
+        public static void HeartbeatResponse(QRServer server,EndPoint endPoint, byte[] buffer)
         {
           
             byte[] recvKeys = new byte[4];
@@ -40,9 +40,9 @@ namespace QueryReport.Handler
                 //we revieved a wrong data, we have to send challege to game server
                 byte[] sendingBuffer = GenerateChallenge(recvKeys);
 
-                server.SendAsync(server.Endpoint, sendingBuffer);
-
-                LogWriter.Log.Write(LogLevel.Debug, "[QR] [HeartBeat] Invalid Server Data Received From {0}:{1}-{2}", server.Endpoint.Address, server.Endpoint.Port, dataFrag[0]);
+                server.SendAsync(endPoint, sendingBuffer);
+                string errorMsg = string.Format("[HeartBeat] Invalid Server Data Received From {0}:{1}-{2}", server.Endpoint.Address, server.Endpoint.Port, dataFrag[0]);
+                server.ToLog(errorMsg);
                 return;
             }
             // We only care about the server data

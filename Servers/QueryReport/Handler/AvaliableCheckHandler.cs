@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 
 namespace QueryReport.Handler
 {
@@ -35,7 +36,7 @@ namespace QueryReport.Handler
             return request[request.Length - 1] == AvailableCheckRequestPostfix;
         }
 
-        public static void BackendAvaliabilityResponse(QRServer server,byte[] buffer)
+        public static void BackendAvaliabilityResponse(QRServer server,EndPoint endPoint,byte[] buffer)
         {
             if (!IsClientRequestValid(buffer))
             {
@@ -52,7 +53,7 @@ namespace QueryReport.Handler
             sendingBuffer[6] = (byte)ServerAvaliability.Avaliable;
 
             //packet.SetBufferContents(dataToSend);
-            server.SendAsync(server.Endpoint, sendingBuffer);
+            server.SendAsync(endPoint, sendingBuffer);
         }
 
         /// <summary>

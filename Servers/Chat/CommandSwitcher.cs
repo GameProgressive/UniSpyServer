@@ -6,7 +6,7 @@ namespace Chat
 {
     public class CommandSwitcher
     {
-        public static void Switch(ChatClient client)
+        public static void Switch(ChatSession session)
         { 
         
         }

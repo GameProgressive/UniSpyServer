@@ -54,20 +54,9 @@ namespace QueryReport
             PollTimer.Start();
         }
 
-        protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
+        protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            // Need at least 5 bytes
-            if (size < 5 && size > 2048)
-            {
-                return;
-            }
-            //string message = Encoding.ASCII.GetString(buffer, 0, (int)size);
-            base.OnReceived(endpoint, buffer, offset, size); // This logs the data we received
-
-            byte[] message = new byte[(int)size];
-            Array.Copy(buffer, 0, message, 0, (int)size);
-            
-            CommandSwitcher.Switch(this, message);
+            CommandSwitcher.Switch(this, endPoint, message);
         }
 
         private bool _disposed;

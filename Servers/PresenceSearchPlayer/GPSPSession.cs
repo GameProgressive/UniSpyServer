@@ -15,17 +15,8 @@ namespace PresenceSearchPlayer
             DisconnectAfterSend = true;
         }
 
-        protected override void OnReceived(byte[] buffer, long offset, long size)
-        {
-            if (size > 2048)
-            {
-                ToLog("[Spam] client spam we ignored!");
-                return;
-            }
-
-            base.OnReceived(buffer, offset, size);
-
-            string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
+        protected override void OnReceived(string message)
+        {            
             message = RequstFormatConversion(message);
 
             if (message[0] != '\\')
@@ -47,8 +38,6 @@ namespace PresenceSearchPlayer
 
                 CommandSwitcher.Switch(this, dict);
             }
-
-
         }
 
     }

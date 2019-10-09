@@ -26,31 +26,16 @@ namespace PresenceConnectionManager
         }
 
         /// <summary>
-        /// Checks if a specific server is running
-        /// </summary>
-        /// <param name="cfg">The specific server configuration</param>
-        /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
-
-        public override bool IsServerRunning()
-        {
-            return Server != null && !Server.Disposed;
-        }
-
-        /// <summary>
         /// Starts a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(ServerConfiguration cfg)
         {
-            //if (cfg.Disabled)
-            //    return;            
-            //LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
-            //LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
+ 
             if (cfg.Name == ServerName)
             {
-                // case "GPCM":
-                Server = new ChatServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
-                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
+                Server = new ChatServer(cfg.Name, databaseDriver, IPAddress.Parse(cfg.Hostname), cfg.Port );
+                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
-using PresenceConnectionManager.Application;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler;
 using System;

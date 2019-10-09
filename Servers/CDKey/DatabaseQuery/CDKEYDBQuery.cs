@@ -3,12 +3,9 @@ using GameSpyLib.Database;
 
 namespace CDKey
 {
-    public class CDKeyDBQuery : DBQueryBase
+    public class CDKeyDBQuery 
     {
 
-        public CDKeyDBQuery(DatabaseDriver dbdriver) : base(dbdriver)
-        {
-        }
 
         public bool IsCDKeyValidate(string str)
         {

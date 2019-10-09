@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Logging;
 using QueryReport.Structure;
 using System;
+using System.Net;
 
 namespace QueryReport.Handler
 {
@@ -16,7 +17,7 @@ namespace QueryReport.Handler
             };
 
 
-        public static void ServerChallengeResponse(QRServer server, byte[] buffer)
+        public static void ServerChallengeResponse(QRServer server,EndPoint endPoint ,byte[] buffer)
         {
            
             byte[] challenge = new byte[90];
@@ -30,7 +31,7 @@ namespace QueryReport.Handler
             sendingbuffer[2] = QRGameServer.ClientRegistered;
             Array.Copy(instancekey, 0, sendingbuffer, 3, 4);
 
-            server.SendAsync(server.Endpoint, sendingbuffer);
+            server.SendAsync(endPoint, sendingbuffer);
             
             LogWriter.Log.Write("[QR] No impliment function for ServerChallengeResponse!", LogLevel.Debug);
         }

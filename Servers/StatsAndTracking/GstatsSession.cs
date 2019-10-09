@@ -15,15 +15,8 @@ namespace StatsAndTracking
             DisconnectAfterSend = true;
         }
 
-        protected override void OnReceived(byte[] buffer, long offset, long size)
+        protected override void OnReceived(string message)
         {
-            if (size > 2048)
-            {
-                LogInfo("Client spam, ignored!");
-                return;
-            }
-
-            string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             message = message.Replace(@"\final\", "");
             string decodedmsg = Enctypex.XorEncoding(message, 1);
             if (decodedmsg[0] != '\\')
@@ -41,35 +34,6 @@ namespace StatsAndTracking
             text = Enctypex.XorEncoding(text, 1);
             text += @"\final\";
             return base.SendAsync(text);
-        }
-        protected override void OnDisconnected()
-        {
-
-            LogInfo($"Id [{Id}] disconnected!");
-        }
-        protected override void OnConnected()
-        {
-            LogInfo($"Id [{Id}] connected!");
-        }
-
-        public string RequstFormatConversion(string message)
-        {
-            message = message.Replace(@"\-", @"\");
-            message = message.Replace('-', '\\');
-
-            int pos = message.IndexesOf("\\")[1];
-            string temp = message.Substring(pos, 2);
-
-            if (message.Substring(pos, 2) != "\\\\")
-            {
-                message = message.Insert(pos, "\\");
-            }
-            return message;
-        }
-
-        protected void LogInfo(string message)
-        {
-            LogWriter.Log.Write(LogLevel.Info, "{0} {1}", ServerName, message);
         }
 
     }

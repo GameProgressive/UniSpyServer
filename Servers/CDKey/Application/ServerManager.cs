@@ -24,18 +24,6 @@ namespace PresenceConnectionManager
         public ServerManager(string serverName) : base(serverName)
         {
         }
-
-        /// <summary>
-        /// Checks if a specific server is running
-        /// </summary>
-        /// <param name="cfg">The specific server configuration</param>
-        /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
-
-        public override bool IsServerRunning()
-        {
-            return Server != null && !Server.Disposed;
-        }
-
         /// <summary>
         /// Starts a specific server
         /// </summary>
@@ -49,8 +37,8 @@ namespace PresenceConnectionManager
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":
-                Server = new CDKeyServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
-                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
+                Server = new CDKeyServer(cfg.Name, databaseDriver,IPAddress.Parse(cfg.Hostname), cfg.Port);
+                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
 
