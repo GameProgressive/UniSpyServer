@@ -2,7 +2,6 @@
 using GameSpyLib.Database;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using GameSpyLib.Network.UDP;
 using System;
 using System.Collections.Generic;
 using System.Net;
