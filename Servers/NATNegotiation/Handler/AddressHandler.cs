@@ -1,16 +1,15 @@
-﻿using GameSpyLib.Network;
-using GameSpyLib.Network.UDP;
-using NATNegotiation.Structure.Packet;
+﻿using NATNegotiation.Structure.Packet;
+using System.Net;
 
 namespace NATNegotiation.Handler
 {
     class AddressHandler
     {
-        public static void AddressCheckResponse(NatNegServer server, UDPPacket packet)
+        public static void AddressCheckResponse(NatNegServer server, EndPoint endpoint, byte[] recv)
         {
-            InitPacket initPacket = new InitPacket(packet.BytesRecieved);
+            InitPacket initPacket = new InitPacket(recv);
             byte[] sendingBuffer = initPacket.CreateReplyPacket();
-            server.Send(packet, sendingBuffer);
+            server.SendAsync(endpoint, sendingBuffer);
         }
     }
 }

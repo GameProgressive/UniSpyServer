@@ -28,14 +28,9 @@ namespace NATNegotiation
         /// ,maybe NatNeg server dose not need connected to database.</param>
         /// <param name="bindTo"></param>
         /// <param name="MaxConnections"></param>
-        public NatNegServer(string serverName, DatabaseDriver databaseDriver,IPEndPoint bindTo, int MaxConnections) : base(serverName, bindTo, MaxConnections)
+        public NatNegServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
-            Start();
-        }
-        protected override void OnStarted()
-        {
-            // Start receive datagrams
-            ReceiveAsync();
+
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
@@ -60,84 +55,28 @@ namespace NATNegotiation
                         //NatNegHandler.PreInitResponse(this, packet, nnpacket);
                         break;
                     case NatPacketType.Init:
-                        InitHandler.InitResponse(this, packet);
+                        InitHandler.InitResponse(this, endpoint, message);
                         break;
                     case NatPacketType.AddressCheck:
-                        AddressHandler.AddressCheckResponse(this, packet);
+                        AddressHandler.AddressCheckResponse(this, endpoint, message);
                         break;
                     case NatPacketType.NatifyRequest:
-                        NatifyHandler.NatifyResponse(this, packet);
+                        NatifyHandler.NatifyResponse(this, endpoint, message);
                         break;
                     case NatPacketType.ConnectAck:
-                        ConnectHandler.ConnectResponse(this, packet);
+                        ConnectHandler.ConnectResponse(this, endpoint, message);
                         break;
                     case NatPacketType.Report:
-                        ReportHandler.ReportResponse(this, packet);
+                        ReportHandler.ReportResponse(this, endpoint, message);
                         break;
                     default:
-                        LogWriter.Log.Write(LogLevel.Error, "{0,-8} [Recv] unknow data", ServerName);
+                        UnknownDataRecived(message);
                         break;
                 }
             }
             catch (Exception e)
             {
                 LogWriter.Log.WriteException(e);
-            }
-        }
-
-        protected override void OnSent(EndPoint endpoint, long sent)
-        {
-            // Continue receive datagrams
-            ReceiveAsync();
-        }
-
-        protected override void ProcessAccept(UDPPacket packet)
-        {
-            IPEndPoint remote = (IPEndPoint)packet.AsyncEventArgs.RemoteEndPoint;
-
-
-            //Task.Run(() =>
-            //{
-
-            if (packet.BytesRecieved.Length < 6)
-                return;
-            BasePacket basePacket = new BasePacket(packet.BytesRecieved);
-            try
-            {
-                //BytesRecieved[7] is nnpacket.PacketType.
-                switch (basePacket.PacketType)
-                {
-                    case NatPacketType.PreInit:
-                        //NatNegHandler.PreInitResponse(this, packet, nnpacket);
-                        break;
-                    case NatPacketType.Init:
-                        InitHandler.InitResponse(this, packet);
-                        break;
-                    case NatPacketType.AddressCheck:
-                        AddressHandler.AddressCheckResponse(this, packet);
-                        break;
-                    case NatPacketType.NatifyRequest:
-                        NatifyHandler.NatifyResponse(this, packet);
-                        break;
-                    case NatPacketType.ConnectAck:
-                        ConnectHandler.ConnectResponse(this, packet);
-                        break;
-                    case NatPacketType.Report:
-                        ReportHandler.ReportResponse(this, packet);
-                        break;
-                    default:
-                        LogWriter.Log.Write(LogLevel.Error, "{0,-8} [Recv] unknow data", ServerName);
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                LogWriter.Log.WriteException(e);
-            }
-            finally
-            {
-                if (Replied == true)
-                    Release(packet.AsyncEventArgs);
             }
         }
 

@@ -1,16 +1,15 @@
-﻿using GameSpyLib.Network;
-using GameSpyLib.Network.UDP;
-using NATNegotiation.Structure.Packet;
+﻿using NATNegotiation.Structure.Packet;
+using System.Net;
 
 namespace NATNegotiation.Handler
 {
     public class ConnectHandler
     {
-        public static void ConnectResponse(NatNegServer server, UDPPacket packet)
+        public static void ConnectResponse(NatNegServer server, EndPoint endpoint, byte[] recv)
         {
-            ConnectPacket connectPacket = new ConnectPacket(packet.BytesRecieved);
+            ConnectPacket connectPacket = new ConnectPacket(recv);
            byte[] sendingBuffer= connectPacket.CreateReplyPacket();
-            server.Send(packet, sendingBuffer);
+            server.SendAsync(endpoint, sendingBuffer);
         }
     }
 }
