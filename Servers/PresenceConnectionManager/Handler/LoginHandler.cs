@@ -22,29 +22,38 @@ namespace PresenceConnectionManager.Handler
         /// the client, and returns encrypted data for the client
         /// to verify as well
         /// </summary>
-        public static void ProcessLogin(GPCMClient client, Dictionary<string, string> recv, GPCMConnectionUpdate OnSuccessfulLogin, GPCMStatusChanged OnStatusChanged)
+        public static void ProcessLogin(GPCMClient session, Dictionary<string, string> recv)
         {
-            uint partnerID = 0;
-            // Make sure we have all the required data to process this login
-            //if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
-            //{
-            //    GameSpyUtils.SendGPError(client, GPErrorCode.General, "Invalid response received from the client!");
-            //    client.DisconnectByReason(DisconnectReason.InvalidLoginQuery);
-            //    return;
-            //}
+
             if (IsContainAllKeys(recv) != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.General, "Invalid response received from the client!");
-                client.DisconnectByReason(DisconnectReason.InvalidLoginQuery);
+                GameSpyUtils.SendGPError(session, GPErrorCode.General, "Invalid response received from the client!");
+                session.DisconnectByReason(DisconnectReason.InvalidLoginQuery);
                 return;
             }
 
+            if (recv.ContainsKey("uniquenick")&&recv.ContainsKey("namespaceid"))
+            {
+                UniquenickLogin(recv);
+            }
+            else if (recv.ContainsKey("authtoken"))
+            {
+                AuthtokenLogin(recv);
+            }
+            else if (recv.ContainsKey("user"))
+            {
+                NoUniquenickLogin(recv);
+            }
+            else
+            {
+                session.ToLog("Invalid login method!!");
+            }
 
+            /*
             // Parse the partnerid, required since it changes the challenge for Unique nick and User login
             ParseRequestToPlayerInfo(client, recv, ref partnerID);
 
 
-            // Dispose connection after use
             try
             {
                 // Try and fetch the user from the database
@@ -72,6 +81,8 @@ namespace PresenceConnectionManager.Handler
                     GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
                     return;
                 }
+
+
 
                 //if no match found we disconnect the game
                 if (queryResult == null)
@@ -126,7 +137,7 @@ namespace PresenceConnectionManager.Handler
                     // Log Incoming Connections
                     //LogWriter.Log.Write(LogLevel.Info, "{0,-8} [Login] {1} - {2} - {3}", client.ServerName, client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, RemoteEndPoint);
                     //string statusString = string.Format(" [Login Success!] Nick:{0} - Profileid:{1} - IP:{2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
-                    client.StatusToLog("Login Success", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint,null);
+                    client.StatusToLog("Login Success", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint, null);
                     // Update status last, and call success login
                     client.PlayerInfo.LoginStatus = LoginStatus.Completed;
                     client.PlayerInfo.PlayerStatus = PlayerStatus.Online;
@@ -153,15 +164,50 @@ namespace PresenceConnectionManager.Handler
                 LogWriter.Log.Write(ex.ToString(), LogLevel.Error);
                 client.DisconnectByReason(DisconnectReason.GeneralError);
                 return;
-            }
+            }*/
         }
 
-        private static GPErrorCode IsContainAllKeys(Dictionary<string, string> recv)
+        private static void NoUniquenickLogin(Dictionary<string, string> recv)
         {
             if (!recv.ContainsKey("namespaceid"))
             {
                 recv.Add("namespaceid", "0");
             }
+
+            throw new NotImplementedException();
+        }
+
+        private static void AuthtokenLogin(Dictionary<string, string> recv)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void UniquenickLogin(Dictionary<string,string> recv)
+        {
+            if (recv["namespaceid"]==" 1")
+            {
+                DefaultNamespaceLogin(recv);
+            }
+            if ( recv["namespaceid"] != " 1")
+            {
+                CustomNamespaceLogin(recv);
+            }
+        }
+
+        private static void DefaultNamespaceLogin(Dictionary<string, string> recv)
+        {
+            //this method is only for GameSpy Arcade login
+            throw new NotImplementedException();
+        }
+
+        private static void CustomNamespaceLogin(Dictionary<string, string> recv)
+        {
+            //this method is for games login
+            throw new NotImplementedException();
+        }
+
+        private static GPErrorCode IsContainAllKeys(Dictionary<string, string> recv)
+        {
             if (recv.ContainsKey("user"))
             {
                 // "User" is <nickname>@<email>
@@ -173,14 +219,7 @@ namespace PresenceConnectionManager.Handler
                 recv.Add("nick", nick);
                 recv.Add("email", email);
             }
-            //    if (!recv.ContainsKey("uniquenick"))
-            //{
-            //    string email = recv["email"];
-            //    int Pos = email.IndexOf('@');
-            //    //we add the nick and email to dictionary
-            //    string uniquenick = email.Substring(0, Pos);
-            //    recv.Add("uniquenick", uniquenick);
-            //}
+          
                 // Make sure we have all the required data to process this login
                 if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
             {
@@ -379,6 +418,9 @@ namespace PresenceConnectionManager.Handler
             HashString.Append(playerinfo.PasswordHash);
             return HashString.ToString().GetMD5Hash();
         }
-    }
 
+
+
+    }
+    
 }
