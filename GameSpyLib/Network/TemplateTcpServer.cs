@@ -24,7 +24,8 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateTcpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = serverName;
+            ServerName = '['+serverName+']';
+            Start();
         }
 
         /// <summary>
@@ -35,7 +36,8 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateTcpServer(string serverName, IPAddress address, int port) : base(address, port)
         {
-            ServerName = serverName;
+            ServerName = '[' + serverName + ']';
+            Start();
         }
 
         /// <summary>
@@ -44,7 +46,18 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            LogWriter.Log.Write(LogLevel.Error, "[{0}] Error: {1}", ServerName, Enum.GetName(typeof(SocketError), error));
+            string errorMsg = Enum.GetName(typeof(SocketError), error);
+            LogWriter.Log.Write(errorMsg, LogLevel.Error);
+        }
+
+        public virtual void ToLog(string text)
+        {
+            ToLog(LogLevel.Info, text);
+        }
+        public virtual void ToLog(LogLevel level, string text)
+        {
+            text = ServerName + " " + text;
+            LogWriter.Log.Write(text, level);
         }
     }
 }

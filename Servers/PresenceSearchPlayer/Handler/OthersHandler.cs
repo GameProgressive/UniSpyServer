@@ -44,7 +44,7 @@ namespace PresenceSearchPlayer.Handler
                 return;
             }
            
-            GameSpyUtils.PrintReceivedGPDictToLogger("others", dict);
+            GameSpyUtils.PrintReceivedGPDictToLogger(dict);
             GameSpyUtils.SendGPError(session, GPErrorCode.General, "This request is not supported yet.");
         }
 

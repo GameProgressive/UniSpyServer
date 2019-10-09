@@ -22,10 +22,11 @@ namespace ServerBrowser
             DB = databaseDriver;
         }
 
-        private bool _dispposed;
+        private bool _disposed;
         protected override void Dispose(bool disposingManagedResources)
         {
-            if (_dispposed) return;
+            if (_disposed) return;
+            _disposed = true;
             if (disposingManagedResources)
             { 
             

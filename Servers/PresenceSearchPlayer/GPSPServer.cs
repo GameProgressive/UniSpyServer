@@ -15,28 +15,24 @@ namespace PresenceSearchPlayer
         /// </summary>
         public static DatabaseDriver DB;
 
-        public bool Disposed = false;
+        private bool _disposed;
         public GPSPServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
             DB = databaseDriver;
-            Start();
         }
         protected override TcpSession CreateSession() { return new GPSPSession(this); }
 
-        protected override void OnError(SocketError error)
-        {
-            string errorMsg = Enum.GetName(typeof(SocketError), error);
-            LogWriter.Log.Write(errorMsg, LogLevel.Error);
-        }
+
         protected override void Dispose(bool disposingManagedResources)
         {
+            if (_disposed) return;
+            _disposed = true;
             if (disposingManagedResources)
             {
                 
             }
             DB?.Dispose();
             DB = null;
-
             base.Dispose(disposingManagedResources);
         }
     }

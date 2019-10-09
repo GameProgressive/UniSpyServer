@@ -16,7 +16,6 @@ namespace PresenceSearchPlayer
             string command = recv.Keys.First();
             try
             {
-
                 switch (command)
                 {
                     case "search":
@@ -50,9 +49,7 @@ namespace PresenceSearchPlayer
                         UniqueSearchHandler.SuggestUniqueNickname(session, recv);
                         break;
                     default:
-                        LogWriter.Log.Write(LogLevel.Info, "{0} Receoved unknown data: {1}", session.Server, command);
-                        GameSpyUtils.PrintReceivedGPDictToLogger(command, recv);
-                        GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "An invalid request was sended.");
+                        session.UnknownDataRecived(command, recv);
                         break;
                 }
             }

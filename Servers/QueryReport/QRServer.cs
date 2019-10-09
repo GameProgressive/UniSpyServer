@@ -37,12 +37,11 @@ namespace QueryReport
 
         public bool HasInstantKey = false;
 
-        public static DatabaseDriver DB;
 
+        public static DatabaseDriver DB;
         public QRServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
             DB = databaseDriver;
-            Start();
             //The Time for servers to remain in the serverlist since the last ping in seconds.
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
@@ -55,12 +54,6 @@ namespace QueryReport
             PollTimer.Start();
         }
 
-        protected override void OnStarted()
-        {
-            // Start receive datagrams
-            ReceiveAsync();
-        }
-
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             // Need at least 5 bytes
@@ -69,46 +62,23 @@ namespace QueryReport
                 return;
             }
             //string message = Encoding.ASCII.GetString(buffer, 0, (int)size);
-
             base.OnReceived(endpoint, buffer, offset, size); // This logs the data we received
 
             byte[] message = new byte[(int)size];
             Array.Copy(buffer, 0, message, 0, (int)size);
-
-            try
-            {
-                switch (buffer[0])
-                {
-                    case QRClient.Avaliable:
-                        AvaliableCheckHandler.BackendAvaliabilityResponse(this, message);
-                        break;
-                    // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
-                    // Perhaps it was present on an older version of GameSpy SDK
-                    case QRGameServer.Challenge:
-                        ChallengeHandler.ServerChallengeResponse(this, message);
-                        break;
-                    case QRClient.Heartbeat: // HEARTBEAT
-                        HeartBeatHandler.HeartbeatResponse(this, message);
-                        break;
-                    case QRClient.KeepAlive:
-                        KeepAliveHandler.KeepAliveResponse(this, message);
-                        break;
-                    default:
-                        string errorMsg = string.Format("unknown data: {0}", Encoding.UTF8.GetString(message));
-                        LogWriter.Log.Write(LogLevel.Error, "{0} {1}", ServerName, message);
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                LogWriter.Log.WriteException(e);
-            }
+            
+            CommandSwitcher.Switch(this, message);
         }
 
-        protected override void OnSent(EndPoint endpoint, long sent)
+        private bool _disposed;
+        protected override void Dispose(bool disposingManageResource)
         {
-            // Continue receive datagrams
-            ReceiveAsync();
+            if (_disposed) return;
+            _disposed = true;
+            if (disposingManageResource)
+            { }
+            DB?.Close();
+            DB?.Dispose();
         }
     }
 }

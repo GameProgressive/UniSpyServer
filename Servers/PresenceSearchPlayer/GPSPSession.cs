@@ -19,12 +19,15 @@ namespace PresenceSearchPlayer
         {
             if (size > 2048)
             {
-                LogInfoMessage("Client spam, ignored!");
+                ToLog("[Spam] client spam we ignored!");
                 return;
             }
 
+            base.OnReceived(buffer, offset, size);
+
             string message = Encoding.UTF8.GetString(buffer, (int)offset, (int)size);
             message = RequstFormatConversion(message);
+
             if (message[0] != '\\')
             {
                 GameSpyUtils.SendGPError(this, GPErrorCode.Parse, "An invalid request was sended.");
@@ -45,36 +48,8 @@ namespace PresenceSearchPlayer
                 CommandSwitcher.Switch(this, dict);
             }
 
-            base.OnReceived(buffer, offset, size);
+
         }
 
-        protected override void OnDisconnected()
-        {
-            LogInfoMessage($"[Disc] Id [{Id}]");
-        }
-        protected override void OnConnected()
-        {
-            LogInfoMessage($"[Conn] Id [{Id}]");
-        }
-
-        public string RequstFormatConversion(string message)
-        {
-            message = message.Replace(@"\-", @"\");
-            message = message.Replace('-', '\\');
-
-            int pos = message.IndexesOf("\\")[1];
-            string temp = message.Substring(pos, 2);
-
-            if (message.Substring(pos, 2) != "\\\\")
-            {
-                message = message.Insert(pos, "\\");
-            }
-            return message;
-        }
-
-        public void LogInfoMessage(string message)
-        {
-            LogWriter.Log.Write(LogLevel.Info, "{0} {1}", ServerName, message);
-        }
     }
 }

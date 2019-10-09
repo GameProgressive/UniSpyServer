@@ -4,6 +4,7 @@ using NetCoreServer;
 using GameSpyLib.Logging;
 using System.Net;
 using System.Net.Sockets;
+using System.Collections.Generic;
 
 namespace GameSpyLib.Network
 {
@@ -17,6 +18,7 @@ namespace GameSpyLib.Network
         /// </summary>
         public string ServerName { get; private set; }
 
+
         /// <summary>
         /// Initialize UDP server with a given IP address and port number
         /// </summary>
@@ -25,7 +27,14 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = serverName;
+            ServerName = '['+serverName+']'+ ' ';
+            Start();
+        }
+
+        protected override void OnStarted()
+        {
+            // Start receive datagrams
+            ReceiveAsync();
         }
 
         /// <summary>
@@ -36,7 +45,8 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(string serverName, IPAddress address, int port) : base(address, port)
         {
-            ServerName = serverName;
+            ServerName = '[' + serverName + ']' + ' ';
+            Start();
         }
 
         /// <summary>
@@ -45,7 +55,7 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            LogWriter.Log.Write(LogLevel.Error, "[{0}] Error: {1}", ServerName, Enum.GetName(typeof(SocketError), error));
+            LogWriter.Log.Write(LogLevel.Error, "{0}Error: {1}", ServerName, Enum.GetName(typeof(SocketError), error));
         }
 
         /// <summary>
@@ -62,7 +72,7 @@ namespace GameSpyLib.Network
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "[{0}] [Send] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
@@ -81,9 +91,15 @@ namespace GameSpyLib.Network
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "[{0}] [Send] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
 
             return base.Send(endpoint, buffer, offset, size);
+        }
+
+        protected override void OnSent(EndPoint endpoint, long sent)
+        {
+            // Continue receive datagrams
+            ReceiveAsync();
         }
 
         /// <summary>
@@ -100,8 +116,24 @@ namespace GameSpyLib.Network
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "[{0}] [Recv] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer, 0, (int)size));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer, 0, (int)size));
+        }
 
+        public virtual void ToLog(string text)
+        {
+            ToLog(LogLevel.Info, text);
+        }
+        public virtual void ToLog(LogLevel level, string text)
+        {
+            text = ServerName + text;
+            LogWriter.Log.Write(text, level);
+        }
+
+        public virtual void UnknownDataRecived(byte[] text)
+        {
+            string buffer = Encoding.UTF8.GetString(text, 0, text.Length);
+            string errorMsg = string.Format("[unknow] {0}", buffer);
+            ToLog(errorMsg);
         }
     }
 }
