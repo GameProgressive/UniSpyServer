@@ -15,7 +15,7 @@ namespace PresenceConnectionManager.Handler
         /// </summary>
         /// <param name="client"></param>
         /// <param name="dict"></param>
-        public static void RegisterNick(GPCMClient client,Dictionary<string,string> dict)
+        public static void RegisterNick(GPCMSession client,Dictionary<string,string> dict)
         {
             GPErrorCode error = IsContainAllKeys(dict);
             if(error!=GPErrorCode.NoError)

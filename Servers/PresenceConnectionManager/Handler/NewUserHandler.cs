@@ -10,16 +10,16 @@ namespace PresenceConnectionManager.Handler
         /// <summary>
         /// Creates an account and use new account to login
         /// </summary>
-        /// <param name="client">The client that sended the data</param>
+        /// <param name="session">The client that sended the data</param>
         /// <param name="dict">The request that the stream sended</param>
-        public static void NewUser(GPCMClient client, Dictionary<string, string> dict)
+        public static void NewUser(GPCMSession session, Dictionary<string, string> dict)
         {
             //Format the password for our database storage           
             GPErrorCode error = IsRequestContainAllKeys(dict);
             //if there do not recieved right <key,value> pairs we send error
             if (error != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client, error, "Error recieving request. Please check the input!");
+                GameSpyUtils.SendGPError(session, error, "Error recieving request. Please check the input!");
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace PresenceConnectionManager.Handler
             if (error != GPErrorCode.NoError)
             {
                 sendingBuffer = string.Format(@"\nur\{0}\final\", (int)error);
-                client.Send(sendingBuffer);
+                session.Send(sendingBuffer);
                 return;
             }
 
@@ -41,12 +41,12 @@ namespace PresenceConnectionManager.Handler
 
             if (profileid == -1)
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "Account is existed, please use another one.");
+                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "Account is existed, please use another one.");
             }
             else
             {
                 sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", profileid);
-                client.Send(sendingBuffer);
+                session.Send(sendingBuffer);
             }
 
         }

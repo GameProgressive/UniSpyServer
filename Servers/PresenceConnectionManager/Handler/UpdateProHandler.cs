@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Handler
         /// Updates profiles
         /// </summary>
         /// <param name="recv">Array of information sent by the server</param>
-        public static void UpdateUser(GPCMClient client, Dictionary<string, string> recv)
+        public static void UpdateUser(GPCMSession client, Dictionary<string, string> recv)
         {
             // Set clients country code
             if (!recv.ContainsKey("sesskey"))

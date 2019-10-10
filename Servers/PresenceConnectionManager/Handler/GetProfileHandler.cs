@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Handler
         /// <summary>
         /// This method is called when the client requests for the Account profile
         /// </summary>
-        public static void SendProfile(GPCMClient client, Dictionary<string, string> recv)
+        public static void SendProfile(GPCMSession session, Dictionary<string, string> recv)
         {
             //TODO
 
@@ -22,25 +22,25 @@ namespace PresenceConnectionManager.Handler
 
             if (!recv.ContainsKey("profileid"))
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             uint targetPID, messID, sesskey;
             if (!uint.TryParse(recv["profileid"], out targetPID))
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
             if (!uint.TryParse(recv["id"], out messID))
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
             if (!uint.TryParse(recv["sesskey"], out sesskey))
             {
-                GameSpyUtils.SendGPError(client, GPErrorCode.Parse, "There was an error parsing an incoming request.");
+                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "There was an error parsing an incoming request.");
                 return;
             }
 
@@ -48,12 +48,12 @@ namespace PresenceConnectionManager.Handler
 
             // If the client want to access the public information
             // of another client
-            if (targetPID != client.PlayerInfo.PlayerId)
+            if (targetPID != session.PlayerInfo.PlayerId)
             {
                 GPCMPlayerInfo playerInfo = GetProfileQuery.GetProfileInfo(targetPID);
                 if (playerInfo == null)
                 {
-                    GameSpyUtils.SendGPError(client, 4, "Unable to get profile information.");
+                    GameSpyUtils.SendGPError(session, 4, "Unable to get profile information.");
                     return;
                 }
 
@@ -139,86 +139,86 @@ namespace PresenceConnectionManager.Handler
                 // the data
 
                 datatoSend = string.Format(datatoSend + @"\nick\{0}\uniquenick\{1}\email\{2}\id\{3}\pmask\{4}",
-                                                                client.PlayerInfo.PlayerNick,
-                                                                client.PlayerInfo.PlayerUniqueNick,
-                                                                client.PlayerInfo.PlayerEmail,
+                                                                session.PlayerInfo.PlayerNick,
+                                                                session.PlayerInfo.PlayerUniqueNick,
+                                                                session.PlayerInfo.PlayerEmail,
                                                                 /*(ProfileSent ? "5" : "2")*/ messID,
-                                                                client.PlayerInfo.PlayerPublicMask
+                                                                session.PlayerInfo.PlayerPublicMask
                                                                 );
 
-                if (client.PlayerInfo.PlayerLastName.Length > 0)
-                    datatoSend += @"\lastname\" + client.PlayerInfo.PlayerLastName;
+                if (session.PlayerInfo.PlayerLastName.Length > 0)
+                    datatoSend += @"\lastname\" + session.PlayerInfo.PlayerLastName;
 
-                if (client.PlayerInfo.PlayerFirstName.Length > 0)
-                    datatoSend += @"\firstname\" + client.PlayerInfo.PlayerFirstName;
+                if (session.PlayerInfo.PlayerFirstName.Length > 0)
+                    datatoSend += @"\firstname\" + session.PlayerInfo.PlayerFirstName;
 
-                if (client.PlayerInfo.PlayerICQ != 0)
-                    datatoSend += @"\icquin\" + client.PlayerInfo.PlayerICQ;
+                if (session.PlayerInfo.PlayerICQ != 0)
+                    datatoSend += @"\icquin\" + session.PlayerInfo.PlayerICQ;
 
-                if (client.PlayerInfo.PlayerHomepage.Length > 0)
-                    datatoSend += @"\homepage\" + client.PlayerInfo.PlayerHomepage;
+                if (session.PlayerInfo.PlayerHomepage.Length > 0)
+                    datatoSend += @"\homepage\" + session.PlayerInfo.PlayerHomepage;
 
-                if (client.PlayerInfo.PlayerPicture != 0)
-                    datatoSend += @"\pic\" + client.PlayerInfo.PlayerPicture;
+                if (session.PlayerInfo.PlayerPicture != 0)
+                    datatoSend += @"\pic\" + session.PlayerInfo.PlayerPicture;
 
-                if (client.PlayerInfo.PlayerAim.Length > 0)
-                    datatoSend += @"\aim\" + client.PlayerInfo.PlayerAim;
+                if (session.PlayerInfo.PlayerAim.Length > 0)
+                    datatoSend += @"\aim\" + session.PlayerInfo.PlayerAim;
 
-                if (client.PlayerInfo.PlayerOccupation != 0)
-                    datatoSend += @"\occ\" + client.PlayerInfo.PlayerOccupation;
+                if (session.PlayerInfo.PlayerOccupation != 0)
+                    datatoSend += @"\occ\" + session.PlayerInfo.PlayerOccupation;
 
-                if (client.PlayerInfo.PlayerZIPCode.Length > 0)
-                    datatoSend += @"\zipcode\" + client.PlayerInfo.PlayerZIPCode;
+                if (session.PlayerInfo.PlayerZIPCode.Length > 0)
+                    datatoSend += @"\zipcode\" + session.PlayerInfo.PlayerZIPCode;
 
-                if (client.PlayerInfo.PlayerCountryCode.Length > 0)
-                    datatoSend += @"\countrycode\" + client.PlayerInfo.PlayerCountryCode;
+                if (session.PlayerInfo.PlayerCountryCode.Length > 0)
+                    datatoSend += @"\countrycode\" + session.PlayerInfo.PlayerCountryCode;
 
-                if (client.PlayerInfo.PlayerBirthday > 0 && client.PlayerInfo.PlayerBirthmonth > 0 && client.PlayerInfo.PlayerBirthyear > 0)
-                    datatoSend += @"\birthday\" + (uint)((client.PlayerInfo.PlayerBirthday << 24) | (client.PlayerInfo.PlayerBirthmonth << 16) | client.PlayerInfo.PlayerBirthyear);
+                if (session.PlayerInfo.PlayerBirthday > 0 && session.PlayerInfo.PlayerBirthmonth > 0 && session.PlayerInfo.PlayerBirthyear > 0)
+                    datatoSend += @"\birthday\" + (uint)((session.PlayerInfo.PlayerBirthday << 24) | (session.PlayerInfo.PlayerBirthmonth << 16) | session.PlayerInfo.PlayerBirthyear);
 
-                if (client.PlayerInfo.PlayerLocation.Length > 0)
-                    datatoSend += @"\loc\" + client.PlayerInfo.PlayerLocation;
+                if (session.PlayerInfo.PlayerLocation.Length > 0)
+                    datatoSend += @"\loc\" + session.PlayerInfo.PlayerLocation;
 
-                if (client.PlayerInfo.PlayerSex == PlayerSexType.FEMALE)
+                if (session.PlayerInfo.PlayerSex == PlayerSexType.FEMALE)
                     datatoSend += @"\sex\1";
-                else if (client.PlayerInfo.PlayerSex == PlayerSexType.MALE)
+                else if (session.PlayerInfo.PlayerSex == PlayerSexType.MALE)
                     datatoSend += @"\sex\0";
 
-                if (client.PlayerInfo.PlayerLatitude != 0.0f)
-                    datatoSend += @"\lat\" + client.PlayerInfo.PlayerLatitude;
+                if (session.PlayerInfo.PlayerLatitude != 0.0f)
+                    datatoSend += @"\lat\" + session.PlayerInfo.PlayerLatitude;
 
-                if (client.PlayerInfo.PlayerLongitude != 0.0f)
-                    datatoSend += @"\lon\" + client.PlayerInfo.PlayerLongitude;
+                if (session.PlayerInfo.PlayerLongitude != 0.0f)
+                    datatoSend += @"\lon\" + session.PlayerInfo.PlayerLongitude;
 
-                if (client.PlayerInfo.PlayerIncomeID != 0)
-                    datatoSend += @"\inc\" + client.PlayerInfo.PlayerIncomeID;
+                if (session.PlayerInfo.PlayerIncomeID != 0)
+                    datatoSend += @"\inc\" + session.PlayerInfo.PlayerIncomeID;
 
-                if (client.PlayerInfo.PlayerIndustryID != 0)
-                    datatoSend += @"\ind\" + client.PlayerInfo.PlayerIndustryID;
+                if (session.PlayerInfo.PlayerIndustryID != 0)
+                    datatoSend += @"\ind\" + session.PlayerInfo.PlayerIndustryID;
 
-                if (client.PlayerInfo.PlayerMarried != 0)
-                    datatoSend += @"\mar\" + client.PlayerInfo.PlayerMarried;
+                if (session.PlayerInfo.PlayerMarried != 0)
+                    datatoSend += @"\mar\" + session.PlayerInfo.PlayerMarried;
 
-                if (client.PlayerInfo.PlayerChildCount != 0)
-                    datatoSend += @"\chc\" + client.PlayerInfo.PlayerChildCount;
+                if (session.PlayerInfo.PlayerChildCount != 0)
+                    datatoSend += @"\chc\" + session.PlayerInfo.PlayerChildCount;
 
-                if (client.PlayerInfo.PlayerInterests != 0)
-                    datatoSend += @"\i1\" + client.PlayerInfo.PlayerInterests;
+                if (session.PlayerInfo.PlayerInterests != 0)
+                    datatoSend += @"\i1\" + session.PlayerInfo.PlayerInterests;
 
-                if (client.PlayerInfo.PlayerOwnership != 0)
-                    datatoSend += @"\o1\" + client.PlayerInfo.PlayerOwnership;
+                if (session.PlayerInfo.PlayerOwnership != 0)
+                    datatoSend += @"\o1\" + session.PlayerInfo.PlayerOwnership;
 
-                if (client.PlayerInfo.PlayerConnectionType != 0)
-                    datatoSend += @"\conn\" + client.PlayerInfo.PlayerConnectionType;
+                if (session.PlayerInfo.PlayerConnectionType != 0)
+                    datatoSend += @"\conn\" + session.PlayerInfo.PlayerConnectionType;
 
                 // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
                 datatoSend += @"\sig\" + GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex) + @"\final\";
 
-                // Set that we send the profile initially
-                if (!client.ProfileSent) client.ProfileSent = true;
+                // Set that we SendAsync the profile initially
+                if (!session.ProfileSent) session.ProfileSent = true;
             }
 
-            client.Send(datatoSend);
+            session.SendAsync(datatoSend);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Handler
     public class StatusHandler
     {
 
-        public static void UpdateStatus(GPCMClient client,Dictionary<string, string> recv, GPCMStatusChanged OnStatusChanged)
+        public static void UpdateStatus(GPCMSession client,Dictionary<string, string> recv)
         {
             //TODO
             ushort testSK;
@@ -23,7 +23,6 @@ namespace PresenceConnectionManager.Handler
             client.PlayerInfo.PlayerStatusString = recv["statstring"];
             client.PlayerInfo.PlayerLocation = recv["locstring"];
 
-            OnStatusChanged?.Invoke(client);
         }
     }
 }

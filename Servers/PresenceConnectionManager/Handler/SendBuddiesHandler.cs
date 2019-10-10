@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Handler
 {
     public class SendBuddiesHandler
     {
-        public static void HandleSendBuddies(GPCMClient client,Dictionary<string,string> recv)
+        public static void HandleSendBuddies(GPCMSession session,Dictionary<string,string> recv)
         {
             // \bdy\<number of friends>\list\<array of profileids>\
             //TODO
@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Handler
 
             
 
-            if (client.BuddiesSent)
+            if (session.BuddiesSent)
                 return;
 
             /*Stream.SendAsync(
@@ -31,15 +31,15 @@ namespace PresenceConnectionManager.Handler
             @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
             );*/
             
-            client.Send(@"\bdy\1\list\13\final\");
-            client.Send(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
-            client.Send(@"\bm\100\f\13\msg\1|signed|1");
+            session.Send(@"\bdy\1\list\13\final\");
+            session.Send(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
+            session.Send(@"\bm\100\f\13\msg\1|signed|1");
 
             return;
            
             int[] pids = SendBuddiesQuery.GetProfileidArray(recv);
             int numBuddies = pids.Length;
-            client.BuddiesSent = true;
+            session.BuddiesSent = true;
 
             string sendingBuffer;
             string profileidArray = "";
@@ -48,7 +48,7 @@ namespace PresenceConnectionManager.Handler
                 profileidArray += pids[i].ToString();
             }
             sendingBuffer = string.Format(@"\bdy\{0}\list\{1}\final\", numBuddies,profileidArray);
-            client.Send(sendingBuffer);
+            session.Send(sendingBuffer);
             
 
         }

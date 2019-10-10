@@ -23,16 +23,6 @@ namespace PresenceConnectionManager
         {
         }
 
-        /// <summary>
-        /// Checks if a specific server is running
-        /// </summary>
-        /// <param name="cfg">The specific server configuration</param>
-        /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
-
-        public override bool IsServerRunning()
-        {
-            return Server != null && !Server.Disposed;
-        }
 
         /// <summary>
         /// Starts a specific server
@@ -42,8 +32,8 @@ namespace PresenceConnectionManager
         {
             if (cfg.Name == ServerName)
             {
-                Server = new GPCMServer(cfg.Name, databaseDriver, new IPEndPoint(IPAddress.Parse(cfg.Hostname), cfg.Port), cfg.MaxConnections);
-                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port, cfg.MaxConnections);
+                Server = new GPCMServer(cfg.Name, databaseDriver, IPAddress.Parse(cfg.Hostname), cfg.Port);
+                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
 

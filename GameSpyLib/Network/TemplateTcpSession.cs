@@ -6,6 +6,7 @@ using GameSpyLib.Logging;
 using System.Collections.Generic;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
+using System.Net;
 
 namespace GameSpyLib.Network
 {
@@ -19,7 +20,7 @@ namespace GameSpyLib.Network
         /// Some server requires that clients should disconnect after send, we use this to determine whether disconnecting clients
         /// </summary>
         protected bool DisconnectAfterSend = false;
-
+        public EndPoint Remote;
         public TemplateTcpSession(TemplateTcpServer server) : base(server)
         {
             ServerName = server.ServerName;
@@ -111,12 +112,13 @@ namespace GameSpyLib.Network
 
         protected override void OnConnected()
         {
-            ToLog($"[Conn] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
+            Remote = Socket.RemoteEndPoint;
+            ToLog($"[Conn] ID:{Id} IP:{Remote.ToString()}");
             base.OnConnected();
         }
         protected override void OnDisconnected()
-        {
-            ToLog($"[Disc] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
+        {            
+            ToLog($"[Disc] ID:{Id} IP:{Remote.ToString()}");
             base.OnDisconnected();
         }
 

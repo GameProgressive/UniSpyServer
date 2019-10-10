@@ -9,12 +9,12 @@ namespace PresenceConnectionManager.Handler
     public class InviteToHandler
     {
         //public static GPCMDBQuery DBQuery = null;
-        public static void AddFriends(GPCMClient client, Dictionary<string, string> recv)
+        public static void AddFriends(GPCMSession session, Dictionary<string, string> recv)
         {
            GPErrorCode error =  IsContainAllKeys(recv);
             if (error != GPErrorCode.NoError)
             {
-                GameSpyLib.Common.GameSpyUtils.SendGPError(client, error, "Parsing error in request");
+                GameSpyLib.Common.GameSpyUtils.SendGPError(session, error, "Parsing error in request");
             }
 
 

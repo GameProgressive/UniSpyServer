@@ -7,18 +7,18 @@ namespace PresenceConnectionManager.Handler
         /// <summary>
         /// Polls the connection, and checks for drops
         /// </summary>
-        public static void SendKeepAlive(GPCMClient client)
+        public static void SendKeepAlive(GPCMSession session)
         {
-            if (client.PlayerInfo.LoginStatus == LoginStatus.Completed)
+            if (session.PlayerInfo.LoginStatus == LoginStatus.Completed)
             {
                 // Try and send a Keep-Alive
                 try
                 {
-                    client.Send(@"\ka\\final\");
+                    session.SendAsync(@"\ka\\final\");
                 }
                 catch
                 {
-                    client.DisconnectByReason(DisconnectReason.KeepAliveFailed);
+                    session.DisconnectByReason(DisconnectReason.KeepAliveFailed);
                 }
             }
         }

@@ -10,7 +10,7 @@ namespace PresenceConnectionManager
 {
     public class CommandSwitcher
     {
-        public static void Switch(GPCMClient client, Dictionary<string, string> recv, GPCMConnectionUpdate OnSuccessfulLogin, GPCMStatusChanged OnStatusChanged)
+        public static void Switch(GPCMSession session, Dictionary<string, string> recv)
         {
             string command = recv.Keys.First();
             try
@@ -18,44 +18,43 @@ namespace PresenceConnectionManager
                 switch (command)
                 {
                     case "inviteto":
-                        InviteToHandler.AddFriends(client, recv);
+                        InviteToHandler.AddFriends(session, recv);
                         break;
                     case "login":
-                        LoginHandler.ProcessLogin(client, recv, OnSuccessfulLogin, OnStatusChanged);
+                        LoginHandler.ProcessLogin(session, recv);
                         break;
                     case "getprofile":
-                        GetProfileHandler.SendProfile(client, recv);
+                        GetProfileHandler.SendProfile(session, recv);
                         break;
                     case "addbuddy":
-                        AddBuddyHandler.Addfriends(client, recv);
+                        AddBuddyHandler.Addfriends(session, recv);
                         break;
                     case "delbuddy":
-                        DelBuddyHandler.Handle(client, recv);
+                        DelBuddyHandler.Handle(session, recv);
                         break;
                     case "updateui":
-                        UpdateUiHandler.UpdateUi(client, recv);
+                        UpdateUiHandler.UpdateUi(session, recv);
                         break;
                     case "updatepro":
-                        UpdateProHandler.UpdateUser(client, recv);
+                        UpdateProHandler.UpdateUser(session, recv);
                         break;
                     case "registernick":
-                        RegisterNickHandler.RegisterNick(client, recv);
+                        RegisterNickHandler.RegisterNick(session, recv);
                         break;
                     case "logout":
-                        client.DisconnectByReason(DisconnectReason.NormalLogout);
+                        session.DisconnectByReason(DisconnectReason.NormalLogout);
                         break;
                     case "status":
-                        StatusHandler.UpdateStatus(client, recv, OnStatusChanged);
+                        StatusHandler.UpdateStatus(session, recv);
                         break;
                     case "newuser":
-                        NewUserHandler.NewUser(client, recv);
+                        NewUserHandler.NewUser(session, recv);
                         break;
                     case "ka":
-                        KAHandler.SendKeepAlive(client);
+                        KAHandler.SendKeepAlive(session);
                         break;
                     default:
-                        LogWriter.Log.Write("[GPCM] received unknown data " + command, LogLevel.Debug);
-                        GameSpyUtils.SendGPError(client, GPErrorCode.General, "An invalid request was sended.");
+                        session.UnknownDataRecived(recv);
                         break;
                 }
             }
