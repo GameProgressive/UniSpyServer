@@ -4637,21 +4637,23 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   `sesskey` int(11) unsigned DEFAULT NULL,
   `firewall` int(10) unsigned DEFAULT NULL,
   `port` int(10) unsigned DEFAULT NULL,
+  `guid` char(36) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `FK1_profile_profileid` (`profileid`),
   KEY `namespaceid` (`namespaceid`),
   KEY `uniquenick` (`uniquenick`),
+  KEY `guid` (`guid`),
   CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
 
 -- Dumping data for table retrospy2.namespace: ~4 rows (approximately)
 /*!40000 ALTER TABLE `namespace` DISABLE KEYS */;
-INSERT INTO `namespace` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `cdkeyenc`, `sesskey`, `firewall`, `port`) VALUES
-	(20, 21, 'wormsforts', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL, NULL),
-	(21, 22, 'wf12', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL, NULL),
-	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', NULL, 19150, NULL, NULL),
-	(41, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, 19150, NULL, NULL);
+INSERT INTO `namespace` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `cdkeyenc`, `sesskey`, `firewall`, `port`, `guid`) VALUES
+	(20, 21, 'wormsforts', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL, NULL, NULL),
+	(21, 22, 'wf12', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL, NULL, NULL),
+	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', NULL, 19150, NULL, NULL, NULL),
+	(41, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, 19150, NULL, NULL, NULL);
 /*!40000 ALTER TABLE `namespace` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.profiles
@@ -4701,7 +4703,7 @@ INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `statuscode`, `status`, `
 	(8, 1, 'MyCrysis', 0, 'RetroSpy', 'jiuwo', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '91.52.99.231', 1569066920, 0),
 	(9, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(12, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
-	(13, 7, 'MyCrysis', 0, 'RetroSpy', '', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1570240313, 0),
+	(13, 7, 'MyCrysis', 0, '1', '', 'xiao', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1570437833, 0),
 	(14, 7, 'xiaojiuwo', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(16, 9, 'worms3d', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
 	(21, 13, 'wormsforts', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0),
@@ -4733,20 +4735,21 @@ CREATE TABLE IF NOT EXISTS `users` (
   `emailverified` int(11) NOT NULL DEFAULT 0,
   `adminrights` int(11) NOT NULL DEFAULT 0,
   `deleted` tinyint(4) NOT NULL DEFAULT 0,
+  `banned` tinyint(1) DEFAULT 0,
   PRIMARY KEY (`userid`) USING BTREE,
   UNIQUE KEY `userid` (`userid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table retrospy2.users: ~6 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`userid`, `email`, `password`, `userstatus`, `createddate`, `useddate`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `emailverified`, `adminrights`, `deleted`) VALUES
-	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1, '2019-08-11 09:07:27', '0000-00-00 00:00:00', '0', '0', '0', 0, 0, 0, '0', 0, '0', 0, 0, 0, 0, 0),
-	(6, 'xiaojiuwo@gamespy.com', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 07:27:29', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0),
-	(7, 'koujiangheng@live.cn', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 11:18:29', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0),
-	(9, 'worms3d@rspy.org', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-21 20:11:36', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0),
-	(13, 'wormsforts@rspy.org', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-21 20:50:45', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0),
-	(14, 'wf12@gs.de', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-23 18:52:13', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0),
-	(15, 'a8@rs.de', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-23 19:26:36', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0);
+INSERT INTO `users` (`userid`, `email`, `password`, `userstatus`, `createddate`, `useddate`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `emailverified`, `adminrights`, `deleted`, `banned`) VALUES
+	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1, '2019-08-11 09:07:27', '0000-00-00 00:00:00', '0', '0', '0', 0, 0, 0, '0', 0, '0', 0, 0, 0, 0, 0, 0),
+	(6, 'xiaojiuwo@gamespy.com', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 07:27:29', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0, 0),
+	(7, 'koujiangheng@live.cn', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 11:18:29', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0, 0),
+	(9, 'worms3d@rspy.org', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-21 20:11:36', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0, 0),
+	(13, 'wormsforts@rspy.org', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-21 20:50:45', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0, 0),
+	(14, 'wf12@gs.de', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-23 18:52:13', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0, 0),
+	(15, 'a8@rs.de', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-23 19:26:36', '0000-00-00 00:00:00', NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0, 0, 0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
