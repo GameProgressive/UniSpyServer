@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Handler
         /// Updates profiles
         /// </summary>
         /// <param name="recv">Array of information sent by the server</param>
-        public static void UpdateUser(GPCMSession client, Dictionary<string, string> recv)
+        public static void UpdateUser(GPCMSession session, Dictionary<string, string> recv)
         {
             // Set clients country code
             if (!recv.ContainsKey("sesskey"))
@@ -23,7 +23,7 @@ namespace PresenceConnectionManager.Handler
             if (!ushort.TryParse(recv["sesskey"], out ssk))
                 return;
 
-            if (ssk != client.SessionKey)
+            if (ssk != session.PlayerInfo.SessionKey)
                 return;
 
             string query = "UPDATE profiles SET";
@@ -58,10 +58,10 @@ namespace PresenceConnectionManager.Handler
                 PublicMasks mask;
                 if (Enum.TryParse(recv["publicmask"], out mask))
                 {
-                    if (client.PlayerInfo.PlayerPublicMask != mask)
+                    if (session.PlayerInfo.PlayerPublicMask != mask)
                     {
                         query += ", publicmask=@P0";
-                        client.PlayerInfo.PlayerPublicMask = mask;
+                        session.PlayerInfo.PlayerPublicMask = mask;
                         passData[0] = mask;
                     }
                 }
@@ -70,21 +70,21 @@ namespace PresenceConnectionManager.Handler
             if (recv.ContainsKey("firstname"))
             {
               
-                if (recv["firstname"] != client.PlayerInfo.PlayerFirstName)
+                if (recv["firstname"] != session.PlayerInfo.PlayerFirstName)
                 {
                     query += ", firstname=@P1";
-                    client.PlayerInfo.PlayerFirstName = recv["firstname"];
-                    passData[1] = client.PlayerInfo.PlayerFirstName;
+                    session.PlayerInfo.PlayerFirstName = recv["firstname"];
+                    passData[1] = session.PlayerInfo.PlayerFirstName;
                 }
             }
 
             if (recv.ContainsKey("lastname"))
             {
-                if (recv["lastname"] != client.PlayerInfo.PlayerLastName)
+                if (recv["lastname"] != session.PlayerInfo.PlayerLastName)
                 {
                     query += ", lastname=@P2";
-                    client.PlayerInfo.PlayerFirstName = recv["lastname"];
-                    passData[2] = client.PlayerInfo.PlayerLastName;
+                    session.PlayerInfo.PlayerFirstName = recv["lastname"];
+                    passData[2] = session.PlayerInfo.PlayerLastName;
                 }
             }
 
@@ -94,10 +94,10 @@ namespace PresenceConnectionManager.Handler
 
                 if (int.TryParse(recv["icquin"], out icq))
                 {
-                    if (icq != client.PlayerInfo.PlayerICQ)
+                    if (icq != session.PlayerInfo.PlayerICQ)
                     {
                         query += "icq=@P3 ";
-                        client.PlayerInfo.PlayerICQ = icq;
+                        session.PlayerInfo.PlayerICQ = icq;
                         passData[3] = icq;
                     }
                 }
@@ -105,21 +105,21 @@ namespace PresenceConnectionManager.Handler
 
             if (recv.ContainsKey("homepage"))
             {
-                if (recv["homepage"] != client.PlayerInfo.PlayerHomepage)
+                if (recv["homepage"] != session.PlayerInfo.PlayerHomepage)
                 {
                     query += ", homepage=@P4";
-                    client.PlayerInfo.PlayerHomepage = recv["homepage"];
-                    passData[4] = client.PlayerInfo.PlayerHomepage;
+                    session.PlayerInfo.PlayerHomepage = recv["homepage"];
+                    passData[4] = session.PlayerInfo.PlayerHomepage;
                 }
             }
 
             if (recv.ContainsKey("zipcode"))
             {
-                if (recv["zipcode"] != client.PlayerInfo.PlayerZIPCode)
+                if (recv["zipcode"] != session.PlayerInfo.PlayerZIPCode)
                 {
                     query += ", zipcode=@P5";
-                    client.PlayerInfo.PlayerZIPCode = recv["zipcode"];
-                    passData[5] = client.PlayerInfo.PlayerZIPCode;
+                    session.PlayerInfo.PlayerZIPCode = recv["zipcode"];
+                    passData[5] = session.PlayerInfo.PlayerZIPCode;
                 }
             }
 
@@ -144,36 +144,36 @@ namespace PresenceConnectionManager.Handler
 
                     if (GameSpyUtils.IsValidDate(d, m, y))
                     {
-                        if (client.PlayerInfo.PlayerBirthday != d)
+                        if (session.PlayerInfo.PlayerBirthday != d)
                         {
                             query += ", birthday=@P6";
                             passData[6] = d;
-                            client.PlayerInfo.PlayerBirthday = d;
+                            session.PlayerInfo.PlayerBirthday = d;
                         }
 
-                        if (client.PlayerInfo.PlayerBirthmonth != m)
+                        if (session.PlayerInfo.PlayerBirthmonth != m)
                         {
                             query += ", birthmonth=@P19";
                             passData[19] = m;
-                            client.PlayerInfo.PlayerBirthmonth = m;
+                            session.PlayerInfo.PlayerBirthmonth = m;
                         }
 
-                        if (client.PlayerInfo.PlayerBirthyear != y)
+                        if (session.PlayerInfo.PlayerBirthyear != y)
                         {
                             query += ", birthyear=@P20";
                             passData[20] = y;
-                            client.PlayerInfo.PlayerBirthyear = y;
+                            session.PlayerInfo.PlayerBirthyear = y;
                         }
                     }
                 }
 
                 if (recv.ContainsKey("countrycode"))
                 {
-                    if (recv["countrycode"] != client.PlayerInfo.PlayerCountryCode)
+                    if (recv["countrycode"] != session.PlayerInfo.PlayerCountryCode)
                     {
                         query += ", countrycode=@P7";
-                        client.PlayerInfo.PlayerCountryCode = recv["zipcode"];
-                        passData[7] = client.PlayerInfo.PlayerCountryCode;
+                        session.PlayerInfo.PlayerCountryCode = recv["zipcode"];
+                        passData[7] = session.PlayerInfo.PlayerCountryCode;
                     }
                 }                
             }
@@ -184,14 +184,14 @@ namespace PresenceConnectionManager.Handler
                 PlayerSexType sex;
                 if (Enum.TryParse(recv["sex"], out sex))
                 {
-                    if (client.PlayerInfo.PlayerSex != sex)
+                    if (session.PlayerInfo.PlayerSex != sex)
                     {
                         query += "sex=@P8";
-                        client.PlayerInfo.PlayerSex = sex;
+                        session.PlayerInfo.PlayerSex = sex;
 
-                        if (client.PlayerInfo.PlayerSex == PlayerSexType.MALE)
+                        if (session.PlayerInfo.PlayerSex == PlayerSexType.MALE)
                             passData[8] = "MALE";
-                        else if (client.PlayerInfo.PlayerSex == PlayerSexType.FEMALE)
+                        else if (session.PlayerInfo.PlayerSex == PlayerSexType.FEMALE)
                             passData[8] = "FEMALE";
                         else
                             passData[8] = "PAT";
@@ -201,11 +201,11 @@ namespace PresenceConnectionManager.Handler
 
             if (recv.ContainsKey("aim"))
             {
-                if (recv["aim"] != client.PlayerInfo.PlayerAim)
+                if (recv["aim"] != session.PlayerInfo.PlayerAim)
                 {
                     query += ", aim=@P9";
-                    client.PlayerInfo.PlayerAim = recv["aim"];
-                    passData[9] = client.PlayerInfo.PlayerAim;
+                    session.PlayerInfo.PlayerAim = recv["aim"];
+                    passData[9] = session.PlayerInfo.PlayerAim;
                 }
             }
 
@@ -215,10 +215,10 @@ namespace PresenceConnectionManager.Handler
 
                 if (int.TryParse(recv["pic"], out pic))
                 {
-                    if (pic != client.PlayerInfo.PlayerPicture)
+                    if (pic != session.PlayerInfo.PlayerPicture)
                     {
                         query += ", picture=@P10";
-                        client.PlayerInfo.PlayerPicture = pic;
+                        session.PlayerInfo.PlayerPicture = pic;
                         passData[10] = pic;
                     }
                 }
@@ -230,10 +230,10 @@ namespace PresenceConnectionManager.Handler
 
                 if (int.TryParse(recv["occ"], out occ))
                 {
-                    if (occ != client.PlayerInfo.PlayerOccupation)
+                    if (occ != session.PlayerInfo.PlayerOccupation)
                     {
                         query += ", occupationid=@P11";
-                        client.PlayerInfo.PlayerOccupation = occ;
+                        session.PlayerInfo.PlayerOccupation = occ;
                         passData[11] = occ;
                     }
                 }
@@ -245,10 +245,10 @@ namespace PresenceConnectionManager.Handler
 
                 if (int.TryParse(recv["ind"], out ind))
                 {
-                    if (ind != client.PlayerInfo.PlayerIndustryID)
+                    if (ind != session.PlayerInfo.PlayerIndustryID)
                     {
                         query += ", industryid=@P12";
-                        client.PlayerInfo.PlayerIndustryID = ind;
+                        session.PlayerInfo.PlayerIndustryID = ind;
                         passData[12] = ind;
                     }
                 }
@@ -260,10 +260,10 @@ namespace PresenceConnectionManager.Handler
 
                 if (int.TryParse(recv["inc"], out inc))
                 {
-                    if (inc != client.PlayerInfo.PlayerIncomeID)
+                    if (inc != session.PlayerInfo.PlayerIncomeID)
                     {
                         query += ", industryid=@P13";
-                        client.PlayerInfo.PlayerIncomeID = inc;
+                        session.PlayerInfo.PlayerIncomeID = inc;
                         passData[13] = inc;
                     }
                 }
@@ -275,10 +275,10 @@ namespace PresenceConnectionManager.Handler
 
                 if (int.TryParse(recv["mar"], out mar))
                 {
-                    if (mar != client.PlayerInfo.PlayerMarried)
+                    if (mar != session.PlayerInfo.PlayerMarried)
                     {
                         query += ", marriedid=@P14";
-                        client.PlayerInfo.PlayerMarried = mar;
+                        session.PlayerInfo.PlayerMarried = mar;
                         passData[14] = mar;
                     }
                 }
@@ -290,10 +290,10 @@ namespace PresenceConnectionManager.Handler
 
                 if (int.TryParse(recv["chc"], out chc))
                 {
-                    if (chc != client.PlayerInfo.PlayerChildCount)
+                    if (chc != session.PlayerInfo.PlayerChildCount)
                     {
                         query += ", childcount=@P15";
-                        client.PlayerInfo.PlayerChildCount = chc;
+                        session.PlayerInfo.PlayerChildCount = chc;
                         passData[15] = chc;
                     }
                 }
@@ -305,10 +305,10 @@ namespace PresenceConnectionManager.Handler
 
                 if (int.TryParse(recv["i1"], out i1))
                 {
-                    if (i1 != client.PlayerInfo.PlayerInterests)
+                    if (i1 != session.PlayerInfo.PlayerInterests)
                     {
                         query += ", interests1=@P16";
-                        client.PlayerInfo.PlayerInterests = i1;
+                        session.PlayerInfo.PlayerInterests = i1;
                         passData[16] = i1;
                     }
                 }
@@ -316,21 +316,21 @@ namespace PresenceConnectionManager.Handler
 
             if (recv.ContainsKey("nick"))
             {
-                if (recv["nick"] != client.PlayerInfo.PlayerNick)
+                if (recv["nick"] != session.PlayerInfo.PlayerNick)
                 {
                     query += ", nick=@P17";
-                    client.PlayerInfo.PlayerNick = recv["nick"];
-                    passData[17] = client.PlayerInfo.PlayerNick;
+                    session.PlayerInfo.PlayerNick = recv["nick"];
+                    passData[17] = session.PlayerInfo.PlayerNick;
                 }
             }
 
             if (recv.ContainsKey("uniquenick"))
             {
-                if (recv["uniquenick"] != client.PlayerInfo.PlayerUniqueNick)
+                if (recv["uniquenick"] != session.PlayerInfo.PlayerUniqueNick)
                 {
                     query += ", uniquenick=@P18";
-                    client.PlayerInfo.PlayerHomepage = recv["uniquenick"];
-                    passData[18] = client.PlayerInfo.PlayerUniqueNick;
+                    session.PlayerInfo.PlayerHomepage = recv["uniquenick"];
+                    passData[18] = session.PlayerInfo.PlayerUniqueNick;
                 }
             }
 
@@ -339,7 +339,7 @@ namespace PresenceConnectionManager.Handler
 
             query = query.Replace("SET,", "SET");
 
-            passData[21] = client.PlayerInfo.PlayerId;
+            passData[21] = session.PlayerInfo.PlayerId;
             query += " WHERE `profileid`=@P21";
 
             try

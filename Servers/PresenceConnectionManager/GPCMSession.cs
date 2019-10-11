@@ -19,7 +19,7 @@ namespace PresenceConnectionManager
     public class GPCMSession : TemplateTcpSession
     {
 
-
+        public LoginStatus LoginProcess;
         /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
@@ -53,8 +53,9 @@ namespace PresenceConnectionManager
         }
 
         public GPCMPlayerInfo PlayerInfo { get; protected set; }
-        public ushort SessionKey { get; internal set; }
-        public string ServerChallengeKey { get; internal set; }
+
+
+
 
         protected override void OnReceived(string message)
         {
@@ -83,35 +84,39 @@ namespace PresenceConnectionManager
         //when a user is loged in we update the sessionkey and the Guid to database
         protected override void OnConnected()
         {
+            LoginProcess = LoginStatus.Connected;
             ToLog($"[Conn] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
             SendServerChallenge();
         }
         protected override void OnDisconnected()
         {
+            LoginProcess = LoginStatus.Disconnected;
             ToLog($"[Disc] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
             RemoveGuidAndSessionKeyFromDatabase();
         }
 
         private void RemoveGuidAndSessionKeyFromDatabase()
         {
+            GPCMServer.DB.Execute("UPDATE namespace SET guid = null, sesskey = 0 WHERE sesskey=@P0 AND guid = @P1", PlayerInfo.SessionKey, Id);
+            GPCMServer.DB.Execute("UPDATE profiles SET status = @P0, statusstring = @P1 WHERE profileid = @P3",(uint)PlayerOnlineStatus.Offline,"",PlayerInfo.Profileid);
             //whether need to check if there exsit guid and session key ?
             //set the status and status string to default
-            throw new NotImplementedException();
         }
 
         public void SendServerChallenge()
         {
             // Only send the login challenge once
-            //if (PlayerInfo.LoginStatus != LoginStatus.Connected)
-            //{
-            //    DisconnectByReason(DisconnectReason.ClientChallengeAlreadySent);
+            if (LoginProcess != LoginStatus.Connected)
+            {
+                DisconnectByReason(DisconnectReason.ClientChallengeAlreadySent);
+                // Throw the error                
+                ToLog(LogLevel.Warning,"The server challenge has already been sent. Cannot send another login challenge.");
+            }
 
-            //    // Throw the error                
-            //    LogWriter.Log.Write("The server challenge has already been sent. Cannot send another login challenge.", LogLevel.Warning);
-            //}
             // We send the client the challenge key
             string serverChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
-            PlayerInfo.LoginStatus = LoginStatus.Processing;
+            PlayerInfo.ServerChallenge = serverChallengeKey;
+            LoginProcess = LoginStatus.Processing;
             string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", serverChallengeKey, 1);
             SendAsync(sendingBuffer);
         }
@@ -121,80 +126,10 @@ namespace PresenceConnectionManager
             ToLog(reason.ToString());
             Disconnect();
         }
-
-
-
-
-
-        /// <summary>
-        /// Event fired when the stream disconnects unexpectedly
-        /// </summary>
-        //protected override void ClientDisconnected()
-        //{
-        //    DisconnectByReason(DisconnectReason.Disconnected);
-        //}
-
-        /// <summary>
-        /// Logs the client out of the game client, and closes the stream
-        /// </summary>
-        /// <param name="reason">
-        /// The disconnect reason code. 
-        /// </param>
-        /// <remarks>
-        /// If set the <paramref name="reason"/> is set to <see cref="DisconnectReason.ForcedServerShutdown"/>, 
-        /// the OnDisconect event will still be called, but the EventArgs objects will NOT be returned to the IO pool. 
-        /// You should only set to <see cref="DisconnectReason.ForcedServerShutdown"/> for a planned server shutdown.
-        /// </remarks>
-        //public void DisconnectByReason(DisconnectReason reason)
-        //{
-        //    // Set status and log
-        //    if (PlayerInfo.LoginStatus == LoginStatus.Completed)
-        //    {
-        //        if (reason == DisconnectReason.NormalLogout)
-        //        {
-        //            StatusToLog("Logout", PlayerInfo.PlayerNick, PlayerInfo.PlayerId, RemoteEndPoint, Enum.GetName(typeof(DisconnectReason), reason));
-        //        }
-        //        else if (reason != DisconnectReason.ForcedServerShutdown)
-        //        {
-        //            StatusToLog("Disconnected", PlayerInfo.PlayerNick,
-        //                PlayerInfo.PlayerId,
-        //                ipa,
-        //                Enum.GetName(typeof(DisconnectReason), reason));
-        //        }
-        //    }
-
-        // Preapare to be unloaded from memory
-        // PlayerInfo.PlayerStatus = PlayerStatus.Offline;
-        //PlayerInfo.LoginStatus = LoginStatus.Disconnected;
-
-        //  Dispose();
-
-        // Call disconnect event
-        // OnDisconnect?.Invoke(this);
-        //}
-
-        //public bool Equals(GPCMClient other)
-        //{
-        //    if (other == null) return false;
-        //    return (PlayerInfo.PlayerId == other.PlayerInfo.PlayerId || PlayerInfo.PlayerNick == other.PlayerInfo.PlayerNick);
-        //}
-
         public void StatusToLog(string status, string nick, uint pid, IPEndPoint remote, string reason)
         {
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
             LogWriter.Log.Write(LogLevel.Info, statusString);
         }
-
-
-        //public override bool Equals(object obj)
-        //{
-        //    return Equals(obj as GPCMClient);
-        //}
-
-        //public override int GetHashCode()
-        //{
-        //    return (int)PlayerInfo.PlayerId;
-        //}
-
     }
 }

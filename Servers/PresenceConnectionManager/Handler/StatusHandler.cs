@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Application;
+using PresenceConnectionManager.DatabaseQuery;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler
@@ -6,7 +7,7 @@ namespace PresenceConnectionManager.Handler
     public class StatusHandler
     {
 
-        public static void UpdateStatus(GPCMSession client,Dictionary<string, string> recv)
+        public static void UpdateStatus(GPCMSession session,Dictionary<string, string> recv)
         {
             //TODO
             ushort testSK;
@@ -17,12 +18,9 @@ namespace PresenceConnectionManager.Handler
             if (!ushort.TryParse(recv["sesskey"], out testSK))
                 return; // Invalid session key
 
-            if (testSK != client.SessionKey)
+            if (testSK != session.PlayerInfo.SessionKey)
                 return; // Are you trying to update another user?
-
-            client.PlayerInfo.PlayerStatusString = recv["statstring"];
-            client.PlayerInfo.PlayerLocation = recv["locstring"];
-
+            StatusQuery.UpdateStatus(recv);
         }
     }
 }

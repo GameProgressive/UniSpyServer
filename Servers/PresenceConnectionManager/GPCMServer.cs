@@ -22,22 +22,17 @@ namespace PresenceConnectionManager
         /// <summary>
         /// Indicates the timeout of when a connecting client will be disconnected
         /// </summary>
-        public const int Timeout = 20000;
-
-        /// <summary>
-        /// A connection counter, used to create unique connection id's
-        /// </summary>
-        private long ConnectionCounter = 0;
+        public const int ExpireTime = 20000;
 
         /// <summary>
         /// List of processing connections (id => Client Obj)
         /// </summary>
-        private static ConcurrentDictionary<long, GPCMSession> Processing = new ConcurrentDictionary<long, GPCMSession>();
+        private static ConcurrentDictionary<Guid, GPCMSession> InLoginSession = new ConcurrentDictionary<Guid, GPCMSession>();
 
         /// <summary>
         /// List of sucessfully logged in clients (Pid => Client Obj)
         /// </summary>
-        private static ConcurrentDictionary<long, GPCMSession> Session = new ConcurrentDictionary<long, GPCMSession>();
+        private static ConcurrentDictionary<Guid, GPCMSession> LoggedInSession = new ConcurrentDictionary<Guid, GPCMSession>();
 
         /// <summary>
         /// A Queue of player status updates we will make on the database in a batch update.
@@ -50,7 +45,7 @@ namespace PresenceConnectionManager
         /// <returns></returns>
         public int NumPlayersOnline
         {
-            get { return Session.Count; }
+            get { return LoggedInSession.Count; }
         }
 
         /// <summary>
@@ -79,7 +74,7 @@ namespace PresenceConnectionManager
             //GPCMHandler.DBQuery = new GPCMDBQuery(driver);
 
             DB = databaseDriver;
-            StartSessionManagement();
+            KeepAliveManagement();
             // Setup timer. Every 15 seconds should be sufficient
             // Set connection handling           
         }
@@ -100,16 +95,16 @@ namespace PresenceConnectionManager
                     try
                     {
                         long timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
-                        GPCMSession result;
-                        while (PlayerStatusQueue.TryDequeue(out result))
+                        GPCMSession session;
+                        while (PlayerStatusQueue.TryDequeue(out session))
                         {
                             // Skip if this player never finished logging in
-                            if (result == null)
+                            if (session == null)
                                 continue;
 
-                            if (!result.CompletedLoginProcess)
+                            if (!session.CompletedLoginProcess)
                                 continue;
-                            LoginQuery.UpdateStatus(timestamp, result.Server.Endpoint.Address, result.PlayerInfo.PlayerId, (uint)result.PlayerInfo.PlayerStatus);
+                            LoginQuery.UpdateStatus(timestamp, session.Server.Endpoint.Address, session.PlayerInfo.Profileid, (uint)session.PlayerInfo.PlayerStatus);
                         }
                         //transaction.Commit();
                     }
@@ -122,7 +117,7 @@ namespace PresenceConnectionManager
                 StatusTimer.Start();
             }
         }
-            private void StartSessionManagement()
+            private void KeepAliveManagement()
             {
                 // Setup timer. Every 15 seconds should be sufficient
                 if (PollTimer == null || !PollTimer.Enabled)
@@ -131,12 +126,17 @@ namespace PresenceConnectionManager
                     PollTimer.Elapsed += (s, e) =>
                     {
                         // Send keep alive to all connected clients
-                        if (Session.Count > 0)
-                            Parallel.ForEach(Session.Values, client => KAHandler.SendKeepAlive(client));
+                        if (LoggedInSession.Count > 0)
+                        {
+                            Parallel.ForEach(LoggedInSession.Values, client => KAHandler.SendKeepAlive(client));
+                        }
 
                         // DisconnectByReason hanging connections
-                        if (Processing.Count > 0)
-                            Parallel.ForEach(Processing.Values, client => CheckTimeout(client));
+                        if (InLoginSession.Count > 0)
+                        {
+                            Parallel.ForEach(InLoginSession.Values, client => CheckTimeout(client));
+                        }
+                            
                     };
                     PollTimer.Start();
                 }
@@ -163,8 +163,8 @@ namespace PresenceConnectionManager
 
                 // Disconnected all connected clients
                 Console.WriteLine("Disconnecting all users...");
-                Parallel.ForEach(Session.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
-                Parallel.ForEach(Processing.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
+                Parallel.ForEach(LoggedInSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
+                Parallel.ForEach(InLoginSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
 
                 // Update the database
                 try
@@ -178,7 +178,7 @@ namespace PresenceConnectionManager
                 }
 
                 // Update Connected Clients in the Database
-                Session.Clear();
+                LoggedInSession.Clear();
 
                 DB.Dispose();
 
@@ -194,10 +194,10 @@ namespace PresenceConnectionManager
             protected void CheckTimeout(GPCMSession session)
             {
                 // Setup vars
-                DateTime expireTime = session.Created.AddSeconds(Timeout);
+                DateTime expireTime = session.Created.AddSeconds(ExpireTime);
                 GPCMSession oldSession;
                 // Remove all processing connections that are hanging
-                if (session.PlayerInfo.LoginStatus != LoginStatus.Completed && expireTime <= DateTime.Now)
+                if (session.LoginProcess != LoginStatus.Completed && expireTime <= DateTime.Now)
                 {
                     try
                     {
@@ -208,20 +208,20 @@ namespace PresenceConnectionManager
                         LogWriter.Log.WriteException(e);
                     }
                 }
-                //else if (client.Status == LoginStatus.Completed)
-                //{
-                //Processing.TryRemove(client.ConnectionId, out oldC);
-                //}
+            else if (session.LoginProcess == LoginStatus.Completed)
+            {
+                InLoginSession.TryRemove(session.Id, out oldSession);
             }
+        }
 
             /// <summary>
             /// Returns whether the specified player is currently connected
             /// </summary>
             /// <param name="playerId">The players ID</param>
             /// <returns></returns>
-            public bool IsConnected(int playerId)
+            public bool IsConnected(Guid guid)
             {
-                return Session.ContainsKey(playerId);
+                return LoggedInSession.ContainsKey(guid);
             }
 
             /// <summary>
@@ -229,76 +229,16 @@ namespace PresenceConnectionManager
             /// </summary>
             /// <param name="playerId">The players ID</param>
             /// <returns>Returns whether the client was connected, and disconnect was called</returns>
-            public bool ForceLogout(int playerId)
+            public bool ForceLogout(Guid guid)
             {
-                if (Session.ContainsKey(playerId))
+                if (LoggedInSession.ContainsKey(guid))
                 {
-                    Session[playerId].DisconnectByReason(DisconnectReason.ForcedLogout);
+                    LoggedInSession[guid].DisconnectByReason(DisconnectReason.ForcedLogout);
                     return true;
                 }
                 return false;
             }
 
-            /// <summary>
-            /// Callback for when a connection had disconnected
-            /// </summary>
-            /// <param name="client">The client object whom is disconnecting</param>
-            //private void ClientDisconnected(GPCMClient client)
-            //{
-            //    // If we are exiting, don't do anything here.
-            //    //if (Exiting) return;
-
-            //    // Remove client, and call OnUpdate Event
-            //    try
-            //    {
-            //        // Remove client from online list
-            //        if (Clients.TryRemove(client.PlayerInfo.PlayerId, out client) && !client.Disposed)
-
-            //            client.DisconnectByReason(DisconnectReason.NormalLogout);
-
-            //        // Add player to database queue
-            //        PlayerStatusQueue.Enqueue(client);
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        LogWriter.Log.Write(LogLevel.Error, "An Error occured at [GPCMClient._OnDisconnect] : Generating Exception Log {0}", e.ToString());
-            //    }
-            //}
-
-            /// <summary>
-            /// Callback for a successful login
-            /// </summary>
-            /// <param name="sender">The GPCMClient that is logged in</param>
-            //private void ClientSuccessfulLogin(object sender)
-            //{
-            //    // Wrap this in a try/catch
-            //    try
-            //    {
-            //        GPCMClient oldC;
-            //        GPCMClient client = sender as GPCMClient;
-
-            //        // Remove connection from processing
-            //        Processing.TryRemove(client.ConnectionID, out oldC);
-
-            //        // Check to see if the client is already logged in, if so disconnect the old user
-            //        if (Session.TryRemove(client.PlayerInfo.PlayerId, out oldC))
-            //        {
-            //            oldC.DisconnectByReason(DisconnectReason.NewLoginDetected);
-            //            LogWriter.Log.Write(LogLevel.Info, "Login Clash:   {0} - {1} - {2}", client.PlayerInfo.PlayerNick, client.PlayerInfo.PlayerId, client.RemoteEndPoint);
-            //        }
-
-            //        // Add current client to the dictionary
-            //        if (!Session.TryAdd(client.PlayerInfo.PlayerId, client))
-            //            LogWriter.Log.Write("ERROR: [GPCMClient._OnSuccessfulLogin] Unable to add client to HashSet.", LogLevel.Error);
-
-            //        // Add player to database queue
-            //        PlayerStatusQueue.Enqueue(client);
-            //    }
-            //    catch (Exception E)
-            //    {
-            //        LogWriter.Log.WriteException(E);
-            //    }
-            //}
         }
 
 

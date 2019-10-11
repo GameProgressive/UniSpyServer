@@ -50,7 +50,7 @@
     /// <summary>
     /// The status of the player
     /// </summary>
-    public enum PlayerStatus : uint
+    public enum PlayerOnlineStatus : uint
     {
         /// <summary>
         /// The player is offline
