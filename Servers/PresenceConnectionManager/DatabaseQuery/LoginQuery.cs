@@ -45,7 +45,7 @@ namespace PresenceConnectionManager.DatabaseQuery
         /// <param name="dict"></param>
         /// <param name="sesskey"></param>
         /// <param name="player"></param>
-        public static void UpdateSessionKey(Dictionary<string, object> dict, int namespaceid, ushort sesskey, Guid guid)
+        public static void UpdateSessionKey(Dictionary<string, object> dict, uint namespaceid, ushort sesskey, Guid guid)
         {
             Dictionary<string, object> temp = GPCMServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 ", dict["profileid"], namespaceid)[0];
             uint id = Convert.ToUInt32(temp["id"]);

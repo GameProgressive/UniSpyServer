@@ -31,7 +31,13 @@ namespace PresenceConnectionManager.Structures
         /// </summary>
         public string UniqueNick = "";
 
+        /// <summary>
+        /// store the information of a user, if using the uniquenick login the userdatawill be his uniquenick if using
+        /// authtoken userdata will be authtoken, if using nouniquenick login the userdata will be nick and email.
+        /// </summary>
         public string UserData;
+
+
         /// <summary>
         /// The clients password, MD5 hashed from UTF8 bytes
         /// </summary>
@@ -42,6 +48,7 @@ namespace PresenceConnectionManager.Structures
         /// </summary>
         public PlayerOnlineStatus PlayerStatus = PlayerOnlineStatus.Offline;
 
+
         public string UserChallenge;
 
         public string ServerChallenge;
@@ -50,8 +57,8 @@ namespace PresenceConnectionManager.Structures
 
         public LoginStatus LoginProcess;
 
-        public uint partnerid;
+        public uint Partnerid;
 
-        public uint namespaceid;
+        public uint Namespaceid;
     }
 }

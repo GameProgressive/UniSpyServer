@@ -89,9 +89,7 @@ namespace PresenceConnectionManager
                 {
                     // Return if we are empty
                     if (PlayerStatusQueue.IsEmpty) return;
-
                     //var transaction =DB.BeginTransaction();
-
                     try
                     {
                         long timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
