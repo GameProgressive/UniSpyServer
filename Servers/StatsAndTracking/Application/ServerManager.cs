@@ -39,7 +39,7 @@ namespace PresenceSearchPlayer
             {
                 // case "GPCM":
                 Server = new GStatsServer(cfg.Name, databaseDriver,IPAddress.Parse(cfg.Hostname), cfg.Port);
-                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|{3,14}|", cfg.Name, cfg.Hostname, cfg.Port);
+                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
 

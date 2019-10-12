@@ -69,6 +69,7 @@ namespace PresenceConnectionManager.Handler
             {
                 session.ToLog("Invalid login method!!");
                 session.DisconnectByReason(DisconnectReason.GeneralError);
+                return;
             }
             //if no match found we disconnect the session
             CheckDatabaseResult();
@@ -158,6 +159,7 @@ namespace PresenceConnectionManager.Handler
                 session.PlayerInfo.Namespaceid = 0;
             }
         }
+
         #region Login Methods
         private static void AuthTokenLoginMethod(GPCMSession session)
         {
