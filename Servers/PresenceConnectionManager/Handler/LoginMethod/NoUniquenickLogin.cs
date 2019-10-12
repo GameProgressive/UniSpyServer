@@ -18,6 +18,7 @@ namespace PresenceConnectionManager.Handler.LoginMethod
                 LoginHandler.Recv.Add("namespaceid", "0");
             }
             LoginHandler.QueryResult = LoginQuery.GetUserFromNickAndEmail(LoginHandler.Recv);
+            LoginHandler.Session.PlayerInfo.Profileid = Convert.ToUInt32(LoginHandler.QueryResult["profileid"]);
             LoginHandler.SendLoginResponseChallenge();
 
         }

@@ -133,3 +133,45 @@ namespace PresenceConnectionManager.Handler
         }
     }
 }
+
+//private static string SetPlayerInfo(GPCMSession session, Dictionary<string, object> queryResult, Dictionary<string, string> recv)
+//{
+//    session.PlayerInfo.PlayerId = uint.Parse(queryResult["profileid"].ToString());
+//    session.PlayerInfo.PasswordHash = queryResult["password"].ToString().ToLowerInvariant();
+//    session.PlayerInfo.PlayerCountryCode = queryResult["countrycode"].ToString();
+//    session.PlayerInfo.PlayerFirstName = queryResult["firstname"].ToString();
+//    session.PlayerInfo.PlayerLastName = queryResult["lastname"].ToString();
+//    session.PlayerInfo.PlayerICQ = int.Parse(queryResult["icq"].ToString());
+//    session.PlayerInfo.PlayerHomepage = queryResult["homepage"].ToString();
+//    session.PlayerInfo.PlayerZIPCode = queryResult["zipcode"].ToString();
+//    session.PlayerInfo.PlayerLocation = queryResult["location"].ToString();
+//    session.PlayerInfo.PlayerAim = queryResult["aim"].ToString();
+//    session.PlayerInfo.PlayerOwnership = int.Parse(queryResult["ownership1"].ToString());
+//    session.PlayerInfo.PlayerOccupation = int.Parse(queryResult["occupationid"].ToString());
+//    session.PlayerInfo.PlayerIndustryID = int.Parse(queryResult["industryid"].ToString());
+//    session.PlayerInfo.PlayerIncomeID = int.Parse(queryResult["incomeid"].ToString());
+//    session.PlayerInfo.PlayerMarried = int.Parse(queryResult["marriedid"].ToString());
+//    session.PlayerInfo.PlayerChildCount = int.Parse(queryResult["childcount"].ToString());
+//    session.PlayerInfo.PlayerConnectionType = int.Parse(queryResult["connectiontype"].ToString());
+//    session.PlayerInfo.PlayerPicture = int.Parse(queryResult["picture"].ToString());
+//    session.PlayerInfo.PlayerInterests = int.Parse(queryResult["interests1"].ToString());
+//    session.PlayerInfo.PlayerBirthday = ushort.Parse(queryResult["birthday"].ToString());
+//    session.PlayerInfo.PlayerBirthmonth = ushort.Parse(queryResult["birthmonth"].ToString());
+//    session.PlayerInfo.PlayerBirthyear = ushort.Parse(queryResult["birthyear"].ToString());
+
+//    PlayerSexType playerSexType;
+//    if (!Enum.TryParse(queryResult["sex"].ToString().ToUpper(), out playerSexType))
+//        session.PlayerInfo.PlayerSex = PlayerSexType.PAT;
+//    else
+//        session.PlayerInfo.PlayerSex = playerSexType;
+
+//    session.PlayerInfo.PlayerLatitude = float.Parse(queryResult["latitude"].ToString());
+//    session.PlayerInfo.PlayerLongitude = float.Parse(queryResult["longitude"].ToString());
+
+//    PublicMasks mask;
+//    if (!Enum.TryParse(queryResult["publicmask"].ToString(), out mask))
+//        session.PlayerInfo.PlayerPublicMask = PublicMasks.MASK_ALL;
+//    else
+//        session.PlayerInfo.PlayerPublicMask = mask;
+
+//}

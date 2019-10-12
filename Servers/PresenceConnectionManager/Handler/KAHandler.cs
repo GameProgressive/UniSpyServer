@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler
         /// </summary>
         public static void SendKeepAlive(GPCMSession session)
         {
-            if (session.LoginProcess == LoginStatus.Completed)
+            if (session.PlayerInfo.LoginProcess == LoginStatus.Completed)
             {
                 // Try and send a Keep-Alive
                 try

@@ -19,7 +19,7 @@ namespace PresenceConnectionManager
     public class GPCMSession : TemplateTcpSession
     {
 
-        public LoginStatus LoginProcess;
+       
         /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
@@ -47,12 +47,15 @@ namespace PresenceConnectionManager
         /// </summary>
         protected static Crc16 Crc = new Crc16(Crc16Mode.Standard);
 
+
+        public GPCMPlayerInfo PlayerInfo { get; protected set; }
         public GPCMSession(TemplateTcpServer server) : base(server)
         {
             DisconnectAfterSend = false;
+            PlayerInfo = new GPCMPlayerInfo();
         }
 
-        public GPCMPlayerInfo PlayerInfo { get; protected set; }
+ 
 
 
 
@@ -84,13 +87,13 @@ namespace PresenceConnectionManager
         //when a user is loged in we update the sessionkey and the Guid to database
         protected override void OnConnected()
         {
-            LoginProcess = LoginStatus.Connected;
+            PlayerInfo.LoginProcess = LoginStatus.Connected;
             ToLog($"[Conn] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
             SendServerChallenge();
         }
         protected override void OnDisconnected()
         {
-            LoginProcess = LoginStatus.Disconnected;
+            PlayerInfo.LoginProcess = LoginStatus.Disconnected;
             ToLog($"[Disc] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
             RemoveGuidAndSessionKeyFromDatabase();
         }
@@ -98,7 +101,7 @@ namespace PresenceConnectionManager
         private void RemoveGuidAndSessionKeyFromDatabase()
         {
             GPCMServer.DB.Execute("UPDATE namespace SET guid = null, sesskey = 0 WHERE sesskey=@P0 AND guid = @P1", PlayerInfo.SessionKey, Id);
-            GPCMServer.DB.Execute("UPDATE profiles SET status = @P0, statusstring = @P1 WHERE profileid = @P3",(uint)PlayerOnlineStatus.Offline,"",PlayerInfo.Profileid);
+            GPCMServer.DB.Execute("UPDATE profiles SET statuscode = @P0, status = '' WHERE profileid = @P2",(uint)PlayerOnlineStatus.Offline,PlayerInfo.Profileid);
             //whether need to check if there exsit guid and session key ?
             //set the status and status string to default
         }
@@ -106,7 +109,7 @@ namespace PresenceConnectionManager
         public void SendServerChallenge()
         {
             // Only send the login challenge once
-            if (LoginProcess != LoginStatus.Connected)
+            if (PlayerInfo.LoginProcess != LoginStatus.Connected)
             {
                 DisconnectByReason(DisconnectReason.ClientChallengeAlreadySent);
                 // Throw the error                
@@ -116,7 +119,7 @@ namespace PresenceConnectionManager
             // We send the client the challenge key
             string serverChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
             PlayerInfo.ServerChallenge = serverChallengeKey;
-            LoginProcess = LoginStatus.Processing;
+            PlayerInfo.LoginProcess = LoginStatus.Processing;
             string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", serverChallengeKey, 1);
             SendAsync(sendingBuffer);
         }

@@ -12,7 +12,7 @@ namespace PresenceSearchPlayer.DatabaseQuery
         }
         public static List<Dictionary<string, object>> PlayerMatch(Dictionary<string, string> dict)
         {
-            return GPSPServer.DB.Query("SELECT profiles.nick,profiles.statuscode,profiles.statusstring FROM profiles " +
+            return GPSPServer.DB.Query("SELECT profiles.nick,profiles.status,profiles.statuscode FROM profiles " +
                 "INNER  JOIN namespace ON namespace.profileid = profiles.profileid " +
                 "WHERE namespace.productid = @P0 AND profiles.profileid = @P1 ",
                 dict["productid"], dict["profileid"]);

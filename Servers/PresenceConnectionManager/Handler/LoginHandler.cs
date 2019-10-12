@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using PresenceConnectionManager.Handler.LoginMethod;
+using PresenceConnectionManager.Structure;
 
 namespace PresenceConnectionManager.Handler
 {
@@ -61,6 +62,8 @@ namespace PresenceConnectionManager.Handler
             }
 
 
+
+
             // Parse the partnerid, required since it changes the challenge for Unique nick and User login
 
 
@@ -91,6 +94,25 @@ namespace PresenceConnectionManager.Handler
             }
         }
 
+        public void SDKRevisionSupport()
+        {
+            switch (Convert.ToInt32(LoginHandler.Recv["sdkrevision"]))
+            {
+                case GameSpySDKRevision.Type1:
+
+                    break;
+                case GameSpySDKRevision.Type2:
+
+                    break;
+                case GameSpySDKRevision.Type3:
+
+                    break;
+                case GameSpySDKRevision.Type4:
+
+                    break;
+            }
+        }
+
         public static void ProcessNickAndEmail()
         {
             if (Recv.ContainsKey("user"))
@@ -111,17 +133,25 @@ namespace PresenceConnectionManager.Handler
                 Session.PlayerInfo.UniqueNick = Recv["uniquenick"];
                 Session.PlayerInfo.UserData = Session.PlayerInfo.UniqueNick;
             }
-            else if (Recv.ContainsKey("uniquenick"))
+            else if (Recv.ContainsKey("authtoken"))
             {
 
-                Session.PlayerInfo.AuthToken = QueryResult["authtoken"].ToString();
+                Session.PlayerInfo.AuthToken = Recv["authtoken"].ToString();
                 Session.PlayerInfo.UserData = Session.PlayerInfo.AuthToken;
 
             }
             else
             {
-               Session.PlayerInfo.User = QueryResult["user"].ToString();
+                Session.PlayerInfo.User = Recv["user"].ToString();
                 Session.PlayerInfo.UserData = Session.PlayerInfo.User;
+            }
+            if (Recv.ContainsKey("namespaceid"))
+            {
+                Session.PlayerInfo.namespaceid = Convert.ToUInt32(Recv["namespaceid"]);
+            }
+            else
+            {
+                Session.PlayerInfo.namespaceid = 0;
             }
         }
 
@@ -148,8 +178,10 @@ namespace PresenceConnectionManager.Handler
             try
             {
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
+
                 // if (Recv["response"] == GenerateProof(Recv["challenge"], Session.ServerChallengeKey, Recv["user"], Recv["authtoken"]?.Length > 0 ? 0 : _partnerid, _originalPassword))
-                if (Recv["response"] == GenerateProof(Session.PlayerInfo.UserChallenge, Session.PlayerInfo.ServerChallenge, Session.PlayerInfo.UserData, 0, QueryResult["password"].ToString().ToLowerInvariant()))
+                string response = GenerateProof(Session.PlayerInfo.UserChallenge, Session.PlayerInfo.ServerChallenge, Session.PlayerInfo.UserData, Session.PlayerInfo.partnerid > 0 ? 0 : Session.PlayerInfo.partnerid, QueryResult["password"].ToString());
+                if (Recv["response"] == response)
                 {
                     // Create session key
                     Session.PlayerInfo.SessionKey = Crc.ComputeChecksum(QueryResult["uniquenick"].ToString());
@@ -158,11 +190,12 @@ namespace PresenceConnectionManager.Handler
                     //access to the sesskey to find the uniquenick for particular game
                     LoginQuery.UpdateSessionKey(QueryResult, Convert.ToInt32(Recv["namespaceid"]), Session.PlayerInfo.SessionKey, Session.Id);
 
+                    string responseProof = GenerateProof(Session.PlayerInfo.ServerChallenge, Session.PlayerInfo.UserChallenge, Session.PlayerInfo.UserData, 0, QueryResult["password"].ToString().ToLowerInvariant());
                     // Password is correct
                     SendingBuffer = string.Format(@"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         Session.PlayerInfo.SessionKey,
                         //GenerateProof(Session.ServerChallengeKey, Recv["challenge"], Recv["user"], Recv["authtoken"]?.Length > 0 ? 0 : _partnerid, _originalPassword), // Do this again, Params are reversed!
-                        GenerateProof(Session.PlayerInfo.ServerChallenge, Session.PlayerInfo.UserChallenge, Session.PlayerInfo.UserData, 0, QueryResult["password"].ToString().ToLowerInvariant()),
+                        responseProof,
                         QueryResult["profileid"],
                         QueryResult["uniquenick"],
                         // Generate LT whatever that is (some sort of random string, 22 chars long)
@@ -246,47 +279,6 @@ namespace PresenceConnectionManager.Handler
             return GPErrorCode.NoError;
         }
 
-        //private static string SetPlayerInfo(GPCMSession session, Dictionary<string, object> queryResult, Dictionary<string, string> recv)
-        //{
-        //    session.PlayerInfo.PlayerId = uint.Parse(queryResult["profileid"].ToString());
-        //    session.PlayerInfo.PasswordHash = queryResult["password"].ToString().ToLowerInvariant();
-        //    session.PlayerInfo.PlayerCountryCode = queryResult["countrycode"].ToString();
-        //    session.PlayerInfo.PlayerFirstName = queryResult["firstname"].ToString();
-        //    session.PlayerInfo.PlayerLastName = queryResult["lastname"].ToString();
-        //    session.PlayerInfo.PlayerICQ = int.Parse(queryResult["icq"].ToString());
-        //    session.PlayerInfo.PlayerHomepage = queryResult["homepage"].ToString();
-        //    session.PlayerInfo.PlayerZIPCode = queryResult["zipcode"].ToString();
-        //    session.PlayerInfo.PlayerLocation = queryResult["location"].ToString();
-        //    session.PlayerInfo.PlayerAim = queryResult["aim"].ToString();
-        //    session.PlayerInfo.PlayerOwnership = int.Parse(queryResult["ownership1"].ToString());
-        //    session.PlayerInfo.PlayerOccupation = int.Parse(queryResult["occupationid"].ToString());
-        //    session.PlayerInfo.PlayerIndustryID = int.Parse(queryResult["industryid"].ToString());
-        //    session.PlayerInfo.PlayerIncomeID = int.Parse(queryResult["incomeid"].ToString());
-        //    session.PlayerInfo.PlayerMarried = int.Parse(queryResult["marriedid"].ToString());
-        //    session.PlayerInfo.PlayerChildCount = int.Parse(queryResult["childcount"].ToString());
-        //    session.PlayerInfo.PlayerConnectionType = int.Parse(queryResult["connectiontype"].ToString());
-        //    session.PlayerInfo.PlayerPicture = int.Parse(queryResult["picture"].ToString());
-        //    session.PlayerInfo.PlayerInterests = int.Parse(queryResult["interests1"].ToString());
-        //    session.PlayerInfo.PlayerBirthday = ushort.Parse(queryResult["birthday"].ToString());
-        //    session.PlayerInfo.PlayerBirthmonth = ushort.Parse(queryResult["birthmonth"].ToString());
-        //    session.PlayerInfo.PlayerBirthyear = ushort.Parse(queryResult["birthyear"].ToString());
-
-        //    PlayerSexType playerSexType;
-        //    if (!Enum.TryParse(queryResult["sex"].ToString().ToUpper(), out playerSexType))
-        //        session.PlayerInfo.PlayerSex = PlayerSexType.PAT;
-        //    else
-        //        session.PlayerInfo.PlayerSex = playerSexType;
-
-        //    session.PlayerInfo.PlayerLatitude = float.Parse(queryResult["latitude"].ToString());
-        //    session.PlayerInfo.PlayerLongitude = float.Parse(queryResult["longitude"].ToString());
-
-        //    PublicMasks mask;
-        //    if (!Enum.TryParse(queryResult["publicmask"].ToString(), out mask))
-        //        session.PlayerInfo.PlayerPublicMask = PublicMasks.MASK_ALL;
-        //    else
-        //        session.PlayerInfo.PlayerPublicMask = mask;
-
-        //}
 
         /// <summary>
         /// Generates an MD5 hash, which is used to verify the sessions login information

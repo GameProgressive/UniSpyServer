@@ -31,7 +31,7 @@ namespace PresenceConnectionManager.Handler
             @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
             );*/
             
-            session.Send(@"\bdy\1\list\13\final\");
+            session.Send(@"\bdy\1\list\0\final\");
             session.Send(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
             session.Send(@"\bm\100\f\13\msg\1|signed|1");
 

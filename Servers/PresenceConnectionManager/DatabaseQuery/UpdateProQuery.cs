@@ -6,9 +6,9 @@ namespace PresenceConnectionManager.DatabaseQuery
 {
     public class UpdateProQuery
     {
-        public static void UpdateUserInfo(string query, object[] passData)
+        public static void UpdateUserInfo(Dictionary<string,string> recv)
         {
-           GPCMServer.DB.Query(query, passData);
+           GPCMServer.DB.Query("UPDATE profiles SET firstname=@P0, lastname=@P1, icquin=@P2, homepage=@P3");
         }
     }
 }

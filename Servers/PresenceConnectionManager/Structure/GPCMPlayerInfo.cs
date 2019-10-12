@@ -43,10 +43,15 @@ namespace PresenceConnectionManager.Structures
         public PlayerOnlineStatus PlayerStatus = PlayerOnlineStatus.Offline;
 
         public string UserChallenge;
+
         public string ServerChallenge;
 
         public ushort SessionKey;
 
-        public int partnerid;
+        public LoginStatus LoginProcess;
+
+        public uint partnerid;
+
+        public uint namespaceid;
     }
 }

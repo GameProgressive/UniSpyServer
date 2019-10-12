@@ -197,7 +197,7 @@ namespace PresenceConnectionManager
                 DateTime expireTime = session.Created.AddSeconds(ExpireTime);
                 GPCMSession oldSession;
                 // Remove all processing connections that are hanging
-                if (session.LoginProcess != LoginStatus.Completed && expireTime <= DateTime.Now)
+                if (session.PlayerInfo.LoginProcess != LoginStatus.Completed && expireTime <= DateTime.Now)
                 {
                     try
                     {
@@ -208,7 +208,7 @@ namespace PresenceConnectionManager
                         LogWriter.Log.WriteException(e);
                     }
                 }
-            else if (session.LoginProcess == LoginStatus.Completed)
+            else if (session.PlayerInfo.LoginProcess == LoginStatus.Completed)
             {
                 InLoginSession.TryRemove(session.Id, out oldSession);
             }
