@@ -16,13 +16,17 @@ namespace PresenceConnectionManager.Handler
         /// Our CRC16 object for generating Checksums
         /// </summary>
         private static Crc16 _crc = new Crc16(Crc16Mode.Standard);
-
-        private static GPCMSession _session;
-
+        /// <summary>
+        /// save the request we received, convience for us to use
+        /// </summary>
         private static Dictionary<string, string> _recv;
-
+        /// <summary>
+        /// store the query result from database
+        /// </summary>
         private static Dictionary<string, object> _queryResult;
-
+        /// <summary>
+        /// store the information we need to send to user
+        /// </summary>
         private static string _sendingBuffer;
 
         private static GPErrorCode _errorCode;
@@ -36,31 +40,30 @@ namespace PresenceConnectionManager.Handler
         /// to verify as well
         /// </summary>
         public static void ProcessLogin(GPCMSession session, Dictionary<string, string> recv)
-        {
-            _session = session;
+        {           
             _recv = recv;
 
             IsContainAllKeys();
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(_session, _errorCode, _errorMsg);
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 session.DisconnectByReason(_disconnectReason);
                 return;
             }
 
-            PreProcessForLogin();
+            PreProcessForLogin(session);
 
             if (recv.ContainsKey("uniquenick"))
             {
-                UniquenickLoginMethod();
+                UniquenickLoginMethod(session);
             }
             else if (recv.ContainsKey("authtoken"))
             {
-                AuthTokenLoginMethod();
+                AuthTokenLoginMethod(session);
             }
             else if (recv.ContainsKey("user"))
             {
-                NoUniquenickLoginMethod();
+                NoUniquenickLoginMethod(session);
             }
             else
             {
@@ -71,7 +74,7 @@ namespace PresenceConnectionManager.Handler
             CheckDatabaseResult();
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(_session, _errorCode, _errorMsg);
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 session.DisconnectByReason(_disconnectReason);
                 return;
             }
@@ -80,14 +83,14 @@ namespace PresenceConnectionManager.Handler
             CheckUsersAccountAvailability();
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(_session, _errorCode, _errorMsg);
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 session.DisconnectByReason(_disconnectReason);
                 return;
             }
 
-            SendLoginResponseChallenge();
+            SendLoginResponseChallenge(session);
 
-            SDKRevisionSwitch();
+            SDKRevisionSwitch(session);
         }
 
 
@@ -108,7 +111,7 @@ namespace PresenceConnectionManager.Handler
         /// <summary>
         /// We make a pre process for the data we received
         /// </summary>
-        public static void PreProcessForLogin()
+        public static void PreProcessForLogin(GPCMSession session)
         {
             if (_recv.ContainsKey("user"))
             {
@@ -121,69 +124,70 @@ namespace PresenceConnectionManager.Handler
                 _recv.Add("nick", nick);
                 _recv.Add("email", email);
             }
-            _session.PlayerInfo.UserChallenge = _recv["challenge"];
+            session.PlayerInfo.UserChallenge = _recv["challenge"];
 
             if (_recv.ContainsKey("uniquenick"))
             {
-                _session.PlayerInfo.UniqueNick = _recv["uniquenick"];
-                _session.PlayerInfo.UserData = _session.PlayerInfo.UniqueNick;
+                session.PlayerInfo.UniqueNick = _recv["uniquenick"];
+                session.PlayerInfo.UserData = session.PlayerInfo.UniqueNick;
             }
             else if (_recv.ContainsKey("authtoken"))
             {
-                _session.PlayerInfo.AuthToken = _recv["authtoken"].ToString();
-                _session.PlayerInfo.UserData = _session.PlayerInfo.AuthToken;
+                session.PlayerInfo.AuthToken = _recv["authtoken"].ToString();
+                session.PlayerInfo.UserData = session.PlayerInfo.AuthToken;
             }
             else
             {
-                _session.PlayerInfo.User = _recv["user"].ToString();
-                _session.PlayerInfo.UserData = _session.PlayerInfo.User;
+                session.PlayerInfo.User = _recv["user"].ToString();
+                session.PlayerInfo.UserData = session.PlayerInfo.User;
             }
             if (_recv.ContainsKey("partnerid"))
             {
-                _session.PlayerInfo.Partnerid = Convert.ToUInt32(_recv["partnerid"]);
+                session.PlayerInfo.Partnerid = Convert.ToUInt32(_recv["partnerid"]);
             }
             else
             {
-                _session.PlayerInfo.Partnerid = 0;
+                session.PlayerInfo.Partnerid = 0;
             }
             if (_recv.ContainsKey("namespaceid"))
             {
-                _session.PlayerInfo.Namespaceid = Convert.ToUInt32(_recv["namespaceid"]);
+                session.PlayerInfo.Namespaceid = Convert.ToUInt32(_recv["namespaceid"]);
             }
             else
             {
-                _session.PlayerInfo.Namespaceid = 0;
+                session.PlayerInfo.Namespaceid = 0;
             }
         }
         #region Login Methods
-        private static void AuthTokenLoginMethod()
+        private static void AuthTokenLoginMethod(GPCMSession session)
         {
+            session.DisconnectByReason(DisconnectReason.ForcedLogout);
             throw new NotImplementedException();
         }
 
-        private static void NoUniquenickLoginMethod()
+        private static void NoUniquenickLoginMethod(GPCMSession session)
         {
             if (!_recv.ContainsKey("namespaceid"))
             {
                 _recv.Add("namespaceid", "0");
             }
             _queryResult = LoginQuery.GetUserFromNickAndEmail(_recv);
-            _session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
+            session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
         }
 
-        private static void UniquenickLoginMethod()
+        private static void UniquenickLoginMethod(GPCMSession session)
         {
             if (LoginHandler._recv.ContainsKey("namespaceid"))
             {
                 _queryResult = LoginQuery.GetUserFromUniqueNick(_recv);
-                _session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
+                session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
             }
             else
             {
                 _recv.Add("namespaceid", "0");
-                _session.PlayerInfo.Namespaceid = 0;
+                session.PlayerInfo.Namespaceid = 0;
                 _queryResult = LoginQuery.GetUserFromUniqueNick(_recv);
-                _session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
+                session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
             }
         }
         #endregion
@@ -264,72 +268,72 @@ namespace PresenceConnectionManager.Handler
             _disconnectReason = DisconnectReason.NormalLogout;
             _errorCode = GPErrorCode.NoError;
         }
-        public static void SendLoginResponseChallenge()
+        public static void SendLoginResponseChallenge(GPCMSession session)
         {
             try
             {
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                string response = GenerateProof(_session.PlayerInfo.UserChallenge, _session.PlayerInfo.ServerChallenge, _queryResult["password"].ToString());
+                string response = GenerateProof(session,session.PlayerInfo.UserChallenge, session.PlayerInfo.ServerChallenge, _queryResult["password"].ToString());
                 if (_recv["response"] == response)
                 {
                     // Create session key
-                    _session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_queryResult["uniquenick"].ToString());
+                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_queryResult["uniquenick"].ToString());
 
                     //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
                     //access to the sesskey to find the uniquenick for particular game
-                    LoginQuery.UpdateSessionKey(_queryResult, _session.PlayerInfo.Namespaceid, _session.PlayerInfo.SessionKey, _session.Id);
+                    LoginQuery.UpdateSessionKey(_queryResult, session.PlayerInfo.Namespaceid, session.PlayerInfo.SessionKey, session.Id);
 
-                    string responseProof = GenerateProof(_session.PlayerInfo.ServerChallenge, _session.PlayerInfo.UserChallenge, _queryResult["password"].ToString());
-                    
+                    string responseProof = GenerateProof(session,session.PlayerInfo.ServerChallenge, session.PlayerInfo.UserChallenge, _queryResult["password"].ToString());
+
                     // Password is correct
                     _sendingBuffer = 
                         string.Format(@"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
-                        _session.PlayerInfo.SessionKey,
+                        session.PlayerInfo.SessionKey,
                         //GenerateProof(Session.ServerChallengeKey, Recv["challenge"], Recv["user"], Recv["authtoken"]?.Length > 0 ? 0 : _partnerid, _originalPassword), // Do this again, Params are reversed!
                         responseProof,
                         _queryResult["profileid"],
                         _queryResult["uniquenick"],
                         // Generate LT whatever that is (some sort of random string, 22 chars long)
                         GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex));
-
-                    _session.SendAsync(_sendingBuffer);
+                    session.PlayerInfo.LoginProcess = LoginStatus.Completed;
+                    session.SendAsync(_sendingBuffer);
                 }
                 else
                 {
                     // Log Incoming Connection
-                    string statusString = string.Format(@"[Login Failed!] Nick:{0} - Profileid:{1} - IP:{2}", _session.PlayerInfo.User, _queryResult["profileid"], _session.Socket.RemoteEndPoint);
-                    _session.ToLog(LogLevel.Info, statusString);
+                    string statusString = string.Format(@"[Login Failed!] Nick:{0} - Profileid:{1} - IP:{2}", session.PlayerInfo.User, _queryResult["profileid"], session.Socket.RemoteEndPoint);
+                    session.ToLog(LogLevel.Info, statusString);
                     // Password is incorrect with database value.
-                    GameSpyUtils.SendGPError(_session, GPErrorCode.LoginBadPassword, "The password provided is incorrect");
-                    _session.DisconnectByReason(DisconnectReason.InvalidPassword);
+                    GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadPassword, "The password provided is incorrect");
+                    session.DisconnectByReason(DisconnectReason.InvalidPassword);
                 }
             }
 
             catch (Exception ex)
             {
                 LogWriter.Log.Write(ex.ToString(), LogLevel.Error);
-                _session.DisconnectByReason(DisconnectReason.GeneralError);
+                session.DisconnectByReason(DisconnectReason.GeneralError);
                 return;
             }
         }
         /// <summary>
         /// Tell server send back extra information according to the number of  sdkrevision
         /// </summary>
-        public static void SDKRevisionSwitch()
+        public static void SDKRevisionSwitch(GPCMSession session)
         {
             switch (Convert.ToInt32(LoginHandler._recv["sdkrevision"]))
             {
                 case GameSpySDKRevision.Type1:
-                    SendBuddiesHandler.HandleSendBuddies(_session, _recv);
+                    SendBuddiesHandler.HandleSendBuddies(session, _recv);
                     break;
                 case GameSpySDKRevision.Type2:
-                    SendBuddiesHandler.HandleSendBuddies(_session, _recv);
+                    SendBuddiesHandler.HandleSendBuddies(session, _recv);
                     break;
                 case GameSpySDKRevision.Type3:
-                    SendBuddiesHandler.HandleSendBuddies(_session, _recv);
+                    SendBuddiesHandler.HandleSendBuddies(session, _recv);
                     break;
                 case GameSpySDKRevision.Type4:
-                    SendBuddiesHandler.HandleSendBuddies(_session, _recv);
+                    SendBuddiesHandler.HandleSendBuddies(session, _recv);
                     break;
             }
         }
@@ -344,13 +348,13 @@ namespace PresenceConnectionManager.Handler
         ///     The proof verification MD5 hash string that can be compared to what the session sends,
         ///     to verify that the users entered password matches the specific user data in the database.
         /// </returns>
-        private static string GenerateProof(string challenge1, string challenge2, string passwordHash)
+        private static string GenerateProof(GPCMSession session,string challenge1, string challenge2, string passwordHash)
         {
-            string realUserData = _session.PlayerInfo.UserData;
+            string realUserData = session.PlayerInfo.UserData;
 
-            if (_session.PlayerInfo.Partnerid != (uint)PartnerID.Gamespy)
+            if (session.PlayerInfo.Partnerid != (uint)PartnerID.Gamespy)
             {
-                realUserData = string.Format("{0}@{1}", _session.PlayerInfo.Partnerid, _session.PlayerInfo.UserData);
+                realUserData = string.Format("{0}@{1}", session.PlayerInfo.Partnerid, session.PlayerInfo.UserData);
             }
             // Generate our string to be hashed
             StringBuilder HashString = new StringBuilder(passwordHash);
