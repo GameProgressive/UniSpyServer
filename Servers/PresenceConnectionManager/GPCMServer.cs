@@ -117,159 +117,107 @@ namespace PresenceConnectionManager
                 StatusTimer.Start();
             }
         }
-            private void KeepAliveManagement()
+        private void KeepAliveManagement()
+        {
+            // Setup timer. Every 15 seconds should be sufficient
+            if (PollTimer == null || !PollTimer.Enabled)
             {
-                // Setup timer. Every 15 seconds should be sufficient
-                if (PollTimer == null || !PollTimer.Enabled)
+                PollTimer = new System.Timers.Timer(15000);
+                PollTimer.Elapsed += (s, e) =>
                 {
-                    PollTimer = new System.Timers.Timer(15000);
-                    PollTimer.Elapsed += (s, e) =>
-                    {
                         // Send keep alive to all connected clients
                         if (LoggedInSession.Count > 0)
-                        {
-                            Parallel.ForEach(LoggedInSession.Values, client => KAHandler.SendKeepAlive(client));
-                        }
-
+                    {
+                        Parallel.ForEach(LoggedInSession.Values, client => KAHandler.SendKeepAlive(client));
+                    }
                         // DisconnectByReason hanging connections
                         if (InLoginSession.Count > 0)
-                        {
-                            Parallel.ForEach(InLoginSession.Values, client => CheckTimeout(client));
-                        }
-                            
-                    };
-                    PollTimer.Start();
-                }
+                    {
+                        Parallel.ForEach(InLoginSession.Values, client => CheckTimeout(client));
+                    }
+                };
+                PollTimer.Start();
             }
+        }
+        private bool _disposed;
 
-            ~GPCMServer()
+        protected override void Dispose(bool disposingManagedResources)
         {
-                if (!Exiting)
-                    Shutdown();
-            }
-
-            /// <summary>
-            /// Shutsdown the ClientManager server and socket
-            /// </summary>
-            public void Shutdown()
+            if (_disposed) return;
+            _disposed = true;
+            if (disposingManagedResources)
             {
-                Exiting = true;
-            
-                // Discard the poll timer
-                PollTimer?.Stop();
-                PollTimer?.Dispose();
-                StatusTimer?.Stop();
-                StatusTimer?.Dispose();
+ 
+            }
+            PollTimer?.Stop();
+            PollTimer?.Dispose();
+            StatusTimer?.Stop();
+            StatusTimer?.Dispose();
+            // Disconnected all connected clients
+            Console.WriteLine("Disconnecting all users...");
+            Parallel.ForEach(LoggedInSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
+            Parallel.ForEach(InLoginSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
+            LoginQuery.ResetAllStatusAndSessionKey();
+            LoggedInSession.Clear();
+            DB.Dispose();
+            base.Dispose(disposingManagedResources);
+        }
 
-                // Disconnected all connected clients
-                Console.WriteLine("Disconnecting all users...");
-                Parallel.ForEach(LoggedInSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
-                Parallel.ForEach(InLoginSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
 
-                // Update the database
+        /// <summary>
+        /// Checks the timeout on a client connection. This method is used to detect hanging connections, and
+        /// forcefully disconnects them.
+        /// </summary>
+        /// <param name="client"></param>
+        protected void CheckTimeout(GPCMSession session)
+        {
+            // Setup vars
+            DateTime expireTime = session.Created.AddSeconds(ExpireTime);
+            GPCMSession oldSession;
+            // Remove all processing connections that are hanging
+            if (session.PlayerInfo.LoginProcess != LoginStatus.Completed && expireTime <= DateTime.Now)
+            {
                 try
                 {
-                    // Set everyone's online session to 0
-                    LoginQuery.ResetStatusAndSessionKey();
+                    session.Disconnect();
                 }
                 catch (Exception e)
                 {
                     LogWriter.Log.WriteException(e);
                 }
-
-                // Update Connected Clients in the Database
-                LoggedInSession.Clear();
-
-                DB.Dispose();
-
-                // Tell the base to dispose all free objects
-                Dispose();
             }
-
-            /// <summary>
-            /// Checks the timeout on a client connection. This method is used to detect hanging connections, and
-            /// forcefully disconnects them.
-            /// </summary>
-            /// <param name="client"></param>
-            protected void CheckTimeout(GPCMSession session)
-            {
-                // Setup vars
-                DateTime expireTime = session.Created.AddSeconds(ExpireTime);
-                GPCMSession oldSession;
-                // Remove all processing connections that are hanging
-                if (session.PlayerInfo.LoginProcess != LoginStatus.Completed && expireTime <= DateTime.Now)
-                {
-                    try
-                    {
-                    session.Disconnect();
-                    }
-                    catch (Exception e)
-                    {
-                        LogWriter.Log.WriteException(e);
-                    }
-                }
             else if (session.PlayerInfo.LoginProcess == LoginStatus.Completed)
             {
                 InLoginSession.TryRemove(session.Id, out oldSession);
             }
         }
 
-            /// <summary>
-            /// Returns whether the specified player is currently connected
-            /// </summary>
-            /// <param name="playerId">The players ID</param>
-            /// <returns></returns>
-            public bool IsConnected(Guid guid)
-            {
-                return LoggedInSession.ContainsKey(guid);
-            }
-
-            /// <summary>
-            /// Forces the logout of a connected client
-            /// </summary>
-            /// <param name="playerId">The players ID</param>
-            /// <returns>Returns whether the client was connected, and disconnect was called</returns>
-            public bool ForceLogout(Guid guid)
-            {
-                if (LoggedInSession.ContainsKey(guid))
-                {
-                    LoggedInSession[guid].DisconnectByReason(DisconnectReason.ForcedLogout);
-                    return true;
-                }
-                return false;
-            }
-
+        /// <summary>
+        /// Returns whether the specified player is currently connected
+        /// </summary>
+        /// <param name="playerId">The players ID</param>
+        /// <returns></returns>
+        public bool IsConnected(Guid guid)
+        {
+            return LoggedInSession.ContainsKey(guid);
         }
 
+        /// <summary>
+        /// Forces the logout of a connected client
+        /// </summary>
+        /// <param name="playerId">The players ID</param>
+        /// <returns>Returns whether the client was connected, and disconnect was called</returns>
+        public bool ForceLogout(Guid guid)
+        {
+            if (LoggedInSession.ContainsKey(guid))
+            {
+                LoggedInSession[guid].DisconnectByReason(DisconnectReason.ForcedLogout);
+                return true;
+            }
+            return false;
+        }
 
+    }
+          
 
-        //protected override void ProcessAccept(TCPStream stream)
-        //{
-        //    // Get our connection id
-        //    long connId = Interlocked.Increment(ref ConnectionCounter);
-        //    GPCMClient client;
-
-        //    try
-        //    {
-        //        // Create a new GPCMClient, passing the IO object for the TcpClientStream
-        //        client = new GPCMClient(stream, connId);
-        //        Processing.TryAdd(connId, client);
-
-        //        // Begin the asynchronous login process
-        //        client.SendServerChallenge(1);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        // Log the error
-        //        LogWriter.Log.WriteException(e);
-
-        //        // Remove pending connection
-        //        //Processing.TryRemove(connId, out client);
-
-        //        // Release this stream so it can be used again
-        //    }
-        //}
-
-
-    
 }

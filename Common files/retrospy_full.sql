@@ -4653,7 +4653,7 @@ INSERT INTO `namespace` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partne
 	(20, 21, 'wormsforts', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL, NULL, NULL),
 	(21, 22, 'wf12', 1, NULL, 722, 'wormsforts', NULL, NULL, NULL, NULL, NULL),
 	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', NULL, 19150, NULL, NULL, NULL),
-	(41, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, 0, NULL, NULL, NULL);
+	(41, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, 19150, NULL, NULL, '6068214f-3e4b-4748-9f7c-02712f5d08a3');
 /*!40000 ALTER TABLE `namespace` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.profiles
@@ -4687,8 +4687,6 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `birthyear` int(4) DEFAULT 0,
   `location` varchar(127) DEFAULT '',
   `icquin` int(8) DEFAULT 0,
-  `lastip` varchar(16) NOT NULL DEFAULT '',
-  `lastonline` int(20) NOT NULL DEFAULT 0,
   `quietflags` int(20) NOT NULL DEFAULT 0,
   `streetaddr` text DEFAULT NULL,
   `streeaddr` text DEFAULT NULL,
@@ -4707,23 +4705,23 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   UNIQUE KEY `profileid` (`profileid`) USING BTREE,
   KEY `FK_profiles_users` (`userid`) USING BTREE,
   CONSTRAINT `FK_profiles_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='statusstring';
 
 -- Dumping data for table retrospy2.profiles: ~12 rows (approximately)
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
-INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `statuscode`, `status`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icquin`, `lastip`, `lastonline`, `quietflags`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `emailverified`, `adminrights`) VALUES
-	(1, 1, 'retrospy', 0, 'RetroSpy', 'Spy', '', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, '127.0.0.1', 1562442207, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(8, 1, 'MyCrysis', 0, 'RetroSpy', 'jiuwo', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '91.52.99.231', 1569066920, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(9, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(12, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(13, 7, 'MyCrysis', 0, '1', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1570758837, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(14, 7, 'xiaojiuwo', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(16, 9, 'worms3d', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(21, 13, 'wormsforts', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(22, 14, 'wf12', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(23, 15, 'a8', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '91.52.101.171', 1569239729, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(25, 7, 'gptest', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
-	(26, 6, 'gptest', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, '127.0.0.1', 1569288967, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0);
+INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `statuscode`, `status`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icquin`, `quietflags`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `emailverified`, `adminrights`) VALUES
+	(1, 1, 'retrospy', 0, 'RetroSpy', 'Spy', '', 0, 41, -74, 'spyguy@aim.com', 0, 0, 0, 0, 0, 0, 0, 0, 3, 'MALE', '10001', 'US', 'https://www.gamespy.com/', 20, 3, 1980, 'New York', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(8, 1, 'MyCrysis', 0, 'RetroSpy', 'jiuwo', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(9, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(12, 6, 'MyCrysis', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(13, 7, 'MyCrysis', 0, 'Retrospy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(14, 7, 'xiaojiuwo', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(16, 9, 'worms3d', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(21, 13, 'wormsforts', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(22, 14, 'wf12', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(23, 15, 'a8', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(25, 7, 'gptest', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0),
+	(26, 6, 'gptest', 0, 'RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 'PAT', '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0, 0);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.users
@@ -4736,20 +4734,22 @@ CREATE TABLE IF NOT EXISTS `users` (
   `useddate` timestamp NOT NULL DEFAULT current_timestamp(),
   `deleted` tinyint(4) NOT NULL DEFAULT 0,
   `banned` tinyint(1) NOT NULL DEFAULT 0,
+  `lastip` varchar(16) DEFAULT NULL,
+  `lastonline` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`userid`) USING BTREE,
   UNIQUE KEY `userid` (`userid`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- Dumping data for table retrospy2.users: ~7 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`userid`, `email`, `password`, `userstatus`, `createddate`, `useddate`, `deleted`, `banned`) VALUES
-	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1, '2019-08-11 09:07:27', '0000-00-00 00:00:00', 0, 0),
-	(6, 'xiaojiuwo@gamespy.com', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 07:27:29', '0000-00-00 00:00:00', 0, 0),
-	(7, 'koujiangheng@live.cn', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 11:18:29', '0000-00-00 00:00:00', 0, 0),
-	(9, 'worms3d@rspy.org', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-21 20:11:36', '0000-00-00 00:00:00', 0, 0),
-	(13, 'wormsforts@rspy.org', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-21 20:50:45', '0000-00-00 00:00:00', 0, 0),
-	(14, 'wf12@gs.de', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-23 18:52:13', '0000-00-00 00:00:00', 0, 0),
-	(15, 'a8@rs.de', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-23 19:26:36', '0000-00-00 00:00:00', 0, 0);
+INSERT INTO `users` (`userid`, `email`, `password`, `userstatus`, `createddate`, `useddate`, `deleted`, `banned`, `lastip`, `lastonline`) VALUES
+	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1, '2019-08-11 09:07:27', '0000-00-00 00:00:00', 0, 0, NULL, '2019-10-12 12:55:57'),
+	(6, 'xiaojiuwo@gamespy.com', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 07:27:29', '0000-00-00 00:00:00', 0, 0, NULL, '2019-10-12 12:55:57'),
+	(7, 'koujiangheng@live.cn', '924680837b0dadf3c8b663261c894d19', 1, '2019-08-19 11:18:29', '0000-00-00 00:00:00', 0, 0, NULL, '2019-10-12 12:55:57'),
+	(9, 'worms3d@rspy.org', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-21 20:11:36', '0000-00-00 00:00:00', 0, 0, NULL, '2019-10-12 12:55:57'),
+	(13, 'wormsforts@rspy.org', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-21 20:50:45', '0000-00-00 00:00:00', 0, 0, NULL, '2019-10-12 12:55:57'),
+	(14, 'wf12@gs.de', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-23 18:52:13', '0000-00-00 00:00:00', 0, 0, NULL, '2019-10-12 12:55:57'),
+	(15, 'a8@rs.de', '149815eb972b3c370dee3b89d645ae14', 1, '2019-09-23 19:26:36', '0000-00-00 00:00:00', 0, 0, NULL, '2019-10-12 12:55:57');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

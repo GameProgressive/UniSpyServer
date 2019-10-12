@@ -54,12 +54,14 @@ namespace PresenceConnectionManager.DatabaseQuery
         }
 
 
-        public static void UpdateStatus(long timestamp, System.Net.IPAddress address, uint profileId, uint status)
+        public static void UpdateStatus(long lastOnlineTime, System.Net.IPAddress address, uint profileId, uint statuscode)
         {
-            GPCMServer.DB.Execute("UPDATE profiles SET statuscode=@P3, lastip=@P0, lastonline=@P1 WHERE profileid=@P2", address, timestamp, profileId, status);
+            GPCMServer.DB.Execute("UPDATE profiles SET statuscode=@P0 WHERE profileid=@P1 ", statuscode, profileId);
+            uint userid = Convert.ToUInt32(GPCMServer.DB.Query("SELECT userid FROM profiles WHERE profileid= @P0",profileId)[0]);
+            GPCMServer.DB.Execute("UPDATE users SET lastip=@P0, lastonline=@P1 WHERE userid = @P2", address, lastOnlineTime, userid);
         }
 
-        public static void ResetStatusAndSessionKey()
+        public static void ResetAllStatusAndSessionKey()
         {
             GPCMServer.DB.Execute("UPDATE profiles SET statuscode=0");
             GPCMServer.DB.Execute("UPDATE namespace SET sesskey = NULL");
