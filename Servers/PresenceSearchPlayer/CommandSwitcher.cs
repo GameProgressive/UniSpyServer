@@ -21,10 +21,10 @@ namespace PresenceSearchPlayer
                     case "search":
                         SearchHandler.SearchUsers(session, recv);
                         break;
-                    case "valid":
+                    case "valid"://is email format valid
                         ValidHandler.IsEmailValid(session, recv);
                         break;
-                    case "nicks":
+                    case "nicks":// search an user with nick name
                         NickHandler.SearchNicks(session, recv);
                         break;
                     case "pmatch":
@@ -33,19 +33,19 @@ namespace PresenceSearchPlayer
                     case "check":
                         CheckHandler.CheckProfileid(session, recv);
                         break;
-                    case "newuser":
+                    case "newuser"://create an new user
                         NewUserHandler.NewUser(session, recv);
                         break;
-                    case "searchunique":
+                    case "searchunique"://search an user with uniquenick
                         SearchUniqueHandler.SearchProfileWithUniquenick(session, recv);
                         break;
-                    case "others":
+                    case "others"://search 
                         OthersHandler.SearchOtherBuddy(session, recv);
                         break;
-                    case "otherslist":
+                    case "otherslist"://search other players friend list to see who is in his list?
                         OthersListHandler.SearchOtherBuddyList(session, recv);
                         break;
-                    case "uniquesearch":
+                    case "uniquesearch"://search a user with uniquenick and namespaceid
                         UniqueSearchHandler.SuggestUniqueNickname(session, recv);
                         break;
                     default:

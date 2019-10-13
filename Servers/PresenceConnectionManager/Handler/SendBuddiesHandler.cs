@@ -8,6 +8,7 @@ namespace PresenceConnectionManager.Handler
 {
     public class SendBuddiesHandler
     {
+
         public static void HandleSendBuddies(GPCMSession session,Dictionary<string,string> recv)
         {
             // \bdy\<number of friends>\list\<array of profileids>\
@@ -20,7 +21,7 @@ namespace PresenceConnectionManager.Handler
 
             
 
-            if (session.BuddiesSent)
+            if (session.PlayerInfo.BuddiesSent)
                 return;
 
             /*Stream.SendAsync(
@@ -31,15 +32,16 @@ namespace PresenceConnectionManager.Handler
             @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
             );*/
             
-            session.Send(@"\bdy\1\list\0\final\");
+            session.Send(@"\bdy\list\1\final\");
             session.Send(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
            session.Send(@"\bm\100\f\13\msg\1|signed|1");
+            GetProfileHandler.SendProfile(session, recv);
 
             return;
            
             int[] pids = SendBuddiesQuery.GetProfileidArray(recv);
             int numBuddies = pids.Length;
-            session.BuddiesSent = true;
+            session.PlayerInfo.BuddiesSent = true;
 
             string sendingBuffer;
             string profileidArray = "";
@@ -52,10 +54,10 @@ namespace PresenceConnectionManager.Handler
             
 
         }
-        public static void SendBuddyInfo(uint profileid)
+        public static void SendBuddyInfo(GPCMSession session,uint profileid)
         {
             bool isBlocked = false;
-            Dictionary<string, object> profile = SendBuddiesQuery.GetProfile(profileid);
+            Dictionary<string, object> profile = SendBuddiesQuery.GetProfile(profileid,session.PlayerInfo.Namespaceid);
             bool.TryParse(profile["deleted"] as string, out isBlocked);
             string locstr = profile["location"].ToString();
             string statstr;

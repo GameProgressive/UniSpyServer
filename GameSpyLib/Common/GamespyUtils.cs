@@ -118,7 +118,6 @@ namespace GameSpyLib.Common
             }
             catch (IndexOutOfRangeException) { }
             ProcessPasswordInRetroSpyWay(data);
-
             return data;
         }
         /// <summary>

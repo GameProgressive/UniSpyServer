@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler
 
             string sendingBuffer;
             GPErrorCode error;
-            error = IsLogIn(dict);
+            //error = IsLogIn(dict);
             //if (error != GPErrorCode.NoError)
             //{
             //    GameSpyUtils.SendGPError(client.Stream, error, "You must login to use search functions");

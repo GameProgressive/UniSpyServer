@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.DatabaseQuery
         {
             var result = GPCMServer.DB.Query("SELECT profileid from namespace WHERE sessionkey = @P0 AND guid = @P1", recv["sesskey"],guid.ToString())[0];
             uint profileid = Convert.ToUInt32(result);
-            GPCMServer.DB.Execute("UPDATE profiles SET statusstring=@P0, lastip=@P1 WHERE profileid=@P2 ", recv["statstring"], recv["locstring"], profileid);
+            GPCMServer.DB.Execute("UPDATE profiles SET status = @P0, statusstring=@P1, lastip=@P2 WHERE profileid=@P2 ", recv["status"],recv["statstring"], recv["locstring"], profileid);
         }
     }
 }
