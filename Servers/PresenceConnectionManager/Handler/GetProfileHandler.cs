@@ -8,46 +8,40 @@ using System.Text;
 
 namespace PresenceConnectionManager.Handler
 {
+
     public class GetProfileHandler
     {
+        static Dictionary<string, string> _recv;
+        static GPErrorCode _error;
         /// <summary>
         /// This method is called when the client requests for the Account profile
         /// </summary>
         public static void SendProfile(GPCMSession session, Dictionary<string, string> recv)
         {
             //TODO
-
+            _recv = recv;
             // \getprofile\\sesskey\19150\profileid\2\id\2\final\
             //profileid is 
-            GPErrorCode error;
-            if (!recv.ContainsKey("profileid"))
+
+            IsContainAllKey();
+
+            if (_error != GPErrorCode.NoError)
             {
-                error = GPErrorCode.Parse;
+                GameSpyUtils.SendGPError(session, _error, "Parsing error.");
                 return;
             }
-            if (!recv.ContainsKey("sesskey"))
-            {
-                error = GPErrorCode.Parse;
-                return;
-            }
-            else
-            { error = GPErrorCode.NoError; }
 
-            if (error != GPErrorCode.NoError)
-            {
-                GameSpyUtils.SendGPError(session, error, "Parsing error.");
-            }
+            var result = GetProfileQuery.GetProfileInfo(Convert.ToUInt32(_recv["profileid"]), Convert.ToUInt32(_recv["sesskey"]));
 
-            var result = GetProfileQuery.GetProfileInfo(Convert.ToUInt32(recv["profileid"]));
             if (result == null)
             {
                 GameSpyUtils.SendGPError(session, GPErrorCode.GetProfileBadProfile, "Unable to get profile information.");
                 return;
             }
 
-            string sendingBuffer = @"\pi\profileid\" + recv["profileid"] + @"\mp\4";
+            string sendingBuffer = @"\pi\profileid\" + _recv["profileid"] + @"\mp\4";
 
-            sendingBuffer = string.Format(sendingBuffer + @"\nick\{0}\uniquenick\{1}\id\{2}", result["nick"], result["uniquenick"], recv["profileid"]);
+            sendingBuffer = string.Format(sendingBuffer + @"\nick\{0}\uniquenick\{1}\id\{2}", result["nick"], result["uniquenick"], _recv["profileid"]);
 
             if (result["email"].ToString().Length > 0)
                 sendingBuffer += @"\email\" + result["email"];
@@ -82,15 +76,15 @@ namespace PresenceConnectionManager.Handler
             if (Convert.ToInt32(result["birthday"]) > 0 && Convert.ToInt32(result["birthmonth"]) > 0 && Convert.ToInt32(result["birthyear"]) > 0)
                 sendingBuffer += @"\birthday\" + (uint)((Convert.ToInt32(result["birthday"]) << 24) | (Convert.ToInt32(result["birthmonth"]) << 16) | Convert.ToInt32(result["birthyear"]));
 
-            if (Convert.ToInt32(result["location"]) > 0)
-                sendingBuffer += @"\loc\" + result["location"];
+            if (result.ContainsKey("location"))
+                sendingBuffer += @"\loc\" + result["location"].ToString();
 
 
-            if ((PlayerSexType)result["sex"] != PlayerSexType.PAT)
+            if (result["sex"].ToString() != "PAT")
             {
-                if ((PlayerSexType)result["sex"] == PlayerSexType.FEMALE)
+                if (result["sex"].ToString() == "FEMALE")
                     sendingBuffer += @"\sex\1";
-                else if ((PlayerSexType)result["sex"] == PlayerSexType.MALE)
+                else if (result["sex"].ToString() == "MALE")
                     sendingBuffer += @"\sex\0";
             }
 
@@ -131,7 +125,23 @@ namespace PresenceConnectionManager.Handler
 
             session.SendAsync(sendingBuffer);
         }
+        private static void IsContainAllKey()
+        {
+            if (!_recv.ContainsKey("profileid"))
+            {
+                _error = GPErrorCode.Parse;
+                return;
+            }
+            if (!_recv.ContainsKey("sesskey"))
+            {
+                _error = GPErrorCode.Parse;
+                return;
+            }
+            _error = GPErrorCode.NoError;
+        }
     }
+
+
 }
 
 //private static string SetPlayerInfo(GPCMSession session, Dictionary<string, object> queryResult, Dictionary<string, string> recv)

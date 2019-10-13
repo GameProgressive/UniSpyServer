@@ -279,7 +279,7 @@ namespace PresenceConnectionManager.Handler
                 if (_recv["response"] == response)
                 {
                     // Create session key
-                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_queryResult["uniquenick"].ToString());
+                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_queryResult["uniquenick"].ToString()+_recv["namespaceid"]);
 
                     //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
                     //access to the sesskey to find the uniquenick for particular game

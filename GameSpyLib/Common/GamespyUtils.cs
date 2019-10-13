@@ -117,7 +117,7 @@ namespace GameSpyLib.Common
                 }
             }
             catch (IndexOutOfRangeException) { }
-            ProessPasswordInRetroSpyWay(data);
+            ProcessPasswordInRetroSpyWay(data);
 
             return data;
         }
@@ -125,7 +125,7 @@ namespace GameSpyLib.Common
         /// Encode password in our way, so we do not need to care about the encoding method of password
         /// </summary>
         /// <param name="dict"></param>
-        public static void ProessPasswordInRetroSpyWay(Dictionary<string, string> dict)
+        public static void ProcessPasswordInRetroSpyWay(Dictionary<string, string> dict)
         {
             string password;
             if (dict.ContainsKey("passenc"))
@@ -136,19 +136,16 @@ namespace GameSpyLib.Common
             }
             if (dict.ContainsKey("pass"))
             {
-                password = dict["pass"];
-                dict["pass"] = StringExtensions.GetMD5Hash(password);
-                dict.Add("passenc", dict["pass"]);
+                password = StringExtensions.GetMD5Hash(dict["pass"]);
+                dict.Add("passenc", password);
             }
             if (dict.ContainsKey("password"))
             {
-                password = dict["password"];
-                dict["password"] = StringExtensions.GetMD5Hash(password);
-                dict.Add("passenc", dict["password"]);
+                password = StringExtensions.GetMD5Hash(dict["password"]);
+                dict.Add("passenc", password);
             }
         }
-
-
+       
         public static void PrintReceivedGPDictToLogger( Dictionary<string, string> recv)
         {
             LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}", recv.Keys.First(), string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray()));

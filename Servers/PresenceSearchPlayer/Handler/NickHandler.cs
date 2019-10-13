@@ -15,29 +15,33 @@ namespace PresenceSearchPlayer.Handler
     /// </summary>
     public class NickHandler
     {
-
+        static List<Dictionary<string, object>> _queryResult;
+        static Dictionary<string, string> _recv;
         /// <summary>
         /// Get nickname through email and password
         /// </summary>
         /// <param name="session"></param>
-        /// <param name="dict"></param>
-        public static void SearchNicks(GPSPSession session, Dictionary<string, string> dict)
+        /// <param name="_recv"></param>
+        public static void SearchNicks(GPSPSession session,Dictionary<string,string> recv)
         {
+            _recv = recv;
             //Format the password for our database storage
             //if not recieved correct request we terminate
-            GPErrorCode error = IsSearchNicksContianAllKeys(dict);
+            GPErrorCode error = IsSearchNicksContianAllKeys();
             if (error != GPErrorCode.NoError)
             {
                 GameSpyUtils.SendGPError(session, (int)error, "Error recieving SearchNicks request.");
                 return;
             }
 
-            List<Dictionary<string, object>> queryResult;
-
+            if (!_recv.ContainsKey("namespaceid"))
+            {
+                _recv.Add("namespaceid", "0");
+            }
             try
             {
                 //get nicknames from GPSPDBQuery class
-                queryResult = NickQuery.RetriveNicknames(dict);
+                _queryResult = NickQuery.RetriveNicknames(_recv);
             }
             catch (Exception ex)
             {
@@ -46,7 +50,7 @@ namespace PresenceSearchPlayer.Handler
                 return;
             }
 
-            if (queryResult.Count < 1)
+            if (_queryResult.Count < 1)
             {
                 GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "No match found !");
                 return;
@@ -54,7 +58,7 @@ namespace PresenceSearchPlayer.Handler
 
             string sendingBuffer;
             sendingBuffer = @"\nr\";
-            foreach (Dictionary<string, object> row in queryResult)
+            foreach (Dictionary<string, object> row in _queryResult)
             {
                 sendingBuffer += @"\nick\";
                 sendingBuffer += row["nick"];
@@ -67,19 +71,19 @@ namespace PresenceSearchPlayer.Handler
             session.SendAsync(sendingBuffer);
         }
 
-        public static GPErrorCode IsSearchNicksContianAllKeys(Dictionary<string, string> dict)
+        public static GPErrorCode IsSearchNicksContianAllKeys()
         {
-            if (!dict.ContainsKey("email"))
+            if (!_recv.ContainsKey("email"))
             {
 
                 return GPErrorCode.Parse;
             }
 
             // First, we try to receive an encoded password
-            if (!dict.ContainsKey("passenc"))
+            if (!_recv.ContainsKey("passenc"))
             {
                 // If the encoded password is not sended, we try receiving the password in plain text
-                if (!dict.ContainsKey("pass"))
+                if (!_recv.ContainsKey("pass"))
                 {
                     // No password is specified, we cannot continue                   
                     return GPErrorCode.Parse;

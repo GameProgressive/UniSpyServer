@@ -25,15 +25,7 @@ namespace StatsAndTracking
         {
             //GStatsHandler.DBQuery = new GSTATSDBQuery(databaseDriver);
             DB = databaseDriver;
-            // Begin accepting connections
-            Start();
         }
-
-        ~GStatsServer()
-        {
-            Dispose(false);
-        }
-
         protected override TcpSession CreateSession() { return new GstatsSession(this); }
 
         protected override void Dispose(bool disposingManagedResources)
@@ -47,17 +39,6 @@ namespace StatsAndTracking
             DB = null;
 
             base.Dispose(disposingManagedResources);
-        }
-
-        public string SendServerChallenge()
-        {
-            //38byte
-            string serverChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(38, GameSpyLib.Common.Random.StringType.Alpha);
-            //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
-            //sendingBuffer = xor(sendingBuffer);
-            string sendingBuffer = string.Format(@"\challenge\{0}", serverChallengeKey);
-            sendingBuffer = GameSpyLib.Extensions.Enctypex.XorEncoding(sendingBuffer, 1);
-            return sendingBuffer;
         }
     }
 }

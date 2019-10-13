@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Handler
 
             if (testSK != session.PlayerInfo.SessionKey)
                 return; // Are you trying to update another user?
-            StatusQuery.UpdateStatus(recv);
+            StatusQuery.UpdateStatus(recv,session.Id);
         }
     }
 }

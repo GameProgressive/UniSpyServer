@@ -33,7 +33,7 @@ namespace PresenceConnectionManager.Handler
             
             session.Send(@"\bdy\1\list\0\final\");
             session.Send(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
-            session.Send(@"\bm\100\f\13\msg\1|signed|1");
+           session.Send(@"\bm\100\f\13\msg\1|signed|1");
 
             return;
            

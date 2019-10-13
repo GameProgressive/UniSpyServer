@@ -16,16 +16,24 @@ namespace PresenceConnectionManager.DatabaseQuery
         /// </summary>
         /// <param name="profileid"></param>
         /// <returns></returns>
-        public static Dictionary<string,object> GetProfileInfo(uint profileid)
+        public static Dictionary<string,object> GetProfileInfo(uint profileid,uint sessionkey)
         {
             //var Rows = Query("SELECT profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, profiles.longitude, " +
             //    "profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, profiles.interests1, " +
             //    @"profiles.ownership1, profiles.connectiontype, profiles.sex, profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth, " +
             //    @"profiles.birthyear, profiles.location, profiles.icq, profiles.status, profiles.nick, namespace.uniquenick, users.email FROM profiles " +
             //    @"INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE profiles.profileid=@P0", profileid);
-            var result = GPCMServer.DB.Query("SELECT * FROM profiles " +
-                @"INNER JOIN users ON users.userid = profiles.userid " +
-                @"INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE profiles.profileid=@P0", profileid);
+            var result = GPCMServer.DB.Query(
+                @"SELECT profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude, 
+                profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, 
+                profiles.incomeid, profiles.industryid, profiles.marriedid, profiles.childcount, 
+                profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, 
+                profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, 
+                profiles.birthmonth,profiles.birthyear, profiles.location, profiles.icquin, profiles.status,
+                profiles.statuscode, profiles.nick,namespace.uniquenick,users.email 
+                FROM profiles LEFT JOIN namespace ON namespace.profileid = profiles.profileid
+                LEFT JOIN users ON users.userid = profiles.profileid
+                WHERE profiles.profileid=@P0 and sesskey=@P1", profileid , sessionkey);
             return (result.Count == 0) ? null : result[0];
 
             //var data = Rows[0];

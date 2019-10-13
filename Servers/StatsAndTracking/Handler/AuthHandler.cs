@@ -11,8 +11,7 @@ namespace StatsAndTracking.Handler
         public static void SendSessionKey(GstatsSession session, Dictionary<string, string> dict)
         {
             string sendingBuffer = string.Format(@"\sesskey\{0}",dict["response"]);
-            sendingBuffer = Enctypex.XorEncoding(sendingBuffer,1);
-            sendingBuffer += @"\final\";
+           
             session.SendAsync(sendingBuffer);
         }
     }

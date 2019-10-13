@@ -111,7 +111,7 @@ namespace PresenceSearchPlayer.Handler
             {
                 dict.Add("namespaceid", "0");
             }
-            GameSpyUtils.ProessPasswordInRetroSpyWay(dict);
+
         }
         private static string CreateUniquenickInRequest(Dictionary<string, string> dict)
         {
