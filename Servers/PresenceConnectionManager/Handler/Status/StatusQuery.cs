@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PresenceConnectionManager.DatabaseQuery
+namespace PresenceConnectionManager.Handler.Status
 {
     public class StatusQuery
     {

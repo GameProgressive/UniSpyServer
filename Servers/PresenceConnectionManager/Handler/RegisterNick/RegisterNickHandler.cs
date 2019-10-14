@@ -1,12 +1,11 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
-using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.RegisterNick;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.RegisterNick
 {
     public class RegisterNickHandler
     {

@@ -1,8 +1,6 @@
-﻿using PresenceConnectionManager.Application;
-using PresenceConnectionManager.DatabaseQuery;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.Status
 {
     public class StatusHandler
     {

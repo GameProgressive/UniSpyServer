@@ -2,9 +2,9 @@
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using NetCoreServer;
-using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler;
+using PresenceConnectionManager.Handler.KeepAlive;
+using PresenceConnectionManager.Handler.Login;
 using System;
 using System.Collections.Concurrent;
 using System.Net;

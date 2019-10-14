@@ -1,11 +1,9 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
-using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.UpdatePro
 {
     public class UpdateProHandler
     {

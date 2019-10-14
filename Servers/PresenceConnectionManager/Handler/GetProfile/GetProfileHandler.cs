@@ -1,12 +1,10 @@
 ﻿using GameSpyLib.Common;
-using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Structure;
+using PresenceConnectionManager.GetProfile;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.GetProfile
 {
 
     public class GetProfileHandler

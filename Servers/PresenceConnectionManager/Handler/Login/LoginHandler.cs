@@ -1,14 +1,14 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using PresenceConnectionManager.DatabaseQuery;
 using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Handler.SendBuddies;
 using PresenceConnectionManager.Structure;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.Login
 {
     public class LoginHandler
     {

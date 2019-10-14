@@ -1,10 +1,8 @@
-﻿using PresenceConnectionManager.DatabaseQuery;
-using PresenceConnectionManager.Enumerator;
-using System;
+﻿using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Handler.GetProfile;
 using System.Collections.Generic;
-using System.Text;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.SendBuddies
 {
     public class SendBuddiesHandler
     {

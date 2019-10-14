@@ -1,6 +1,6 @@
 ﻿using PresenceConnectionManager.Enumerator;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.KeepAlive
 {
     public class KAHandler
     {
