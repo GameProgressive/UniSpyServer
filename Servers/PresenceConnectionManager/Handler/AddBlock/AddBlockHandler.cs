@@ -9,7 +9,6 @@ namespace PresenceConnectionManager.Handler
         public static void AddUserToBlockList(GPCMSession session, Dictionary<string,string> recv)
         {
 
-
         }
     }
 }

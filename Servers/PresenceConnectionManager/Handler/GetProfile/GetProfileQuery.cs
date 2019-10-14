@@ -1,5 +1,5 @@
 ﻿using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Structures;
+using PresenceConnectionManager.Structure;
 using System;
 using System.Collections.Generic;
 using System.Text;

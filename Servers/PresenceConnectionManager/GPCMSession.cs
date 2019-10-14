@@ -3,10 +3,11 @@ using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Structures;
+using PresenceConnectionManager.Structure;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using PresenceConnectionManager.Handler;
 
 namespace PresenceConnectionManager
 {

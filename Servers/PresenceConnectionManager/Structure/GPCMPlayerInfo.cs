@@ -1,6 +1,6 @@
 ﻿using PresenceConnectionManager.Enumerator;
 
-namespace PresenceConnectionManager.Structures
+namespace PresenceConnectionManager.Structure
 {
     public class GPCMPlayerInfo
     {

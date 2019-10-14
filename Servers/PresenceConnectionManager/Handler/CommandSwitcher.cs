@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager
+namespace PresenceConnectionManager.Handler
 {
     public class CommandSwitcher
     {
@@ -33,7 +33,7 @@ namespace PresenceConnectionManager
                         DelBuddyHandler.Handle(session, recv);
                         break;
                     case "updateui"://update a user's email
-                        UpdateUiHandler.UpdateUi(session, recv);
+                        UpdateUIHandler.UpdateUI(session, recv);
                         break;
                     case "updatepro"://update a user's profile
                         UpdateProHandler.UpdateUser(session, recv);
