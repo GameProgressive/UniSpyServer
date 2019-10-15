@@ -1,12 +1,10 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
-using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace PresenceSearchPlayer.Handler
+namespace PresenceSearchPlayer.Handler.Valid
 {
     class ValidHandler
     {

@@ -1,11 +1,6 @@
-﻿using GameSpyLib.Common;
-using PresenceSearchPlayer.DatabaseQuery;
-using PresenceSearchPlayer.Enumerator;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace PresenceSearchPlayer.Handler
+namespace PresenceSearchPlayer.Handler.OthersList
 {
     class OthersListHandler
     {

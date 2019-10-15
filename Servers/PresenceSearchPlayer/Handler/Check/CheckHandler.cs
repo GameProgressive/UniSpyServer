@@ -1,9 +1,8 @@
 ﻿using GameSpyLib.Common;
-using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 
-namespace PresenceSearchPlayer.Handler
+namespace PresenceSearchPlayer.Handler.Check
 {
     public class CheckHandler
     {

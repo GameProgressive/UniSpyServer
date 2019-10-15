@@ -2,12 +2,22 @@
 using GameSpyLib.Logging;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler;
+using PresenceSearchPlayer.Handler.Check;
+using PresenceSearchPlayer.Handler.NewUser;
+using PresenceSearchPlayer.Handler.Nick;
+using PresenceSearchPlayer.Handler.Others;
+using PresenceSearchPlayer.Handler.OthersList;
+using PresenceSearchPlayer.Handler.Pmatch;
+using PresenceSearchPlayer.Handler.Search;
+using PresenceSearchPlayer.Handler.SearchUnique;
+using PresenceSearchPlayer.Handler.UniqueSearch;
+using PresenceSearchPlayer.Handler.Valid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PresenceSearchPlayer
+namespace PresenceSearchPlayer.Handler
 {
     public class CommandSwitcher
     {

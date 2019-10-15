@@ -1,10 +1,8 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using PresenceSearchPlayer.Enumerator;
+using PresenceSearchPlayer.Handler;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PresenceSearchPlayer
 {

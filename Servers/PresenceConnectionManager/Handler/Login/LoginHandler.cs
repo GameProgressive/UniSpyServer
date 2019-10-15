@@ -90,7 +90,7 @@ namespace PresenceConnectionManager.Handler.Login
 
             SendLoginResponseChallenge(session);
 
-            SDKRevision.Switch(session);
+            SDKRevision.Switch(session,_recv);
         }
 
 

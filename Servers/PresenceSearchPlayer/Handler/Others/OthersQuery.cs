@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PresenceSearchPlayer.DatabaseQuery
+namespace PresenceSearchPlayer.Handler.Others
 {
     public class OthersQuery
     {

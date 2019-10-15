@@ -1,11 +1,8 @@
 ﻿using GameSpyLib.Common;
-using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace PresenceSearchPlayer.Handler
+namespace PresenceSearchPlayer.Handler.UniqueSearch
 {
     class UniqueSearchHandler
     {

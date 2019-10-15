@@ -1,13 +1,11 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
-using PresenceSearchPlayer.DatabaseQuery;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 /////////////////////////Finished/////////////////////////////////
-namespace PresenceSearchPlayer.Handler
+namespace PresenceSearchPlayer.Handler.Nick
 {
 
     /// <summary>

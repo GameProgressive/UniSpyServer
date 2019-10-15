@@ -2,7 +2,7 @@
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 
-namespace PresenceSearchPlayer.Handler
+namespace PresenceSearchPlayer.Handler.SearchUnique
 {
     public class SearchUniqueHandler
     {

@@ -60,21 +60,21 @@ namespace PresenceConnectionManager.Handler.SDKExtendFeature
         /// <summary>
         /// Tell server send back extra information according to the number of  sdkrevision
         /// </summary>
-        public static void Switch(GPCMSession session)
+        public static void Switch(GPCMSession session,Dictionary<string,string> recv)
         {
             switch (Convert.ToInt32(session.PlayerInfo.SDKRevision))
             {
                 case Type1:
-                    SendBuddiesHandler.HandleSendBuddies(session);
+                    SendBuddiesHandler.HandleSendBuddies(session,recv);
                     break;
                 case Type2:
-                    SendBuddiesHandler.HandleSendBuddies(session);
+                    SendBuddiesHandler.HandleSendBuddies(session, recv);
                     break;
                 case Type3:
-                    SendBuddiesHandler.HandleSendBuddies(session);
+                    SendBuddiesHandler.HandleSendBuddies(session, recv);
                     break;
                 case Type4:
-                    SendBuddiesHandler.HandleSendBuddies(session);
+                    SendBuddiesHandler.HandleSendBuddies(session, recv);
                     break;
             }
         }
