@@ -1,9 +1,6 @@
-﻿using System;
+﻿using GameSpyLib.Logging;
+using System;
 using System.Runtime.InteropServices;
-using System.IO;
-using GameSpyLib.Logging;
-using PresenceConnectionManager;
-using GameSpyLib.XMLConfig;
 
 namespace PresenceConnectionManager.Application
 {

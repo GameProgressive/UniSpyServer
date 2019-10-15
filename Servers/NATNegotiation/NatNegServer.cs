@@ -1,14 +1,11 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Logging;
+using GameSpyLib.Network;
 using NATNegotiation.Enumerator;
 using NATNegotiation.Handler;
 using NATNegotiation.Structure;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using GameSpyLib.Network;
-using System.Net.Sockets;
-using System.Text;
 
 namespace NATNegotiation
 {
@@ -28,7 +25,7 @@ namespace NATNegotiation
 
         protected override void OnReceived(EndPoint endpoint, byte[] message)
         {
-            
+
             BasePacket basePacket = new BasePacket(message);
             try
             {

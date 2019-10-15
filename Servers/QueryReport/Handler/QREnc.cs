@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace QueryReport.Handler
+﻿namespace QueryReport.Handler
 {
     public class QREnc
     {
@@ -63,9 +59,9 @@ namespace QueryReport.Handler
                 enctmp[i] = (byte)i;
             }
             a = 0; b = 0;
-            for (i = 0;src[i]!=0; i++)
+            for (i = 0; src[i] != 0; i++)
             {
-                a += (byte)(src[i] +1);
+                a += (byte)(src[i] + 1);
                 x = enctmp[a];
                 b += x;
                 y = enctmp[b];
@@ -74,7 +70,7 @@ namespace QueryReport.Handler
                 tmp[i] = (byte)(src[i] ^ enctmp[(x + y) & 0xff]);
 
             }
-            for (size = i; size % 3!=0; size++)
+            for (size = i; size % 3 != 0; size++)
             {
                 tmp[size] = 0;
             }
@@ -93,7 +89,7 @@ namespace QueryReport.Handler
                 }
             }
 
-            
+
             for (i = 0; i < size; i += 3)
             {
                 x = tmp[i];

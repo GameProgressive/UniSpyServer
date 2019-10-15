@@ -1,8 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.Auth
 {
@@ -10,8 +6,8 @@ namespace StatsAndTracking.Handler.Auth
     {
         public static void SendSessionKey(GstatsSession session, Dictionary<string, string> dict)
         {
-            string sendingBuffer = string.Format(@"\sesskey\{0}",dict["response"]);
-           
+            string sendingBuffer = string.Format(@"\sesskey\{0}", dict["response"]);
+
             session.SendAsync(sendingBuffer);
         }
     }

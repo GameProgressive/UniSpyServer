@@ -1,7 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
-using PresenceSearchPlayer.Enumerator;
-using PresenceSearchPlayer.Handler;
+﻿using GameSpyLib.Logging;
 using PresenceSearchPlayer.Handler.Check;
 using PresenceSearchPlayer.Handler.NewUser;
 using PresenceSearchPlayer.Handler.Nick;
@@ -15,7 +12,6 @@ using PresenceSearchPlayer.Handler.Valid;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace PresenceSearchPlayer.Handler
 {

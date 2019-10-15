@@ -17,13 +17,13 @@ namespace QueryReport.Handler.Challenge
             };
 
 
-        public static void ServerChallengeResponse(QRServer server,EndPoint endPoint ,byte[] buffer)
+        public static void ServerChallengeResponse(QRServer server, EndPoint endPoint, byte[] buffer)
         {
-           
+
             byte[] challenge = new byte[90];
             byte[] instancekey = new byte[4];
 
-            Array.Copy(buffer, 1, instancekey, 0, 4);         
+            Array.Copy(buffer, 1, instancekey, 0, 4);
 
             byte[] sendingbuffer = new byte[7];
             sendingbuffer[0] = QR.QRMagic1;
@@ -32,7 +32,7 @@ namespace QueryReport.Handler.Challenge
             Array.Copy(instancekey, 0, sendingbuffer, 3, 4);
 
             server.SendAsync(endPoint, sendingbuffer);
-            
+
             LogWriter.Log.Write("[QR] No impliment function for ServerChallengeResponse!", LogLevel.Debug);
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PresenceConnectionManager.Enumerator
+﻿namespace PresenceConnectionManager.Enumerator
 {
     public enum GPEnum : uint
     {
@@ -198,7 +194,7 @@ namespace PresenceConnectionManager.Enumerator
         NewStatusInfoSupported = 0xC00,
         NewStatusInfoNotSupported = 0xC01,
 
-            //BM status
+        //BM status
         BmMessage = 1,
         BmRquest = 2,
         BmReply = 3, // only used on the backend

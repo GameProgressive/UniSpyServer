@@ -17,7 +17,7 @@ namespace StatsAndTracking
         }
 
         protected override void OnReceived(string message)
-        {           
+        {
             if (message[0] != '\\')
             {
                 return;
@@ -28,7 +28,7 @@ namespace StatsAndTracking
             CommandSwitcher.Switch(this, dict);
         }
 
-        
+
         protected override void OnConnected()
         {
             string challenge = SendServerChallenge();
@@ -42,7 +42,7 @@ namespace StatsAndTracking
                 ToLog("[Spam] client spam we ignored!");
                 return;
             }
-            string message=Encoding.UTF8.GetString(buffer, 0, (int)size);
+            string message = Encoding.UTF8.GetString(buffer, 0, (int)size);
             message = message.Replace(@"\final\", "");
             string decodedmsg = Enctypex.XorEncoding(message, 1);
             if (LogWriter.Log.DebugSockets)
@@ -68,7 +68,7 @@ namespace StatsAndTracking
 
             string sendingBuffer2 = Enctypex.XorEncoding(sendingBuffer, 1);
             sendingBuffer2 += @"\final\";
-            byte[] sendingBuffer3 =Encoding.UTF8.GetBytes(sendingBuffer2);
+            byte[] sendingBuffer3 = Encoding.UTF8.GetBytes(sendingBuffer2);
 
             bool returnValue = base.SendAsync(sendingBuffer3, offset, sendingBuffer3.Length);
 

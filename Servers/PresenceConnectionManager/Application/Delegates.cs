@@ -1,7 +1,4 @@
-﻿using PresenceConnectionManager;
-
-
-namespace PresenceConnectionManager.Application
+﻿namespace PresenceConnectionManager.Application
 {
     //public delegate void GPCMConnectionUpdate(GPCMClient client);
     //public delegate void GPCMConnectionClosed(GPCMClient client);

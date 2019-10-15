@@ -2,7 +2,7 @@
 
 namespace Chat
 {
-    public class ChatSession:TemplateTcpSession
+    public class ChatSession : TemplateTcpSession
     {
         public ChatSession(TemplateTcpServer server) : base(server)
         {
@@ -14,7 +14,7 @@ namespace Chat
             //Stream.SendAsync("PING capricorn.goes.here :123456");
             //ChatHandler.Crypt(this, message);
         }
-       
+
     }
 }
 

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.UniqueSearch
 {
@@ -12,7 +10,7 @@ namespace PresenceSearchPlayer.Handler.UniqueSearch
                  "WHERE uniquenick=@P0 AND namespaceid=@P1",
                 dict["preferrednick"], dict["namespaceid"]);
 
-            if (result==null)
+            if (result == null)
                 return true;
             else
                 return false;

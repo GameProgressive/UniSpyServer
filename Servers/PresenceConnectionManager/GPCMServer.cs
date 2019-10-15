@@ -125,13 +125,13 @@ namespace PresenceConnectionManager
                 PollTimer = new System.Timers.Timer(15000);
                 PollTimer.Elapsed += (s, e) =>
                 {
-                        // Send keep alive to all connected clients
-                        if (LoggedInSession.Count > 0)
+                    // Send keep alive to all connected clients
+                    if (LoggedInSession.Count > 0)
                     {
                         Parallel.ForEach(LoggedInSession.Values, client => KAHandler.SendKeepAlive(client));
                     }
-                        // DisconnectByReason hanging connections
-                        if (InLoginSession.Count > 0)
+                    // DisconnectByReason hanging connections
+                    if (InLoginSession.Count > 0)
                     {
                         Parallel.ForEach(InLoginSession.Values, client => CheckTimeout(client));
                     }
@@ -147,7 +147,7 @@ namespace PresenceConnectionManager
             _disposed = true;
             if (disposingManagedResources)
             {
- 
+
             }
             PollTimer?.Stop();
             PollTimer?.Dispose();
@@ -218,6 +218,6 @@ namespace PresenceConnectionManager
         }
 
     }
-          
+
 
 }

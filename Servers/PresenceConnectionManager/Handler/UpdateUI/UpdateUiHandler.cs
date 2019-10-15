@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.UpdateUI
     {
         public static void UpdateUI(GPCMSession client, Dictionary<string, string> recv)
         {
-            GameSpyUtils.PrintReceivedGPDictToLogger( recv);
+            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
             GameSpyUtils.SendGPError(client, GPErrorCode.General, "This request is not supported yet.");
         }
 

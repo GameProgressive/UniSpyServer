@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PresenceConnectionManager.Handler.SendBuddies
 {
@@ -11,7 +10,7 @@ namespace PresenceConnectionManager.Handler.SendBuddies
         /// </summary>
         /// <param name="profileid"></param>
         /// <returns></returns>
-        public static Dictionary<string, object> GetProfile(uint profileid,uint namespaceid)
+        public static Dictionary<string, object> GetProfile(uint profileid, uint namespaceid)
         {
             //TODO
             var result = GPCMServer.DB.Query(
@@ -50,7 +49,7 @@ namespace PresenceConnectionManager.Handler.SendBuddies
             return (result.Count == 0) ? null : result[0];
 
         }
-                
+
         /// <summary>
         /// 
         /// </summary>

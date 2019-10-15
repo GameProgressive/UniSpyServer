@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer.Handler.Pmatch
                 }
 
             }
-           
+
             //there are two ways to send information back.
 
             //First way: \psr\<profileid>\status\<status>\statuscode\<statuscode>\psrdone\final\

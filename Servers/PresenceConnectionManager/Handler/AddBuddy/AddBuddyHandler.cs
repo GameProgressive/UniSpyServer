@@ -6,9 +6,9 @@ namespace PresenceConnectionManager.Handler.AddBuddy
 {
     public class AddBuddyHandler
     {
-        public static void Addfriends(GPCMSession client,Dictionary<string,string> recv)
+        public static void Addfriends(GPCMSession client, Dictionary<string, string> recv)
         {
-            GameSpyUtils.PrintReceivedGPDictToLogger( recv);
+            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
             GameSpyUtils.SendGPError(client, GPErrorCode.General, "This request is not supported yet.");
         }
     }

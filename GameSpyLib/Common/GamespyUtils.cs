@@ -144,8 +144,8 @@ namespace GameSpyLib.Common
                 dict.Add("passenc", password);
             }
         }
-       
-        public static void PrintReceivedGPDictToLogger( Dictionary<string, string> recv)
+
+        public static void PrintReceivedGPDictToLogger(Dictionary<string, string> recv)
         {
             LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}", recv.Keys.First(), string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray()));
         }

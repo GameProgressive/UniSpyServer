@@ -1,8 +1,6 @@
 ﻿using GameSpyLib.Extensions;
 using NATNegotiation.Enumerator;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NATNegotiation.Structure.Packet
 {
@@ -16,8 +14,8 @@ namespace NATNegotiation.Structure.Packet
         public byte UseGamePort;
         public uint LocalIp;
         public ushort LocalPort;
-        
-        public InitPacket(byte[] data):base(data)
+
+        public InitPacket(byte[] data) : base(data)
         {
             PortType = data[13];//02
             ClientIndex = data[14];//00

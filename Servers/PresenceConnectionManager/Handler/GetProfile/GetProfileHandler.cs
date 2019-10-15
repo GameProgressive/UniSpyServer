@@ -91,13 +91,13 @@ namespace PresenceConnectionManager.Handler.GetProfile
             }
 
             PlayerSexType playerSexType;
-                if (!Enum.TryParse(result["sex"].ToString().ToUpper(), out playerSexType))
-                    if (playerSexType == PlayerSexType.PAT)                    
-                        sendingBuffer += @"\sex\2";                    
-                     if (playerSexType == PlayerSexType.FEMALE)
-                        sendingBuffer += @"\sex\1";
-                     if (playerSexType == PlayerSexType.MALE)
-                        sendingBuffer += @"\sex\0";
+            if (!Enum.TryParse(result["sex"].ToString().ToUpper(), out playerSexType))
+                if (playerSexType == PlayerSexType.PAT)
+                    sendingBuffer += @"\sex\2";
+            if (playerSexType == PlayerSexType.FEMALE)
+                sendingBuffer += @"\sex\1";
+            if (playerSexType == PlayerSexType.MALE)
+                sendingBuffer += @"\sex\0";
 
 
             PublicMasks mask;
@@ -134,10 +134,10 @@ namespace PresenceConnectionManager.Handler.GetProfile
             // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
             string signature = GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex);
             sendingBuffer += @"\sig\" + signature;
-                            
+
 
             session.SendAsync(sendingBuffer);
-            session.PlayerInfo.BuddiesSent=true;
+            session.PlayerInfo.BuddiesSent = true;
         }
 
         private static void IsContainAllKey()

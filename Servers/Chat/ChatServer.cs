@@ -4,11 +4,11 @@ using System.Net;
 
 namespace Chat
 {
-   
+
     public class ChatServer : TemplateTcpServer
     {
         public static DatabaseDriver DB;
-        public ChatServer(string serverName,DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
+        public ChatServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
             DB = databaseDriver;
         }

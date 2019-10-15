@@ -1,11 +1,9 @@
-﻿using System;
-using System.Text;
+﻿using GameSpyLib.Logging;
 using NetCoreServer;
-using GameSpyLib.Logging;
+using System;
 using System.Net;
 using System.Net.Sockets;
-using System.Collections.Generic;
-using GameSpyLib.Common;
+using System.Text;
 
 namespace GameSpyLib.Network
 {
@@ -28,7 +26,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = '['+serverName+']'+ ' ';
+            ServerName = '[' + serverName + ']' + ' ';
             Start();
         }
 
@@ -104,8 +102,8 @@ namespace GameSpyLib.Network
         }
 
         protected virtual void OnReceived(EndPoint endPoint, byte[] message)
-        { 
-        
+        {
+
         }
         /// <summary>
         /// Handle datagram received notification
@@ -148,6 +146,6 @@ namespace GameSpyLib.Network
             string buffer = Encoding.UTF8.GetString(text, 0, text.Length);
             string errorMsg = string.Format("[unknow] {0}", buffer);
             ToLog(errorMsg);
-        }       
+        }
     }
 }

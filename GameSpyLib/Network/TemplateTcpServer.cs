@@ -1,7 +1,7 @@
-﻿using System;
-using System.Net;
+﻿using GameSpyLib.Logging;
 using NetCoreServer;
-using GameSpyLib.Logging;
+using System;
+using System.Net;
 using System.Net.Sockets;
 
 namespace GameSpyLib.Network
@@ -24,7 +24,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateTcpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = '['+serverName+']';
+            ServerName = '[' + serverName + ']';
             Start();
         }
 

@@ -23,7 +23,7 @@ namespace GameSpyLib.Extensions
         {
             byte[] temp = new byte[length];
             Array.Copy(srcBytes, startIndex, temp, 0, length);
-            return temp;           
+            return temp;
         }
     }
 }

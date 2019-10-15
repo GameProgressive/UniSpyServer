@@ -172,7 +172,7 @@ namespace GameSpyLib.Logging
         /// <param name="message">The message to write to the log</param>
         /// <param name="level">The level of the log</param>
         /// <param name="items">Extra items to be appended to the message</param>
-        public void Write(LogLevel level,string message, params object[] items)
+        public void Write(LogLevel level, string message, params object[] items)
         {
             if (level < MiniumLogLevel)
                 return;
@@ -196,7 +196,7 @@ namespace GameSpyLib.Logging
         {
             do
             {
-                Write(LogLevel.Error,"{0} from {3} (HRESULT: {1})\n{2}", ex.Message, ex.HResult, ex.StackTrace, ex.Source);
+                Write(LogLevel.Error, "{0} from {3} (HRESULT: {1})\n{2}", ex.Message, ex.HResult, ex.StackTrace, ex.Source);
                 ex = ex.InnerException;
             } while (ex != null);
         }
@@ -219,13 +219,13 @@ namespace GameSpyLib.Logging
         {
             if (_disposed) return;
             _disposed = true;
-            if(disposingManageResource)
+            if (disposingManageResource)
             {
-                
-            }     
-                _logStream?.Close();
-                _logStream?.Dispose();
-                _truncateTimer?.Dispose();
+
+            }
+            _logStream?.Close();
+            _logStream?.Dispose();
+            _truncateTimer?.Dispose();
         }
     }
 }

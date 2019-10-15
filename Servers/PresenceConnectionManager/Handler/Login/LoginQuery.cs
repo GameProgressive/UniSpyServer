@@ -1,7 +1,5 @@
-﻿using PresenceConnectionManager.Structure;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PresenceConnectionManager.Handler.Login
 {
@@ -57,7 +55,7 @@ namespace PresenceConnectionManager.Handler.Login
         public static void UpdateStatus(long lastOnlineTime, System.Net.IPAddress address, uint profileId, uint statuscode)
         {
             GPCMServer.DB.Execute("UPDATE profiles SET statuscode=@P0 WHERE profileid=@P1 ", statuscode, profileId);
-            uint userid = Convert.ToUInt32(GPCMServer.DB.Query("SELECT userid FROM profiles WHERE profileid= @P0",profileId)[0]);
+            uint userid = Convert.ToUInt32(GPCMServer.DB.Query("SELECT userid FROM profiles WHERE profileid= @P0", profileId)[0]);
             GPCMServer.DB.Execute("UPDATE users SET lastip=@P0, lastonline=@P1 WHERE userid = @P2", address, lastOnlineTime, userid);
         }
 

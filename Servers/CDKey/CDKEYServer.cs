@@ -1,18 +1,17 @@
-﻿using GameSpyLib.Common;
+﻿using CDKey.Handler;
+using GameSpyLib.Common;
 using GameSpyLib.Database;
 using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
-using System;
+using GameSpyLib.Network;
 using System.Collections.Generic;
 using System.Net;
-using GameSpyLib.Network;
 
 namespace CDKey
 {
     public class CDKeyServer : TemplateUdpServer
     {
         public static DatabaseDriver DB;
-        public CDKeyServer(string serverName,DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
+        public CDKeyServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
             DB = databaseDriver;
         }
@@ -43,8 +42,8 @@ namespace CDKey
             if (_disposed) return;
             _disposed = true;
             if (disposingManagedResources)
-            { 
-            
+            {
+
             }
             DB?.Close();
             DB?.Dispose();

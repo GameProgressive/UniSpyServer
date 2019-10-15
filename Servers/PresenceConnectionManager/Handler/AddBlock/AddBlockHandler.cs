@@ -4,7 +4,7 @@ namespace PresenceConnectionManager.Handler.AddBlock
 {
     public class AddBlockHandler
     {
-        public static void AddUserToBlockList(GPCMSession session, Dictionary<string,string> recv)
+        public static void AddUserToBlockList(GPCMSession session, Dictionary<string, string> recv)
         {
 
         }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using System.IO;
-using GameSpyLib.Logging;
-using PresenceConnectionManager;
-using GameSpyLib.XMLConfig;
+﻿using GameSpyLib.Logging;
+using System;
 
 namespace PresenceConnectionManager.Application
 {
@@ -28,7 +24,7 @@ namespace PresenceConnectionManager.Application
         ///<param name="bool_InitPathArg">argument for Main()</param>
         static void Main(string[] args)
         {
-           // if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
+            // if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
 
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;

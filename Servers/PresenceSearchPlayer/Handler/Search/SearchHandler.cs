@@ -30,7 +30,7 @@ namespace PresenceSearchPlayer.Handler.Search
                 }
                 else
                 {
-                    client.Send(sendingBuffer);                  
+                    client.Send(sendingBuffer);
                 }
                 return;
             }
@@ -51,7 +51,7 @@ namespace PresenceSearchPlayer.Handler.Search
                 return;
             }
 
-            if(dict.ContainsKey("email"))
+            if (dict.ContainsKey("email"))
             {
                 error = SearchWithEmail(dict, out sendingBuffer);
                 if (error != GPErrorCode.NoError)
@@ -109,7 +109,7 @@ namespace PresenceSearchPlayer.Handler.Search
             if (dict.ContainsKey("uniquenick") && dict["uniquenick"] != "0")
             {
                 //TODO
-                List<Dictionary<string, object>> temp =SearchQuery.GetProfileFromUniquenick(dict);
+                List<Dictionary<string, object>> temp = SearchQuery.GetProfileFromUniquenick(dict);
                 if (temp.Count < 1)
                 {
                     sendingBuffer = "No math found!";
@@ -134,13 +134,13 @@ namespace PresenceSearchPlayer.Handler.Search
             if (dict["email"] != "0" && dict["nick"] != "0'")
             {
                 var temp = SearchQuery.GetProfileFromNickEmail(dict);
-                
-                if (temp==null)
+
+                if (temp == null)
                 {
                     sendingBuffer = "No math found!";
                     return GPErrorCode.DatabaseError;
                 }
-                
+
                 sendingBuffer =
                string.Format(@"\bsr\{0}\nick\{1}\uniquenick\{2}\namespaceid\{3}\firstname\{4}\lastname\{5}\email\{6}\bsrdone\\final\",
                temp[0]["profileid"], temp[0]["nick"], temp[0]["uniquenick"], temp[0]["namespaceid"], temp[0]["firstname"], temp[0]["lastname"], temp[0]["email"]);
@@ -156,7 +156,7 @@ namespace PresenceSearchPlayer.Handler.Search
         /// <param name="dict"></param>
         /// <param name="sendingBuffer"></param>
         /// <returns></returns>
-        private static GPErrorCode SearchWithEmail( Dictionary<string, string> dict, out string sendingBuffer)
+        private static GPErrorCode SearchWithEmail(Dictionary<string, string> dict, out string sendingBuffer)
         {
             if (dict["email"] != "0")
             {
@@ -171,7 +171,7 @@ namespace PresenceSearchPlayer.Handler.Search
                     if (dict.ContainsKey("skip"))
                     {
                         int currentIndex = System.Convert.ToInt32(dict["skip"]);
-                        if (currentIndex < temp.Count-1)
+                        if (currentIndex < temp.Count - 1)
                         {
                             sendingBuffer = string.Format(
                        @"\bsr\{0}\nick\{1}\uniquenick\{2}\namespaceid\{3}\firstname\{4}\lastname\{5}\email\{6}\bsrdone\\more\final\",

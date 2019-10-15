@@ -1,20 +1,17 @@
 ﻿using GameSpyLib.Logging;
-using QueryReport.Handler;
 using QueryReport.Handler.Avaliable;
 using QueryReport.Handler.Challenge;
 using QueryReport.Handler.HeartBeat;
 using QueryReport.Handler.KeepAlive;
 using QueryReport.Structure;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace QueryReport
 {
     public class CommandSwitcher
     {
-        public static void Switch(QRServer server,EndPoint endPoint, byte[] message)
+        public static void Switch(QRServer server, EndPoint endPoint, byte[] message)
         {
             try
             {

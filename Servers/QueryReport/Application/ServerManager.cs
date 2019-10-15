@@ -1,9 +1,7 @@
-﻿using System;
-using System.Net;
-using GameSpyLib.Database;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
-using GameSpyLib.Common;
+using System.Net;
 namespace QueryReport
 {
     /// <summary>

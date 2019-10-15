@@ -161,7 +161,7 @@ namespace PresenceSearchPlayer.Enumerator
         TransferDone,            // ***
         TransferCancelled,       // ***
         TransferLostConnection, // ***
-       TransferError,           // ***
+        TransferError,           // ***
         TransferThrottle,  // arg->num == Bps
         FileBegin,
         FileProgress,  // arg->num == numBytes

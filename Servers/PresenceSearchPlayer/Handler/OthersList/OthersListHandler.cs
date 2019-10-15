@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.OthersList
             foreach (string pid in opids)
             {
                 List<Dictionary<string, object>> temp = OthersListQuery.GetOtherBuddyList(dict, pid);
-                if (temp==null)
+                if (temp == null)
                 {
                     continue;
                 }

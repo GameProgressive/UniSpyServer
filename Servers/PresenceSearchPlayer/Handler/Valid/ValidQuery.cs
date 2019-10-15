@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.Valid
 {
@@ -11,10 +9,10 @@ namespace PresenceSearchPlayer.Handler.Valid
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public static bool IsEmailValid(Dictionary<string,string> dict)
+        public static bool IsEmailValid(Dictionary<string, string> dict)
         {
-            var result =  GPSPServer.DB.Query("SELECT userid FROM users WHERE `email`=@P0", dict["email"]);
-             return (result.Count == 0) ? false : true;
+            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE `email`=@P0", dict["email"]);
+            return (result.Count == 0) ? false : true;
         }
     }
 }

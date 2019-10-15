@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Xml.Serialization;
 using System.IO;
+using System.Xml.Serialization;
 
 namespace GameSpyLib.XMLConfig
 {
@@ -15,7 +15,7 @@ namespace GameSpyLib.XMLConfig
         {
             // Load XML file
             {
-                
+
                 FileStream fstream = File.OpenRead(@"RetroSpyServer.xml");
                 //FileStream fstream = new FileStream(fullpath, FileMode.Open,FileAccess.Read,FileShare.Read);
 

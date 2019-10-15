@@ -1,10 +1,8 @@
-﻿using System;
-using System.Net;
-using GameSpyLib.Common;
-using GameSpyLib.Database;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using ServerBrowser;
+using System.Net;
 
 namespace PresenceSearchPlayer
 {

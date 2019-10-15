@@ -1,5 +1,5 @@
-﻿using System.Data.SQLite;
-using System.Data.Common;
+﻿using System.Data.Common;
+using System.Data.SQLite;
 
 namespace GameSpyLib.Database
 {

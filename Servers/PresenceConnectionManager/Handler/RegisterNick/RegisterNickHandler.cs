@@ -14,34 +14,34 @@ namespace PresenceConnectionManager.Handler.RegisterNick
         /// </summary>
         /// <param name="client"></param>
         /// <param name="dict"></param>
-        public static void RegisterNick(GPCMSession client,Dictionary<string,string> dict)
+        public static void RegisterNick(GPCMSession client, Dictionary<string, string> dict)
         {
             GPErrorCode error = IsContainAllKeys(dict);
-            if(error!=GPErrorCode.NoError)
+            if (error != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client,error,"Parsing error");
+                GameSpyUtils.SendGPError(client, error, "Parsing error");
                 return;
             }
             string sendingBuffer;
-            
+
             try
             {
-                 RegisterNickQuery.UpdateUniquenick(dict);              
-                    sendingBuffer = @"\rn\final\";
-                    client.Send(sendingBuffer);              
-            } 
+                RegisterNickQuery.UpdateUniquenick(dict);
+                sendingBuffer = @"\rn\final\";
+                client.Send(sendingBuffer);
+            }
             catch (Exception e)
             {
                 LogWriter.Log.WriteException(e);
             }
-           
-          
+
+
 
         }
-        public static GPErrorCode IsContainAllKeys(Dictionary<string,string> dict)
+        public static GPErrorCode IsContainAllKeys(Dictionary<string, string> dict)
         {
             if (!dict.ContainsKey("sesskey"))
-            { 
+            {
                 return GPErrorCode.Parse;
             }
             if (!dict.ContainsKey("uniquenick"))

@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.AuthP
 {
     public class AuthPHandler
     {
-        public static void AuthPlayer(GstatsSession session,Dictionary<string,string> dict)
+        public static void AuthPlayer(GstatsSession session, Dictionary<string, string> dict)
         {
-          
+
         }
     }
 }

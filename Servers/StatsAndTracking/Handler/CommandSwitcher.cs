@@ -1,11 +1,9 @@
 ﻿using GameSpyLib.Logging;
-using StatsAndTracking.Handler;
 using StatsAndTracking.Handler.Auth;
 using StatsAndTracking.Handler.AuthP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace StatsAndTracking.Handler
 {

@@ -1,7 +1,4 @@
-﻿using PresenceSearchPlayer;
-
-
-namespace PresenceSearchPlayer
+﻿namespace PresenceSearchPlayer
 {
     public delegate void GPSPConnectionClosed(GPSPSession session);
 }

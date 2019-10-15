@@ -1,7 +1,5 @@
 ﻿using GameSpyLib.Extensions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NATNegotiation.Structure.Packet
 {
@@ -34,10 +32,10 @@ namespace NATNegotiation.Structure.Packet
             BitConverter.GetBytes(RemoteIP).CopyTo(TempBytes, BasePacketSize);
             BitConverter.GetBytes(RemotePort).CopyTo(TempBytes, BasePacketSize + 4);
 
-            TempBytes[BasePacketSize+5] = GotYourData;
+            TempBytes[BasePacketSize + 5] = GotYourData;
             TempBytes[BasePacketSize + 6] = Finished;
             return TempBytes;
 
         }
-        }
+    }
 }

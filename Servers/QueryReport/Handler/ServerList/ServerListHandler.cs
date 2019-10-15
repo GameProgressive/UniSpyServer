@@ -1,9 +1,7 @@
 ﻿using GameSpyLib.Logging;
 using QueryReport.DedicatedServerData;
-using QueryReport.Handler.ServerList;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace QueryReport.Handler.ServerList
 {
@@ -28,7 +26,7 @@ namespace QueryReport.Handler.ServerList
                 {
                     if (gameServer.LastPing < DateTime.Now - timeSpan)
                     {
-                        LogWriter.Log.Write("Removing Server for Expired Ping: " + key,LogLevel.Info);
+                        LogWriter.Log.Write("Removing Server for Expired Ping: " + key, LogLevel.Info);
                         if (QRServer.ServersList.TryRemove(key, out gameServer))
                             ServersToRemove.Add(gameServer);
                         else

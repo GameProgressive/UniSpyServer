@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ServerBrowser.Structure
+﻿namespace ServerBrowser.Structure
 {
     public class SBRequest
     {

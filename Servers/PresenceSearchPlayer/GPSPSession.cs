@@ -14,7 +14,7 @@ namespace PresenceSearchPlayer
         }
 
         protected override void OnReceived(string message)
-        {            
+        {
             message = RequstFormatConversion(message);
 
             if (message[0] != '\\')

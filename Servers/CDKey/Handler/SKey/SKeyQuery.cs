@@ -1,9 +1,6 @@
-﻿
-using GameSpyLib.Database;
-
-namespace CDKey.Handler.SKey
+﻿namespace CDKey.Handler.SKey
 {
-    public class CDKeyDBQuery 
+    public class CDKeyDBQuery
     {
 
 

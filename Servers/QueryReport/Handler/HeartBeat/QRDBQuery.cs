@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Database;
-using QueryReport.DedicatedServerData;
+﻿using QueryReport.DedicatedServerData;
 using System;
 
 namespace QueryReport.Handler.HeartBeat

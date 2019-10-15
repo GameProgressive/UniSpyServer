@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.IO;
-using System.Net;
-using System.Threading;
+﻿using GameSpyLib.Database;
 using GameSpyLib.Network;
-using GameSpyLib.Logging;
-using GameSpyLib.Database;
+using System.Net;
 
 namespace ServerBrowser
 {
@@ -15,7 +10,7 @@ namespace ServerBrowser
     /// </summary>
     public class SBServer : TemplateTcpServer
     {
-       
+
         public static DatabaseDriver DB;
         public SBServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
@@ -28,8 +23,8 @@ namespace ServerBrowser
             if (_disposed) return;
             _disposed = true;
             if (disposingManagedResources)
-            { 
-            
+            {
+
             }
             DB.Close();
             DB.Dispose();

@@ -1,10 +1,8 @@
-﻿using System;
-using System.Net;
-using GameSpyLib.Common;
-using GameSpyLib.Database;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using StatsAndTracking;
+using System.Net;
 
 namespace PresenceSearchPlayer
 {
@@ -38,7 +36,7 @@ namespace PresenceSearchPlayer
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":
-                Server = new GStatsServer(cfg.Name, databaseDriver,IPAddress.Parse(cfg.Hostname), cfg.Port);
+                Server = new GStatsServer(cfg.Name, databaseDriver, IPAddress.Parse(cfg.Hostname), cfg.Port);
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }

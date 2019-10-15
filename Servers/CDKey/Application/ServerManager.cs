@@ -1,10 +1,8 @@
-﻿using System;
-using System.Net;
-using CDKey;
+﻿using CDKey;
 using GameSpyLib.Common;
-using GameSpyLib.Database;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
+using System.Net;
 
 
 namespace PresenceConnectionManager
@@ -37,7 +35,7 @@ namespace PresenceConnectionManager
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":
-                Server = new CDKeyServer(cfg.Name, databaseDriver,IPAddress.Parse(cfg.Hostname), cfg.Port);
+                Server = new CDKeyServer(cfg.Name, databaseDriver, IPAddress.Parse(cfg.Hostname), cfg.Port);
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }

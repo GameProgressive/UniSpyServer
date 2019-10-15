@@ -87,16 +87,16 @@
         /// </summary>
         Banned,
     };
-	
-	/// <summary>
-	/// This enumerator contains the masks used to hide certain informations.
+
+    /// <summary>
+    /// This enumerator contains the masks used to hide certain informations.
     /// 
     /// The public mask works by ORing this bytes.
     /// 
     /// If the MASK_HOMEPAGE is ORed with MASK_ZIPCODE both the Homepage
     /// and the Zipcode will be showed to the user.
-	/// </summary>
-    public enum PublicMasks  : uint
+    /// </summary>
+    public enum PublicMasks : uint
     {
         /// <summary>
         /// Show the essential informations for getting the profile info

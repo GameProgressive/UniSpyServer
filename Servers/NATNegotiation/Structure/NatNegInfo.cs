@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NATNegotiation.Structure
+﻿namespace NATNegotiation.Structure
 {
     public static class NatNegInfo
     {
@@ -18,7 +14,7 @@ namespace NATNegotiation.Structure
         public static int FinishedErrorDeadBearPartner = 1;
 
         public static int FinishedErrorInitPacketsTimeOut = 2;
-        
+
         public static int PreInitRetryTime = 500;
 
         public static int PreInitRetryCount = 10;

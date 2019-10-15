@@ -26,16 +26,16 @@ namespace PresenceSearchPlayer.Handler.Others
             }
             if (temp.Count == 1)
             {
-                sendingbuffer = string.Format(@"\others\o\nick\{0}\uniquenick\{1}\first\{2}\last\{3}\email\{4}\odone\final\",temp[0]["nick"],temp[0]["uniquenick"],temp[0]["firstname"],temp[0]["lastname"],temp[0]["email"]);
+                sendingbuffer = string.Format(@"\others\o\nick\{0}\uniquenick\{1}\first\{2}\last\{3}\email\{4}\odone\final\", temp[0]["nick"], temp[0]["uniquenick"], temp[0]["firstname"], temp[0]["lastname"], temp[0]["email"]);
                 session.SendAsync(sendingbuffer);
                 return;
             }
-            if(temp.Count>1)
+            if (temp.Count > 1)
             {
-                sendingbuffer=@"\others\";
+                sendingbuffer = @"\others\";
                 foreach (Dictionary<string, object> info in temp)
                 {
-                    sendingbuffer += string.Format(@"o\nick\{0}\uniquenick\{1}\first\{1}\last\{2}\email\{3}\",info["nick"],info["uniquenick"],info["firstname"],info["lastname"],info["email"]);
+                    sendingbuffer += string.Format(@"o\nick\{0}\uniquenick\{1}\first\{1}\last\{2}\email\{3}\", info["nick"], info["uniquenick"], info["firstname"], info["lastname"], info["email"]);
                 }
                 session.SendAsync(sendingbuffer);
                 return;

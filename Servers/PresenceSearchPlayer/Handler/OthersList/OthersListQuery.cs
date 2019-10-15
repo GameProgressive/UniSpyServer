@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.OthersList
 {
@@ -10,7 +8,7 @@ namespace PresenceSearchPlayer.Handler.OthersList
         {
             var result = GPSPServer.DB.Query("SELECT profileid,uniquenick FROM namespace WHERE profileid = @P0 AND namespaceid =@P1 AND gamename=@P2 ", pid, dict["namespaceid"], dict["gamename"]);
 
-           return (result.Count == 0) ? null : result;
+            return (result.Count == 0) ? null : result;
         }
 
     }

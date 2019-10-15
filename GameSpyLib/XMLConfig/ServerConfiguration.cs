@@ -9,7 +9,7 @@ namespace GameSpyLib.XMLConfig
 
         public string Hostname;
 
-       //public int MaxConnections;
+        //public int MaxConnections;
 
         public int Port;
 

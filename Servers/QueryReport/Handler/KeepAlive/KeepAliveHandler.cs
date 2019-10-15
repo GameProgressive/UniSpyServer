@@ -7,7 +7,7 @@ namespace QueryReport.Handler.KeepAlive
 {
     public class KeepAliveHandler
     {
-        public static void KeepAliveResponse(QRServer server,EndPoint endPoint, byte[] buffer)
+        public static void KeepAliveResponse(QRServer server, EndPoint endPoint, byte[] buffer)
         {
             byte[] sendingBuffer = new byte[7];
             sendingBuffer[0] = QR.QRMagic1;

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PresenceConnectionManager.Structure
+﻿namespace PresenceConnectionManager.Structure
 {
     public static class SDKRevision
     {
@@ -17,15 +13,15 @@ namespace PresenceConnectionManager.Structure
             SDKRevisionType3;
 
 
-        public const int SDKRevisionType1 = 
+        public const int SDKRevisionType1 =
             GPINewAuthNotification +
             GPINewRevokeNotification +
             GPINewListRetrevalOnLogin;
 
-        public const int SDKRevisionType2 = 
-            GPINewAuthNotification + 
-            GPINewRevokeNotification + 
-            GPINewStatusNotification + 
+        public const int SDKRevisionType2 =
+            GPINewAuthNotification +
+            GPINewRevokeNotification +
+            GPINewStatusNotification +
             GPINewListRetrevalOnLogin;
 
         public const int SDKRevisionType3 =

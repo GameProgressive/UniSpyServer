@@ -1,8 +1,5 @@
 ﻿using GameSpyLib.Logging;
-using GameSpyLib.XMLConfig;
 using System;
-using System.IO;
-using System.Runtime.InteropServices;
 
 namespace QueryReport
 {
@@ -21,7 +18,7 @@ namespace QueryReport
         /// <param name="args">List of arguments passed to the application</param>
         ///<param name="bool_InitPathArg">argument for Main()</param>
         static void Main(string[] args)
-        {            
+        {
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;
             // Whether accept  args input.

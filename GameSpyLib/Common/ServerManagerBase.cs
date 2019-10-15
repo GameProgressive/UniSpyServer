@@ -2,9 +2,7 @@
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace GameSpyLib.Common
 {
@@ -135,13 +133,13 @@ namespace GameSpyLib.Common
         }
 
         //TODO: 仅当以上 Dispose(bool disposing) 拥有用于释放未托管资源的代码时才替代终结器。
-         ~ServerManagerBase()
+        ~ServerManagerBase()
         {
             // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
             Dispose(false);
         }
 
-        
+
 
     }
 }

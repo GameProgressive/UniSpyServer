@@ -1,5 +1,5 @@
-﻿using System.Xml.Serialization;
-using GameSpyLib.Database;
+﻿using GameSpyLib.Database;
+using System.Xml.Serialization;
 
 namespace GameSpyLib.XMLConfig
 {

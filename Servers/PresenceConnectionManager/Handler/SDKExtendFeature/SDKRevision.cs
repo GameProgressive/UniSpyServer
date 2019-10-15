@@ -1,8 +1,6 @@
-﻿using PresenceConnectionManager.Handler.Login;
-using PresenceConnectionManager.Handler.SendBuddies;
+﻿using PresenceConnectionManager.Handler.SendBuddies;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PresenceConnectionManager.Handler.SDKExtendFeature
 {
@@ -34,15 +32,15 @@ namespace PresenceConnectionManager.Handler.SDKExtendFeature
             Type3;
 
 
-        public const int Type1 = 
+        public const int Type1 =
             GPINewAuthNotification +
             GPINewRevokeNotification +
             GPINewListRetrevalOnLogin;
 
-        public const int Type2 = 
-            GPINewAuthNotification + 
-            GPINewRevokeNotification + 
-            GPINewStatusNotification + 
+        public const int Type2 =
+            GPINewAuthNotification +
+            GPINewRevokeNotification +
+            GPINewStatusNotification +
             GPINewListRetrevalOnLogin;
 
         public const int Type3 =
@@ -60,12 +58,12 @@ namespace PresenceConnectionManager.Handler.SDKExtendFeature
         /// <summary>
         /// Tell server send back extra information according to the number of  sdkrevision
         /// </summary>
-        public static void Switch(GPCMSession session,Dictionary<string,string> recv)
+        public static void Switch(GPCMSession session, Dictionary<string, string> recv)
         {
             switch (Convert.ToInt32(session.PlayerInfo.SDKRevision))
             {
                 case Type1:
-                    SendBuddiesHandler.HandleSendBuddies(session,recv);
+                    SendBuddiesHandler.HandleSendBuddies(session, recv);
                     break;
                 case Type2:
                     SendBuddiesHandler.HandleSendBuddies(session, recv);

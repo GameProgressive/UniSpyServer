@@ -1,7 +1,5 @@
-﻿using GameSpyLib.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PresenceSearchPlayer.Handler.NewUser
 {
@@ -57,7 +55,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
         /// <param name="dict"></param>
         /// <returns></returns>
         public static int CreateUserOnTableUsers(Dictionary<string, string> dict)
-        { 
+        {
             int userid;
             var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", dict["email"]);
             if (result.Count == 0)
@@ -85,7 +83,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
             int profileid;
             //we check is there exit a profile
             var result = GPSPServer.DB.Query("SELECT profiles.profileid FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE users.userid = @P0 AND profiles.nick=@P1", userid, dict["nick"]);
-             
+
             if (result.Count == 0)
             {
                 //create profile
@@ -93,7 +91,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
                 //get the profileid
                 result = GPSPServer.DB.Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid);
                 profileid = Convert.ToInt32(result[0]["profileid"]);
-                
+
 
             }
             else//if the profile is not exist we create one   
@@ -107,13 +105,13 @@ namespace PresenceSearchPlayer.Handler.NewUser
         public static bool CreateSubprofileOnTableNamespace(Dictionary<string, string> dict, int profileid)
         {
             var result = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1", profileid, dict["namespaceid"]);
-            if (result .Count==0)
+            if (result.Count == 0)
             {
                 GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick) VALUES (@P0,@P1,@P2)", profileid, dict["namespaceid"], dict["uniquenick"]);
                 result = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 AND uniquenick = @P2", profileid, dict["namespaceid"], dict["uniquenick"]);
                 UpdateOtherInfo((uint)result[0]["id"], dict);
                 //return profileid.
-                return true;                
+                return true;
             }
             else
             {
@@ -145,7 +143,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
             {
                 GPSPServer.DB.Execute("UPDATE namespace SET port = @P0 WHERE id = @P1", dict["port"], id);
             }
-            if(dict.ContainsKey("cdkeyenc"))
+            if (dict.ContainsKey("cdkeyenc"))
             {
                 GPSPServer.DB.Execute("UPDATE namepace SET cdkeyenc = @P0 WHERE id = @P1", dict["cdkeyenc"], id);
             }

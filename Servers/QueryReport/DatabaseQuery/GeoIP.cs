@@ -1,10 +1,9 @@
-﻿using System;
-using System.IO;
-using System.Net;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Logging;
 using MaxMind.GeoIP2;
 using MaxMind.GeoIP2.Responses;
-using QueryReport;
+using System;
+using System.IO;
+using System.Net;
 
 namespace QueryReport
 {

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chat
+﻿namespace Chat
 {
     public class CommandSwitcher
     {
         public static void Switch(ChatSession session)
-        { 
-        
+        {
+
         }
     }
 }

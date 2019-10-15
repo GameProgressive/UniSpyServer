@@ -3,11 +3,11 @@ using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Handler;
 using PresenceConnectionManager.Structure;
 using System;
 using System.Collections.Generic;
 using System.Net;
-using PresenceConnectionManager.Handler;
 
 namespace PresenceConnectionManager
 {
@@ -20,13 +20,13 @@ namespace PresenceConnectionManager
     public class GPCMSession : TemplateTcpSession
     {
 
-       
+
         /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
         public bool CompletedLoginProcess { get; set; } = false;
 
-     
+
 
         /// <summary>
         /// Indicates the date and time this connection was created
@@ -46,7 +46,7 @@ namespace PresenceConnectionManager
             PlayerInfo = new GPCMPlayerInfo();
         }
 
- 
+
 
 
 
@@ -92,7 +92,7 @@ namespace PresenceConnectionManager
         private void RemoveGuidAndSessionKeyFromDatabase()
         {
             GPCMServer.DB.Execute("UPDATE namespace SET guid = null WHERE guid = @P1", PlayerInfo.SessionKey, Id);
-            GPCMServer.DB.Execute("UPDATE profiles SET statuscode = @P0, status = '' WHERE profileid = @P1",(uint)PlayerOnlineStatus.Offline,PlayerInfo.Profileid);
+            GPCMServer.DB.Execute("UPDATE profiles SET statuscode = @P0, status = '' WHERE profileid = @P1", (uint)PlayerOnlineStatus.Offline, PlayerInfo.Profileid);
             //whether need to check if there exsit guid and session key ?
             //set the status and status string to default
         }
@@ -104,7 +104,7 @@ namespace PresenceConnectionManager
             {
                 DisconnectByReason(DisconnectReason.ClientChallengeAlreadySent);
                 // Throw the error                
-                ToLog(LogLevel.Warning,"The server challenge has already been sent. Cannot send another login challenge.");
+                ToLog(LogLevel.Warning, "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
             // We send the client the challenge key

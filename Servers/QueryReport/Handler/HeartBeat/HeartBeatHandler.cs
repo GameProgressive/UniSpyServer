@@ -17,9 +17,9 @@ namespace QueryReport.Handler.HeartBeat
         /// </summary>
         /// <param name="server"></param>
         /// <param name="packet"></param>
-        public static void HeartbeatResponse(QRServer server,EndPoint endPoint, byte[] buffer)
+        public static void HeartbeatResponse(QRServer server, EndPoint endPoint, byte[] buffer)
         {
-          
+
             byte[] recvKeys = new byte[4];
             //we copy 4 bytes information prepare for reply 
             Array.Copy(buffer, 1, recvKeys, 0, 4);

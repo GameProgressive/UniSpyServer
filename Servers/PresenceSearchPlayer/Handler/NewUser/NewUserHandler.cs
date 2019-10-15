@@ -84,7 +84,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
             {
                 return GPErrorCode.NewUserBadNick;
             }
-            if (dict.ContainsKey("uniquenick")&&dict["uniquenick"]!="")
+            if (dict.ContainsKey("uniquenick") && dict["uniquenick"] != "")
             {
                 if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
                 {

@@ -1,12 +1,10 @@
 ﻿using GameSpyLib.Extensions;
 using NATNegotiation.Enumerator;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NATNegotiation.Structure.Packet
 {
-    public class ReportPacket:BasePacket
+    public class ReportPacket : BasePacket
     {
         private static readonly int ReportPacketSize = 61;
         public static readonly int PacketSize = BasePacketSize + ReportPacketSize;
@@ -43,7 +41,7 @@ namespace NATNegotiation.Structure.Packet
 
             TempBytes[BasePacketSize] = PortType;
             TempBytes[BasePacketSize + 1] = ClientIndex;
-            TempBytes[BasePacketSize + 2] =NegResult;
+            TempBytes[BasePacketSize + 2] = NegResult;
             BitConverter.GetBytes((int)NatType).CopyTo(TempBytes, BasePacketSize + 3);
             BitConverter.GetBytes((int)NatMappingScheme).CopyTo(TempBytes, BasePacketSize + 7);
             GameName.CopyTo(TempBytes, BasePacketSize + 11);

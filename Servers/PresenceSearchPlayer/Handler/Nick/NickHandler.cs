@@ -20,7 +20,7 @@ namespace PresenceSearchPlayer.Handler.Nick
         /// </summary>
         /// <param name="session"></param>
         /// <param name="_recv"></param>
-        public static void SearchNicks(GPSPSession session,Dictionary<string,string> recv)
+        public static void SearchNicks(GPSPSession session, Dictionary<string, string> recv)
         {
             _recv = recv;
             //Format the password for our database storage

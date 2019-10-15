@@ -26,7 +26,7 @@ namespace PresenceSearchPlayer
             _disposed = true;
             if (disposingManagedResources)
             {
-                
+
             }
             DB?.Dispose();
             DB = null;

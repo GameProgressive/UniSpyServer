@@ -24,7 +24,7 @@ namespace QueryReport.Structure
 
     public class ModInfo
     {
-        public string Name ;
+        public string Name;
         public byte[] Description = new byte[128];
     }
 

@@ -1,12 +1,12 @@
-﻿using System;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using NetCoreServer;
+using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using NetCoreServer;
-using GameSpyLib.Logging;
-using System.Collections.Generic;
-using GameSpyLib.Common;
-using GameSpyLib.Extensions;
-using System.Net;
 
 namespace GameSpyLib.Network
 {
@@ -117,7 +117,7 @@ namespace GameSpyLib.Network
             base.OnConnected();
         }
         protected override void OnDisconnected()
-        {            
+        {
             ToLog($"[Disc] ID:{Id} IP:{Remote.ToString()}");
             base.OnDisconnected();
         }

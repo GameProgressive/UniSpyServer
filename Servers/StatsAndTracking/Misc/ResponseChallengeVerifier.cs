@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace StatsAndTracking.Misc
 {
@@ -9,7 +8,7 @@ namespace StatsAndTracking.Misc
         public static bool VerifyResponse(Dictionary<string, string> dict)
         {
             throw new NotImplementedException();
-        }      
+        }
 
         //        static char* value_for_key(const char* s, const char* key)
         //{

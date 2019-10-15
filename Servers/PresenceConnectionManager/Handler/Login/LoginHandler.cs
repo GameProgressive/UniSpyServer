@@ -39,7 +39,7 @@ namespace PresenceConnectionManager.Handler.Login
         /// to verify as well
         /// </summary>
         public static void ProcessLogin(GPCMSession session, Dictionary<string, string> recv)
-        {           
+        {
             _recv = recv;
 
             IsContainAllKeys();
@@ -90,7 +90,7 @@ namespace PresenceConnectionManager.Handler.Login
 
             SendLoginResponseChallenge(session);
 
-            SDKRevision.Switch(session,_recv);
+            SDKRevision.Switch(session, _recv);
         }
 
 
@@ -160,7 +160,7 @@ namespace PresenceConnectionManager.Handler.Login
             //store sdkrevision
             if (_recv.ContainsKey("sdkrevision"))
             {
-                session.PlayerInfo.SDKRevision =Convert.ToUInt32( _recv["sdkrevision"]);
+                session.PlayerInfo.SDKRevision = Convert.ToUInt32(_recv["sdkrevision"]);
             }
 
         }
@@ -280,20 +280,20 @@ namespace PresenceConnectionManager.Handler.Login
             try
             {
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                string response = GenerateProof(session,session.PlayerInfo.UserChallenge, session.PlayerInfo.ServerChallenge, _queryResult["password"].ToString());
+                string response = GenerateProof(session, session.PlayerInfo.UserChallenge, session.PlayerInfo.ServerChallenge, _queryResult["password"].ToString());
                 if (_recv["response"] == response)
                 {
                     // Create session key
-                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_queryResult["uniquenick"].ToString()+_recv["namespaceid"]);
+                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_queryResult["uniquenick"].ToString() + _recv["namespaceid"]);
 
                     //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
                     //access to the sesskey to find the uniquenick for particular game
                     LoginQuery.UpdateSessionKey(_queryResult, session.PlayerInfo.Namespaceid, session.PlayerInfo.SessionKey, session.Id);
 
-                    string responseProof = GenerateProof(session,session.PlayerInfo.ServerChallenge, session.PlayerInfo.UserChallenge, _queryResult["password"].ToString());
+                    string responseProof = GenerateProof(session, session.PlayerInfo.ServerChallenge, session.PlayerInfo.UserChallenge, _queryResult["password"].ToString());
 
                     // Password is correct
-                    _sendingBuffer = 
+                    _sendingBuffer =
                         string.Format(@"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         session.PlayerInfo.SessionKey,
                         //GenerateProof(Session.ServerChallengeKey, Recv["challenge"], Recv["user"], Recv["authtoken"]?.Length > 0 ? 0 : _partnerid, _originalPassword), // Do this again, Params are reversed!
@@ -323,7 +323,7 @@ namespace PresenceConnectionManager.Handler.Login
                 return;
             }
         }
-       
+
         /// <summary>
         /// Generates an MD5 hash, which is used to verify the sessions login information
         /// </summary>
@@ -335,7 +335,7 @@ namespace PresenceConnectionManager.Handler.Login
         ///     The proof verification MD5 hash string that can be compared to what the session sends,
         ///     to verify that the users entered password matches the specific user data in the database.
         /// </returns>
-        private static string GenerateProof(GPCMSession session,string challenge1, string challenge2, string passwordHash)
+        private static string GenerateProof(GPCMSession session, string challenge1, string challenge2, string passwordHash)
         {
             string realUserData = session.PlayerInfo.UserData;
 

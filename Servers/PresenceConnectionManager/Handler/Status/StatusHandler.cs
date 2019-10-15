@@ -5,21 +5,21 @@ namespace PresenceConnectionManager.Handler.Status
     public class StatusHandler
     {
         static Dictionary<string, string> _recv;
-        public static void UpdateStatus(GPCMSession session,Dictionary<string, string> recv)
+        public static void UpdateStatus(GPCMSession session, Dictionary<string, string> recv)
         {
             //TODO
             _recv = recv;
-            if(!IsContainAllKey())
+            if (!IsContainAllKey())
             { return; }
-            
+
             ushort sessionkey;
             if (!ushort.TryParse(recv["sesskey"], out sessionkey))
                 return; // Invalid session key
             // Are you trying to update another user?
             //you can only update your status.?
             if (sessionkey != session.PlayerInfo.SessionKey)
-                return; 
-            StatusQuery.UpdateStatus(recv,session.Id);
+                return;
+            StatusQuery.UpdateStatus(recv, session.Id);
         }
 
         private static bool IsContainAllKey()

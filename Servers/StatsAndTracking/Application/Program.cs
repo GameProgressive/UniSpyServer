@@ -1,7 +1,5 @@
 ﻿using GameSpyLib.Logging;
-using GameSpyLib.XMLConfig;
 using System;
-using System.IO;
 using System.Runtime.InteropServices;
 
 namespace PresenceSearchPlayer

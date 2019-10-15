@@ -8,7 +8,7 @@ namespace NATNegotiation.Handler
         public static void ConnectResponse(NatNegServer server, EndPoint endpoint, byte[] recv)
         {
             ConnectPacket connectPacket = new ConnectPacket(recv);
-           byte[] sendingBuffer= connectPacket.CreateReplyPacket();
+            byte[] sendingBuffer = connectPacket.CreateReplyPacket();
             server.SendAsync(endpoint, sendingBuffer);
         }
     }

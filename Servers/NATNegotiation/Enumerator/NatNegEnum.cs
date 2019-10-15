@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NATNegotiation.Enumerator
+﻿namespace NATNegotiation.Enumerator
 {
 
     public enum NatPacketType : byte
