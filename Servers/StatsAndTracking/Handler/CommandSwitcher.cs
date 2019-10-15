@@ -1,11 +1,13 @@
 ﻿using GameSpyLib.Logging;
 using StatsAndTracking.Handler;
+using StatsAndTracking.Handler.Auth;
+using StatsAndTracking.Handler.AuthP;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace StatsAndTracking
+namespace StatsAndTracking.Handler
 {
     public class CommandSwitcher
     {
@@ -20,7 +22,7 @@ namespace StatsAndTracking
                         AuthHandler.SendSessionKey(session, recv);
                         break;
                     case "authp":
-                        AuthpHandler.AuthPlayer(session, recv);
+                        AuthPHandler.AuthPlayer(session, recv);
                         break;
                     default:
                         session.UnknownDataRecived(recv);

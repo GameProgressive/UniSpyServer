@@ -2,7 +2,7 @@
 using QueryReport.DedicatedServerData;
 using System;
 
-namespace QueryReport
+namespace QueryReport.Handler.HeartBeat
 {
     public class QRDBQuery
     {

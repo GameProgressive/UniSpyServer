@@ -1,5 +1,9 @@
 ﻿using GameSpyLib.Logging;
 using QueryReport.Handler;
+using QueryReport.Handler.Avaliable;
+using QueryReport.Handler.Challenge;
+using QueryReport.Handler.HeartBeat;
+using QueryReport.Handler.KeepAlive;
 using QueryReport.Structure;
 using System;
 using System.Collections.Generic;

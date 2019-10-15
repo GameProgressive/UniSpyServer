@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Text;
 
-namespace QueryReport.Handler
+namespace QueryReport.Handler.Avaliable
 {
     public enum ServerAvaliability : byte
     {

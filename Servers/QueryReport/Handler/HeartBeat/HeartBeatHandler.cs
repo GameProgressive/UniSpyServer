@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
 
-namespace QueryReport.Handler
+namespace QueryReport.Handler.HeartBeat
 {
     public class HeartBeatHandler
     {

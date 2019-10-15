@@ -3,7 +3,7 @@ using QueryReport.Structure;
 using System;
 using System.Net;
 
-namespace QueryReport.Handler
+namespace QueryReport.Handler.KeepAlive
 {
     public class KeepAliveHandler
     {

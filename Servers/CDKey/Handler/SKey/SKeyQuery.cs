@@ -1,7 +1,7 @@
 ﻿
 using GameSpyLib.Database;
 
-namespace CDKey
+namespace CDKey.Handler.SKey
 {
     public class CDKeyDBQuery 
     {

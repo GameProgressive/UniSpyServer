@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace StatsAndTracking.Handler
+namespace StatsAndTracking.Handler.Auth
 {
     public class AuthHandler
     {
