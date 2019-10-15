@@ -1,12 +1,13 @@
 ﻿using GameSpyLib.Logging;
 using QueryReport.DedicatedServerData;
+using QueryReport.Handler.ServerList;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace QueryReport.Handler
+namespace QueryReport.Handler.ServerList
 {
-    public class RefreshServerList
+    public class ServerListHandler
     {
         /// <summary>
         /// Executed every 5 seconds or so... Removes all servers that haven't
@@ -54,7 +55,7 @@ namespace QueryReport.Handler
                     try
                     {
                         foreach (GameServerData server in ServersToRemove)
-                            QRHandler.DBQuery.UpdateServerOffline(server);
+                            ServerListQuery.UpdateServerOffline(server);
                         transaction.Commit();
                     }
                     catch

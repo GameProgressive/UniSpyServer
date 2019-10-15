@@ -10,14 +10,14 @@ namespace StatsAndTracking
 {
     public class GstatsSession : TemplateTcpSession
     {
+        public string SessionKey { get; protected set; }
         public GstatsSession(TemplateTcpServer server) : base(server)
         {
             DisconnectAfterSend = false;
         }
 
         protected override void OnReceived(string message)
-        {
-           
+        {           
             if (message[0] != '\\')
             {
                 return;

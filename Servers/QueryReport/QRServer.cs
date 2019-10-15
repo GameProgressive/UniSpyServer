@@ -11,6 +11,7 @@ using System.Timers;
 using GameSpyLib.Network;
 using System.Net.Sockets;
 using System.Text;
+using QueryReport.Handler.ServerList;
 
 namespace QueryReport
 {
@@ -50,7 +51,7 @@ namespace QueryReport
 
             // Setup timer. Remove servers who havent ping'd since ServerTTL
             PollTimer = new Timer(5000);
-            PollTimer.Elapsed += (s, e) => RefreshServerList.CheckServers();
+            PollTimer.Elapsed += (s, e) => ServerListHandler.CheckServers();
             PollTimer.Start();
         }
 

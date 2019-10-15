@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.GetProfile;
 using System;
 using System.Collections.Generic;
 
@@ -140,14 +139,7 @@ namespace PresenceConnectionManager.Handler.GetProfile
             session.SendAsync(sendingBuffer);
             session.PlayerInfo.BuddiesSent=true;
         }
-        /// <summary>
-        /// send logged user's profile
-        /// </summary>
-        /// <param name="session"></param>
-        public static void SendProfile(GPCMSession session)
-        { 
-        
-        }
+
         private static void IsContainAllKey()
         {
             if (!_recv.ContainsKey("profileid"))

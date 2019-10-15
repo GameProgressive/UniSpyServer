@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.SendBuddies
     public class SendBuddiesHandler
     {
 
-        public static void HandleSendBuddies(GPCMSession session, Dictionary<string, string> recv)
+        public static void HandleSendBuddies(GPCMSession session)
         {
             // \bdy\<number of friends>\list\<array of profileids>\
             //TODO
@@ -33,11 +33,11 @@ namespace PresenceConnectionManager.Handler.SendBuddies
             session.Send(@"\bdy\1\list\13\final\");
             session.Send(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
             session.Send(@"\bm\100\f\13\msg\1|signed|1");
-            GetProfileHandler.SendProfile(session, recv);
+            GetProfileHandler.SendProfile(session);
 
             return;
 
-            int[] pids = SendBuddiesQuery.GetProfileidArray(recv);
+            int[] pids = SendBuddiesQuery.GetProfileidArray();
             int numBuddies = pids.Length;
             session.PlayerInfo.BuddiesSent = true;
 

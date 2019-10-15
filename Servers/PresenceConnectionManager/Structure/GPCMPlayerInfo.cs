@@ -61,7 +61,7 @@ namespace PresenceConnectionManager.Structure
 
         public uint Namespaceid;
 
-
+        public uint SDKRevision;
         /// <summary>
         /// The profile id parameter that is sent back to the client is initially 2, 
         /// and then 5 everytime after that. So we set here, whether we have sent the 

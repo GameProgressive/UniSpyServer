@@ -1,10 +1,12 @@
-﻿using System;
+﻿using PresenceConnectionManager.Handler.Login;
+using PresenceConnectionManager.Handler.SendBuddies;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PresenceConnectionManager.Structure
+namespace PresenceConnectionManager.Handler.SDKExtendFeature
 {
-    public static class GameSpySDKRevision
+    public static class SDKRevision
     {
         /// <summary>
         /// Extended message support
@@ -55,6 +57,26 @@ namespace PresenceConnectionManager.Structure
             GPINewListRetrevalOnLogin +
             GPIRemoteAuthIDSNotification +
             GPINewCDKeyRegistration;
-        
+        /// <summary>
+        /// Tell server send back extra information according to the number of  sdkrevision
+        /// </summary>
+        public static void Switch(GPCMSession session)
+        {
+            switch (Convert.ToInt32(session.PlayerInfo.SDKRevision))
+            {
+                case Type1:
+                    SendBuddiesHandler.HandleSendBuddies(session);
+                    break;
+                case Type2:
+                    SendBuddiesHandler.HandleSendBuddies(session);
+                    break;
+                case Type3:
+                    SendBuddiesHandler.HandleSendBuddies(session);
+                    break;
+                case Type4:
+                    SendBuddiesHandler.HandleSendBuddies(session);
+                    break;
+            }
+        }
     }
 }

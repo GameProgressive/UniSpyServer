@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PresenceConnectionManager.GetProfile
+namespace PresenceConnectionManager.Handler.GetProfile
 {
     public class GetProfileQuery
     {

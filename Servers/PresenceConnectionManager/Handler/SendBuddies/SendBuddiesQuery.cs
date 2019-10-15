@@ -56,7 +56,7 @@ namespace PresenceConnectionManager.Handler.SendBuddies
         /// </summary>
         /// <param name="recv"></param>
         /// <returns></returns>
-        public static int[] GetProfileidArray(Dictionary<string,string> recv)
+        public static int[] GetProfileidArray()
         {
             //use namespaceid,productid,gamename to find friends pid
             throw new NotImplementedException();

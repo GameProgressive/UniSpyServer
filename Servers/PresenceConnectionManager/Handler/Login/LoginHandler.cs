@@ -2,8 +2,7 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.SendBuddies;
-using PresenceConnectionManager.Structure;
+using PresenceConnectionManager.Handler.SDKExtendFeature;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -91,7 +90,7 @@ namespace PresenceConnectionManager.Handler.Login
 
             SendLoginResponseChallenge(session);
 
-            SDKRevisionSwitch(session);
+            SDKRevision.Switch(session);
         }
 
 
@@ -158,6 +157,12 @@ namespace PresenceConnectionManager.Handler.Login
             {
                 session.PlayerInfo.Namespaceid = 0;
             }
+            //store sdkrevision
+            if (_recv.ContainsKey("sdkrevision"))
+            {
+                session.PlayerInfo.SDKRevision =Convert.ToUInt32( _recv["sdkrevision"]);
+            }
+
         }
 
         #region Login Methods
@@ -318,27 +323,7 @@ namespace PresenceConnectionManager.Handler.Login
                 return;
             }
         }
-        /// <summary>
-        /// Tell server send back extra information according to the number of  sdkrevision
-        /// </summary>
-        public static void SDKRevisionSwitch(GPCMSession session)
-        {
-            switch (Convert.ToInt32(LoginHandler._recv["sdkrevision"]))
-            {
-                case GameSpySDKRevision.Type1:
-                    SendBuddiesHandler.HandleSendBuddies(session, _recv);
-                    break;
-                case GameSpySDKRevision.Type2:
-                    SendBuddiesHandler.HandleSendBuddies(session, _recv);
-                    break;
-                case GameSpySDKRevision.Type3:
-                    SendBuddiesHandler.HandleSendBuddies(session, _recv);
-                    break;
-                case GameSpySDKRevision.Type4:
-                    SendBuddiesHandler.HandleSendBuddies(session, _recv);
-                    break;
-            }
-        }
+       
         /// <summary>
         /// Generates an MD5 hash, which is used to verify the sessions login information
         /// </summary>
