@@ -223,7 +223,7 @@ namespace PresenceConnectionManager.Handler.Login
             PlayerOnlineStatus onlineStatus;
             UserStatus userStatus;
 
-            if (!Enum.TryParse(_queryResult["statuscode"].ToString(), out onlineStatus))
+            if (!Enum.TryParse(_queryResult["status"].ToString(), out onlineStatus))
             {
                 _errorMsg = "Invalid player data! Please contact an administrator.";
                 _disconnectReason = DisconnectReason.InvalidPlayer;

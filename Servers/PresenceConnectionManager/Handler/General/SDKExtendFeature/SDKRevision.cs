@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Handler.SendBuddies;
+using PresenceConnectionManager.Handler.SendBlockList;
 using System;
 using System.Collections.Generic;
 
@@ -65,9 +66,11 @@ namespace PresenceConnectionManager.Handler.SDKExtendFeature
             {
                 case Type1:
                     SendBuddiesHandler.SendBuddyList(session);
+                    SendBlockListHandler.SendBlockList(session);
                     break;
                 case Type2:
                     SendBuddiesHandler.SendBuddyList(session);
+                    SendBlockListHandler.SendBlockList(session);
                     break;
                 case Type3:
                     SendBuddiesHandler.SendBuddyList(session);

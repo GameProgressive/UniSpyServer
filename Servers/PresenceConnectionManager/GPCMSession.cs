@@ -92,7 +92,7 @@ namespace PresenceConnectionManager
         private void RemoveGuidAndSessionKeyFromDatabase()
         {
             GPCMServer.DB.Execute("UPDATE namespace SET guid = null WHERE guid = @P1", PlayerInfo.SessionKey, Id);
-            GPCMServer.DB.Execute("UPDATE profiles SET statuscode = @P0, status = '' WHERE profileid = @P1", (uint)PlayerOnlineStatus.Offline, PlayerInfo.Profileid);
+            GPCMServer.DB.Execute("UPDATE profiles SET status = @P0, statstring = '' WHERE profileid = @P1", (uint)PlayerOnlineStatus.Offline, PlayerInfo.Profileid);
             //whether need to check if there exsit guid and session key ?
             //set the status and status string to default
         }

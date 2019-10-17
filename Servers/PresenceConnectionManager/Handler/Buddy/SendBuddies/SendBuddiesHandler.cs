@@ -42,28 +42,22 @@ namespace PresenceConnectionManager.Handler.SendBuddies
             {
                 //convert the object in dictionary to uint array
                 profileids= result.Values.Cast<uint>().ToArray();                
-                sendingBuffer += result.Count + @"\list\";
+                sendingBuffer += profileids.Length + @"\list\";
                 for(int i=0;i<profileids.Length;i++)
                 {
-                    sendingBuffer += profileids[i] + @",";
                     //last one we do not add ,
                     if (i == profileids.Length - 1)
                     {
                         sendingBuffer += profileids[i];
+                        break ;
                     }
+                    sendingBuffer += profileids[i] + @",";
                 }
-                foreach (KeyValuePair<string, object> id in result)
-                {
-                    sendingBuffer += Convert.ToUInt32(id.Value) + @",";
-                    if (id.Equals(result.Last()))
-                    {
-                        sendingBuffer += Convert.ToUInt32(id.Value);
-                    }
-                }
+
                 sendingBuffer += @"\final\";
                 session.SendAsync(sendingBuffer);
                 //we send the player's status info to client
-                Task.Run(() => SendBuddyStatusInfo(session, profileids));
+                SendBuddyStatusInfo(session, profileids);
             }
             else
             {
@@ -81,11 +75,11 @@ namespace PresenceConnectionManager.Handler.SendBuddies
 
             foreach (uint profileid in profileids)
             {
-                string sendingBuffer = @"\bm\" + GPEnum.BmStatus + @"\f\";
-                result = SendBuddiesQuery.GetProfile(profileid, session.PlayerInfo.Namespaceid);
+                string sendingBuffer = @"\bm\" + (uint)GPEnum.BmStatus + @"\f\";
+                result = SendBuddiesQuery.GetStatusInfo(profileid, session.PlayerInfo.Namespaceid);
                 sendingBuffer += profileid + @"\msg\";
-                sendingBuffer += @"|s|" + Convert.ToUInt32(result["statuscode"]);
-                sendingBuffer += @"|ss|" + result["status"].ToString();
+                sendingBuffer += @"|s|" + Convert.ToUInt32(result["status"]);
+                sendingBuffer += @"|ss|" + result["statstring"].ToString();
                 sendingBuffer += @"|ls|" + result["location"].ToString();
                 sendingBuffer += @"|ip|" + result["lastip"];
                 sendingBuffer += @"|p|" + Convert.ToUInt32(result["port"]);

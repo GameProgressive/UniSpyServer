@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PresenceConnectionManager.Enumerator;
+using System;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.Login
@@ -17,7 +18,7 @@ namespace PresenceConnectionManager.Handler.Login
                  profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,
                  profiles.marriedid, profiles.childcount, profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, 
                  profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, 
-                 profiles.location, profiles.icquin, profiles.statuscode,profiles.status, users.email, users.password, users.userstatus 
+                 profiles.location, profiles.icquin, profiles.status,profiles.statstring, users.email, users.password, users.userstatus 
                  FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
                  WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1"
                  , dict["uniquenick"], dict["namespaceid"]
@@ -30,7 +31,7 @@ namespace PresenceConnectionManager.Handler.Login
             var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
             + @"profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, "
             + @"profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex,profiles.zipcode, profiles.countrycode, profiles.homepage, "
-            + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icquin,profiles.statuscode,profiles.status, users.password, users.userstatus, namespace.uniquenick"
+            + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icquin,profiles.status,profiles.statstring, users.password, users.userstatus, namespace.uniquenick"
             + @" FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid "
             + @"WHERE  namespace.namespaceid = @P0  AND profiles.nick = @P1 AND  users.email=@P2", dict["namespaceid"], dict["nick"], dict["email"]);
             return (result.Count == 0) ? null : result[0];
@@ -52,9 +53,9 @@ namespace PresenceConnectionManager.Handler.Login
         }
 
 
-        public static void UpdateStatus(long lastOnlineTime, string ip, uint profileId, uint statuscode)
+        public static void UpdateStatus(long lastOnlineTime, string ip, uint profileId, uint status)
         {
-            GPCMServer.DB.Execute("UPDATE profiles SET statuscode=@P0 WHERE profileid=@P1 ", statuscode, profileId);
+            GPCMServer.DB.Execute("UPDATE profiles SET status=@P0 WHERE profileid=@P1 ", status, profileId);
             uint userid = Convert.ToUInt32(GPCMServer.DB.Query("SELECT userid FROM profiles WHERE profileid= @P0", profileId)[0]);
             GPCMServer.DB.Execute("UPDATE users SET lastip=@P0, lastonline=@P1 WHERE userid = @P2", ip, lastOnlineTime, userid);
         }
@@ -65,8 +66,8 @@ namespace PresenceConnectionManager.Handler.Login
 
         public static void ResetAllStatusAndSessionKey()
         {
-            GPCMServer.DB.Execute("UPDATE profiles SET statuscode=0");
-            GPCMServer.DB.Execute("UPDATE namespace SET sesskey = NULL");
+            GPCMServer.DB.Execute("UPDATE profiles SET status=@P0,statstring =@P1,location = @P2",GPEnum.Offline,"","");
+            //GPCMServer.DB.Execute("UPDATE namespace SET sesskey = NULL");
             GPCMServer.DB.Execute("UPDATE namespace SET guid = NULL");
         }
     }

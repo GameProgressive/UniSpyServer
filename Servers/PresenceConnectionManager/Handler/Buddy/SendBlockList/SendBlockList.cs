@@ -4,9 +4,9 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.SendBlockList
 {
-    public class SendBlockList
+    public class SendBlockListHandler
     {
-        public static void Send(GPCMSession session)
+        public static void SendBlockList(GPCMSession session)
         {
             if (session.PlayerInfo.BlockListSent)
                 return;
@@ -14,16 +14,20 @@ namespace PresenceConnectionManager.Handler.SendBlockList
 
             string sendingBuffer= @"\blk\";
             Dictionary<string, object> result = SendBlockListQuery.SearchBlockList(session.PlayerInfo.Profileid, session.PlayerInfo.Namespaceid);
+            uint[] profileids;
             if (result!=null)
             {
+                profileids = result.Values.Cast<uint>().ToArray();
                 sendingBuffer += result.Count +@"\list\";
-                foreach (KeyValuePair<string, object> id in result)
+                for (int i = 0; i < profileids.Length; i++)
                 {
-                    sendingBuffer += Convert.ToUInt32(id.Value) + @",";
-                    if (id.Equals(result.Last()))
+                    //last one we do not add ,
+                    if (i == profileids.Length - 1)
                     {
-                        sendingBuffer += Convert.ToUInt32(id.Value);
+                        sendingBuffer += profileids[i];
+                        break;
                     }
+                    sendingBuffer += profileids[i] + @",";
                 }
                 sendingBuffer += @"\final\";
             }

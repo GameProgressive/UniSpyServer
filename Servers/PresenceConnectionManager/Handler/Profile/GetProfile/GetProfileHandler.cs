@@ -36,7 +36,7 @@ namespace PresenceConnectionManager.Handler.GetProfile
                 return;
             }
 
-            string sendingBuffer = @"\pi\profileid\" + _recv["profileid"];
+            string sendingBuffer = @"\pi\\profileid\" + _recv["profileid"];
 
             if (result["nick"].ToString().Length > 0)
                 sendingBuffer += @"\nick\" + result["nick"].ToString();
@@ -109,31 +109,31 @@ namespace PresenceConnectionManager.Handler.GetProfile
                 sendingBuffer += @"\aim\" + result["aim"].ToString();
 
             if (result["picture"].ToString().Length > 0)
-                sendingBuffer += @"\picture\" + Convert.ToUInt32(result["picture"]);
+                sendingBuffer += @"\picture\" + Convert.ToUInt16(result["picture"]);
 
             if (result["occupationid"].ToString().Length > 0)
-                sendingBuffer += @"\occ\" + result["occupationid"].ToString();
+                sendingBuffer += @"\occ\" + Convert.ToUInt16(result["occupationid"]);
             if (result["industryid"].ToString().Length > 0)
-                sendingBuffer += @"\ind\" + result["industryid"].ToString();
+                sendingBuffer += @"\ind\" + Convert.ToUInt16(result["industryid"]);
             if (result["incomeid"].ToString().Length > 0)
-                sendingBuffer += @"\inc\" + result["incomeid"].ToString();
+                sendingBuffer += @"\inc\" + Convert.ToUInt16(result["incomeid"]);
 
 
             if (result["marriedid"].ToString().Length > 0)
-                sendingBuffer += @"\mar\" + result["marriedid"].ToString();
+                sendingBuffer += @"\mar\" + Convert.ToUInt16(result["marriedid"]);
             if (result["childcount"].ToString().Length > 0)
-                sendingBuffer += @"\chc\" + result["childcount"].ToString();
+                sendingBuffer += @"\chc\" + Convert.ToUInt16(result["childcount"]);
 
             if (result["interests1"].ToString().Length > 0)
                 sendingBuffer += @"\i1\" + result["interests1"].ToString();
             if (result["ownership1"].ToString().Length > 0)
                 sendingBuffer += @"\o1\" + result["ownership1"].ToString();
             if (result["connectiontype"].ToString().Length > 0)
-                sendingBuffer += @"\conn\" + result["connectiontype"].ToString();
+                sendingBuffer += @"\conn\" + Convert.ToUInt16(result["connectiontype"]);
 
             // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
-            string signature = GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex);
-            sendingBuffer += @"\sig\" + signature;
+            string signature = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Hex);
+            sendingBuffer += @"\sig\" + signature+@"\id\"+recv["id"]+@"\final\";
 
 
             session.SendAsync(sendingBuffer);

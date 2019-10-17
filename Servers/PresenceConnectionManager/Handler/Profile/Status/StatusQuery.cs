@@ -12,13 +12,13 @@ namespace PresenceConnectionManager.Handler.Status
         /// update profile status
         /// </summary>
         /// <param name="profileid"></param>
-        /// <param name="statuscode"></param>
         /// <param name="status"></param>
+        /// <param name="statstring"></param>
         /// <param name="location"></param>
         /// <param name="lastIP"></param>
-        public static void UpdateStatus(GPCMPlayerInfo playerInfo, uint statuscode, string status, string location)
+        public static void UpdateStatus(GPCMPlayerInfo playerInfo, uint status, string statstring, string location)
         {
-            GPCMServer.DB.Execute("UPDATE profiles SET statuscode = @P0, status=@P1, location=@P2 WHERE profileid=@P3", statuscode, status, location, playerInfo.Profileid);
+            GPCMServer.DB.Execute("UPDATE profiles SET status = @P0, statstring=@P1, location=@P2 WHERE profileid=@P3", status, statstring, location, playerInfo.Profileid);
         }
        
     }

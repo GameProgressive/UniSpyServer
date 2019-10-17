@@ -56,9 +56,29 @@ namespace PresenceConnectionManager.Handler.SendBuddies
         /// </summary>
         /// <param name="recv"></param>
         /// <returns></returns>
-        public static Dictionary<string,object> SearchBuddiesId(uint profileid,uint namespaceid)
+        public static Dictionary<string, object> SearchBuddiesId(uint profileid, uint namespaceid)
         {
-           var result = GPCMServer.DB.Query("SELECT targetid FROM friends WHERE profileid = @P0 AND namespaceid = @P1", profileid,namespaceid);            
+            var result = GPCMServer.DB.Query("SELECT targetid FROM friends WHERE profileid = @P0 AND namespaceid = @P1", profileid, namespaceid);
+            return (result.Count == 0) ? null : result[0];
+        }
+
+
+        public static Dictionary<string, object> GetStatusInfo(uint profileid, uint namespaceid)
+        {
+            var result = GPCMServer.DB.Query(
+                 @"SELECT 
+                profiles.status,
+                profiles.statstring,
+                profiles.location,
+                users.lastip,
+                namespace.port,
+                profiles.quietflags
+                FROM profiles 
+                LEFT JOIN users on users.userid=profiles.profileid 
+                LEFT JOIN namespace on namespace.profileid = profiles.profileid 
+                WHERE namespace.profileid=@P0 AND namespace.namespaceid=@P1",
+                 profileid, namespaceid
+                 );
             return (result.Count == 0) ? null : result[0];
         }
     }
