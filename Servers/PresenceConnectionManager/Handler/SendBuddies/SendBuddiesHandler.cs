@@ -1,79 +1,108 @@
 ﻿using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.GetProfile;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PresenceConnectionManager.Handler.SendBuddies
 {
+    /// <summary>
+    /// Send friendlist, friends message, friends add request to player when he logged in.
+    /// </summary>
     public class SendBuddiesHandler
     {
 
-        public static void HandleSendBuddies(GPCMSession session, Dictionary<string, string> recv)
+        //**********************************************************
+        //\bm\<MESSAGE>\f\<from profileid>\msg\<>\final\
+        //\bm\<UTM>\f\<from profileid>\msg\<>\final\
+        //\bm\<REQUEST>\f\<from profileid>\msg\|signed|\final\
+        //\bm\<AUTH>\f\<from profileid>\final\
+        //\bm\<REVOKE>\f\<from profileid>\final\
+        //\bm\<STATUS>\f\<from profileid>\msg\|s|<status code>|ss|<status string>|ls|<location string>|ip|<>|p|<port>|qm|<quiet mode falgs>\final\
+        //\bm\<INVITE>\f\<from profileid>\msg\|p|<productid>|l|<location string>
+        //\bm\<ping>\f\<from profileid>\msg\final\
+        //\bm\<pong>\f\<from profileid>\final\
+
+        public static void SendBuddyList(GPCMSession session)
         {
             // \bdy\<number of friends>\list\<array of profileids>\
-            //TODO
-
-
             //total number of friends
             // we have to separate friends by productid,namespaceid,partnerid,gamename 
-            //because you will have different friends in different game
-
-
+            //because you will have different friends in different game            
 
             if (session.PlayerInfo.BuddiesSent)
                 return;
-
-            /*Stream.SendAsync(
-                @"\bdy\1\list\2,\final\");
-
-            Stream.SendAsync(
-            //    @"\bm\100\f\2\msg\|s|0|ss|Offline\final\"
-            @"\bm\100\f\2\msg\Messaggio di prova|s|2|ss|Home|ls|locstr://Reversing the world...|\final\"
-            );*/
-
-            session.Send(@"\bdy\1\list\13\final\");
-            session.Send(@"\bm\100\f\13\msg\|s|0|ss|Offline\final\");
-            session.Send(@"\bm\100\f\13\msg\1|signed|1");
-            GetProfileHandler.SendProfile(session, recv);
-
-            return;
-
-            int[] pids = SendBuddiesQuery.GetProfileidArray();
-            int numBuddies = pids.Length;
             session.PlayerInfo.BuddiesSent = true;
-
-            string sendingBuffer;
-            string profileidArray = "";
-            for (int i = 0; i < numBuddies; i++)
+            //return;
+            string sendingBuffer = @"\bdy\";
+            var result = SendBuddiesQuery.SearchBuddiesId(session.PlayerInfo.Profileid, session.PlayerInfo.Namespaceid);
+            uint[] profileids;
+            if (result != null)
             {
-                profileidArray += pids[i].ToString();
-            }
-            sendingBuffer = string.Format(@"\bdy\{0}\list\{1}\final\", numBuddies, profileidArray);
-            session.Send(sendingBuffer);
-
-
-        }
-        public static void SendBuddyInfo(GPCMSession session, uint profileid)
-        {
-            bool isBlocked = false;
-            Dictionary<string, object> profile = SendBuddiesQuery.GetProfile(profileid, session.PlayerInfo.Namespaceid);
-            bool.TryParse(profile["deleted"] as string, out isBlocked);
-            string locstr = profile["location"].ToString();
-            string statstr;
-            string sendingBuffer;
-            if (isBlocked)
-            {
-                statstr = @"|s|0|ss|Offline";
+                //convert the object in dictionary to uint array
+                profileids= result.Values.Cast<uint>().ToArray();                
+                sendingBuffer += result.Count + @"\list\";
+                for(int i=0;i<profileids.Length;i++)
+                {
+                    sendingBuffer += profileids[i] + @",";
+                    //last one we do not add ,
+                    if (i == profileids.Length - 1)
+                    {
+                        sendingBuffer += profileids[i];
+                    }
+                }
+                foreach (KeyValuePair<string, object> id in result)
+                {
+                    sendingBuffer += Convert.ToUInt32(id.Value) + @",";
+                    if (id.Equals(result.Last()))
+                    {
+                        sendingBuffer += Convert.ToUInt32(id.Value);
+                    }
+                }
+                sendingBuffer += @"\final\";
+                session.SendAsync(sendingBuffer);
+                //we send the player's status info to client
+                Task.Run(() => SendBuddyStatusInfo(session, profileids));
             }
             else
             {
-                statstr = string.Format(@"|s|{0}|ss|{1}{2}{3}|ip|{4}|p|{5}|qm|{6}",
-                    profile["status"], profile["statusstring"], locstr != "0" ? "|ls|" : "", locstr, profile["lastip"], profile["port"], profile["quietflags"]);
+                sendingBuffer = @"\bdy\0\list\\final\";
+                session.SendAsync(sendingBuffer);
             }
-            sendingBuffer = string.Format(@"\bm\{0}\f\{1}\msg{2}", GPEnum.BmStatus, profileid, statstr);
+          
+          
+
+
+        }
+        public static void SendBuddyStatusInfo(GPCMSession session, uint[] profileids)
+        {
+            Dictionary<string, object> result;
+
+            foreach (uint profileid in profileids)
+            {
+                string sendingBuffer = @"\bm\" + GPEnum.BmStatus + @"\f\";
+                result = SendBuddiesQuery.GetProfile(profileid, session.PlayerInfo.Namespaceid);
+                sendingBuffer += profileid + @"\msg\";
+                sendingBuffer += @"|s|" + Convert.ToUInt32(result["statuscode"]);
+                sendingBuffer += @"|ss|" + result["status"].ToString();
+                sendingBuffer += @"|ls|" + result["location"].ToString();
+                sendingBuffer += @"|ip|" + result["lastip"];
+                sendingBuffer += @"|p|" + Convert.ToUInt32(result["port"]);
+                sendingBuffer += @"|qm|" + result["quietflags"] + @"\final\";
+
+                session.SendAsync(sendingBuffer);
+            }
         }
 
 
-        public static void SendAddRequest()
+        public static void SendBuddyMessage(GPCMSession session, uint profileid)
+        { }
+
+        public static void SendBuddyUTM(GPCMSession session, uint profileid)
+        { }
+
+        public static void SendBuddyAddRequest()
         {
             //char query[256];
             //sprintf_s(query, sizeof(query), "SELECT `profileid`,`syncrequested`,`reason` FROM `Presence`.`addrequest` WHERE `targetid` = %d", getProfileID());
@@ -93,5 +122,7 @@ namespace PresenceConnectionManager.Handler.SendBuddies
             //}
             //mysql_free_result(res);
         }
+        public static void BuddyAuth()
+        { }
     }
 }

@@ -73,5 +73,7 @@ namespace PresenceConnectionManager.Structure
         /// This boolean checks if the client has received buddy information
         /// </summary>
         public bool BuddiesSent = false;
+
+        public bool BlockListSent = false;
     }
 }

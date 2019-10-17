@@ -52,11 +52,15 @@ namespace PresenceConnectionManager.Handler.Login
         }
 
 
-        public static void UpdateStatus(long lastOnlineTime, System.Net.IPAddress address, uint profileId, uint statuscode)
+        public static void UpdateStatus(long lastOnlineTime, string ip, uint profileId, uint statuscode)
         {
             GPCMServer.DB.Execute("UPDATE profiles SET statuscode=@P0 WHERE profileid=@P1 ", statuscode, profileId);
             uint userid = Convert.ToUInt32(GPCMServer.DB.Query("SELECT userid FROM profiles WHERE profileid= @P0", profileId)[0]);
-            GPCMServer.DB.Execute("UPDATE users SET lastip=@P0, lastonline=@P1 WHERE userid = @P2", address, lastOnlineTime, userid);
+            GPCMServer.DB.Execute("UPDATE users SET lastip=@P0, lastonline=@P1 WHERE userid = @P2", ip, lastOnlineTime, userid);
+        }
+        public static void UpdateSessionKeyAndGuid(uint profileid, uint namespaceid, uint sessionkey, Guid guid)
+        {
+            GPCMServer.DB.Execute("UPDATE namespace SET sesskey=@P0, guid =@P1 WHERE profileid =@P2 AND namespaceid = @P3", sessionkey, guid.ToString(), profileid, namespaceid);
         }
 
         public static void ResetAllStatusAndSessionKey()

@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using PresenceConnectionManager.Enumerator;
+using System;
+using System.Collections.Generic;
+using System.Net;
 
 namespace PresenceConnectionManager.Handler.Status
 {
@@ -19,7 +22,7 @@ namespace PresenceConnectionManager.Handler.Status
             //you can only update your status.?
             if (sessionkey != session.PlayerInfo.SessionKey)
                 return;
-            StatusQuery.UpdateStatus(recv, session.Id);
+            StatusQuery.UpdateStatus(session.PlayerInfo,Convert.ToUInt32(recv["status"]),recv["statstring"],recv["locstring"]);
         }
 
         private static bool IsContainAllKey()

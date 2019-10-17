@@ -28,7 +28,7 @@ namespace PresenceConnectionManager.Handler
                 switch (command)
                 {
                     case "inviteto":
-                        InviteToHandler.AddFriends(session, recv);
+                        InviteToHandler.InvitePlayer(session, recv);
                         break;
                     case "login"://login to gamespy
                         LoginHandler.ProcessLogin(session, recv);
@@ -36,7 +36,7 @@ namespace PresenceConnectionManager.Handler
                     case "getprofile"://get profile of a player
                         GetProfileHandler.SendProfile(session, recv);
                         break;
-                    case "addbuddy"://add an user to our friend list
+                    case "addbuddy"://Send a request which adds an user to our friend list
                         AddBuddyHandler.Addfriends(session, recv);
                         break;
                     case "delbuddy"://delete a user from our friend list

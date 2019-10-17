@@ -42,11 +42,13 @@ CREATE TABLE IF NOT EXISTS `addrequests` (
 CREATE TABLE IF NOT EXISTS `blocked` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(11) unsigned NOT NULL,
+  `targetid` int(10) unsigned NOT NULL,
   `namespaceid` int(11) unsigned NOT NULL,
-  `productid` int(11) unsigned NOT NULL,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `FK_blocked_namespace` (`profileid`),
   KEY `FK_blocked_namespace_3` (`namespaceid`),
+  KEY `targetid` (`targetid`),
+  CONSTRAINT `FK3_blocked_profile` FOREIGN KEY (`targetid`) REFERENCES `namespace` (`profileid`),
   CONSTRAINT `FK_blocked_namespace` FOREIGN KEY (`profileid`) REFERENCES `namespace` (`profileid`),
   CONSTRAINT `FK_blocked_namespace_3` FOREIGN KEY (`namespaceid`) REFERENCES `namespace` (`namespaceid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
@@ -4612,6 +4614,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `to` int(10) unsigned NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `message` varchar(200) NOT NULL,
+  `namespaceid` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `FK_messages_profiles` (`from`) USING BTREE,
@@ -4635,7 +4638,7 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   `gamename` text DEFAULT NULL,
   `cdkeyenc` varchar(50) DEFAULT NULL,
   `sesskey` int(11) unsigned DEFAULT NULL,
-  `firewall` int(10) unsigned DEFAULT NULL,
+  `firewall` tinyint(1) unsigned DEFAULT NULL,
   `port` int(10) unsigned DEFAULT NULL,
   `guid` char(36) DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -4740,7 +4743,7 @@ CREATE TABLE IF NOT EXISTS `status` (
   `newstatusinfoflag` enum('SUPPORT','NOTSUPPORT') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Buddy Status Info table';
 
--- Dumping data for table retrospy2.status: ~0 rows (approximately)
+-- Dumping data for table retrospy2.status: ~1 rows (approximately)
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
 INSERT INTO `status` (`profileid`, `namespaceid`, `profile`, `statusstate`, `buddyip`, `hostip`, `hostprivateip`, `queryreport`, `hostport`, `sessionflags`, `richstatus`, `gametype`, `gamevariant`, `gamemapname`, `quietmodefalgs`, `newstatusinfoflag`) VALUES
 	(13, 1, NULL, 'OFFLINE', NULL, NULL, NULL, NULL, NULL, NULL, '', '', '', '', 'NONE', NULL);

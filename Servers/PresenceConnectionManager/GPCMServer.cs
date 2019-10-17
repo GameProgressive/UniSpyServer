@@ -101,10 +101,9 @@ namespace PresenceConnectionManager
                             // Skip if this player never finished logging in
                             if (session == null)
                                 continue;
-
                             if (!session.CompletedLoginProcess)
                                 continue;
-                            LoginQuery.UpdateStatus(timestamp, session.Server.Endpoint.Address, session.PlayerInfo.Profileid, (uint)session.PlayerInfo.PlayerStatus);
+                            LoginQuery.UpdateStatus(timestamp, session.Remote.ToString(), session.PlayerInfo.Profileid, (uint)session.PlayerInfo.PlayerStatus);
                         }
                         //transaction.Commit();
                     }

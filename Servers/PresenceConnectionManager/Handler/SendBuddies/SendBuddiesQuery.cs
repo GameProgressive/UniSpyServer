@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Handler.SendBuddies
 {
@@ -55,10 +56,10 @@ namespace PresenceConnectionManager.Handler.SendBuddies
         /// </summary>
         /// <param name="recv"></param>
         /// <returns></returns>
-        public static int[] GetProfileidArray()
+        public static Dictionary<string,object> SearchBuddiesId(uint profileid,uint namespaceid)
         {
-            //use namespaceid,productid,gamename to find friends pid
-            throw new NotImplementedException();
+           var result = GPCMServer.DB.Query("SELECT targetid FROM friends WHERE profileid = @P0 AND namespaceid = @P1", profileid,namespaceid);            
+            return (result.Count == 0) ? null : result[0];
         }
     }
 }

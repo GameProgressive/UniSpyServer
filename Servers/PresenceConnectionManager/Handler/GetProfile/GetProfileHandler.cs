@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.GetProfile
         static Dictionary<string, string> _recv;
         static GPErrorCode _error;
         /// <summary>
-        /// This method is called when the client requests for the Account profile
+        /// Send others profile.
         /// </summary>
         public static void SendProfile(GPCMSession session, Dictionary<string, string> recv)
         {
@@ -29,6 +29,135 @@ namespace PresenceConnectionManager.Handler.GetProfile
             }
 
             var result = GetProfileQuery.GetProfileInfo(Convert.ToUInt32(_recv["profileid"]), Convert.ToUInt32(_recv["sesskey"]));
+
+            if (result == null)
+            {
+                GameSpyUtils.SendGPError(session, GPErrorCode.GetProfileBadProfile, "Unable to get profile information.");
+                return;
+            }
+
+            string sendingBuffer = @"\pi\profileid\" + _recv["profileid"];
+
+            if (result["nick"].ToString().Length > 0)
+                sendingBuffer += @"\nick\" + result["nick"].ToString();
+
+            if (result["uniquenick"].ToString().Length > 0)
+                sendingBuffer += @"\uniquenick\" + result["uniquenick"].ToString();
+
+            if (result["email"].ToString().Length > 0)
+                sendingBuffer += @"\email\" + result["email"].ToString();
+
+            if (result["firstname"].ToString().Length > 0)
+                sendingBuffer += @"\firstname\" + result["firstname"].ToString();
+
+            if (result["lastname"].ToString().Length > 0)
+                sendingBuffer += @"\firstname\" + result["lastname"].ToString();
+
+            if (result["icquin"].ToString().Length > 0)
+                sendingBuffer += @"\icquin\" + Convert.ToUInt32(result["icquin"]);
+
+            if (result["homepage"].ToString().Length > 0)
+                sendingBuffer += @"\homepage\" + result["homepage"].ToString();
+
+            if (result["zipcode"].ToString().Length > 0)
+                sendingBuffer += @"\zipcode\" + result["zipcode"].ToString();
+
+            if (result["countrycode"].ToString().Length > 0)
+                sendingBuffer += @"\countrycode\" + result["countrycode"].ToString();
+
+
+            float longtitude;
+            if (result["longitude"].ToString().Length > 0)
+            {
+                float.TryParse(result["longitude"].ToString(), out longtitude);
+                sendingBuffer += @"\lon\" + longtitude;
+            }
+
+
+            float latitude;
+            if (result["latitude"].ToString().Length > 0)
+            {
+                float.TryParse(result["latitude"].ToString(), out latitude);
+                sendingBuffer += @"\lat\" + latitude;
+            }
+
+            if (result["location"].ToString().Length > 0)
+                sendingBuffer += @"\loc\" + result["location"].ToString();
+
+            if (result["birthday"].ToString().Length > 0 && result["birthmonth"].ToString().Length > 0 && result["birthyear"].ToString().Length > 0)
+            {
+                uint birthday = (Convert.ToUInt32(result["birthday"]) << 24) | (Convert.ToUInt32(result["birthmonth"]) << 16) | Convert.ToUInt32(result["birthyear"]);
+                sendingBuffer += @"\birthday\" + birthday;
+            }
+
+            PlayerSexType playerSexType;
+            if (!Enum.TryParse(result["sex"].ToString().ToUpper(), out playerSexType))
+                if (playerSexType == PlayerSexType.PAT)
+                    sendingBuffer += @"\sex\2";
+            if (playerSexType == PlayerSexType.FEMALE)
+                sendingBuffer += @"\sex\1";
+            if (playerSexType == PlayerSexType.MALE)
+                sendingBuffer += @"\sex\0";
+
+
+            PublicMasks mask;
+            if (result["publicmask"].ToString().Length > 0)
+                if (!Enum.TryParse(result["publicmask"].ToString(), out mask))
+                    sendingBuffer += @"\publicmask\" + mask;
+
+            if (result["aim"].ToString().Length > 0)
+                sendingBuffer += @"\aim\" + result["aim"].ToString();
+
+            if (result["picture"].ToString().Length > 0)
+                sendingBuffer += @"\picture\" + Convert.ToUInt32(result["picture"]);
+
+            if (result["occupationid"].ToString().Length > 0)
+                sendingBuffer += @"\occ\" + result["occupationid"].ToString();
+            if (result["industryid"].ToString().Length > 0)
+                sendingBuffer += @"\ind\" + result["industryid"].ToString();
+            if (result["incomeid"].ToString().Length > 0)
+                sendingBuffer += @"\inc\" + result["incomeid"].ToString();
+
+
+            if (result["marriedid"].ToString().Length > 0)
+                sendingBuffer += @"\mar\" + result["marriedid"].ToString();
+            if (result["childcount"].ToString().Length > 0)
+                sendingBuffer += @"\chc\" + result["childcount"].ToString();
+
+            if (result["interests1"].ToString().Length > 0)
+                sendingBuffer += @"\i1\" + result["interests1"].ToString();
+            if (result["ownership1"].ToString().Length > 0)
+                sendingBuffer += @"\o1\" + result["ownership1"].ToString();
+            if (result["connectiontype"].ToString().Length > 0)
+                sendingBuffer += @"\conn\" + result["connectiontype"].ToString();
+
+            // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
+            string signature = GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex);
+            sendingBuffer += @"\sig\" + signature;
+
+
+            session.SendAsync(sendingBuffer);
+            session.PlayerInfo.BuddiesSent = true;
+        }
+
+        /// <summary>
+        /// Send myself profile.
+        /// </summary>
+        /// <param name="session"></param>
+        public static void SendProfile(GPCMSession session)
+        {
+            // \getprofile\\sesskey\19150\profileid\2\id\2\final\
+            //profileid is 
+
+            IsContainAllKey();
+
+            if (_error != GPErrorCode.NoError)
+            {
+                GameSpyUtils.SendGPError(session, _error, "Parsing error.");
+                return;
+            }
+
+            var result = GetProfileQuery.GetProfileInfo(Convert.ToUInt32(session.PlayerInfo.Profileid), session.PlayerInfo.SessionKey);
 
             if (result == null)
             {

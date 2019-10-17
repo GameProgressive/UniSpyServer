@@ -146,16 +146,24 @@ namespace GameSpyLib.Network
 
         public virtual string RequstFormatConversion(string message)
         {
-            message = message.Replace(@"\-", @"\");
-            message = message.Replace('-', '\\');
-
-            int pos = message.IndexesOf("\\")[1];
-
-            if (message.Substring(pos, 2) != "\\\\")
+            if (message.Contains("login"))
             {
-                message = message.Insert(pos, "\\");
+                message = message.Replace(@"\-", @"\");
+                message = message.Replace('-', '\\');
+
+                int pos = message.IndexesOf("\\")[1];
+
+                if (message.Substring(pos, 2) != "\\\\")
+                {
+                    message = message.Insert(pos, "\\");
+                }
+                return message;
             }
-            return message;
+            else
+            {
+                return message;
+            }
+            
         }
     }
 }

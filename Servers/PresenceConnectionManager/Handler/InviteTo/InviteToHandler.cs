@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Handler.InviteTo
     public class InviteToHandler
     {
         //public static GPCMDBQuery DBQuery = null;
-        public static void AddFriends(GPCMSession session, Dictionary<string, string> recv)
+        public static void InvitePlayer(GPCMSession session, Dictionary<string, string> recv)
         {
             GPErrorCode error = IsContainAllKeys(recv);
             if (error != GPErrorCode.NoError)

@@ -10,6 +10,7 @@ namespace PresenceConnectionManager.Handler.SDKExtendFeature
         /// Extended message support
         /// </summary>
         public const int GPINewAuthNotification = 1;
+        
         public const int GPINewRevokeNotification = 2;
         /// <summary>
         /// New Status Info support
@@ -63,16 +64,16 @@ namespace PresenceConnectionManager.Handler.SDKExtendFeature
             switch (Convert.ToInt32(session.PlayerInfo.SDKRevision))
             {
                 case Type1:
-                    SendBuddiesHandler.HandleSendBuddies(session, recv);
+                    SendBuddiesHandler.SendBuddyList(session);
                     break;
                 case Type2:
-                    SendBuddiesHandler.HandleSendBuddies(session, recv);
+                    SendBuddiesHandler.SendBuddyList(session);
                     break;
                 case Type3:
-                    SendBuddiesHandler.HandleSendBuddies(session, recv);
+                    SendBuddiesHandler.SendBuddyList(session);
                     break;
                 case Type4:
-                    SendBuddiesHandler.HandleSendBuddies(session, recv);
+                    SendBuddiesHandler.SendBuddyList(session);
                     break;
             }
         }

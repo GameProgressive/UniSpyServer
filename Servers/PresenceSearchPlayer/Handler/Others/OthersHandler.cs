@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.Others
 {
+    /// <summary>
+    /// revoke buddy auth
+    /// </summary>
     public class OthersHandler
     {
         public static object OthersList { get; private set; }
