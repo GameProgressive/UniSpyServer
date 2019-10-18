@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.UniqueSearch
         {
             //The multiple nick suggest correct response is like 
             //@"\us\<number of suggested nick>\nick\<nick1>\nick\<nick2>\usdone\final\";
-            string sendingBuffer;
+            string sendingBuffer;          
             GPErrorCode error = IsContainAllKeys(dict);
             if (error != GPErrorCode.NoError)
             {
