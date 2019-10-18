@@ -180,23 +180,29 @@ namespace PresenceConnectionManager.Handler.General.Login
                 _recv.Add("namespaceid", "0");
             }
             _queryResult = LoginQuery.GetUserFromNickAndEmail(_recv);
+            if (_queryResult == null)
+            {
+                GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadNick, "No user found");
+                return;
+            }                
             session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
         }
 
         private static void UniquenickLoginMethod(GPCMSession session)
         {
-            if (LoginHandler._recv.ContainsKey("namespaceid"))
-            {
-                _queryResult = LoginQuery.GetUserFromUniqueNick(_recv);
-                session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
-            }
-            else
-            {
+            if (!_recv.ContainsKey("namespaceid"))
+            { 
                 _recv.Add("namespaceid", "0");
                 session.PlayerInfo.Namespaceid = 0;
-                _queryResult = LoginQuery.GetUserFromUniqueNick(_recv);
-                session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
             }
+            _queryResult = LoginQuery.GetUserFromUniqueNick(_recv);
+           
+            if (_queryResult == null)
+            {
+                GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadNick, "No user found");
+                return;
+            }
+            session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
         }
         #endregion
 
