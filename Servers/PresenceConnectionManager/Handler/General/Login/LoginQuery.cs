@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.Login
+namespace PresenceConnectionManager.Handler.General.Login.Query
 {
     //login request will have different key,value pairs
     //some have dict["uniquenick"], dict["productid"], dict["partnerid"], dict["gamename"]
@@ -14,7 +14,7 @@ namespace PresenceConnectionManager.Handler.Login
         public static Dictionary<string, object> GetUserFromUniqueNick(Dictionary<string, string> dict)
         {
             var result = GPCMServer.DB.Query(
-                @"SELECT profiles.profileid, profiles.nick, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,
+                @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,
                  profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,
                  profiles.marriedid, profiles.childcount, profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, 
                  profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, 

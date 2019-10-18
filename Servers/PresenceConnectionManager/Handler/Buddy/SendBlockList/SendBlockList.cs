@@ -1,8 +1,8 @@
-﻿using System;
+﻿using PresenceConnectionManager.Handler.Buddy.SendBlockList.Query;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.SendBlockList
+namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
     public class SendBlockListHandler
     {

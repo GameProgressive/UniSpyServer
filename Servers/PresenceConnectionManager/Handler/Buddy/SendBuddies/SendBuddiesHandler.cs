@@ -1,11 +1,10 @@
 ﻿using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.GetProfile;
+using PresenceConnectionManager.Handler.Buddy.SendBuddies.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
-namespace PresenceConnectionManager.Handler.SendBuddies
+namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
 {
     /// <summary>
     /// Send friendlist, friends message, friends add request to player when he logged in.

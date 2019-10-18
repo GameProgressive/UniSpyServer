@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.GetProfile
+namespace PresenceConnectionManager.Handler.Profile.GetProfile.Query
 {
     public class GetProfileQuery
     {

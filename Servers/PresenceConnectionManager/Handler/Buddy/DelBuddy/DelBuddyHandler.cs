@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.DelBuddy
+namespace PresenceConnectionManager.Handler.Buddy.DelBuddy
 {
     /// <summary>
     /// handles dell buddy request,remove friends from friends list

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.BuddyStatusInfo
+namespace PresenceConnectionManager.Handler.Buddy.BuddyStatusInfo
 {
     public class BuddyStatusInfoHandler
     {

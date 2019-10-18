@@ -1,9 +1,10 @@
 ﻿using GameSpyLib.Common;
 using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Handler.Profile.UpdatePro.Query;
 using System;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.UpdatePro
+namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
     public class UpdateProHandler
     {
@@ -26,70 +27,35 @@ namespace PresenceConnectionManager.Handler.UpdatePro
                 return;
 
             string query = "UPDATE profiles SET";
-            object[] profileData = new object[11] {
-                null, // publicmask : 0
-                null, // firstname
-                null, // lastname
-                null, // icq
-                null, // homepage
-                null, // zipcode
-                null, // countrycode
-                null, // birthday
-                null, // Bithmonth
-                null, // Birthyear
-                null, // sex
-            };
-
 
             if (recv.ContainsKey("publicmask"))
             {
                 PublicMasks mask;
                 if (Enum.TryParse(recv["publicmask"], out mask))
                 {
-                    query += ", publicmask=@P0";
-                    profileData[0] = mask;
+                    query += "publicmask=" + recv["publicmask"]+",";
                 }
             }
 
             if (recv.ContainsKey("firstname"))
             {
-                query += ", firstname=@P1";
-                profileData[1] = recv["firstname"];
+                query += "firstname"+recv["firstname"] + ",";
+                
             }
 
             if (recv.ContainsKey("lastname"))
             {
-                query += ", lastname=@P2";
-                profileData[2] = recv["lastname"];
+                query += "lastname=" + recv["lastname"] + ",";
             }
 
             if (recv.ContainsKey("icquin"))
             {
-                int icq = 0;
-                if (int.TryParse(recv["icquin"], out icq))
-                {
-                    query += "icq=@P3 ";
-                    profileData[3] = icq;
-                }
+                query += "icquin=" + recv["icquin"] + ",";
             }
 
             if (recv.ContainsKey("homepage"))
             {
-                query += ", homepage=@P4";
-                profileData[4] = recv["homepage"];
-            }
-
-            if (recv.ContainsKey("zipcode"))
-            {
-
-                query += ", zipcode=@P5";
-                profileData[5] = recv["zipcode"];
-            }
-
-            if (recv.ContainsKey("countrycode"))
-            {
-                query += ", countrycode=@P6";
-                profileData[6] = recv["zipcode"];
+                query += "homepage=" + recv["homepage"] + ",";
             }
 
             if (recv.ContainsKey("birthday"))
@@ -103,39 +69,28 @@ namespace PresenceConnectionManager.Handler.UpdatePro
 
                     if (GameSpyUtils.IsValidDate(d, m, y))
                     {
-                        query += ", birthday=@P6";
-                        profileData[6] = d;
+                        query += ", birthday="+d+",";
 
-                        query += ", birthmonth=@P19";
-                        profileData[19] = m;
+                        query += ", birthmonth="+ m+",";
 
-                        query += ", birthyear=@P20";
-                        profileData[20] = y;
+                        query += ", birthyear="+y+",";
                     }
                 }
-            }
-
-            if (recv.ContainsKey("countrycode"))
-            {
-                query += ", countrycode=@P7";
-                profileData[7] = recv["zipcode"];
-            }
-
-
-
-            if (recv.ContainsKey("sex"))
-            {
-                PlayerSexType sex;
-                if (Enum.TryParse(recv["sex"], out sex))
+                if (recv.ContainsKey("sex"))
                 {
-                    query += "sex=@P8";
-                    if (sex == PlayerSexType.MALE)
-                        profileData[8] = "MALE";
-                    else if (sex == PlayerSexType.FEMALE)
-                        profileData[8] = "FEMALE";
-                    else
-                        profileData[8] = "PAT";
+                    query += "sex="+ recv["sex"]+",";
                 }
+                if (recv.ContainsKey("zipcode"))
+                {
+
+                    query += ", zipcode=" + recv["zipcode"] + ",";
+                }
+
+                if (recv.ContainsKey("countrycode"))
+                {
+                    query += ", countrycode=" + recv["countrycode"] + ",";
+                }
+                UpdateProQuery.UpdateProfile(query);
             }
         }
 

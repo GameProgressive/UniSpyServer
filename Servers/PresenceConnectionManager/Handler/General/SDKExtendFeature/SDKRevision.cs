@@ -1,9 +1,9 @@
-﻿using PresenceConnectionManager.Handler.SendBuddies;
-using PresenceConnectionManager.Handler.SendBlockList;
+﻿using PresenceConnectionManager.Handler.Buddy.SendBlockList;
+using PresenceConnectionManager.Handler.Buddy.SendBuddies;
 using System;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.SDKExtendFeature
+namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
 {
     public static class SDKRevision
     {

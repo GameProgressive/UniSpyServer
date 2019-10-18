@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.NewUser
+namespace PresenceConnectionManager.Handler.Profile.NewUser.Query
 {
     public class NewUserQuery
     {

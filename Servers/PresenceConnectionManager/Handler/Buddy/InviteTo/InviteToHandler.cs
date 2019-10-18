@@ -1,7 +1,7 @@
 ﻿using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.InviteTo
+namespace PresenceConnectionManager.Handler.Buddy.InviteTo
 {
     public class InviteToHandler
     {

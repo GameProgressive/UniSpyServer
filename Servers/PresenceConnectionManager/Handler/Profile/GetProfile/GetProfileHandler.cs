@@ -1,9 +1,10 @@
 ﻿using GameSpyLib.Common;
 using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Handler.Profile.GetProfile.Query;
 using System;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.GetProfile
+namespace PresenceConnectionManager.Handler.Profile.GetProfile
 {
 
     public class GetProfileHandler
@@ -219,13 +220,12 @@ namespace PresenceConnectionManager.Handler.GetProfile
                 sendingBuffer += @"\birthday\" + birthday;
             }
 
-            PlayerSexType playerSexType;
-            if (!Enum.TryParse(result["sex"].ToString().ToUpper(), out playerSexType))
-                if (playerSexType == PlayerSexType.PAT)
+            if (result["sex"].ToString().Length>0)
+                if ((PlayerSexType)result["sex"] == PlayerSexType.PAT)
                     sendingBuffer += @"\sex\2";
-            if (playerSexType == PlayerSexType.FEMALE)
+            if ((PlayerSexType)result["sex"] == PlayerSexType.FEMALE)
                 sendingBuffer += @"\sex\1";
-            if (playerSexType == PlayerSexType.MALE)
+            if ((PlayerSexType)result["sex"] == PlayerSexType.MALE)
                 sendingBuffer += @"\sex\0";
 
 

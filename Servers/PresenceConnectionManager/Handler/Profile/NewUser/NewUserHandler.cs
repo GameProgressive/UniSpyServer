@@ -1,8 +1,9 @@
 ﻿using GameSpyLib.Common;
 using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Handler.Profile.NewUser.Query;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.NewUser
+namespace PresenceConnectionManager.Handler.Profile.NewUser
 {
     public class NewUserHandler
     {

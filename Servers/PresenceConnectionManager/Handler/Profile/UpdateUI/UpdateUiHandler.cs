@@ -2,7 +2,7 @@
 using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.UpdateUI
+namespace PresenceConnectionManager.Handler.Profile.UpdateUI
 {
     /// <summary>
     /// Update user information (email)

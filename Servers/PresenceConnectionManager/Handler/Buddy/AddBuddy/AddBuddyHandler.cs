@@ -2,7 +2,7 @@
 using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.AddBuddy
+namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
 {
     public class AddBuddyHandler
     {

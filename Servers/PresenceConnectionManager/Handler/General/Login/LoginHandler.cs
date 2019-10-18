@@ -2,12 +2,13 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.SDKExtendFeature;
+using PresenceConnectionManager.Handler.General.Login.Query;
+using PresenceConnectionManager.Handler.General.SDKExtendFeature;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace PresenceConnectionManager.Handler.Login
+namespace PresenceConnectionManager.Handler.General.Login
 {
     public class LoginHandler
     {
@@ -284,7 +285,7 @@ namespace PresenceConnectionManager.Handler.Login
                 if (_recv["response"] == response)
                 {
                     // Create session key
-                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_queryResult["uniquenick"].ToString() + _recv["namespaceid"]);
+                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_queryResult["uniquenick"] + _recv["namespaceid"]);
 
                     //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
                     //access to the sesskey to find the uniquenick for particular game

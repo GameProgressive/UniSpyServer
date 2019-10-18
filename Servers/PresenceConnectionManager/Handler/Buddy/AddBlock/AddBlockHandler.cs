@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.AddBlock
+namespace PresenceConnectionManager.Handler.Buddy.AddBlock
 {
     public class AddBlockHandler
     {

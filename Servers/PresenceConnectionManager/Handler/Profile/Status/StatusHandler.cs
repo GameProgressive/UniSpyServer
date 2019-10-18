@@ -1,9 +1,10 @@
 ﻿using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Handler.Profile.Status.Query;
 using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace PresenceConnectionManager.Handler.Status
+namespace PresenceConnectionManager.Handler.Profile.Status
 {
     public class StatusHandler
     {

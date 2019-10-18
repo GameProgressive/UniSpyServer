@@ -1,17 +1,16 @@
 ﻿using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.AddBlock;
-using PresenceConnectionManager.Handler.AddBuddy;
-using PresenceConnectionManager.Handler.DelBuddy;
-using PresenceConnectionManager.Handler.GetProfile;
-using PresenceConnectionManager.Handler.InviteTo;
-using PresenceConnectionManager.Handler.KeepAlive;
-using PresenceConnectionManager.Handler.Login;
-using PresenceConnectionManager.Handler.NewUser;
-using PresenceConnectionManager.Handler.RegisterNick;
-using PresenceConnectionManager.Handler.Status;
-using PresenceConnectionManager.Handler.UpdatePro;
-using PresenceConnectionManager.Handler.UpdateUI;
+using PresenceConnectionManager.Handler.Buddy.AddBlock;
+using PresenceConnectionManager.Handler.Buddy.AddBuddy;
+using PresenceConnectionManager.Handler.Buddy.DelBuddy;
+using PresenceConnectionManager.Handler.Buddy.InviteTo;
+using PresenceConnectionManager.Handler.General.Login;
+using PresenceConnectionManager.Handler.Profile.GetProfile;
+using PresenceConnectionManager.Handler.Profile.NewUser;
+using PresenceConnectionManager.Handler.Profile.RegisterNick;
+using PresenceConnectionManager.Handler.Profile.Status;
+using PresenceConnectionManager.Handler.Profile.UpdatePro;
+using PresenceConnectionManager.Handler.Profile.UpdateUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,9 +58,6 @@ namespace PresenceConnectionManager.Handler
                         break;
                     case "newuser"://create an new user
                         NewUserHandler.NewUser(session, recv);
-                        break;
-                    case "ka"://keep alive
-                        KAHandler.SendKeepAlive(session);
                         break;
                     case "addblock"://add an user to our block list
                         AddBlockHandler.AddUserToBlockList(session, recv);

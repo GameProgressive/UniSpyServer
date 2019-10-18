@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PresenceConnectionManager.RegisterNick
+namespace PresenceConnectionManager.Profile.RegisterNick.Query
 {
     public class RegisterNickQuery
     {

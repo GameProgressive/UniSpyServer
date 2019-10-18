@@ -58,14 +58,15 @@ namespace GameSpyLib.Common
 
         public void LoadServerConfig()
         {
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", "-----------", "--------------", "------");
+            LogWriter.Log.Write(LogLevel.Info, "+{0,-11}+{1,-14}+{2,-6}+", "-----------", "--------------", "------");
             LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", "Server Name", "Host Name", "Port");
+            LogWriter.Log.Write(LogLevel.Info, "+{0,-11}+{1,-14}+{2,-6}+", "-----------", "--------------", "------");
             // Add all servers
             foreach (ServerConfiguration cfg in ConfigManager.xmlConfiguration.Servers)
             {
                 StartServer(cfg);
             }
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", "-----------", "--------------", "------");
+            LogWriter.Log.Write(LogLevel.Info, "+{0,-11}+{1,-14}+{2,-6}+", "-----------", "--------------", "------");
             LogWriter.Log.Write("Server is successfully started! ", LogLevel.Info);
         }
 
