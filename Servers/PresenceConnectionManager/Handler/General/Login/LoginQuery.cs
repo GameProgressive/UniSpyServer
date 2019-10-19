@@ -14,11 +14,7 @@ namespace PresenceConnectionManager.Handler.General.Login.Query
         public static Dictionary<string, object> GetUserFromUniqueNick(Dictionary<string, string> dict)
         {
             var result = GPCMServer.DB.Query(
-                @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,
-                 profiles.longitude,profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,
-                 profiles.marriedid, profiles.childcount, profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex, 
-                 profiles.zipcode, profiles.countrycode, profiles.homepage, profiles.birthday, profiles.birthmonth ,profiles.birthyear, 
-                 profiles.location, profiles.icquin, profiles.status,profiles.statstring, users.email, users.password, users.userstatus 
+                @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, users.email, users.password, users.emailverified,users.banned 
                  FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
                  WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1"
                  , dict["uniquenick"], dict["namespaceid"]
@@ -28,10 +24,7 @@ namespace PresenceConnectionManager.Handler.General.Login.Query
 
         public static Dictionary<string, object> GetUserFromNickAndEmail(Dictionary<string, string> dict)
         {
-            var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, profiles.firstname, profiles.lastname, profiles.publicmask, profiles.latitude,profiles.longitude,"
-            + @"profiles.aim, profiles.picture, profiles.occupationid, profiles.incomeid, profiles.industryid,profiles.marriedid, profiles.childcount, "
-            + @"profiles.interests1,profiles.ownership1, profiles.connectiontype, profiles.sex,profiles.zipcode, profiles.countrycode, profiles.homepage, "
-            + @"profiles.birthday, profiles.birthmonth ,profiles.birthyear,profiles.location, profiles.icquin,profiles.status,profiles.statstring, users.password, users.userstatus, namespace.uniquenick"
+            var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, namespace.uniquenick , users.password, users.emailverified,users.banned"
             + @" FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid "
             + @"WHERE  namespace.namespaceid = @P0  AND profiles.nick = @P1 AND  users.email=@P2", dict["namespaceid"], dict["nick"], dict["email"]);
             return (result.Count == 0) ? null : result[0];
@@ -44,9 +37,9 @@ namespace PresenceConnectionManager.Handler.General.Login.Query
         /// <param name="dict"></param>
         /// <param name="sesskey"></param>
         /// <param name="player"></param>
-        public static void UpdateSessionKey(Dictionary<string, object> dict, uint namespaceid, ushort sesskey, Guid guid)
+        public static void UpdateSessionKey(uint profileid, uint namespaceid, ushort sesskey, Guid guid)
         {
-            Dictionary<string, object> temp = GPCMServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 ", dict["profileid"], namespaceid)[0];
+            Dictionary<string, object> temp = GPCMServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 ", profileid, namespaceid)[0];
             uint id = Convert.ToUInt32(temp["id"]);
             GPCMServer.DB.Execute("UPDATE namespace SET guid = @P0 WHERE id = @P1 ", guid.ToString(), id);
             GPCMServer.DB.Execute("UPDATE namespace SET sesskey = @P0 WHERE id = @P1 ", sesskey, id);

@@ -14,7 +14,7 @@ namespace PresenceConnectionManager.Handler.General.KeepAlive
                 // Try and send a Keep-Alive
                 try
                 {
-                    session.SendAsync(@"\ka\\final\");
+                    session.Send(@"\ka\\final\");
                 }
                 catch
                 {

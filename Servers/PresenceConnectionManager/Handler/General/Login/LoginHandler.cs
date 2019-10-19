@@ -29,7 +29,7 @@ namespace PresenceConnectionManager.Handler.General.Login
         /// </summary>
         private static string _sendingBuffer;
 
-        private static GPErrorCode _errorCode;
+        private static GPErrorCode _errorCode = GPErrorCode.NoError;
 
         private static string _errorMsg;
 
@@ -42,7 +42,7 @@ namespace PresenceConnectionManager.Handler.General.Login
         public static void ProcessLogin(GPCMSession session, Dictionary<string, string> recv)
         {
             _recv = recv;
-
+            
             IsContainAllKeys();
             if (_errorCode != GPErrorCode.NoError)
             {
@@ -53,15 +53,15 @@ namespace PresenceConnectionManager.Handler.General.Login
 
             PreProcessForLogin(session);
 
-            if (recv.ContainsKey("uniquenick"))
+            if (_recv.ContainsKey("uniquenick"))
             {
                 UniquenickLoginMethod(session);
             }
-            else if (recv.ContainsKey("authtoken"))
+            else if (_recv.ContainsKey("authtoken"))
             {
                 AuthTokenLoginMethod(session);
             }
-            else if (recv.ContainsKey("user"))
+            else if (_recv.ContainsKey("user"))
             {
                 NoUniquenickLoginMethod(session);
             }
@@ -72,7 +72,7 @@ namespace PresenceConnectionManager.Handler.General.Login
                 return;
             }
             //if no match found we disconnect the session
-            CheckDatabaseResult();
+            CheckDatabaseResult(session);
             if (_errorCode != GPErrorCode.NoError)
             {
                 GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
@@ -90,6 +90,12 @@ namespace PresenceConnectionManager.Handler.General.Login
             }
 
             SendLoginResponseChallenge(session);
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                session.DisconnectByReason(_disconnectReason);
+                return;
+            }
 
             SDKRevision.Switch(session, _recv);
         }
@@ -122,6 +128,9 @@ namespace PresenceConnectionManager.Handler.General.Login
                 //we add the nick and email to dictionary
                 string nick = user.Substring(0, Pos);
                 string email = user.Substring(Pos + 1);
+                session.PlayerInfo.Nick = nick;
+                session.PlayerInfo.Email = email;
+                //improve it later
                 _recv.Add("nick", nick);
                 _recv.Add("email", email);
             }
@@ -180,107 +189,67 @@ namespace PresenceConnectionManager.Handler.General.Login
                 _recv.Add("namespaceid", "0");
             }
             _queryResult = LoginQuery.GetUserFromNickAndEmail(_recv);
-            if (_queryResult == null)
-            {
-                GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadNick, "No user found");
-                return;
-            }                
-            session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
         }
 
         private static void UniquenickLoginMethod(GPCMSession session)
         {
             if (!_recv.ContainsKey("namespaceid"))
-            { 
+            {
                 _recv.Add("namespaceid", "0");
                 session.PlayerInfo.Namespaceid = 0;
             }
             _queryResult = LoginQuery.GetUserFromUniqueNick(_recv);
-           
-            if (_queryResult == null)
-            {
-                GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadNick, "No user found");
-                return;
-            }
-            session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
         }
         #endregion
 
-        private static void CheckDatabaseResult()
+        private static void CheckDatabaseResult(GPCMSession session)
         {
             if (_queryResult == null)
             {
                 if (_recv.ContainsKey("uniquenick"))
                 {
-
                     _errorCode = GPErrorCode.LoginBadUniquenick;
                     _errorMsg = "The uniquenick provided is incorrect!";
                     _disconnectReason = DisconnectReason.InvalidUsername;
                 }
-                else
+                else if (_recv.ContainsKey("nick"))
                 {
-                    _errorCode = GPErrorCode.LoginBadProfile;
+                    _errorCode = GPErrorCode.LoginBadNick;
                     _errorMsg = "The information provided is incorrect!";
                     _disconnectReason = DisconnectReason.InvalidUsername;
                 }
+                else//authtoken error
+                {
+                    _errorCode = GPErrorCode.AuthAddBadForm;
+                    _errorMsg = "The information provided is incorrect!";
+                    _disconnectReason = DisconnectReason.InvalidLoginQuery;
+                }
+            }
+            else
+            {
+                //parse profileid to playerinfo
+                session.PlayerInfo.Profileid = Convert.ToUInt32(_queryResult["profileid"]);
             }
         }
         private static void CheckUsersAccountAvailability()
         {
-            PlayerOnlineStatus onlineStatus;
-            UserStatus userStatus;
+            bool isVerified = Convert.ToBoolean(_queryResult["emailverified"]);
+            bool isBanned = Convert.ToBoolean(_queryResult["banned"]);
+            if (!isVerified)
+            {
+                _errorMsg = "Your account is not verified. Please check your email inbox and verify the account.";
+                _disconnectReason = DisconnectReason.InvalidPlayer;
+                _errorCode = GPErrorCode.LoginBadProfile;
+            }
 
-            if (!Enum.TryParse(_queryResult["status"].ToString(), out onlineStatus))
-            {
-                _errorMsg = "Invalid player data! Please contact an administrator.";
-                _disconnectReason = DisconnectReason.InvalidPlayer;
-                _errorCode = GPErrorCode.LoginBadUniquenick;
-                //GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
-                //session.DisconnectByReason(DisconnectReason.InvalidPlayer);
-            }
-            if (!Enum.TryParse(_queryResult["userstatus"].ToString(), out userStatus))
-            {
-                _errorMsg = "Invalid player data! Please contact an administrator.";
-                _disconnectReason = DisconnectReason.InvalidPlayer;
-                _errorCode = GPErrorCode.LoginBadUniquenick;
-                //GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadUniquenick, "Invalid player data! Please contact an administrator.");
-                //session.DisconnectByReason(DisconnectReason.InvalidPlayer);
-                //return;
-            }
             // Check the status of the account.
             // If the single profile is banned, the account or the player status
-            if (onlineStatus == PlayerOnlineStatus.Banned)
+            if (isBanned)
             {
                 _errorMsg = "Your profile has been permanently suspended.";
                 _disconnectReason = DisconnectReason.PlayerIsBanned;
-                _errorCode = GPErrorCode.LoginBadUniquenick;
-                //GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadUniquenick, "Your profile has been permanently suspended.");
-                //session.DisconnectByReason(DisconnectReason.PlayerIsBanned);
-                //return;
+                _errorCode = GPErrorCode.LoginProfileDeleted;
             }
-            if (userStatus == UserStatus.Created)
-            {
-                _errorMsg = "Your account is not verified. Please check your email inbox and verify the account.";
-                _disconnectReason = DisconnectReason.PlayerIsBanned;
-                _errorCode = GPErrorCode.LoginBadUniquenick;
-
-                //GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadUniquenick, "Your account is not verified. Please check your email inbox and verify the account.");
-                //session.DisconnectByReason(DisconnectReason.PlayerIsBanned);
-                //return;
-            }
-            if (userStatus == UserStatus.Banned)
-            {
-                _errorMsg = "Your account has been permanently suspended.";
-                _disconnectReason = DisconnectReason.PlayerIsBanned;
-                _errorCode = GPErrorCode.LoginBadUniquenick;
-                //GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadUniquenick, "Your account has been permanently suspended.");
-                //session.DisconnectByReason(DisconnectReason.PlayerIsBanned);
-                //return;
-            }
-
-            _errorMsg = "No error";
-            _disconnectReason = DisconnectReason.NormalLogout;
-            _errorCode = GPErrorCode.NoError;
         }
         public static void SendLoginResponseChallenge(GPCMSession session)
         {
@@ -295,31 +264,30 @@ namespace PresenceConnectionManager.Handler.General.Login
 
                     //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
                     //access to the sesskey to find the uniquenick for particular game
-                    LoginQuery.UpdateSessionKey(_queryResult, session.PlayerInfo.Namespaceid, session.PlayerInfo.SessionKey, session.Id);
+                    LoginQuery.UpdateSessionKey(session.PlayerInfo.Profileid, session.PlayerInfo.Namespaceid, session.PlayerInfo.SessionKey, session.Id);
 
                     string responseProof = GenerateProof(session, session.PlayerInfo.ServerChallenge, session.PlayerInfo.UserChallenge, _queryResult["password"].ToString());
 
+                    string random = GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex);
                     // Password is correct
-                    _sendingBuffer =
-                        string.Format(@"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
+                    _sendingBuffer = string.Format(
+                        @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         session.PlayerInfo.SessionKey,
-                        //GenerateProof(Session.ServerChallengeKey, Recv["challenge"], Recv["user"], Recv["authtoken"]?.Length > 0 ? 0 : _partnerid, _originalPassword), // Do this again, Params are reversed!
                         responseProof,
                         _queryResult["profileid"],
                         _queryResult["uniquenick"],
                         // Generate LT whatever that is (some sort of random string, 22 chars long)
-                        GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex));
+                        random
+                        ) ;
+
                     session.PlayerInfo.LoginProcess = LoginStatus.Completed;
                     session.SendAsync(_sendingBuffer);
                 }
                 else
                 {
-                    // Log Incoming Connection
-                    string statusString = string.Format(@"[Login Failed!] Nick:{0} - Profileid:{1} - IP:{2}", session.PlayerInfo.User, _queryResult["profileid"], session.Socket.RemoteEndPoint);
-                    session.ToLog(LogLevel.Info, statusString);
-                    // Password is incorrect with database value.
-                    GameSpyUtils.SendGPError(session, GPErrorCode.LoginBadPassword, "The password provided is incorrect");
-                    session.DisconnectByReason(DisconnectReason.InvalidPassword);
+                    _errorCode = GPErrorCode.LoginBadPassword;
+                    _errorMsg = "Password is not correct";
+                    _disconnectReason = DisconnectReason.InvalidPassword;
                 }
             }
 

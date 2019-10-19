@@ -4,6 +4,7 @@ using PresenceConnectionManager.Handler.Buddy.AddBlock;
 using PresenceConnectionManager.Handler.Buddy.AddBuddy;
 using PresenceConnectionManager.Handler.Buddy.DelBuddy;
 using PresenceConnectionManager.Handler.Buddy.InviteTo;
+using PresenceConnectionManager.Handler.General.KeepAlive;
 using PresenceConnectionManager.Handler.General.Login;
 using PresenceConnectionManager.Handler.Profile.GetProfile;
 using PresenceConnectionManager.Handler.Profile.NewUser;
@@ -61,6 +62,9 @@ namespace PresenceConnectionManager.Handler
                         break;
                     case "addblock"://add an user to our block list
                         AddBlockHandler.AddUserToBlockList(session, recv);
+                        break;
+                    case "KA":
+                        KAHandler.SendKeepAlive(session);
                         break;
                     default:
                         session.UnknownDataRecived(recv);
