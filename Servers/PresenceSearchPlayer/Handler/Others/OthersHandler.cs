@@ -9,8 +9,7 @@ namespace PresenceSearchPlayer.Handler.Others
     /// </summary>
     public class OthersHandler
     {
-        public static object OthersList { get; private set; }
-
+         
         /// <summary>
         /// Get profiles that have you on their buddy(friend) list.
         /// </summary>

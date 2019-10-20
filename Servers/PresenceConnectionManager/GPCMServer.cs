@@ -80,6 +80,7 @@ namespace PresenceConnectionManager
             // Set connection handling           
         }
         protected override TcpSession CreateSession() { return new GPCMSession(this); }
+
         private void PlayerStatusUpdate()
         {
             //the status of a player may change time by time we need to update that, so the online status will update on others
