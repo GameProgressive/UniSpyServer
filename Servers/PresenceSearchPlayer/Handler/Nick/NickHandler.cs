@@ -9,12 +9,16 @@ namespace PresenceSearchPlayer.Handler.Nick
 {
 
     /// <summary>
-    /// Uses a nick to find how many uniquenick is in this nick
+    /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
     public class NickHandler
     {
-        static List<Dictionary<string, object>> _queryResult;
+        static List<Dictionary<string, object>>_queryResult;
         static Dictionary<string, string> _recv;
+        static GPErrorCode _errorCode;
+        static string _sendingBuffer;
+        static string _errorMsg;
+
         /// <summary>
         /// Get nickname through email and password
         /// </summary>
@@ -23,60 +27,64 @@ namespace PresenceSearchPlayer.Handler.Nick
         public static void SearchNicks(GPSPSession session, Dictionary<string, string> recv)
         {
             _recv = recv;
+            _errorCode = GPErrorCode.NoError;
+            _sendingBuffer = "";
+            _errorMsg = "";
+            _queryResult = null;
+
             //Format the password for our database storage
             //if not recieved correct request we terminate
-            GPErrorCode error = IsSearchNicksContianAllKeys();
-            if (error != GPErrorCode.NoError)
+            IsContianAllKeys();
+            if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, (int)error, "Error recieving SearchNicks request.");
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 return;
             }
-
-            if (!_recv.ContainsKey("namespaceid"))
+            //get nicknames from GPSPDBQuery class
+            _queryResult = NickQuery.RetriveNicknames(_recv["email"],_recv["password"],Convert.ToUInt16(_recv["namespaceid"]));
+            CheckDatabaseResult();
+            if (_errorCode != GPErrorCode.NoError)
             {
-                _recv.Add("namespaceid", "0");
-            }
-            try
-            {
-                //get nicknames from GPSPDBQuery class
-                _queryResult = NickQuery.RetriveNicknames(_recv);
-            }
-            catch (Exception ex)
-            {
-                LogWriter.Log.Write(ex.Message, LogLevel.Error);
-                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "This request cannot be processed because of a database error.");
+                session.SendAsync(@"\nr\\ndone\final\");
+                //GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 return;
             }
+            SendResponse(session);
 
-            if (_queryResult.Count < 1)
-            {
-                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "No match found !");
-                return;
-            }
 
-            string sendingBuffer;
-            sendingBuffer = @"\nr\";
-            foreach (Dictionary<string, object> row in _queryResult)
-            {
-                sendingBuffer += @"\nick\";
-                sendingBuffer += row["nick"];
-                sendingBuffer += @"\uniquenick\";
-                sendingBuffer += row["uniquenick"];
-
-            }
-
-            sendingBuffer += @"\ndone\final\";
-            session.SendAsync(sendingBuffer);
+           
         }
 
-        public static GPErrorCode IsSearchNicksContianAllKeys()
+        private static void SendResponse(GPSPSession session)
+        {
+            _sendingBuffer= @"\nr\";
+            foreach (Dictionary<string, object> player in _queryResult)
+            {
+                _sendingBuffer += @"\nick\";
+                _sendingBuffer += player["nick"];
+                _sendingBuffer += @"\uniquenick\";
+                _sendingBuffer += player["uniquenick"];
+            }
+            _sendingBuffer += @"\ndone\final\";
+            session.SendAsync(_sendingBuffer);
+        }
+
+        private static void CheckDatabaseResult()
+        {
+            if (_queryResult == null)
+            {
+                _errorCode = GPErrorCode.DatabaseError;
+                _errorMsg = "No match found";
+            }
+        }
+
+        public static void IsContianAllKeys()
         {
             if (!_recv.ContainsKey("email"))
             {
-
-                return GPErrorCode.Parse;
+                _errorCode = GPErrorCode.Parse;
+                _errorMsg = "Parsing error";
             }
-
             // First, we try to receive an encoded password
             if (!_recv.ContainsKey("passenc"))
             {
@@ -84,10 +92,14 @@ namespace PresenceSearchPlayer.Handler.Nick
                 if (!_recv.ContainsKey("pass"))
                 {
                     // No password is specified, we cannot continue                   
-                    return GPErrorCode.Parse;
+                    _errorCode = GPErrorCode.Parse;
+                    _errorMsg = "Parsing error";
+                }
+                if (!_recv.ContainsKey("namespaceid"))
+                {
+                    _recv.Add("namespaceid", "0");
                 }
             }
-            return GPErrorCode.NoError;
         }
     }
 }

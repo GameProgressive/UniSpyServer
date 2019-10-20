@@ -42,7 +42,12 @@ namespace PresenceConnectionManager.Handler.General.Login
         public static void ProcessLogin(GPCMSession session, Dictionary<string, string> recv)
         {
             _recv = recv;
-            
+            _queryResult = null;
+            _sendingBuffer = "";
+            _errorCode = GPErrorCode.NoError;
+            _errorMsg = "";
+            _disconnectReason = DisconnectReason.NormalLogout;
+
             IsContainAllKeys();
             if (_errorCode != GPErrorCode.NoError)
             {
@@ -98,7 +103,10 @@ namespace PresenceConnectionManager.Handler.General.Login
             }
 
             SDKRevision.Switch(session, _recv);
+
+
         }
+
 
 
         private static void IsContainAllKeys()
@@ -278,7 +286,7 @@ namespace PresenceConnectionManager.Handler.General.Login
                         _queryResult["uniquenick"],
                         // Generate LT whatever that is (some sort of random string, 22 chars long)
                         random
-                        ) ;
+                        );
 
                     session.PlayerInfo.LoginProcess = LoginStatus.Completed;
                     session.SendAsync(_sendingBuffer);

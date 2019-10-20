@@ -16,18 +16,23 @@ namespace PresenceSearchPlayer.Handler.Search
     {
         private static List<Dictionary<string, object>> _queryResult;
         private static string _sendingBuffer;
-        private static GPErrorCode _error = GPErrorCode.NoError;
+        private static GPErrorCode _errorCode;
         private static string _errorMsg;
         private static Dictionary<string, string> _recv;
 
         public static void SearchUsers(GPSPSession session, Dictionary<string, string> recv)
         {
+            //initialize all staitc member
             _recv = recv;
+            _sendingBuffer = "";
+            _errorCode = GPErrorCode.NoError;
+            _errorMsg = "";
+            _queryResult = null;
 
             IsContainAllKey();
-            if (_error != GPErrorCode.NoError)
+            if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, _error, _errorMsg);
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 return;
             }
 
@@ -51,9 +56,9 @@ namespace PresenceSearchPlayer.Handler.Search
             }
 
             CheckDatabaseResult();
-            if (_error != GPErrorCode.NoError)
+            if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, _error, _errorMsg);
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 return;
             }
 
@@ -65,7 +70,7 @@ namespace PresenceSearchPlayer.Handler.Search
         {
             if (!_recv.ContainsKey("sesskey") && !_recv.ContainsKey("email") && !_recv.ContainsKey("uniquenick"))
             {
-                _error = GPErrorCode.Parse;
+                _errorCode = GPErrorCode.Parse;
                 _errorMsg = "Parsing error";
             }
             if (!_recv.ContainsKey("namespaceid"))
@@ -82,7 +87,8 @@ namespace PresenceSearchPlayer.Handler.Search
         /// <returns></returns>
         private static void SearchWithUniquenick()
         {
-            _queryResult = SearchQuery.GetProfileFromUniquenick(_recv);
+            _queryResult
+                = SearchQuery.GetProfileFromUniquenick(_recv["uniquenick"], Convert.ToUInt32(_recv["namespaceid"]));
         }
 
         /// <summary>
@@ -93,7 +99,7 @@ namespace PresenceSearchPlayer.Handler.Search
         /// <returns></returns>
         private static void SearchWithNickAndEmail()
         {
-            _queryResult = SearchQuery.GetProfileFromNickEmail(_recv);
+            _queryResult = SearchQuery.GetProfileFromNickEmail(_recv["nick"],_recv["email"],Convert.ToUInt16(_recv["namespaceid"]));
         }
 
         /// <summary>
@@ -109,9 +115,9 @@ namespace PresenceSearchPlayer.Handler.Search
 
         private static void CheckDatabaseResult()
         {
-            if (_queryResult.Count < 1)
+            if (_queryResult == null)
             {
-                _error = GPErrorCode.Search;
+                _errorCode = GPErrorCode.Search;
                 _errorMsg = "No match found!";
             }
         }
@@ -133,7 +139,7 @@ namespace PresenceSearchPlayer.Handler.Search
                 else
                 {
                     index = 0;
-                }               
+                }
             }
             if (index < _queryResult.Count)
             {

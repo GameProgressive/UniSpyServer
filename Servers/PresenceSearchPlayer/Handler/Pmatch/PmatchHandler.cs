@@ -1,54 +1,74 @@
 ﻿using GameSpyLib.Common;
 using PresenceSearchPlayer.Enumerator;
+using System;
 using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.Pmatch
 {
+    /// <summary>
+    /// Search the all players in specific game
+    /// </summary>
     public class PmatchHandler
     {
-        public static void PlayerMatch(GPSPSession session, Dictionary<string, string> dict)
-        { //pmath\\sesskey\\profileid\\productid\\
-            string sendingBuffer;
-            if (IsContainAllKey(dict))
+        private static List<Dictionary<string, object>> _queryResult;
+        private static Dictionary<string, string> _recv;
+        private static GPErrorCode _errorCode;
+        private static string _errorMsg;
+        private static string _sendingBuffer;
+        public static void PlayerMatch(GPSPSession session, Dictionary<string, string> recv)
+        {
+            _recv = recv;
+            _queryResult = null;
+            _errorCode = GPErrorCode.NoError;
+            _errorMsg = "";
+            _sendingBuffer = "";
+
+            //pmath\\sesskey\\profileid\\productid\\
+            IsContainAllKey();
+            if (_errorCode != GPErrorCode.NoError)
             {
-                List<Dictionary<string, object>> temp = PmatchQuery.PlayerMatch(dict);
-                if (temp.Count == 1)
-                {
-                    sendingBuffer = string.Format(@"\psr\status\{0}\nick\{1}\statuscode\{2}\final\",
-                        temp[0]["status"], temp[0]["nick"], temp[0]["statuscode"]);
-                    session.SendAsync(sendingBuffer);
-                }
-                else
-                {
-                    GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "No match found!");
-                }
-
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                return;
             }
-
-            //there are two ways to send information back.
-
-            //First way: \psr\<profileid>\status\<status>\statuscode\<statuscode>\psrdone\final\
-
-            //this is a multiple command. you can contain mutiple \psr\........... in the Steam
-            //Second way:\psr\<profileid>\nick\<nick>\***multiple \psr\ command***\psrdone\final\
-            //<status> is like the introduction in a player homepage
-            //<statuscode> mean the status information is support or not the value should be as follows
-            //GP_NEW_STATUS_INFO_SUPPORTED = 0xC00,
-            //GP_NEW_STATUS_INFO_NOT_SUPPORTED = 0xC01            
+            _queryResult = PmatchQuery.PlayerMatch(Convert.ToUInt16(_recv["productid"]));
+            CheckDatabaseResult();
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                return;
+            }
+            SendRespose(session);
         }
 
-        private static bool IsContainAllKey(Dictionary<string, string> dict)
+        private static void SendRespose(GPSPSession session)
         {
-            if (dict.ContainsKey("sesskey") && dict.ContainsKey("profileid") && dict.ContainsKey("productid"))
+            for (int i = 0; i < _queryResult.Count; i++)
             {
-                if (GameSpyUtils.IsNumber(dict["sesskey"]) && GameSpyUtils.IsNumber(dict["profileid"]) && GameSpyUtils.IsNumber(dict["productid"]))
-                    return true;
-                else
-                    return false;
+                _sendingBuffer += @"\psr\"+_queryResult[i]["profileid"];
+                _sendingBuffer += @"\status\" + _queryResult[i]["statstring"];
+                _sendingBuffer += @"\nick\" + _queryResult[i]["nick"];
+                _sendingBuffer += @"\statuscode\" + _queryResult[i]["status"];
+
             }
-            else
+            _sendingBuffer += @"\psrdone\final\";
+            session.SendAsync(_sendingBuffer);
+
+        }
+
+        private static void IsContainAllKey()
+        {
+            if (!_recv.ContainsKey("sesskey") || !_recv.ContainsKey("profileid") || !_recv.ContainsKey("productid"))
             {
-                return false;
+                _errorCode = GPErrorCode.Parse;
+                _errorMsg = "Parsing error";
+            }
+        }
+        private static void CheckDatabaseResult()
+        {
+            if (_queryResult.Count < 1)
+            {
+                _errorCode = GPErrorCode.DatabaseError;
+                _errorMsg = "No match found";
             }
         }
     }

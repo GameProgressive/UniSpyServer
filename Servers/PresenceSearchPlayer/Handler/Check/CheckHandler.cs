@@ -6,7 +6,7 @@ namespace PresenceSearchPlayer.Handler.Check
 {
     public class CheckHandler
     {
-
+      
         /// <summary>
         /// Validates a user's info, without logging into the account.
         /// </summary>

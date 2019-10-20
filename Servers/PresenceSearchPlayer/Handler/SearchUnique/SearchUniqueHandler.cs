@@ -18,6 +18,11 @@ namespace PresenceSearchPlayer.Handler.SearchUnique
         public static void SearchProfileWithUniquenick(GPSPSession session, Dictionary<string, string> recv)
         {
             _recv = recv;
+            _sendingBuffer = "";
+            _error = GPErrorCode.NoError;
+            _errorMsg = "";
+            _queryResult = null;
+
             IsContainAllKey();
             if (_error != GPErrorCode.NoError)
             {

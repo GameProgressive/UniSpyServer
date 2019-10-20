@@ -4,9 +4,9 @@ namespace PresenceSearchPlayer.Handler.Search
 {
     public class SearchQuery
     {
-        public static List<Dictionary<string, object>> GetProfileFromNickEmail(Dictionary<string, string> dict)
+        public static List<Dictionary<string, object>> GetProfileFromNickEmail(string nick,string email,uint namespaceid)
         {
-            List<Dictionary<string, object>> queryResult = GPSPServer.DB.Query("SELECT profiles.profileid,profiles.nick,namespace.uniquenick,profiles.lastname,profiles.firstname,users.email,namespace.namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE users.email = @P0 AND profiles.nick = @P1", dict["email"], dict["nick"]);
+            List<Dictionary<string, object>> queryResult = GPSPServer.DB.Query("SELECT profiles.profileid,profiles.nick,namespace.uniquenick,profiles.lastname,profiles.firstname,users.email,namespace.namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE users.email = @P0 AND profiles.nick = @P1 AND namespace.namespaceid = @P3", email, nick,namespaceid);
             return (queryResult.Count == 0) ? null : queryResult;
         }
         /// <summary>
@@ -14,9 +14,9 @@ namespace PresenceSearchPlayer.Handler.Search
         /// </summary>
         /// <param name="dict"></param>
         /// <returns></returns>
-        public static List<Dictionary<string, object>> GetProfileFromUniquenick(Dictionary<string, string> dict)
+        public static List<Dictionary<string, object>> GetProfileFromUniquenick(string uniquenick,uint namespaceid)
         {
-            List<Dictionary<string, object>> result = GPSPServer.DB.Query(@"SELECT profiles.profileid,profiles.nick,namespace.uniquenick,profiles.lastname,profiles.firstname,users.email,namespace.namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE namespace.uniquenick=@P0 AND namespace.namespaceid = @P1", dict["nick"], dict["namespaceid"]);
+            List<Dictionary<string, object>> result = GPSPServer.DB.Query(@"SELECT profiles.profileid,profiles.nick,namespace.uniquenick,profiles.lastname,profiles.firstname,users.email,namespace.namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE namespace.uniquenick=@P0 AND namespace.namespaceid = @P1", uniquenick, namespaceid);
             return (result.Count == 0) ? null : result;
         }
 

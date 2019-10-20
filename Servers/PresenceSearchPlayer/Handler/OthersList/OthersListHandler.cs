@@ -4,6 +4,11 @@ namespace PresenceSearchPlayer.Handler.OthersList
 {
     class OthersListHandler
     {
+        /// <summary>
+        /// search a buddy list which contain less information
+        /// </summary>
+        /// <param name="session"></param>
+        /// <param name="dict"></param>
         public static void SearchOtherBuddyList(GPSPSession session, Dictionary<string, string> dict)
         {
             //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
