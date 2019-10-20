@@ -34,7 +34,7 @@ namespace PresenceSearchPlayer.Handler.Others
                 GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 return;
             }
-            _queryResult = OthersQuery.GetOtherBuddy(recv);
+            _queryResult = OthersQuery.GetOtherBuddy(Convert.ToUInt16(_recv["profileid"]),Convert.ToUInt16(_recv["namespaceid"]));
            
             CheckDatabaseReult();
             if (_errorCode != GPErrorCode.NoError)
@@ -73,7 +73,11 @@ namespace PresenceSearchPlayer.Handler.Others
 
         private static void IsContainAllKey()
         {
-            throw new NotImplementedException();
+            if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
+            {
+                _errorCode = GPErrorCode.Parse;
+                _errorMsg = "Parsing error";
+            }
         }
     }
 }

@@ -46,13 +46,10 @@ namespace PresenceSearchPlayer.Handler.Nick
             if (_errorCode != GPErrorCode.NoError)
             {
                 session.SendAsync(@"\nr\\ndone\final\");
-                //GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 return;
             }
-            SendResponse(session);
 
-
-           
+            SendResponse(session);           
         }
 
         private static void SendResponse(GPSPSession session)
