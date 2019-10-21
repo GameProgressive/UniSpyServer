@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer
     {
         public GPSPSession(GPSPServer server) : base(server)
         {
-            DisconnectAfterSend = false;
+            DisconnectAfterSend = true;
         }
 
         protected override void OnReceived(string message)

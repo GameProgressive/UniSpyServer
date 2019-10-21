@@ -41,7 +41,7 @@ namespace PresenceSearchPlayer.Handler.Nick
                 return;
             }
             //get nicknames from GPSPDBQuery class
-            _queryResult = NickQuery.RetriveNicknames(_recv["email"],_recv["password"],Convert.ToUInt16(_recv["namespaceid"]));
+            _queryResult = NickQuery.RetriveNicknames(_recv["email"],_recv["passenc"],Convert.ToUInt16(_recv["namespaceid"]));
             CheckDatabaseResult();
             if (_errorCode != GPErrorCode.NoError)
             {
