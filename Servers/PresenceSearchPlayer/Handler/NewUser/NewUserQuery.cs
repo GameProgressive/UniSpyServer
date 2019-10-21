@@ -61,7 +61,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
             if (result.Count == 0)
             {
                 //ToDo Finish this add account in database and return a userid
-                GPSPServer.DB.Execute("INSERT INTO users(email,password,userstatus) VALUES (@P0, @P1, @P2)", dict["email"], dict["passenc"], "1");
+                GPSPServer.DB.Execute("INSERT INTO users(email,password) VALUES (@P0, @P1)", dict["email"], dict["passenc"]);
                 userid = Convert.ToInt32(GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", dict["email"])[0]["userid"]);
                 return userid;
             }
