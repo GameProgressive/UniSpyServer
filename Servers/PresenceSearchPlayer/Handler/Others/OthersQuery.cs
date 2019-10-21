@@ -7,7 +7,7 @@ namespace PresenceSearchPlayer.Handler.Others
     {
         public static List<Dictionary<string, object>> GetOtherBuddy(uint profileid,uint namespaceid)
         {
-            var buddy = GPSPServer.DB.Query("SELECT friends.targetid FROM friends WHERE profileid = @P0 AND namespace = @P1", profileid, namespaceid)[0];
+            var buddy = GPSPServer.DB.Query("SELECT friends.targetid FROM friends WHERE profileid = @P0 AND namespaceid = @P1", profileid, namespaceid)[0];
             uint[] buddyPIDs = buddy.Values.Cast<uint>().ToArray();
 
             List<Dictionary<string, object>> result= new List<Dictionary<string, object>>(buddyPIDs.Length);

@@ -51,7 +51,7 @@ namespace PresenceSearchPlayer.Handler.Others
             _sendingBuffer = @"\others\";
            foreach(Dictionary<string,object> player in _queryResult)
             {
-                _sendingBuffer += @"\o\" + player["profileid"];
+                _sendingBuffer += @"\o\" + _recv["profileid"];
                 _sendingBuffer += @"\nick\" + player["nick"];
                 _sendingBuffer += @"\uniquenick\" + player["uniquenick"];
                 _sendingBuffer += @"\first\" + player["firstname"];

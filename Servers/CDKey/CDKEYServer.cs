@@ -24,7 +24,7 @@ namespace CDKey
         /// </summary>
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            string decrypted = Enctypex.XorEncoding(message, 0).Trim('\\');
+           string decrypted = Enctypex.XorEncoding(message, 0).Trim('\\');
             string[] recieved = decrypted.TrimStart('\\').Split('\\');
             Dictionary<string, string> recv = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
             CommandSwitcher.Switch(this, endPoint, recv);

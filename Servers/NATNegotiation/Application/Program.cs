@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Application
         public static readonly string ServerName = "NATNEG";
         public static string BasePath { get; protected set; }
 
-        public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+       // public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         private static ServerManager Manager = null;
 
@@ -26,7 +26,7 @@ namespace PresenceConnectionManager.Application
         ///<param name="bool_InitPathArg">argument for Main()</param>
         static void Main(string[] args)
         {
-            if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
+         //   if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
 
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;

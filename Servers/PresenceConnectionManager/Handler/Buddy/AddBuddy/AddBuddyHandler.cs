@@ -36,7 +36,6 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
             if (!_recv.ContainsKey("sesskey") || !_recv.ContainsKey("newprofileid") || !_recv.ContainsKey("reason"))
             {
                 _errorCode = GPErrorCode.Parse;
-                _errorMsg = "Parsing error";
             }
         }
     }
