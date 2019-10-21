@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS `addrequests` (
   `profileid` int(10) unsigned NOT NULL DEFAULT 0,
   `targetid` int(11) unsigned NOT NULL,
   `namespaceid` int(11) unsigned NOT NULL,
-  `syncrequested` varchar(255) NOT NULL DEFAULT '',
   `reason` varchar(255) NOT NULL DEFAULT '',
+  `syncrequested` varchar(255) NOT NULL DEFAULT '',
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `FK_addrequests_profiles` (`profileid`) USING BTREE,
   KEY `FK_addrequests_profiles_2` (`targetid`) USING BTREE,
@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `friends` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(11) unsigned NOT NULL,
   `targetid` int(11) unsigned NOT NULL,
-  `namespaceid` int(11) unsigned DEFAULT NULL,
+  `namespaceid` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `id` (`id`) USING BTREE,
   KEY `FK_friends_profiles` (`profileid`) USING BTREE,
@@ -4678,15 +4678,16 @@ CREATE TABLE IF NOT EXISTS `namespace` (
   KEY `uniquenick` (`uniquenick`),
   KEY `guid` (`guid`),
   CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
--- Dumping data for table retrospy2.namespace: ~4 rows (approximately)
+-- Dumping data for table retrospy2.namespace: ~5 rows (approximately)
 /*!40000 ALTER TABLE `namespace` DISABLE KEYS */;
 INSERT INTO `namespace` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `cdkeyenc`, `sesskey`, `firewall`, `port`, `guid`) VALUES
 	(20, 21, 'wormsforts', 1, 0, 722, 'wormsforts', NULL, NULL, 1, 0, NULL),
 	(21, 22, 'wf12', 1, 0, 722, 'wormsforts', NULL, NULL, 1, 0, NULL),
 	(40, 13, 'xiaojiuwo', 95, 95, 13429, 'capricorn', NULL, 53255, 0, 0, 'fb942363-efcf-445e-bdae-3481ca48aca1'),
-	(41, 13, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, 16394, 0, 0, 'a61e1f46-b005-40b9-8a85-20e07c337048');
+	(41, 13, 'xiaojiuwo', 1, 0, 1, 'gmtest', NULL, 16394, 0, 0, NULL),
+	(42, 27, '', 1, 0, 1, 'gsa', NULL, NULL, 0, 0, NULL);
 /*!40000 ALTER TABLE `namespace` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.profiles
@@ -4737,19 +4738,20 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   UNIQUE KEY `profileid` (`profileid`) USING BTREE,
   KEY `FK_profiles_users` (`userid`) USING BTREE,
   CONSTRAINT `FK_profiles_users` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='statusstring';
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='statusstring';
 
--- Dumping data for table retrospy2.profiles: ~8 rows (approximately)
+-- Dumping data for table retrospy2.profiles: ~9 rows (approximately)
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
 INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `status`, `statstring`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `location`, `icquin`, `quietflags`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `adminrights`) VALUES
-	(13, 7, 'MyCrysis', 1, 'Online', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
-	(14, 7, 'xiaojiuwo', 0, 'I love RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
-	(16, 9, 'worms3d', 0, 'I love RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
-	(21, 13, 'wormsforts', 0, 'I love RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
-	(22, 14, 'wf12', 0, 'I love RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
-	(23, 15, 'a8', 0, 'I love RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
-	(25, 7, 'gptest', 0, 'I love RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
-	(26, 6, 'gptest', 0, 'I love RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0);
+	(13, 7, 'MyCrysis', 0, '', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
+	(14, 7, 'xiaojiuwo', 0, 'Online', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
+	(16, 9, 'worms3d', 0, 'Online', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
+	(21, 13, 'wormsforts', 0, 'Online', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
+	(22, 14, 'wf12', 0, 'Online', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
+	(23, 15, 'a8', 0, 'Online', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
+	(25, 7, 'gptest', 0, 'Online', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
+	(26, 6, 'gptest', 0, 'Online', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, '00000', '', '', 0, 0, 0, '', 0, 0, NULL, NULL, NULL, 0, 0, 0, NULL, 0, NULL, 0, 0, 0),
+	(27, 1, 'spyguy', 0, 'I love RetroSpy', '', '', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, '00000', '1', 'rspy.org', 0, 0, 0, '', 0, 0, '', '', '', 0, 0, 0, '', 0, '', 0, 0, 0);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy2.users
