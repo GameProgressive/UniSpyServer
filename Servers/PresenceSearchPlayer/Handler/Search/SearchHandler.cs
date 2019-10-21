@@ -58,7 +58,7 @@ namespace PresenceSearchPlayer.Handler.Search
             CheckDatabaseResult();
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                session.SendAsync(@"\bsrdone\\final\");
                 return;
             }
 

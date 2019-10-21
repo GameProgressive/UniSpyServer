@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PresenceSearchPlayer.Handler.SearchUnique
 {
-    public class SeachUniqueQuery
+    public class SearchUniqueQuery
     {
         public static Dictionary<string,object>GetProfileWithUniquenickAndNamespace(string uniquenick,uint namespaceid)
         {

@@ -23,7 +23,6 @@ namespace PresenceSearchPlayer.Handler.Check
             _errorCode = GPErrorCode.NoError;
             _sendingBuffer = "";
             _errorMsg = "";
-
             // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
             //\cur\pid\<pid>\final
             //check is request recieved correct and convert password into our MD5 type

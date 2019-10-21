@@ -34,7 +34,7 @@ namespace PresenceSearchPlayer.Handler.Pmatch
             CheckDatabaseResult();
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                session.SendAsync(@"\psrdone\final\");
                 return;
             }
             SendRespose(session);

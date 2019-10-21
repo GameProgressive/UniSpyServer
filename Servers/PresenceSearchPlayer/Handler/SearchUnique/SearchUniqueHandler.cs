@@ -29,7 +29,7 @@ namespace PresenceSearchPlayer.Handler.SearchUnique
                 GameSpyUtils.SendGPError(session, _error, _errorMsg);
                 return;
             }
-            _queryResult = SeachUniqueQuery.GetProfileWithUniquenickAndNamespace(_recv["uniquenick"], Convert.ToUInt16(_recv["namespaceid"]));
+            _queryResult = SearchUniqueQuery.GetProfileWithUniquenickAndNamespace(_recv["uniquenick"], Convert.ToUInt16(_recv["namespaceid"]));
             CheckDatabaseResult();
             if (_error != GPErrorCode.NoError)
             {
