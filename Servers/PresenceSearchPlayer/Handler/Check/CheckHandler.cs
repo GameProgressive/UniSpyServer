@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using PresenceSearchPlayer.Enumerator;
+using System;
 using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.Check
@@ -18,40 +19,60 @@ namespace PresenceSearchPlayer.Handler.Check
         /// <param name="recv"></param>
         public static void CheckProfileid(GPSPSession session, Dictionary<string, string> recv)
         {
+            _recv = recv;
+            _errorCode = GPErrorCode.NoError;
+            _sendingBuffer = "";
+            _errorMsg = "";
+
             // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
             //\cur\pid\<pid>\final
             //check is request recieved correct and convert password into our MD5 type
-            bool isContiansAllKey = recv.ContainsKey("nick") && recv.ContainsKey("email") && (recv.ContainsKey("passenc") || recv.ContainsKey("pass"));
-            if (!isContiansAllKey)
+            IsContainAllKey();
+            if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "Parsing error, please check input.");
-                return;
-            }
-            bool isEmailCorrect = GameSpyUtils.IsEmailFormatCorrect(recv["email"]);
-            if (!isEmailCorrect)
-            {
-                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "Email format not correct.");
+                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
                 return;
             }
 
+            _queryResult = CheckQuery.GetProfileidFromNickEmailPassword(_recv["email"], _recv["passenc"], _recv["nick"]);
 
-            //Search pid in our database and return whether exist
-            string sendingBuffer;
-            int profileid = CheckQuery.GetProfileidFromNickEmailPassword(recv);
-            if (profileid != -1)
+            CheckDatabaseResult();
+
+            if (_errorCode != GPErrorCode.NoError)
             {
-                sendingBuffer = string.Format(@"\cur\0\pid\{0}\final\", profileid);
-                session.SendAsync(sendingBuffer);
+                _sendingBuffer = @"\cur\" + GPErrorCode.CheckBadNick + @"\final\";                
+                return;
             }
-            else
+            SendResponse(session);           
+        }
+
+        private static void SendResponse(GPSPSession session)
+        {
+            _sendingBuffer = @"\cur\" + GPErrorCode.Check;
+            _sendingBuffer+= @"\pid\"+_queryResult["profileid"]+@"\final\";
+            session.SendAsync(_sendingBuffer);         
+        }
+
+        private static void CheckDatabaseResult()
+        {
+            if (_queryResult == null)
             {
-                sendingBuffer = "No math found";
-                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, sendingBuffer);
+                _errorCode = GPErrorCode.DatabaseError;
             }
         }
+
         private static void IsContainAllKey()
         {
-            if (dict.ContainsKey("nick") || dict.ContainsKey("email") || dict.ContainsKey("passenc"))
+            if (!_recv.ContainsKey("nick") || !_recv.ContainsKey("email") || !_recv.ContainsKey("passenc"))
+            {
+                _errorCode = GPErrorCode.Parse;
+                _errorMsg = "Parsing error";
+            }
+            if (GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            {
+                _errorCode = GPErrorCode.Parse;
+                _errorMsg = "Parsing error";
+            }
         }
     }
 }
