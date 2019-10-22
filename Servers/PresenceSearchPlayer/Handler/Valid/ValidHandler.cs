@@ -23,7 +23,7 @@ namespace PresenceSearchPlayer.Handler.Valid
 
             try
             {
-                if (GameSpyUtils.IsEmailFormatCorrect(dict["email"]))
+                if (!GameSpyUtils.IsEmailFormatCorrect(dict["email"]))
                 {
                     if (ValidQuery.IsEmailValid(dict))
                         session.Send(@"\vr\1\final\");

@@ -67,10 +67,10 @@ namespace PresenceSearchPlayer.Handler.Check
                 _errorCode = GPErrorCode.Parse;
                 _errorMsg = "Parsing error";
             }
-            if (GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
                 _errorCode = GPErrorCode.Parse;
-                _errorMsg = "Parsing error";
+                _errorMsg = "Email format incorrect";
             }
         }
     }
