@@ -78,6 +78,9 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
                 case Type4:
                     SendBuddiesHandler.SendBuddyList(session);
                     break;
+                default:
+                    session.ToLog("No sdkrevision found");
+                    break;
             }
         }
     }
