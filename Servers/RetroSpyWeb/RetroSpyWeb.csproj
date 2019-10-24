@@ -6,6 +6,9 @@
 
 
   <ItemGroup>
+    <Folder Include="Pages\pubsvs\auth\" />
+    <Folder Include="Pages\pubsvs\comp\" />
+    <Folder Include="Pages\sake\" />
   </ItemGroup>
 
 </Project>
