@@ -62,15 +62,14 @@ namespace StatsAndTracking
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
             string sendingBuffer = Encoding.UTF8.GetString(buffer);
-            string sendingBuffer1 = sendingBuffer + @"\final\";
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer1);
 
-            string sendingBuffer2 = Enctypex.XorEncoding(sendingBuffer, 1);
-            sendingBuffer2 += @"\final\";
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer + @"\final\");
+
+            string sendingBuffer2 = Enctypex.XorEncoding(sendingBuffer, 1)+@"\final\"; ;
             byte[] sendingBuffer3 = Encoding.UTF8.GetBytes(sendingBuffer2);
 
-            bool returnValue = base.OriginalSendAsync(sendingBuffer3, offset, sendingBuffer3.Length);
+            bool returnValue = BaseSendAsync(sendingBuffer3, offset, sendingBuffer3.Length);
 
             if (DisconnectAfterSend)
                 Disconnect();
