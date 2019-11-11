@@ -6,6 +6,7 @@ using PresenceConnectionManager.Handler.Buddy.DelBuddy;
 using PresenceConnectionManager.Handler.Buddy.InviteTo;
 using PresenceConnectionManager.Handler.General.KeepAlive;
 using PresenceConnectionManager.Handler.General.Login;
+using PresenceConnectionManager.Handler.NewProfile;
 using PresenceConnectionManager.Handler.Profile.GetProfile;
 using PresenceConnectionManager.Handler.Profile.NewUser;
 using PresenceConnectionManager.Handler.Profile.RegisterNick;
@@ -65,6 +66,9 @@ namespace PresenceConnectionManager.Handler
                         break;
                     case "KA":
                         KAHandler.SendKeepAlive(session);
+                        break;
+                    case "newprofile":
+                        NewProfileHandler.ChangeNick(session, recv);
                         break;
                     default:
                         session.UnknownDataRecived(recv);

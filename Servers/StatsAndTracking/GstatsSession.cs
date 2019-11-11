@@ -15,7 +15,7 @@ namespace StatsAndTracking
         {
             DisconnectAfterSend = false;
         }
-
+    
         protected override void OnReceived(string message)
         {
             if (message[0] != '\\')
@@ -32,7 +32,7 @@ namespace StatsAndTracking
         protected override void OnConnected()
         {
             string challenge = SendServerChallenge();
-            base.SendAsync(challenge);
+            this.SendAsync(challenge);
             base.OnConnected();
         }
         protected override void OnReceived(byte[] buffer, long offset, long size)
@@ -44,7 +44,7 @@ namespace StatsAndTracking
             }
             string message = Encoding.UTF8.GetString(buffer, 0, (int)size);
             message = message.Replace(@"\final\", "");
-            string decodedmsg = Enctypex.XorEncoding(message, 1);
+            string decodedmsg = Enctypex.XorEncoding(message, 1) + @"\final\";
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, decodedmsg);
             OnReceived(message);
@@ -70,7 +70,7 @@ namespace StatsAndTracking
             sendingBuffer2 += @"\final\";
             byte[] sendingBuffer3 = Encoding.UTF8.GetBytes(sendingBuffer2);
 
-            bool returnValue = base.SendAsync(sendingBuffer3, offset, sendingBuffer3.Length);
+            bool returnValue = base.OriginalSendAsync(sendingBuffer3, offset, sendingBuffer3.Length);
 
             if (DisconnectAfterSend)
                 Disconnect();
