@@ -47,7 +47,7 @@ namespace StatsAndTracking
             string decodedmsg = Enctypex.XorEncoding(message, 1) + @"\final\";
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, decodedmsg);
-            OnReceived(message);
+            OnReceived(decodedmsg);
         }
         /// <summary>
         /// Send data to the client (asynchronous)
