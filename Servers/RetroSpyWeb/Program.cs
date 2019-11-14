@@ -10,17 +10,9 @@ namespace RetroSpyWeb
         public static void Main(string[] args)
         {
 
-            CreateHostBuilder(args).Build().Run();
+            CreateGameSpyAuthService();
         }
-
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-
-        public void CreateGameSpyAuthService()
+        public static void CreateGameSpyAuthService()
         {
             var host = new WebHostBuilder()
                     .UseKestrel(x => x.AllowSynchronousIO = true)
