@@ -6,9 +6,9 @@
 
 
   <ItemGroup>
-    <Folder Include="Pages\pubsvs\auth\" />
-    <Folder Include="Pages\pubsvs\comp\" />
-    <Folder Include="Pages\sake\" />
+    <Folder Include="Pages\GameSpy\pubsvs\auth\" />
+    <Folder Include="Pages\GameSpy\pubsvs\comp\" />
+    <Folder Include="Pages\GameSpy\sake\" />
   </ItemGroup>
 
 
@@ -20,6 +20,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
+    <PackageReference Include="SoapCore" Version="0.9.9.6" />
   </ItemGroup>
 
 </Project>
