@@ -1,72 +1,74 @@
-﻿namespace RetroSpyServer.Servers.Chat.Structures
+﻿namespace StatsAndTracking.Structure
 {
+    public class ChatRPL
+    {
+        const int Welcome = 001;
+        const int USRIP = 302;
+        const int WhoIsUser = 311;
+        const int EndOfWho = 315;
+        const int EndOfWhoIs = 318;
+        const int WhoIsChannels = 319;
+        const int ListStart = 321;
+        const int List = 322;
+        const int ListEnd = 323;
+        const int ChannelModels = 324;
+        const int NoToPic = 331;
+        const int ToPic = 332;
+        const int WhoReply = 352;
+        const int NameReply = 353;
+        const int EndOfNames = 366;
+        const int BanList = 367;
+        const int EndOfBanList = 368;
+        const int GetKey = 700;
+        const int EndGetKey = 701;
+        const int GetCKey = 702;
+        const int EndGetCKey = 703;
+        const int GetCHANKey = 704;
+        const int SecureKey = 705;
+        const int CDKey = 706;
+        const int Login = 707;
+        const int GetUDPRelay = 712;
+    }
+    public class ChatError
+    {
+        const int NoSuchNICK = 401;
+        const int NoSuchChannel = 403;
+        const int TooManyChannels = 405;
+        const int ErrOneUSNickName = 432;
+        const int NickNameInUse = 433;
+        const int ChannelIsFull = 471;
+        const int InviteOnlyChan = 473;
+        const int BannedFromChan = 474;
+        const int BadChannelKey = 475;
+        const int BadChanMask = 476;
+        const int Login_Failed = 708;
+        const int No_Unique_Nick = 709;
+        const int Unique_NIick_Expired = 710;
+        const int Register_Nick_Failed = 711;
+    }
+    public class ChatMode
+    {
+        const int End = 0;
+        const int Ban = 1;
+        const int Invite_Only= 2;
+        const int LIMIT = 3;
+        const int PRIVATE = 4;
+        const int SECRET = 5;
+        const int Key = 6;
+        const int ModeRated = 7;
+        const int No_EXTERNAL_MESSAGES = 8;
+        const int ONLY_OPS_CHANGE_TOPIC = 9;
+        const int OP = 10;
+        const int Voice = 11;
+        const int USERS_HIDDEN = 12;
+        const int RECEIVE_WALLOPS = 13;
+        const int OPS_OBEY_Channel_LIMIT = 14;
+    }
     public class GSPeerChatCTX
     {
         public byte GSPeerChat1;
         public byte GSPeerChat2;
         public byte[] GSPeerChatCrypt = new byte[256];
     }
-    /// <summary>
-    /// RPL is remote program load
-    /// </summary>
-    public class ChatCode
-    {
-        const int RPL_WELCOME = 001;
-        const int RPL_USRIP = 302;
-        const int RPL_WHOISUSER = 311;
-        const int RPL_ENDOFWHO = 315;
-        const int RPL_ENDOFWHOIS = 318;
-        const int RPL_WHOISCHANNELS = 319;
-        const int RPL_LISTSTART = 321;
-        const int RPL_LIST = 322;
-        const int RPL_LISTEND = 323;
-        const int RPL_CHANNELMODEIS = 324;
-        const int RPL_NOTOPIC = 331;
-        const int RPL_TOPIC = 332;
-        const int RPL_WHOREPLY = 352;
-        const int RPL_NAMEREPLY = 353;
-        const int RPL_ENDOFNAMES = 366;
-        const int RPL_BANLIST = 367;
-        const int RPL_ENDOFBANLIST = 368;
-        const int RPL_GETKEY = 700;
-        const int RPL_ENDGETKEY = 701;
-        const int RPL_GETCKEY = 702;
-        const int RPL_ENDGETCKEY = 703;
-        const int RPL_GETCHANKEY = 704;
-        const int RPL_SECUREKEY = 705;
-        const int RPL_CDKEY = 706;
-        const int RPL_LOGIN = 707;
-        const int RPL_GETUDPRELAY = 712;
 
-        const int ERR_NOSUCHNICK = 401;
-        const int ERR_NOSUCHCHANNEL = 403;
-        const int ERR_TOOMANYCHANNELS = 405;
-        const int ERR_ERRONEUSNICKNAME = 432;
-        const int ERR_NICKNAMEINUSE = 433;
-        const int ERR_CHANNELISFULL = 471;
-        const int ERR_INVITEONLYCHAN = 473;
-        const int ERR_BANNEDFROMCHAN = 474;
-        const int ERR_BADCHANNELKEY = 475;
-        const int ERR_BADCHANMASK = 476;
-        const int ERR_LOGIN_FAILED = 708;
-        const int ERR_NO_UNIQUE_NICK = 709;
-        const int ERR_UNIQUE_NICK_EXPIRED = 710;
-        const int ERR_REGISTER_NICK_FAILED = 711;
-
-        const int MODE_END = 0;
-        const int MODE_BAN = 1;
-        const int MODE_INVITE_ONLY = 2;
-        const int MODE_LIMIT = 3;
-        const int MODE_PRIVATE = 4;
-        const int MODE_SECRET = 5;
-        const int MODE_KEY = 6;
-        const int MODE_MODERATED = 7;
-        const int MODE_NO_EXTERNAL_MESSAGES = 8;
-        const int MODE_ONLY_OPS_CHANGE_TOPIC = 9;
-        const int MODE_OP = 10;
-        const int MODE_VOICE = 11;
-        const int MODE_USERS_HIDDEN = 12;
-        const int MODE_RECEIVE_WALLOPS = 13;
-        const int MODE_OPS_OBEY_CHANNEL_LIMIT = 14;
-    }
 }
