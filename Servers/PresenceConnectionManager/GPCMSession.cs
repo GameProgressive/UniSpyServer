@@ -108,7 +108,7 @@ namespace PresenceConnectionManager
             }
 
             // We send the client the challenge key
-            string serverChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Alpha);
+            string serverChallengeKey = GameSpyLib.Common.GameSpyRandom.GenerateRandomString(10, GameSpyLib.Common.GameSpyRandom.StringType.Alpha);
             PlayerInfo.ServerChallenge = serverChallengeKey;
             PlayerInfo.LoginProcess = LoginStatus.Processing;
             string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", serverChallengeKey, 1);

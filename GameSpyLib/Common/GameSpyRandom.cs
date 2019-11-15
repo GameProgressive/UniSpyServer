@@ -3,7 +3,7 @@ using System.Text;
 
 namespace GameSpyLib.Common
 {
-    public class Random
+    public class GameSpyRandom
     {
         public enum StringType
         {

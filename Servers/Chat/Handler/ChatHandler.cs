@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static GameSpyLib.Common.Random;
+using static GameSpyLib.Common.GameSpyRandom;
 
 namespace Chat
 {

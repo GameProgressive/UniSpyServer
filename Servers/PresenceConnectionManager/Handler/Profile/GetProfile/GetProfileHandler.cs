@@ -133,7 +133,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
                 sendingBuffer += @"\conn\" + Convert.ToUInt16(result["connectiontype"]);
 
             // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
-            string signature = GameSpyLib.Common.Random.GenerateRandomString(10, GameSpyLib.Common.Random.StringType.Hex);
+            string signature = GameSpyLib.Common.GameSpyRandom.GenerateRandomString(10, GameSpyLib.Common.GameSpyRandom.StringType.Hex);
             sendingBuffer += @"\sig\" + signature+@"\id\"+recv["id"]+@"\final\";
 
 
@@ -261,7 +261,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
                 sendingBuffer += @"\conn\" + result["connectiontype"].ToString();
 
             // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
-            string signature = GameSpyLib.Common.Random.GenerateRandomString(33, GameSpyLib.Common.Random.StringType.Hex);
+            string signature = GameSpyLib.Common.GameSpyRandom.GenerateRandomString(33, GameSpyLib.Common.GameSpyRandom.StringType.Hex);
             sendingBuffer += @"\sig\" + signature;
 
 

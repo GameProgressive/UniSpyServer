@@ -276,7 +276,7 @@ namespace PresenceConnectionManager.Handler.General.Login
 
                     string responseProof = GenerateProof(session, session.PlayerInfo.ServerChallenge, session.PlayerInfo.UserChallenge, _queryResult["password"].ToString());
 
-                    string random = GameSpyLib.Common.Random.GenerateRandomString(22, GameSpyLib.Common.Random.StringType.Hex);
+                    string random = GameSpyLib.Common.GameSpyRandom.GenerateRandomString(22, GameSpyLib.Common.GameSpyRandom.StringType.Hex);
                     // Password is correct
                     _sendingBuffer = string.Format(
                         @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",

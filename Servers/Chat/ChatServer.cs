@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Network;
+using NetCoreServer;
 using System.Net;
 
 namespace Chat
@@ -12,7 +13,7 @@ namespace Chat
         {
             DB = databaseDriver;
         }
-
+        protected override TcpSession CreateSession() { return new ChatSession(this); }
         protected override void Dispose(bool disposingManagedResources)
         {
             if (disposingManagedResources)

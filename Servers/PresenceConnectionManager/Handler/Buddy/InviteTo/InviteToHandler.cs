@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.Buddy.InviteTo
 {
+    /// <summary>
+    /// This function sets which games the local profile can be invited to.
+    /// </summary>
     public class InviteToHandler
     {
         //public static GPCMDBQuery DBQuery = null;
@@ -13,6 +16,7 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
             {
                 GameSpyLib.Common.GameSpyUtils.SendGPError(session, error, "Parsing error in request");
             }
+            //session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
 
 
         }

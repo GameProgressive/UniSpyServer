@@ -105,7 +105,7 @@ namespace StatsAndTracking
         public string GenerateServerChallenge()
         {
             //38byte
-            string serverChallengeKey = Random.GenerateRandomString(38, Random.StringType.Alpha);
+            string serverChallengeKey = GameSpyRandom.GenerateRandomString(38, GameSpyRandom.StringType.Alpha);
             //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
             //sendingBuffer = xor(sendingBuffer);
             string sendingBuffer = string.Format(@"\challenge\{0}", serverChallengeKey);
