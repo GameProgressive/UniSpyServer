@@ -7,6 +7,7 @@ namespace RetroSpyWeb
         public static void Main(string[] args)
         {
             AuthServiceCreator.CreateHTTPAuthService();
+            AuthServiceCreator.CreateHTTPSAuthService();
         }
 
     }

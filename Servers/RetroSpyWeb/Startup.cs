@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using SoapCore;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 
 namespace RetroSpyWeb
@@ -30,6 +32,7 @@ namespace RetroSpyWeb
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseSoapEndpoint<AuthServerBase>("/AuthService/AuthService.asmx", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
+            app.UseSoapEndpoint<AuthServerBase>("/AuthService/AuthService.asmx", new BasicHttpsBinding(), SoapSerializer.XmlSerializer);
 
         }
     }
