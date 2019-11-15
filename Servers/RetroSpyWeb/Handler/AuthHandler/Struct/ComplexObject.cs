@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Handler.SoapAuthHandler
+namespace Handler.AuthHandler.Struct
 {
     [DataContract]
     public class ComplexObject

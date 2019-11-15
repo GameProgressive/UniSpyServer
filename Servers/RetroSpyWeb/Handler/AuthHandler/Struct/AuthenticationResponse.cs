@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Handler.SoapAuthHandler
+namespace Handler.AuthHandler.Struct
 {
     [DataContract]
-    public class AuthenticationRequest
+    public class AuthenticationResponse
     {
         [DataMember]
-        public string StringProperty { get; set; }
+        public float FloatProperty { get; set; }
 
         [DataMember]
-        public int IntProperty { get; set; }
+        public string StringProperty { get; set; }
 
         [DataMember]
         public List<string> ListProperty { get; set; }
@@ -20,6 +20,12 @@ namespace Handler.SoapAuthHandler
         public DateTimeOffset DateTimeOffsetProperty { get; set; }
 
         [DataMember]
-        public List<ComplexObject> ComplexListProperty { get; set; }
+        public TestEnum TestEnum { get; set; }
+    }
+
+    public enum TestEnum
+    {
+        One,
+        Two
     }
 }

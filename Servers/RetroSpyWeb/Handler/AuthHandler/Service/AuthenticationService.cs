@@ -1,10 +1,11 @@
+using Handler.AuthHandler.Struct;
 using System;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Handler.SoapAuthHandler
+namespace Handler.AuthHandler.Service
 {
-    public class SoapAuthenticationService : SoapAuthServerBase
+    public class AuthenticationService : AuthServerBase
     {
         public string Ping(string s)
         {

@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System.IO;
+using Handler.AuthHandler.Program;
 
 namespace RetroSpyWeb
 {
@@ -9,24 +6,8 @@ namespace RetroSpyWeb
     {
         public static void Main(string[] args)
         {
-
-            CreateGameSpyAuthService();
+            AuthServiceCreator.CreateHTTPAuthService();
         }
-        public static void CreateGameSpyAuthService()
-        {
-            var host = new WebHostBuilder()
-                    .UseKestrel(x => x.AllowSynchronousIO = true)
-                    .UseUrls("http://*:4040")
-                    .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseStartup<Startup>()
-                    .ConfigureLogging(x =>
-                    {
-                        x.AddDebug();
-                        x.AddConsole();
-                    })
-                    .Build();
 
-            host.Run();
-        }
     }
 }

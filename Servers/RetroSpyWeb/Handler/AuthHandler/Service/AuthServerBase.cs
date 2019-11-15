@@ -1,10 +1,11 @@
+using Handler.AuthHandler.Struct;
 using System.ServiceModel;
 using System.Threading.Tasks;
 
-namespace Handler.SoapAuthHandler
+namespace Handler.AuthHandler.Service
 {
     [ServiceContract]
-    public interface SoapAuthServerBase
+    public interface AuthServerBase
     {
         [OperationContract]
         string Ping(string s);
