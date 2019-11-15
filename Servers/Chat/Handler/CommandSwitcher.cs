@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Chat.Handler.CRYPT;
+using System.Collections.Generic;
 
 namespace Chat
 {
@@ -6,6 +7,8 @@ namespace Chat
     {
         public static void Switch(ChatSession session,Dictionary<string,string> recv)
         {
+           
+            CRYPTHandler.Handle(session, recv);
 
         }
     }

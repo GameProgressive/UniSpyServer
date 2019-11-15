@@ -13,10 +13,6 @@ namespace Chat
 
         protected override void OnReceived(string message)
         {
-            //LogWriter.Log.Write("[CHAT] Recv " + message, LogLevel.Info);
-            //Stream.SendAsync("PING capricorn.goes.here :123456");
-            //ChatHandler.Crypt(this, message);
-         
             if (message[message.Length - 1] == ' ')
             {
                 message = message.Substring(0, message.Length - 2);
@@ -29,7 +25,7 @@ namespace Chat
             _recv.Add("gamename", request[3]);
 
 
-            CommandSwitcher.Switch();
+            CommandSwitcher.Switch(this,_recv);
         }
 
     }
