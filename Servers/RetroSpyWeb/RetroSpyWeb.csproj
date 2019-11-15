@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
+    <StartupObject>RetroSpyWeb.Program</StartupObject>
   </PropertyGroup>
 
 

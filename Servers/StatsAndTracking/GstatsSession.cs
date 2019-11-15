@@ -31,7 +31,7 @@ namespace StatsAndTracking
 
         protected override void OnConnected()
         {
-            string challenge = SendServerChallenge();
+            string challenge = GenerateServerChallenge();
             this.SendAsync(challenge);
             base.OnConnected();
         }
@@ -44,7 +44,7 @@ namespace StatsAndTracking
             }
             string message = Encoding.UTF8.GetString(buffer, 0, (int)size);
             message = message.Replace(@"\final\", "");
-            string decodedmsg = Enctypex.XorEncoding(message, 1) + @"\final\";
+            string decodedmsg = GstatsXOR(message) + @"\final\";
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, decodedmsg);
             OnReceived(decodedmsg);
@@ -66,10 +66,9 @@ namespace StatsAndTracking
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer + @"\final\");
 
-            string sendingBuffer2 = Enctypex.XorEncoding(sendingBuffer, 1)+@"\final\"; ;
-            byte[] sendingBuffer3 = Encoding.UTF8.GetBytes(sendingBuffer2);
-
-            bool returnValue = BaseSendAsync(sendingBuffer3, offset, sendingBuffer3.Length);
+            sendingBuffer = GstatsXOR(sendingBuffer)+@"\final\"; 
+            
+            bool returnValue = BaseSendAsync(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
 
             if (DisconnectAfterSend)
                 Disconnect();
@@ -89,16 +88,13 @@ namespace StatsAndTracking
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer);
-            string sendingBuffer1 = sendingBuffer + @"\final\";
+            string sendingBuffer = Encoding.UTF8.GetString(buffer);            
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer1);
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer + @"\final\");
 
-            string sendingBuffer2 = Enctypex.XorEncoding(sendingBuffer, 1);
-            sendingBuffer2 += @"\final\";
-            byte[] sendingBuffer3 = Encoding.UTF8.GetBytes(sendingBuffer2);
+            sendingBuffer = GstatsXOR(sendingBuffer) + @"\final\";
 
-            long returnValue = base.Send(sendingBuffer3, offset, sendingBuffer3.Length);
+            long returnValue = base.Send(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
 
             if (DisconnectAfterSend)
                 Disconnect();
@@ -106,15 +102,24 @@ namespace StatsAndTracking
             return returnValue;
         }
 
-        public string SendServerChallenge()
+        public string GenerateServerChallenge()
         {
             //38byte
-            string serverChallengeKey = GameSpyLib.Common.Random.GenerateRandomString(38, GameSpyLib.Common.Random.StringType.Alpha);
+            string serverChallengeKey = Random.GenerateRandomString(38, Random.StringType.Alpha);
             //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
             //sendingBuffer = xor(sendingBuffer);
             string sendingBuffer = string.Format(@"\challenge\{0}", serverChallengeKey);
             return sendingBuffer;
         }
 
+        /// <summary>
+        /// Encrypt and Decrypt using XOR with type3 method
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static string GstatsXOR(string msg)
+        {
+            return Enctypex.XorEncoding(msg, 1);
+        }
     }
 }

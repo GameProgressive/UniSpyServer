@@ -12,7 +12,7 @@ namespace Handler.AuthHandler.Program
         {
             var host = new WebHostBuilder()
                     .UseKestrel(x => x.AllowSynchronousIO = true)
-                    .UseUrls("http://*.auth.pubsvs.gamespy.com:80")
+                    .UseUrls("http://*:80")
                     .UseContentRoot(Directory.GetCurrentDirectory())
                     .UseStartup<Startup>()
                     .ConfigureLogging(x =>
@@ -28,7 +28,7 @@ namespace Handler.AuthHandler.Program
         {
             var host = new WebHostBuilder()
                         .UseKestrel(x => x.AllowSynchronousIO = true)
-                        .UseUrls("https://*.auth.pubsvs.gamespy.com:443")
+                        .UseUrls("https://*:443")
                         .UseContentRoot(Directory.GetCurrentDirectory())
                         .UseStartup<Startup>()
                         .ConfigureLogging(x =>
