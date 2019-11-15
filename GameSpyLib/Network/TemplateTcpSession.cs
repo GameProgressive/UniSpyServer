@@ -57,6 +57,15 @@ namespace GameSpyLib.Network
 
             return returnValue;
         }
+        protected long BaseSend(byte[] buffer, long offset, long size)
+        {
+            long returnValue = base.Send(buffer, offset, size);
+
+            if (DisconnectAfterSend)
+                Disconnect();
+
+            return returnValue;
+        }
         protected bool BaseSendAsync(byte[] buffer, long offset, long size)
         {
             bool returnValue = base.SendAsync(buffer, offset, size);

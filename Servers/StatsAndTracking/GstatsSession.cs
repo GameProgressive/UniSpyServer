@@ -94,7 +94,7 @@ namespace StatsAndTracking
 
             sendingBuffer = GstatsXOR(sendingBuffer) + @"\final\";
 
-            long returnValue = base.Send(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
+            long returnValue = BaseSend(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
 
             if (DisconnectAfterSend)
                 Disconnect();
