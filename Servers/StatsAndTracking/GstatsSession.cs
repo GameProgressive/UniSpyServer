@@ -63,10 +63,11 @@ namespace StatsAndTracking
         {
             string sendingBuffer = Encoding.UTF8.GetString(buffer);
 
+            sendingBuffer = sendingBuffer + @"\final\";
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer + @"\final\");
-
-            sendingBuffer = GstatsXOR(sendingBuffer)+@"\final\"; 
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer);
+            
+            sendingBuffer = GstatsXOR(sendingBuffer); 
             
             bool returnValue = BaseSendAsync(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
 
@@ -88,11 +89,14 @@ namespace StatsAndTracking
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer);            
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer + @"\final\");
+            string sendingBuffer = Encoding.UTF8.GetString(buffer);
 
-            sendingBuffer = GstatsXOR(sendingBuffer) + @"\final\";
+            sendingBuffer = sendingBuffer + @"\final\";
+
+            if (LogWriter.Log.DebugSockets)
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer);
+
+            sendingBuffer = GstatsXOR(sendingBuffer);
 
             long returnValue = BaseSend(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
 

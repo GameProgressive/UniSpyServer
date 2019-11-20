@@ -39,8 +39,7 @@ namespace PresenceSearchPlayer.Handler.Check
 
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = @"\cur\" + GPErrorCode.CheckBadNick + @"\final\";                
-                return;
+                _sendingBuffer = @"\cur\" + GPErrorCode.CheckBadNick + @"\final\";
             }
             SendResponse(session);           
         }
