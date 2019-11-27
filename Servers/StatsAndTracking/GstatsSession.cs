@@ -61,9 +61,8 @@ namespace StatsAndTracking
         /// </remarks>
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer);
+            string sendingBuffer = Encoding.UTF8.GetString(buffer) + @"\final\";
 
-            sendingBuffer = sendingBuffer + @"\final\";
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer);
             
@@ -89,9 +88,7 @@ namespace StatsAndTracking
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer);
-
-            sendingBuffer = sendingBuffer + @"\final\";
+            string sendingBuffer = Encoding.UTF8.GetString(buffer)+ @"\final\";            
 
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer);
@@ -108,8 +105,9 @@ namespace StatsAndTracking
 
         public string GenerateServerChallenge()
         {
-            //38byte
-            string serverChallengeKey = GameSpyRandom.GenerateRandomString(38, GameSpyRandom.StringType.Alpha);
+            //response total length bigger than 38bytes
+            // challenge length should be bigger than 20bytes
+            string serverChallengeKey = GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.Alpha);
             //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
             //sendingBuffer = xor(sendingBuffer);
             string sendingBuffer = string.Format(@"\challenge\{0}", serverChallengeKey);
