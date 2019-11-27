@@ -6,8 +6,6 @@ using System.Globalization;
 
 namespace GameSpyLib.Database
 {
-
-
     public abstract class DatabaseDriver : IDisposable
     {
         /// <summary>

@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySql.Data" Version="8.0.18" />
-    <PackageReference Include="NetCoreServer" Version="1.6.0" />
-    <PackageReference Include="System.Data.SQLite" Version="1.0.111" />
+    <PackageReference Include="MySqlConnector" Version="0.61.0" />
+    <PackageReference Include="NetCoreServer" Version="3.0.0" />
+    <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

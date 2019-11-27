@@ -17,5 +17,17 @@ namespace GameSpyLib.XMLConfig
         public string Password;
 
         public string Databasename;
+
+        // SSL
+        public string SslMode;
+
+        public string SslCert;
+
+        public string SslKey;
+
+        public string SslCa;
+
+
+
     }
 }
