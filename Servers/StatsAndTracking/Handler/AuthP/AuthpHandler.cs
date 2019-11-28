@@ -10,7 +10,8 @@ namespace StatsAndTracking.Handler.AuthP
     {
         public static void AuthPlayer(GstatsSession session, Dictionary<string, string> dict)
         {
-
+            /* process the playerauth result */
+            // \\pauthr\\100000\\lid\\1
         }
     }
 }
