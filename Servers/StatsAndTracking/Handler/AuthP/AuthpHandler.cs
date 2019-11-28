@@ -8,7 +8,7 @@ namespace StatsAndTracking.Handler.AuthP
     /// </summary>
     public class AuthPHandler
     {
-        public static void AuthPid(GstatsSession session, Dictionary<string, string> dict)
+        public static void AuthPlayer(GstatsSession session, Dictionary<string, string> dict)
         {
 
         }

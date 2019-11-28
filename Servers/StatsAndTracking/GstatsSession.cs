@@ -5,12 +5,12 @@ using GameSpyLib.Network;
 using StatsAndTracking.Handler;
 using System.Collections.Generic;
 using System.Text;
-
+using StatsAndTracking.Structure;
 namespace StatsAndTracking
 {
     public class GstatsSession : TemplateTcpSession
     {
-        public string SessionKey { get; protected set; }
+        public GStatsInfo Ginfo { get; protected set; }
         public GstatsSession(TemplateTcpServer server) : base(server)
         {
             DisconnectAfterSend = false;

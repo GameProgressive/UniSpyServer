@@ -20,7 +20,7 @@ namespace StatsAndTracking.Handler
                         AuthHandler.SendSessionKey(session, recv);
                         break;
                     case "authp":
-                        AuthPHandler.AuthPid(session, recv);
+                        AuthPHandler.AuthPlayer(session, recv);
                         break;
                     default:
                         session.UnknownDataRecived(recv);

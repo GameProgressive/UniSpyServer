@@ -39,17 +39,17 @@ namespace PresenceSearchPlayer.Handler.Check
 
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = @"\cur\" + GPErrorCode.CheckBadNick + @"\final\";
+                _sendingBuffer = @"\cur\" + (uint)GPErrorCode.CheckBadNick + @"\final\";
             }
-            SendResponse(session);           
+            else
+            {
+                _sendingBuffer = @"\cur\" + (uint)GPErrorCode.Check;
+                _sendingBuffer += @"\pid\" + _queryResult["profileid"] + @"\final\";                
+            }
+            session.SendAsync(_sendingBuffer);
         }
 
-        private static void SendResponse(GPSPSession session)
-        {
-            _sendingBuffer = @"\cur\" + GPErrorCode.Check;
-            _sendingBuffer+= @"\pid\"+_queryResult["profileid"]+@"\final\";
-            session.SendAsync(_sendingBuffer);         
-        }
+
 
         private static void CheckDatabaseResult()
         {
