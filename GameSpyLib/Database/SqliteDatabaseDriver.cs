@@ -4,7 +4,7 @@ using System.Data.SQLite;
 namespace GameSpyLib.Database
 {
     /// <summary>
-    /// Create a sqlite databasedriver that can access to sqlite database
+    /// Creates a SQLite database driver that can access the SQLite database
     /// </summary>
     public class SqliteDatabaseDriver : DatabaseDriver
     {
