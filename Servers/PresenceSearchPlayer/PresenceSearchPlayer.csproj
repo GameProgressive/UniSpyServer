@@ -7,6 +7,10 @@
     <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="Handler\GPSPHandler.cs" />
   </ItemGroup>

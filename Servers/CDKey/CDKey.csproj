@@ -9,6 +9,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

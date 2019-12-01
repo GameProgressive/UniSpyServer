@@ -6,6 +6,10 @@
     <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="MaxMind.GeoIP2" Version="3.0.0" />
   </ItemGroup>

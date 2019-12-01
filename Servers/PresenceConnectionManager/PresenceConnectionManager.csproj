@@ -10,6 +10,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
