@@ -43,7 +43,7 @@ namespace PresenceSearchPlayer.Handler.Check
             }
             else
             {
-                _sendingBuffer = @"\cur\" + (uint)GPErrorCode.Check;
+                _sendingBuffer = @"\cur\0";
                 _sendingBuffer += @"\pid\" + _queryResult["profileid"] + @"\final\";                
             }
             session.SendAsync(_sendingBuffer);
