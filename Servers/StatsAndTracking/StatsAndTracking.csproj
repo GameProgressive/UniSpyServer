@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handler\SetPersistData\" />
+    <Folder Include="Handler\SetPdr\" />
+    <Folder Include="Handler\GetPid\" />
+    <Folder Include="Handler\GetPdr\" />
   </ItemGroup>
 
 </Project>
