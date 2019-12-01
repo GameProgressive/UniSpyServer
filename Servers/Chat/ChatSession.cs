@@ -11,21 +11,18 @@ namespace Chat
         {
         }
 
-        protected override void OnReceived(string message)
+        protected override void OnReceived(string data)
         {
-            if (message[message.Length - 1] == ' ')
+            string[] messages = data.Split("\r\n");
+
+            foreach (string message in messages)
             {
-                message = message.Substring(0, message.Length - 2);
+                if (message.Length < 1)
+                    continue;
+
+                string[] request = message.Trim(' ').Split(' ');
+                CommandSwitcher.Switch(this, request);
             }
-            string[] request = message.Trim(' ').Split(' ');
-            _recv = new Dictionary<string, string>();
-            _recv.Add("command",request[0]);
-            _recv.Add("enctype", request[1]);
-            _recv.Add("value", request[2]);
-            _recv.Add("gamename", request[3]);
-
-
-            CommandSwitcher.Switch(this,_recv);
         }
 
     }

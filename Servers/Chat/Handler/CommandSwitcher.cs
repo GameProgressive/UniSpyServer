@@ -1,14 +1,34 @@
-﻿using Chat.Handler.CRYPT;
+﻿using Chat.Handler.Command.NICK;
+using Chat.Handler.Command.USER;
+using Chat.Handler.CRYPT;
 using System.Collections.Generic;
 
 namespace Chat
 {
     public class CommandSwitcher
     {
-        public static void Switch(ChatSession session,Dictionary<string,string> recv)
+        public static void Switch(ChatSession session, string[] recv)
         {
-           
-            CRYPTHandler.Handle(session, recv);
+            string command = recv[0];
+            switch (command)
+            {
+                case "USER":
+                    USERHandler.Handle(session, recv);
+                    break;
+                case "NICK":
+                    NICKHandler.Handle(session, recv);
+                    break;
+                case "CRYPT":
+                    CRYPTHandler.Handle(session, recv);
+                    break;
+                default:
+                    string singleRecv = "";
+                    foreach (string data in recv)
+                        singleRecv += data;
+
+                    session.ToLog("Unknown request: " + singleRecv);
+                    break;
+            }
 
         }
     }
