@@ -75,7 +75,10 @@ namespace GameSpyLib.Network
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
-
+        public bool BaseSendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
+        {
+            return base.SendAsync(endpoint, buffer, offset, size);
+        }
         /// <summary>
         /// Send datagram to the given endpoint (synchronous)
         /// </summary>
@@ -94,7 +97,10 @@ namespace GameSpyLib.Network
 
             return base.Send(endpoint, buffer, offset, size);
         }
-
+        public long BaseSend(EndPoint endpoint, byte[] buffer, long offset, long size)
+        {
+            return base.Send(endpoint,buffer,offset,size);
+        }
         protected override void OnSent(EndPoint endpoint, long sent)
         {
             // Continue receive datagrams

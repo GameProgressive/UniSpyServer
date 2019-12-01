@@ -13,10 +13,11 @@ namespace CDKey.Handler
         {
             try
             {
-                switch (recv.Values.First())
+                switch (recv.Keys.First())
                 {
                     //keep client alive request, we skip this
                     case "ka":
+                        Console.WriteLine("Received keep alive command");
                         break;
                     case "auth":
                         break;
