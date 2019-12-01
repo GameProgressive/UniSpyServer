@@ -61,13 +61,13 @@ namespace StatsAndTracking
         /// </remarks>
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer) + @"\final\";
+            string sendingBuffer = Encoding.UTF8.GetString(buffer);
 
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer);
-            
-            sendingBuffer = GstatsXOR(sendingBuffer); 
-            
+
+            sendingBuffer = GstatsXOR(sendingBuffer) + @"\final\";
+
             bool returnValue = BaseSendAsync(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
 
             if (DisconnectAfterSend)
