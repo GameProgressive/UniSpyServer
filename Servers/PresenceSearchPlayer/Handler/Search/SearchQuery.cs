@@ -12,7 +12,7 @@ namespace PresenceSearchPlayer.Handler.Search
 
         public static List<Dictionary<string, object>> GetProfileFromNick(string nick, uint namespaceid)
         {
-            List<Dictionary<string, object>> queryResult = GPSPServer.DB.Query("SELECT profiles.profileid,profiles.nick,namespace.uniquenick,profiles.lastname,profiles.firstname,users.email,namespace.namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid profiles.nick = @P0 AND namespace.namespaceid = @P1", nick, namespaceid);
+            List<Dictionary<string, object>> queryResult = GPSPServer.DB.Query("SELECT profiles.profileid,profiles.nick,namespace.uniquenick,profiles.lastname,profiles.firstname,users.email,namespace.namespaceid FROM profiles INNER JOIN users ON users.userid = profiles.userid INNER JOIN namespace ON namespace.profileid = profiles.profileid WHERE profiles.nick = @P0 AND namespace.namespaceid = @P1", nick, namespaceid);
             return (queryResult.Count == 0) ? null : queryResult;
         }
 
