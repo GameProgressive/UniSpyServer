@@ -10,6 +10,7 @@ using System.Collections.Generic;
 //"\\bsr\\1\\nick\\mycrysis\\uniquenick\\1\\namespaceid\\0\\firstname\\jiangheng\\lastname\\kou\\email\\koujiangheng@live.cn\\bsrdone\\0\\final\\";
 //client.Stream.SendAsync(sendingbuffer);
 //\more\<number of items>\final\
+//\search\sesskey\0\profileid\0\namespaceid\0\nick\gbr359_jordips\gamename\gbrome\final\
 namespace PresenceSearchPlayer.Handler.Search
 {
     public class SearchHandler
@@ -44,6 +45,10 @@ namespace PresenceSearchPlayer.Handler.Search
             else if (recv.ContainsKey("nick") && recv.ContainsKey("email"))
             {
                 SearchWithNickAndEmail();
+            }
+            else if (recv.ContainsKey("nick"))
+            {
+                SearchWithNick();
             }
             else if (recv.ContainsKey("email"))
             {
@@ -100,6 +105,11 @@ namespace PresenceSearchPlayer.Handler.Search
         private static void SearchWithNickAndEmail()
         {
             _queryResult = SearchQuery.GetProfileFromNickEmail(_recv["nick"],_recv["email"],Convert.ToUInt16(_recv["namespaceid"]));
+        }
+
+        private static void SearchWithNick()
+        {
+            _queryResult = SearchQuery.GetProfileFromNick(_recv["nick"], Convert.ToUInt16(_recv["namespaceid"]));
         }
 
         /// <summary>
