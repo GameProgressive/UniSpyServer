@@ -37,7 +37,8 @@ namespace GameSpyLib.Common
             if (!Directory.Exists(LogPath))
                 Directory.CreateDirectory(LogPath);
             #endregion
-            LogWriter.Log = new LogWriter(string.Format(Path.Combine(LogPath, "retrospy_{0}.log"), DateTime.Now.ToString("yyyy-MM-dd__HH_mm_ss")));
+            string logFileName = string.Format("{0}_{1}.log", ServerName, DateTime.Now.ToString("yyyy-MM-dd__HH_mm_ss"));
+            LogWriter.Log = new LogWriter(Path.Combine(LogPath, logFileName));
             ConfigManager.Load();
             //set the loglevel to system
             LogWriter.Log.MiniumLogLevel = ConfigManager.xmlConfiguration.LogLevel;

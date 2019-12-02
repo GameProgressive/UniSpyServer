@@ -104,7 +104,7 @@ namespace GameSpyLib.Logging
                 _truncateTimer = new Timer();
                 _truncateTimer.AutoReset = false; // Don't reset first time around!
                 _truncateTimer.Interval = untilMidnight.TotalMilliseconds;
-                _truncateTimer.Elapsed += _truncateTimer_Elapsed;
+                _truncateTimer.Elapsed += TruncateTimerElapsed;
                 _truncateTimer.Start();
             }
 
@@ -114,7 +114,7 @@ namespace GameSpyLib.Logging
         /// <summary>
         /// Event called at midnight, to clear the log file
         /// </summary>
-        private void _truncateTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void TruncateTimerElapsed(object sender, ElapsedEventArgs e)
         {
             try
             {

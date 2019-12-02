@@ -7,6 +7,7 @@ namespace Chat
     public class ChatSession : TemplateTcpSession
     {
         public Dictionary<string, string> _recv;
+        public bool IsEncrypt = false;
         public ChatSession(TemplateTcpServer server) : base(server)
         {
         }
