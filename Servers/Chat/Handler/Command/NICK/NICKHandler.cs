@@ -10,10 +10,10 @@ namespace Chat.Handler.Command.NICK
 
         public static void Handle(ChatSession session, string[] recv)
         {
-            Nick = recv[1];
-            string sendingBuffer = ":" + USER.USERHandler.IP + " 001 " + Nick + " :Welcome!\r\n";
-            session.SendAsync(sendingBuffer);
+            session.chatUserInfo.nickname = recv[1];
 
+            string sendingBuffer = ":" + session.chatUserInfo.serverIP + " 001 " + recv[1] + " :Welcome!\r\n";
+            session.SendAsync(sendingBuffer);
         }
     }
 }

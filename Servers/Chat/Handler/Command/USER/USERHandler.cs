@@ -6,11 +6,9 @@ namespace Chat.Handler.Command.USER
 {
     class USERHandler
     {
-        public static string IP = "";
-
         public static void Handle(ChatSession session, string[] recv)
         {
-            IP = recv[2];
+            session.chatUserInfo.serverIP = recv[2];
         }
     }
 }

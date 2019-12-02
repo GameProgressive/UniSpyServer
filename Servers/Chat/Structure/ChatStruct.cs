@@ -36,6 +36,7 @@
         public const int TooManyChannels = 405;
         public const int ErrOneUSNickName = 432;
         public const int NickNameInUse = 433;
+        public const int MoreParameters = 461;
         public const int ChannelIsFull = 471;
         public const int InviteOnlyChan = 473;
         public const int BannedFromChan = 474;

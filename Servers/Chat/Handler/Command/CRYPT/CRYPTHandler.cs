@@ -8,14 +8,14 @@ namespace Chat.Handler.CRYPT
     {
         public static void Handle(ChatSession session,string[] recv)
         {
-            // first check the is the game recv["gamename"] avaliable
+            // CRYPT des 1 gamename
+            session.chatUserInfo.gameName = recv[3];
 
             //this is a fake response;
-            string clientKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
-            string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
-            string sendingBuffer = ":s " + ChatRPL.SecureKey + " * " + clientKey + " " + serverKey + "\r\n";
-            session.SendAsync(sendingBuffer);
-
+/*            string clientKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
+            string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);*/
+            session.ElevateSecurity();
+//            session.SendCommand(ChatRPL.SecureKey, "* " + clientKey + " " + serverKey);
         }
     }
 }
