@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace CDKey
+namespace CDKey.Structure
 {
     /// <summary>
     /// This class is used for storing the cdkey and user which is using this cdkey

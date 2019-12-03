@@ -1,4 +1,4 @@
-﻿namespace QueryReport.DedicatedServerInfo
+﻿namespace QueryReport.Structure
 {
     public class DedicatedServerStruct
     {

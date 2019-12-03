@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace PresenceConnectionManager.Handler.Profile.Status.Query
+namespace PresenceConnectionManager.Handler.Profile.Status
 {
     public class StatusQuery
     {

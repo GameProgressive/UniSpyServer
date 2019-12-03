@@ -1,10 +1,11 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Network;
-using QueryReport.DedicatedServerData;
+using QueryReport.Structure;
 using QueryReport.Handler.ServerList;
 using System.Collections.Concurrent;
 using System.Net;
 using System.Timers;
+using QueryReport.Handler;
 
 namespace QueryReport
 {

@@ -5,7 +5,7 @@ using GameSpyLib.XMLConfig;
 using System.Net;
 
 
-namespace PresenceConnectionManager
+namespace CDKey.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

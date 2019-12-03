@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GameSpyLib
+namespace GameSpyLib.Database
 {
     public class DbConnectException : Exception
     {

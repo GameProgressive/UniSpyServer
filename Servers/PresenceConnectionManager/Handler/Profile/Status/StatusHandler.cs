@@ -1,5 +1,4 @@
 ﻿using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.Profile.Status.Query;
 using System;
 using System.Collections.Generic;
 using System.Net;

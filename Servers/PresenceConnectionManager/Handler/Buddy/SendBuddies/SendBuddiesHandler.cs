@@ -1,5 +1,4 @@
 ﻿using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.Buddy.SendBuddies.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;

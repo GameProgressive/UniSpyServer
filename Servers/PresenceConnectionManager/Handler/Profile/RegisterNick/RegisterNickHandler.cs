@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Profile.RegisterNick.Query;
+using PresenceConnectionManager.Profile.RegisterNick;
 using System;
 using System.Collections.Generic;
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.NewProfile
+namespace PresenceConnectionManager.Handler.Profile.NewProfile
 {
     public class NewProfileHandler
     {

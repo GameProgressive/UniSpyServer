@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.General.Login.Query
+namespace PresenceConnectionManager.Handler.General.Login
 {
     //login request will have different key,value pairs
     //some have dict["uniquenick"], dict["productid"], dict["partnerid"], dict["gamename"]

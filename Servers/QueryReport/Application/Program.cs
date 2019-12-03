@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Logging;
 using System;
 
-namespace QueryReport
+namespace QueryReport.Application
 {
     class Program
     {

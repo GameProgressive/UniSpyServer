@@ -2,7 +2,8 @@
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System.Net;
-namespace QueryReport
+
+namespace QueryReport.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

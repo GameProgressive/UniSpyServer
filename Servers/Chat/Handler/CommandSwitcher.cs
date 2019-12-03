@@ -1,9 +1,8 @@
 ﻿using Chat.Handler.Command.NICK;
 using Chat.Handler.Command.USER;
-using Chat.Handler.CRYPT;
-using System.Collections.Generic;
+using Chat.Handler.Command.CRYPT;
 
-namespace Chat
+namespace Chat.Handler
 {
     public class CommandSwitcher
     {

@@ -2,7 +2,7 @@
 using NATNegotiation.Enumerator;
 using System;
 
-namespace NATNegotiation.Structure
+namespace NATNegotiation.Structure.Packet
 {
     public class BasePacket
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Chat.Encryption
+namespace Chat.Handler.Encryption
 {
     /// <summary>
     /// This class is used to encrypt and decrypt the data for peerchat.

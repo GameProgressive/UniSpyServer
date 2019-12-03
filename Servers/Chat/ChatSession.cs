@@ -1,9 +1,9 @@
-﻿using Chat.Handler.Command.CRYPT;
+﻿using Chat.Handler;
+using Chat.Handler.Encryption;
 using Chat.Structure;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -34,7 +34,7 @@ namespace Chat
         /// <summary>
         /// Elevates security, for use with CRYPT method.
         /// </summary>
-        public void ElevateSecurity()
+        public void ElevateSecurity(string secretKey)
         {
             LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] Elevating security for user {1} with game {2}", ServerName, chatUserInfo.nickname, chatUserInfo.gameName);
 
@@ -42,31 +42,14 @@ namespace Chat
             string clientKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
             string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
 
-            // 2. Get the secret key
-            Dictionary<string, object> secretKeyDict = CRYPTQuery.GetSecretKeyFromGame(chatUserInfo.gameName);
+            // 2. Prepare the two keys
+            ChatCrypt.Init(ref chatUserInfo.ClientCTX, Encoding.ASCII.GetBytes(clientKey), Encoding.ASCII.GetBytes(secretKey));
+            ChatCrypt.Init(ref chatUserInfo.ServerCTX, Encoding.ASCII.GetBytes(serverKey), Encoding.ASCII.GetBytes(secretKey));
 
-            if (secretKeyDict == null)
-            {
-                SendCommand(ChatError.MoreParameters, "CRYPT :Not enough parameters");
-                return;
-            }
-
-            if (!secretKeyDict.ContainsKey("secretkey"))
-            {
-                SendCommand(ChatError.MoreParameters, "CRYPT :Not enough parameters");
-                return;
-            }
-
-            string secretKey = secretKeyDict["secretkey"].ToString();
-
-            // 3. Prepare the two keys
-            CRYPTSystem.Init(ref chatUserInfo.ClientCTX, Encoding.ASCII.GetBytes(clientKey), Encoding.ASCII.GetBytes(secretKey));
-            CRYPTSystem.Init(ref chatUserInfo.ServerCTX, Encoding.ASCII.GetBytes(serverKey), Encoding.ASCII.GetBytes(secretKey));
-
-            // 4. Response the crypt command
+            // 3. Response the crypt command
             SendCommand(ChatRPL.SecureKey, "* " + clientKey + " " + serverKey);
 
-            // 5. Start using encrypted connection
+            // 4. Start using encrypted connection
             chatUserInfo.encrypted = true;
         }
 
@@ -79,7 +62,7 @@ namespace Chat
         private void DecryptData(ref string data)
         {
             byte[] array = Encoding.ASCII.GetBytes(data);
-            CRYPTSystem.Handle(ref chatUserInfo.ClientCTX, ref array);
+            ChatCrypt.Handle(ref chatUserInfo.ClientCTX, ref array);
             data = Encoding.ASCII.GetString(array);
         }
 
@@ -96,7 +79,7 @@ namespace Chat
 
         private void EncryptData(ref byte[] buffer, ref long size)
         {
-            CRYPTSystem.Handle(ref chatUserInfo.ServerCTX, ref buffer);
+            ChatCrypt.Handle(ref chatUserInfo.ServerCTX, ref buffer);
             size = buffer.Length;
         }
 

@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Extensions;
-using QueryReport.DedicatedServerData;
+using QueryReport.Structure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace ServerBrowser
+namespace ServerBrowser.Handler
 {
     /// <summary>
     /// This class contians gamespy master tcp server functions  which help cdkeyserver to finish the master tcp server functionality. 

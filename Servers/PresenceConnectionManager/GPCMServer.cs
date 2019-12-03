@@ -4,7 +4,7 @@ using GameSpyLib.Network;
 using NetCoreServer;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.General.KeepAlive;
-using PresenceConnectionManager.Handler.General.Login.Query;
+using PresenceConnectionManager.Handler.General.Login;
 using System;
 using System.Collections.Concurrent;
 using System.Net;

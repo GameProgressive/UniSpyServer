@@ -1,10 +1,9 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
-using ServerBrowser;
 using System.Net;
 
-namespace PresenceSearchPlayer
+namespace ServerBrowser.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

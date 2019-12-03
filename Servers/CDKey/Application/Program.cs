@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace PresenceConnectionManager.Application
+namespace CDKey.Application
 {
     /// <summary>
     /// This class represents a RetroSpy Server program

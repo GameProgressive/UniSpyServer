@@ -7,8 +7,8 @@ namespace PresenceConnectionManager.Handler.Buddy.DelBuddy
     /// </summary>
     public class DelBuddyHandler
     {
-        GPCMSession _session;
-        Dictionary<string, string> _recv;
+        //GPCMSession _session;
+        //Dictionary<string, string> _recv;
         public static void Handle(GPCMSession session, Dictionary<string, string> recv)
         {
 

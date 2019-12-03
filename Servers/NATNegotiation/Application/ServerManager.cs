@@ -1,10 +1,9 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
-using NATNegotiation;
 using System.Net;
 
-namespace PresenceConnectionManager
+namespace NATNegotiation.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

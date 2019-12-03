@@ -1,4 +1,4 @@
-﻿using QueryReport.DedicatedServerData;
+﻿using QueryReport.Structure;
 using System;
 
 namespace QueryReport.Handler.HeartBeat

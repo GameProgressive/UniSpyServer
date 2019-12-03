@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace QueryReport.DedicatedServerData
+namespace QueryReport.Structure
 {
     /// <summary>
     /// This is How BattleSpy implement the Server information

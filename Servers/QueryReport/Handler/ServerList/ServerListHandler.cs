@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Logging;
-using QueryReport.DedicatedServerData;
+using QueryReport.Structure;
 using System;
 using System.Collections.Generic;
 

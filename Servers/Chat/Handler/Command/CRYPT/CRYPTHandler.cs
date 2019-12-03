@@ -1,7 +1,7 @@
-﻿using GameSpyLib.Common;
+﻿using Chat.Structure;
 using System.Collections.Generic;
 
-namespace Chat.Handler.CRYPT
+namespace Chat.Handler.Command.CRYPT
 {
     public class CRYPTHandler
     {
@@ -9,8 +9,25 @@ namespace Chat.Handler.CRYPT
         {
             // CRYPT des 1 gamename
             session.chatUserInfo.gameName = recv[3];
-            session.ElevateSecurity();
-//            
+
+            Dictionary<string, object> secretKeyDict = CRYPTQuery.GetSecretKeyFromGame(recv[3]);
+
+            if (secretKeyDict == null)
+            {
+                session.SendCommand(ChatError.MoreParameters, "CRYPT :Not enough parameters");
+                return;
+            }
+
+            if (!secretKeyDict.ContainsKey("secretkey"))
+            {
+                session.SendCommand(ChatError.MoreParameters, "CRYPT :Not enough parameters");
+                return;
+            }
+
+            string secretKey = secretKeyDict["secretkey"].ToString();
+
+            session.ElevateSecurity(secretKey);
+     
         }
     }
 }

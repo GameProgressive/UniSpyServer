@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.Profile.UpdatePro.Query
+namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
     public class UpdateProQuery
     {

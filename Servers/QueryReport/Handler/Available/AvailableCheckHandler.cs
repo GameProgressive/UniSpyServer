@@ -1,18 +1,18 @@
 ﻿using System.Net;
 using System.Text;
 
-namespace QueryReport.Handler.Avaliable
+namespace QueryReport.Handler.Available
 {
-    public enum ServerAvaliability : byte
+    public enum ServerAvailability : byte
     {
-        Avaliable = 0x00,
-        PermanentUnavaliable = 0x01,
-        TemporarilyUnavaliable = 0x02,
+        Available = 0x00,
+        PermanentUnavailable = 0x01,
+        TemporarilyUnavailable = 0x02,
     };
     /// <summary>
-    /// AvaliableCheckHandler
+    /// AvailableCheckHandler
     /// </summary>
-    public class AvaliableCheckHandler
+    public class AvailableCheckHandler
     {
         private static readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
 
@@ -50,7 +50,7 @@ namespace QueryReport.Handler.Avaliable
             AvailableReply.CopyTo(sendingBuffer, 0);
 
             // NOTE: Change this if you want to make the server not avaliable.
-            sendingBuffer[6] = (byte)ServerAvaliability.Avaliable;
+            sendingBuffer[6] = (byte)ServerAvailability.Available;
 
             //packet.SetBufferContents(dataToSend);
             server.SendAsync(endPoint, sendingBuffer);

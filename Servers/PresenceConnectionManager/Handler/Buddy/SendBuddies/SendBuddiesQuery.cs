@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Buddy.SendBuddies.Query
+namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
 {
     public class SendBuddiesQuery
     {

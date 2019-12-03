@@ -3,7 +3,7 @@ using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using NATNegotiation.Enumerator;
 using NATNegotiation.Handler;
-using NATNegotiation.Structure;
+using NATNegotiation.Structure.Packet;
 using System;
 using System.Net;
 

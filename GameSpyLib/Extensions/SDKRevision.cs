@@ -1,4 +1,4 @@
-﻿namespace PresenceConnectionManager.Structure
+﻿namespace GameSpyLib.Extensions
 {
     public static class SDKRevision
     {

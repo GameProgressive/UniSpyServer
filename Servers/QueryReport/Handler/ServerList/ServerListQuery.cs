@@ -1,4 +1,4 @@
-﻿using QueryReport.DedicatedServerData;
+﻿using QueryReport.Structure;
 
 namespace QueryReport.Handler.ServerList
 {

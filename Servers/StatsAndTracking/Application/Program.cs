@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace PresenceSearchPlayer
+namespace StatsAndTracking.Application
 {
     class Program
     {

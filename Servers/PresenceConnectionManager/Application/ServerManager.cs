@@ -4,7 +4,7 @@ using GameSpyLib.XMLConfig;
 using System.Net;
 
 
-namespace PresenceConnectionManager
+namespace PresenceConnectionManager.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

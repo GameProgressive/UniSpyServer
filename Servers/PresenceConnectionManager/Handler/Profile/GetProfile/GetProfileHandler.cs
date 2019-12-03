@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.Profile.GetProfile.Query;
 using System;
 using System.Collections.Generic;
 

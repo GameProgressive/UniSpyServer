@@ -4,7 +4,7 @@ using GameSpyLib.XMLConfig;
 using StatsAndTracking;
 using System.Net;
 
-namespace PresenceSearchPlayer
+namespace StatsAndTracking.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PresenceConnectionManager.Handler.Buddy.SendBlockList.Query
+namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
     public class SendBlockListQuery
     {

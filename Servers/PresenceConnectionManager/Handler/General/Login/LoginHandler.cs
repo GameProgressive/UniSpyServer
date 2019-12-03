@@ -2,7 +2,6 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.General.Login.Query;
 using PresenceConnectionManager.Handler.General.SDKExtendFeature;
 using System;
 using System.Collections.Generic;
@@ -102,7 +101,7 @@ namespace PresenceConnectionManager.Handler.General.Login
                 return;
             }
 
-            SDKRevision.Switch(session, _recv);
+            SDKExtendFeature.SDKRevision.Switch(session, _recv);
 
 
         }

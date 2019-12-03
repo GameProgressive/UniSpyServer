@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Net;
 
-namespace QueryReport
+namespace QueryReport.DatabaseQuery
 {
     public static class GeoIP
     {
