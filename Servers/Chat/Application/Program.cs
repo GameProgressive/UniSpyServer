@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace PresenceConnectionManager.Application
+namespace Chat.Application
 {
     /// <summary>
     /// This class represents a RetroSpy Server program

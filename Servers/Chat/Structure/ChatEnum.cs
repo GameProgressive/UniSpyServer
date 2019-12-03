@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace StatsAndTracking.Structure
+namespace Chat.Structure
 {
     enum ChatType
     {

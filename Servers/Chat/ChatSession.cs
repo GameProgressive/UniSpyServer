@@ -3,7 +3,6 @@ using Chat.Structure;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using StatsAndTracking.Structure;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -44,14 +43,25 @@ namespace Chat
             string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
 
             // 2. Get the secret key
-            Dictionary<string, object> secretKey = CRYPTQuery.GetSecretKeyFromGame(chatUserInfo.gameName);
+            Dictionary<string, object> secretKeyDict = CRYPTQuery.GetSecretKeyFromGame(chatUserInfo.gameName);
 
-            if (secretKey == null)
+            if (secretKeyDict == null)
             {
                 SendCommand(ChatError.MoreParameters, "CRYPT :Not enough parameters");
                 return;
             }
+
+            if (!secretKeyDict.ContainsKey("secretkey"))
+            {
+                SendCommand(ChatError.MoreParameters, "CRYPT :Not enough parameters");
+                return;
+            }
+
+            string secretKey = secretKeyDict["secretkey"].ToString();
+
             // 3. Prepare the two keys
+            CRYPTSystem.Init(ref chatUserInfo.ClientCTX, Encoding.ASCII.GetBytes(clientKey), Encoding.ASCII.GetBytes(secretKey));
+            CRYPTSystem.Init(ref chatUserInfo.ServerCTX, Encoding.ASCII.GetBytes(serverKey), Encoding.ASCII.GetBytes(secretKey));
 
             // 4. Response the crypt command
             SendCommand(ChatRPL.SecureKey, "* " + clientKey + " " + serverKey);
@@ -68,7 +78,9 @@ namespace Chat
 
         private void DecryptData(ref string data)
         {
-            // TODO!
+            byte[] array = Encoding.ASCII.GetBytes(data);
+            CRYPTSystem.Handle(ref chatUserInfo.ClientCTX, ref array);
+            data = Encoding.ASCII.GetString(array);
         }
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
@@ -84,7 +96,8 @@ namespace Chat
 
         private void EncryptData(ref byte[] buffer, ref long size)
         {
-            // TODO!
+            CRYPTSystem.Handle(ref chatUserInfo.ServerCTX, ref buffer);
+            size = buffer.Length;
         }
 
         private void HandleIRCCommands(string data)

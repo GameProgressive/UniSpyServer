@@ -1,11 +1,11 @@
-﻿using Chat;
+﻿using StatsAndTracking;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System.Net;
 
 
-namespace PresenceConnectionManager
+namespace Chat
 {
     /// <summary>
     /// A factory that create the instance of servers

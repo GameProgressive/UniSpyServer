@@ -1,4 +1,4 @@
-﻿namespace StatsAndTracking.Structure
+﻿namespace Chat.Structure
 {
     public class ChatRPL
     {
