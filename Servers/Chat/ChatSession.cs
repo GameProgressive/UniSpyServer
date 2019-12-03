@@ -20,8 +20,10 @@ namespace Chat
             chatUserInfo = new ChatUserInfo();
         }
 
-        protected override void OnReceived(string data)
+
+        protected override void OnReceived(byte[] buffer, long offset, long size)
         {
+            string data = Encoding.UTF8.GetString(buffer, 0, (int)size);
             if (chatUserInfo.encrypted)
                 DecryptData(ref data);
 
@@ -36,8 +38,9 @@ namespace Chat
         /// </summary>
         public void ElevateSecurity(string secretKey)
         {
-            LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] Elevating security for user {1} with game {2}", ServerName, chatUserInfo.nickname, chatUserInfo.gameName);
-
+            string Info = string.Format("{0} Elevating security for user {1} with game {2}", ServerName, chatUserInfo.nickname, chatUserInfo.gameName);
+            ToLog(Info);
+            
             // 1. Generate the two keys
             string clientKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
             string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
@@ -74,7 +77,7 @@ namespace Chat
             if (chatUserInfo.encrypted)
                 EncryptData(ref buffer, ref size);
 
-            return base.SendAsync(buffer, offset, size);
+            return BaseSendAsync(buffer, offset, size);
         }
 
         private void EncryptData(ref byte[] buffer, ref long size)
