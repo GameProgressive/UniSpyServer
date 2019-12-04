@@ -1,6 +1,4 @@
 ﻿using Chat.Structure;
-using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Chat.Handler.Encryption
@@ -13,29 +11,63 @@ namespace Chat.Handler.Encryption
     /// </summary>
     public class ChatCrypt
     {
+
+        /// <summary>
+        /// Crypt or decrypt the data
+        /// </summary>
+        /// <param name="ctx"></param>
+        /// <param name=""></param>
+        /// <param name="data"></param>
+        public static void Handle(GSPeerChatCTX ctx, ref byte[] data)
+        {
+            byte num1 = ctx.GSPeerChat1;
+            byte num2 = ctx.GSPeerChat2;
+            byte[] crypt = ctx.GSPeerChatCrypt;
+            byte t = 0;
+            int datapos = 0;
+
+            int size = data.Length;
+            while ((size--) > 0)
+            {
+                t = crypt[++num1];
+                num2 += t;
+                crypt[num1] = crypt[num2];
+                crypt[num2] = t;
+                t += crypt[num1];
+                data[datapos++] ^= crypt[t];
+            }
+
+            ctx.GSPeerChat1 = num1;
+            ctx.GSPeerChat2 = num2;
+        }
+
         /// <summary>
         /// Prepare the key
         /// </summary>
         /// <param name="ctx"></param>
         /// <param name="chall"></param>
         /// <param name="gamekey"></param>
-        public static void Init(ref GSPeerChatCTX ctx, byte[] chall, byte[] gamekey)
+        public static void Init(GSPeerChatCTX ctx, string challengeString, string gameKeyString)
         {
+
+            byte[] chall = Encoding.ASCII.GetBytes(challengeString);
+            byte[] gamekey = Encoding.ASCII.GetBytes(gameKeyString);
+
             byte[] challenge = new byte[16];
-            byte[] crypt = null;
+            byte[] crypt = ctx.GSPeerChatCrypt;
 
             ctx.GSPeerChat1 = 0;
             ctx.GSPeerChat2 = 0;
 
-            crypt = ctx.GSPeerChatCrypt;
 
-            int gkeyi = 0;
-            for (int i = 0; i < challenge.Length; i++, gkeyi++)
+
+            int gKeyi = 0;
+            for (int i = 0; i < challenge.Length; i++, gKeyi++)
             {
-                if (gkeyi >= gamekey.Length)
-                    gkeyi = 0;
+                if (gKeyi >= gamekey.Length)
+                    gKeyi = 0;
 
-                challenge[i] = (byte)(chall[i] ^ gamekey[gkeyi]);
+                challenge[i] = (byte)(chall[i] ^ gamekey[gKeyi]);
             }
 
             // Eh?
@@ -62,33 +94,6 @@ namespace Chat.Handler.Encryption
             ctx.GSPeerChatCrypt = crypt;
         }
 
-        /// <summary>
-        /// Crypt or decrypt the data
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name=""></param>
-        /// <param name="data"></param>
-        public static void Handle(ref GSPeerChatCTX ctx, ref byte[] data)
-        {
-            byte num1 = ctx.GSPeerChat1;
-            byte num2 = ctx.GSPeerChat2;
-            byte[] crypt = ctx.GSPeerChatCrypt;
-            byte t = 0;
-            int datapos = 0;
-
-            int size = data.Length;
-            while ((size--) > 0)
-            {
-                t = crypt[++num1];
-                num2 += t;
-                crypt[num1] = crypt[num2];
-                crypt[num2] = t;
-                t += crypt[num1];
-                data[datapos++] ^= crypt[t];
-            }
-
-            ctx.GSPeerChat1 = num1;
-            ctx.GSPeerChat2 = num2;
-        }
+        
     }
 }

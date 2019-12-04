@@ -4,14 +4,12 @@ using Chat.Structure;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using System.Collections.Generic;
 using System.Text;
 
 namespace Chat
 {
     public class ChatSession : TemplateTcpSession
     {
-        public Dictionary<string, string> _recv;
 
         public ChatUserInfo chatUserInfo { get; set; }
 
@@ -45,9 +43,9 @@ namespace Chat
             string clientKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
             string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
 
-            // 2. Prepare the two keys
-            ChatCrypt.Init(ref chatUserInfo.ClientCTX, Encoding.ASCII.GetBytes(clientKey), Encoding.ASCII.GetBytes(secretKey));
-            ChatCrypt.Init(ref chatUserInfo.ServerCTX, Encoding.ASCII.GetBytes(serverKey), Encoding.ASCII.GetBytes(secretKey));
+            // 2. Prepare two keys
+            ChatCrypt.Init(chatUserInfo.ClientCTX, clientKey, secretKey);
+            ChatCrypt.Init(chatUserInfo.ServerCTX, serverKey, secretKey);
 
             // 3. Response the crypt command
             SendCommand(ChatRPL.SecureKey, "* " + clientKey + " " + serverKey);
@@ -65,7 +63,7 @@ namespace Chat
         private void DecryptData(ref string data)
         {
             byte[] array = Encoding.ASCII.GetBytes(data);
-            ChatCrypt.Handle(ref chatUserInfo.ClientCTX, ref array);
+            ChatCrypt.Handle(chatUserInfo.ClientCTX, ref array);
             data = Encoding.ASCII.GetString(array);
         }
 
@@ -82,7 +80,7 @@ namespace Chat
 
         private void EncryptData(ref byte[] buffer, ref long size)
         {
-            ChatCrypt.Handle(ref chatUserInfo.ServerCTX, ref buffer);
+            ChatCrypt.Handle(chatUserInfo.ServerCTX, ref buffer);
             size = buffer.Length;
         }
 
