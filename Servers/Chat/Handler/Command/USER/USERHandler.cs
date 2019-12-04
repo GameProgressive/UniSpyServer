@@ -8,6 +8,7 @@ namespace Chat.Handler.Command.USER
     {
         public static void Handle(ChatSession session, string[] recv)
         {
+            session.chatUserInfo.username = recv[1];
             session.chatUserInfo.serverIP = recv[3];
         }
     }

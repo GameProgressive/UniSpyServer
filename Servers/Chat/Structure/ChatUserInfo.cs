@@ -9,6 +9,7 @@ namespace Chat.Structure
         public string gameName = "";
         public string nickname = "";
         public string serverIP = "";
+        public string username = "";
 
         // secure connection
 

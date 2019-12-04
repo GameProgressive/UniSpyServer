@@ -11,7 +11,7 @@ namespace Chat.Handler.Command.USRIP
             string sessionIP = session.Remote.ToString();
             string IP = sessionIP.Substring(0, sessionIP.IndexOf(':'));
 
-            session.SendCommand(302, " @" + IP);
+            session.SendCommand(302, session.chatUserInfo.nickname + " :" + session.chatUserInfo.nickname + "=+ " + session.chatUserInfo.username + "@" + IP);
         }
     }
 }
