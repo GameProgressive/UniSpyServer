@@ -21,9 +21,10 @@ namespace Chat
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            string data = Encoding.UTF8.GetString(buffer, 0, (int)size);
             if (chatUserInfo.encrypted)
-                DecryptData(ref data);
+                DecryptData(ref buffer, size);
+
+            string data = Encoding.UTF8.GetString(buffer, 0, (int)size);
 
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] IRC data: {1}", ServerName, data);
@@ -60,11 +61,9 @@ namespace Chat
             SendAsync(stringToSend);
         }
 
-        private void DecryptData(ref string data)
+        private void DecryptData(ref byte[] data, long size)
         {
-            byte[] array = Encoding.ASCII.GetBytes(data);
-            ChatCrypt.Handle(chatUserInfo.ClientCTX, ref array);
-            data = Encoding.ASCII.GetString(array);
+            ChatCrypt.Handle(chatUserInfo.ClientCTX, ref data, size);
         }
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
@@ -73,15 +72,14 @@ namespace Chat
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] IRC data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
 
             if (chatUserInfo.encrypted)
-                EncryptData(ref buffer, ref size);
+                EncryptData(ref buffer, size);
 
             return BaseSendAsync(buffer, offset, size);
         }
 
-        private void EncryptData(ref byte[] buffer, ref long size)
+        private void EncryptData(ref byte[] buffer, long size)
         {
-            ChatCrypt.Handle(chatUserInfo.ServerCTX, ref buffer);
-            size = buffer.Length;
+            ChatCrypt.Handle(chatUserInfo.ServerCTX, ref buffer, size);
         }
 
         private void HandleIRCCommands(string data)
