@@ -86,7 +86,7 @@ namespace GameSpyLib.Common
             switch (dbConfiguration.Type)
             {
                 case DatabaseEngine.Mysql:
-                    databaseDriver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port));// if using mysql we set this to null to make sure this value is null
+                    databaseDriver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port, dbConfiguration.SslMode, dbConfiguration.SslCert, dbConfiguration.SslKey, dbConfiguration.SslCa));// if using mysql we set this to null to make sure this value is null
                     break;
                 case DatabaseEngine.Sqlite:
                     databaseDriver = new SqliteDatabaseDriver("Data Source=" + dbConfiguration.Databasename + ";Version=3;New=False");
