@@ -37,7 +37,7 @@ namespace Chat
         /// </summary>
         public void ElevateSecurity(string secretKey)
         {
-            string Info = string.Format("{0} Elevating security for user {1} with game {2}", ServerName, chatUserInfo.nickname, chatUserInfo.gameName);
+            string Info = $"{ServerName} Elevating security for user {Id} with game {chatUserInfo.gameName}";
             ToLog(Info);
             
             // 1. Generate the two keys
