@@ -11,6 +11,7 @@ using System.Collections.Generic;
 //client.Stream.SendAsync(sendingbuffer);
 //\more\<number of items>\final\
 //\search\sesskey\0\profileid\0\namespaceid\0\nick\gbr359_jordips\gamename\gbrome\final\
+
 namespace PresenceSearchPlayer.Handler.Search
 {
     public class SearchHandler
