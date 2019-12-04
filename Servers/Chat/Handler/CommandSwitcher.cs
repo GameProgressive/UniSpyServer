@@ -1,6 +1,7 @@
 ﻿using Chat.Handler.Command.NICK;
 using Chat.Handler.Command.USER;
 using Chat.Handler.Command.CRYPT;
+using Chat.Handler.Command.USRIP;
 
 namespace Chat.Handler
 {
@@ -19,6 +20,12 @@ namespace Chat.Handler
                     break;
                 case "CRYPT":
                     CRYPTHandler.Handle(session, recv);
+                    break;
+                case "USRIP":
+                    USRIPHandler.Handle(session, recv);
+                    break;
+                case "QUIT":
+                    session.Disconnect();
                     break;
                 default:
                     string singleRecv = "";
