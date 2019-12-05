@@ -25,6 +25,7 @@ namespace CDKey
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
            string decrypted = Enctypex.XorEncoding(message, 0);
+            decrypted.Replace(@"\r\n", "").Replace("\0", "");
             string[] recieved = decrypted.TrimStart('\\').Split('\\');
             Dictionary<string, string> recv = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
             CommandSwitcher.Switch(this, endPoint, recv);
@@ -32,9 +33,9 @@ namespace CDKey
 
         public void UnknownDataRecived(Dictionary<string, string> recv)
         {
-            string errorMsg = string.Format("Received unknown data.");
-            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
+            string errorMsg = string.Format("Received unknown data.");           
             ToLog(errorMsg);
+            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
         }
         private bool _disposed;
         protected override void Dispose(bool disposingManagedResources)

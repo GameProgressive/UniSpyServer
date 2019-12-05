@@ -26,7 +26,9 @@ namespace CDKey.Handler
                     case "skey":
                         SKeyHandler.IsCDKeyValid(server, endPoint, recv);
                         break;
-                    case "disc":
+                    case "disc"://disconnect from server
+                        break;
+                    case "uon":
                         break;
                     default:
                         server.UnknownDataRecived(recv);

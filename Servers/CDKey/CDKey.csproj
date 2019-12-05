@@ -24,4 +24,9 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handler\Auth\" />
+    <Folder Include="Handler\UON\" />
+  </ItemGroup>
+
 </Project>
