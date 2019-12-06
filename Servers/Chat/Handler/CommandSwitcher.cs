@@ -2,6 +2,7 @@
 using Chat.Handler.Command.USER;
 using Chat.Handler.Command.CRYPT;
 using Chat.Handler.Command.USRIP;
+using Chat.Handler.Command.LOGIN;
 
 namespace Chat.Handler
 {
@@ -26,6 +27,9 @@ namespace Chat.Handler
                     break;
                 case "QUIT":
                     session.Disconnect();
+                    break;
+                case "LOGIN":
+                    LOGINHandler.Handle(session, recv);
                     break;
                 default:
                     string singleRecv = "";

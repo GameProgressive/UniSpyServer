@@ -10,6 +10,8 @@ namespace Chat.Structure
         public string nickname = "";
         public string serverIP = "";
         public string username = "";
+        public int namespaceID = 0;
+        public string uniqueNickname = "";
 
         // secure connection
 
