@@ -10,7 +10,7 @@ namespace Chat.Handler.Command.LOGIN
         public static void Handle(ChatSession session, string[] recv)
         {
             int namespaceid = 0;
-            if (Int32.TryParse(recv[1], out namespaceid))
+            if (!Int32.TryParse(recv[1], out namespaceid))
             {
                 session.SendCommand(ChatError.MoreParameters, "LOGIN :Not enough parameters");
                 session.Disconnect();
