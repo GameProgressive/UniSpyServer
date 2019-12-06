@@ -31,7 +31,7 @@ namespace Chat.Handler.Command.LOGIN
             session.chatUserInfo.uniqueNickname = recv[3];
             //session.chatUserInfo.password = recv[4];
 
-            session.SendCommand(ChatRPL.Login, "1 1");
+            session.SendCommand(ChatRPL.Login, "* 1 1");
         }
     }
 }
