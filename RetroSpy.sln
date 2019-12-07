@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common files", "Common file
 		Common files\retrospy.sql = Common files\retrospy.sql
 		Common files\RetroSpy_Logo.ico = Common files\RetroSpy_Logo.ico
 		Common files\RetroSpyServer.xml = Common files\RetroSpyServer.xml
-		Common files\sqlite_retrospy_server.db = Common files\sqlite_retrospy_server.db
+		Common files\RetroSpy.sqlite = Common files\RetroSpy.sqlite
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenceConnectionManager", "Servers\PresenceConnectionManager\PresenceConnectionManager.csproj", "{2756723C-4071-4EEA-851D-A23C0019E43A}"
