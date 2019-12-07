@@ -12,7 +12,7 @@ namespace Chat.Handler.Command.CRYPT
 
             string secretKey = CRYPTQuery.GetSecretKeyFromGame(recv[3]);
 
-            if (secretKey == null)
+            if (secretKey == null||secretKey=="")
             {
                 session.SendCommand(ChatError.MoreParameters, "CRYPT :Secret key not found!");
                 return;
