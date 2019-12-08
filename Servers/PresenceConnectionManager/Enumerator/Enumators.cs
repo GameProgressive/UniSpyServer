@@ -33,18 +33,18 @@
         /// <summary>
         /// Gender is male
         /// </summary>
-        MALE,
+        Male,
 
         /// <summary>
         /// Gender is female
         /// </summary>
-        FEMALE,
+        Female,
 
         /// <summary>
         /// Unspecified or unknown gender, this is
         /// used to mask the gender when the information is queried
         /// </summary>
-        PAT
+        Pat
     }
 
     /// <summary>
@@ -101,41 +101,62 @@
         /// <summary>
         /// Show the essential informations for getting the profile info
         /// </summary>
-        MASK_NONE = 0x00000000,
+        None = 0x00000000,
 
         /// <summary>
         /// Show the user homepage
         /// </summary>
-        MASK_HOMEPAGE = 0x00000001,
+        Homepage = 0x00000001,
 
         /// <summary>
         /// Show the ZIP code
         /// </summary>
-        MASK_ZIPCODE = 0x00000002,
+        ZipCode = 0x00000002,
 
         /// <summary>
         /// Show the country code where the player lives
         /// </summary>
-        MASK_COUNTRYCODE = 0x00000004,
+        CountryCode = 0x00000004,
 
         /// <summary>
         /// Show the birth date
         /// </summary>
-        MASK_BIRTHDAY = 0x00000008,
+        Birthday = 0x00000008,
 
         /// <summary>
         /// Show the gender
         /// </summary>
-        MASK_SEX = 0x00000010,
+        Sex = 0x00000010,
 
         /// <summary>
         /// Show the Email
         /// </summary>
-        MASK_EMAIL = 0x00000020,
+        Email = 0x00000020,
 
         /// <summary>
         /// Show all the informations
         /// </summary>
-        MASK_ALL = 0xFFFFFFFF,
+        All = 0xFFFFFFFF,
     };
+
+    /// <summary>
+    /// This enumation defins the supported login method for the users.
+    /// </summary>
+    public enum LoginMethods
+    {
+        /// <summary>
+        /// Login with user combo (nick@email)
+        /// </summary>
+        Username = 0,
+
+        /// <summary>
+        /// Login with unique nickname
+        /// </summary>
+        UniqueNickname,
+
+        /// <summary>
+        /// Pre-authenticated login
+        /// </summary>
+        AuthToken
+    }
 }

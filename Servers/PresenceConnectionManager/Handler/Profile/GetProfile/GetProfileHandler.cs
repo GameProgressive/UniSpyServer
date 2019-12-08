@@ -198,11 +198,11 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
 
             PlayerSexType playerSexType;
             if (!Enum.TryParse(result["sex"].ToString().ToUpper(), out playerSexType))
-                if (playerSexType == PlayerSexType.PAT)
+                if (playerSexType == PlayerSexType.Pat)
                     _sendingBuffer += @"\sex\2";
-            if (playerSexType == PlayerSexType.FEMALE)
+            if (playerSexType == PlayerSexType.Female)
                 _sendingBuffer += @"\sex\1";
-            if (playerSexType == PlayerSexType.MALE)
+            if (playerSexType == PlayerSexType.Male)
                 _sendingBuffer += @"\sex\0";
 
 
