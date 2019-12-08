@@ -11,22 +11,22 @@ namespace PresenceConnectionManager.Handler.General.Login
     public class LoginQuery
     {
 
-        public static Dictionary<string, object> GetUserFromUniqueNick(Dictionary<string, string> dict)
+        public static Dictionary<string, object> GetUserFromUniqueNick(string uniquenick, uint namespaceid)
         {
             var result = GPCMServer.DB.Query(
                 @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, users.email, users.password, users.emailverified,users.banned 
                  FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
                  WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1"
-                 , dict["uniquenick"], dict["namespaceid"]
+                 , uniquenick, namespaceid
                  );
             return (result.Count == 0) ? null : result[0];
         }
 
-        public static Dictionary<string, object> GetUserFromNickAndEmail(Dictionary<string, string> dict)
+        public static Dictionary<string, object> GetUserFromNickAndEmail(uint namespaceid, string nickname, string email)
         {
-            var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, namespace.uniquenick , users.password, users.emailverified,users.banned"
+            var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, namespace.uniquenick, users.password, users.emailverified, users.banned"
             + @" FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid "
-            + @"WHERE  namespace.namespaceid = @P0  AND profiles.nick = @P1 AND  users.email=@P2", dict["namespaceid"], dict["nick"], dict["email"]);
+            + @"WHERE  namespace.namespaceid = @P0  AND profiles.nick = @P1 AND users.email=@P2", namespaceid, nickname, email);
             return (result.Count == 0) ? null : result[0];
         }
 
@@ -37,12 +37,17 @@ namespace PresenceConnectionManager.Handler.General.Login
         /// <param name="dict"></param>
         /// <param name="sesskey"></param>
         /// <param name="player"></param>
-        public static void UpdateSessionKey(uint profileid, uint namespaceid, ushort sesskey, Guid guid)
+        public static bool UpdateSessionKey(uint profileid, uint namespaceid, ushort sesskey, Guid guid)
         {
-            Dictionary<string, object> temp = GPCMServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 ", profileid, namespaceid)[0];
-            uint id = Convert.ToUInt32(temp["id"]);
+            List<Dictionary<string, object>> temp = GPCMServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1 ", profileid, namespaceid);
+
+            if (temp.Count < 1)
+                return false;
+
+            uint id = Convert.ToUInt32(temp[0]["id"]);
             GPCMServer.DB.Execute("UPDATE namespace SET guid = @P0 WHERE id = @P1 ", guid.ToString(), id);
             GPCMServer.DB.Execute("UPDATE namespace SET sesskey = @P0 WHERE id = @P1 ", sesskey, id);
+            return true;
         }
 
 
@@ -52,10 +57,12 @@ namespace PresenceConnectionManager.Handler.General.Login
             uint userid = Convert.ToUInt32(GPCMServer.DB.Query("SELECT userid FROM profiles WHERE profileid= @P0", profileId)[0]);
             GPCMServer.DB.Execute("UPDATE users SET lastip=@P0, lastonline=@P1 WHERE userid = @P2", ip, lastOnlineTime, userid);
         }
+
         public static void UpdateSessionKeyAndGuid(uint profileid, uint namespaceid, uint sessionkey, Guid guid)
         {
             GPCMServer.DB.Execute("UPDATE namespace SET sesskey=@P0, guid =@P1 WHERE profileid =@P2 AND namespaceid = @P3", sessionkey, guid.ToString(), profileid, namespaceid);
         }
+
 
         public static void ResetAllStatusAndSessionKey()
         {

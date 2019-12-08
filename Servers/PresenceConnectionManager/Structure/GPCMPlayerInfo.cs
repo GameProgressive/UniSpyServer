@@ -9,8 +9,6 @@ namespace PresenceConnectionManager.Structure
         /// </summary>
         public uint Profileid = 0;
 
-
-        public string User = "";
         /// <summary>
         /// The connected clients Nick
         /// </summary>
@@ -35,8 +33,7 @@ namespace PresenceConnectionManager.Structure
         /// store the information of a user, if using the uniquenick login the userdatawill be his uniquenick if using
         /// authtoken userdata will be authtoken, if using nouniquenick login the userdata will be nick and email.
         /// </summary>
-        public string UserData;
-
+        public string UserData = "";
 
         /// <summary>
         /// The clients password, MD5 hashed from UTF8 bytes
@@ -49,11 +46,11 @@ namespace PresenceConnectionManager.Structure
         public PlayerOnlineStatus PlayerStatus = PlayerOnlineStatus.Offline;
 
 
-        public string UserChallenge;
+        public string UserChallenge = "";
 
-        public string ServerChallenge;
+        public string ServerChallenge = "";
 
-        public ushort SessionKey;
+        public ushort SessionKey = 0;
 
         public LoginStatus LoginProcess;
 
@@ -62,6 +59,7 @@ namespace PresenceConnectionManager.Structure
         public uint Namespaceid;
 
         public uint SDKRevision;
+
         /// <summary>
         /// The profile id parameter that is sent back to the client is initially 2, 
         /// and then 5 everytime after that. So we set here, whether we have sent the 
@@ -75,5 +73,7 @@ namespace PresenceConnectionManager.Structure
         public bool BuddiesSent = false;
 
         public bool BlockListSent = false;
+
+        public LoginMethods loginMethod;
     }
 }
