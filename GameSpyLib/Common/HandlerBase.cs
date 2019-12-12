@@ -4,18 +4,11 @@ using System.Text;
 
 namespace GameSpyLib.Common
 {
-    public abstract class HandlerBase
+    public abstract class HandlerBase<Source>
     {
-        private static Dictionary<string, string> _recv;
-        /// <summary>
-        /// store the query result from database
-        /// </summary>
-        private static Dictionary<string, object> _queryResult;
-        /// <summary>
-        /// store the information we need to send to user
-        /// </summary>
-        private static string _sendingBuffer;
+        public abstract void Handle(Source source);
 
-        private static string _errorMsg;
+        protected abstract void CheckRequest();
+
     }
 }

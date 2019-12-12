@@ -1,6 +1,6 @@
 ﻿namespace PresenceConnectionManager.Enumerator
 {
-    public enum GPEnum : uint
+    public enum GPBasic : uint
     {
         // Callbacks
         ////////////
@@ -228,141 +228,51 @@
         Count
     }
 
-    public enum GPErrorCode : uint
+    /// <summary>
+    /// This enum rapresers the known Parter IDs, This value was setted to 0 when
+    /// a game is directly connecting to GameSpy, otherwise the Partner ID would be
+    /// different for any service that uses GameSpy as backend (for example Nintendo
+    /// Wifi Connection).
+    /// </summary>
+    public enum PartnerID : uint
     {
-        // General.
-        ///////////
-        General = 0x0000,
-        Parse,
-        NotLoggedIn,
-        BadSessionKey,
-        DatabaseError,
-        Network,
-        ForcedDisconnect,
-        ConnectionClose,
-        UdpLayer,
+        /// <summary>
+        /// The client is directly connecting to the Server
+        /// </summary>
+        Gamespy = 0,
 
-        // Login.
-        /////////
-        Login = 0x0100,
-        LoginTimeOut,
-        LoginBadNick,
-        LoginBadEmail,
-        LoginBadPassword,
-        LoginBadProfile,
-        LoginProfileDeleted,
-        LoginConnectionFailed,
-        LoginServerAuthFaild,
-        LoginBadUniquenick,
-        LoginBadPreAuth,
+        // Unknown Partner ID from 1 to 9
+        // EA partner ID should range here, it was
 
-        // Newuser.
-        ///////////
-        NewUser = 0x0200,
-        NewUserBadNick,
-        NewUserBadPasswords,
-        NewUserUniquenickInvalid,
-        NewUserUniquenickInUse,
+        /// <summary>
+        /// Unknown usage for this partner id, but it exists in the
+        /// GameSpy SDK
+        /// </summary>
+        IGN = 10,
 
-        // Updateui.
-        ////////////
-        UpdateUI = 0x0300,
-        UpdateUIBadEmail,
-
-        // Newprofile.
-        //////////////
-        NewProfile = 0x0400,
-        NewProfileBadnick,
-        NewProfileBadOldNick,
-
-        // Updatepro.
-        /////////////
-        UpdatePro = 0x0500,
-        UpdatePROBadNick,
-
-        // Addbuddy.
-        ////////////
-        AddBuddy = 0x0600,
-        AddBuddyBadForm,
-        AddBuddyBadNew,
-        AddBuddyAlreadyBuddy,
-
-        // Authadd.
-        ///////////
-        AuthAdd = 0x0700,
-        AuthAddBadForm,
-        AuthAddBadSig,
-
-        // Status.
-        //////////
-        Status = 0x0800,
-
-        // Bm.
-        //////
-        Bm = 0x0900,
-        BmNotBuddy,
-        BmExtInfoNotSupported,
-        BmBuddyOffline,
-
-        // Getprofile.
-        //////////////
-        GetProfile = 0x0A00,
-        GetProfileBadProfile,
-
-        // Delbuddy.
-        ////////////
-        DelBuddy = 0x0B00,
-        DelBuddyNotBuddy,
-
-        // Delprofile.
-        /////////////
-        DelProfile = 0x0C00,
-        DelProfileLastProfile,
-
-        // Search.
-        //////////
-        Search = 0x0D00,
-        SearchConnectionFailed,
-        SearchTimeOut,
-
-        // Check.
-        /////////
-        Check = 0x0E00,
-        CheckBadMail,
-        CheckBadNick,
-        CheckBadPassword,
-
-        // Revoke.
-        //////////
-        Revoke = 0x0F00,
-        RevokeNotBuddy,
-
-        // Registeruniquenick.
-        //////////////////////
-        RegisterUniquenick = 0x1000,
-        RegisterUniquenickTaken,
-        RegisterUniquenickReserved,
-        RegisterUniquenickBadNamespace,
-
-        // Register cdkey.
-        //////////////////
-        RegisterCDKey = 0x1100,
-        RegisterCDKeyBadKey,
-        RegisterCDKeyAlreadySet,
-        RegisterCDKeyAlreadyTaken,
-
-        // AddBlock.
-        ////////////
-        AddBlock = 0x1200,
-        AddBlockAlreadyBlocked,
-
-        // RemoveBlock.
-        ///////////////
-        RemoveBlock = 0x1300,
-        RemoveBlockNotBlocked,
-
-
-        //RetroSpy self defined NoError code
-        NoError = 0xffff
+        //Nintendo = 11, // Please verify this
     }
+
+    /// <summary>
+    /// This enum rapresents the gender of a player.
+    /// </summary>
+    public enum PlayerSexType : ushort
+    {
+        /// <summary>
+        /// Gender is male
+        /// </summary>
+        Male,
+
+        /// <summary>
+        /// Gender is female
+        /// </summary>
+        Female,
+
+        /// <summary>
+        /// Unspecified or unknown gender, this is
+        /// used to mask the gender when the information is queried
+        /// </summary>
+        Pat
+    }
+
 }

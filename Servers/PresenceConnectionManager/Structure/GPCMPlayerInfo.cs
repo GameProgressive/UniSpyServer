@@ -43,7 +43,7 @@ namespace PresenceConnectionManager.Structure
         /// <summary>
         /// Gets the current status of the player
         /// </summary>
-        public PlayerOnlineStatus PlayerStatus = PlayerOnlineStatus.Offline;
+        public PlayerStatus PlayerStatus = PlayerStatus.Offline;
 
 
         public string UserChallenge = "";

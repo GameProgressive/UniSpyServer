@@ -73,7 +73,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
 
             foreach (uint profileid in profileids)
             {
-                string sendingBuffer = @"\bm\" + (uint)GPEnum.BmStatus + @"\f\";
+                string sendingBuffer = @"\bm\" + (uint)GPBasic.BmStatus + @"\f\";
                 result = SendBuddiesQuery.GetStatusInfo(profileid, session.PlayerInfo.Namespaceid);
                 sendingBuffer += profileid + @"\msg\";
                 sendingBuffer += @"|s|" + Convert.ToUInt32(result["status"]);
