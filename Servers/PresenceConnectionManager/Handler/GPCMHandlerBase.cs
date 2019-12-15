@@ -5,36 +5,56 @@ using PresenceConnectionManager.Enumerator;
 
 namespace PresenceConnectionManager.Handler
 {
-    public class GPCMHandlerBase : HandlerBase<GPCMSession>
+    public class GPCMHandlerBase : HandlerBase<GPCMSession, Dictionary<string, string>>
     {
         protected Dictionary<string, string> _recv;
-        protected GPErrorCode _errorCode;
+        protected GPErrorCode _errorCode = GPErrorCode.NoError;
         protected Dictionary<string, object> _result;
         protected string _sendingBuffer;
 
         protected GPCMHandlerBase(Dictionary<string, string> recv)
         {
             _recv = recv;
-            _errorCode = GPErrorCode.NoError;
-            _sendingBuffer = null;
         }
-
-        public override void Handle(GPCMSession source)
+        public override void Handle(GPCMSession session)
         {
-            throw new NotImplementedException();
+            CheckRequest(session);
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                //TODO
+            }
+
+            DataBaseOperation(session);
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                //TODO
+            }
+
+            CheckDatabaseResult(session);
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                //TODO
+            }
+
+            Response(session);
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                //TODO
+            }
         }
 
-        protected override void CheckRequest()
+        public virtual void CheckRequest(GPCMSession session) { }
+
+        public virtual void DataBaseOperation(GPCMSession session) { }
+
+        public virtual void CheckDatabaseResult(GPCMSession session) { }
+
+        public virtual void Response(GPCMSession session)
         {
-            throw new NotImplementedException();
+            if (_sendingBuffer != null)
+            {
+                session.SendAsync(_sendingBuffer);
+            }
         }
-
-        protected virtual void DatabaseOperation() { }
-
-        protected virtual void ProcessDatabaseResult() { }
-
-        protected virtual void ConstructResponse() { }
-
-
     }
 }

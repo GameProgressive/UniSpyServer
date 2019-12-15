@@ -32,7 +32,8 @@ namespace PresenceConnectionManager.Handler
                         InviteToHandler.InvitePlayer(session, recv);
                         break;
                     case "login"://login to gamespy
-                        LoginHandler.ProcessLogin(session, recv);
+                        LoginHandler login = new LoginHandler(session, recv);
+                        login.Handle(session);
                         break;
                     case "getprofile"://get profile of a player
                         GetProfileHandler.SendProfile(session, recv);
@@ -41,7 +42,8 @@ namespace PresenceConnectionManager.Handler
                         AddBuddyHandler.Addfriends(session, recv);
                         break;
                     case "delbuddy"://delete a user from our friend list
-                        DelBuddyHandler.Handle(session, recv);
+                        DelBuddyHandler delBuddy = new DelBuddyHandler(recv);
+                        delBuddy.Handle(session);
                         break;
                     case "updateui"://update a user's email
                         UpdateUIHandler.UpdateUI(session, recv);

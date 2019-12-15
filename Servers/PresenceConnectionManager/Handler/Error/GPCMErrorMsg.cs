@@ -5,103 +5,215 @@ namespace PresenceConnectionManager.Handler
 {
     public class GPCMErrorMsg
     {
-        private static string _message;
         public static string GetErrorMsg(GPErrorCode errorCode)
         {
             switch (errorCode)
             {
                 ///General error message
                 case GPErrorCode.General:
-                    _message = "There was an unknown error.";
-                    break;
+                    return "There was an unknown error.";
+
                 case GPErrorCode.Parse:
-                    _message = "There was an error parsing an incoming request.";
-                    break;
+                    return "There was an error parsing an incoming request.";
+
                 case GPErrorCode.NotLoggedIn:
-                    _message = "This request cannot be processed because you are not logged in.";
-                    break;
+                    return "This request cannot be processed because you are not logged in.";
+
                 case GPErrorCode.BadSessionKey:
-                    _message = "This request cannot be processed because the session key is invalid.";
-                    break;
+                    return "This request cannot be processed because the session key is invalid.";
+
                 case GPErrorCode.DatabaseError:
-                    _message = "Can not find information in database";
-                    break;
+                    return "Can not find information in database";
+
                 case GPErrorCode.Network:
-                    _message = "here was an error connecting a network socket.";
-                    break;
+                    return "here was an error connecting a network socket.";
+
                 case GPErrorCode.ForcedDisconnect:
-                    _message = "This profile has been disconnected by another login.";
-                    break;
+                    return "This profile has been disconnected by another login.";
+
                 case GPErrorCode.ConnectionClose:
-                    _message = "The server has closed the connection";
-                    break;
+                    return "The server has closed the connection";
+
                 case GPErrorCode.UdpLayer:
-                    _message = "There was a problem with the UDP layer.";
-                    break;
+                    return "There was a problem with the UDP layer.";
+
 
 
                 ///Login error message
                 case GPErrorCode.Login:
-                    _message = "There was an error logging in to the GP backend.";
-                    break;
+                    return "There was an error logging in to the GP backend.";
+
                 case GPErrorCode.LoginTimeOut:
-                    _message = "The login attempt timed out.";
-                    break;
+                    return "The login attempt timed out.";
+
                 case GPErrorCode.LoginBadNick:
-                    _message = "The nickname provided was incorrect.";
-                    break;
+                    return "The nickname provided was incorrect.";
+
                 case GPErrorCode.LoginBadEmail:
-                    _message = "The email address provided was incorrect.";
-                    break;
+                    return "The email address provided was incorrect.";
+
                 case GPErrorCode.LoginBadPassword:
-                    _message = "The password provided was incorrect.";
-                    break;
+                    return "The password provided was incorrect.";
+
                 case GPErrorCode.LoginBadProfile:
-                    _message = "The profile provided was incorrect.";
-                    break;
+                    return "The profile provided was incorrect.";
+
                 case GPErrorCode.LoginProfileDeleted:
-                    _message = "The profile has been deleted.";
-                    break;
+                    return "The profile has been deleted.";
+
                 case GPErrorCode.LoginConnectionFailed:
-                    _message = "The server has refused the connection.";
-                    break;
+                    return "The server has refused the connection.";
+
                 case GPErrorCode.LoginServerAuthFaild:
-                    _message = "The server could not be authenticated.";
-                    break;
+                    return "The server could not be authenticated.";
+
                 case GPErrorCode.LoginBadUniquenick:
-                    _message = "The uniquenick provided is incorrect.";
-                    break;
+                    return "The uniquenick provided is incorrect.";
+
                 case GPErrorCode.LoginBadPreAuth:
-                    _message = "There was an error validating the pre-authentication.";
-                    break;
+                    return "There was an error validating the pre-authentication.";
+
                 case GPErrorCode.LoginBadLoginTicket:
-                    _message = "The login ticket was unable to be validated.";
-                    break;
+                    return "The login ticket was unable to be validated.";
+
                 case GPErrorCode.LoginTicketExpired:
-                    _message = "The login ticket had expired and could not be used.";
-                    break;
+                    return "The login ticket had expired and could not be used.";
+
 
                 ///New user errors
                 case GPErrorCode.NewUser:
-                    _message = "There was an error creating a new user.";
-                    break;
+                    return "There was an error creating a new user.";
+
                 case GPErrorCode.NewUserBadNick:
-                    _message = "A profile with that nick already exists.";
-                    break;
+                    return "A profile with that nick already exists.";
+
                 case GPErrorCode.NewUserBadPasswords:
-                    _message = "The password does not match the email address.";
-                    break;
+                    return "The password does not match the email address.";
+
                 case GPErrorCode.NewUserUniquenickInvalid:
-                    _message = "The uniquenick is invalid.";
-                    break;
+                    return "The uniquenick is invalid.";
+
                 case GPErrorCode.NewUserUniquenickInUse:
-                    _message = "The uniquenick is already in use.";
-                    break;
+                    return "The uniquenick is already in use.";
 
 
+
+                ///UpdateUi
+                case GPErrorCode.UpdateUI:
+                    return "There was an error updating the user information.";
+
+                case GPErrorCode.UpdateUIBadEmail:
+                    return "A user with the email adress provided already exists.";
+
+
+
+                ///Newprofile
+                case GPErrorCode.NewProfile:
+                    return "There was an error creating a new profile.";
+
+                case GPErrorCode.NewProfileBadNick:
+                    return "The nickname to be replaced does not exist.";
+
+                case GPErrorCode.NewProfileBadOldNick:
+                    return "A profile with the nickname provided already exists.";
+
+
+                // Updatepro.
+                /////////////
+                case GPErrorCode.UpdatePro:
+                    return "There was an error updating the profile information.";
+
+                case GPErrorCode.UpdatePROBadNick:
+                    return "A user with the nickname provided already exists.";
+
+
+                // Addbuddy.
+                ////////////
+                case GPErrorCode.AddBuddy:
+                    return "There was an error adding a buddy. ";
+
+                case GPErrorCode.AddBuddyBadForm:
+                    return "The profile requesting to add a buddy is invaild. ";
+
+                case GPErrorCode.AddBuddyBadNew:
+                    return "The profile requested is invalid.";
+
+                case GPErrorCode.AddBuddyAlreadyBuddy:
+
+
+                //_return "The profile requested is already a buddy.You tried to register a profile id which is already in your friendlist.";
+                //_return "The profile requested is on the local profile's block list.";
+                //_return "Reserved for future use The profile requested is blocking you.";
+
+
+                // Authadd.
+                ///////////
+                case GPErrorCode.AuthAdd:
+                    return "There was an error authorizing an add buddy request.";
+
+                case GPErrorCode.AuthAddBadForm:
+                    return "The profile being authorized is invalid.";
+
+                case GPErrorCode.AuthAddBadSig:
+                    return "The signature for the authorization is invalid.";
+
+                case GPErrorCode.Status:
+                    return "There was an error with the status string.	";
+
+                case GPErrorCode.Bm:
+                    return "There was an error sending a buddy message.";
+
+                case GPErrorCode.BmNotBuddy:
+                    return "The profile the message was to be sent to is not a buddy.";
+
+                case GPErrorCode.BmExtInfoNotSupported:
+                    return "The profile does not support extended info keys.	";
+
+                case GPErrorCode.BmBuddyOffline:
+                    return "The buddy to send a message to is offline.";
+
+                case GPErrorCode.GetProfile:
+                    return "There was an error getting profile info.";
+
+                case GPErrorCode.GetProfileBadProfile:
+                    return "The profile info was requested on is invalid.	";
+
+                case GPErrorCode.DelBuddy:
+                    return "There was an error deleting the buddy.";
+
+                case GPErrorCode.DelBuddyNotBuddy:
+                    return "The buddy to be deleted is not a buddy.";
+
+                case GPErrorCode.DelProfile:
+                    return "	There was an error deleting the profile.";
+
+                case GPErrorCode.DelProfileLastProfile:
+                    return "The last profile cannot be deleted.	";
+
+
+
+                // AddBlock.
+                ////////////
+                case GPErrorCode.AddBlock:
+                    return "There was an error adding the player to the blocked list.";
+
+                case GPErrorCode.AddBlockAlreadyBlocked:
+                    return "The profile specified is already blocked.";
+
+
+                // RemoveBlock.
+                ///////////////
+                case GPErrorCode.RemoveBlock:
+                    return "There was an error removing the player from the blocked list.";
+
+                case GPErrorCode.RemoveBlockNotBlocked:
+                    return "The profile specified was not a member of the blocked list.";
+
+
+                default:
+                    return "General error.";
 
             }
-            return _message;
         }
     }
 }

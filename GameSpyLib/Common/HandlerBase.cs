@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace GameSpyLib.Common
 {
-    public abstract class HandlerBase<Source>
+    public abstract class HandlerBase<T1, T2>
     {
-        public abstract void Handle(Source source);
-
-        protected abstract void CheckRequest();
-
+        public virtual void Handle(T1 source) { }
     }
 }

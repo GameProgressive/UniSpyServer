@@ -1,4 +1,4 @@
-﻿namespace PresenceConnectionManager.Enumerator
+﻿namespace PresenceSearchPlayer.Enumerator
 {
 
     public enum GPErrorCode : uint
