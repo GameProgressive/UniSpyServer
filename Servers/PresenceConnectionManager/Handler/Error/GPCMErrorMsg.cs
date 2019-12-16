@@ -209,6 +209,17 @@ namespace PresenceConnectionManager.Handler
                 case GPErrorCode.RemoveBlockNotBlocked:
                     return "The profile specified was not a member of the blocked list.";
 
+                // Registeruniquenick.
+                //////////////////////
+                case GPErrorCode.RegisterUniquenick:
+                    return "There was an error registering the uniquenick.";
+                case GPErrorCode.RegisterUniquenickTaken:
+                    return "The uniquenick is already taken.";
+                case GPErrorCode.RegisterUniquenickReserved:
+                    return "The uniquenick is reserved.";
+                case GPErrorCode.RegisterUniquenickBadNamespace:
+                    return "Tried to register a nick with no namespace set. ";
+
 
                 default:
                     return "General error.";

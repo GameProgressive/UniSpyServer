@@ -12,51 +12,40 @@ namespace PresenceSearchPlayer.Handler.Error
                 // Search.
                 //////////
                 case GPErrorCode.Search:
-                    return "";
+                    return "There was an error searching for a profile.";
                 case GPErrorCode.SearchConnectionFailed:
-                    return "";
+                    return "The search attempt failed to connect to the server.	";
                 case GPErrorCode.SearchTimeOut:
-                    return "";
+                    return "The search did not return in a timely fashion.	";
                 // Check.
                 /////////
                 case GPErrorCode.Check:
-                    return "";
+                    return "There was an error checking the user account.";
                 case GPErrorCode.CheckBadMail:
-                    return "";
+                    return "No account exists with the provided e-mail address.";
                 case GPErrorCode.CheckBadNick:
-                    return "";
+                    return "No such profile exists for the provided e-mail adress.	";
                 case GPErrorCode.CheckBadPassword:
-                    return "";
+                    return "The password is incorrect.";
 
                 // Revoke.
                 //////////
                 case GPErrorCode.Revoke:
-                    return "";
+                    return "There was an error revoking the buddy.";
                 case GPErrorCode.RevokeNotBuddy:
-                    return "";
-
-                // Registeruniquenick.
-                //////////////////////
-                case GPErrorCode.RegisterUniquenick:
-                    return "";
-                case GPErrorCode.RegisterUniquenickTaken:
-                    return "";
-                case GPErrorCode.RegisterUniquenickReserved:
-                    return "";
-                case GPErrorCode.RegisterUniquenickBadNamespace:
-                    return "";
+                    return "You are not a buddy of the profile.";
 
                 // Register cdkey.
                 //////////////////
                 case GPErrorCode.RegisterCDKey:
-                    return "";
+                    return "There was an error registering the cdkey.";
                 case GPErrorCode.RegisterCDKeyBadKey:
-                    return "";
+                    return "The cdkey is invalid.";
 
                 case GPErrorCode.RegisterCDKeyAlreadySet:
-                    return "";
+                    return "The profile has already been registered with a different cdkey.";
                 case GPErrorCode.RegisterCDKeyAlreadyTaken:
-                    return "";
+                    return "The cdkey has already been registered to another profile.";
 
                 default:
                     return "General error.";
