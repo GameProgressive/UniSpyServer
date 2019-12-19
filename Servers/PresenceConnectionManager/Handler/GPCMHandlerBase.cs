@@ -2,6 +2,8 @@
 using GameSpyLib.Common;
 using System.Collections.Generic;
 using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Handler.Error;
+
 
 namespace PresenceConnectionManager.Handler
 {
@@ -11,6 +13,7 @@ namespace PresenceConnectionManager.Handler
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
         protected Dictionary<string, object> _result;
         protected string _sendingBuffer;
+        protected DisconnectReason _discReason;
 
         protected GPCMHandlerBase(Dictionary<string, string> recv)
         {
@@ -22,24 +25,36 @@ namespace PresenceConnectionManager.Handler
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
+                ErrorSender.SendGPCMError(session, _errorCode, Convert.ToUInt16(_recv["id"]));
+                session.DisconnectByReason(_discReason);
+                return;
             }
 
             DataBaseOperation(session);
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
+                ErrorSender.SendGPCMError(session, _errorCode, Convert.ToUInt16(_recv["id"]));
+                session.DisconnectByReason(_discReason);
+                return;
             }
 
             CheckDatabaseResult(session);
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
+                ErrorSender.SendGPCMError(session, _errorCode, Convert.ToUInt16(_recv["id"]));
+                session.DisconnectByReason(_discReason);
+                return;
             }
 
             Response(session);
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
+                ErrorSender.SendGPCMError(session, _errorCode, Convert.ToUInt16(_recv["id"]));
+                session.DisconnectByReason(_discReason);
+                return;
             }
         }
 
@@ -54,6 +69,10 @@ namespace PresenceConnectionManager.Handler
             if (_sendingBuffer != null)
             {
                 session.SendAsync(_sendingBuffer);
+            }
+            else
+            {
+                session.Disconnect();
             }
         }
     }

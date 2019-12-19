@@ -4,6 +4,7 @@ namespace PresenceConnectionManager.Structure
 {
     public class GPCMPlayerInfo
     {
+        public uint OperationID;
         /// <summary>
         /// The connected clients Player Id
         /// </summary>

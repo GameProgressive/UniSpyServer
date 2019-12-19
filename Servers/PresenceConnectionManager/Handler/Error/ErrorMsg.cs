@@ -3,7 +3,7 @@
 
 namespace PresenceConnectionManager.Handler
 {
-    public class GPCMErrorMsg
+    public class ErrorMsg
     {
         public static string GetErrorMsg(GPErrorCode errorCode)
         {

@@ -115,11 +115,15 @@ namespace PresenceConnectionManager
             SendAsync(sendingBuffer);
         }
 
+
+
         public void DisconnectByReason(DisconnectReason reason)
         {
             ToLog(reason.ToString());
             Disconnect();
         }
+
+
         public void StatusToLog(string status, string nick, uint pid, IPEndPoint remote, string reason)
         {
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
