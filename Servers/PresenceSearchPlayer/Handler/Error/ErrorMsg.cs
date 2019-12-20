@@ -3,7 +3,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.Error
 {
-    public class GPSPErrorCode
+    public class ErrorMsg
     {
         public static string GetErrorMsg(GPErrorCode errorCode)
         {

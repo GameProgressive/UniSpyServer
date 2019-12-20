@@ -65,6 +65,8 @@ namespace PresenceConnectionManager
 
 
         public static DatabaseDriver DB;
+
+        public static DBKeeper _dbKeeper;
         /// <summary>
         /// Creates a new instance of <see cref="GPCMClient"/>
         /// </summary>
@@ -74,6 +76,10 @@ namespace PresenceConnectionManager
             //GPCMHandler.DBQuery = new GPCMDBQuery(driver);
 
             DB = databaseDriver;
+
+            _dbKeeper = new DBKeeper(databaseDriver);
+            _dbKeeper.Run();
+
             KeepAliveManagement();
             PlayerStatusUpdate();
             // Setup timer. Every 15 seconds should be sufficient

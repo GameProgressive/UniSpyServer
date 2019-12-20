@@ -16,6 +16,7 @@ namespace GameSpyLib.Common
         protected DatabaseDriver databaseDriver = null;
 
         protected bool Disposed = false;
+
         public ServerManagerBase(string serverName)
         {
             BasePath = AppDomain.CurrentDomain.BaseDirectory;
