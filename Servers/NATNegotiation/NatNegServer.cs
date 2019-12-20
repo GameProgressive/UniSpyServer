@@ -3,6 +3,7 @@ using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using NATNegotiation.Enumerator;
 using NATNegotiation.Handler;
+using NATNegotiation.Handler.Switcher;
 using NATNegotiation.Structure.Packet;
 using System;
 using System.Net;
@@ -26,39 +27,8 @@ namespace NATNegotiation
         protected override void OnReceived(EndPoint endpoint, byte[] message)
         {
 
-            BasePacket basePacket = new BasePacket(message);
-            try
-            {
-                //BytesRecieved[7] is nnpacket.PacketType.
-                switch (basePacket.PacketType)
-                {
-                    case NatPacketType.PreInit:
-                        //NatNegHandler.PreInitResponse(this, packet, nnpacket);
-                        break;
-                    case NatPacketType.Init:
-                        InitHandler.InitResponse(this, endpoint, message);
-                        break;
-                    case NatPacketType.AddressCheck:
-                        AddressHandler.AddressCheckResponse(this, endpoint, message);
-                        break;
-                    case NatPacketType.NatifyRequest:
-                        NatifyHandler.NatifyResponse(this, endpoint, message);
-                        break;
-                    case NatPacketType.ConnectAck:
-                        ConnectHandler.ConnectResponse(this, endpoint, message);
-                        break;
-                    case NatPacketType.Report:
-                        ReportHandler.ReportResponse(this, endpoint, message);
-                        break;
-                    default:
-                        UnknownDataRecived(message);
-                        break;
-                }
-            }
-            catch (Exception e)
-            {
-                LogWriter.Log.WriteException(e);
-            }
+            PacketSwitcher.Switch(this,message);
+            
         }
 
     }

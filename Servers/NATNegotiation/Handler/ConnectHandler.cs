@@ -5,11 +5,11 @@ namespace NATNegotiation.Handler
 {
     public class ConnectHandler
     {
-        public static void ConnectResponse(NatNegServer server, EndPoint endpoint, byte[] recv)
+        public static void ConnectResponse(NatNegServer server, byte[] recv)
         {
             ConnectPacket connectPacket = new ConnectPacket(recv);
             byte[] sendingBuffer = connectPacket.CreateReplyPacket();
-            server.SendAsync(endpoint, sendingBuffer);
+            server.SendAsync(server.Socket.RemoteEndPoint, sendingBuffer);
         }
     }
 }

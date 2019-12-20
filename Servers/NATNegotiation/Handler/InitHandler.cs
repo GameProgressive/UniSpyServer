@@ -5,12 +5,12 @@ namespace NATNegotiation.Handler
 {
     public class InitHandler
     {
-        public static void InitResponse(NatNegServer server, EndPoint endpoint, byte[] recv)
+        public static void InitResponse(NatNegServer server, byte[] recv)
         {
 
             InitPacket initPacket = new InitPacket(recv);
             byte[] sendingBuffer = initPacket.CreateReplyPacket();
-            server.SendAsync(endpoint, sendingBuffer);
+            server.SendAsync(server.Socket.RemoteEndPoint, sendingBuffer);
         }
     }
 }

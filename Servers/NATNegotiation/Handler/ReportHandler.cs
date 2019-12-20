@@ -5,12 +5,12 @@ namespace NATNegotiation.Handler
 {
     public class ReportHandler
     {
-        public static void ReportResponse(NatNegServer server, EndPoint endpoint, byte[] recv)
+        public static void ReportResponse(NatNegServer server,byte[] recv)
         {
             ReportPacket reportPacket = new ReportPacket(recv);
 
             byte[] sendingBuffer = reportPacket.CreateReplyPacket();
-            server.SendAsync(endpoint, sendingBuffer);
+            server.SendAsync(server.Socket.RemoteEndPoint, sendingBuffer);
         }
     }
 }
