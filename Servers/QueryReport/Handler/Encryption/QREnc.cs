@@ -1,4 +1,4 @@
-﻿namespace QueryReport.Handler
+﻿namespace QueryReport.Handler.Encryption
 {
     public class QREnc
     {

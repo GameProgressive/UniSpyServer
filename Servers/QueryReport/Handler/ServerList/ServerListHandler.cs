@@ -2,7 +2,7 @@
 using QueryReport.Structure;
 using System;
 using System.Collections.Generic;
-
+using QueryReport.Server;
 namespace QueryReport.Handler.ServerList
 {
     public class ServerListHandler

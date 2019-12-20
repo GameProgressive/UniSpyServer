@@ -2,7 +2,7 @@
 using QueryReport.Structure;
 using System;
 using System.Net;
-
+using QueryReport.Server;
 namespace QueryReport.Handler.Challenge
 {
     public class ChallengeHandler

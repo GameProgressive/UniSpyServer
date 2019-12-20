@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using QueryReport.Server;
+using System.Net;
 using System.Text;
 
 namespace QueryReport.Handler.Available

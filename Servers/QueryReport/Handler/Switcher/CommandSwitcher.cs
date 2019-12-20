@@ -3,6 +3,7 @@ using QueryReport.Handler.Available;
 using QueryReport.Handler.Challenge;
 using QueryReport.Handler.HeartBeat;
 using QueryReport.Handler.KeepAlive;
+using QueryReport.Server;
 using QueryReport.Structure;
 using System;
 using System.Net;

@@ -7,7 +7,7 @@ using System.Net;
 using System.Timers;
 using QueryReport.Handler;
 
-namespace QueryReport
+namespace QueryReport.Server
 {
     public class QRServer : TemplateUdpServer
     {

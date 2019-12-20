@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
+using QueryReport.Server;
 using System.Net;
 
 namespace QueryReport.Application

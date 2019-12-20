@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using System.Text;
+using QueryReport.Server;
 
 namespace QueryReport.Handler.HeartBeat
 {
