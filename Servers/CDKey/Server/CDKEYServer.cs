@@ -51,5 +51,15 @@ namespace CDKey
 
             base.Dispose(disposingManagedResources);
         }
+
+        public override long Send(byte[] buffer, long offset, long size)
+        {
+            return base.Send(buffer, offset, size);
+        }
+
+        public override bool SendAsync(EndPoint endpoint, byte[] buffer)
+        {
+            return base.SendAsync(endpoint, buffer);
+        }
     }
 }
