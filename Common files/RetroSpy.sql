@@ -1374,7 +1374,7 @@ INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, 
 	(1398, 'whammermocd', NULL, 'Warhammer: Mark of Chaos Demo', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1399, 'flatout2ps2', NULL, 'FlatOut 2 (PS2)', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1400, 'cruciform', NULL, 'Genesis Rising: The Universal Crusade', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
-	(1401, 'blkhwkdntsps2', NULL, 'Delta Force â€“ Black Hawk Down: Team Sabre (PS2)', 6500, 0, 0, NULL, NULL),
+	(1401, 'blkhwkdntsps2', NULL, 'Delta Force â€?Black Hawk Down: Team Sabre (PS2)', 6500, 0, 0, NULL, NULL),
 	(1402, 'socelevends', NULL, 'World Soccer Winning Eleven DS (DS)', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1403, 'konductrads', NULL, 'Konductra (DS)', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1404, 'strongholdl', NULL, 'Stronghold Legends', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
@@ -2923,7 +2923,7 @@ INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, 
 	(2986, 'casinotourwiiam', NULL, 'Casino Tournament  Automatch (Wii)', 6500, 0, 0, NULL, NULL),
 	(0, 'gmtest', NULL, 'Test / demo / temporary', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\mymaxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1\\0'),
 	(1, 'bgate', NULL, 'Baldur\'s Gate', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
-	(3000, 'warms3d', 'fZDYB0', 'Warms 3D', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1');
+	(3000, 'warms3', 'fZDYB0', 'Warms 3D', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1');
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy.grouplist
