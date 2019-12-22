@@ -52,5 +52,5 @@ namespace PresenceSearchPlayer.Handler.Error
 
             }
         }
-    }
+   }
 }

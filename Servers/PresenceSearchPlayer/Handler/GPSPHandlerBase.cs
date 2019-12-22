@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameSpyLib.Common;
 using PresenceSearchPlayer.Enumerator;
+using PresenceSearchPlayer.Handler.Error;
 
 namespace PresenceSearchPlayer.Handler
 {
@@ -11,39 +12,45 @@ namespace PresenceSearchPlayer.Handler
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
         protected Dictionary<string, object> _result;
         protected string _sendingBuffer;
+        protected ushort operationID=0;
 
         protected GPSPHandlerBase(Dictionary<string, string> recv)
         {
-            _recv = recv;
+            _recv = recv;            
         }
         public override void Handle(GPSPSession session)
         {
             CheckRequest(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                //TODO
+                ErrorSender.SendGPSPError(session, _errorCode, operationID);
+                return;
             }
 
             DataBaseOperation(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                //TODO
+                ErrorSender.SendGPSPError(session, _errorCode, operationID);
+                return;
             }
 
             CheckDatabaseResult(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                //TODO
+                ErrorSender.SendGPSPError(session, _errorCode, operationID);
+                return;
             }
 
             Response(session);
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                //TODO
-            }
         }
 
-        public virtual void CheckRequest(GPSPSession session) { }
+        public virtual void CheckRequest(GPSPSession session) 
+        {
+            if (!UInt16.TryParse(_recv["id"], out operationID))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
+        }
 
         public virtual void DataBaseOperation(GPSPSession session) { }
 
