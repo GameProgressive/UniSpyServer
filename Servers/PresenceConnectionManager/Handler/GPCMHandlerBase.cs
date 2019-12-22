@@ -14,6 +14,7 @@ namespace PresenceConnectionManager.Handler
         protected Dictionary<string, object> _result;
         protected string _sendingBuffer;
         protected DisconnectReason _discReason;
+        protected ushort _operationID;
 
         protected GPCMHandlerBase(Dictionary<string, string> recv)
         {
@@ -58,7 +59,13 @@ namespace PresenceConnectionManager.Handler
             }
         }
 
-        public virtual void CheckRequest(GPCMSession session) { }
+        public virtual void CheckRequest(GPCMSession session)
+        {
+            if (!UInt16.TryParse(_recv["id"], out _operationID))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
+        }
 
         public virtual void DataBaseOperation(GPCMSession session) { }
 

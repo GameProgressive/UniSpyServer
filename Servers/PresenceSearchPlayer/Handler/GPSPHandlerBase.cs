@@ -12,7 +12,7 @@ namespace PresenceSearchPlayer.Handler
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
         protected Dictionary<string, object> _result;
         protected string _sendingBuffer;
-        protected ushort operationID=0;
+        protected ushort _operationID;
 
         protected GPSPHandlerBase(Dictionary<string, string> recv)
         {
@@ -23,21 +23,21 @@ namespace PresenceSearchPlayer.Handler
             CheckRequest(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                ErrorSender.SendGPSPError(session, _errorCode, operationID);
+                ErrorSender.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
             DataBaseOperation(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                ErrorSender.SendGPSPError(session, _errorCode, operationID);
+                ErrorSender.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
             CheckDatabaseResult(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                ErrorSender.SendGPSPError(session, _errorCode, operationID);
+                ErrorSender.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
@@ -46,7 +46,7 @@ namespace PresenceSearchPlayer.Handler
 
         public virtual void CheckRequest(GPSPSession session) 
         {
-            if (!UInt16.TryParse(_recv["id"], out operationID))
+            if (!UInt16.TryParse(_recv["id"], out _operationID))
             {
                 _errorCode = GPErrorCode.Parse;
             }
