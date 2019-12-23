@@ -9,6 +9,34 @@ namespace PresenceSearchPlayer.Handler.Error
         {
             switch (errorCode)
             {
+                ///General error message
+                case GPErrorCode.General:
+                    return "There was an unknown error.";
+
+                case GPErrorCode.Parse:
+                    return "There was an error parsing an incoming request.";
+
+                case GPErrorCode.NotLoggedIn:
+                    return "This request cannot be processed because you are not logged in.";
+
+                case GPErrorCode.BadSessionKey:
+                    return "This request cannot be processed because the session key is invalid.";
+
+                case GPErrorCode.DatabaseError:
+                    return "Can not find information in database";
+
+                case GPErrorCode.Network:
+                    return "here was an error connecting a network socket.";
+
+                case GPErrorCode.ForcedDisconnect:
+                    return "This profile has been disconnected by another login.";
+
+                case GPErrorCode.ConnectionClose:
+                    return "The server has closed the connection";
+
+                case GPErrorCode.UdpLayer:
+                    return "There was a problem with the UDP layer.";
+
                 // Search.
                 //////////
                 case GPErrorCode.Search:
@@ -52,5 +80,18 @@ namespace PresenceSearchPlayer.Handler.Error
 
             }
         }
-   }
+
+        /// <summary>
+        /// Send a presence error
+        /// </summary>
+        /// <param name="session">The stream that will receive the error</param>
+        /// <param name="errorCode">The error code</param>
+        /// <param name="operationID">The operation id</param>
+        public static void SendGPSPError(GPSPSession session, GPErrorCode errorCode, uint operationID)
+        {
+            string errorMsg = ErrorMsg.GetErrorMsg(errorCode);
+            string sendingBuffer = string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\{2}\final\", (uint)errorCode, errorMsg, operationID);
+            session.SendAsync(sendingBuffer);
+        }
+    }
 }

@@ -23,40 +23,44 @@ namespace PresenceSearchPlayer.Handler
             CheckRequest(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                ErrorSender.SendGPSPError(session, _errorCode, _operationID);
+                ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
             DataBaseOperation(session);
-            if (_errorCode != GPErrorCode.NoError)
+            if (_errorCode == GPErrorCode.DatabaseError)
             {
-                ErrorSender.SendGPSPError(session, _errorCode, _operationID);
+                ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
-            CheckDatabaseResult(session);
-            if (_errorCode != GPErrorCode.NoError)
+            ConstructResponse(session);
+            if (_errorCode == GPErrorCode.ConstructResponseError)
             {
-                ErrorSender.SendGPSPError(session, _errorCode, _operationID);
+                ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
             Response(session);
         }
 
-        public virtual void CheckRequest(GPSPSession session) 
+        protected virtual void CheckRequest(GPSPSession session) 
         {
             if (!UInt16.TryParse(_recv["id"], out _operationID))
             {
-                _errorCode = GPErrorCode.Parse;
+                //default operationID
+                _operationID = 1;
+                session.OperationID = 1;
             }
         }
 
-        public virtual void DataBaseOperation(GPSPSession session) { }
+        protected virtual void DataBaseOperation(GPSPSession session) { }
 
-        public virtual void CheckDatabaseResult(GPSPSession session) { }
+        protected virtual void CheckDatabaseResult(GPSPSession session) { }
 
-        public virtual void Response(GPSPSession session)
+        protected virtual void ConstructResponse(GPSPSession session) { }
+
+        protected virtual void Response(GPSPSession session)
         {
             if (_sendingBuffer != null)
             {

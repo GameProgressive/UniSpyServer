@@ -15,5 +15,22 @@ namespace PresenceSearchPlayer.Handler.Check
             return (result.Count == 0) ? null : result[0];
         }
 
+        public static bool FindEmail(string email)
+        {
+            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE users.email = @P0", email);
+            return (result.Count == 0) ? false : true;
+        }
+
+        public static bool FindNick(string nick)
+        {
+            var result = GPSPServer.DB.Query("SELECT profileid FROM profiles WHERE profiles.nick = @P0", nick);
+            return (result.Count == 0) ? false : true;
+        }
+        public static bool CheckPassword(string email,string password)
+        {
+            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE users.email = @P0 AND users.password = @P1", email,password);
+            return (result.Count == 0) ? false : true;
+        }
+    
     }
 }

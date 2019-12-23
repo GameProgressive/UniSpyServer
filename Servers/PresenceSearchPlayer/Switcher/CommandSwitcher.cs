@@ -37,7 +37,8 @@ namespace PresenceSearchPlayer.Handler
                         PmatchHandler.PlayerMatch(session, recv);
                         break;
                     case "check":
-                        CheckHandler.CheckProfileid(session, recv);
+                        CheckHandler check = new CheckHandler(recv);
+                        check.Handle(session);
                         break;
                     case "newuser"://create an new user
                         NewUserHandler.NewUser(session, recv);

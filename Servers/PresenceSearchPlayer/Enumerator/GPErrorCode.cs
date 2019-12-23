@@ -137,6 +137,7 @@
 
 
         //RetroSpy self defined NoError code
-        NoError = 0xffff
+        NoError = 0xffff,
+        ConstructResponseError,
     }
 }
