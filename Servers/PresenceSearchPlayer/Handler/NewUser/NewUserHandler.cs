@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
         private ushort _namespaceid;
         private uint _userid;
         private uint _profileid;
-        protected NewUserHandler(Dictionary<string, string> recv) : base(recv)
+        public NewUserHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
 

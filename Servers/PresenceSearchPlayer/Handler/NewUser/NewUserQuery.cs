@@ -161,13 +161,13 @@ namespace PresenceSearchPlayer.Handler.NewUser
 
         public static bool IsAccountCorrect(string email, string passenc, out uint userid)
         {
-            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0 AND password=@P1", email, passenc)[0];
-            if (result == null)
+            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0 AND password=@P1", email, passenc);
+            if (result.Count == 0)
             {
                 userid = 0;
                 return false;
             }
-            userid = Convert.ToUInt32(result["userid"]);
+            userid = Convert.ToUInt32(result[0]["userid"]);
             return true;
         }
 
@@ -184,9 +184,9 @@ namespace PresenceSearchPlayer.Handler.NewUser
                 "SELECT profiles.profileid " +
                 "FROM profiles " +
                 "INNER JOIN users ON profiles.userid = users.userid " +
-                "WHERE users.userid = @P0 AND profiles.nick=@P1", userid, nick)[0];
+                "WHERE users.userid = @P0 AND profiles.nick=@P1", userid, nick);
             //if the profile is not exist we create one
-            if (result == null)
+            if (result.Count == 0)
             {
                 //create profile
                 GPSPServer.DB.Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, nick);
@@ -200,7 +200,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
             }
             else
             {
-                profileid = Convert.ToUInt32(result["profileid"]);
+                profileid = Convert.ToUInt32(result[0]["profileid"]);
             }
 
 
@@ -208,8 +208,8 @@ namespace PresenceSearchPlayer.Handler.NewUser
 
         public static bool FindOrCreateSubProfileOnNamespaceTable(string uniquenick, ushort namespaceid, uint profileid)
         {
-            var result = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1", profileid, namespaceid)[0];
-            if (result == null)
+            var result = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1", profileid, namespaceid);
+            if (result.Count == 0)
             {
                 GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick) VALUES (@P0,@P1,@P2)", profileid, namespaceid, uniquenick);
                 return true;

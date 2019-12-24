@@ -41,7 +41,8 @@ namespace PresenceSearchPlayer.Handler
                         check.Handle(session);
                         break;
                     case "newuser"://create an new user
-                        NewUserHandler.NewUser(session, recv);
+                        NewUserHandler newUser = new NewUserHandler(recv);
+                        newUser.Handle(session);
                         break;
                     case "searchunique"://search an user with uniquenick
                         SearchUniqueHandler.SearchProfileWithUniquenick(session, recv);
