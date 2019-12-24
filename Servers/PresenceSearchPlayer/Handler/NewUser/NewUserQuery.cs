@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System;
 
 namespace PresenceSearchPlayer.Handler.NewUser
 {
@@ -49,28 +49,30 @@ namespace PresenceSearchPlayer.Handler.NewUser
         //    }
         //}
 
+
+        public static uint IsEmailAndPasswordExist(string email, string password)
+        {
+            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0 AND password=@P1", email, password)[0];
+            if (result == null)
+            {
+                return 0;
+            }
+            return Convert.ToUInt32(result["userid"]);
+        }
+
+
         /// <summary>
-        /// 
+        /// If user is existed verify his email and password, otherwise create it
         /// </summary>
         /// <param name="dict"></param>
         /// <returns></returns>
-        public static int CreateUserOnTableUsers(Dictionary<string, string> dict)
+        public static uint CreateUserOnTableUsers(Dictionary<string, string> dict)
         {
-            int userid;
-            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", dict["email"]);
-            if (result.Count == 0)
-            {
-                //ToDo Finish this add account in database and return a userid
-                GPSPServer.DB.Execute("INSERT INTO users(email,password) VALUES (@P0, @P1)", dict["email"], dict["passenc"]);
-                userid = Convert.ToInt32(GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", dict["email"])[0]["userid"]);
-                return userid;
-            }
-            else
-            {
-                userid = Convert.ToInt32(result[0]["userid"]);
-                return userid;
-            }
-
+            uint userid;
+            //ToDo Finish this add account in database and return a userid
+            GPSPServer.DB.Execute("INSERT INTO users(email,password) VALUES (@P0, @P1)", dict["email"], dict["passenc"]);
+            userid = Convert.ToUInt32(GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", dict["email"])[0]["userid"]);
+            return userid;
         }
         /// <summary>
         /// create account
@@ -78,9 +80,9 @@ namespace PresenceSearchPlayer.Handler.NewUser
         /// <param name="dict"></param>
         /// <param name="userid"></param>
         /// <returns>if user existed we returns -1 otherwise return profileid</returns>
-        public static int CreateProfileOnTableProfiles(Dictionary<string, string> dict, int userid)
+        public static uint CreateProfileOnTableProfiles(Dictionary<string, string> dict, int userid)
         {
-            int profileid;
+            uint profileid;
             //we check is there exit a profile
             var result = GPSPServer.DB.Query("SELECT profiles.profileid FROM profiles INNER JOIN users ON profiles.userid = users.userid WHERE users.userid = @P0 AND profiles.nick=@P1", userid, dict["nick"]);
 
@@ -90,13 +92,11 @@ namespace PresenceSearchPlayer.Handler.NewUser
                 GPSPServer.DB.Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, dict["nick"]);
                 //get the profileid
                 result = GPSPServer.DB.Query("SELECT profileid FROM profiles INNER JOIN users WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1", dict["nick"], userid);
-                profileid = Convert.ToInt32(result[0]["profileid"]);
-
-
+                profileid = Convert.ToUInt32(result[0]["profileid"]);
             }
             else//if the profile is not exist we create one   
             {
-                profileid = Convert.ToInt32(result[0]["profileid"]);
+                profileid = Convert.ToUInt32(result[0]["profileid"]);
             }
             //any way we return profileid;
             return profileid;
@@ -148,5 +148,78 @@ namespace PresenceSearchPlayer.Handler.NewUser
                 GPSPServer.DB.Execute("UPDATE namepace SET cdkeyenc = @P0 WHERE id = @P1", dict["cdkeyenc"], id);
             }
         }
+
+        public static bool IsAccountExist(string email)
+        {
+            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", email)[0];
+            if (result == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool IsAccountCorrect(string email, string passenc, out uint userid)
+        {
+            var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0 AND password=@P1", email, passenc)[0];
+            if (result == null)
+            {
+                userid = 0;
+                return false;
+            }
+            userid = Convert.ToUInt32(result["userid"]);
+            return true;
+        }
+
+        public static void CreateAccountOnUsersTable(string email, string passenc, out uint userid)
+        {
+            GPSPServer.DB.Execute("INSERT INTO users(email,password) VALUES (@P0, @P1)", email, passenc);
+            userid = Convert.ToUInt32(GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", email, passenc)[0]["userid"]);
+        }
+
+        public static void FindOrCreateProfieOnProfileTable(string nick, uint userid, out uint profileid)
+        {
+            //we check is there exit a profile
+            var result = GPSPServer.DB.Query(
+                "SELECT profiles.profileid " +
+                "FROM profiles " +
+                "INNER JOIN users ON profiles.userid = users.userid " +
+                "WHERE users.userid = @P0 AND profiles.nick=@P1", userid, nick)[0];
+            //if the profile is not exist we create one
+            if (result == null)
+            {
+                //create profile
+                GPSPServer.DB.Execute("INSERT INTO profiles(userid,nick) VALUES (@P0,@P1)", userid, nick);
+                //get the profileid
+                profileid = Convert.ToUInt32(GPSPServer.DB.Query(
+                    "SELECT profileid " +
+                    "FROM profiles " +
+                    "INNER JOIN users " +
+                    "WHERE profiles.userid=users.userid AND profiles.nick = @P0 AND profiles.userid = @P1"
+                    , nick, userid)[0]["profileid"]);
+            }
+            else
+            {
+                profileid = Convert.ToUInt32(result["profileid"]);
+            }
+
+
+        }
+
+        public static bool FindOrCreateSubProfileOnNamespaceTable(string uniquenick, ushort namespaceid, uint profileid)
+        {
+            var result = GPSPServer.DB.Query("SELECT id FROM namespace WHERE profileid = @P0 AND namespaceid = @P1", profileid, namespaceid)[0];
+            if (result == null)
+            {
+                GPSPServer.DB.Execute("INSERT INTO namespace(profileid,namespaceid,uniquenick) VALUES (@P0,@P1,@P2)", profileid, namespaceid, uniquenick);
+                return true;
+            }
+            //account existed, creation failed
+            return false;
+        }
+
+
+
+
     }
 }

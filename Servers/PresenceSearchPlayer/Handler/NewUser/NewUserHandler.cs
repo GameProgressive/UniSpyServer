@@ -4,145 +4,83 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.NewUser
 {
-    public class NewUserHandler
+    public class NewUserHandler : GPSPHandlerBase
     {
-        /// <summary>
-        /// Creates an account and use new account to login
-        /// </summary>
-        /// <param name="client">The client that sended the data</param>
-        /// <param name="dict">The request that the stream sended</param>
-        public static void NewUser(GPSPSession client, Dictionary<string, string> dict)
+        private ushort _namespaceid;
+        private uint _userid;
+        private uint _profileid;
+        protected NewUserHandler(Dictionary<string, string> recv) : base(recv)
         {
-            //Format the password for our database storage           
-            GPErrorCode error = IsContainAllKeys(dict);
-            //if there do not recieved right <key,value> pairs we send error
-            if (error != GPErrorCode.NoError)
-            {
-                GameSpyUtils.SendGPError(client, error, "Error recieving request. Please check the input!");
-                return;
-            }
-            //Check the nick and uniquenick is formated correct and uniquenick is existed in database
-            string sendingBuffer;
-            PreProcessRequest(dict);
-            error = IsEmailNickUniquenickValied(dict);
-            if (error != GPErrorCode.NoError)
-            {
-                sendingBuffer = string.Format(@"\nur\{0}\final\", (int)error);
-                client.SendAsync(sendingBuffer);
-                return;
-            }
-
-            //if the request did not contain uniquenick and namespaceid we use our way to create it.
-
-            //we get the userid in database. If no userid found according to email we create one 
-            //and store the new account into database.
-            int profileid = CreateAccount(dict);
-
-            if (profileid == -1)
-            {
-                GameSpyUtils.SendGPError(client, GPErrorCode.DatabaseError, "Account is existed, please use another one.");
-            }
-            else
-            {
-                //client.Stream.SendAsync(@"\nur\0\pid\{0}\final\", profileid);
-                sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", profileid);
-                client.SendAsync(sendingBuffer);
-            }
-
         }
 
-
-        private static GPErrorCode IsContainAllKeys(Dictionary<string, string> dict)
+        protected override void CheckRequest(GPSPSession session)
         {
-            if (!dict.ContainsKey("nick"))
+            base.CheckRequest(session);
+
+            if (!_recv.ContainsKey("nick"))
             {
-                return GPErrorCode.Parse;
+                _errorCode = GPErrorCode.Parse;
+                return;
             }
-            if (!dict.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(dict["email"]))
+            if (!_recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
-                return GPErrorCode.Parse;
+                _errorCode = GPErrorCode.Parse;
+                return;
             }
-            if (!dict.ContainsKey("passenc"))
+            if (!_recv.ContainsKey("passenc"))
             {
-                if (!dict.ContainsKey("pass"))
+                if (!_recv.ContainsKey("pass"))
                 {
-                    return GPErrorCode.Parse;
+                    _errorCode = GPErrorCode.Parse;
+                    return;
                 }
             }
 
-            return GPErrorCode.NoError;
-        }
-
-        /// <summary>
-        /// First we need to check the format of email,nick,uniquenick is correct 
-        /// and search uniquenick to find if a account is existed
-        /// </summary>
-        /// <returns></returns>
-        private static GPErrorCode IsEmailNickUniquenickValied(Dictionary<string, string> dict)
-        {
-            if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["nick"]))
+            if (_recv.ContainsKey("namespaceid"))
             {
-                return GPErrorCode.NewUserBadNick;
-            }
-            if (dict.ContainsKey("uniquenick") && dict["uniquenick"] != "")
-            {
-                if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
+                if (!ushort.TryParse(_recv["namespaceid"], out _namespaceid))
                 {
-                    return GPErrorCode.NewUserUniquenickInUse;
+                    _errorCode = GPErrorCode.Parse;
                 }
             }
-            return GPErrorCode.NoError;
         }
 
-        private static void PreProcessRequest(Dictionary<string, string> dict)
+        protected override void DataBaseOperation(GPSPSession session)
         {
-            if (!dict.ContainsKey("uniquenick"))
+            if (NewUserQuery.IsAccountExist(_recv["email"]))
             {
-                dict.Add("uniquenick", CreateUniquenickInRequest(dict));
+                if (!NewUserQuery.IsAccountCorrect(_recv["email"], _recv["passenc"], out _userid))
+                {
+                    _errorCode = GPErrorCode.NewUserBadPasswords;
+                    return;
+                }
             }
-            else if (dict["uniquenick"] == "")
+            else // Account not exist
             {
-                dict["uniquenick"] = CreateUniquenickInRequest(dict);
+                NewUserQuery.CreateAccountOnUsersTable(_recv["email"], _recv["passenc"], out _userid);
             }
-            if (!dict.ContainsKey("namespaceid"))
+
+            if (_userid == 0)//error happend
             {
-                dict.Add("namespaceid", "0");
+                _errorCode = GPErrorCode.DatabaseError;
+                return;
+            }
+
+            NewUserQuery.FindOrCreateProfieOnProfileTable(_recv["nick"], _userid, out _profileid);
+
+            if (!NewUserQuery.FindOrCreateSubProfileOnNamespaceTable(_recv["uniquenick"], _namespaceid, _profileid))
+            {
+                _errorCode = GPErrorCode.NewUserUniquenickInUse;
             }
 
         }
-        private static string CreateUniquenickInRequest(Dictionary<string, string> dict)
+
+        protected override void ConstructResponse(GPSPSession session)
         {
-            string user = dict["email"];
-            int Pos = user.IndexOf('@');
-            //we add the nick and email to dictionary
-            string uniquenick = user.Substring(0, Pos);
-            return uniquenick;
-        }
-
-        /// <summary>
-        /// create account on our database
-        /// </summary>
-        /// <param name="dict"></param>
-        /// <returns>return profileid, if profile exsit returns -1</returns>
-        private static int CreateAccount(Dictionary<string, string> dict)
-        {
-
-            //check is user exist in users table, if not exist we create
-            int userid = NewUserQuery.CreateUserOnTableUsers(dict);
-
-            //find or create a profile according to userid          
-            int profileid = NewUserQuery.CreateProfileOnTableProfiles(dict, userid);
-
-            bool IsCreationSuccess = NewUserQuery.CreateSubprofileOnTableNamespace(dict, profileid);
-
-            if (IsCreationSuccess)
-            {
-                return profileid;
-            }
+            if (_errorCode != GPErrorCode.NoError)
+                _sendingBuffer = string.Format(@"\nur\{0}\final\", (uint)_errorCode);
             else
-            {
-                return -1;
-            }
+                _sendingBuffer = string.Format(@"\nur\{0}\final\", _profileid);
         }
     }
 }

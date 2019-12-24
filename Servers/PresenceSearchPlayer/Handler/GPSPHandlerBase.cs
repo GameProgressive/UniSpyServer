@@ -46,12 +46,16 @@ namespace PresenceSearchPlayer.Handler
 
         protected virtual void CheckRequest(GPSPSession session) 
         {
-            if (!UInt16.TryParse(_recv["id"], out _operationID))
+            if (_recv.ContainsKey("id"))
             {
-                //default operationID
-                _operationID = 1;
-                session.OperationID = 1;
+                if (!UInt16.TryParse(_recv["id"], out _operationID))
+                {
+                    //default operationID
+                    _operationID = 1;
+                    session.OperationID = 1;
+                }
             }
+            
         }
 
         protected virtual void DataBaseOperation(GPSPSession session) { }
