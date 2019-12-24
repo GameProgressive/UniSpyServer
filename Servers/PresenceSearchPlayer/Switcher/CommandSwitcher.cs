@@ -64,6 +64,7 @@ namespace PresenceSearchPlayer.Handler
             catch (Exception e)
             {
                 LogWriter.Log.WriteException(e);
+                Error.ErrorMsg.SendGPSPError(session, Enumerator.GPErrorCode.General, 0);
             }
         }
     }

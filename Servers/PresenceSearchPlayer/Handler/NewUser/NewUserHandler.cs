@@ -72,15 +72,20 @@ namespace PresenceSearchPlayer.Handler.NewUser
             {
                 _errorCode = GPErrorCode.NewUserUniquenickInUse;
             }
-
+            else
+            {
+                NewUserQuery.UpdateOtherInfo(_recv["uniquenick"], _namespaceid, _recv);
+            }
         }
 
         protected override void ConstructResponse(GPSPSession session)
         {
             if (_errorCode != GPErrorCode.NoError)
+            {
                 _sendingBuffer = string.Format(@"\nur\{0}\final\", (uint)_errorCode);
+            } 
             else
-                _sendingBuffer = string.Format(@"\nur\{0}\final\", _profileid);
+                _sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _profileid);
         }
     }
 }
