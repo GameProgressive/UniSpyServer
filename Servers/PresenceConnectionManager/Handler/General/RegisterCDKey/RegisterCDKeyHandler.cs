@@ -10,30 +10,5 @@ namespace PresenceConnectionManager.Handler.General.RegisterCDKey
         {
         }
 
-
-        public override void Handle(GPCMSession session)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void CheckDatabaseResult(GPCMSession session)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void CheckRequest(GPCMSession session)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void DataBaseOperation(GPCMSession session)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Response(GPCMSession session)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

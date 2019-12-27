@@ -3,19 +3,20 @@ using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.General.SDKExtendFeature;
-using PresenceConnectionManager.Handler.HandlerBase;
+using PresenceConnectionManager.Handler.Error;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace PresenceConnectionManager.Handler.General.Login
 {
-    public class LoginHandler : LoginHandlerBase
+    public class LoginHandler : GPCMHandlerBase
     {
-        public LoginHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public LoginHandler( Dictionary<string, string> recv) : base( recv)
         {
         }
 
+        Crc16 _crc = new Crc16(Crc16Mode.Standard);
         /// <summary>
         /// This method verifies the login information sent by
         /// the session, and returns encrypted data for the session
@@ -28,41 +29,16 @@ namespace PresenceConnectionManager.Handler.General.Login
 
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
                 session.DisconnectByReason(session.PlayerInfo.DisconReason);
                 return;
             }
 
-            if (!PreProcessForLogin(session))
-            {
-                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "There was an error parsing an incoming request.");
-                session.DisconnectByReason(DisconnectReason.GeneralError);
-                return;
-            }
-
-            switch (session.PlayerInfo.LoginMethod)
-            {
-                case LoginMethods.UniqueNickname:
-                    UniquenickLoginMethod(session);
-                    break;
-                case LoginMethods.AuthToken:
-                    AuthTokenLoginMethod(session);
-                    break;
-                case LoginMethods.Username:
-                    NoUniquenickLoginMethod(session);
-                    break;
-                default:
-                    session.ToLog("Invalid login method!!");
-                    GameSpyUtils.SendGPError(session, GPErrorCode.General, "There was an unknown error.");
-                    session.DisconnectByReason(DisconnectReason.GeneralError);
-                    return;
-            }
-
             //if no match found we disconnect the session
-            CheckDatabaseResult(session);
+            DataBaseOperation(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
                 session.DisconnectByReason(session.PlayerInfo.DisconReason);
                 return;
             }
@@ -71,7 +47,7 @@ namespace PresenceConnectionManager.Handler.General.Login
             CheckUsersAccountAvailability(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
                 session.DisconnectByReason(session.PlayerInfo.DisconReason);
                 return;
             }
@@ -79,7 +55,7 @@ namespace PresenceConnectionManager.Handler.General.Login
             SendLoginResponseChallenge(session);
             if (_errorCode != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
                 session.DisconnectByReason(session.PlayerInfo.DisconReason);
                 return;
             }
@@ -93,12 +69,18 @@ namespace PresenceConnectionManager.Handler.General.Login
             if (!_recv.ContainsKey("challenge") || !_recv.ContainsKey("response"))
             {
                 _errorCode = GPErrorCode.Parse;
-                _errorMsg = "Parsing error";
                 session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
+                return;
             }
             else
             {
                 _errorCode = GPErrorCode.NoError;
+            }
+
+
+            if(!PreProcessForLogin(session))
+            {
+                _errorCode = GPErrorCode.Parse;
             }
         }
         /// <summary>
@@ -172,45 +154,41 @@ namespace PresenceConnectionManager.Handler.General.Login
             return true;
         }
 
-        #region Login Methods
-        private static void AuthTokenLoginMethod(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session)
         {
-            GameSpyUtils.SendGPError(session, GPErrorCode.General, "Not implemeted");
-            session.DisconnectByReason(DisconnectReason.ForcedLogout);
-        }
+            switch(session.PlayerInfo.LoginMethod)
+            {
+                case LoginMethods.UniqueNickname:
+                    _result = LoginQuery.GetUserFromUniqueNick(session.PlayerInfo.UniqueNick, session.PlayerInfo.Namespaceid);
+                    break;
+                case LoginMethods.Username:
+                    _result = LoginQuery.GetUserFromNickAndEmail(session.PlayerInfo.Namespaceid, session.PlayerInfo.Nick, session.PlayerInfo.Email);
+                    break;
+                case LoginMethods.AuthToken:
+                    ErrorMsg.SendGPCMError(session, GPErrorCode.Login, _operationID);
+                    session.DisconnectByReason(DisconnectReason.ForcedLogout);
+                    break;
+                default:
+                    _result = null;
+                    return;
+            }
 
-        private void NoUniquenickLoginMethod(GPCMSession session)
-        {
-            _result = LoginQuery.GetUserFromNickAndEmail(session.PlayerInfo.Namespaceid, session.PlayerInfo.Nick, session.PlayerInfo.Email);
-        }
-
-        private void UniquenickLoginMethod(GPCMSession session)
-        {
-            _result = LoginQuery.GetUserFromUniqueNick(session.PlayerInfo.UniqueNick, session.PlayerInfo.Namespaceid);
-        }
-        #endregion
-
-        private void CheckDatabaseResult(GPCMSession session)
-        {
             if (_result == null)
             {
                 switch (session.PlayerInfo.LoginMethod)
                 {
                     case LoginMethods.UniqueNickname:
                         _errorCode = GPErrorCode.LoginBadUniquenick;
-                        _errorMsg = "The uniquenick provided is incorrect!";
                         session.PlayerInfo.DisconReason = DisconnectReason.InvalidUsername;
                         break;
 
                     case LoginMethods.Username:
                         _errorCode = GPErrorCode.LoginBadNick;
-                        _errorMsg = "The information provided is incorrect!";
                         session.PlayerInfo.DisconReason = DisconnectReason.InvalidUsername;
                         break;
 
                     case LoginMethods.AuthToken:
                         _errorCode = GPErrorCode.AuthAddBadForm;
-                        _errorMsg = "The information provided is incorrect!";
                         session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
                         break;
                 }
@@ -228,16 +206,16 @@ namespace PresenceConnectionManager.Handler.General.Login
             bool isBanned = Convert.ToBoolean(_result["banned"]);
             if (!isVerified)
             {
-                _errorMsg = "Your account is not verified. Please check your email inbox and verify the account.";
+
                 session.PlayerInfo.DisconReason = DisconnectReason.InvalidPlayer;
-                _errorCode = GPErrorCode.LoginBadProfile;
+                _errorCode = GPErrorCode.LoginBadEmail;
             }
 
             // Check the status of the account.
             // If the single profile is banned, the account or the player status
             if (isBanned)
             {
-                _errorMsg = "Your profile has been permanently suspended.";
+
                 session.PlayerInfo.DisconReason = DisconnectReason.PlayerIsBanned;
                 _errorCode = GPErrorCode.LoginProfileDeleted;
             }
@@ -259,7 +237,7 @@ namespace PresenceConnectionManager.Handler.General.Login
                     if (!LoginQuery.UpdateSessionKey(session.PlayerInfo.Profileid, session.PlayerInfo.Namespaceid, session.PlayerInfo.SessionKey, session.Id))
                     {
                         _errorCode = GPErrorCode.DatabaseError;
-                        _errorMsg = "This request cannot be processed because of a database error.";
+
                         session.PlayerInfo.DisconReason = DisconnectReason.GeneralError;
                         return;
                     }
@@ -284,7 +262,7 @@ namespace PresenceConnectionManager.Handler.General.Login
                 else
                 {
                     _errorCode = GPErrorCode.LoginBadPassword;
-                    _errorMsg = "Password is not correct";
+
                     session.PlayerInfo.DisconReason = DisconnectReason.InvalidPassword;
                 }
             }

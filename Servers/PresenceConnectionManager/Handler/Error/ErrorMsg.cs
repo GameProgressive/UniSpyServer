@@ -1,7 +1,7 @@
 ﻿using PresenceConnectionManager.Enumerator;
 
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.Error
 {
     public class ErrorMsg
     {

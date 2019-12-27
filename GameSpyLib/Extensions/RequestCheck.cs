@@ -13,7 +13,6 @@ namespace GameSpyLib.Extensions
             }
 
             return false;
-
         }
         public static bool IsNicknameLegal(string nick)
         {
@@ -24,7 +23,7 @@ namespace GameSpyLib.Extensions
 
             return false;
         }
-       public static bool IsEmailLegal(string email)
+        public static bool IsEmailLegal(string email)
         {
             return true;
 
@@ -38,6 +37,13 @@ namespace GameSpyLib.Extensions
             return true;
         }
 
-
+        public static bool IsPasswordLegal(string password)
+        {
+            if (password.Length > 4 && password.Length < 20)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

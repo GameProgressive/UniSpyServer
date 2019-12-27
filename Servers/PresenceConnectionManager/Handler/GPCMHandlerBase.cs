@@ -26,40 +26,28 @@ namespace PresenceConnectionManager.Handler
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
-                ErrorSender.SendGPCMError(session, _errorCode, Convert.ToUInt16(_recv["id"]));
-                session.DisconnectByReason(_discReason);
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
                 return;
             }
 
             DataBaseOperation(session);
-            if (_errorCode != GPErrorCode.NoError)
+            if (_errorCode == GPErrorCode.DatabaseError)
             {
                 //TODO
-                ErrorSender.SendGPCMError(session, _errorCode, Convert.ToUInt16(_recv["id"]));
-                session.DisconnectByReason(_discReason);
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
                 return;
             }
 
-            CheckDatabaseResult(session);
-            if (_errorCode != GPErrorCode.NoError)
+            ConstructResponse(session);
+            if (_errorCode == GPErrorCode.ConstructResponseError)
             {
-                //TODO
-                ErrorSender.SendGPCMError(session, _errorCode, Convert.ToUInt16(_recv["id"]));
-                session.DisconnectByReason(_discReason);
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
                 return;
             }
 
             Response(session);
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                //TODO
-                ErrorSender.SendGPCMError(session, _errorCode, Convert.ToUInt16(_recv["id"]));
-                session.DisconnectByReason(_discReason);
-                return;
-            }
         }
-
-        public virtual void CheckRequest(GPCMSession session)
+        protected virtual void CheckRequest(GPCMSession session)
         {
             if (!UInt16.TryParse(_recv["id"], out _operationID))
             {
@@ -67,11 +55,11 @@ namespace PresenceConnectionManager.Handler
             }
         }
 
-        public virtual void DataBaseOperation(GPCMSession session) { }
+        protected virtual void DataBaseOperation(GPCMSession session) { }
 
-        public virtual void CheckDatabaseResult(GPCMSession session) { }
+        protected virtual void ConstructResponse(GPCMSession session) { }
 
-        public virtual void Response(GPCMSession session)
+        protected virtual void Response(GPCMSession session)
         {
             if (_sendingBuffer != null)
             {

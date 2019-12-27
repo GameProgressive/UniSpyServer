@@ -32,7 +32,7 @@ namespace PresenceConnectionManager.Handler
                         InviteToHandler.InvitePlayer(session, recv);
                         break;
                     case "login"://login to gamespy
-                        LoginHandler login = new LoginHandler(session, recv);
+                        LoginHandler login = new LoginHandler(recv);
                         login.Handle(session);
                         break;
                     case "getprofile"://get profile of a player

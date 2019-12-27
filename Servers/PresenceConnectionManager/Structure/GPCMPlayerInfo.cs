@@ -1,4 +1,5 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using System.Collections.Generic;
+using PresenceConnectionManager.Enumerator;
 
 namespace PresenceConnectionManager.Structure
 {
@@ -78,5 +79,8 @@ namespace PresenceConnectionManager.Structure
         public LoginMethods LoginMethod;
 
         public DisconnectReason DisconReason;
+
+        public List<Dictionary<string, object>> FriendList = new List<Dictionary<string, object>>();
+
     }
 }

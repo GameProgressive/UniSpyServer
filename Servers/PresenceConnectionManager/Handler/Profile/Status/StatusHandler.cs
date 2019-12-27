@@ -1,4 +1,5 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using PresenceConnectionManager.Application;
+using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -8,6 +9,9 @@ namespace PresenceConnectionManager.Handler.Profile.Status
     public class StatusHandler
     {
         static Dictionary<string, string> _recv;
+
+        public UserStatusChanged StatusChange;
+
         public static void UpdateStatus(GPCMSession session, Dictionary<string, string> recv)
         {
             //TODO
