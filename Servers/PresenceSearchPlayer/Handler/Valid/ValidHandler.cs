@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.Valid
 {
-    class ValidHandler
+    public class ValidHandler
     {
         /// <summary>
         /// check if a email is exist in database

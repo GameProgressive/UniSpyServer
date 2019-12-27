@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Handler
     {
         protected Dictionary<string, string> _recv;
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
-        protected Dictionary<string, object> _result;
+        protected List<Dictionary<string, object>> _result;
         protected string _sendingBuffer;
         protected ushort _operationID;
 
@@ -58,9 +58,13 @@ namespace PresenceSearchPlayer.Handler
             
         }
 
-        protected virtual void DataBaseOperation(GPSPSession session) { }
-
-        protected virtual void CheckDatabaseResult(GPSPSession session) { }
+        protected virtual void DataBaseOperation(GPSPSession session)
+        {
+            if (_result == null)
+            {
+                _errorCode = GPErrorCode.DatabaseError;
+            }
+        }
 
         protected virtual void ConstructResponse(GPSPSession session) { }
 

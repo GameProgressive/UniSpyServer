@@ -31,7 +31,8 @@ namespace PresenceSearchPlayer.Handler
                         ValidHandler.IsEmailValid(session, recv);
                         break;
                     case "nicks":// search an user with nick name
-                        NickHandler.SearchNicks(session, recv);
+                        NickHandler nick = new NickHandler(recv);
+                        nick.Handle(session);
                         break;
                     case "pmatch":
                         PmatchHandler.PlayerMatch(session, recv);

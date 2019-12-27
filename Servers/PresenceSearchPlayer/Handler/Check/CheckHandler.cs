@@ -45,7 +45,7 @@ namespace PresenceSearchPlayer.Handler.Check
                 return;
             }
 
-            _result = CheckQuery.GetProfileidFromNickEmailPassword(_recv["email"], _recv["passenc"], _recv["nick"]);
+            _result[0] = CheckQuery.GetProfileidFromNickEmailPassword(_recv["email"], _recv["passenc"], _recv["nick"]);
             if (_result == null)
             {
                 _errorCode = GPErrorCode.Check;
@@ -60,7 +60,7 @@ namespace PresenceSearchPlayer.Handler.Check
             }
             else
             {
-                _sendingBuffer = @"\cur\0\pid\" + _result["profileid"] + @"\final\";
+                _sendingBuffer = @"\cur\0\pid\" + _result[0]["profileid"] + @"\final\";
             }
         }
     }
