@@ -28,7 +28,8 @@ namespace PresenceSearchPlayer.Handler
                         SearchHandler.SearchUsers(session, recv);
                         break;
                     case "valid"://is email format valid
-                        ValidHandler.IsEmailValid(session, recv);
+                        ValidHandler valid = new ValidHandler(recv);
+                        valid.Handle(session);
                         break;
                     case "nicks":// search an user with nick name
                         NickHandler nick = new NickHandler(recv);
@@ -46,16 +47,19 @@ namespace PresenceSearchPlayer.Handler
                         newUser.Handle(session);
                         break;
                     case "searchunique"://search an user with uniquenick
-                        SearchUniqueHandler.SearchProfileWithUniquenick(session, recv);
+                        SearchUniqueHandler searchUnique = new SearchUniqueHandler(recv);
+                        searchUnique.Handle(session);
                         break;
                     case "others"://search 
-                        OthersHandler.SearchOtherBuddy(session, recv);
+                        OthersHandler others = new OthersHandler(recv);
+                        others.Handle(session);
                         break;
                     case "otherslist"://search other players friend list to see who is in his list?
                         OthersListHandler.SearchOtherBuddyList(session, recv);
                         break;
                     case "uniquesearch"://search a user with uniquenick and namespaceid
-                        UniqueSearchHandler.SuggestUniqueNickname(session, recv);
+                        UniqueSearchHandler uniqueSearch = new UniqueSearchHandler(recv);
+                        uniqueSearch.Handle(session);
                         break;
                     default:
                         session.UnknownDataRecived(command, recv);

@@ -6,7 +6,7 @@ using PresenceSearchPlayer.Handler.Error;
 
 namespace PresenceSearchPlayer.Handler
 {
-    public class GPSPHandlerBase:HandlerBase<GPSPSession,Dictionary<string,string>>
+    public class GPSPHandlerBase : HandlerBase<GPSPSession, Dictionary<string, string>>
     {
         protected Dictionary<string, string> _recv;
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler
 
         protected GPSPHandlerBase(Dictionary<string, string> recv)
         {
-            _recv = recv;            
+            _recv = recv;
         }
         public override void Handle(GPSPSession session)
         {
@@ -44,7 +44,7 @@ namespace PresenceSearchPlayer.Handler
             Response(session);
         }
 
-        protected virtual void CheckRequest(GPSPSession session) 
+        protected virtual void CheckRequest(GPSPSession session)
         {
             if (_recv.ContainsKey("id"))
             {
@@ -55,16 +55,10 @@ namespace PresenceSearchPlayer.Handler
                     session.OperationID = 1;
                 }
             }
-            
+
         }
 
-        protected virtual void DataBaseOperation(GPSPSession session)
-        {
-            if (_result == null)
-            {
-                _errorCode = GPErrorCode.DatabaseError;
-            }
-        }
+        protected virtual void DataBaseOperation(GPSPSession session) { }
 
         protected virtual void ConstructResponse(GPSPSession session) { }
 

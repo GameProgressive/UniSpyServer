@@ -8,65 +8,36 @@ namespace PresenceSearchPlayer.Handler.SearchUnique
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    public class SearchUniqueHandler
+    public class SearchUniqueHandler:GPSPHandlerBase
     {
-        private static Dictionary<string, object> _queryResult;
-        private static Dictionary<string, string> _recv;
-        private static GPErrorCode _error;
-        private static string _errorMsg;
-        private static string _sendingBuffer;
-        public static void SearchProfileWithUniquenick(GPSPSession session, Dictionary<string, string> recv)
+        public SearchUniqueHandler(Dictionary<string, string> recv) : base(recv)
         {
-            _recv = recv;
-            _sendingBuffer = "";
-            _error = GPErrorCode.NoError;
-            _errorMsg = "";
-            _queryResult = null;
-
-            IsContainAllKey();
-            if (_error != GPErrorCode.NoError)
-            {
-                GameSpyUtils.SendGPError(session, _error, _errorMsg);
-                return;
-            }
-            _queryResult = SearchUniqueQuery.GetProfileWithUniquenickAndNamespace(_recv["uniquenick"], Convert.ToUInt16(_recv["namespaceid"]));
-            CheckDatabaseResult();
-            if (_error != GPErrorCode.NoError)
-            {
-                GameSpyUtils.SendGPError(session, _error, _errorMsg);
-                return;
-            }
-            SendResponse(session);
         }
 
-        private static void CheckDatabaseResult()
+        protected override void CheckRequest(GPSPSession session)
         {
-           if(_queryResult.Count==0)
-            {
-                _error = GPErrorCode.DatabaseError;
-                _errorMsg = "No match found!";
-            }
-        }
-
-        private static void IsContainAllKey()
-        {
+            base.CheckRequest(session);
             if (!_recv.ContainsKey("uniquenick") || !_recv.ContainsKey("namespace"))
             {
-                _error = GPErrorCode.Parse;
-                _errorMsg = "Parsing error!";
+                _errorCode = GPErrorCode.Parse;
             }
         }
-        private static void SendResponse(GPSPSession session)
+
+        protected override void ConstructResponse(GPSPSession session)
         {
-            _sendingBuffer = @"\bsr\" + Convert.ToUInt16(_queryResult["profileid"]);
-            _sendingBuffer += @"\nick\" + _queryResult["nick"];
-            _sendingBuffer += @"\uniquenick\" + _queryResult["uniquenick"];
-            _sendingBuffer += @"\namespaceid\" + Convert.ToUInt16(_queryResult["namespaceid"]);
-            _sendingBuffer += @"\firstname\" + _queryResult["firstname"];
-            _sendingBuffer += @"\lastname\" + _queryResult["lastname"];
-            _sendingBuffer += @"\email\" + _queryResult["email"];
-            _sendingBuffer += @"\bsrdone\\more\0"+ @"\final\";
-            session.SendAsync(_sendingBuffer);
+            _sendingBuffer = @"\bsr\" + Convert.ToUInt32(_result[0]["profileid"]);
+            _sendingBuffer += @"\nick\" + _result[0]["nick"];
+            _sendingBuffer += @"\uniquenick\" + _result[0]["uniquenick"];
+            _sendingBuffer += @"\namespaceid\" + Convert.ToUInt16(_result[0]["namespaceid"]);
+            _sendingBuffer += @"\firstname\" + _result[0]["firstname"];
+            _sendingBuffer += @"\lastname\" + _result[0]["lastname"];
+            _sendingBuffer += @"\email\" + _result[0]["email"];
+            _sendingBuffer += @"\bsrdone\\more\0" + @"\final\";
+        }
+
+        protected override void DataBaseOperation(GPSPSession session)
+        {
+            _result[0] = SearchUniqueQuery.GetProfileWithUniquenickAndNamespace(_recv["uniquenick"], Convert.ToUInt16(_recv["namespaceid"]));
         }
     }
 }

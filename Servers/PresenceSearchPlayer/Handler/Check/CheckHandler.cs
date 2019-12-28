@@ -46,7 +46,7 @@ namespace PresenceSearchPlayer.Handler.Check
             }
 
             _result[0] = CheckQuery.GetProfileidFromNickEmailPassword(_recv["email"], _recv["passenc"], _recv["nick"]);
-            if (_result == null)
+            if (_result.Count==0)
             {
                 _errorCode = GPErrorCode.Check;
             }

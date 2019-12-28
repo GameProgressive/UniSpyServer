@@ -4,45 +4,48 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.UniqueSearch
 {
-    class UniqueSearchHandler
+    public class UniqueSearchHandler:GPSPHandlerBase
     {
-        /// <summary>
-        /// we just simply check the existance of the unique nickname in the database and suggest some numbered postfix nickname
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="dict"></param>
-        public static void SuggestUniqueNickname(GPSPSession session, Dictionary<string, string> dict)
+        public  UniqueSearchHandler(Dictionary<string, string> recv) : base(recv)
         {
-            //The multiple nick suggest correct response is like 
-            //@"\us\<number of suggested nick>\nick\<nick1>\nick\<nick2>\usdone\final\";
-            string sendingBuffer;          
-            GPErrorCode error = IsContainAllKeys(dict);
-            if (error != GPErrorCode.NoError)
+        }
+        bool IsUniquenickExist;
+        uint namespaceid;       
+        
+        protected override void CheckRequest(GPSPSession session)
+        {
+            base.CheckRequest(session);
+            if (!_recv.ContainsKey("preferrednick"))
             {
-                GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "There was an error parsing an incoming request.");
-                return;
+                _errorCode = GPErrorCode.Parse;
             }
+                
 
-            if (UniqueSearchQuery.IsUniqueNickExist(dict))
+            if (_recv.ContainsKey("namespaceid"))
             {
-                GameSpyUtils.SendGPError(session, GPErrorCode.General, "The Nick is existed, please choose another name");
-            }
-            else
-            {
-                sendingBuffer = @"\us\1\nick\" + dict["preferrednick"] + @"\usdone\final\";
-                session.Send(sendingBuffer);
+               if( !uint.TryParse(_recv["namespaceid"], out namespaceid))
+                {
+                    _errorCode = GPErrorCode.Parse;
+                }
             }
         }
 
-        public static GPErrorCode IsContainAllKeys(Dictionary<string, string> dict)
+        protected override void DataBaseOperation(GPSPSession session)
         {
-            if (!dict.ContainsKey("preferrednick"))
-                return GPErrorCode.Parse;
-            if (!dict.ContainsKey("namespaceid"))
+            IsUniquenickExist = UniqueSearchQuery.IsUniqueNickExist(_recv["preferrednick"], namespaceid);
+
+        }
+        protected override void ConstructResponse(GPSPSession session)
+        {
+            if (!IsUniquenickExist)
             {
-                dict.Add("namespaceid", "0");
+                _sendingBuffer = @"us\0\usdone\final";
             }
-            return GPErrorCode.NoError;
+            else
+            {
+                _sendingBuffer = @"\us\1\nick\" + _recv["preferrednick"] + @"\usdone\final\";
+            }
+            
         }
     }
 }

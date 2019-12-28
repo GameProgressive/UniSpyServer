@@ -8,48 +8,35 @@ namespace PresenceSearchPlayer.Handler.Others
     /// <summary>
     /// Get buddy's information
     /// </summary>
-    public class OthersHandler
+    public class OthersHandler : GPSPHandlerBase
     {
-        static List<Dictionary<string, object>> _queryResult;
-        static Dictionary<string, string> _recv;
-        static GPErrorCode _errorCode;
-        static string _sendingBuffer;
-        static string _errorMsg;
-        /// <summary>
-        /// Get your friends profile detail
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="recv"></param>
-        public static void SearchOtherBuddy(GPSPSession session, Dictionary<string, string> recv)
+        public OthersHandler(Dictionary<string, string> recv) : base(recv)
         {
-            _recv = recv;
-            _errorCode = GPErrorCode.NoError;
-            _sendingBuffer = "";
-            _errorMsg = "";
-            _queryResult = null;
-
-            IsContainAllKey();
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
-                return;
-            }
-            _queryResult = OthersQuery.GetOtherBuddy(Convert.ToUInt16(_recv["profileid"]),Convert.ToUInt16(_recv["namespaceid"]));
-           
-            CheckDatabaseReult();
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                session.SendAsync(@"\others\\odone\final\");
-                return;
-            }
-
-            SendResponse(session);
         }
 
-        private static void SendResponse(GPSPSession session)
-        {            
+        protected override void CheckRequest(GPSPSession session)
+        {
+            if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
+            base.CheckRequest(session);
+        }
+
+        protected override void DataBaseOperation(GPSPSession session)
+        {
+             _result = OthersQuery.GetOtherBuddy(Convert.ToUInt16(_recv["profileid"]), Convert.ToUInt16(_recv["namespaceid"]));
+        }
+
+        protected override void ConstructResponse(GPSPSession session)
+        {
+            if (_result.Count == 0)
+            {
+                _sendingBuffer = @"\others\\odone\final\";
+                return;
+            }
             _sendingBuffer = @"\others\";
-           foreach(Dictionary<string,object> player in _queryResult)
+            foreach (Dictionary<string, object> player in _result)
             {
                 _sendingBuffer += @"\o\" + _recv["profileid"];
                 _sendingBuffer += @"\nick\" + player["nick"];
@@ -59,25 +46,6 @@ namespace PresenceSearchPlayer.Handler.Others
                 _sendingBuffer += @"\email\" + player["email"];
             }
             _sendingBuffer += @"\odone\final\";
-            session.SendAsync(_sendingBuffer);
-        }
-
-        private static void CheckDatabaseReult()
-        {
-            if (_queryResult == null)
-            {
-                _errorCode = GPErrorCode.DatabaseError;
-                _errorMsg = "No match found";                
-            }
-        }
-
-        private static void IsContainAllKey()
-        {
-            if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
-            {
-                _errorCode = GPErrorCode.Parse;
-                _errorMsg = "Parsing error";
-            }
         }
     }
 }

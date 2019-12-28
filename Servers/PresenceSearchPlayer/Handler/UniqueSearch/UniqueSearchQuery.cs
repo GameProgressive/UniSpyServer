@@ -4,11 +4,11 @@ namespace PresenceSearchPlayer.Handler.UniqueSearch
 {
     public class UniqueSearchQuery
     {
-        public static bool IsUniqueNickExist(Dictionary<string, string> dict)
+        public static bool IsUniqueNickExist(string uniquenick, uint namespaceid)
         {
             var result = GPSPServer.DB.Query("SELECT uniquenick FROM namespace " +
                  "WHERE uniquenick=@P0 AND namespaceid=@P1",
-                dict["preferrednick"], dict["namespaceid"]);
+                uniquenick, namespaceid)[0];
 
             if (result == null)
                 return true;
