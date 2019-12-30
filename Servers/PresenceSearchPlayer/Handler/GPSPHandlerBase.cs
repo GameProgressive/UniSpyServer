@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Handler
         protected List<Dictionary<string, object>> _result;
         protected string _sendingBuffer;
         protected ushort _operationID;
-        protected uint _namespaceid;
+        protected ushort _namespaceid;
 
         protected GPSPHandlerBase(Dictionary<string, string> recv)
         {
@@ -49,14 +49,20 @@ namespace PresenceSearchPlayer.Handler
         {
             if (_recv.ContainsKey("id"))
             {
-                if (!UInt16.TryParse(_recv["id"], out _operationID))
+                if (!ushort.TryParse(_recv["id"], out _operationID))
                 {
                     //default operationID
                     _operationID = 1;
                     session.OperationID = 1;
                 }
             }
-
+            if(_recv.ContainsKey("namespaceid"))
+            {
+                if(!ushort.TryParse(_recv["namespaceid"], out _namespaceid))
+                {
+                    _errorCode = GPErrorCode.Parse;
+                }
+            }
         }
 
         protected virtual void DataBaseOperation(GPSPSession session) { }

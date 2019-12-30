@@ -14,9 +14,9 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.Search
 {
-    public class SearchHandler:GPSPHandlerBase
+    public class SearchHandler : GPSPHandlerBase
     {
-        public  SearchHandler(Dictionary<string, string> recv) : base(recv)
+        public SearchHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
 
@@ -26,13 +26,6 @@ namespace PresenceSearchPlayer.Handler.Search
             if (!_recv.ContainsKey("sesskey") && !_recv.ContainsKey("email") && !_recv.ContainsKey("uniquenick"))
             {
                 _errorCode = GPErrorCode.Parse;
-            }
-            if (!_recv.ContainsKey("namespaceid"))
-            {
-                if(!uint.TryParse(_recv["namespaceid"],out _namespaceid))
-                {
-                    _errorCode = GPErrorCode.Parse;
-                }
             }
         }
 

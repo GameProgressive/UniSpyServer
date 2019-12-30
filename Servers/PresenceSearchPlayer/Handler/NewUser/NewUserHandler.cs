@@ -6,7 +6,6 @@ namespace PresenceSearchPlayer.Handler.NewUser
 {
     public class NewUserHandler : GPSPHandlerBase
     {
-        private ushort _namespaceid;
         private uint _userid;
         private uint _profileid;
         public NewUserHandler(Dictionary<string, string> recv) : base(recv)
@@ -33,14 +32,6 @@ namespace PresenceSearchPlayer.Handler.NewUser
                 {
                     _errorCode = GPErrorCode.Parse;
                     return;
-                }
-            }
-
-            if (_recv.ContainsKey("namespaceid"))
-            {
-                if (!ushort.TryParse(_recv["namespaceid"], out _namespaceid))
-                {
-                    _errorCode = GPErrorCode.Parse;
                 }
             }
         }
