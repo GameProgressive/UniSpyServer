@@ -25,7 +25,8 @@ namespace PresenceSearchPlayer.Handler
                 switch (command)
                 {
                     case "search":
-                        SearchHandler.SearchUsers(session, recv);
+                        SearchHandler search = new SearchHandler(recv);
+                        search.Handle(session);
                         break;
                     case "valid"://is email format valid
                         ValidHandler valid = new ValidHandler(recv);
@@ -36,7 +37,8 @@ namespace PresenceSearchPlayer.Handler
                         nick.Handle(session);
                         break;
                     case "pmatch":
-                        PmatchHandler.PlayerMatch(session, recv);
+                        PmatchHandler pmatch = new PmatchHandler(recv);
+                        pmatch.Handle(session);
                         break;
                     case "check":
                         CheckHandler check = new CheckHandler(recv);
@@ -55,7 +57,8 @@ namespace PresenceSearchPlayer.Handler
                         others.Handle(session);
                         break;
                     case "otherslist"://search other players friend list to see who is in his list?
-                        OthersListHandler.SearchOtherBuddyList(session, recv);
+                        OthersListHandler othersList = new OthersListHandler(recv);
+                        othersList.Handle(session);
                         break;
                     case "uniquesearch"://search a user with uniquenick and namespaceid
                         UniqueSearchHandler uniqueSearch = new UniqueSearchHandler(recv);

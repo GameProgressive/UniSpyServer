@@ -8,68 +8,44 @@ namespace PresenceSearchPlayer.Handler.Pmatch
     /// <summary>
     /// Search the all players in specific game
     /// </summary>
-    public class PmatchHandler
+    public class PmatchHandler:GPSPHandlerBase
     {
-        private static List<Dictionary<string, object>> _queryResult;
-        private static Dictionary<string, string> _recv;
-        private static GPErrorCode _errorCode;
-        private static string _errorMsg;
-        private static string _sendingBuffer;
-        public static void PlayerMatch(GPSPSession session, Dictionary<string, string> recv)
+
+        public PmatchHandler(Dictionary<string, string> recv) : base(recv)
         {
-            _recv = recv;
-            _queryResult = null;
-            _errorCode = GPErrorCode.NoError;
-            _errorMsg = "";
-            _sendingBuffer = "";
+        }
 
             //pmath\\sesskey\\profileid\\productid\\
-            IsContainAllKey();
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                GameSpyUtils.SendGPError(session, _errorCode, _errorMsg);
-                return;
-            }
-            _queryResult = PmatchQuery.PlayerMatch(Convert.ToUInt16(_recv["productid"]));
-            CheckDatabaseResult();
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                session.SendAsync(@"\psrdone\final\");
-                return;
-            }
-            SendRespose(session);
-        }
-
-        private static void SendRespose(GPSPSession session)
+           
+        protected override void CheckRequest(GPSPSession session)
         {
-            for (int i = 0; i < _queryResult.Count; i++)
-            {
-                _sendingBuffer += @"\psr\"+_queryResult[i]["profileid"];
-                _sendingBuffer += @"\status\" + _queryResult[i]["statstring"];
-                _sendingBuffer += @"\nick\" + _queryResult[i]["nick"];
-                _sendingBuffer += @"\statuscode\" + _queryResult[i]["status"];
-
-            }
-            _sendingBuffer += @"\psrdone\final\";
-            session.SendAsync(_sendingBuffer);
-
-        }
-
-        private static void IsContainAllKey()
-        {
+            base.CheckRequest(session);
             if (!_recv.ContainsKey("sesskey") || !_recv.ContainsKey("profileid") || !_recv.ContainsKey("productid"))
             {
                 _errorCode = GPErrorCode.Parse;
-                _errorMsg = "Parsing error";
             }
         }
-        private static void CheckDatabaseResult()
+
+        protected override void DataBaseOperation(GPSPSession session)
         {
-            if (_queryResult.Count < 1)
+            _result = PmatchQuery.PlayerMatch(Convert.ToUInt16(_recv["productid"]));
+        }
+
+        protected override void ConstructResponse(GPSPSession session)
+        {
+            if(_result.Count==0)
             {
-                _errorCode = GPErrorCode.DatabaseError;
-                _errorMsg = "No match found";
+                _sendingBuffer= @"\psrdone\final\";
+                return;
             }
+            foreach (Dictionary<string, object> player in _result)
+            {
+                _sendingBuffer += @"\psr\" + player["profileid"];
+                _sendingBuffer += @"\status\" + player["statstring"];
+                _sendingBuffer += @"\nick\" + player["nick"];
+                _sendingBuffer += @"\statuscode\" + player["status"];
+            }
+            _sendingBuffer += @"\psrdone\final\";
         }
     }
 }

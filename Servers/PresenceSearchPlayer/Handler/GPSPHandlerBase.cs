@@ -13,6 +13,7 @@ namespace PresenceSearchPlayer.Handler
         protected List<Dictionary<string, object>> _result;
         protected string _sendingBuffer;
         protected ushort _operationID;
+        protected uint _namespaceid;
 
         protected GPSPHandlerBase(Dictionary<string, string> recv)
         {
