@@ -8,6 +8,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
     {
         private uint _userid;
         private uint _profileid;
+        private string _uniquenick = "";
         public NewUserHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
@@ -33,6 +34,10 @@ namespace PresenceSearchPlayer.Handler.NewUser
                     _errorCode = GPErrorCode.Parse;
                     return;
                 }
+            }
+            if (_recv.ContainsKey("uniquenick"))
+            {
+                _uniquenick = _recv["uniquenick"];
             }
         }
 
@@ -88,15 +93,15 @@ namespace PresenceSearchPlayer.Handler.NewUser
                 return;
             }
 
-            NewUserQuery.FindOrCreateProfieOnProfileTable(_recv["nick"], _userid, out _profileid);
+            NewUserQuery.FindOrCreateProfileOnProfileTable(_recv["nick"], _userid, out _profileid);
 
-            if (!NewUserQuery.FindOrCreateSubProfileOnNamespaceTable(_recv["uniquenick"], _namespaceid, _profileid))
+            if (!NewUserQuery.FindOrCreateSubProfileOnNamespaceTable(_uniquenick, _namespaceid, _profileid))
             {
                 _errorCode = GPErrorCode.NewUserUniquenickInUse;
             }
             else
             {
-                NewUserQuery.UpdateOtherInfo(_recv["uniquenick"], _namespaceid, _recv);
+                NewUserQuery.UpdateOtherInfo(_uniquenick, _namespaceid, _recv);
             }
         }
 

@@ -38,7 +38,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
         public static bool IsAccountExist(string email)
         {
             var result = GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", email)[0];
-            if (result == null)
+            if (result.Count == 0)
             {
                 return false;
             }
@@ -63,7 +63,7 @@ namespace PresenceSearchPlayer.Handler.NewUser
             userid = Convert.ToUInt32(GPSPServer.DB.Query("SELECT userid FROM users WHERE email=@P0", email, passenc)[0]["userid"]);
         }
 
-        public static void FindOrCreateProfieOnProfileTable(string nick, uint userid, out uint profileid)
+        public static void FindOrCreateProfileOnProfileTable(string nick, uint userid, out uint profileid)
         {
             //we check is there exit a profile
             var result = GPSPServer.DB.Query(
