@@ -10,6 +10,10 @@ namespace PresenceSearchPlayer.Handler
     {
         protected Dictionary<string, string> _recv;
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
+        /// <summary>
+        /// Be careful the return of query function should be List type,
+        /// the decision formula should use _result.Count==0
+        /// </summary>
         protected List<Dictionary<string, object>> _result;
         protected string _sendingBuffer;
         protected ushort _operationID;

@@ -121,7 +121,7 @@ namespace QueryReport.Handler.HeartBeat
             {
                 savestr += @"0x" + Convert.ToString(b, 16) + " ,";
             }
-            server.ToLog(savestr);
+           //log(savestr);
             //byte[] serverData = new byte[buffer.Length - 5];
 
 
