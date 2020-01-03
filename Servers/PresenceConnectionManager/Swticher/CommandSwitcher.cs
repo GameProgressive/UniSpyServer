@@ -64,7 +64,8 @@ namespace PresenceConnectionManager.Handler
                         NewUserHandler.NewUser(session, recv);
                         break;
                     case "addblock"://add an user to our block list
-                        AddBlockHandler.AddUserToBlockList(session, recv);
+                        AddBlockHandler addBlock = new AddBlockHandler(recv);
+                        addBlock.Handle(session);
                         break;
                     case "KA":
                         KAHandler.SendKeepAlive(session);

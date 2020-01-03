@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler
     {
         protected Dictionary<string, string> _recv;
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
-        protected Dictionary<string, object> _result;
+        protected List<Dictionary<string, object>> _result;
         protected string _sendingBuffer;
         protected DisconnectReason _discReason;
         protected ushort _operationID;

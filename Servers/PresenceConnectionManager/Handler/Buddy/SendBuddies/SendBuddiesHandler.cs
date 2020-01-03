@@ -34,7 +34,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
             session.PlayerInfo.BuddiesSent = true;
             //return;
             string sendingBuffer = @"\bdy\";
-            var result = SendBuddiesQuery.SearchBuddiesId(session.PlayerInfo.Profileid, session.PlayerInfo.Namespaceid);
+            var result = SendBuddiesQuery.SearchBuddiesId(session.PlayerInfo.Profileid, session.PlayerInfo.NamespaceID);
             uint[] profileids;
             if (result != null)
             {
@@ -74,7 +74,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
             foreach (uint profileid in profileids)
             {
                 string sendingBuffer = @"\bm\" + (uint)GPBasic.BmStatus + @"\f\";
-                result = SendBuddiesQuery.GetStatusInfo(profileid, session.PlayerInfo.Namespaceid);
+                result = SendBuddiesQuery.GetStatusInfo(profileid, session.PlayerInfo.NamespaceID);
                 sendingBuffer += profileid + @"\msg\";
                 sendingBuffer += @"|s|" + Convert.ToUInt32(result["status"]);
                 sendingBuffer += @"|ss|" + result["statstring"].ToString();

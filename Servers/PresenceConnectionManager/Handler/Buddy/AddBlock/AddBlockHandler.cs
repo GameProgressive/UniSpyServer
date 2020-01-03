@@ -4,28 +4,23 @@ using PresenceConnectionManager.Enumerator;
 
 namespace PresenceConnectionManager.Handler.Buddy.AddBlock
 {
-    public class AddBlockHandler
+    public class AddBlockHandler:GPCMHandlerBase
     {
-        static Dictionary<string, string> _recv;
-        static GPErrorCode _errorCode;
-        public static void AddUserToBlockList(GPCMSession session, Dictionary<string, string> recv)
+        public AddBlockHandler(Dictionary<string, string> recv) : base(recv)
         {
-            _recv = recv;
-            _errorCode = GPErrorCode.NoError;
-
-            IsContainAllKey();
-            if (_errorCode != GPErrorCode.NoError)
-            { return; }
-            AddBlockQuery.UpdateBlockListInDatabase(session.PlayerInfo.Profileid, Convert.ToUInt16(_recv["profileid"]),session.PlayerInfo.Namespaceid);
-
         }
-
-        private static void IsContainAllKey()
+        protected override void CheckRequest(GPCMSession session)
         {
+            base.CheckRequest(session);
             if (!_recv.ContainsKey("profileid"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
+        }
+
+        protected override void DataBaseOperation(GPCMSession session)
+        {
+            AddBlockQuery.UpdateBlockListInDatabase(session.PlayerInfo.Profileid, Convert.ToUInt16(_recv["profileid"]), session.PlayerInfo.NamespaceID);
         }
     }
 }

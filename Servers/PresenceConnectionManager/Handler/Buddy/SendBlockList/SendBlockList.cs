@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
             session.PlayerInfo.BlockListSent = true;
 
             string sendingBuffer= @"\blk\";
-            Dictionary<string, object> result = SendBlockListQuery.SearchBlockList(session.PlayerInfo.Profileid, session.PlayerInfo.Namespaceid);
+            Dictionary<string, object> result = SendBlockListQuery.SearchBlockList(session.PlayerInfo.Profileid, session.PlayerInfo.NamespaceID);
             uint[] profileids;
             if (result!=null)
             {

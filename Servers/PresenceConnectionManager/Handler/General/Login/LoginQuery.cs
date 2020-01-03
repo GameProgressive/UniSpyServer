@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.General.Login
     public class LoginQuery
     {
 
-        public static Dictionary<string, object> GetUserFromUniqueNick(string uniquenick, uint namespaceid)
+        public static List<Dictionary<string, object>> GetUserFromUniqueNick(string uniquenick, uint namespaceid)
         {
             var result = GPCMServer.DB.Query(
                 @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, users.email, users.password, users.emailverified,users.banned 
@@ -19,15 +19,15 @@ namespace PresenceConnectionManager.Handler.General.Login
                  WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1"
                  , uniquenick, namespaceid
                  );
-            return (result.Count == 0) ? null : result[0];
+            return (result.Count == 0) ? null : result;
         }
 
-        public static Dictionary<string, object> GetUserFromNickAndEmail(uint namespaceid, string nickname, string email)
+        public static List<Dictionary<string, object>> GetUserFromNickAndEmail(uint namespaceid, string nickname, string email)
         {
             var result = GPCMServer.DB.Query(@"SELECT profiles.profileid, namespace.uniquenick, users.password, users.emailverified, users.banned"
             + @" FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid "
             + @"WHERE  namespace.namespaceid = @P0  AND profiles.nick = @P1 AND users.email=@P2", namespaceid, nickname, email);
-            return (result.Count == 0) ? null : result[0];
+            return (result.Count == 0) ? null : result;
         }
 
         /// <summary>

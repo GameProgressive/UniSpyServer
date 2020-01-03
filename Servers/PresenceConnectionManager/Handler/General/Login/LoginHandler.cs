@@ -23,8 +23,7 @@ namespace PresenceConnectionManager.Handler.General.Login
         /// to verify as well
         /// </summary>
         public override void Handle(GPCMSession session)
-        {          
-
+        {     
             CheckRequest(session);
 
             if (_errorCode != GPErrorCode.NoError)
@@ -129,20 +128,20 @@ namespace PresenceConnectionManager.Handler.General.Login
 
             if (_recv.ContainsKey("partnerid"))
             {
-                session.PlayerInfo.Partnerid = Convert.ToUInt32(_recv["partnerid"]);
+                session.PlayerInfo.PartnerID = Convert.ToUInt32(_recv["partnerid"]);
             }
             else
             {
-                session.PlayerInfo.Partnerid = (uint)PartnerID.Gamespy; // Default partnerid: Gamespy
+                session.PlayerInfo.PartnerID = (uint)PartnerID.Gamespy; // Default partnerid: Gamespy
             }
 
             if (_recv.ContainsKey("namespaceid"))
             {
-                session.PlayerInfo.Namespaceid = Convert.ToUInt32(_recv["namespaceid"]);
+                session.PlayerInfo.NamespaceID = Convert.ToUInt32(_recv["namespaceid"]);
             }
             else
             {
-                session.PlayerInfo.Namespaceid = 0; // Default namespaceid
+                session.PlayerInfo.NamespaceID = 0; // Default namespaceid
             }
 
             //store sdkrevision
@@ -159,10 +158,10 @@ namespace PresenceConnectionManager.Handler.General.Login
             switch(session.PlayerInfo.LoginMethod)
             {
                 case LoginMethods.UniqueNickname:
-                    _result = LoginQuery.GetUserFromUniqueNick(session.PlayerInfo.UniqueNick, session.PlayerInfo.Namespaceid);
+                    _result = LoginQuery.GetUserFromUniqueNick(session.PlayerInfo.UniqueNick, session.PlayerInfo.NamespaceID);
                     break;
                 case LoginMethods.Username:
-                    _result = LoginQuery.GetUserFromNickAndEmail(session.PlayerInfo.Namespaceid, session.PlayerInfo.Nick, session.PlayerInfo.Email);
+                    _result = LoginQuery.GetUserFromNickAndEmail(session.PlayerInfo.NamespaceID, session.PlayerInfo.Nick, session.PlayerInfo.Email);
                     break;
                 case LoginMethods.AuthToken:
                     ErrorMsg.SendGPCMError(session, GPErrorCode.Login, _operationID);
@@ -196,14 +195,14 @@ namespace PresenceConnectionManager.Handler.General.Login
             else
             {
                 //parse profileid to playerinfo
-                session.PlayerInfo.Profileid = Convert.ToUInt32(_result["profileid"]);
+                session.PlayerInfo.Profileid = Convert.ToUInt32(_result[0]["profileid"]);
             }
         }
 
         private void CheckUsersAccountAvailability(GPCMSession session)
         {
-            bool isVerified = Convert.ToBoolean(_result["emailverified"]);
-            bool isBanned = Convert.ToBoolean(_result["banned"]);
+            bool isVerified = Convert.ToBoolean(_result[0]["emailverified"]);
+            bool isBanned = Convert.ToBoolean(_result[0]["banned"]);
             if (!isVerified)
             {
 
@@ -226,15 +225,15 @@ namespace PresenceConnectionManager.Handler.General.Login
             try
             {
                 // Use the GenerateProof method to compare with the "response" value. This validates the given password
-                string response = GenerateProof(session, session.PlayerInfo.UserChallenge, session.PlayerInfo.ServerChallenge, _result["password"].ToString());
+                string response = GenerateProof(session, session.PlayerInfo.UserChallenge, session.PlayerInfo.ServerChallenge, _result[0]["password"].ToString());
                 if (_recv["response"] == response)
                 {
                     // Create session key
-                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_result["uniquenick"] + _recv["namespaceid"]);
+                    session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_result[0]["uniquenick"] + _recv["namespaceid"]);
 
                     //actually we should store sesskey in database at namespace table, when we want someone's profile we just 
                     //access to the sesskey to find the uniquenick for particular game
-                    if (!LoginQuery.UpdateSessionKey(session.PlayerInfo.Profileid, session.PlayerInfo.Namespaceid, session.PlayerInfo.SessionKey, session.Id))
+                    if (!LoginQuery.UpdateSessionKey(session.PlayerInfo.Profileid, session.PlayerInfo.NamespaceID, session.PlayerInfo.SessionKey, session.Id))
                     {
                         _errorCode = GPErrorCode.DatabaseError;
 
@@ -242,7 +241,7 @@ namespace PresenceConnectionManager.Handler.General.Login
                         return;
                     }
 
-                    string responseProof = GenerateProof(session, session.PlayerInfo.ServerChallenge, session.PlayerInfo.UserChallenge, _result["password"].ToString());
+                    string responseProof = GenerateProof(session, session.PlayerInfo.ServerChallenge, session.PlayerInfo.UserChallenge, _result[0]["password"].ToString());
 
                     string random = GameSpyRandom.GenerateRandomString(22, GameSpyRandom.StringType.Hex);
                     // Password is correct
@@ -250,8 +249,8 @@ namespace PresenceConnectionManager.Handler.General.Login
                         @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
                         session.PlayerInfo.SessionKey,
                         responseProof,
-                        _result["profileid"],
-                        _result["uniquenick"],
+                        _result[0]["profileid"],
+                        _result[0]["uniquenick"],
                         // Generate LT whatever that is (some sort of random string, 22 chars long)
                         random
                         );
@@ -290,9 +289,9 @@ namespace PresenceConnectionManager.Handler.General.Login
             string realUserData = session.PlayerInfo.UserData;
 
             // Auth token does not have partnerid append.
-            if (session.PlayerInfo.Partnerid != (uint)PartnerID.Gamespy && session.PlayerInfo.LoginMethod != LoginMethods.AuthToken)
+            if (session.PlayerInfo.PartnerID != (uint)PartnerID.Gamespy && session.PlayerInfo.LoginMethod != LoginMethods.AuthToken)
             {
-                realUserData = string.Format("{0}@{1}", session.PlayerInfo.Partnerid, session.PlayerInfo.UserData);
+                realUserData = string.Format("{0}@{1}", session.PlayerInfo.PartnerID, session.PlayerInfo.UserData);
             }
 
             // Generate our string to be hashed

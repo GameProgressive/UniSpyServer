@@ -27,7 +27,7 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
                 //you can not add yourself friend
                 return;
             }
-            AddBuddyQuery.SaveAddBuddyRequest(session.PlayerInfo.Profileid, Convert.ToUInt16(_recv["newprofileid"]), session.PlayerInfo.Namespaceid, _recv["reason"]);
+            AddBuddyQuery.SaveAddBuddyRequest(session.PlayerInfo.Profileid, Convert.ToUInt16(_recv["newprofileid"]), session.PlayerInfo.NamespaceID, _recv["reason"]);
 
         }
 

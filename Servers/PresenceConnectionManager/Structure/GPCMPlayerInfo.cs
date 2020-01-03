@@ -56,9 +56,9 @@ namespace PresenceConnectionManager.Structure
 
         public LoginStatus LoginProcess;
 
-        public uint Partnerid;
+        public uint PartnerID;
 
-        public uint Namespaceid;
+        public uint NamespaceID;
 
         public uint SDKRevision;
 
