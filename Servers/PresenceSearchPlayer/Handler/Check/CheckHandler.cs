@@ -22,7 +22,7 @@ namespace PresenceSearchPlayer.Handler.Check
             }
             if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
-                _errorCode = GPErrorCode.Parse;
+                _errorCode = GPErrorCode.CheckBadMail;
             }
         }
 
@@ -46,9 +46,9 @@ namespace PresenceSearchPlayer.Handler.Check
             }
 
             _result = CheckQuery.GetProfileidFromNickEmailPassword(_recv["email"], _recv["passenc"], _recv["nick"]);
-            if (_result.Count==0)
+            if (_result== null)
             {
-                _errorCode = GPErrorCode.Check;
+                _errorCode = GPErrorCode.CheckBadNick;
             }
         }
 
