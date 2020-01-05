@@ -7,17 +7,19 @@ namespace PresenceConnectionManager.Enumerator
     /// <summary>
     /// This enumation defins the supported login method for the users.
     /// </summary>
-    public enum LoginMethods
+    public enum LoginType:uint
     {
+
+        NotFound,
         /// <summary>
         /// Login with user combo (nick@email)
         /// </summary>
-        Username = 0,
+        Nick,
 
         /// <summary>
         /// Login with unique nickname
         /// </summary>
-        UniqueNickname,
+        Uniquenick,
 
         /// <summary>
         /// Pre-authenticated login

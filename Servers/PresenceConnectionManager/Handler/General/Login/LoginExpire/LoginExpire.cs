@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginExpire
     /// <summary>
     /// This class handles the expire user from login process
     /// </summary>
-    public class ExpireHandler
+    public class LoginExpire
     {
 
     }

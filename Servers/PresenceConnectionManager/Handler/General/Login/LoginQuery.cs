@@ -66,7 +66,7 @@ namespace PresenceConnectionManager.Handler.General.Login
 
         public static void ResetAllStatusAndSessionKey()
         {
-            GPCMServer.DB.Execute("UPDATE profiles SET status=@P0,statstring =@P1,location = @P2",GPBasic.Offline,"","");
+            GPCMServer.DB.Execute("UPDATE profiles SET status=@P0,statstring =@P1,location = @P2",GPStatus.Offline,"","");
             GPCMServer.DB.Execute("UPDATE namespace SET guid = NULL");
         }
     }

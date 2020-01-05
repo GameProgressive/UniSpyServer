@@ -112,14 +112,6 @@
         MaskEmail = 0x00000020,
         MaskAll = 0xFFFFFFFF,
 
-        // Status
-        /////////
-        Offline = 0,
-        Online = 1,
-        Playing = 2,
-        Staging = 3,
-        Chatting = 4,
-        Away = 5,
 
         // Session flags
         /////////////////
@@ -226,6 +218,18 @@
         ServerError,
         MISCError,
         Count
+    }
+
+    public enum GPStatus : uint
+    {
+        // Status
+        /////////
+        Offline = 0,
+        Online = 1,
+        Playing = 2,
+        Staging = 3,
+        Chatting = 4,
+        Away = 5,
     }
 
     /// <summary>

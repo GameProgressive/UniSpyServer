@@ -93,13 +93,13 @@ namespace PresenceConnectionManager.Handler.General.Login
             {
                 session.PlayerInfo.UniqueNick = _recv["uniquenick"];
                 session.PlayerInfo.UserData = session.PlayerInfo.UniqueNick;
-                session.PlayerInfo.LoginMethod = LoginMethods.UniqueNickname;
+                session.PlayerInfo.LoginType = LoginType.Uniquenick;
             }
             else if (_recv.ContainsKey("authtoken"))
             {
                 session.PlayerInfo.AuthToken = _recv["authtoken"].ToString();
                 session.PlayerInfo.UserData = session.PlayerInfo.AuthToken;
-                session.PlayerInfo.LoginMethod = LoginMethods.AuthToken;
+                session.PlayerInfo.LoginType = LoginType.AuthToken;
             }
             else
             {
@@ -123,7 +123,7 @@ namespace PresenceConnectionManager.Handler.General.Login
                 session.PlayerInfo.Nick = nick;
                 session.PlayerInfo.Email = email;
                 session.PlayerInfo.UserData = user;
-                session.PlayerInfo.LoginMethod = LoginMethods.Username;
+                session.PlayerInfo.LoginType = LoginType.Nick;
             }
 
             if (_recv.ContainsKey("partnerid"))
@@ -155,15 +155,15 @@ namespace PresenceConnectionManager.Handler.General.Login
 
         protected override void DataBaseOperation(GPCMSession session)
         {
-            switch(session.PlayerInfo.LoginMethod)
+            switch(session.PlayerInfo.LoginType)
             {
-                case LoginMethods.UniqueNickname:
+                case LoginType.Uniquenick:
                     _result = LoginQuery.GetUserFromUniqueNick(session.PlayerInfo.UniqueNick, session.PlayerInfo.NamespaceID);
                     break;
-                case LoginMethods.Username:
+                case LoginType.Nick:
                     _result = LoginQuery.GetUserFromNickAndEmail(session.PlayerInfo.NamespaceID, session.PlayerInfo.Nick, session.PlayerInfo.Email);
                     break;
-                case LoginMethods.AuthToken:
+                case LoginType.AuthToken:
                     ErrorMsg.SendGPCMError(session, GPErrorCode.Login, _operationID);
                     session.DisconnectByReason(DisconnectReason.ForcedLogout);
                     break;
@@ -174,19 +174,19 @@ namespace PresenceConnectionManager.Handler.General.Login
 
             if (_result == null)
             {
-                switch (session.PlayerInfo.LoginMethod)
+                switch (session.PlayerInfo.LoginType)
                 {
-                    case LoginMethods.UniqueNickname:
+                    case LoginType.Uniquenick:
                         _errorCode = GPErrorCode.LoginBadUniquenick;
                         session.PlayerInfo.DisconReason = DisconnectReason.InvalidUsername;
                         break;
 
-                    case LoginMethods.Username:
+                    case LoginType.Nick:
                         _errorCode = GPErrorCode.LoginBadNick;
                         session.PlayerInfo.DisconReason = DisconnectReason.InvalidUsername;
                         break;
 
-                    case LoginMethods.AuthToken:
+                    case LoginType.AuthToken:
                         _errorCode = GPErrorCode.AuthAddBadForm;
                         session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
                         break;
@@ -278,18 +278,18 @@ namespace PresenceConnectionManager.Handler.General.Login
         /// <summary>
         /// Generates an MD5 hash, which is used to verify the sessions login information
         /// </summary>
-        /// <param name="challenge1">First challenge key</param>
-        /// <param name="challenge2">Second challenge key</param>
+        /// <param name="serverChallenge">First challenge key</param>
+        /// <param name="clientChallenge">Second challenge key</param>
         /// <returns>
         ///     The proof verification MD5 hash string that can be compared to what the session sends,
         ///     to verify that the users entered password matches the specific user data in the database.
         /// </returns>
-        private static string GenerateProof(GPCMSession session, string challenge1, string challenge2, string passwordHash)
+        private static string GenerateProof(GPCMSession session, string serverChallenge, string clientChallenge, string passwordHash)
         {
             string realUserData = session.PlayerInfo.UserData;
 
             // Auth token does not have partnerid append.
-            if (session.PlayerInfo.PartnerID != (uint)PartnerID.Gamespy && session.PlayerInfo.LoginMethod != LoginMethods.AuthToken)
+            if (session.PlayerInfo.PartnerID != (uint)PartnerID.Gamespy && session.PlayerInfo.LoginType != LoginType.AuthToken)
             {
                 realUserData = string.Format("{0}@{1}", session.PlayerInfo.PartnerID, session.PlayerInfo.UserData);
             }
@@ -298,8 +298,8 @@ namespace PresenceConnectionManager.Handler.General.Login
             StringBuilder HashString = new StringBuilder(passwordHash);
             HashString.Append(' ', 48); // 48 spaces
             HashString.Append(realUserData);
-            HashString.Append(challenge1);
-            HashString.Append(challenge2);
+            HashString.Append(serverChallenge);
+            HashString.Append(clientChallenge);
             HashString.Append(passwordHash);
             return HashString.ToString().GetMD5Hash();
         }

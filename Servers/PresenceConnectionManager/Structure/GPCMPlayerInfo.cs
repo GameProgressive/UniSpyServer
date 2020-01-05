@@ -62,6 +62,13 @@ namespace PresenceConnectionManager.Structure
 
         public uint SDKRevision;
 
+/////////////////////////User status//////////////////////////
+        public string StatusString;
+
+        public GPStatus StatusCode;
+
+        public string LocationString;
+
         /// <summary>
         /// The profile id parameter that is sent back to the client is initially 2, 
         /// and then 5 everytime after that. So we set here, whether we have sent the 
@@ -76,7 +83,7 @@ namespace PresenceConnectionManager.Structure
 
         public bool BlockListSent;
 
-        public LoginMethods LoginMethod;
+        public LoginType LoginType;
 
         public DisconnectReason DisconReason;
 
