@@ -12,18 +12,21 @@ namespace PresenceConnectionManager.Handler.General.Login
             if (recv.ContainsKey("uniquenick"))
             {
                 session.PlayerInfo.LoginType = LoginType.Uniquenick;
+                session.PlayerInfo.UserData = recv["uniquenick"];
                 UniquenickLogin uniquenickLogin = new UniquenickLogin(recv);
                 uniquenickLogin.Handle(session);
             }
             else if (recv.ContainsKey("authtoken"))
             {
                 session.PlayerInfo.LoginType = LoginType.AuthToken;
+                session.PlayerInfo.UserData = recv["authtoken"];
                 AuthtokenLogin authtoken = new AuthtokenLogin(recv);
                 authtoken.Handle(session);
             }
-           else if (recv.ContainsKey("nick"))
+           else if (recv.ContainsKey("user"))
             {
                 session.PlayerInfo.LoginType = LoginType.Nick;
+                session.PlayerInfo.UserData = recv["user"];
                 NickEmailLogin nickEmailLogin = new NickEmailLogin(recv);
                 nickEmailLogin.Handle(session);
             }
