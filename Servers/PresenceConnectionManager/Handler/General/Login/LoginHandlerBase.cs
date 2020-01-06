@@ -4,6 +4,7 @@ using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.General.Login.Misc;
+using PresenceConnectionManager.Handler.General.SDKExtendFeature;
 
 namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 {
@@ -78,6 +79,9 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             string responseProof = ChallengeProof.GenerateProof
                 (
                 session.PlayerInfo,
+                session.PlayerInfo.UserData,
+                session.PlayerInfo.LoginType,
+                session.PlayerInfo.PartnerID,
                 session.PlayerInfo.ServerChallenge,
                 session.PlayerInfo.UserChallenge,
                 _result[0]["password"].ToString()
@@ -110,6 +114,9 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             string response = ChallengeProof.GenerateProof
                 (
                 session.PlayerInfo,
+                session.PlayerInfo.UserData,
+                session.PlayerInfo.LoginType,
+                session.PlayerInfo.PartnerID,
                 session.PlayerInfo.UserChallenge,
                 session.PlayerInfo.ServerChallenge,
                 session.PlayerInfo.PasswordHash
@@ -143,6 +150,12 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 session.PlayerInfo.DisconReason = DisconnectReason.PlayerIsBanned;
                 _errorCode = GPErrorCode.LoginProfileDeleted;
             }
+        }
+
+        protected override void Response(GPCMSession session)
+        {
+            base.Response(session);
+            SDKRevision.Switch(session, _recv);
         }
     }
 }

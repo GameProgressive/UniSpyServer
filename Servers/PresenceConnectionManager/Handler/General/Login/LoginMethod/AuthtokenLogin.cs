@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             {
                 return;
             }
-
+            session.PlayerInfo.AuthToken = _recv["authtoken"];
         }
 
         protected override void DataBaseOperation(GPCMSession session)
