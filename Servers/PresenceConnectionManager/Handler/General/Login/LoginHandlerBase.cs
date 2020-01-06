@@ -31,30 +31,19 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
             if (_recv.ContainsKey("partnerid"))
             {
-                if (uint.TryParse(_recv["partnerid"], out session.PlayerInfo.PartnerID))
+                if (!uint.TryParse(_recv["partnerid"], out session.PlayerInfo.PartnerID))
                 {
                     _errorCode = GPErrorCode.Parse;
                     session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
                 }
             }
-            if (!_recv.ContainsKey("passenc"))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
+            //if (!_recv.ContainsKey("passenc"))
+            //{
+            //    _errorCode = GPErrorCode.Parse;
+            //    return;
+            //}
 
             session.PlayerInfo.UserChallenge = _recv["challenge"];
-            session.PlayerInfo.PasswordHash = _recv["passenc"];
-
-            if (!IsChallengeCorrect(session))
-            {
-                //TODO check the challenge response correctness
-                _errorCode = GPErrorCode.LoginBadLoginTicket;
-                session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
-                return;
-            }
-
-
 
             if (_recv.ContainsKey("partnerid"))
             {
@@ -76,6 +65,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void ConstructResponse(GPCMSession session)
         {
+            session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_result[0]["uniquenick"] + _recv["namespaceid"]);
             string responseProof = ChallengeProof.GenerateProof
                 (
                 session.PlayerInfo,
@@ -99,12 +89,13 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             //    random
             //    );
 
-            _sendingBuffer = @"\lc\2\sessionkey\" + session.PlayerInfo.SessionKey;
+            _sendingBuffer = @"\lc\2\sesskey\" + session.PlayerInfo.SessionKey;
             _sendingBuffer += @"\proof\" + responseProof;
-            _sendingBuffer += @"\userid\" +_result[0]["profileid"];
+            _sendingBuffer += @"\userid\" +_result[0]["userid"];
+            _sendingBuffer += @"\profileid\" + _result[0]["profileid"];
             _sendingBuffer += @"\uniquenick\" + _result[0]["uniquenick"];
             _sendingBuffer += @"\lt\" + GameSpyRandom.GenerateRandomString(22, GameSpyRandom.StringType.Hex)+ @"__";
-            _sendingBuffer += @"id" + session.PlayerInfo.OperationID;
+            _sendingBuffer += @"\id\" + _operationID+@"\final\";
 
             session.PlayerInfo.LoginProcess = LoginStatus.Completed;
         }
@@ -130,17 +121,41 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void DataBaseOperation(GPCMSession session)
         {
+
             if(_result==null)
             {
                 _errorCode = GPErrorCode.DatabaseError;
                 return;
             }
+
+            session.PlayerInfo.PasswordHash = _result[0]["password"].ToString();
+
+            if (!IsChallengeCorrect(session))
+            {
+                //TODO check the challenge response correctness
+                _errorCode = GPErrorCode.LoginBadLoginTicket;
+                session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
+                return;
+            }
+            CheckAccount(session);
+        }
+
+        protected override void Response(GPCMSession session)
+        {
+            base.Response(session);
+            SDKRevision.Switch(session, _recv);
+        }
+
+
+        protected void CheckAccount(GPCMSession session)
+        {
             bool isVerified = Convert.ToBoolean(_result[0]["emailverified"]);
             bool isBanned = Convert.ToBoolean(_result[0]["banned"]);
             if (!isVerified)
             {
                 session.PlayerInfo.DisconReason = DisconnectReason.InvalidPlayer;
                 _errorCode = GPErrorCode.LoginBadEmail;
+                return;
             }
 
             // Check the status of the account.
@@ -149,13 +164,8 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             {
                 session.PlayerInfo.DisconReason = DisconnectReason.PlayerIsBanned;
                 _errorCode = GPErrorCode.LoginProfileDeleted;
+                return;
             }
-        }
-
-        protected override void Response(GPCMSession session)
-        {
-            base.Response(session);
-            SDKRevision.Switch(session, _recv);
         }
     }
 }

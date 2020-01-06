@@ -49,7 +49,8 @@ namespace PresenceConnectionManager.Handler
         }
         protected virtual void CheckRequest(GPCMSession session)
         {
-            if (!UInt16.TryParse(_recv["id"], out _operationID))
+            if(_recv.ContainsKey("id"))
+            if (!ushort.TryParse(_recv["id"], out _operationID))
             {
                 _errorCode = GPErrorCode.Parse;
             }

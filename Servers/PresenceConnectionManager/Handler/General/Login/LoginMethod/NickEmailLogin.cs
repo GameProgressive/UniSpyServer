@@ -45,7 +45,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void DataBaseOperation(GPCMSession session)
         {
-
+            
             _result = LoginQuery.GetUserFromNickAndEmail(session.PlayerInfo.NamespaceID, session.PlayerInfo.Nick, session.PlayerInfo.Email);
             base.DataBaseOperation(session);
         }
