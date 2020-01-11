@@ -65,7 +65,7 @@ namespace StatsAndTracking
             string sendingBuffer = Encoding.UTF8.GetString(buffer);
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer);
+                LogWriter.Log.Write(LogLevel.Debug, @"{0}[Send] TCP data: {1}\final\", ServerName, sendingBuffer);
 
             sendingBuffer = GstatsXOR(sendingBuffer) + @"\final\";
 
@@ -89,10 +89,10 @@ namespace StatsAndTracking
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer)+ @"\final\";            
+            string sendingBuffer = Encoding.UTF8.GetString(buffer);            
 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, sendingBuffer);
+                LogWriter.Log.Write(LogLevel.Debug, @"{0}[Send] TCP data: {1}\final\", ServerName, sendingBuffer);
 
             sendingBuffer = GstatsXOR(sendingBuffer);
 

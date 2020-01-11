@@ -22,6 +22,8 @@ namespace StatsAndTracking.Handler.CommandSwitcher
                     case "authp":
                         AuthPHandler.AuthPlayer(session, recv);
                         break;
+                    case "getpd"://get player data
+                        break;
                     default:
                         session.UnknownDataRecived(recv);
                         break;
