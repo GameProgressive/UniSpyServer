@@ -1,11 +1,11 @@
-﻿using CDKey.Handler.SKey;
+﻿using CDKey.Handler.CommandHandler.SKey;
 using GameSpyLib.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace CDKey.Handler
+namespace CDKey.Handler.CommandHandler
 {
     public class CommandSwitcher
     {

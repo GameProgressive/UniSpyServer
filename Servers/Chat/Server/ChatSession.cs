@@ -1,6 +1,6 @@
-﻿using Chat.Handler;
-using Chat.Handler.Encryption;
-using Chat.Structure;
+﻿using Chat.Handler.CommandSwitcher;
+using Chat.Handler.SystemHandler.Encryption;
+using Chat.Entity.Structure;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;

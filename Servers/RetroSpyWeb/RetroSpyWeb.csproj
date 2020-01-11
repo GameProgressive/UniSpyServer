@@ -21,8 +21,8 @@
 
 
   <ItemGroup>
-    <Folder Include="Handler\SAKEHandler\" />
-    <Folder Include="Handler\CompHandler\" />
+    <Folder Include="RetroSpySystem\Handler\SAKEHandler\" />
+    <Folder Include="RetroSpySystem\Handler\CompHandler\" />
   </ItemGroup>
 
 

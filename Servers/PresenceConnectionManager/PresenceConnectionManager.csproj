@@ -26,12 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\" />
-    <Folder Include="Handler\General\Login\LoginMethod\" />
-    <Folder Include="Handler\General\Login\Misc\" />
-    <Folder Include="Handler\General\Login\Swticher\" />
+    <Folder Include="Entity\Interface\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Handler\General\Login\Misc\ChallangeVerify.cs" />
+    <Compile Remove="Handler\CommandHandler\General\Login\Misc\ChallangeVerify.cs" />
   </ItemGroup>
 </Project>

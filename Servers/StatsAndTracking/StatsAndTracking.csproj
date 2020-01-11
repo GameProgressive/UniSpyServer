@@ -15,17 +15,23 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Handler\GetPdr\**" />
+    <Compile Remove="Handler\GetPid\**" />
+    <Compile Remove="Handler\SetPdr\**" />
+    <EmbeddedResource Remove="Handler\GetPdr\**" />
+    <EmbeddedResource Remove="Handler\GetPid\**" />
+    <EmbeddedResource Remove="Handler\SetPdr\**" />
+    <None Remove="Handler\GetPdr\**" />
+    <None Remove="Handler\GetPid\**" />
+    <None Remove="Handler\SetPdr\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Handler\SetPdr\" />
-    <Folder Include="Handler\GetPid\" />
-    <Folder Include="Handler\GetPdr\" />
   </ItemGroup>
 
 </Project>

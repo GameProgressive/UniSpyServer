@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace GameSpyLib.Extensions
+namespace GameSpyLib.Encryption
 {
     public static class ByteExtensions
     {

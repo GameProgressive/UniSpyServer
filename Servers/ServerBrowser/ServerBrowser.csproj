@@ -18,6 +18,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Handler\Switcher\**" />
+    <EmbeddedResource Remove="Handler\Switcher\**" />
+    <None Remove="Handler\Switcher\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
     <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
   </ItemGroup>
@@ -27,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handler\Switcher\" />
+    <Folder Include="Handler\CommandSwitcher\" />
   </ItemGroup>
 
 </Project>

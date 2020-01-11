@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Network;
 using PresenceSearchPlayer.Enumerator;
-using PresenceSearchPlayer.Handler;
+using PresenceSearchPlayer.Handler.CommandHandler;
 using System.Collections.Generic;
 
 namespace PresenceSearchPlayer

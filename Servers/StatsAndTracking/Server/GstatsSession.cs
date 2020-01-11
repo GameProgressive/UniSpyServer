@@ -1,11 +1,12 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Extensions;
+using GameSpyLib.Encryption;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using StatsAndTracking.Handler;
 using System.Collections.Generic;
 using System.Text;
 using StatsAndTracking.Structure;
+using StatsAndTracking.Handler.CommandSwitcher;
+
 namespace StatsAndTracking
 {
     public class GstatsSession : TemplateTcpSession
@@ -121,7 +122,7 @@ namespace StatsAndTracking
         /// <returns></returns>
         public static string GstatsXOR(string msg)
         {
-            return Enctypex.XorEncoding(msg, 1);
+            return Enctypex.XorEncoding(msg, Enctypex.XorEncodingType.Type1);
         }
     }
 }

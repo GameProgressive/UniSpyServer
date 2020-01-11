@@ -1,7 +1,7 @@
-﻿using CDKey.Handler;
+﻿using CDKey.Handler.CommandHandler;
 using GameSpyLib.Common;
-using GameSpyLib.Database;
-using GameSpyLib.Extensions;
+using GameSpyLib.Database.Entity;
+using GameSpyLib.Encryption;
 using GameSpyLib.Network;
 using System.Collections.Generic;
 using System.Net;

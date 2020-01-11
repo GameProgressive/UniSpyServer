@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Database;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Database.Entity;
+using GameSpyLib.Encryption;
 using GameSpyLib.Network;
 using NetCoreServer;
 using System.Net;

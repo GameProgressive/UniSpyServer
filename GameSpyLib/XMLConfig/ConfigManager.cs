@@ -33,7 +33,7 @@ namespace GameSpyLib.XMLConfig
                     throw new Exception("Database configuration not specified!");
                 }
 
-                if (xmlConfiguration.Database.Type == GameSpyLib.Database.DatabaseEngine.Mysql)
+                if (xmlConfiguration.Database.Type == GameSpyLib.Database.Entity.DatabaseEngine.Mysql)
                 {
                     if (xmlConfiguration.Database.Username.Length < 1 ||
                         xmlConfiguration.Database.Hostname.Length < 1 || 

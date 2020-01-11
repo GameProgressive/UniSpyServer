@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Database;
+﻿using GameSpyLib.Database.Entity;
 using System.Xml.Serialization;
 
 namespace GameSpyLib.XMLConfig

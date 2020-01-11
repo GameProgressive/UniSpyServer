@@ -5,7 +5,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace GameSpyLib.Extensions
+namespace GameSpyLib.Encryption
 {
     public static class StringExtensions
     {
