@@ -25,8 +25,10 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         protected override void DataBaseOperation(GPCMSession session)
         {
             //TODO
+            _result = GPCMServer.DB.Query(@"SELECT * FROM profiles WHERE profiles.userid = 1");
             _result = null;
-            //base.DataBaseOperation(session);
+            
+            base.DataBaseOperation(session);
         }
     }
 }
