@@ -12,7 +12,7 @@
     "RetroSpyWeb": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "/Service.asmx",
+      "launchUrl": "Service.asmx",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
