@@ -32,8 +32,8 @@ namespace QueryReport.Server
 
         public bool HasInstantKey = false;
 
-
         public static DatabaseDriver DB;
+
         public QRServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
         {
             DB = databaseDriver;
@@ -53,6 +53,9 @@ namespace QueryReport.Server
         {
             CommandSwitcher.Switch(this, endPoint, message);
         }
+
+
+
 
         private bool _disposed;
         protected override void Dispose(bool disposingManageResource)
