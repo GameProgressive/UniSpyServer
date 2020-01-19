@@ -21,12 +21,17 @@ namespace PresenceConnectionManager.Handler.Profile.Status
 
             ushort sessionkey;
             if (!ushort.TryParse(recv["sesskey"], out sessionkey))
-                return; // Invalid session key
+                return;
+            // Invalid session key
             // Are you trying to update another user?
             //you can only update your status.?
             if (sessionkey != session.PlayerInfo.SessionKey)
                 return;
-            StatusQuery.UpdateStatus(session.PlayerInfo,Convert.ToUInt32(recv["status"]),recv["statstring"],recv["locstring"]);
+            //update the status in playerinfomation.
+            //notify all user in that namespace who have this friend.
+
+
+            //StatusQuery.UpdateStatus(session.PlayerInfo,Convert.ToUInt32(recv["status"]),recv["statstring"],recv["locstring"]);
         }
 
         private static bool IsContainAllKey()

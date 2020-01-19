@@ -8,6 +8,7 @@ namespace PresenceConnectionManager.Handler.General.RegisterCDKey
     {
         public RegisterCDKeyHandler(Dictionary<string, string> recv) : base(recv)
         {
+            _sendingBuffer = @"\rc\final\";
         }
 
     }
