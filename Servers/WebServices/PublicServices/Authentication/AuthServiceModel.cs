@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-namespace Models
+namespace PublicServices.Authentication
 {
     [DataContract]
-    public class MyCustomModel
+    public class AuthServiceModel
     {
         [DataMember]
         public int Id { get; set; }

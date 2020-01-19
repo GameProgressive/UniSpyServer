@@ -1,9 +1,8 @@
-﻿using Models;
-using System;
+﻿using System;
 using System.Xml.Linq;
-namespace Models
+namespace PublicServices.Competitive
 {
-    public class SampleService : ISampleService
+    public class CompetitiveService : ICompetitiveService
     {
         public string Test(string s)
         {
@@ -14,7 +13,7 @@ namespace Models
         {
             Console.WriteLine(xml.ToString());
         }
-        public MyCustomModel TestCustomModel(MyCustomModel customModel)
+        public CompetitiveServiceModel TestCompetitiveServiceModel(CompetitiveServiceModel customModel)
         {
             return customModel;
         }

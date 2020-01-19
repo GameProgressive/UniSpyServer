@@ -1,14 +1,14 @@
 ﻿using System.ServiceModel;
-namespace Models
+namespace Sake
 {
     [ServiceContract]
-    public interface ISampleService
+    public interface IStorageServer
     {
         [OperationContract]
         string Test(string s);
         [OperationContract]
         void XmlMethod(System.Xml.Linq.XElement xml);
         [OperationContract]
-        MyCustomModel TestCustomModel(MyCustomModel inputModel);
+        StorageServerModel TestStorageServerModel(StorageServerModel inputModel);
     }
 }
