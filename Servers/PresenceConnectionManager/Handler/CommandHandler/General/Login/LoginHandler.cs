@@ -49,26 +49,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         {
             session.PlayerInfo.SessionKey = _crc.ComputeChecksum(session.PlayerInfo.Nick + session.PlayerInfo.NamespaceID);
             string responseProof = ChallengeProof.GenerateProof
-                (
+            (
                 session.PlayerInfo.UserData,
                 session.PlayerInfo.LoginType,
                 session.PlayerInfo.PartnerID,
                 session.PlayerInfo.ServerChallenge,
                 session.PlayerInfo.UserChallenge,
                 session.PlayerInfo.PasswordHash
-                );
-
-            //string random = GameSpyRandom.GenerateRandomString(22, GameSpyRandom.StringType.Hex);
-            //// Password is correct
-            //_sendingBuffer = string.Format(
-            //    @"\lc\2\sesskey\{0}\proof\{1}\userid\{2}\profileid\{2}\uniquenick\{3}\lt\{4}__\id\1\final\",
-            //    session.PlayerInfo.SessionKey,
-            //    responseProof,
-            //    _result[0]["profileid"],
-            //    _result[0]["uniquenick"],
-            //    // Generate LT whatever that is (some sort of random string, 22 chars long)
-            //    random
-            //    );
+            );
 
             _sendingBuffer = @"\lc\2\sesskey\" + session.PlayerInfo.SessionKey;
             _sendingBuffer += @"\proof\" + responseProof;

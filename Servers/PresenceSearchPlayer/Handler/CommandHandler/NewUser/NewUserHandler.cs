@@ -27,14 +27,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
+
             if (!_recv.ContainsKey("passenc"))
             {
-                if (!_recv.ContainsKey("pass"))
-                {
-                    _errorCode = GPErrorCode.Parse;
-                    return;
-                }
+                _errorCode = GPErrorCode.Parse;
+                return;
             }
+
             if (_recv.ContainsKey("uniquenick"))
             {
                 _uniquenick = _recv["uniquenick"];
