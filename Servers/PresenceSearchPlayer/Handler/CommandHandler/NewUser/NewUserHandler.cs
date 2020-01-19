@@ -43,10 +43,42 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
         protected override void DataBaseOperation(GPSPSession session)
         {
-            //bool IsAccountExist=false;
-            //bool IsAccountCorrect = false;
+            //bool IsEmail=false;
+            //bool IsEmailPasswordCorrect = false;
             //bool IsNickExist = false;
             //bool IsUniquenickExist = false;
+            //bool NewUserWithUniquenick =false;
+            //bool NewUserWithEmail = false;
+
+            //if(_recv.ContainsKey("uniquenick"))
+            //{
+            //    NewUserWithUniquenick = true;
+            //}
+            //else
+            //{
+            //    NewUserWithEmail = true;
+            //}
+
+
+            //if (NewUserWithEmail)
+            //{
+            //    if (NewUserQuery.IsAccountExist(_recv["email"]))
+            //    {
+            //        if (!NewUserQuery.IsAccountCorrect(_recv["email"], _recv["passenc"], out _userid))
+            //        {
+            //            _errorCode = GPErrorCode.NewUserBadPasswords;
+            //            return;
+            //        }
+            //        else
+            //        {
+            //            if (IsNickExist())
+            //            { }
+            //        }
+            //    }
+            //}
+            //else
+
+
 
             //if (IsAccountExist)
             //{

@@ -16,6 +16,8 @@ using PresenceConnectionManager.Handler.Profile.UpdateUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Handler;
+
 
 namespace PresenceConnectionManager.Handler
 {

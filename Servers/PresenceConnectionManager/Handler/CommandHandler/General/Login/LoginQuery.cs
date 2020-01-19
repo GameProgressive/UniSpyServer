@@ -14,7 +14,7 @@ namespace PresenceConnectionManager.Handler.General.Login
         public static List<Dictionary<string, object>> GetUserFromUniqueNick(string uniquenick, uint namespaceid)
         {
             var result = GPCMServer.DB.Query(
-                @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, users.email, users.password, users.emailverified,users.banned 
+                @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, users.email, users.userid, users.password, users.emailverified,users.banned 
                  FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
                  WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1"
                  , uniquenick, namespaceid
@@ -67,7 +67,7 @@ namespace PresenceConnectionManager.Handler.General.Login
         public static void ResetAllStatusAndSessionKey()
         {
             GPCMServer.DB.Execute("UPDATE profiles SET status=@P0,statstring =@P1,location = @P2",GPStatus.Offline,"","");
-            GPCMServer.DB.Execute("UPDATE namespace SET guid = NULL");
+            //GPCMServer.DB.Execute("UPDATE namespace SET guid = NULL");
         }
     }
 }
