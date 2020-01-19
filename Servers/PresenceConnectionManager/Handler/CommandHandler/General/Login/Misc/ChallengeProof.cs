@@ -16,12 +16,12 @@ namespace PresenceConnectionManager.Handler.General.Login.Misc
         ///     The proof verification MD5 hash string that can be compared to what the session sends,
         ///     to verify that the users entered password matches the specific user data in the database.
         /// </returns>
-        public static string GenerateProof(GPCMPlayerInfo playerInfo,string userData,LoginType loginType,uint partnerID, string serverChallenge, string clientChallenge, string passwordHash)
+        public static string GenerateProof(string userData, LoginType loginType, uint partnerID, string serverChallenge, string clientChallenge, string passwordHash)
         {
             string realUserData = userData;
 
             // Auth token does not have partnerid append.
-            if (playerInfo.PartnerID != (uint)PartnerID.Gamespy && loginType != LoginType.AuthToken)
+            if (partnerID != (uint)PartnerID.Gamespy && loginType != LoginType.AuthToken)
             {
                 realUserData = string.Format("{0}@{1}", partnerID, userData);
             }

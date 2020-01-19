@@ -14,10 +14,23 @@ namespace PresenceConnectionManager.Handler.General.Login
         public static List<Dictionary<string, object>> GetUserFromUniqueNick(string uniquenick, uint namespaceid)
         {
             var result = GPCMServer.DB.Query(
-                @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, users.email, users.userid, users.password, users.emailverified,users.banned 
-                 FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
-                 WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1"
-                 , uniquenick, namespaceid
+                    @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, users.email, users.userid, users.password, users.emailverified,users.banned 
+                     FROM profiles INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace ON profiles.profileid = namespace.profileid  
+                     WHERE namespace.uniquenick = @P0 AND namespace.namespaceid = @P1"
+                     , uniquenick, namespaceid
+                 );
+            return (result.Count == 0) ? null : result;
+        }
+
+        public static List<Dictionary<string, object>> GetPreAuthenticatedUser(string authtoken, uint partnerid, uint namespaceid)
+        {
+            var result = GPCMServer.DB.Query(
+                    @"SELECT profiles.profileid, namespace.uniquenick, profiles.nick, 
+                    users.email, users.userid, users.emailverified, users.banned, users.password FROM profiles
+                    INNER JOIN users ON profiles.userid = users.userid INNER JOIN namespace
+                    ON namespace.profileid = profiles.profileid INNER JOIN partners ON partners.partnerid =
+                    namespace.partnerid WHERE namespace.authtoken = @P0 AND namespace.namespaceid = @P1 AND
+                    partners.partnerid = @P2", authtoken, namespaceid, partnerid
                  );
             return (result.Count == 0) ? null : result;
         }

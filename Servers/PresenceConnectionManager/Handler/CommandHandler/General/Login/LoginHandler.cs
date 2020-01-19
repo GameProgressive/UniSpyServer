@@ -50,13 +50,12 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             session.PlayerInfo.SessionKey = _crc.ComputeChecksum(session.PlayerInfo.Nick + session.PlayerInfo.NamespaceID);
             string responseProof = ChallengeProof.GenerateProof
                 (
-                session.PlayerInfo,
                 session.PlayerInfo.UserData,
                 session.PlayerInfo.LoginType,
                 session.PlayerInfo.PartnerID,
                 session.PlayerInfo.ServerChallenge,
                 session.PlayerInfo.UserChallenge,
-                _result[0]["password"].ToString()
+                session.PlayerInfo.PasswordHash
                 );
 
             //string random = GameSpyRandom.GenerateRandomString(22, GameSpyRandom.StringType.Hex);
@@ -76,7 +75,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             _sendingBuffer += @"\userid\" + _result[0]["userid"];
             _sendingBuffer += @"\profileid\" + _result[0]["profileid"];
 
-            if (session.PlayerInfo.LoginType == LoginType.Uniquenick)
+            if (session.PlayerInfo.LoginType != LoginType.Nick)
                 _sendingBuffer += @"\uniquenick\" + _result[0]["uniquenick"];
 
             _sendingBuffer += @"\lt\" + session.Id.ToString().Replace("-", "").Substring(0, 22) + "__";
@@ -194,7 +193,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                     _result = LoginQuery.GetUserFromUniqueNick(session.PlayerInfo.UniqueNick, session.PlayerInfo.NamespaceID);
                     break;
                 case LoginType.AuthToken:
-                    //TODO
+                    _result = LoginQuery.GetPreAuthenticatedUser(session.PlayerInfo.AuthToken, session.PlayerInfo.PartnerID, session.PlayerInfo.NamespaceID);
                     break;
             }
         }
@@ -203,7 +202,6 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         {
             string response = ChallengeProof.GenerateProof
                 (
-                session.PlayerInfo,
                 session.PlayerInfo.UserData,
                 session.PlayerInfo.LoginType,
                 session.PlayerInfo.PartnerID,
