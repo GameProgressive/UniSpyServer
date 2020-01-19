@@ -9,6 +9,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         private uint _userid;
         private uint _profileid;
         private string _uniquenick = "";
+        private bool _CreateUserWithUniquenick;
         public NewUserHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
@@ -36,75 +37,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
             if (_recv.ContainsKey("uniquenick"))
             {
+                _CreateUserWithUniquenick = true;
                 _uniquenick = _recv["uniquenick"];
             }
         }
 
         protected override void DataBaseOperation(GPSPSession session)
         {
-            //bool IsEmail=false;
-            //bool IsEmailPasswordCorrect = false;
-            //bool IsNickExist = false;
-            //bool IsUniquenickExist = false;
-            //bool NewUserWithUniquenick =false;
-            //bool NewUserWithEmail = false;
-
-            //if(_recv.ContainsKey("uniquenick"))
-            //{
-            //    NewUserWithUniquenick = true;
-            //}
-            //else
-            //{
-            //    NewUserWithEmail = true;
-            //}
-
-
-            //if (NewUserWithEmail)
-            //{
-            //    if (NewUserQuery.IsAccountExist(_recv["email"]))
-            //    {
-            //        if (!NewUserQuery.IsAccountCorrect(_recv["email"], _recv["passenc"], out _userid))
-            //        {
-            //            _errorCode = GPErrorCode.NewUserBadPasswords;
-            //            return;
-            //        }
-            //        else
-            //        {
-            //            if (IsNickExist())
-            //            { }
-            //        }
-            //    }
-            //}
-            //else
-
-
-
-            //if (IsAccountExist)
-            //{
-            //    if (IsAccountCorrect)
-            //    {
-            //        if (IsNickExist)
-            //        {
-            //            if (IsUniquenickExist)
-            //            {
-            //                _errorCode = GPErrorCode.NewUserUniquenickInUse;
-            //            }
-            //            else
-            //            {
-
-            //            }
-            //        }
-            //        else
-            //        {
-            //            //RegisterNickAndUniquenick();
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    //RegisterNewAcount();
-            //}              
-
             if (NewUserQuery.IsAccountExist(_recv["email"]))
             {
                 if (!NewUserQuery.IsAccountCorrect(_recv["email"], _recv["passenc"], out _userid))
@@ -126,14 +65,17 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
             NewUserQuery.FindOrCreateProfileOnProfileTable(_recv["nick"], _userid, out _profileid);
 
-            if (!NewUserQuery.FindOrCreateSubProfileOnNamespaceTable(_uniquenick, _namespaceid, _profileid))
+            if (_CreateUserWithUniquenick)
             {
-                _errorCode = GPErrorCode.NewUserUniquenickInUse;
+                if (!NewUserQuery.FindOrCreateSubProfileOnNamespaceTable(_uniquenick, _namespaceid, _profileid))
+                {
+                    _errorCode = GPErrorCode.NewUserUniquenickInUse;
+                    return;
+                }
             }
-            else
-            {
-                NewUserQuery.UpdateOtherInfo(_uniquenick, _namespaceid, _recv);
-            }
+
+            NewUserQuery.UpdateOtherInfo(_uniquenick, _namespaceid, _recv);
+
         }
 
         protected override void ConstructResponse(GPSPSession session)
@@ -141,7 +83,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             if (_errorCode != GPErrorCode.NoError)
             {
                 _sendingBuffer = string.Format(@"\nur\{0}\final\", (uint)_errorCode);
-            } 
+            }
             else
                 _sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _profileid);
         }

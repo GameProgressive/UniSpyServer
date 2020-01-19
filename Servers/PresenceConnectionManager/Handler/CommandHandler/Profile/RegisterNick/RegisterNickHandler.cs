@@ -12,23 +12,23 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
         /// <summary>
         /// update the uniquenick
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="session"></param>
         /// <param name="dict"></param>
-        public static void RegisterNick(GPCMSession client, Dictionary<string, string> dict)
+        public static void RegisterNick(GPCMSession session, Dictionary<string, string> dict)
         {
             GPErrorCode error = IsContainAllKeys(dict);
             if (error != GPErrorCode.NoError)
             {
-                GameSpyUtils.SendGPError(client, error, "Parsing error");
+                GameSpyUtils.SendGPError(session, error, "Parsing error");
                 return;
             }
             string sendingBuffer;
 
             try
             {
-                RegisterNickQuery.UpdateUniquenick(dict);
+                RegisterNickQuery.UpdateUniquenick(dict["uniquenick"],session.PlayerInfo.SessionKey,Convert.ToUInt16(dict["patnerid"]));
                 sendingBuffer = @"\rn\final\";
-                client.Send(sendingBuffer);
+                session.Send(sendingBuffer);
             }
             catch (Exception e)
             {

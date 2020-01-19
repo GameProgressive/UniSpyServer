@@ -11,7 +11,7 @@ namespace QueryReport.Handler.CommandHandler
     {
         protected byte[] _recv;
         protected List<Dictionary<string, object>> _result;
-        protected string _sendingBuffer;
+        protected byte[] _sendingBuffer;
         protected QRErrorCode _error = QRErrorCode.NoError;
 
         protected QRHandlerBase(byte[] recv)
