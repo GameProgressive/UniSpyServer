@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
     {
         Crc16 _crc = new Crc16(Crc16Mode.Standard);
 
-        protected LoginHandler(Dictionary<string, string> recv) : base(recv)
+        public LoginHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
 
@@ -47,7 +47,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void ConstructResponse(GPCMSession session)
         {
-            session.PlayerInfo.SessionKey = _crc.ComputeChecksum(_result[0]["uniquenick"] + _recv["namespaceid"]);
+            session.PlayerInfo.SessionKey = _crc.ComputeChecksum(session.PlayerInfo.Nick + session.PlayerInfo.NamespaceID);
             string responseProof = ChallengeProof.GenerateProof
                 (
                 session.PlayerInfo,
@@ -75,8 +75,11 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             _sendingBuffer += @"\proof\" + responseProof;
             _sendingBuffer += @"\userid\" + _result[0]["userid"];
             _sendingBuffer += @"\profileid\" + _result[0]["profileid"];
-            _sendingBuffer += @"\uniquenick\" + _result[0]["uniquenick"];
-            _sendingBuffer += @"\lt\" + GameSpyRandom.GenerateRandomString(22, GameSpyRandom.StringType.Hex) + @"__";
+
+            if (session.PlayerInfo.LoginType == LoginType.Uniquenick)
+                _sendingBuffer += @"\uniquenick\" + _result[0]["uniquenick"];
+
+            _sendingBuffer += @"\lt\" + session.Id.ToString().Replace("-", "").Substring(0, 22) + "__";
             _sendingBuffer += @"\id\" + _operationID + @"\final\";
 
             session.PlayerInfo.LoginProcess = LoginStatus.Completed;
@@ -91,16 +94,19 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 return;
             }
 
+            if (!CheckAccount(session))
+            {
+                return;
+            }
+
             session.PlayerInfo.PasswordHash = _result[0]["password"].ToString();
 
             if (!IsChallengeCorrect(session))
             {
                 //TODO check the challenge response correctness
                 _errorCode = GPErrorCode.LoginBadLoginTicket;
-                session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
-                return;
             }
-            CheckAccount(session);
+
         }
 
         protected override void Response(GPCMSession session)
@@ -212,25 +218,25 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             return false;
         }
 
-        protected void CheckAccount(GPCMSession session)
+        protected bool CheckAccount(GPCMSession session)
         {
             bool isVerified = Convert.ToBoolean(_result[0]["emailverified"]);
             bool isBanned = Convert.ToBoolean(_result[0]["banned"]);
             if (!isVerified)
             {
-                session.PlayerInfo.DisconReason = DisconnectReason.InvalidPlayer;
                 _errorCode = GPErrorCode.LoginBadEmail;
-                return;
+                return false;
             }
 
             // Check the status of the account.
             // If the single profile is banned, the account or the player status
             if (isBanned)
             {
-                session.PlayerInfo.DisconReason = DisconnectReason.PlayerIsBanned;
                 _errorCode = GPErrorCode.LoginProfileDeleted;
-                return;
+                return false;
             }
+
+            return true;
         }
     }
 }
