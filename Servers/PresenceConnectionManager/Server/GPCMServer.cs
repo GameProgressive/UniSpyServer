@@ -1,15 +1,12 @@
-﻿using GameSpyLib.Database.DatabaseConnectionKeeper;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Net;
+using GameSpyLib.Database.DatabaseConnectionKeeper;
 using GameSpyLib.Database.Entity;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using NetCoreServer;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.General.KeepAlive;
-using PresenceConnectionManager.Handler.General.Login;
-using System;
-using System.Collections.Concurrent;
-using System.Net;
-using System.Threading.Tasks;
 
 //GPCM represents GameSpy Connection Manager
 namespace PresenceConnectionManager
@@ -34,11 +31,6 @@ namespace PresenceConnectionManager
         /// List of sucessfully logged in clients (Pid => Client Obj)
         /// </summary>
         private static ConcurrentDictionary<Guid, GPCMSession> LoggedInSession = new ConcurrentDictionary<Guid, GPCMSession>();
-
-        /// <summary>
-        /// A Queue of player status updates we will make on the database in a batch update.
-        /// </summary>
-        public static ConcurrentQueue<GPCMSession> PlayerStatusQueue { get; private set; } = new ConcurrentQueue<GPCMSession>();
 
         /// <summary>
         /// Returns the number of players online
@@ -81,71 +73,71 @@ namespace PresenceConnectionManager
             _dbKeeper = new DBKeeper(databaseDriver);
             _dbKeeper.Run();
 
-            KeepAliveManagement();
-            PlayerStatusUpdate();
+            //KeepAliveManagement();
+            //PlayerStatusUpdate();
             // Setup timer. Every 15 seconds should be sufficient
             // Set connection handling           
         }
         protected override TcpSession CreateSession() { return new GPCMSession(this); }
 
-        private void PlayerStatusUpdate()
-        {
-            //the status of a player may change time by time we need to update that, so the online status will update on others
-            // Setup timer. Every 5 seconds should be sufficient
-            if (StatusTimer == null || !StatusTimer.Enabled)
-            {
-                StatusTimer = new System.Timers.Timer(5000);
-                StatusTimer.Elapsed += (s, e) =>
-                {
-                    // Return if we are empty
-                    if (PlayerStatusQueue.IsEmpty) return;
-                    //var transaction =DB.BeginTransaction();
-                    try
-                    {
-                        long timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
-                        GPCMSession session;
-                        while (PlayerStatusQueue.TryDequeue(out session))
-                        {
-                            // Skip if this player never finished logging in
-                            if (session == null)
-                                continue;
-                            if (!session.CompletedLoginProcess)
-                                continue;
-                            LoginQuery.UpdateStatus(timestamp, session.Remote.ToString(), session.PlayerInfo.Profileid, (uint)session.PlayerInfo.PlayerStatus);
-                        }
-                        //transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        LogWriter.Log.WriteException(ex);
-                        // transaction.Rollback();
-                    }
-                };
-                StatusTimer.Start();
-            }
-        }
-        private void KeepAliveManagement()
-        {
-            // Setup timer. Every 15 seconds should be sufficient
-            if (PollTimer == null || !PollTimer.Enabled)
-            {
-                PollTimer = new System.Timers.Timer(15000);
-                PollTimer.Elapsed += (s, e) =>
-                {
-                    // Send keep alive to all connected clients
-                    if (LoggedInSession.Count > 0)
-                    {
-                        Parallel.ForEach(LoggedInSession.Values, client => KAHandler.SendKeepAlive(client));
-                    }
-                    // DisconnectByReason hanging connections
-                    if (InLoginSession.Count > 0)
-                    {
-                        Parallel.ForEach(InLoginSession.Values, client => CheckTimeout(client));
-                    }
-                };
-                PollTimer.Start();
-            }
-        }
+        //private void PlayerStatusUpdate()
+        //{
+        //    //the status of a player may change time by time we need to update that, so the online status will update on others
+        //    // Setup timer. Every 5 seconds should be sufficient
+        //    if (StatusTimer == null || !StatusTimer.Enabled)
+        //    {
+        //        StatusTimer = new System.Timers.Timer(5000);
+        //        StatusTimer.Elapsed += (s, e) =>
+        //        {
+        //            // Return if we are empty
+        //            if (PlayerStatusQueue.IsEmpty) return;
+        //            //var transaction =DB.BeginTransaction();
+        //            try
+        //            {
+        //                long timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds();
+        //                GPCMSession session;
+        //                while (PlayerStatusQueue.TryDequeue(out session))
+        //                {
+        //                    // Skip if this player never finished logging in
+        //                    if (session == null)
+        //                        continue;
+        //                    if (!session.CompletedLoginProcess)
+        //                        continue;
+        //                    LoginQuery.UpdateStatus(timestamp, session.Remote.ToString(), session.PlayerInfo.Profileid, (uint)session.PlayerInfo.PlayerStatus);
+        //                }
+        //                //transaction.Commit();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                LogWriter.Log.WriteException(ex);
+        //                // transaction.Rollback();
+        //            }
+        //        };
+        //        StatusTimer.Start();
+        //    }
+        //}
+        //private void KeepAliveManagement()
+        //{
+        //    // Setup timer. Every 15 seconds should be sufficient
+        //    if (PollTimer == null || !PollTimer.Enabled)
+        //    {
+        //        PollTimer = new System.Timers.Timer(15000);
+        //        PollTimer.Elapsed += (s, e) =>
+        //        {
+        //            // Send keep alive to all connected clients
+        //            if (LoggedInSession.Count > 0)
+        //            {
+        //                Parallel.ForEach(LoggedInSession.Values, client => KAHandler.SendKeepAlive(client));
+        //            }
+        //            // DisconnectByReason hanging connections
+        //            if (InLoginSession.Count > 0)
+        //            {
+        //                Parallel.ForEach(InLoginSession.Values, client => CheckTimeout(client));
+        //            }
+        //        };
+        //        PollTimer.Start();
+        //    }
+        //}
         private bool _disposed;
 
         protected override void Dispose(bool disposingManagedResources)
@@ -162,9 +154,9 @@ namespace PresenceConnectionManager
             StatusTimer?.Dispose();
             // Disconnected all connected clients
             Console.WriteLine("Disconnecting all users...");
-            Parallel.ForEach(LoggedInSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
-            Parallel.ForEach(InLoginSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
-            LoginQuery.ResetAllStatusAndSessionKey();
+            //Parallel.ForEach(LoggedInSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
+            //Parallel.ForEach(InLoginSession.Values, client => client.DisconnectByReason(DisconnectReason.ForcedServerShutdown));
+            //LoginQuery.ResetAllStatusAndSessionKey();
             LoggedInSession.Clear();
             DB.Dispose();
             base.Dispose(disposingManagedResources);
@@ -214,15 +206,15 @@ namespace PresenceConnectionManager
         /// </summary>
         /// <param name="playerId">The players ID</param>
         /// <returns>Returns whether the client was connected, and disconnect was called</returns>
-        public bool ForceLogout(Guid guid)
-        {
-            if (LoggedInSession.ContainsKey(guid))
-            {
-                LoggedInSession[guid].DisconnectByReason(DisconnectReason.ForcedLogout);
-                return true;
-            }
-            return false;
-        }
+        //public bool ForceLogout(Guid guid)
+        //{
+        //    if (LoggedInSession.ContainsKey(guid))
+        //    {
+        //        LoggedInSession[guid].DisconnectByReason(DisconnectReason.ForcedLogout);
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
     }
 

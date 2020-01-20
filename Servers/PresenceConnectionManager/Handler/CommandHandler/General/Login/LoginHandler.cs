@@ -26,7 +26,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             if (!_recv.ContainsKey("challenge") || !_recv.ContainsKey("response"))
             {
                 _errorCode = GPErrorCode.Parse;
-                session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
+               // session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
                 return;
             }
             if (_recv.ContainsKey("partnerid"))
@@ -34,7 +34,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 if (!uint.TryParse(_recv["partnerid"], out session.PlayerInfo.PartnerID))
                 {
                     _errorCode = GPErrorCode.Parse;
-                    session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
+                   // session.PlayerInfo.DisconReason = DisconnectReason.InvalidLoginQuery;
                 }
             }
 

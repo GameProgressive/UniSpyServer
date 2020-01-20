@@ -49,11 +49,11 @@ namespace PresenceConnectionManager.Handler
         }
         protected virtual void CheckRequest(GPCMSession session)
         {
-            if(_recv.ContainsKey("id"))
-            if (!ushort.TryParse(_recv["id"], out _operationID))
-            {
-                _errorCode = GPErrorCode.Parse;
-            }
+            if (_recv.ContainsKey("id"))
+                if (!ushort.TryParse(_recv["id"], out _operationID))
+                {
+                    _errorCode = GPErrorCode.Parse;
+                }
         }
 
         protected virtual void DataBaseOperation(GPCMSession session) { }
@@ -62,14 +62,11 @@ namespace PresenceConnectionManager.Handler
 
         protected virtual void Response(GPCMSession session)
         {
-            if (_sendingBuffer != null)
+            if (_sendingBuffer == null)
             {
-                session.SendAsync(_sendingBuffer);
+                return;
             }
-            else
-            {
-                session.Disconnect();
-            }
+            session.SendAsync(_sendingBuffer);
         }
     }
 }
