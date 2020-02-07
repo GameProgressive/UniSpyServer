@@ -13,6 +13,11 @@ namespace GameSpyLib.Database.DatabaseSetting
         public string DefaultConfiguration => "MySql.Data.MySqlClient";
         public string DefaultDataProvider => "MySql.Data.MySqlClient";
 
+        public string ConnString { get; protected set; }
+        public void SetConnectionString(string str)
+        {
+            ConnString = str;
+        }
         public IEnumerable<IConnectionStringSettings> ConnectionStrings
         {
             get
