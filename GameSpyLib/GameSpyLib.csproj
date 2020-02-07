@@ -6,12 +6,38 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="linq2db.t4models" Version="2.9.6" />
     <PackageReference Include="MySqlConnector" Version="0.61.0" />
     <PackageReference Include="NetCoreServer" Version="3.0.4" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
   </ItemGroup>
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Database\DatabaseModel\MySqlModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MySqlModel.generated.cs</LastGenOutput>
+    </None>
+    <None Update="Database\DatabaseModel\SQLiteModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>SQLiteModel.generated.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Database\DatabaseModel\MySqlModel.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>MySqlModel.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Database\DatabaseModel\SQLiteModel.generated.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SQLiteModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

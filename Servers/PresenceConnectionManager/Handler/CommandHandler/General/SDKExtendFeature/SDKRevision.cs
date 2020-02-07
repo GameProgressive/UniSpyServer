@@ -12,6 +12,9 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
         /// </summary>
         public const int GPINewAuthNotification = 1;
         
+        /// <summary>
+        /// Remove friend from remote
+        /// </summary>
         public const int GPINewRevokeNotification = 2;
         /// <summary>
         /// New Status Info support
