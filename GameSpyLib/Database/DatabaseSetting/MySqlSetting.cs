@@ -6,18 +6,20 @@ using System.Text;
 
 namespace GameSpyLib.Database.DatabaseSetting
 {
-    class MySqlSetting: ILinqToDBSettings
+    public class MySqlSetting: ILinqToDBSettings
     {
+        public MySqlSetting(string connString)
+        {
+            ConnString = connString;
+        }
+
         public IEnumerable<IDataProviderSettings> DataProviders => Enumerable.Empty<IDataProviderSettings>();
 
         public string DefaultConfiguration => "MySql.Data.MySqlClient";
         public string DefaultDataProvider => "MySql.Data.MySqlClient";
 
         public string ConnString { get; protected set; }
-        public void SetConnectionString(string str)
-        {
-            ConnString = str;
-        }
+
         public IEnumerable<IConnectionStringSettings> ConnectionStrings
         {
             get
@@ -27,7 +29,7 @@ namespace GameSpyLib.Database.DatabaseSetting
                     {
                         Name = "RetroSpy",
                         ProviderName = "MySql.Data.MySqlClient",
-                        ConnectionString = @"Server=localhost;Port=3306;Database=retrospy;Uid=root;Pwd=0000"
+                        ConnectionString = ConnString
                     };
             }
         }

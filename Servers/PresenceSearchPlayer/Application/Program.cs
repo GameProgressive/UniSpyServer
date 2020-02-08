@@ -83,19 +83,6 @@ namespace PresenceSearchPlayer
                 _manager = new ServerManager(ServerName);
                 Console.Title = "RetroSpy Server " + _manager.Version;
                 IsRunning = true;
-                using (var db = new GameSpyLib.Database.DatabaseModel.MySql.RetrospyDB())
-                {
-                    var q =
-                        from c in db.Profiles
-                        select c;
-                    if (q.Count() == 0)
-                    {
-                        Console.WriteLine("not found!");
-                    }
-
-                    foreach (var c in q)
-                        Console.WriteLine(c.Nick);
-                }
             }
             catch (Exception e)
             {

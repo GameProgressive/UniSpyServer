@@ -6,6 +6,12 @@ namespace GameSpyLib.Database.DatabaseSetting
 {
     public class SQLiteSetting: ILinqToDBSettings
     {
+        public string ConnString;
+        public SQLiteSetting(string connString)
+        {
+            ConnString = connString;
+        }
+
         public IEnumerable<IDataProviderSettings> DataProviders => Enumerable.Empty<IDataProviderSettings>();
 
         public string DefaultConfiguration => "SQLite";
