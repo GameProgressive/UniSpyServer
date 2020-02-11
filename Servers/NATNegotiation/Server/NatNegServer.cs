@@ -19,7 +19,7 @@ namespace NATNegotiation
         /// ,maybe NatNeg server dose not need connected to database.</param>
         /// <param name="bindTo"></param>
         /// <param name="MaxConnections"></param>
-        public NatNegServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
+        public NatNegServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
 
         }

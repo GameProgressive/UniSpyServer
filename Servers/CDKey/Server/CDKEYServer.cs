@@ -10,10 +10,10 @@ namespace CDKey
 {
     public class CDKeyServer : TemplateUdpServer
     {
-        public static DatabaseDriver DB;
-        public CDKeyServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
+        public static DatabaseEngine DB;
+        public CDKeyServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
-            DB = databaseDriver;
+            DB = engine;
         }
         /// <summary>
         ///  Called when a connection comes in on the CDKey server

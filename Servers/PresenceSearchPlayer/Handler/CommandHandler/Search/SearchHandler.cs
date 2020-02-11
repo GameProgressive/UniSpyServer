@@ -37,10 +37,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-            if (!_recv.ContainsKey("skip") && int.TryParse(_recv["skip"], out _skip))
+            if (_recv.ContainsKey("skip"))
             {
-                _errorCode = GPErrorCode.Parse;
-                return;
+                if (!int.TryParse(_recv["skip"], out _skip))
+                {
+                    _errorCode = GPErrorCode.Parse;
+                    return;
+                }
+
             }
 
         }

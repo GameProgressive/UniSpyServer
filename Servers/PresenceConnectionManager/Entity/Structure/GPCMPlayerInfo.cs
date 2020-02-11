@@ -62,6 +62,7 @@ namespace PresenceConnectionManager.Structure
 
         public uint SDKRevision;
 
+        public uint productID;
 /////////////////////////User status//////////////////////////
         public string StatusString;
 

@@ -55,7 +55,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 
                 if (result.Count() == 1)
                 {
-                    _sendingBuffer = @"\cur\0\pid\" + result + @"\final\";
+                    _sendingBuffer = @"\cur\0\pid\" + result.First() + @"\final\";
                 }
                 else
                 {

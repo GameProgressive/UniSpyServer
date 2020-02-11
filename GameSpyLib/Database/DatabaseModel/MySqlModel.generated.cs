@@ -63,15 +63,14 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 	{
 		[Column("id"),          PrimaryKey,  Identity] public uint   Id          { get; set; } // int(11) unsigned
 		[Column("profileid"),   NotNull              ] public uint   Profileid   { get; set; } // int(11) unsigned
-		[Column("uniquenick"),  NotNull              ] public string Uniquenick  { get; set; } // varchar(50)
+		[Column("uniquenick"),     Nullable          ] public string Uniquenick  { get; set; } // varchar(50)
 		[Column("namespaceid"), NotNull              ] public uint   Namespaceid { get; set; } // int(11) unsigned
 		[Column("partnerid"),   NotNull              ] public uint   Partnerid   { get; set; } // int(11) unsigned
 		[Column("productid"),      Nullable          ] public uint?  Productid   { get; set; } // int(11) unsigned
 		[Column("gamename"),       Nullable          ] public string Gamename    { get; set; } // text
 		[Column("cdkeyenc"),       Nullable          ] public string Cdkeyenc    { get; set; } // varchar(50)
-		[Column("sesskey"),        Nullable          ] public uint?  Sesskey     { get; set; } // int(11) unsigned
-		[Column("firewall"),    NotNull              ] public bool   Firewall    { get; set; } // tinyint(1)
-		[Column("port"),        NotNull              ] public uint   Port        { get; set; } // int(10) unsigned
+		[Column("firewall"),       Nullable          ] public bool?  Firewall    { get; set; } // tinyint(1)
+		[Column("port"),           Nullable          ] public uint?  Port        { get; set; } // int(10) unsigned
 		[Column("authtoken"),      Nullable          ] public string Authtoken   { get; set; } // varchar(255)
 
 		#region Associations
