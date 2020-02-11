@@ -32,7 +32,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
 
         protected override void DataBaseOperation(GPSPSession session)
         {
-            //_result = OthersQuery.GetOtherBuddy(Convert.ToUInt16(_recv["profileid"]), Convert.ToUInt16(_recv["namespaceid"]));
             using (var db = new RetrospyDB())
             {
                 var info = from b in db.Friends

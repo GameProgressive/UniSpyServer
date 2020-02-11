@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
@@ -9,8 +11,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
         public  UniqueSearchHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
-        bool IsUniquenickExist;
-        uint namespaceid;       
+        bool IsUniquenickExist; 
         
         protected override void CheckRequest(GPSPSession session)
         {
@@ -19,21 +20,22 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             {
                 _errorCode = GPErrorCode.Parse;
             }
-                
-
-            if (_recv.ContainsKey("namespaceid"))
-            {
-               if( !uint.TryParse(_recv["namespaceid"], out namespaceid))
-                {
-                    _errorCode = GPErrorCode.Parse;
-                }
-            }
         }
 
         protected override void DataBaseOperation(GPSPSession session)
         {
-            IsUniquenickExist = UniqueSearchQuery.IsUniqueNickExist(_recv["preferrednick"], namespaceid);
-
+            using (var db = new RetrospyDB())
+            {
+                var result = from p in db.Profiles
+                                    join n in db.Namespaces on p.Profileid equals n.Profileid
+                                    where n.Uniquenick == _recv["preferrednick"] && n.Namespaceid == _namespaceid && n.Gamename == _recv["gamename"]
+                                    select p.Profileid;
+                if (result.Count() == 0)
+                {
+                    IsUniquenickExist = false;
+                }
+            }
+           
         }
         protected override void ConstructResponse(GPSPSession session)
         {
@@ -43,7 +45,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             }
             else
             {
-                _sendingBuffer = @"\us\1\nick\" + _recv["preferrednick"] + @"\usdone\final\";
+                _sendingBuffer = @"\us\1\nick\choose another name\usdone\final\";
             }
             
         }

@@ -17,26 +17,8 @@
 
   <ItemGroup>
     <Compile Remove="Handler\CommandHandler\NewUser\**" />
-    <Compile Remove="Handler\CommandHandler\OthersList\**" />
-    <Compile Remove="Handler\CommandHandler\Pmatch\**" />
-    <Compile Remove="Handler\CommandHandler\SearchUnique\**" />
-    <Compile Remove="Handler\CommandHandler\Search\**" />
-    <Compile Remove="Handler\CommandHandler\UniqueSearch\**" />
-    <Compile Remove="Handler\CommandHandler\Valid\**" />
     <EmbeddedResource Remove="Handler\CommandHandler\NewUser\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\OthersList\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\Pmatch\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\SearchUnique\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\Search\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\UniqueSearch\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\Valid\**" />
     <None Remove="Handler\CommandHandler\NewUser\**" />
-    <None Remove="Handler\CommandHandler\OthersList\**" />
-    <None Remove="Handler\CommandHandler\Pmatch\**" />
-    <None Remove="Handler\CommandHandler\SearchUnique\**" />
-    <None Remove="Handler\CommandHandler\Search\**" />
-    <None Remove="Handler\CommandHandler\UniqueSearch\**" />
-    <None Remove="Handler\CommandHandler\Valid\**" />
   </ItemGroup>
 
   <ItemGroup>

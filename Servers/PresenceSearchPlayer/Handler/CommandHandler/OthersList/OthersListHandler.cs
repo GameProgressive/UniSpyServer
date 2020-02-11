@@ -3,6 +3,7 @@ using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
@@ -27,18 +28,26 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
         protected override void DataBaseOperation(GPSPSession session)
         {
             uint[] opids = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
-            _result = OthersListQuery.GetOtherBuddyList(opids, Convert.ToUInt16(_recv["namespaceid"]));
-        }
-
-        protected override void ConstructResponse(GPSPSession session)
-        {
-            _sendingBuffer = @"\otherslist\";
-            foreach (Dictionary<string, object> player in _result)
+            try
             {
-                _sendingBuffer += @"\o\" + player["profileid"];
-                _sendingBuffer += @"\uniquenick\" + player["uniquenick"];
+                using (var db = new RetrospyDB())
+                {
+                    _sendingBuffer = @"\otherslist\";
+                    foreach (var pid in opids)
+                    {
+                        var info = from n in db.Namespaces
+                                   where n.Profileid == pid && n.Namespaceid == _namespaceid
+                                   select new { uniquenick = n.Uniquenick };
+                        _sendingBuffer += @"\o\" + pid;
+                        _sendingBuffer += @"\uniquenick\" + info.First().uniquenick;
+                    }
+                    _sendingBuffer += @"oldone\final\";
+                }
             }
-            _sendingBuffer += @"oldone\final\";
+            catch
+            {
+                _errorCode = GPErrorCode.DatabaseError;
+            }
         }
     }
 }
