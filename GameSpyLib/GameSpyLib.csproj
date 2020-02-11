@@ -19,10 +19,6 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MySqlModel.generated.cs</LastGenOutput>
     </None>
-    <None Update="Database\DatabaseModel\SQLiteModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>SQLiteModel.generated.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
@@ -32,11 +28,6 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>MySqlModel.tt</DependentUpon>
-    </Compile>
-    <Compile Update="Database\DatabaseModel\SQLiteModel.generated.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>SQLiteModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
 

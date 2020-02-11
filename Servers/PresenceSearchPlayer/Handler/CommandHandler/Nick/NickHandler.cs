@@ -1,8 +1,7 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /////////////////////////Finished/////////////////////////////////
 namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
@@ -19,6 +18,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
 
         protected override void CheckRequest(GPSPSession session)
         {
+            base.CheckRequest(session);
             if (!_recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;
@@ -33,38 +33,49 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                     // No password is specified, we cannot continue                   
                     _errorCode = GPErrorCode.Parse;
                 }
-                if (!_recv.ContainsKey("namespaceid"))
-                {
-                    _recv.Add("namespaceid", "0");
-                }
             }
-            base.CheckRequest(session);
         }
 
         protected override void DataBaseOperation(GPSPSession session)
         {
-            _result = NickQuery.RetriveNicknames(_recv["email"], _recv["passenc"], Convert.ToUInt16(_recv["namespaceid"]));
+            try
+            {
+                using (var db = new RetrospyDB())
+                {
+                    var players = from u in db.Users
+                                  join p in db.Profiles on u.Userid equals p.Userid
+                                  join n in db.Namespaces on p.Profileid equals n.Profileid
+                                  where u.Email == _recv["email"] && u.Password == _recv["passenc"] && n.Namespaceid == _namespaceid
+                                  select new { nick = p.Nick, uniquenick = n.Uniquenick };
+                    if (players.Count() == 0)
+                    {
+                        _errorCode = GPErrorCode.CheckBadPassword;
+                    }
+                    _sendingBuffer=@"\nr\";
+                    foreach (var info in players)
+                    {
+                        _sendingBuffer += @"\nick\";
+                        _sendingBuffer += info.nick;
+                        _sendingBuffer += @"\uniquenick\";
+                        _sendingBuffer += info.uniquenick;
+                    }
+                    _sendingBuffer += @"\ndone\final\";
+                }
+            }
+            catch
+            {
+                _errorCode = GPErrorCode.DatabaseError;
+            }
+
+
         }
 
         protected override void ConstructResponse(GPSPSession session)
         {
-            if (_result == null)
+            if (_errorCode != GPErrorCode.NoError)
             {
                 _sendingBuffer = @"\nr\\ndone\final\";
             }
-            else
-            {
-                _sendingBuffer = @"\nr\";
-                foreach (Dictionary<string, object> player in _result)
-                {
-                    _sendingBuffer += @"\nick\";
-                    _sendingBuffer += player["nick"];
-                    _sendingBuffer += @"\uniquenick\";
-                    _sendingBuffer += player["uniquenick"];
-                }
-                _sendingBuffer += @"\ndone\final\";
-            }
-           
         }
     }
 }

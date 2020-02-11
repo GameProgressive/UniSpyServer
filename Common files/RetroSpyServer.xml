@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RetroSpy>
-  <Database Type="Mysql">  
+  <Database Type="MySql">  <!--MySql or SQLite-->
     <Port>3306</Port>
     <Hostname>127.0.0.1</Hostname>
     <Username>retrospy</Username>

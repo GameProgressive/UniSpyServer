@@ -1,4 +1,4 @@
 ﻿namespace GameSpyLib.Database.Entity
 {
-    public enum DatabaseEngine { Sqlite, Mysql, }
+    public enum DatabaseEngine { SQLite, MySql, }
 }

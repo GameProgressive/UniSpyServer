@@ -3,10 +3,12 @@ using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
+using System.Linq;
+using GameSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {
-    public class CheckHandler:GPSPHandlerBase
+    public class CheckHandler : GPSPHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
@@ -26,41 +28,46 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
             }
         }
 
+
+
         protected override void DataBaseOperation(GPSPSession session)
         {
-            if (!CheckQuery.FindEmail(_recv["email"]))
+            using (var db = new RetrospyDB())
             {
-                _errorCode = GPErrorCode.CheckBadMail;
-                return;
-            }
-            if (!CheckQuery.CheckPassword(_recv["email"], _recv["passenc"]))
-            {
-                _errorCode = GPErrorCode.CheckBadPassword;
-                return;
-            }
+                if (db.Users.Where(e => e.Email == _recv["email"]).Count() < 1)
+                {
+                    _errorCode = GPErrorCode.CheckBadMail;
+                    return;
+                }
 
-            if (!CheckQuery.FindNick(_recv["nick"]))
-            {
-                _errorCode = GPErrorCode.CheckBadNick;
-                return;
-            }
+                if (db.Users.Where(u => u.Email == _recv["email"] && u.Password == _recv["passenc"]).Count() < 1)
+                {
+                    _errorCode = GPErrorCode.CheckBadPassword;
+                    return;
+                }
 
-            _result = CheckQuery.GetProfileidFromNickEmailPassword(_recv["email"], _recv["passenc"], _recv["nick"]);
-            if (_result== null)
-            {
-                _errorCode = GPErrorCode.CheckBadNick;
+                var result = from p in db.Profiles
+                             join u in db.Users on p.Userid equals u.Userid
+                             where u.Email.Equals(_recv["email"])
+                             && u.Password.Equals(_recv["passenc"])
+                             && p.Nick.Equals(_recv["nick"])
+                             select p.Profileid;
+
+                if (result.Count() == 1)
+                {
+                    _sendingBuffer = @"\cur\0\pid\" + result + @"\final\";
+                }
+                else
+                {
+                    _errorCode = GPErrorCode.CheckBadNick;
+                }
             }
         }
-
         protected override void ConstructResponse(GPSPSession session)
         {
             if (_errorCode != GPErrorCode.NoError)
             {
                 _sendingBuffer = @"\cur\" + (uint)_errorCode + @"\final\";
-            }
-            else
-            {
-                _sendingBuffer = @"\cur\0\pid\" + _result[0]["profileid"] + @"\final\";
             }
         }
     }

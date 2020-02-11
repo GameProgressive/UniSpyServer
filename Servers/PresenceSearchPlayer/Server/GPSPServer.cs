@@ -1,9 +1,7 @@
-﻿using GameSpyLib.Database.DatabaseConnectionKeeper;
-using GameSpyLib.Database.Entity;
+﻿using GameSpyLib.Database.Entity;
 using GameSpyLib.Network;
 using NetCoreServer;
 using System.Net;
-using System.Timers;
 
 namespace PresenceSearchPlayer
 {
@@ -12,15 +10,11 @@ namespace PresenceSearchPlayer
         /// <summary>
         /// Database connection
         /// </summary>
-        public static DatabaseDriver DB;
-        private static DBKeeper _dbKeeper;
-       
+        public static DatabaseEngine DBType { get; protected set; }
         private bool _disposed;
-        public GPSPServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
+        public GPSPServer(string serverName, DatabaseEngine databaseType, IPAddress address, int port) : base(serverName, address, port)
         {
-            DB = databaseDriver;
-            _dbKeeper = new DBKeeper(databaseDriver);
-            _dbKeeper.Run();
+            DBType = databaseType;
         }
         protected override TcpSession CreateSession() { return new GPSPSession(this); }
 
@@ -33,11 +27,9 @@ namespace PresenceSearchPlayer
             {
 
             }
-            DB?.Dispose();
-            DB = null;
             base.Dispose(disposingManagedResources);
         }
 
-       
+
     }
 }

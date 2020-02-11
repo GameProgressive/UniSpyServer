@@ -34,6 +34,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		public ITable<Game>       Games       { get { return this.GetTable<Game>(); } }
 		public ITable<Grouplist>  Grouplists  { get { return this.GetTable<Grouplist>(); } }
 		public ITable<Message>    Messages    { get { return this.GetTable<Message>(); } }
+		public ITable<Partner>    Partners    { get { return this.GetTable<Partner>(); } }
 		/// <summary>
 		/// statusstring
 		/// </summary>
@@ -280,6 +281,14 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		#endregion
 	}
 
+	[Table("partner")]
+	public partial class Partner
+	{
+		[Column("id"),        PrimaryKey, Identity] public uint   Id        { get; set; } // int(10) unsigned
+		[Column("partnerid"), NotNull             ] public uint   Partnerid { get; set; } // int(10) unsigned
+		[Column("name"),      NotNull             ] public string Name      { get; set; } // varchar(50)
+	}
+
 	/// <summary>
 	/// statusstring
 	/// </summary>
@@ -288,11 +297,11 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 	{
 		[Column("profileid"),        PrimaryKey,  Identity] public uint   Profileid        { get; set; } // int(11) unsigned
 		[Column("userid"),           NotNull              ] public uint   Userid           { get; set; } // int(11) unsigned
-		[Column("nick"),             NotNull              ] public string Nick             { get; set; } // varchar(30)
+		[Column("nick"),             NotNull              ] public string Nick             { get; set; } // varchar(50)
 		[Column("status"),              Nullable          ] public sbyte? Status           { get; set; } // tinyint(3) unsigned
 		[Column("statstring"),       NotNull              ] public string Statstring       { get; set; } // varchar(50)
-		[Column("firstname"),        NotNull              ] public string Firstname        { get; set; } // varchar(30)
-		[Column("lastname"),         NotNull              ] public string Lastname         { get; set; } // varchar(30)
+		[Column("firstname"),        NotNull              ] public string Firstname        { get; set; } // varchar(50)
+		[Column("lastname"),         NotNull              ] public string Lastname         { get; set; } // varchar(50)
 		[Column("publicmask"),       NotNull              ] public int    Publicmask       { get; set; } // int(11)
 		[Column("latitude"),         NotNull              ] public float  Latitude         { get; set; } // float(10,0)
 		[Column("longitude"),        NotNull              ] public float  Longitude        { get; set; } // float(10,0)
@@ -389,12 +398,11 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		[Column("email"),         NotNull              ] public string    Email         { get; set; } // varchar(50)
 		[Column("password"),      NotNull              ] public string    Password      { get; set; } // varchar(32)
 		[Column("emailverified"), NotNull              ] public sbyte     Emailverified { get; set; } // tinyint(1) unsigned
-		[Column("createddate"),   NotNull              ] public DateTime  Createddate   { get; set; } // timestamp
-		[Column("useddate"),      NotNull              ] public DateTime  Useddate      { get; set; } // timestamp
 		[Column("deleted"),       NotNull              ] public bool      Deleted       { get; set; } // tinyint(1)
 		[Column("banned"),        NotNull              ] public bool      Banned        { get; set; } // tinyint(1)
 		[Column("lastip"),           Nullable          ] public string    Lastip        { get; set; } // varchar(16)
 		[Column("lastonline"),       Nullable          ] public DateTime? Lastonline    { get; set; } // timestamp
+		[Column("createddate"),   NotNull              ] public DateTime  Createddate   { get; set; } // timestamp
 
 		#region Associations
 
@@ -434,6 +442,12 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		}
 
 		public static Message Find(this ITable<Message> table, uint Id)
+		{
+			return table.FirstOrDefault(t =>
+				t.Id == Id);
+		}
+
+		public static Partner Find(this ITable<Partner> table, uint Id)
 		{
 			return table.FirstOrDefault(t =>
 				t.Id == Id);

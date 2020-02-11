@@ -16,7 +16,7 @@ namespace GameSpyLib.Common
         public string LogPath { get; protected set; }
         public string ServerName { get; protected set; }
 
-        protected DatabaseDriver databaseDriver = null;
+        protected DatabaseEngine DBEngine;
 
         protected bool Disposed = false;
 
@@ -85,29 +85,21 @@ namespace GameSpyLib.Common
         private void LoadDatabaseConfig()
         {
             DatabaseConfiguration dbConfiguration = ConfigManager.xmlConfiguration.Database;
-
+            DBEngine = dbConfiguration.Type;
             // Determine which database is using and create the database connection
+
             switch (dbConfiguration.Type)
             {
-                case DatabaseEngine.Mysql:
-                    string tempConn =string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port, dbConfiguration.SslMode, dbConfiguration.SslCert, dbConfiguration.SslKey, dbConfiguration.SslCa);
-                    DataConnection.DefaultSettings = new MySqlSetting(tempConn);                    
-                    databaseDriver = new MySqlDatabaseDriver(string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port, dbConfiguration.SslMode, dbConfiguration.SslCert, dbConfiguration.SslKey, dbConfiguration.SslCa));// if using mysql we set this to null to make sure this value is null
+                case DatabaseEngine.MySql:
+                    string MySqlConnStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port, dbConfiguration.SslMode, dbConfiguration.SslCert, dbConfiguration.SslKey, dbConfiguration.SslCa);
+                    DataConnection.DefaultSettings = new MySqlSetting(MySqlConnStr);
                     break;
-                case DatabaseEngine.Sqlite:
-                    databaseDriver = new SqliteDatabaseDriver("Data Source=" + dbConfiguration.Databasename + ";Version=3;New=False");
+                case DatabaseEngine.SQLite:
+                    string SQLiteConnStr = "Data Source=" + dbConfiguration.Databasename + ";Version=3;New=False";
+                    DataConnection.DefaultSettings = new SQLiteSetting(SQLiteConnStr);
                     break;
                 default:
                     throw new Exception("Unknown database engine!");
-            }
-            try
-            {
-                databaseDriver?.Connect();
-            }
-            catch (Exception ex)
-            {
-                LogWriter.Log.Write(ex.Message, LogLevel.Fatal);
-                throw ex;
             }
             LogWriter.Log.Write(LogLevel.Info, "Successfully connected to the {0}!", dbConfiguration.Type);
         }
@@ -131,13 +123,10 @@ namespace GameSpyLib.Common
                 // TODO: 释放托管状态(托管对象)。                
                 StopServer();
             }
-            databaseDriver?.Dispose();
 
             // TODO: 释放未托管的资源(未托管的对象)并在以下内容中替代终结器。
             // TODO: 将大型字段设置为 null。
-
             Disposed = true;
-
         }
 
         //TODO: 仅当以上 Dispose(bool disposing) 拥有用于释放未托管资源的代码时才替代终结器。
@@ -146,8 +135,5 @@ namespace GameSpyLib.Common
             // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
             Dispose(false);
         }
-
-
-
     }
 }

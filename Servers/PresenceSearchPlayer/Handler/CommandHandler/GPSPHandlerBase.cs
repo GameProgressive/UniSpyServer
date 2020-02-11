@@ -14,10 +14,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         /// Be careful the return of query function should be List type,
         /// the decision formula should use _result.Count==0
         /// </summary>
-        protected List<Dictionary<string, object>> _result;
         protected string _sendingBuffer;
         protected ushort _operationID;
-        protected ushort _namespaceid;
+        protected uint _namespaceid = 0;
 
         protected GPSPHandlerBase(Dictionary<string, string> recv)
         {
@@ -42,7 +41,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
             ConstructResponse(session);
             if (_errorCode == GPErrorCode.ConstructResponseError)
             {
-                ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
+                ErrorMsg.SendGPSPError(session, GPErrorCode.General, _operationID);
                 return;
             }
 
@@ -56,13 +55,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                 if (!ushort.TryParse(_recv["id"], out _operationID))
                 {
                     //default operationID
-                    _operationID = 1;
                     session.OperationID = 1;
                 }
             }
-            if(_recv.ContainsKey("namespaceid"))
+            if (_recv.ContainsKey("namespaceid"))
             {
-                if(!ushort.TryParse(_recv["namespaceid"], out _namespaceid))
+                if (!uint.TryParse(_recv["namespaceid"], out _namespaceid))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
