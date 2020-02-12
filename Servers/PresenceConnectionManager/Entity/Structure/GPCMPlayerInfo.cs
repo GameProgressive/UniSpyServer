@@ -12,6 +12,10 @@ namespace PresenceConnectionManager.Structure
         public uint Profileid;
 
         /// <summary>
+        /// User ID in database
+        /// </summary>
+        public uint Userid;
+        /// <summary>
         /// The connected clients Nick
         /// </summary>
         public string Nick;
@@ -58,12 +62,12 @@ namespace PresenceConnectionManager.Structure
 
         public uint PartnerID;
 
-        public uint NamespaceID;
+        public uint NamespaceID = 0;
 
         public uint SDKRevision;
 
         public uint productID;
-/////////////////////////User status//////////////////////////
+        /////////////////////////User status//////////////////////////
         public string StatusString;
 
         public GPStatus StatusCode;
@@ -88,7 +92,12 @@ namespace PresenceConnectionManager.Structure
 
         public DisconnectReason DisconReason;
 
+        public string GameName;
+
         public List<Dictionary<string, object>> FriendList = new List<Dictionary<string, object>>();
 
+        public bool IsEmailVerified;
+
+        public bool IsBlocked;
     }
 }

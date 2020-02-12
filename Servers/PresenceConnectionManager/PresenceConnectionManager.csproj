@@ -18,6 +18,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Handler\CommandHandler\Buddy\**" />
+    <Compile Remove="Handler\CommandHandler\General\BasicStatusInfo\**" />
+    <Compile Remove="Handler\CommandHandler\General\KeepAlive\**" />
+    <Compile Remove="Handler\CommandHandler\General\RegisterCDKey\**" />
+    <Compile Remove="Handler\CommandHandler\General\SDKExtendFeature\**" />
+    <Compile Remove="Handler\CommandHandler\Profile\**" />
+    <EmbeddedResource Remove="Handler\CommandHandler\Buddy\**" />
+    <EmbeddedResource Remove="Handler\CommandHandler\General\BasicStatusInfo\**" />
+    <EmbeddedResource Remove="Handler\CommandHandler\General\KeepAlive\**" />
+    <EmbeddedResource Remove="Handler\CommandHandler\General\RegisterCDKey\**" />
+    <EmbeddedResource Remove="Handler\CommandHandler\General\SDKExtendFeature\**" />
+    <EmbeddedResource Remove="Handler\CommandHandler\Profile\**" />
+    <None Remove="Handler\CommandHandler\Buddy\**" />
+    <None Remove="Handler\CommandHandler\General\BasicStatusInfo\**" />
+    <None Remove="Handler\CommandHandler\General\KeepAlive\**" />
+    <None Remove="Handler\CommandHandler\General\RegisterCDKey\**" />
+    <None Remove="Handler\CommandHandler\General\SDKExtendFeature\**" />
+    <None Remove="Handler\CommandHandler\Profile\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
     <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
   </ItemGroup>

@@ -4750,7 +4750,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `userid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `emailverified` tinyint(1) unsigned NOT NULL DEFAULT 1,
+  `emailverified` tinyint(1) NOT NULL DEFAULT 1,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   `banned` tinyint(1) NOT NULL DEFAULT 0,
   `lastip` varchar(16) DEFAULT NULL,

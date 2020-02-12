@@ -63,7 +63,7 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
         /// <summary>
         /// Tell server send back extra information according to the number of  sdkrevision
         /// </summary>
-        public static void Switch(GPCMSession session, Dictionary<string, string> recv)
+        public static void Switch(GPCMSession session)
         {
             switch (Convert.ToInt32(session.PlayerInfo.SDKRevision))
             {

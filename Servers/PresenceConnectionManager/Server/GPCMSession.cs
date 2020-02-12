@@ -38,12 +38,11 @@ namespace PresenceConnectionManager
         /// </summary>
         protected static Crc16 Crc = new Crc16(Crc16Mode.Standard);
 
+        public GPCMPlayerInfo PlayerInfo = new GPCMPlayerInfo();
 
-        public GPCMPlayerInfo PlayerInfo { get; protected set; }
         public GPCMSession(TemplateTcpServer server) : base(server)
         {
             DisconnectAfterSend = false;
-            PlayerInfo = new GPCMPlayerInfo();
         }
 
 

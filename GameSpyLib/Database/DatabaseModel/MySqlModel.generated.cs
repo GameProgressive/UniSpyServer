@@ -396,7 +396,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		[Column("userid"),        PrimaryKey,  Identity] public uint      Userid        { get; set; } // int(11) unsigned
 		[Column("email"),         NotNull              ] public string    Email         { get; set; } // varchar(50)
 		[Column("password"),      NotNull              ] public string    Password      { get; set; } // varchar(32)
-		[Column("emailverified"), NotNull              ] public sbyte     Emailverified { get; set; } // tinyint(1) unsigned
+		[Column("emailverified"), NotNull              ] public bool     Emailverified { get; set; } // tinyint(1) unsigned
 		[Column("deleted"),       NotNull              ] public bool      Deleted       { get; set; } // tinyint(1)
 		[Column("banned"),        NotNull              ] public bool      Banned        { get; set; } // tinyint(1)
 		[Column("lastip"),           Nullable          ] public string    Lastip        { get; set; } // varchar(16)
