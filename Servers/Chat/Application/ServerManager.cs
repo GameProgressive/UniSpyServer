@@ -31,7 +31,7 @@ namespace Chat.Application
 
             if (cfg.Name == ServerName)
             {
-                Server = new ChatServer(cfg.Name, databaseDriver, IPAddress.Parse(cfg.Hostname), cfg.Port);
+                Server = new ChatServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.Hostname), cfg.Port);
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }

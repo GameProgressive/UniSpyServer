@@ -1,18 +1,22 @@
-﻿using System;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
+using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Linq;
 namespace Chat.Handler.CommandHandler.CRYPT
 {
     public class CRYPTQuery
     {
         public static string GetSecretKeyFromGame(string gameName)
         {
-            var result = ChatServer.DB.Query(
-                @"SELECT secretkey FROM games WHERE gamename=@P0"
-                 , gameName
-                 );
-            return (result.Count == 0) ? null : result[0]["secretkey"].ToString();
+            using (var db = new RetrospyDB())
+            {
+                var secretkey = from g in db.Games
+                                   where g.Gamename == gameName
+                                   select g.Secretkey;
+                return secretkey.Count()==0? null: secretkey.First();               
+            
+            }
         }
     }
 }

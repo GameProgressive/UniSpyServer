@@ -6,6 +6,7 @@ using System.Collections.Concurrent;
 using System.Net;
 using System.Timers;
 using QueryReport.Handler.CommandSwitcher;
+using System.Collections.Generic;
 
 namespace QueryReport.Server
 {
@@ -15,7 +16,7 @@ namespace QueryReport.Server
         /// <summary>
         /// A List of all servers that have sent data to this master server, and are active in the last 30 seconds or so
         /// </summary>
-        public static ConcurrentDictionary<string, GameServerData> ServersList = new ConcurrentDictionary<string, GameServerData>();
+        public static List<Dictionary<string, GameServerData>> ServersList = new List<Dictionary<string, GameServerData>>();
 
         /// <summary>
         /// A timer that is used to Poll all the servers, and remove inactive servers from the server list
@@ -41,7 +42,6 @@ namespace QueryReport.Server
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
             //is busy and cant refresh the server's TTL right away
-
 
             // Setup timer. Remove servers who havent ping'd since ServerTTL
             PollTimer = new Timer(5000);

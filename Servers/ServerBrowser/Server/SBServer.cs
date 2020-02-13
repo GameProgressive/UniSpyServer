@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Database.Entity;
 using GameSpyLib.Network;
+using NetCoreServer;
 using System.Net;
 
 namespace ServerBrowser
@@ -11,11 +12,12 @@ namespace ServerBrowser
     public class SBServer : TemplateTcpServer
     {
 
-        public static DatabaseDriver DB;
-        public SBServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
+        public static DatabaseEngine DB;
+        public SBServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
-            DB = databaseDriver;
+            DB = engine;
         }
+        protected override TcpSession CreateSession() { return new SBSession(this); }
 
         private bool _disposed;
         protected override void Dispose(bool disposingManagedResources)
@@ -26,8 +28,6 @@ namespace ServerBrowser
             {
 
             }
-            DB.Close();
-            DB.Dispose();
             base.Dispose(disposingManagedResources);
         }
     }
