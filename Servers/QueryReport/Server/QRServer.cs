@@ -32,11 +32,11 @@ namespace QueryReport.Server
 
         public bool HasInstantKey = false;
 
-        public static DatabaseDriver DB;
+        public static DatabaseEngine DB;
 
-        public QRServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
+        public QRServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
-            DB = databaseDriver;
+            DB = engine;
             //The Time for servers to remain in the serverlist since the last ping in seconds.
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
@@ -64,8 +64,6 @@ namespace QueryReport.Server
             _disposed = true;
             if (disposingManageResource)
             { }
-            DB?.Close();
-            DB?.Dispose();
         }
     }
 }

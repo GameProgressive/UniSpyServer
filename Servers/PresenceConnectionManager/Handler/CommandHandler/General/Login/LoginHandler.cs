@@ -200,7 +200,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 //Grab information from database
                 var info = from u in db.Users
                            from p in db.Profiles
-                           from n in db.Namespaces
+                           from n in db.Subprofiles
                            where u.Email == session.PlayerInfo.Email && p.Nick == session.PlayerInfo.Nick && n.Namespaceid == session.PlayerInfo.NamespaceID
                            select new
                            {
@@ -237,7 +237,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         {
             using (var db = new RetrospyDB())
             {
-                var info = from n in db.Namespaces
+                var info = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
                            join u in db.Users on p.Userid equals u.Userid
                            where n.Uniquenick == session.PlayerInfo.UniqueNick
@@ -280,7 +280,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             {
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
-                           join n in db.Namespaces on p.Profileid equals n.Profileid
+                           join n in db.Subprofiles on p.Profileid equals n.Profileid
                            where n.Authtoken == session.PlayerInfo.AuthToken && n.Partnerid == session.PlayerInfo.PartnerID
                            && n.Namespaceid == session.PlayerInfo.NamespaceID
                            select new

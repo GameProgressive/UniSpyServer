@@ -58,7 +58,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Namespaces on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
                                  where n.Uniquenick == _recv["uniquenick"]
                                  && n.Namespaceid == _namespaceid
@@ -92,7 +92,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Namespaces on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
                                  where p.Nick == _recv["nick"] && u.Email == _recv["email"]
                                  && n.Namespaceid == _namespaceid
@@ -122,7 +122,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 else if (_recv.ContainsKey("nick"))
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Namespaces on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
                                  where p.Nick == _recv["nick"]
                                  && n.Namespaceid == _namespaceid
@@ -153,7 +153,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 else if (_recv.ContainsKey("email"))
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Namespaces on p.Profileid equals n.Profileid
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
                                  where u.Email == _recv["email"]
                                  && n.Namespaceid == _namespaceid

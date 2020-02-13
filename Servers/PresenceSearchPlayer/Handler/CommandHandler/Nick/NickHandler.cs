@@ -44,7 +44,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                 {
                     var players = from u in db.Users
                                   join p in db.Profiles on u.Userid equals p.Userid
-                                  join n in db.Namespaces on p.Profileid equals n.Profileid
+                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                   where u.Email == _recv["email"] && u.Password == _recv["passenc"] && n.Namespaceid == _namespaceid
                                   select new { nick = p.Nick, uniquenick = n.Uniquenick };
                     if (players.Count() == 0)

@@ -8,7 +8,8 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
     {
         public static Dictionary<string,object> SearchPlayerInfo()
         {
-            return GStatsServer.DB.Query("SELECT * FROM profiles")[0];
+            //return GStatsServer.DB.Query("SELECT * FROM profiles")[0];
+            return null;
         }
     }
 }

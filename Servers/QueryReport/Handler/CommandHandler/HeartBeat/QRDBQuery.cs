@@ -17,7 +17,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             {
                 // Update
                 string query = "UPDATE server SET online=0, lastseen=@P0 WHERE id=@P1";
-                QRServer.DB.Execute(query, new DateTimeOffset(server.LastRefreshed).ToUnixTimeSeconds(), server.DatabaseId);
+            //    QRServer.DB.Execute(query, new DateTimeOffset(server.LastRefreshed).ToUnixTimeSeconds(), server.DatabaseId);
             }
         }
 

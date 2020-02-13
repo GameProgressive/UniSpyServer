@@ -11,7 +11,8 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
             //MD5Digest((unsigned char *)resp, (unsigned int)len, md5val);
             //DOXCODE(respformat, sizeof(respformat) - 1, enc3);
             //len = sprintf(resp, respformat, gcd_gamename, md5val, gameport);
-            string sendingBuffer = string.Format(@"\sesskey\{0}", dict["response"]);
+            session.ConnID = 123456;
+            string sendingBuffer = string.Format(@"\sesskey\{0}", session.ConnID);
 
             session.SendAsync(sendingBuffer);
         }

@@ -66,7 +66,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
                 var result = from u in db.Users
                              join p in db.Profiles on u.Userid equals p.Userid
-                             join n in db.Namespaces on p.Profileid equals n.Profileid
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
                              where u.Email == _recv["email"] && u.Password == _recv["passenc"] && p.Nick == _recv["nick"] && n.Uniquenick == _recv["uniquenick"] && n.Namespaceid == _namespaceid
                              select p.Profileid;
                 _IsUniqueNickExist = result.Count() == 1;
@@ -100,7 +100,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             uint userid = db.Users.Where(u => u.Email == _recv["email"] && u.Password == _recv["passenc"]).Select(u => u.Userid).First();
                             db.GetTable<Profile>().Insert(() => new Profile { Userid = userid, Nick = _recv["nick"] });
                             uint profileid = db.Profiles.Where(p => p.Userid == userid && p.Nick == _recv["nick"]).Select(p => p.Profileid).First();
-                            db.GetTable<@namespace>().Insert(() => new @namespace
+                            db.GetTable<Subprofile>().Insert(() => new Subprofile
                             {
                                 Profileid = profileid,
                                 Namespaceid = _namespaceid,
@@ -117,7 +117,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             uint userid = db.Users.Where(u => u.Email == _recv["email"] && u.Password == _recv["passenc"]).Select(u => u.Userid).First();
                             db.GetTable<Profile>().Insert(() => new Profile { Userid = userid, Nick = _recv["nick"] });
                             uint profileid = db.Profiles.Where(p => p.Userid == userid && p.Nick == _recv["nick"]).Select(p => p.Profileid).First();
-                            db.GetTable<@namespace>().Insert(() => new @namespace
+                            db.GetTable<Subprofile>().Insert(() => new Subprofile
                             {
                                 Profileid = profileid,
                                 Namespaceid = _namespaceid,
@@ -135,7 +135,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                                              where u.Email == _recv["email"] && u.Password == _recv["passenc"] && p.Nick == _recv["nick"]
                                              select p.Profileid;
                             uint profileid = resultpids.First();
-                            db.GetTable<@namespace>().Insert(() => new @namespace
+                            db.GetTable<Subprofile>().Insert(() => new Subprofile
                             {
                                 Profileid = profileid,
                                 Namespaceid = _namespaceid,
@@ -180,14 +180,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 {
                     var resultpids = from u in db.Users
                                      join p in db.Profiles on u.Userid equals p.Userid
-                                     join n in db.Namespaces on p.Profileid equals n.Profileid
+                                     join n in db.Subprofiles on p.Profileid equals n.Profileid
                                      where u.Email == _recv["email"] && u.Password == _recv["passenc"]
                                      && p.Nick == _recv["nick"] && n.Uniquenick == _recv["uniquenick"]
                                      && n.Namespaceid == _namespaceid
                                      select p.Profileid;
                     uint profileid = resultpids.First();
 
-                    var ns = from n in db.Namespaces
+                    var ns = from n in db.Subprofiles
                              where n.Profileid == profileid && n.Uniquenick == _recv["uniquenick"] && n.Namespaceid == _namespaceid
                              select n;
                     var firstns = ns.First();

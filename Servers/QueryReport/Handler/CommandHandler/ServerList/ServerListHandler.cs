@@ -37,36 +37,6 @@ namespace QueryReport.Handler.CommandHandler.ServerList
                     }
                 }
             }
-
-            // If we have no servers to update, return
-            if (ServersToRemove.Count == 0) return;
-
-            // Update servers in database
-            try
-            {
-                // Wrap this all in a database transaction, as this will speed
-                // things up alot if there are alot of rows to update
-                //using (DatabaseDriver Driver = new DatabaseDriver())
-                //using (DbTransaction Transaction = Driver.BeginTransaction())
-                using (var transaction = QRServer.DB.BeginTransaction())
-                {
-                    try
-                    {
-                        foreach (GameServerData server in ServersToRemove)
-                            ServerListQuery.UpdateServerOffline(server);
-                        transaction.Commit();
-                    }
-                    catch
-                    {
-                        transaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                LogWriter.Log.WriteException(e);
-            }
         }
     }
 }

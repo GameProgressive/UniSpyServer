@@ -23,23 +23,55 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 	/// </summary>
 	public partial class RetrospyDB : LinqToDB.Data.DataConnection
 	{
-		public ITable<@namespace> Namespaces  { get { return this.GetTable<@namespace>(); } }
-		public ITable<Addrequest> Addrequests { get { return this.GetTable<Addrequest>(); } }
-		public ITable<Blocked>    Blockeds    { get { return this.GetTable<Blocked>(); } }
+		/// <summary>
+		/// friend add request
+		/// </summary>
+		public ITable<Addrequest> Addrequests  { get { return this.GetTable<Addrequest>(); } }
+		/// <summary>
+		/// block list
+		/// </summary>
+		public ITable<Blocked>    Blockeds     { get { return this.GetTable<Blocked>(); } }
+		/// <summary>
+		/// friend list
+		/// </summary>
+		public ITable<Friend>     Friends      { get { return this.GetTable<Friend>(); } }
+		/// <summary>
+		/// game list that contains all secret keys of games
+		/// </summary>
+		public ITable<Game>       Games        { get { return this.GetTable<Game>(); } }
+		/// <summary>
+		/// old game use this to create their game room
+		/// </summary>
+		public ITable<Grouplist>  Grouplists   { get { return this.GetTable<Grouplist>(); } }
+		/// <summary>
+		/// friend (buddy) messages
+		/// </summary>
+		public ITable<Message>    Messages     { get { return this.GetTable<Message>(); } }
+		/// <summary>
+		/// partner information, these information are used for authentication and login.
+		/// </summary>
+		public ITable<Partner>    Partners     { get { return this.GetTable<Partner>(); } }
+		/// <summary>
+		/// user's profiles.
+		/// </summary>
+		public ITable<Profile>    Profiles     { get { return this.GetTable<Profile>(); } }
+		/// <summary>
+		/// persistant storage.
+		/// old game use this to store game data.
+		/// </summary>
+		public ITable<Pstorage>   Pstorages    { get { return this.GetTable<Pstorage>(); } }
 		/// <summary>
 		/// Buddy Status Info table
 		/// </summary>
-		public ITable<Buddystatu> Buddystatus { get { return this.GetTable<Buddystatu>(); } }
-		public ITable<Friend>     Friends     { get { return this.GetTable<Friend>(); } }
-		public ITable<Game>       Games       { get { return this.GetTable<Game>(); } }
-		public ITable<Grouplist>  Grouplists  { get { return this.GetTable<Grouplist>(); } }
-		public ITable<Message>    Messages    { get { return this.GetTable<Message>(); } }
-		public ITable<Partner>    Partners    { get { return this.GetTable<Partner>(); } }
+		public ITable<Statusinfo> Statusinfoes { get { return this.GetTable<Statusinfo>(); } }
 		/// <summary>
-		/// statusstring
+		/// user's subprofiles
 		/// </summary>
-		public ITable<Profile>    Profiles    { get { return this.GetTable<Profile>(); } }
-		public ITable<User>       Users       { get { return this.GetTable<User>(); } }
+		public ITable<Subprofile> Subprofiles  { get { return this.GetTable<Subprofile>(); } }
+		/// <summary>
+		/// user's account information
+		/// </summary>
+		public ITable<User>       Users        { get { return this.GetTable<User>(); } }
 
 		public RetrospyDB()
 		{
@@ -58,56 +90,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		partial void InitMappingSchema();
 	}
 
-	[Table("namespace")]
-	public partial class @namespace
-	{
-		[Column("id"),          PrimaryKey,  Identity] public uint   Id          { get; set; } // int(11) unsigned
-		[Column("profileid"),   NotNull              ] public uint   Profileid   { get; set; } // int(11) unsigned
-		[Column("uniquenick"),     Nullable          ] public string Uniquenick  { get; set; } // varchar(50)
-		[Column("namespaceid"), NotNull              ] public uint   Namespaceid { get; set; } // int(11) unsigned
-		[Column("partnerid"),   NotNull              ] public uint   Partnerid   { get; set; } // int(11) unsigned
-		[Column("productid"),      Nullable          ] public uint?  Productid   { get; set; } // int(11) unsigned
-		[Column("gamename"),       Nullable          ] public string Gamename    { get; set; } // text
-		[Column("cdkeyenc"),       Nullable          ] public string Cdkeyenc    { get; set; } // varchar(50)
-		[Column("firewall"),       Nullable          ] public bool?  Firewall    { get; set; } // tinyint(1)
-		[Column("port"),           Nullable          ] public uint?  Port        { get; set; } // int(10) unsigned
-		[Column("authtoken"),      Nullable          ] public string Authtoken   { get; set; } // varchar(255)
-
-		#region Associations
-
-		/// <summary>
-		/// FK_blocked_namespace_BackReference
-		/// </summary>
-		[Association(ThisKey="Profileid", OtherKey="Profileid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
-		public IEnumerable<Blocked> Blockeds { get; set; }
-
-		/// <summary>
-		/// FK3_blocked_profile_BackReference
-		/// </summary>
-		[Association(ThisKey="Profileid", OtherKey="Targetid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
-		public IEnumerable<Blocked> FK3blockedprofiles { get; set; }
-
-		/// <summary>
-		/// FK3_namespaceid_BackReference
-		/// </summary>
-		[Association(ThisKey="Namespaceid", OtherKey="Namespaceid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
-		public IEnumerable<Addrequest> FK3namespaceids { get; set; }
-
-		/// <summary>
-		/// FK_blocked_namespace_3_BackReference
-		/// </summary>
-		[Association(ThisKey="Namespaceid", OtherKey="Namespaceid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
-		public IEnumerable<Blocked> FkBlockedNamespace3BackReferences { get; set; }
-
-		/// <summary>
-		/// FK1_profile_profileid
-		/// </summary>
-		[Association(ThisKey="Profileid", OtherKey="Profileid", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="FK1_profile_profileid", BackReferenceName="FK1profileprofileids")]
-		public Profile Profile { get; set; }
-
-		#endregion
-	}
-
+	/// <summary>
+	/// friend add request
+	/// </summary>
 	[Table("addrequests")]
 	public partial class Addrequest
 	{
@@ -124,7 +109,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		/// FK3_namespaceid
 		/// </summary>
 		[Association(ThisKey="Namespaceid", OtherKey="Namespaceid", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="FK3_namespaceid", BackReferenceName="FK3namespaceids")]
-		public @namespace @namespace { get; set; }
+		public Subprofile @namespace { get; set; }
 
 		/// <summary>
 		/// FK_addrequests_profiles
@@ -141,6 +126,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		#endregion
 	}
 
+	/// <summary>
+	/// block list
+	/// </summary>
 	[Table("blocked")]
 	public partial class Blocked
 	{
@@ -155,47 +143,26 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		/// FK_blocked_namespace_3
 		/// </summary>
 		[Association(ThisKey="Namespaceid", OtherKey="Namespaceid", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="FK_blocked_namespace_3", BackReferenceName="FkBlockedNamespace3BackReferences")]
-		public @namespace @namespace { get; set; }
+		public Subprofile @namespace { get; set; }
 
 		/// <summary>
 		/// FK_blocked_namespace
 		/// </summary>
-		[Association(ThisKey="Profileid", OtherKey="Profileid", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="FK_blocked_namespace", BackReferenceName="Blockeds")]
-		public @namespace Profile { get; set; }
+		[Association(ThisKey="Profileid", OtherKey="Profileid", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="FK_blocked_namespace", BackReferenceName="Blockednamespaces")]
+		public Subprofile Profile { get; set; }
 
 		/// <summary>
 		/// FK3_blocked_profile
 		/// </summary>
 		[Association(ThisKey="Targetid", OtherKey="Profileid", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="FK3_blocked_profile", BackReferenceName="FK3blockedprofiles")]
-		public @namespace Target { get; set; }
+		public Subprofile Target { get; set; }
 
 		#endregion
 	}
 
 	/// <summary>
-	/// Buddy Status Info table
+	/// friend list
 	/// </summary>
-	[Table("buddystatus")]
-	public partial class Buddystatu
-	{
-		[Column("profileid"),      NotNull    ] public uint   Profileid      { get; set; } // int(10) unsigned
-		[Column("namespaceid"),    NotNull    ] public uint   Namespaceid    { get; set; } // int(10) unsigned
-		[Column("profile"),           Nullable] public uint?  Profile        { get; set; } // int(10) unsigned zerofill
-		[Column("statusstate"),       Nullable] public string Statusstate    { get; set; } // enum('OFFLINE','ONLINE','PLAYING','STAGING','CHATTING','AWAY')
-		[Column("buddyip"),           Nullable] public string Buddyip        { get; set; } // varchar(16)
-		[Column("hostip"),            Nullable] public string Hostip         { get; set; } // varchar(16)
-		[Column("hostprivateip"),     Nullable] public string Hostprivateip  { get; set; } // varchar(16)
-		[Column("queryreport"),       Nullable] public sbyte? Queryreport    { get; set; } // tinyint(4)
-		[Column("hostport"),          Nullable] public sbyte? Hostport       { get; set; } // tinyint(4)
-		[Column("sessionflags"),      Nullable] public uint?  Sessionflags   { get; set; } // int(10) unsigned
-		[Column("richstatus"),        Nullable] public string Richstatus     { get; set; } // varchar(256)
-		[Column("gametype"),          Nullable] public string Gametype       { get; set; } // varchar(33)
-		[Column("gamevariant"),       Nullable] public string Gamevariant    { get; set; } // varchar(33)
-		[Column("gamemapname"),       Nullable] public string Gamemapname    { get; set; } // varchar(33)
-		[Column("productid"),      NotNull    ] public sbyte  Productid      { get; set; } // tinyint(3) unsigned
-		[Column("quietmodefalgs"), NotNull    ] public string Quietmodefalgs { get; set; } // enum('NONE','MESSAGE','UTMS','LIST','ALL')
-	}
-
 	[Table("friends")]
 	public partial class Friend
 	{
@@ -221,6 +188,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		#endregion
 	}
 
+	/// <summary>
+	/// game list that contains all secret keys of games
+	/// </summary>
 	[Table("games")]
 	public partial class Game
 	{
@@ -238,6 +208,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		[Column("keytypelist"),         Nullable         ] public string Keytypelist      { get; set; } // text
 	}
 
+	/// <summary>
+	/// old game use this to create their game room
+	/// </summary>
 	[Table("grouplist")]
 	public partial class Grouplist
 	{
@@ -253,12 +226,16 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		[Column("updatetime"), NotNull             ] public int    Updatetime { get; set; } // int(11)
 	}
 
+	/// <summary>
+	/// friend (buddy) messages
+	/// </summary>
 	[Table("messages")]
 	public partial class Message
 	{
 		[Column("id"),          PrimaryKey,  Identity] public uint     Id            { get; set; } // int(10) unsigned
 		[Column("from"),        NotNull              ] public uint     From          { get; set; } // int(10) unsigned
 		[Column("to"),          NotNull              ] public uint     To            { get; set; } // int(10) unsigned
+		[Column("type"),           Nullable          ] public uint?    Type          { get; set; } // int(10) unsigned
 		[Column("date"),        NotNull              ] public DateTime Date          { get; set; } // timestamp
 		[Column("message"),     NotNull              ] public string   MessageColumn { get; set; } // varchar(200)
 		[Column("namespaceid"),    Nullable          ] public uint?    Namespaceid   { get; set; } // int(10) unsigned
@@ -280,6 +257,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		#endregion
 	}
 
+	/// <summary>
+	/// partner information, these information are used for authentication and login.
+	/// </summary>
 	[Table("partner")]
 	public partial class Partner
 	{
@@ -289,16 +269,18 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 	}
 
 	/// <summary>
-	/// statusstring
+	/// user's profiles.
 	/// </summary>
 	[Table("profiles")]
 	public partial class Profile
 	{
 		[Column("profileid"),        PrimaryKey,  Identity] public uint   Profileid        { get; set; } // int(11) unsigned
 		[Column("userid"),           NotNull              ] public uint   Userid           { get; set; } // int(11) unsigned
+		[Column("serverflag"),       NotNull              ] public int    Serverflag       { get; set; } // int(1)
 		[Column("nick"),             NotNull              ] public string Nick             { get; set; } // varchar(50)
 		[Column("status"),              Nullable          ] public sbyte? Status           { get; set; } // tinyint(3) unsigned
 		[Column("statstring"),       NotNull              ] public string Statstring       { get; set; } // varchar(50)
+		[Column("location"),            Nullable          ] public string Location         { get; set; } // varchar(127)
 		[Column("firstname"),        NotNull              ] public string Firstname        { get; set; } // varchar(50)
 		[Column("lastname"),         NotNull              ] public string Lastname         { get; set; } // varchar(50)
 		[Column("publicmask"),       NotNull              ] public int    Publicmask       { get; set; } // int(11)
@@ -321,7 +303,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		[Column("birthday"),            Nullable          ] public int?   Birthday         { get; set; } // int(2)
 		[Column("birthmonth"),          Nullable          ] public int?   Birthmonth       { get; set; } // int(2)
 		[Column("birthyear"),           Nullable          ] public int?   Birthyear        { get; set; } // int(4)
-		[Column("location"),            Nullable          ] public string Location         { get; set; } // varchar(127)
 		[Column("icquin"),              Nullable          ] public uint?  Icquin           { get; set; } // int(8) unsigned
 		[Column("quietflags"),       NotNull              ] public sbyte  Quietflags       { get; set; } // tinyint(4)
 		[Column("streetaddr"),          Nullable          ] public string Streetaddr       { get; set; } // text
@@ -349,7 +330,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		/// FK1_profile_profileid_BackReference
 		/// </summary>
 		[Association(ThisKey="Profileid", OtherKey="Profileid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
-		public IEnumerable<@namespace> FK1profileprofileids { get; set; }
+		public IEnumerable<Subprofile> FK1profileprofileids { get; set; }
 
 		/// <summary>
 		/// FK_addrequests_profiles_2_BackReference
@@ -390,13 +371,105 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		#endregion
 	}
 
+	/// <summary>
+	/// persistant storage.
+	/// old game use this to store game data.
+	/// </summary>
+	[Table("pstorage")]
+	public partial class Pstorage
+	{
+		[Column("profileid"), NotNull    ] public uint   Profileid { get; set; } // int(10) unsigned
+		[Column("ptype"),     NotNull    ] public uint   Ptype     { get; set; } // int(4) unsigned
+		[Column("dindex"),    NotNull    ] public uint   Dindex    { get; set; } // int(4) unsigned
+		[Column("data"),         Nullable] public string Data      { get; set; } // varchar(200)
+	}
+
+	/// <summary>
+	/// Buddy Status Info table
+	/// </summary>
+	[Table("statusinfo")]
+	public partial class Statusinfo
+	{
+		[Column("profileid"),      NotNull    ] public uint   Profileid      { get; set; } // int(10) unsigned
+		[Column("namespaceid"),    NotNull    ] public uint   Namespaceid    { get; set; } // int(10) unsigned
+		[Column("statusstate"),       Nullable] public string Statusstate    { get; set; } // enum('OFFLINE','ONLINE','PLAYING','STAGING','CHATTING','AWAY')
+		[Column("buddyip"),           Nullable] public string Buddyip        { get; set; } // varchar(16)
+		[Column("hostip"),            Nullable] public string Hostip         { get; set; } // varchar(16)
+		[Column("hostprivateip"),     Nullable] public string Hostprivateip  { get; set; } // varchar(16)
+		[Column("queryreport"),       Nullable] public uint?  Queryreport    { get; set; } // int(10) unsigned
+		[Column("hostport"),          Nullable] public uint?  Hostport       { get; set; } // int(10) unsigned
+		[Column("sessionflags"),      Nullable] public uint?  Sessionflags   { get; set; } // int(10) unsigned
+		[Column("richstatus"),        Nullable] public string Richstatus     { get; set; } // varchar(256)
+		[Column("gametype"),          Nullable] public string Gametype       { get; set; } // varchar(33)
+		[Column("gamevariant"),       Nullable] public string Gamevariant    { get; set; } // varchar(33)
+		[Column("gamemapname"),       Nullable] public string Gamemapname    { get; set; } // varchar(33)
+		[Column("productid"),      NotNull    ] public uint   Productid      { get; set; } // int(10) unsigned
+		[Column("quietmodefalgs"), NotNull    ] public string Quietmodefalgs { get; set; } // enum('NONE','MESSAGE','UTMS','LIST','ALL')
+	}
+
+	/// <summary>
+	/// user's subprofiles
+	/// </summary>
+	[Table("subprofiles")]
+	public partial class Subprofile
+	{
+		[Column("id"),          PrimaryKey,  Identity] public uint   Id          { get; set; } // int(11) unsigned
+		[Column("profileid"),   NotNull              ] public uint   Profileid   { get; set; } // int(11) unsigned
+		[Column("uniquenick"),     Nullable          ] public string Uniquenick  { get; set; } // varchar(50)
+		[Column("namespaceid"), NotNull              ] public uint   Namespaceid { get; set; } // int(10) unsigned
+		[Column("partnerid"),   NotNull              ] public uint   Partnerid   { get; set; } // int(11) unsigned
+		[Column("productid"),      Nullable          ] public uint?  Productid   { get; set; } // int(11) unsigned
+		[Column("gamename"),       Nullable          ] public string Gamename    { get; set; } // text
+		[Column("cdkeyenc"),       Nullable          ] public string Cdkeyenc    { get; set; } // varchar(50)
+		[Column("firewall"),       Nullable          ] public bool?  Firewall    { get; set; } // tinyint(1)
+		[Column("port"),           Nullable          ] public uint?  Port        { get; set; } // int(10) unsigned
+		[Column("authtoken"),      Nullable          ] public string Authtoken   { get; set; } // varchar(255)
+
+		#region Associations
+
+		/// <summary>
+		/// FK_blocked_namespace_BackReference
+		/// </summary>
+		[Association(ThisKey="Profileid", OtherKey="Profileid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<Blocked> Blockednamespaces { get; set; }
+
+		/// <summary>
+		/// FK3_blocked_profile_BackReference
+		/// </summary>
+		[Association(ThisKey="Profileid", OtherKey="Targetid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<Blocked> FK3blockedprofiles { get; set; }
+
+		/// <summary>
+		/// FK3_namespaceid_BackReference
+		/// </summary>
+		[Association(ThisKey="Namespaceid", OtherKey="Namespaceid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<Addrequest> FK3namespaceids { get; set; }
+
+		/// <summary>
+		/// FK_blocked_namespace_3_BackReference
+		/// </summary>
+		[Association(ThisKey="Namespaceid", OtherKey="Namespaceid", CanBeNull=true, Relationship=Relationship.OneToMany, IsBackReference=true)]
+		public IEnumerable<Blocked> FkBlockedNamespace3BackReferences { get; set; }
+
+		/// <summary>
+		/// FK1_profile_profileid
+		/// </summary>
+		[Association(ThisKey="Profileid", OtherKey="Profileid", CanBeNull=false, Relationship=Relationship.ManyToOne, KeyName="FK1_profile_profileid", BackReferenceName="FK1profileprofileids")]
+		public Profile Profile { get; set; }
+
+		#endregion
+	}
+
+	/// <summary>
+	/// user's account information
+	/// </summary>
 	[Table("users")]
 	public partial class User
 	{
 		[Column("userid"),        PrimaryKey,  Identity] public uint      Userid        { get; set; } // int(11) unsigned
 		[Column("email"),         NotNull              ] public string    Email         { get; set; } // varchar(50)
 		[Column("password"),      NotNull              ] public string    Password      { get; set; } // varchar(32)
-		[Column("emailverified"), NotNull              ] public bool     Emailverified { get; set; } // tinyint(1) unsigned
+		[Column("emailverified"), NotNull              ] public bool      Emailverified { get; set; } // tinyint(1)
 		[Column("deleted"),       NotNull              ] public bool      Deleted       { get; set; } // tinyint(1)
 		[Column("banned"),        NotNull              ] public bool      Banned        { get; set; } // tinyint(1)
 		[Column("lastip"),           Nullable          ] public string    Lastip        { get; set; } // varchar(16)
@@ -416,12 +489,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
 	public static partial class TableExtensions
 	{
-		public static @namespace Find(this ITable<@namespace> table, uint Id)
-		{
-			return table.FirstOrDefault(t =>
-				t.Id == Id);
-		}
-
 		public static Friend Find(this ITable<Friend> table, uint Id)
 		{
 			return table.FirstOrDefault(t =>
@@ -456,6 +523,12 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 		{
 			return table.FirstOrDefault(t =>
 				t.Profileid == Profileid);
+		}
+
+		public static Subprofile Find(this ITable<Subprofile> table, uint Id)
+		{
+			return table.FirstOrDefault(t =>
+				t.Id == Id);
 		}
 
 		public static User Find(this ITable<User> table, uint Userid)

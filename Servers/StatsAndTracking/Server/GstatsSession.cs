@@ -11,7 +11,7 @@ namespace StatsAndTracking
 {
     public class GstatsSession : TemplateTcpSession
     {
-        public GStatsInfo Ginfo { get; protected set; }
+        public uint ConnID;
         public GstatsSession(TemplateTcpServer server) : base(server)
         {
             DisconnectAfterSend = false;
