@@ -1,15 +1,16 @@
 ﻿using GameSpyLib.Logging;
-using NATNegotiation.Entity.Enumerator;
-using NATNegotiation.Entity.Structure.Packet;
+using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Structure.Packet;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 
-namespace NATNegotiation.Handler.CommandHandler.CommandSwitcher
+namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(NatNegServer server,byte[] message)
+        public static void Switch(NatNegServer server, EndPoint endPoint, byte[] message)
         {
             BasePacket basePacket = new BasePacket(message);
             try
@@ -21,19 +22,19 @@ namespace NATNegotiation.Handler.CommandHandler.CommandSwitcher
                         //NatNegHandler.PreInitResponse(this, packet, nnpacket);
                         break;
                     case NatPacketType.Init:
-                        InitHandler.InitResponse(server, message);
+                        InitHandler init = new InitHandler(server,endPoint, message);
                         break;
                     case NatPacketType.AddressCheck:
-                        AddressHandler.AddressCheckResponse(server, message);
+                        AddressHandler.AddressCheckHandler(server,endPoint, message);
                         break;
                     case NatPacketType.NatifyRequest:
-                        NatifyHandler.NatifyResponse(server, message);
+                        NatifyHandler.NatifyHandler(server,endPoint, message);
                         break;
                     case NatPacketType.ConnectAck:
-                        ConnectHandler.ConnectResponse(server, message);
+                        ConnectHandler.ConnectHandler(server,endPoint, message);
                         break;
                     case NatPacketType.Report:
-                        ReportHandler.ReportResponse(server, message);
+                        ReportHandler.ReportHandler(server,endPoint, message);
                         break;
                     default:
                         server.UnknownDataRecived(message);

@@ -4752,11 +4752,11 @@ CREATE TABLE IF NOT EXISTS `subprofiles` (
   CONSTRAINT `FK1_profile_profileid` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='user''s subprofiles';
 
--- Dumping data for table retrospy.subprofiles: ~1 rows (approximately)
+-- Dumping data for table retrospy.subprofiles: ~2 rows (approximately)
 /*!40000 ALTER TABLE `subprofiles` DISABLE KEYS */;
 INSERT INTO `subprofiles` (`id`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `cdkeyenc`, `firewall`, `port`, `authtoken`) VALUES
 	(1, 27, 'spyguy', 1, 0, 0, 'gmtest', NULL, 0, 0, 'example_token'),
-	(55, 33, 'xiaojiuwo', 1, 0, 0, 'gmtest', NULL, 0, 0, NULL);
+	(55, 33, 'xiaojiuwo', 95, 0, 13429, 'capricorn', NULL, 0, 0, NULL);
 /*!40000 ALTER TABLE `subprofiles` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy.users

@@ -1,14 +1,14 @@
 ﻿using GameSpyLib.Database.Entity;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using NATNegotiation.Entity.Enumerator;
-using NATNegotiation.Handler.CommandHandler;
-using NATNegotiation.Handler.CommandHandler.CommandSwitcher;
-using NATNegotiation.Entity.Structure.Packet;
+using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Handler.CommandHandler;
+using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
+using NatNegotiation.Entity.Structure.Packet;
 using System;
 using System.Net;
 
-namespace NATNegotiation
+namespace NatNegotiation
 {
     public class NatNegServer : TemplateUdpServer
     {
@@ -26,11 +26,7 @@ namespace NATNegotiation
 
         protected override void OnReceived(EndPoint endpoint, byte[] message)
         {
-
-            CommandSwitcher.Switch(this,message);
-            
+            CommandSwitcher.Switch(this, endpoint, message);
         }
-
     }
-
 }

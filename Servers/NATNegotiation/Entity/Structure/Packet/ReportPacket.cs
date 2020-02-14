@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Encryption;
-using NATNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Enumerator;
 using System;
 
-namespace NATNegotiation.Entity.Structure.Packet
+namespace NatNegotiation.Entity.Structure.Packet
 {
     public class ReportPacket : BasePacket
     {

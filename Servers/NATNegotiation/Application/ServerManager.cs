@@ -3,7 +3,7 @@ using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System.Net;
 
-namespace NATNegotiation.Application
+namespace NatNegotiation.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

@@ -1,4 +1,4 @@
-﻿namespace NATNegotiation.Entity.Structure
+﻿namespace NatNegotiation.Entity.Structure
 {
     public static class NatNegInfo
     {

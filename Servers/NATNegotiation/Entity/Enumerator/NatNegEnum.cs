@@ -1,4 +1,4 @@
-﻿namespace NATNegotiation.Entity.Enumerator
+﻿namespace NatNegotiation.Entity.Enumerator
 {
 
     public enum NatPacketType : byte

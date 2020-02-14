@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace NATNegotiation.Application
+namespace NatNegotiation.Application
 {
     /// <summary>
     /// This class represents a RetroSpy Server program

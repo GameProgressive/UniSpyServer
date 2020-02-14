@@ -1,11 +1,11 @@
-﻿using NATNegotiation.Entity.Structure.Packet;
+﻿using NatNegotiation.Entity.Structure.Packet;
 using System.Net;
 
-namespace NATNegotiation.Handler.CommandHandler
+namespace NatNegotiation.Handler.CommandHandler
 {
-    class AddressHandler
+    public class AddressHandler
     {
-        public static void AddressCheckResponse(NatNegServer server, byte[] recv)
+        public void Handle(NatNegServer server,EndPoint endPoint, byte[] recv)
         {
             InitPacket initPacket = new InitPacket(recv);
             byte[] sendingBuffer = initPacket.CreateReplyPacket();

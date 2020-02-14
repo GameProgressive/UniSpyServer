@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Encryption;
 using System;
 
-namespace NATNegotiation.Entity.Structure.Packet
+namespace NatNegotiation.Entity.Structure.Packet
 {
     public class ConnectPacket : BasePacket
     {

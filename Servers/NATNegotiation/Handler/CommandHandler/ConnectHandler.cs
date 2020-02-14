@@ -1,11 +1,11 @@
-﻿using NATNegotiation.Entity.Structure.Packet;
+﻿using NatNegotiation.Entity.Structure.Packet;
 using System.Net;
 
-namespace NATNegotiation.Handler.CommandHandler
+namespace NatNegotiation.Handler.CommandHandler
 {
     public class ConnectHandler
     {
-        public static void ConnectResponse(NatNegServer server, byte[] recv)
+        public void Handle(NatNegServer server, EndPoint endPoint, byte[] recv)
         {
             ConnectPacket connectPacket = new ConnectPacket(recv);
             byte[] sendingBuffer = connectPacket.CreateReplyPacket();

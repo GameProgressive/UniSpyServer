@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace NATNegotiation.Entity.Structure
+namespace NatNegotiation.Entity.Structure
 {
     public class ClientInfo
     {

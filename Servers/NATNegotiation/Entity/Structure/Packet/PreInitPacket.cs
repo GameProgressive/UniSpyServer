@@ -1,4 +1,4 @@
-﻿namespace NATNegotiation.Entity.Structure.Packet
+﻿namespace NatNegotiation.Entity.Structure.Packet
 {
     public class PreInitPacket : BasePacket
     {
