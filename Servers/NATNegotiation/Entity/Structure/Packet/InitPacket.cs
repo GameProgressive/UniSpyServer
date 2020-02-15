@@ -24,21 +24,21 @@ namespace NatNegotiation.Entity.Structure.Packet
             LocalPort = BitConverter.ToUInt16(ByteExtensions.SubBytes(recv, 20, sizeof(ushort)));//00 - 00
         }
 
-        //public byte[] CreateReplyPacket()
-        //{
-        //    byte[] TempBytes = new byte[GetReplyPacketSize()];
-        //    MagicData.CopyTo(TempBytes, 0);
-        //    TempBytes[MagicData.Length] = Version;
-        //    TempBytes[MagicData.Length + 1] = (byte)NatPacketType.InitAck;
-        //    BitConverter.GetBytes(Cookie).CopyTo(TempBytes, MagicData.Length + 2);
+        public byte[] GenerateByteArray()
+        {
+            byte[] TempBytes = new byte[GetReplyPacketSize()];
+            MagicData.CopyTo(TempBytes, 0);
+            TempBytes[MagicData.Length] = Version;
+            TempBytes[MagicData.Length + 1] = (byte)NatPacketType.InitAck;
+            BitConverter.GetBytes(Cookie).CopyTo(TempBytes, MagicData.Length + 2);
 
-        //    TempBytes[BasePacket.Size] = PortType;
-        //    TempBytes[BasePacket.Size + 1] = ClientIndex;
-        //    TempBytes[BasePacket.Size + 2] = UseGamePort;
-        //    BitConverter.GetBytes(LocalIp).CopyTo(TempBytes, BasePacket.Size + 3);
-        //    BitConverter.GetBytes(LocalPort).CopyTo(TempBytes, BasePacket.Size + 7);
-        //    return TempBytes;
-        //}
+            TempBytes[BasePacket.Size] = PortType;
+            TempBytes[BasePacket.Size + 1] = ClientIndex;
+            TempBytes[BasePacket.Size + 2] = UseGamePort;
+            BitConverter.GetBytes(LocalIp).CopyTo(TempBytes, BasePacket.Size + 3);
+            BitConverter.GetBytes(LocalPort).CopyTo(TempBytes, BasePacket.Size + 7);
+            return TempBytes;
+        }
 
     }
 }

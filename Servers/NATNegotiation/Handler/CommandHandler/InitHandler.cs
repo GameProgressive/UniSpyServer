@@ -30,24 +30,18 @@ namespace NatNegotiation.Handler.CommandHandler
 
             if (client.GotConnectAck)
             {
-                var c = NatNegServer.ClientList.Where(c => c.Cookie == client.Cookie && c.ClientIndex == (client.ClientIndex == 1 ? 0 : 1));
+                var c = NatNegServer.ClientList.Where(c => c.Cookie == client.Cookie && c.ClientIndex == (client.ClientIndex == 1 ? 0 : 1) && c != client);
+
                 if (c.Count() == 0)
                     return;
                 ClientInfo other = c.First();
 
-                ConnectPacket connPacket = new ConnectPacket
-                {
-                    RemoteIP = BitConverter.ToUInt32(((IPEndPoint)client.EndPoint).Address.GetAddressBytes(), 0),
-                    RemotePort = (uint)((IPEndPoint)client.EndPoint).Port,
-                    Finished = 0,
-                };
-                client.SentConnectTime = DateTime.Now;
-                client.Connected = true;
+                if (client.GotConnectAck || other.GotConnectAck || !client.GotInit)
+                    return;
 
-
+                ConnectHandler.SendConnectPacket(server, client, other);
 
             }
-
         }
     }
 }

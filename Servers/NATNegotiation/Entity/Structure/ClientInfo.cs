@@ -11,7 +11,7 @@ namespace NATNegotiation.Entity.Structure
         public byte Version;
         public DateTime ConnectTime;
         public DateTime LastPacketTime;
-        public DateTime SentConnectTime;
+        public DateTime SentConnectPacketTime;
         public int Cookie;
         public byte ClientIndex;
         public bool Connected;

@@ -8,9 +8,11 @@ namespace NatNegotiation.Handler.CommandHandler
     {
         public void Handle(NatNegServer server, ClientInfo client, byte[] recv)
         {
-            //ReportPacket reportPacket = new ReportPacket(recv);
-            //byte[] sendingBuffer = reportPacket.CreateReplyPacket();
-            //server.SendAsync(server.Socket.RemoteEndPoint, sendingBuffer);
+            ReportPacket reportPacket = new ReportPacket();
+            reportPacket.Parse(recv);
+            reportPacket.PacketType = Entity.Enumerator.NatPacketType.ReportAck;
+            byte[] buffer = reportPacket.GenerateByteArray();
+            server.SendAsync(client.EndPoint, buffer);
         }
     }
 }

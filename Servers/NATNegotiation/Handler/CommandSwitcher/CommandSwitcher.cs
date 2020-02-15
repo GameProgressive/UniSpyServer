@@ -16,6 +16,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
         {
             ClientInfo client = NatNegServer.ClientList.Where(c => c.EndPoint == endPoint).First();
             client.Version = recv[BasePacket.MagicData.Length];
+            client.LastPacketTime = DateTime.Now;
             try
             {
                 //BytesRecieved[7] is nnpacket.PacketType.

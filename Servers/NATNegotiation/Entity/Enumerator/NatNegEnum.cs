@@ -1,5 +1,11 @@
 ﻿namespace NatNegotiation.Entity.Enumerator
 {
+    public enum ConnectPacketFinishStatus:uint
+    {
+        NoError,
+        DeadHeartBeat,
+        InitPacketTimeOut
+    }
 
     public enum NatPacketType : byte
     {

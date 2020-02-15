@@ -1,30 +1,28 @@
-﻿using GameSpyLib.Database.Entity;
-using GameSpyLib.Network;
-using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
-using System.Net;
-using System.Collections.Concurrent;
-using NATNegotiation.Entity.Structure;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NatNegotiation.Entity.Enumerator;
-using NatNegotiation.Entity.Structure.Packet;
+using System.Net;
+using System.Threading;
+using GameSpyLib.Database.Entity;
+using GameSpyLib.Network;
+using NatNegotiation.Handler.CommandHandler;
+using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
+using NATNegotiation.Entity.Structure;
 
 namespace NatNegotiation
 {
     public class NatNegServer : TemplateUdpServer
     {
 
-        public static List< ClientInfo> ClientList = new List<ClientInfo>();
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dbdriver">If choose sqlite for database you should pass the connection to server
-        /// ,maybe NatNeg server dose not need connected to database.</param>
-        /// <param name="bindTo"></param>
-        /// <param name="MaxConnections"></param>
+        public static List<ClientInfo> ClientList = new List<ClientInfo>();
+        private System.Timers.Timer _CheckTimer = new System.Timers.Timer { Enabled = true, Interval = 10000, AutoReset = true };
+
+
         public NatNegServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
-
+            
+            _CheckTimer.Start();
+            _CheckTimer.Elapsed+=CheckClientTimeOut;
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
@@ -32,49 +30,40 @@ namespace NatNegotiation
             //check and add client into clientList
             if (ClientList.Where(c => c.EndPoint == endPoint).Count() == 0)
             {
-                ClientList.Add(new ClientInfo { EndPoint = endPoint});
+                ClientList.Add(new ClientInfo { EndPoint = endPoint });
             }
             CommandSwitcher.Switch(this, endPoint, message);
         }
 
-
-        /// <summary>
-        /// Get repsonse packet size from natneg recieved packet type
-        /// </summary>
-        /// <param name="type">recieved packet type</param>
-        /// <returns></returns>
-        public static int GetReplyPacketSize(NatPacketType type)
+        private void CheckClientTimeOut(object sender,System.Timers.ElapsedEventArgs e)
         {
-            //The size is initially CommonInfo size
-            int size = BasePacket.Size;
-
-            switch (type)
+            ToLog("Check timeout excuted!");
+            foreach (var c in ClientList)
             {
-                case NatPacketType.PreInit:
-                case NatPacketType.PreInitAck:
-                    size += 6;
-                    break;
-                case NatPacketType.AddressCheck:
-                case NatPacketType.NatifyRequest:
-                case NatPacketType.ErtTest:
-                case NatPacketType.ErtAck:
-                case NatPacketType.Init:
-                case NatPacketType.InitAck:
-                case NatPacketType.ConnectAck:
-                case NatPacketType.ReportAck:
-                    size += 9;
-                    break;
-                case NatPacketType.Connect:
-                case NatPacketType.ConnectPing:
-                    size += 8;
-                    break;
-                case NatPacketType.Report:
-                    size += 61;
-                    break;
-                default:
-                    break;
+                if (DateTime.Now.Second - c.LastPacketTime.Second > 120)
+                {
+                    ClientList.Remove(c);
+                }
             }
-            return size;
+            foreach (var c in ClientList)
+            {
+                if (c.Connected)
+                    if (c.GotConnectAck)
+                        if (DateTime.Now.Second - c.SentConnectPacketTime.Second > 5)
+                        {
+                            //send connect packet to c it self
+                            ConnectHandler.SendConnectPacket(this, c, null);
+                        }
+            }
+            foreach (var c in ClientList)
+            {
+                if (DateTime.Now.Second - c.ConnectTime.Second > 30)
+                    if (!c.Connected)
+                    {
+                        //send DeadHeatBeat notice
+                        ConnectHandler.SendDeadHeartBeatNotice(this, c);
+                    }
+            }
         }
     }
 }
