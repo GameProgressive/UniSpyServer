@@ -12,7 +12,7 @@ namespace NATNegotiation.Entity.Structure
         public DateTime ConnectTime;
         public DateTime LastPacketTime;
         public DateTime SentConnectPacketTime;
-        public int Cookie;
+        public byte[] Cookie = new byte[4];
         public byte ClientIndex;
         public bool Connected;
         public bool GotInit;

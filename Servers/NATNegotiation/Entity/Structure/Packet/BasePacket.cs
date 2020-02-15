@@ -11,8 +11,9 @@ namespace NatNegotiation.Entity.Structure.Packet
     {
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public byte Version;
-        public NatPacketType PacketType;
-        public int Cookie;
+        public byte PacketType;
+        public byte[] Cookie= new byte[4];
+
         public static readonly int Size = 12;
         public NNErrorCode ErrorCode { get; protected set; }
 
@@ -38,8 +39,8 @@ namespace NatNegotiation.Entity.Structure.Packet
             }
 
             Version = recv[MagicData.Length];
-            PacketType = (NatPacketType)recv[MagicData.Length + 1];
-            Cookie = BitConverter.ToInt32(ByteExtensions.SubBytes(recv, MagicData.Length + 2, 4));
+            PacketType = recv[MagicData.Length + 1];
+            Cookie = ByteExtensions.SubBytes(recv, MagicData.Length + 2, 4);
         }
 
 
@@ -53,7 +54,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             //The size is initially CommonInfo size
             int size = BasePacket.Size;
 
-            switch (this.PacketType)
+            switch ((NatPacketType)PacketType)
             {
                 case NatPacketType.PreInit:
                 case NatPacketType.PreInitAck:

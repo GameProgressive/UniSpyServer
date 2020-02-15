@@ -19,11 +19,11 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             ConnectPacket connPacket = new ConnectPacket
             {
-                PacketType = NatPacketType.Connect,
+                PacketType = (byte)NatPacketType.Connect,
                 Cookie = client.Cookie,
                 Finished = 0,
-                RemoteIP = BitConverter.ToUInt32(((IPEndPoint)client.EndPoint).Address.GetAddressBytes(), 0),
-                RemotePort = (ushort)((IPEndPoint)client.EndPoint).Port,
+                RemoteIP = ((IPEndPoint)client.EndPoint).Address.GetAddressBytes(),
+                RemotePort = BitConverter.GetBytes(((IPEndPoint)client.EndPoint).Port)
             };
             byte[] buffer = connPacket.GenerateByteArray();
 
@@ -36,11 +36,11 @@ namespace NatNegotiation.Handler.CommandHandler
             if (other == null)
             { return; }
 
-            connPacket.RemoteIP = BitConverter.ToUInt32(((IPEndPoint)other.EndPoint).Address.GetAddressBytes(), 0);
-            connPacket.RemotePort = (ushort)((IPEndPoint)other.EndPoint).Port;
+            connPacket.RemoteIP = ((IPEndPoint)other.EndPoint).Address.GetAddressBytes();
+            connPacket.RemotePort = BitConverter.GetBytes(((IPEndPoint)other.EndPoint).Port);
 
             buffer = connPacket.GenerateByteArray();
-            server.Send(other.EndPoint, buffer);
+            server.SendAsync(other.EndPoint, buffer);
             other.SentConnectPacketTime = DateTime.Now;
 
         }
@@ -49,11 +49,11 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             ConnectPacket connPacket = new ConnectPacket
             {
-                PacketType = NatPacketType.Connect,
+                PacketType = (byte)NatPacketType.Connect,
                 Cookie = client.Cookie,
                 Finished = (byte)ConnectPacketFinishStatus.DeadHeartBeat,
-                RemoteIP = BitConverter.ToUInt32(((IPEndPoint)client.EndPoint).Address.GetAddressBytes(), 0),
-                RemotePort = (ushort)((IPEndPoint)client.EndPoint).Port,
+                RemoteIP = ((IPEndPoint)client.EndPoint).Address.GetAddressBytes(),
+                RemotePort =BitConverter.GetBytes(((IPEndPoint)client.EndPoint).Port),
             };
             byte[] buffer = connPacket.GenerateByteArray();
             server.SendAsync(client.EndPoint, buffer);

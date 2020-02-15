@@ -11,8 +11,8 @@ namespace NatNegotiation.Entity.Structure.Packet
         public byte PortType;
         public byte ClientIndex;
         public byte NegResult;
-        public NatType NatType; //int
-        public NatMappingScheme NatMappingScheme; //int
+        public byte[] NatType = new byte[4]; //int
+        public byte[] NatMappingScheme = new byte[4]; //int
         public byte[] GameName = new byte[50];
 
         public new void Parse(byte[] recv)
@@ -22,11 +22,9 @@ namespace NatNegotiation.Entity.Structure.Packet
             ClientIndex = recv[14];
             NegResult = recv[15];
 
-            byte[] tempNatType = ByteExtensions.SubBytes(recv, 17, sizeof(int));
-            NatType = (NatType)BitConverter.ToInt32(tempNatType, 0);
+            NatType = ByteExtensions.SubBytes(recv, 17, sizeof(int)); ;
 
-            byte[] tempNatMappingScheme = ByteExtensions.SubBytes(recv, 19, sizeof(int));
-            NatMappingScheme = (NatMappingScheme)BitConverter.ToInt32(tempNatMappingScheme, 0);
+            NatMappingScheme = ByteExtensions.SubBytes(recv, 19, sizeof(int));
 
             Array.Copy(recv, 23, GameName, 0, 50);
         }
@@ -37,13 +35,13 @@ namespace NatNegotiation.Entity.Structure.Packet
             MagicData.CopyTo(TempBytes, 0);
             TempBytes[MagicData.Length] = Version;
             TempBytes[MagicData.Length + 1] = (byte)PacketType;
-            BitConverter.GetBytes(Cookie).CopyTo(TempBytes, MagicData.Length + 2);
+            Cookie.CopyTo(TempBytes, MagicData.Length + 2);
 
             TempBytes[BasePacket.Size] = PortType;
             TempBytes[BasePacket.Size + 1] = ClientIndex;
             TempBytes[BasePacket.Size + 2] = NegResult;
-            BitConverter.GetBytes((int)NatType).CopyTo(TempBytes, BasePacket.Size + 3);
-            BitConverter.GetBytes((int)NatMappingScheme).CopyTo(TempBytes, BasePacket.Size + 7);
+            NatType.CopyTo(TempBytes, BasePacket.Size + 3);
+            NatMappingScheme.CopyTo(TempBytes, BasePacket.Size + 7);
             GameName.CopyTo(TempBytes, BasePacket.Size + 11);
 
             return TempBytes;

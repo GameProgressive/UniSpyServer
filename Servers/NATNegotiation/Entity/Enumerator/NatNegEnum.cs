@@ -6,8 +6,14 @@
         DeadHeartBeat,
         InitPacketTimeOut
     }
-
-    public enum NatPacketType : byte
+    public enum NatPortType
+    {
+        GP,
+        NN1,
+        NN2,
+        NN3
+    }
+    public enum NatPacketType
     {
         Init ,
         InitAck,
@@ -35,7 +41,7 @@
         PacketMap1b,
         NumPackets
     };
-    public enum NatMappingScheme
+    public enum NatMappingScheme: byte
     {
         Unrecognized,
         PrivateAsPublic,

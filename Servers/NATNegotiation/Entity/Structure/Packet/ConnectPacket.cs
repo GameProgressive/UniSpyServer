@@ -6,10 +6,10 @@ using System.Net;
 
 namespace NatNegotiation.Entity.Structure.Packet
 {
-    public class ConnectPacket:BasePacket
+    public class ConnectPacket : BasePacket
     {
-        public uint RemoteIP;
-        public ushort RemotePort;
+        public byte[] RemoteIP = new byte[4];
+        public byte[] RemotePort = new byte[2];
         public byte GotYourData;
         public byte Finished;
 
@@ -27,17 +27,17 @@ namespace NatNegotiation.Entity.Structure.Packet
             MagicData.CopyTo(TempBytes, 0);
             TempBytes[MagicData.Length] = Version;
             TempBytes[MagicData.Length + 1] = (byte)PacketType;
-            BitConverter.GetBytes(Cookie).CopyTo(TempBytes, MagicData.Length + 2);
+            Cookie.CopyTo(TempBytes, MagicData.Length + 2);
 
             // Cache the client info on the init packet and then access them with the cookie and send GotConnectAck to true
-            BitConverter.GetBytes(RemoteIP).CopyTo(TempBytes, BasePacket.Size);
-            BitConverter.GetBytes(RemotePort).CopyTo(TempBytes, BasePacket.Size + 4);
+            RemoteIP.CopyTo(TempBytes, BasePacket.Size);
+            RemotePort.CopyTo(TempBytes, BasePacket.Size + 4);
 
             TempBytes[BasePacket.Size + 5] = GotYourData;
             TempBytes[BasePacket.Size + 6] = Finished;
             return TempBytes;
 
         }
-        
+
     }
 }

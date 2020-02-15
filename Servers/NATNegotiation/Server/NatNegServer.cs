@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using GameSpyLib.Database.Entity;
 using GameSpyLib.Network;
 using NatNegotiation.Handler.CommandHandler;
@@ -43,6 +42,7 @@ namespace NatNegotiation
                 if (DateTime.Now.Second - c.LastPacketTime.Second > 120)
                 {
                     ClientList.Remove(c);
+                    ToLog("deleted client");
                 }
             }
             foreach (var c in ClientList)

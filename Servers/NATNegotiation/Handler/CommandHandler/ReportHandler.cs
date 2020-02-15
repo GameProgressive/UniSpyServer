@@ -1,4 +1,5 @@
-﻿using NatNegotiation.Entity.Structure.Packet;
+﻿using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using System.Net;
 
@@ -10,7 +11,7 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             ReportPacket reportPacket = new ReportPacket();
             reportPacket.Parse(recv);
-            reportPacket.PacketType = Entity.Enumerator.NatPacketType.ReportAck;
+            reportPacket.PacketType = (byte)NatPacketType.ReportAck;
             byte[] buffer = reportPacket.GenerateByteArray();
             server.SendAsync(client.EndPoint, buffer);
         }
