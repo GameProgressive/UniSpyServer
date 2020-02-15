@@ -1,12 +1,16 @@
 ﻿namespace NatNegotiation.Entity.Structure.Packet
 {
-    public class PreInitPacket : BasePacket
+    public class PreInitPacket:BasePacket
     {
-        private static readonly int PreInitPacketSize = 6;
-        private static readonly int PacketSize = BasePacketSize + PreInitPacketSize;
-        public PreInitPacket(byte[] data) : base(data)
-        {
+        public int CLientIndex;
+        public int State;
+        public int ClientID;
+        
+        public new static readonly int Size = BasePacket.Size + 6;
 
+        public new void Parse(byte[] recv)
+        {
+            base.Parse(recv);
         }
     }
 }

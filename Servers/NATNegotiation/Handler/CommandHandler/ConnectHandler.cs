@@ -7,9 +7,9 @@ namespace NatNegotiation.Handler.CommandHandler
     {
         public void Handle(NatNegServer server, EndPoint endPoint, byte[] recv)
         {
-            ConnectPacket connectPacket = new ConnectPacket(recv);
-            byte[] sendingBuffer = connectPacket.CreateReplyPacket();
-            server.SendAsync(server.Socket.RemoteEndPoint, sendingBuffer);
+            //ConnectPacket connectPacket = new ConnectPacket(recv);
+            //byte[] sendingBuffer = connectPacket.CreateReplyPacket();
+            //server.SendAsync(server.Socket.RemoteEndPoint, sendingBuffer);
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
+using NATNegotiation.Entity.Structure;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 
@@ -10,34 +12,37 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(NatNegServer server, EndPoint endPoint, byte[] message)
+        public static void Switch(NatNegServer server, EndPoint endPoint, byte[] recv)
         {
-            BasePacket basePacket = new BasePacket(message);
+            ClientInfo client = NatNegServer.ClientList.Where(c => c.EndPoint == endPoint).First();
+            client.Version = recv[BasePacket.MagicData.Length];
             try
             {
                 //BytesRecieved[7] is nnpacket.PacketType.
-                switch (basePacket.PacketType)
+                switch ((NatPacketType)recv[7])
                 {
-                    case NatPacketType.PreInit:
-                        //NatNegHandler.PreInitResponse(this, packet, nnpacket);
-                        break;
                     case NatPacketType.Init:
-                        InitHandler init = new InitHandler(server,endPoint, message);
+                        InitHandler init = new InitHandler();
+                        init.Handle(server,client,recv);
                         break;
                     case NatPacketType.AddressCheck:
-                        AddressHandler.AddressCheckHandler(server,endPoint, message);
+                        AddressHandler address = new AddressHandler();
+                        address.Handle(server, client, recv);
                         break;
                     case NatPacketType.NatifyRequest:
-                        NatifyHandler.NatifyHandler(server,endPoint, message);
+                        NatifyHandler natify = new NatifyHandler();
+                        natify.Handle(server, client, recv);
                         break;
                     case NatPacketType.ConnectAck:
-                        ConnectHandler.ConnectHandler(server,endPoint, message);
+                        client.GotConnectAck = true;
                         break;
                     case NatPacketType.Report:
-                        ReportHandler.ReportHandler(server,endPoint, message);
+                        ReportHandler report = new ReportHandler();
+                        report.Handle(server, client, recv);
+
                         break;
                     default:
-                        server.UnknownDataRecived(message);
+                        server.UnknownDataRecived(recv);
                         break;
                 }
             }

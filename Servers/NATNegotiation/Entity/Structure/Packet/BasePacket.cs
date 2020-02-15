@@ -1,76 +1,46 @@
 ﻿using GameSpyLib.Encryption;
+using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
+using NATNegotiation.Entity.Enumerator;
+using NATNegotiation.Entity.Structure;
 using System;
 
 namespace NatNegotiation.Entity.Structure.Packet
 {
     public class BasePacket
     {
+        public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public byte Version;
         public NatPacketType PacketType;
         public int Cookie;
-        public int magicDataLen = NatNegInfo.MagicData.Length;
-        public static readonly int BasePacketSize = NatNegInfo.MagicData.Length + 6;
+        public static readonly int Size = 12;
+        public NNErrorCode ErrorCode { get; protected set; }
 
-        public BasePacket(byte[] data)
+        public void Parse(byte[] recv)
         {
-            if (data.Length < BasePacketSize)
+            ErrorCode = NNErrorCode.NoError;
+            if (recv.Length < Size)
             {
+                ErrorCode = NNErrorCode.RequestError;
+                return;
+            }
+            //check magic data
+            if (!ByteExtensions.SubBytes(recv, 0, MagicData.Length).Equals(MagicData))
+            {
+                ErrorCode = NNErrorCode.MagicDataError;
+                return;
+            }
+            //check packet type
+            if (recv[MagicData.Length + 2] < 0 || recv[MagicData.Length + 2] > (byte)NatPacketType.PreInitAck)
+            {
+                ErrorCode = NNErrorCode.PacketTypeError;
                 return;
             }
 
-            byte[] sub = ByteExtensions.SubBytes(data, 0, magicDataLen);
-            //bool isEqual = Array.Equals(sub, NatNegInfo.MagicData);
-            if (sub[0] != NatNegInfo.MagicData[0] || sub[1] != NatNegInfo.MagicData[1] || sub[2] != NatNegInfo.MagicData[2])
-                return;
-
-            if (data[magicDataLen + 2] < 0 || data[magicDataLen + 2] > (byte)NatPacketType.PreInitAck)
-                return;
-
-            Version = data[magicDataLen];
-            PacketType = (NatPacketType)data[magicDataLen + 1];
-            Cookie = BitConverter.ToInt32(ByteExtensions.SubBytes(data, magicDataLen + 2, 4));
+            Version = recv[MagicData.Length];
+            PacketType = (NatPacketType)recv[MagicData.Length + 1];
+            Cookie = BitConverter.ToInt32(ByteExtensions.SubBytes(recv, MagicData.Length + 2, 4));
         }
 
-        /// <summary>
-        /// Get repsonse packet size from natneg recieved packet type
-        /// </summary>
-        /// <param name="type">recieved packet type</param>
-        /// <returns></returns>
-        protected int GetReplyPacketSize()
-        {
-            //The size is initially CommonInfo size
-            int size = BasePacketSize;
-
-            switch (PacketType)
-            {
-                case NatPacketType.PreInit:
-                case NatPacketType.PreInitAck:
-                    size += 6;
-                    break;
-                case NatPacketType.AddressCheck:
-                case NatPacketType.NatifyRequest:
-                case NatPacketType.ErtTest:
-                case NatPacketType.ErtAck:
-                case NatPacketType.Init:
-                case NatPacketType.InitAck:
-                case NatPacketType.ConnectAck:
-                case NatPacketType.ReportAck:
-                    size += 9;
-                    break;
-
-                case NatPacketType.ConnectPing:
-                case NatPacketType.Connect:
-                    size += 8;
-                    break;
-                case NatPacketType.Report:
-                    size += 61;
-                    break;
-                default:
-                    break;
-            }
-
-            return size;
-        }
     }
 }
