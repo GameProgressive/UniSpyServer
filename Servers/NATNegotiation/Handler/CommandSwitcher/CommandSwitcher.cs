@@ -3,10 +3,8 @@ using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
@@ -16,6 +14,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
         {
             ClientInfo client = NatNegServer.ClientList.Where(c => c.EndPoint == endPoint).First();
             client.Version = recv[BasePacket.MagicData.Length];
+
             client.LastPacketTime = DateTime.Now;
             try
             {

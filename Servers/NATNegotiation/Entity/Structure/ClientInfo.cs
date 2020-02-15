@@ -20,8 +20,8 @@ namespace NATNegotiation.Entity.Structure
         public GameInfo Game;
         public EndPoint EndPoint;
 
-        //public uint RemoteIP;
-        //public uint RemotePort;
+        //public byte[] RemoteIP = new byte[4];
+        //public byte[] RemotePort = new byte[2];
         //public byte GotYourData;
         //public byte Finished;
     }

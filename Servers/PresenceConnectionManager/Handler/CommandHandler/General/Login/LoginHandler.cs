@@ -40,26 +40,26 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         /// <param name="session"></param>
         private void ParseDataBasedOnLoginType(GPCMSession session)
         {
-            session.PlayerInfo.UserChallenge = _recv["challenge"];
+            session.UserInfo.UserChallenge = _recv["challenge"];
 
             if (_recv.ContainsKey("uniquenick"))
             {
-                session.PlayerInfo.LoginType = LoginType.Uniquenick;
-                session.PlayerInfo.UniqueNick = _recv["uniquenick"];
-                session.PlayerInfo.UserData = _recv["uniquenick"];
+                session.UserInfo.LoginType = LoginType.Uniquenick;
+                session.UserInfo.UniqueNick = _recv["uniquenick"];
+                session.UserInfo.UserData = _recv["uniquenick"];
                 return;
             }
             if (_recv.ContainsKey("authtoken"))
             {
-                session.PlayerInfo.LoginType = LoginType.AuthToken;
-                session.PlayerInfo.AuthToken = _recv["authtoken"];
-                session.PlayerInfo.UserData = _recv["authtoken"];
+                session.UserInfo.LoginType = LoginType.AuthToken;
+                session.UserInfo.AuthToken = _recv["authtoken"];
+                session.UserInfo.UserData = _recv["authtoken"];
                 return;
             }
             if (_recv.ContainsKey("user"))
             {
-                session.PlayerInfo.LoginType = LoginType.Nick;
-                session.PlayerInfo.UserData = _recv["user"];
+                session.UserInfo.LoginType = LoginType.Nick;
+                session.UserInfo.UserData = _recv["user"];
                 string user = _recv["user"];
 
                 int Pos = user.IndexOf('@');
@@ -71,9 +71,9 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 string nick = user.Substring(0, Pos);
                 string email = user.Substring(Pos + 1);
 
-                session.PlayerInfo.Nick = nick;
-                session.PlayerInfo.Email = email;
-                session.PlayerInfo.LoginType = LoginType.Nick;
+                session.UserInfo.Nick = nick;
+                session.UserInfo.Email = email;
+                session.UserInfo.LoginType = LoginType.Nick;
                 return;
             }
 
@@ -87,62 +87,65 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         {
             if (_recv.ContainsKey("partnerid"))
             {
-                if (!uint.TryParse(_recv["partnerid"], out session.PlayerInfo.PartnerID))
+                if (!uint.TryParse(_recv["partnerid"], out session.UserInfo.PartnerID))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
             }
             if (_recv.ContainsKey("namespaceid"))
             {
-                if (!uint.TryParse(_recv["namespaceid"], out session.PlayerInfo.NamespaceID))
+                if (!uint.TryParse(_recv["namespaceid"], out session.UserInfo.NamespaceID))
                     _errorCode = GPErrorCode.Parse;
                 // the default namespaceid = 0
             }
             //store sdkrevision
             if (_recv.ContainsKey("sdkrevision"))
             {
-                if (!uint.TryParse(_recv["sdkrevision"], out session.PlayerInfo.SDKRevision))
+                if (!uint.TryParse(_recv["sdkrevision"], out session.UserInfo.SDKRevision))
                     _errorCode = GPErrorCode.Parse;
             }
             if (_recv.ContainsKey("gamename"))
             {
-                session.PlayerInfo.GameName = _recv["gamename"];
+                session.UserInfo.GameName = _recv["gamename"];
             }
+            if (_recv.ContainsKey("port"))
+                if (!uint.TryParse(_recv["port"], out session.UserInfo.Port))
+                    _errorCode = GPErrorCode.Parse;
         }
 
         protected override void ConstructResponse(GPCMSession session)
         {
-            session.PlayerInfo.SessionKey
-                = _crc.ComputeChecksum(session.PlayerInfo.Nick + session.PlayerInfo.NamespaceID);
+            session.UserInfo.SessionKey
+                = _crc.ComputeChecksum(session.UserInfo.Nick + session.UserInfo.NamespaceID);
 
             string responseProof = ChallengeProof.GenerateProof
             (
-                session.PlayerInfo.UserData,
-                session.PlayerInfo.LoginType,
-                session.PlayerInfo.PartnerID,
-                session.PlayerInfo.ServerChallenge,
-                session.PlayerInfo.UserChallenge,
-                session.PlayerInfo.PasswordHash
+                session.UserInfo.UserData,
+                session.UserInfo.LoginType,
+                session.UserInfo.PartnerID,
+                session.UserInfo.ServerChallenge,
+                session.UserInfo.UserChallenge,
+                session.UserInfo.PasswordHash
             );
 
-            _sendingBuffer = @"\lc\2\sesskey\" + session.PlayerInfo.SessionKey;
+            _sendingBuffer = @"\lc\2\sesskey\" + session.UserInfo.SessionKey;
             _sendingBuffer += @"\proof\" + responseProof;
-            _sendingBuffer += @"\userid\" + session.PlayerInfo.Userid;
-            _sendingBuffer += @"\profileid\" + session.PlayerInfo.Profileid;
+            _sendingBuffer += @"\userid\" + session.UserInfo.Userid;
+            _sendingBuffer += @"\profileid\" + session.UserInfo.Profileid;
 
-            if (session.PlayerInfo.LoginType != LoginType.Nick)
-                _sendingBuffer += @"\uniquenick\" + session.PlayerInfo.UniqueNick;
+            if (session.UserInfo.LoginType != LoginType.Nick)
+                _sendingBuffer += @"\uniquenick\" + session.UserInfo.UniqueNick;
 
             _sendingBuffer += @"\lt\" + session.Id.ToString().Replace("-", "").Substring(0, 22) + "__";
             _sendingBuffer += @"\id\" + _operationID + @"\final\";
 
-            session.PlayerInfo.LoginProcess = LoginStatus.Completed;
+            session.UserInfo.LoginProcess = LoginStatus.Completed;
         }
 
         protected override void DataBaseOperation(GPCMSession session)
         {
 
-            switch (session.PlayerInfo.LoginType)
+            switch (session.UserInfo.LoginType)
             {
                 case LoginType.Nick:
                     NickEmailLogin(session);
@@ -160,7 +163,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 return;
             }
 
-            if (!session.PlayerInfo.IsEmailVerified)
+            if (!session.UserInfo.IsEmailVerified)
             {
                 _errorCode = GPErrorCode.LoginBadEmail;
                 return;
@@ -168,7 +171,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
             // Check the status of the account.
             // If the single profile is banned, the account or the player status
-            if (session.PlayerInfo.IsBlocked)
+            if (session.UserInfo.IsBlocked)
             {
                 _errorCode = GPErrorCode.LoginProfileDeleted;
                 return;
@@ -189,7 +192,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             using (var db = new RetrospyDB())
             {
                 var email = from u in db.Users
-                            where u.Email == session.PlayerInfo.Email
+                            where u.Email == session.UserInfo.Email
                             select u.Userid;
 
                 if (email.Count() == 0)
@@ -201,7 +204,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 var info = from u in db.Users
                            from p in db.Profiles
                            from n in db.Subprofiles
-                           where u.Email == session.PlayerInfo.Email && p.Nick == session.PlayerInfo.Nick && n.Namespaceid == session.PlayerInfo.NamespaceID
+                           where u.Email == session.UserInfo.Email && p.Nick == session.UserInfo.Nick && n.Namespaceid == session.UserInfo.NamespaceID
                            select new
                            {
                                userid = u.Userid,
@@ -218,12 +221,12 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 }
                 else if (info.Count() == 1)
                 {
-                    session.PlayerInfo.Userid = info.First().userid;
-                    session.PlayerInfo.Profileid = info.First().profileid;
-                    session.PlayerInfo.UniqueNick = info.First().uniquenick;
-                    session.PlayerInfo.PasswordHash = info.First().password;
-                    session.PlayerInfo.IsEmailVerified = info.First().emailVerified;
-                    session.PlayerInfo.IsBlocked = info.First().blocked;
+                    session.UserInfo.Userid = info.First().userid;
+                    session.UserInfo.Profileid = info.First().profileid;
+                    session.UserInfo.UniqueNick = info.First().uniquenick;
+                    session.UserInfo.PasswordHash = info.First().password;
+                    session.UserInfo.IsEmailVerified = info.First().emailVerified;
+                    session.UserInfo.IsBlocked = info.First().blocked;
                 }
                 else
                 {
@@ -240,8 +243,8 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 var info = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
                            join u in db.Users on p.Userid equals u.Userid
-                           where n.Uniquenick == session.PlayerInfo.UniqueNick
-                           && n.Namespaceid == session.PlayerInfo.NamespaceID
+                           where n.Uniquenick == session.UserInfo.UniqueNick
+                           && n.Namespaceid == session.UserInfo.NamespaceID
                            select new
                            {
                                userid = u.Userid,
@@ -258,12 +261,12 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 }
                 else if (info.Count() == 1)
                 {
-                    session.PlayerInfo.Userid = info.First().userid;
-                    session.PlayerInfo.Profileid = info.First().profileid;
-                    session.PlayerInfo.UniqueNick = info.First().uniquenick;
-                    session.PlayerInfo.PasswordHash = info.First().password;
-                    session.PlayerInfo.IsEmailVerified = info.First().emailVerified;
-                    session.PlayerInfo.IsBlocked = info.First().blocked;
+                    session.UserInfo.Userid = info.First().userid;
+                    session.UserInfo.Profileid = info.First().profileid;
+                    session.UserInfo.UniqueNick = info.First().uniquenick;
+                    session.UserInfo.PasswordHash = info.First().password;
+                    session.UserInfo.IsEmailVerified = info.First().emailVerified;
+                    session.UserInfo.IsBlocked = info.First().blocked;
                 }
                 else
                 {
@@ -281,8 +284,8 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                           where n.Authtoken == session.PlayerInfo.AuthToken && n.Partnerid == session.PlayerInfo.PartnerID
-                           && n.Namespaceid == session.PlayerInfo.NamespaceID
+                           where n.Authtoken == session.UserInfo.AuthToken && n.Partnerid == session.UserInfo.PartnerID
+                           && n.Namespaceid == session.UserInfo.NamespaceID
                            select new
                            {
                                profileid = n.Profileid,
@@ -301,14 +304,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 }
                 else if (info.Count() == 1)
                 {
-                    session.PlayerInfo.Userid = info.First().userid;
-                    session.PlayerInfo.Profileid = info.First().profileid;
-                    session.PlayerInfo.UniqueNick = info.First().uniquenick;
-                    session.PlayerInfo.PasswordHash = info.First().password;
-                    session.PlayerInfo.IsEmailVerified = info.First().emailVerified;
-                    session.PlayerInfo.IsBlocked = info.First().blocked;
-                    session.PlayerInfo.Nick = info.First().nick;
-                    session.PlayerInfo.Email = info.First().email;
+                    session.UserInfo.Userid = info.First().userid;
+                    session.UserInfo.Profileid = info.First().profileid;
+                    session.UserInfo.UniqueNick = info.First().uniquenick;
+                    session.UserInfo.PasswordHash = info.First().password;
+                    session.UserInfo.IsEmailVerified = info.First().emailVerified;
+                    session.UserInfo.IsBlocked = info.First().blocked;
+                    session.UserInfo.Nick = info.First().nick;
+                    session.UserInfo.Email = info.First().email;
                 }
                 else
                 {
@@ -327,12 +330,12 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         {
             string response = ChallengeProof.GenerateProof
                 (
-                session.PlayerInfo.UserData,
-                session.PlayerInfo.LoginType,
-                session.PlayerInfo.PartnerID,
-                session.PlayerInfo.UserChallenge,
-                session.PlayerInfo.ServerChallenge,
-                session.PlayerInfo.PasswordHash
+                session.UserInfo.UserData,
+                session.UserInfo.LoginType,
+                session.UserInfo.PartnerID,
+                session.UserInfo.UserChallenge,
+                session.UserInfo.ServerChallenge,
+                session.UserInfo.PasswordHash
                 );
             if (_recv["response"] == response)
             {

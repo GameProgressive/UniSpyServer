@@ -3,9 +3,9 @@ using PresenceConnectionManager.Enumerator;
 
 namespace PresenceConnectionManager.Structure
 {
-    public class GPCMPlayerInfo
+    public class UserInfo
     {
-        public ushort OperationID;
+
         /// <summary>
         /// The connected clients Player Id
         /// </summary>
@@ -99,5 +99,7 @@ namespace PresenceConnectionManager.Structure
         public bool IsEmailVerified;
 
         public bool IsBlocked;
+
+        public uint Port;
     }
 }

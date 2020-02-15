@@ -38,7 +38,7 @@ namespace PresenceConnectionManager
         /// </summary>
         protected static Crc16 Crc = new Crc16(Crc16Mode.Standard);
 
-        public GPCMPlayerInfo PlayerInfo = new GPCMPlayerInfo();
+        public UserInfo UserInfo = new UserInfo();
 
         public GPCMSession(TemplateTcpServer server) : base(server)
         {
@@ -77,13 +77,13 @@ namespace PresenceConnectionManager
         //when a user is loged in we update the sessionkey and the Guid to database
         protected override void OnConnected()
         {
-            PlayerInfo.LoginProcess = LoginStatus.Connected;
+            UserInfo.LoginProcess = LoginStatus.Connected;
             ToLog($"[Conn] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
             SendServerChallenge();
         }
         protected override void OnDisconnected()
         {
-            PlayerInfo.LoginProcess = LoginStatus.Disconnected;
+            UserInfo.LoginProcess = LoginStatus.Disconnected;
             ToLog($"[Disc] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
             RemoveGuidAndSessionKeyFromDatabase();
         }
@@ -99,7 +99,7 @@ namespace PresenceConnectionManager
         public void SendServerChallenge()
         {
             // Only send the login challenge once
-            if (PlayerInfo.LoginProcess != LoginStatus.Connected)
+            if (UserInfo.LoginProcess != LoginStatus.Connected)
             {
                 DisconnectByReason(DisconnectReason.ClientChallengeAlreadySent);
                 // Throw the error                
@@ -108,8 +108,8 @@ namespace PresenceConnectionManager
 
             // We send the client the challenge key
             string serverChallengeKey = GameSpyRandom.GenerateRandomString(10, GameSpyLib.Common.GameSpyRandom.StringType.Alpha);
-            PlayerInfo.ServerChallenge = serverChallengeKey;
-            PlayerInfo.LoginProcess = LoginStatus.Processing;
+            UserInfo.ServerChallenge = serverChallengeKey;
+            UserInfo.LoginProcess = LoginStatus.Processing;
             string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", serverChallengeKey, 1);
             SendAsync(sendingBuffer);
         }
