@@ -20,7 +20,7 @@ namespace NatNegotiation.Handler.CommandHandler
             }
 
             client.Version = initPacket.Version;
-            client.Cookie = initPacket.Cookie;
+            Array.Copy(initPacket.Cookie, client.Cookie,4);
             client.ClientIndex = initPacket.ClientIndex;
             client.IsGotInit = true;
 

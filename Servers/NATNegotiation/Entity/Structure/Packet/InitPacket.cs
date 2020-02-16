@@ -4,7 +4,7 @@ using System;
 
 namespace NatNegotiation.Entity.Structure.Packet
 {
-    public class InitPacket:BasePacket
+    public class InitPacket : BasePacket
     {
         public static new readonly int Size = BasePacket.Size + 9;
 
@@ -12,7 +12,7 @@ namespace NatNegotiation.Entity.Structure.Packet
         public byte ClientIndex;
         public byte UseGamePort;
         public byte[] LocalIP = new byte[4];
-        public byte[] LocalPort=new byte[2];
+        public byte[] LocalPort = new byte[2];
 
         public new void Parse(byte[] recv)
         {
@@ -20,8 +20,8 @@ namespace NatNegotiation.Entity.Structure.Packet
             PortType = recv[13];//02
             ClientIndex = recv[14];//00
             UseGamePort = recv[15];//00
-            LocalIP = ByteExtensions.SubBytes(recv, 16, sizeof(uint));//00 - 00 - 00 - 00
-            LocalPort = ByteExtensions.SubBytes(recv, 20, sizeof(ushort));//00 - 00
+            Array.Copy(ByteExtensions.SubBytes(recv, 16, sizeof(uint)), LocalIP, 4);
+            Array.Copy(ByteExtensions.SubBytes(recv, 20, sizeof(uint)), LocalPort, 2);
         }
 
         public byte[] GenerateByteArray()
@@ -36,7 +36,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             TempBytes[BasePacket.Size + 1] = ClientIndex;
             TempBytes[BasePacket.Size + 2] = UseGamePort;
             LocalIP.CopyTo(TempBytes, BasePacket.Size + 3);
-           LocalPort.CopyTo(TempBytes, BasePacket.Size + 7);
+            LocalPort.CopyTo(TempBytes, BasePacket.Size + 7);
             return TempBytes;
         }
 

@@ -40,7 +40,7 @@ namespace NatNegotiation.Entity.Structure.Packet
 
             Version = recv[MagicData.Length];
             PacketType = recv[MagicData.Length + 1];
-            Cookie = ByteExtensions.SubBytes(recv, MagicData.Length + 2, 4);
+            Array.Copy(ByteExtensions.SubBytes(recv, MagicData.Length + 2, 4), Cookie, 4);
         }
 
 

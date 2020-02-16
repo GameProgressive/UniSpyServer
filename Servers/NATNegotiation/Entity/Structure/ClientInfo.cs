@@ -35,8 +35,8 @@ namespace NATNegotiation.Entity.Structure
         public void Parse(byte[] recv)
         {
             Version = recv[BasePacket.MagicData.Length];
-            ExternalIP = NNFormat.IPToByte(this.EndPoint);
-            ExternalPort = NNFormat.PortToByte(this.EndPoint);
+            Array.Copy(NNFormat.IPToByte(this.EndPoint), ExternalIP, 4);
+            Array.Copy(NNFormat.PortToByte(this.EndPoint), ExternalPort, 2);
         }
     }
 }
