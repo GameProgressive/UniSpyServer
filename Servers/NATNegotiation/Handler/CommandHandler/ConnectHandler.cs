@@ -1,6 +1,7 @@
 ﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Handler.SystemHandler;
 using System;
 using System.Net;
 
@@ -22,22 +23,22 @@ namespace NatNegotiation.Handler.CommandHandler
                 PacketType = (byte)NatPacketType.Connect,
                 Cookie = client.Cookie,
                 Finished = 0,
-                RemoteIP = ((IPEndPoint)client.EndPoint).Address.GetAddressBytes(),
-                RemotePort = BitConverter.GetBytes(((IPEndPoint)client.EndPoint).Port)
+                RemoteIP = NNFormat.IPToByte(client.EndPoint),
+                RemotePort = NNFormat.PortToByte(client.EndPoint)
             };
             byte[] buffer = connPacket.GenerateByteArray();
 
             server.SendAsync(client.EndPoint, buffer);
             client.SentConnectPacketTime = DateTime.Now;
-            client.Connected = true;
+            client.IsConnected = true;
 
 
             //send to other client
             if (other == null)
             { return; }
 
-            connPacket.RemoteIP = ((IPEndPoint)other.EndPoint).Address.GetAddressBytes();
-            connPacket.RemotePort = BitConverter.GetBytes(((IPEndPoint)other.EndPoint).Port);
+            connPacket.RemoteIP = NNFormat.IPToByte(other.EndPoint);
+            connPacket.RemotePort = NNFormat.PortToByte(other.EndPoint);
 
             buffer = connPacket.GenerateByteArray();
             server.SendAsync(other.EndPoint, buffer);

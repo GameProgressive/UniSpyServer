@@ -23,4 +23,7 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Handler\SystemHandler\" />
+  </ItemGroup>
 </Project>

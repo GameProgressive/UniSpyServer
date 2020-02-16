@@ -11,7 +11,7 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             InitPacket initPacket = new InitPacket();
             initPacket.Parse(recv);
-            initPacket.LocalIp = ((IPEndPoint)client.EndPoint).Address.GetAddressBytes();
+            initPacket.LocalIP = ((IPEndPoint)client.EndPoint).Address.GetAddressBytes();
             initPacket.LocalPort = BitConverter.GetBytes(((IPEndPoint)client.EndPoint).Port);
             byte[] buffer = initPacket.GenerateByteArray();
             server.SendAsync(client.EndPoint, buffer);

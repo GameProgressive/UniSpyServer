@@ -11,10 +11,24 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             InitPacket initPacket = new InitPacket();
             initPacket.Parse(recv);
+            //if (initPacket.LocalPort == client.ExternalPort && initPacket.LocalIP == client.ExternalIP)
+            //{
+            //    initPacket.PortType = (byte)NatPortType.NN1;
+            //}
+            //else if (initPacket.LocalIP == client.ExternalIP)
+            //{
+            //    initPacket.PortType = (byte)NatPortType.NN3;
+            //}
+            //else if (initPacket.LocalPort == client.ExternalPort)
+            //{
+            //    initPacket.PortType = (byte)NatPortType.NN2;
+            //}
+
             initPacket.PacketType = (byte)NatPacketType.ErtTest;
+
             if (initPacket.PortType == (byte)NatPortType.NN1)
             {
-               byte[] buffer= initPacket.GenerateByteArray();
+                byte[] buffer = initPacket.GenerateByteArray();
                 server.SendAsync(client.EndPoint, buffer);
                 return;
             }

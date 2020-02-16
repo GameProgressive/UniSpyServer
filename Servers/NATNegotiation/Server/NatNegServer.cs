@@ -47,8 +47,8 @@ namespace NatNegotiation
             }
             foreach (var c in ClientList)
             {
-                if (c.Connected)
-                    if (c.GotConnectAck)
+                if (c.IsConnected)
+                    if (c.IsGotConnectAck)
                         if (DateTime.Now.Second - c.SentConnectPacketTime.Second > 5)
                         {
                             //send connect packet to c it self
@@ -58,7 +58,7 @@ namespace NatNegotiation
             foreach (var c in ClientList)
             {
                 if (DateTime.Now.Second - c.ConnectTime.Second > 30)
-                    if (!c.Connected)
+                    if (!c.IsConnected)
                     {
                         //send DeadHeatBeat notice
                         ConnectHandler.SendDeadHeartBeatNotice(this, c);

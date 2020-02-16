@@ -11,7 +11,7 @@ namespace NatNegotiation.Entity.Structure.Packet
         public byte PortType;
         public byte ClientIndex;
         public byte UseGamePort;
-        public byte[] LocalIp = new byte[4];
+        public byte[] LocalIP = new byte[4];
         public byte[] LocalPort=new byte[2];
 
         public new void Parse(byte[] recv)
@@ -20,7 +20,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             PortType = recv[13];//02
             ClientIndex = recv[14];//00
             UseGamePort = recv[15];//00
-            LocalIp = ByteExtensions.SubBytes(recv, 16, sizeof(uint));//00 - 00 - 00 - 00
+            LocalIP = ByteExtensions.SubBytes(recv, 16, sizeof(uint));//00 - 00 - 00 - 00
             LocalPort = ByteExtensions.SubBytes(recv, 20, sizeof(ushort));//00 - 00
         }
 
@@ -35,7 +35,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             TempBytes[BasePacket.Size] = PortType;
             TempBytes[BasePacket.Size + 1] = ClientIndex;
             TempBytes[BasePacket.Size + 2] = UseGamePort;
-            LocalIp.CopyTo(TempBytes, BasePacket.Size + 3);
+            LocalIP.CopyTo(TempBytes, BasePacket.Size + 3);
            LocalPort.CopyTo(TempBytes, BasePacket.Size + 7);
             return TempBytes;
         }

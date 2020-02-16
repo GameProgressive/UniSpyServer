@@ -2,6 +2,8 @@
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Handler.CommandHandler;
+using NATNegotiation.Handler.SystemHandler;
 using System;
 using System.Linq;
 using System.Net;
@@ -13,7 +15,8 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
         public static void Switch(NatNegServer server, EndPoint endPoint, byte[] recv)
         {
             ClientInfo client = NatNegServer.ClientList.Where(c => c.EndPoint == endPoint).First();
-            client.Version = recv[BasePacket.MagicData.Length];
+            //parse basic info
+            client.Parse(recv);
 
             client.LastPacketTime = DateTime.Now;
             try
@@ -34,12 +37,15 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                         natify.Handle(server, client, recv);
                         break;
                     case NatPacketType.ConnectAck:
-                        client.GotConnectAck = true;
+                        client.IsGotConnectAck = true;
                         break;
                     case NatPacketType.Report:
                         ReportHandler report = new ReportHandler();
                         report.Handle(server, client, recv);
-
+                      break;
+                    case NatPacketType.ErtAck:
+                        ErtACKHandler ert = new ErtACKHandler();
+                        ert.Handle(server, client, recv);
                         break;
                     default:
                         server.UnknownDataRecived(recv);

@@ -8,9 +8,21 @@
     }
     public enum NatPortType
     {
+        /// <summary>
+        /// Not determined
+        /// </summary>
         GP,
+        /// <summary>
+        /// solicited ERT reply
+        /// </summary>
         NN1,
+        /// <summary>
+        /// unsolicited IP ERT reply
+        /// </summary>
         NN2,
+        /// <summary>
+        /// unsolicited IP&Port ERT reply
+        /// </summary>
         NN3
     }
     public enum NatPacketType

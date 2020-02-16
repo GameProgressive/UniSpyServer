@@ -22,13 +22,13 @@ namespace NatNegotiation.Handler.CommandHandler
             client.Version = initPacket.Version;
             client.Cookie = initPacket.Cookie;
             client.ClientIndex = initPacket.ClientIndex;
-            client.GotInit = true;
+            client.IsGotInit = true;
 
             recv[BasePacket.MagicData.Length + 1] = (byte)NatPacketType.InitAck;
 
             server.SendAsync(client.EndPoint, recv);
 
-            if (client.GotConnectAck)
+            if (client.IsGotConnectAck)
             {
                 var c = NatNegServer.ClientList.Where(c => c.Cookie == client.Cookie && c.ClientIndex == (client.ClientIndex == 1 ? 0 : 1) && c != client);
 
@@ -36,7 +36,7 @@ namespace NatNegotiation.Handler.CommandHandler
                     return;
                 ClientInfo other = c.First();
 
-                if (client.GotConnectAck || other.GotConnectAck || !client.GotInit)
+                if (client.IsGotConnectAck || other.IsGotConnectAck || !client.IsGotInit)
                     return;
 
                 ConnectHandler.SendConnectPacket(server, client, other);
