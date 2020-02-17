@@ -17,11 +17,11 @@ namespace NatNegotiation.Entity.Structure.Packet
         public new void Parse(byte[] recv)
         {
             base.Parse(recv);
-            PortType = recv[13];//02
-            ClientIndex = recv[14];//00
-            UseGamePort = recv[15];//00
-            Array.Copy(ByteExtensions.SubBytes(recv, 16, sizeof(uint)), LocalIP, 4);
-            Array.Copy(ByteExtensions.SubBytes(recv, 20, sizeof(uint)), LocalPort, 2);
+            PortType = recv[BasePacket.Size];//
+            ClientIndex = recv[BasePacket.Size+1];//00
+            UseGamePort = recv[BasePacket.Size+2];//00
+            Array.Copy(ByteExtensions.SubBytes(recv, BasePacket.Size+3, sizeof(uint)), LocalIP, 4);
+            Array.Copy(ByteExtensions.SubBytes(recv, BasePacket.Size+7, sizeof(uint)), LocalPort, 2);
         }
 
         public byte[] GenerateByteArray()
@@ -29,7 +29,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             byte[] TempBytes = new byte[Size];
             MagicData.CopyTo(TempBytes, 0);
             TempBytes[MagicData.Length] = Version;
-            TempBytes[MagicData.Length + 1] = (byte)NatPacketType.InitAck;
+            TempBytes[MagicData.Length + 1] = PacketType;
             Cookie.CopyTo(TempBytes, MagicData.Length + 2);
 
             TempBytes[BasePacket.Size] = PortType;

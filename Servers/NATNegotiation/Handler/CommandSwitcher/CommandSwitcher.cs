@@ -12,13 +12,9 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(NatNegServer server, EndPoint endPoint, byte[] recv)
+        public static void Switch(NatNegServer server, ClientInfo client, byte[] recv)
         {
-            ClientInfo client = NatNegServer.ClientList.Where(c => c.EndPoint == endPoint).First();
-            //parse basic info
-            client.Parse(recv);
-
-            client.LastPacketTime = DateTime.Now;
+           
             try
             {
                 //BytesRecieved[7] is nnpacket.PacketType.

@@ -20,18 +20,22 @@ namespace NatNegotiation
         public NatNegServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
             
-            _CheckTimer.Start();
-            _CheckTimer.Elapsed+=CheckClientTimeOut;
+            //_CheckTimer.Start();
+            //_CheckTimer.Elapsed+=CheckClientTimeOut;
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
+            if (message.Length < 5)
+                return;
             //check and add client into clientList
-            if (ClientList.Where(c => c.EndPoint == endPoint).Count() == 0)
+            if (ClientList.Where(c => c.EndPoint.Equals(endPoint)).Count() == 0)
             {
-                ClientList.Add(new ClientInfo { EndPoint = endPoint });
+                ClientList.Add(new ClientInfo { EndPoint = endPoint,ConnectTime=DateTime.Now });
             }
-            CommandSwitcher.Switch(this, endPoint, message);
+            ClientInfo client = ClientList.Where(c => c.EndPoint.Equals(endPoint)).First();
+            client.LastPacketTime = DateTime.Now;
+            CommandSwitcher.Switch(this, client, message);
         }
 
         private void CheckClientTimeOut(object sender,System.Timers.ElapsedEventArgs e)

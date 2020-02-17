@@ -26,17 +26,17 @@ namespace NatNegotiation.Entity.Structure.Packet
                 return;
             }
             //check magic data
-            if (!ByteExtensions.SubBytes(recv, 0, MagicData.Length).Equals(MagicData))
-            {
-                ErrorCode = NNErrorCode.MagicDataError;
-                return;
-            }
+            //if (!ByteExtensions.SubBytes(recv, 0, MagicData.Length).Equals(MagicData))
+            //{
+            //    ErrorCode = NNErrorCode.MagicDataError;
+            //    return;
+            //}
             //check packet type
-            if (recv[MagicData.Length + 2] < 0 || recv[MagicData.Length + 2] > (byte)NatPacketType.PreInitAck)
-            {
-                ErrorCode = NNErrorCode.PacketTypeError;
-                return;
-            }
+            //if (recv[MagicData.Length + 2] < 0 || recv[MagicData.Length + 2] > (byte)NatPacketType.PreInitAck)
+            //{
+            //    ErrorCode = NNErrorCode.PacketTypeError;
+            //    return;
+            //}
 
             Version = recv[MagicData.Length];
             PacketType = recv[MagicData.Length + 1];

@@ -3,8 +3,8 @@
     public class GameInfo
     {
         public int ID;
-        public byte Name;
-        public byte Secretkey;
+        public string Name;
+        public string Secretkey;
         public ushort QueryPort;
         public ushort BackendFlags;
         public uint ServicesDisabled;

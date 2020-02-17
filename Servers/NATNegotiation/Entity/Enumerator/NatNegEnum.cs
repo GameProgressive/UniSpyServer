@@ -6,26 +6,26 @@
         DeadHeartBeat,
         InitPacketTimeOut
     }
-    public enum NatPortType
+    public enum NatPortType:byte
     {
         /// <summary>
-        /// Not determined
+        /// IP and Port both not restricted
         /// </summary>
         GP,
         /// <summary>
-        /// solicited ERT reply
+        /// IP and Port both restricted
         /// </summary>
         NN1,
         /// <summary>
-        /// unsolicited IP ERT reply
+        /// IP not restricted
         /// </summary>
         NN2,
         /// <summary>
-        /// unsolicited IP&Port ERT reply
+        /// Port not restriced
         /// </summary>
         NN3
     }
-    public enum NatPacketType
+    public enum NatPacketType:byte
     {
         Init ,
         InitAck,
@@ -45,7 +45,7 @@
         PreInit ,
         PreInitAck ,
     }
-    enum NatifyPacket
+    enum NatifyPacket:byte
     {
         PacketMap1a,
         PacketMap2,

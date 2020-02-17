@@ -1,19 +1,27 @@
 ﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
-using System.Net;
+using NATNegotiation.Handler;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class ReportHandler
+    public class ReportHandler : NatNegHandlerBase
     {
-        public void Handle(NatNegServer server, ClientInfo client, byte[] recv)
+
+        protected override void ConvertRequest(ClientInfo client, byte[] recv)
         {
-            ReportPacket reportPacket = new ReportPacket();
-            reportPacket.Parse(recv);
-            reportPacket.PacketType = (byte)NatPacketType.ReportAck;
-            byte[] buffer = reportPacket.GenerateByteArray();
-            server.SendAsync(client.EndPoint, buffer);
+            _reportPacket = new ReportPacket();
+            _reportPacket.Parse(recv);
+        }
+
+        protected override void ProcessInformation(ClientInfo client, byte[] recv)
+        {
+            client.IsGotReport = true;
+        }
+        protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
+        {
+            _reportPacket.PacketType = (byte)NatPacketType.ReportAck;
+            _sendingBuffer = _reportPacket.GenerateByteArray();
         }
     }
 }

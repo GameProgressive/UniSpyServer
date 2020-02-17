@@ -26,7 +26,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             byte[] TempBytes = new byte[Size];
             MagicData.CopyTo(TempBytes, 0);
             TempBytes[MagicData.Length] = Version;
-            TempBytes[MagicData.Length + 1] = (byte)PacketType;
+            TempBytes[MagicData.Length + 1] = PacketType;
             Cookie.CopyTo(TempBytes, MagicData.Length + 2);
 
             // Cache the client info on the init packet and then access them with the cookie and send GotConnectAck to true

@@ -1,47 +1,52 @@
-﻿using NatNegotiation.Entity.Enumerator;
+﻿using GameSpyLib.Encryption;
+using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Enumerator;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Handler;
+using NATNegotiation.Handler.SystemHandler;
 using System;
 using System.Linq;
 using System.Net;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class InitHandler
+    public class InitHandler:NatNegHandlerBase
     {
-        public void Handle(NatNegServer server, ClientInfo client, byte[] recv)
+    
+        protected override void ConvertRequest(ClientInfo client, byte[] recv)
         {
-            InitPacket initPacket = new InitPacket();
-            initPacket.Parse(recv);
-            if (initPacket.ErrorCode != NNErrorCode.NoError)
-            {
-                return;
-            }
+            _initPacket = new InitPacket();
+            _initPacket.Parse(recv);
+        }
 
-            client.Version = initPacket.Version;
-            Array.Copy(initPacket.Cookie, client.Cookie,4);
-            client.ClientIndex = initPacket.ClientIndex;
+        protected override void ProcessInformation(ClientInfo client, byte[] recv)
+        {
+            client.Version = _initPacket.Version;
+            client.PortType = _initPacket.PortType;
+            Array.Copy(_initPacket.Cookie, client.Cookie, 4);
+            Array.Copy(NNFormat.IPToByte(client.EndPoint), client.PublicIP, 4);
+            Array.Copy(NNFormat.PortToByte(client.EndPoint), client.PublicPort, 2);
+           // client.GameName = ByteExtensions.SubBytes(recv, InitPacket.Size - 1, recv.Length - 1);
+            client.ClientIndex = _initPacket.ClientIndex;
             client.IsGotInit = true;
+        }
 
-            recv[BasePacket.MagicData.Length + 1] = (byte)NatPacketType.InitAck;
+        protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
+        {
+            //we parse everything we got about client2 into response
+            var other = NatNegServer.ClientList.Where(o => o.PublicIP == _initPacket.LocalIP && o.PublicPort == _initPacket.LocalPort);
+            if (other.Count() < 1)
+                return;
 
-            server.SendAsync(client.EndPoint, recv);
+            ClientInfo client2 = other.First();
 
-            if (client.IsGotConnectAck)
-            {
-                var c = NatNegServer.ClientList.Where(c => c.Cookie == client.Cookie && c.ClientIndex == (client.ClientIndex == 1 ? 0 : 1) && c != client);
+            _initPacket.PacketType = (byte)NatPacketType.InitAck;
+            _initPacket.PortType = client2.PortType;
+            Array.Copy(_initPacket.LocalIP, client2.PublicIP, 4);
+            Array.Copy(_initPacket.LocalPort, client2.PublicPort, 2);
 
-                if (c.Count() == 0)
-                    return;
-                ClientInfo other = c.First();
-
-                if (client.IsGotConnectAck || other.IsGotConnectAck || !client.IsGotInit)
-                    return;
-
-                ConnectHandler.SendConnectPacket(server, client, other);
-
-            }
+            _sendingBuffer = _initPacket.GenerateByteArray();
         }
     }
 }

@@ -4,7 +4,7 @@ using System;
 
 namespace NatNegotiation.Entity.Structure.Packet
 {
-    public class ReportPacket :BasePacket
+    public class ReportPacket : BasePacket
     {
         public new static readonly int Size = BasePacket.Size + 61;
 
@@ -33,7 +33,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             byte[] TempBytes = new byte[Size];
             MagicData.CopyTo(TempBytes, 0);
             TempBytes[MagicData.Length] = Version;
-            TempBytes[MagicData.Length + 1] = (byte)PacketType;
+            TempBytes[MagicData.Length + 1] = PacketType;
             Cookie.CopyTo(TempBytes, MagicData.Length + 2);
 
             TempBytes[BasePacket.Size] = PortType;

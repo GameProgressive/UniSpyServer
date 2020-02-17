@@ -13,13 +13,15 @@ namespace NATNegotiation.Entity.Structure
         public byte Version;
         public byte[] Cookie = new byte[4];
         public byte ClientIndex;
+        public byte PortType;
         public bool IsConnected;
         public bool IsGotInit;
         public bool IsGotConnectAck;
         public bool IsGotErtAck;
+        public bool IsGotReport;
         public GameInfo Game;
         public EndPoint EndPoint;
-
+        public byte[] GameName;
        
         public byte[] PublicIP = new byte[4];
         public byte[] PublicPort = new byte[2];

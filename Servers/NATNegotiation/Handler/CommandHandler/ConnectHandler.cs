@@ -10,7 +10,9 @@ namespace NatNegotiation.Handler.CommandHandler
     public class ConnectHandler
     {
         public void Handle(NatNegServer server, EndPoint endPoint, byte[] recv)
-        {
+        { 
+            //find the client2 that client1 want to connect
+
             //ConnectPacket connectPacket = new ConnectPacket(recv);
             //byte[] sendingBuffer = connectPacket.CreateReplyPacket();
             //server.SendAsync(server.Socket.RemoteEndPoint, sendingBuffer);
