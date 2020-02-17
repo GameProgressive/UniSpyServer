@@ -61,6 +61,7 @@ namespace NatNegotiation.Entity.Structure.Packet
                     size += 6;
                     break;
                 case NatPacketType.AddressCheck:
+                case NatPacketType.AddressReply:
                 case NatPacketType.NatifyRequest:
                 case NatPacketType.ErtTest:
                 case NatPacketType.ErtAck:

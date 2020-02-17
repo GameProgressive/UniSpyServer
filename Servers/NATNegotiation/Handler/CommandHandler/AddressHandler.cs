@@ -1,4 +1,5 @@
-﻿using NatNegotiation.Entity.Structure.Packet;
+﻿using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using System;
 using System.Net;
@@ -11,8 +12,9 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             InitPacket initPacket = new InitPacket();
             initPacket.Parse(recv);
-            initPacket.LocalIP = ((IPEndPoint)client.EndPoint).Address.GetAddressBytes();
-            initPacket.LocalPort = BitConverter.GetBytes(((IPEndPoint)client.EndPoint).Port);
+            initPacket.PacketType=(byte)NatPacketType.AddressReply;
+            Array.Copy(client.PublicIP, initPacket.LocalIP, 4);
+            Array.Copy(client.PublicPort, initPacket.LocalPort, 2);
             byte[] buffer = initPacket.GenerateByteArray();
             server.SendAsync(client.EndPoint, buffer);
         }

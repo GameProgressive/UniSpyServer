@@ -23,7 +23,7 @@ namespace NatNegotiation.Entity.Structure.Packet
 
         public byte[] GenerateByteArray()
         {
-            byte[] TempBytes = new byte[GetReplyPacketSize()];
+            byte[] TempBytes = new byte[Size];
             MagicData.CopyTo(TempBytes, 0);
             TempBytes[MagicData.Length] = Version;
             TempBytes[MagicData.Length + 1] = (byte)PacketType;
