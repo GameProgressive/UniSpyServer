@@ -1,12 +1,8 @@
 ﻿using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
-using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler.CommandHandler;
-using NATNegotiation.Handler.SystemHandler;
 using System;
-using System.Linq;
-using System.Net;
 
 namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
@@ -22,7 +18,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                 {
                     case NatPacketType.Init:
                         InitHandler init = new InitHandler();
-                        init.Handle(server,client,recv);
+                        init.Handle(server, client, recv);
                         break;
                     case NatPacketType.AddressCheck:
                         AddressHandler address = new AddressHandler();

@@ -44,7 +44,7 @@ namespace NATNegotiation.Handler
         {
             if(_sendingBuffer==null)
                 return;
-            server.Send(client.EndPoint, _sendingBuffer);
+            server.SendAsync(client.EndPoint, _sendingBuffer);
         }
     }
 }

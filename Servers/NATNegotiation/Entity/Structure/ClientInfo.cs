@@ -39,6 +39,7 @@ namespace NATNegotiation.Entity.Structure
             Version = recv[BasePacket.MagicData.Length];
             Array.Copy(NNFormat.IPToByte(this.EndPoint), PublicIP, 4);
             Array.Copy(NNFormat.PortToByte(this.EndPoint), PublicPort, 2);
+            LastPacketTime = DateTime.Now;
         }
     }
 }

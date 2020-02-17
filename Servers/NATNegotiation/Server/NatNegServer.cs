@@ -34,7 +34,7 @@ namespace NatNegotiation
                 ClientList.Add(new ClientInfo { EndPoint = endPoint,ConnectTime=DateTime.Now });
             }
             ClientInfo client = ClientList.Where(c => c.EndPoint.Equals(endPoint)).First();
-            client.LastPacketTime = DateTime.Now;
+            client.Parse(message);
             CommandSwitcher.Switch(this, client, message);
         }
 
