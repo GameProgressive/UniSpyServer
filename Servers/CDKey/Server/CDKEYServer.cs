@@ -46,9 +46,6 @@ namespace CDKey
             {
 
             }
-            DB?.Close();
-            DB?.Dispose();
-
             base.Dispose(disposingManagedResources);
         }
 
