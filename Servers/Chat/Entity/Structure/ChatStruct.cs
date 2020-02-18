@@ -51,7 +51,7 @@
     {
         public const int End = 0;
         public const int Ban = 1;
-        public const int Invite_Only= 2;
+        public const int Invite_Only = 2;
         public const int LIMIT = 3;
         public const int PRIVATE = 4;
         public const int SECRET = 5;

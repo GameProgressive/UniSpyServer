@@ -1,11 +1,9 @@
 ﻿using GameSpyLib.Logging;
 using System;
-using LinqToDB.Data;
-using System.Linq;
 
 namespace PresenceSearchPlayer
 {
-    class Program
+    internal class Program
     {
         public static readonly string ServerName = "GPSP";
         public static string BasePath { get; protected set; }
@@ -21,7 +19,7 @@ namespace PresenceSearchPlayer
         /// </summary>
         /// <param name="args">List of arguments passed to the application</param>
         ///<param name="bool_InitPathArg">argument for Main()</param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StatsAndTracking.Handler.CommandHandler.NewGame
+﻿namespace StatsAndTracking.Handler.CommandHandler.NewGame
 {
     public class NewGame
     {

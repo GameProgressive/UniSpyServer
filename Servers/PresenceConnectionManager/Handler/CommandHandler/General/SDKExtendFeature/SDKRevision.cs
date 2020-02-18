@@ -1,7 +1,5 @@
-﻿using PresenceConnectionManager.Handler.Buddy.SendBlockList;
-using PresenceConnectionManager.Handler.Buddy.SendBuddies;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using System.Collections;
 
 namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
 {
@@ -10,81 +8,61 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
         /// <summary>
         /// Extended message support
         /// </summary>
-        public const int GPINewAuthNotification = 1;
-        
+        public const uint GPINewAuthNotification = 0b_1;//1
+
         /// <summary>
         /// Remove friend from remote
         /// </summary>
-        public const int GPINewRevokeNotification = 2;
+        public const uint GPINewRevokeNotification = 0b_10;//10
         /// <summary>
         /// New Status Info support
         /// </summary>
-        public const int GPINewStatusNotification = 4;
+        public const uint GPINewStatusNotification = 0b_100;//1000
         /// <summary>
         /// Buddy List + Block List retrieval on login
         /// </summary>
-        public const int GPINewListRetrevalOnLogin = 8;
+        public const uint GPINewListRetrevalOnLogin = 0b_1000;//
         /// <summary>
         /// Remote Auth logins now return namespaceid/partnerid on login
         /// </summary>
-        public const int GPIRemoteAuthIDSNotification = 16;
+        public const uint GPIRemoteAuthIDSNotification = 0b_10000;
         /// <summary>
         /// New CD Key registration style as opposed to using product ids
         /// </summary>
-        public const int GPINewCDKeyRegistration = 32;
+        public const uint GPINewCDKeyRegistration = 0b_100000;
 
-        public const int Crysis2SDKRevision =
-            Type3;
-
-
-        public const int Type1 =
-            GPINewAuthNotification +
-            GPINewRevokeNotification +
-            GPINewListRetrevalOnLogin;
-
-        public const int Type2 =
-            GPINewAuthNotification +
-            GPINewRevokeNotification +
-            GPINewStatusNotification +
-            GPINewListRetrevalOnLogin;
-
-        public const int Type3 =
-            GPINewAuthNotification +
-            GPINewRevokeNotification +
-            GPINewListRetrevalOnLogin +
-            GPINewCDKeyRegistration;
-
-        public const int Type4 =
-            GPINewAuthNotification +
-            GPINewRevokeNotification +
-            GPINewListRetrevalOnLogin +
-            GPIRemoteAuthIDSNotification +
-            GPINewCDKeyRegistration;
         /// <summary>
         /// Tell server send back extra information according to the number of  sdkrevision
         /// </summary>
-        public static void Switch(GPCMSession session)
+        public static void ExtendedFunction(GPCMSession session)
         {
-            switch (Convert.ToInt32(session.PlayerInfo.SDKRevision))
+
+            var bits = new BitArray(BitConverter.GetBytes(session.UserInfo.SDKRevision));
+            if (bits[0])
             {
-                case Type1:
-                    SendBuddiesHandler.SendBuddyList(session);
-                    SendBlockListHandler.SendBlockList(session);
-                    break;
-                case Type2:
-                    SendBuddiesHandler.SendBuddyList(session);
-                    SendBlockListHandler.SendBlockList(session);
-                    break;
-                case Type3:
-                    SendBuddiesHandler.SendBuddyList(session);
-                    break;
-                case Type4:
-                    SendBuddiesHandler.SendBuddyList(session);
-                    break;
-                default:
-                    session.ToLog("No sdkrevision found");
-                    break;
+                //Send add friend request
             }
+            if (bits[1])
+            {
+                //send revoke request
+            }
+            if (bits[2])
+            {
+                //send new status info
+            }
+            if (bits[3])
+            {
+                //send buddy list and block list
+            }
+            if (bits[4])
+            {
+                //Remote auth
+            }
+            if (bits[5])
+            {
+                //register cdkey with product id
+            }
+
         }
     }
 }

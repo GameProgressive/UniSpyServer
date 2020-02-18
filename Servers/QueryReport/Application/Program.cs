@@ -3,7 +3,7 @@ using System;
 
 namespace QueryReport.Application
 {
-    class Program
+    internal class Program
     {
         public static readonly string ServerName = "QR";
         public static string BasePath { get; protected set; }
@@ -17,7 +17,7 @@ namespace QueryReport.Application
         /// </summary>
         /// <param name="args">List of arguments passed to the application</param>
         ///<param name="bool_InitPathArg">argument for Main()</param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;

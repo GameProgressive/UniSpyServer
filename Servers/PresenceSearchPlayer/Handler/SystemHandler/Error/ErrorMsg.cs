@@ -1,5 +1,4 @@
-﻿using System;
-using PresenceSearchPlayer.Enumerator;
+﻿using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Error
 {

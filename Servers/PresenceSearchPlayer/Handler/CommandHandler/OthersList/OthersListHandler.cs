@@ -1,9 +1,7 @@
-﻿using GameSpyLib.Common;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {

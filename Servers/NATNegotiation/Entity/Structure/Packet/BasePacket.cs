@@ -1,8 +1,6 @@
 ﻿using GameSpyLib.Encryption;
-using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
 using NATNegotiation.Entity.Enumerator;
-using NATNegotiation.Entity.Structure;
 using System;
 
 namespace NatNegotiation.Entity.Structure.Packet
@@ -12,7 +10,7 @@ namespace NatNegotiation.Entity.Structure.Packet
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public byte Version;
         public byte PacketType;
-        public byte[] Cookie= new byte[4];
+        public byte[] Cookie = new byte[4];
 
         public static readonly int Size = 12;
         public NNErrorCode ErrorCode { get; protected set; }

@@ -1,8 +1,7 @@
-﻿using System;
-using GameSpyLib.Common;
-using System.Collections.Generic;
+﻿using GameSpyLib.Common;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Error;
+using System.Collections.Generic;
 
 
 namespace PresenceConnectionManager.Handler
@@ -20,6 +19,8 @@ namespace PresenceConnectionManager.Handler
         {
             _recv = recv;
         }
+        protected GPCMHandlerBase() { }
+
         public override void Handle(GPCMSession session)
         {
             CheckRequest(session);

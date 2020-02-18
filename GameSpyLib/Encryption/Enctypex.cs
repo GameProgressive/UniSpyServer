@@ -305,7 +305,7 @@ namespace GameSpyLib.Encryption
             char[] data = plaintext.ToCharArray();
             int index = 0;
             string temp;
-            switch(type)
+            switch (type)
             {
                 case XorEncodingType.Type0:
                     temp = enc0;
@@ -323,7 +323,7 @@ namespace GameSpyLib.Encryption
                     temp = enc0;
                     break;
             }
-            
+
             for (int i = 0; length > 0; length--)
             {
                 if (i >= temp.Length)

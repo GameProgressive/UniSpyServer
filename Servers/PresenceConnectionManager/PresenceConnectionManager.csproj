@@ -19,22 +19,10 @@
 
   <ItemGroup>
     <Compile Remove="Handler\CommandHandler\Buddy\**" />
-    <Compile Remove="Handler\CommandHandler\General\BasicStatusInfo\**" />
-    <Compile Remove="Handler\CommandHandler\General\KeepAlive\**" />
-    <Compile Remove="Handler\CommandHandler\General\RegisterCDKey\**" />
-    <Compile Remove="Handler\CommandHandler\General\SDKExtendFeature\**" />
     <Compile Remove="Handler\CommandHandler\Profile\**" />
     <EmbeddedResource Remove="Handler\CommandHandler\Buddy\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\General\BasicStatusInfo\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\General\KeepAlive\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\General\RegisterCDKey\**" />
-    <EmbeddedResource Remove="Handler\CommandHandler\General\SDKExtendFeature\**" />
     <EmbeddedResource Remove="Handler\CommandHandler\Profile\**" />
     <None Remove="Handler\CommandHandler\Buddy\**" />
-    <None Remove="Handler\CommandHandler\General\BasicStatusInfo\**" />
-    <None Remove="Handler\CommandHandler\General\KeepAlive\**" />
-    <None Remove="Handler\CommandHandler\General\RegisterCDKey\**" />
-    <None Remove="Handler\CommandHandler\General\SDKExtendFeature\**" />
     <None Remove="Handler\CommandHandler\Profile\**" />
   </ItemGroup>
 
@@ -49,8 +37,23 @@
 
   <ItemGroup>
     <Folder Include="Entity\Interface\" />
+    <Folder Include="Handler\CommandHandler\Buddy\Revoke\" />
+    <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Handler\CommandHandler\General\Login\Misc\ChallangeVerify.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Handler\CommandHandler\Buddy\AddBlock\AddBlockHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\AddBuddy\AddBuddyHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\BuddyStatusInfo\BuddyStatusInfo.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\DelBuddy\DelBuddyHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\InviteTo\InviteToHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\SendBlockList\SendBlockList.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\SendBuddyList\SendBuddyList.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\StatusInfo\BasicStatusInfo.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\NewProfile\NewProfileHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\RegisterNick\RegisterNickHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\UpdateUI\UpdateUiHandler.cs" />
   </ItemGroup>
 </Project>

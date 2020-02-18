@@ -2,11 +2,10 @@
 using GameSpyLib.Network;
 using QueryReport.Entity.Structure;
 using QueryReport.Handler.CommandHandler.ServerList;
-using System.Collections.Concurrent;
-using System.Net;
-using System.Timers;
 using QueryReport.Handler.CommandSwitcher;
 using System.Collections.Generic;
+using System.Net;
+using System.Timers;
 
 namespace QueryReport.Server
 {

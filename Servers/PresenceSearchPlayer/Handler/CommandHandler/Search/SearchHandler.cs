@@ -1,7 +1,5 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 //last one we search with email this may get few profile so we can not return GPErrorCode
@@ -21,9 +19,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
         public SearchHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
-        uint _profileid;
-        uint _partnerid;
-        int _skip;
+
+        private uint _profileid;
+        private uint _partnerid;
+        private int _skip;
         protected override void CheckRequest(GPSPSession session)
         {
             base.CheckRequest(session);

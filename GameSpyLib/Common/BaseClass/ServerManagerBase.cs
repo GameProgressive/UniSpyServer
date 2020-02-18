@@ -5,7 +5,6 @@ using GameSpyLib.XMLConfig;
 using LinqToDB.Data;
 using System;
 using System.IO;
-using System.Linq;
 
 namespace GameSpyLib.Common
 {

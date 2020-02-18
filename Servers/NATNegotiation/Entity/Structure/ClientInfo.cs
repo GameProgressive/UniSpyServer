@@ -2,9 +2,7 @@
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Handler.SystemHandler;
 using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace NATNegotiation.Entity.Structure
 {
@@ -22,13 +20,13 @@ namespace NATNegotiation.Entity.Structure
         public GameInfo Game;
         public EndPoint EndPoint;
         public byte[] GameName;
-       
+
         public byte[] PublicIP = new byte[4];
         public byte[] PublicPort = new byte[2];
         public byte[] InternalIP = new byte[4];
         public byte[] InternalPort = new byte[2];
 
-        
+
 
         public DateTime ConnectTime;
         public DateTime LastPacketTime;

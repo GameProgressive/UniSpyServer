@@ -1,10 +1,8 @@
 ﻿using GameSpyLib.Common;
-using PresenceSearchPlayer.Enumerator;
-using System;
-using System.Collections.Generic;
-using PresenceSearchPlayer.Handler.CommandHandler.Error;
-using System.Linq;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Enumerator;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {

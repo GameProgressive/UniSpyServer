@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
+using System;
 
 namespace Chat.Handler.CommandHandler.LOGIN
 {

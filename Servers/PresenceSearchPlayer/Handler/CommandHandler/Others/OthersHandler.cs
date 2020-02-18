@@ -13,7 +13,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
         public OthersHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
-        uint _profileid;
+
+        private uint _profileid;
 
         protected override void CheckRequest(GPSPSession session)
         {

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StatsAndTracking.Entity.Enumerator
+﻿namespace StatsAndTracking.Entity.Enumerator
 {
-    enum PersistStorage:uint
+    internal enum PersistStorage : uint
     {
         /// <summary>
         /// Readable only by the authenticated client it belongs to, can only by set on the server

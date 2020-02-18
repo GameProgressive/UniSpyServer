@@ -1,10 +1,10 @@
 ﻿using GameSpyLib.Logging;
+using QueryReport.Entity.Structure;
 using QueryReport.Handler.CommandHandler.Available;
 using QueryReport.Handler.CommandHandler.Challenge;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
 using QueryReport.Server;
-using QueryReport.Entity.Structure;
 using System;
 using System.Net;
 

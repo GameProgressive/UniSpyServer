@@ -207,5 +207,5 @@ namespace PresenceSearchPlayer.Enumerator
         Count
     }
 
-   
+
 }

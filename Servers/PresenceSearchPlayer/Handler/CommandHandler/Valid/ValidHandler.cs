@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
-using PresenceSearchPlayer.Enumerator;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,7 +11,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
         public ValidHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
-        uint _partnerid;
+
+        private uint _partnerid;
         protected override void CheckRequest(GPSPSession session)
         {
             if (!_recv.ContainsKey("email"))
@@ -54,7 +54,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                     _errorCode = GPErrorCode.DatabaseError;
                 }
             }
-            
+
         }
     }
 }

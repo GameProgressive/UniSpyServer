@@ -99,7 +99,7 @@ namespace GameSpyLib.Network
         }
         public long BaseSend(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            return base.Send(endpoint,buffer,offset,size);
+            return base.Send(endpoint, buffer, offset, size);
         }
         protected override void OnSent(EndPoint endpoint, long sent)
         {

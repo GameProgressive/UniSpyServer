@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Chat.Handler.CommandHandler.USER
 {
-    class USERHandler
+    internal class USERHandler
     {
         public static void Handle(ChatSession session, string[] recv)
         {

@@ -1,8 +1,8 @@
-﻿using Chat.Handler.CommandHandler.NICK;
-using Chat.Handler.CommandHandler.USER;
-using Chat.Handler.CommandHandler.CRYPT;
-using Chat.Handler.CommandHandler.USRIP;
+﻿using Chat.Handler.CommandHandler.CRYPT;
 using Chat.Handler.CommandHandler.LOGIN;
+using Chat.Handler.CommandHandler.NICK;
+using Chat.Handler.CommandHandler.USER;
+using Chat.Handler.CommandHandler.USRIP;
 
 namespace Chat.Handler.CommandSwitcher
 {

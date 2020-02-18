@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Logging;
 using QueryReport.Entity.Structure;
+using QueryReport.Server;
 using System;
 using System.Net;
-using QueryReport.Server;
 
 namespace QueryReport.Handler.CommandHandler.KeepAlive
 {

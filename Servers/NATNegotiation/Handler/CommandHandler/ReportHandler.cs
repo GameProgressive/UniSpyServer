@@ -20,7 +20,7 @@ namespace NatNegotiation.Handler.CommandHandler
         protected override void ProcessInformation(ClientInfo client, byte[] recv)
         {
             client.IsGotReport = true;
-            
+
         }
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
@@ -29,7 +29,7 @@ namespace NatNegotiation.Handler.CommandHandler
         }
         protected override void SendResponse(NatNegServer server, ClientInfo client)
         {
-            server.ToLog("Client: "+client.PublicIP+"natneg failed!");
+            server.ToLog("Client: " + client.PublicIP + "natneg failed!");
             base.SendResponse(server, client);
         }
     }

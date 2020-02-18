@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Database.Entity;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System.Net;

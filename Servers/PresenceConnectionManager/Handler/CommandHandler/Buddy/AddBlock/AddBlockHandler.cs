@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
+using LinqToDB;
 using PresenceConnectionManager.Enumerator;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.AddBlock
 {
-    public class AddBlockHandler:GPCMHandlerBase
+    public class AddBlockHandler : GPCMHandlerBase
     {
+        private uint _blockProfileid;
         public AddBlockHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
@@ -16,11 +19,25 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
             {
                 _errorCode = GPErrorCode.Parse;
             }
+            else if (!uint.TryParse(_recv["profileid"], out _blockProfileid))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
         }
 
         protected override void DataBaseOperation(GPCMSession session)
         {
-            AddBlockQuery.UpdateBlockListInDatabase(session.PlayerInfo.Profileid, Convert.ToUInt16(_recv["profileid"]), session.PlayerInfo.NamespaceID);
+            using (var db = new RetrospyDB())
+            {
+                if (db.Blockeds.Where(b => b.Targetid == _blockProfileid && b.Namespaceid == session.UserInfo.NamespaceID && b.Profileid == session.UserInfo.Profileid).Count() == 0)
+                {
+                    db.Blockeds
+                        .Value(b => b.Profileid, session.UserInfo.Profileid)
+                        .Value(b => b.Targetid, _blockProfileid)
+                        .Value(b => b.Namespaceid, session.UserInfo.NamespaceID)
+                        .Insert();
+                }
+            }
         }
     }
 }

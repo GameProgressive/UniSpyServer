@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Encryption;
-using NatNegotiation.Entity.Enumerator;
 using System;
 
 namespace NatNegotiation.Entity.Structure.Packet
@@ -18,10 +17,10 @@ namespace NatNegotiation.Entity.Structure.Packet
         {
             base.Parse(recv);
             PortType = recv[BasePacket.Size];//
-            ClientIndex = recv[BasePacket.Size+1];//00
-            UseGamePort = recv[BasePacket.Size+2];//00
-            Array.Copy(ByteExtensions.SubBytes(recv, BasePacket.Size+3, sizeof(uint)), LocalIP, 4);
-            Array.Copy(ByteExtensions.SubBytes(recv, BasePacket.Size+7, sizeof(uint)), LocalPort, 2);
+            ClientIndex = recv[BasePacket.Size + 1];//00
+            UseGamePort = recv[BasePacket.Size + 2];//00
+            Array.Copy(ByteExtensions.SubBytes(recv, BasePacket.Size + 3, sizeof(uint)), LocalIP, 4);
+            Array.Copy(ByteExtensions.SubBytes(recv, BasePacket.Size + 7, sizeof(uint)), LocalPort, 2);
         }
 
         public byte[] GenerateByteArray()

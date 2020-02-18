@@ -51,7 +51,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                     {
                         _errorCode = GPErrorCode.CheckBadPassword;
                     }
-                    _sendingBuffer=@"\nr\";
+                    _sendingBuffer = @"\nr\";
                     foreach (var info in players)
                     {
                         _sendingBuffer += @"\nick\";

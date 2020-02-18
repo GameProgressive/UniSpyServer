@@ -79,7 +79,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
-          
+
         }
         protected override void SendResponse(NatNegServer server, ClientInfo client)
         {

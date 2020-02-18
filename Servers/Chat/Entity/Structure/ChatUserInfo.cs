@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chat.Entity.Structure
+﻿namespace Chat.Entity.Structure
 {
     public class ChatUserInfo
     {

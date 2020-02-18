@@ -1,10 +1,4 @@
-﻿using GameSpyLib.Encryption;
-using NatNegotiation.Entity.Enumerator;
-using NATNegotiation.Entity.Structure;
-using System;
-using System.Net;
-
-namespace NatNegotiation.Entity.Structure.Packet
+﻿namespace NatNegotiation.Entity.Structure.Packet
 {
     public class ConnectPacket : BasePacket
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StatsAndTracking.Structure
+﻿namespace StatsAndTracking.Structure
 {
     public class GStatsInfo
     {

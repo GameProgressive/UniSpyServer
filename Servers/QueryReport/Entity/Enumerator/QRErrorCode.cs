@@ -1,5 +1,4 @@
-﻿using System;
-namespace QueryReport.Entity.Enumerator
+﻿namespace QueryReport.Entity.Enumerator
 {
     public enum QRErrorCode : uint
     {

@@ -2,10 +2,9 @@
 using GameSpyLib.Encryption;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using StatsAndTracking.Handler.CommandSwitcher;
 using System.Collections.Generic;
 using System.Text;
-using StatsAndTracking.Structure;
-using StatsAndTracking.Handler.CommandSwitcher;
 
 namespace StatsAndTracking
 {
@@ -16,7 +15,7 @@ namespace StatsAndTracking
         {
             DisconnectAfterSend = false;
         }
-    
+
         protected override void OnReceived(string message)
         {
             if (message[0] != '\\')
@@ -89,7 +88,7 @@ namespace StatsAndTracking
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer);            
+            string sendingBuffer = Encoding.UTF8.GetString(buffer);
 
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, @"{0}[Send] TCP data: {1}\final\", ServerName, sendingBuffer);

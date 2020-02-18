@@ -36,9 +36,9 @@ namespace GameSpyLib.XMLConfig
                 if (xmlConfiguration.Database.Type == GameSpyLib.Database.Entity.DatabaseEngine.MySql)
                 {
                     if (xmlConfiguration.Database.Username.Length < 1 ||
-                        xmlConfiguration.Database.Hostname.Length < 1 || 
+                        xmlConfiguration.Database.Hostname.Length < 1 ||
                         xmlConfiguration.Database.Databasename.Length < 1 ||
-                        xmlConfiguration.Database.SslMode.Length < 1 )
+                        xmlConfiguration.Database.SslMode.Length < 1)
                     {
                         throw new Exception("Invalid database configuration!");
                     }

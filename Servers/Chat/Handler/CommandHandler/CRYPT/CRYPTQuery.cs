@@ -1,7 +1,4 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 namespace Chat.Handler.CommandHandler.CRYPT
 {
@@ -12,10 +9,10 @@ namespace Chat.Handler.CommandHandler.CRYPT
             using (var db = new RetrospyDB())
             {
                 var secretkey = from g in db.Games
-                                   where g.Gamename == gameName
-                                   select g.Secretkey;
-                return secretkey.Count()==0? null: secretkey.First();               
-            
+                                where g.Gamename == gameName
+                                select g.Secretkey;
+                return secretkey.Count() == 0 ? null : secretkey.First();
+
             }
         }
     }

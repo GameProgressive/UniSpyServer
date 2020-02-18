@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
-using StatsAndTracking;
 using System.Net;
 
 namespace StatsAndTracking.Application

@@ -1,41 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
-    public class SendBlockListHandler
+    public class SendBlockList : GPCMHandlerBase
     {
-        public static void SendBlockList(GPCMSession session)
+
+        protected override void DataBaseOperation(GPCMSession session)
         {
-            if (session.PlayerInfo.BlockListSent)
+            if (session.UserInfo.BlockListSent)
                 return;
-            session.PlayerInfo.BlockListSent = true;
-
-            string sendingBuffer= @"\blk\";
-            Dictionary<string, object> result = SendBlockListQuery.SearchBlockList(session.PlayerInfo.Profileid, session.PlayerInfo.NamespaceID);
-            uint[] profileids;
-            if (result!=null)
+            session.UserInfo.BlockListSent = true;
+            using (var db = new RetrospyDB())
             {
-                profileids = result.Values.Cast<uint>().ToArray();
-                sendingBuffer += result.Count +@"\list\";
-                for (int i = 0; i < profileids.Length; i++)
+                var buddies = db.Blockeds.Where(
+                    f => f.Profileid == session.UserInfo.Profileid
+                && f.Namespaceid == session.UserInfo.NamespaceID);
+                //if (buddies.Count() == 0)
+                //{
+                //    _sendingBuffer = @"\blk\0\list\\final\";
+                //    return;
+                //}
+                _sendingBuffer = @"\blk\" + buddies.Count() + @"\list\";
+                foreach (var b in buddies)
                 {
-                    //last one we do not add ,
-                    if (i == profileids.Length - 1)
-                    {
-                        sendingBuffer += profileids[i];
-                        break;
-                    }
-                    sendingBuffer += profileids[i] + @",";
-                }
-                sendingBuffer += @"\final\";
-            }
-            else
-            {
-                sendingBuffer = @"\blk\0\list\\final\";
-            }
 
-            session.SendAsync(sendingBuffer);
+                    _sendingBuffer += b.Profileid;
+                    if (b != buddies.Last())
+                        _sendingBuffer += @",";
+                }
+                _sendingBuffer += @"\final\";
+            }
         }
     }
 }

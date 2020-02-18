@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PresenceConnectionManager.Enumerator
+﻿namespace PresenceConnectionManager.Enumerator
 {
     /// <summary>
     /// This enumerator contains the masks used to hide certain informations.

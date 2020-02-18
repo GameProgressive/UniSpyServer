@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Encryption;
-using NatNegotiation.Entity.Enumerator;
 using System;
 
 namespace NatNegotiation.Entity.Structure.Packet

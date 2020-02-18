@@ -1,21 +1,20 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using LinqToDB;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
-using LinqToDB;
-using System;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 {
     public class NewUserHandler : GPSPHandlerBase
     {
         private bool _IsUniquenickMethod;
-        string _uniquenick;
-        bool _IsEmailExist;
-        bool _IsUserPasswordCorrect;
-        bool _IsNickNameExist;
-        bool _IsUniqueNickExist;
+        private string _uniquenick;
+        private bool _IsEmailExist;
+        private bool _IsUserPasswordCorrect;
+        private bool _IsNickNameExist;
+        private bool _IsUniqueNickExist;
 
         private uint _profileid;
         public NewUserHandler(Dictionary<string, string> recv) : base(recv)
@@ -222,7 +221,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         { firstns.Port = port; }
                         else
                         { _errorCode = GPErrorCode.DatabaseError; }
-                       
+
                     }
 
                     if (_recv.ContainsKey("cdkeyenc"))

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chat.Handler.CommandHandler.USRIP
+﻿namespace Chat.Handler.CommandHandler.USRIP
 {
     public class USRIPHandler
     {

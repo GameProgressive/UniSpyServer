@@ -1,12 +1,11 @@
-﻿using System;
+﻿using GameSpyLib.Database.Entity;
+using GameSpyLib.Network;
+using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
+using NATNegotiation.Entity.Structure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using GameSpyLib.Database.Entity;
-using GameSpyLib.Network;
-using NatNegotiation.Handler.CommandHandler;
-using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
-using NATNegotiation.Entity.Structure;
 
 namespace NatNegotiation
 {
@@ -19,7 +18,7 @@ namespace NatNegotiation
 
         public NatNegServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
-            
+
             //_CheckTimer.Start();
             //_CheckTimer.Elapsed+=CheckClientTimeOut;
         }
@@ -31,14 +30,14 @@ namespace NatNegotiation
             //check and add client into clientList
             if (ClientList.Where(c => c.EndPoint.Equals(endPoint)).Count() == 0)
             {
-                ClientList.Add(new ClientInfo { EndPoint = endPoint,ConnectTime=DateTime.Now });
+                ClientList.Add(new ClientInfo { EndPoint = endPoint, ConnectTime = DateTime.Now });
             }
             ClientInfo client = ClientList.Where(c => c.EndPoint.Equals(endPoint)).First();
             client.Parse(message);
             CommandSwitcher.Switch(this, client, message);
         }
 
-        private void CheckClientTimeOut(object sender,System.Timers.ElapsedEventArgs e)
+        private void CheckClientTimeOut(object sender, System.Timers.ElapsedEventArgs e)
         {
             ToLog("Check timeout excuted!");
             foreach (var c in ClientList)

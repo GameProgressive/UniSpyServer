@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Logging;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using QueryReport.Server;
 using System;
 using System.Collections.Generic;

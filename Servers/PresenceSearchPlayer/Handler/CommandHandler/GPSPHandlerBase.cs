@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.Common;
+﻿using GameSpyLib.Common;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
+using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler
 {

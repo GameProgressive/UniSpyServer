@@ -1,12 +1,10 @@
-﻿using System;
-using System.Net;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Database.Entity;
 using GameSpyLib.Network;
 using NetCoreServer;
-using PresenceConnectionManager.Enumerator;
-using System.Linq;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using GameSpyLib.Database.Entity;
+using System.Net;
 
 //GPCM represents GameSpy Connection Manager
 namespace PresenceConnectionManager
@@ -31,7 +29,7 @@ namespace PresenceConnectionManager
         /// <summary>
         /// List of sucessfully logged in clients (Pid => Client Obj)
         /// </summary>
-        public static IEnumerable<GPCMSession> LoggedInSession { get; set; }
+        public static ConcurrentDictionary<Guid, GPCMSession> LoggedInSession;
 
         /// <summary>
         /// A timer that is used to Poll all connections, and removes dropped connections

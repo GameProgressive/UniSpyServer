@@ -1,5 +1,4 @@
-﻿using CDKey;
-using GameSpyLib.Common;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System.Net;

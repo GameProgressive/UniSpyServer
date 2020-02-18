@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Application
     /// <summary>
     /// This class represents a RetroSpy Server program
     /// </summary>
-    class Program
+    internal class Program
     {
 
         public static readonly string ServerName = "GPCM";
@@ -22,7 +22,7 @@ namespace PresenceConnectionManager.Application
         /// </summary>
         /// <param name="args">List of arguments passed to the application</param>
         ///<param name="bool_InitPathArg">argument for Main()</param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             // if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
 

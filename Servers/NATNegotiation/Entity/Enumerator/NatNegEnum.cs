@@ -1,13 +1,13 @@
 ﻿namespace NatNegotiation.Entity.Enumerator
 {
-    public enum ConnectPacketFinishStatus:byte
+    public enum ConnectPacketFinishStatus : byte
     {
         NoError,
         DeadHeartBeat,
         InitPacketTimeOut
     }
 
-    public enum NatPortType:byte
+    public enum NatPortType : byte
     {
         /// <summary>
         /// Use game port for nat neg
@@ -26,27 +26,28 @@
         /// </summary>
         NN3
     }
-    public enum NatPacketType:byte
+    public enum NatPacketType : byte
     {
-        Init ,
+        Init,
         InitAck,
         ErtTest,
         ErtAck,
-        StateUpdate ,
-        Connect ,
-        ConnectAck ,
-        ConnectPing ,
-        BackupTest ,
-        BackupAck ,
+        StateUpdate,
+        Connect,
+        ConnectAck,
+        ConnectPing,
+        BackupTest,
+        BackupAck,
         AddressCheck,
         AddressReply,
-        NatifyRequest ,
-        Report ,
-        ReportAck ,
-        PreInit ,
-        PreInitAck ,
+        NatifyRequest,
+        Report,
+        ReportAck,
+        PreInit,
+        PreInitAck,
     }
-    enum NatifyPacket:byte
+
+    internal enum NatifyPacket : byte
     {
         PacketMap1a,
         PacketMap2,
@@ -54,7 +55,7 @@
         PacketMap1b,
         NumPackets
     };
-    public enum NatMappingScheme: byte
+    public enum NatMappingScheme : byte
     {
         Unrecognized,
         PrivateAsPublic,
@@ -74,7 +75,8 @@
         Unknown,
         NumNatTypes
     }
-    enum NatPromiscuity
+
+    internal enum NatPromiscuity
     {
         Promiscuous,
         NotPromiscuous,

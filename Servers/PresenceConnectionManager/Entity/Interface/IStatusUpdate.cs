@@ -1,12 +1,11 @@
-﻿using System;
-namespace PresenceConnectionManager.Interface
+﻿namespace PresenceConnectionManager.Interface
 {
     public interface IFriendStatusUpdate
     {
-         void SubscribeToStatusChange();
+        void SubscribeToStatusChange();
 
-         void UnsubscribeToStatusChange();
+        void UnsubscribeToStatusChange();
 
-         void UpdateFriendStatus();
+        void UpdateFriendStatus();
     }
 }

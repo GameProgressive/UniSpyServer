@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace NATNegotiation.Entity.Enumerator
+﻿namespace NATNegotiation.Entity.Enumerator
 {
     public enum NNErrorCode
     {

@@ -1,12 +1,10 @@
 ﻿using LinqToDB.Configuration;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace GameSpyLib.Database.DatabaseSetting
 {
-    public class MySqlSetting: ILinqToDBSettings
+    public class MySqlSetting : ILinqToDBSettings
     {
         public MySqlSetting(string connString)
         {

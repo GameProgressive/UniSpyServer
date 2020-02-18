@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chat.Entity.Structure
+﻿namespace Chat.Entity.Structure
 {
-    enum ChatType
+    internal enum ChatType
     {
         List,
         Join,

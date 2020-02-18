@@ -1,19 +1,18 @@
 ﻿using GameSpyLib.Logging;
 using System;
-using System.Runtime.InteropServices;
 
 namespace NatNegotiation.Application
 {
     /// <summary>
     /// This class represents a RetroSpy Server program
     /// </summary>
-    class Program
+    internal class Program
     {
 
         public static readonly string ServerName = "NATNEG";
         public static string BasePath { get; protected set; }
 
-       // public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+        // public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
         private static ServerManager Manager = null;
 
@@ -24,9 +23,9 @@ namespace NatNegotiation.Application
         /// </summary>
         /// <param name="args">List of arguments passed to the application</param>
         ///<param name="bool_InitPathArg">argument for Main()</param>
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-         //   if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
+            //   if (IsWindows()) { Console.WindowWidth = 100; } // Temp fix for Linux and MacOS?
 
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;

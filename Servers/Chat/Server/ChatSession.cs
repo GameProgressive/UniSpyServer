@@ -1,6 +1,6 @@
-﻿using Chat.Handler.CommandSwitcher;
+﻿using Chat.Entity.Structure;
+using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.Encryption;
-using Chat.Entity.Structure;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
@@ -39,7 +39,7 @@ namespace Chat
         {
             string Info = $"{ServerName} Elevating security for user {Id} with game {chatUserInfo.gameName}";
             ToLog(Info);
-            
+
             // 1. Generate the two keys
             string clientKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
             string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);

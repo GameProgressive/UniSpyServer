@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.General.Login.Misc;
+using PresenceConnectionManager.Handler.General.SDKExtendFeature;
+using System.Collections.Generic;
 //using PresenceConnectionManager.Handler.General.SDKExtendFeature;
 using System.Linq;
 
@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
     public class LoginHandler : GPCMHandlerBase
     {
-        Crc16 _crc = new Crc16(Crc16Mode.Standard);
+        private Crc16 _crc = new Crc16(Crc16Mode.Standard);
 
         public LoginHandler(Dictionary<string, string> recv) : base(recv)
         {
@@ -109,7 +109,11 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 session.UserInfo.GameName = _recv["gamename"];
             }
             if (_recv.ContainsKey("port"))
-                if (!uint.TryParse(_recv["port"], out session.UserInfo.Port))
+                if (!uint.TryParse(_recv["port"], out session.UserInfo.PeerPort))
+                    _errorCode = GPErrorCode.Parse;
+
+            if (_recv.ContainsKey("quiet"))
+                if (!uint.TryParse(_recv["quiet"], out session.UserInfo.QuietModeFlag))
                     _errorCode = GPErrorCode.Parse;
         }
 
@@ -324,7 +328,9 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         protected override void Response(GPCMSession session)
         {
             base.Response(session);
-            //SDKRevision.Switch(session);
+            session.UserInfo.StatusCode = GPStatus.Online;
+            GPCMServer.LoggedInSession.TryAdd(session.Id, session);
+            SDKRevision.ExtendedFunction(session);
         }
         protected bool IsChallengeCorrect(GPCMSession session)
         {

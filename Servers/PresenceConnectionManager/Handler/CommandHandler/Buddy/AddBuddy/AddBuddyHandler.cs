@@ -1,42 +1,39 @@
-﻿using GameSpyLib.Common;
-using PresenceConnectionManager.Enumerator;
-using System;
+﻿using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
 {
-    public class AddBuddyHandler
+    //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
+    public class AddBuddyHandler : GPCMHandlerBase
     {
-        
-        static Dictionary<string, string> _recv;
-        static GPErrorCode _errorCode;
-       
-        public static void Addfriends(GPCMSession session, Dictionary<string, string> recv)
+        protected AddBuddyHandler(Dictionary<string, string> recv) : base(recv)
         {
-            _recv = recv;
-            _errorCode = GPErrorCode.NoError;
-           
-            //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
-            IsContainAllKey();
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
-            if (session.PlayerInfo.Profileid == Convert.ToUInt16(_recv["profileid"]))
-            {
-                //you can not add yourself friend
-                return;
-            }
-            AddBuddyQuery.SaveAddBuddyRequest(session.PlayerInfo.Profileid, Convert.ToUInt16(_recv["newprofileid"]), session.PlayerInfo.NamespaceID, _recv["reason"]);
-
         }
-
-        private static void IsContainAllKey()
+        private uint _friendPid;
+        protected override void CheckRequest(GPCMSession session)
         {
+            base.CheckRequest(session);
             if (!_recv.ContainsKey("sesskey") || !_recv.ContainsKey("newprofileid") || !_recv.ContainsKey("reason"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
+            if (!uint.TryParse(_recv["newprofileid"], out _friendPid))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
         }
+
+        protected override void DataBaseOperation(GPCMSession session)
+        {
+            //Check if the friend is online
+            //if(online)
+            //else
+            //store add request to database
+        }
+
+
+
+
+
     }
 }

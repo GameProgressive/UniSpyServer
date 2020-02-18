@@ -180,7 +180,7 @@ namespace GameSpyLib.Network
             {
                 return message;
             }
-            
+
         }
     }
 }

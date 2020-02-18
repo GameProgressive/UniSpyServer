@@ -2,13 +2,10 @@
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Enumerator;
 using NATNegotiation.Entity.Structure;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NATNegotiation.Handler
 {
-    
+
     public class NatNegHandlerBase
     {
         protected NNErrorCode _errorCode = NNErrorCode.NoError;
@@ -17,10 +14,10 @@ namespace NATNegotiation.Handler
         protected ConnectPacket _connPacket;
         protected ReportPacket _reportPacket;
 
-        public virtual void Handle(NatNegServer server,ClientInfo client,byte[] recv)
+        public virtual void Handle(NatNegServer server, ClientInfo client, byte[] recv)
         {
             ConvertRequest(client, recv);
-            if(_errorCode!=NNErrorCode.NoError)
+            if (_errorCode != NNErrorCode.NoError)
             {
                 server.ToLog("Packet parse error!");
                 return;
@@ -42,7 +39,7 @@ namespace NATNegotiation.Handler
 
         protected virtual void SendResponse(NatNegServer server, ClientInfo client)
         {
-            if(_sendingBuffer==null)
+            if (_sendingBuffer == null)
                 return;
             server.SendAsync(client.EndPoint, _sendingBuffer);
         }

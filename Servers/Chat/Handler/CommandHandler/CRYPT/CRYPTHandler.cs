@@ -1,5 +1,4 @@
 ﻿using Chat.Entity.Structure;
-using System.Collections.Generic;
 
 namespace Chat.Handler.CommandHandler.CRYPT
 {

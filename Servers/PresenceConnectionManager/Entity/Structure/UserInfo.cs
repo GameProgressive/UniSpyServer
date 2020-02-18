@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using PresenceConnectionManager.Enumerator;
+﻿using PresenceConnectionManager.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Structure
 {
@@ -68,9 +68,10 @@ namespace PresenceConnectionManager.Structure
 
         public uint productID;
         /////////////////////////User status//////////////////////////
-        public string StatusString;
 
         public GPStatus StatusCode;
+
+        public string StatusString;
 
         public string LocationString;
 
@@ -100,6 +101,8 @@ namespace PresenceConnectionManager.Structure
 
         public bool IsBlocked;
 
-        public uint Port;
+        public uint PeerPort;
+
+        public uint QuietModeFlag;
     }
 }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using GameSpyLib.Common;
+﻿using GameSpyLib.Common;
 using QueryReport.Entity.Enumerator;
 using QueryReport.Server;
+using System.Collections.Generic;
 
 namespace QueryReport.Handler.CommandHandler
 {
@@ -33,7 +31,7 @@ namespace QueryReport.Handler.CommandHandler
                 return;
             }
             ConstructResponse(server);
-            if(_error!=QRErrorCode.NoError)
+            if (_error != QRErrorCode.NoError)
             {
                 return;
             }

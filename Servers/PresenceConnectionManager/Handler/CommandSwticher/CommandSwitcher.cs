@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Logging;
+using PresenceConnectionManager.Handler.General.Login.LoginMethod;
 //using PresenceConnectionManager.Enumerator;
 //using PresenceConnectionManager.Handler.Buddy.AddBlock;
 //using PresenceConnectionManager.Handler.Buddy.AddBuddy;
@@ -16,8 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PresenceSearchPlayer.Handler;
-using PresenceConnectionManager.Handler.General.Login.LoginMethod;
 
 namespace PresenceConnectionManager.Handler
 {

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace GameSpyLib.Database.DatabaseSetting
 {
-    public class SQLiteSetting: ILinqToDBSettings
+    public class SQLiteSetting : ILinqToDBSettings
     {
         public string ConnString;
         public SQLiteSetting(string connString)

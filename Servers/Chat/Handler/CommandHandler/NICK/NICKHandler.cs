@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Chat.Handler.CommandHandler.NICK
+﻿namespace Chat.Handler.CommandHandler.NICK
 {
     public class NICKHandler
     {
