@@ -21,15 +21,11 @@ namespace PresenceConnectionManager
         public const int ExpireTime = 20000;
 
         public static DatabaseEngine DB;
-        /// <summary>
-        /// List of processing connections (id => Client Obj)
-        /// </summary>
-        public static IEnumerable<GPCMSession> LoggingSession { get; set; }
 
         /// <summary>
         /// List of sucessfully logged in clients (Pid => Client Obj)
         /// </summary>
-        public static ConcurrentDictionary<Guid, GPCMSession> LoggedInSession;
+        public static ConcurrentDictionary<Guid,GPCMSession> LoggedInSession = new ConcurrentDictionary<Guid,GPCMSession>();
 
         /// <summary>
         /// A timer that is used to Poll all connections, and removes dropped connections

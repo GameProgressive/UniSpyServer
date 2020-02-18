@@ -104,5 +104,7 @@ namespace PresenceConnectionManager.Structure
         public uint PeerPort;
 
         public uint QuietModeFlag;
+
+        public string LoginTicket;
     }
 }

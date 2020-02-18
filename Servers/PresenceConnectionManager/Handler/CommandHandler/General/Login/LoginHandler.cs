@@ -329,7 +329,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         {
             base.Response(session);
             session.UserInfo.StatusCode = GPStatus.Online;
-            //GPCMServer.LoggedInSession.TryAdd(session.Id, session);
+            GPCMServer.LoggedInSession.GetOrAdd(session.Id,session);
             SDKRevision.ExtendedFunction(session);
         }
         protected bool IsChallengeCorrect(GPCMSession session)

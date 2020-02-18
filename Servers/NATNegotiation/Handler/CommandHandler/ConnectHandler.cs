@@ -83,7 +83,7 @@ namespace NatNegotiation.Handler.CommandHandler
         }
         protected override void SendResponse(NatNegServer server, ClientInfo client)
         {
-            var other = NatNegServer.ClientList.Where(
+            var other = NatNegServer.ClientList.Values.Where(
                 c => c.PublicIP.SequenceEqual(_connPacket.RemoteIP)
                 && c.PublicPort.SequenceEqual(_connPacket.RemotePort)
                 );

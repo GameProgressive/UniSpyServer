@@ -124,8 +124,8 @@ namespace GameSpyLib.Network
         /// </remarks>
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            // Need at least 5 bytes
-            if (size < 5 && size > 2048)
+            // Need at least 2 bytes
+            if (size < 2 && size > 2048)
             {
                 return;
             }

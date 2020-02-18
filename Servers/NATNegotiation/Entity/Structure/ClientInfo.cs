@@ -21,11 +21,11 @@ namespace NATNegotiation.Entity.Structure
         public EndPoint EndPoint;
         public byte[] GameName;
 
+
         public byte[] PublicIP = new byte[4];
         public byte[] PublicPort = new byte[2];
         public byte[] InternalIP = new byte[4];
         public byte[] InternalPort = new byte[2];
-
 
 
         public DateTime ConnectTime;
