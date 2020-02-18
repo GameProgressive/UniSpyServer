@@ -1,15 +1,16 @@
 ﻿namespace NatNegotiation.Entity.Enumerator
 {
-    public enum ConnectPacketFinishStatus:uint
+    public enum ConnectPacketFinishStatus:byte
     {
         NoError,
         DeadHeartBeat,
         InitPacketTimeOut
     }
+
     public enum NatPortType:byte
     {
         /// <summary>
-        /// IP and Port both not restricted
+        /// Use game port for nat neg
         /// </summary>
         GP,
         /// <summary>

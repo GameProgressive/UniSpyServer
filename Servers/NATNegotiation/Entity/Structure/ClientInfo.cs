@@ -28,11 +28,13 @@ namespace NATNegotiation.Entity.Structure
         public byte[] InternalIP = new byte[4];
         public byte[] InternalPort = new byte[2];
 
+        
 
         public DateTime ConnectTime;
         public DateTime LastPacketTime;
         public DateTime SentConnectPacketTime;
 
+        public ClientInfo TargetClient;
 
         public void Parse(byte[] recv)
         {

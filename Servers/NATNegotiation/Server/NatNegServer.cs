@@ -46,28 +46,28 @@ namespace NatNegotiation
                 if (DateTime.Now.Second - c.LastPacketTime.Second > 120)
                 {
                     ClientList.Remove(c);
-                    ToLog("deleted client");
+                    ToLog("Deleted client");
                 }
             }
-            foreach (var c in ClientList)
-            {
-                if (c.IsConnected)
-                    if (c.IsGotConnectAck)
-                        if (DateTime.Now.Second - c.SentConnectPacketTime.Second > 5)
-                        {
-                            //send connect packet to c it self
-                            ConnectHandler.SendConnectPacket(this, c, null);
-                        }
-            }
-            foreach (var c in ClientList)
-            {
-                if (DateTime.Now.Second - c.ConnectTime.Second > 30)
-                    if (!c.IsConnected)
-                    {
-                        //send DeadHeatBeat notice
-                        ConnectHandler.SendDeadHeartBeatNotice(this, c);
-                    }
-            }
+            //foreach (var c in ClientList)
+            //{
+            //    if (c.IsConnected)
+            //        if (c.IsGotConnectAck)
+            //            if (DateTime.Now.Second - c.SentConnectPacketTime.Second > 5)
+            //            {
+            //                //send connect packet to c it self
+            //                ConnectHandler.SendConnectPacket(this, c, null);
+            //            }
+            //}
+            //foreach (var c in ClientList)
+            //{
+            //    if (DateTime.Now.Second - c.ConnectTime.Second > 30)
+            //        if (!c.IsConnected)
+            //        {
+            //            //send DeadHeatBeat notice
+            //            ConnectHandler.SendDeadHeartBeatNotice(this, c);
+            //        }
+            //}
         }
     }
 }

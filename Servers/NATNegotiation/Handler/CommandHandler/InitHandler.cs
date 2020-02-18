@@ -1,19 +1,16 @@
-﻿using GameSpyLib.Encryption;
-using NatNegotiation.Entity.Enumerator;
+﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
-using NATNegotiation.Entity.Enumerator;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler;
 using NATNegotiation.Handler.SystemHandler;
 using System;
 using System.Linq;
-using System.Net;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
     public class InitHandler:NatNegHandlerBase
     {
-    
+  
         protected override void ConvertRequest(ClientInfo client, byte[] recv)
         {
             _initPacket = new InitPacket();
@@ -35,18 +32,32 @@ namespace NatNegotiation.Handler.CommandHandler
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
             //we parse everything we got about client2 into response
-            var other = NatNegServer.ClientList.Where(o => o.PublicIP == _initPacket.LocalIP && o.PublicPort == _initPacket.LocalPort);
-            if (other.Count() < 1)
-                return;
+            //var other = NatNegServer.ClientList.Where(o => o.PublicIP == _initPacket.LocalIP && o.PublicPort == _initPacket.LocalPort);
+            //if (other.Count() < 1)
+            //    return;
 
-            ClientInfo client2 = other.First();
+            //client.TargetClient = other.First();
+            //other.First().TargetClient = client;
+
+            //ClientInfo client2 = other.First();
 
             _initPacket.PacketType = (byte)NatPacketType.InitAck;
-            _initPacket.PortType = client2.PortType;
-            Array.Copy(_initPacket.LocalIP, client2.PublicIP, 4);
-            Array.Copy(_initPacket.LocalPort, client2.PublicPort, 2);
-
+            //Array.Copy(client2.PublicIP, _initPacket.LocalIP, 4);
+            //Array.Copy(client2.PublicPort, _initPacket.LocalPort, 2);
             _sendingBuffer = _initPacket.GenerateByteArray();
+
+            //_connPacket = new ConnectPacket();
+            //_connPacket.Version = client.Version;
+            //_connPacket.PacketType = (byte)NatPacketType.Connect;
+            //Array.Copy(client.Cookie, _connPacket.Cookie, 4);
+            //Array.Copy(_connPacket.RemoteIP, client.PublicIP, 4);
+            //Array.Copy(_connPacket.RemotePort, client.PublicPort, 4);
+        }
+
+        protected override void SendResponse(NatNegServer server, ClientInfo client)
+        {
+
+            base.SendResponse(server, client);
         }
     }
 }
