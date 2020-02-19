@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         private uint _profileid;
         private GameSpyLib.Database.DatabaseModel.MySql.Profile _profile = new GameSpyLib.Database.DatabaseModel.MySql.Profile();
-        protected GetProfileHandler(Dictionary<string, string> recv) : base(recv)
+        public GetProfileHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
 
@@ -107,7 +107,8 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
                 _sendingBuffer += @"\i1\" + info.interest1;
                 _sendingBuffer += @"\o1\" + info.ownership1;
                 _sendingBuffer += @"\conn\" + info.connectiontype;
-                _sendingBuffer +=@"\sig\+" + GameSpyRandom.GenerateRandomString(10, GameSpyRandom.StringType.Hex);
+                // SUPER NOTE: Please check the Signature of the PID, otherwise when it will be compared with other peers, it will break everything (See gpiPeer.c @ peerSig)
+                _sendingBuffer += @"\sig\+" + GameSpyRandom.GenerateRandomString(10, GameSpyRandom.StringType.Hex);
                 _sendingBuffer += @"\id\" + _operationID + @"\final\";
             }
         }

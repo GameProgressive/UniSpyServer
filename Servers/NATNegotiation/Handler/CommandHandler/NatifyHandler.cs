@@ -18,8 +18,8 @@ namespace NatNegotiation.Handler.CommandHandler
         protected override void ProcessInformation(ClientInfo client, byte[] recv)
         {
             client.Version = _initPacket.Version;
-            Array.Copy(NNFormat.IPToByte(client.EndPoint), client.PublicIP, 4);
-            Array.Copy(NNFormat.PortToByte(client.EndPoint), client.PublicPort, 2);
+            Array.Copy(NNFormat.IPToByte(client.RemoteEndPoint), client.PublicIP, 4);
+            Array.Copy(NNFormat.PortToByte(client.RemoteEndPoint), client.PublicPort, 2);
         }
 
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)

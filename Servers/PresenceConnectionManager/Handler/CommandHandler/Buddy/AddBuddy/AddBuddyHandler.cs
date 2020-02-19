@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     public class AddBuddyHandler : GPCMHandlerBase
     {
-        protected AddBuddyHandler(Dictionary<string, string> recv) : base(recv)
+        public AddBuddyHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
         private uint _friendPid;

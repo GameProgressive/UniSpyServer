@@ -18,14 +18,8 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ProcessInformation(ClientInfo client, byte[] recv)
         {
-            client.Version = _initPacket.Version;
-            client.PortType = _initPacket.PortType;
-            Array.Copy(_initPacket.Cookie, client.Cookie, 4);
-            Array.Copy(NNFormat.IPToByte(client.EndPoint), client.PublicIP, 4);
-            Array.Copy(NNFormat.PortToByte(client.EndPoint), client.PublicPort, 2);
+            client.Parse(_initPacket);
             // client.GameName = ByteExtensions.SubBytes(recv, InitPacket.Size - 1, recv.Length - 1);
-            client.ClientIndex = _initPacket.ClientIndex;
-            client.IsGotInit = true;
         }
 
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)

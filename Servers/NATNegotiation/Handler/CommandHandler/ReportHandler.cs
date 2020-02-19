@@ -20,7 +20,6 @@ namespace NatNegotiation.Handler.CommandHandler
         protected override void ProcessInformation(ClientInfo client, byte[] recv)
         {
             client.IsGotReport = true;
-
         }
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {

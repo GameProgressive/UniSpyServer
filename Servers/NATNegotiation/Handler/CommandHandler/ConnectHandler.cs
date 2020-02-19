@@ -10,16 +10,7 @@ using System.Net;
 namespace NatNegotiation.Handler.CommandHandler
 {
     public class ConnectHandler : NatNegHandlerBase
-    {
-        public void Handle(NatNegServer server, EndPoint endPoint, byte[] recv)
-        {
-            //find the client2 that client1 want to connect
-
-            //ConnectPacket connectPacket = new ConnectPacket(recv);
-            //byte[] sendingBuffer = connectPacket.CreateReplyPacket();
-            //server.SendAsync(server.Socket.RemoteEndPoint, sendingBuffer);
-        }
-
+    { 
         public static void SendConnectPacket(NatNegServer server, ClientInfo client, ClientInfo other)
         {
             ConnectPacket connPacket = new ConnectPacket
@@ -27,12 +18,13 @@ namespace NatNegotiation.Handler.CommandHandler
                 PacketType = (byte)NatPacketType.Connect,
                 Cookie = client.Cookie,
                 Finished = 0,
-                RemoteIP = NNFormat.IPToByte(client.EndPoint),
-                RemotePort = NNFormat.PortToByte(client.EndPoint)
+                RemoteIP = client.PublicIP,
+                RemotePort = client.PublicPort,
             };
+
             byte[] buffer = connPacket.GenerateByteArray();
 
-            server.SendAsync(client.EndPoint, buffer);
+            server.SendAsync(client.RemoteEndPoint, buffer);
             client.SentConnectPacketTime = DateTime.Now;
             client.IsConnected = true;
 
@@ -41,11 +33,11 @@ namespace NatNegotiation.Handler.CommandHandler
             if (other == null)
             { return; }
 
-            connPacket.RemoteIP = NNFormat.IPToByte(other.EndPoint);
-            connPacket.RemotePort = NNFormat.PortToByte(other.EndPoint);
+            connPacket.RemoteIP = NNFormat.IPToByte(other.RemoteEndPoint);
+            connPacket.RemotePort = NNFormat.PortToByte(other.RemoteEndPoint);
 
             buffer = connPacket.GenerateByteArray();
-            server.SendAsync(other.EndPoint, buffer);
+            server.SendAsync(other.RemoteEndPoint, buffer);
             other.SentConnectPacketTime = DateTime.Now;
 
         }
@@ -57,11 +49,11 @@ namespace NatNegotiation.Handler.CommandHandler
                 PacketType = (byte)NatPacketType.Connect,
                 Cookie = client.Cookie,
                 Finished = (byte)ConnectPacketFinishStatus.DeadHeartBeat,
-                RemoteIP = ((IPEndPoint)client.EndPoint).Address.GetAddressBytes(),
-                RemotePort = BitConverter.GetBytes(((IPEndPoint)client.EndPoint).Port),
+                RemoteIP = ((IPEndPoint)client.RemoteEndPoint).Address.GetAddressBytes(),
+                RemotePort = BitConverter.GetBytes(((IPEndPoint)client.RemoteEndPoint).Port),
             };
             byte[] buffer = connPacket.GenerateByteArray();
-            server.SendAsync(client.EndPoint, buffer);
+            server.SendAsync(client.RemoteEndPoint, buffer);
         }
 
         protected override void ConvertRequest(ClientInfo client, byte[] recv)
@@ -94,7 +86,7 @@ namespace NatNegotiation.Handler.CommandHandler
             }
             ClientInfo client2 = other.First();
             _sendingBuffer = _connPacket.GenerateByteArray();
-            server.SendAsync(client2.EndPoint, _sendingBuffer);
+            server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);
         }
     }
 }

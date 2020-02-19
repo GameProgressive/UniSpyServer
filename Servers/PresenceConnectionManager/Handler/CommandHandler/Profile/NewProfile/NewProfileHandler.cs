@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"
         //replace a existed nick with new nick
         //@"  \newprofile\sesskey\<>\nick\<>\replace\1\oldnick\<>\id\1\final\"
-        protected NewProfileHandler(Dictionary<string, string> recv) : base(recv)
+        public NewProfileHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
 

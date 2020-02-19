@@ -38,7 +38,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                 var result = from u in db.Users
                              join p in db.Profiles on u.Userid equals p.Userid
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             where u.Email == _recv["email"] && p.Nick == _recv["nick"] && n.Partnerid == _partnerid && n.Gamename == _recv["gamename"]
+                             where u.Email == _recv["email"] && n.Partnerid == _partnerid && n.Gamename == _recv["gamename"]
                              select p.Profileid;
                 if (result.Count() == 0)
                 {

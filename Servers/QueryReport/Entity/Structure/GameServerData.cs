@@ -6,50 +6,49 @@ namespace QueryReport.Entity.Structure
     /// <summary>
     /// This is How BattleSpy implement the Server information
     /// </summary>
-    public class NonFilterAttribute : Attribute
-    {
-    }
 
     public class GameServerData
     {
-        public GameServerData(IPEndPoint remote)
+        public GameServerData(EndPoint endPoint)
         {
-            Remote = remote;
+            RemoteEndPoint = endPoint;
         }
-        [NonFilter]
+        
         public int DatabaseId { get; set; }
 
-        [NonFilter]
-        public IPEndPoint Remote { get; protected set; }
-
-        [NonFilter]
+        
+        public EndPoint RemoteEndPoint { get; protected set; }
+       
+        
         public bool IsValidated = false;
 
-        [NonFilter]
-        public int QueryPort
+        public int RemotePort
         {
-            get { return Remote.Port; }
+            get { return ((IPEndPoint)RemoteEndPoint).Port; }
         }
-
-        [NonFilter]
+        public byte[] RemoteIP
+        {
+            get { return ((IPEndPoint)RemoteEndPoint).Address.GetAddressBytes(); }
+        }
+        
         public DateTime LastRefreshed { get; set; }
 
-        [NonFilter]
+        
         public DateTime LastPing { get; set; }
 
-        [NonFilter]
+        
         public string LocalIp0 { get; set; }
 
-        [NonFilter]
+        
         public string localIp1 { get; set; }
 
-        [NonFilter]
+        
         public int LocalPort { get; set; }
 
-        [NonFilter]
+        
         public bool NatNeg { get; set; }
 
-        [NonFilter]
+        
         public int StateChanged { get; set; }
 
         #region Server Vars

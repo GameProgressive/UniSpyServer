@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
     public class RegisterNickHandler : GPCMHandlerBase
     {
-        protected RegisterNickHandler(Dictionary<string, string> recv) : base(recv)
+        public RegisterNickHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
 

@@ -18,7 +18,7 @@ namespace NatNegotiation
         public NatNegServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
             _CheckTimer.Start();
-            _CheckTimer.Elapsed+=CheckClientTimeOut;
+            _CheckTimer.Elapsed += CheckClientTimeOut;
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
@@ -26,11 +26,8 @@ namespace NatNegotiation
             if (message.Length < 5)
                 return;
             //check and add client into clientList
-
-            //ClientInfo client = ClientList.Where(c => c.EndPoint == endPoint).First();
-            ClientInfo client;
-                client = ClientList.GetOrAdd(endPoint, new ClientInfo { EndPoint = endPoint, ConnectTime = DateTime.Now });
-                client.Parse(message);
+            ClientInfo client = ClientList.GetOrAdd(endPoint, new ClientInfo(endPoint));
+            client.LastPacketTime = DateTime.Now;
             CommandSwitcher.Switch(this, client, message);
         }
 
@@ -39,10 +36,11 @@ namespace NatNegotiation
             ToLog("Check timeout excuted!");
             foreach (var c in ClientList.Values)
             {
-                if ((DateTime.Now - c.LastPacketTime).Seconds > 60)
+                //Console.WriteLine(DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds);
+                if (DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds > 60)
                 {
-                    ToLog("Deleted client "+c.EndPoint.ToString());
-                    ClientList.TryRemove(c.EndPoint, out _);
+                    ToLog("Deleted client " + c.RemoteEndPoint.ToString());
+                    ClientList.TryRemove(c.RemoteEndPoint, out _);
                 }
             }
         }

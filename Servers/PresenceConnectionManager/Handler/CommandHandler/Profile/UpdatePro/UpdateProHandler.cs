@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
     public class UpdateProHandler : GPCMHandlerBase
     {
-        protected UpdateProHandler(Dictionary<string, string> recv) : base(recv)
+        public UpdateProHandler(Dictionary<string, string> recv) : base(recv)
         {
         }
 

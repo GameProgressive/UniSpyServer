@@ -1,7 +1,7 @@
 ﻿using NatNegotiation.Entity.Structure;
 using NatNegotiation.Entity.Structure.Packet;
-using NATNegotiation.Handler.SystemHandler;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace NATNegotiation.Entity.Structure
@@ -18,28 +18,40 @@ namespace NATNegotiation.Entity.Structure
         public bool IsGotErtAck;
         public bool IsGotReport;
         public GameInfo Game;
-        public EndPoint EndPoint;
+        public EndPoint RemoteEndPoint;
         public byte[] GameName;
 
 
-        public byte[] PublicIP = new byte[4];
-        public byte[] PublicPort = new byte[2];
+        public byte[] PublicIP => ((IPEndPoint)RemoteEndPoint).Address.GetAddressBytes();
+        public byte[] PublicPort => BitConverter.GetBytes(((IPEndPoint)RemoteEndPoint).Port).Take(2).ToArray();
+
         public byte[] InternalIP = new byte[4];
         public byte[] InternalPort = new byte[2];
 
 
-        public DateTime ConnectTime;
+        public DateTime ConnectPacketTime;
         public DateTime LastPacketTime;
         public DateTime SentConnectPacketTime;
 
         public ClientInfo TargetClient;
 
-        public void Parse(byte[] recv)
+        public ClientInfo(EndPoint end)
         {
-            Version = recv[BasePacket.MagicData.Length];
-            Array.Copy(NNFormat.IPToByte(this.EndPoint), PublicIP, 4);
-            Array.Copy(NNFormat.PortToByte(this.EndPoint), PublicPort, 2);
+            RemoteEndPoint = end;
             LastPacketTime = DateTime.Now;
+        }
+
+        public void Parse(InitPacket init)
+        {
+            Version = init.Version;
+            Cookie = init.Cookie;
+            PortType = init.PortType;
+            ClientIndex = init.ClientIndex;
+            IsGotInit = true;
+        }
+        public void Parse(ConnectPacket connect)
+        {
+
         }
     }
 }

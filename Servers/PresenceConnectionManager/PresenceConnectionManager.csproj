@@ -54,7 +54,7 @@
     <Compile Include="Handler\CommandHandler\Buddy\InviteTo\InviteToHandler.cs" />
     <Compile Include="Handler\CommandHandler\Buddy\SendBlockList\SendBlockList.cs" />
     <Compile Include="Handler\CommandHandler\Buddy\SendBuddyList\SendBuddyList.cs" />
-    <Compile Include="Handler\CommandHandler\Buddy\StatusInfo\BasicStatusInfo.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\Status\StatusHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\GetProfile\GetProfileHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\NewProfile\NewProfileHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\RegisterNick\RegisterNickHandler.cs" />

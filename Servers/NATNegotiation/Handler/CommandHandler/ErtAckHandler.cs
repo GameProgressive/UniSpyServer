@@ -13,7 +13,7 @@ namespace NATNegotiation.Handler.CommandHandler
         }
         protected override void ProcessInformation(ClientInfo client, byte[] recv)
         {
-            client.IsGotErtAck = true;
+            client.Parse(_initPacket);
         }
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
