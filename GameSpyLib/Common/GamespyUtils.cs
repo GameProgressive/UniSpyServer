@@ -234,7 +234,7 @@ namespace GameSpyLib.Common
         /// <param name="month"></param>
         /// <param name="year"></param>
         /// <returns>True if the date is valid, otherwise false</returns>
-        public static bool IsValidDate(ushort day, ushort month, ushort year)
+        public static bool IsValidDate(int day, int month, int year)
         {
             // Check for a blank.
             /////////////////////

@@ -20,10 +20,13 @@
   <ItemGroup>
     <Compile Remove="Handler\CommandHandler\Buddy\**" />
     <Compile Remove="Handler\CommandHandler\Profile\**" />
+    <Compile Remove="obj\**" />
     <EmbeddedResource Remove="Handler\CommandHandler\Buddy\**" />
     <EmbeddedResource Remove="Handler\CommandHandler\Profile\**" />
+    <EmbeddedResource Remove="obj\**" />
     <None Remove="Handler\CommandHandler\Buddy\**" />
     <None Remove="Handler\CommandHandler\Profile\**" />
+    <None Remove="obj\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,8 +40,8 @@
 
   <ItemGroup>
     <Folder Include="Entity\Interface\" />
-    <Folder Include="Handler\CommandHandler\Buddy\Revoke\" />
-    <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\" />
+    <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Revoke\" />
+    <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Auth\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Handler\CommandHandler\General\Login\Misc\ChallangeVerify.cs" />
@@ -52,8 +55,10 @@
     <Compile Include="Handler\CommandHandler\Buddy\SendBlockList\SendBlockList.cs" />
     <Compile Include="Handler\CommandHandler\Buddy\SendBuddyList\SendBuddyList.cs" />
     <Compile Include="Handler\CommandHandler\Buddy\StatusInfo\BasicStatusInfo.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\GetProfile\GetProfileHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\NewProfile\NewProfileHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\RegisterNick\RegisterNickHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\UpdatePro\UpdateProHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\UpdateUI\UpdateUiHandler.cs" />
   </ItemGroup>
 </Project>

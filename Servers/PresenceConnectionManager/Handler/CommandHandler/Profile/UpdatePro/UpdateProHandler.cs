@@ -1,95 +1,110 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using LinqToDB;
 
 namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
-    public class UpdateProHandler
+    public class UpdateProHandler : GPCMHandlerBase
     {
-        /// <summary>
-        /// Updates profiles
-        /// </summary>
-        /// <param name="recv">Array of information sent by the server</param>
-        public static void UpdateUser(GPCMSession session, Dictionary<string, string> recv)
+        protected UpdateProHandler(Dictionary<string, string> recv) : base(recv)
         {
+        }
 
-            // Set clients country code
-            if (!recv.ContainsKey("sesskey"))
-                return;
+        protected override void CheckRequest(GPCMSession session)
+        {
+            base.CheckRequest(session);
+        }
 
-            ushort ssk;
-            if (!ushort.TryParse(recv["sesskey"], out ssk))
-                return;
-
-            if (ssk != session.PlayerInfo.SessionKey)
-                return;
-
-            string query = "UPDATE profiles SET";
-
-            if (recv.ContainsKey("publicmask"))
+        protected override void DataBaseOperation(GPCMSession session)
+        {
+            using (var db = new RetrospyDB())
             {
-                PublicMasks mask;
-                if (Enum.TryParse(recv["publicmask"], out mask))
+                var profile = db.Profiles.Where(
+                    p => p.Userid == session.UserInfo.Userid
+                    && p.Profileid == session.UserInfo.Profileid
+                    && p.Nick == p.Nick).First();
+
+                var user = db.Users.Where(
+                    u => u.Userid == session.UserInfo.Userid).First();
+
+                var subprofile = db.Subprofiles.Where(
+                    s => s.Profileid == session.UserInfo.Profileid
+                    && s.Namespaceid == session.UserInfo.NamespaceID
+                    && s.Uniquenick == session.UserInfo.UniqueNick).First();
+
+
+                if (_recv.ContainsKey("publicmask"))
                 {
-                    query += "publicmask=" + recv["publicmask"]+",";
-                }
-            }
-
-            if (recv.ContainsKey("firstname"))
-            {
-                query += "firstname"+recv["firstname"] + ",";
-                
-            }
-
-            if (recv.ContainsKey("lastname"))
-            {
-                query += "lastname=" + recv["lastname"] + ",";
-            }
-
-            if (recv.ContainsKey("icquin"))
-            {
-                query += "icquin=" + recv["icquin"] + ",";
-            }
-
-            if (recv.ContainsKey("homepage"))
-            {
-                query += "homepage=" + recv["homepage"] + ",";
-            }
-
-            if (recv.ContainsKey("birthday"))
-            {
-                int date;
-                if (int.TryParse(recv["birthday"], out date))
-                {
-                    ushort d = (ushort)((date >> 24) & 0xFF);
-                    ushort m = (ushort)((date >> 16) & 0xFF);
-                    ushort y = (ushort)(date & 0xFFFF);
-
-                    if (GameSpyUtils.IsValidDate(d, m, y))
+                    PublicMasks mask;
+                    if (Enum.TryParse(_recv["publicmask"], out mask))
                     {
-                        query += ", birthday="+d+",";
-
-                        query += ", birthmonth="+ m+",";
-
-                        query += ", birthyear="+y+",";
+                        profile.Publicmask = (int)mask;
                     }
                 }
-                if (recv.ContainsKey("sex"))
-                {
-                    query += "sex="+ recv["sex"]+",";
-                }
-                if (recv.ContainsKey("zipcode"))
-                {
 
-                    query += ", zipcode=" + recv["zipcode"] + ",";
+                if (_recv.ContainsKey("firstname"))
+                {
+                    profile.Firstname = _recv["firstname"];
                 }
 
-                if (recv.ContainsKey("countrycode"))
+                if (_recv.ContainsKey("lastname"))
                 {
-                    query += ", countrycode=" + recv["countrycode"] + ",";
+                    profile.Lastname = _recv["lastname"];
                 }
-                UpdateProQuery.UpdateProfile(query);
+
+                if (_recv.ContainsKey("icquin"))
+                {
+                    uint icq;
+                    uint.TryParse(_recv["icquin"], out icq);
+                    profile.Icquin = icq;
+                }
+
+                if (_recv.ContainsKey("homepage"))
+                {
+                    profile.Homepage = _recv["homepage"];
+                }
+
+                if (_recv.ContainsKey("birthday"))
+                {
+                    int date;
+                    if (int.TryParse(_recv["birthday"], out date))
+                    {
+                        int d = (int)((date >> 24) & 0xFF);
+                        ushort m = (ushort)((date >> 16) & 0xFF);
+                        ushort y = (ushort)(date & 0xFFFF);
+
+                        if (GameSpyUtils.IsValidDate(d, m, y))
+                        {
+                            profile.Birthday = d;
+                            profile.Birthmonth = m;
+                            profile.Birthyear = y;
+                        }
+                    }
+                    if (_recv.ContainsKey("sex"))
+                    {
+                        byte sex;
+                        if (byte.TryParse(_recv["sex"], out sex))
+                        {
+                            profile.Sex = Convert.ToSByte(_recv["sex"]);
+                        }
+
+                    }
+                    if (_recv.ContainsKey("zipcode"))
+                    {
+
+                        profile.Zipcode = _recv["zipcode"];
+                    }
+
+                    if (_recv.ContainsKey("countrycode"))
+                    {
+                        profile.Countrycode = _recv["countrycode"];
+                    }
+                    db.Update(profile);
+                }
             }
         }
     }
