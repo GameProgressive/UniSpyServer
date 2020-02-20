@@ -202,13 +202,17 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 if (email.Count() == 0)
                 {
                     _errorCode = GPErrorCode.LoginBadEmail;
+                    return;
                 }
 
                 //Grab information from database
                 var info = from u in db.Users
-                           from p in db.Profiles
-                           from n in db.Subprofiles
-                           where u.Email == session.UserInfo.Email && p.Nick == session.UserInfo.Nick && n.Namespaceid == session.UserInfo.NamespaceID
+                           join p in db.Profiles on u.Userid equals p.Userid
+                           join n in db.Subprofiles on p.Profileid equals n.Profileid
+                           where u.Email == session.UserInfo.Email
+                           && n.Uniquenick ==session.UserInfo.UniqueNick
+                           && p.Nick == session.UserInfo.Nick
+                           && n.Namespaceid == session.UserInfo.NamespaceID
                            select new
                            {
                                userid = u.Userid,
@@ -218,12 +222,8 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                                emailVerified = u.Emailverified,
                                blocked = u.Banned
                            };
-                if (info.Count() == 0)
-                {
-                    _errorCode = GPErrorCode.LoginBadPassword;
-                    return;
-                }
-                else if (info.Count() == 1)
+
+                if (info.Count() == 1)
                 {
                     session.UserInfo.Userid = info.First().userid;
                     session.UserInfo.Profileid = info.First().profileid;
@@ -236,7 +236,6 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 {
                     _errorCode = GPErrorCode.DatabaseError;
                 }
-
             }
         }
 
@@ -301,12 +300,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                                emailVerified = u.Emailverified,
                                blocked = u.Banned
                            };
-                if (info.Count() == 0)
-                {
-                    _errorCode = GPErrorCode.LoginBadUniquenick;
-                    return;
-                }
-                else if (info.Count() == 1)
+                if (info.Count() == 1)
                 {
                     session.UserInfo.Userid = info.First().userid;
                     session.UserInfo.Profileid = info.First().profileid;
@@ -321,7 +315,6 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 {
                     _errorCode = GPErrorCode.DatabaseError;
                 }
-
             }
         }
 
@@ -329,7 +322,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         {
             base.Response(session);
             session.UserInfo.StatusCode = GPStatus.Online;
-            GPCMServer.LoggedInSession.GetOrAdd(session.Id,session);
+            GPCMServer.LoggedInSession.GetOrAdd(session.Id, session);
             SDKRevision.ExtendedFunction(session);
         }
         protected bool IsChallengeCorrect(GPCMSession session)

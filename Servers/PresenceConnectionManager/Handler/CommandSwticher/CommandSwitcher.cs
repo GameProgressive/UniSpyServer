@@ -1,23 +1,18 @@
 ﻿using GameSpyLib.Logging;
-using PresenceConnectionManager.Handler.General.Login.LoginMethod;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Buddy.AddBlock;
 using PresenceConnectionManager.Handler.Buddy.AddBuddy;
 using PresenceConnectionManager.Handler.Buddy.DelBuddy;
-using PresenceConnectionManager.Handler.Buddy.InviteTo;
-using PresenceConnectionManager.Handler.General.KeepAlive;
-using PresenceConnectionManager.Handler.General.Login;
-using PresenceConnectionManager.Handler.Profile.NewProfile;
+using PresenceConnectionManager.Handler.CommandHandler.Buddy.Status;
+using PresenceConnectionManager.Handler.General.Login.LoginMethod;
 using PresenceConnectionManager.Handler.Profile.GetProfile;
-using PresenceConnectionManager.Handler.Profile.NewUser;
+using PresenceConnectionManager.Handler.Profile.NewProfile;
 using PresenceConnectionManager.Handler.Profile.RegisterNick;
-using PresenceConnectionManager.Handler.Profile.Status;
 using PresenceConnectionManager.Handler.Profile.UpdatePro;
 using PresenceConnectionManager.Handler.Profile.UpdateUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PresenceConnectionManager.Handler.CommandHandler.Buddy.Status;
 
 namespace PresenceConnectionManager.Handler
 {
@@ -73,7 +68,7 @@ namespace PresenceConnectionManager.Handler
                         AddBlockHandler addBlock = new AddBlockHandler(recv);
                         addBlock.Handle(session);
                         break;
-                    case "KA":
+                    case "ka":
                         //KAHandler.SendKeepAlive(session);
                         break;
                     case "newprofile":

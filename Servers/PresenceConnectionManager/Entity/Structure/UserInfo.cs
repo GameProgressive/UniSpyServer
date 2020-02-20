@@ -33,7 +33,7 @@ namespace PresenceConnectionManager.Structure
         /// <summary>
         /// The connected clients Unique Nick
         /// </summary>
-        public string UniqueNick;
+        public string UniqueNick="";
 
         /// <summary>
         /// store the information of a user, if using the uniquenick login the userdatawill be his uniquenick if using
