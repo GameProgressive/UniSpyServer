@@ -1,20 +1,18 @@
 ﻿using PresenceConnectionManager.Enumerator;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
 {
     public class StatusHandler : GPCMHandlerBase
     {
         private uint _statusCode;
-        public StatusHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public StatusHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (recv.ContainsKey("status"))
             {
                 if (!uint.TryParse(recv["status"], out _statusCode))
@@ -24,8 +22,8 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
             }
             else
                 _errorCode = GPErrorCode.Parse;
-            
-               
+
+
         }
 
         protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)

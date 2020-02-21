@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
     /// </summary>
     public class OthersHandler : GPSPHandlerBase
     {
-        public OthersHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
+        public OthersHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
@@ -28,7 +28,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                 _errorCode = GPErrorCode.Parse;
             }
 
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
         }
 
         protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)

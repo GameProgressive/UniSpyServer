@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Enumerator;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 namespace PresenceConnectionManager.Handler.Profile.GetProfile
@@ -11,7 +10,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         private uint _profileid;
-        public GetProfileHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public GetProfileHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 

@@ -1,7 +1,5 @@
-﻿using GameSpyLib.Common;
-using StatsAndTracking.Entity.Enumerator;
+﻿using StatsAndTracking.Entity.Enumerator;
 using StatsAndTracking.Handler.SystemHandler;
-using System;
 using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler
@@ -11,14 +9,14 @@ namespace StatsAndTracking.Handler.CommandHandler
         protected string _sendingBuffer;
         protected uint _localId;
         protected GstatsErrorCode _errorCode = GstatsErrorCode.NoError;
-        protected GStatsHandlerBase(GStatsSession session,Dictionary<string, string> recv)
+        protected GStatsHandlerBase(GStatsSession session, Dictionary<string, string> recv)
         {
             Handle(session, recv);
         }
 
-        protected virtual void Handle(GStatsSession session,Dictionary<string,string> recv)
+        protected virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
         {
-            CheckRequest(session,recv);
+            CheckRequest(session, recv);
             if (_errorCode != GstatsErrorCode.NoError)
             {
                 session.ToLog(ErrorMessage.ToMsg(_errorCode));
@@ -31,7 +29,7 @@ namespace StatsAndTracking.Handler.CommandHandler
                 return;
             }
             ConstructResponse(session, recv);
-            if(_errorCode!= GstatsErrorCode.NoError)
+            if (_errorCode != GstatsErrorCode.NoError)
             {
                 session.ToLog(ErrorMessage.ToMsg(_errorCode));
                 return;
@@ -40,7 +38,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
         }
 
-        protected virtual void CheckRequest(GStatsSession session,Dictionary<string, string> recv)
+        protected virtual void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
         {
             if (recv.ContainsKey("lid"))
             {

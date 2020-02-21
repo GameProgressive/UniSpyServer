@@ -27,7 +27,7 @@ namespace CDKey
             string decrypted = Enctypex.XorEncoding(message, 0);
             decrypted.Replace(@"\r\n", "").Replace("\0", "");
             string[] recieved = decrypted.TrimStart('\\').Split('\\');
-            Dictionary<string, string> recv = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
+            Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
             CommandSwitcher.Switch(this, endPoint, recv);
         }
 

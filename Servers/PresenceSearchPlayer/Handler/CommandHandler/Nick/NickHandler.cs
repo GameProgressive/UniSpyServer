@@ -12,13 +12,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     /// </summary>
     public class NickHandler : GPSPHandlerBase
     {
-        public NickHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
+        public NickHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;

@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using QueryReport.Entity.Enumerator;
+﻿using QueryReport.Entity.Enumerator;
 using QueryReport.Server;
 using System.Collections.Generic;
 

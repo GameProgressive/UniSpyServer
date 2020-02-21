@@ -6,13 +6,13 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     public class AddBuddyHandler : GPCMHandlerBase
     {
-        public AddBuddyHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public AddBuddyHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
         private uint _friendPid;
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("sesskey") || !recv.ContainsKey("newprofileid") || !recv.ContainsKey("reason"))
             {
                 _errorCode = GPErrorCode.Parse;

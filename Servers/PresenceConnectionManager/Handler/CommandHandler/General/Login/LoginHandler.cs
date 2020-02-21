@@ -14,14 +14,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
     {
         private Crc16 _crc = new Crc16(Crc16Mode.Standard);
 
-        public LoginHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public LoginHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             // for pass operation id to session,Playerinfo
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
 
             // Make sure we have all the required data to process this login
             if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
@@ -30,9 +30,9 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 return;
             }
 
-            ParseDataBasedOnLoginType(session,recv);
+            ParseDataBasedOnLoginType(session, recv);
 
-            ParseOtherData(session,recv);
+            ParseOtherData(session, recv);
         }
         /// <summary>
         /// Parse everything into PlayerInfo, so we can use it later.
@@ -181,7 +181,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 return;
             }
 
-            if (!IsChallengeCorrect(session,recv))
+            if (!IsChallengeCorrect(session, recv))
             {
                 _errorCode = GPErrorCode.LoginBadPassword;
                 return;
@@ -210,7 +210,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
                            where u.Email == session.UserInfo.Email
-                           && n.Uniquenick ==session.UserInfo.UniqueNick
+                           && n.Uniquenick == session.UserInfo.UniqueNick
                            && p.Nick == session.UserInfo.Nick
                            && n.Namespaceid == session.UserInfo.NamespaceID
                            select new
@@ -320,7 +320,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void Response(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.Response(session,recv);
+            base.Response(session, recv);
             session.UserInfo.StatusCode = GPStatus.Online;
             GPCMServer.LoggedInSession.GetOrAdd(session.Id, session);
             SDKRevision.ExtendedFunction(session);

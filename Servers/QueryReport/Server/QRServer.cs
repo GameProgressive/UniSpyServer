@@ -4,7 +4,6 @@ using QueryReport.Entity.Structure;
 using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Net;
 using System.Timers;
 

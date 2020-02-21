@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Handler.General.KeepAlive
         {
         }
 
-        protected override void ConstructResponse(GPCMSession session,Dictionary<string,string> recv)
+        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
         {
             _sendingBuffer = @"\ka\\final\";
         }

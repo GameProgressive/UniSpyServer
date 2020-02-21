@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 {
     public class SearchHandler : GPSPHandlerBase
     {
-        public SearchHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
+        public SearchHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
@@ -25,7 +25,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
         private int _skip;
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("profileid") && !recv.ContainsKey("namespaceid") && !recv.ContainsKey("gamename") && !recv.ContainsKey("partnerid"))
             {
                 _errorCode = GPErrorCode.Parse;

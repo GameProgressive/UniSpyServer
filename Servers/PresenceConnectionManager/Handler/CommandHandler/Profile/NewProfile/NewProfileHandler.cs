@@ -11,13 +11,13 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"
         //replace a existed nick with new nick
         //@"  \newprofile\sesskey\<>\nick\<>\replace\1\oldnick\<>\id\1\final\"
-        public NewProfileHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public NewProfileHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
         }
 
         protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)

@@ -13,13 +13,13 @@ namespace QueryReport.Entity.Structure
         {
             RemoteEndPoint = endPoint;
         }
-        
+
         public int DatabaseId { get; set; }
 
-        
+
         public EndPoint RemoteEndPoint { get; protected set; }
-       
-        
+
+
         public bool IsValidated = false;
 
         public int RemotePort
@@ -30,25 +30,25 @@ namespace QueryReport.Entity.Structure
         {
             get { return ((IPEndPoint)RemoteEndPoint).Address.GetAddressBytes(); }
         }
-        
+
         public DateTime LastRefreshed { get; set; }
 
-        
+
         public DateTime LastPing { get; set; }
 
-        
+
         public string LocalIp0 { get; set; }
 
-        
+
         public string localIp1 { get; set; }
 
-        
+
         public int LocalPort { get; set; }
 
-        
+
         public bool NatNeg { get; set; }
 
-        
+
         public int StateChanged { get; set; }
 
         #region Server Vars

@@ -7,7 +7,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
     public class OthersListHandler : GPSPHandlerBase
     {
-        public OthersListHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
+        public OthersListHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("opids") || !recv.ContainsKey("namespaceid"))
             {
                 _errorCode = GPErrorCode.Parse;

@@ -2,8 +2,6 @@
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler;
-using NATNegotiation.Handler.SystemHandler;
-using System;
 
 namespace NatNegotiation.Handler.CommandHandler
 {

@@ -10,7 +10,7 @@ using System.Net;
 namespace NatNegotiation.Handler.CommandHandler
 {
     public class ConnectHandler : NatNegHandlerBase
-    { 
+    {
         public static void SendConnectPacket(NatNegServer server, ClientInfo client, ClientInfo other)
         {
             ConnectPacket connPacket = new ConnectPacket

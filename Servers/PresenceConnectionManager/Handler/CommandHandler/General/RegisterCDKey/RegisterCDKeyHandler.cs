@@ -7,13 +7,13 @@ namespace PresenceConnectionManager.Handler.General.RegisterCDKey
 {
     public class RegisterCDKeyHandler : GPCMHandlerBase
     {
-        public RegisterCDKeyHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public RegisterCDKeyHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
 
         }
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("cdkeyenc"))
                 _errorCode = Enumerator.GPErrorCode.Parse;
         }

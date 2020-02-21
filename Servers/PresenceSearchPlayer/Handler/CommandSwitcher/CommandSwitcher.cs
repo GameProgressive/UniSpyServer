@@ -25,7 +25,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                 switch (command)
                 {
                     case "search":
-                        SearchHandler search = new SearchHandler(session,recv);
+                        SearchHandler search = new SearchHandler(session, recv);
                         break;
                     case "valid"://is email format valid
                         ValidHandler valid = new ValidHandler(session, recv);

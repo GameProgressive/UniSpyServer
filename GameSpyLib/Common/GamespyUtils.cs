@@ -105,7 +105,7 @@ namespace GameSpyLib.Common
         /// </summary>
         /// <param name="parts">The array of data from the client</param>
         /// <returns>A converted dictionary</returns>
-        public static Dictionary<string, string> ConvertGPResponseToKeyValue(string[] parts)
+        public static Dictionary<string, string> ConvertRequestToKeyValue(string[] parts)
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
             try

@@ -11,13 +11,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
     /// </summary>
     public class SearchUniqueHandler : GPSPHandlerBase
     {
-        public SearchUniqueHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
+        public SearchUniqueHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("uniquenick") || !recv.ContainsKey("namespaces"))
             {
                 _errorCode = GPErrorCode.Parse;

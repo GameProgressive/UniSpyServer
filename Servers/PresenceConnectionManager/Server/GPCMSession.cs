@@ -69,7 +69,7 @@ namespace PresenceConnectionManager
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
 
-                Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
+                Dictionary<string, string> dict = GameSpyUtils.ConvertRequestToKeyValue(recieved);
 
                 CommandSwitcher.Switch(this, dict);
             }

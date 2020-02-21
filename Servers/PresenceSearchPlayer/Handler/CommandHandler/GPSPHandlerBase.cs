@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using PresenceSearchPlayer.Enumerator;
+﻿using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
 
@@ -16,27 +15,27 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected ushort _operationID;
         protected uint _namespaceid = 0;
 
-        protected GPSPHandlerBase(GPSPSession session,Dictionary<string, string> recv)
+        protected GPSPHandlerBase(GPSPSession session, Dictionary<string, string> recv)
         {
             Handle(session, recv);
         }
         public virtual void Handle(GPSPSession session, Dictionary<string, string> recv)
         {
-            CheckRequest(session,recv);
+            CheckRequest(session, recv);
             if (_errorCode != GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
-            DataBaseOperation(session,recv);
+            DataBaseOperation(session, recv);
             if (_errorCode == GPErrorCode.DatabaseError)
             {
                 ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
-            ConstructResponse(session,recv);
+            ConstructResponse(session, recv);
             if (_errorCode == GPErrorCode.ConstructResponseError)
             {
                 ErrorMsg.SendGPSPError(session, GPErrorCode.General, _operationID);

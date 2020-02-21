@@ -1,22 +1,22 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using LinqToDB;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LinqToDB;
 
 namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
     public class UpdateProHandler : GPCMHandlerBase
     {
-        public UpdateProHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public UpdateProHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
         }
 
         protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)

@@ -7,7 +7,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
     public class UniqueSearchHandler : GPSPHandlerBase
     {
-        public UniqueSearchHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
+        public UniqueSearchHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("preferrednick"))
             {
                 _errorCode = GPErrorCode.Parse;

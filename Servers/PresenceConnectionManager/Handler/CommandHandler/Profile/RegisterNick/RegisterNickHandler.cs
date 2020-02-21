@@ -9,13 +9,13 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
     public class RegisterNickHandler : GPCMHandlerBase
     {
-        public RegisterNickHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public RegisterNickHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;

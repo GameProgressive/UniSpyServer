@@ -17,13 +17,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         private bool _IsUniqueNickExist;
 
         private uint _profileid;
-        public NewUserHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
+        public NewUserHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
 
             if (!recv.ContainsKey("nick"))
             {
@@ -155,7 +155,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 //update other information
                 if (_errorCode != GPErrorCode.DatabaseError)
                 {
-                    UpdateOtherInfo(session,recv);
+                    UpdateOtherInfo(session, recv);
                 }
 
             }
@@ -171,7 +171,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 _sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _profileid);
         }
 
-        private void UpdateOtherInfo(GPSPSession session,Dictionary<string, string> recv)
+        private void UpdateOtherInfo(GPSPSession session, Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {
@@ -206,9 +206,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         else
                         { _errorCode = GPErrorCode.DatabaseError; }
 
-                    if (recv.ContainsKey("productID"))
-                        if (uint.TryParse(recv["productID"], out productid))
-                            firstns.Productid = productid;
+                    //if (recv.ContainsKey("productID"))
+                    //    if (uint.TryParse(recv["productID"], out productid))
+                    //        firstns.Productid = productid;
 
                     if (recv.ContainsKey("gamename"))
                     {

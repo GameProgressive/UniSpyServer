@@ -9,12 +9,12 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
     public class AddBlockHandler : GPCMHandlerBase
     {
         private uint _blockProfileid;
-        public AddBlockHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
+        public AddBlockHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest(session, recv);
             if (!recv.ContainsKey("profileid"))
             {
                 _errorCode = GPErrorCode.Parse;

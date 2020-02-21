@@ -11,10 +11,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        public CheckHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
+        public CheckHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
-        protected override void CheckRequest(GPSPSession session,Dictionary<string, string> recv)
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             if (!recv.ContainsKey("nick") || !recv.ContainsKey("email") || !recv.ContainsKey("passenc"))
             {

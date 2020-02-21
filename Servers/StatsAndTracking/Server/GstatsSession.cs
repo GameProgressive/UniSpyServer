@@ -23,7 +23,7 @@ namespace StatsAndTracking
                 return;
             }
             string[] recieved = message.TrimStart('\\').Split('\\');
-            Dictionary<string, string> dict = GameSpyUtils.ConvertGPResponseToKeyValue(recieved);
+            Dictionary<string, string> dict = GameSpyUtils.ConvertRequestToKeyValue(recieved);
 
             CommandSwitcher.Switch(this, dict);
         }

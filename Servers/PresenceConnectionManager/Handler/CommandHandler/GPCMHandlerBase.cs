@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using PresenceConnectionManager.Enumerator;
+﻿using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Error;
 using System.Collections.Generic;
 
@@ -12,14 +11,14 @@ namespace PresenceConnectionManager.Handler
         protected string _sendingBuffer;
         protected ushort _operationID;
 
-        protected GPCMHandlerBase(GPCMSession session,Dictionary<string, string> recv)
+        protected GPCMHandlerBase(GPCMSession session, Dictionary<string, string> recv)
         {
             Handle(session, recv);
         }
 
-        public void Handle(GPCMSession session,Dictionary<string,string> recv)
+        public void Handle(GPCMSession session, Dictionary<string, string> recv)
         {
-            CheckRequest(session,recv);
+            CheckRequest(session, recv);
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
@@ -27,7 +26,7 @@ namespace PresenceConnectionManager.Handler
                 return;
             }
 
-            DataBaseOperation(session,recv);
+            DataBaseOperation(session, recv);
             if (_errorCode == GPErrorCode.DatabaseError)
             {
                 //TODO
@@ -35,14 +34,14 @@ namespace PresenceConnectionManager.Handler
                 return;
             }
 
-            ConstructResponse(session,recv);
+            ConstructResponse(session, recv);
             if (_errorCode == GPErrorCode.ConstructResponseError)
             {
                 ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
                 return;
             }
 
-            Response(session,recv);
+            Response(session, recv);
         }
         protected virtual void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {

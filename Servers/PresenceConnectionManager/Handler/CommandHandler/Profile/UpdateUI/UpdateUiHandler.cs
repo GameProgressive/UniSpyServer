@@ -1,6 +1,4 @@
-﻿using GameSpyLib.Common;
-using PresenceConnectionManager.Enumerator;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.Profile.UpdateUI
 {
