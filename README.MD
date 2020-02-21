@@ -1,5 +1,7 @@
 # RetroSpy Server
 
+![](https://github.com/GameProgressive/RetroSpyServer/workflows/CI/badge.svg)
+
 RetroSpy is a GameSpy Project that aims to create GameSpy 2011/2012 services.
 
 The server is written in C#, it's inspired by OpenSpy and it's a forked project of BattleSpy (The content inside GameSpyLib/).
