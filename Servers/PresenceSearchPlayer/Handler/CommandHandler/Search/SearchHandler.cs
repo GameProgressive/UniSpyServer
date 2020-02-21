@@ -16,29 +16,29 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 {
     public class SearchHandler : GPSPHandlerBase
     {
-        public SearchHandler(Dictionary<string, string> recv) : base(recv)
+        public SearchHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
         private uint _profileid;
         private uint _partnerid;
         private int _skip;
-        protected override void CheckRequest(GPSPSession session)
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("profileid") && !_recv.ContainsKey("namespaceid") && !_recv.ContainsKey("gamename") && !_recv.ContainsKey("partnerid"))
+            base.CheckRequest(session,recv);
+            if (!recv.ContainsKey("profileid") && !recv.ContainsKey("namespaceid") && !recv.ContainsKey("gamename") && !recv.ContainsKey("partnerid"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-            if (!uint.TryParse(_recv["profileid"], out _profileid) || !uint.TryParse(_recv["partnerid"], out _partnerid))
+            if (!uint.TryParse(recv["profileid"], out _profileid) || !uint.TryParse(recv["partnerid"], out _partnerid))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-            if (_recv.ContainsKey("skip"))
+            if (recv.ContainsKey("skip"))
             {
-                if (!int.TryParse(_recv["skip"], out _skip))
+                if (!int.TryParse(recv["skip"], out _skip))
                 {
                     _errorCode = GPErrorCode.Parse;
                     return;
@@ -48,20 +48,20 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 
         }
 
-        protected override void DataBaseOperation(GPSPSession session)
+        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             //TODO verify the search condition whether needed namespaceid!!!!!
             using (var db = new RetrospyDB())
             {
                 //we only need uniquenick to search a profile
-                if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
+                if (recv.ContainsKey("uniquenick") && recv.ContainsKey("namespaceid"))
                 {
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
-                                 where n.Uniquenick == _recv["uniquenick"]
+                                 where n.Uniquenick == recv["uniquenick"]
                                  && n.Namespaceid == _namespaceid
-                                 && n.Gamename == _recv["gamename"]
+                                 && n.Gamename == recv["gamename"]
                                  && n.Partnerid == _partnerid
                                  select new
                                  {
@@ -88,14 +88,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 
 
                 }
-                else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
+                else if (recv.ContainsKey("nick") && recv.ContainsKey("email"))
                 {
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
-                                 where p.Nick == _recv["nick"] && u.Email == _recv["email"]
+                                 where p.Nick == recv["nick"] && u.Email == recv["email"]
                                  && n.Namespaceid == _namespaceid
-                                 && n.Gamename == _recv["gamename"]
+                                 && n.Gamename == recv["gamename"]
                                  && n.Partnerid == _partnerid
                                  select new
                                  {
@@ -118,14 +118,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                     }
                     _sendingBuffer += @"\bsrdone\\more\0\final\";
                 }
-                else if (_recv.ContainsKey("nick"))
+                else if (recv.ContainsKey("nick"))
                 {
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
-                                 where p.Nick == _recv["nick"]
+                                 where p.Nick == recv["nick"]
                                  && n.Namespaceid == _namespaceid
-                                 && n.Gamename == _recv["gamename"]
+                                 && n.Gamename == recv["gamename"]
                                  && n.Partnerid == _partnerid
                                  select new
                                  {
@@ -149,14 +149,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                     _sendingBuffer += @"\bsrdone\\more\0\final\";
 
                 }
-                else if (_recv.ContainsKey("email"))
+                else if (recv.ContainsKey("email"))
                 {
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
-                                 where u.Email == _recv["email"]
+                                 where u.Email == recv["email"]
                                  && n.Namespaceid == _namespaceid
-                                 && n.Gamename == _recv["gamename"]
+                                 && n.Gamename == recv["gamename"]
                                  && n.Partnerid == _partnerid
                                  select new
                                  {

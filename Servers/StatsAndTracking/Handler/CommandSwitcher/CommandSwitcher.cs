@@ -9,7 +9,7 @@ namespace StatsAndTracking.Handler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(GstatsSession session, Dictionary<string, string> recv)
+        public static void Switch(GStatsSession session, Dictionary<string, string> recv)
         {
             string command = recv.Keys.First();
             try

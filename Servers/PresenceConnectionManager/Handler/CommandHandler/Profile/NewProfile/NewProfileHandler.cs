@@ -11,30 +11,30 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"
         //replace a existed nick with new nick
         //@"  \newprofile\sesskey\<>\nick\<>\replace\1\oldnick\<>\id\1\final\"
-        public NewProfileHandler(Dictionary<string, string> recv) : base(recv)
+        public NewProfileHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session)
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
+            base.CheckRequest(session,recv);
         }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {
-                if (_recv.ContainsKey("replace"))
+                if (recv.ContainsKey("replace"))
                 {
-                    db.Profiles.Where(p => p.Profileid == session.UserInfo.Profileid && p.Nick == _recv["oldnick"])
-                        .Set(p => p.Nick, _recv["nick"])
+                    db.Profiles.Where(p => p.Profileid == session.UserInfo.Profileid && p.Nick == recv["oldnick"])
+                        .Set(p => p.Nick, recv["nick"])
                         .Update();
                 }
                 else
                 {
                     db.Profiles
                             .Value(p => p.Profileid, session.UserInfo.Profileid)
-                            .Value(p => p.Nick, _recv["nick"])
+                            .Value(p => p.Nick, recv["nick"])
                             .Value(p => p.Userid, session.UserInfo.Userid)
                             .Insert();
                 }

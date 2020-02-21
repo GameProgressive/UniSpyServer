@@ -1,12 +1,16 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
     public class SendBlockList : GPCMHandlerBase
     {
+        protected SendBlockList(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        {
+        }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             if (session.UserInfo.BlockListSent)
                 return;

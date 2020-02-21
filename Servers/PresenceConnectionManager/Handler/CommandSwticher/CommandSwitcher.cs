@@ -29,51 +29,42 @@ namespace PresenceConnectionManager.Handler
                     //    InviteToHandler.InvitePlayer(session, recv);
                     //    break;
                     case "login"://login to gamespy
-                        LoginHandler login = new LoginHandler(recv);
-                        login.Handle(session); 
+                        LoginHandler login = new LoginHandler(session,recv);
                         break;
                     case "getprofile"://get profile of a player
-                        GetProfileHandler get = new GetProfileHandler(recv);
-                        get.Handle(session);
+                        GetProfileHandler get = new GetProfileHandler(session, recv);
                         break;
                     case "addbuddy"://Send a request which adds an user to our friend list
-                        AddBuddyHandler add = new AddBuddyHandler(recv);
-                        add.Handle(session);
+                        AddBuddyHandler add = new AddBuddyHandler(session, recv);
                         break;
                     case "delbuddy"://delete a user from our friend list
-                        DelBuddyHandler delBuddy = new DelBuddyHandler(recv);
-                        delBuddy.Handle(session);
+                        DelBuddyHandler delBuddy = new DelBuddyHandler(session, recv);
                         break;
                     case "updateui"://update a user's email
-                        UpdateUIHandler.UpdateUI(session, recv);
+                        UpdateUIHandler updateUI = new UpdateUIHandler(session, recv);
                         break;
                     case "updatepro"://update a user's profile
-                        UpdateProHandler updatePro = new UpdateProHandler(recv);
-                        updatePro.Handle(session);
+                        UpdateProHandler updatePro = new UpdateProHandler(session, recv);
                         break;
                     case "registernick"://update user's uniquenick
-                        RegisterNickHandler register = new RegisterNickHandler(recv);
-                        register.Handle(session);
+                        RegisterNickHandler register = new RegisterNickHandler(session, recv);
                         break;
                     case "logout":
                         session.DisconnectByReason(DisconnectReason.NormalLogout);
                         break;
                     case "status"://update current logged in user's status info
-                        StatusHandler status = new StatusHandler(recv);
-                        status.Handle(session);
+                        StatusHandler status = new StatusHandler(session, recv);
                         break;
                     case "newuser"://create an new user
                         break;
                     case "addblock"://add an user to our block list
-                        AddBlockHandler addBlock = new AddBlockHandler(recv);
-                        addBlock.Handle(session);
+                        AddBlockHandler addBlock = new AddBlockHandler(session, recv);
                         break;
                     case "ka":
                         //KAHandler.SendKeepAlive(session);
                         break;
                     case "newprofile":
-                        NewProfileHandler newProfile = new NewProfileHandler(recv);
-                        newProfile.Handle(session);
+                        NewProfileHandler newProfile = new NewProfileHandler(session, recv);
                         break;
                     default:
                         session.UnknownDataRecived(recv);

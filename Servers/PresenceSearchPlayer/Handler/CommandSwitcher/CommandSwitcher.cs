@@ -25,44 +25,35 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                 switch (command)
                 {
                     case "search":
-                        SearchHandler search = new SearchHandler(recv);
-                        search.Handle(session);
+                        SearchHandler search = new SearchHandler(session,recv);
                         break;
                     case "valid"://is email format valid
-                        ValidHandler valid = new ValidHandler(recv);
-                        valid.Handle(session);
+                        ValidHandler valid = new ValidHandler(session, recv);
                         break;
                     case "nicks":// search an user with nick name
-                        NickHandler nick = new NickHandler(recv);
-                        nick.Handle(session);
+                        NickHandler nick = new NickHandler(session, recv);
                         break;
                     //case "pmatch":
                     //    PmatchHandler pmatch = new PmatchHandler(recv);
                     //    pmatch.Handle(session);
                     //break;
                     case "check":
-                        CheckHandler check = new CheckHandler(recv);
-                        check.Handle(session);
+                        CheckHandler check = new CheckHandler(session, recv);
                         break;
                     case "newuser"://create an new user
-                        NewUserHandler newUser = new NewUserHandler(recv);
-                        newUser.Handle(session);
+                        NewUserHandler newUser = new NewUserHandler(session, recv);
                         break;
                     case "searchunique"://search an user with uniquenick
-                        SearchUniqueHandler searchUnique = new SearchUniqueHandler(recv);
-                        searchUnique.Handle(session);
+                        SearchUniqueHandler searchUnique = new SearchUniqueHandler(session, recv);
                         break;
                     case "others"://search 
-                        OthersHandler others = new OthersHandler(recv);
-                        others.Handle(session);
+                        OthersHandler others = new OthersHandler(session, recv);
                         break;
                     case "otherslist"://search other players friend list to see who is in his list?
-                        OthersListHandler othersList = new OthersListHandler(recv);
-                        othersList.Handle(session);
+                        OthersListHandler othersList = new OthersListHandler(session, recv);
                         break;
                     case "uniquesearch"://search a user with uniquenick and namespaceid
-                        UniqueSearchHandler uniqueSearch = new UniqueSearchHandler(recv);
-                        uniqueSearch.Handle(session);
+                        UniqueSearchHandler uniqueSearch = new UniqueSearchHandler(session, recv);
                         break;
                     default:
                         session.UnknownDataRecived(command, recv);

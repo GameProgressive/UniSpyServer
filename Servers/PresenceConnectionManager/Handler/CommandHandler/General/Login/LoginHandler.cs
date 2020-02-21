@@ -14,53 +14,53 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
     {
         private Crc16 _crc = new Crc16(Crc16Mode.Standard);
 
-        public LoginHandler(Dictionary<string, string> recv) : base(recv)
+        public LoginHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session)
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             // for pass operation id to session,Playerinfo
-            base.CheckRequest(session);
+            base.CheckRequest(session,recv);
 
             // Make sure we have all the required data to process this login
-            if (!_recv.ContainsKey("challenge") || !_recv.ContainsKey("response"))
+            if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            ParseDataBasedOnLoginType(session);
+            ParseDataBasedOnLoginType(session,recv);
 
-            ParseOtherData(session);
+            ParseOtherData(session,recv);
         }
         /// <summary>
         /// Parse everything into PlayerInfo, so we can use it later.
         /// </summary>
         /// <param name="session"></param>
-        private void ParseDataBasedOnLoginType(GPCMSession session)
+        private void ParseDataBasedOnLoginType(GPCMSession session, Dictionary<string, string> recv)
         {
-            session.UserInfo.UserChallenge = _recv["challenge"];
+            session.UserInfo.UserChallenge = recv["challenge"];
 
-            if (_recv.ContainsKey("uniquenick"))
+            if (recv.ContainsKey("uniquenick"))
             {
                 session.UserInfo.LoginType = LoginType.Uniquenick;
-                session.UserInfo.UniqueNick = _recv["uniquenick"];
-                session.UserInfo.UserData = _recv["uniquenick"];
+                session.UserInfo.UniqueNick = recv["uniquenick"];
+                session.UserInfo.UserData = recv["uniquenick"];
                 return;
             }
-            if (_recv.ContainsKey("authtoken"))
+            if (recv.ContainsKey("authtoken"))
             {
                 session.UserInfo.LoginType = LoginType.AuthToken;
-                session.UserInfo.AuthToken = _recv["authtoken"];
-                session.UserInfo.UserData = _recv["authtoken"];
+                session.UserInfo.AuthToken = recv["authtoken"];
+                session.UserInfo.UserData = recv["authtoken"];
                 return;
             }
-            if (_recv.ContainsKey("user"))
+            if (recv.ContainsKey("user"))
             {
                 session.UserInfo.LoginType = LoginType.Nick;
-                session.UserInfo.UserData = _recv["user"];
-                string user = _recv["user"];
+                session.UserInfo.UserData = recv["user"];
+                string user = recv["user"];
 
                 int Pos = user.IndexOf('@');
                 if (Pos == -1 || Pos < 1 || (Pos + 1) >= user.Length)
@@ -83,41 +83,41 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         }
 
-        private void ParseOtherData(GPCMSession session)
+        private void ParseOtherData(GPCMSession session, Dictionary<string, string> recv)
         {
-            if (_recv.ContainsKey("partnerid"))
+            if (recv.ContainsKey("partnerid"))
             {
-                if (!uint.TryParse(_recv["partnerid"], out session.UserInfo.PartnerID))
+                if (!uint.TryParse(recv["partnerid"], out session.UserInfo.PartnerID))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
             }
-            if (_recv.ContainsKey("namespaceid"))
+            if (recv.ContainsKey("namespaceid"))
             {
-                if (!uint.TryParse(_recv["namespaceid"], out session.UserInfo.NamespaceID))
+                if (!uint.TryParse(recv["namespaceid"], out session.UserInfo.NamespaceID))
                     _errorCode = GPErrorCode.Parse;
                 // the default namespaceid = 0
             }
             //store sdkrevision
-            if (_recv.ContainsKey("sdkrevision"))
+            if (recv.ContainsKey("sdkrevision"))
             {
-                if (!uint.TryParse(_recv["sdkrevision"], out session.UserInfo.SDKRevision))
+                if (!uint.TryParse(recv["sdkrevision"], out session.UserInfo.SDKRevision))
                     _errorCode = GPErrorCode.Parse;
             }
-            if (_recv.ContainsKey("gamename"))
+            if (recv.ContainsKey("gamename"))
             {
-                session.UserInfo.GameName = _recv["gamename"];
+                session.UserInfo.GameName = recv["gamename"];
             }
-            if (_recv.ContainsKey("port"))
-                if (!uint.TryParse(_recv["port"], out session.UserInfo.PeerPort))
+            if (recv.ContainsKey("port"))
+                if (!uint.TryParse(recv["port"], out session.UserInfo.PeerPort))
                     _errorCode = GPErrorCode.Parse;
 
-            if (_recv.ContainsKey("quiet"))
-                if (!uint.TryParse(_recv["quiet"], out session.UserInfo.QuietModeFlag))
+            if (recv.ContainsKey("quiet"))
+                if (!uint.TryParse(recv["quiet"], out session.UserInfo.QuietModeFlag))
                     _errorCode = GPErrorCode.Parse;
         }
 
-        protected override void ConstructResponse(GPCMSession session)
+        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
         {
             session.UserInfo.SessionKey
                 = _crc.ComputeChecksum(session.UserInfo.Nick + session.UserInfo.NamespaceID);
@@ -146,7 +146,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             session.UserInfo.LoginProcess = LoginStatus.Completed;
         }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
 
             switch (session.UserInfo.LoginType)
@@ -181,7 +181,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 return;
             }
 
-            if (!IsChallengeCorrect(session))
+            if (!IsChallengeCorrect(session,recv))
             {
                 _errorCode = GPErrorCode.LoginBadPassword;
                 return;
@@ -318,14 +318,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
         }
 
-        protected override void Response(GPCMSession session)
+        protected override void Response(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.Response(session);
+            base.Response(session,recv);
             session.UserInfo.StatusCode = GPStatus.Online;
             GPCMServer.LoggedInSession.GetOrAdd(session.Id, session);
             SDKRevision.ExtendedFunction(session);
         }
-        protected bool IsChallengeCorrect(GPCMSession session)
+        protected bool IsChallengeCorrect(GPCMSession session, Dictionary<string, string> recv)
         {
             string response = ChallengeProof.GenerateProof
                 (
@@ -336,7 +336,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 session.UserInfo.ServerChallenge,
                 session.UserInfo.PasswordHash
                 );
-            if (_recv["response"] == response)
+            if (recv["response"] == response)
             {
                 return true;
             }

@@ -8,37 +8,37 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
     public class ValidHandler : GPSPHandlerBase
     {
-        public ValidHandler(Dictionary<string, string> recv) : base(recv)
+        public ValidHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
         private uint _partnerid;
-        protected override void CheckRequest(GPSPSession session)
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            if (!_recv.ContainsKey("email"))
+            if (!recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-            if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            if (!GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-            if (!_recv.ContainsKey("partnerid") && !uint.TryParse(_recv["partnerid"], out _partnerid))
+            if (!recv.ContainsKey("partnerid") && !uint.TryParse(recv["partnerid"], out _partnerid))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
         }
-        protected override void DataBaseOperation(GPSPSession session)
+        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {
                 var result = from u in db.Users
                              join p in db.Profiles on u.Userid equals p.Userid
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             where u.Email == _recv["email"] && n.Partnerid == _partnerid && n.Gamename == _recv["gamename"]
+                             where u.Email == recv["email"] && n.Partnerid == _partnerid && n.Gamename == recv["gamename"]
                              select p.Profileid;
                 if (result.Count() == 0)
                 {

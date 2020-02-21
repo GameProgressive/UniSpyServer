@@ -17,56 +17,56 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         private bool _IsUniqueNickExist;
 
         private uint _profileid;
-        public NewUserHandler(Dictionary<string, string> recv) : base(recv)
+        public NewUserHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
-        protected override void CheckRequest(GPSPSession session)
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
+            base.CheckRequest(session,recv);
 
-            if (!_recv.ContainsKey("nick"))
+            if (!recv.ContainsKey("nick"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-            if (!_recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
-
-            if (!_recv.ContainsKey("passenc"))
+            if (!recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            if (_recv.ContainsKey("uniquenick"))
+            if (!recv.ContainsKey("passenc"))
+            {
+                _errorCode = GPErrorCode.Parse;
+                return;
+            }
+
+            if (recv.ContainsKey("uniquenick"))
             {
                 _IsUniquenickMethod = true;
-                _uniquenick = _recv["uniquenick"];
+                _uniquenick = recv["uniquenick"];
             }
 
         }
 
-        protected override void DataBaseOperation(GPSPSession session)
+        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {
-                _IsEmailExist = db.Users.Where(u => u.Email == _recv["email"]).Select(p => p.Userid).Count() == 1;
+                _IsEmailExist = db.Users.Where(u => u.Email == recv["email"]).Select(p => p.Userid).Count() == 1;
 
-                _IsUserPasswordCorrect = db.Users.Where(u => u.Email == _recv["email"] && u.Password == _recv["passenc"]).Select(p => p.Userid).Count() == 1;
+                _IsUserPasswordCorrect = db.Users.Where(u => u.Email == recv["email"] && u.Password == recv["passenc"]).Select(p => p.Userid).Count() == 1;
 
                 _IsNickNameExist = db.Users.Join(db.Profiles, u => u.Userid, p => p.Userid, (u, p) => new { users = u, profiles = p }).
-                    Where(o => o.users.Email == _recv["email"]
-                    && o.users.Password == _recv["passenc"]
-                    && o.profiles.Nick == _recv["nick"]).Select(r => r.profiles.Profileid).Count() == 1;
+                    Where(o => o.users.Email == recv["email"]
+                    && o.users.Password == recv["passenc"]
+                    && o.profiles.Nick == recv["nick"]).Select(r => r.profiles.Profileid).Count() == 1;
 
                 var result = from u in db.Users
                              join p in db.Profiles on u.Userid equals p.Userid
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             where u.Email == _recv["email"] && u.Password == _recv["passenc"] && p.Nick == _recv["nick"] && n.Uniquenick == _recv["uniquenick"] && n.Namespaceid == _namespaceid
+                             where u.Email == recv["email"] && u.Password == recv["passenc"] && p.Nick == recv["nick"] && n.Uniquenick == recv["uniquenick"] && n.Namespaceid == _namespaceid
                              select p.Profileid;
                 _IsUniqueNickExist = result.Count() == 1;
 
@@ -95,10 +95,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         //create user in database
                         if (!_IsEmailExist)
                         {
-                            db.GetTable<User>().Insert(() => new User { Email = _recv["email"], Password = _recv["passenc"] });
-                            uint userid = db.Users.Where(u => u.Email == _recv["email"] && u.Password == _recv["passenc"]).Select(u => u.Userid).First();
-                            db.GetTable<Profile>().Insert(() => new Profile { Userid = userid, Nick = _recv["nick"] });
-                            uint profileid = db.Profiles.Where(p => p.Userid == userid && p.Nick == _recv["nick"]).Select(p => p.Profileid).First();
+                            db.GetTable<User>().Insert(() => new User { Email = recv["email"], Password = recv["passenc"] });
+                            uint userid = db.Users.Where(u => u.Email == recv["email"] && u.Password == recv["passenc"]).Select(u => u.Userid).First();
+                            db.GetTable<Profile>().Insert(() => new Profile { Userid = userid, Nick = recv["nick"] });
+                            uint profileid = db.Profiles.Where(p => p.Userid == userid && p.Nick == recv["nick"]).Select(p => p.Profileid).First();
                             db.GetTable<Subprofile>().Insert(() => new Subprofile
                             {
                                 Profileid = profileid,
@@ -113,9 +113,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
                         if (_IsEmailExist && _IsUserPasswordCorrect && !_IsNickNameExist)
                         {
-                            uint userid = db.Users.Where(u => u.Email == _recv["email"] && u.Password == _recv["passenc"]).Select(u => u.Userid).First();
-                            db.GetTable<Profile>().Insert(() => new Profile { Userid = userid, Nick = _recv["nick"] });
-                            uint profileid = db.Profiles.Where(p => p.Userid == userid && p.Nick == _recv["nick"]).Select(p => p.Profileid).First();
+                            uint userid = db.Users.Where(u => u.Email == recv["email"] && u.Password == recv["passenc"]).Select(u => u.Userid).First();
+                            db.GetTable<Profile>().Insert(() => new Profile { Userid = userid, Nick = recv["nick"] });
+                            uint profileid = db.Profiles.Where(p => p.Userid == userid && p.Nick == recv["nick"]).Select(p => p.Profileid).First();
                             db.GetTable<Subprofile>().Insert(() => new Subprofile
                             {
                                 Profileid = profileid,
@@ -131,7 +131,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         {
                             var resultpids = from u in db.Users
                                              join p in db.Profiles on u.Userid equals p.Userid
-                                             where u.Email == _recv["email"] && u.Password == _recv["passenc"] && p.Nick == _recv["nick"]
+                                             where u.Email == recv["email"] && u.Password == recv["passenc"] && p.Nick == recv["nick"]
                                              select p.Profileid;
                             uint profileid = resultpids.First();
                             db.GetTable<Subprofile>().Insert(() => new Subprofile
@@ -155,13 +155,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 //update other information
                 if (_errorCode != GPErrorCode.DatabaseError)
                 {
-                    UpdateOtherInfo();
+                    UpdateOtherInfo(session,recv);
                 }
 
             }
         }
 
-        protected override void ConstructResponse(GPSPSession session)
+        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
         {
             if (_errorCode != GPErrorCode.NoError)
             {
@@ -171,7 +171,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 _sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _profileid);
         }
 
-        private void UpdateOtherInfo()
+        private void UpdateOtherInfo(GPSPSession session,Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {
@@ -180,53 +180,53 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                     var resultpids = from u in db.Users
                                      join p in db.Profiles on u.Userid equals p.Userid
                                      join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                     where u.Email == _recv["email"] && u.Password == _recv["passenc"]
-                                     && p.Nick == _recv["nick"] && n.Uniquenick == _recv["uniquenick"]
+                                     where u.Email == recv["email"] && u.Password == recv["passenc"]
+                                     && p.Nick == recv["nick"] && n.Uniquenick == recv["uniquenick"]
                                      && n.Namespaceid == _namespaceid
                                      select p.Profileid;
                     uint profileid = resultpids.First();
 
                     var ns = from n in db.Subprofiles
-                             where n.Profileid == profileid && n.Uniquenick == _recv["uniquenick"] && n.Namespaceid == _namespaceid
+                             where n.Profileid == profileid && n.Uniquenick == recv["uniquenick"] && n.Namespaceid == _namespaceid
                              select n;
                     var firstns = ns.First();
                     uint partnerid;
 
-                    if (_recv.ContainsKey("partnerid"))
+                    if (recv.ContainsKey("partnerid"))
                     {
-                        if (uint.TryParse(_recv["partnerid"], out partnerid))
+                        if (uint.TryParse(recv["partnerid"], out partnerid))
                             firstns.Partnerid = partnerid;
                         else
                             _errorCode = GPErrorCode.DatabaseError;
                     }
                     uint productid;
-                    if (_recv.ContainsKey("productid"))
-                        if (uint.TryParse(_recv["productid"], out productid))
+                    if (recv.ContainsKey("productid"))
+                        if (uint.TryParse(recv["productid"], out productid))
                         { firstns.Productid = productid; }
                         else
                         { _errorCode = GPErrorCode.DatabaseError; }
 
-                    if (_recv.ContainsKey("productID"))
-                        if (uint.TryParse(_recv["productID"], out productid))
+                    if (recv.ContainsKey("productID"))
+                        if (uint.TryParse(recv["productID"], out productid))
                             firstns.Productid = productid;
 
-                    if (_recv.ContainsKey("gamename"))
+                    if (recv.ContainsKey("gamename"))
                     {
-                        firstns.Gamename = _recv["gamename"];
+                        firstns.Gamename = recv["gamename"];
                     }
                     uint port;
-                    if (_recv.ContainsKey("port"))
+                    if (recv.ContainsKey("port"))
                     {
-                        if (uint.TryParse(_recv["port"], out port))
+                        if (uint.TryParse(recv["port"], out port))
                         { firstns.Port = port; }
                         else
                         { _errorCode = GPErrorCode.DatabaseError; }
 
                     }
 
-                    if (_recv.ContainsKey("cdkeyenc"))
+                    if (recv.ContainsKey("cdkeyenc"))
                     {
-                        firstns.Cdkeyenc = _recv["cdkeyenc"];
+                        firstns.Cdkeyenc = recv["cdkeyenc"];
                     }
                     db.Update(firstns);
                     tran.Commit();

@@ -9,32 +9,32 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
     public class RegisterNickHandler : GPCMHandlerBase
     {
-        public RegisterNickHandler(Dictionary<string, string> recv) : base(recv)
+        public RegisterNickHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session)
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("sesskey"))
+            base.CheckRequest(session,recv);
+            if (!recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
-            if (!_recv.ContainsKey("uniquenick"))
+            if (!recv.ContainsKey("uniquenick"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
 
         }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             try
             {
                 using (var db = new RetrospyDB())
                 {
                     db.Subprofiles.Where(s => s.Profileid == session.UserInfo.Profileid && s.Namespaceid == session.UserInfo.NamespaceID)
-                        .Set(s => s.Uniquenick, _recv["uniquenick"])
+                        .Set(s => s.Uniquenick, recv["uniquenick"])
                         .Update();
                 }
             }
@@ -45,7 +45,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 
         }
 
-        protected override void ConstructResponse(GPCMSession session)
+        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
         {
             _sendingBuffer = @"\rn\final\";
         }

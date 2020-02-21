@@ -11,31 +11,30 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         private uint _profileid;
-        private GameSpyLib.Database.DatabaseModel.MySql.Profile _profile = new GameSpyLib.Database.DatabaseModel.MySql.Profile();
-        public GetProfileHandler(Dictionary<string, string> recv) : base(recv)
+        public GetProfileHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session)
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("profileid"))
+            base.CheckRequest(session, recv);
+            if (!recv.ContainsKey("profileid"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-            if (!_recv.ContainsKey("sesskey"))
+            if (!recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-            if (uint.TryParse(_recv["profileid"], out _profileid))
+            if (uint.TryParse(recv["profileid"], out _profileid))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
         }
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {

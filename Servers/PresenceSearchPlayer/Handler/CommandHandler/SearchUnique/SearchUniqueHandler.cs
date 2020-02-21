@@ -11,22 +11,22 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
     /// </summary>
     public class SearchUniqueHandler : GPSPHandlerBase
     {
-        public SearchUniqueHandler(Dictionary<string, string> recv) : base(recv)
+        public SearchUniqueHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
-        protected override void CheckRequest(GPSPSession session)
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("uniquenick") || !_recv.ContainsKey("namespaces"))
+            base.CheckRequest(session,recv);
+            if (!recv.ContainsKey("uniquenick") || !recv.ContainsKey("namespaces"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session)
+        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            string[] tempstr = _recv["namespaces"].Trim(',').Split(',');
+            string[] tempstr = recv["namespaces"].Trim(',').Split(',');
             uint[] nspaceid = Array.ConvertAll(tempstr, uint.Parse);
 
             using (var db = new RetrospyDB())
@@ -36,7 +36,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
-                                 where n.Uniquenick == _recv["uniquenick"]
+                                 where n.Uniquenick == recv["uniquenick"]
                                  && n.Namespaceid == _namespaceid
                                  select new
                                  {

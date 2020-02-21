@@ -8,10 +8,10 @@ using System.Text;
 
 namespace StatsAndTracking
 {
-    public class GstatsSession : TemplateTcpSession
+    public class GStatsSession : TemplateTcpSession
     {
         public uint ConnID;
-        public GstatsSession(TemplateTcpServer server) : base(server)
+        public GStatsSession(TemplateTcpServer server) : base(server)
         {
             DisconnectAfterSend = false;
         }

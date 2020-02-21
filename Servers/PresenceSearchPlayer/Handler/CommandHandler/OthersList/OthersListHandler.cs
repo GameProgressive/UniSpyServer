@@ -7,25 +7,25 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
     public class OthersListHandler : GPSPHandlerBase
     {
-        public OthersListHandler(Dictionary<string, string> recv) : base(recv)
+        public OthersListHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
         //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
         //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
 
-        protected override void CheckRequest(GPSPSession session)
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("opids") || !_recv.ContainsKey("namespaceid"))
+            base.CheckRequest(session,recv);
+            if (!recv.ContainsKey("opids") || !recv.ContainsKey("namespaceid"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session)
+        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            uint[] opids = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
+            uint[] opids = recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
             try
             {
                 using (var db = new RetrospyDB())

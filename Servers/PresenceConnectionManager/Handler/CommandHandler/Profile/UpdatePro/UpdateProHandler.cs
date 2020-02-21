@@ -10,16 +10,16 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
     public class UpdateProHandler : GPCMHandlerBase
     {
-        public UpdateProHandler(Dictionary<string, string> recv) : base(recv)
+        public UpdateProHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session)
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
+            base.CheckRequest(session,recv);
         }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {
@@ -37,41 +37,41 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                     && s.Uniquenick == session.UserInfo.UniqueNick).First();
 
 
-                if (_recv.ContainsKey("publicmask"))
+                if (recv.ContainsKey("publicmask"))
                 {
                     PublicMasks mask;
-                    if (Enum.TryParse(_recv["publicmask"], out mask))
+                    if (Enum.TryParse(recv["publicmask"], out mask))
                     {
                         profile.Publicmask = (int)mask;
                     }
                 }
 
-                if (_recv.ContainsKey("firstname"))
+                if (recv.ContainsKey("firstname"))
                 {
-                    profile.Firstname = _recv["firstname"];
+                    profile.Firstname = recv["firstname"];
                 }
 
-                if (_recv.ContainsKey("lastname"))
+                if (recv.ContainsKey("lastname"))
                 {
-                    profile.Lastname = _recv["lastname"];
+                    profile.Lastname = recv["lastname"];
                 }
 
-                if (_recv.ContainsKey("icquin"))
+                if (recv.ContainsKey("icquin"))
                 {
                     uint icq;
-                    uint.TryParse(_recv["icquin"], out icq);
+                    uint.TryParse(recv["icquin"], out icq);
                     profile.Icquin = icq;
                 }
 
-                if (_recv.ContainsKey("homepage"))
+                if (recv.ContainsKey("homepage"))
                 {
-                    profile.Homepage = _recv["homepage"];
+                    profile.Homepage = recv["homepage"];
                 }
 
-                if (_recv.ContainsKey("birthday"))
+                if (recv.ContainsKey("birthday"))
                 {
                     int date;
-                    if (int.TryParse(_recv["birthday"], out date))
+                    if (int.TryParse(recv["birthday"], out date))
                     {
                         int d = (int)((date >> 24) & 0xFF);
                         ushort m = (ushort)((date >> 16) & 0xFF);
@@ -84,24 +84,24 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                             profile.Birthyear = y;
                         }
                     }
-                    if (_recv.ContainsKey("sex"))
+                    if (recv.ContainsKey("sex"))
                     {
                         byte sex;
-                        if (byte.TryParse(_recv["sex"], out sex))
+                        if (byte.TryParse(recv["sex"], out sex))
                         {
-                            profile.Sex = Convert.ToSByte(_recv["sex"]);
+                            profile.Sex = Convert.ToSByte(recv["sex"]);
                         }
 
                     }
-                    if (_recv.ContainsKey("zipcode"))
+                    if (recv.ContainsKey("zipcode"))
                     {
 
-                        profile.Zipcode = _recv["zipcode"];
+                        profile.Zipcode = recv["zipcode"];
                     }
 
-                    if (_recv.ContainsKey("countrycode"))
+                    if (recv.ContainsKey("countrycode"))
                     {
-                        profile.Countrycode = _recv["countrycode"];
+                        profile.Countrycode = recv["countrycode"];
                     }
                     db.Update(profile);
                 }

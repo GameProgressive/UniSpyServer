@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.Buddy.DelBuddy
     {
         //GPCMSession _session;
         //Dictionary<string, string> _recv;
-        public DelBuddyHandler(Dictionary<string, string> recv) : base(recv)
+        public DelBuddyHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
         //delete friend in database then send bm_revoke message to friend

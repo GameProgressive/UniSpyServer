@@ -5,9 +5,8 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler
 {
-    public class GPSPHandlerBase : HandlerBase<GPSPSession, Dictionary<string, string>>
+    public class GPSPHandlerBase
     {
-        protected Dictionary<string, string> _recv;
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
         /// <summary>
         /// Be careful the return of query function should be List type,
@@ -17,60 +16,60 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected ushort _operationID;
         protected uint _namespaceid = 0;
 
-        protected GPSPHandlerBase(Dictionary<string, string> recv)
+        protected GPSPHandlerBase(GPSPSession session,Dictionary<string, string> recv)
         {
-            _recv = recv;
+            Handle(session, recv);
         }
-        public override void Handle(GPSPSession session)
+        public virtual void Handle(GPSPSession session, Dictionary<string, string> recv)
         {
-            CheckRequest(session);
+            CheckRequest(session,recv);
             if (_errorCode != GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
-            DataBaseOperation(session);
+            DataBaseOperation(session,recv);
             if (_errorCode == GPErrorCode.DatabaseError)
             {
                 ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
                 return;
             }
 
-            ConstructResponse(session);
+            ConstructResponse(session,recv);
             if (_errorCode == GPErrorCode.ConstructResponseError)
             {
                 ErrorMsg.SendGPSPError(session, GPErrorCode.General, _operationID);
                 return;
             }
 
-            Response(session);
+            Response(session, recv);
         }
 
-        protected virtual void CheckRequest(GPSPSession session)
+        protected virtual void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            if (_recv.ContainsKey("id"))
+            if (recv.ContainsKey("id"))
             {
-                if (!ushort.TryParse(_recv["id"], out _operationID))
+                if (!ushort.TryParse(recv["id"], out _operationID))
                 {
                     //default operationID
                     session.OperationID = 1;
                 }
             }
-            if (_recv.ContainsKey("namespaceid"))
+            if (recv.ContainsKey("namespaceid"))
             {
-                if (!uint.TryParse(_recv["namespaceid"], out _namespaceid))
+                if (!uint.TryParse(recv["namespaceid"], out _namespaceid))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
             }
         }
 
-        protected virtual void DataBaseOperation(GPSPSession session) { }
+        protected virtual void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv) { }
 
-        protected virtual void ConstructResponse(GPSPSession session) { }
+        protected virtual void ConstructResponse(GPSPSession session, Dictionary<string, string> recv) { }
 
-        protected virtual void Response(GPSPSession session)
+        protected virtual void Response(GPSPSession session, Dictionary<string, string> recv)
         {
             if (_sendingBuffer != null)
             {

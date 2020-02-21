@@ -4,11 +4,11 @@ namespace PresenceConnectionManager.Handler.General.KeepAlive
 {
     public class KAHandler : GPCMHandlerBase
     {
-        protected KAHandler(Dictionary<string, string> recv) : base(recv)
+        protected KAHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 
-        protected override void ConstructResponse(GPCMSession session)
+        protected override void ConstructResponse(GPCMSession session,Dictionary<string,string> recv)
         {
             _sendingBuffer = @"\ka\\final\";
         }

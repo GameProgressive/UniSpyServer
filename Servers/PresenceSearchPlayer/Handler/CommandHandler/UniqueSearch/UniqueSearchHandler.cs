@@ -7,28 +7,28 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
     public class UniqueSearchHandler : GPSPHandlerBase
     {
-        public UniqueSearchHandler(Dictionary<string, string> recv) : base(recv)
+        public UniqueSearchHandler(GPSPSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
         private bool IsUniquenickExist;
 
-        protected override void CheckRequest(GPSPSession session)
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("preferrednick"))
+            base.CheckRequest(session,recv);
+            if (!recv.ContainsKey("preferrednick"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session)
+        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {
                 var result = from p in db.Profiles
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             where n.Uniquenick == _recv["preferrednick"] && n.Namespaceid == _namespaceid && n.Gamename == _recv["gamename"]
+                             where n.Uniquenick == recv["preferrednick"] && n.Namespaceid == _namespaceid && n.Gamename == recv["gamename"]
                              select p.Profileid;
                 if (result.Count() == 0)
                 {
@@ -37,7 +37,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             }
 
         }
-        protected override void ConstructResponse(GPSPSession session)
+        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
         {
             if (!IsUniquenickExist)
             {

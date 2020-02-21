@@ -10,34 +10,34 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
     public class InviteToHandler : GPCMHandlerBase
     {
         //session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
-        protected InviteToHandler(Dictionary<string, string> recv) : base(recv)
+        protected InviteToHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
         private uint _productid;
         private uint _profileid;
         //public static GPCMDBQuery DBQuery = null;
-        protected override void CheckRequest(GPCMSession session)
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("productid") || !_recv.ContainsKey("sesskey"))
+            base.CheckRequest(session, recv);
+            if (!recv.ContainsKey("productid") || !recv.ContainsKey("sesskey"))
                 _errorCode = GPErrorCode.Parse;
 
-            if (!_recv.ContainsKey("sesskey"))
+            if (!recv.ContainsKey("sesskey"))
                 _errorCode = GPErrorCode.Parse;
-            if (!uint.TryParse(_recv["productid"], out _productid))
+            if (!uint.TryParse(recv["productid"], out _productid))
             {
                 _errorCode = GPErrorCode.Parse;
             }
-            if (!uint.TryParse(_recv["profileid"], out _profileid))
+            if (!uint.TryParse(recv["profileid"], out _profileid))
                 _errorCode = GPErrorCode.Parse;
         }
 
-        protected override void ConstructResponse(GPCMSession session)
+        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.ConstructResponse(session);
+            base.ConstructResponse(session, recv);
         }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
 
             var user = GPCMServer.LoggedInSession.Values.Where(
@@ -50,7 +50,7 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
 
         }
 
-        protected override void Response(GPCMSession session)
+        protected override void Response(GPCMSession session, Dictionary<string, string> recv)
         {
 
         }

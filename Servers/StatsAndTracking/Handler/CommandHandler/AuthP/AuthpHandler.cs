@@ -8,7 +8,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
     public class AuthPHandler
     {
         //request \authp\\pid\27\resp\16ae1e1f47c8ab646de7a52d615e3b06\lid\0\final\
-        public static void AuthPlayer(GstatsSession session, Dictionary<string, string> dict)
+        public static void AuthPlayer(GStatsSession session, Dictionary<string, string> dict)
         {
             /*
              *process the playerauth result 

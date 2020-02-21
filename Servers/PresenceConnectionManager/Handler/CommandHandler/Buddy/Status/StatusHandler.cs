@@ -8,16 +8,16 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
     public class StatusHandler : GPCMHandlerBase
     {
         private uint _statusCode;
-        public StatusHandler(Dictionary<string, string> recv) : base(recv)
+        public StatusHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session)
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (_recv.ContainsKey("status"))
+            base.CheckRequest(session,recv);
+            if (recv.ContainsKey("status"))
             {
-                if (!uint.TryParse(_recv["status"], out _statusCode))
+                if (!uint.TryParse(recv["status"], out _statusCode))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
@@ -28,11 +28,11 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
                
         }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             session.UserInfo.StatusCode = (GPStatus)_statusCode;
-            session.UserInfo.StatusString = _recv["statstring"];
-            session.UserInfo.LocationString = _recv["locstring"];
+            session.UserInfo.StatusString = recv["statstring"];
+            session.UserInfo.LocationString = recv["locstring"];
         }
     }
 }

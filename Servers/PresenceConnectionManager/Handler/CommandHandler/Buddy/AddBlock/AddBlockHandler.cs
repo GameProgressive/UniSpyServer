@@ -9,23 +9,23 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
     public class AddBlockHandler : GPCMHandlerBase
     {
         private uint _blockProfileid;
-        public AddBlockHandler(Dictionary<string, string> recv) : base(recv)
+        public AddBlockHandler(GPCMSession session,Dictionary<string, string> recv) : base(session,recv)
         {
         }
-        protected override void CheckRequest(GPCMSession session)
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("profileid"))
+            base.CheckRequest(session,recv);
+            if (!recv.ContainsKey("profileid"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
-            else if (!uint.TryParse(_recv["profileid"], out _blockProfileid))
+            else if (!uint.TryParse(recv["profileid"], out _blockProfileid))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             using (var db = new RetrospyDB())
             {
