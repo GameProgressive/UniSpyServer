@@ -30,33 +30,34 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             string serverData, playerData, teamData;
             if (IsServerDataValid(recvData, out dataFrag))
             {
-                serverData = dataFrag[0];
+/*                serverData = dataFrag[0];
                 playerData = dataFrag[1];
-                teamData = dataFrag[2];
+                teamData = dataFrag[2];*/
             }
             else
             {
                 //we revieved a wrong data, we have to send challege to game server
-                byte[] sendingBuffer = GenerateChallenge(recvKeys);
+              /*  byte[] sendingBuffer2 = GenerateChallenge(recvKeys, endPoint);
 
-                server.SendAsync(endPoint, sendingBuffer);
+                server.SendAsync(endPoint, sendingBuffer2);
                 string errorMsg = string.Format("[HeartBeat] Invalid Server Data Received From {0}:{1}-{2}", server.Endpoint.Address, server.Endpoint.Port, dataFrag[0]);
-                server.ToLog(errorMsg);
+                server.ToLog(errorMsg);*/
                 return;
             }
             // We only care about the server data
-            string[] serverDataFrag = serverData.Split(new string[] { "\x00" }, StringSplitOptions.None);
+           /* string[] serverDataFrag = serverData.Split(new string[] { "\x00" }, StringSplitOptions.None);
             //server.ToLog(LogLevel.Debug, string.Format("[QR] [HeartBeat] Data received From {0}", server.Socket.RemoteEndPoint.ToString()));
-            server.ToLog(LogLevel.Debug, string.Format("[QR] [HeartBeat] server info:{0} \t player info:{1} \t team info:{2}", serverData, playerData, teamData));
+            server.ToLog(LogLevel.Debug, string.Format("[QR] [HeartBeat] server info:{0} \t player info:{1} \t team info:{2}", serverData, playerData, teamData));*/
 
             GameServerData gameServer = new GameServerData(server.Endpoint);
             // set the country based off ip address if its IPv4
 
             //we set the server variables
-            SetServerVariables(gameServer, serverDataFrag, server.Endpoint);
+           // SetServerVariables(gameServer, serverDataFrag, server.Endpoint);
 
-            LogWriter.Log.Write("[QR] No impliment function for Heartbeatpacket!", LogLevel.Debug);
-            //TODO
+            byte[] sendingBuffer = GenerateChallenge(recvKeys, endPoint);
+
+            server.SendAsync(endPoint, sendingBuffer);
         }
 
         private static void SetServerVariables(GameServerData gameServer, string[] serverDataFrag, IPEndPoint remote)
@@ -98,17 +99,36 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 return true;
             }
         }
-        private static byte[] GenerateChallenge(byte[] recvKeys)
+        private static byte[] GenerateChallenge(byte[] recvKeys, EndPoint endPoint)
         {
-            byte[] sendingbuffer = new byte[23];
+            byte[] sendingbuffer = new byte[24];
             sendingbuffer[0] = QR.QRMagic1;
             sendingbuffer[1] = QR.QRMagic2;
             sendingbuffer[2] = QRGameServer.Challenge;
             Array.Copy(recvKeys, 0, sendingbuffer, 3, 4);
-            //TODO hard coded challenge, we will make it dynamic later
-            byte[] challenge = {0x44, 0x3d, 0x73,0x7e, 0x6a, 0x59, 0x30, 0x30, 0x37, 0x43, 0x39, 0x35, 0x41, 0x42, 0x42, 0x35, 0x37, 0x34,
-                                                0x43, 0x43, 0x00};
-            Array.Copy(challenge, 0, sendingbuffer, 7, challenge.Length);
+
+            // Challenge
+            sendingbuffer[7] = 0x54;
+            sendingbuffer[8] = 0x54;
+            sendingbuffer[9] = 0x54;
+
+            sendingbuffer[10] = 0x00;
+            sendingbuffer[11] = 0x00;
+
+
+
+            // IP
+            IPEndPoint iPEndPoint = (IPEndPoint)endPoint;
+            Array.Copy(iPEndPoint.Address.GetAddressBytes(), 0, sendingbuffer, 12, 4);
+            sendingbuffer[16] = 0;
+            sendingbuffer[17] = 0;
+            sendingbuffer[18] = 0;
+            sendingbuffer[19] = 0;
+
+            //Port
+            int port  = iPEndPoint.Port;
+            Array.Copy(BitConverter.GetBytes(port), 0, sendingbuffer, 20, 4);
+
             return sendingbuffer;
         }
         private static void SaveQRinfo(byte[] buffer)

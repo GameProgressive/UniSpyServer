@@ -30,6 +30,13 @@ namespace Chat.Handler.CommandHandler.LOGIN
             //session.chatUserInfo.password = recv[4];
 
             session.SendCommand(ChatRPL.Login, "* 1 1");
+
+            NICK.NICKHandler.Handle(session, recv);
+
+            session.Send("JOIN #retrospy\r\n");
+            session.SendCommand(ChatRPL.ToPic, "#retrospy Test!");
+            session.SendCommand(ChatRPL.EndOfNames, "#retrospy :End of names LIST");
+
         }
     }
 }
