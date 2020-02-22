@@ -2,7 +2,7 @@
 
 namespace CDKey.Handler.CommandHandler
 {
-    public class CDKeyHandlerBase : HandlerBase<CDKeyServer, Dictionary<string, string>>
+    public class CDKeyHandlerBase
     {
         protected Dictionary<string, string> _recv;
         protected string _sendingBuffer;
@@ -10,7 +10,7 @@ namespace CDKey.Handler.CommandHandler
         {
             _recv = recv;
         }
-        public override void Handle(CDKeyServer server)
+        public void Handle(CDKeyServer server)
         {
         }
 
