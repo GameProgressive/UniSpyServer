@@ -5,17 +5,19 @@ using System;
 using System.Net;
 namespace QueryReport.Handler.CommandHandler.Challenge
 {
-    public class ChallengeHandler
+    public class ChallengeHandler:QRHandlerBase
     {
-        public static void ServerChallengeResponse(QRServer server, EndPoint endPoint, byte[] buffer)
+        protected ChallengeHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
         {
-            byte[] sendingbuffer = new byte[7];
-            sendingbuffer[0] = QR.QRMagic1;
-            sendingbuffer[1] = QR.QRMagic2;
-            sendingbuffer[2] = QRGameServer.ClientRegistered;
-            Array.Copy(buffer, 1, sendingbuffer, 3, 4);
+        }
 
-            server.SendAsync(endPoint, sendingbuffer);
+        protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
+        {
+            _sendingBuffer = new byte[7];
+            _sendingBuffer[0] = QR.QRMagic1;
+            _sendingBuffer[1] = QR.QRMagic2;
+            _sendingBuffer[2] = QRGameServer.ClientRegistered;
+            Array.Copy(recv, 1, _sendingBuffer, 3, 4);
         }
     }
 }

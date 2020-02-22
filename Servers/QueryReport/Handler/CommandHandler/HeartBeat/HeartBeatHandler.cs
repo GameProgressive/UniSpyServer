@@ -1,11 +1,8 @@
-﻿using GameSpyLib.Logging;
-using MaxMind.GeoIP2;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using QueryReport.Server;
 using System;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Text;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
@@ -60,31 +57,6 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             server.SendAsync(endPoint, sendingBuffer);
         }
 
-        private static void SetServerVariables(GameServerData gameServer, string[] serverDataFrag, IPEndPoint remote)
-        {
-            //gameServer.Country = (remote.Address.AddressFamily == AddressFamily.InterNetwork)
-            //   ? GeoIP.GetCountryCode(remote.Address).ToUpperInvariant()
-            //   : "??";
-
-            using (var reader = new DatabaseReader("./GeoLite2-Country.mmdb"))
-            {
-                var response = reader.Country("128.101.101.101");
-                var country = response.Country;
-                Console.WriteLine(country.IsoCode);            // 'US'
-                Console.WriteLine(country.Name);               // 'United States'
-                Console.WriteLine(country.Names["zh-CN"]);     // '美国'
-                Console.WriteLine(country.Confidence);         // 99
-            }
-
-            for (int i = 0; i < serverDataFrag.Length - 1; i += 2)
-            {
-                //Fetch the properties
-                PropertyInfo property = typeof(GameServerData).GetProperty(serverDataFrag[i]);
-                if (property == null)
-                    continue;
-
-            }
-        }
 
         private static bool IsServerDataValid(string recvData, out string[] dataFrag)
         {

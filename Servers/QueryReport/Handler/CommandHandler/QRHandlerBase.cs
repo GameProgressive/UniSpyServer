@@ -43,9 +43,8 @@ namespace QueryReport.Handler.CommandHandler
             Response(server, endPoint, recv);
         }
 
-        protected virtual void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
-        {
-        }
+        protected virtual void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv) { }
+
         protected virtual void DatabaseOperation(QRServer server, EndPoint endPoint, byte[] recv) { }
 
         protected virtual void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv) { }

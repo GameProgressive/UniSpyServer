@@ -31,4 +31,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Handler\CommandHandler\HeartBeat\QRDBQuery.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entity\Structure\Packet\" />
+  </ItemGroup>
 </Project>
