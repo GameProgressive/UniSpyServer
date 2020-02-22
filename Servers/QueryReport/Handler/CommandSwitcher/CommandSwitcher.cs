@@ -19,7 +19,7 @@ namespace QueryReport.Handler.CommandSwitcher
                 switch (recv[0])
                 {
                     case QRClient.Avaliable:
-                        AvailableCheckHandler.BackendAvaliabilityResponse(server, endPoint, recv);
+                        AvailableHandler available = new AvailableHandler(server, endPoint, recv);
                         break;
                     // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
                     // Perhaps it was present on an older version of GameSpy SDK

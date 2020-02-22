@@ -4,16 +4,15 @@ namespace CDKey.Handler.CommandHandler
 {
     public class CDKeyHandlerBase
     {
-        protected Dictionary<string, string> _recv;
         protected string _sendingBuffer;
-        public CDKeyHandlerBase(Dictionary<string, string> recv)
+        public CDKeyHandlerBase(CDKeyServer server,Dictionary<string, string> recv)
         {
-            _recv = recv;
-        }
-        public void Handle(CDKeyServer server)
-        {
+            Handle(server, recv);
         }
 
+        public void Handle(CDKeyServer server, Dictionary<string, string> recv)
+        {
+        }
         public virtual void CheckRequest(CDKeyServer server) { }
 
         public virtual void DataBaseOperation(CDKeyServer server) { }
@@ -22,10 +21,11 @@ namespace CDKey.Handler.CommandHandler
 
         public virtual void Response(CDKeyServer server)
         {
-            if (_sendingBuffer != null)
+            if (_sendingBuffer == null||_sendingBuffer=="")
             {
-                server.SendAsync(server.Socket.RemoteEndPoint, _sendingBuffer);
+                return;
             }
+            server.SendAsync(server.Socket.RemoteEndPoint, _sendingBuffer);
         }
     }
 }

@@ -48,6 +48,7 @@ namespace QueryReport.Server
             PollTimer.Start();
         }
 
+
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
             CommandSwitcher.Switch(this, endPoint, message);
