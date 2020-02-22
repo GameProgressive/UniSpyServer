@@ -1,28 +1,21 @@
 name: CI
 
-on:
-  push:
-    branches:
-  pull_request:
-    branches:
-  pull_request_review:
-    branches:
+on: [push, pull_request]
 
 jobs:
-  test:
-    name: Test on .NET Core ${{ matrix.dotnetcore_version }} and ${{ matrix.os }}
+  build:
+    name: Test on dotnet core v${{ matrix.dotnetcore_version }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        dotnetcore_version: ['3.1.100']
+        dotnetcore_version: ['3.1.102']
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use .NET Core ${{ matrix.dotnetcore_version }}
-      uses: actions/setup-dotnet@v1
+    - name: Setup .NET Core ${{ matrix.dotnetcore_version }}
+      uses: actions/setup-dotnet@v1.4.0
       with:
         dotnet-version: ${{ matrix.dotnetcore_version }}
-
-    - name: .NET Core, build and test
+    - name: Building project
       run: dotnet build
