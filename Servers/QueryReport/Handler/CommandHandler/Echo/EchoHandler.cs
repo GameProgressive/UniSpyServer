@@ -10,7 +10,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
         {
         }
 
-        protected override void DatabaseOperation(QRServer server, EndPoint endPoint, byte[] recv)
+        protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
             //TODO
             //add recive echo packet on gameserverList

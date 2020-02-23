@@ -26,7 +26,7 @@ namespace QueryReport.Handler.CommandHandler
                 return;
             }
 
-            DatabaseOperation(server, endPoint, recv);
+            DataOperation(server, endPoint, recv);
             if (_errorCode == QRErrorCode.Database)
             {
                 server.ToLog(ErrorMessage.ToMsg(_errorCode));
@@ -45,7 +45,7 @@ namespace QueryReport.Handler.CommandHandler
 
         protected virtual void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv) { }
 
-        protected virtual void DatabaseOperation(QRServer server, EndPoint endPoint, byte[] recv) { }
+        protected virtual void DataOperation(QRServer server, EndPoint endPoint, byte[] recv) { }
 
         protected virtual void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv) { }
 

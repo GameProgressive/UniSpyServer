@@ -37,5 +37,6 @@
   <ItemGroup>
     <Folder Include="Entity\Structure\Packet\" />
     <Folder Include="Handler\CommandHandler\Echo\" />
+    <Folder Include="Handler\CommandHandler\MessageACK\" />
   </ItemGroup>
 </Project>
