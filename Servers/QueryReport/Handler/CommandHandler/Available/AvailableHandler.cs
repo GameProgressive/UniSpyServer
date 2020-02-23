@@ -29,8 +29,11 @@ namespace QueryReport.Handler.CommandHandler.Available
             for (int i = 0; i < AvailableCheckRequestPrefix.Length; i++)
             {
                 if (recv[i] != AvailableCheckRequestPrefix[i])
+                {
                     _errorCode = QRErrorCode.Parse;
-                return;
+                    return;
+                }
+                    
             }
 
             //postfix check

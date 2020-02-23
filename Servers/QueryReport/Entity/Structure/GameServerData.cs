@@ -32,7 +32,7 @@ namespace QueryReport.Entity.Structure
         }
 
         public DateTime LastRefreshed { get; set; }
-
+        public DateTime LastKeepAlive { get; set; }
 
         public DateTime LastPing { get; set; }
 

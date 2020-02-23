@@ -1,24 +1,23 @@
 ﻿using GameSpyLib.Logging;
+using QueryReport.Entity.Enumerator;
 using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
 using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.KeepAlive
 {
-    public class KeepAliveHandler
+    public class KeepAliveHandler:QRHandlerBase
     {
-        public static void KeepAliveResponse(QRServer server, EndPoint endPoint, byte[] buffer)
+        public KeepAliveHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
         {
-            byte[] sendingBuffer = new byte[7];
-            sendingBuffer[0] = QR.QRMagic1;
-            sendingBuffer[1] = QR.QRMagic2;
-            sendingBuffer[2] = QRClient.KeepAlive;
-            //According to SDK we know the instant key is from packet.BytesRecieved[1] to packet.BytesRecieved[4]
-            //So we add it to response
-            Array.Copy(buffer, 1, sendingBuffer, 3, 4);
-            server.SendAsync(endPoint, sendingBuffer);
-            //We should keep the dedicated server in our server list
+        }
+
+        protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
+        {
+            KeepAlivePacket keep = new KeepAlivePacket(recv);
+            _sendingBuffer = keep.GenerateResponse();
         }
     }
 }

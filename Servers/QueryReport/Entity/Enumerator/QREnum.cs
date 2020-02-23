@@ -3,15 +3,21 @@ namespace QueryReport.Entity.Enumerator
 {
     public enum QRPacketType : byte
     {
+        //Server response
         Query = 0x00,
         Challenge = 0x01,
         Echo = 0x02,
-        Heartbeat = 0x03,
-        AddressError = 0x04,
-        EchoResponse = 0x05,
+        ADDError = 0x04,
         ClientMessage = 0x06,
+        RequireIPVerify = 0x09,
+        ClientRegistered = 0x0A,
+        //Client request
+        HeartBeat = 0x03,
+        EchoResponse = 0x05,
         ClientMessageACK = 0x07,
         KeepAlive = 0x08,
-        RequireIPVerify = 0x09
+        AvaliableCheck = 0x09
     }
+
+
 }

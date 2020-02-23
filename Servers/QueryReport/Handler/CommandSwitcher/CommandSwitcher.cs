@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Logging;
-using QueryReport.Entity.Structure;
+using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.CommandHandler.Available;
-using QueryReport.Handler.CommandHandler.Challenge;
+using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
 using QueryReport.Server;
@@ -16,21 +16,24 @@ namespace QueryReport.Handler.CommandSwitcher
         {
             try
             {
-                switch (recv[0])
+                switch ((QRPacketType)recv[0])
                 {
-                    case QRClient.Avaliable:
+                    case QRPacketType.AvaliableCheck:
                         AvailableHandler available = new AvailableHandler(server, endPoint, recv);
                         break;
                     // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
                     // Perhaps it was present on an older version of GameSpy SDK
-                    case QRGameServer.Challenge:
-                        ChallengeHandler.ServerChallengeResponse(server, endPoint, recv);
+                    //case QRRequestPacket.Challenge:
+                    //    ChallengeHandler.ServerChallengeResponse(server, endPoint, recv);
+                    //   break;
+                    case QRPacketType.HeartBeat: // HEARTBEAT
+                        HeartBeatHandler heart = new HeartBeatHandler(server, endPoint, recv);
                         break;
-                    case QRClient.Heartbeat: // HEARTBEAT
-                        HeartBeatHandler.HeartbeatResponse(server, endPoint, recv);
+                    case QRPacketType.KeepAlive:
+                        KeepAliveHandler keep = new KeepAliveHandler(server,endPoint,recv);
                         break;
-                    case QRClient.KeepAlive:
-                        KeepAliveHandler.KeepAliveResponse(server, endPoint, recv);
+                    case QRPacketType.EchoResponse:
+                        EchoHandler echo = new EchoHandler(server, endPoint, recv);
                         break;
                     default:
                         server.UnknownDataRecived(recv);

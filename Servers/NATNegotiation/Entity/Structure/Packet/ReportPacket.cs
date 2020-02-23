@@ -21,8 +21,8 @@ namespace NatNegotiation.Entity.Structure.Packet
             ClientIndex = recv[14];
             NegResult = recv[15];
 
-            Array.Copy(ByteExtensions.SubBytes(recv, 17, sizeof(int)), NatType, 4);
-            Array.Copy(ByteExtensions.SubBytes(recv, 19, sizeof(int)), NatMappingScheme, 4);
+            Array.Copy(ByteTools.SubBytes(recv, 17, sizeof(int)), NatType, 4);
+            Array.Copy(ByteTools.SubBytes(recv, 19, sizeof(int)), NatMappingScheme, 4);
 
             Array.Copy(recv, 23, GameName, 0, 50);
         }

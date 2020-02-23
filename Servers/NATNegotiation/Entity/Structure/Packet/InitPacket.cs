@@ -19,8 +19,8 @@ namespace NatNegotiation.Entity.Structure.Packet
             PortType = recv[BasePacket.Size];//
             ClientIndex = recv[BasePacket.Size + 1];//00
             UseGamePort = recv[BasePacket.Size + 2];//00
-            Array.Copy(ByteExtensions.SubBytes(recv, BasePacket.Size + 3, sizeof(uint)), LocalIP, 4);
-            Array.Copy(ByteExtensions.SubBytes(recv, BasePacket.Size + 7, sizeof(uint)), LocalPort, 2);
+            Array.Copy(ByteTools.SubBytes(recv, BasePacket.Size + 3, sizeof(uint)), LocalIP, 4);
+            Array.Copy(ByteTools.SubBytes(recv, BasePacket.Size + 7, sizeof(uint)), LocalPort, 2);
         }
 
         public byte[] GenerateByteArray()

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace GameSpyLib.Encryption
 {
-    public static class ByteExtensions
+    public static class ByteTools
     {
         /// <summary>
         /// Converts the byte array to its Hex string equivlent
