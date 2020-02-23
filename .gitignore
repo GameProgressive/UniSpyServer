@@ -332,6 +332,9 @@ ASALocalRun/
 logs\
 RetroSpyServer.xml
 
+# linq2db
+.tools/
+
 # Prerequisites
 *.d
 
