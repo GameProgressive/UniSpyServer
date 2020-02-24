@@ -11,7 +11,7 @@ namespace ServerBrowser
 
         protected override void OnReceived(string message)
         {
-            CommandSwitcher.Switch(this,message);
+            CommandSwitcher.Switch(this, message);
         }
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {

@@ -1,8 +1,5 @@
 ﻿using QueryReport.Server;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace QueryReport.Handler.CommandHandler.Challenge
 {

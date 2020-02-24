@@ -13,7 +13,7 @@ namespace QueryReport.Handler.CommandHandler.ServerList
         public static void CheckServers()
         {
             // Create a list of servers to update in the database
-            List<GameServerData> ServersToRemove = new List<GameServerData>();
+            List<GameServer> ServersToRemove = new List<GameServer>();
 
             var timeSpan = TimeSpan.FromSeconds(QRServer.ServerTTL);
 

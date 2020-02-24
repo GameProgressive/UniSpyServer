@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using ServerBrowser.Handler.CommandHandler;
+using System;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
@@ -8,10 +7,12 @@ namespace ServerBrowser.Handler.CommandSwitcher
     {
         public static void Switch(SBSession session, string recv)
         {
-            string[] dataPartition = recv.Split(new string[] { "\x00\x00" }, StringSplitOptions.None);
-            byte[] challenge= Encoding.ASCII.GetBytes(recv.Substring(0, 9));
-            string[] gameInfo = recv.Substring(9).Split(new string[] { "\x00\\"}, StringSplitOptions.None);
-            byte[] data = Encoding.ASCII.GetBytes(recv);
+            string[] requests = recv.Split(new string[] { "\0\0\0\0\0" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string request in requests)
+            {
+                new ServerListRetriveHandler(session, request);
+            }
+
         }
     }
 }

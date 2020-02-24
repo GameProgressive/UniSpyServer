@@ -119,7 +119,7 @@ namespace ServerBrowser.Handler
         /// <param name="server">The server we are fetching the field value from</param>
         /// <param name="fieldName">the field value we want</param>
         /// <returns></returns>
-        private static string GetField(GameServerData server, string fieldName)
+        private static string GetField(GameServer server, string fieldName)
         {
             object value = server.GetType().GetProperty(fieldName).GetValue(server, null);
             if (value == null)
@@ -177,7 +177,7 @@ namespace ServerBrowser.Handler
 
         private static string FixFilterOperators(string filter)
         {
-            PropertyInfo[] properties = typeof(GameServerData).GetProperties();
+            PropertyInfo[] properties = typeof(GameServer).GetProperties();
             List<string> filterableProperties = new List<string>();
 
             // get all the properties that aren't "[NonFilter]"
