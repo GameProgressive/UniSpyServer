@@ -47,10 +47,10 @@ namespace ServerBrowser.Handler.CommandHandler
                 data.AddRange(new byte[] { 0, 0 });
             }
 
-            var onlineServers = QueryReport.Server.QRServer.GameServerList.Select(x => x.Value).Where(c => c. == gameName);
+            var onlineServers = QueryReport.Server.QRServer.GameServerList.Select(x => x.Value).Where(c => c.ServerInfo.GameName== gameName);
             foreach (var server in onlineServers)
             {
-                byte[] portBytes = BitConverter.GetBytes((ushort)server.HostPort);
+                byte[] portBytes = BitConverter.GetBytes((ushort)server.RemotePort);
                 if (BitConverter.IsLittleEndian)
                     Array.Reverse(portBytes, 0, portBytes.Length);
                 data.Add(81);
