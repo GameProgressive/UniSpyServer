@@ -1,10 +1,7 @@
 ﻿using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.SystemHandler;
 using QueryReport.Server;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace QueryReport.Handler.CommandHandler
 {
@@ -51,7 +48,7 @@ namespace QueryReport.Handler.CommandHandler
 
         protected virtual void Response(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            if (_sendingBuffer.Length < 4)
+            if (_sendingBuffer == null)
                 return;
             server.SendAsync(endPoint, _sendingBuffer);
         }

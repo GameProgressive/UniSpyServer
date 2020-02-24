@@ -1,5 +1,4 @@
-﻿using System;
-namespace QueryReport.Entity.Structure.Packet
+﻿namespace QueryReport.Entity.Structure.Packet
 {
     public class HeartBeatPacket
     {

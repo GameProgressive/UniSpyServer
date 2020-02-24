@@ -1,6 +1,5 @@
-﻿using System;
+﻿using QueryReport.Server;
 using System.Net;
-using QueryReport.Server;
 
 namespace QueryReport.Handler.CommandHandler.Echo
 {

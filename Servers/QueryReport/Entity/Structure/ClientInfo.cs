@@ -14,7 +14,7 @@ namespace QueryReport.Entity.Structure
         public EndPoint RemoteEndPoint;
         public GameServerInfo ServerInfo;
 
-        public ClientInfo(EndPoint remoteEndPoint,DateTime lastPacketTime)
+        public ClientInfo(EndPoint remoteEndPoint, DateTime lastPacketTime)
         {
             RemoteEndPoint = remoteEndPoint;
             LastPacketTime = lastPacketTime;

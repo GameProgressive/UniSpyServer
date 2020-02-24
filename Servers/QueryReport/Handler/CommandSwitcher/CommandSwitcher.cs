@@ -30,7 +30,7 @@ namespace QueryReport.Handler.CommandSwitcher
                         HeartBeatHandler heart = new HeartBeatHandler(server, endPoint, recv);
                         break;
                     case QRPacketType.KeepAlive:
-                        KeepAliveHandler keep = new KeepAliveHandler(server,endPoint,recv);
+                        KeepAliveHandler keep = new KeepAliveHandler(server, endPoint, recv);
                         break;
                     case QRPacketType.EchoResponse:
                         EchoHandler echo = new EchoHandler(server, endPoint, recv);

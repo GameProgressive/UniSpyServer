@@ -5,7 +5,7 @@ namespace CDKey.Handler.CommandHandler
     public class CDKeyHandlerBase
     {
         protected string _sendingBuffer;
-        public CDKeyHandlerBase(CDKeyServer server,Dictionary<string, string> recv)
+        public CDKeyHandlerBase(CDKeyServer server, Dictionary<string, string> recv)
         {
             Handle(server, recv);
         }
@@ -21,7 +21,7 @@ namespace CDKey.Handler.CommandHandler
 
         public virtual void Response(CDKeyServer server)
         {
-            if (_sendingBuffer == null||_sendingBuffer=="")
+            if (_sendingBuffer == null || _sendingBuffer == "")
             {
                 return;
             }

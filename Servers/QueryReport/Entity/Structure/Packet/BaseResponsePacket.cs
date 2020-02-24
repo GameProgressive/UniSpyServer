@@ -1,5 +1,4 @@
-﻿using System;
-using GameSpyLib.Encryption;
+﻿using GameSpyLib.Encryption;
 
 namespace QueryReport.Entity.Structure.Packet
 {

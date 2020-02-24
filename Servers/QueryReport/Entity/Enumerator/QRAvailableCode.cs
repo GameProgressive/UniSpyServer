@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace QueryReport.Entity.Enumerator
+﻿namespace QueryReport.Entity.Enumerator
 {
     public enum ServerAvailability : byte
     {

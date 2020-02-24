@@ -1,5 +1,4 @@
-﻿using System;
-namespace QueryReport.Entity.Structure.Packet
+﻿namespace QueryReport.Entity.Structure.Packet
 {
     public class QueryPacket
     {
@@ -7,6 +6,6 @@ namespace QueryReport.Entity.Structure.Packet
         public QueryPacket(byte[] recv)
         {
         }
-        
+
     }
 }
