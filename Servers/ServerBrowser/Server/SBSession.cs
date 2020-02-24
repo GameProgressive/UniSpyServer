@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Network;
+using ServerBrowser.Handler.CommandSwitcher;
 
 namespace ServerBrowser
 {
@@ -10,8 +11,11 @@ namespace ServerBrowser
 
         protected override void OnReceived(string message)
         {
-            base.OnReceived(message);
-            Send(@"1111");
+            CommandSwitcher.Switch(this,message);
+        }
+        protected override void OnReceived(byte[] buffer, long offset, long size)
+        {
+            base.OnReceived(buffer, offset, size);
         }
     }
 }

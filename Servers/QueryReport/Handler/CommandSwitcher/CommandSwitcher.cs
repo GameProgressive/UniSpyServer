@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Logging;
 using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.CommandHandler.Available;
+using QueryReport.Handler.CommandHandler.Challenge;
 using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
@@ -21,11 +22,11 @@ namespace QueryReport.Handler.CommandSwitcher
                     case QRPacketType.AvaliableCheck:
                         AvailableHandler available = new AvailableHandler(server, endPoint, recv);
                         break;
-                    // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
-                    // Perhaps it was present on an older version of GameSpy SDK
-                    //case QRRequestPacket.Challenge:
-                    //    ChallengeHandler.ServerChallengeResponse(server, endPoint, recv);
-                    //   break;
+                    //verify challenge to check game server is real or fake;
+                    //after verify we can add game server to server list
+                    case QRPacketType.Challenge:
+                        ChallengeHandler challenge = new ChallengeHandler(server, endPoint, recv);
+                        break;
                     case QRPacketType.HeartBeat: // HEARTBEAT
                         HeartBeatHandler heart = new HeartBeatHandler(server, endPoint, recv);
                         break;

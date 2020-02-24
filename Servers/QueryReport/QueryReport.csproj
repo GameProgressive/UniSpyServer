@@ -32,6 +32,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Entity\Structure\QRGeneralData.cs" />
     <Compile Remove="Handler\CommandHandler\HeartBeat\QRDBQuery.cs" />
   </ItemGroup>
   <ItemGroup>

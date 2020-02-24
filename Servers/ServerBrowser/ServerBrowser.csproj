@@ -32,8 +32,4 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handler\CommandSwitcher\" />
-  </ItemGroup>
-
 </Project>

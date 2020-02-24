@@ -1,4 +1,5 @@
-﻿using QueryReport.Server;
+﻿using QueryReport.Entity.Structure.Packet;
+using QueryReport.Server;
 using System;
 using System.Linq;
 using System.Net;
@@ -39,8 +40,8 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            //ChallengePacket challenge = new ChallengePacket(endPoint, recv);
-            //_sendingBuffer = challenge.GenerateResponse();
+            ChallengePacket challenge = new ChallengePacket(endPoint, recv);
+            _sendingBuffer = challenge.GenerateResponse();
         }
     }
 }
