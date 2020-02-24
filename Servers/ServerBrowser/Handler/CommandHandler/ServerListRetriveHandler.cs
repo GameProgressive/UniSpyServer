@@ -20,7 +20,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             string[] parts = request.Split(new string[] { "\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
             //we have to check the request Header
-            string requestHeader = recv.Substring(0, 9);
+            string requestHeader = request.Substring(0, 9);
 
             string[] gameInfo = request.Substring(9).Split(new string[] { "\x00\\" }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -68,7 +68,6 @@ namespace ServerBrowser.Handler.CommandHandler
 
             }
         }
-
     }
 }
-}
+
