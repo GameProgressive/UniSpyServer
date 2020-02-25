@@ -32,26 +32,24 @@ namespace QueryReport.Server
 
         public bool HasInstantKey = false;
 
-        public static DatabaseEngine DB;
-
         public QRServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
-            DB = engine;
             //The Time for servers to remain in the serverlist since the last ping in seconds.
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
             //is busy and cant refresh the server's TTL right away
 
             // Setup timer. Remove servers who havent ping'd since ServerTTL
-            PollTimer = new Timer(5000);
-            PollTimer.Elapsed += (s, e) => ServerListHandler.CheckServers();
-            PollTimer.Start();
+            //PollTimer = new Timer(5000);
+           // PollTimer.Elapsed += (s, e) => ServerListHandler.CheckServers();
+           // PollTimer.Start();
         }
 
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            CommandSwitcher.Switch(this, endPoint, message);
+            //CommandSwitcher.Switch(this, endPoint, message);
+            
         }
 
 

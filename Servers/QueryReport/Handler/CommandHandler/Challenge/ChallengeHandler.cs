@@ -12,6 +12,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
         protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
         {
             //TODO
+            server.ToLog("received challenge");
             base.CheckRequest(server, endPoint, recv);
         }
 

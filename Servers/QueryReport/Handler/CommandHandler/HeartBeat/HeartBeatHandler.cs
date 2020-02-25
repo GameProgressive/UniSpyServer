@@ -29,6 +29,10 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
             string[] dataFrag = dataPartition.Split(new string[] { "\x00\x00\x00", "\x00\x00\x02" }, StringSplitOptions.None);
+            foreach (var frag in dataFrag)
+            { 
+            
+            }
             serverData = dataFrag[0];
             playerData = dataFrag[1];
             teamData = dataFrag[2];

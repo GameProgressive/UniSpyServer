@@ -133,6 +133,8 @@ namespace GameSpyLib.Network
             Array.Copy(buffer, 0, temp, 0, (int)size);
             if (LogWriter.Log.DebugSockets)
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer, 0, (int)size));
+            //even if we did not response we keep receive message
+            ReceiveAsync();
 
             OnReceived(endpoint, temp);
         }
