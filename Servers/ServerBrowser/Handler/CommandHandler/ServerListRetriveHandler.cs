@@ -47,7 +47,7 @@ namespace ServerBrowser.Handler.CommandHandler
                 data.AddRange(new byte[] { 0, 0 });
             }
 
-            var onlineServers = QueryReport.Server.QRServer.GameServerList.Select(x => x.Value).Where(c => c.ServerInfo.GameName== gameName);
+            var onlineServers = QueryReport.Server.QRServer.GameServerList.Select(x => x.Value).Where(c => c.ServerInfo.Data["gamename"]== gameName);
             foreach (var server in onlineServers)
             {
                 byte[] portBytes = BitConverter.GetBytes((ushort)server.RemotePort);

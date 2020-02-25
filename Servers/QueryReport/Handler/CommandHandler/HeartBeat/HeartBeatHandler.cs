@@ -1,6 +1,9 @@
-﻿using QueryReport.Entity.Structure.Packet;
+﻿using GameSpyLib.Common;
+using QueryReport.Entity.Structure.Packet;
+using QueryReport.Entity.Structure.ReportData;
 using QueryReport.Server;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -9,7 +12,9 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
     public class HeartBeatHandler : QRHandlerBase
     {
-
+        string _heartBeatHeader;
+        string _dataFrag;
+        uint _playerTeamCount;
         public HeartBeatHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
         {
         }
@@ -28,18 +33,22 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             //Save server information.
             string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
-            string[] dataFrag = dataPartition.Split(new string[] { "\x00\x00\x00", "\x00\x00\x02" }, StringSplitOptions.None);
-            foreach (var frag in dataFrag)
-            { 
-            
+            int playerPos = dataPartition.IndexOf("player_");
+            if (playerPos != -1)
+            {
+                serverData = dataPartition.Substring(0, playerPos - 4); 
             }
-            serverData = dataFrag[0];
-            playerData = dataFrag[1];
-            teamData = dataFrag[2];
-            Console.WriteLine(serverData);
-            Console.WriteLine(playerData);
-            Console.WriteLine(teamData);
+            
+            int teamPos = dataPartition.IndexOf("team_t");
+            int playerLenth = teamPos - playerPos;
+            if (teamPos != -1)
+            {
+                playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
 
+                int teamLength = dataPartition.Length - teamPos;
+                teamData = dataPartition.Substring(teamPos - 1, teamLength);
+
+            }
         }
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)

@@ -48,8 +48,7 @@ namespace QueryReport.Server
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            //CommandSwitcher.Switch(this, endPoint, message);
-            
+            CommandSwitcher.Switch(this, endPoint, message);  
         }
 
 
