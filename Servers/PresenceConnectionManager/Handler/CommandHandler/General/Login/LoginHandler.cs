@@ -21,8 +21,13 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            // for pass operation id to session,Playerinfo
-            base.CheckRequest(session, recv);
+            if (recv.ContainsKey("id"))
+            {
+                if (!ushort.TryParse(recv["id"], out _operationID))
+                {
+                    _errorCode = GPErrorCode.Parse;
+                }
+            }
 
             // Make sure we have all the required data to process this login
             if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
@@ -153,7 +158,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
         {
             session.UserInfo.SessionKey
-                = _crc.ComputeChecksum(session.UserInfo.Nick + session.UserInfo.NamespaceID);
+                = _crc.ComputeChecksum(session.UserInfo.Nick + session.UserInfo.UniqueNick + session.UserInfo.NamespaceID);
 
             string responseProof = ChallengeProof.GenerateProof
             (

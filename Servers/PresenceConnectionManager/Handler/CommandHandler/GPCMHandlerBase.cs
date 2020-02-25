@@ -53,6 +53,10 @@ namespace PresenceConnectionManager.Handler
                     _errorCode = GPErrorCode.Parse;
                 }
             }
+            if (session.UserInfo.SessionKey == 0)
+            {
+                _errorCode = GPErrorCode.NotLoggedIn;
+            }
         }
 
         protected virtual void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv) { }

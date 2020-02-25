@@ -33,22 +33,12 @@ namespace PresenceConnectionManager
         /// </summary>
         public readonly DateTime Created = DateTime.Now;
 
-        /// <summary>
-        /// Our CRC16 object for generating Checksums
-        /// </summary>
-        protected static Crc16 Crc = new Crc16(Crc16Mode.Standard);
-
         public UserInfo UserInfo = new UserInfo();
 
         public GPCMSession(TemplateTcpServer server) : base(server)
         {
             DisconnectAfterSend = false;
         }
-
-
-
-
-
 
         protected override void OnReceived(string message)
         {
