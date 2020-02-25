@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Entity.Structure.ReportData;
 using QueryReport.Server;
@@ -12,43 +13,50 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
     public class HeartBeatHandler : QRHandlerBase
     {
-        string _heartBeatHeader;
-        string _dataFrag;
-        uint _playerTeamCount;
+        GameServer _gameServer;
         public HeartBeatHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
-        {
-        }
+        { }
 
 
         protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
         {
             //TODO
-
+            _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, new GameServer(endPoint));
             base.CheckRequest(server, endPoint, recv);
         }
 
         protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            //TODO
             //Save server information.
             string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
+
             int playerPos = dataPartition.IndexOf("player_");
-            if (playerPos != -1)
-            {
-                serverData = dataPartition.Substring(0, playerPos - 4); 
-            }
-            
             int teamPos = dataPartition.IndexOf("team_t");
-            int playerLenth = teamPos - playerPos;
-            if (teamPos != -1)
+
+            serverData = dataPartition.Substring(0, playerPos - 4);
+            _gameServer.ServerInfo.UpdateServerInfo(serverData);
+
+            if (playerPos != -1 && teamPos != -1)
             {
+                //normal heart beat
+                serverData = dataPartition.Substring(0, playerPos - 4);
+                _gameServer.ServerInfo.UpdateServerInfo(serverData);
+
+                int playerLenth = teamPos - playerPos;
                 playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
+                _gameServer.PlayerInfo.UpdatePlayerInfo(playerData);
 
                 int teamLength = dataPartition.Length - teamPos;
                 teamData = dataPartition.Substring(teamPos - 1, teamLength);
-
+                _gameServer.TeamInfo.UpdatePlayerInfo(teamData);
             }
+            else
+            {
+                //shutdown heart beat
+                _gameServer.IsValidated = false;
+            }
+
         }
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)

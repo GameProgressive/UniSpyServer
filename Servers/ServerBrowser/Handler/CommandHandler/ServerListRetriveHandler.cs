@@ -25,8 +25,12 @@ namespace ServerBrowser.Handler.CommandHandler
             string[] gameInfo = request.Substring(9).Split(new string[] { "\x00\\" }, StringSplitOptions.RemoveEmptyEntries);
 
             string[] restData = gameInfo[0].Split('\x00');
+            if (restData[0] == restData[1])
+            { 
+            
+            }
             string gameName = restData[0];
-            string validate = restData[1];
+    
             string filter = restData[2];
             string[] dataFields = gameInfo[1].Split('\\', StringSplitOptions.RemoveEmptyEntries);
 
@@ -50,7 +54,7 @@ namespace ServerBrowser.Handler.CommandHandler
             var onlineServers = QueryReport.Server.QRServer.GameServerList.Select(x => x.Value).Where(c => c.ServerInfo.Data["gamename"]== gameName);
             foreach (var server in onlineServers)
             {
-                byte[] portBytes = BitConverter.GetBytes((ushort)server.RemotePort);
+                byte[] portBytes = server.RemotePort;
                 if (BitConverter.IsLittleEndian)
                     Array.Reverse(portBytes, 0, portBytes.Length);
                 data.Add(81);

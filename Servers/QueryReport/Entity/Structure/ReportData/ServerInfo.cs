@@ -6,9 +6,10 @@ namespace QueryReport.Entity.Structure.ReportData
     public class ServerInfo
     {
         public Dictionary<string, string> Data = new Dictionary<string, string>();
-        public void SetServerInfo(string input)
+        public void UpdateServerInfo(string serverData)
         {
-            string[] parts = input.Split("\x00");
+            Data.Clear();
+            string[] parts = serverData.Split("\x00");
             Data = GameSpyUtils.ConvertRequestToKeyValue(parts);
         }
     }

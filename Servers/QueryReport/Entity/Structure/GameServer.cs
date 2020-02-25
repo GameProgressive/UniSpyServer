@@ -23,16 +23,17 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         public DateTime LastPing { get; set; }
 
+        public EndPoint RemoteEndPoint { get; protected set; }
+
         public GameServer(EndPoint endPoint)
         {
             RemoteEndPoint = endPoint;
         }
-        public EndPoint RemoteEndPoint { get; protected set; }
 
         public bool IsValidated = false;
-        public int RemotePort
+        public byte[] RemotePort
         {
-            get { return ((IPEndPoint)RemoteEndPoint).Port; }
+            get { return BitConverter.GetBytes(((IPEndPoint)RemoteEndPoint).Port); }
         }
         public byte[] RemoteIP
         {
