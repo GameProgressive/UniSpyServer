@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Handler
             Handle(session, recv);
         }
 
-        public void Handle(GPCMSession session, Dictionary<string, string> recv)
+        public virtual void Handle(GPCMSession session, Dictionary<string, string> recv)
         {
             CheckRequest(session, recv);
             if (_errorCode != GPErrorCode.NoError)
@@ -43,13 +43,16 @@ namespace PresenceConnectionManager.Handler
 
             Response(session, recv);
         }
+
         protected virtual void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             if (recv.ContainsKey("id"))
+            {
                 if (!ushort.TryParse(recv["id"], out _operationID))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
+            }
         }
 
         protected virtual void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv) { }

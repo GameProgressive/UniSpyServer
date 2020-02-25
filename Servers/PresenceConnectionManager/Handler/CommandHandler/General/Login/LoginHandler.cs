@@ -5,6 +5,7 @@ using PresenceConnectionManager.Handler.General.Login.Misc;
 using PresenceConnectionManager.Handler.General.SDKExtendFeature;
 using System.Collections.Generic;
 //using PresenceConnectionManager.Handler.General.SDKExtendFeature;
+using PresenceConnectionManager.Handler.Error;
 using System.Linq;
 
 namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
@@ -34,6 +35,33 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
             ParseOtherData(session, recv);
         }
+
+        public override void Handle(GPCMSession session, Dictionary<string, string> recv)
+        {
+            CheckRequest(session, recv);
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
+                return;
+            }
+
+            DataBaseOperation(session, recv);
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
+                return;
+            }
+
+            ConstructResponse(session, recv);
+            if (_errorCode == GPErrorCode.ConstructResponseError)
+            {
+                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
+                return;
+            }
+
+            Response(session, recv);
+        }
+
         /// <summary>
         /// Parse everything into PlayerInfo, so we can use it later.
         /// </summary>
@@ -108,13 +136,18 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             {
                 session.UserInfo.GameName = recv["gamename"];
             }
+
             if (recv.ContainsKey("port"))
+            {
                 if (!uint.TryParse(recv["port"], out session.UserInfo.PeerPort))
                     _errorCode = GPErrorCode.Parse;
+            }
 
             if (recv.ContainsKey("quiet"))
+            {
                 if (!uint.TryParse(recv["quiet"], out session.UserInfo.QuietModeFlag))
                     _errorCode = GPErrorCode.Parse;
+            }
         }
 
         protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
