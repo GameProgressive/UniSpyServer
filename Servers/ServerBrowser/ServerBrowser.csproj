@@ -25,7 +25,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-    <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
   </ItemGroup>
 
   <ItemGroup>
