@@ -18,8 +18,6 @@ namespace ServerBrowser.Handler.CommandHandler
         public void Handle(SBSession session, string request)
         {
 
-            string header, dataPartition;
-
             string[] parts = request.Split(new string[] { "\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
             //we have to check the request Header
             string requestHeader = request.Substring(0, 9);
