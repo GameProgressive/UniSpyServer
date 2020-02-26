@@ -38,7 +38,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
                         .Update();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _errorCode = GPErrorCode.DatabaseError;
             }

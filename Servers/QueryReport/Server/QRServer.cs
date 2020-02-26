@@ -20,7 +20,7 @@ namespace QueryReport.Server
         /// <summary>
         /// A timer that is used to Poll all the servers, and remove inactive servers from the server list
         /// </summary>
-        private static Timer PollTimer;
+        //private static Timer PollTimer;
 
         /// <summary>
         /// The Time for servers are to remain in the serverlist since the last ping.
