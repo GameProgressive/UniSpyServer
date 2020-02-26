@@ -21,7 +21,8 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
         {
             //TODO
-            _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, new GameServer(endPoint));
+            BaseResponsePacket b = new BaseResponsePacket(recv);
+            _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, new GameServer(endPoint, b.InstantKey));
             base.CheckRequest(server, endPoint, recv);
         }
 
@@ -33,9 +34,6 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
             int playerPos = dataPartition.IndexOf("player_");
             int teamPos = dataPartition.IndexOf("team_t");
-
-            serverData = dataPartition.Substring(0, playerPos - 4);
-            _gameServer.ServerInfo.UpdateServerInfo(serverData);
 
             if (playerPos != -1 && teamPos != -1)
             {

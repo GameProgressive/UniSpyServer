@@ -12,6 +12,7 @@ namespace QueryReport.Entity.Structure.Packet
         {
             ByteTools.SubBytes(recv, 1, 4).CopyTo(InstantKey, 0);
         }
+        public BaseResponsePacket() { }
 
         public virtual byte[] GenerateResponse()
         {

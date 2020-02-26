@@ -20,21 +20,21 @@ namespace GameSpyLib.Encryption
             public long Start;
         }
 
-        public static byte[] Encode(byte[] key, byte[] validate, byte[] data, long size)
+        public static byte[] Encode(byte[] key, byte[] gameName, byte[] data, long size)
         {
             byte[] numArray = new byte[size + 23];
             byte[] numArray1 = new byte[23];
-            if (key == null || validate == null || data == null || size < 0)
+            if (key == null || gameName == null || data == null || size < 0)
             {
                 return null;
             }
             int length = key.Length;
-            int num = validate.Length;
+            int num = gameName.Length;
             int num1 = (new System.Random()).Next();
             for (int i = 0; i < numArray1.Length; i++)
             {
                 num1 = num1 * 214013 + 2531011;
-                numArray1[i] = (byte)((num1 ^ key[i % length] ^ validate[i % num]) % 256);
+                numArray1[i] = (byte)((num1 ^ key[i % length] ^ gameName[i % num]) % 256);
             }
             numArray1[0] = 235;
             numArray1[1] = 0;
@@ -46,47 +46,47 @@ namespace GameSpyLib.Encryption
             }
             Array.Copy(numArray1, numArray, numArray1.Length);
             size = size + numArray1.Length;
-            byte[] numArray2 = Two(key, validate, numArray, size, null);
+            byte[] numArray2 = Two(key, gameName, numArray, size, null);
             byte[] numArray3 = new byte[numArray2.Length + numArray1.Length];
             Array.Copy(numArray1, 0, numArray3, 0, numArray1.Length);
             Array.Copy(numArray2, 0, numArray3, numArray1.Length, numArray2.Length);
             return numArray3;
         }
 
-        private static byte[] Two(byte[] u0002, byte[] u0003, byte[] u0005, long u0008, GSEncodingData u0006)
+        private static byte[] Two(byte[] u0002, byte[] u0003, byte[] gameName, long u0008, GSEncodingData u0006)
         {
             byte[] numArray;
             byte[] numArray1 = new byte[261];
             numArray = (u0006 != null ? u0006.EncodingKey : numArray1);
             if (u0006 == null || u0006.Start == 0)
             {
-                u0005 = Three(ref numArray, ref u0002, u0003, ref u0005, ref u0008, ref u0006);
-                if (u0005 == null)
+                gameName = Three(ref numArray, ref u0002, u0003, ref gameName, ref u0008, ref u0006);
+                if (gameName == null)
                 {
                     return null;
                 }
             }
             if (u0006 == null)
             {
-                Four(ref numArray, ref u0005, u0008);
-                return u0005;
+                Four(ref numArray, ref gameName, u0008);
+                return gameName;
             }
             if (u0006.Start == 0)
             {
                 return null;
             }
             byte[] numArray2 = new byte[u0008 - u0006.Offset];
-            Array.ConstrainedCopy(u0005, (int)u0006.Offset, numArray2, 0, (int)(u0008 - u0006.Offset));
+            Array.ConstrainedCopy(gameName, (int)u0006.Offset, numArray2, 0, (int)(u0008 - u0006.Offset));
             long num = Four(ref numArray, ref numArray2, u0008 - u0006.Offset);
-            Array.ConstrainedCopy(numArray2, 0, u0005, (int)u0006.Offset, (int)(u0008 - u0006.Offset));
+            Array.ConstrainedCopy(numArray2, 0, gameName, (int)u0006.Offset, (int)(u0008 - u0006.Offset));
             GSEncodingData offset = u0006;
             offset.Offset = offset.Offset + num;
             byte[] numArray3 = new byte[u0008 - u0006.Start];
-            Array.ConstrainedCopy(u0005, (int)u0006.Start, numArray3, 0, (int)(u0008 - u0006.Start));
+            Array.ConstrainedCopy(gameName, (int)u0006.Start, numArray3, 0, (int)(u0008 - u0006.Start));
             return numArray3;
         }
 
-        private static byte[] Three(ref byte[] u0002, ref byte[] u0003, byte[] u0005, ref byte[] u0008, ref long u0006, ref GSEncodingData u000e)
+        private static byte[] Three(ref byte[] u0002, ref byte[] u0003, byte[] gameName, ref byte[] u0008, ref long u0006, ref GSEncodingData u000e)
         {
             long num = (long)((u0008[0] ^ 236) + 2);
             byte[] numArray = new byte[8];
@@ -103,7 +103,7 @@ namespace GameSpyLib.Encryption
             {
                 return null;
             }
-            Array.Copy(u0005, numArray, 8);
+            Array.Copy(gameName, numArray, gameName.Length);
             byte[] numArray1 = new byte[u0006 - num];
             Array.ConstrainedCopy(u0008, (int)num, numArray1, 0, (int)(u0006 - num));
             Six(ref u0002, ref u0003, ref numArray, numArray1, num1);

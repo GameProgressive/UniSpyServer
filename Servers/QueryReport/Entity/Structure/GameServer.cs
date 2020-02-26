@@ -1,4 +1,5 @@
-﻿using QueryReport.Entity.Structure.ReportData;
+﻿using QueryReport.Entity.Structure.Packet;
+using QueryReport.Entity.Structure.ReportData;
 using System;
 using System.Net;
 
@@ -25,10 +26,13 @@ namespace QueryReport.Entity.Structure
 
         public EndPoint RemoteEndPoint { get; protected set; }
 
-        public GameServer(EndPoint endPoint)
+        public byte[] InstantKey = new byte[4];
+        public GameServer(EndPoint endPoint,byte[] instantKey)
         {
             RemoteEndPoint = endPoint;
+            instantKey.CopyTo(InstantKey, 0);
         }
+        
 
         public bool IsValidated = false;
         public byte[] RemotePort

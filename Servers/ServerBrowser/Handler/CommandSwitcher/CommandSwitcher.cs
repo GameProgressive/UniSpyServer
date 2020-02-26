@@ -10,7 +10,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             string[] requests = recv.Split(new string[] { "\0\0\0\0\0" }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string request in requests)
             {
-                new ServerListRetriveHandler(session, request);
+                new ServerListHandler(session, request);
             }
 
         }
