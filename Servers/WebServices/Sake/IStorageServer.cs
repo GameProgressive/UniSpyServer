@@ -6,6 +6,9 @@ namespace Sake
     {
         [OperationContract]
         string Test(string s);
+
+        string upload();
+
         [OperationContract]
         void XmlMethod(System.Xml.Linq.XElement xml);
         [OperationContract]

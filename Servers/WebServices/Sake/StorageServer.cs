@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Xml.Linq;
 namespace Sake
 {
-    public class StorageServer : IStorageServer
+    public class StorageServer : Controller, IStorageServer
     {
         public string Test(string s)
         {
@@ -16,6 +17,11 @@ namespace Sake
         public StorageServerModel TestStorageServerModel(StorageServerModel customModel)
         {
             return customModel;
+        }
+
+        public string upload()
+        {
+            throw new NotImplementedException();
         }
     }
 
