@@ -6,11 +6,11 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>E:\retrospy_stuff\RetroSpyServer\Debug</OutputPath>
+    <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>E:\retrospy_stuff\RetroSpyServer\Release</OutputPath>
+    <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>

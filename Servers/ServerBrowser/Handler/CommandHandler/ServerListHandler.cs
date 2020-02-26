@@ -29,7 +29,10 @@ namespace ServerBrowser.Handler.CommandHandler
             //we do not care about the restData[0] it is used for game development test
             //string testGameName = restData[0];
             string gameName = restData[1];
-            string filter = restData[2];
+            string filter;
+            if (restData.Length == 3)
+            { filter= restData[2]; }
+            
             string[] dataFields = gameInfo[1].Split('\\', StringSplitOptions.RemoveEmptyEntries);
 
 
