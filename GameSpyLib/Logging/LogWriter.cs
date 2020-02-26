@@ -223,7 +223,16 @@ namespace GameSpyLib.Logging
             {
 
             }
-            _logStream?.Close();
+
+            try
+            {
+                _logStream?.Close();
+            }
+            catch (Exception)
+            {
+
+            }
+
             _logStream?.Dispose();
             _truncateTimer?.Dispose();
         }
