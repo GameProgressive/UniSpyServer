@@ -9,7 +9,6 @@ namespace ServerBrowser.Handler.CommandHandler
 {
     public class ServerListHandler
     {
-
         public ServerListHandler(SBSession session, string recv)
         {
             Handle(session, recv);
@@ -36,7 +35,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             byte[] remoteIP = ((IPEndPoint)session.Remote).Address.GetAddressBytes();
             //TODO we have to make sure the port number
-            byte[] remotePort = BitConverter.GetBytes(((IPEndPoint)session.Remote).Port);
+            byte[] remotePort = BitConverter.GetBytes( (ushort)(((IPEndPoint)session.Remote).Port & 0xFFFF) );
 
 
             List<byte> data = new List<byte>();
@@ -75,11 +74,8 @@ namespace ServerBrowser.Handler.CommandHandler
             data.AddRange(new byte[] { 0, 255, 255, 255, 255 });
             byte[] sendingbuffer = data.ToArray();
             string secretkey = "HA6zkS";
-            byte[] encBuffer = 
-                Enctypex.Encode(Encoding.ASCII.GetBytes(secretkey), 
-                Encoding.ASCII.GetBytes(gameName), sendingbuffer, 
-                sendingbuffer.Length);
-            session.SendAsync(encBuffer);
+
+            session.SendAsync(new EnctypeX().EncryptData(Encoding.ASCII.GetBytes(secretkey), gameName, sendingbuffer, 0).ToArray());
         }
     }
 }
