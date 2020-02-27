@@ -9,14 +9,14 @@ namespace ServerBrowser.Handler.CommandHandler
 {
     public class ServerListHandler
     {
-        public ServerListHandler(SBSession session, string recv)
+        public ServerListHandler(SBSession session, byte[] recv)
         {
             Handle(session, recv);
         }
 
-        public void Handle(SBSession session, string request)
+        public void Handle(SBSession session, byte[]  recv)
         {
-
+            string request = Encoding.ASCII.GetString(recv);
             string[] parts = request.Split(new string[] { "\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
             //we have to check the request Header
             string requestHeader = request.Substring(0, 9);
@@ -25,7 +25,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             //we do not care about the restData[0] it is used for game development test
             //string testGameName = restData[0];
-            string gameName = restData[1];
+            byte[] gameName = Encoding.ASCII.GetBytes(restData[1]);
             string filter;
             if (restData.Length == 3)
             { filter= restData[2]; }
@@ -50,7 +50,7 @@ namespace ServerBrowser.Handler.CommandHandler
             }
 
             var onlineServers = QueryReport.Server.QRServer.GameServerList.
-                Where(c => c.Value.ServerInfo.Data["gamename"]== gameName);
+                Where(c => c.Value.ServerInfo.Data["gamename"]== gameName.ToString());
             foreach (var server in onlineServers)
             {
                 byte[] portBytes = Encoding.ASCII.GetBytes(server.Value.ServerInfo.Data["hostport"]);

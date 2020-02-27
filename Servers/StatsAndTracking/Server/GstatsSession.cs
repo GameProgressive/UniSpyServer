@@ -121,7 +121,7 @@ namespace StatsAndTracking
         /// <returns></returns>
         public static string GstatsXOR(string msg)
         {
-            return Enctypex.XorEncoding(msg, Enctypex.XorEncodingType.Type1);
+            return XorEncoding.Encrypt(msg, XorEncoding.XorType.Type1);
         }
     }
 }

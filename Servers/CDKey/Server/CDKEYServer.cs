@@ -24,7 +24,7 @@ namespace CDKey
         /// </summary>
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            string decrypted = Enctypex.XorEncoding(message, 0);
+            string decrypted = XorEncoding.Encrypt(message, XorEncoding.XorType.Type0);
             decrypted.Replace(@"\r\n", "").Replace("\0", "");
             string[] recieved = decrypted.TrimStart('\\').Split('\\');
             Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);

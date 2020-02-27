@@ -6,10 +6,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
     {
         public static void Switch(SBSession session, byte[] recv)
         {
-
             new ServerListHandler(session, recv);
-
-
         }
     }
 }
