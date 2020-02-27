@@ -4,7 +4,7 @@ namespace QueryReport.Entity.Structure.ReportData
 {
     public class TeamInfo
     {
-        public Dictionary<string, string> Data = new Dictionary<string, string>();
+        public List<Dictionary<string, string>> Data = new List<Dictionary<string, string>>();
 
         public void Update(string teamData)
         {
@@ -20,9 +20,9 @@ namespace QueryReport.Entity.Structure.ReportData
                 Dictionary<string, string> temp = new Dictionary<string, string>();
                 for (int j = 0; j < keys.Length; j++)
                 {
-                    Data.Add(keys[j], values[i * keys.Length + j]);
+                    temp.Add(keys[j], values[i * keys.Length + j]);
                 }
-
+                Data.Add(temp);
             }
         }
     }
