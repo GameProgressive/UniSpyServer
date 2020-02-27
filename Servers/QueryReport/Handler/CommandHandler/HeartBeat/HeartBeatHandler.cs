@@ -1,10 +1,6 @@
-﻿using GameSpyLib.Common;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
-using QueryReport.Entity.Structure.ReportData;
 using QueryReport.Server;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -13,7 +9,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
     public class HeartBeatHandler : QRHandlerBase
     {
-        GameServer _gameServer;
+        private GameServer _gameServer;
         public HeartBeatHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
         { }
 

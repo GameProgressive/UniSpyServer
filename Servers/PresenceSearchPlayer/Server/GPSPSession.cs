@@ -16,8 +16,6 @@ namespace PresenceSearchPlayer
 
         protected override void OnReceived(string message)
         {
-            message = RequstFormatConversion(message);
-
             if (message[0] != '\\')
             {
                 GameSpyUtils.SendGPError(this, GPErrorCode.Parse, "An invalid request was sended.");

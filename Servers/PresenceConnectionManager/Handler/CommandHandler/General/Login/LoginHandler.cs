@@ -1,11 +1,11 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
 using PresenceConnectionManager.Enumerator;
+//using PresenceConnectionManager.Handler.General.SDKExtendFeature;
+using PresenceConnectionManager.Handler.Error;
 using PresenceConnectionManager.Handler.General.Login.Misc;
 using PresenceConnectionManager.Handler.General.SDKExtendFeature;
 using System.Collections.Generic;
-//using PresenceConnectionManager.Handler.General.SDKExtendFeature;
-using PresenceConnectionManager.Handler.Error;
 using System.Linq;
 
 namespace PresenceConnectionManager.Handler.General.Login.LoginMethod

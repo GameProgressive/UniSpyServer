@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Encryption;
 using GameSpyLib.Logging;
 using NetCoreServer;
 using System;
@@ -104,6 +103,10 @@ namespace GameSpyLib.Network
         protected virtual void OnReceived(string message)
         { }
 
+        protected virtual void OnReceived(byte[] buffer)
+        {
+            OnReceived(Encoding.ASCII.GetString(buffer));
+        }
         /// <summary>
         /// Handle buffer received notification
         /// </summary>
@@ -122,9 +125,11 @@ namespace GameSpyLib.Network
                 return;
             }
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, Encoding.UTF8.GetString(buffer, 0, (int)size));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, Encoding.ASCII.GetString(buffer, 0, (int)size));
 
-            OnReceived(Encoding.UTF8.GetString(buffer, 0, (int)size));
+            byte[] tempBuffer = new byte[size];
+            Array.Copy(buffer, 0, tempBuffer, 0, size);
+            OnReceived(tempBuffer);
         }
 
         protected override void OnConnected()
@@ -161,26 +166,6 @@ namespace GameSpyLib.Network
             GameSpyUtils.PrintReceivedGPDictToLogger(recv);
         }
 
-        public virtual string RequstFormatConversion(string message)
-        {
-            if (message.Contains("login"))
-            {
-                message = message.Replace(@"\-", @"\");
-                message = message.Replace('-', '\\');
-
-                int pos = message.IndexesOf("\\")[1];
-
-                if (message.Substring(pos, 2) != "\\\\")
-                {
-                    message = message.Insert(pos, "\\");
-                }
-                return message;
-            }
-            else
-            {
-                return message;
-            }
-
-        }
     }
 }
+

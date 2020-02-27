@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Logging;
-using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Buddy.AddBlock;
 using PresenceConnectionManager.Handler.Buddy.AddBuddy;
 using PresenceConnectionManager.Handler.Buddy.DelBuddy;
@@ -50,7 +49,8 @@ namespace PresenceConnectionManager.Handler
                         RegisterNickHandler register = new RegisterNickHandler(session, recv);
                         break;
                     case "logout":
-                        session.DisconnectByReason(DisconnectReason.NormalLogout);
+                        session.Disconnect();
+                        GPCMServer.LoggedInSession.TryRemove(session.Id, out _);
                         break;
                     case "status"://update current logged in user's status info
                         StatusHandler status = new StatusHandler(session, recv);

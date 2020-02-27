@@ -1,11 +1,9 @@
 ﻿using GameSpyLib.Database.Entity;
 using GameSpyLib.Network;
 using QueryReport.Entity.Structure;
-using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
 using System.Collections.Concurrent;
 using System.Net;
-using System.Timers;
 
 namespace QueryReport.Server
 {
@@ -41,14 +39,14 @@ namespace QueryReport.Server
 
             // Setup timer. Remove servers who havent ping'd since ServerTTL
             //PollTimer = new Timer(5000);
-           // PollTimer.Elapsed += (s, e) => ServerListHandler.CheckServers();
-           // PollTimer.Start();
+            // PollTimer.Elapsed += (s, e) => ServerListHandler.CheckServers();
+            // PollTimer.Start();
         }
 
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            CommandSwitcher.Switch(this, endPoint, message);  
+            CommandSwitcher.Switch(this, endPoint, message);
         }
 
 

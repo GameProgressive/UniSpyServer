@@ -37,7 +37,6 @@ namespace PresenceConnectionManager
 
         public GPCMSession(TemplateTcpServer server) : base(server)
         {
-            DisconnectAfterSend = false;
         }
 
         protected override void OnReceived(string message)
@@ -114,6 +113,27 @@ namespace PresenceConnectionManager
         {
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
             LogWriter.Log.Write(LogLevel.Info, statusString);
+        }
+
+        public virtual string RequstFormatConversion(string message)
+        {
+            if (message.Contains("login"))
+            {
+                message = message.Replace(@"\-", @"\");
+                message = message.Replace('-', '\\');
+
+                int pos = message.IndexesOf("\\")[1];
+
+                if (message.Substring(pos, 2) != "\\\\")
+                {
+                    message = message.Insert(pos, "\\");
+                }
+                return message;
+            }
+            else
+            {
+                return message;
+            }
         }
     }
 }
