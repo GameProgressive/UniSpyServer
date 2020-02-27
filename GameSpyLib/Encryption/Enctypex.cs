@@ -1,385 +1,348 @@
-﻿using System;
+﻿using GameSpyLib.Common;
+using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace GameSpyLib.Encryption
 {
-    /// <remarks>
-    /// I was never smart enough to recode this from the Open C source that Alugi made, instead
-    /// i decompiled the Reality.Net.Dll from the PR guys and copied thier sources. Since this was
-    /// created by using the Alugi open source code, i didnt see an harm in this.
-    /// If anyone an issue with this, they can email me directly @ wilson.steven10@gmail.com.
-    /// </remarks>
-    public static class Enctypex
+    /// <summary>
+    /// This class provides an implementation of Encryption type X used in server browser with port 28910.
+    /// 
+    /// This implementation was converted from Luigi Auriemma's enctypex decoder in C++ to C#
+    /// </summary>
+    /*
+       Copy of the original aluigi program header as follows:
+      ------------------------------------------------------
+
+        GS enctypeX servers list decoder/encoder 0.1.3b
+        by Luigi Auriemma
+        e-mail: aluigi @autistici.org
+        web:    aluigi.org
+
+        This is the algorithm used by ANY new and old game which contacts the Gamespy master server.
+        It has been written for being used in gslist so there are no explanations or comments here,
+        if you want to understand something take a look to gslist.c
+
+            Copyright 2008-2012 Luigi Auriemma
+
+            This program is free software; you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation; either version 2 of the License, or
+            (at your option) any later version.
+
+            This program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+            GNU General Public License for more details.
+
+            You should have received a copy of the GNU General Public License
+            along with this program; if not, write to the Free Software
+            Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+
+            http://www.gnu.org/licenses/gpl-2.0.txt
+    */
+
+    public class EnctypeX
     {
-        public class GSEncodingData
+        private byte[] _encxkey = new byte[261]; // Static key
+        private int _offset = 0; // everything decrypted till now (total)
+        private byte[] _validate = new byte[8];
+
+        public List<byte> EncryptData(byte[] secretkey, byte[] clientvalidate, byte[] data, short backendflag)
         {
-            public byte[] EncodingKey = new byte[261];
+            List<byte> result = new List<byte>();
 
-            public long Offset;
+            _encxkey.Initialize();
+            _validate.Initialize();
 
-            public long Start;
+            byte[] secretServerKey = Encoding.ASCII.GetBytes(GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.AlphaNumeric));
+
+            Array.Copy(clientvalidate, 0, _validate, 0, 8);
+
+            Funcx(secretkey, secretServerKey); // challenge computation
+
+            result.Add(2 ^ 0xEC); // data length
+
+            result.AddRange(BitConverter.GetBytes(backendflag));
+
+            result.Add((byte)(secretServerKey.Length ^ 0xEA)); // secret server key length
+            result.AddRange(secretServerKey);
+
+            // Start of encrypted data
+            _offset = 0;
+            byte[] encData = Encode(data);
+            result.AddRange(encData);
+
+            return result;
         }
 
-        public static byte[] Encode(byte[] key, byte[] gameName, byte[] data, long size)
+        public List<byte> DecryptData(byte[] secretkey, string gamename, ref byte[] data)
         {
-            byte[] numArray = new byte[size + 23];
-            byte[] numArray1 = new byte[23];
-            if (key == null || gameName == null || data == null || size < 0)
+            List<byte> result = new List<byte>();
+
+            _encxkey.Initialize();
+            _validate.Initialize();
+
+            int a, b;
+
+            if (data.Length < 1)
+                return result;
+
+            a = (data[0] ^ 0xec) + 2;
+
+            if (data.Length < a)
+                return result;
+
+            b = data[a - 1] ^ 0xea;
+            if (data.Length < (a + b))
+                return result;
+
+            byte[] dataToFunc = new byte[b];
+            Array.Copy(data, a, dataToFunc, 0, b);
+
+            for (int i = 0; i < 8; i++)
             {
-                return null;
+                if ((i + 1) > gamename.Length)
+                    _validate[i] = 0;
+                else
+                    _validate[i] = (byte)gamename[i];
             }
-            int length = key.Length;
-            int num = gameName.Length;
-            int num1 = (new System.Random()).Next();
-            for (int i = 0; i < numArray1.Length; i++)
-            {
-                num1 = num1 * 214013 + 2531011;
-                numArray1[i] = (byte)((num1 ^ key[i % length] ^ gameName[i % num]) % 256);
-            }
-            numArray1[0] = 235;
-            numArray1[1] = 0;
-            numArray1[2] = 0;
-            numArray1[8] = 228;
-            for (long j = size - 1; j >= 0; j = j - 1)
-            {
-                numArray[numArray1.Length + j] = data[j];
-            }
-            Array.Copy(numArray1, numArray, numArray1.Length);
-            size = size + numArray1.Length;
-            byte[] numArray2 = Two(key, gameName, numArray, size, null);
-            byte[] numArray3 = new byte[numArray2.Length + numArray1.Length];
-            Array.Copy(numArray1, 0, numArray3, 0, numArray1.Length);
-            Array.Copy(numArray2, 0, numArray3, numArray1.Length, numArray2.Length);
-            return numArray3;
+
+            Funcx(secretkey, dataToFunc); // challenge computation
+            a += b;
+
+            _offset = a;
+
+            result.AddRange(Decode(data));
+            return result;
         }
 
-        private static byte[] Two(byte[] u0002, byte[] u0003, byte[] gameName, long u0008, GSEncodingData u0006)
+        private int Func5(int cnt, byte[] id, ref int n1, ref int n2)
         {
-            byte[] numArray;
-            byte[] numArray1 = new byte[261];
-            numArray = (u0006 != null ? u0006.EncodingKey : numArray1);
-            if (u0006 == null || u0006.Start == 0)
-            {
-                gameName = Three(ref numArray, ref u0002, u0003, ref gameName, ref u0008, ref u0006);
-                if (gameName == null)
-                {
-                    return null;
-                }
-            }
-            if (u0006 == null)
-            {
-                Four(ref numArray, ref gameName, u0008);
-                return gameName;
-            }
-            if (u0006.Start == 0)
-            {
-                return null;
-            }
-            byte[] numArray2 = new byte[u0008 - u0006.Offset];
-            Array.ConstrainedCopy(gameName, (int)u0006.Offset, numArray2, 0, (int)(u0008 - u0006.Offset));
-            long num = Four(ref numArray, ref numArray2, u0008 - u0006.Offset);
-            Array.ConstrainedCopy(numArray2, 0, gameName, (int)u0006.Offset, (int)(u0008 - u0006.Offset));
-            GSEncodingData offset = u0006;
-            offset.Offset = offset.Offset + num;
-            byte[] numArray3 = new byte[u0008 - u0006.Start];
-            Array.ConstrainedCopy(gameName, (int)u0006.Start, numArray3, 0, (int)(u0008 - u0006.Start));
-            return numArray3;
-        }
+            int i, tmp, mask = 1;
 
-        private static byte[] Three(ref byte[] u0002, ref byte[] u0003, byte[] gameName, ref byte[] u0008, ref long u0006, ref GSEncodingData u000e)
-        {
-            long num = (long)((u0008[0] ^ 236) + 2);
-            byte[] numArray = new byte[8];
-            if (u0006 < (long)1)
-            {
-                return null;
-            }
-            if (u0006 < num)
-            {
-                return null;
-            }
-            long num1 = (long)(u0008[num - 1] ^ 234);
-            if (u0006 < num + num1)
-            {
-                return null;
-            }
-            Array.Copy(gameName, numArray, gameName.Length);
-            byte[] numArray1 = new byte[u0006 - num];
-            Array.ConstrainedCopy(u0008, (int)num, numArray1, 0, (int)(u0006 - num));
-            Six(ref u0002, ref u0003, ref numArray, numArray1, num1);
-            Array.ConstrainedCopy(numArray1, 0, u0008, (int)num, (int)(u0006 - num));
-            num = num + num1;
-            if (u000e != null)
-            {
-                u000e.Offset = num;
-                u000e.Start = num;
-            }
-            else
-            {
-                byte[] numArray2 = new byte[u0006 - num];
-                Array.ConstrainedCopy(u0008, (int)num, numArray2, 0, (int)(u0006 - num));
-                u0008 = numArray2;
-                u0006 = u0006 - num;
-            }
-            return u0008;
-        }
-
-        private static long Four(ref byte[] u0002, ref byte[] u0003, long u0005)
-        {
-            for (long i = 0; i < u0005; i = i + 1)
-            {
-                u0003[i] = Five(ref u0002, u0003[i]);
-            }
-            return u0005;
-        }
-
-        private static byte Five(ref byte[] u0002, byte u0003)
-        {
-            int num = u0002[256];
-            int num1 = u0002[257];
-            int num2 = u0002[num];
-            u0002[256] = (byte)((num + 1) % 256);
-            u0002[257] = (byte)((num1 + num2) % 256);
-            num = u0002[260];
-            num1 = u0002[257];
-            num1 = u0002[num1];
-            num2 = u0002[num];
-            u0002[num] = (byte)num1;
-            num = u0002[259];
-            num1 = u0002[257];
-            num = u0002[num];
-            u0002[num1] = (byte)num;
-            num = u0002[256];
-            num1 = u0002[259];
-            num = u0002[num];
-            u0002[num1] = (byte)num;
-            num = u0002[256];
-            u0002[num] = (byte)num2;
-            num1 = u0002[258];
-            num = u0002[num2];
-            num2 = u0002[259];
-            num1 = (num1 + num) % 256;
-            u0002[258] = (byte)num1;
-            num = num1;
-            num2 = u0002[num2];
-            num1 = u0002[257];
-            num1 = u0002[num1];
-            num = u0002[num];
-            num2 = (num2 + num1) % 256;
-            num1 = u0002[260];
-            num1 = u0002[num1];
-            num2 = (num2 + num1) % 256;
-            num1 = u0002[num2];
-            num2 = u0002[256];
-            num2 = u0002[num2];
-            num = (num + num2) % 256;
-            num2 = u0002[num1];
-            num1 = u0002[num];
-            num2 = (num2 ^ num1 ^ u0003) % 256;
-            u0002[260] = (byte)num2;
-            u0002[259] = u0003;
-            return (byte)num2;
-        }
-
-        // 78
-        private static void Six(ref byte[] u0002, ref byte[] u0003, ref byte[] u0005, byte[] u0008, long u0006)
-        {
-            long length = (long)u0003.Length;
-            for (long i = 0; i <= u0006 - 1; i = i + 1)
-            {
-                u0005[u0003[i % length] * i & 7] = (byte)(u0005[u0003[i % length] * i & 7] ^ u0005[i & 7] ^ u0008[i]);
-            }
-            long num = 8;
-            Seven(ref u0002, ref u0005, ref num);
-        }
-
-        // 89
-        private static void Seven(ref byte[] u0002, ref byte[] u0003, ref long u0005)
-        {
-            long i;
-            long num = 0;
-            long num1 = 0;
-            if (u0005 < 1)
-            {
-                return;
-            }
-            for (i = 0; i <= 255; i = i + 1)
-            {
-                u0002[i] = (byte)i;
-            }
-            for (i = 255; i >= 0; i = i - 1)
-            {
-                byte num2 = (byte)Eight(u0002, i, u0003, u0005, ref num, ref num1);
-                byte num3 = u0002[i];
-                u0002[i] = u0002[num2];
-                u0002[num2] = num3;
-            }
-            u0002[256] = u0002[1];
-            u0002[257] = u0002[3];
-            u0002[258] = u0002[5];
-            u0002[259] = u0002[7];
-            u0002[260] = u0002[num & 255];
-        }
-
-        // 116
-        private static long Eight(byte[] u0002, long u0003, byte[] u0005, long u0008, ref long u0006, ref long u000e)
-        {
-            long num;
-            long num1 = (long)0;
-            long num2 = (long)1;
-            if (u0003 == (long)0)
-            {
+            if (cnt == 0)
                 return 0;
-            }
-            if (u0003 > 1)
+
+            if (cnt > 1)
             {
                 do
                 {
-                    num2 = (num2 << 1) + 1;
-                }
-                while (num2 < u0003);
+                    mask = (mask << 1) + 1;
+                } while (mask < cnt);
             }
+
+            i = 0;
             do
             {
-                u0006 = (long)(u0002[u0006 & 255] + u0005[u000e]);
-                u000e = u000e + (long)1;
-                if (u000e >= u0008)
+                n1 = _encxkey[n1 & 0xff] + id[n2];
+                n2++;
+                if (n2 >= id.Length)
                 {
-                    u000e = 0;
-                    u0006 = u0006 + u0008;
+                    n2 = 0;
+                    n1 += id.Length;
                 }
-                num1 = num1 + 1;
-                num = (num1 <= 11 ? u0006 & num2 : u0006 & num2 % u0003);
-            }
-            while (num > u0003);
-            return num;
+                tmp = n1 & mask;
+                if (++i > 11) tmp %= cnt;
+            } while (tmp > cnt);
+
+            return tmp;
         }
 
-        /// <summary>
-        /// Encrypts / Descrypts the CDKey Query String
-        /// </summary>
-        /// <param name="s"></param>
-        /// <returns></returns>
-        public static string XOR(string s)
+        private void Func4(byte[] id)
         {
-            const string gamespy = "gamespy";
-            int length = s.Length;
-            char[] data = s.ToCharArray();
-            int index = 0;
+            int i, n1 = 0, n2 = 0;
+            byte t1, t2;
 
-            for (int i = 0; length > 0; length--)
+            if (id.Length < 1)
+                return;
+
+            for (i = 0; i < 256; i++)
+                _encxkey[i] = (byte)i;
+
+            for (i = 255; i >= 0; i--)
             {
-                if (i >= gamespy.Length)
-                    i = 0;
-
-                data[index++] ^= gamespy[i++];
+                t1 = (byte)Func5(i, id, ref n1, ref n2);
+                t2 = _encxkey[i];
+                _encxkey[i] = _encxkey[t1];
+                _encxkey[t1] = t2;
             }
 
-            return new string(data);
+            _encxkey[256] = _encxkey[1];
+            _encxkey[257] = _encxkey[3];
+            _encxkey[258] = _encxkey[5];
+            _encxkey[259] = _encxkey[7];
+            _encxkey[260] = _encxkey[n1 & 0xff];
         }
-        public enum XorEncodingType : uint
+
+        private int Func7(byte d)
         {
-            Type0,
-            Type1,
-            Type2,
-            Type3
+            byte a, b, c;
+
+            a = _encxkey[256];
+            b = _encxkey[257];
+            c = _encxkey[a];
+            _encxkey[256] = (byte)(a + 1);
+            _encxkey[257] = (byte)(b + c);
+            a = _encxkey[260];
+            b = _encxkey[257];
+            b = _encxkey[b];
+            c = _encxkey[a];
+            _encxkey[a] = b;
+            a = _encxkey[259];
+            b = _encxkey[257];
+            a = _encxkey[a];
+            _encxkey[b] = a;
+            a = _encxkey[256];
+            b = _encxkey[259];
+            a = _encxkey[a];
+            _encxkey[b] = a;
+            a = _encxkey[256];
+            _encxkey[a] = c;
+            b = _encxkey[258];
+            a = _encxkey[c];
+            c = _encxkey[259];
+            b += a;
+            _encxkey[258] = b;
+            a = b;
+            c = _encxkey[c];
+            b = _encxkey[257];
+            b = _encxkey[b];
+            a = _encxkey[a];
+            c += b;
+            b = _encxkey[260];
+            b = _encxkey[b];
+            c += b;
+            b = _encxkey[c];
+            c = _encxkey[256];
+            c = _encxkey[c];
+            a += c;
+            c = _encxkey[b];
+            b = _encxkey[a];
+            _encxkey[260] = d;
+            c ^= (byte)(b ^ d);
+            _encxkey[259] = c;
+            return c;
         }
-        /// <summary>
-        /// simple xor encoding for Gstats,GPSP,GPCM
-        /// </summary>
-        /// <param name="plaintext"></param>
-        /// <param name ="enc0">default encryption string used in GPSP,GPCM</param>
-        /// <param name ="enc1">used in GStats</param>
-        /// <param name ="enc2">used in GStats</param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static string XorEncoding(string plaintext, XorEncodingType type)
+
+        private int Func7e(byte d)
         {
-            string enc0 = "gamespy";
-            string enc1 = "GameSpy3D";// '\0','a','m','e','S','p','y','3','D','\0'
-            string enc2 = "Industries";// { '\0', 'n', 'd', 'u', 's', 't', 'r', 'i', 'e', 's', '\0' }
-            string enc3 = "ProjectAphex";// { '\0','r','o','j','e','c','t','A','p','h','e','x','\0'}
-            //string statsfile = "gstats.dat";
+            byte a, b, c;
 
-            int length = plaintext.Length;
-            char[] data = plaintext.ToCharArray();
-            int index = 0;
-            string temp;
-            switch (type)
-            {
-                case XorEncodingType.Type0:
-                    temp = enc0;
-                    break;
-                case XorEncodingType.Type1:
-                    temp = enc1;
-                    break;
-                case XorEncodingType.Type2:
-                    temp = enc2;
-                    break;
-                case XorEncodingType.Type3:
-                    temp = enc3;
-                    break;
-                default:
-                    temp = enc0;
-                    break;
-            }
-
-            for (int i = 0; length > 0; length--)
-            {
-                if (i >= temp.Length)
-                    i = 0;
-
-                data[index++] ^= temp[i++];
-            }
-
-            return new string(data);
+            a = _encxkey[256];
+            b = _encxkey[257];
+            c = _encxkey[a];
+            _encxkey[256] = (byte)(a + 1);
+            _encxkey[257] = (byte)(b + c);
+            a = _encxkey[260];
+            b = _encxkey[257];
+            b = _encxkey[b];
+            c = _encxkey[a];
+            _encxkey[a] = b;
+            a = _encxkey[259];
+            b = _encxkey[257];
+            a = _encxkey[a];
+            _encxkey[b] = a;
+            a = _encxkey[256];
+            b = _encxkey[259];
+            a = _encxkey[a];
+            _encxkey[b] = a;
+            a = _encxkey[256];
+            _encxkey[a] = c;
+            b = _encxkey[258];
+            a = _encxkey[c];
+            c = _encxkey[259];
+            b += a;
+            _encxkey[258] = b;
+            a = b;
+            c = _encxkey[c];
+            b = _encxkey[257];
+            b = _encxkey[b];
+            a = _encxkey[a];
+            c += b;
+            b = _encxkey[260];
+            b = _encxkey[b];
+            c += b;
+            b = _encxkey[c];
+            c = _encxkey[256];
+            c = _encxkey[c];
+            a += c;
+            c = _encxkey[b];
+            b = _encxkey[a];
+            c ^= (byte)(b ^ d);
+            _encxkey[260] = c;   // encrypt
+            _encxkey[259] = d;   // encrypt
+            return c;
         }
-        /// <summary>
-        /// simple xor encoding for Gstats
-        /// </summary>
-        /// <param name="plaintext"></param>
-        /// <param name="enctype"></param>
-        /// <returns></returns>
-        public static string XorEncoding(byte[] plainByte, int enctype)
+
+        private int Func6(ref byte[] data)
         {
-            string plaintext = Encoding.UTF8.GetString(plainByte);
-            string enc0 = "gamespy";
-            string enc1 = "GameSpy3D";// '\0','a','m','e','S','p','y','3','D','\0'
-            string enc2 = "Industries";// { '\0', 'n', 'd', 'u', 's', 't', 'r', 'i', 'e', 's', '\0' }
-            string enc3 = "ProjectAphex";// { '\0','r','o','j','e','c','t','A','p','h','e','x','\0'}
-            //string statsfile = "gstats.dat";
-
-            int length = plaintext.Length;
-            char[] data = plaintext.ToCharArray();
-            int index = 0;
-            string temp;
-            if (enctype == 0)
+            for (int i = 0; i < data.Length; i++)
             {
-                temp = enc0;
+                data[i] = (byte)Func7(data[i]);
             }
-            else if (enctype == 1)
-            {
-                temp = enc1;
-            }
-            else if (enctype == 2)
-            {
-                temp = enc2;
-            }
-            else
-            {
-                temp = enc3;
-            }
-
-            for (int i = 0; length > 0; length--)
-            {
-                if (i >= temp.Length)
-                    i = 0;
-
-                data[index++] ^= temp[i++];
-            }
-
-            return new string(data);
+            return data.Length;
         }
 
+        private int Func6e(ref byte[] data)
+        {
+            for (int i = 0; i < data.Length; i++)
+            {
+                data[i] = (byte)Func7e(data[i]);
+            }
+
+            return data.Length;
+        }
+
+        private void Funcx(byte[] secretkey, byte[] key)
+        {
+            int seckeylen = secretkey.Length;
+
+            for (int i = 0; i < key.Length; i++)
+            {
+                _validate[(secretkey[i % seckeylen] * i) & 7] ^= (byte)(_validate[i & 7] ^ key[i]);
+            }
+
+            Func4(_validate);
+        }
+
+        private byte[] Decode(byte[] data)
+        {
+            int dataToDecryptSize = data.Length - _offset;
+            byte[] dataToDecrypt = new byte[dataToDecryptSize];
+            Array.Copy(data, _offset, dataToDecrypt, 0, dataToDecryptSize);
+
+            _offset += Func6(ref dataToDecrypt);
+
+            return dataToDecrypt;
+        }
+
+        private byte[] Encode(byte[] data)
+        {
+            int dataToEncryptSize = data.Length - _offset;
+            byte[] dataToEncrypt = new byte[dataToEncryptSize];
+            Array.Copy(data, _offset, dataToEncrypt, 0, dataToEncryptSize);
+
+            _offset += Func6e(ref dataToEncrypt);
+
+            return dataToEncrypt;
+        }
+
+        public static int GetMasterServerNumber(string gamename)
+        {
+            int c, server_num = 0;
+
+            if (gamename.Length < 1)
+                return 0;
+
+            for (int i = 0; i < gamename.Length; i++)
+            {
+                c = char.ToLower(gamename[i]);
+                server_num = c - (server_num * 0x63306ce7);
+            }
+            server_num %= 20;
+
+            return server_num;
+        }
     }
 }

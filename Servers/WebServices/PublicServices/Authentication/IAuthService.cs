@@ -5,7 +5,8 @@ namespace PublicServices.Authentication
     public interface IAuthService
     {
         [OperationContract]
-        string Test(string s);
+        string LoginUniqueNick(string s);
+
         [OperationContract]
         void XmlMethod(System.Xml.Linq.XElement xml);
         [OperationContract]

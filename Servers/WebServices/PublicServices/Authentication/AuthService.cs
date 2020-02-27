@@ -4,7 +4,7 @@ namespace PublicServices.Authentication
 {
     public class AuthService : IAuthService
     {
-        public string Test(string s)
+        public string LoginUniqueNick(string s)
         {
             Console.WriteLine("Test Method Executed!");
             return s;

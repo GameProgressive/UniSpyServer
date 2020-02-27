@@ -9,15 +9,14 @@ namespace ServerBrowser.Handler.CommandHandler
 {
     public class ServerListHandler
     {
-
-        public ServerListHandler(SBSession session, byte[] recv)
+        public ServerListHandler(SBSession session, string recv)
         {
             Handle(session, recv);
         }
 
-        public void Handle(SBSession session, byte[] recv)
+        public void Handle(SBSession session, string request)
         {
-            string request = Encoding.ASCII.GetString(recv);
+
             string[] parts = request.Split(new string[] { "\x00\x00" }, StringSplitOptions.RemoveEmptyEntries);
             //we have to check the request Header
             string requestHeader = request.Substring(0, 9);
@@ -29,14 +28,14 @@ namespace ServerBrowser.Handler.CommandHandler
             string gameName = restData[1];
             string filter;
             if (restData.Length == 3)
-            { filter = restData[2]; }
-
+            { filter= restData[2]; }
+            
             string[] dataFields = gameInfo[1].Split('\\', StringSplitOptions.RemoveEmptyEntries);
 
 
             byte[] remoteIP = ((IPEndPoint)session.Remote).Address.GetAddressBytes();
             //TODO we have to make sure the port number
-            byte[] remotePort = BitConverter.GetBytes(((IPEndPoint)session.Remote).Port);
+            byte[] remotePort = BitConverter.GetBytes( (ushort)(((IPEndPoint)session.Remote).Port & 0xFFFF) );
 
 
             List<byte> data = new List<byte>();
@@ -51,7 +50,7 @@ namespace ServerBrowser.Handler.CommandHandler
             }
 
             var onlineServers = QueryReport.Server.QRServer.GameServerList.
-                Where(c => c.Value.ServerInfo.Data["gamename"] == gameName);
+                Where(c => c.Value.ServerInfo.Data["gamename"]== gameName);
             foreach (var server in onlineServers)
             {
                 byte[] portBytes = Encoding.ASCII.GetBytes(server.Value.ServerInfo.Data["hostport"]);
@@ -75,11 +74,8 @@ namespace ServerBrowser.Handler.CommandHandler
             data.AddRange(new byte[] { 0, 255, 255, 255, 255 });
             byte[] sendingbuffer = data.ToArray();
             string secretkey = "HA6zkS";
-            byte[] encBuffer =
-                Enctypex.Encode(Encoding.ASCII.GetBytes(secretkey),
-                Encoding.ASCII.GetBytes(gameName), sendingbuffer,
-                sendingbuffer.Length);
-            session.SendAsync(encBuffer);
+
+            session.SendAsync(new EnctypeX().EncryptData(Encoding.ASCII.GetBytes(secretkey), gameName, sendingbuffer, 0).ToArray());
         }
     }
 }
