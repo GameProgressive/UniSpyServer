@@ -28,9 +28,9 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
 
-            int playerPos = dataPartition.IndexOf("player_\0");
+            int playerPos = dataPartition.IndexOf("player_",System.StringComparison.Ordinal);
 
-            int teamPos = dataPartition.IndexOf("team_t\0");
+            int teamPos = dataPartition.IndexOf("team_t\0", System.StringComparison.Ordinal);
 
             if (playerPos != -1 && teamPos != -1)
             {
