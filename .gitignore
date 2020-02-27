@@ -334,6 +334,7 @@ RetroSpyServer.xml
 
 # linq2db
 .tools/
+db/
 
 # Prerequisites
 *.d

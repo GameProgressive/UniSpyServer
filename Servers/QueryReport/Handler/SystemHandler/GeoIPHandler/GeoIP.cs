@@ -19,7 +19,7 @@ namespace QueryReport.DatabaseQuery
             try
             {
                 // Dont attempt to create, just quit
-                string file = Path.Combine("Common files", "GeoLite2-Country.mmdb");
+                string file = Path.Combine("Resource", "GeoLite2-Country.mmdb");
                 if (!File.Exists(file))
                     LogWriter.Log.Write("[GeoIP] GeoLite2-Country.mmdb file is missing!", LogLevel.Fatal);
 
