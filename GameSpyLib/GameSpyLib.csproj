@@ -12,9 +12,6 @@
     <PackageReference Include="NetCoreServer" Version="3.0.4" />
   </ItemGroup>
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update="Database\DatabaseModel\MySqlModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>MySqlModel.generated.cs</LastGenOutput>

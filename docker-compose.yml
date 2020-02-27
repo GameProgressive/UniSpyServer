@@ -1,0 +1,74 @@
+version: '3.7'
+services:
+  cdkey:
+    build:
+      context: .
+      dockerfile: ./Servers/CDKey/Dockerfile
+    image: gameprogressive/cdkey
+    ports:
+    - "29910:29910"
+
+  chat:
+    build:
+      context: .
+      dockerfile: ./Servers/Chat/Dockerfile
+    image: gameprogressive/chat
+    ports:
+    - "6667:6667"
+
+  natneg:
+    build:
+      context: .
+      dockerfile: ./Servers/NATNegotiation/Dockerfile
+    image: gameprogressive/natneg
+    ports:
+    - "27901:27901"
+
+  gpcm:
+    build:
+      context: .
+      dockerfile: ./Servers/PresenceConnectionManager/Dockerfile
+    image: gameprogressive/gpcm
+    ports:
+    - "29900:29900"
+
+  gpsp:
+    build:
+      context: .
+      dockerfile: ./Servers/PresenceSearchPlayer/Dockerfile
+    image: gameprogressive/gpsp
+    ports:
+    - "29901:29901"
+
+  qr:
+    build:
+      context: .
+      dockerfile: ./Servers/QueryReport/Dockerfile
+    image: gameprogressive/qr
+    ports:
+    - "27900:27900"
+
+  sb:
+    build:
+      context: .
+      dockerfile: ./Servers/ServerBrowser/Dockerfile
+    image: gameprogressive/sb
+    ports:
+    - "28910:28910"
+
+  gstats:
+    build:
+      context: .
+      dockerfile: ./Servers/StatsAndTracking/Dockerfile
+    image: gameprogressive/gstats
+    ports:
+    - "29920:29920"
+
+  ws:
+    build:
+      context: .
+      dockerfile: ./Servers/WebServices/Dockerfile
+    image: gameprogressive/ws
+    ports:
+    - "80:80"
+    - "443:443"

@@ -6,6 +6,8 @@
     <StartupObject></StartupObject>
     <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
     <NoWin32Manifest>true</NoWin32Manifest>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -35,10 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Entity\Interface\" />
     <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Revoke\" />
     <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Auth\" />
@@ -60,5 +58,8 @@
     <Compile Include="Handler\CommandHandler\Profile\RegisterNick\RegisterNickHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\UpdatePro\UpdateProHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\UpdateUI\UpdateUiHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
 </Project>
