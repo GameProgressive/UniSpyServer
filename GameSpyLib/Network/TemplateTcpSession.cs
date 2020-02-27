@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GameSpyLib.Network
 {
@@ -47,8 +48,9 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
+            string t = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, t);
 
             bool returnValue = base.SendAsync(buffer, offset, size);
 
@@ -87,8 +89,9 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
+            string t = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, t);
 
             long returnValue = base.Send(buffer, offset, size);
 
@@ -101,7 +104,7 @@ namespace GameSpyLib.Network
         /// Our method to receive message and print in the console
         /// </summary>
         /// <param name="recv">message we recieved</param>
-        protected virtual void OnReceived(string message){ }
+        protected virtual void OnReceived(string message) { }
 
         protected virtual void OnReceived(byte[] buffer)
         {
@@ -124,8 +127,12 @@ namespace GameSpyLib.Network
                 ToLog("[Spam] client spam we ignored!");
                 return;
             }
+            string t = Regex.Replace(Encoding.ASCII.GetString(buffer, 0, (int)size), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, Encoding.ASCII.GetString(buffer, 0, (int)size));
+                LogWriter.Log.Write(
+                    LogLevel.Debug,
+                    "{0}[Recv] TCP data: {1}",
+                    ServerName, t);
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);

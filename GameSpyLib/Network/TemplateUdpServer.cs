@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace GameSpyLib.Network
 {
@@ -70,8 +71,9 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
+            string t = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] UDP data: {1}", ServerName, t);
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
@@ -92,8 +94,9 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
+            string t = Regex.Replace(Encoding.UTF8.GetString(buffer), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] UDP data: {1}", ServerName, t);
 
             return base.Send(endpoint, buffer, offset, size);
         }
@@ -131,8 +134,9 @@ namespace GameSpyLib.Network
             }
             byte[] temp = new byte[(int)size];
             Array.Copy(buffer, 0, temp, 0, (int)size);
+            string t = Regex.Replace(Encoding.ASCII.GetString(buffer, 0, (int)size), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] UDP data: {1}", ServerName, Encoding.UTF8.GetString(buffer, 0, (int)size));
+                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] UDP data: {1}", ServerName, t);
             //even if we did not response we keep receive message
             ReceiveAsync();
 
@@ -151,7 +155,7 @@ namespace GameSpyLib.Network
 
         public virtual void UnknownDataRecived(byte[] text)
         {
-            string buffer = Encoding.UTF8.GetString(text, 0, text.Length);
+            string buffer = Encoding.ASCII.GetString(text, 0, text.Length);
             string errorMsg = string.Format("[unknow] {0}", buffer);
             ToLog(errorMsg);
         }
