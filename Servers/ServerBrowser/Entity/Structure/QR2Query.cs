@@ -42,10 +42,24 @@ namespace ServerBrowser.Entity.Structure
             get
             { return Encoding.ASCII.GetBytes(_queryForGameName); }
         }
+
         public byte[] QueryFromGameName
         {
             get
-            { return Encoding.ASCII.GetBytes(_queryFromGameName); }
+            {
+                byte[] buffer= Encoding.ASCII.GetBytes(_queryFromGameName);
+                byte[] name = new byte[8];
+
+                if (buffer.Length < 8)
+                {
+                    buffer.CopyTo(name, 0);
+                }
+                else
+                {
+                    Array.Copy(buffer, name, 8);
+                }
+                return name;
+            }
         }
         public byte[] Challenge
         {

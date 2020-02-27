@@ -4,9 +4,9 @@ namespace QueryReport.Entity.Structure.ReportData
 {
     public class TeamInfo
     {
-        public List<Dictionary<string, string>> Data = new List<Dictionary<string, string>>();
+        public Dictionary<string, string> Data = new Dictionary<string, string>();
 
-        public void UpdatePlayerInfo(string teamData)
+        public void Update(string teamData)
         {
             Data.Clear();
             int teamCount = System.Convert.ToInt32(teamData[0]);
@@ -20,9 +20,9 @@ namespace QueryReport.Entity.Structure.ReportData
                 Dictionary<string, string> temp = new Dictionary<string, string>();
                 for (int j = 0; j < keys.Length; j++)
                 {
-                    temp.Add(keys[j], values[i * keys.Length + j]);
+                    Data.Add(keys[j], values[i * keys.Length + j]);
                 }
-                Data.Add(temp);
+
             }
         }
     }

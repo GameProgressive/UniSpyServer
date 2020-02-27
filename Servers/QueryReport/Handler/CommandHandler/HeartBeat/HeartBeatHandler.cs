@@ -28,22 +28,23 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
 
-            int playerPos = dataPartition.IndexOf("player_");
-            int teamPos = dataPartition.IndexOf("team_t");
+            int playerPos = dataPartition.IndexOf("player_\0");
+
+            int teamPos = dataPartition.IndexOf("team_t\0");
 
             if (playerPos != -1 && teamPos != -1)
             {
                 //normal heart beat
-                serverData = dataPartition.Substring(0, playerPos - 4);
-                _gameServer.ServerInfo.UpdateServerInfo(serverData);
-
                 int playerLenth = teamPos - playerPos;
-                playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
-                _gameServer.PlayerInfo.UpdatePlayerInfo(playerData);
-
                 int teamLength = dataPartition.Length - teamPos;
+
+                serverData = dataPartition.Substring(0, playerPos - 4);
+                playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
                 teamData = dataPartition.Substring(teamPos - 1, teamLength);
-                _gameServer.TeamInfo.UpdatePlayerInfo(teamData);
+
+                _gameServer.ServerInfo.Update(serverData);
+                _gameServer.PlayerInfo.Update(playerData);
+                _gameServer.TeamInfo.Update(teamData);
             }
             else
             {
