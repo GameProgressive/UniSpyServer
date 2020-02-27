@@ -34,6 +34,7 @@ namespace GameSpyLib.Network
             LogWriter.Log.Write(LogLevel.Error, "{0} Error: {1}", ServerName, Enum.GetName(typeof(SocketError), error));
         }
 
+
         /// <summary>
         /// Send data to the client (asynchronous)
         /// </summary>
@@ -100,8 +101,7 @@ namespace GameSpyLib.Network
         /// Our method to receive message and print in the console
         /// </summary>
         /// <param name="recv">message we recieved</param>
-        protected virtual void OnReceived(string message)
-        { }
+        protected virtual void OnReceived(string message){ }
 
         protected virtual void OnReceived(byte[] buffer)
         {

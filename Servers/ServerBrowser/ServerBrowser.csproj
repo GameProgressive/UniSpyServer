@@ -32,4 +32,8 @@
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entity\Enumerator\" />
+    <Folder Include="Handler\CommandHandler\ServerListHandler\" />
+  </ItemGroup>
 </Project>
