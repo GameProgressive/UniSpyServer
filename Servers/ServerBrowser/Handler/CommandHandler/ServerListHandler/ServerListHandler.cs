@@ -60,8 +60,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
             data.AddRange(new byte[] { 0, 255, 255, 255, 255 });
             byte[] sendingbuffer = data.ToArray();
             string secretkey = "HA6zkS";
-
-            session.SendAsync(new EnctypeX().EncryptData(Encoding.ASCII.GetBytes(secretkey), query.QueryFromGameName, sendingbuffer, 0).ToArray());
+            byte[] _8byteGameName = new byte[8];
+            if (query.QueryFromGameName.Length < 9)
+            {
+                query.QueryFromGameName.CopyTo(_8byteGameName, 0);
+            }
+            byte[] _sendingBuffer = new EnctypeX().EncryptData(Encoding.ASCII.GetBytes(secretkey), _8byteGameName, sendingbuffer, 0).ToArray();
+            session.SendAsync(_sendingBuffer) ;
         }
     }
 }
