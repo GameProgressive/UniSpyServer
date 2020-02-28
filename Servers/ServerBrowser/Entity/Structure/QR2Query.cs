@@ -47,18 +47,7 @@ namespace ServerBrowser.Entity.Structure
         {
             get
             {
-                byte[] buffer= Encoding.ASCII.GetBytes(_queryFromGameName);
-                byte[] name = new byte[8];
-
-                if (buffer.Length < 8)
-                {
-                    buffer.CopyTo(name, 0);
-                }
-                else
-                {
-                    Array.Copy(buffer, name, 8);
-                }
-                return name;
+                return  Encoding.ASCII.GetBytes(_queryFromGameName);
             }
         }
         public byte[] Challenge

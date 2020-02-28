@@ -23,7 +23,6 @@ namespace QueryReport.Entity.Structure.ReportData
                 }
                 Data.Add(temp);
             }
-
         }
     }
 }

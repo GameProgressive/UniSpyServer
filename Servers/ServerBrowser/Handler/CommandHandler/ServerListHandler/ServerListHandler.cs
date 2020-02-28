@@ -19,8 +19,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
         {
             QR2Query query = new QR2Query(recv);
 
-           
-
             byte[] remoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
             //TODO we have to make sure the port number
             byte[] remotePort = BitConverter.GetBytes( (ushort)(((IPEndPoint)session.Socket.RemoteEndPoint).Port & 0xFFFF) );
@@ -37,8 +35,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 data.AddRange(new byte[] { 0, 0 });
             }
 
+            string gamename = Encoding.ASCII.GetString(query.QueryFromGameName);
             var onlineServers = QueryReport.Server.QRServer.GameServerList.
-                Where(c => c.Value.ServerInfo.Data["gamename"]== query.QueryFromGameName.ToString());
+                Where(c => c.Value.ServerInfo.Data["gamename"] == gamename);
+
             foreach (var server in onlineServers)
             {
                 byte[] portBytes = Encoding.ASCII.GetBytes(server.Value.ServerInfo.Data["hostport"]);
@@ -51,7 +51,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
 
                 for (int i = 0; i < query.DataField.Length; i++)
                 {
-                    data.AddRange(Encoding.UTF8.GetBytes("1"));
+                    string temp = server.Value.ServerInfo.Data[query.DataField[i]];
+                    data.AddRange(Encoding.ASCII.GetBytes(temp));
+
                     if (i < query.DataField.Length - 1)
                         data.AddRange(new byte[] { 0, 255 }); // Field Seperator
                 }
@@ -60,13 +62,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
             data.AddRange(new byte[] { 0, 255, 255, 255, 255 });
             byte[] sendingbuffer = data.ToArray();
             string secretkey = "HA6zkS";
-            byte[] _8byteGameName = new byte[8];
          
             byte[] _sendingBuffer = new EnctypeX()
                 .EncryptData
                 (
                     Encoding.ASCII.GetBytes(secretkey),
-                    query.QueryFromGameName,
+                    query.Challenge,
                     sendingbuffer, 0
                 ).
                 ToArray();

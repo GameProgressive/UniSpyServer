@@ -46,18 +46,18 @@ namespace GameSpyLib.Encryption
     {
         private byte[] _encxkey = new byte[261]; // Static key
         private int _offset = 0; // everything decrypted till now (total)
-        private byte[] _validate = new byte[8];
+        private byte[] _clientChallenge = new byte[8];
 
-        public List<byte> EncryptData(byte[] secretkey, byte[] clientvalidate, byte[] data, short backendflag)
+        public List<byte> EncryptData(byte[] secretkey, byte[] clientChallenge, byte[] data, short backendflag)
         {
             List<byte> result = new List<byte>();
 
             _encxkey.Initialize();
-            _validate.Initialize();
+            _clientChallenge.Initialize();
 
             byte[] secretServerKey = Encoding.ASCII.GetBytes(GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.AlphaNumeric));
 
-            Array.Copy(clientvalidate, 0, _validate, 0, 8);
+            Array.Copy(clientChallenge, 0, _clientChallenge, 0, 8);
 
             Funcx(secretkey, secretServerKey); // challenge computation
 
@@ -81,7 +81,7 @@ namespace GameSpyLib.Encryption
             List<byte> result = new List<byte>();
 
             _encxkey.Initialize();
-            _validate.Initialize();
+            _clientChallenge.Initialize();
 
             int a, b;
 
@@ -103,9 +103,9 @@ namespace GameSpyLib.Encryption
             for (int i = 0; i < 8; i++)
             {
                 if ((i + 1) > gamename.Length)
-                    _validate[i] = 0;
+                    _clientChallenge[i] = 0;
                 else
-                    _validate[i] = (byte)gamename[i];
+                    _clientChallenge[i] = (byte)gamename[i];
             }
 
             Funcx(secretkey, dataToFunc); // challenge computation
@@ -300,10 +300,10 @@ namespace GameSpyLib.Encryption
 
             for (int i = 0; i < key.Length; i++)
             {
-                _validate[(secretkey[i % seckeylen] * i) & 7] ^= (byte)(_validate[i & 7] ^ key[i]);
+                _clientChallenge[(secretkey[i % seckeylen] * i) & 7] ^= (byte)(_clientChallenge[i & 7] ^ key[i]);
             }
 
-            Func4(_validate);
+            Func4(_clientChallenge);
         }
 
         private byte[] Decode(byte[] data)
