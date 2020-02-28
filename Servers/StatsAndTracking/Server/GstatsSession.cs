@@ -13,7 +13,6 @@ namespace StatsAndTracking
         public uint ConnID;
         public GStatsSession(TemplateTcpServer server) : base(server)
         {
-            DisconnectAfterSend = false;
         }
 
         protected override void OnReceived(string message)
@@ -68,12 +67,7 @@ namespace StatsAndTracking
 
             sendingBuffer = GstatsXOR(sendingBuffer) + @"\final\";
 
-            bool returnValue = BaseSendAsync(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
-
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
+            return BaseSendAsync(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
         }
 
         /// <summary>
@@ -95,12 +89,8 @@ namespace StatsAndTracking
 
             sendingBuffer = GstatsXOR(sendingBuffer);
 
-            long returnValue = BaseSend(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
+            return BaseSend(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
 
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
         }
 
         public string GenerateServerChallenge()

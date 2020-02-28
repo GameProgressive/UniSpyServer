@@ -25,7 +25,7 @@ namespace StatsAndTracking.Handler.CommandSwitcher
                     case "getpd"://get player data
                         break;
                     default:
-                        session.UnknownDataRecived(recv);
+                        session.UnknownDataReceived(recv);
                         break;
                 }
             }

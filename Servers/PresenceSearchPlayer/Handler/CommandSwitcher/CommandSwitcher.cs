@@ -56,7 +56,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                         UniqueSearchHandler uniqueSearch = new UniqueSearchHandler(session, recv);
                         break;
                     default:
-                        session.UnknownDataRecived(command, recv);
+                        session.UnknownDataReceived(recv);
                         break;
                 }
             }

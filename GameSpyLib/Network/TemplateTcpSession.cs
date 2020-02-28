@@ -16,10 +16,6 @@ namespace GameSpyLib.Network
     public class TemplateTcpSession : TcpSession
     {
         public string ServerName;
-        /// <summary>
-        /// Some server requires that clients should disconnect after send, we use this to determine whether disconnecting clients
-        /// </summary>
-        protected bool DisconnectAfterSend = false;
         public EndPoint Remote;
         public TemplateTcpSession(TemplateTcpServer server) : base(server)
         {
@@ -35,7 +31,6 @@ namespace GameSpyLib.Network
             LogWriter.Log.Write(LogLevel.Error, "{0} Error: {1}", ServerName, Enum.GetName(typeof(SocketError), error));
         }
 
-
         /// <summary>
         /// Send data to the client (asynchronous)
         /// </summary>
@@ -48,34 +43,18 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            string t = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, t);
+                ToLog(LogLevel.Debug, $"[Send] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
-            bool returnValue = base.SendAsync(buffer, offset, size);
-
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
+            return base.SendAsync(buffer, offset, size);
         }
         protected long BaseSend(byte[] buffer, long offset, long size)
         {
-            long returnValue = base.Send(buffer, offset, size);
-
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
+            return base.Send(buffer, offset, size);
         }
         protected bool BaseSendAsync(byte[] buffer, long offset, long size)
         {
-            bool returnValue = base.SendAsync(buffer, offset, size);
-
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
+            return base.SendAsync(buffer, offset, size);
         }
         /// <summary>
         /// Send data to the client (synchronous)
@@ -89,16 +68,11 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            string t = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\t\n\r", "");
+
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, t);
+                ToLog(LogLevel.Debug, $"[Send] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
-            long returnValue = base.Send(buffer, offset, size);
-
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
+            return base.Send(buffer, offset, size);
         }
         /// <summary>
         /// Our method to receive message and print in the console
@@ -127,12 +101,9 @@ namespace GameSpyLib.Network
                 ToLog("[Spam] client spam we ignored!");
                 return;
             }
-            string t = Regex.Replace(Encoding.ASCII.GetString(buffer, 0, (int)size), @"\t\n\r", "");
+
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(
-                    LogLevel.Debug,
-                    "{0}[Recv] TCP data: {1}",
-                    ServerName, t);
+                ToLog(LogLevel.Debug, $"[Recv] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);
@@ -147,6 +118,7 @@ namespace GameSpyLib.Network
         }
         protected override void OnDisconnected()
         {
+            //We create our own RemoteEndPoint because when client disconnect, the session socket will dispose immidiatly
             ToLog($"[Disc] ID:{Id} IP:{Remote.ToString()}");
             base.OnDisconnected();
         }
@@ -161,14 +133,26 @@ namespace GameSpyLib.Network
             LogWriter.Log.Write(text, level);
         }
 
-        public virtual void UnknownDataRecived(string text, Dictionary<string, string> recv)
+        public virtual string FormatLogMessage(byte[] buffer)
         {
-            string errorMsg = string.Format("Received unknown data: {0}", text);
-            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
-            ToLog(errorMsg);
+            return FormatLogMessage(buffer, 0, buffer.Length);
+        }
+        public virtual string FormatLogMessage(byte[] buffer, int index, int size)
+        {
+            return Regex.Replace(Encoding.ASCII.GetString(buffer, 0, size), @"[\x00-\x20]", "?");
+        }   
+
+        public virtual void UnKnownDataReceived(byte[] text)
+        {
+            UnknownDataReceived(Encoding.ASCII.GetString(text));
         }
 
-        public virtual void UnknownDataRecived(Dictionary<string, string> recv)
+        public virtual void UnknownDataReceived(string text)
+        {
+            ToLog(LogLevel.Error, $"Received unknown data: {text}");
+        }
+
+        public virtual void UnknownDataReceived(Dictionary<string, string> recv)
         {
             GameSpyUtils.PrintReceivedGPDictToLogger(recv);
         }

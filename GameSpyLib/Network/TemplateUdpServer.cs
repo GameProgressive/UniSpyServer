@@ -71,9 +71,8 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            string t = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] UDP data: {1}", ServerName, t);
+                ToLog(LogLevel.Debug, $"[Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
@@ -94,9 +93,8 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            string t = Regex.Replace(Encoding.UTF8.GetString(buffer), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] UDP data: {1}", ServerName, t);
+                ToLog(LogLevel.Debug, $"[Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.Send(endpoint, buffer, offset, size);
         }
@@ -134,9 +132,8 @@ namespace GameSpyLib.Network
             }
             byte[] temp = new byte[(int)size];
             Array.Copy(buffer, 0, temp, 0, (int)size);
-            string t = Regex.Replace(Encoding.ASCII.GetString(buffer, 0, (int)size), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] UDP data: {1}", ServerName, t);
+                ToLog(LogLevel.Debug, $"[Recv] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
             ReceiveAsync();
 
@@ -159,5 +156,14 @@ namespace GameSpyLib.Network
             string errorMsg = string.Format("[unknow] {0}", buffer);
             ToLog(errorMsg);
         }
+        public virtual string FormatLogMessage(byte[] buffer)
+        {
+            return FormatLogMessage(buffer, 0, buffer.Length);
+        }
+        public virtual string FormatLogMessage(byte[] buffer, int index, int size)
+        {
+            return Regex.Replace(Encoding.ASCII.GetString(buffer, 0, size), @"[\x00-\x20]", "?");
+        }
+
     }
 }

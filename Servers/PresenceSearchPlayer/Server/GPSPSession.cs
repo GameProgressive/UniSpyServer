@@ -11,7 +11,6 @@ namespace PresenceSearchPlayer
         public uint OperationID;
         public GPSPSession(GPSPServer server) : base(server)
         {
-            DisconnectAfterSend = true;
         }
 
         protected override void OnReceived(string message)

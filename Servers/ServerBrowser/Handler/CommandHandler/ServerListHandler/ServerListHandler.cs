@@ -21,9 +21,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
 
            
 
-            byte[] remoteIP = ((IPEndPoint)session.Remote).Address.GetAddressBytes();
+            byte[] remoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
             //TODO we have to make sure the port number
-            byte[] remotePort = BitConverter.GetBytes( (ushort)(((IPEndPoint)session.Remote).Port & 0xFFFF) );
+            byte[] remotePort = BitConverter.GetBytes( (ushort)(((IPEndPoint)session.Socket.RemoteEndPoint).Port & 0xFFFF) );
 
 
             List<byte> data = new List<byte>();

@@ -67,7 +67,7 @@ namespace PresenceConnectionManager.Handler
                         NewProfileHandler newProfile = new NewProfileHandler(session, recv);
                         break;
                     default:
-                        session.UnknownDataRecived(recv);
+                        session.UnknownDataReceived(recv);
                         break;
                 }
             }
