@@ -44,7 +44,7 @@ namespace GameSpyLib.Network
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Send] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $" [Send] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.SendAsync(buffer, offset, size);
         }
@@ -70,7 +70,7 @@ namespace GameSpyLib.Network
         {
 
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Send] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $" [Send] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.Send(buffer, offset, size);
         }
@@ -103,7 +103,7 @@ namespace GameSpyLib.Network
             }
 
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Recv] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $" [Recv] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);
@@ -113,13 +113,13 @@ namespace GameSpyLib.Network
         protected override void OnConnected()
         {
             Remote = Socket.RemoteEndPoint;
-            ToLog($"[Conn] ID:{Id} IP:{Remote.ToString()}");
+            ToLog($" [Conn] ID:{Id} IP:{Remote.ToString()}");
             base.OnConnected();
         }
         protected override void OnDisconnected()
         {
             //We create our own RemoteEndPoint because when client disconnect, the session socket will dispose immidiatly
-            ToLog($"[Disc] ID:{Id} IP:{Remote.ToString()}");
+            ToLog($" [Disc] ID:{Id} IP:{Remote.ToString()}");
             base.OnDisconnected();
         }
 
@@ -149,7 +149,7 @@ namespace GameSpyLib.Network
 
         public virtual void UnknownDataReceived(string text)
         {
-            ToLog(LogLevel.Error, $"Received unknown data: {text}");
+            ToLog(LogLevel.Error, $" [Unknow]: {text}");
         }
 
         public virtual void UnknownDataReceived(Dictionary<string, string> recv)

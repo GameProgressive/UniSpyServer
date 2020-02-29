@@ -53,4 +53,10 @@ namespace ServerBrowser.Entity.Enumerator
         Construct,
         NoError
     }
+    public enum SBKeyType
+    {
+        String,
+        Byte,
+        Short
+    }
 }

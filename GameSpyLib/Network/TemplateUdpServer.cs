@@ -27,7 +27,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = '[' + serverName + ']' + ' ';
+            ServerName =$"[{serverName}]";
             Start();
         }
 
@@ -45,7 +45,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(string serverName, IPAddress address, int port) : base(address, port)
         {
-            ServerName = '[' + serverName + ']' + ' ';
+            ServerName = $"[{serverName}]";
             Start();
         }
 
@@ -72,7 +72,7 @@ namespace GameSpyLib.Network
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $" [Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
@@ -94,7 +94,7 @@ namespace GameSpyLib.Network
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $" [Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.Send(endpoint, buffer, offset, size);
         }
@@ -133,7 +133,7 @@ namespace GameSpyLib.Network
             byte[] temp = new byte[(int)size];
             Array.Copy(buffer, 0, temp, 0, (int)size);
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Recv] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $" [Recv] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
             ReceiveAsync();
 
@@ -153,7 +153,7 @@ namespace GameSpyLib.Network
         public virtual void UnknownDataRecived(byte[] text)
         {
             string buffer = Encoding.ASCII.GetString(text, 0, text.Length);
-            string errorMsg = string.Format("[unknow] {0}", buffer);
+            string errorMsg = string.Format("[Unknow] {0}", buffer);
             ToLog(errorMsg);
         }
         public virtual string FormatLogMessage(byte[] buffer)

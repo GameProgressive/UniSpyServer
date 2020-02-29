@@ -24,7 +24,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateTcpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = '[' + serverName + ']';
+            ServerName = $"[{serverName}]";
             Start();
         }
 
@@ -36,7 +36,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateTcpServer(string serverName, IPAddress address, int port) : base(address, port)
         {
-            ServerName = '[' + serverName + ']';
+            ServerName = $"[{serverName}]";
             Start();
         }
 
