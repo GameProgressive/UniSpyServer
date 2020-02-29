@@ -10,7 +10,8 @@ namespace StatsAndTracking
 {
     public class GStatsSession : TemplateTcpSession
     {
-        public uint ConnID;
+        public uint SessionKey;
+        public string Challenge { get; protected set; }
         public GStatsSession(TemplateTcpServer server) : base(server)
         {
         }
@@ -29,9 +30,8 @@ namespace StatsAndTracking
 
 
         protected override void OnConnected()
-        {
-            string challenge = GenerateServerChallenge();
-            this.SendAsync(challenge);
+        { 
+            this.SendAsync(GenerateServerChallenge());
             base.OnConnected();
         }
         protected override void OnReceived(byte[] buffer, long offset, long size)
@@ -97,11 +97,10 @@ namespace StatsAndTracking
         {
             //response total length bigger than 38bytes
             // challenge length should be bigger than 20bytes
-            string serverChallengeKey = GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.Alpha);
+            Challenge = GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.Alpha);
             //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
             //sendingBuffer = xor(sendingBuffer);
-            string sendingBuffer = string.Format(@"\challenge\{0}", serverChallengeKey);
-            return sendingBuffer;
+            return string.Format(@"\challenge\{0}", Challenge);
         }
 
         /// <summary>

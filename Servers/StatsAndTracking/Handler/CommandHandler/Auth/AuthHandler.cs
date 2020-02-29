@@ -2,19 +2,30 @@
 
 namespace StatsAndTracking.Handler.CommandHandler.Auth
 {
-    public class AuthHandler
+    public class AuthHandler : GStatsHandlerBase
     {
-        public static void SendSessionKey(GStatsSession session, Dictionary<string, string> dict)
+        GameSpyLib.Encryption.Crc16 _crc16 = new GameSpyLib.Encryption.Crc16(GameSpyLib.Encryption.Crc16Mode.Standard);
+
+        public AuthHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
+        {
+        }
+        protected override void DatabaseOperation(GStatsSession session, Dictionary<string, string> recv)
         {
             //we have to verify the challenge response from the game, the response challenge is computed as
             //len = sprintf(resp, "%d%s",g_crc32(challenge,(int)strlen(challenge)), gcd_secret_key);
             //MD5Digest((unsigned char *)resp, (unsigned int)len, md5val);
             //DOXCODE(respformat, sizeof(respformat) - 1, enc3);
             //len = sprintf(resp, respformat, gcd_gamename, md5val, gameport);
-            session.ConnID = 123456;
-            string sendingBuffer = string.Format(@"\sesskey\{0}", session.ConnID);
 
-            session.SendAsync(sendingBuffer);
+            // for now we do not check this
+            session.SessionKey = (uint)new System.Random().Next(0, 2147483647);
+
         }
+        protected override void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
+        {
+            _sendingBuffer = string.Format(@"\sesskey\{0}", session.SessionKey);
+        }
+
+     
     }
 }
