@@ -42,9 +42,9 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
                 teamData = dataPartition.Substring(teamPos - 1, teamLength);
 
-                _gameServer.ServerInfo.Update(serverData);
-                _gameServer.PlayerInfo.Update(playerData);
-                _gameServer.TeamInfo.Update(teamData);
+                _gameServer.ServerKeyValue.Update(serverData);
+                _gameServer.PlayerKeyValue.Update(playerData);
+                _gameServer.TeamKeyValue.Update(teamData);
             }
             else
             {
@@ -58,6 +58,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         {
             ChallengePacket challenge = new ChallengePacket(endPoint, recv);
             _sendingBuffer = challenge.GenerateResponse();
+
         }
     }
 }

@@ -2,6 +2,7 @@
 using GameSpyLib.Network;
 using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Handler.SystemHandler.ClientChecker;
 using System;
 using System.Collections.Concurrent;
 using System.Net;
@@ -11,13 +12,11 @@ namespace NatNegotiation
     public class NatNegServer : TemplateUdpServer
     {
         public static ConcurrentDictionary<EndPoint, ClientInfo> ClientList = new ConcurrentDictionary<EndPoint, ClientInfo>();
-        private System.Timers.Timer _CheckTimer = new System.Timers.Timer { Enabled = true, Interval = 10000, AutoReset = true };
-
+        private ClientListChecker _checker = new ClientListChecker();
 
         public NatNegServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
-            _CheckTimer.Start();
-            _CheckTimer.Elapsed += CheckClientTimeOut;
+            _checker.StartCheck(this);
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)

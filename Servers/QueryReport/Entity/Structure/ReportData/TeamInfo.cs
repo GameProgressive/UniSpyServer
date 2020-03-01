@@ -2,7 +2,7 @@
 
 namespace QueryReport.Entity.Structure.ReportData
 {
-    public class TeamInfo
+    public class TeamKey
     {
         public List<Dictionary<string, string>> Data = new List<Dictionary<string, string>>();
 

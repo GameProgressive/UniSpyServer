@@ -43,7 +43,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
 
             string gamename = Encoding.ASCII.GetString(query.QueryFromGameName);
             var onlineServers = QueryReport.Server.QRServer.GameServerList.
-                Where(c => c.Value.ServerInfo.Data["gamename"] == gamename);
+                Where(c => c.Value.ServerKeyValue.Data["gamename"] == gamename);
 
             //we add the number of values
             data.Add(Convert.ToByte(onlineServers.Count() * query.DataField.Length));
@@ -52,7 +52,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
             {
                 for (int i = 0; i < query.DataField.Length; i++)
                 {
-                    string temp = server.Value.ServerInfo.Data[query.DataField[i]];
+                    string temp = server.Value.ServerKeyValue.Data[query.DataField[i]];
                     data.AddRange(Encoding.ASCII.GetBytes(temp));
                     data.Add(0); // Field Seperator
                 }

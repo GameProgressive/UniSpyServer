@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Handler\SystemHandler\" />
+    <Folder Include="Handler\SystemHandler\ClientChecker\" />
   </ItemGroup>
 
   <ItemGroup>

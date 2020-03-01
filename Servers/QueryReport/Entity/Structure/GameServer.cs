@@ -44,9 +44,9 @@ namespace QueryReport.Entity.Structure
         }
 
 
-        public ServerInfo ServerInfo = new ServerInfo();
-        public PlayerInfo PlayerInfo = new PlayerInfo();
-        public TeamInfo TeamInfo = new TeamInfo();
+        public ServerKey ServerKeyValue = new ServerKey();
+        public PlayerKey  PlayerKeyValue = new PlayerKey();
+        public TeamKey TeamKeyValue = new TeamKey();
 
     }
 }

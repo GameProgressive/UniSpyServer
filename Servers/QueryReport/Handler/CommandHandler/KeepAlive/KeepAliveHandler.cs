@@ -1,5 +1,7 @@
-﻿using QueryReport.Entity.Structure.Packet;
+﻿using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
+using System;
 using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.KeepAlive
@@ -12,9 +14,11 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            server.ToLog("Recieved keep alive packet");
             KeepAlivePacket keep = new KeepAlivePacket(recv);
             _sendingBuffer = keep.GenerateResponse();
+            GameServer game;
+            QRServer.GameServerList.TryGetValue(endPoint, out game);
+            game.LastKeepAlive = DateTime.Now;
         }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace QueryReport.Entity.Structure.ReportData
 {
-    public class ServerInfo
+    public class ServerKey
     {
         public Dictionary<string, string> Data = new Dictionary<string, string>();
         public void Update(string serverData)

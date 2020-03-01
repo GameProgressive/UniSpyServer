@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Database.Entity;
 using GameSpyLib.Network;
 using QueryReport.Entity.Structure;
+using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
 using System.Collections.Concurrent;
 using System.Net;
@@ -15,20 +16,11 @@ namespace QueryReport.Server
         /// </summary>
         public static ConcurrentDictionary<EndPoint, GameServer> GameServerList = new ConcurrentDictionary<EndPoint, GameServer>();
 
-        /// <summary>
-        /// A timer that is used to Poll all the servers, and remove inactive servers from the server list
-        /// </summary>
-        //private static Timer PollTimer;
-
-        /// <summary>
-        /// The Time for servers are to remain in the serverlist since the last ping.
-        /// Once this value is surpassed, server is presumed offline and is removed
-        /// </summary>
-        public static int ServerTTL { get; protected set; } = 30;
-
         public bool IsChallengeSent = false;
 
         public bool HasInstantKey = false;
+
+        private ServerListChecker _checker = new ServerListChecker();
 
         public QRServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
@@ -36,11 +28,7 @@ namespace QueryReport.Server
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
             //is busy and cant refresh the server's TTL right away
-
-            // Setup timer. Remove servers who havent ping'd since ServerTTL
-            //PollTimer = new Timer(5000);
-            // PollTimer.Elapsed += (s, e) => ServerListHandler.CheckServers();
-            // PollTimer.Start();
+            _checker.StartCheck(this);
         }
 
 

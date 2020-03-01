@@ -27,7 +27,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName =$"[{serverName}]";
+            ServerName = $"[{serverName}]";
             Start();
         }
 
@@ -72,7 +72,7 @@ namespace GameSpyLib.Network
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $" [Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $"[Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
@@ -94,7 +94,7 @@ namespace GameSpyLib.Network
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $" [Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $"[Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.Send(endpoint, buffer, offset, size);
         }
@@ -133,7 +133,7 @@ namespace GameSpyLib.Network
             byte[] temp = new byte[(int)size];
             Array.Copy(buffer, 0, temp, 0, (int)size);
             if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $" [Recv] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+                ToLog(LogLevel.Debug, $"[Recv] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
             ReceiveAsync();
 
@@ -146,7 +146,7 @@ namespace GameSpyLib.Network
         }
         public virtual void ToLog(LogLevel level, string text)
         {
-            text = ServerName + text;
+            text = ServerName + " " + text;
             LogWriter.Log.Write(text, level);
         }
 

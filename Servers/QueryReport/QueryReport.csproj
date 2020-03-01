@@ -38,5 +38,6 @@
     <Folder Include="Entity\Structure\Packet\" />
     <Folder Include="Handler\CommandHandler\Echo\" />
     <Folder Include="Handler\CommandHandler\MessageACK\" />
+    <Folder Include="Handler\SystemHandler\ServerListChecker\" />
   </ItemGroup>
 </Project>
