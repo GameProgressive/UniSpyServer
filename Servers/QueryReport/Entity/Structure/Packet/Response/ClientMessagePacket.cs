@@ -3,17 +3,16 @@ using System.Text;
 
 namespace QueryReport.Entity.Structure.Packet
 {
-    public class ClientMessagePacket : BaseResponsePacket
+    public class ClientMessagePacket : BasePacket
     {
         private string _message;
         public ClientMessagePacket(string message)
         {
-            _message = message;
-            PacketType = (byte)QRPacketType.ClientMessage;
-
+            _message = message; 
         }
         public override byte[] GenerateResponse()
         {
+            PacketType = (byte)QRPacketType.ClientMessage;
             byte[] msg = Encoding.ASCII.GetBytes(_message);
             byte[] buffer = new byte[7 + msg.Length];
             buffer[0] = MagicData[0];

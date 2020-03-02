@@ -1,11 +1,11 @@
-﻿using QueryReport.Entity.Enumerator;
-using System;
+﻿using System;
+using QueryReport.Entity.Enumerator;
 
 namespace QueryReport.Entity.Structure.Packet
 {
-    public class ADDErrorPacket : BaseResponsePacket
+    public class AddErrorPacket : BasePacket
     {
-        public ADDErrorPacket(byte[] recv) : base(recv)
+        public AddErrorPacket(byte[] recv) : base(recv)
         {
             PacketType = (byte)QRPacketType.ADDError;
             throw new NotImplementedException();

@@ -10,7 +10,7 @@ namespace ServerBrowser.Entity.Enumerator
         MapLoopRequest,
         PlayerSearchRequest
     }
-    public enum SBServerResponseType
+    public enum SBAdHocType
     {
         PushKeysMessage = 1,
         PushServerMessage,

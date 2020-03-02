@@ -2,11 +2,10 @@
 
 namespace QueryReport.Entity.Structure.Packet
 {
-    public class KeepAlivePacket : BaseResponsePacket
+    public class KeepAlivePacket : BasePacket
     {
         public KeepAlivePacket(byte[] recv) : base(recv)
         {
-            PacketType = (byte)QRPacketType.KeepAlive;
         }
     }
 }

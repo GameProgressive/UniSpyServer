@@ -1,6 +1,7 @@
 ﻿using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
+using System;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -16,9 +17,8 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            //TODO
-            BaseResponsePacket b = new BaseResponsePacket(recv);
-            _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, new GameServer(endPoint, b.InstantKey));
+            BasePacket basePacket = new BasePacket(recv);
+            _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, new GameServer(endPoint, basePacket.InstantKey));
             base.CheckRequest(server, endPoint, recv);
         }
 
@@ -45,6 +45,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 _gameServer.ServerKeyValue.Update(serverData);
                 _gameServer.PlayerKeyValue.Update(playerData);
                 _gameServer.TeamKeyValue.Update(teamData);
+                _gameServer.LastHeartBeatPacket = DateTime.Now;
             }
             else
             {
@@ -58,7 +59,6 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         {
             ChallengePacket challenge = new ChallengePacket(endPoint, recv);
             _sendingBuffer = challenge.GenerateResponse();
-
         }
     }
 }

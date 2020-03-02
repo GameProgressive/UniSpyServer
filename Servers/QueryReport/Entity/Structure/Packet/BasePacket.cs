@@ -2,17 +2,18 @@
 
 namespace QueryReport.Entity.Structure.Packet
 {
-    public class BaseResponsePacket
+    public class BasePacket
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
         public byte PacketType;
         public byte[] InstantKey = new byte[4];
 
-        public BaseResponsePacket(byte[] recv)
+        public BasePacket(byte[] recv)
         {
+            PacketType = recv[0];
             ByteTools.SubBytes(recv, 1, 4).CopyTo(InstantKey, 0);
         }
-        public BaseResponsePacket() { }
+        public BasePacket() { }
 
         public virtual byte[] GenerateResponse()
         {

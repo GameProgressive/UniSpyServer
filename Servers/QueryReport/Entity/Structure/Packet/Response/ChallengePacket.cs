@@ -4,19 +4,22 @@ using System.Net;
 
 namespace QueryReport.Entity.Structure.Packet
 {
-    public class ChallengePacket : BaseResponsePacket
+    public class ChallengePacket : BasePacket
     {
         public byte[] RemoteIP = new byte[4];
         public byte[] RemotePort = new byte[4];
 
         public ChallengePacket(EndPoint endPoint, byte[] recv) : base(recv)
         {
-            PacketType = (byte)QRPacketType.Challenge;
             Array.Copy(((IPEndPoint)endPoint).Address.GetAddressBytes(), RemoteIP, 4);
             Array.Copy(BitConverter.GetBytes(((IPEndPoint)endPoint).Port), RemotePort, 4);
         }
         public override byte[] GenerateResponse()
         {
+            //change packet type to challenge
+
+            PacketType = (byte)QRPacketType.Challenge;
+
             byte[] buffer = new byte[24];
             base.GenerateResponse().CopyTo(buffer, 0);
             // Challenge

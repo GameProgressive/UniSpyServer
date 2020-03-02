@@ -5,8 +5,8 @@ namespace ServerBrowser.Handler.CommandHandler
 {
     public class SBHandlerBase
     {
-        SBErrorCode _errorCode = SBErrorCode.NoError;
-        byte[] _sendingBuffer;
+        protected SBErrorCode _errorCode = SBErrorCode.NoError;
+        protected byte[] _sendingBuffer;
 
         public SBHandlerBase(SBSession session, byte[] recv)
         {
@@ -43,7 +43,7 @@ namespace ServerBrowser.Handler.CommandHandler
             {
                 return;
             }
-            session.SendAsync(recv);
+            session.SendAsync(_sendingBuffer);
         }
     }
 }

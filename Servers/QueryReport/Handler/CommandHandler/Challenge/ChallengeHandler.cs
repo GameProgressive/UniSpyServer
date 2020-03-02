@@ -1,5 +1,6 @@
 ﻿using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
+using System;
 using System.Linq;
 using System.Net;
 
@@ -29,6 +30,10 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             EchoPacket echo = new EchoPacket(recv);
             // We send the echo packet to check the ping
             _sendingBuffer = echo.GenerateResponse();
+            Entity.Structure.GameServer gameServer;
+            QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
+            gameServer.LastPing = DateTime.Now;
+
         }
     }
 }

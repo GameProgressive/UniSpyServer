@@ -33,6 +33,7 @@
   <ItemGroup>
     <Folder Include="Entity\Enumerator\" />
     <Folder Include="Handler\CommandHandler\ServerListHandler\" />
+    <Folder Include="Handler\SystemHandler\" />
   </ItemGroup>
 
   <ItemGroup>

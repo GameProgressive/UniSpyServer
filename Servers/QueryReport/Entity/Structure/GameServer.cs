@@ -13,7 +13,7 @@ namespace QueryReport.Entity.Structure
         /// <summary>
         /// Last valid heart beat packet time
         /// </summary>
-        public DateTime LastRefreshed { get; set; }
+        public DateTime LastHeartBeatPacket { get; set; }
         /// <summary>
         /// Last keep alive packet time
         /// </summary>

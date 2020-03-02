@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ServerBrowser.Entity.Structure
 {
-    public class QR2Query
+    public class SBRequest
     {
         public byte QueryLenth { get; protected set; }
         public byte RequestVersion { get; protected set; }
@@ -21,7 +21,7 @@ namespace ServerBrowser.Entity.Structure
         public string[] DataField { get; protected set; }
         public byte[] Filter;
 
-        public QR2Query(byte[] recv)
+        public SBRequest(byte[] recv)
         {
             QueryLenth = recv[1];
             RequestVersion = recv[2];
