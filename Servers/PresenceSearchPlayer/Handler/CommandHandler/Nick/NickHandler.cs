@@ -40,7 +40,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
         {
             try
             {
-                using (var db = new RetrospyDB())
+                using (var db = new retrospyContext())
                 {
                     var players = from u in db.Users
                                   join p in db.Profiles on u.Userid equals p.Userid

@@ -29,7 +29,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
             string[] tempstr = recv["namespaces"].Trim(',').Split(',');
             uint[] nspaceid = Array.ConvertAll(tempstr, uint.Parse);
 
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 foreach (var id in nspaceid)
                 {

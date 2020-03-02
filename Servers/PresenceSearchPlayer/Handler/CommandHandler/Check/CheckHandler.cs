@@ -30,7 +30,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 
         protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 if (db.Users.Where(e => e.Email == recv["email"]).Count() < 1)
                 {

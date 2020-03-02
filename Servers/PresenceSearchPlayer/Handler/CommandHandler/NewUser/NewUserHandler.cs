@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using LinqToDB;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +51,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
         protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 _IsEmailExist = db.Users.Where(u => u.Email == recv["email"]).Select(p => p.Userid).Count() == 1;
 
@@ -90,41 +89,32 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
                 try
                 {
-                    using (var tran = db.BeginTransaction())
+                    //create user in database
+                    if (!_IsEmailExist)
                     {
-                        //create user in database
-                        if (!_IsEmailExist)
-                        {
-                            db.GetTable<User>().Insert(() => new User { Email = recv["email"], Password = recv["passenc"] });
-                            uint userid = db.Users.Where(u => u.Email == recv["email"] && u.Password == recv["passenc"]).Select(u => u.Userid).First();
-                            db.GetTable<Profile>().Insert(() => new Profile { Userid = userid, Nick = recv["nick"] });
-                            uint profileid = db.Profiles.Where(p => p.Userid == userid && p.Nick == recv["nick"]).Select(p => p.Profileid).First();
-                            db.GetTable<Subprofile>().Insert(() => new Subprofile
-                            {
-                                Profileid = profileid,
-                                Namespaceid = _namespaceid,
-                                Uniquenick = _uniquenick
-                            });
-                            tran.Commit();
-                            //set profileid for construct response
-                            _profileid = profileid;
-                            //create user and profile and namespace
-                        }
-
+                        Users users = new Users { Email = recv["email"], Password = recv["passenc"] };
+                        db.Users.Add(users);
+                        db.SaveChanges();
+                        Profiles profiles = new Profiles { Userid = users.Userid, Nick = recv["nick"] };
+                        db.Profiles.Add(profiles);
+                        db.SaveChanges();
+                        Subprofiles subprofiles = new Subprofiles { Profileid = profiles.Profileid, Namespaceid = _namespaceid, Uniquenick = _uniquenick };
+                        db.Subprofiles.Add(subprofiles);
+                        db.SaveChanges();
+                        //set profileid for construct response
+                        _profileid = profiles.Profileid;
+                        //create user and profile and namespace
                         if (_IsEmailExist && _IsUserPasswordCorrect && !_IsNickNameExist)
                         {
                             uint userid = db.Users.Where(u => u.Email == recv["email"] && u.Password == recv["passenc"]).Select(u => u.Userid).First();
-                            db.GetTable<Profile>().Insert(() => new Profile { Userid = userid, Nick = recv["nick"] });
-                            uint profileid = db.Profiles.Where(p => p.Userid == userid && p.Nick == recv["nick"]).Select(p => p.Profileid).First();
-                            db.GetTable<Subprofile>().Insert(() => new Subprofile
-                            {
-                                Profileid = profileid,
-                                Namespaceid = _namespaceid,
-                                Uniquenick = _uniquenick
-                            });
-                            tran.Commit();
+                            Profiles profiles1 = new Profiles { Userid = userid, Nick = recv["nick"] };
+                            db.Profiles.Add(profiles1);
+                            db.SaveChanges();
+                            Subprofiles subprofiles1 = new Subprofiles { Profileid = profiles1.Profileid, Namespaceid = _namespaceid, Uniquenick = _uniquenick };
+                            db.Subprofiles.Add(subprofiles1);
+                            db.SaveChanges();
                             //set profileid for construct response
-                            _profileid = profileid;
+                            _profileid = profiles1.Profileid;
                             //create nick and niquenick
                         }
                         if (_IsEmailExist && _IsUserPasswordCorrect && _IsEmailExist && !_IsUniqueNickExist)
@@ -134,15 +124,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                                              where u.Email == recv["email"] && u.Password == recv["passenc"] && p.Nick == recv["nick"]
                                              select p.Profileid;
                             uint profileid = resultpids.First();
-                            db.GetTable<Subprofile>().Insert(() => new Subprofile
-                            {
-                                Profileid = profileid,
-                                Namespaceid = _namespaceid,
-                                Uniquenick = _uniquenick
-                            });
-                            tran.Commit();
+                            Subprofiles subprofiles2 = new Subprofiles { Profileid = profileid, Namespaceid = _namespaceid, Uniquenick = _uniquenick };
+                            db.Subprofiles.Add(subprofiles2);
                             //set profileid for construct response
-                            _profileid = profileid;
+                            _profileid = subprofiles2.Profileid;
                             //create uniquenick
                         }
                     }
@@ -173,64 +158,61 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
         private void UpdateOtherInfo(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
-                using (var tran = db.BeginTransaction())
+                var resultpids = from u in db.Users
+                                 join p in db.Profiles on u.Userid equals p.Userid
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 where u.Email == recv["email"] && u.Password == recv["passenc"]
+                                 && p.Nick == recv["nick"] && n.Uniquenick == recv["uniquenick"]
+                                 && n.Namespaceid == _namespaceid
+                                 select p.Profileid;
+                uint profileid = resultpids.First();
+
+                var ns = from n in db.Subprofiles
+                         where n.Profileid == profileid && n.Uniquenick == recv["uniquenick"] && n.Namespaceid == _namespaceid
+                         select n;
+                var firstns = ns.First();
+                uint partnerid;
+
+                if (recv.ContainsKey("partnerid"))
                 {
-                    var resultpids = from u in db.Users
-                                     join p in db.Profiles on u.Userid equals p.Userid
-                                     join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                     where u.Email == recv["email"] && u.Password == recv["passenc"]
-                                     && p.Nick == recv["nick"] && n.Uniquenick == recv["uniquenick"]
-                                     && n.Namespaceid == _namespaceid
-                                     select p.Profileid;
-                    uint profileid = resultpids.First();
-
-                    var ns = from n in db.Subprofiles
-                             where n.Profileid == profileid && n.Uniquenick == recv["uniquenick"] && n.Namespaceid == _namespaceid
-                             select n;
-                    var firstns = ns.First();
-                    uint partnerid;
-
-                    if (recv.ContainsKey("partnerid"))
-                    {
-                        if (uint.TryParse(recv["partnerid"], out partnerid))
-                            firstns.Partnerid = partnerid;
-                        else
-                            _errorCode = GPErrorCode.DatabaseError;
-                    }
-                    uint productid;
-                    if (recv.ContainsKey("productid"))
-                        if (uint.TryParse(recv["productid"], out productid))
-                        { firstns.Productid = productid; }
-                        else
-                        { _errorCode = GPErrorCode.DatabaseError; }
-
-                    //if (recv.ContainsKey("productID"))
-                    //    if (uint.TryParse(recv["productID"], out productid))
-                    //        firstns.Productid = productid;
-
-                    if (recv.ContainsKey("gamename"))
-                    {
-                        firstns.Gamename = recv["gamename"];
-                    }
-                    uint port;
-                    if (recv.ContainsKey("port"))
-                    {
-                        if (uint.TryParse(recv["port"], out port))
-                        { firstns.Port = port; }
-                        else
-                        { _errorCode = GPErrorCode.DatabaseError; }
-
-                    }
-
-                    if (recv.ContainsKey("cdkeyenc"))
-                    {
-                        firstns.Cdkeyenc = recv["cdkeyenc"];
-                    }
-                    db.Update(firstns);
-                    tran.Commit();
+                    if (uint.TryParse(recv["partnerid"], out partnerid))
+                        firstns.Partnerid = partnerid;
+                    else
+                        _errorCode = GPErrorCode.DatabaseError;
                 }
+                uint productid;
+                if (recv.ContainsKey("productid"))
+                    if (uint.TryParse(recv["productid"], out productid))
+                    { firstns.Productid = productid; }
+                    else
+                    { _errorCode = GPErrorCode.DatabaseError; }
+
+                //if (recv.ContainsKey("productID"))
+                //    if (uint.TryParse(recv["productID"], out productid))
+                //        firstns.Productid = productid;
+
+                if (recv.ContainsKey("gamename"))
+                {
+                    firstns.Gamename = recv["gamename"];
+                }
+                uint port;
+                if (recv.ContainsKey("port"))
+                {
+                    if (uint.TryParse(recv["port"], out port))
+                    { firstns.Port = port; }
+                    else
+                    { _errorCode = GPErrorCode.DatabaseError; }
+
+                }
+
+                if (recv.ContainsKey("cdkeyenc"))
+                {
+                    firstns.Cdkeyenc = recv["cdkeyenc"];
+                }
+                db.Update(firstns);
+
             }
         }
     }

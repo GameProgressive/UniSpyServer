@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using LinqToDB;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,21 +21,17 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
 
         protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 if (recv.ContainsKey("replace"))
                 {
-                    db.Profiles.Where(p => p.Profileid == session.UserInfo.Profileid && p.Nick == recv["oldnick"])
-                        .Set(p => p.Nick, recv["nick"])
-                        .Update();
+                    db.Profiles.Where(p => p.Profileid == session.UserInfo.Profileid && p.Nick == recv["oldnick"]).First().Nick = recv["nick"];
+                    db.SaveChanges();
                 }
                 else
                 {
-                    db.Profiles
-                            .Value(p => p.Profileid, session.UserInfo.Profileid)
-                            .Value(p => p.Nick, recv["nick"])
-                            .Value(p => p.Userid, session.UserInfo.Userid)
-                            .Insert();
+                    Profiles profiles = new Profiles { Profileid = session.UserInfo.Profileid, Nick = recv["nick"], Userid = session.UserInfo.Userid };
+                    db.Add(profiles);
                 }
             }
         }

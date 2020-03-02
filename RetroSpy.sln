@@ -5,16 +5,6 @@ VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameSpyLib", "GameSpyLib\GameSpyLib.csproj", "{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommonFiles", "CommonFiles", "{ECCAE4E3-FA3F-4756-84F1-C695FBF7FC76}"
-	ProjectSection(SolutionItems) = preProject
-		CommonFiles\CONVERTING C Plus Plus CODE TO CSharp CODE.MD = CommonFiles\CONVERTING C Plus Plus CODE TO CSharp CODE.MD
-		CommonFiles\GeoLite2-Country.mmdb = CommonFiles\GeoLite2-Country.mmdb
-		CommonFiles\retrospy.sql = CommonFiles\retrospy.sql
-		CommonFiles\RetroSpy.sqlite = CommonFiles\RetroSpy.sqlite
-		CommonFiles\RetroSpy_Logo.ico = CommonFiles\RetroSpy_Logo.ico
-		CommonFiles\RetroSpyServer.xml = CommonFiles\RetroSpyServer.xml
-	EndProjectSection
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenceConnectionManager", "Servers\PresenceConnectionManager\PresenceConnectionManager.csproj", "{2756723C-4071-4EEA-851D-A23C0019E43A}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}

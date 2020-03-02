@@ -1,8 +1,8 @@
-﻿using GameSpyLib.Database.DatabaseSetting;
+﻿
+using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Database.Entity;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
-using LinqToDB.Data;
 using System;
 using System.IO;
 
@@ -15,7 +15,7 @@ namespace GameSpyLib.Common
         public string LogPath { get; protected set; }
         public string ServerName { get; protected set; }
 
-        protected DatabaseEngine DBEngine;
+        public DatabaseEngine DBEngine;
 
         protected bool Disposed = false;
 
@@ -90,12 +90,12 @@ namespace GameSpyLib.Common
             switch (dbConfiguration.Type)
             {
                 case DatabaseEngine.MySql:
-                    string MySqlConnStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port, dbConfiguration.SslMode, dbConfiguration.SslCert, dbConfiguration.SslKey, dbConfiguration.SslCa);
-                    DataConnection.DefaultSettings = new MySqlSetting(MySqlConnStr);
+                    string mySqlConnStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port, dbConfiguration.SslMode, dbConfiguration.SslCert, dbConfiguration.SslKey, dbConfiguration.SslCa);
+                    retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
                     break;
                 case DatabaseEngine.SQLite:
                     string SQLiteConnStr = "Data Source=" + dbConfiguration.Databasename + ";Version=3;New=False";
-                    DataConnection.DefaultSettings = new SQLiteSetting(SQLiteConnStr);
+                    
                     break;
                 default:
                     throw new Exception("Unknown database engine!");

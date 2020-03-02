@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using LinqToDB;
 using StatsAndTracking.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,11 +48,10 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
         }
         protected override void DatabaseOperation(GStatsSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
-                db.Pstorages.Where(p => p.Profileid == _profileid && p.Dindex == _dindex)
-                    .Set(p => p.Data, _keyValueStr)
-                    .Update();
+                db.Pstorage.Where(p => p.Profileid == _profileid && p.Dindex == _dindex).FirstOrDefault().Data = _keyValueStr;
+                db.SaveChanges();
             }
         }
     }

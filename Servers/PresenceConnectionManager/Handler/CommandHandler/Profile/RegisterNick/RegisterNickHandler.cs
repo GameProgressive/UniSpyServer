@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using LinqToDB;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -31,11 +30,11 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
         {
             try
             {
-                using (var db = new RetrospyDB())
+                using (var db = new retrospyContext())
                 {
                     db.Subprofiles.Where(s => s.Profileid == session.UserInfo.Profileid && s.Namespaceid == session.UserInfo.NamespaceID)
-                        .Set(s => s.Uniquenick, recv["uniquenick"])
-                        .Update();
+                        .First().Uniquenick = recv["uniquenick"];
+                    db.SaveChanges();
                 }
             }
             catch (Exception)

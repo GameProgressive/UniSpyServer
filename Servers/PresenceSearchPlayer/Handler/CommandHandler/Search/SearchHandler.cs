@@ -51,7 +51,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
         protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             //TODO verify the search condition whether needed namespaceid!!!!!
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 //we only need uniquenick to search a profile
                 if (recv.ContainsKey("uniquenick") && recv.ContainsKey("namespaceid"))

@@ -6,7 +6,7 @@ namespace Chat.Handler.CommandHandler.CRYPT
     {
         public static string GetSecretKeyFromGame(string gameName)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var secretkey = from g in db.Games
                                 where g.Gamename == gameName

@@ -35,7 +35,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
         }
         protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
                              join s in db.Subprofiles on p.Profileid equals s.Profileid

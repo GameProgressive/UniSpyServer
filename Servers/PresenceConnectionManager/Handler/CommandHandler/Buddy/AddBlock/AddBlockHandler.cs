@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using LinqToDB;
 using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,15 +26,17 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
 
         protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
-                if (db.Blockeds.Where(b => b.Targetid == _blockProfileid && b.Namespaceid == session.UserInfo.NamespaceID && b.Profileid == session.UserInfo.Profileid).Count() == 0)
+                if (db.Blocked.Where(b => b.Targetid == _blockProfileid && b.Namespaceid == session.UserInfo.NamespaceID && b.Profileid == session.UserInfo.Profileid).Count() == 0)
                 {
-                    db.Blockeds
-                        .Value(b => b.Profileid, session.UserInfo.Profileid)
-                        .Value(b => b.Targetid, _blockProfileid)
-                        .Value(b => b.Namespaceid, session.UserInfo.NamespaceID)
-                        .Insert();
+                    Blocked blocked = new Blocked
+                    {
+                        Profileid = session.UserInfo.Profileid,
+                        Targetid = _blockProfileid,
+                        Namespaceid = session.UserInfo.NamespaceID
+                    };
+                    db.Blocked.Update(blocked);
                 }
             }
         }

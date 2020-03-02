@@ -33,7 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-    <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

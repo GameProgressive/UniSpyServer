@@ -33,7 +33,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
         }
         protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var result = from u in db.Users
                              join p in db.Profiles on u.Userid equals p.Userid

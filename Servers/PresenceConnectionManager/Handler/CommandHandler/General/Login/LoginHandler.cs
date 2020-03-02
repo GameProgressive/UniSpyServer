@@ -231,7 +231,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         private void NickEmailLogin(GPCMSession session)
         {
             //Check email existence
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var email = from u in db.Users
                             where u.Email == session.UserInfo.Email
@@ -267,7 +267,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                     session.UserInfo.Profileid = info.First().profileid;
                     session.UserInfo.UniqueNick = info.First().uniquenick;
                     session.UserInfo.PasswordHash = info.First().password;
-                    session.UserInfo.IsEmailVerified = info.First().emailVerified;
+                    session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
                     session.UserInfo.IsBlocked = info.First().blocked;
                 }
                 else
@@ -279,7 +279,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         private void UniquenickLogin(GPCMSession session)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var info = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
@@ -306,7 +306,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                     session.UserInfo.Profileid = info.First().profileid;
                     session.UserInfo.UniqueNick = info.First().uniquenick;
                     session.UserInfo.PasswordHash = info.First().password;
-                    session.UserInfo.IsEmailVerified = info.First().emailVerified;
+                    session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
                     session.UserInfo.IsBlocked = info.First().blocked;
                 }
                 else
@@ -320,7 +320,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         private void AuthtokenLogin(GPCMSession session)
         {
 
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
@@ -344,7 +344,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                     session.UserInfo.Profileid = info.First().profileid;
                     session.UserInfo.UniqueNick = info.First().uniquenick;
                     session.UserInfo.PasswordHash = info.First().password;
-                    session.UserInfo.IsEmailVerified = info.First().emailVerified;
+                    session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
                     session.UserInfo.IsBlocked = info.First().blocked;
                     session.UserInfo.Nick = info.First().nick;
                     session.UserInfo.Email = info.First().email;

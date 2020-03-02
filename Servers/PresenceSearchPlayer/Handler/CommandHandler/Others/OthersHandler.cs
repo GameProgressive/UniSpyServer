@@ -33,7 +33,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
 
         protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var info = from b in db.Friends
                            where b.Profileid == _profileid && b.Namespaceid == _namespaceid

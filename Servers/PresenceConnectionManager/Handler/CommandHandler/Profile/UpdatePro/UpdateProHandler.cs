@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using LinqToDB;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 
         protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var profile = db.Profiles.Where(
                     p => p.Userid == session.UserInfo.Userid
@@ -89,7 +88,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                         byte sex;
                         if (byte.TryParse(recv["sex"], out sex))
                         {
-                            profile.Sex = Convert.ToSByte(recv["sex"]);
+                            profile.Sex = Convert.ToByte(recv["sex"]);
                         }
 
                     }

@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 
         protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
                              join n in db.Subprofiles on p.Profileid equals n.Profileid

@@ -28,7 +28,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
             uint[] opids = recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
             try
             {
-                using (var db = new RetrospyDB())
+                using (var db = new retrospyContext())
                 {
                     _sendingBuffer = @"\otherslist\";
                     foreach (var pid in opids)
