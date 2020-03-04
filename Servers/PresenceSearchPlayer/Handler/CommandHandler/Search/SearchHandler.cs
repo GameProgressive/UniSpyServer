@@ -48,7 +48,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             //TODO verify the search condition whether needed namespaceid!!!!!
             using (var db = new retrospyContext())

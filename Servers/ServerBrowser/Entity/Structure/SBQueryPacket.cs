@@ -5,7 +5,7 @@ using System.Text;
 
 namespace ServerBrowser.Entity.Structure
 {
-    public class SBRequest
+    public class SBRequestPacket
     {
         public byte QueryLenth { get; protected set; }
         public byte RequestVersion { get; protected set; }
@@ -21,7 +21,7 @@ namespace ServerBrowser.Entity.Structure
         public string[] DataField { get; protected set; }
         public byte[] Filter;
 
-        public SBRequest(byte[] recv)
+        public SBRequestPacket(byte[] recv)
         {
             QueryLenth = recv[1];
             RequestVersion = recv[2];

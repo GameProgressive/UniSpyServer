@@ -23,7 +23,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             uint[] opids = recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
             try

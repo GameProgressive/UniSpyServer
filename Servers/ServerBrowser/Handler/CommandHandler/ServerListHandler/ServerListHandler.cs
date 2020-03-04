@@ -14,7 +14,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
     {
         byte[] _remoteIP;
         byte[] _remotePort;
-        SBRequest _sbRequest;
+        SBRequestPacket _sbRequest;
         public ServerListHandler(SBSession session, byte[] recv) : base(session, recv)
         {
         }
@@ -22,7 +22,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
-            _sbRequest = new SBRequest(recv);
+            _sbRequest = new SBRequestPacket(recv);
 
             _remoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
             //TODO we have to make sure the port number
@@ -70,7 +70,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 data.Add(Convert.ToByte(32));
                 data.Add(0);
             }
-            byte serverFlag = 1;
+            byte serverFlag = 0;
             data.Add(serverFlag);
             data.AddRange(new byte[] { 255, 255, 255, 255 });
 

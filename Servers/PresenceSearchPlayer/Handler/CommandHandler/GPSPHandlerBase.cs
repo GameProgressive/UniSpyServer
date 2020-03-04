@@ -28,7 +28,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                 return;
             }
 
-            DataBaseOperation(session, recv);
+            DataOperation(session, recv);
             if (_errorCode == GPErrorCode.DatabaseError)
             {
                 ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
@@ -64,7 +64,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
             }
         }
 
-        protected virtual void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv) { }
+        protected virtual void DataOperation(GPSPSession session, Dictionary<string, string> recv) { }
 
         protected virtual void ConstructResponse(GPSPSession session, Dictionary<string, string> recv) { }
 

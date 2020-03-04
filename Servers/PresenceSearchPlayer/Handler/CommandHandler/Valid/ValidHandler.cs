@@ -31,7 +31,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                 return;
             }
         }
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             using (var db = new retrospyContext())
             {

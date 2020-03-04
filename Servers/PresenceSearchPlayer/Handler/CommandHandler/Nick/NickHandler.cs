@@ -36,7 +36,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             try
             {

@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             string[] tempstr = recv["namespaces"].Trim(',').Split(',');
             uint[] nspaceid = Array.ConvertAll(tempstr, uint.Parse);
