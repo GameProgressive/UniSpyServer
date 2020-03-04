@@ -42,20 +42,23 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 == Encoding.ASCII.GetString(_sbRequest.QueryFromGameName));
 
             dataList.AddRange(GetServersKeys(onlineServers));
-
+            dataList.AddRange(GetUniqueServersKeys(onlineServers));
             dataList.AddRange(GetServerValues(onlineServers));
 
             //dataList.AddRange(GetServersInfo());
             byte[] preSendingBuffer = dataList.ToArray();
 
             //we get secrete key from database
-            byte[] secretKey = Encoding.ASCII.GetBytes(FindGameSecreteKey());
+            string gameSk = FindGameSecreteKey();
 
-            if (secretKey == null)
+            if (gameSk == null)
             {
+                session.ToLog($"Unknown or unsupported game: {_sbRequest.QueryFromGameName}");
                 _errorCode = SBErrorCode.DataOperation;
                 return;
             }
+
+            byte[] secretKey = Encoding.ASCII.GetBytes(gameSk);
 
             EnctypeX enx = new EnctypeX();
 
@@ -63,8 +66,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                     _sbRequest.Challenge,
                     preSendingBuffer, 0);
         }
-
-
 
         private byte[] GetServersKeys(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
         {
@@ -89,18 +90,18 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
 
             return data.ToArray();
         }
-        private byte[] GetServerValues(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
+
+        private byte[] GetUniqueServersKeys(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
         {
             List<byte> data = new List<byte>();
-            //we add the number of values, because we manually add ping so here should be add one
-            int valueCount = onlineServers.Count() * _sbRequest.DataField.Length + 1;
-            data.Add(Convert.ToByte(valueCount));
+            data.Add(Convert.ToByte(_sbRequest.DataField.Length * onlineServers.Count()));
 
             foreach (var server in onlineServers)
             {
                 foreach (var field in _sbRequest.DataField)
                 {
                     string temp = server.Value.ServerKeyValue.Data[field];
+                    data.Add(Convert.ToByte(temp.Length));
                     data.AddRange(Encoding.ASCII.GetBytes(temp));
                     data.Add(0); // Field Seperator
                 }
@@ -108,8 +109,31 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 data.Add(Convert.ToByte(32));
                 data.Add(0);
             }
+
+            return data.ToArray();
+        }
+
+        private byte[] GetServerValues(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
+        {
+            List<byte> data = new List<byte>();
+
+            byte stringId = 0;
+
+            //we add the number of values, because we manually add ping so here should be add one
+            foreach (var server in onlineServers)
+            {
+                data.Add(64); // Server flags !
+                data.AddRange(server.Value.RemoteIP);
+                foreach (var field in _sbRequest.DataField)
+                {
+                    data.Add(stringId);
+                    stringId++;
+                }
+            }
+
             data.Add(0);
             data.AddRange(new byte[] { 255, 255, 255, 255 });
+
             return data.ToArray();
         }
         private string FindGameSecreteKey()
@@ -119,7 +143,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 var secretKeyResult = from p in db.Games
                                       where p.Gamename == Encoding.ASCII.GetString(_sbRequest.QueryFromGameName)
                                       select new { p.Secretkey };
-                return secretKeyResult.First().ToString();
+
+                if (secretKeyResult.Count() < 1)
+                    return null;
+
+                return secretKeyResult.First().Secretkey;
             }
         }
         private byte[] GetServersInfo()
