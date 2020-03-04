@@ -48,7 +48,7 @@ namespace GameSpyLib.Encryption
         private int _offset = 0; // everything decrypted till now (total)
         private byte[] _clientChallenge = new byte[8];
 
-        public List<byte> EncryptData(byte[] secretkey, byte[] clientChallenge, byte[] data, short backendflag)
+        public byte[] EncryptData(byte[] secretkey, byte[] clientChallenge, byte[] data, short backendflag)
         {
             List<byte> result = new List<byte>();
 
@@ -73,7 +73,7 @@ namespace GameSpyLib.Encryption
             byte[] encData = Encode(data);
             result.AddRange(encData);
 
-            return result;
+            return result.ToArray();
         }
 
         public List<byte> DecryptData(byte[] secretkey, string gamename, ref byte[] data)

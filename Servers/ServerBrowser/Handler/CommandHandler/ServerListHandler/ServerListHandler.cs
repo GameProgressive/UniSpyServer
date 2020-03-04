@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
+using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using System;
@@ -32,9 +33,43 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
 
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
+            List<byte> dataList = new List<byte>();
+            dataList.AddRange(_remoteIP);
+            dataList.AddRange(_remotePort);
+
+            var onlineServers = QueryReport.Server.QRServer.GameServerList.
+                Where(c => c.Value.ServerKeyValue.Data["gamename"]
+                == Encoding.ASCII.GetString(_sbRequest.QueryFromGameName));
+
+            dataList.AddRange(GetServersKeys(onlineServers));
+
+            dataList.AddRange(GetServerValues(onlineServers));
+
+            //dataList.AddRange(GetServersInfo());
+            byte[] preSendingBuffer = dataList.ToArray();
+
+            //we get secrete key from database
+            byte[] secretKey = Encoding.ASCII.GetBytes(FindGameSecreteKey());
+
+            if (secretKey == null)
+            {
+                _errorCode = SBErrorCode.DataOperation;
+                return;
+            }
+
+            EnctypeX enx = new EnctypeX();
+
+            _sendingBuffer = enx.EncryptData(secretKey,
+                    _sbRequest.Challenge,
+                    preSendingBuffer, 0);
+        }
+
+
+
+        private byte[] GetServersKeys(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
+        {
             List<byte> data = new List<byte>();
-            data.AddRange(_remoteIP);
-            data.AddRange(_remotePort);
+
             //the key lenth, because we manually added ping so we add one here
             data.Add((byte)(_sbRequest.DataField.Length + 1));
 
@@ -42,6 +77,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
 
             foreach (var field in _sbRequest.DataField)
             {
+                //get every keys key type
                 data.Add((byte)SBKeyType.String);
                 data.AddRange(Encoding.ASCII.GetBytes(field));
                 data.Add(0);
@@ -50,19 +86,21 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
             data.Add((byte)SBKeyType.Byte);
             data.AddRange(Encoding.ASCII.GetBytes("ping"));
             data.Add(0);
-            string gamename = Encoding.ASCII.GetString(_sbRequest.QueryFromGameName);
-            var onlineServers = QueryReport.Server.QRServer.GameServerList.
-                Where(c => c.Value.ServerKeyValue.Data["gamename"] == gamename);
 
+            return data.ToArray();
+        }
+        private byte[] GetServerValues(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
+        {
+            List<byte> data = new List<byte>();
             //we add the number of values, because we manually add ping so here should be add one
             int valueCount = onlineServers.Count() * _sbRequest.DataField.Length + 1;
             data.Add(Convert.ToByte(valueCount));
 
             foreach (var server in onlineServers)
             {
-                for (int i = 0; i < _sbRequest.DataField.Length; i++)
+                foreach (var field in _sbRequest.DataField)
                 {
-                    string temp = server.Value.ServerKeyValue.Data[_sbRequest.DataField[i]];
+                    string temp = server.Value.ServerKeyValue.Data[field];
                     data.AddRange(Encoding.ASCII.GetBytes(temp));
                     data.Add(0); // Field Seperator
                 }
@@ -70,10 +108,22 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 data.Add(Convert.ToByte(32));
                 data.Add(0);
             }
-            byte serverFlag = 0;
-            data.Add(serverFlag);
+            data.Add(0);
             data.AddRange(new byte[] { 255, 255, 255, 255 });
-
+            return data.ToArray();
+        }
+        private string FindGameSecreteKey()
+        {
+            using (var db = new retrospyContext())
+            {
+                var secretKeyResult = from p in db.Games
+                                      where p.Gamename == Encoding.ASCII.GetString(_sbRequest.QueryFromGameName)
+                                      select new { p.Secretkey };
+                return secretKeyResult.First().ToString();
+            }
+        }
+        private byte[] GetServersInfo()
+        {
             // we need some kind of information about server (ad hoc information)
             List<byte> tempList = new List<byte>();
             tempList.Add((byte)SBAdHocType.PushKeysMessage);
@@ -82,27 +132,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
             tempList.AddRange(Encoding.ASCII.GetBytes("retrospy"));
             tempList.Add(0);
 
-            byte[] buffer = data.ToArray();
-            Console.WriteLine(Encoding.ASCII.GetString(buffer));
-            string secretkey = "HA6zkS";
-            //using (var db = new RetrospyDB())
-            //{
-            //    var secretKey = from p in db.Games
-            //                    where p.Gamename == Encoding.ASCII.GetString(query.QueryFromGameName)
-            //                    select new { p.Secretkey };
-            //    if (secretKey == null)
-            //    {
-            //        return;
-            //    }
-            //}
-            _sendingBuffer = new EnctypeX()
-                .EncryptData
-                (
-                    Encoding.ASCII.GetBytes(secretkey),
-                    _sbRequest.Challenge,
-                    buffer, 0
-                ).
-                ToArray();
+            return null;
         }
     }
 }
