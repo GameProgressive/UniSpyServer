@@ -2,8 +2,9 @@ name: CI
 
 on:
   push:
-    paths-ignore:
-      - 'Servers/**'
+    branches-ignore:
+      - master
+      - candidate
   pull_request:
     branches:
       - '**'
