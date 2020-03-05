@@ -9,13 +9,15 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
+namespace ServerBrowser.Handler.CommandHandler.ServerList
 {
     public class ServerListHandler : SBHandlerBase
     {
-        byte[] _remoteIP;
-        byte[] _remotePort;
-        SBRequestPacket _sbRequest;
+        private byte[] _remoteIP;
+        private byte[] _remotePort;
+        private SBRequestPacket _sbRequest;
+        private IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers;
+
         public ServerListHandler(SBSession session, byte[] recv) : base(session, recv)
         {
         }
@@ -30,6 +32,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
             _remotePort = BitConverter.GetBytes((ushort)(((IPEndPoint)session.Socket.RemoteEndPoint).Port & 0xFFFF));
 
         }
+        public override void DataOperation(SBSession session, byte[] recv)
+        {
+            onlineServers = QueryReport.Server.QRServer.GameServerList.
+              Where(c => c.Value.ServerKeyValue.Data["gamename"]
+              == Encoding.ASCII.GetString(_sbRequest.QueryFromGameName));
+        }
 
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
@@ -37,13 +45,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
             dataList.AddRange(_remoteIP);
             dataList.AddRange(_remotePort);
 
-            var onlineServers = QueryReport.Server.QRServer.GameServerList.
-                Where(c => c.Value.ServerKeyValue.Data["gamename"]
-                == Encoding.ASCII.GetString(_sbRequest.QueryFromGameName));
-
             dataList.AddRange(GetServersKeys(onlineServers));
-            dataList.AddRange(GetUniqueServersKeys(onlineServers));
-            dataList.AddRange(GetServerValues(onlineServers));
+            dataList.AddRange(GetUniqueValues(onlineServers));
+            dataList.AddRange(GetServerInfo(onlineServers));
 
             //dataList.AddRange(GetServersInfo());
             byte[] preSendingBuffer = dataList.ToArray();
@@ -72,7 +76,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
             List<byte> data = new List<byte>();
 
             //the key lenth, because we manually added ping so we add one here
-            data.Add((byte)(_sbRequest.DataField.Length + 1));
+            data.Add((byte)(_sbRequest.DataField.Length));
 
             //The following byte should be keyType: maybe serverkey playerkey teamkey
 
@@ -84,14 +88,14 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 data.Add(0);
             }
             //manually add ping
-            data.Add((byte)SBKeyType.Byte);
-            data.AddRange(Encoding.ASCII.GetBytes("ping"));
-            data.Add(0);
+            //data.Add((byte)SBKeyType.Byte);
+            //data.AddRange(Encoding.ASCII.GetBytes("ping"));
+            //data.Add(0);
 
             return data.ToArray();
         }
 
-        private byte[] GetUniqueServersKeys(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
+        private byte[] GetUniqueValues(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
         {
             List<byte> data = new List<byte>();
             data.Add(Convert.ToByte(_sbRequest.DataField.Length * onlineServers.Count()));
@@ -101,41 +105,43 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 foreach (var field in _sbRequest.DataField)
                 {
                     string temp = server.Value.ServerKeyValue.Data[field];
-                    data.Add(Convert.ToByte(temp.Length));
+                    //data.Add(Convert.ToByte(temp.Length));
                     data.AddRange(Encoding.ASCII.GetBytes(temp));
                     data.Add(0); // Field Seperator
                 }
                 //this is ping value
-                data.Add(Convert.ToByte(32));
-                data.Add(0);
+                //data.Add(Convert.ToByte(32));
+                //data.Add(0);
             }
 
             return data.ToArray();
         }
 
-        private byte[] GetServerValues(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
+        private byte[] GetServerInfo(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
         {
             List<byte> data = new List<byte>();
 
-            byte stringId = 0;
 
-            //we add the number of values, because we manually add ping so here should be add one
+            byte uniqueValueId = 0;
             foreach (var server in onlineServers)
             {
-                data.Add(64); // Server flags !
+                data.Add((byte)GameServerFlags.HasKeysFlag); // Server flags !
                 data.AddRange(server.Value.RemoteIP);
+
+                //We have to numberd string by its sequence
                 foreach (var field in _sbRequest.DataField)
                 {
-                    data.Add(stringId);
-                    stringId++;
+                    data.Add(uniqueValueId);
+                    uniqueValueId++;
                 }
             }
 
-            data.Add(0);
+            data.Add((byte)GameServerFlags.ServerInfoEndFlag);
             data.AddRange(new byte[] { 255, 255, 255, 255 });
 
             return data.ToArray();
         }
+
         private string FindGameSecreteKey()
         {
             using (var db = new retrospyContext())
@@ -150,18 +156,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerListHandler
                 return secretKeyResult.First().Secretkey;
             }
         }
-        private byte[] GetServersInfo()
-        {
-            // we need some kind of information about server (ad hoc information)
-            List<byte> tempList = new List<byte>();
-            tempList.Add((byte)SBAdHocType.PushKeysMessage);
-            tempList.Add(1);
-            tempList.Add((byte)SBKeyType.String);
-            tempList.AddRange(Encoding.ASCII.GetBytes("retrospy"));
-            tempList.Add(0);
 
-            return null;
-        }
     }
 }
 

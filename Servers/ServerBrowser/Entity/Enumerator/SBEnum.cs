@@ -59,4 +59,15 @@ namespace ServerBrowser.Entity.Enumerator
         Byte,
         Short
     }
+    public enum GameServerFlags
+    {
+        ServerInfoEndFlag = 0,
+        UnsolicitedUdpFlag = 1,
+        PrivateIpFlag = 2,
+        ConnectNegotiateFlag = 4,
+        ICMPIpFlag = 8,
+        NonStandardPrivatePortFlag = 32,
+        HasKeysFlag = 64,
+        HasFullRulesFlag = 128
+    }
 }
