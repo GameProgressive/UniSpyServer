@@ -23,8 +23,12 @@ namespace QueryReport.Handler.CommandHandler.Echo
                 server.ToLog("Can not find game server");
                 return;
             }
-            double ping = DateTime.Now.Subtract(game.LastPing).TotalSeconds;
-            game.ServerKeyValue.Data.Add("ping", ping.ToString());
+            
+            //compute the ping
+           
+            byte ping = (byte)(int)(DateTime.Now.Subtract(game.LastPing).TotalMilliseconds);
+            //adding ping and value to dictionary
+            game.ServerKeyValue.Data.Add("ping", Convert.ToString(ping));
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
     {
         private byte[] _remoteIP;
         private byte[] _remotePort;
-        private SBRequestPacket _sbRequest;
+        private ServerListPacket _sbRequest;
         private IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers;
 
         public ServerListHandler(SBSession session, byte[] recv) : base(session, recv)
@@ -25,7 +25,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
-            _sbRequest = new SBRequestPacket(recv);
+            _sbRequest = new ServerListPacket(recv);
 
             _remoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
             //TODO we have to make sure the port number
@@ -70,13 +70,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     _sbRequest.Challenge,
                     preSendingBuffer, 0);
         }
-
+        int _totalKeysNumber;
+      
         private byte[] GetServersKeys(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
         {
             List<byte> data = new List<byte>();
 
             //the key lenth, because we manually added ping so we add one here
-            data.Add((byte)(_sbRequest.DataField.Length));
+            _totalKeysNumber = _sbRequest.DataField.Length + 1;
+            data.Add((byte)_totalKeysNumber);
 
             //The following byte should be keyType: maybe serverkey playerkey teamkey
 
@@ -87,18 +89,20 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 data.AddRange(Encoding.ASCII.GetBytes(field));
                 data.Add(0);
             }
-            //manually add ping
-            //data.Add((byte)SBKeyType.Byte);
-            //data.AddRange(Encoding.ASCII.GetBytes("ping"));
-            //data.Add(0);
+            //manually add key ping
+            data.Add((byte)SBKeyType.Byte);
+            data.AddRange(Encoding.ASCII.GetBytes("ping"));
+            data.Add(0);
 
             return data.ToArray();
         }
-
+        int _totalValueNumber;
         private byte[] GetUniqueValues(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
         {
             List<byte> data = new List<byte>();
-            data.Add(Convert.ToByte(_sbRequest.DataField.Length * onlineServers.Count()));
+            //this is total value's number include ping value
+            _totalValueNumber = _totalKeysNumber * onlineServers.Count();
+            data.Add(Convert.ToByte( _totalValueNumber));
 
             foreach (var server in onlineServers)
             {
@@ -110,10 +114,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     data.Add(0); // Field Seperator
                 }
                 //this is ping value
-                //data.Add(Convert.ToByte(32));
-                //data.Add(0);
+                //TODO implement real ping system
+                byte pingValue = Convert.ToByte(server.Value.ServerKeyValue.Data["ping"]);
+                data.Add(pingValue);
+                data.Add(0);
             }
-
             return data.ToArray();
         }
 
@@ -121,18 +126,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         {
             List<byte> data = new List<byte>();
 
-
-            byte uniqueValueId = 0;
             foreach (var server in onlineServers)
             {
                 data.Add((byte)GameServerFlags.HasKeysFlag); // Server flags !
                 data.AddRange(server.Value.RemoteIP);
 
                 //We have to numberd string by its sequence
-                foreach (var field in _sbRequest.DataField)
+                for (int uniqueValueIndex = 0; uniqueValueIndex < _totalKeysNumber; uniqueValueIndex++)
                 {
-                    data.Add(uniqueValueId);
-                    uniqueValueId++;
+                    data.Add((byte)uniqueValueIndex);
                 }
             }
 
