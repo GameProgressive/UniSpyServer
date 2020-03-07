@@ -2,7 +2,7 @@
 using GameSpyLib.Encryption;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
-using ServerBrowser.Entity.Structure;
+using ServerBrowser.Entity.Structure.Packet.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,8 +48,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             dataList.AddRange(GetServersKeys(onlineServers));
             dataList.AddRange(GetUniqueValues(onlineServers));
             dataList.AddRange(GetServerInfo(onlineServers));
+            //TODO
+            // ADDHOC data
+            //dataList.AddRange(GetAddHocData());
 
-            //dataList.AddRange(GetServersInfo());
+
+
             byte[] preSendingBuffer = dataList.ToArray();
 
             //we get secrete key from database

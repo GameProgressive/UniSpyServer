@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Text;
 using GameSpyLib.Encryption;
 
-namespace ServerBrowser.Entity.Structure
+namespace ServerBrowser.Entity.Structure.Packet.Request
 {
     public class PlayerSearchPacket
     {

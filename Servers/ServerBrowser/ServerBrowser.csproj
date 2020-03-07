@@ -34,13 +34,10 @@
     <Folder Include="Entity\Enumerator\" />
     <Folder Include="Handler\CommandHandler\ServerList\" />
     <Folder Include="Handler\SystemHandler\" />
-    <Folder Include="Handler\CommandHandler\ServerList\ListProtocolVersion\" />
-    <Folder Include="Handler\CommandHandler\ServerList\EncodingVersion\" />
     <Folder Include="Handler\CommandHandler\PlayerSearch\" />
     <Folder Include="Entity\Structure\Packet\" />
-    <Folder Include="Entity\Structure\Packet\Request\" />
     <Folder Include="Handler\CommandHandler\ServerInfo\" />
-    <Folder Include="Handler\CommandHandler\MapLoop\" />
+    <Folder Include="Entity\Structure\Packet\Request\" />
   </ItemGroup>
 
   <ItemGroup>

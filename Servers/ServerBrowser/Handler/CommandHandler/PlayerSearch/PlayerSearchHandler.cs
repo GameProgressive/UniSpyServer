@@ -1,5 +1,5 @@
 ﻿using System;
-using ServerBrowser.Entity.Structure;
+using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler.PlayerSearch
 {

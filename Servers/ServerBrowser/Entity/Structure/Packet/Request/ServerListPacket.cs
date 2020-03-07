@@ -2,8 +2,11 @@
 using System.Linq;
 using System.Text;
 
-namespace ServerBrowser.Entity.Structure
+namespace ServerBrowser.Entity.Structure.Packet.Request
 {
+    /// <summary>
+    /// ServerList also called ServerRule
+    /// </summary>
     public class ServerListPacket
     {
         public byte QueryLenth { get; protected set; }

@@ -1,5 +1,4 @@
-﻿using System;
-using ServerBrowser.Entity.Structure.Packet.Request;
+﻿using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerInfo
 {
@@ -20,14 +19,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
             _infoPacket = new ServerInfoPacket(recv);
         }
 
+        public override void DataOperation(SBSession session, byte[] recv)
+        {
+            base.DataOperation(session, recv);
+        }
+
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
             base.ConstructResponse(session, recv);
         }
 
-        public override void DataOperation(SBSession session, byte[] recv)
-        {
-            base.DataOperation(session, recv);
-        }
     }
 }
