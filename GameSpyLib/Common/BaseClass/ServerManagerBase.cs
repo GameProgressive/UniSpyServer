@@ -95,7 +95,7 @@ namespace GameSpyLib.Common
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
                     using (var db = new retrospyContext())
                     {
-                        db.Users.Select(u => u).Count();
+                        db.Users.Where(u=>u.Userid == 0);
                     }
                     break;
                 case DatabaseEngine.SQLite:

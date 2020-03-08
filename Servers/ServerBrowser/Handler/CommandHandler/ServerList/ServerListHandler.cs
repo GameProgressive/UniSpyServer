@@ -16,8 +16,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         private byte[] _remoteIP;
         private byte[] _remotePort;
         private ServerListPacket _sbRequest;
-        private IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers;
-
+        private IEnumerable<KeyValuePair<EndPoint, GameServer>> _onlineServers;
+        int _totalValueNumber;
+        int _totalKeysNumber;
         public ServerListHandler(SBSession session, byte[] recv) : base(session, recv)
         {
         }
@@ -26,17 +27,18 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         {
             base.CheckRequest(session, recv);
             _sbRequest = new ServerListPacket(recv);
-            //save challenge 
-            _remoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
+            //save challenge
+            IPEndPoint remote = (IPEndPoint)session.Socket.RemoteEndPoint;
+            _remoteIP = remote.Address.GetAddressBytes();
             //TODO we have to make sure the port number
-            _remotePort = BitConverter.GetBytes((ushort)(((IPEndPoint)session.Socket.RemoteEndPoint).Port & 0xFFFF));
+            _remotePort = BitConverter.GetBytes((ushort)(remote.Port & 0xFFFF));
 
         }
         public override void DataOperation(SBSession session, byte[] recv)
         {
-            onlineServers = QueryReport.Server.QRServer.GameServerList.
+            _onlineServers = QueryReport.Server.QRServer.GameServerList.
               Where(c => c.Value.ServerKeyValue.Data["gamename"]
-              == Encoding.ASCII.GetString(_sbRequest.QueryFromGameName));
+              == _sbRequest.GameName);
         }
 
         public override void ConstructResponse(SBSession session, byte[] recv)
@@ -45,48 +47,47 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             dataList.AddRange(_remoteIP);
             dataList.AddRange(_remotePort);
 
-            dataList.AddRange(GetServersKeys(onlineServers));
-            dataList.AddRange(GetUniqueValues(onlineServers));
-            dataList.AddRange(GetServerInfo(onlineServers));
+            dataList.AddRange(GetServersKeys(_onlineServers));
+            dataList.AddRange(GetUniqueValues(_onlineServers));
+            dataList.AddRange(GetServerInfo(_onlineServers));
+
+
             //TODO
             // ADDHOC data
             //dataList.AddRange(GetAddHocData());
 
-            byte[] preSendingBuffer = dataList.ToArray();
-            session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(preSendingBuffer)}");
             //we get secrete key from database
-            string gameSk = FindGameSecreteKey();
+            string secretKey = FindGameSecreteKey();
 
-            if (gameSk == null)
+            if (secretKey == null)
             {
-                session.ToLog($"Unknown or unsupported game: {_sbRequest.QueryFromGameName}");
+                session.ToLog($"Unknown or unsupported game: {_sbRequest.GameName}");
                 _errorCode = SBErrorCode.DataOperation;
                 return;
             }
 
-            byte[] secretKey = Encoding.ASCII.GetBytes(gameSk);
+            byte[] buffer = dataList.ToArray();
+            session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(buffer)}");
 
             EnctypeX enx = new EnctypeX();
+            _sendingBuffer = enx.EncryptData(secretKey, _sbRequest.Challenge, buffer, 0);
 
-            _sendingBuffer = enx.EncryptData(secretKey,
-                    _sbRequest.Challenge,
-                    preSendingBuffer, 0);
             //save encryption key so we can use in serverinfo request
             session.EncXKey = enx._encxkey;
         }
-        int _totalKeysNumber;
-      
+
+
         private byte[] GetServersKeys(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
         {
             List<byte> data = new List<byte>();
 
             //the key lenth, because we manually added ping so we add one here
-            _totalKeysNumber = _sbRequest.DataField.Length;
+            _totalKeysNumber = _sbRequest.Keys.Length;
             data.Add((byte)_totalKeysNumber);
 
             //The following byte should be keyType: maybe serverkey playerkey teamkey
 
-            foreach (var field in _sbRequest.DataField)
+            foreach (var field in _sbRequest.Keys)
             {
                 //get every keys key type
                 data.Add((byte)SBKeyType.String);
@@ -97,20 +98,19 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             //data.Add((byte)SBKeyType.Byte);
             //data.AddRange(Encoding.ASCII.GetBytes("ping"));
             //data.Add(0);
-
             return data.ToArray();
         }
-        int _totalValueNumber;
+
         private byte[] GetUniqueValues(IEnumerable<KeyValuePair<EndPoint, GameServer>> onlineServers)
         {
             List<byte> data = new List<byte>();
             //this is total value's number include ping value
             _totalValueNumber = _totalKeysNumber * onlineServers.Count();
-            data.Add(Convert.ToByte( _totalValueNumber));
+            data.Add(Convert.ToByte(_totalValueNumber));
 
             foreach (var server in onlineServers)
             {
-                foreach (var field in _sbRequest.DataField)
+                foreach (var field in _sbRequest.Keys)
                 {
                     string temp = server.Value.ServerKeyValue.Data[field];
                     //data.Add(Convert.ToByte(temp.Length));
@@ -153,7 +153,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             using (var db = new retrospyContext())
             {
                 var secretKeyResult = from p in db.Games
-                                      where p.Gamename == Encoding.ASCII.GetString(_sbRequest.QueryFromGameName)
+                                      where p.Gamename == _sbRequest.GameName
                                       select new { p.Secretkey };
 
                 if (secretKeyResult.Count() < 1)

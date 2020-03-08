@@ -15,13 +15,12 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public byte EncodingVersion { get; protected set; }
         public byte GameVersion { get; protected set; }
 
+        public string DevGameName { get; protected set; }
+        public string GameName { get; protected set; }
+        public string Challenge { get; protected set; }
 
-        private string _queryForGameName;
-        private string _queryFromGameName;
-        private string _challenge;
-
-        public string[] DataField { get; protected set; }
-        public byte[] Filter;
+        public string[] Keys { get; protected set; }
+        public string Filter;
 
         public ServerListPacket(byte[] recv)
         {
@@ -32,32 +31,17 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             GameVersion = recv[5];
             string tempStr = Encoding.ASCII.GetString(recv.Skip(9).ToArray());
             string[] dataFrag = tempStr.Split('\0', StringSplitOptions.RemoveEmptyEntries);
-            _queryForGameName = dataFrag[0];
-            _queryFromGameName = dataFrag[1];
-            _challenge = dataFrag[2];
-            DataField = dataFrag[3].Split('\\', StringSplitOptions.RemoveEmptyEntries);   
-        }
-
-
-        public byte[] QueryForGameName
-        {
-            get
-            { return Encoding.ASCII.GetBytes(_queryForGameName); }
-        }
-
-        public byte[] QueryFromGameName
-        {
-            get
+            DevGameName = dataFrag[0];
+            GameName = dataFrag[1];
+            Challenge = dataFrag[2].Substring(0, 8);
+            if (dataFrag[2].Length > 8)
             {
-                return  Encoding.ASCII.GetBytes(_queryFromGameName);
+                Filter = dataFrag[2].Substring(8);
             }
-        }
-        public byte[] Challenge
-        {
-            get
-            { return Encoding.ASCII.GetBytes(_challenge); }
+            Keys = dataFrag[3].Split('\\', StringSplitOptions.RemoveEmptyEntries);
         }
 
 
+       
     }
 }

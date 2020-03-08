@@ -48,6 +48,40 @@ namespace GameSpyLib.Encryption
         private int _offset = 0; // everything decrypted till now (total)
         private byte[] _clientChallenge = new byte[8];
 
+        public byte[] EncryptData(string strSecretKey, string strClientChallenge, byte[] data, short backendflag)
+        {
+            byte[] secretkey = Encoding.ASCII.GetBytes(strSecretKey);
+            byte[] clientChallenge = Encoding.ASCII.GetBytes(strClientChallenge);
+
+
+            List<byte> result = new List<byte>();
+
+            _encxkey = new byte[261];
+            _encxkey.Initialize();
+            _clientChallenge.Initialize();
+
+            byte[] serverRandomParam =
+                Encoding.ASCII.GetBytes(
+                    GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.AlphaNumeric));
+
+            Array.Copy(clientChallenge, 0, _clientChallenge, 0, 8);
+
+            Funcx(secretkey, serverRandomParam); // challenge computation
+
+            result.Add(2 ^ 0xEC); // data length
+
+            result.AddRange(BitConverter.GetBytes(backendflag));
+
+            result.Add((byte)(serverRandomParam.Length ^ 0xEA)); // server challenge length
+            result.AddRange(serverRandomParam);
+
+            // Start of encrypted data
+            _offset = 0;
+            byte[] encData = Encode(data);
+            result.AddRange(encData);
+
+            return result.ToArray();
+        }
         public byte[] EncryptData(byte[] secretkey, byte[] clientChallenge, byte[] data, short backendflag)
         {
             List<byte> result = new List<byte>();

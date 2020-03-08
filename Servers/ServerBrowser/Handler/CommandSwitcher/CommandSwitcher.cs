@@ -1,6 +1,5 @@
 ﻿using ServerBrowser.Handler.CommandHandler.ServerList;
 using ServerBrowser.Entity.Enumerator;
-using ServerBrowser.Handler.CommandHandler.PlayerSearch;
 using ServerBrowser.Handler.CommandHandler.ServerInfo;
 
 
@@ -17,7 +16,6 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     new ServerListHandler(session, recv);
                     break;
                 case SBClientRequestType.PlayerSearchRequest:
-                    new PlayerSearchHandler(session, recv);
                     break;
                 case SBClientRequestType.ServerInfoRequest:
                     new ServerInfoHandler(session, recv);

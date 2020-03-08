@@ -127,6 +127,12 @@ namespace GameSpyLib.Common
         public static void ProcessPasswordInRetroSpyWay(Dictionary<string, string> dict)
         {
             string password;
+            if (dict.ContainsKey("passwordenc"))
+            {
+                //we do nothing with encoded password                
+                password = DecodePassword(dict["passwordenc"]);
+                dict.Add("passenc", StringExtensions.GetMD5Hash(password));
+            }
             if (dict.ContainsKey("passenc"))
             {
                 //we do nothing with encoded password                

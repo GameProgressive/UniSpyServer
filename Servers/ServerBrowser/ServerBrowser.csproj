@@ -34,10 +34,10 @@
     <Folder Include="Entity\Enumerator\" />
     <Folder Include="Handler\CommandHandler\ServerList\" />
     <Folder Include="Handler\SystemHandler\" />
-    <Folder Include="Handler\CommandHandler\PlayerSearch\" />
     <Folder Include="Entity\Structure\Packet\" />
     <Folder Include="Handler\CommandHandler\ServerInfo\" />
     <Folder Include="Entity\Structure\Packet\Request\" />
+    <Folder Include="Entity\Structure\Packet\Response\" />
   </ItemGroup>
 
   <ItemGroup>
