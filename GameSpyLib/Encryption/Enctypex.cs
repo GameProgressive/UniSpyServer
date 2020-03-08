@@ -44,7 +44,7 @@ namespace GameSpyLib.Encryption
 
     public class EnctypeX
     {
-        private byte[] _encxkey = new byte[261]; // Static key
+        public byte[] _encxkey { get; protected set; }  // Static key
         private int _offset = 0; // everything decrypted till now (total)
         private byte[] _clientChallenge = new byte[8];
 
@@ -52,21 +52,22 @@ namespace GameSpyLib.Encryption
         {
             List<byte> result = new List<byte>();
 
+            _encxkey = new byte[261];
             _encxkey.Initialize();
             _clientChallenge.Initialize();
 
-            byte[] secretServerKey = Encoding.ASCII.GetBytes(GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.AlphaNumeric));
+            byte[] serverRandomParam = Encoding.ASCII.GetBytes(GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.AlphaNumeric));
 
             Array.Copy(clientChallenge, 0, _clientChallenge, 0, 8);
 
-            Funcx(secretkey, secretServerKey); // challenge computation
+            Funcx(secretkey, serverRandomParam); // challenge computation
 
             result.Add(2 ^ 0xEC); // data length
 
             result.AddRange(BitConverter.GetBytes(backendflag));
 
-            result.Add((byte)(secretServerKey.Length ^ 0xEA)); // secret server key length
-            result.AddRange(secretServerKey);
+            result.Add((byte)(serverRandomParam.Length ^ 0xEA)); // secret server key length
+            result.AddRange(serverRandomParam);
 
             // Start of encrypted data
             _offset = 0;
@@ -75,6 +76,19 @@ namespace GameSpyLib.Encryption
 
             return result.ToArray();
         }
+
+        public byte[] EncryptDataWithEncryptionKey(byte[] data, byte[] encryptKey)
+        {
+            _offset = 0;
+            _encxkey = encryptKey;
+            List<byte> result = new List<byte>();
+
+            byte[] encData = Encode(data);
+            result.AddRange(encData);
+
+            return result.ToArray();
+        }
+
 
         public List<byte> DecryptData(byte[] secretkey, string gamename, ref byte[] data)
         {
@@ -345,6 +359,6 @@ namespace GameSpyLib.Encryption
             return server_num;
         }
 
-       
+
     }
 }

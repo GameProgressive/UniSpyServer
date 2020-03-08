@@ -2,6 +2,10 @@
 
 namespace ServerBrowser.Handler.CommandHandler.ServerInfo
 {
+    /// <summary>
+    /// Get full information (for example, to get full rules and
+    /// player information from a server that only has basic information so far)
+    /// </summary>
     public class ServerInfoHandler:SBHandlerBase
     {
         public ServerInfoHandler(SBSession session, byte[] recv) : base(session, recv)

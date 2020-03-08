@@ -5,6 +5,7 @@ using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace GameSpyLib.Common
 {
@@ -92,6 +93,10 @@ namespace GameSpyLib.Common
                 case DatabaseEngine.MySql:
                     string mySqlConnStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port, dbConfiguration.SslMode, dbConfiguration.SslCert, dbConfiguration.SslKey, dbConfiguration.SslCa);
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
+                    using (var db = new retrospyContext())
+                    {
+                        db.Users.Select(u => u).Count();
+                    }
                     break;
                 case DatabaseEngine.SQLite:
                     string SQLiteConnStr = "Data Source=" + dbConfiguration.Databasename + ";Version=3;New=False";

@@ -5,7 +5,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
 {
     public class ServerInfoPacket
     {
-        public uint MessageLength { get; protected set; }
+        public ushort MessageLength { get; protected set; }
         public byte[] IPByte { get; protected set; }
         public byte[] PortByte { get; protected set; }
         public uint IP { get { return Convert.ToUInt32(IPByte); } }
@@ -17,10 +17,13 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             PortByte = new byte[2];
             byte[] lengthByte = new byte[2];
             ByteTools.SubBytes(recv, 0, 2).CopyTo(lengthByte, 0);
-            MessageLength = Convert.ToUInt16(lengthByte);
 
-            ByteTools.SubBytes(recv, 6, 4).CopyTo(IPByte, 0);
-            ByteTools.SubBytes(recv, 11, 2).CopyTo(PortByte, 0);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(lengthByte);
+            MessageLength = BitConverter.ToUInt16(lengthByte,0);
+
+            ByteTools.SubBytes(recv, 2, 4).CopyTo(IPByte, 0);
+            ByteTools.SubBytes(recv, 7, 2).CopyTo(PortByte, 0);
         }
     }
 }

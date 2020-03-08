@@ -26,7 +26,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         {
             base.CheckRequest(session, recv);
             _sbRequest = new ServerListPacket(recv);
-
+            //save challenge 
             _remoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
             //TODO we have to make sure the port number
             _remotePort = BitConverter.GetBytes((ushort)(((IPEndPoint)session.Socket.RemoteEndPoint).Port & 0xFFFF));
@@ -52,10 +52,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             // ADDHOC data
             //dataList.AddRange(GetAddHocData());
 
-
-
             byte[] preSendingBuffer = dataList.ToArray();
-
+            session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(preSendingBuffer)}");
             //we get secrete key from database
             string gameSk = FindGameSecreteKey();
 
@@ -73,6 +71,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             _sendingBuffer = enx.EncryptData(secretKey,
                     _sbRequest.Challenge,
                     preSendingBuffer, 0);
+            //save encryption key so we can use in serverinfo request
+            session.EncXKey = enx._encxkey;
         }
         int _totalKeysNumber;
       
@@ -81,7 +81,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             List<byte> data = new List<byte>();
 
             //the key lenth, because we manually added ping so we add one here
-            _totalKeysNumber = _sbRequest.DataField.Length + 1;
+            _totalKeysNumber = _sbRequest.DataField.Length;
             data.Add((byte)_totalKeysNumber);
 
             //The following byte should be keyType: maybe serverkey playerkey teamkey
@@ -93,10 +93,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 data.AddRange(Encoding.ASCII.GetBytes(field));
                 data.Add(0);
             }
-            //manually add key ping
-            data.Add((byte)SBKeyType.Byte);
-            data.AddRange(Encoding.ASCII.GetBytes("ping"));
-            data.Add(0);
+            ////manually add key ping
+            //data.Add((byte)SBKeyType.Byte);
+            //data.AddRange(Encoding.ASCII.GetBytes("ping"));
+            //data.Add(0);
 
             return data.ToArray();
         }
@@ -119,9 +119,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 }
                 //this is ping value
                 //TODO implement real ping system
-                byte pingValue = Convert.ToByte(server.Value.ServerKeyValue.Data["ping"]);
-                data.Add(pingValue);
-                data.Add(0);
+                //byte pingValue = Convert.ToByte(server.Value.ServerKeyValue.Data["ping"]);
+                //data.Add(pingValue);
+                //data.Add(0);
             }
             return data.ToArray();
         }
