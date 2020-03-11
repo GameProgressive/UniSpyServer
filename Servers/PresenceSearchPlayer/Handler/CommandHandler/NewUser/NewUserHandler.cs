@@ -36,7 +36,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
-
             if (!recv.ContainsKey("nick"))
             {
                 _errorCode = GPErrorCode.Parse;

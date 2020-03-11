@@ -329,8 +329,8 @@ ASALocalRun/
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
 
+# retrospy
 logs\
-RetroSpyServer.xml
 
 # linq2db
 .tools/

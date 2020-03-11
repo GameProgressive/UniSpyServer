@@ -139,7 +139,7 @@ namespace GameSpyLib.Network
         }
         public virtual string FormatLogMessage(byte[] buffer, int index, int size)
         {
-            return Regex.Replace(Encoding.ASCII.GetString(buffer, 0, size), @"[\x00-\x20]", "?");
+            return Regex.Replace(Encoding.ASCII.GetString(buffer, 0, size), @"[\x00-\x1F]", "?");
         }
 
         public virtual void UnKnownDataReceived(byte[] text)

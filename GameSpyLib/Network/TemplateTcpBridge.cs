@@ -26,13 +26,13 @@ namespace GameSpyLib.Network
         protected override void OnConnected()
         {
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, $"{_serverName}[Conn] RetroSpy Server Connected!");
+                ToLog(LogLevel.Debug, $"[Conn] RetroSpy Server Connected!");
         }
 
         protected override void OnDisconnected()
         {
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, $"{_serverName}[Disc] RetroSpy Server Connected!");
+                ToLog(LogLevel.Debug, $"[Disc] RetroSpy Server Connected!");
 
             // Wait for a while...
             Thread.Sleep(1000);
@@ -44,11 +44,9 @@ namespace GameSpyLib.Network
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            string t = Regex.Replace(Encoding.ASCII.GetString(buffer, 0, (int)size), @"\t\n\r", "");
+
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(
-                    LogLevel.Debug,
-                   $"{_serverName}[Recv] TCP data: {t}");
+                ToLog(LogLevel.Debug, $" [Recv] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);
@@ -63,18 +61,16 @@ namespace GameSpyLib.Network
 
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
-        {
-            string t = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\t\n\r", "");
+        { 
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, $"{_serverName}[Send] TCP data: {t}");
+               ToLog(LogLevel.Debug, $"[Send] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.SendAsync(buffer, offset, size);
         }
         public override long Send(byte[] buffer, long offset, long size)
         {
-            string t = Regex.Replace(Encoding.ASCII.GetString(buffer), @"\t\n\r", "");
             if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, $"{_serverName}[Send] TCP data: {t}");
+                ToLog(LogLevel.Debug, $"[Send] TCP data: {FormatLogMessage(buffer, 0, (int)size)}");
 
             return base.Send(buffer, offset, size);
         }
@@ -91,8 +87,12 @@ namespace GameSpyLib.Network
         }
         public virtual void ToLog(LogLevel level, string text)
         {
-            text = _serverName + text;
+            text = _serverName + " " + text;
             LogWriter.Log.Write(text, level);
+        }
+        public virtual string FormatLogMessage(byte[] buffer, int index, int size)
+        {
+            return Regex.Replace(Encoding.ASCII.GetString(buffer, 0, size), @"[\x00-\x1F]", "?");
         }
     }
 }

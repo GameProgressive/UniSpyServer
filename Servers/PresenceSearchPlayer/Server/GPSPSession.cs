@@ -20,8 +20,8 @@ namespace PresenceSearchPlayer
                 GameSpyUtils.SendGPError(this, GPErrorCode.Parse, "An invalid request was sended.");
                 return;
             }
-
-            string[] commands = message.Split("\\final\\");
+            
+             string[] commands = message.Split("\\final\\",System.StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string command in commands)
             {

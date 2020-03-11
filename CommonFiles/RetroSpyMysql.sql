@@ -80,6 +80,8 @@ CREATE TABLE IF NOT EXISTS `games` (
 -- Dumping data for table retrospy.games: 2,799 rows
 /*!40000 ALTER TABLE `games` DISABLE KEYS */;
 INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, `backendflags`, `disabledservices`, `keylist`, `keytypelist`) VALUES
+	(0, 'gmtest', NULL, 'Test / demo / temporary', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\mymaxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1\\0'),
+	(1, 'bgate', NULL, 'Baldur\'s Gate', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(2, 'blood2', NULL, 'Blood II', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(3, 'bz2', NULL, 'Battlezone 2', 17770, 0, 0, NULL, NULL),
 	(4, 'daikatana', NULL, 'Daikatana', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
@@ -985,7 +987,7 @@ INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, 
 	(1006, 'menofvalor', NULL, 'Men of Valor', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1007, 'srsyndps2', NULL, 'Street Racing Syndicate (PS2)', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1008, 'gc2demo', NULL, 'Ground Control 2 Demo', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
-	(1009, 'fswpc', NULL, 'Full Spectrum Warrior', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password\\teamplay', '\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0'),
+	(1009, 'fswpc', 'R5pZ29', 'Full Spectrum Warrior', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password\\teamplay', '\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0'),
 	(1010, 'soldiersww2', NULL, 'Soldiers: Heroes of World War II', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1011, 'mtxmototrax', NULL, 'MTX MotoTrax', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1012, 'pbfqmv', NULL, 'PlanetBattlefield QuickMatch Vietnam', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
@@ -1152,7 +1154,7 @@ INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, 
 	(1197, 'smackdn2ps2pal', NULL, 'WWE Smackdown vs RAW 2 PAL (PS2)', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1198, 'smackdn2ps2kor', NULL, 'WWE Smackdown vs RAW 2 Korea (PS2)', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(1199, 'fsw10hps2', NULL, 'Full Spectrum Warrior: Ten Hammers (PS2)', 6500, 0, 0, '\\autorecyclegames\\country\\crclevel\\gamemode\\gametype\\gamever\\hostname\\joinable\\manualslotselection\\mapname\\maxplayers\\numplayers\\password\\settings\\spectatorslots', '\\1\\0\\0\\0\\0\\0\\0\\1\\1\\0\\1\\1\\1\\0\\1'),
-	(1200, 'fsw10hpc', NULL, 'Full Spectrum Warrior: Ten Hammers (PC)', 6500, 0, 0, '\\autorecyclegames\\country\\crclevel\\gamemode\\gametype\\gamever\\hostname\\joinable\\manualslotselection\\mapname\\maxplayers\\numplayers\\password\\settings\\spectatorslots', '\\1\\0\\0\\0\\0\\0\\0\\1\\1\\0\\1\\1\\1\\1\\1'),
+	(1200, 'fsw10hpc', '6w2X9m', 'Full Spectrum Warrior: Ten Hammers (PC)', 6500, 0, 0, '\\autorecyclegames\\country\\crclevel\\gamemode\\gametype\\gamever\\hostname\\joinable\\manualslotselection\\mapname\\maxplayers\\numplayers\\password\\settings\\spectatorslots', '\\1\\0\\0\\0\\0\\0\\0\\1\\1\\0\\1\\1\\1\\1\\1'),
 	(1201, 'fsw10hps2kor', NULL, 'Full Spectrum Warrior: Ten Hammers (Korea, PS2)', 6500, 0, 0, '\\country\\crclevel\\gamemode\\gametype\\gamever\\hostname\\joinable\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\0\\1\\1\\1'),
 	(1202, 'fsw10hps2pal', NULL, 'Full Spectrum Warrior: Ten Hammers (PAL, PS2)', 6500, 0, 0, '\\autorecyclegames\\country\\crclevel\\gamemode\\gametype\\gamever\\hostname\\joinable\\manualslotselection\\mapname\\maxplayers\\numplayers\\password\\settings\\spectatorslots', '\\1\\0\\0\\0\\0\\0\\0\\1\\1\\0\\1\\1\\1\\0\\1'),
 	(1203, 'swbfront2pc', NULL, 'Star Wars Battlefront 2 PC', 6500, 0, 0, NULL, NULL),
@@ -2876,9 +2878,7 @@ INSERT INTO `games` (`id`, `gamename`, `secretkey`, `description`, `queryport`, 
 	(2983, 'jbondmv2ds', NULL, 'James Bond Non Movie 2 (2010) (DS)', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
 	(2984, 'jbondmv2dsam', NULL, 'James Bond Non Movie 2  Automatch (2010) (DS)', 6500, 0, 0, NULL, NULL),
 	(2985, 'casinotourwii', NULL, 'Casino Tournament (Wii)', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1'),
-	(2986, 'casinotourwiiam', NULL, 'Casino Tournament  Automatch (Wii)', 6500, 0, 0, NULL, NULL),
-	(0, 'gmtest', NULL, 'Test / demo / temporary', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\mymaxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1\\0'),
-	(1, 'bgate', NULL, 'Baldur\'s Gate', 6500, 0, 0, '\\country\\gamemode\\gametype\\gamever\\hostname\\mapname\\maxplayers\\numplayers\\password', '\\0\\0\\0\\0\\0\\0\\1\\1\\1');
+	(2986, 'casinotourwiiam', NULL, 'Casino Tournament  Automatch (Wii)', 6500, 0, 0, NULL, NULL);
 /*!40000 ALTER TABLE `games` ENABLE KEYS */;
 
 -- Dumping structure for table retrospy.grouplist
@@ -2894,7 +2894,7 @@ CREATE TABLE IF NOT EXISTS `grouplist` (
   `password` int(11) NOT NULL DEFAULT 0,
   `updatetime` int(11) NOT NULL,
   PRIMARY KEY (`groupid`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=2400 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='old game use this to create their game room';
+) ENGINE=MyISAM AUTO_INCREMENT=2400 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='Old games use this to create their game rooms';
 
 -- Dumping data for table retrospy.grouplist: 1,691 rows
 /*!40000 ALTER TABLE `grouplist` DISABLE KEYS */;
