@@ -5,9 +5,15 @@ using System.Text;
 
 namespace ServerBrowser.Entity.Structure
 {
+    /*public class SBKeyValue
+    {
+        SBKeyType Type;
+        object Value;
+    }*/
+
     public class SBRequestPacket
     {
-        public byte QueryLenth { get; protected set; }
+        public byte QueryLength { get; protected set; }
         public byte RequestVersion { get; protected set; }
         public byte ProtocolVersion { get; protected set; }
         public byte EncodingVersion { get; protected set; }
@@ -23,7 +29,7 @@ namespace ServerBrowser.Entity.Structure
 
         public SBRequestPacket(byte[] recv)
         {
-            QueryLenth = recv[1];
+            QueryLength = recv[1];
             RequestVersion = recv[2];
             ProtocolVersion = recv[3];
             EncodingVersion = recv[4];
