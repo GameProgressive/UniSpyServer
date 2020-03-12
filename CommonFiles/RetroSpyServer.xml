@@ -3,7 +3,7 @@
   <Database Type="MySql">  <!--MySql or SQLite-->
     <Port>3306</Port>
     <Hostname>127.0.0.1</Hostname>
-    <Username>retrospy</Username>
+    <Username>root</Username>
     <Password>0000</Password>
     <Databasename>retrospy</Databasename>
     <!-- Preferred - (this is the default). Use SSL if the server supports it.
@@ -18,42 +18,42 @@
   </Database>
   <Servers>
     <ServerConfiguration Name="GPSP">
-      <Hostname>127.0.0.1</Hostname>
+      <Hostname>0.0.0.0</Hostname>
       <MaxConnections>255</MaxConnections>
       <Port>29901</Port>
     </ServerConfiguration>
     <ServerConfiguration Name="GPCM">
-      <Hostname>127.0.0.1</Hostname>
+      <Hostname>0.0.0.0</Hostname>
       <MaxConnections>255</MaxConnections>
       <Port>29900</Port>
     </ServerConfiguration>
     <ServerConfiguration Name="CDKEY">
-      <Hostname>127.0.0.1</Hostname>
+      <Hostname>0.0.0.0</Hostname>
       <MaxConnections>255</MaxConnections>
       <Port>29910</Port>
     </ServerConfiguration>
     <ServerConfiguration Name="SB">
-      <Hostname>127.0.0.1</Hostname>
+      <Hostname>0.0.0.0</Hostname>
       <MaxConnections>255</MaxConnections>
       <Port>28910</Port>
     </ServerConfiguration>
     <ServerConfiguration Name="QR">
-	  <Hostname>127.0.0.1</Hostname>
+	  <Hostname>0.0.0.0</Hostname>
 	  <MaxConnections>255</MaxConnections>
 	  <Port>27900</Port>
     </ServerConfiguration>
     <ServerConfiguration Name="NATNEG">
-      <Hostname>127.0.0.1</Hostname>
+      <Hostname>0.0.0.0</Hostname>
       <MaxConnections>255</MaxConnections>
       <Port>27901</Port>
     </ServerConfiguration>
     <ServerConfiguration Name="GSTATS">
-      <Hostname>127.0.0.1</Hostname>
+      <Hostname>0.0.0.0</Hostname>
       <MaxConnections>255</MaxConnections>
       <Port>29920</Port>
     </ServerConfiguration>
     <ServerConfiguration Name="CHAT">
-      <Hostname>127.0.0.1</Hostname>
+      <Hostname>0.0.0.0</Hostname>
       <MaxConnections>255</MaxConnections>
       <Port>6667</Port>
     </ServerConfiguration>

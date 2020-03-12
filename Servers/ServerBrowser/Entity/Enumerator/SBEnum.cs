@@ -28,7 +28,7 @@ namespace ServerBrowser.Entity.Enumerator
     public enum SBServerListUpdateOption
     {
         SendFieldForAll = 1,
-        NoServerList,
+        NoServerList = 2,
         PushUpdates = 4,
         SendGroups = 32,
         NoListCache = 64,
@@ -62,7 +62,7 @@ namespace ServerBrowser.Entity.Enumerator
     }
     public enum GameServerFlags
     {
-        ServerInfoEndFlag = 0,
+        ServerEnd = 0,
         UnsolicitedUdpFlag = 1,
         PrivateIpFlag = 2,
         ConnectNegotiateFlag = 4,

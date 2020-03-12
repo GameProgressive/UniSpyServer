@@ -16,6 +16,8 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
 
             ByteTools.SubBytes(recv, 2, 4).CopyTo(IP, 0);
             ByteTools.SubBytes(recv, 7, 2).CopyTo(Port, 0);
+            if (BitConverter.IsLittleEndian)
+                Array.Reverse(Port);
         }
     }
 }

@@ -38,6 +38,9 @@
     <Folder Include="Handler\CommandHandler\ServerInfo\" />
     <Folder Include="Entity\Structure\Packet\Request\" />
     <Folder Include="Entity\Structure\Packet\Response\" />
+    <Folder Include="Handler\CommandHandler\ServerList\GetServers\" />
+    <Folder Include="Entity\Interface\" />
+    <Folder Include="Handler\CommandHandler\ServerList\GetServers\Filter\" />
   </ItemGroup>
 
   <ItemGroup>

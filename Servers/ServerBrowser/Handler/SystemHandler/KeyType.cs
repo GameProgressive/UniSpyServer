@@ -1,17 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using ServerBrowser.Entity.Enumerator;
 
 namespace ServerBrowser.Handler.SystemHandler
 {
+    /// <summary>
+    /// all unique value string has 255 limits,
+    /// we do not think there will be a lot of server for each game
+    /// so we parse every value in string format for simplicity
+    /// </summary>
     public class KeyType
     {
-        public static SBKeyType GetKeyType(byte[] data)
+        public SBKeyType GetKeyType(string key, string value)
         {
-            if (data.Length == 1)
+            if (IsByte(key, value))
             {
                 return SBKeyType.Byte;
             }
-            else if (data.Length == 2)
+            else if (IsShort(key, value))
             {
                 return SBKeyType.Short;
             }
@@ -19,6 +26,27 @@ namespace ServerBrowser.Handler.SystemHandler
             {
                 return SBKeyType.String;
             }
+        }
+
+        public bool IsByte(string key, string value)
+        {
+            if (value.Length == 1)
+            {
+                if (key.Contains("numplayers") || key.Contains("maxplayers") || key.Contains("password"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        public bool IsShort(string key, string value)
+        {
+            if (value.Length == 2)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }
