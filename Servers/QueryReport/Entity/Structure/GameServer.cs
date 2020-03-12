@@ -1,6 +1,6 @@
-﻿using QueryReport.Entity.Structure.ReportData;
-using System;
+﻿using System;
 using System.Net;
+using QueryReport.Entity.Structure.ReportData;
 
 namespace QueryReport.Entity.Structure
 {
@@ -22,31 +22,25 @@ namespace QueryReport.Entity.Structure
         /// Last ping packet time
         /// </summary>
         public DateTime LastPing { get; set; }
+        public byte[] PublicIP { get; protected set; }
+        public byte[] PublicPort { get; protected set; }
 
-        public EndPoint RemoteEndPoint { get; protected set; }
-
+        /// <summary>
+        /// Instant key used to verity the client
+        /// </summary>
         public byte[] InstantKey = new byte[4];
         public GameServer(EndPoint endPoint, byte[] instantKey)
         {
-            RemoteEndPoint = endPoint;
+            PublicIP = ((IPEndPoint)endPoint).Address.GetAddressBytes();
+            PublicPort = BitConverter.GetBytes((ushort)((IPEndPoint)endPoint).Port);
             instantKey.CopyTo(InstantKey, 0);
         }
 
-
         public bool IsValidated = false;
-        public byte[] RemotePort
-        {
-            get { return BitConverter.GetBytes(((IPEndPoint)RemoteEndPoint).Port); }
-        }
-        public byte[] RemoteIP
-        {
-            get { return ((IPEndPoint)RemoteEndPoint).Address.GetAddressBytes(); }
-        }
 
-
-        public ServerKey ServerKeyValue = new ServerKey();
-        public PlayerKey  PlayerKeyValue = new PlayerKey();
-        public TeamKey TeamKeyValue = new TeamKey();
+        public ServerKeyValue ServerInfo = new ServerKeyValue();
+        public PlayerKeyValue PlayerInfo = new PlayerKeyValue();
+        public TeamKeyValue TeamInfo = new TeamKeyValue();
 
     }
 }

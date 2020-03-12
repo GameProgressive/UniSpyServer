@@ -15,7 +15,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
         IEnumerable<KeyValuePair<EndPoint, GameServer>> _filteredServers;
         int _totalKeysNumber;
         int _totalValueNumber;
-        public GetServerFromQR(IGetServerAble iServer,string gameName, string filter)
+        public GetServerFromQR(IGetServerAble iServer, string gameName, string filter)
         {
             _filteredServers = new ServerFilter(iServer.GetOnlineServers(gameName), filter).GetFilteredServer();
         }
@@ -23,7 +23,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
         public byte[] GenerateServerKeys(string[] keys)
         {
             List<byte> data = new List<byte>();
-
             //the key lenth
             _totalKeysNumber = keys.Length;
             data.Add((byte)keys.Length);
@@ -51,7 +50,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
             {
                 foreach (var key in keys)
                 {
-                    string temp = server.Value.ServerKeyValue.Data[key];
+                    string temp = server.Value.ServerInfo.Data[key];
                     //data.Add(Convert.ToByte(temp.Length));
                     data.AddRange(Encoding.ASCII.GetBytes(temp));
                     data.Add(0); // Field Seperator
@@ -66,21 +65,48 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
 
             foreach (var server in _filteredServers)
             {
+                // you will only have HasKeysFlag or HasFullRule you can not have both
+                List<byte> infoHeader = new List<byte>();
 
-                //TODO
-                data.Add((byte)GameServerFlags.HasKeysFlag); // Server flags !
-                data.AddRange(server.Value.RemoteIP);
+                infoHeader.Add((byte)GameServerFlags.HasKeysFlag);
+                //we add server public ip here
+                infoHeader.AddRange(server.Value.PublicIP);
+
+                // now we check if there are private ip
+                if (server.Value.ServerInfo.Data.ContainsKey("localip0"))
+                {
+                    infoHeader[0] ^= (byte)GameServerFlags.PrivateIPFlag;
+                    infoHeader.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerInfo.Data["localip0"]));
+                }
+                //TODO we have to check icmp_ip_flag
+
+                //we check host port is standard port or not
+                if (server.Value.ServerInfo.Data.ContainsKey("hostport"))
+                {
+                    if (server.Value.ServerInfo.Data["hostport"] != "6500")
+                    {
+                        infoHeader[0] ^= (byte)GameServerFlags.NonStandardPort;
+                        ushort port = (ushort)uint.Parse(server.Value.ServerInfo.Data["hostport"]);
+                        byte[] bytePort = BitConverter.GetBytes(port);
+                        if (BitConverter.IsLittleEndian)
+                            Array.Reverse(bytePort);
+                        infoHeader.AddRange(bytePort);
+                    }
+                }
+
+                // we check private port here
+                if (server.Value.ServerInfo.Data.ContainsKey("localport"))
+                {
+                    infoHeader[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
+                    infoHeader.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerInfo.Data["localport"]));
+                }
 
                 //We have to numberd string by its sequence
-                for (int uniqueValueIndex = 0; uniqueValueIndex < _totalKeysNumber; uniqueValueIndex++)
+                for (int valueIndex = 0; valueIndex < _totalKeysNumber; valueIndex++)
                 {
-                    data.Add((byte)uniqueValueIndex);
+                    data.Add((byte)valueIndex);
                 }
             }
-
-            data.Add((byte)GameServerFlags.ServerEnd);
-            data.AddRange(new byte[] { 255, 255, 255, 255 });
-
             return data.ToArray();
         }
     }

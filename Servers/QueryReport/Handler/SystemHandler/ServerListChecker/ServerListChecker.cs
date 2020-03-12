@@ -19,7 +19,7 @@ namespace QueryReport.Handler.CommandHandler.ServerList
         }
         private void CheckClientTimeOut(QRServer server)
         {
-            server.ToLog("Check timeout excuted!");
+            Console.WriteLine("Check timeout excuted!");
 
             // Remove servers that havent talked to us in awhile from the server list
             //foreach (string key in QRServer.ServersList.Keys)

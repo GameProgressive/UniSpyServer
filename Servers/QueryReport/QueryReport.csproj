@@ -17,7 +17,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MaxMind.GeoIP2" Version="3.1.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
 
@@ -39,5 +38,6 @@
     <Folder Include="Handler\CommandHandler\Echo\" />
     <Folder Include="Handler\CommandHandler\MessageACK\" />
     <Folder Include="Handler\SystemHandler\ServerListChecker\" />
+    <Folder Include="Handler\SystemHandler\FindGeographicLocation\" />
   </ItemGroup>
 </Project>

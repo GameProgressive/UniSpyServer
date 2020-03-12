@@ -63,10 +63,11 @@ namespace ServerBrowser.Entity.Enumerator
     public enum GameServerFlags
     {
         ServerEnd = 0,
-        UnsolicitedUdpFlag = 1,
-        PrivateIpFlag = 2,
+        UnsolicitedUDPFlag = 1,
+        PrivateIPFlag = 2,
         ConnectNegotiateFlag = 4,
-        ICMPIpFlag = 8,
+        ICMPIPFlag = 8,
+        NonStandardPort = 16,
         NonStandardPrivatePortFlag = 32,
         HasKeysFlag = 64,
         HasFullRulesFlag = 128
