@@ -41,9 +41,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                 case GPErrorCode.Search:
                     return "There was an error searching for a profile.";
                 case GPErrorCode.SearchConnectionFailed:
-                    return "The search attempt failed to connect to the server.	";
+                    return "The search attempt failed to connect to the server.";
                 case GPErrorCode.SearchTimeOut:
-                    return "The search did not return in a timely fashion.	";
+                    return "The search did not return in a timely fashion.";
                 // Check.
                 /////////
                 case GPErrorCode.Check:
@@ -51,7 +51,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                 case GPErrorCode.CheckBadMail:
                     return "No account exists with the provided e-mail address.";
                 case GPErrorCode.CheckBadNick:
-                    return "No such profile exists for the provided e-mail adress.	";
+                    return "No such profile exists for the provided e-mail adress.";
                 case GPErrorCode.CheckBadPassword:
                     return "The password is incorrect.";
 

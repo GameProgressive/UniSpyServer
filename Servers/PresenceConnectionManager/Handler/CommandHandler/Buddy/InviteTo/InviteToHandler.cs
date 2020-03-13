@@ -37,7 +37,7 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
             base.ConstructResponse(session, recv);
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
 
             var user = GPCMServer.LoggedInSession.Values.Where(

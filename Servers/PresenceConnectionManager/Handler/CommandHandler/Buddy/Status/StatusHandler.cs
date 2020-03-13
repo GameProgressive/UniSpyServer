@@ -26,7 +26,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
 
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             session.UserInfo.StatusCode = (GPStatus)_statusCode;
             session.UserInfo.StatusString = recv["statstring"];

@@ -33,7 +33,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
                 return;
             }
         }
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             using (var db = new retrospyContext())
             {

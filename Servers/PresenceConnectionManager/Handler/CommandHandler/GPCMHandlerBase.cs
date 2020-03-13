@@ -10,6 +10,7 @@ namespace PresenceConnectionManager.Handler
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
         protected string _sendingBuffer;
         protected ushort _operationID;
+        protected uint _namespaceid = 0;
 
         protected GPCMHandlerBase(GPCMSession session, Dictionary<string, string> recv)
         {
@@ -26,7 +27,7 @@ namespace PresenceConnectionManager.Handler
                 return;
             }
 
-            DataBaseOperation(session, recv);
+            DataOperation(session, recv);
             if (_errorCode == GPErrorCode.DatabaseError)
             {
                 //TODO
@@ -53,13 +54,16 @@ namespace PresenceConnectionManager.Handler
                     _errorCode = GPErrorCode.Parse;
                 }
             }
-            if (session.UserInfo.SessionKey == 0)
+            if (recv.ContainsKey("namespaceid"))
             {
-                _errorCode = GPErrorCode.NotLoggedIn;
+                if (!uint.TryParse(recv["namespaceid"], out _namespaceid))
+                {
+                    _errorCode = GPErrorCode.Parse;
+                }
             }
         }
 
-        protected virtual void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv) { }
+        protected virtual void DataOperation(GPCMSession session, Dictionary<string, string> recv) { }
 
         protected virtual void ConstructResponse(GPCMSession session, Dictionary<string, string> recv) { }
 

@@ -26,7 +26,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             try
             {

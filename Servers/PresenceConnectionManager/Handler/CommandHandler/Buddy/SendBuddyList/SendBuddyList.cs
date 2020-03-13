@@ -28,7 +28,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
             base.ConstructResponse(session, recv);
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             if (session.UserInfo.BuddiesSent)
                 return;

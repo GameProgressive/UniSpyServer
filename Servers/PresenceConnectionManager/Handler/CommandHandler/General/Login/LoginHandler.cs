@@ -21,6 +21,10 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
+            if (session.UserInfo.SessionKey == 0)
+            {
+                _errorCode = GPErrorCode.NotLoggedIn;
+            }
             if (recv.ContainsKey("id"))
             {
                 if (!ushort.TryParse(recv["id"], out _operationID))
@@ -50,7 +54,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 return;
             }
 
-            DataBaseOperation(session, recv);
+            DataOperation(session, recv);
             if (_errorCode != GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
@@ -184,7 +188,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             session.UserInfo.LoginProcess = LoginStatus.Completed;
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
 
             switch (session.UserInfo.LoginType)

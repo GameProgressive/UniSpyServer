@@ -23,7 +23,7 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
             }
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             //Check if the friend is online
             //if(online)

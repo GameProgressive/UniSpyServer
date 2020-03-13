@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
         {
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             if (session.UserInfo.BlockListSent)
                 return;

@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General.Logout
         {
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             GPCMServer.LoggedInSession.Remove(session.Id, out _);
         }

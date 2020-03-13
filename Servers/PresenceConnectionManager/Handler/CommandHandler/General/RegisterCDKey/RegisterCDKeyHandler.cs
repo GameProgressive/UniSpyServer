@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Handler.General.RegisterCDKey
             if (!recv.ContainsKey("cdkeyenc"))
                 _errorCode = Enumerator.GPErrorCode.Parse;
         }
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             using (var db = new retrospyContext())
             {

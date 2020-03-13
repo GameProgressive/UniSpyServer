@@ -9,6 +9,7 @@ using PresenceConnectionManager.Handler.Profile.NewProfile;
 using PresenceConnectionManager.Handler.Profile.RegisterNick;
 using PresenceConnectionManager.Handler.Profile.UpdatePro;
 using PresenceConnectionManager.Handler.Profile.UpdateUI;
+using PresenceConnectionManager.Handler.Profile.NewUser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,6 +57,7 @@ namespace PresenceConnectionManager.Handler
                         StatusHandler status = new StatusHandler(session, recv);
                         break;
                     case "newuser"://create an new user
+                        NewUserHandler newUser = new NewUserHandler(session, recv);
                         break;
                     case "addblock"://add an user to our block list
                         AddBlockHandler addBlock = new AddBlockHandler(session, recv);
