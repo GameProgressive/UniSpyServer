@@ -100,7 +100,8 @@ namespace GameSpyLib.Common
             return a;
         }
 
-        /// <summary>
+
+        /// </summary>
         /// Converts a trimmed presence message from the client string to a keyValue pair dictionary
         /// </summary>
         /// <param name="parts">The array of data from the client</param>

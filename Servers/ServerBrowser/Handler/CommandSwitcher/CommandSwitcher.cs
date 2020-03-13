@@ -18,7 +18,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.PlayerSearchRequest:
                     break;
                 case SBClientRequestType.ServerInfoRequest:
-                    new ServerInfoHandler(session, recv);
+                    new ServerRulesHandler(session, recv);
                     break;
                 default:
                     session.UnKnownDataReceived(recv);

@@ -9,7 +9,7 @@ namespace ServerBrowser.Entity.Interface
     /// We do not want to care about which method system
     /// using to get the servers' information, we just need the data.
     /// </summary>
-    public interface IGetServerAble
+    public interface IGetServerable
     {
         /// <summary>
         /// Get online servers by game name

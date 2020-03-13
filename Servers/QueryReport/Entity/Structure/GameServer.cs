@@ -28,19 +28,29 @@ namespace QueryReport.Entity.Structure
         /// <summary>
         /// Instant key used to verity the client
         /// </summary>
-        public byte[] InstantKey = new byte[4];
+        public byte[] InstantKey;
+
+        public bool IsValidated = false;
+
+
+        public ServerData Server { get; set; }
+        public PlayerData Player { get; set; }
+        public TeamData Team { get; set; }
+
         public GameServer(EndPoint endPoint, byte[] instantKey)
         {
+            InstantKey = new byte[4];
+            Server = new ServerData();
+            Player = new PlayerData();
+            Team = new TeamData();
             PublicIP = ((IPEndPoint)endPoint).Address.GetAddressBytes();
             PublicPort = BitConverter.GetBytes((ushort)((IPEndPoint)endPoint).Port);
             instantKey.CopyTo(InstantKey, 0);
         }
 
-        public bool IsValidated = false;
 
-        public ServerKeyValue ServerInfo = new ServerKeyValue();
-        public PlayerKeyValue PlayerInfo = new PlayerKeyValue();
-        public TeamKeyValue TeamInfo = new TeamKeyValue();
+
+
 
     }
 }

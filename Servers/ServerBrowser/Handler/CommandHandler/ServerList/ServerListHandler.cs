@@ -16,7 +16,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         private byte[] _clientRemoteIP;
         private byte[] _clientRemotePort;
         private ServerListPacket _sbRequest;
-        GetServerFromQR _getServerFromQR;
+        GetServersFromQR _getServerFromQR;
         private readonly byte[] _AllServersEndFlag = new byte[] { 0, 255, 255, 255, 255 };
         public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
 
@@ -34,7 +34,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         public override void DataOperation(SBSession session, byte[] recv)
         {
             //we can use GetServersFromNetwork class in the future
-            _getServerFromQR = new GetServerFromQR(new GetServersFromMemory(), _sbRequest.GameName, _sbRequest.Filter);
+            _getServerFromQR = new GetServersFromQR(new GetServersFromMemory(), _sbRequest.GameName, _sbRequest.Filter);
         }
 
         public override void ConstructResponse(SBSession session, byte[] recv)

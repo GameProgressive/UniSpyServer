@@ -4,13 +4,14 @@ using System.Net;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Interface;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
+namespace ServerBrowser.Handler.CommandHandler.ServerInfo.GetServer
 {
-    /// <summary>
-    /// This class will get server list  from network
-    /// </summary>
-    public class GetServersFromNetwork:IGetServerable
+    public class GetServerFromNetwork:IGetServerable
     {
+        public GetServerFromNetwork()
+        {
+        }
+
         public IEnumerable<KeyValuePair<EndPoint, GameServer>> GetOnlineServers(string serverName)
         {
             throw new NotImplementedException();

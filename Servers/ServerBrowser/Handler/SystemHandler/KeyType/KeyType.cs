@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using ServerBrowser.Entity.Enumerator;
 
-namespace ServerBrowser.Handler.SystemHandler
+namespace ServerBrowser.Handler.SystemHandler.KeyType
 {
     /// <summary>
     /// all unique value string has 255 limits,

@@ -35,12 +35,16 @@
     <Folder Include="Handler\CommandHandler\ServerList\" />
     <Folder Include="Handler\SystemHandler\" />
     <Folder Include="Entity\Structure\Packet\" />
-    <Folder Include="Handler\CommandHandler\ServerInfo\" />
+    <Folder Include="Handler\CommandHandler\ServerRules\" />
     <Folder Include="Entity\Structure\Packet\Request\" />
     <Folder Include="Entity\Structure\Packet\Response\" />
     <Folder Include="Handler\CommandHandler\ServerList\GetServers\" />
     <Folder Include="Entity\Interface\" />
     <Folder Include="Handler\CommandHandler\ServerList\GetServers\Filter\" />
+    <Folder Include="Handler\SystemHandler\KeyType\" />
+    <Folder Include="Handler\CommandHandler\GetAdHocData\" />
+    <Folder Include="Handler\CommandHandler\ServerRules\GetServer\" />
+    <Folder Include="Handler\CommandHandler\KeepAlive\" />
   </ItemGroup>
 
   <ItemGroup>

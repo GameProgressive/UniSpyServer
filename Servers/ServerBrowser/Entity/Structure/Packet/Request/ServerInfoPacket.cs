@@ -3,21 +3,22 @@ using GameSpyLib.Encryption;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {
-    public class ServerInfoPacket
+    public class ServerRulesPacket
     {
-        public byte[] IP { get; protected set; }
-        public byte[] Port { get; protected set; }
-        
+        public string IP { get; protected set; }
+        public string Port { get; protected set; }
 
-        public ServerInfoPacket(byte[] recv)
+
+        public ServerRulesPacket(byte[] recv)
         {
-            IP = new byte[4];
-            Port = new byte[2];
-
-            ByteTools.SubBytes(recv, 2, 4).CopyTo(IP, 0);
-            ByteTools.SubBytes(recv, 7, 2).CopyTo(Port, 0);
+            IP = string.Format($"{recv[2]}.{recv[3]}.{recv[4]}.{recv[5]}");
+            ushort port;
+            port = BitConverter.ToUInt16(ByteTools.SubBytes(recv, 7, 2));
+            byte[] temp = new byte[2];
+            ByteTools.SubBytes(recv, 7, 2).CopyTo(temp, 0);
             if (BitConverter.IsLittleEndian)
-                Array.Reverse(Port);
+                Array.Reverse(temp);
+            port = BitConverter.ToUInt16(temp);
         }
     }
 }

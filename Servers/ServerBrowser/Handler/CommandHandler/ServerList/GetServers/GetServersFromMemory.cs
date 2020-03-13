@@ -7,12 +7,12 @@ using ServerBrowser.Entity.Interface;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
 {
-    public class GetServersFromMemory:IGetServerAble
+    public class GetServersFromMemory:IGetServerable
     {
         public IEnumerable<KeyValuePair<EndPoint, GameServer>> GetOnlineServers(string gameName)
         {
            return QueryReport.Server.QRServer.GameServerList.
-              Where(c => c.Value.ServerInfo.Data["gamename"]
+              Where(c => c.Value.Server.StandardKeyValue["gamename"]
               == gameName);
         }
     }
