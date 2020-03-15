@@ -66,14 +66,15 @@ namespace PresenceConnectionManager
         //when a user is loged in we update the sessionkey and the Guid to database
         protected override void OnConnected()
         {
+            Remote = Socket.RemoteEndPoint;
             UserInfo.LoginProcess = LoginStatus.Connected;
-            ToLog($"[Conn] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
+            ToLog($"[Conn] ID:{Id} IP:{Remote.ToString()}");
             SendServerChallenge();
         }
         protected override void OnDisconnected()
         {
             UserInfo.LoginProcess = LoginStatus.Disconnected;
-            ToLog($"[Disc] ID:{Id} IP:{Server.Endpoint.Address.ToString()}");
+            ToLog($"[Disc] ID:{Id} IP:{Remote.ToString()}");
             RemoveGuidAndSessionKeyFromDatabase();
         }
 
