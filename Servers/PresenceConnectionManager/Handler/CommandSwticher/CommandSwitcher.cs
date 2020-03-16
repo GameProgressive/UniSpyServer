@@ -28,7 +28,7 @@ namespace PresenceConnectionManager.Handler
                     //case "inviteto":
                     //    InviteToHandler.InvitePlayer(session, recv);
                     //    break;
-                    case "login"://login to gamespy
+                    case "login"://login to retrospy
                         LoginHandler login = new LoginHandler(session, recv);
                         break;
                     case "getprofile"://get profile of a player
@@ -49,7 +49,7 @@ namespace PresenceConnectionManager.Handler
                     case "registernick"://update user's uniquenick
                         RegisterNickHandler register = new RegisterNickHandler(session, recv);
                         break;
-                    case "logout":
+                    case "logout"://logout from retrospy
                         session.Disconnect();
                         GPCMServer.LoggedInSession.TryRemove(session.Id, out _);
                         break;
@@ -65,7 +65,7 @@ namespace PresenceConnectionManager.Handler
                     case "ka":
                         //KAHandler.SendKeepAlive(session);
                         break;
-                    case "newprofile":
+                    case "newprofile"://create an new profile
                         NewProfileHandler newProfile = new NewProfileHandler(session, recv);
                         break;
                     default:

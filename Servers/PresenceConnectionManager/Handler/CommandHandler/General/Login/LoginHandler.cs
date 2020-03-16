@@ -21,10 +21,6 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            if (session.UserInfo.SessionKey == 0)
-            {
-                _errorCode = GPErrorCode.NotLoggedIn;
-            }
             if (recv.ContainsKey("id"))
             {
                 if (!ushort.TryParse(recv["id"], out _operationID))
