@@ -57,7 +57,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
         //}
 
 
-        protected override void DatabaseOperation(GStatsSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
         {
            
             //search database for user's password

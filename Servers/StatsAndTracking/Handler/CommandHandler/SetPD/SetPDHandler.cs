@@ -46,7 +46,7 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
             }
 
         }
-        protected override void DatabaseOperation(GStatsSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
         {
             using (var db = new retrospyContext())
             {

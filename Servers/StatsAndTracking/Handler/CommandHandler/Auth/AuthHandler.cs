@@ -9,7 +9,7 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
         public AuthHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
-        protected override void DatabaseOperation(GStatsSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
         {
             //we have to verify the challenge response from the game, the response challenge is computed as
             //len = sprintf(resp, "%d%s",g_crc32(challenge,(int)strlen(challenge)), gcd_secret_key);

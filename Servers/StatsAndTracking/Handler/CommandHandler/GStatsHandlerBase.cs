@@ -22,7 +22,7 @@ namespace StatsAndTracking.Handler.CommandHandler
                 session.ToLog(ErrorMessage.ToMsg(_errorCode));
                 return;
             }
-            DatabaseOperation(session, recv);
+            DataOperation(session, recv);
             if (_errorCode == GstatsErrorCode.Database)
             {
                 session.ToLog(ErrorMessage.ToMsg(_errorCode));
@@ -40,28 +40,23 @@ namespace StatsAndTracking.Handler.CommandHandler
 
         protected virtual void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
         {
-            //worms 3d use id not lid so we added conditions here
-            if (!recv.ContainsKey("lid") || !recv.ContainsKey("id"))
-            {
-                _errorCode = GstatsErrorCode.Parse;
-                return;
-            }
-
             if (recv.ContainsKey("lid"))
+            {
                 if (!uint.TryParse(recv["lid"], out _localId))
                 {
                     _errorCode = GstatsErrorCode.Parse;
-                    return;
                 }
-
+            }
+            //worms 3d use id not lid so we added an condition here
             if (recv.ContainsKey("id"))
+            {
                 if (!uint.TryParse(recv["id"], out _localId))
                 {
                     _errorCode = GstatsErrorCode.Parse;
-                    return;
                 }
+            }
         }
-        protected virtual void DatabaseOperation(GStatsSession session, Dictionary<string, string> recv)
+        protected virtual void DataOperation(GStatsSession session, Dictionary<string, string> recv)
         { }
         protected virtual void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
         { }
