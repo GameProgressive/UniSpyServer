@@ -40,17 +40,26 @@ namespace StatsAndTracking.Handler.CommandHandler
 
         protected virtual void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
         {
-            if (recv.ContainsKey("lid"))
+            //worms 3d use id not lid so we added conditions here
+            if (!recv.ContainsKey("lid") || !recv.ContainsKey("id"))
             {
+                _errorCode = GstatsErrorCode.Parse;
+                return;
+            }
+
+            if (recv.ContainsKey("lid"))
                 if (!uint.TryParse(recv["lid"], out _localId))
                 {
                     _errorCode = GstatsErrorCode.Parse;
+                    return;
                 }
-            }
-            else
-            {
-                _errorCode = GstatsErrorCode.Parse;
-            }
+
+            if (recv.ContainsKey("id"))
+                if (!uint.TryParse(recv["id"], out _localId))
+                {
+                    _errorCode = GstatsErrorCode.Parse;
+                    return;
+                }
         }
         protected virtual void DatabaseOperation(GStatsSession session, Dictionary<string, string> recv)
         { }
