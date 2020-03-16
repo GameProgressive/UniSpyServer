@@ -33,16 +33,16 @@ namespace QueryReport.Entity.Structure
         public bool IsValidated = false;
 
 
-        public ServerData Server { get; set; }
-        public PlayerData Player { get; set; }
-        public TeamData Team { get; set; }
+        public ServerData ServerData { get; set; }
+        public PlayerData PlayerData { get; set; }
+        public TeamData TeamData { get; set; }
 
         public GameServer(EndPoint endPoint, byte[] instantKey)
         {
             InstantKey = new byte[4];
-            Server = new ServerData();
-            Player = new PlayerData();
-            Team = new TeamData();
+            ServerData = new ServerData();
+            PlayerData = new PlayerData();
+            TeamData = new TeamData();
             PublicIP = ((IPEndPoint)endPoint).Address.GetAddressBytes();
             PublicPort = BitConverter.GetBytes((ushort)((IPEndPoint)endPoint).Port);
             instantKey.CopyTo(InstantKey, 0);

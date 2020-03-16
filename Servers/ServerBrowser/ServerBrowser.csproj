@@ -45,6 +45,7 @@
     <Folder Include="Handler\CommandHandler\GetAdHocData\" />
     <Folder Include="Handler\CommandHandler\ServerRules\GetServer\" />
     <Folder Include="Handler\CommandHandler\KeepAlive\" />
+    <Folder Include="Handler\CommandHandler\TestHandler\" />
   </ItemGroup>
 
   <ItemGroup>

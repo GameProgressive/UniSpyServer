@@ -25,7 +25,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             base.CheckRequest(session, recv);
             //save client challenge in _sbRequest
             _sbRequest = new ServerListPacket(recv);
-
             //this is client public ip and port
             IPEndPoint remote = (IPEndPoint)session.Socket.RemoteEndPoint;
             _clientRemoteIP = remote.Address.GetAddressBytes();
@@ -39,19 +38,23 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
-            List<byte> dataList = new List<byte>();
+            List<byte> serversList = new List<byte>();
+
             //first add client public ip and port
-            dataList.AddRange(_clientRemoteIP);
-            dataList.AddRange(_clientRemotePort);
+            serversList.AddRange(_clientRemoteIP);
+            serversList.AddRange(_clientRemotePort);
 
             //add server keys and keytypes
-            dataList.AddRange(_getServerFromQR.GenerateServerKeys(_sbRequest.Keys));
-            //add server unique values
-            dataList.AddRange(_getServerFromQR.GenerateUniqueValues(_sbRequest.Keys));
+            serversList.AddRange(_getServerFromQR.GenerateServerKeys(_sbRequest.Keys));
+
+            //we use NTS string so total unique value list is 0
+            serversList.Add(0);
+
             //add server infomation such as public ip etc.
-            dataList.AddRange(_getServerFromQR.GenerateServerInfos());
+            serversList.AddRange(_getServerFromQR.GenerateServerInfos(_sbRequest.Keys));
+
             //after all server information is added we add the end flag
-            dataList.AddRange(_AllServersEndFlag);
+            serversList.AddRange(_AllServersEndFlag);
 
             //TODO
             // ADDHOC data
@@ -74,15 +77,30 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     return;
                 }
             }
+            string serverChallenge = "0000000000";
 
-            byte[] plainText = dataList.ToArray();
+
+            List<byte> cryptHeader = new List<byte>();
+            // we add the message length here
+            cryptHeader.Add(2 ^ 0xEC);
+            cryptHeader.AddRange(new byte[] { 0, 0 });
+            cryptHeader.Add((byte)(serverChallenge.Length ^ 0xEA));
+            cryptHeader.AddRange(Encoding.ASCII.GetBytes(serverChallenge));
+            //we add game flag here
+
+           
+            
+            byte[] plainText = serversList.ToArray();
+
+
             session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(plainText)}");
 
-            EnctypeX enx = new EnctypeX();
-            _sendingBuffer = enx.EncryptData(secretKey, _sbRequest.Challenge, plainText, 0);
+            GOAEncryption enc = new GOAEncryption(secretKey, _sbRequest.Challenge, serverChallenge);
+            cryptHeader.AddRange(enc.Encrypt(plainText));
+           serversList.InsertRange(0, cryptHeader);
+            _sendingBuffer = serversList.ToArray();
+            session.EncState = enc.State;
 
-            //save encryption key so we can use in serverinfo request
-            session.EncXKey = enx._encxkey;
         }
     }
 }

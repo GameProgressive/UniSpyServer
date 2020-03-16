@@ -12,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
         public IEnumerable<KeyValuePair<EndPoint, GameServer>> GetOnlineServers(string gameName)
         {
            return QueryReport.Server.QRServer.GameServerList.
-              Where(c => c.Value.Server.StandardKeyValue["gamename"]
+              Where(c => c.Value.ServerData.StandardKeyValue["gamename"]
               == gameName);
         }
     }

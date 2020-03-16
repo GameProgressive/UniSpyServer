@@ -42,9 +42,9 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
                 teamData = dataPartition.Substring(teamPos - 1, teamLength);
 
-                _gameServer.Server.Update(serverData,endPoint);
-                _gameServer.Player.Update(playerData);
-                _gameServer.Team.Update(teamData);
+                _gameServer.ServerData.Update(serverData,endPoint);
+                _gameServer.PlayerData.Update(playerData);
+                _gameServer.TeamData.Update(teamData);
                 _gameServer.LastHeartBeatPacket = DateTime.Now;
             }
             else

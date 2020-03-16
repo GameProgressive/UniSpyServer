@@ -16,7 +16,7 @@ namespace GameSpyLib.Encryption
 
     public class GOAEncryption
     {
-        GOACryptState state = new GOACryptState();
+        public GOACryptState State { get; protected set; }
         byte[] _clientChallenge = new byte[8];
         byte[] _serverChallenge;
         /// <summary>
@@ -26,6 +26,7 @@ namespace GameSpyLib.Encryption
         /// <param name="serverChallenge">can be null</param>
         public GOAEncryption(byte[] secKey,byte[] clientChallenge ,byte[] serverChallenge)
         {
+            State = new GOACryptState();
             _clientChallenge = clientChallenge;
             _serverChallenge = serverChallenge;
             InitCryptKey(secKey);
@@ -33,10 +34,15 @@ namespace GameSpyLib.Encryption
 
         public GOAEncryption(string secKey,string clientChallenge, string serverChallenge)
         {
-            byte[] secretKey = Encoding.ASCII.GetBytes(secKey);
+            State = new GOACryptState();
             _clientChallenge = Encoding.ASCII.GetBytes(clientChallenge);
             _serverChallenge = Encoding.ASCII.GetBytes(serverChallenge);
-            InitCryptKey(secretKey);
+            InitCryptKey(Encoding.ASCII.GetBytes(secKey));
+        }
+
+        public GOAEncryption(GOACryptState state)
+        {
+            State = state;
         }
 
         /// <summary>
@@ -60,8 +66,6 @@ namespace GameSpyLib.Encryption
             GOACryptInit();
         }
 
-
-
         private void GOACryptInit()
         {
             uint i;
@@ -77,7 +81,7 @@ namespace GameSpyLib.Encryption
             //generate ascii table
             for (i = 0; i < 256; i++)
             {
-                state.cards[i] = (byte)i;
+                State.cards[i] = (byte)i;
             }
 
             toswap = 0;
@@ -86,9 +90,9 @@ namespace GameSpyLib.Encryption
             for (i = 255; i > 0; i--)
             {
                 toswap = KeyRand(i, ref rsum, ref keypos);
-                swaptemp = state.cards[i];
-                state.cards[i] = state.cards[toswap];
-                state.cards[toswap] = swaptemp;
+                swaptemp = State.cards[i];
+                State.cards[i] = State.cards[toswap];
+                State.cards[toswap] = swaptemp;
             }
 
             // Initialize the indices and data dependencies.
@@ -96,53 +100,12 @@ namespace GameSpyLib.Encryption
             // to reduce what is known about the state of the state.cards
             // when the first byte is emitted.
 
-            state.rotor = state.cards[1];
-            state.ratchet = state.cards[3];
-            state.avalanche = state.cards[5];
-            state.last_plain = state.cards[7];
-            state.last_cipher = state.cards[rsum];
+            State.rotor = State.cards[1];
+            State.ratchet = State.cards[3];
+            State.avalanche = State.cards[5];
+            State.last_plain = State.cards[7];
+            State.last_cipher = State.cards[rsum];
 
-        }
-
-        private void GOANonChallengeHashInit()
-        {
-
-            // Initialize the indices and data dependencies.
-            byte i, j;
-            state.rotor = 1;
-            state.ratchet = 3;
-            state.avalanche = 5;
-            state.last_plain = 7;
-            state.last_cipher = 11;
-
-            // Start with state.cards all in inverse order.
-            for (i = 0, j = 255; i <= 255; i++, j--)
-            {
-                state.cards[i] = j;
-            }
-
-        }
-        byte swaptemp;
-        private byte GOAEncryptEachByte(byte b)
-        {
-            
-            state.ratchet = (byte)(state.ratchet + state.cards[state.rotor++]);
-            swaptemp = state.cards[state.last_cipher];
-            state.cards[state.last_cipher] = state.cards[state.ratchet];
-            state.cards[state.ratchet] = state.cards[state.last_plain];
-            state.cards[state.last_plain] = state.cards[state.rotor];
-            state.cards[state.rotor] = swaptemp;
-            state.avalanche = (byte)(state.avalanche + state.cards[swaptemp]);
-
-
-            state.last_cipher =
-                (byte)(b ^ state.cards[(state.cards[state.avalanche] + state.cards[state.rotor]) & 0xFF] ^
-       state.cards[state.cards[(state.cards[state.last_plain] +
-       state.cards[state.last_cipher] +
-       state.cards[state.ratchet]) & 0xFF]]);
-            state.last_plain = b;
-
-            return state.last_cipher;
         }
 
         public byte[] Encrypt(string plainStr)
@@ -157,10 +120,52 @@ namespace GameSpyLib.Encryption
             byte[] cipherText = new byte[plainText.Length];
             for (i = 0; i < plainText.Length; i++)
             {
-                cipherText[i] = GOAEncryptEachByte(plainText[i]);
+                cipherText[i] = GOAEncryptByteShift(plainText[i]);
             }
             return cipherText;
         }
+
+        private void GOANonChallengeHashInit()
+        {
+
+            // Initialize the indices and data dependencies.
+            byte i, j;
+            State.rotor = 1;
+            State.ratchet = 3;
+            State.avalanche = 5;
+            State.last_plain = 7;
+            State.last_cipher = 11;
+
+            // Start with state.cards all in inverse order.
+            for (i = 0, j = 255; i <= 255; i++, j--)
+            {
+                State.cards[i] = j;
+            }
+
+        }
+
+        private byte GOAEncryptByteShift(byte b)
+        {
+            byte swaptemp;
+            State.ratchet = (byte)(State.ratchet + State.cards[State.rotor++]);
+            swaptemp = State.cards[State.last_cipher];
+            State.cards[State.last_cipher] = State.cards[State.ratchet];
+            State.cards[State.ratchet] = State.cards[State.last_plain];
+            State.cards[State.last_plain] = State.cards[State.rotor];
+            State.cards[State.rotor] = swaptemp;
+            State.avalanche = (byte)(State.avalanche + State.cards[swaptemp]);
+
+
+            State.last_cipher =
+                (byte)(b ^ State.cards[(State.cards[State.avalanche] + State.cards[State.rotor]) & 0xFF] ^
+       State.cards[State.cards[(State.cards[State.last_plain] +
+       State.cards[State.last_cipher] +
+       State.cards[State.ratchet]) & 0xFF]]);
+            State.last_plain = b;
+
+            return State.last_cipher;
+        }
+
 
         /// <summary>
         /// Generate permutation index position
@@ -189,7 +194,7 @@ namespace GameSpyLib.Encryption
 
             do
             {
-                rsum = (byte)(state.cards[rsum] + _clientChallenge[keypos++]);
+                rsum = (byte)(State.cards[rsum] + _clientChallenge[keypos++]);
 
                 if (keypos >= _clientChallenge.Length)
                 {

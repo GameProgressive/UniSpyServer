@@ -7,10 +7,10 @@ using GameSpyLib.Logging;
 using TcpClient = NetCoreServer.TcpClient;
 namespace GameSpyLib.Network
 {
-    public class TemplateTcpBridge : TcpClient
+    public class TemplateTcpClient : TcpClient
     {
         private string _serverName;
-        public TemplateTcpBridge(string serverName, string hostname, int port) : base(hostname, port)
+        public TemplateTcpClient(string serverName, string hostname, int port) : base(hostname, port)
         {
             _serverName = serverName;
         }

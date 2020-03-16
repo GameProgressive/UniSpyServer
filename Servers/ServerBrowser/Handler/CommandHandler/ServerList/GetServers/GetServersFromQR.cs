@@ -23,18 +23,22 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
         public byte[] GenerateServerKeys(string[] keys)
         {
             List<byte> data = new List<byte>();
-            //the key lenth
+
             _totalKeysNumber = keys.Length;
-            data.Add((byte)keys.Length);
+
+            data.Add((byte)_totalKeysNumber);
 
             //The following byte should be keyType: maybe serverkey playerkey teamkey
-            foreach (var field in keys)
+            foreach (var standardKey in keys)
             {
                 //get every keys key type
                 data.Add((byte)SBKeyType.String);
-                data.AddRange(Encoding.ASCII.GetBytes(field));
+                data.AddRange(Encoding.ASCII.GetBytes(standardKey));
                 data.Add(0);
             }
+
+            //the key lenth
+
             return data.ToArray();
         }
 
@@ -50,28 +54,37 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
             {
                 foreach (var key in keys)
                 {
-                    string temp = server.Value.Server.StandardKeyValue[key];
-                    //data.Add(Convert.ToByte(temp.Length));
+                    string temp = server.Value.ServerData.StandardKeyValue[key];
                     data.AddRange(Encoding.ASCII.GetBytes(temp));
                     data.Add(0); // Field Seperator
+                }
+
+                //fixme we add the server rules here
+                foreach (var customKey in server.Value.ServerData.CustomKeyValue)
+                {
+                    data.AddRange(Encoding.ASCII.GetBytes(customKey.Value));
+                    data.Add(0);
                 }
             }
             return data.ToArray();
         }
 
-        public byte[] GenerateServerInfos()
+        public byte[] GenerateServerInfos(string[] keys)
         {
+
             List<byte> data = new List<byte>();
 
             foreach (var server in _filteredServers)
             {
                 data.AddRange(GenerateInfoHeader(server));
-
-                //We have to generate unique value string index
-                for (int valueIndex = 0; valueIndex < _totalKeysNumber; valueIndex++)
+                //add every value to list
+                foreach (var key in keys)
                 {
-                    data.Add((byte)valueIndex);
+                    data.Add(0xFF);
+                    data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
+                    data.Add(0);
                 }
+
             }
             return data.ToArray();
         }
@@ -81,12 +94,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
             // you will only have HasKeysFlag or HasFullRule you can not have both
             List<byte> infoHeader = new List<byte>();
 
+            //add has key flag
             infoHeader.Add((byte)GameServerFlags.HasKeysFlag);
+
             //we add server public ip here
             infoHeader.AddRange(server.Value.PublicIP);
 
             // now we check if there are private ip
             CheckPrivateIP(infoHeader, server);
+
             //TODO we have to check icmp_ip_flag
 
             //we check host port is standard port or not
@@ -101,25 +117,24 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
         private void CheckPrivateIP(List<byte> infoHeader, KeyValuePair<EndPoint, GameServer> server)
         {
             // now we check if there are private ip
-            if (server.Value.Server.StandardKeyValue.ContainsKey("localip0"))
+            if (server.Value.ServerData.StandardKeyValue.ContainsKey("localip0"))
             {
                 infoHeader[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                var address = IPAddress.Parse(server.Value.Server.StandardKeyValue["localip0"]);
-                address.GetAddressBytes();
-                infoHeader.AddRange(address.GetAddressBytes());
+                byte[] address = IPAddress.Parse(server.Value.ServerData.StandardKeyValue["localip0"]).GetAddressBytes();
+                infoHeader.AddRange(address);
             }
         }
 
         private void CheckNonStandardPort(List<byte> infoHeader, KeyValuePair<EndPoint, GameServer> server)
         {
             //we check host port is standard port or not
-            if (server.Value.Server.StandardKeyValue.ContainsKey("hostport"))
+            if (server.Value.ServerData.StandardKeyValue.ContainsKey("hostport"))
             {
-                if (server.Value.Server.StandardKeyValue["hostport"] != "6500")
+                if (server.Value.ServerData.StandardKeyValue["hostport"] != "6500")
                 {
                     infoHeader[0] ^= (byte)GameServerFlags.NonStandardPort;
                     byte[] port = BitConverter.GetBytes(
-                        ushort.Parse(server.Value.Server.StandardKeyValue["hostport"]));
+                        ushort.Parse(server.Value.ServerData.StandardKeyValue["hostport"]));
                     if (BitConverter.IsLittleEndian)
                     {
                         Array.Reverse(port);
@@ -131,11 +146,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
         private void CheckPrivatePort(List<byte> infoHeader, KeyValuePair<EndPoint, GameServer> server)
         {
             // we check private port here
-            if (server.Value.Server.StandardKeyValue.ContainsKey("localport"))
+            if (server.Value.ServerData.StandardKeyValue.ContainsKey("localport"))
             {
                 infoHeader[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-                byte[] localport = BitConverter.GetBytes(ushort.Parse(server.Value.Server.StandardKeyValue["localport"]));
-                infoHeader.AddRange(localport);
+                byte[] localPort = BitConverter.GetBytes(ushort.Parse(server.Value.ServerData.StandardKeyValue["localport"]));
+                if (BitConverter.IsLittleEndian)
+                {
+                    Array.Reverse(localPort);
+                }
+                infoHeader.AddRange(localPort);
             }
         }
     }
