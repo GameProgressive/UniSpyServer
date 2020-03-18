@@ -29,36 +29,11 @@ namespace ServerBrowser.Entity.Enumerator
     {
         SendFieldForAll = 1,
         NoServerList = 2,
+        AlternateSourceIP=8,
         PushUpdates = 4,
         SendGroups = 32,
         NoListCache = 64,
         LimitResultCount = 128
-    }
-    public enum PlayerSearchOptions
-    {
-        SearchAllGames = 1,
-        SearchLeftSubstring,
-        SearchRightSubString = 4,
-        SearchAnySubString = 8,
-    }
-    public enum SBQueryType
-    {
-        Basic,
-        Full,
-        ICMP
-    }
-    public enum SBErrorCode
-    {
-        Parse,
-        DataOperation,
-        Construct,
-        NoError
-    }
-    public enum SBKeyType
-    {
-        String,
-        Byte,
-        Short
     }
     public enum GameServerFlags
     {

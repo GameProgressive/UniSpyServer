@@ -24,7 +24,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         {
             base.CheckRequest(session, recv);
             //save client challenge in _sbRequest
-            _sbRequest = new ServerListPacket(recv);
+            _sbRequest = new ServerListPacket();
+            _sbRequest.Parse(recv);
             //this is client public ip and port
             IPEndPoint remote = (IPEndPoint)session.Socket.RemoteEndPoint;
             _clientRemoteIP = remote.Address.GetAddressBytes();
@@ -45,13 +46,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             serversList.AddRange(_clientRemotePort);
 
             //add server keys and keytypes
-            serversList.AddRange(_getServerFromQR.GenerateServerKeys(_sbRequest.Keys));
+            serversList.AddRange(_getServerFromQR.GenerateServerKeys(_sbRequest.FieldList));
 
             //we use NTS string so total unique value list is 0
             serversList.Add(0);
 
             //add server infomation such as public ip etc.
-            serversList.AddRange(_getServerFromQR.GenerateServerInfos(_sbRequest.Keys));
+            serversList.AddRange(_getServerFromQR.GenerateServerInfos(_sbRequest.FieldList));
 
             //after all server information is added we add the end flag
             serversList.AddRange(_AllServersEndFlag);
