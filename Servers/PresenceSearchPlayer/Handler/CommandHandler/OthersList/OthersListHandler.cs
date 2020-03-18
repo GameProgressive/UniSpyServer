@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
-    public class OthersListHandler : GPSPHandlerBase
+    public class OthersListHandler : CommandHandlerBase
     {
         public OthersListHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {

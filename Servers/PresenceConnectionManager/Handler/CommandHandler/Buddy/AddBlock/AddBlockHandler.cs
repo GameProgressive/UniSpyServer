@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.AddBlock
 {
-    public class AddBlockHandler : GPCMHandlerBase
+    public class AddBlockHandler : CommandHandlerBase
     {
         private uint _blockProfileid;
         public AddBlockHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)

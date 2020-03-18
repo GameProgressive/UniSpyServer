@@ -5,7 +5,7 @@ namespace PresenceConnectionManager.Handler.Buddy.DelBuddy
     /// <summary>
     /// handles dell buddy request,remove friends from friends list
     /// </summary>
-    public class DelBuddyHandler : GPCMHandlerBase
+    public class DelBuddyHandler : CommandHandlerBase
     {
         //GPCMSession _session;
         //Dictionary<string, string> _recv;

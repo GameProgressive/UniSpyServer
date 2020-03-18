@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {
-    public class CheckHandler : GPSPHandlerBase
+    public class CheckHandler : CommandHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final

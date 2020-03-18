@@ -6,7 +6,7 @@ using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.Echo
 {
-    public class EchoHandler : QRHandlerBase
+    public class EchoHandler : CommandHandlerBase
     {
         public EchoHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
         {

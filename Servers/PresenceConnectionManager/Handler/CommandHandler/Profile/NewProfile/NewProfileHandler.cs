@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.NewProfile
 {
-    public class NewProfileHandler : GPCMHandlerBase
+    public class NewProfileHandler : CommandHandlerBase
     {
         //create a new profile with new nick 
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"

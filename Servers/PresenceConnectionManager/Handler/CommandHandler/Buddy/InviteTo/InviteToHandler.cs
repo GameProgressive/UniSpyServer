@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
     /// <summary>
     /// This function sets which games the local profile can be invited to.
     /// </summary>
-    public class InviteToHandler : GPCMHandlerBase
+    public class InviteToHandler : CommandHandlerBase
     {
         //session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
         protected InviteToHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)

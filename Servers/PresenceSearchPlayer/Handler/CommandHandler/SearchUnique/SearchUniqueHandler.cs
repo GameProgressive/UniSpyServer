@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    public class SearchUniqueHandler : GPSPHandlerBase
+    public class SearchUniqueHandler : CommandHandlerBase
     {
         public SearchUniqueHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {

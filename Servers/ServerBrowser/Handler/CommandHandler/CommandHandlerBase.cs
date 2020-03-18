@@ -3,12 +3,12 @@ using ServerBrowser.Entity.Enumerator;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
-    public class SBHandlerBase
+    public class CommandHandlerBase
     {
         protected SBErrorCode _errorCode = SBErrorCode.NoError;
         protected byte[] _sendingBuffer;
 
-        public SBHandlerBase(SBSession session, byte[] recv)
+        public CommandHandlerBase(SBSession session, byte[] recv)
         {
             Handle(session, recv);
         }

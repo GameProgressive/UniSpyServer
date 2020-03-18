@@ -6,7 +6,7 @@ using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.Challenge
 {
-    public class ChallengeHandler : QRHandlerBase
+    public class ChallengeHandler : CommandHandlerBase
     {
         //we do not need to implement this to check the correctness of the challenge response
         public ChallengeHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)

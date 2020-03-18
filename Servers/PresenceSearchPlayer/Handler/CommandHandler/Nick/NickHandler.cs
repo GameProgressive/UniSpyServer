@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    public class NickHandler : GPSPHandlerBase
+    public class NickHandler : CommandHandlerBase
     {
         public NickHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {

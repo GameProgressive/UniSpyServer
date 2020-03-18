@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
-    public class AddBuddyHandler : GPCMHandlerBase
+    public class AddBuddyHandler : CommandHandlerBase
     {
         public AddBuddyHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {

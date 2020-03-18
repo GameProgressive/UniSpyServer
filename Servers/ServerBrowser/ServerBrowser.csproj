@@ -42,10 +42,10 @@
     <Folder Include="Entity\Interface\" />
     <Folder Include="Handler\CommandHandler\ServerList\GetServers\Filter\" />
     <Folder Include="Handler\SystemHandler\KeyType\" />
-    <Folder Include="Handler\CommandHandler\GetAdHocData\" />
     <Folder Include="Handler\CommandHandler\ServerRules\GetServer\" />
     <Folder Include="Handler\CommandHandler\KeepAlive\" />
     <Folder Include="Handler\CommandHandler\TestHandler\" />
+    <Folder Include="Handler\SystemHandler\AdHoc\" />
   </ItemGroup>
 
   <ItemGroup>

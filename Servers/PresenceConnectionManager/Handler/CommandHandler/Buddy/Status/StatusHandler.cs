@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
 {
-    public class StatusHandler : GPCMHandlerBase
+    public class StatusHandler : CommandHandlerBase
     {
         private uint _statusCode;
         public StatusHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)

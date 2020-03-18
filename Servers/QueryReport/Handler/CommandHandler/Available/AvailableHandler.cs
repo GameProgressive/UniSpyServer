@@ -7,7 +7,7 @@ namespace QueryReport.Handler.CommandHandler.Available
     /// <summary>
     /// AvailableCheckHandler
     /// </summary>
-    public class AvailableHandler : QRHandlerBase
+    public class AvailableHandler : CommandHandlerBase
     {
         private readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
         private readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };

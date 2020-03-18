@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServerBrowser.Handler.CommandHandler.AdHoc
+namespace ServerBrowser.Handler.SystemHandler.AdHoc
 {
     public class AdHocHandler
     {

@@ -2,10 +2,10 @@
 
 namespace CDKey.Handler.CommandHandler
 {
-    public class CDKeyHandlerBase
+    public class CommandHandlerBase
     {
         protected string _sendingBuffer;
-        public CDKeyHandlerBase(CDKeyServer server, Dictionary<string, string> recv)
+        public CommandHandlerBase(CDKeyServer server, Dictionary<string, string> recv)
         {
             Handle(server, recv);
         }

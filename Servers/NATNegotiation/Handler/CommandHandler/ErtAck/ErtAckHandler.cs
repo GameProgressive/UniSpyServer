@@ -4,7 +4,7 @@ using System;
 
 namespace NATNegotiation.Handler.CommandHandler
 {
-    public class ErtACKHandler : NatNegHandlerBase
+    public class ErtACKHandler : CommandHandlerBase
     {
         protected override void ConvertRequest(ClientInfo client, byte[] recv)
         {

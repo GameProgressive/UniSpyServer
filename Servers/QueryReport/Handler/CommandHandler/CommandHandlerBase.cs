@@ -5,11 +5,11 @@ using System.Net;
 
 namespace QueryReport.Handler.CommandHandler
 {
-    public class QRHandlerBase
+    public class CommandHandlerBase
     {
         protected QRErrorCode _errorCode = QRErrorCode.NoError;
         protected byte[] _sendingBuffer;
-        protected QRHandlerBase(QRServer server, EndPoint endPoint, byte[] recv)
+        protected CommandHandlerBase(QRServer server, EndPoint endPoint, byte[] recv)
         {
             Handle(server, endPoint, recv);
         }

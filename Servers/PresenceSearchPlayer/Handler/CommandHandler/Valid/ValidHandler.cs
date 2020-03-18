@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
-    public class ValidHandler : GPSPHandlerBase
+    public class ValidHandler : CommandHandlerBase
     {
         public ValidHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {

@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 {
-    public class NewUserHandler : GPSPHandlerBase
+    public class NewUserHandler : CommandHandlerBase
     {
 
         private string _uniquenick;
@@ -192,7 +192,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         _errorCode = GPErrorCode.Parse;
                     }
                 }
-                    
+
                 if (recv.ContainsKey("gamename"))
                 {
                     _subProfiles.Gamename = recv["gamename"];

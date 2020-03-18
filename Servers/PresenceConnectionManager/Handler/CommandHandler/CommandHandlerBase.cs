@@ -5,14 +5,14 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler
 {
-    public class GPCMHandlerBase
+    public class CommandHandlerBase
     {
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
         protected string _sendingBuffer;
         protected ushort _operationID;
         protected uint _namespaceid = 0;
 
-        protected GPCMHandlerBase(GPCMSession session, Dictionary<string, string> recv)
+        protected CommandHandlerBase(GPCMSession session, Dictionary<string, string> recv)
         {
             Handle(session, recv);
         }

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
-    public class SendBlockList : GPCMHandlerBase
+    public class SendBlockList : CommandHandlerBase
     {
         protected SendBlockList(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {

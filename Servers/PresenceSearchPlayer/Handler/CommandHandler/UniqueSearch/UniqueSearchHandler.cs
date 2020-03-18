@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
-    public class UniqueSearchHandler : GPSPHandlerBase
+    public class UniqueSearchHandler : CommandHandlerBase
     {
         public UniqueSearchHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler
 {
-    public class GPSPHandlerBase
+    public class CommandHandlerBase
     {
         protected GPErrorCode _errorCode = GPErrorCode.NoError;
         /// <summary>
@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected ushort _operationID;
         protected uint _namespaceid = 0;
 
-        protected GPSPHandlerBase(GPSPSession session, Dictionary<string, string> recv)
+        protected CommandHandlerBase(GPSPSession session, Dictionary<string, string> recv)
         {
             Handle(session, recv);
         }

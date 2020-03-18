@@ -6,7 +6,7 @@ using System.Linq;
 namespace PresenceConnectionManager.Handler.Profile.GetProfile
 {
 
-    public class GetProfileHandler : GPCMHandlerBase
+    public class GetProfileHandler : CommandHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         private uint _profileid;

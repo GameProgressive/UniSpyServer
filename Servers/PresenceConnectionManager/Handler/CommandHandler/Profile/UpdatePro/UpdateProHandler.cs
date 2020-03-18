@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
-    public class UpdateProHandler : GPCMHandlerBase
+    public class UpdateProHandler : CommandHandlerBase
     {
         public UpdateProHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {

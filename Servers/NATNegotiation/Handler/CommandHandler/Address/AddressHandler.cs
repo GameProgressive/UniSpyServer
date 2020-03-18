@@ -1,12 +1,12 @@
 ﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler;
+using NATNegotiation.Handler.CommandHandler;
 using System;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class AddressHandler : NatNegHandlerBase
+    public class AddressHandler : CommandHandlerBase
     {
 
         protected override void ConvertRequest(ClientInfo client, byte[] recv)

@@ -6,7 +6,7 @@ using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.KeepAlive
 {
-    public class KeepAliveHandler : QRHandlerBase
+    public class KeepAliveHandler : CommandHandlerBase
     {
         public KeepAliveHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
         {

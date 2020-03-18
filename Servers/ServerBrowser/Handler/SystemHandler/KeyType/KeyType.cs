@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ServerBrowser.Entity.Enumerator;
+﻿using ServerBrowser.Entity.Enumerator;
 
 namespace ServerBrowser.Handler.SystemHandler.KeyType
 {
@@ -10,7 +7,7 @@ namespace ServerBrowser.Handler.SystemHandler.KeyType
     /// we do not think there will be a lot of server for each game
     /// so we parse every value in string format for simplicity
     /// </summary>
-    public class KeyType
+    public class KeyTypeHandler
     {
         public SBKeyType GetKeyType(string key, string value)
         {

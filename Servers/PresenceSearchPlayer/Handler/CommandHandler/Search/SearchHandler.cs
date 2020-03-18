@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 {
-    public class SearchHandler : GPSPHandlerBase
+    public class SearchHandler : CommandHandlerBase
     {
         public SearchHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {

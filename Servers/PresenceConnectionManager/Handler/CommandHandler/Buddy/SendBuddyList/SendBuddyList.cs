@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
     /// <summary>
     /// Send friendlist, friends message, friends add request to player when he logged in.
     /// </summary>
-    public class SendBuddyList : GPCMHandlerBase
+    public class SendBuddyList : CommandHandlerBase
     {
         //**********************************************************
         //\bm\<MESSAGE>\f\<from profileid>\msg\<>\final\

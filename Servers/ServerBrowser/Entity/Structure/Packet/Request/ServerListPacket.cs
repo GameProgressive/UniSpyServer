@@ -11,7 +11,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
     /// </summary>
     public class ServerListPacket
     {
-        public SBErrorCode ErrorCode;
+        public bool IsParsingFinished;
         public short RequestLenth { get; protected set; }
         public byte RequestVersion { get; protected set; }
         public byte ProtocolVersion { get; protected set; }
@@ -33,16 +33,15 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public ServerListPacket()
         {
             SourceIP = new byte[4];
-            ErrorCode = SBErrorCode.NoError;
+            IsParsingFinished = true;
         }
 
         /// <summary>
         /// Parse all value to this class
         /// </summary>
         /// <param name="recv"></param>
-        public void Parse(byte[] recv)
+        public bool Parse(byte[] recv)
         {
-            
             byte[] byteRequestLength = ByteTools.SubBytes(recv, 0, 2);
             if (BitConverter.IsLittleEndian)
             {
@@ -52,8 +51,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
 
             if (RequestLenth != recv.Length)
             {
-                ErrorCode = SBErrorCode.Parse;
-                return;
+                return false;
             }
 
             RequestVersion = recv[2];
@@ -104,6 +102,9 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
                 }
                 MaxServers = BitConverter.ToInt32(byteMaxServer);
             }
+
+
+            return true;
         }
     }
 }

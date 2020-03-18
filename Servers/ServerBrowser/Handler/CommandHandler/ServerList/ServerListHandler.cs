@@ -11,7 +11,7 @@ using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList
 {
-    public class ServerListHandler : SBHandlerBase
+    public class ServerListHandler : CommandHandlerBase
     {
         private byte[] _clientRemoteIP;
         private byte[] _clientRemotePort;
@@ -89,8 +89,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             cryptHeader.AddRange(Encoding.ASCII.GetBytes(serverChallenge));
             //we add game flag here
 
-           
-            
+
+
             byte[] plainText = serversList.ToArray();
 
 
@@ -98,7 +98,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
             GOAEncryption enc = new GOAEncryption(secretKey, _sbRequest.Challenge, serverChallenge);
             cryptHeader.AddRange(enc.Encrypt(plainText));
-           serversList.InsertRange(0, cryptHeader);
+            serversList.InsertRange(0, cryptHeader);
             _sendingBuffer = serversList.ToArray();
             session.EncState = enc.State;
 

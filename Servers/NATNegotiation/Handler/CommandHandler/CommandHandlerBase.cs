@@ -3,10 +3,10 @@ using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Enumerator;
 using NATNegotiation.Entity.Structure;
 
-namespace NATNegotiation.Handler
+namespace NATNegotiation.Handler.CommandHandler
 {
 
-    public class NatNegHandlerBase
+    public class CommandHandlerBase
     {
         protected NNErrorCode _errorCode = NNErrorCode.NoError;
         protected byte[] _sendingBuffer;

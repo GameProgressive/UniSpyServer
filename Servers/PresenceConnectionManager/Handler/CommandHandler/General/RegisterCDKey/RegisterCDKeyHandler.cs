@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.General.RegisterCDKey
 {
-    public class RegisterCDKeyHandler : GPCMHandlerBase
+    public class RegisterCDKeyHandler : CommandHandlerBase
     {
         public RegisterCDKeyHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {

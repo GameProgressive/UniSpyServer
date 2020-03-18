@@ -1,13 +1,13 @@
 ﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler;
+using NATNegotiation.Handler.CommandHandler;
 using NATNegotiation.Handler.SystemHandler;
 using System;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class NatifyHandler : NatNegHandlerBase
+    public class NatifyHandler : CommandHandlerBase
     {
         protected override void ConvertRequest(ClientInfo client, byte[] recv)
         {

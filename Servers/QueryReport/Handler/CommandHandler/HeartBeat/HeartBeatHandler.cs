@@ -8,7 +8,7 @@ using System.Text;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
-    public class HeartBeatHandler : QRHandlerBase
+    public class HeartBeatHandler : CommandHandlerBase
     {
         private GameServer _gameServer;
         public HeartBeatHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)

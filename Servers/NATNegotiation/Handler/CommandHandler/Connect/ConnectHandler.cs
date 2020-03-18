@@ -2,6 +2,7 @@
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler;
+using NATNegotiation.Handler.CommandHandler;
 using NATNegotiation.Handler.SystemHandler;
 using System;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Net;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class ConnectHandler : NatNegHandlerBase
+    public class ConnectHandler : CommandHandlerBase
     {
         public static void SendConnectPacket(NatNegServer server, ClientInfo client, ClientInfo other)
         {

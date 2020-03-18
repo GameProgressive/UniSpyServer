@@ -11,7 +11,7 @@ using System.Linq;
 namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 {
 
-    public class LoginHandler : GPCMHandlerBase
+    public class LoginHandler : CommandHandlerBase
     {
         private Crc16 _crc = new Crc16(Crc16Mode.Standard);
 
