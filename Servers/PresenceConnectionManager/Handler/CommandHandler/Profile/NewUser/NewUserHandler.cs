@@ -164,7 +164,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                 _sendingBuffer = string.Format(@"\nur\{0}\final\", (uint)_errorCode);
             }
             else
-                _sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _subProfiles.Profileid);
+                _sendingBuffer = string.Format(@"\nur\\userid\{0}\profileid\{1}\id\1\final\ ", _users.Userid, _subProfiles.Profileid);
         }
 
         private void UpdateOtherInfo(Dictionary<string, string> recv)
