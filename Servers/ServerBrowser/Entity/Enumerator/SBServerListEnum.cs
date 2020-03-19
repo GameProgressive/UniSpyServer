@@ -30,10 +30,17 @@ namespace ServerBrowser.Entity.Enumerator
 
     public enum SBServerListUpdateOption
     {
+        /// <summary>
+        /// This is used to tell server browser client want main server list (keys and values)
+        /// </summary>
+        SendRequestedField = 0,
         SendFieldForAll = 1,
+        /// <summary>
+        /// this is used to check the connection to server browser
+        /// </summary>
         NoServerList = 2,
-        AlternateSourceIP=8,
         PushUpdates = 4,
+        AlternateSourceIP = 8,
         SendGroups = 32,
         NoListCache = 64,
         LimitResultCount = 128

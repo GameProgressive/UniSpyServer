@@ -21,9 +21,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
         private readonly byte[] _AllServersEndFlag = new byte[] { 0, 255, 255, 255, 255 };
 
-        public ServerListHandler(SBSession session, byte[] recv) : base(session, recv)
-        {
-        }
+        string _secretKey;
+        public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
 
         public override void CheckRequest(SBSession session, byte[] recv)
         {
@@ -36,7 +35,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             //this is client public ip and port
             IPEndPoint remote = (IPEndPoint)session.Socket.RemoteEndPoint;
             _clientRemoteIP = remote.Address.GetAddressBytes();
-            _clientRemotePort = BitConverter.GetBytes((ushort)(remote.Port & 0xFFFF));
+            //TODO   //check what is the default port
+            _clientRemotePort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
         }
 
         public override void DataOperation(SBSession session, byte[] recv)
@@ -54,13 +54,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             serversList.AddRange(_clientRemotePort);
 
             //add server keys and keytypes
-            serversList.AddRange(_getServerFromQR.GenerateServerKeys(_sbRequest.FieldList));
+            serversList.AddRange(_getServerFromQR.GenerateServerKeys(_sbRequest));
 
             //we use NTS string so total unique value list is 0
             serversList.Add(0);
 
             //add server infomation such as public ip etc.
-            serversList.AddRange(_getServerFromQR.GenerateServerInfos(_sbRequest.FieldList));
+            serversList.AddRange(_getServerFromQR.GenerateServerInfos(_sbRequest));
 
             //after all server information is added we add the end flag
             serversList.AddRange(_AllServersEndFlag);
@@ -70,7 +70,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             //dataList.AddRange(GetAddHocData());
 
             //we get secrete key from database
-            string secretKey;
 
             using (var db = new retrospyContext())
             {
@@ -80,7 +79,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
                 if (result.Count() == 1)
                 {
-                    secretKey = result.First().Secretkey;
+                    _secretKey = result.First().Secretkey;
                 }
                 else
                 {
@@ -102,13 +101,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             //we add game flag here
 
             byte[] plainText = serversList.ToArray();
-
             session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(plainText)}");
 
-            GOAEncryption enc = new GOAEncryption(secretKey, _sbRequest.Challenge, serverChallenge);
+            GOAEncryption enc = new GOAEncryption(_secretKey, _sbRequest.Challenge, serverChallenge);
             cryptHeader.AddRange(enc.Encrypt(plainText));
-            serversList.InsertRange(0, cryptHeader);
-            _sendingBuffer = serversList.ToArray();
+
+            _sendingBuffer = cryptHeader.ToArray();
             session.EncState = enc.State;
         }
     }

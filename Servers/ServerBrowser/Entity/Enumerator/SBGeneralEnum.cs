@@ -18,6 +18,7 @@
     public enum SBErrorCode
     {
         Parse,
+        UnSupportedGame,
         DataOperation,
         Construct,
         NoError
