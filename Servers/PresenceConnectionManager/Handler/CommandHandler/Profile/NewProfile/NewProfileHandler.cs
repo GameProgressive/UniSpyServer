@@ -35,6 +35,5 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
                 }
             }
         }
-
     }
 }

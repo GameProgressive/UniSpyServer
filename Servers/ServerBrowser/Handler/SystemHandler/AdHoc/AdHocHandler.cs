@@ -4,6 +4,5 @@ namespace ServerBrowser.Handler.SystemHandler.AdHoc
 {
     public class AdHocHandler
     {
-     
     }
 }

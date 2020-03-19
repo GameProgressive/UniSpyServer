@@ -19,9 +19,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         {
             Handle(session, recv);
         }
+
         public virtual void Handle(GPSPSession session, Dictionary<string, string> recv)
         {
             CheckRequest(session, recv);
+
             if (_errorCode != GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
@@ -29,6 +31,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
             }
 
             DataOperation(session, recv);
+
             if (_errorCode == GPErrorCode.DatabaseError)
             {
                 ErrorMsg.SendGPSPError(session, _errorCode, _operationID);
@@ -36,6 +39,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
             }
 
             ConstructResponse(session, recv);
+
             if (_errorCode == GPErrorCode.ConstructResponseError)
             {
                 ErrorMsg.SendGPSPError(session, GPErrorCode.General, _operationID);
@@ -55,6 +59,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                     session.OperationID = 1;
                 }
             }
+
             if (recv.ContainsKey("namespaceid"))
             {
                 if (!uint.TryParse(recv["namespaceid"], out _namespaceid))

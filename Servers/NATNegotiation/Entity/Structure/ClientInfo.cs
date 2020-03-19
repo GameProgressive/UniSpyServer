@@ -21,13 +21,13 @@ namespace NATNegotiation.Entity.Structure
         public EndPoint RemoteEndPoint;
         public byte[] GameName;
 
-
         public byte[] PublicIP => ((IPEndPoint)RemoteEndPoint).Address.GetAddressBytes();
+
         public byte[] PublicPort => BitConverter.GetBytes(((IPEndPoint)RemoteEndPoint).Port).Take(2).ToArray();
 
         public byte[] InternalIP = new byte[4];
-        public byte[] InternalPort = new byte[2];
 
+        public byte[] InternalPort = new byte[2];
 
         public DateTime ConnectPacketTime;
         public DateTime LastPacketTime;
@@ -49,6 +49,7 @@ namespace NATNegotiation.Entity.Structure
             ClientIndex = init.ClientIndex;
             IsGotInit = true;
         }
+
         public void Parse(ConnectPacket connect)
         {
 

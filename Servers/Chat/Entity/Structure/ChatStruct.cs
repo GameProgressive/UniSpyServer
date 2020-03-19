@@ -29,6 +29,7 @@
         public const int Login = 707;
         public const int GetUDPRelay = 712;
     }
+
     public class ChatError
     {
         public const int NoSuchNICK = 401;
@@ -47,6 +48,7 @@
         public const int Unique_NIick_Expired = 710;
         public const int Register_Nick_Failed = 711;
     }
+
     public class ChatMode
     {
         public const int End = 0;
@@ -65,11 +67,11 @@
         public const int RECEIVE_WALLOPS = 13;
         public const int OPS_OBEY_Channel_LIMIT = 14;
     }
+
     public class GSPeerChatCTX
     {
         public byte GSPeerChat1;
         public byte GSPeerChat2;
         public byte[] GSPeerChatCrypt = new byte[256];
     }
-
 }

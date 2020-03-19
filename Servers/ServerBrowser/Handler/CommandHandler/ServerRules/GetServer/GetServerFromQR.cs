@@ -13,4 +13,3 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo.GetServer
         }
     }
 }
-

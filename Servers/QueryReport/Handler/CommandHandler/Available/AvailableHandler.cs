@@ -32,7 +32,6 @@ namespace QueryReport.Handler.CommandHandler.Available
                     _errorCode = QRErrorCode.Parse;
                     return;
                 }
-
             }
 
             //postfix check

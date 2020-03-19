@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Linq;
+
 namespace Chat.Handler.CommandHandler.CRYPT
 {
     public class CRYPTQuery
@@ -11,8 +12,8 @@ namespace Chat.Handler.CommandHandler.CRYPT
                 var secretkey = from g in db.Games
                                 where g.Gamename == gameName
                                 select g.Secretkey;
-                return secretkey.Count() == 0 ? null : secretkey.First();
 
+                return secretkey.Count() == 0 ? null : secretkey.First();
             }
         }
     }

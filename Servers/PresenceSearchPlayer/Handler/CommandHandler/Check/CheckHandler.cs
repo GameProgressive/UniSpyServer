@@ -14,19 +14,19 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         public CheckHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
+
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             if (!recv.ContainsKey("nick") || !recv.ContainsKey("email") || !recv.ContainsKey("passenc"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
+
             if (!GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
                 _errorCode = GPErrorCode.CheckBadMail;
             }
         }
-
-
 
         protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
@@ -61,6 +61,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
                 }
             }
         }
+
         protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
         {
             if (_errorCode != GPErrorCode.NoError)

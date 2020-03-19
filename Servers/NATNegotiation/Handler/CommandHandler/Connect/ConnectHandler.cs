@@ -29,10 +29,11 @@ namespace NatNegotiation.Handler.CommandHandler
             client.SentConnectPacketTime = DateTime.Now;
             client.IsConnected = true;
 
-
             //send to other client
             if (other == null)
-            { return; }
+            {
+                return; 
+            }
 
             connPacket.RemoteIP = NNFormat.IPToByte(other.RemoteEndPoint);
             connPacket.RemotePort = NNFormat.PortToByte(other.RemoteEndPoint);
@@ -40,7 +41,6 @@ namespace NatNegotiation.Handler.CommandHandler
             buffer = connPacket.GenerateByteArray();
             server.SendAsync(other.RemoteEndPoint, buffer);
             other.SentConnectPacketTime = DateTime.Now;
-
         }
 
         public static void SendDeadHeartBeatNotice(NatNegServer server, ClientInfo client)
@@ -65,26 +65,25 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ProcessInformation(ClientInfo client, byte[] recv)
         {
-
-
-
         }
 
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
-
         }
+
         protected override void SendResponse(NatNegServer server, ClientInfo client)
         {
             var other = NatNegServer.ClientList.Values.Where(
                 c => c.PublicIP.SequenceEqual(_connPacket.RemoteIP)
                 && c.PublicPort.SequenceEqual(_connPacket.RemotePort)
                 );
+
             if (other.Count() < 1)
             {
                 server.ToLog("Can not find client2 that client1 tries to connect!");
                 return;
             }
+
             ClientInfo client2 = other.First();
             _sendingBuffer = _connPacket.GenerateByteArray();
             server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);

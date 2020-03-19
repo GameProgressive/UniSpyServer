@@ -26,7 +26,9 @@ namespace PresenceSearchPlayer
             foreach (string command in commands)
             {
                 if (command.Length < 1)
+                {
                     continue;
+                }
 
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
@@ -35,6 +37,5 @@ namespace PresenceSearchPlayer
                 CommandSwitcher.Switch(this, dict);
             }
         }
-
     }
 }

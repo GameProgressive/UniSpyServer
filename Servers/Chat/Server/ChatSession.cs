@@ -10,7 +10,6 @@ namespace Chat
 {
     public class ChatSession : TemplateTcpSession
     {
-
         public ChatUserInfo chatUserInfo { get; set; }
 
         public ChatSession(TemplateTcpServer server) : base(server)
@@ -18,16 +17,19 @@ namespace Chat
             chatUserInfo = new ChatUserInfo();
         }
 
-
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             if (chatUserInfo.encrypted)
+            {
                 DecryptData(ref buffer, size);
+            }
 
             string data = Encoding.UTF8.GetString(buffer, 0, (int)size);
 
             if (LogWriter.Log.DebugSockets)
+            {
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] IRC data: {1}", ServerName, data);
+            }
 
             HandleIRCCommands(data);
         }
@@ -69,10 +71,14 @@ namespace Chat
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
             if (LogWriter.Log.DebugSockets)
+            {
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] IRC data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+            }
 
             if (chatUserInfo.encrypted)
+            {
                 EncryptData(ref buffer, size);
+            }
 
             return BaseSendAsync(buffer, offset, size);
         }
@@ -89,13 +95,13 @@ namespace Chat
             foreach (string message in messages)
             {
                 if (message.Length < 1)
+                {
                     continue;
+                }
 
                 string[] request = message.Trim(' ').Split(' ');
                 CommandSwitcher.Switch(this, request);
             }
         }
-
     }
 }
-

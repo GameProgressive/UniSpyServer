@@ -7,6 +7,7 @@ namespace MasterServer
     {
         public static readonly string ServerName = "SB";
         public static readonly string ServerName2 = "QR";
+
         public static string BasePath { get; protected set; }
 
         //public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
@@ -27,6 +28,7 @@ namespace MasterServer
 
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;
+
             // Whether accept  args input.
             bool IsInitPathArgAvailable = false;
 
@@ -43,7 +45,6 @@ namespace MasterServer
             foreach (var argument in args)
             {
                 if (IsInitPathArgAvailable)
-
                 {
                     BasePath = argument;
                     IsInitPathArgAvailable = false;
@@ -60,9 +61,13 @@ namespace MasterServer
                     return;
                 }
                 else if (argument == "--no-cli-input")
+                {
                     IsConsoleInputAvailable = false;
+                }
                 else if (argument == "--init-path")
+                {
                     IsInitPathArgAvailable = true;
+                }
                 else
                 {
                     Console.WriteLine("Unknown argument {0}", argument);
@@ -75,7 +80,6 @@ namespace MasterServer
                 return;
             }
             #endregion
-
 
             try
             {
@@ -106,10 +110,12 @@ namespace MasterServer
                             Manager.Dispose();
                             IsRunning = false;
                             break;
+
                         case "help":
                             Console.WriteLine("--exit \t shutdown all servers and exit the RetroSpy emulator\n" +
                                                            "other features are comming soon..\n");
                             break;
+
                         default:
                             Console.WriteLine("Unknown command!");
                             break;
@@ -127,11 +133,6 @@ namespace MasterServer
             Manager?.Dispose();
             LogWriter.Log.Dispose();
             #endregion
-
-
-
-
-
         }
     }
 }

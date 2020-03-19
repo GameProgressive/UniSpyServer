@@ -9,6 +9,7 @@ namespace QueryReport.Handler.CommandHandler
     {
         protected QRErrorCode _errorCode = QRErrorCode.NoError;
         protected byte[] _sendingBuffer;
+
         protected CommandHandlerBase(QRServer server, EndPoint endPoint, byte[] recv)
         {
             Handle(server, endPoint, recv);
@@ -17,6 +18,7 @@ namespace QueryReport.Handler.CommandHandler
         protected virtual void Handle(QRServer server, EndPoint endPoint, byte[] recv)
         {
             CheckRequest(server, endPoint, recv);
+
             if (_errorCode != QRErrorCode.NoError)
             {
                 server.ToLog(ErrorMessage.ToMsg(_errorCode));
@@ -24,6 +26,7 @@ namespace QueryReport.Handler.CommandHandler
             }
 
             DataOperation(server, endPoint, recv);
+
             if (_errorCode == QRErrorCode.Database)
             {
                 server.ToLog(ErrorMessage.ToMsg(_errorCode));
@@ -31,6 +34,7 @@ namespace QueryReport.Handler.CommandHandler
             }
 
             ConstructeResponse(server, endPoint, recv);
+
             if (_errorCode != QRErrorCode.NoError)
             {
                 server.ToLog(ErrorMessage.ToMsg(_errorCode));
@@ -49,9 +53,11 @@ namespace QueryReport.Handler.CommandHandler
         protected virtual void Response(QRServer server, EndPoint endPoint, byte[] recv)
         {
             if (_sendingBuffer == null)
+            {
                 return;
+            }
+
             server.SendAsync(endPoint, _sendingBuffer);
         }
-
     }
 }

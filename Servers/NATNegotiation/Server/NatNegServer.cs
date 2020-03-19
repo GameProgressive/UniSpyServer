@@ -12,6 +12,7 @@ namespace NatNegotiation
     public class NatNegServer : TemplateUdpServer
     {
         public static ConcurrentDictionary<EndPoint, ClientInfo> ClientList = new ConcurrentDictionary<EndPoint, ClientInfo>();
+
         private ClientListChecker _checker = new ClientListChecker();
 
         public NatNegServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
@@ -22,7 +23,10 @@ namespace NatNegotiation
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
             if (message.Length < 5)
+            {
                 return;
+            }
+
             //check and add client into clientList
             ClientInfo client = ClientList.GetOrAdd(endPoint, new ClientInfo(endPoint));
             client.LastPacketTime = DateTime.Now;
@@ -32,6 +36,7 @@ namespace NatNegotiation
         private void CheckClientTimeOut(object sender, System.Timers.ElapsedEventArgs e)
         {
             ToLog("Check timeout excuted!");
+
             foreach (var c in ClientList.Values)
             {
                 //Console.WriteLine(DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds);

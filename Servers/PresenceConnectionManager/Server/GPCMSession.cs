@@ -19,14 +19,10 @@ namespace PresenceConnectionManager
     /// </summary>
     public class GPCMSession : TemplateTcpSession
     {
-
-
         /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
         public bool CompletedLoginProcess { get; set; } = false;
-
-
 
         /// <summary>
         /// Indicates the date and time this connection was created
@@ -54,7 +50,10 @@ namespace PresenceConnectionManager
             foreach (string command in commands)
             {
                 if (command.Length < 1)
+                {
                     continue;
+                }
+
                 // Read client message, and parse it into key value pairs
                 string[] recieved = command.TrimStart('\\').Split('\\');
 
@@ -63,6 +62,7 @@ namespace PresenceConnectionManager
                 CommandSwitcher.Switch(this, dict);
             }
         }
+
         //when a user is loged in we update the sessionkey and the Guid to database
         protected override void OnConnected()
         {
@@ -71,6 +71,7 @@ namespace PresenceConnectionManager
             ToLog($"[Conn] ID:{Id} IP:{Remote.ToString()}");
             SendServerChallenge();
         }
+
         protected override void OnDisconnected()
         {
             UserInfo.LoginProcess = LoginStatus.Disconnected;
@@ -101,14 +102,11 @@ namespace PresenceConnectionManager
             SendAsync(sendingBuffer);
         }
 
-
-
         public void DisconnectByReason(DisconnectReason reason)
         {
             ToLog(reason.ToString());
             Disconnect();
         }
-
 
         public void StatusToLog(string status, string nick, uint pid, IPEndPoint remote, string reason)
         {

@@ -15,6 +15,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
         public ServerRulesHandler(SBSession session, byte[] recv) : base(session, recv)
         {
         }
+
         private ServerRulesPacket _rulesPacket;
 
         public override void CheckRequest(SBSession session, byte[] recv)
@@ -24,12 +25,16 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
             ByteTools.SubBytes(recv, 0, 2).CopyTo(lengthByte, 0);
 
             if (BitConverter.IsLittleEndian)
+            {
                 Array.Reverse(lengthByte);
+            }
+
             if (BitConverter.ToUInt16(lengthByte, 0) != recv.Length || recv.Length > 17)
             {
                 _errorCode = Entity.Enumerator.SBErrorCode.Parse;
                 return;
             }
+
             _rulesPacket = new ServerRulesPacket(recv);
         }
 
@@ -45,7 +50,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
 
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
-
         }
     }
 }

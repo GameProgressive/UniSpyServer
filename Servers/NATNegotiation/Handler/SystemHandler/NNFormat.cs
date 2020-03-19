@@ -9,10 +9,12 @@ namespace NATNegotiation.Handler.SystemHandler
         {
             return ((IPEndPoint)endPoint).Address.GetAddressBytes();
         }
+
         public static byte[] PortToByte(EndPoint endPoint)
         {
             return BitConverter.GetBytes(((IPEndPoint)endPoint).Port);
         }
+
         public static EndPoint IPToEndPoint(byte[] ip, byte[] port)
         {
             IPEndPoint end = new IPEndPoint(Convert.ToUInt32(ip), Convert.ToInt32(port));

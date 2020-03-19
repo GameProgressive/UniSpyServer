@@ -31,9 +31,12 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
         protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             if (session.UserInfo.BuddiesSent)
+            {
                 return;
+            }
+
             session.UserInfo.BuddiesSent = true;
-            //return;
+
             using (var db = new retrospyContext())
             {
                 var buddies = db.Friends.Where(
@@ -47,10 +50,12 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
                 _sendingBuffer = @"\bdy\" + buddies.Count() + @"\list\";
                 foreach (var b in buddies)
                 {
-
                     _sendingBuffer += b.Profileid;
+
                     if (b != buddies.Last())
+                    {
                         _sendingBuffer += @",";
+                    }
                 }
                 _sendingBuffer += @"\final\";
             }

@@ -9,6 +9,7 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
         public AuthHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
+
         protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
         {
             //we have to verify the challenge response from the game, the response challenge is computed as
@@ -21,11 +22,10 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
             session.SessionKey = (uint)new System.Random().Next(0, 2147483647);
 
         }
+
         protected override void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
         {
             _sendingBuffer = string.Format(@"\sesskey\{0}", session.SessionKey);
         }
-
-     
     }
 }

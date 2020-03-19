@@ -9,7 +9,6 @@
 
         public new static readonly int Size = BasePacket.Size + 8;
 
-
         public new void Parse(byte[] recv)
         {
             base.Parse(recv);
@@ -30,8 +29,6 @@
             TempBytes[BasePacket.Size + 5] = GotYourData;
             TempBytes[BasePacket.Size + 6] = Finished;
             return TempBytes;
-
         }
-
     }
 }

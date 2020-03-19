@@ -36,8 +36,8 @@ namespace NatNegotiation.Entity.Structure.Packet
             TempBytes[BasePacket.Size + 2] = UseGamePort;
             LocalIP.CopyTo(TempBytes, BasePacket.Size + 3);
             LocalPort.CopyTo(TempBytes, BasePacket.Size + 7);
+
             return TempBytes;
         }
-
     }
 }

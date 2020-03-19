@@ -17,6 +17,4 @@
         KeepAlive = 0x08,
         AvaliableCheck = 0x09
     }
-
-
 }

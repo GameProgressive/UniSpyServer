@@ -23,14 +23,15 @@ namespace StatsAndTracking
             //GStatsHandler.DBQuery = new GSTATSDBQuery(databaseDriver);
             DB = engine;
         }
+
         protected override TcpSession CreateSession() { return new GStatsSession(this); }
 
         protected override void Dispose(bool disposingManagedResources)
         {
             if (disposingManagedResources)
             {
-
             }
+
             base.Dispose(disposingManagedResources);
         }
     }

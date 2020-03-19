@@ -3,7 +3,6 @@ using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System.Net;
 
-
 namespace PresenceConnectionManager.Application
 {
     /// <summary>
@@ -21,7 +20,6 @@ namespace PresenceConnectionManager.Application
         {
         }
 
-
         /// <summary>
         /// Starts a specific server
         /// </summary>
@@ -34,7 +32,6 @@ namespace PresenceConnectionManager.Application
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
-
 
         /// <summary>
         /// Stop a specific server

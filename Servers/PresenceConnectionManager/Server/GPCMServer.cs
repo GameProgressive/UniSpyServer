@@ -48,21 +48,27 @@ namespace PresenceConnectionManager
         {
             DB = engine;
         }
-        protected override TcpSession CreateSession() { return new GPCMSession(this); }
 
+        protected override TcpSession CreateSession()
+        {
+            return new GPCMSession(this);
+        }
 
         private bool _disposed;
 
-
-
         protected override void Dispose(bool disposingManagedResources)
         {
-            if (_disposed) return;
+            if (_disposed)
+            {
+                return;
+            }
+
             _disposed = true;
+
             if (disposingManagedResources)
             {
-
             }
+
             PollTimer?.Stop();
             PollTimer?.Dispose();
             StatusTimer?.Stop();

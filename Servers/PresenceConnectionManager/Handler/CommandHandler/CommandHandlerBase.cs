@@ -2,7 +2,6 @@
 using PresenceConnectionManager.Handler.Error;
 using System.Collections.Generic;
 
-
 namespace PresenceConnectionManager.Handler
 {
     public class CommandHandlerBase
@@ -20,6 +19,7 @@ namespace PresenceConnectionManager.Handler
         public virtual void Handle(GPCMSession session, Dictionary<string, string> recv)
         {
             CheckRequest(session, recv);
+
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
@@ -28,6 +28,7 @@ namespace PresenceConnectionManager.Handler
             }
 
             DataOperation(session, recv);
+
             if (_errorCode == GPErrorCode.DatabaseError)
             {
                 //TODO
@@ -36,6 +37,7 @@ namespace PresenceConnectionManager.Handler
             }
 
             ConstructResponse(session, recv);
+
             if (_errorCode == GPErrorCode.ConstructResponseError)
             {
                 ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
@@ -54,6 +56,7 @@ namespace PresenceConnectionManager.Handler
                     _errorCode = GPErrorCode.Parse;
                 }
             }
+
             if (recv.ContainsKey("namespaceid"))
             {
                 if (!uint.TryParse(recv["namespaceid"], out _namespaceid))
@@ -73,6 +76,7 @@ namespace PresenceConnectionManager.Handler
             {
                 return;
             }
+
             session.SendAsync(_sendingBuffer);
         }
     }

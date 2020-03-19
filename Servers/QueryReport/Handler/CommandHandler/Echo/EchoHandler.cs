@@ -18,6 +18,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
             //add recive echo packet on gameserverList
             GameServer game;
             QRServer.GameServerList.TryGetValue(endPoint, out game);
+
             if (game == null)
             {
                 server.ToLog("Can not find game server");
@@ -27,6 +28,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
             //compute the ping
            
             byte ping = (byte)(int)(DateTime.Now.Subtract(game.LastPing).TotalMilliseconds);
+
             //adding ping and value to dictionary
             game.ServerData.StandardKeyValue.Add("ping", Convert.ToString(ping));
         }

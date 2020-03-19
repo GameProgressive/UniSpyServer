@@ -7,18 +7,15 @@ namespace ServerBrowser.Handler.CommandHandler.TestHandler
 {
     public class RuleTest
     {
-
         public RuleTest(SBSession session, byte[] recv)
         {
-            
             List<byte> data = new List<byte>();
             byte[] ip = { 192, 168, 0, 100 };
             byte[] port = { 200, 0 };
             string[] keys = { "gravity", "rankingon"};
             string[] values = { "80", "1"};
 
-            data.AddRange(ip)
-;
+            data.AddRange(ip);
             data.AddRange(port);
 
             data.Add(0);
@@ -55,7 +52,6 @@ namespace ServerBrowser.Handler.CommandHandler.TestHandler
 
             //we do not know what data client needed so we just add this here
             data.AddRange(new byte[] { 0, 255, 255, 255, 255 });
-
 
             byte[] buffer = data.ToArray();
             string skey = "HA6zkS";

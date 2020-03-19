@@ -10,7 +10,6 @@ namespace QueryReport.Server
 {
     public class QRServer : TemplateUdpServer
     {
-
         /// <summary>
         /// A List of all servers that have sent data to this master server, and are active in the last 30 seconds or so
         /// </summary>
@@ -31,22 +30,25 @@ namespace QueryReport.Server
             _checker.StartCheck(this);
         }
 
-
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
             CommandSwitcher.Switch(this, endPoint, message);
         }
 
-
-
-
         private bool _disposed;
+
         protected override void Dispose(bool disposingManageResource)
         {
-            if (_disposed) return;
+            if (_disposed)
+            {
+                return;
+            }
+
             _disposed = true;
+
             if (disposingManageResource)
-            { }
+            {
+            }
         }
     }
 }

@@ -22,20 +22,25 @@ namespace QueryReport.Handler.CommandSwitcher
                     case QRPacketType.AvaliableCheck:
                         AvailableHandler available = new AvailableHandler(server, endPoint, recv);
                         break;
+
                     //verify challenge to check game server is real or fake;
                     //after verify we can add game server to server list
                     case QRPacketType.Challenge:
                         ChallengeHandler challenge = new ChallengeHandler(server, endPoint, recv);
                         break;
+
                     case QRPacketType.HeartBeat: // HEARTBEAT
                         HeartBeatHandler heart = new HeartBeatHandler(server, endPoint, recv);
                         break;
+
                     case QRPacketType.KeepAlive:
                         KeepAliveHandler keep = new KeepAliveHandler(server, endPoint, recv);
                         break;
+
                     case QRPacketType.EchoResponse:
                         EchoHandler echo = new EchoHandler(server, endPoint, recv);
                         break;
+
                     default:
                         server.UnknownDataRecived(recv);
                         break;

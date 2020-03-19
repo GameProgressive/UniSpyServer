@@ -10,7 +10,6 @@
         /// </summary>
         public static void Handle()
         {
-
         }
     }
 }

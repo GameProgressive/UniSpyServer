@@ -29,7 +29,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public byte[] SourceIP { get; protected set; }
         public int MaxServers { get; protected set; }
 
-
         public ServerListPacket()
         {
             SourceIP = new byte[4];
@@ -43,10 +42,12 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public bool Parse(byte[] recv)
         {
             byte[] byteRequestLength = ByteTools.SubBytes(recv, 0, 2);
+
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(byteRequestLength);
             }
+
             RequestLenth = BitConverter.ToInt16(byteRequestLength);
 
             if (RequestLenth != recv.Length)
@@ -67,6 +68,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             GameName = remainData.Substring(0, remainData.IndexOf('\0'));
             remainData = remainData.Substring(remainData.IndexOf('\0')+1);
             Challenge = remainData.Substring(0, remainData.IndexOf('\0')).Substring(0,8);
+
             if (remainData.Substring(0, remainData.IndexOf('\0')).Length > 8)
             {
                 Filter = remainData.Substring(0, remainData.IndexOf('\0')).Substring(7, remainData.IndexOf('0'));
@@ -84,7 +86,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             }
 
             UpdateOption = (SBServerListUpdateOption)BitConverter.ToInt32(byteUpdateOptions);
-
   
             if ((UpdateOption & SBServerListUpdateOption.AlternateSourceIP) != 0)
             {
@@ -100,9 +101,9 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
                 {
                     Array.Reverse(byteMaxServer);
                 }
+
                 MaxServers = BitConverter.ToInt32(byteMaxServer);
             }
-
 
             return true;
         }

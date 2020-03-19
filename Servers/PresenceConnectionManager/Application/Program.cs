@@ -8,8 +8,8 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     internal class Program
     {
-
         public static readonly string ServerName = "GPCM";
+
         public static string BasePath { get; protected set; }
         //public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
@@ -28,6 +28,7 @@ namespace PresenceConnectionManager.Application
 
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;
+
             // Whether accept  args input.
             bool IsInitPathArgAvailable = false;
 
@@ -44,7 +45,6 @@ namespace PresenceConnectionManager.Application
             foreach (var argument in args)
             {
                 if (IsInitPathArgAvailable)
-
                 {
                     BasePath = argument;
                     IsInitPathArgAvailable = false;
@@ -56,14 +56,17 @@ namespace PresenceConnectionManager.Application
                         "--no-cli-input\tDisables console input, usefull for services\n" +
                         "--init-path [path]\tUse a custom base path for load the configuration and save the logs"
                     );
-
                     // Close the program after --help
                     return;
                 }
                 else if (argument == "--no-cli-input")
+                {
                     IsConsoleInputAvailable = false;
+                }
                 else if (argument == "--init-path")
+                {
                     IsInitPathArgAvailable = true;
+                }
                 else
                 {
                     Console.WriteLine("Unknown argument {0}", argument);
@@ -76,7 +79,6 @@ namespace PresenceConnectionManager.Application
                 return;
             }
             #endregion
-
 
             try
             {
@@ -93,6 +95,7 @@ namespace PresenceConnectionManager.Application
             if (IsConsoleInputAvailable)
             {
                 LogWriter.Log.Write("Server is successfully started! \nType \"help\" for a list of the available commands.", LogLevel.Info);
+
                 //Read key from console
                 while (IsRunning)
                 {
@@ -106,10 +109,12 @@ namespace PresenceConnectionManager.Application
                             Manager.Dispose();
                             IsRunning = false;
                             break;
+
                         case "help":
                             Console.WriteLine("--exit \t shutdown all servers and exit the RetroSpy emulator\n" +
                                                            "other features are comming soon..\n");
                             break;
+
                         default:
                             Console.WriteLine("Unknown command!");
                             break;
@@ -126,7 +131,6 @@ namespace PresenceConnectionManager.Application
             LogWriter.Log.Write("Goodbye!", LogLevel.Info);
             Manager?.Dispose();
             LogWriter.Log.Dispose();
-
         }
     }
 }

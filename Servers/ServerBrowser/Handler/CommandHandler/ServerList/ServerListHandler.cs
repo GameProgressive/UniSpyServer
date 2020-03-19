@@ -16,21 +16,29 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         private byte[] _clientRemoteIP;
         private byte[] _clientRemotePort;
         private ServerListPacket _sbRequest;
+
         GetServersFromQR _getServerFromQR;
+
         private readonly byte[] _AllServersEndFlag = new byte[] { 0, 255, 255, 255, 255 };
-        public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
+
+        public ServerListHandler(SBSession session, byte[] recv) : base(session, recv)
+        {
+        }
 
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
+
             //save client challenge in _sbRequest
             _sbRequest = new ServerListPacket();
             _sbRequest.Parse(recv);
+
             //this is client public ip and port
             IPEndPoint remote = (IPEndPoint)session.Socket.RemoteEndPoint;
             _clientRemoteIP = remote.Address.GetAddressBytes();
             _clientRemotePort = BitConverter.GetBytes((ushort)(remote.Port & 0xFFFF));
         }
+
         public override void DataOperation(SBSession session, byte[] recv)
         {
             //we can use GetServersFromNetwork class in the future
@@ -63,6 +71,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
             //we get secrete key from database
             string secretKey;
+
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Games
@@ -70,7 +79,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                              select new { p.Secretkey };
 
                 if (result.Count() == 1)
+                {
                     secretKey = result.First().Secretkey;
+                }
                 else
                 {
                     _errorCode = SBErrorCode.DataOperation;
@@ -78,10 +89,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     return;
                 }
             }
+
             string serverChallenge = "0000000000";
 
-
             List<byte> cryptHeader = new List<byte>();
+
             // we add the message length here
             cryptHeader.Add(2 ^ 0xEC);
             cryptHeader.AddRange(new byte[] { 0, 0 });
@@ -89,10 +101,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             cryptHeader.AddRange(Encoding.ASCII.GetBytes(serverChallenge));
             //we add game flag here
 
-
-
             byte[] plainText = serversList.ToArray();
-
 
             session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(plainText)}");
 
@@ -101,8 +110,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             serversList.InsertRange(0, cryptHeader);
             _sendingBuffer = serversList.ToArray();
             session.EncState = enc.State;
-
         }
     }
 }
-

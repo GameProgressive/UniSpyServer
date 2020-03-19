@@ -3,7 +3,6 @@ using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System.Net;
 
-
 namespace Chat.Application
 {
     /// <summary>
@@ -11,7 +10,6 @@ namespace Chat.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-
         private ChatServer Server = null;
 
         /// <summary>
@@ -28,14 +26,12 @@ namespace Chat.Application
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(ServerConfiguration cfg)
         {
-
             if (cfg.Name == ServerName)
             {
                 Server = new ChatServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.Hostname), cfg.Port);
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
-
 
         /// <summary>
         /// Stop a specific server

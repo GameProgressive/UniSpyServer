@@ -9,7 +9,9 @@ namespace QueryReport.Entity.Structure.ReportData
             {
                 "groupid","player_","score_","skill_","ping_","team_","deaths_","pid_"
             };
+
         public List<Dictionary<string, string>> StandardKeyValue { get; protected set; }
+
         public List<Dictionary<string, string>> CustomKeyValue { get; protected set; }
 
         public PlayerData()
@@ -30,10 +32,12 @@ namespace QueryReport.Entity.Structure.ReportData
             for (int i = 0; i < playerCount; i++)
             {
                 Dictionary<string, string> temp = new Dictionary<string, string>();
+
                 for (int j = 0; j < keys.Length; j += 2)
                 {
                     temp.Add(keys[j], values[i * keys.Length + j]);
                 }
+
                 StandardKeyValue.Add(temp);
             }
         }

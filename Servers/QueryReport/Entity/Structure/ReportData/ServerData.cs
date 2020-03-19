@@ -15,6 +15,7 @@ namespace QueryReport.Entity.Structure.ReportData
                 "roundtime","roundelapsed","password","groupid",
                 "localip0","localport","natneg","statechanged","gamename","hostname"
             };
+
         public Dictionary<string, string> StandardKeyValue { get; protected set; }
 
         public Dictionary<string, string> CustomKeyValue { get; protected set; }

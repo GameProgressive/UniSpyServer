@@ -5,7 +5,6 @@ namespace PresenceConnectionManager.Structure
 {
     public class UserInfo
     {
-
         /// <summary>
         /// The connected clients Player Id
         /// </summary>
@@ -15,6 +14,7 @@ namespace PresenceConnectionManager.Structure
         /// User ID in database
         /// </summary>
         public uint Userid;
+
         /// <summary>
         /// The connected clients Nick
         /// </summary>
@@ -67,8 +67,8 @@ namespace PresenceConnectionManager.Structure
         public uint SDKRevision;
 
         public uint productID;
-        /////////////////////////User status//////////////////////////
 
+        /////////////////////////User status//////////////////////////
         public GPStatus StatusCode;
 
         public string StatusString;

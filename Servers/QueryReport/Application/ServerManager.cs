@@ -11,8 +11,6 @@ namespace QueryReport.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-
-
         private QRServer Server = null;
 
         /// <summary>
@@ -40,7 +38,6 @@ namespace QueryReport.Application
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
-
 
         /// <summary>
         /// Stop a specific server

@@ -18,6 +18,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("uniquenick") || !recv.ContainsKey("namespaces"))
             {
                 _errorCode = GPErrorCode.Parse;
@@ -47,7 +48,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
                                      first = p.Firstname,
                                      last = p.Lastname
                                  };
+
                     var info = result.First();
+
                     _sendingBuffer = @"\bsr\" + info.profileid;
                     _sendingBuffer += @"\nick\" + info.nick;
                     _sendingBuffer += @"\uniquenick\" + info.uniquenick;
@@ -56,9 +59,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
                     _sendingBuffer += @"\lastname\" + info.last;
                     _sendingBuffer += @"\email\" + info.email;
                 }
+
                 _sendingBuffer += @"\bsrdone\\more\0\final\";
             }
         }
     }
 }
-

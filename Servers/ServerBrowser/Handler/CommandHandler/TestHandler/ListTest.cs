@@ -8,7 +8,6 @@ namespace ServerBrowser.Handler.CommandHandler.TestHandler
 {
     public class ListTest
     {
-
         public ListTest(SBSession session, byte[] recv)
         {
             ServerListPacket sbRequest = new ServerListPacket();
@@ -28,8 +27,8 @@ namespace ServerBrowser.Handler.CommandHandler.TestHandler
             data.AddRange(ip);
             data.AddRange(port);
 
-
             data.Add((byte)keys.Length);
+
             foreach (var key in keys)
             {
                 data.Add((byte)SBKeyType.String);
@@ -55,9 +54,8 @@ namespace ServerBrowser.Handler.CommandHandler.TestHandler
 
             data.AddRange(new byte[] { 0, 255, 255, 255, 255 });
 
-
-
             List<byte> cryptHeader = new List<byte>();
+
             // we add the message length here
             cryptHeader.Add(2 ^ 0xEC);
             cryptHeader.AddRange(new byte[] { 0, 0 });
@@ -67,11 +65,9 @@ namespace ServerBrowser.Handler.CommandHandler.TestHandler
 
             data.InsertRange(0, cryptHeader);
 
-
             GOAEncryption enc = new GOAEncryption("HA6zkS", sbRequest.Challenge, serverChallenge);
             data.AddRange(enc.Encrypt("11111111"));
             session.SendAsync(data.ToArray());
-
         }
     }
 }

@@ -37,12 +37,14 @@ namespace ServerBrowser.Handler.SystemHandler.KeyType
 
             return false;
         }
+
         public bool IsShort(string key, string value)
         {
             if (value.Length == 2)
             {
                 return true;
             }
+
             return false;
         }
     }

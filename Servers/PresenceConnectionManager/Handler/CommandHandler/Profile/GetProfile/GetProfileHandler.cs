@@ -3,13 +3,14 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
+
 namespace PresenceConnectionManager.Handler.Profile.GetProfile
 {
-
     public class GetProfileHandler : CommandHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         private uint _profileid;
+
         public GetProfileHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
@@ -17,22 +18,26 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("profileid"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
+
             if (!recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
+
             if (uint.TryParse(recv["profileid"], out _profileid))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
         }
+
         protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             using (var db = new retrospyContext())
@@ -72,12 +77,15 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
                                  ownership1 = p.Ownership1,
                                  connectiontype = p.Connectiontype,
                              };
+
                 if (result.Count() == 0)
                 {
                     _errorCode = GPErrorCode.DatabaseError;
                     return;
                 }
+
                 var info = result.First();
+
                 _sendingBuffer = @"\pi\\profileid\" + info.profileid;
                 _sendingBuffer += @"\nick\" + info.nick;
                 _sendingBuffer += @"\uniquenick\" + info.uniquenick;
@@ -91,7 +99,9 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
                 _sendingBuffer += @"\lon\" + info.countrycode;
                 _sendingBuffer += @"\lat\" + info.latitude;
                 _sendingBuffer += @"\loc\" + info.location;
+
                 int tempbirth = (int)info.birthday << 24 | (int)info.birthmonth << 16 | (int)info.birthyear;
+
                 _sendingBuffer += @"\birthday\" + tempbirth;
                 _sendingBuffer += @"\sex\" + info.sex;
                 _sendingBuffer += @"\publicmask\" + info.publicmask;

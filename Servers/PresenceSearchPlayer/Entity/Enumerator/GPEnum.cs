@@ -1,6 +1,4 @@
-﻿
-
-namespace PresenceSearchPlayer.Enumerator
+﻿namespace PresenceSearchPlayer.Enumerator
 {
     public enum GPEnum : uint
     {
@@ -170,7 +168,7 @@ namespace PresenceSearchPlayer.Enumerator
         FileSkip,
         FileFaild,  // arg->num == error
 
-        //FILE_FAILED error
+        // FILE_FAILED error
         ///////////////////////
         FileReadError = 0x900,
         FileWriteError,
@@ -196,6 +194,7 @@ namespace PresenceSearchPlayer.Enumerator
         NewStatusInfoSupported = 0xC00,
         NewStatusInfoNotSupported = 0xC01
     }
+
     public enum GPSPResult : uint
     {
         NoError,
@@ -206,6 +205,4 @@ namespace PresenceSearchPlayer.Enumerator
         MISCError,
         Count
     }
-
-
 }

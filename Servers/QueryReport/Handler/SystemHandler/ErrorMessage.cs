@@ -10,12 +10,16 @@ namespace QueryReport.Handler.SystemHandler
             {
                 case QRErrorCode.Parse:
                     return "Request parse error!";
+
                 case QRErrorCode.General:
                     return "General error!";
+
                 case QRErrorCode.Database:
                     return "Database error!";
+
                 case QRErrorCode.Network:
                     return "Network error!";
+
                 default:
                     return "Unknown error!";
             }

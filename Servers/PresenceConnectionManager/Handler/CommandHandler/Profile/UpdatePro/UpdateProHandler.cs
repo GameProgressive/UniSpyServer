@@ -35,7 +35,6 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                     && s.Namespaceid == session.UserInfo.NamespaceID
                     && s.Uniquenick == session.UserInfo.UniqueNick).First();
 
-
                 if (recv.ContainsKey("publicmask"))
                 {
                     PublicMasks mask;
@@ -58,6 +57,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                 if (recv.ContainsKey("icquin"))
                 {
                     uint icq;
+
                     uint.TryParse(recv["icquin"], out icq);
                     profile.Icquin = icq;
                 }
@@ -70,6 +70,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                 if (recv.ContainsKey("birthday"))
                 {
                     int date;
+
                     if (int.TryParse(recv["birthday"], out date))
                     {
                         int d = (int)((date >> 24) & 0xFF);
@@ -83,18 +84,19 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                             profile.Birthyear = y;
                         }
                     }
+
                     if (recv.ContainsKey("sex"))
                     {
                         byte sex;
+
                         if (byte.TryParse(recv["sex"], out sex))
                         {
                             profile.Sex = Convert.ToByte(recv["sex"]);
                         }
-
                     }
+
                     if (recv.ContainsKey("zipcode"))
                     {
-
                         profile.Zipcode = recv["zipcode"];
                     }
 
@@ -108,4 +110,3 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
         }
     }
 }
-

@@ -22,5 +22,4 @@
         GetUDPRelay,
         NumTypes
     }
-
 }

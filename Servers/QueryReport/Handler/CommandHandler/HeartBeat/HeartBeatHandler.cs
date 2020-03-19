@@ -11,14 +11,16 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
     public class HeartBeatHandler : CommandHandlerBase
     {
         private GameServer _gameServer;
-        public HeartBeatHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
-        { }
 
+        public HeartBeatHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
+        {
+        }
 
         protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
         {
             BasePacket basePacket = new BasePacket(recv);
             _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, new GameServer(endPoint, basePacket.InstantKey));
+
             base.CheckRequest(server, endPoint, recv);
         }
 
@@ -52,7 +54,6 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 //shutdown heart beat
                 _gameServer.IsValidated = false;
             }
-
         }
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)

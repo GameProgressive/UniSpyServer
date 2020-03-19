@@ -7,7 +7,6 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class InitHandler : CommandHandlerBase
     {
-
         protected override void ConvertRequest(ClientInfo client, byte[] recv)
         {
             _initPacket = new InitPacket();
@@ -47,7 +46,6 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void SendResponse(NatNegServer server, ClientInfo client)
         {
-
             base.SendResponse(server, client);
         }
     }

@@ -1,5 +1,4 @@
-﻿
-namespace ServerBrowser.Entity.Enumerator
+﻿namespace ServerBrowser.Entity.Enumerator
 {
     public enum PlayerSearchOptions
     {
@@ -8,12 +7,14 @@ namespace ServerBrowser.Entity.Enumerator
         SearchRightSubString = 4,
         SearchAnySubString = 8,
     }
+
     public enum SBQueryType
     {
         Basic,
         Full,
         ICMP
     }
+
     public enum SBErrorCode
     {
         Parse,
@@ -21,11 +22,11 @@ namespace ServerBrowser.Entity.Enumerator
         Construct,
         NoError
     }
+
     public enum SBKeyType
     {
         String,
         Byte,
         Short
     }
-
 }

@@ -18,7 +18,6 @@ namespace Chat.Handler.CommandHandler.CRYPT
             }
 
             session.ElevateSecurity(secretKey);
-
         }
     }
 }

@@ -40,6 +40,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                            select b.Targetid;
 
                 _sendingBuffer = @"\others\";
+
                 foreach (var pid in info)
                 {
                     var b = from p in db.Profiles
@@ -54,6 +55,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                     _sendingBuffer += @"\last\" + b.First().last;
                     _sendingBuffer += @"\email\" + b.First().email;
                 }
+
                 _sendingBuffer += @"\odone\final\";
             }
         }

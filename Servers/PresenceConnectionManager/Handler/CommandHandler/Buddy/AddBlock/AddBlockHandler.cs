@@ -8,16 +8,20 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
     public class AddBlockHandler : CommandHandlerBase
     {
         private uint _blockProfileid;
+
         public AddBlockHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
+
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("profileid"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
+
             else if (!uint.TryParse(recv["profileid"], out _blockProfileid))
             {
                 _errorCode = GPErrorCode.Parse;
@@ -36,6 +40,7 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
                         Targetid = _blockProfileid,
                         Namespaceid = session.UserInfo.NamespaceID
                     };
+
                     db.Blocked.Update(blocked);
                 }
             }

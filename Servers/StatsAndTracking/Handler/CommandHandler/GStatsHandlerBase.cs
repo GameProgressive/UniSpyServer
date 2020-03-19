@@ -9,6 +9,7 @@ namespace StatsAndTracking.Handler.CommandHandler
         protected string _sendingBuffer;
         protected uint _localId;
         protected GstatsErrorCode _errorCode = GstatsErrorCode.NoError;
+
         protected GStatsHandlerBase(GStatsSession session, Dictionary<string, string> recv)
         {
             Handle(session, recv);
@@ -17,25 +18,30 @@ namespace StatsAndTracking.Handler.CommandHandler
         protected virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
         {
             CheckRequest(session, recv);
+
             if (_errorCode != GstatsErrorCode.NoError)
             {
                 session.ToLog(ErrorMessage.ToMsg(_errorCode));
                 return;
             }
+
             DataOperation(session, recv);
+
             if (_errorCode == GstatsErrorCode.Database)
             {
                 session.ToLog(ErrorMessage.ToMsg(_errorCode));
                 return;
             }
+
             ConstructResponse(session, recv);
+
             if (_errorCode != GstatsErrorCode.NoError)
             {
                 session.ToLog(ErrorMessage.ToMsg(_errorCode));
                 return;
             }
-            Response(session, recv);
 
+            Response(session, recv);
         }
 
         protected virtual void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
@@ -47,6 +53,7 @@ namespace StatsAndTracking.Handler.CommandHandler
                     _errorCode = GstatsErrorCode.Parse;
                 }
             }
+
             //worms 3d use id not lid so we added an condition here
             if (recv.ContainsKey("id"))
             {
@@ -56,16 +63,22 @@ namespace StatsAndTracking.Handler.CommandHandler
                 }
             }
         }
+
         protected virtual void DataOperation(GStatsSession session, Dictionary<string, string> recv)
-        { }
+        {
+        }
+
         protected virtual void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
-        { }
+        {
+        }
+
         protected virtual void Response(GStatsSession session, Dictionary<string, string> recv)
         {
             if (_sendingBuffer == null)
             {
                 return;
             }
+
             session.SendAsync(_sendingBuffer);
         }
     }

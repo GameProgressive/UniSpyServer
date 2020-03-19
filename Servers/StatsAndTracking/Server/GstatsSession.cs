@@ -11,7 +11,9 @@ namespace StatsAndTracking
     public class GStatsSession : TemplateTcpSession
     {
         public uint SessionKey;
+
         public string Challenge { get; protected set; }
+
         public GStatsSession(TemplateTcpServer server) : base(server)
         {
         }
@@ -22,18 +24,19 @@ namespace StatsAndTracking
             {
                 return;
             }
+
             string[] recieved = message.TrimStart('\\').Split('\\');
             Dictionary<string, string> dict = GameSpyUtils.ConvertRequestToKeyValue(recieved);
 
             CommandSwitcher.Switch(this, dict);
         }
 
-
         protected override void OnConnected()
         { 
             this.SendAsync(GenerateServerChallenge());
             base.OnConnected();
         }
+
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             if (size > 2048)
@@ -41,13 +44,19 @@ namespace StatsAndTracking
                 ToLog("[Spam] client spam we ignored!");
                 return;
             }
+
             string message = Encoding.UTF8.GetString(buffer, 0, (int)size);
             message = message.Replace(@"\final\", "");
             string decodedmsg = GstatsXOR(message) + @"\final\";
+
             if (LogWriter.Log.DebugSockets)
+            {
                 LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, decodedmsg);
+            }
+
             OnReceived(decodedmsg);
         }
+
         /// <summary>
         /// Send data to the client (asynchronous)
         /// </summary>
@@ -63,7 +72,9 @@ namespace StatsAndTracking
             string sendingBuffer = Encoding.UTF8.GetString(buffer);
 
             if (LogWriter.Log.DebugSockets)
+            {
                 LogWriter.Log.Write(LogLevel.Debug, @"{0}[Send] TCP data: {1}\final\", ServerName, sendingBuffer);
+            }
 
             sendingBuffer = GstatsXOR(sendingBuffer) + @"\final\";
 
@@ -85,12 +96,13 @@ namespace StatsAndTracking
             string sendingBuffer = Encoding.UTF8.GetString(buffer);
 
             if (LogWriter.Log.DebugSockets)
+            {
                 LogWriter.Log.Write(LogLevel.Debug, @"{0}[Send] TCP data: {1}\final\", ServerName, sendingBuffer);
+            }
 
             sendingBuffer = GstatsXOR(sendingBuffer);
 
             return BaseSend(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
-
         }
 
         public string GenerateServerChallenge()

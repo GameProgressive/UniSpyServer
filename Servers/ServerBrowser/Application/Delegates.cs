@@ -2,4 +2,3 @@
 {
     public delegate void ServerBrowserConnectionClosed(SBSession client);
 }
-

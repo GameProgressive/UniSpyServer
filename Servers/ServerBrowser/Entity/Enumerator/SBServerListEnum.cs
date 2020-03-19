@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace ServerBrowser.Entity.Enumerator
 {
     public enum SBClientRequestType
@@ -20,11 +21,13 @@ namespace ServerBrowser.Entity.Enumerator
         MapLoopMessage,
         PlayerSearchMessage
     }
+
     public enum SBProtocolVersion
     {
         ListProtocolVersion1 = 0,
         ListEncodingVersion = 3
     }
+
     public enum SBServerListUpdateOption
     {
         SendFieldForAll = 1,
@@ -35,6 +38,7 @@ namespace ServerBrowser.Entity.Enumerator
         NoListCache = 64,
         LimitResultCount = 128
     }
+
     public enum GameServerFlags
     {
         ServerEnd = 0,

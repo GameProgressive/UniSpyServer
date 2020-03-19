@@ -11,10 +11,12 @@ namespace CDKey
     public class CDKeyServer : TemplateUdpServer
     {
         public static DatabaseEngine DB;
+
         public CDKeyServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
             DB = engine;
         }
+
         /// <summary>
         ///  Called when a connection comes in on the CDKey server
         ///  known messages
@@ -37,15 +39,23 @@ namespace CDKey
             ToLog(errorMsg);
             GameSpyUtils.PrintReceivedGPDictToLogger(recv);
         }
+
         private bool _disposed;
+
         protected override void Dispose(bool disposingManagedResources)
         {
-            if (_disposed) return;
+            if (_disposed)
+            {
+                return;
+            }
+
             _disposed = true;
+
             if (disposingManagedResources)
             {
 
             }
+
             base.Dispose(disposingManagedResources);
         }
 

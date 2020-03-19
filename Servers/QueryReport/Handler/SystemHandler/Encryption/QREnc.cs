@@ -4,31 +4,33 @@
     {
         public static byte GSValFunc(int reg)
         {
-
             if (reg < 26)
                 return (byte)(reg + 'A');
+
             if (reg < 52)
                 return (byte)(reg + 'G');
+
             if (reg < 62)
                 return (byte)(reg - 4);
+
             if (reg == 62)
                 return (byte)('+');
+
             if (reg == 63)
                 return (byte)('/');
 
             return (0);
         }
 
-
         public static byte[] GSSecKey(byte[] dst, byte[] src, byte[] key, int enctype)
         {
             int i, size, keysz;
+
             byte[] enctmp = new byte[256];
             byte[] tmp = new byte[66];
             byte x, y, z, a, b;
             //byte[] p;
-            byte[] enctype1_data =
-        {
+            byte[] enctype1_data = {
                 0x01,0xba,0xfa,0xb2,0x51,0x00,0x54,0x80,0x75,0x16,0x8e,0x8e,0x02,0x08,0x36,
                 0xa5,0x2d,0x05,0x0d,0x16,0x52,0x07,0xb4,0x22,0x8c,0xe9,0x09,0xd6,0xb9,0x26,
                 0x00,0x04,0x06,0x05,0x00,0x13,0x18,0xc4,0x1e,0x5b,0x1d,0x76,0x74,0xfc,0x50,
@@ -47,18 +49,24 @@
                 0xa9,0xbb,0x06,0xb8,0x88,0x14,0x24,0xa9,0x00,0x14,0xcb,0x24,0x12,0xae,0xcc,
                 0x57,0x56,0xee,0xfd,0x08,0x30,0xd9,0xfd,0x8b,0x3e,0x0a,0x84,0x46,0xfa,0x77,0xb8
             };
+
             size = src.Length;
+
             if (size < 1 || size > 65)
             {
                 dst[0] = 0;
                 return dst;
             }
+
             keysz = key.Length;
+
             for (i = 0; i < 256; i++)
             {
                 enctmp[i] = (byte)i;
             }
+
             a = 0; b = 0;
+
             for (i = 0; src[i] != 0; i++)
             {
                 a += (byte)(src[i] + 1);
@@ -68,12 +76,13 @@
                 enctmp[b] = x;
                 enctmp[a] = y;
                 tmp[i] = (byte)(src[i] ^ enctmp[(x + y) & 0xff]);
-
             }
+
             for (size = i; size % 3 != 0; size++)
             {
                 tmp[size] = 0;
             }
+
             if (enctype == 1)
             {
                 for (i = 0; i < size; i++)
@@ -89,17 +98,18 @@
                 }
             }
 
-
             for (i = 0; i < size; i += 3)
             {
                 x = tmp[i];
                 y = tmp[i + 1];
                 z = tmp[i + 2];
+
                 dst[i++] = GSValFunc(x >> 2);
                 dst[i++] = GSValFunc(((x & 3) << 4) | (y >> 4));
                 dst[i++] = GSValFunc(((y & 15) << 2) | (z >> 6));
                 dst[i++] = GSValFunc(z & 63);
             }
+
             return dst;
         }
     }

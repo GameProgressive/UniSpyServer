@@ -112,7 +112,6 @@
         MaskEmail = 0x00000020,
         MaskAll = 0xFFFFFFFF,
 
-
         // Session flags
         /////////////////
         SessIsClosed = 0x00000001,
@@ -120,7 +119,6 @@
         SessHasPassword = 0x00000004,
         SessIsBehindNAT = 0x00000008,
         SessIsRanked = 0x000000010,
-
 
         // CPU Brand ID
         ///////////////
@@ -209,6 +207,7 @@
         BmFileTransferCancel = 207,
         BmFileTransferKeepAlive = 208,
     }
+
     public enum GPSPResult : uint
     {
         NoError,
@@ -278,5 +277,4 @@
         /// </summary>
         Pat
     }
-
 }

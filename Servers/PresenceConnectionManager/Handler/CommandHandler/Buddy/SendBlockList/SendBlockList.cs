@@ -13,8 +13,12 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
         protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             if (session.UserInfo.BlockListSent)
+            {
                 return;
+            }
+
             session.UserInfo.BlockListSent = true;
+
             using (var db = new retrospyContext())
             {
                 var buddies = db.Blocked.Where(
@@ -28,10 +32,12 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
                 _sendingBuffer = @"\blk\" + buddies.Count() + @"\list\";
                 foreach (var b in buddies)
                 {
-
                     _sendingBuffer += b.Profileid;
+
                     if (b != buddies.Last())
+                    {
                         _sendingBuffer += @",";
+                    }
                 }
                 _sendingBuffer += @"\final\";
             }

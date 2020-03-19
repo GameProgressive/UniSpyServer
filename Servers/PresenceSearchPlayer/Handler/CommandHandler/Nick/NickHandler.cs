@@ -6,7 +6,6 @@ using System.Linq;
 /////////////////////////Finished/////////////////////////////////
 namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
 {
-
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
@@ -19,11 +18,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;
 
             }
+
             // First, we try to receive an encoded password
             if (!recv.ContainsKey("passenc"))
             {
@@ -47,11 +48,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                                   join n in db.Subprofiles on p.Profileid equals n.Profileid
                                   where u.Email == recv["email"] && u.Password == recv["passenc"] && n.Namespaceid == _namespaceid
                                   select new { nick = p.Nick, uniquenick = n.Uniquenick };
+
                     if (players.Count() == 0)
                     {
                         _errorCode = GPErrorCode.CheckBadPassword;
                     }
+
                     _sendingBuffer = @"\nr\";
+
                     foreach (var info in players)
                     {
                         _sendingBuffer += @"\nick\";
@@ -59,6 +63,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                         _sendingBuffer += @"\uniquenick\";
                         _sendingBuffer += info.uniquenick;
                     }
+
                     _sendingBuffer += @"\ndone\final\";
                 }
             }
@@ -66,8 +71,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
             {
                 _errorCode = GPErrorCode.DatabaseError;
             }
-
-
         }
 
         protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)

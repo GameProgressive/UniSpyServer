@@ -10,7 +10,6 @@ namespace NatNegotiation.Handler.CommandHandler
     /// </summary>
     public class ReportHandler : CommandHandlerBase
     {
-
         protected override void ConvertRequest(ClientInfo client, byte[] recv)
         {
             _reportPacket = new ReportPacket();
@@ -21,11 +20,13 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             client.IsGotReport = true;
         }
+
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
             _reportPacket.PacketType = (byte)NatPacketType.ReportAck;
             _sendingBuffer = _reportPacket.GenerateByteArray();
         }
+
         protected override void SendResponse(NatNegServer server, ClientInfo client)
         {
             server.ToLog("Client: " + client.PublicIP + "natneg failed!");

@@ -9,9 +9,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
 {
     public class NewUserHandler : CommandHandlerBase
     {
-
         private string _uniquenick;
-
         private Users _users;
         private Profiles _profiles;
         private Subprofiles _subProfiles;
@@ -36,11 +34,13 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("nick"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
+
             if (!recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
                 _errorCode = GPErrorCode.Parse;
@@ -57,7 +57,6 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
             {
                 _uniquenick = recv["uniquenick"];
             }
-
         }
 
         protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
@@ -70,6 +69,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                     {
                         case _newUserStatus.CheckAccount:
                             int count = db.Users.Where(u => u.Email == recv["email"]).Select(u => u).Count();
+
                             if (count == 0)
                             {
                                 goto case _newUserStatus.AccountNotExist;
@@ -98,7 +98,6 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                                 goto case _newUserStatus.CheckProfile;
                             }
 
-
                         case _newUserStatus.CheckProfile:
                             _profiles = db.Profiles.Where(p => p.Userid == _users.Userid && p.Nick == recv["nick"]).FirstOrDefault();
                             if (_profiles == null)
@@ -117,7 +116,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                             goto case _newUserStatus.CheckSubProfile;
 
                         case _newUserStatus.ProfileExist:
-                        //we do nothing here
+                            //we do nothing here
 
                         case _newUserStatus.CheckSubProfile:
                             _subProfiles = db.Subprofiles
@@ -139,6 +138,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                             db.Subprofiles.Add(_subProfiles);
                             db.SaveChanges();
                             break;
+
                         case _newUserStatus.SubProfileExist:
                             _errorCode = GPErrorCode.NewUserUniquenickInUse;
                             break;
@@ -164,7 +164,9 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                 _sendingBuffer = string.Format(@"\nur\{0}\final\", (uint)_errorCode);
             }
             else
-                _sendingBuffer = string.Format(@"\nur\\userid\{0}\profileid\{1}\id\1\final\ ", _users.Userid, _subProfiles.Profileid);
+            {
+                _sendingBuffer = string.Format(@"\nur\\userid\{0}\profileid\{1}\id\1\final\", _users.Userid, _subProfiles.Profileid);
+            }
         }
 
         private void UpdateOtherInfo(Dictionary<string, string> recv)
@@ -176,11 +178,17 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                 if (recv.ContainsKey("partnerid"))
                 {
                     if (uint.TryParse(recv["partnerid"], out partnerid))
+                    {
                         _subProfiles.Partnerid = partnerid;
+                    }
                     else
+                    {
                         _errorCode = GPErrorCode.Parse;
+                    }
                 }
+
                 uint productid;
+
                 if (recv.ContainsKey("productid"))
                 {
                     if (uint.TryParse(recv["productid"], out productid))
@@ -197,7 +205,9 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                 {
                     _subProfiles.Gamename = recv["gamename"];
                 }
+
                 uint port;
+
                 if (recv.ContainsKey("port"))
                 {
                     if (uint.TryParse(recv["port"], out port))
@@ -208,7 +218,6 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                     {
                         _errorCode = GPErrorCode.Parse;
                     }
-
                 }
 
                 if (recv.ContainsKey("cdkeyenc"))

@@ -36,33 +36,37 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
         /// </summary>
         public static void ExtendedFunction(GPCMSession session)
         {
-
             var bits = new BitArray(BitConverter.GetBytes(session.UserInfo.SDKRevision));
+
             if (bits[0])
             {
                 //Send add friend request
             }
+
             if (bits[1])
             {
                 //send revoke request
             }
+
             if (bits[2])
             {
                 //send new status info
             }
+
             if (bits[3])
             {
                 //send buddy list and block list
             }
+
             if (bits[4])
             {
                 //Remote auth
             }
+
             if (bits[5])
             {
                 //register cdkey with product id
             }
-
         }
     }
 }

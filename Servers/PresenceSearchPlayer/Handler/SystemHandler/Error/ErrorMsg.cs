@@ -36,6 +36,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                 case GPErrorCode.UdpLayer:
                     return "There was a problem with the UDP layer.";
 
+
                 // Search.
                 //////////
                 case GPErrorCode.Search:
@@ -44,6 +45,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                     return "The search attempt failed to connect to the server.";
                 case GPErrorCode.SearchTimeOut:
                     return "The search did not return in a timely fashion.";
+
+
                 // Check.
                 /////////
                 case GPErrorCode.Check:
@@ -55,12 +58,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                 case GPErrorCode.CheckBadPassword:
                     return "The password is incorrect.";
 
+
                 // Revoke.
                 //////////
                 case GPErrorCode.Revoke:
                     return "There was an error revoking the buddy.";
                 case GPErrorCode.RevokeNotBuddy:
                     return "You are not a buddy of the profile.";
+
 
                 // Register cdkey.
                 //////////////////
@@ -74,9 +79,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                 case GPErrorCode.RegisterCDKeyAlreadyTaken:
                     return "The cdkey has already been registered to another profile.";
 
+
                 default:
                     return "General error.";
-
             }
         }
 

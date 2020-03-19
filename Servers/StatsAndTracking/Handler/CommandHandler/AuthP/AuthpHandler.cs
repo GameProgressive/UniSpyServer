@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Linq;
+
 namespace StatsAndTracking.Handler.CommandHandler.AuthP
 {
     /// <summary>
@@ -10,6 +11,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
     {
         private uint _profileid;
         private string _responseStr;
+
         public AuthPHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
@@ -17,6 +19,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
         protected override void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (recv.ContainsKey("pid"))
             {
                 if (!uint.TryParse(recv["pid"], out _profileid))
@@ -56,10 +59,8 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
         //    //session.SendAsync(@"\setpdr\1\lid\"+dict["lid"]+@"\pid\26\mod\123");
         //}
 
-
         protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
-        {
-           
+        {  
             //search database for user's password
             //We do not store user's plaintext password, so we can not check this response
             //using (var db = new RetrospyDB())

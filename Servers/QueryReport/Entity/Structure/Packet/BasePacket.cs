@@ -13,7 +13,10 @@ namespace QueryReport.Entity.Structure.Packet
             PacketType = recv[0];
             ByteTools.SubBytes(recv, 1, 4).CopyTo(InstantKey, 0);
         }
-        public BasePacket() { }
+
+        public BasePacket()
+        {
+        }
 
         public virtual byte[] GenerateResponse()
         {
@@ -22,6 +25,7 @@ namespace QueryReport.Entity.Structure.Packet
             buffer[1] = MagicData[1];
             buffer[2] = PacketType;
             InstantKey.CopyTo(buffer, 3);
+
             return buffer;
         }
     }

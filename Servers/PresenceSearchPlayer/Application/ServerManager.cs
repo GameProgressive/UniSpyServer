@@ -43,13 +43,19 @@ namespace PresenceSearchPlayer
         }
 
         private bool _disposed = false;
+
         protected override void Dispose(bool disposingManagedResources)
         {
-            if (_disposed) return;
+            if (_disposed)
+            {
+                return;
+            }
+
             if (disposingManagedResources)
             {
                 LogWriter.Log.Dispose();
             }
+
             base.Dispose(disposingManagedResources);
         }
     }

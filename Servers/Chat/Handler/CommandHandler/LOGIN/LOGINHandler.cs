@@ -8,6 +8,7 @@ namespace Chat.Handler.CommandHandler.LOGIN
         public static void Handle(ChatSession session, string[] recv)
         {
             int namespaceid = 0;
+
             if (!Int32.TryParse(recv[1], out namespaceid))
             {
                 session.SendCommand(ChatError.MoreParameters, "LOGIN :Not enough parameters");
@@ -36,7 +37,6 @@ namespace Chat.Handler.CommandHandler.LOGIN
             session.Send("JOIN #retrospy\r\n");
             session.SendCommand(ChatRPL.ToPic, "#retrospy Test!");
             session.SendCommand(ChatRPL.EndOfNames, "#retrospy :End of names LIST");
-
         }
     }
 }

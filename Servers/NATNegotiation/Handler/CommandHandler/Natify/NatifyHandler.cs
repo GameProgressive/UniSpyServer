@@ -29,6 +29,5 @@ namespace NatNegotiation.Handler.CommandHandler
             Array.Copy(client.PublicPort, _initPacket.LocalPort, 2);
             _sendingBuffer = _initPacket.GenerateByteArray();
         }
-
     }
 }

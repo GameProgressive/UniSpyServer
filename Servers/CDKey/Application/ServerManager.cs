@@ -3,7 +3,6 @@ using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using System.Net;
 
-
 namespace CDKey.Application
 {
     /// <summary>
@@ -11,7 +10,6 @@ namespace CDKey.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-
         private CDKeyServer Server = null;
 
         /// <summary>
@@ -21,6 +19,7 @@ namespace CDKey.Application
         public ServerManager(string serverName) : base(serverName)
         {
         }
+
         /// <summary>
         /// Starts a specific server
         /// </summary>
@@ -38,7 +37,6 @@ namespace CDKey.Application
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
-
 
         /// <summary>
         /// Stop a specific server

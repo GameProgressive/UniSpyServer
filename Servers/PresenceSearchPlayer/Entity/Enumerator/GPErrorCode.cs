@@ -1,6 +1,5 @@
 ﻿namespace PresenceSearchPlayer.Enumerator
 {
-
     public enum GPErrorCode : uint
     {
         // General.
@@ -136,7 +135,8 @@
         RemoveBlockNotBlocked,
 
 
-        //RetroSpy self defined NoError code
+        // RetroSpy self defined NoError code
+        ///////////////
         NoError = 0xffff,
         ConstructResponseError,
     }

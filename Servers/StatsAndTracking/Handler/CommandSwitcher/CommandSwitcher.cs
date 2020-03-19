@@ -12,6 +12,7 @@ namespace StatsAndTracking.Handler.CommandSwitcher
         public static void Switch(GStatsSession session, Dictionary<string, string> recv)
         {
             string command = recv.Keys.First();
+
             try
             {
                 switch (command)
@@ -19,19 +20,26 @@ namespace StatsAndTracking.Handler.CommandSwitcher
                     case "auth":
                         AuthHandler auth = new AuthHandler(session, recv);
                         break;
+
                     case "authp":
                         AuthPHandler authp = new AuthPHandler(session, recv);
                         break;
+
                     case "getpid":
                         break;
+
                     case "getpd"://get player data
                         break;
+
                     case "setpd":
                         break;
+
                     case "updgame":
                         break;
+
                     case "newgame":
                         break;
+
                     default:
                         session.UnknownDataReceived(recv);
                         break;

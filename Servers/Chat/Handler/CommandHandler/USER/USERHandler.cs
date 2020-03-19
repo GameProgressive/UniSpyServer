@@ -9,7 +9,9 @@ namespace Chat.Handler.CommandHandler.USER
             int encryptIPSeparator = recv[1].IndexOf('|');
 
             if (encryptIPSeparator == -1)
+            {
                 session.chatUserInfo.username = recv[1];
+            }
             else
             {
                 // <crypted IP>|<unique nickname ID>

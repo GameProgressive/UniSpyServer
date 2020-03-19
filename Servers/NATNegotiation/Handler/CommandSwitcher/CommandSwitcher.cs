@@ -10,7 +10,6 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
     {
         public static void Switch(NatNegServer server, ClientInfo client, byte[] recv)
         {
-
             try
             {
                 //BytesRecieved[7] is nnpacket.PacketType.
@@ -20,25 +19,31 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                         InitHandler init = new InitHandler();
                         init.Handle(server, client, recv);
                         break;
+
                     case NatPacketType.AddressCheck:
                         AddressHandler address = new AddressHandler();
                         address.Handle(server, client, recv);
                         break;
+
                     case NatPacketType.NatifyRequest:
                         NatifyHandler natify = new NatifyHandler();
                         natify.Handle(server, client, recv);
                         break;
+
                     case NatPacketType.ConnectAck:
                         client.IsGotConnectAck = true;
                         break;
+
                     case NatPacketType.Report:
                         ReportHandler report = new ReportHandler();
                         report.Handle(server, client, recv);
                         break;
+
                     case NatPacketType.ErtAck:
                         ErtACKHandler ert = new ErtACKHandler();
                         ert.Handle(server, client, recv);
                         break;
+
                     default:
                         server.UnknownDataRecived(recv);
                         break;

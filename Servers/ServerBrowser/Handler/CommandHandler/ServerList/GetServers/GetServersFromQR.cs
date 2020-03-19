@@ -13,8 +13,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
     public class GetServersFromQR
     {
         IEnumerable<KeyValuePair<EndPoint, GameServer>> _filteredServers;
+
         int _totalKeysNumber;
         int _totalValueNumber;
+
         public GetServersFromQR(IGetServerable iServer, string gameName, string filter)
         {
             _filteredServers = new ServerFilter(iServer.GetOnlineServers(gameName), filter).GetFilteredServer();
@@ -66,17 +68,18 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
                     data.Add(0);
                 }
             }
+
             return data.ToArray();
         }
 
         public byte[] GenerateServerInfos(string[] keys)
         {
-
             List<byte> data = new List<byte>();
 
             foreach (var server in _filteredServers)
             {
                 data.AddRange(GenerateInfoHeader(server));
+
                 //add every value to list
                 foreach (var key in keys)
                 {
@@ -86,6 +89,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
                 }
 
             }
+
             return data.ToArray();
         }
 
@@ -135,10 +139,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
                     infoHeader[0] ^= (byte)GameServerFlags.NonStandardPort;
                     byte[] port = BitConverter.GetBytes(
                         ushort.Parse(server.Value.ServerData.StandardKeyValue["hostport"]));
+
                     if (BitConverter.IsLittleEndian)
                     {
                         Array.Reverse(port);
                     }
+
                     infoHeader.AddRange(port);
                 }
             }
@@ -150,10 +156,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers
             {
                 infoHeader[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
                 byte[] localPort = BitConverter.GetBytes(ushort.Parse(server.Value.ServerData.StandardKeyValue["localport"]));
+
                 if (BitConverter.IsLittleEndian)
                 {
                     Array.Reverse(localPort);
                 }
+
                 infoHeader.AddRange(localPort);
             }
         }

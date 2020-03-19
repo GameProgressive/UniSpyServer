@@ -17,14 +17,17 @@ namespace QueryReport.Handler.CommandHandler.Challenge
         {
             Entity.Structure.GameServer gameServer;
             QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
+
             if (gameServer == null)
             {
                 server.ToLog("Can not find game server in game server list");
                 return;
             }
+
             server.ToLog("Challenge received game server is now available");
             gameServer.IsValidated = true;
         }
+
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
         {
             EchoPacket echo = new EchoPacket(recv);
@@ -33,7 +36,6 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             Entity.Structure.GameServer gameServer;
             QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
             gameServer.LastPing = DateTime.Now;
-
         }
     }
 }

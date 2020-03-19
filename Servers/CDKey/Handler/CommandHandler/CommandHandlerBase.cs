@@ -5,6 +5,7 @@ namespace CDKey.Handler.CommandHandler
     public class CommandHandlerBase
     {
         protected string _sendingBuffer;
+
         public CommandHandlerBase(CDKeyServer server, Dictionary<string, string> recv)
         {
             Handle(server, recv);
@@ -13,11 +14,18 @@ namespace CDKey.Handler.CommandHandler
         public void Handle(CDKeyServer server, Dictionary<string, string> recv)
         {
         }
-        public virtual void CheckRequest(CDKeyServer server) { }
 
-        public virtual void DataBaseOperation(CDKeyServer server) { }
+        public virtual void CheckRequest(CDKeyServer server)
+        {
+        }
 
-        public virtual void CheckDatabaseResult(CDKeyServer server) { }
+        public virtual void DataBaseOperation(CDKeyServer server)
+        {
+        }
+
+        public virtual void CheckDatabaseResult(CDKeyServer server)
+        {
+        }
 
         public virtual void Response(CDKeyServer server)
         {

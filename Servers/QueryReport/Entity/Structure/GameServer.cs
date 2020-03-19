@@ -14,14 +14,17 @@ namespace QueryReport.Entity.Structure
         /// Last valid heart beat packet time
         /// </summary>
         public DateTime LastHeartBeatPacket { get; set; }
+
         /// <summary>
         /// Last keep alive packet time
         /// </summary>
         public DateTime LastKeepAlive { get; set; }
+
         /// <summary>
         /// Last ping packet time
         /// </summary>
         public DateTime LastPing { get; set; }
+
         public byte[] PublicIP { get; protected set; }
         public byte[] PublicPort { get; protected set; }
 
@@ -47,10 +50,5 @@ namespace QueryReport.Entity.Structure
             PublicPort = BitConverter.GetBytes((ushort)((IPEndPoint)endPoint).Port);
             instantKey.CopyTo(InstantKey, 0);
         }
-
-
-
-
-
     }
 }

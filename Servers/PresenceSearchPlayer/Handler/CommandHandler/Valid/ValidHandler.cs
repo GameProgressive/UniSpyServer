@@ -11,6 +11,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
         public ValidHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
+
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             if (!recv.ContainsKey("email"))
@@ -18,12 +19,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
+
             if (!GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
         }
+
         protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             using (var db = new retrospyContext())
@@ -34,6 +37,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                              //According to FSW partnerid is not nessesary
                              where u.Email == recv["email"] && n.Gamename == recv["gamename"] && n.Namespaceid == _namespaceid
                              select p.Profileid;
+
                 if (result.Count() == 0)
                 {
                     _sendingBuffer = @"\vr\0\final\";
@@ -48,7 +52,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                     _errorCode = GPErrorCode.DatabaseError;
                 }
             }
-
         }
     }
 }

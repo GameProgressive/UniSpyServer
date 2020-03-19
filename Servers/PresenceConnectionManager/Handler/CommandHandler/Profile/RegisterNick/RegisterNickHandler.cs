@@ -15,15 +15,16 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
+
             if (!recv.ContainsKey("uniquenick"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
-
         }
 
         protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
@@ -41,7 +42,6 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
             {
                 _errorCode = GPErrorCode.DatabaseError;
             }
-
         }
 
         protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)

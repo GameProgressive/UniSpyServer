@@ -2,7 +2,6 @@
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.ServerInfo;
 
-
 namespace ServerBrowser.Handler.CommandSwitcher
 {
     public class CommandSwitcher
@@ -15,11 +14,14 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.ServerListRequest:
                     new ServerListHandler(session, recv);
                     break;
+
                 case SBClientRequestType.PlayerSearchRequest:
                     break;
+
                 case SBClientRequestType.ServerInfoRequest:
                     new ServerRulesHandler(session, recv);
                     break;
+
                 default:
                     session.UnKnownDataReceived(recv);
                     break;

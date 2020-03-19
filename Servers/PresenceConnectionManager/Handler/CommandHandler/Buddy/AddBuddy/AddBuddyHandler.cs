@@ -9,14 +9,18 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
         public AddBuddyHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
+
         private uint _friendPid;
+
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("sesskey") || !recv.ContainsKey("newprofileid") || !recv.ContainsKey("reason"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
+
             if (!uint.TryParse(recv["newprofileid"], out _friendPid))
             {
                 _errorCode = GPErrorCode.Parse;
@@ -30,10 +34,5 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
             //else
             //store add request to database
         }
-
-
-
-
-
     }
 }

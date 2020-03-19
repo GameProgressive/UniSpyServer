@@ -10,7 +10,6 @@ namespace NatNegotiation.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-
         private NatNegServer Server = null;
 
         /// <summary>

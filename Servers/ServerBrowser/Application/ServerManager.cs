@@ -11,7 +11,6 @@ namespace ServerBrowser.Application
     public class ServerManager : ServerManagerBase
     {
 
-
         private SBServer Server = null;
 
         /// <summary>
@@ -28,7 +27,6 @@ namespace ServerBrowser.Application
         /// <param name="cfg">The specific server configuration</param>
         /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
 
-
         /// <summary>
         /// Starts a specific server
         /// </summary>
@@ -41,7 +39,6 @@ namespace ServerBrowser.Application
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
-
 
         /// <summary>
         /// Stop a specific server

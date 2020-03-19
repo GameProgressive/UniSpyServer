@@ -6,10 +6,12 @@ namespace QueryReport.Entity.Structure.Packet
     public class ClientMessagePacket : BasePacket
     {
         private string _message;
+
         public ClientMessagePacket(string message)
         {
             _message = message; 
         }
+
         public override byte[] GenerateResponse()
         {
             PacketType = (byte)QRPacketType.ClientMessage;
@@ -20,6 +22,7 @@ namespace QueryReport.Entity.Structure.Packet
             buffer[2] = PacketType;
             InstantKey.CopyTo(buffer, 3);
             msg.CopyTo(buffer, 7);
+
             return buffer;
         }
     }

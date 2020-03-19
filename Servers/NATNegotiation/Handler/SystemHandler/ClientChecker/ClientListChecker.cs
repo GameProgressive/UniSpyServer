@@ -12,9 +12,11 @@ namespace NATNegotiation.Handler.SystemHandler.ClientChecker
             _checkTimer.Start();
             _checkTimer.Elapsed += (s, e) => CheckClientTimeOut(server);
         }
+
         private void CheckClientTimeOut(NatNegServer server)
         {
             server.ToLog("Check timeout excuted!");
+
             foreach (var c in NatNegServer.ClientList.Values)
             {
                 //Console.WriteLine(DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds);

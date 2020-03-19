@@ -10,8 +10,6 @@ namespace StatsAndTracking.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-
-
         private GStatsServer Server = null;
 
         /// <summary>
@@ -39,7 +37,6 @@ namespace StatsAndTracking.Application
                 LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
             }
         }
-
 
         /// <summary>
         /// Stop a specific server

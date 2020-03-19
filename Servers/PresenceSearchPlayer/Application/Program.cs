@@ -6,6 +6,7 @@ namespace PresenceSearchPlayer
     internal class Program
     {
         public static readonly string ServerName = "GPSP";
+
         public static string BasePath { get; protected set; }
 
         //public static bool IsWindows() => RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
@@ -25,6 +26,7 @@ namespace PresenceSearchPlayer
 
             //you can choose whether accept command input.
             bool IsConsoleInputAvailable = false;
+
             // Whether accept  args input.
             bool IsInitPathArgAvailable = false;
 
@@ -41,7 +43,6 @@ namespace PresenceSearchPlayer
             foreach (var argument in args)
             {
                 if (IsInitPathArgAvailable)
-
                 {
                     BasePath = argument;
                     IsInitPathArgAvailable = false;
@@ -58,9 +59,13 @@ namespace PresenceSearchPlayer
                     return;
                 }
                 else if (argument == "--no-cli-input")
+                {
                     IsConsoleInputAvailable = false;
+                }
                 else if (argument == "--init-path")
+                {
                     IsInitPathArgAvailable = true;
+                }
                 else
                 {
                     Console.WriteLine("Unknown argument {0}", argument);
@@ -73,7 +78,6 @@ namespace PresenceSearchPlayer
                 return;
             }
             #endregion
-
 
             try
             {
@@ -97,16 +101,19 @@ namespace PresenceSearchPlayer
                     //if (bool_ConsoleInput)
                     //{
                     string input = Console.ReadLine();
+
                     switch (input)
                     {
                         case "exit":
                             _manager.Dispose();
                             IsRunning = false;
                             break;
+
                         case "help":
                             Console.WriteLine("--exit \t shutdown all servers and exit the RetroSpy emulator\n" +
                                                            "other features are comming soon..\n");
                             break;
+
                         default:
                             Console.WriteLine("Unknown command!");
                             break;
@@ -124,11 +131,6 @@ namespace PresenceSearchPlayer
             _manager?.Dispose();
             LogWriter.Log.Dispose();
             #endregion
-
-
-
-
-
         }
     }
 }
