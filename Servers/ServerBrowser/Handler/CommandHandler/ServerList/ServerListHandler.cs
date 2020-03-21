@@ -6,7 +6,6 @@ using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using ServerBrowser.Handler.CommandHandler.ServerList.GetServers;
-using ServerBrowser.Handler.CommandHandler.ServerList.GetServers.Filter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -76,17 +75,25 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             }
 
             _serverChallenge = "0000000000";
+
             session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(serverList.ToArray())}");
-
-            GOAEncryption enc = new GOAEncryption(_secretKey, _request.Challenge, _serverChallenge);
-
+            GOAEncryption enc;
+            if (session.EncState == null)
+            {
+                enc = new GOAEncryption(_secretKey, _request.Challenge, _serverChallenge);
+            }
+            else
+            {
+                enc = new GOAEncryption(session.EncState);
+            }
+           
             _sendingBuffer = new ServerListResponse().
                 CombineHeaderAndContext
                 (
                     enc.Encrypt(serverList.ToArray()),
                     _serverChallenge
                 );
-
+            //refresh encryption state
             session.EncState = enc.State;
         }
 
@@ -191,10 +198,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             CheckPrivatePort(header, server);
 
             //TODO we have to check icmp_ip_flag
-
-
-
-
 
             return header;
         }

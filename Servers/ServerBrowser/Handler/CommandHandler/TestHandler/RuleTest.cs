@@ -57,9 +57,9 @@ namespace ServerBrowser.Handler.CommandHandler.TestHandler
             string skey = "HA6zkS";
 
             EnctypeX enx = new EnctypeX();
-            byte[] sendingBuffer = enx.EncryptData(skey,session.Challenge,buffer,0);
+           // byte[] sendingBuffer = enx.EncryptData(skey,session.Challenge,buffer,0);
             
-            session.SendAsync(sendingBuffer);
+           // session.SendAsync(sendingBuffer);
         }
     }
 }
