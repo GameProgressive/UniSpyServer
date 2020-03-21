@@ -41,7 +41,6 @@
     <Folder Include="Entity\Interface\" />
     <Folder Include="Handler\SystemHandler\KeyType\" />
     <Folder Include="Handler\CommandHandler\KeepAlive\" />
-    <Folder Include="Handler\CommandHandler\TestHandler\" />
     <Folder Include="Handler\SystemHandler\AdHoc\" />
     <Folder Include="Handler\SystemHandler\GetServers\" />
     <Folder Include="Handler\SystemHandler\Filter\" />
