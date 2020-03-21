@@ -10,7 +10,7 @@ namespace ServerBrowser.Handler.CommandHandler.TestHandler
     {
         public ListTest(SBSession session, byte[] recv)
         {
-            ServerListPacket sbRequest = new ServerListPacket();
+            ServerListRequest sbRequest = new ServerListRequest();
             sbRequest.Parse(recv);
             List<byte> data = new List<byte>();
             byte[] ip = { 192, 168, 0, 100 };

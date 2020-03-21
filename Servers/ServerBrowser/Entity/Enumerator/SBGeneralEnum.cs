@@ -18,6 +18,7 @@
     public enum SBErrorCode
     {
         Parse,
+        NoServersFound,
         UnSupportedGame,
         DataOperation,
         Construct,

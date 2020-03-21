@@ -25,8 +25,8 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         public DateTime LastPing { get; set; }
 
-        public byte[] PublicIP { get; protected set; }
-        public byte[] PublicPort { get; protected set; }
+        public int PublicIP { get; protected set; }
+        public ushort PublicPort { get; protected set; }
 
         /// <summary>
         /// Instant key used to verity the client
@@ -46,8 +46,8 @@ namespace QueryReport.Entity.Structure
             ServerData = new ServerData();
             PlayerData = new PlayerData();
             TeamData = new TeamData();
-            PublicIP = ((IPEndPoint)endPoint).Address.GetAddressBytes();
-            PublicPort = BitConverter.GetBytes((ushort)((IPEndPoint)endPoint).Port);
+            PublicIP = BitConverter.ToInt32(((IPEndPoint)endPoint).Address.GetAddressBytes());
+            PublicPort = (ushort)((IPEndPoint)endPoint).Port;
             instantKey.CopyTo(InstantKey, 0);
         }
     }

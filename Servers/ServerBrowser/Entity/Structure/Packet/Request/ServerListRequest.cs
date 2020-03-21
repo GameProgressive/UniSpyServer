@@ -9,7 +9,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
     /// <summary>
     /// ServerList also called ServerRule
     /// </summary>
-    public class ServerListPacket
+    public class ServerListRequest
     {
         public bool IsParsingFinished;
         public short RequestLenth { get; protected set; }
@@ -29,7 +29,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public byte[] SourceIP { get; protected set; }
         public int MaxServers { get; protected set; }
 
-        public ServerListPacket()
+        public ServerListRequest()
         {
             SourceIP = new byte[4];
             IsParsingFinished = true;

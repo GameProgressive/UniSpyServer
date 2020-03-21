@@ -29,6 +29,7 @@ namespace QueryReport.Entity.Structure.ReportData
         public void Update(string serverData, EndPoint endPoint)
         {
             StandardKeyValue.Clear();
+            CustomKeyValue.Clear();
             string[] keyValueArray = serverData.Split("\0",System.StringSplitOptions.RemoveEmptyEntries);
             
             for (int j = 0; j < keyValueArray.Length; j+=2)

@@ -10,19 +10,17 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
     public class ServerRulesHandler : CommandHandlerBase
     {
 
-        private ServerRulesPacket _packet;
+        private ServerRulesRequest _request;
 
         public ServerRulesHandler(SBSession session, byte[] recv) : base(session, recv)
         {
-            _packet = new ServerRulesPacket();
         }
         
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
-
-            if (_packet.Parse(recv))
-
+            _request = new ServerRulesRequest();
+            if (!_request.Parse(recv))
             {
                 _errorCode = Entity.Enumerator.SBErrorCode.Parse;
                 return;
@@ -33,13 +31,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
         {
             base.DataOperation(session, recv);
             var server = QueryReport.Server.QRServer.GameServerList.
-              Where(c => c.Value.PublicIP==_packet.IP&&c.Value.ServerData.StandardKeyValue["hostport"]==_packet.HostPort);
-
-            //string port = Convert.ToString(BitConverter.ToUInt16(_rulesPacket.Port))
-            ////get server here
-            //var result = QueryReport.Server.QRServer.GameServerList.
-            //  Where(c => c.Value.PublicIP == _rulesPacket.IP
-            //  && c.Value.ServerInfo.Data["hostport"]==Convert.ToString(BitConverter.ToUInt16(_rulesPacket.Port)));
+              Where(c => c.Value.PublicIP==_request.IP);
         }
 
         public override void ConstructResponse(SBSession session, byte[] recv)

@@ -7,21 +7,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers.Filter
 {
     public class ServerFilter
     {
-        IEnumerable<KeyValuePair<EndPoint, GameServer>> _rawServer;
-
-        string _filter;
-
-        public ServerFilter(IEnumerable<KeyValuePair<EndPoint, GameServer>> rawServer, string filter )
-        {
-            _rawServer = rawServer;
-            _filter = filter;
-        }
-
-        public IEnumerable<KeyValuePair<EndPoint, GameServer>> GetFilteredServer()
+        public static IEnumerable<KeyValuePair<EndPoint, GameServer>> GetFilteredServer(IEnumerable<KeyValuePair<EndPoint, GameServer>> rawServer, string filter)
         {
             //TODO
             //We filter server for next step
-            return _rawServer;
+            return rawServer;
         }
     }
 }

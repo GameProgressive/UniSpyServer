@@ -13,7 +13,6 @@ namespace GameSpyLib.Encryption
         public byte last_cipher;
     }
 
-
     public class GOAEncryption
     {
         public GOACryptState State { get; protected set; }

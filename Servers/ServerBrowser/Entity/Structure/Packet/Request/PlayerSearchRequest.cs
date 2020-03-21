@@ -5,7 +5,7 @@ using GameSpyLib.Encryption;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {
-    public class PlayerSearchPacket
+    public class PlayerSearchRequest
     {
         public byte[] SearchOption = new byte[4];
         public byte[] MaxResults = new byte[4];
@@ -34,7 +34,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
 
         private byte[] _message;
 
-        public PlayerSearchPacket(byte[] recv)
+        public PlayerSearchRequest(byte[] recv)
         {
             ByteTools.SubBytes(recv, 3, 3 + 4).CopyTo(SearchOption,0);
             ByteTools.SubBytes(recv, 7, 7 + 4).CopyTo(MaxResults, 0);
