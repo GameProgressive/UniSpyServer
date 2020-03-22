@@ -29,6 +29,7 @@
     <None Remove="Handler\CommandHandler\Buddy\**" />
     <None Remove="Handler\CommandHandler\Profile\**" />
     <None Remove="obj\**" />
+    <Compile Remove="Handler\CommandHandler\Buddy\BuddyMessage\Auth\EmptyClass.cs" />
   </ItemGroup>
 
   <ItemGroup>
