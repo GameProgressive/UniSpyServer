@@ -9,7 +9,6 @@ namespace StatsAndTracking
     {
         public static DatabaseEngine DB;
 
-        public bool Disposed = false;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -26,13 +25,5 @@ namespace StatsAndTracking
 
         protected override TcpSession CreateSession() { return new GStatsSession(this); }
 
-        protected override void Dispose(bool disposingManagedResources)
-        {
-            if (disposingManagedResources)
-            {
-            }
-
-            base.Dispose(disposingManagedResources);
-        }
     }
 }

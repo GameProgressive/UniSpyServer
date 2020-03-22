@@ -11,7 +11,7 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
         private string _keyValueStr = "";
         private uint _profileid, _ptype, _dindex, _length;
 
-        protected SetPDHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
+        public SetPDHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 

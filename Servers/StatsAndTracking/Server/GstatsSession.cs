@@ -19,6 +19,12 @@ namespace StatsAndTracking
             PlayerData = new PlayerData();
         }
 
+        protected override void OnConnected()
+        {
+            SendAsync(GenerateServerChallenge());
+            base.OnConnected();
+        }
+
         protected override void OnReceived(string message)
         {
             message = Decrypt(message);
@@ -45,7 +51,7 @@ namespace StatsAndTracking
         }
 
         /// <summary>
-        /// Encrypt and send
+        /// Encrypt and send async
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
@@ -63,7 +69,7 @@ namespace StatsAndTracking
             //response total length bigger than 38bytes
             // challenge length should be bigger than 20bytes
             PlayerData.Challenge = "00000000000000000000";
-            return Encrypt(string.Format(@"\challenge\{0}", PlayerData.Challenge));
+            return $@"\challenge\{PlayerData.Challenge}";
         }
 
         /// <summary>

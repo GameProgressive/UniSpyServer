@@ -149,7 +149,7 @@ namespace GameSpyLib.Network
 
         public virtual void UnknownDataReceived(string text)
         {
-            ToLog(LogLevel.Error, $"[Unknow]: {text}");
+            ToLog(LogLevel.Error, $"[Unknow] {text}");
         }
 
         public virtual void UnknownDataReceived(Dictionary<string, string> recv)
@@ -159,7 +159,7 @@ namespace GameSpyLib.Network
 
         public virtual void LogPlainText(string data)
         {
-            ToLog($@"[Plain]: {data}");
+            ToLog($@"[Plain] {data}");
         }
 
         public virtual void LogPlainText(byte[] data)
