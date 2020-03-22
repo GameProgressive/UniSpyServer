@@ -1,4 +1,4 @@
-﻿using System,
+﻿
 namespace PresenceConnectionManager.Entity.Structure
 {
     public enum SDKRevisionType
