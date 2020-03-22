@@ -157,6 +157,15 @@ namespace GameSpyLib.Network
             GameSpyUtils.PrintReceivedGPDictToLogger(recv);
         }
 
+        public virtual void LogPlainText(string data)
+        {
+            ToLog($@"[Plain]: {data}");
+        }
+
+        public virtual void LogPlainText(byte[] data)
+        {
+            LogPlainText(Encoding.ASCII.GetString(data));
+        }
     }
 }
 

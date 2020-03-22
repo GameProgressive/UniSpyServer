@@ -2,7 +2,7 @@
 
 namespace StatsAndTracking.Handler.CommandHandler.Auth
 {
-    public class AuthHandler : GStatsHandlerBase
+    public class AuthHandler : CommandHandlerBase
     {
         GameSpyLib.Encryption.Crc16 _crc16 = new GameSpyLib.Encryption.Crc16(GameSpyLib.Encryption.Crc16Mode.Standard);
 
@@ -19,13 +19,12 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
             //len = sprintf(resp, respformat, gcd_gamename, md5val, gameport);
 
             // for now we do not check this
-            session.SessionKey = (uint)new System.Random().Next(0, 2147483647);
-
+            session.PlayerData.SessionKey = (uint)new System.Random().Next(0, 2147483647);
         }
 
         protected override void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
         {
-            _sendingBuffer = string.Format(@"\sesskey\{0}", session.SessionKey);
+            _sendingBuffer = string.Format(@"\sesskey\{0}", session.PlayerData.SessionKey);
         }
     }
 }

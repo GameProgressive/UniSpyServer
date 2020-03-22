@@ -2,6 +2,7 @@
 using GameSpyLib.Encryption;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandSwitcher;
 using System.Collections.Generic;
 using System.Text;
@@ -10,16 +11,18 @@ namespace StatsAndTracking
 {
     public class GStatsSession : TemplateTcpSession
     {
-        public uint SessionKey;
 
-        public string Challenge { get; protected set; }
+        public PlayerData PlayerData { get; set; }
 
         public GStatsSession(TemplateTcpServer server) : base(server)
         {
+            PlayerData = new PlayerData();
         }
 
         protected override void OnReceived(string message)
         {
+            message = Decrypt(message);
+
             if (message[0] != '\\')
             {
                 return;
@@ -31,98 +34,63 @@ namespace StatsAndTracking
             CommandSwitcher.Switch(this, dict);
         }
 
-        protected override void OnConnected()
-        { 
-            this.SendAsync(GenerateServerChallenge());
-            base.OnConnected();
-        }
-
-        protected override void OnReceived(byte[] buffer, long offset, long size)
+        /// <summary>
+        /// Encrypt and send
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public override long Send(string text)
         {
-            if (size > 2048)
-            {
-                ToLog("[Spam] client spam we ignored!");
-                return;
-            }
-
-            string message = Encoding.UTF8.GetString(buffer, 0, (int)size);
-            message = message.Replace(@"\final\", "");
-            string decodedmsg = GstatsXOR(message) + @"\final\";
-
-            if (LogWriter.Log.DebugSockets)
-            {
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, decodedmsg);
-            }
-
-            OnReceived(decodedmsg);
+            return base.Send(Encrypt(text));
         }
 
         /// <summary>
-        /// Send data to the client (asynchronous)
+        /// Encrypt and send
         /// </summary>
-        /// <param name="buffer">Buffer to send</param>
-        /// <param name="offset">Buffer offset</param>
-        /// <param name="size">Buffer size</param>
-        /// <returns>'true' if the data was successfully sent, 'false' if the session is not connected</returns>
-        /// <remarks>
-        /// We override this method in order to let it print the data it transmits, please call "base.SendAsync" in your overrided function.
-        /// </remarks>
-        public override bool SendAsync(byte[] buffer, long offset, long size)
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public override bool SendAsync(string text)
         {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer);
-
-            if (LogWriter.Log.DebugSockets)
-            {
-                LogWriter.Log.Write(LogLevel.Debug, @"{0}[Send] TCP data: {1}\final\", ServerName, sendingBuffer);
-            }
-
-            sendingBuffer = GstatsXOR(sendingBuffer) + @"\final\";
-
-            return BaseSendAsync(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
+            return base.SendAsync(Encrypt(text));
         }
 
         /// <summary>
-        /// Send data to the client (synchronous)
+        /// Generate server challenge for a new connected player
         /// </summary>
-        /// <param name="buffer">Buffer to send</param>
-        /// <param name="offset">Buffer offset</param>
-        /// <param name="size">Buffer size</param>
-        /// <returns>Size of sent data</returns>
-        /// <remarks>
-        /// We override this method in order to let it print the data it transmits, please call "base.Send" in your overrided function.
-        /// </remarks>
-        public override long Send(byte[] buffer, long offset, long size)
-        {
-            string sendingBuffer = Encoding.UTF8.GetString(buffer);
-
-            if (LogWriter.Log.DebugSockets)
-            {
-                LogWriter.Log.Write(LogLevel.Debug, @"{0}[Send] TCP data: {1}\final\", ServerName, sendingBuffer);
-            }
-
-            sendingBuffer = GstatsXOR(sendingBuffer);
-
-            return BaseSend(Encoding.UTF8.GetBytes(sendingBuffer), offset, sendingBuffer.Length);
-        }
-
+        /// <returns></returns>
         public string GenerateServerChallenge()
         {
             //response total length bigger than 38bytes
             // challenge length should be bigger than 20bytes
-            Challenge = GameSpyRandom.GenerateRandomString(20, GameSpyRandom.StringType.Alpha);
-            //string sendingBuffer = string.Format(@"\challenge\{0}\final\", ServerChallengeKey);
-            //sendingBuffer = xor(sendingBuffer);
-            return string.Format(@"\challenge\{0}", Challenge);
+            PlayerData.Challenge = "00000000000000000000";
+            return Encrypt(string.Format(@"\challenge\{0}", PlayerData.Challenge));
         }
 
         /// <summary>
-        /// Encrypt and Decrypt using XOR with type3 method
+        /// Encrypt using XOR with type3 method
         /// </summary>
-        /// <param name="msg"></param>
+        /// <param name="plainText"></param>
         /// <returns></returns>
-        public static string GstatsXOR(string msg)
+        public string Encrypt(string plainText)
         {
-            return XorEncoding.Encrypt(msg, XorEncoding.XorType.Type1);
+            if (LogWriter.Log.DebugSockets)
+                LogPlainText(plainText);
+            string cipherText = XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type1) + @"\final\";
+            return cipherText;
+        }
+
+        /// <summary>
+        /// Decrypt using XOR with type3 method
+        /// </summary>
+        /// <param name="cipherText"></param>
+        /// <returns></returns>
+        public string Decrypt(string cipherText)
+        {
+            cipherText = cipherText.Substring(0, cipherText.Length - 7);
+            string plainText = XorEncoding.Encrypt(cipherText, XorEncoding.XorType.Type1) + @"\final\";
+            if (LogWriter.Log.DebugSockets)
+                LogPlainText(plainText);
+            return plainText;
         }
     }
 }

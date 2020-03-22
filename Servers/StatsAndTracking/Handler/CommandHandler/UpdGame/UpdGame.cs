@@ -1,7 +1,7 @@
 ﻿namespace StatsAndTracking.Handler.CommandHandler.UpdGame
 {
     /// <summary>
-    /// Handles game snapshot
+    /// Handles game snapshot and update game data
     /// </summary>
     public class UpdGame
     {

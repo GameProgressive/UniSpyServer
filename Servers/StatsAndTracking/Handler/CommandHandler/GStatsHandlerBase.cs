@@ -4,13 +4,13 @@ using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler
 {
-    public class GStatsHandlerBase
+    public class CommandHandlerBase
     {
         protected string _sendingBuffer;
         protected uint _localId;
         protected GstatsErrorCode _errorCode = GstatsErrorCode.NoError;
 
-        protected GStatsHandlerBase(GStatsSession session, Dictionary<string, string> recv)
+        protected CommandHandlerBase(GStatsSession session, Dictionary<string, string> recv)
         {
             Handle(session, recv);
         }

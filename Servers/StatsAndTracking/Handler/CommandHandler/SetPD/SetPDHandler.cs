@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace StatsAndTracking.Handler.CommandHandler.SetPD
 {
-    internal class SetPDHandler : GStatsHandlerBase
+    internal class SetPDHandler : CommandHandlerBase
     {
         //@"\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"
         private string _keyValueStr = "";

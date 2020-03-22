@@ -7,10 +7,9 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
     /// <summary>
     /// Authenticate with profileid
     /// </summary>
-    public class AuthPHandler:GStatsHandlerBase
+    public class AuthPHandler:CommandHandlerBase
     {
         private uint _profileid;
-        private string _responseStr;
 
         public AuthPHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
         {
@@ -35,12 +34,8 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
 
         protected override void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
         {
-            //we did not store the plaintext of user password so we can not check this
-            if (_responseStr == recv["resp"])
-            {
-                _sendingBuffer = $@"\pauthr\{_profileid}\lid\{_localId}\";
-            }
-            _sendingBuffer = $@"\pauthr\{_profileid}\lid\{_localId}\";
+            //we did not store the plaintext of user password so we do not need to check this
+            _sendingBuffer =$@"\pauthr\{_profileid}\lid\{_localId}\";
         }
 
         ////request \authp\\pid\27\resp\16ae1e1f47c8ab646de7a52d615e3b06\lid\0\final\
