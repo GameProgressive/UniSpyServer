@@ -1,5 +1,7 @@
 ﻿using System;
+using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
+using ServerBrowser.Handler.SystemHandler.Error;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
@@ -19,6 +21,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             if (_errorCode != SBErrorCode.NoError)
             {
+                session.ToLog(LogLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
                 return;
             }
 
@@ -26,6 +29,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             if (_errorCode != SBErrorCode.NoError)
             {
+                session.ToLog(LogLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
                 return;
             }
 
@@ -33,6 +37,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             if (_errorCode != SBErrorCode.NoError)
             {
+                session.ToLog(LogLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
                 return;
             }
 

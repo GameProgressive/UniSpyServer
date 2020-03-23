@@ -12,6 +12,12 @@ namespace ServerBrowser
     public class SBServer : TemplateTcpServer
     {
         public static DatabaseEngine DB;
+        /// <summary>
+        /// we are not gamespy,
+        /// for simplicity we use hard coded challenge
+        /// to reduce computation cost of our program
+        /// </summary>
+        public static readonly string ServerChallenge = "0000000000";
 
         public SBServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {

@@ -48,7 +48,6 @@ namespace ServerBrowser.Entity.Enumerator
 
     public enum GameServerFlags
     {
-        ServerEnd = 0,
         UnsolicitedUDPFlag = 1,
         PrivateIPFlag = 2,
         ConnectNegotiateFlag = 4,

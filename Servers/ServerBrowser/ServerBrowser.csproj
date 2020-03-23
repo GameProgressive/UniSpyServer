@@ -44,6 +44,13 @@
     <Folder Include="Handler\SystemHandler\AdHoc\" />
     <Folder Include="Handler\SystemHandler\GetServers\" />
     <Folder Include="Handler\SystemHandler\Filter\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionSwitcher\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\NoServerList\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\PushUpdates\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroups\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendRequestedField\" />
+    <Folder Include="Handler\SystemHandler\Error\" />
   </ItemGroup>
 
   <ItemGroup>

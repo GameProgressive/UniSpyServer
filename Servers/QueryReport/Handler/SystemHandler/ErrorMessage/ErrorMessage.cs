@@ -1,10 +1,10 @@
 ﻿using QueryReport.Entity.Enumerator;
 
-namespace QueryReport.Handler.SystemHandler
+namespace QueryReport.Handler.SystemHandler.ErrorMessage
 {
     public class ErrorMessage
     {
-        public static string ToMsg(QRErrorCode error)
+        public static string GetErrorMessage(QRErrorCode error)
         {
             switch (error)
             {

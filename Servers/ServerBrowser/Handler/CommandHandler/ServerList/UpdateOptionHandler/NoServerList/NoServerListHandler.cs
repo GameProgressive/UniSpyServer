@@ -1,34 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
+using System.Linq;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Encryption;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
-using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
+using ServerBrowser.Entity.Structure;
+using System.Text;
+using GameSpyLib.Encryption;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using ServerBrowser.Handler.CommandHandler.ServerList.GetServers;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList
+namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList
 {
-    public class ServerListHandler : CommandHandlerBase
+    /// <summary>
+    /// Send servers list without keys and values
+    /// </summary>
+    public class NoServerListHandler : CommandHandlerBase
     {
+        private string _secretKey;
         private byte[] _clientRemoteIP;
         private byte[] _clientRemotePort;
-        private string _secretKey;
-        private bool _IsUsingNTSValue = true;
         private ServerListRequest _request = new ServerListRequest();
         private IEnumerable<KeyValuePair<EndPoint, GameServer>> _filteredServers;
 
-        public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
+        public NoServerListHandler(SBSession session, byte[] recv) : base(session, recv)
+        {
+        }
 
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
-            //save client challenge in _sbRequest
+
             _request.Parse(recv);
 
             //this is client public ip and port
@@ -40,7 +44,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
         public override void DataOperation(SBSession session, byte[] recv)
         {
-            //we can use GetServersFromNetwork class in the future
+            base.DataOperation(session, recv);
             _filteredServers = GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
 
             if (_filteredServers.Count() == 0)
@@ -51,19 +55,20 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
-            List<byte> serverList = new List<byte>();
+            base.ConstructResponse(session, recv);
+            List<byte> data = new List<byte>();
 
             //first add client public ip and port
-            serverList.AddRange(_clientRemoteIP);
-            serverList.AddRange(_clientRemotePort);
-            //add server keys and keytypes
-            serverList.AddRange(GenerateServerKeys());
-            //we use NTS string so total unique value list is 0
-            serverList.AddRange(GenerateUniqueValue());
-            //add server infomation such as public ip etc.
-            serverList.AddRange(GenerateServersInfo());
+            data.AddRange(_clientRemoteIP);
+            data.AddRange(_clientRemotePort);
+            //we add the number of keys
+            data.Add(0);
+            //we add the number of unique values
+            data.Add(0);
+            //we add server info
+            data.AddRange(GenerateServersInfo());
             //after all server information is added we add the end flag
-            serverList.AddRange(SBStringFlag.AllServerEndFlag);
+            data.AddRange(SBStringFlag.AllServerEndFlag);
 
             //we get secrete key from database
             if (!GetSecretKey())
@@ -71,67 +76,22 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 session.ToLog($"Unknown or unsupported game: {_request.GameName}");
                 return;
             }
-            session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(serverList.ToArray())}");
-            GOAEncryption enc =
-                new GOAEncryption(_secretKey, _request.Challenge, SBServer.ServerChallenge);
+
+            session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(data.ToArray())}");
+            GOAEncryption enc
+                = new GOAEncryption(_secretKey, _request.Challenge, SBServer.ServerChallenge);
 
             _sendingBuffer = new ServerListResponse().
                 CombineHeaderAndContext
                 (
-                    enc.Encrypt(serverList.ToArray()),
-                     SBServer.ServerChallenge
-                );
+                    enc.Encrypt(data.ToArray()),
+                    SBServer.ServerChallenge
+                ); ;
+
             //refresh encryption state
             session.EncState = enc.State;
         }
 
-
-        private List<byte> GenerateServerKeys()
-        {
-            List<byte> data = new List<byte>();
-
-            switch (_request.UpdateOption)
-            {
-                case SBServerListUpdateOption.NoServerList:
-                    //we do not need to add keys
-                    data.Add(0);
-                    break;
-                case SBServerListUpdateOption.SendRequestedField:
-                    data.Add((byte)_request.FieldList.Length);
-                    foreach (var key in _request.FieldList)
-                    {
-                        data.Add((byte)SBKeyType.String);
-                        data.AddRange(Encoding.ASCII.GetBytes(key));
-                        data.Add(0);
-                    }
-                    break;
-            }
-            return data;
-        }
-        private List<byte> GenerateUniqueValue()
-        {
-
-            List<byte> data = new List<byte>();
-            switch (_request.UpdateOption)
-            {
-                case SBServerListUpdateOption.NoServerList:
-                    break;
-                case SBServerListUpdateOption.SendRequestedField:
-                    if (_IsUsingNTSValue)
-                    {
-                        //we do not add unique value here
-                        //because we are using NTS string
-                        data.Add(0);
-                    }
-                    else
-                    {
-                        //we add unique value here
-                    }
-                    break;
-            }
-
-            return data;
-        }
         private List<byte> GenerateServersInfo()
         {
             List<byte> data = new List<byte>();
@@ -140,26 +100,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             {
                 data.AddRange(GenerateServerInfoHeader(server));
 
-                switch (_request.UpdateOption)
+                foreach (var key in _request.FieldList)
                 {
-                    case SBServerListUpdateOption.SendRequestedField:
-                        //add every value to list
-                        if (_IsUsingNTSValue)
-                        {
-                            foreach (var key in _request.FieldList)
-                            {
-                                data.Add(SBStringFlag.NTSStringFlag);
-                                data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
-                                data.Add(SBStringFlag.StringSpliter);
-                            }
-                        }
-                        else
-                        {
-                            //do unique values method
-                        }
-                        break;
-                    case SBServerListUpdateOption.NoServerList:
-                        break;
+                    data.Add(SBStringFlag.NTSStringFlag);
+                    data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
+                    data.Add(SBStringFlag.StringSpliter);
                 }
             }
             return data;
@@ -170,8 +115,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             // you will only have HasKeysFlag or HasFullRule you can not have both
             List<byte> header = new List<byte>();
 
-            //add has key flag
-            header.Add((byte)GameServerFlags.HasKeysFlag);
+            //add has server flag
+            header.Add(0);
 
             //we add server public ip here
             header.AddRange(BitConverter.GetBytes(server.Value.PublicIP));
@@ -253,5 +198,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 }
             }
         }
+
     }
 }

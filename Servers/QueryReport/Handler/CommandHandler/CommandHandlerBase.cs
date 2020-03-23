@@ -1,5 +1,5 @@
 ﻿using QueryReport.Entity.Enumerator;
-using QueryReport.Handler.SystemHandler;
+using QueryReport.Handler.SystemHandler.ErrorMessage;
 using QueryReport.Server;
 using System.Net;
 
@@ -21,7 +21,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode != QRErrorCode.NoError)
             {
-                server.ToLog(ErrorMessage.ToMsg(_errorCode));
+                server.ToLog(ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode == QRErrorCode.Database)
             {
-                server.ToLog(ErrorMessage.ToMsg(_errorCode));
+                server.ToLog(ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode != QRErrorCode.NoError)
             {
-                server.ToLog(ErrorMessage.ToMsg(_errorCode));
+                server.ToLog(ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 

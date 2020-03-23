@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace StatsAndTracking.Handler.CommandHandler.SetPD
 {
+    /// <summary>
+    /// Set persist storage data
+    /// </summary>
     internal class SetPDHandler : CommandHandlerBase
     {
         //@"\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"
@@ -57,7 +60,29 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
         {
             using (var db = new retrospyContext())
             {
-                db.Pstorage.Where(p => p.Profileid == _profileid && p.Dindex == _dindex).FirstOrDefault().Data = _keyValueStr;
+                
+                var result = from p in db.Pstorage
+                             where p.Profileid == _profileid && p.Dindex == _dindex && p.Ptype == _ptype
+                             select p;
+
+                Pstorage ps;
+                if (result.Count() == 0)
+                {
+                    //insert a new record in database
+                    ps = new Pstorage();
+                    ps.Dindex = _dindex;
+                    ps.Profileid = _profileid;
+                    ps.Ptype = _ptype;
+                    ps.Data = _keyValueStr;
+                    db.Pstorage.Add(ps);
+                }
+                else if (result.Count() == 1)
+                {
+                    //update an existed record in database
+                    ps = result.First();
+                    ps.Data = _keyValueStr;
+                }
+                
                 db.SaveChanges();
             }
         }

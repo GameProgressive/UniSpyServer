@@ -39,5 +39,6 @@
     <Folder Include="Handler\CommandHandler\MessageACK\" />
     <Folder Include="Handler\SystemHandler\ServerListChecker\" />
     <Folder Include="Handler\SystemHandler\FindGeographicLocation\" />
+    <Folder Include="Handler\SystemHandler\ErrorMessage\" />
   </ItemGroup>
 </Project>

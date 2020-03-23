@@ -12,22 +12,26 @@ using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using ServerBrowser.Handler.CommandHandler.ServerList.GetServers;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList
+
+namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.SendRequestedField
 {
-    public class ServerListHandler : CommandHandlerBase
+    public class SendRequestFieldHandler : CommandHandlerBase
     {
         private byte[] _clientRemoteIP;
         private byte[] _clientRemotePort;
+        private string _serverChallenge;
         private string _secretKey;
-        private bool _IsUsingNTSValue = true;
         private ServerListRequest _request = new ServerListRequest();
         private IEnumerable<KeyValuePair<EndPoint, GameServer>> _filteredServers;
 
-        public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
+        public SendRequestFieldHandler(SBSession session, byte[] recv) : base(session, recv)
+        {
+        }
 
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
+
             //save client challenge in _sbRequest
             _request.Parse(recv);
 
@@ -36,10 +40,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             _clientRemoteIP = remote.Address.GetAddressBytes();
             //TODO   //check what is the default port
             _clientRemotePort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
+
         }
 
         public override void DataOperation(SBSession session, byte[] recv)
         {
+            base.DataOperation(session, recv);
+
             //we can use GetServersFromNetwork class in the future
             _filteredServers = GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
 
@@ -47,10 +54,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             {
                 _errorCode = SBErrorCode.NoServersFound;
             }
+
         }
 
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
+            base.ConstructResponse(session, recv);
+
             List<byte> serverList = new List<byte>();
 
             //first add client public ip and port
@@ -71,15 +81,18 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 session.ToLog($"Unknown or unsupported game: {_request.GameName}");
                 return;
             }
+
+            _serverChallenge = "0000000000";
+
             session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(serverList.ToArray())}");
             GOAEncryption enc =
-                new GOAEncryption(_secretKey, _request.Challenge, SBServer.ServerChallenge);
+                new GOAEncryption(_secretKey, _request.Challenge, _serverChallenge);
 
             _sendingBuffer = new ServerListResponse().
                 CombineHeaderAndContext
                 (
                     enc.Encrypt(serverList.ToArray()),
-                     SBServer.ServerChallenge
+                    _serverChallenge
                 );
             //refresh encryption state
             session.EncState = enc.State;
@@ -90,45 +103,28 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         {
             List<byte> data = new List<byte>();
 
-            switch (_request.UpdateOption)
+            data.Add((byte)_request.FieldList.Length);
+            foreach (var key in _request.FieldList)
             {
-                case SBServerListUpdateOption.NoServerList:
-                    //we do not need to add keys
-                    data.Add(0);
-                    break;
-                case SBServerListUpdateOption.SendRequestedField:
-                    data.Add((byte)_request.FieldList.Length);
-                    foreach (var key in _request.FieldList)
-                    {
-                        data.Add((byte)SBKeyType.String);
-                        data.AddRange(Encoding.ASCII.GetBytes(key));
-                        data.Add(0);
-                    }
-                    break;
+                data.Add((byte)SBKeyType.String);
+                data.AddRange(Encoding.ASCII.GetBytes(key));
+                data.Add(0);
             }
             return data;
         }
+
+        /// <summary>
+        /// we only use NTS string so we do not need add unique value
+        /// </summary>
+        /// <returns></returns>
         private List<byte> GenerateUniqueValue()
         {
 
             List<byte> data = new List<byte>();
-            switch (_request.UpdateOption)
-            {
-                case SBServerListUpdateOption.NoServerList:
-                    break;
-                case SBServerListUpdateOption.SendRequestedField:
-                    if (_IsUsingNTSValue)
-                    {
-                        //we do not add unique value here
-                        //because we are using NTS string
-                        data.Add(0);
-                    }
-                    else
-                    {
-                        //we add unique value here
-                    }
-                    break;
-            }
+
+            //we do not add unique value here
+            //because we are using NTS string
+            data.Add(0);
 
             return data;
         }
@@ -140,26 +136,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             {
                 data.AddRange(GenerateServerInfoHeader(server));
 
-                switch (_request.UpdateOption)
+                foreach (var key in _request.FieldList)
                 {
-                    case SBServerListUpdateOption.SendRequestedField:
-                        //add every value to list
-                        if (_IsUsingNTSValue)
-                        {
-                            foreach (var key in _request.FieldList)
-                            {
-                                data.Add(SBStringFlag.NTSStringFlag);
-                                data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
-                                data.Add(SBStringFlag.StringSpliter);
-                            }
-                        }
-                        else
-                        {
-                            //do unique values method
-                        }
-                        break;
-                    case SBServerListUpdateOption.NoServerList:
-                        break;
+                    data.Add(SBStringFlag.NTSStringFlag);
+                    data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
+                    data.Add(SBStringFlag.StringSpliter);
                 }
             }
             return data;

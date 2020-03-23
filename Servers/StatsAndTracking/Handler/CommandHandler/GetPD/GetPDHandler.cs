@@ -67,25 +67,26 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
         {
             base.DataOperation(session, recv);
             //search player data in database;
-            using (var db = new retrospyContext())
-            {
-                var result = from ps in db.Pstorage
-                             where ps.Ptype == _persistantStorageType
-                             && ps.Dindex == _dataIndex
-                             && ps.Profileid == _profileid
-                             select ps.Data;
-                if (result.Count() != 1)
-                {
-                    _errorCode = GstatsErrorCode.Database;
-                    return;
-                }
-                //TODO figure out what is the function of keys in request
-                //throw new NotImplementedException();
-            }
+
+            //using (var db = new retrospyContext())
+            //{
+            //    var result = from ps in db.Pstorage
+            //                 where ps.Ptype == _persistantStorageType
+            //                 && ps.Dindex == _dataIndex
+            //                 && ps.Profileid == _profileid
+            //                 select ps.Data;
+            //    if (result.Count() != 1)
+            //    {
+            //        _errorCode = GstatsErrorCode.Database;
+            //        return;
+            //    }
+            //    //TODO figure out what is the function of keys in request
+            //    //throw new NotImplementedException();
+            //}
         }
         protected override void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
         {
-            _sendingBuffer = $@"\getpdr\{recv["pid"]}\lid\{_localId}\mod\1234\length\5\data\mydata";
+            _sendingBuffer = $@"\getpdr\1\pid\{recv["pid"]}\lid\{_localId}\mod\1234\length\5\data\mydata";
         }
     }
 }
