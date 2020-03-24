@@ -22,6 +22,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
         private string _serverChallenge;
         private string _secretKey;
         private ServerListRequest _request = new ServerListRequest();
+        
         private IEnumerable<KeyValuePair<EndPoint, GameServer>> _filteredServers;
 
         public SendRequestFieldHandler(SBSession session, byte[] recv) : base(session, recv)

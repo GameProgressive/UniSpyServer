@@ -51,6 +51,7 @@
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroups\" />
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendRequestedField\" />
     <Folder Include="Handler\SystemHandler\Error\" />
+    <Folder Include="Handler\SystemHandler\GetGroups\" />
   </ItemGroup>
 
   <ItemGroup>

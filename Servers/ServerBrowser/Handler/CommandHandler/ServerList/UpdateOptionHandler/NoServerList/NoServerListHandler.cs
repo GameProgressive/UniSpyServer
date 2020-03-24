@@ -65,8 +65,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.No
             data.Add(0);
             //we add the number of unique values
             data.Add(0);
-            //we add server info
-            data.AddRange(GenerateServersInfo());
+            //there is not server info here
+
             //after all server information is added we add the end flag
             data.AddRange(SBStringFlag.AllServerEndFlag);
 
@@ -90,92 +90,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.No
 
             //refresh encryption state
             session.EncState = enc.State;
-        }
-
-        private List<byte> GenerateServersInfo()
-        {
-            List<byte> data = new List<byte>();
-
-            foreach (var server in _filteredServers)
-            {
-                data.AddRange(GenerateServerInfoHeader(server));
-
-                foreach (var key in _request.FieldList)
-                {
-                    data.Add(SBStringFlag.NTSStringFlag);
-                    data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
-                    data.Add(SBStringFlag.StringSpliter);
-                }
-            }
-            return data;
-        }
-
-        private List<byte> GenerateServerInfoHeader(KeyValuePair<EndPoint, GameServer> server)
-        {
-            // you will only have HasKeysFlag or HasFullRule you can not have both
-            List<byte> header = new List<byte>();
-
-            //add has server flag
-            header.Add(0);
-
-            //we add server public ip here
-            header.AddRange(BitConverter.GetBytes(server.Value.PublicIP));
-
-            //we check host port is standard port or not
-            CheckNonStandardPort(header, server);
-
-            // now we check if there are private ip
-            CheckPrivateIP(header, server);
-
-            // we check private port here
-            CheckPrivatePort(header, server);
-
-            //TODO we have to check icmp_ip_flag
-
-            return header;
-        }
-        private void CheckPrivateIP(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
-        {
-            // now we check if there are private ip
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("localip0"))
-            {
-                header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.Value.ServerData.StandardKeyValue["localip0"]).GetAddressBytes();
-                header.AddRange(address);
-            }
-            else if (server.Value.ServerData.StandardKeyValue.ContainsKey("localip1"))
-            {
-                header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.Value.ServerData.StandardKeyValue["localip1"]).GetAddressBytes();
-                header.AddRange(address);
-            }
-        }
-        private void CheckNonStandardPort(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
-        {
-            //we check host port is standard port or not
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("hostport"))
-            {
-                if (server.Value.ServerData.StandardKeyValue["hostport"] != "6500")
-                {
-                    header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                    //we do not need to reverse port bytes
-                    byte[] port = BitConverter.GetBytes(ushort.Parse(server.Value.ServerData.StandardKeyValue["hostport"]));
-
-                    header.AddRange(port);
-                }
-            }
-        }
-        private void CheckPrivatePort(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
-        {
-            // we check private port here
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("localport"))
-            {
-                header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-                byte[] localPort =
-                 BitConverter.GetBytes(ushort.Parse(server.Value.ServerData.StandardKeyValue["localport"]));
-
-                header.AddRange(localPort);
-            }
         }
 
         private bool GetSecretKey()
