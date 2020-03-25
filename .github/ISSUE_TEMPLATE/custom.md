@@ -1,6 +1,6 @@
 ---
-name: Custom issue template
-about: Describe this issue template's purpose here.
+name: Game compatibility
+about: Fill an issue about a missing game compatibility
 title: Game name
 labels: compat
 assignees: ''
