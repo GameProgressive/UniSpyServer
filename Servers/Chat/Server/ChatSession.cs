@@ -28,7 +28,7 @@ namespace Chat
 
             if (LogWriter.Log.DebugSockets)
             {
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] IRC data: {1}", ServerName, data);
+                ToLog(LogLevel.Debug, $"[Recv] IRC data: {data}");
             }
 
             HandleIRCCommands(data);
@@ -43,8 +43,10 @@ namespace Chat
             ToLog(Info);
 
             // 1. Generate the two keys
-            string clientKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
-            string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
+            string clientKey = "0000000000000000";
+            //GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
+            string serverKey = "0000000000000000";
+            //GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
 
             // 2. Prepare two keys
             ChatCrypt.Init(chatUserInfo.ClientCTX, clientKey, secretKey);
@@ -72,7 +74,7 @@ namespace Chat
         {
             if (LogWriter.Log.DebugSockets)
             {
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] IRC data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+                ToLog(LogLevel.Debug, $"[Send] IRC data: {Encoding.ASCII.GetString(buffer)}");
             }
 
             if (chatUserInfo.encrypted)

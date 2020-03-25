@@ -1,7 +1,6 @@
 ﻿using ServerBrowser.Handler.CommandHandler.ServerList;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.ServerInfo;
-using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
@@ -13,7 +12,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             switch ((SBClientRequestType)recv[2])
             {
                 case SBClientRequestType.ServerListRequest:
-                    UpdateOprionSwitcher.Switch(session,recv);
+                    new ServerListHandler(session, recv);
                     break;
 
                 case SBClientRequestType.PlayerSearchRequest:

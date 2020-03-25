@@ -5,7 +5,6 @@ using GameSpyLib.Network;
 using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandSwitcher;
 using System.Collections.Generic;
-using System.Text;
 
 namespace StatsAndTracking
 {
@@ -40,6 +39,15 @@ namespace StatsAndTracking
             CommandSwitcher.Switch(this, dict);
         }
 
+        public override long Send(byte[] buffer, long offset, long size)
+        {
+            return BaseSend(buffer, offset, size);
+        }
+
+        public override bool SendAsync(byte[] buffer, long offset, long size)
+        {
+            return BaseSendAsync(buffer, offset, size);
+        }
         /// <summary>
         /// Encrypt and send
         /// </summary>

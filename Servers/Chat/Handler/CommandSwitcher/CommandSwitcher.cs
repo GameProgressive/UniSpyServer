@@ -1,4 +1,5 @@
 ﻿using Chat.Handler.CommandHandler.CRYPT;
+using Chat.Handler.CommandHandler.JOIN;
 using Chat.Handler.CommandHandler.LOGIN;
 using Chat.Handler.CommandHandler.NICK;
 using Chat.Handler.CommandHandler.USER;
@@ -37,7 +38,9 @@ namespace Chat.Handler.CommandSwitcher
                 case "LOGIN":
                     LOGINHandler.Handle(session, recv);
                     break;
-
+                case "JOIN":
+                    JOINHandler.Handler(session, recv);
+                    break;
                 default:
                     string singleRecv = "";
 

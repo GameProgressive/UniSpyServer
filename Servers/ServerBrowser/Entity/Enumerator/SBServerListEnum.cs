@@ -33,7 +33,7 @@ namespace ServerBrowser.Entity.Enumerator
         /// <summary>
         /// This is used to tell server browser client want main server list (keys and values)
         /// </summary>
-        SendRequestedField = 0,
+        GeneralRequest = 0,
         SendFieldForAll = 1,
         /// <summary>
         /// this is used to check the connection to server browser

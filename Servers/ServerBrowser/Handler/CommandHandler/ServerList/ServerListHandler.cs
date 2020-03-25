@@ -11,6 +11,7 @@ using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using ServerBrowser.Handler.CommandHandler.ServerList.GetServers;
+using ServerBrowser.Handler.SystemHandler.GetGroups;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList
 {
@@ -19,29 +20,44 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         private byte[] _clientRemoteIP;
         private byte[] _clientRemotePort;
         private string _secretKey;
-        private bool _IsUsingNTSValue = true;
         private ServerListRequest _request = new ServerListRequest();
         private IEnumerable<KeyValuePair<EndPoint, GameServer>> _filteredServers;
-
+        private IEnumerable<Grouplist> _filteredGroups;
         public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
 
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
-            //save client challenge in _sbRequest
+            //save client challenge in _request
             _request.Parse(recv);
 
-            //this is client public ip and port
-            IPEndPoint remote = (IPEndPoint)session.Socket.RemoteEndPoint;
-            _clientRemoteIP = remote.Address.GetAddressBytes();
+            //this is client public ip and default query port
+            _clientRemoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
             //TODO   //check what is the default port
             _clientRemotePort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
         }
 
         public override void DataOperation(SBSession session, byte[] recv)
         {
+            switch (_request.UpdateOption)
+            {
+                case SBServerListUpdateOption.GeneralRequest:
+                    _filteredServers =
+                        GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
+                    break;
+                case SBServerListUpdateOption.NoServerList:
+                    //we do not need to retrive server for this
+                    break;
+                case SBServerListUpdateOption.PushUpdates:
+                    break;
+                case SBServerListUpdateOption.SendGroups:
+                    //we need to search group in database
+                    _filteredGroups =
+                        GetGroupsFromQR.GetFilteredGroups(new GetGroupsFromDatabase(), _request.GameName, _request.Filter);
+                    break;
+            }
             //we can use GetServersFromNetwork class in the future
-            _filteredServers = GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
+
 
             if (_filteredServers.Count() == 0)
             {
@@ -71,7 +87,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 session.ToLog($"Unknown or unsupported game: {_request.GameName}");
                 return;
             }
-            session.ToLog($"[Plaintext] {Encoding.ASCII.GetString(serverList.ToArray())}");
+            session.LogPlainText(Encoding.ASCII.GetString(serverList.ToArray()));
+
             GOAEncryption enc =
                 new GOAEncryption(_secretKey, _request.Challenge, SBServer.ServerChallenge);
 
@@ -93,10 +110,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             switch (_request.UpdateOption)
             {
                 case SBServerListUpdateOption.NoServerList:
-                    //we do not need to add keys
+                    //we do not need to add anything here client will only read game port
                     data.Add(0);
                     break;
-                case SBServerListUpdateOption.SendRequestedField:
+                case SBServerListUpdateOption.GeneralRequest:
                     data.Add((byte)_request.FieldList.Length);
                     foreach (var key in _request.FieldList)
                     {
@@ -110,23 +127,23 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         }
         private List<byte> GenerateUniqueValue()
         {
-
             List<byte> data = new List<byte>();
+
             switch (_request.UpdateOption)
             {
                 case SBServerListUpdateOption.NoServerList:
+                    //we do not need to add anything here client will only read game port
                     break;
-                case SBServerListUpdateOption.SendRequestedField:
-                    if (_IsUsingNTSValue)
-                    {
-                        //we do not add unique value here
-                        //because we are using NTS string
-                        data.Add(0);
-                    }
-                    else
-                    {
-                        //we add unique value here
-                    }
+                case SBServerListUpdateOption.GeneralRequest:
+                    //we do not add unique value here
+                    //because we are using NTS string
+                    data.Add(0);
+                    break;
+                case SBServerListUpdateOption.PushUpdates:
+                    break;
+                case SBServerListUpdateOption.SendGroups:
+                    // we use NTS string to parse values so we do not add things here
+                    data.Add(0);
                     break;
             }
 
@@ -142,24 +159,53 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
                 switch (_request.UpdateOption)
                 {
-                    case SBServerListUpdateOption.SendRequestedField:
+                    case SBServerListUpdateOption.GeneralRequest:
                         //add every value to list
-                        if (_IsUsingNTSValue)
+                        foreach (var key in _request.FieldList)
                         {
-                            foreach (var key in _request.FieldList)
-                            {
-                                data.Add(SBStringFlag.NTSStringFlag);
-                                data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
-                                data.Add(SBStringFlag.StringSpliter);
-                            }
-                        }
-                        else
-                        {
-                            //do unique values method
+                            data.Add(SBStringFlag.NTSStringFlag);
+                            data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
+                            data.Add(SBStringFlag.StringSpliter);
                         }
                         break;
                     case SBServerListUpdateOption.NoServerList:
+
                         break;
+                    case SBServerListUpdateOption.PushUpdates:
+                        break;
+
+                    case SBServerListUpdateOption.SendGroups:
+                        //TODO add values here
+                        foreach (var room in _filteredGroups)
+                        {
+                            data.Add((byte)GameServerFlags.HasKeysFlag);
+                            data.AddRange(new byte[] { 192, 168, 0, 1 });
+                            data.Add(SBStringFlag.NTSStringFlag);
+                            data.AddRange(Encoding.ASCII.GetBytes(room.Name));
+                            data.Add(SBStringFlag.StringSpliter);
+
+                            data.Add(SBStringFlag.NTSStringFlag);
+                            data.AddRange(Encoding.ASCII.GetBytes(room.Numwaiting.ToString()));
+                            data.Add(SBStringFlag.StringSpliter);
+
+                            data.Add(SBStringFlag.NTSStringFlag);
+                            data.AddRange(Encoding.ASCII.GetBytes(room.Maxwaiting.ToString()));
+                            data.Add(SBStringFlag.StringSpliter);
+
+                            data.Add(SBStringFlag.NTSStringFlag);
+                            data.AddRange(Encoding.ASCII.GetBytes(room.Name));
+                            data.Add(SBStringFlag.StringSpliter);
+
+                            data.Add(SBStringFlag.NTSStringFlag);
+                            data.AddRange(Encoding.ASCII.GetBytes(room.Numservers.ToString()));
+                            data.Add(SBStringFlag.StringSpliter);
+
+                            data.Add(SBStringFlag.NTSStringFlag);
+                            data.AddRange(Encoding.ASCII.GetBytes(room.Numplayers.ToString()));
+                            data.Add(SBStringFlag.StringSpliter);
+                        }
+                        break;
+
                 }
             }
             return data;
@@ -168,27 +214,43 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         private List<byte> GenerateServerInfoHeader(KeyValuePair<EndPoint, GameServer> server)
         {
             // you will only have HasKeysFlag or HasFullRule you can not have both
-            List<byte> header = new List<byte>();
+            List<byte> data = new List<byte>();
 
-            //add has key flag
-            header.Add((byte)GameServerFlags.HasKeysFlag);
+            switch (_request.UpdateOption)
+            {
+                case SBServerListUpdateOption.NoServerList:
+                    //we do not need to add anything here client will only read game port
+                    break;
 
-            //we add server public ip here
-            header.AddRange(BitConverter.GetBytes(server.Value.PublicIP));
 
-            //we check host port is standard port or not
-            CheckNonStandardPort(header, server);
+                case SBServerListUpdateOption.GeneralRequest:
+                    //add has key flag
+                    data.Add((byte)GameServerFlags.HasKeysFlag);
+                    //we add server public ip here
+                    data.AddRange(BitConverter.GetBytes(server.Value.PublicIP));
+                    //we check host port is standard port or not
+                    CheckNonStandardPort(data, server);
+                    // now we check if there are private ip
+                    CheckPrivateIP(data, server);
+                    // we check private port here
+                    CheckPrivatePort(data, server);
+                    //we check icmp support here
+                    CheckICMPSupport(data, server);
+                    break;
 
-            // now we check if there are private ip
-            CheckPrivateIP(header, server);
+                case SBServerListUpdateOption.PushUpdates:
+                    break;
 
-            // we check private port here
-            CheckPrivatePort(header, server);
 
-            //TODO we have to check icmp_ip_flag
+                case SBServerListUpdateOption.SendGroups:
+                    data.Add((byte)GameServerFlags.HasKeysFlag);
+                    data.AddRange(new byte[] { 0, 0, 0, 0 });
+                    break;
+            }
 
-            return header;
+            return data;
         }
+
         private void CheckPrivateIP(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
         {
             // now we check if there are private ip
@@ -232,7 +294,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 header.AddRange(localPort);
             }
         }
+        private void CheckICMPSupport(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
+        {
 
+        }
         private bool GetSecretKey()
         {
             using (var db = new retrospyContext())
@@ -248,7 +313,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 }
                 else
                 {
-                    _errorCode = SBErrorCode.DataOperation;
                     return false;
                 }
             }

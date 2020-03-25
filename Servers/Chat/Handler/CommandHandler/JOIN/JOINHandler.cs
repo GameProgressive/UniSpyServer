@@ -5,7 +5,7 @@ namespace Chat.Handler.CommandHandler.JOIN
     {
         public static void Handler(ChatSession session, string[] recv)
         {
-            session.SendAsync(":<32> JOIN :<gmtest>");
+            session.SendAsync("spyguy!spyguy@peerchat.gamespy.com \r\n JOIN #GPG!-1062731775");
         }
     }
 }
