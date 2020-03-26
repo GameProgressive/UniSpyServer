@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace GameSpyLib.XMLConfig
 {
-    public class DatabaseConfiguration
+    public class DatabaseConfig
     {
         [XmlAttribute]
         public DatabaseEngine Type;

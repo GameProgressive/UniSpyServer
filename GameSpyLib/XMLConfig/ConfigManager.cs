@@ -9,7 +9,7 @@ namespace GameSpyLib.XMLConfig
     /// </summary>
     public class ConfigManager
     {
-        public static XMLConfiguration xmlConfiguration { get; protected set; }
+        public static XMLConfiguration xmlConfig { get; protected set; }
 
         public static bool Load()
         {
@@ -22,39 +22,42 @@ namespace GameSpyLib.XMLConfig
                 fstream.Seek(0, SeekOrigin.Begin);
                 //stream.Position = 0;
                 XmlSerializer serializer = new XmlSerializer(typeof(XMLConfiguration));
-                xmlConfiguration = (XMLConfiguration)serializer.Deserialize(fstream);
+                xmlConfig = (XMLConfiguration)serializer.Deserialize(fstream);
                 fstream.Close();
             }
 
             // Perform XML validation
             {
-                if (xmlConfiguration.Database == null)
+                if (xmlConfig.Database == null)
                 {
                     throw new Exception("Database configuration not specified!");
                 }
 
-                if (xmlConfiguration.Database.Type == GameSpyLib.Database.Entity.DatabaseEngine.MySql)
+                if (xmlConfig.Database.Type == Database.Entity.DatabaseEngine.MySql)
                 {
-                    if (xmlConfiguration.Database.Username.Length < 1 ||
-                        xmlConfiguration.Database.Hostname.Length < 1 ||
-                        xmlConfiguration.Database.Databasename.Length < 1 ||
-                        xmlConfiguration.Database.SslMode.Length < 1)
+                    if (xmlConfig.Database.Username.Length < 1 ||
+                        xmlConfig.Database.Hostname.Length < 1 ||
+                        xmlConfig.Database.Databasename.Length < 1 ||
+                        xmlConfig.Database.SslMode.Length < 1)
                     {
                         throw new Exception("Invalid database configuration!");
                     }
 
-                    if (xmlConfiguration.Database.Port < 1)
-                        xmlConfiguration.Database.Port = 3306;
+                    if (xmlConfig.Database.Port < 1)
+                        xmlConfig.Database.Port = 3306;
                 }
                 //issue if servers config not exsit this will not throw an exception
-                if (xmlConfiguration.Servers == null || xmlConfiguration.Servers.Length < 1)
+                if (xmlConfig.Servers == null || xmlConfig.Servers.Length < 1)
                 {
                     throw new Exception("Server configuration not specified!");
                 }
 
+                if (xmlConfig.Redis == null || xmlConfig.Redis.Hostname.Length < 1)
+                {
+                    throw new Exception("Redis configuration not specified!");
+                }
 
-
-                foreach (ServerConfiguration servercfg in xmlConfiguration.Servers)
+                foreach (ServerConfiguration servercfg in xmlConfig.Servers)
                 {
 
                     if (servercfg.Hostname.Length < 1 ||

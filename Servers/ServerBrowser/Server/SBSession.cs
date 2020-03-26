@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Network;
 using ServerBrowser.Handler.CommandSwitcher;
 using GameSpyLib.Encryption;
+using System;
+
 namespace ServerBrowser
 {
     public class SBSession : TemplateTcpSession

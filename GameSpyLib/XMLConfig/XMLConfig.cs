@@ -10,7 +10,10 @@ namespace GameSpyLib.XMLConfig
         public ServerConfiguration[] Servers;
 
         [XmlElement("Database", IsNullable = false)]
-        public DatabaseConfiguration Database;
+        public DatabaseConfig Database;
+
+        [XmlElement("Redis", IsNullable = false)]
+        public RedisConfig Redis;
 
         public LogLevel LogLevel;
     }

@@ -16,6 +16,12 @@
     <SslKey></SslKey>
     <SslCa></SslCa>
   </Database>
+
+  <Redis>
+  <Hostname>localhost</Hostname>
+  <Port></Port><!--default value is null-->>
+  </Redis>
+
   <Servers>
     <ServerConfiguration Name="GPSP">
       <Hostname>0.0.0.0</Hostname>

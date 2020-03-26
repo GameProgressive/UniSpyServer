@@ -3,6 +3,7 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Database.Entity;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
+using StackExchange.Redis;
 using System;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace GameSpyLib.Common
         public static string BasePath { get; protected set; }
         public string LogPath { get; protected set; }
         public string ServerName { get; protected set; }
-
+        public static ConnectionMultiplexer Redis;
         public DatabaseEngine DBEngine;
 
         protected bool Disposed = false;
@@ -45,7 +46,7 @@ namespace GameSpyLib.Common
             LogWriter.Log = new LogWriter(Path.Combine(LogPath, logFileName));
             ConfigManager.Load();
             //set the loglevel to system
-            LogWriter.Log.MiniumLogLevel = ConfigManager.xmlConfiguration.LogLevel;
+            LogWriter.Log.MiniumLogLevel = ConfigManager.xmlConfig.LogLevel;
         }
 
         private void ShowRetroSpyLogo()
@@ -67,7 +68,7 @@ namespace GameSpyLib.Common
             LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", "Server Name", "Host Name", "Port");
             LogWriter.Log.Write(LogLevel.Info, "+{0,-11}+{1,-14}+{2,-6}+", "-----------", "--------------", "------");
             // Add all servers
-            foreach (ServerConfiguration cfg in ConfigManager.xmlConfiguration.Servers)
+            foreach (ServerConfiguration cfg in ConfigManager.xmlConfig.Servers)
             {
                 StartServer(cfg);
             }
@@ -84,14 +85,14 @@ namespace GameSpyLib.Common
 
         private void LoadDatabaseConfig()
         {
-            DatabaseConfiguration dbConfiguration = ConfigManager.xmlConfiguration.Database;
-            DBEngine = dbConfiguration.Type;
+            DatabaseConfig dbConfig = ConfigManager.xmlConfig.Database;
+            DBEngine = dbConfig.Type;
             // Determine which database is using and create the database connection
 
-            switch (dbConfiguration.Type)
+            switch (dbConfig.Type)
             {
                 case DatabaseEngine.MySql:
-                    string mySqlConnStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfiguration.Hostname, dbConfiguration.Databasename, dbConfiguration.Username, dbConfiguration.Password, dbConfiguration.Port, dbConfiguration.SslMode, dbConfiguration.SslCert, dbConfiguration.SslKey, dbConfiguration.SslCa);
+                    string mySqlConnStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfig.Hostname, dbConfig.Databasename, dbConfig.Username, dbConfig.Password, dbConfig.Port, dbConfig.SslMode, dbConfig.SslCert, dbConfig.SslKey, dbConfig.SslCa);
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
                     using (var db = new retrospyContext())
                     {
@@ -99,13 +100,18 @@ namespace GameSpyLib.Common
                     }
                     break;
                 case DatabaseEngine.SQLite:
-                    string SQLiteConnStr = "Data Source=" + dbConfiguration.Databasename + ";Version=3;New=False";
+                    string SQLiteConnStr = "Data Source=" + dbConfig.Databasename + ";Version=3;New=False";
                     
                     break;
                 default:
                     throw new Exception("Unknown database engine!");
             }
-            LogWriter.Log.Write(LogLevel.Info, "Successfully connected to the {0}!", dbConfiguration.Type);
+            LogWriter.Log.Write(LogLevel.Info, $"Successfully connected to the {dbConfig.Type}!");
+
+            //RedisConfig redisConfig = ConfigManager.xmlConfig.Redis;
+            //Redis = ConnectionMultiplexer.Connect(redisConfig.Hostname + redisConfig.Port);
+            //LogWriter.Log.Write(LogLevel.Info, $"Successfully connected to Redis!");
+
         }
 
 
