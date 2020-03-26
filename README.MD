@@ -9,7 +9,7 @@ The server is written in C#, it's inspired by OpenSpy and it's a forked project 
 See the [wiki](https://github.com/GameProgressive/RetroSpyServer/wiki) for more information about compiling and creating a RetroSpy Server.
 
 ### Connect with us
-If you have any issue, suggestion or would like to contribute you can connect with us on [Discord](https://discord.gg/Tv85Am4) or on #retrospy@freenode.net (IRC)
+If you have any issue, suggestion or would like to contribute you can connect with us on [Discord](https://discord.gg/Tv85Am4)
 
 ### Special thanks
 * [Luigi Auriemma](http://aluigi.altervista.org/papers.htm) for his gamespy papers that were used as a reference.
