@@ -1,4 +1,5 @@
-﻿using QueryReport.Entity.Structure.Packet;
+﻿using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
 using System.Linq;
@@ -30,10 +31,11 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            EchoPacket echo = new EchoPacket(recv);
+            EchoPacket echo = new EchoPacket();
+            echo.Parse(recv);
             // We send the echo packet to check the ping
             _sendingBuffer = echo.GenerateResponse();
-            Entity.Structure.GameServer gameServer;
+            GameServer gameServer;
             QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
             gameServer.LastPing = DateTime.Now;
         }

@@ -16,7 +16,7 @@ namespace GameSpyLib.Common
         public static string BasePath { get; protected set; }
         public string LogPath { get; protected set; }
         public string ServerName { get; protected set; }
-        public static ConnectionMultiplexer Redis;
+        public static ConnectionMultiplexer Redis { get; protected set; }
         public DatabaseEngine DBEngine;
 
         protected bool Disposed = false;
@@ -108,9 +108,9 @@ namespace GameSpyLib.Common
             }
             LogWriter.Log.Write(LogLevel.Info, $"Successfully connected to the {dbConfig.Type}!");
 
-            //RedisConfig redisConfig = ConfigManager.xmlConfig.Redis;
-            //Redis = ConnectionMultiplexer.Connect(redisConfig.Hostname + redisConfig.Port);
-            //LogWriter.Log.Write(LogLevel.Info, $"Successfully connected to Redis!");
+            RedisConfig redisConfig = ConfigManager.xmlConfig.Redis;
+            Redis = ConnectionMultiplexer.Connect(redisConfig.Hostname + redisConfig.Port);
+            LogWriter.Log.Write(LogLevel.Info, $"Successfully connected to Redis!");
 
         }
 
@@ -130,7 +130,7 @@ namespace GameSpyLib.Common
 
             if (disposing)
             {
-                // TODO: 释放托管状态(托管对象)。                
+                // TODO: 释放托管状态(托管对象)。
                 StopServer();
             }
 

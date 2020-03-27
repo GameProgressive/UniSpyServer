@@ -4,7 +4,7 @@ namespace QueryReport.Entity.Structure.Packet
 {
     public class KeepAlivePacket : BasePacket
     {
-        public KeepAlivePacket(byte[] recv) : base(recv)
+        public KeepAlivePacket() : base()
         {
         }
     }

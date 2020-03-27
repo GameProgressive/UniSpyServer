@@ -1,32 +1,30 @@
-﻿using GameSpyLib.Encryption;
+﻿using System;
+using System.Collections.Generic;
+using GameSpyLib.Encryption;
+using QueryReport.Entity.Enumerator;
 
 namespace QueryReport.Entity.Structure.Packet
 {
     public class BasePacket
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
-        public byte PacketType;
-        public byte[] InstantKey = new byte[4];
+        public QRPacketType PacketType { get; protected set; }
+        public int InstantKey { get; protected set; }
 
-        public BasePacket(byte[] recv)
+        public virtual void Parse(byte[] recv)
         {
-            PacketType = recv[0];
-            ByteTools.SubBytes(recv, 1, 4).CopyTo(InstantKey, 0);
-        }
-
-        public BasePacket()
-        {
+            PacketType = (QRPacketType)recv[0];
+            InstantKey = BitConverter.ToInt32(ByteTools.SubBytes(recv, 1, 4));
         }
 
         public virtual byte[] GenerateResponse()
         {
-            byte[] buffer = new byte[7];
-            buffer[0] = MagicData[0];
-            buffer[1] = MagicData[1];
-            buffer[2] = PacketType;
-            InstantKey.CopyTo(buffer, 3);
+            List<byte> data = new List<byte>();
+            data.AddRange(MagicData);
+            data.Add((byte)PacketType);
+            data.AddRange(BitConverter.GetBytes(InstantKey));
 
-            return buffer;
+            return data.ToArray();
         }
     }
 }

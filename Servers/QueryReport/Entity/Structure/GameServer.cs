@@ -25,13 +25,13 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         public DateTime LastPing { get; set; }
 
-        public int PublicIP { get; protected set; }
-        public ushort PublicPort { get; protected set; }
+        public int RemoteIP { get; set; }
+        public ushort RemotePort { get; set; }
 
         /// <summary>
         /// Instant key used to verity the client
         /// </summary>
-        public byte[] InstantKey;
+        public int InstantKey;
 
         public bool IsValidated = false;
 
@@ -40,15 +40,19 @@ namespace QueryReport.Entity.Structure
         public PlayerData PlayerData { get; set; }
         public TeamData TeamData { get; set; }
 
-        public GameServer(EndPoint endPoint, byte[] instantKey)
+        public GameServer()
         {
-            InstantKey = new byte[4];
             ServerData = new ServerData();
             PlayerData = new PlayerData();
             TeamData = new TeamData();
-            PublicIP = BitConverter.ToInt32(((IPEndPoint)endPoint).Address.GetAddressBytes());
-            PublicPort = (ushort)((IPEndPoint)endPoint).Port;
-            instantKey.CopyTo(InstantKey, 0);
         }
+
+        public void Parse(EndPoint endPoint, int instantKey)
+        {
+            RemoteIP = BitConverter.ToInt32(((IPEndPoint)endPoint).Address.GetAddressBytes());
+            RemotePort = (ushort)((IPEndPoint)endPoint).Port;
+            InstantKey = instantKey;
+        }
+
     }
 }

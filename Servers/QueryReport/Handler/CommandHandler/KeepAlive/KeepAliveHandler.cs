@@ -14,8 +14,9 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            KeepAlivePacket keep = new KeepAlivePacket(recv);
-            _sendingBuffer = keep.GenerateResponse();
+            KeepAlivePacket packet = new KeepAlivePacket();
+            packet.Parse(recv);
+            _sendingBuffer = packet.GenerateResponse();
             GameServer game;
             QRServer.GameServerList.TryGetValue(endPoint, out game);
             game.LastKeepAlive = DateTime.Now;

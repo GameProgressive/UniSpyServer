@@ -1,47 +1,39 @@
 ﻿using QueryReport.Entity.Enumerator;
 using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace QueryReport.Entity.Structure.Packet
 {
     public class ChallengePacket : BasePacket
     {
-        public byte[] RemoteIP = new byte[4];
-        public byte[] RemotePort = new byte[4];
+        public int RemoteIP { get; protected set; }
+        public int RemotePort { get; protected set; }
 
-        public ChallengePacket(EndPoint endPoint, byte[] recv) : base(recv)
+        public void Parse(EndPoint endPoint, byte[] recv)
         {
-            Array.Copy(((IPEndPoint)endPoint).Address.GetAddressBytes(), RemoteIP, 4);
-            Array.Copy(BitConverter.GetBytes(((IPEndPoint)endPoint).Port), RemotePort, 4);
+            base.Parse(recv);
+            RemoteIP = BitConverter.ToInt32(((IPEndPoint)endPoint).Address.GetAddressBytes());
+            RemotePort = ((IPEndPoint)endPoint).Port;
         }
 
         public override byte[] GenerateResponse()
         {
             //change packet type to challenge
+            List<byte> data = new List<byte>();
 
-            PacketType = (byte)QRPacketType.Challenge;
+            PacketType = QRPacketType.Challenge;
 
-            byte[] buffer = new byte[24];
-            base.GenerateResponse().CopyTo(buffer, 0);
+            data.AddRange(base.GenerateResponse());
+            //Challenge
+            data.AddRange(new byte[] { 0x54, 0x54, 0x54, 0x00, 0x00 });
+            //IP
+            data.AddRange(BitConverter.GetBytes(RemoteIP));
+            data.AddRange(new byte[] { 0x00, 0x00, 0x00, 0x00 });
+            //port
+            data.AddRange(BitConverter.GetBytes(RemotePort));
 
-            // Challenge
-            buffer[7] = 0x54;
-            buffer[8] = 0x54;
-            buffer[9] = 0x54;
-
-            buffer[10] = 0x00;
-            buffer[11] = 0x00;
-
-            // IP
-            RemoteIP.CopyTo(buffer, 12);
-            buffer[16] = 0;
-            buffer[17] = 0;
-            buffer[18] = 0;
-            buffer[19] = 0;
-
-            //Port
-            RemotePort.CopyTo(buffer, 20);
-            return buffer;
+            return data.ToArray();
         }
     }
 }

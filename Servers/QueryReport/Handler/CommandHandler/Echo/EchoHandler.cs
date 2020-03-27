@@ -27,7 +27,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
             
             //compute the ping
            
-            byte ping = (byte)(int)(DateTime.Now.Subtract(game.LastPing).TotalMilliseconds);
+            byte ping = (byte)DateTime.Now.Subtract(game.LastPing).TotalMilliseconds;
 
             //adding ping and value to dictionary
             game.ServerData.StandardKeyValue.Add("ping", Convert.ToString(ping));

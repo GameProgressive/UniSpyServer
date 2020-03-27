@@ -1,4 +1,6 @@
-﻿using QueryReport.Entity.Structure;
+﻿using Newtonsoft.Json;
+using QueryReport.Application;
+using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
@@ -18,8 +20,12 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            BasePacket basePacket = new BasePacket(recv);
-            _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, new GameServer(endPoint, basePacket.InstantKey));
+            BasePacket basePacket = new BasePacket();
+            basePacket.Parse(recv);
+            GameServer gameServer = new GameServer();
+            gameServer.Parse(endPoint, basePacket.InstantKey);
+
+            _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
 
             base.CheckRequest(server, endPoint, recv);
         }
@@ -44,7 +50,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
                 teamData = dataPartition.Substring(teamPos - 1, teamLength);
 
-                _gameServer.ServerData.Update(serverData,endPoint);
+                _gameServer.ServerData.Update(serverData, endPoint);
                 _gameServer.PlayerData.Update(playerData);
                 _gameServer.TeamData.Update(teamData);
                 _gameServer.LastHeartBeatPacket = DateTime.Now;
@@ -58,8 +64,9 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            ChallengePacket challenge = new ChallengePacket(endPoint, recv);
-            _sendingBuffer = challenge.GenerateResponse();
+            ChallengePacket packet = new ChallengePacket();
+            packet.Parse(endPoint, recv);
+            _sendingBuffer = packet.GenerateResponse();
         }
     }
 }

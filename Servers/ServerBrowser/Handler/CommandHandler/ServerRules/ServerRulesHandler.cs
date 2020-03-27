@@ -38,7 +38,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
         public override void DataOperation(SBSession session, byte[] recv)
         {
             var servers = QueryReport.Server.QRServer.GameServerList.
-                Where(c => c.Value.PublicIP == _request.IP
+                Where(c => c.Value.RemoteIP == _request.IP
                 && c.Value.ServerData.StandardKeyValue["hostport"] == _request.HostPort.ToString());
             if (servers.Count() != 1)
             {
@@ -51,10 +51,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
             List<byte> data = new List<byte>();
-            
+
             data.Add((byte)SBServerResponseType.PushServerMessage);
             byte[] info = GenerateServerInfo().ToArray();
-            
+
             // we add server info here
             data.AddRange(GenerateServerInfo());
 
@@ -63,11 +63,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
             {
                 Array.Reverse(byteLength);
             }
-            data.InsertRange(0,byteLength);
+            data.InsertRange(0, byteLength);
 
 
             GOAEncryption enc = new GOAEncryption(session.EncState);
-            
+
             _sendingBuffer = enc.Encrypt(data.ToArray());
             session.EncState = enc.State;
         }
@@ -95,7 +95,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
             header.Add((byte)GameServerFlags.HasFullRulesFlag);
 
             //we add server public ip here
-            header.AddRange(BitConverter.GetBytes(server.Value.PublicIP));
+            header.AddRange(BitConverter.GetBytes(server.Value.RemoteIP));
 
             //we check host port is standard port or not
             CheckNonStandardPort(header, server);

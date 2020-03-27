@@ -1,6 +1,8 @@
-﻿using NatNegotiation.Entity.Structure.Packet;
+﻿using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using System;
+using System.Net;
 
 namespace NATNegotiation.Handler.CommandHandler
 {
@@ -19,9 +21,7 @@ namespace NATNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
-            Array.Copy(client.PublicIP, _initPacket.LocalIP, 4);
-            Array.Copy(client.PublicPort, _initPacket.LocalPort, 2);
-            _sendingBuffer = _initPacket.GenerateByteArray();
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtAck,client.RemoteEndPoint);
         }
     }
 }

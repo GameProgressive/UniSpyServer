@@ -48,7 +48,7 @@ namespace NATNegotiation.Handler.CommandHandler
                 return;
             }
 
-            server.SendAsync(client.RemoteEndPoint, _sendingBuffer);
+            server.Send(client.RemoteEndPoint, _sendingBuffer);
         }
     }
 }

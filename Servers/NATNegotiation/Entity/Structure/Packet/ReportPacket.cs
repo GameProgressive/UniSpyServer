@@ -1,5 +1,8 @@
 ﻿using GameSpyLib.Encryption;
+using NatNegotiation.Entity.Enumerator;
 using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace NatNegotiation.Entity.Structure.Packet
 {
@@ -10,9 +13,9 @@ namespace NatNegotiation.Entity.Structure.Packet
         public byte PortType;
         public byte ClientIndex;
         public byte NegResult;
-        public byte[] NatType = new byte[4]; //int
-        public byte[] NatMappingScheme = new byte[4]; //int
-        public byte[] GameName = new byte[50];
+        public NatNegotiationType NatType; //int
+        public NatNegotiationMappingScheme MappingScheme; //int
+        public string GameName;
 
         public new void Parse(byte[] recv)
         {
@@ -21,28 +24,25 @@ namespace NatNegotiation.Entity.Structure.Packet
             ClientIndex = recv[14];
             NegResult = recv[15];
 
-            Array.Copy(ByteTools.SubBytes(recv, 17, sizeof(int)), NatType, 4);
-            Array.Copy(ByteTools.SubBytes(recv, 19, sizeof(int)), NatMappingScheme, 4);
-
-            Array.Copy(recv, 23, GameName, 0, 50);
+            NatType = (NatNegotiationType)BitConverter.ToInt32(ByteTools.SubBytes(recv, 17, sizeof(int)));
+            MappingScheme = (NatNegotiationMappingScheme)BitConverter.ToInt32(ByteTools.SubBytes(recv, 19, sizeof(int)));
+            GameName = Encoding.ASCII.GetString(ByteTools.SubBytes(recv, 23, recv.Length - 23));
         }
 
-        public byte[] GenerateByteArray()
+        public override byte[] GenerateResponse(NatPacketType packetType)
         {
-            byte[] TempBytes = new byte[Size];
-            MagicData.CopyTo(TempBytes, 0);
-            TempBytes[MagicData.Length] = Version;
-            TempBytes[MagicData.Length + 1] = PacketType;
-            Cookie.CopyTo(TempBytes, MagicData.Length + 2);
+            List<byte> data = new List<byte>();
 
-            TempBytes[BasePacket.Size] = PortType;
-            TempBytes[BasePacket.Size + 1] = ClientIndex;
-            TempBytes[BasePacket.Size + 2] = NegResult;
-            NatType.CopyTo(TempBytes, BasePacket.Size + 3);
-            NatMappingScheme.CopyTo(TempBytes, BasePacket.Size + 7);
-            GameName.CopyTo(TempBytes, BasePacket.Size + 11);
+            data.AddRange(base.GenerateResponse(packetType));
 
-            return TempBytes;
+            data.Add(PortType);
+            data.Add(ClientIndex);
+            data.Add(NegResult);
+            data.AddRange(BitConverter.GetBytes((int)NatType));
+            data.AddRange(BitConverter.GetBytes((int)MappingScheme));
+            data.AddRange(Encoding.ASCII.GetBytes(GameName));
+
+            return data.ToArray();
         }
     }
 }

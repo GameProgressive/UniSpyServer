@@ -14,46 +14,41 @@ namespace NatNegotiation.Handler.CommandHandler
     {
         public static void SendConnectPacket(NatNegServer server, ClientInfo client, ClientInfo other)
         {
-            ConnectPacket connPacket = new ConnectPacket
-            {
-                PacketType = (byte)NatPacketType.Connect,
-                Cookie = client.Cookie,
-                Finished = 0,
-                RemoteIP = client.PublicIP,
-                RemotePort = client.PublicPort,
-            };
+            //ConnectPacket connPacket = new ConnectPacket
+            //{
+            //    PacketType = (byte)NatPacketType.Connect,
+            //    Cookie = client.Cookie,
+            //    Finished = 0,
+            //    RemoteIP = client.PublicIP,
+            //    RemotePort = client.PublicPort,
+            //};
+            //connPacket.Parse(client.RemoteEndPoint, recv);
 
-            byte[] buffer = connPacket.GenerateByteArray();
+            //byte[] buffer = connPacket.GenerateByteArray();
 
-            server.SendAsync(client.RemoteEndPoint, buffer);
-            client.SentConnectPacketTime = DateTime.Now;
-            client.IsConnected = true;
+            //server.SendAsync(client.RemoteEndPoint, buffer);
+            //client.SentConnectPacketTime = DateTime.Now;
+            //client.IsConnected = true;
 
             //send to other client
-            if (other == null)
-            {
-                return; 
-            }
+            //if (other == null)
+            //{
+            //    return; 
+            //}
 
-            connPacket.RemoteIP = NNFormat.IPToByte(other.RemoteEndPoint);
-            connPacket.RemotePort = NNFormat.PortToByte(other.RemoteEndPoint);
+            //connPacket.RemoteIP = NNFormat.IPToByte(other.RemoteEndPoint);
+            //connPacket.RemotePort = NNFormat.PortToByte(other.RemoteEndPoint);
 
-            buffer = connPacket.GenerateByteArray();
-            server.SendAsync(other.RemoteEndPoint, buffer);
-            other.SentConnectPacketTime = DateTime.Now;
+            //buffer = connPacket.GenerateByteArray();
+            //server.SendAsync(other.RemoteEndPoint, buffer);
+            //other.SentConnectPacketTime = DateTime.Now;
         }
 
-        public static void SendDeadHeartBeatNotice(NatNegServer server, ClientInfo client)
+        public static void SendDeadHeartBeatNotice(NatNegServer server, ClientInfo client,byte[] recv)
         {
-            ConnectPacket connPacket = new ConnectPacket
-            {
-                PacketType = (byte)NatPacketType.Connect,
-                Cookie = client.Cookie,
-                Finished = (byte)ConnectPacketFinishStatus.DeadHeartBeat,
-                RemoteIP = ((IPEndPoint)client.RemoteEndPoint).Address.GetAddressBytes(),
-                RemotePort = BitConverter.GetBytes(((IPEndPoint)client.RemoteEndPoint).Port),
-            };
-            byte[] buffer = connPacket.GenerateByteArray();
+            ConnectPacket connPacket = new ConnectPacket();
+            connPacket.Parse(client.RemoteEndPoint, recv);
+            byte[] buffer = connPacket.GenerateResponse(NatPacketType.Connect);
             server.SendAsync(client.RemoteEndPoint, buffer);
         }
 
@@ -74,9 +69,7 @@ namespace NatNegotiation.Handler.CommandHandler
         protected override void SendResponse(NatNegServer server, ClientInfo client)
         {
             var other = NatNegServer.ClientList.Values.Where(
-                c => c.PublicIP.SequenceEqual(_connPacket.RemoteIP)
-                && c.PublicPort.SequenceEqual(_connPacket.RemotePort)
-                );
+                c => c.RemoteEndPoint == _connPacket.RemoteEndPoint);
 
             if (other.Count() < 1)
             {
@@ -85,7 +78,7 @@ namespace NatNegotiation.Handler.CommandHandler
             }
 
             ClientInfo client2 = other.First();
-            _sendingBuffer = _connPacket.GenerateByteArray();
+            _sendingBuffer = _connPacket.GenerateResponse(NatPacketType.Connect);
             server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);
         }
     }

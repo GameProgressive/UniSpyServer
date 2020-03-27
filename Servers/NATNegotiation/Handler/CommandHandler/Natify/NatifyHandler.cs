@@ -18,16 +18,11 @@ namespace NatNegotiation.Handler.CommandHandler
         protected override void ProcessInformation(ClientInfo client, byte[] recv)
         {
             client.Version = _initPacket.Version;
-            Array.Copy(NNFormat.IPToByte(client.RemoteEndPoint), client.PublicIP, 4);
-            Array.Copy(NNFormat.PortToByte(client.RemoteEndPoint), client.PublicPort, 2);
         }
 
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
-            _initPacket.PacketType = (byte)NatPacketType.ErtTest;
-            Array.Copy(client.PublicIP, _initPacket.LocalIP, 4);
-            Array.Copy(client.PublicPort, _initPacket.LocalPort, 2);
-            _sendingBuffer = _initPacket.GenerateByteArray();
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtTest, client.RemoteEndPoint);
         }
     }
 }

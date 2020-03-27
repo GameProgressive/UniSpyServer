@@ -57,7 +57,7 @@
         NumPackets
     }
 
-    public enum NatMappingScheme : byte
+    public enum NatNegotiationMappingScheme : byte
     {
         Unrecognized,
         PrivateAsPublic,
@@ -67,7 +67,7 @@
         NumMappingSchemes
     }
 
-    public enum NatType
+    public enum NatNegotiationType
     {
         NoNat,
         FirewallOnly,

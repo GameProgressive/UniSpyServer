@@ -1,23 +1,28 @@
-﻿using QueryReport.Entity.Enumerator;
+﻿using System.Collections.Generic;
+using System.Text;
+using QueryReport.Entity.Enumerator;
 
 namespace QueryReport.Entity.Structure.Packet
 {
     public class EchoPacket : BasePacket
     {
-        public byte[] EchoMessage = System.Text.Encoding.ASCII.GetBytes("This is an echo packet from retrospy server");
+        public string EchoMessage { get; protected set; }
 
-        public EchoPacket(byte[] recv) : base(recv)
+        public EchoPacket() : base()
         {
+            EchoMessage = "This is an echo packet";
         }
 
         public override byte[] GenerateResponse()
         {
-            PacketType = (byte)QRPacketType.Echo;
-            byte[] buffer = new byte[7 + EchoMessage.Length];
-            base.GenerateResponse().CopyTo(buffer, 0);
-            EchoMessage.CopyTo(buffer, 7);
+            List<byte> data = new List<byte>();
 
-            return buffer;
+            PacketType = QRPacketType.Echo;
+
+            data.AddRange(base.GenerateResponse());
+            data.AddRange(Encoding.ASCII.GetBytes(EchoMessage));
+
+            return data.ToArray();
         }
     }
 }

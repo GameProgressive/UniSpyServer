@@ -227,7 +227,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     //add has key flag
                     data.Add((byte)GameServerFlags.HasKeysFlag);
                     //we add server public ip here
-                    data.AddRange(BitConverter.GetBytes(server.Value.PublicIP));
+                    data.AddRange(BitConverter.GetBytes(server.Value.RemoteIP));
                     //we check host port is standard port or not
                     CheckNonStandardPort(data, server);
                     // now we check if there are private ip

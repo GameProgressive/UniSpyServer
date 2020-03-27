@@ -17,10 +17,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
-            _initPacket.PacketType = (byte)NatPacketType.AddressReply;
-            Array.Copy(client.PublicIP, _initPacket.LocalIP, 4);
-            Array.Copy(client.PublicPort, _initPacket.LocalPort, 2);
-            _sendingBuffer = _initPacket.GenerateByteArray();
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.AddressReply,client.RemoteEndPoint);
         }
     }
 }
