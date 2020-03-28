@@ -7,8 +7,7 @@ namespace QueryReport.Entity.Structure
     /// <summary>
     /// This is the server 
     /// </summary>
-
-    public class GameServer
+    public class DedicatedGameServer
     {
         /// <summary>
         /// Last valid heart beat packet time
@@ -40,7 +39,7 @@ namespace QueryReport.Entity.Structure
         public PlayerData PlayerData { get; set; }
         public TeamData TeamData { get; set; }
 
-        public GameServer()
+        public DedicatedGameServer()
         {
             ServerData = new ServerData();
             PlayerData = new PlayerData();
