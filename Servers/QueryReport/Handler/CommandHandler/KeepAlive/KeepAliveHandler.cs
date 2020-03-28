@@ -1,7 +1,9 @@
-﻿using QueryReport.Entity.Structure;
+﻿using GameSpyLib.Extensions;
+using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
+using System.Linq;
 using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.KeepAlive
@@ -17,9 +19,13 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             KeepAlivePacket packet = new KeepAlivePacket();
             packet.Parse(recv);
             _sendingBuffer = packet.GenerateResponse();
-            GameServer game;
-            QRServer.GameServerList.TryGetValue(endPoint, out game);
-            game.LastKeepAlive = DateTime.Now;
+            var gameServer = RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint).First();
+            gameServer.LastKeepAlive = DateTime.Now;
+            RetroSpyRedisExtensions.UpdateDedicatedGameServer
+                (
+                endPoint,
+                gameServer.ServerData.StandardKeyValue["gamename"],
+                gameServer);
         }
     }
 }

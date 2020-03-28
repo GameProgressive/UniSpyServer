@@ -8,6 +8,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
     {
         public int IP { get; protected set; }
         public ushort HostPort { get; protected set; }
+
         public ServerRulesRequest()
         {
         }

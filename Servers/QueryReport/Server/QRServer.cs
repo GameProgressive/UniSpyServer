@@ -1,9 +1,7 @@
 ﻿using GameSpyLib.Database.Entity;
 using GameSpyLib.Network;
-using QueryReport.Entity.Structure;
 using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
-using System.Collections.Concurrent;
 using System.Net;
 
 namespace QueryReport.Server
@@ -13,7 +11,7 @@ namespace QueryReport.Server
         /// <summary>
         /// A List of all servers that have sent data to this master server, and are active in the last 30 seconds or so
         /// </summary>
-        public static ConcurrentDictionary<EndPoint, GameServer> GameServerList = new ConcurrentDictionary<EndPoint, GameServer>();
+        //public static ConcurrentDictionary<EndPoint, DedicatedGameServer> GameServerList = new ConcurrentDictionary<EndPoint, DedicatedGameServer>();
 
         public bool IsChallengeSent = false;
 

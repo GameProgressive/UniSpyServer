@@ -5,24 +5,25 @@ using System.Net;
 using System.Text;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
+using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Entity.Structure.Packet.Response;
-using ServerBrowser.Handler.CommandHandler.ServerList.GetServers;
-using ServerBrowser.Handler.SystemHandler.GetGroups;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList
 {
     public class ServerListHandler : CommandHandlerBase
     {
         private byte[] _clientRemoteIP;
-        private byte[] _clientRemotePort;
+        private byte[] _gameServerDefaultHostPort;
         private string _secretKey;
         private ServerListRequest _request = new ServerListRequest();
-        private IEnumerable<KeyValuePair<EndPoint, GameServer>> _filteredServers;
-        private IEnumerable<Grouplist> _filteredGroups;
+
+        private List<DedicatedGameServer> _redisServer;
+        private List<Grouplist> _redisGroup;
+
         public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
 
         public override void CheckRequest(SBSession session, byte[] recv)
@@ -34,7 +35,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             //this is client public ip and default query port
             _clientRemoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
             //TODO   //check what is the default port
-            _clientRemotePort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
+            _gameServerDefaultHostPort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
         }
 
         public override void DataOperation(SBSession session, byte[] recv)
@@ -42,8 +43,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             switch (_request.UpdateOption)
             {
                 case SBServerListUpdateOption.GeneralRequest:
-                    _filteredServers =
-                        GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
+                   //_filteredServers =
+                  //      GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
+                    _redisServer =
+                        RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(_request.GameName);
                     break;
                 case SBServerListUpdateOption.NoServerList:
                     //we do not need to retrive server for this
@@ -52,14 +55,14 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     break;
                 case SBServerListUpdateOption.SendGroups:
                     //we need to search group in database
-                    _filteredGroups =
-                        GetGroupsFromQR.GetFilteredGroups(new GetGroupsFromDatabase(), _request.GameName, _request.Filter);
+                    //_filteredGroups =
+                    //    GetGroupsFromQR.GetFilteredGroups(new GetGroupsFromDatabase(), _request.GameName, _request.Filter);
                     break;
             }
             //we can use GetServersFromNetwork class in the future
 
 
-            if (_filteredServers.Count() == 0)
+            if (_redisServer.Count() == 0)
             {
                 _errorCode = SBErrorCode.NoServersFound;
             }
@@ -71,7 +74,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
             //first add client public ip and port
             serverList.AddRange(_clientRemoteIP);
-            serverList.AddRange(_clientRemotePort);
+            serverList.AddRange(_gameServerDefaultHostPort);
             //add server keys and keytypes
             serverList.AddRange(GenerateServerKeys());
             //we use NTS string so total unique value list is 0
@@ -153,7 +156,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         {
             List<byte> data = new List<byte>();
 
-            foreach (var server in _filteredServers)
+            foreach (var server in _redisServer)
             {
                 data.AddRange(GenerateServerInfoHeader(server));
 
@@ -164,7 +167,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                         foreach (var key in _request.FieldList)
                         {
                             data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(server.Value.ServerData.StandardKeyValue[key]));
+                            data.AddRange(Encoding.ASCII.GetBytes(server.ServerData.StandardKeyValue[key]));
                             data.Add(SBStringFlag.StringSpliter);
                         }
                         break;
@@ -176,7 +179,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
                     case SBServerListUpdateOption.SendGroups:
                         //TODO add values here
-                        foreach (var room in _filteredGroups)
+                        foreach (var room in _redisGroup)
                         {
                             data.Add((byte)GameServerFlags.HasKeysFlag);
                             data.AddRange(new byte[] { 192, 168, 0, 1 });
@@ -211,7 +214,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             return data;
         }
 
-        private List<byte> GenerateServerInfoHeader(KeyValuePair<EndPoint, GameServer> server)
+        private List<byte> GenerateServerInfoHeader(DedicatedGameServer server)
         {
             // you will only have HasKeysFlag or HasFullRule you can not have both
             List<byte> data = new List<byte>();
@@ -227,7 +230,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     //add has key flag
                     data.Add((byte)GameServerFlags.HasKeysFlag);
                     //we add server public ip here
-                    data.AddRange(BitConverter.GetBytes(server.Value.RemoteIP));
+                    data.AddRange(BitConverter.GetBytes(server.RemoteIP));
                     //we check host port is standard port or not
                     CheckNonStandardPort(data, server);
                     // now we check if there are private ip
@@ -251,50 +254,50 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             return data;
         }
 
-        private void CheckPrivateIP(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
+        private void CheckPrivateIP(List<byte> header,DedicatedGameServer server)
         {
             // now we check if there are private ip
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("localip0"))
+            if (server.ServerData.StandardKeyValue.ContainsKey("localip0"))
             {
                 header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.Value.ServerData.StandardKeyValue["localip0"]).GetAddressBytes();
+                byte[] address = IPAddress.Parse(server.ServerData.StandardKeyValue["localip0"]).GetAddressBytes();
                 header.AddRange(address);
             }
-            else if (server.Value.ServerData.StandardKeyValue.ContainsKey("localip1"))
+            else if (server.ServerData.StandardKeyValue.ContainsKey("localip1"))
             {
                 header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.Value.ServerData.StandardKeyValue["localip1"]).GetAddressBytes();
+                byte[] address = IPAddress.Parse(server.ServerData.StandardKeyValue["localip1"]).GetAddressBytes();
                 header.AddRange(address);
             }
         }
-        private void CheckNonStandardPort(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
+        private void CheckNonStandardPort(List<byte> header, DedicatedGameServer server)
         {
             //we check host port is standard port or not
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("hostport"))
+            if (server.ServerData.StandardKeyValue.ContainsKey("hostport"))
             {
-                if (server.Value.ServerData.StandardKeyValue["hostport"] != "6500")
+                if (server.ServerData.StandardKeyValue["hostport"] != "6500")
                 {
                     header[0] ^= (byte)GameServerFlags.NonStandardPort;
                     //we do not need to reverse port bytes
-                    byte[] port = BitConverter.GetBytes(ushort.Parse(server.Value.ServerData.StandardKeyValue["hostport"]));
+                    byte[] port = BitConverter.GetBytes(ushort.Parse(server.ServerData.StandardKeyValue["hostport"]));
 
                     header.AddRange(port);
                 }
             }
         }
-        private void CheckPrivatePort(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
+        private void CheckPrivatePort(List<byte> header, DedicatedGameServer server)
         {
             // we check private port here
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("localport"))
+            if (server.ServerData.StandardKeyValue.ContainsKey("localport"))
             {
                 header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
                 byte[] localPort =
-                 BitConverter.GetBytes(ushort.Parse(server.Value.ServerData.StandardKeyValue["localport"]));
+                 BitConverter.GetBytes(ushort.Parse(server.ServerData.StandardKeyValue["localport"]));
 
                 header.AddRange(localPort);
             }
         }
-        private void CheckICMPSupport(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
+        private void CheckICMPSupport(List<byte> header, DedicatedGameServer server)
         {
 
         }

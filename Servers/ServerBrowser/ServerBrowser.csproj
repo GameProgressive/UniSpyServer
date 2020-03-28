@@ -41,10 +41,8 @@
     <Folder Include="Entity\Interface\" />
     <Folder Include="Handler\SystemHandler\KeyType\" />
     <Folder Include="Handler\CommandHandler\KeepAlive\" />
-    <Folder Include="Handler\SystemHandler\GetServers\" />
     <Folder Include="Handler\SystemHandler\Filter\" />
     <Folder Include="Handler\SystemHandler\Error\" />
-    <Folder Include="Handler\SystemHandler\GetGroups\" />
   </ItemGroup>
 
   <ItemGroup>

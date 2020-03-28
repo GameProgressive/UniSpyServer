@@ -1,7 +1,9 @@
-﻿using QueryReport.Entity.Structure;
+﻿using GameSpyLib.Extensions;
+using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
@@ -9,6 +11,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 {
     public class ChallengeHandler : CommandHandlerBase
     {
+        DedicatedGameServer _gameServer;
         //we do not need to implement this to check the correctness of the challenge response
         public ChallengeHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
         {
@@ -16,17 +19,18 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 
         protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            Entity.Structure.GameServer gameServer;
-            QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
+            var result =
+                  RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
+            //QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
 
-            if (gameServer == null)
+            if (result.Count() != 1)
             {
                 server.ToLog("Can not find game server in game server list");
                 return;
             }
-
+            _gameServer = result.First();
             server.ToLog("Challenge received game server is now available");
-            gameServer.IsValidated = true;
+            _gameServer.IsValidated = true;
         }
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
@@ -35,9 +39,15 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             echo.Parse(recv);
             // We send the echo packet to check the ping
             _sendingBuffer = echo.GenerateResponse();
-            GameServer gameServer;
-            QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
-            gameServer.LastPing = DateTime.Now;
+
+            RetroSpyRedisExtensions.UpdateDedicatedGameServer(
+                endPoint,
+                _gameServer.ServerData.StandardKeyValue["gamename"],
+                _gameServer
+                );
+
+            //DedicatedGameServer gameServer;
+            //QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
         }
     }
 }

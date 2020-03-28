@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using GameSpyLib.Encryption;
+using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
@@ -18,7 +19,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
     public class ServerRulesHandler : CommandHandlerBase
     {
         private ServerRulesRequest _request;
-        private KeyValuePair<EndPoint, GameServer> _server;
+        private DedicatedGameServer _gameServer;
         public ServerRulesHandler(SBSession session, byte[] recv) : base(session, recv)
         {
         }
@@ -37,15 +38,23 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
 
         public override void DataOperation(SBSession session, byte[] recv)
         {
-            var servers = QueryReport.Server.QRServer.GameServerList.
-                Where(c => c.Value.RemoteIP == _request.IP
-                && c.Value.ServerData.StandardKeyValue["hostport"] == _request.HostPort.ToString());
-            if (servers.Count() != 1)
+            var result =
+                RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(
+                    new IPAddress(BitConverter.GetBytes(_request.IP)).ToString());
+            if (result.Count() != 1)
             {
                 _errorCode = SBErrorCode.NoServersFound;
                 return;
             }
-            _server = servers.FirstOrDefault();
+            else
+            {
+                _gameServer = result.First();
+            }
+            //var servers = QueryReport.Server.QRServer.GameServerList.
+            //    Where(c => c.Value.RemoteIP == _request.IP
+            //    && c.Value.ServerData.StandardKeyValue["hostport"] == _request.HostPort.ToString());
+
+            _gameServer = result.FirstOrDefault();
         }
 
         public override void ConstructResponse(SBSession session, byte[] recv)
@@ -75,9 +84,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
         private List<byte> GenerateServerInfo()
         {
             List<byte> data = new List<byte>();
-            data.AddRange(GenerateServerInfoHeader(_server));
+            data.AddRange(GenerateServerInfoHeader(_gameServer));
 
-            foreach (var kv in _server.Value.ServerData.CustomKeyValue)
+            foreach (var kv in _gameServer.ServerData.CustomKeyValue)
             {
                 data.AddRange(Encoding.ASCII.GetBytes(kv.Key));
                 data.Add(SBStringFlag.StringSpliter);
@@ -86,7 +95,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
             }
             return data;
         }
-        private List<byte> GenerateServerInfoHeader(KeyValuePair<EndPoint, GameServer> server)
+        private List<byte> GenerateServerInfoHeader(DedicatedGameServer server)
         {
             // you will only have HasKeysFlag or HasFullRule you can not have both
             List<byte> header = new List<byte>();
@@ -95,7 +104,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
             header.Add((byte)GameServerFlags.HasFullRulesFlag);
 
             //we add server public ip here
-            header.AddRange(BitConverter.GetBytes(server.Value.RemoteIP));
+            header.AddRange(BitConverter.GetBytes(server.RemoteIP));
 
             //we check host port is standard port or not
             CheckNonStandardPort(header, server);
@@ -110,45 +119,45 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
 
             return header;
         }
-        private void CheckPrivateIP(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
+        private void CheckPrivateIP(List<byte> header, DedicatedGameServer server)
         {
             // now we check if there are private ip
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("localip0"))
+            if (server.ServerData.StandardKeyValue.ContainsKey("localip0"))
             {
                 header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.Value.ServerData.StandardKeyValue["localip0"]).GetAddressBytes();
+                byte[] address = IPAddress.Parse(server.ServerData.StandardKeyValue["localip0"]).GetAddressBytes();
                 header.AddRange(address);
             }
-            else if (server.Value.ServerData.StandardKeyValue.ContainsKey("localip1"))
+            else if (server.ServerData.StandardKeyValue.ContainsKey("localip1"))
             {
                 header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.Value.ServerData.StandardKeyValue["localip1"]).GetAddressBytes();
+                byte[] address = IPAddress.Parse(server.ServerData.StandardKeyValue["localip1"]).GetAddressBytes();
                 header.AddRange(address);
             }
         }
-        private void CheckNonStandardPort(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
+        private void CheckNonStandardPort(List<byte> header, DedicatedGameServer server)
         {
             //we check host port is standard port or not
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("hostport"))
+            if (server.ServerData.StandardKeyValue.ContainsKey("hostport"))
             {
-                if (server.Value.ServerData.StandardKeyValue["hostport"] != "6500")
+                if (server.ServerData.StandardKeyValue["hostport"] != "6500")
                 {
                     header[0] ^= (byte)GameServerFlags.NonStandardPort;
                     //we do not need to reverse port bytes
-                    byte[] port = BitConverter.GetBytes(ushort.Parse(server.Value.ServerData.StandardKeyValue["hostport"]));
+                    byte[] port = BitConverter.GetBytes(ushort.Parse(server.ServerData.StandardKeyValue["hostport"]));
 
                     header.AddRange(port);
                 }
             }
         }
-        private void CheckPrivatePort(List<byte> header, KeyValuePair<EndPoint, GameServer> server)
+        private void CheckPrivatePort(List<byte> header, DedicatedGameServer server)
         {
             // we check private port here
-            if (server.Value.ServerData.StandardKeyValue.ContainsKey("localport"))
+            if (server.ServerData.StandardKeyValue.ContainsKey("localport"))
             {
                 header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
                 byte[] localPort =
-                 BitConverter.GetBytes(ushort.Parse(server.Value.ServerData.StandardKeyValue["localport"]));
+                 BitConverter.GetBytes(ushort.Parse(server.ServerData.StandardKeyValue["localport"]));
 
                 header.AddRange(localPort);
             }

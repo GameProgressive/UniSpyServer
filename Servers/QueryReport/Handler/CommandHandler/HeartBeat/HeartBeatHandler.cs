@@ -1,18 +1,17 @@
-﻿using Newtonsoft.Json;
-using QueryReport.Application;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
 using System.Linq;
 using System.Net;
 using System.Text;
+using GameSpyLib.Extensions;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
     public class HeartBeatHandler : CommandHandlerBase
     {
-        private GameServer _gameServer;
+        private DedicatedGameServer _gameServer;
 
         public HeartBeatHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
         {
@@ -22,16 +21,20 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         {
             BasePacket basePacket = new BasePacket();
             basePacket.Parse(recv);
-            GameServer gameServer = new GameServer();
-            gameServer.Parse(endPoint, basePacket.InstantKey);
+            //DedicatedGameServer gameServer = new DedicatedGameServer();
+            //gameServer.Parse(endPoint, basePacket.InstantKey);
 
-            _gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
+            _gameServer = new DedicatedGameServer();
+            _gameServer.Parse(endPoint, basePacket.InstantKey); ;
+            //_gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
 
             base.CheckRequest(server, endPoint, recv);
         }
 
         protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
+
+
             //Save server information.
             string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
@@ -60,6 +63,12 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 //shutdown heart beat
                 _gameServer.IsValidated = false;
             }
+
+            RetroSpyRedisExtensions.UpdateDedicatedGameServer(
+               endPoint,
+               _gameServer.ServerData.StandardKeyValue["gamename"],
+               _gameServer
+           );
         }
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
