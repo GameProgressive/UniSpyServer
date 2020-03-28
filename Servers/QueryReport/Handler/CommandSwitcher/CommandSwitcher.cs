@@ -5,6 +5,7 @@ using QueryReport.Handler.CommandHandler.Challenge;
 using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
+using QueryReport.Handler.SystemHandler.PeerSystem;
 using QueryReport.Server;
 using System;
 using System.Net;

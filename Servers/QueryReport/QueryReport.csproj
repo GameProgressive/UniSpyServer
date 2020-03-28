@@ -32,6 +32,7 @@
   <ItemGroup>
     <Compile Remove="Entity\Structure\QRGeneralData.cs" />
     <Compile Remove="Handler\CommandHandler\HeartBeat\QRDBQuery.cs" />
+    <Compile Remove="Entity\Structure\GameServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entity\Structure\Packet\" />
@@ -40,5 +41,8 @@
     <Folder Include="Handler\SystemHandler\ServerListChecker\" />
     <Folder Include="Handler\SystemHandler\FindGeographicLocation\" />
     <Folder Include="Handler\SystemHandler\ErrorMessage\" />
+    <Folder Include="Entity\Structure\Server\" />
+    <Folder Include="Entity\Structure\Group\" />
+    <Folder Include="Handler\SystemHandler\PeerSystem\" />
   </ItemGroup>
 </Project>

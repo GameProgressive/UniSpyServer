@@ -2,6 +2,7 @@
 using GameSpyLib.Network;
 using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
+using QueryReport.Handler.SystemHandler.PeerSystem;
 using System.Net;
 
 namespace QueryReport.Server
@@ -21,6 +22,7 @@ namespace QueryReport.Server
 
         public QRServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
         {
+            new PeerGroupHandler().LoadAllGameGroups();
             //The Time for servers to remain in the serverlist since the last ping in seconds.
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
