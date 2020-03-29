@@ -55,9 +55,4 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\GeneralRequest\GeneralRequestHandler.cs" />
-    <Compile Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\NoServerList\NoServerListHandler.cs" />
-    <Compile Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroups\SendGroupsHandler.cs" />
-  </ItemGroup>
 </Project>
