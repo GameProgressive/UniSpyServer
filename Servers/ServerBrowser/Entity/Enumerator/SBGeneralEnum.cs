@@ -18,6 +18,7 @@
     public enum SBErrorCode
     {
         Parse,
+        NoGroupRoomFound,
         NoServersFound,
         UnSupportedGame,
         DataOperation,

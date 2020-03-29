@@ -18,7 +18,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected byte[] _gameServerDefaultHostPort;
         protected string _secretKey;
         protected ServerListRequest _request = new ServerListRequest();
-        protected List<byte> _dataList;
+        protected List<byte> _dataList = new List<byte>();
         public UpdateOptionHandlerBase(SBSession session, byte[] recv) : base(session, recv)
         {
         }
@@ -47,7 +47,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected abstract void GenerateServerKeys();
         protected abstract void GenerateUniqueValue();
         protected abstract void GenerateServersInfo();
-        protected abstract void GenerateServerInfoHeader(DedicatedGameServer server);
+        protected abstract void GenerateServerInfoHeader(List<byte> header,DedicatedGameServer server);
 
 
 

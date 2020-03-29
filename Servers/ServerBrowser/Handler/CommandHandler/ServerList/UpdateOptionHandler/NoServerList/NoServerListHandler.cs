@@ -30,11 +30,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.No
             throw new NotImplementedException();
         }
 
-        protected override void GenerateServerInfoHeader(DedicatedGameServer server)
+        protected override void GenerateServerInfoHeader(List<byte> header, DedicatedGameServer server)
         {
             throw new NotImplementedException();
         }
 
-       
+
     }
 }

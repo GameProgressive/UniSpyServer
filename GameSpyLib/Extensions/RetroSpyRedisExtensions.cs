@@ -7,16 +7,16 @@ namespace GameSpyLib.Extensions
 {
     public class RetroSpyRedisExtensions
     {
-        public static void SerializeSet<T>(string key, T value)
+        public static void SerializeSet<T>(string key, T value,int dbNumber)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase();
+            var redis = ServerManagerBase.Redis.GetDatabase(dbNumber);
             string jsonStr = JsonConvert.SerializeObject(value);
             redis.StringSet(key, jsonStr);
         }
 
-        public static T SerilizeGet<T>(string key)
+        public static T SerilizeGet<T>(string key,int dbNumber)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase();
+            var redis = ServerManagerBase.Redis.GetDatabase(dbNumber);
             T t = JsonConvert.DeserializeObject<T>(redis.StringGet(key));
             return t;
         }
@@ -48,7 +48,7 @@ namespace GameSpyLib.Extensions
         public static void UpdateDedicatedGameServer<T>(EndPoint end, string gameName, T gameServer)
         {
             string key = BuildDedicatedGameServerKey(end, gameName);
-            SerializeSet(key, gameServer);
+            SerializeSet(key, gameServer,0);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace GameSpyLib.Extensions
             List<T> gameServer = new List<T>();
             foreach (var key in allServerKeys)
             {
-                gameServer.Add(SerilizeGet<T>(key));
+                gameServer.Add(SerilizeGet<T>(key,0));
             }
             return gameServer;
         }
@@ -82,19 +82,19 @@ namespace GameSpyLib.Extensions
             List<T> gameServer = new List<T>();
             foreach (var key in allServerKeys)
             {
-                gameServer.Add(SerilizeGet<T>(key));
+                gameServer.Add(SerilizeGet<T>(key,0));
             }
             return gameServer;
         }
 
         public static T GetGroupsList<T>(string gameName)
         {
-            return SerilizeGet<T>(gameName);
+            return SerilizeGet<T>(gameName,1);
         }
 
         public static void SetGroupList<T>(string gameName, T room)
         {
-            SerializeSet(gameName, room);
+            SerializeSet(gameName, room,1);
         }
     }
 }

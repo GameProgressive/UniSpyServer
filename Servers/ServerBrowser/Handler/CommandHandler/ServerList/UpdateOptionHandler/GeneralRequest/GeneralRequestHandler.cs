@@ -8,21 +8,19 @@ using ServerBrowser.Entity.Structure;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.GeneralRequest
 {
-    public class GeneralRequestHandler:UpdateOptionHandlerBase
+    public class GeneralRequestHandler : UpdateOptionHandlerBase
     {
         List<DedicatedGameServer> _gameServer;
         public GeneralRequestHandler(SBSession session, byte[] recv) : base(session, recv)
         {
         }
 
-      
-
         public override void DataOperation(SBSession session, byte[] recv)
         {
             base.DataOperation(session, recv);
             _gameServer =
                         RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(_request.GameName);
-            if(_gameServer==null||_gameServer.Count==0)
+            if (_gameServer == null || _gameServer.Count == 0)
             {
                 _errorCode = SBErrorCode.NoServersFound;
                 return;
@@ -45,8 +43,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
 
         protected override void GenerateServerKeys()
         {
-            //add key number
+            //we add the total number of the requested keys
             _dataList.Add((byte)_request.FieldList.Length);
+            //then we add the keys
             foreach (var key in _request.FieldList)
             {
                 _dataList.Add((byte)SBKeyType.String);
@@ -63,9 +62,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
 
         protected override void GenerateServersInfo()
         {
+
             foreach (var server in _gameServer)
             {
-                GenerateServerInfoHeader(server);
+                List<byte> header = new List<byte>();
+                GenerateServerInfoHeader(header, server);
+                _dataList.AddRange(header);
                 foreach (var key in _request.FieldList)
                 {
                     _dataList.Add(SBStringFlag.NTSStringFlag);
@@ -76,20 +78,20 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
         }
 
 
-        protected override void GenerateServerInfoHeader(DedicatedGameServer server)
+        protected override void GenerateServerInfoHeader(List<byte> header, DedicatedGameServer server)
         {
             //add has key flag
-            _dataList.Add((byte)GameServerFlags.HasKeysFlag);
+            header.Add((byte)GameServerFlags.HasKeysFlag);
             //we add server public ip here
-            _dataList.AddRange(BitConverter.GetBytes(server.RemoteIP));
+            header.AddRange(BitConverter.GetBytes(server.RemoteIP));
             //we check host port is standard port or not
-            CheckNonStandardPort(_dataList, server);
+            CheckNonStandardPort(header, server);
             // now we check if there are private ip
-            CheckPrivateIP(_dataList, server);
+            CheckPrivateIP(header, server);
             // we check private port here
-            CheckPrivatePort(_dataList, server);
+            CheckPrivatePort(header, server);
             //we check icmp support here
-            CheckICMPSupport(_dataList, server);
+            CheckICMPSupport(header, server);
         }
     }
 }

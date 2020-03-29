@@ -202,25 +202,16 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                         {
                             data.Add((byte)GameServerFlags.HasKeysFlag);
                             data.AddRange(new byte[] { 192, 168, 0, 1 });
-                            data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.RoomName));
-                            data.Add(SBStringFlag.StringSpliter);
+                            foreach (var key in _request.FieldList)
+                            {
+                                if (room.StandardKeyValue.ContainsKey(key))
+                                {
+                                    data.Add(SBStringFlag.NTSStringFlag);
+                                    data.AddRange(Encoding.ASCII.GetBytes(room.StandardKeyValue[key]));
+                                    data.Add(SBStringFlag.StringSpliter);
+                                }
 
-                            data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.NumberWating.ToString()));
-                            data.Add(SBStringFlag.StringSpliter);
-
-                            data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.MaxPlayers.ToString()));
-                            data.Add(SBStringFlag.StringSpliter);
-
-                            data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.NumberGames.ToString()));
-                            data.Add(SBStringFlag.StringSpliter);
-
-                            data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.NumberPlaying.ToString()));
-                            data.Add(SBStringFlag.StringSpliter);
+                            }
                         }
                         break;
 
