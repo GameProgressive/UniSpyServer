@@ -59,9 +59,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
 
             foreach (var room in _peerGroup.PeerRooms)
             {
-                List<byte> header = new List<byte>();
-                GenerateServerInfoHeader(header, null);
-                _dataList.AddRange(header);
+
+                //add has key flag
+                _dataList.Add((byte)GameServerFlags.HasKeysFlag);
+                //in group list server ip is group id
+                
+                byte[] groupid = BitConverter.GetBytes(int.Parse(room.StandardKeyValue["groupid"]));
+                //need convert to big endian
+                Array.Reverse(groupid);
+                _dataList.AddRange(groupid);
 
                 foreach (var key in _request.FieldList)
                 {
@@ -74,10 +80,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
 
         protected override void GenerateServerInfoHeader(List<byte> header, DedicatedGameServer server)
         {
-            //add has key flag
-            header.Add((byte)GameServerFlags.HasKeysFlag);
-            //we add server public ip here
-            header.AddRange(new byte[] { 192, 168, 0, 1 });
+           
         }
     }
 }

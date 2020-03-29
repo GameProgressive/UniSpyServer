@@ -10,7 +10,6 @@ namespace QueryReport.Entity.Structure.Group
     {
         public string GameName { get;  set; }
         public int GameID { get;  set; }
-        public int GroupID { get;  set; }
         public List<PeerRoom> PeerRooms { get; set; }
 
         public PeerGroup()
@@ -22,7 +21,6 @@ namespace QueryReport.Entity.Structure.Group
             PeerRooms = new List<PeerRoom>();
             GameName = gameName;
             GameID = grouplist.Gameid;
-            GroupID = grouplist.Groupid;
         }
     }
 }

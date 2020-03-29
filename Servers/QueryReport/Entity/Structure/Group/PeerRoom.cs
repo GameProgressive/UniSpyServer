@@ -10,7 +10,7 @@ namespace QueryReport.Entity.Structure.Group
         public static readonly List<string> StandardKey =
             new List<string>
             {
-                "hostname","numwaiting","maxwaiting","maxplayers","numservers",
+                "groupid","hostname","numwaiting","maxwaiting","maxplayers","numservers",
                 "numplayers","password","numGames","numplaying",
                 "param"
             };
@@ -48,6 +48,7 @@ namespace QueryReport.Entity.Structure.Group
             StandardKeyValue = new Dictionary<string, string>();
             CustomKeyValue = new Dictionary<string, string>();
 
+            StandardKeyValue.Add("groupid", grouplist.Groupid.ToString());
             StandardKeyValue.Add("hostname", grouplist.Name);
             StandardKeyValue.Add("numwaiting", "0");
             StandardKeyValue.Add("maxwaiting", "200");
