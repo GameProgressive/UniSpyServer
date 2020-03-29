@@ -7,6 +7,7 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
@@ -22,7 +23,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         private ServerListRequest _request = new ServerListRequest();
 
         private List<DedicatedGameServer> _redisServer;
-        private List<Grouplist> _redisGroup;
+        private PeerGroup _redisGroup;
 
         public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
 
@@ -43,8 +44,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             switch (_request.UpdateOption)
             {
                 case SBServerListUpdateOption.GeneralRequest:
-                   //_filteredServers =
-                  //      GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
+                    //_filteredServers =
+                    //      GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
                     _redisServer =
                         RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(_request.GameName);
                     break;
@@ -55,17 +56,27 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     break;
                 case SBServerListUpdateOption.SendGroups:
                     //we need to search group in database
-                    //_filteredGroups =
-                    //    GetGroupsFromQR.GetFilteredGroups(new GetGroupsFromDatabase(), _request.GameName, _request.Filter);
+                    _redisGroup = RetroSpyRedisExtensions.GetGroupsList<PeerGroup>(_request.GameName);
                     break;
             }
             //we can use GetServersFromNetwork class in the future
 
-
-            if (_redisServer.Count() == 0)
+            if (_redisGroup == null && _redisServer == null)
             {
                 _errorCode = SBErrorCode.NoServersFound;
+                return;
             }
+            //if (_redisServer.Count() == 0)
+            //{
+            //    _errorCode = SBErrorCode.NoServersFound;
+            //    return;
+            //}
+
+            //if (_redisGroup.PeerRooms.Count() == 0)
+            //{
+            //    _errorCode = SBErrorCode.DataOperation;
+            //    return;
+            //}
         }
 
         public override void ConstructResponse(SBSession session, byte[] recv)
@@ -118,6 +129,14 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     break;
                 case SBServerListUpdateOption.GeneralRequest:
                     data.Add((byte)_request.FieldList.Length);
+                    foreach (var key in _request.FieldList)
+                    {
+                        data.Add((byte)SBKeyType.String);
+                        data.AddRange(Encoding.ASCII.GetBytes(key));
+                        data.Add(0);
+                    }
+                    break;
+                case SBServerListUpdateOption.SendGroups:
                     foreach (var key in _request.FieldList)
                     {
                         data.Add((byte)SBKeyType.String);
@@ -179,32 +198,28 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
 
                     case SBServerListUpdateOption.SendGroups:
                         //TODO add values here
-                        foreach (var room in _redisGroup)
+                        foreach (var room in _redisGroup.PeerRooms)
                         {
                             data.Add((byte)GameServerFlags.HasKeysFlag);
                             data.AddRange(new byte[] { 192, 168, 0, 1 });
                             data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.Name));
+                            data.AddRange(Encoding.ASCII.GetBytes(room.RoomName));
                             data.Add(SBStringFlag.StringSpliter);
 
                             data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.Numwaiting.ToString()));
+                            data.AddRange(Encoding.ASCII.GetBytes(room.NumberWating.ToString()));
                             data.Add(SBStringFlag.StringSpliter);
 
                             data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.Maxwaiting.ToString()));
+                            data.AddRange(Encoding.ASCII.GetBytes(room.MaxPlayers.ToString()));
                             data.Add(SBStringFlag.StringSpliter);
 
                             data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.Name));
+                            data.AddRange(Encoding.ASCII.GetBytes(room.NumberGames.ToString()));
                             data.Add(SBStringFlag.StringSpliter);
 
                             data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.Numservers.ToString()));
-                            data.Add(SBStringFlag.StringSpliter);
-
-                            data.Add(SBStringFlag.NTSStringFlag);
-                            data.AddRange(Encoding.ASCII.GetBytes(room.Numplayers.ToString()));
+                            data.AddRange(Encoding.ASCII.GetBytes(room.NumberPlaying.ToString()));
                             data.Add(SBStringFlag.StringSpliter);
                         }
                         break;
@@ -254,7 +269,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             return data;
         }
 
-        private void CheckPrivateIP(List<byte> header,DedicatedGameServer server)
+        private void CheckPrivateIP(List<byte> header, DedicatedGameServer server)
         {
             // now we check if there are private ip
             if (server.ServerData.StandardKeyValue.ContainsKey("localip0"))

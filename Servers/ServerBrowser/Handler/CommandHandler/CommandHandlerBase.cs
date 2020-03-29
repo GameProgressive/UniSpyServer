@@ -5,7 +5,7 @@ using ServerBrowser.Handler.SystemHandler.Error;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
-    public class CommandHandlerBase
+    public abstract class CommandHandlerBase
     {
         protected SBErrorCode _errorCode = SBErrorCode.NoError;
         protected byte[] _sendingBuffer;
