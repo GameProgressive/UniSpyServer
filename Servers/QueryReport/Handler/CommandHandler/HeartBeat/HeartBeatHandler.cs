@@ -61,7 +61,13 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             else
             {
                 //shutdown heart beat
-                _gameServer.IsValidated = false;
+                serverData = dataPartition;
+                _gameServer.ServerData.Update(serverData, endPoint);
+                RetroSpyRedisExtensions.DeleteDedicatedGameServer(
+                    endPoint,
+                    _gameServer.ServerData.StandardKeyValue["gamename"]
+                    );
+                return;
             }
 
             RetroSpyRedisExtensions.UpdateDedicatedGameServer(

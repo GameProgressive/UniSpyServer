@@ -7,14 +7,14 @@ namespace GameSpyLib.Extensions
 {
     public class RetroSpyRedisExtensions
     {
-        public static void SerializeSet<T>(string key, T value,int dbNumber)
+        public static bool SerializeSet<T>(string key, T value, int dbNumber)
         {
             var redis = ServerManagerBase.Redis.GetDatabase(dbNumber);
             string jsonStr = JsonConvert.SerializeObject(value);
-            redis.StringSet(key, jsonStr);
+            return redis.StringSet(key, jsonStr);
         }
 
-        public static T SerilizeGet<T>(string key,int dbNumber)
+        public static T SerilizeGet<T>(string key, int dbNumber)
         {
             var redis = ServerManagerBase.Redis.GetDatabase(dbNumber);
             T t = JsonConvert.DeserializeObject<T>(redis.StringGet(key));
@@ -40,6 +40,14 @@ namespace GameSpyLib.Extensions
             }
             return matchKeys;
         }
+
+        public static bool DeleteDedicatedGameServer(EndPoint endPoint, string gameName)
+        {
+            string key = BuildDedicatedGameServerKey(endPoint, gameName);
+            var redis = ServerManagerBase.Redis.GetDatabase(0);
+            return redis.KeyDelete(key);
+        }
+
         public static string BuildDedicatedGameServerKey(EndPoint end, string gameName)
         {
             return ((IPEndPoint)end).Address.ToString() + ":" + ((IPEndPoint)end).Port + " " + gameName;
@@ -48,7 +56,7 @@ namespace GameSpyLib.Extensions
         public static void UpdateDedicatedGameServer<T>(EndPoint end, string gameName, T gameServer)
         {
             string key = BuildDedicatedGameServerKey(end, gameName);
-            SerializeSet(key, gameServer,0);
+            SerializeSet(key, gameServer, 0);
         }
 
         /// <summary>
@@ -66,7 +74,7 @@ namespace GameSpyLib.Extensions
             List<T> gameServer = new List<T>();
             foreach (var key in allServerKeys)
             {
-                gameServer.Add(SerilizeGet<T>(key,0));
+                gameServer.Add(SerilizeGet<T>(key, 0));
             }
             return gameServer;
         }
@@ -82,19 +90,19 @@ namespace GameSpyLib.Extensions
             List<T> gameServer = new List<T>();
             foreach (var key in allServerKeys)
             {
-                gameServer.Add(SerilizeGet<T>(key,0));
+                gameServer.Add(SerilizeGet<T>(key, 0));
             }
             return gameServer;
         }
 
         public static T GetGroupsList<T>(string gameName)
         {
-            return SerilizeGet<T>(gameName,1);
+            return SerilizeGet<T>(gameName, 1);
         }
 
         public static void SetGroupList<T>(string gameName, T room)
         {
-            SerializeSet(gameName, room,1);
+            SerializeSet(gameName, room, 1);
         }
     }
 }
