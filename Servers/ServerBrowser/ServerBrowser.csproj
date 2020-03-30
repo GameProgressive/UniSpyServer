@@ -10,7 +10,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
-    <NoStdLib></NoStdLib>
+    <NoStdLib>true</NoStdLib>
     <PlatformTarget>anycpu</PlatformTarget>
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
