@@ -46,10 +46,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
                 _errorCode = SBErrorCode.NoServersFound;
                 return;
             }
-            else
-            {
-                _gameServer = result.First();
-            }
+
             //var servers = QueryReport.Server.QRServer.GameServerList.
             //    Where(c => c.Value.RemoteIP == _request.IP
             //    && c.Value.ServerData.StandardKeyValue["hostport"] == _request.HostPort.ToString());

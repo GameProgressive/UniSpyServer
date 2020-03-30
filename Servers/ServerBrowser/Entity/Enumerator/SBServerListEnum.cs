@@ -48,13 +48,38 @@ namespace ServerBrowser.Entity.Enumerator
 
     public enum GameServerFlags
     {
+        /// <summary>
+        /// game can directly send request to dedicate server
+        /// </summary>
         UnsolicitedUDPFlag = 1,
+        /// <summary>
+        /// private ip exist
+        /// </summary>
         PrivateIPFlag = 2,
+        /// <summary>
+        /// connect with nat neg
+        /// </summary>
         ConnectNegotiateFlag = 4,
+        /// <summary>
+        /// server has icmp
+        /// </summary>
         ICMPIPFlag = 8,
+        /// <summary>
+        /// non standard query port
+        /// </summary>
         NonStandardPort = 16,
+
+        /// <summary>
+        /// nonstandard private port
+        /// </summary>
         NonStandardPrivatePortFlag = 32,
+        /// <summary>
+        /// has standard keys
+        /// </summary>
         HasKeysFlag = 64,
+        /// <summary>
+        /// has full rules keys
+        /// </summary>
         HasFullRulesFlag = 128
     }
 }

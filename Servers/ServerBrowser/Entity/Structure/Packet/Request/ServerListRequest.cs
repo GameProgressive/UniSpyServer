@@ -64,29 +64,26 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             string remainData = Encoding.ASCII.GetString(recv.Skip(9).ToArray());
             remainData.IndexOf('\0');
             DevGameName = remainData.Substring(0, remainData.IndexOf('\0'));
-            remainData = remainData.Substring(remainData.IndexOf('\0')+1);
+            remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
             GameName = remainData.Substring(0, remainData.IndexOf('\0'));
-            remainData = remainData.Substring(remainData.IndexOf('\0')+1);
-            Challenge = remainData.Substring(0, remainData.IndexOf('\0')).Substring(0,8);
+            remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
+            Challenge = remainData.Substring(0, remainData.IndexOf('\0')).Substring(0, 8);
 
             if (remainData.Substring(0, remainData.IndexOf('\0')).Length > 8)
             {
-                Filter = remainData.Substring(0, remainData.IndexOf('\0')).Substring(7, remainData.IndexOf('0'));
+                Filter = remainData.Substring(8, remainData.IndexOf('\0') - 8);
             }
-            
+
             remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
-            FieldList = remainData.Substring(0, remainData.IndexOf('\0')).Split("\\",StringSplitOptions.RemoveEmptyEntries);
+            FieldList = remainData.Substring(0, remainData.IndexOf('\0')).Split("\\", StringSplitOptions.RemoveEmptyEntries);
             remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
 
             byte[] byteUpdateOptions = Encoding.ASCII.GetBytes(remainData.Substring(0, 4));
-
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(byteUpdateOptions);
-            }
+            //gamespy send this in big endian, we need to convert to little endian
+            Array.Reverse(byteUpdateOptions);
 
             UpdateOption = (SBServerListUpdateOption)BitConverter.ToInt32(byteUpdateOptions);
-  
+
             if ((UpdateOption & SBServerListUpdateOption.AlternateSourceIP) != 0)
             {
                 SourceIP = Encoding.ASCII.GetBytes(remainData.Substring(0, 4));

@@ -26,7 +26,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             {
                 return false;
             }
-
+            
             IP = BitConverter.ToInt32(ByteTools.SubBytes(recv, 3, 4));
 
             byte[] bytePort = new byte[2];
