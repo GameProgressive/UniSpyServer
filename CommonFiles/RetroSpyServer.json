@@ -1,0 +1,81 @@
+{
+    "DataBase": {
+        "Type": "MySql",
+        "RemoteAddress": "127.0.0.1",
+        "RemotePort": "3306",
+        "UserName": "root",
+        "Password": "0000",
+        "DatabaseName": "retrospy",
+        "SslMode": "Preferred",
+        "SslCert": "",
+        "SslKey": "",
+        "SslCa": ""
+    },
+    "Redis": {
+        "RemoteAddress": "localhost",
+        "RemotePort": "6379"
+    },
+    "Servers": [
+        {
+            "Name": "GPCM",
+            "ListeningAddress": "0.0.0.0",
+            "ListeningPort": "29900",
+            "RemoteAddress": "",
+            "RemotePort": ""
+        },
+        {
+            "Name": "GPSP",
+            "ListeningAddress": "0.0.0.0",
+            "ListeningPort": "29901",
+            "RemoteAddress": "",
+            "RemotePort": ""
+        },
+        {
+            "Name": "CDKEY",
+            "ListeningAddress": "0.0.0.0",
+            "ListeningPort": "29910",
+            "RemoteAddress": "",
+            "RemotePort": ""
+        },
+        {
+            "Name": "SB",
+            "ListeningAddress": "0.0.0.0",
+            "ListeningPort": "28910"
+        },
+        {
+            "Name": "QR",
+            "ListeningAddress": "0.0.0.0",
+            "ListeningPort": "27900",
+            "RemoteAddress": "",
+            "RemotePort": ""
+        },
+        {
+
+            "Name": "NATNEG",
+            "ListeningAddress": "0.0.0.0",
+            "ListeningPort": "27901",
+            "RemoteAddress": "",
+            "RemotePort": ""
+
+        },
+        {
+            "Server": {
+                "Name": "GSTATS",
+                "ListeningAddress": "0.0.0.0",
+                "ListeningPort": "29920",
+                "RemoteAddress": "",
+                "RemotePort": ""
+            }
+        },
+        {
+            "Name": "CHAT",
+            "ListeningAddress": "0.0.0.0",
+            "ListeningPort": "6667",
+            "RemoteAddress": "",
+            "RemotePort": ""
+        }
+
+    ],
+
+    "LogLevel": "Debug"
+}
