@@ -1,6 +1,7 @@
 ﻿
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Database.Entity;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.XMLConfig;
 using StackExchange.Redis;
@@ -12,7 +13,7 @@ namespace GameSpyLib.Common
 {
     public abstract class ServerManagerBase : IDisposable
     {
-        public readonly string Version = "0.5";
+        public readonly string RetroSpyVersion = "0.5";
         public static string BasePath { get; protected set; }
         public string LogPath { get; protected set; }
         public string ServerName { get; protected set; }
@@ -26,7 +27,7 @@ namespace GameSpyLib.Common
             BasePath = AppDomain.CurrentDomain.BaseDirectory;
             ServerName = serverName;
             LoadLogWriter();
-            ShowRetroSpyLogo();
+            StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
             LoadDatabaseConfig();
             LoadServerConfig();
         }
@@ -47,19 +48,6 @@ namespace GameSpyLib.Common
             ConfigManager.Load();
             //set the loglevel to system
             LogWriter.Log.MiniumLogLevel = ConfigManager.xmlConfig.LogLevel;
-        }
-
-        private void ShowRetroSpyLogo()
-        {
-
-            Console.WriteLine("\t" + @"  ___     _           ___             ___                      ");
-            Console.WriteLine("\t" + @" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
-            Console.WriteLine("\t" + @" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
-            Console.WriteLine("\t" + @" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
-            Console.WriteLine("\t" + @"                         |_|   |__/                            ");
-            Console.WriteLine("");
-
-            LogWriter.Log.Write("RetroSpy Server version " + Version + ".", LogLevel.Info);
         }
 
         public void LoadServerConfig()

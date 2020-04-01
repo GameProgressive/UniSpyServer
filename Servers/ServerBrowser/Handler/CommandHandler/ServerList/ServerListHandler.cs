@@ -128,8 +128,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     data.Add(0);
                     break;
                 case SBServerListUpdateOption.GeneralRequest:
-                    data.Add((byte)_request.FieldList.Length);
-                    foreach (var key in _request.FieldList)
+                    data.Add((byte)_request.Keys.Length);
+                    foreach (var key in _request.Keys)
                     {
                         data.Add((byte)SBKeyType.String);
                         data.AddRange(Encoding.ASCII.GetBytes(key));
@@ -137,7 +137,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     }
                     break;
                 case SBServerListUpdateOption.SendGroups:
-                    foreach (var key in _request.FieldList)
+                    foreach (var key in _request.Keys)
                     {
                         data.Add((byte)SBKeyType.String);
                         data.AddRange(Encoding.ASCII.GetBytes(key));
@@ -183,7 +183,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 {
                     case SBServerListUpdateOption.GeneralRequest:
                         //add every value to list
-                        foreach (var key in _request.FieldList)
+                        foreach (var key in _request.Keys)
                         {
                             data.Add(SBStringFlag.NTSStringFlag);
                             data.AddRange(Encoding.ASCII.GetBytes(server.ServerData.StandardKeyValue[key]));
@@ -202,7 +202,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                         {
                             data.Add((byte)GameServerFlags.HasKeysFlag);
                             data.AddRange(new byte[] { 192, 168, 0, 1 });
-                            foreach (var key in _request.FieldList)
+                            foreach (var key in _request.Keys)
                             {
                                 if (room.StandardKeyValue.ContainsKey(key))
                                 {

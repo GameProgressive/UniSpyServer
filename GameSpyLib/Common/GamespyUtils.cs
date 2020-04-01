@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Encryption;
+﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using NetCoreServer;
 using System;

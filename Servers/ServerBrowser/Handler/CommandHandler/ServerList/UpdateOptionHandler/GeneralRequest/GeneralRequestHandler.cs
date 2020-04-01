@@ -44,9 +44,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
         protected override void GenerateServerKeys()
         {
             //we add the total number of the requested keys
-            _dataList.Add((byte)_request.FieldList.Length);
+            _dataList.Add((byte)_request.Keys.Length);
             //then we add the keys
-            foreach (var key in _request.FieldList)
+            foreach (var key in _request.Keys)
             {
                 _dataList.Add((byte)SBKeyType.String);
                 _dataList.AddRange(Encoding.ASCII.GetBytes(key));
@@ -68,7 +68,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
                 List<byte> header = new List<byte>();
                 GenerateServerInfoHeader(header, server);
                 _dataList.AddRange(header);
-                foreach (var key in _request.FieldList)
+                foreach (var key in _request.Keys)
                 {
                     _dataList.Add(SBStringFlag.NTSStringFlag);
                     _dataList.AddRange(Encoding.ASCII.GetBytes(server.ServerData.StandardKeyValue[key]));

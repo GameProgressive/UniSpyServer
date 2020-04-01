@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using GameSpyLib.Encryption;
+using GameSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {

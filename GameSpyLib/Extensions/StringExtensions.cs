@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
-namespace GameSpyLib.Encryption
+namespace GameSpyLib.Extensions
 {
     public static class StringExtensions
     {
@@ -49,6 +50,35 @@ namespace GameSpyLib.Encryption
                 if (Encoding == null) Encoding = Encoding.UTF8;
                 return Md5.ComputeHash(Encoding.GetBytes(input)).ToHex(upperCase);
             }
+        }
+        /// <summary>
+        /// Replace unreadable charactors to ? for logging
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public static string ReplaceUnreadableCharToHex(byte[] buffer,int index, int size)
+        {
+            return ReplaceUnreadableCharToHex(Encoding.ASCII.GetString(buffer, index, size));
+        }
+
+        public static string ReplaceUnreadableCharToHex(string buffer)
+        {
+            return Regex.Replace(buffer,
+                          @"\p{Cc}",
+                          a => string.Format("[{0:X2}]", (byte)a.Value[0])
+                        );
+        }
+
+        public static void ShowRetroSpyLogo(string version)
+        {
+            Console.WriteLine("\t" + @"  ___     _           ___             ___                      ");
+            Console.WriteLine("\t" + @" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
+            Console.WriteLine("\t" + @" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
+            Console.WriteLine("\t" + @" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
+            Console.WriteLine("\t" + @"                         |_|   |__/                            ");
+            Console.WriteLine("\t" + @" Version: " + version);
+
         }
     }
 }

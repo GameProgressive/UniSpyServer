@@ -13,28 +13,5 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.No
         public NoServerListHandler(SBSession session, byte[] recv) : base(session, recv)
         {
         }
-
-        //we do not need to use these functions so we leave it empty
-        protected override void GenerateServerKeys()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void GenerateServersInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void GenerateUniqueValue()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void GenerateServerInfoHeader(List<byte> header, DedicatedGameServer server)
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

@@ -83,7 +83,7 @@ namespace PresenceSearchPlayer
             {
                 //create a instance of ServerManager class
                 _manager = new ServerManager(ServerName);
-                Console.Title = "RetroSpy Server " + _manager.Version;
+                Console.Title = "RetroSpy Server " + _manager.RetroSpyVersion;
                 IsRunning = true;
             }
             catch (Exception e)

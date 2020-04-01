@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Encryption;
+using GameSpyLib.Extensions;
 using NatNegotiation.Entity.Enumerator;
 using System;
 using System.Collections.Generic;

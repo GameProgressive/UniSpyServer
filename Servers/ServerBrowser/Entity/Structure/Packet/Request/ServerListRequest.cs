@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using GameSpyLib.Encryption;
+using GameSpyLib.Extensions;
 using ServerBrowser.Entity.Enumerator;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
@@ -24,7 +25,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public string Challenge { get; protected set; }
         public SBServerListUpdateOption UpdateOption { get; protected set; }
 
-        public string[] FieldList { get; protected set; }
+        public string[] Keys { get; protected set; }
         public string Filter;
         public byte[] SourceIP { get; protected set; }
         public int MaxServers { get; protected set; }
@@ -75,7 +76,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             }
 
             remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
-            FieldList = remainData.Substring(0, remainData.IndexOf('\0')).Split("\\", StringSplitOptions.RemoveEmptyEntries);
+            Keys = remainData.Substring(0, remainData.IndexOf('\0')).Split("\\", StringSplitOptions.RemoveEmptyEntries);
             remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
 
             byte[] byteUpdateOptions = Encoding.ASCII.GetBytes(remainData.Substring(0, 4));

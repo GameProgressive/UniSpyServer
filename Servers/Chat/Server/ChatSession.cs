@@ -1,7 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.Encryption;
-using GameSpyLib.Common;
+using Chat.Server;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using System.Text;
@@ -12,9 +12,12 @@ namespace Chat
     {
         public ChatUserInfo chatUserInfo { get; set; }
 
+        public ChatProxyClient ChatClientProxy;
         public ChatSession(TemplateTcpServer server) : base(server)
         {
             chatUserInfo = new ChatUserInfo();
+            ChatClientProxy = new ChatProxyClient(this, "192.168.0.109", 6667);
+            ChatClientProxy.ConnectAsync();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
@@ -31,7 +34,7 @@ namespace Chat
                 ToLog(LogLevel.Debug, $"[Recv] IRC data: {data}");
             }
 
-            HandleIRCCommands(data);
+            CommandSwitcher.Switch(this, data);
         }
 
         /// <summary>
@@ -54,7 +57,7 @@ namespace Chat
 
             // 3. Response the crypt command
             SendCommand(ChatRPL.SecureKey, "* " + clientKey + " " + serverKey);
-
+           // string buffer = $":s {ChatRPL.SecureKey} * {clientKey} {serverKey}";
             // 4. Start using encrypted connection
             chatUserInfo.encrypted = true;
         }
@@ -88,22 +91,6 @@ namespace Chat
         private void EncryptData(ref byte[] buffer, long size)
         {
             ChatCrypt.Handle(chatUserInfo.ServerCTX, ref buffer, size);
-        }
-
-        private void HandleIRCCommands(string data)
-        {
-            string[] messages = data.Split("\r\n");
-
-            foreach (string message in messages)
-            {
-                if (message.Length < 1)
-                {
-                    continue;
-                }
-
-                string[] request = message.Trim(' ').Split(' ');
-                CommandSwitcher.Switch(this, request);
-            }
         }
     }
 }

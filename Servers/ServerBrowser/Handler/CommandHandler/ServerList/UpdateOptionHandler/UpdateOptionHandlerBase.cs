@@ -44,10 +44,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             _gameServerDefaultHostPort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
         }
 
-        protected abstract void GenerateServerKeys();
-        protected abstract void GenerateUniqueValue();
-        protected abstract void GenerateServersInfo();
-        protected abstract void GenerateServerInfoHeader(List<byte> header,DedicatedGameServer server);
+        protected virtual void GenerateServerKeys() { }
+        protected virtual void GenerateUniqueValue() { }
+        protected virtual void GenerateServersInfo() { }
+        protected virtual void GenerateServerInfoHeader(List<byte> header, DedicatedGameServer server) { }
 
 
 

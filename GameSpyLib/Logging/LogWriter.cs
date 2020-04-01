@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 using System.Timers;
-
+using Serilog;
 namespace GameSpyLib.Logging
 {
     public enum LogLevel : int
@@ -62,6 +62,8 @@ namespace GameSpyLib.Logging
         private static object _fullSync = new object();
 
         private bool _disposed;
+
+        public static Serilog.Core.Logger Logger;
         /// <summary>
         /// Creates a new Log Writer instance
         /// </summary>
@@ -74,6 +76,7 @@ namespace GameSpyLib.Logging
         /// </param>1048576
         public LogWriter(string FileLocation, bool Truncate = false, int TruncateLen = 1048576)
         {
+
 #if DEBUG
             DebugSockets = true;
 #endif

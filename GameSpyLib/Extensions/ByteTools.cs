@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text;
 
-namespace GameSpyLib.Encryption
+namespace GameSpyLib.Extensions
 {
     public static class ByteTools
     {

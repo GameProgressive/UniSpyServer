@@ -83,7 +83,7 @@ namespace StatsAndTracking.Application
             {
                 //create a instance of ServerManager class
                 Manager = new ServerManager(ServerName);
-                Console.Title = "RetroSpy Server " + Manager.Version;
+                Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
                 IsRunning = true;
             }
             catch (Exception e)
