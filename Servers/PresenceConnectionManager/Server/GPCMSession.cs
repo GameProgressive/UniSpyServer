@@ -35,6 +35,12 @@ namespace PresenceConnectionManager
         {
         }
 
+        protected override void OnConnected()
+        {
+            SendServerChallenge();
+            base.OnConnected();
+        }
+
         protected override void OnReceived(string message)
         {
             message = RequstFormatConversion(message);
@@ -75,11 +81,9 @@ namespace PresenceConnectionManager
                 ToLog(Serilog.Events.LogEventLevel.Warning, "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
-            // We send the client the challenge key
-            string serverChallengeKey = GameSpyRandom.GenerateRandomString(10, GameSpyLib.Common.GameSpyRandom.StringType.Alpha);
-            UserInfo.ServerChallenge = serverChallengeKey;
+            UserInfo.ServerChallenge = GPCMServer.ServerChallenge;
             UserInfo.LoginProcess = LoginStatus.Processing;
-            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", serverChallengeKey, 1);
+            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", GPCMServer.ServerChallenge, 1);
             SendAsync(sendingBuffer);
         }
 

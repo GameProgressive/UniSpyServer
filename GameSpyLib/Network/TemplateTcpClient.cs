@@ -5,15 +5,17 @@ using GameSpyLib.RetroSpyConfig;
 using Serilog.Events;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using TcpClient = NetCoreServer.TcpClient;
 
 namespace GameSpyLib.Network
 {
+
     public class TemplateTcpClient : TcpClient
     {
+        private EndPoint _endPoint;
         /// <summary>
         /// We automatic connect to remote server address
         /// </summary>
@@ -28,12 +30,13 @@ namespace GameSpyLib.Network
 
         protected override void OnConnected()
         {
-            ToLog(LogEventLevel.Information, $"[Proxy] [Conn] {Socket.RemoteEndPoint} Connected!");
+            _endPoint = Socket.RemoteEndPoint;
+            ToLog(LogEventLevel.Information, $"[Proxy] [Conn] {_endPoint} Connected!");
         }
 
         protected override void OnDisconnected()
         {
-            ToLog(LogEventLevel.Information, $"[Proxy] [Disc] {Socket.RemoteEndPoint} disconnected!");
+            ToLog(LogEventLevel.Information, $"[Proxy] [Disc] {_endPoint} disconnected!");
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)

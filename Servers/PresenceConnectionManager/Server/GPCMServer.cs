@@ -34,7 +34,7 @@ namespace PresenceConnectionManager
         /// </summary>
         public static System.Timers.Timer StatusTimer { get; protected set; }
 
-
+        public static readonly string ServerChallenge = "0000000000";
         /// <summary>
         /// Creates a new instance of <see cref="GPCMClient"/>
         /// </summary>

@@ -16,7 +16,7 @@ namespace GameSpyLib.Network
     /// </summary>
     public class TemplateTcpSession : TcpSession
     {
-        public EndPoint Remote;
+        private EndPoint _endPoint;
         public TemplateTcpSession(TemplateTcpServer server) : base(server)
         {
         }
@@ -108,14 +108,14 @@ namespace GameSpyLib.Network
 
         protected override void OnConnected()
         {
-            Remote = Socket.RemoteEndPoint;
-            ToLog(LogEventLevel.Information, $"[Conn] ID:{Id} IP:{Remote}");
+            _endPoint = Socket.RemoteEndPoint;
+            ToLog(LogEventLevel.Information, $"[Conn] IP:{_endPoint}");
             base.OnConnected();
         }
         protected override void OnDisconnected()
         {
             //We create our own RemoteEndPoint because when client disconnect, the session socket will dispose immidiatly
-            ToLog(LogEventLevel.Information, $"[Disc] ID:{Id} IP:{Remote}");
+            ToLog(LogEventLevel.Information, $"[Disc] IP:{_endPoint}");
             base.OnDisconnected();
         }
 
