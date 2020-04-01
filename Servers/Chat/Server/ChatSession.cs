@@ -29,10 +29,7 @@ namespace Chat
 
             string data = Encoding.UTF8.GetString(buffer, 0, (int)size);
 
-            if (LogWriter.Log.DebugSockets)
-            {
-                ToLog(LogLevel.Debug, $"[Recv] IRC data: {data}");
-            }
+            ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] IRC data: {data}");
 
             CommandSwitcher.Switch(this, data);
         }
@@ -43,7 +40,7 @@ namespace Chat
         public void ElevateSecurity(string secretKey)
         {
             string Info = $"{ServerName} Elevating security for user {Id} with game {chatUserInfo.gameName}";
-            ToLog(Info);
+            ToLog(Serilog.Events.LogEventLevel.Information, Info);
 
             // 1. Generate the two keys
             string clientKey = "0000000000000000";
@@ -57,7 +54,7 @@ namespace Chat
 
             // 3. Response the crypt command
             SendCommand(ChatRPL.SecureKey, "* " + clientKey + " " + serverKey);
-           // string buffer = $":s {ChatRPL.SecureKey} * {clientKey} {serverKey}";
+            // string buffer = $":s {ChatRPL.SecureKey} * {clientKey} {serverKey}";
             // 4. Start using encrypted connection
             chatUserInfo.encrypted = true;
         }
@@ -75,10 +72,9 @@ namespace Chat
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            if (LogWriter.Log.DebugSockets)
-            {
-                ToLog(LogLevel.Debug, $"[Send] IRC data: {Encoding.ASCII.GetString(buffer)}");
-            }
+
+            ToLog(Serilog.Events.LogEventLevel.Debug, $"[Send] IRC data: {Encoding.ASCII.GetString(buffer)}");
+
 
             if (chatUserInfo.encrypted)
             {

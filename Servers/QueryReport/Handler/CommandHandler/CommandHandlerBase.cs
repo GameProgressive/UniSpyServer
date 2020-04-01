@@ -2,6 +2,7 @@
 using QueryReport.Handler.SystemHandler.ErrorMessage;
 using QueryReport.Server;
 using System.Net;
+using Serilog.Events;
 
 namespace QueryReport.Handler.CommandHandler
 {
@@ -21,7 +22,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode != QRErrorCode.NoError)
             {
-                server.ToLog(ErrorMessage.GetErrorMessage(_errorCode));
+                server.ToLog(LogEventLevel.Error,ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 
@@ -29,7 +30,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode == QRErrorCode.Database)
             {
-                server.ToLog(ErrorMessage.GetErrorMessage(_errorCode));
+                server.ToLog(LogEventLevel.Error,ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 
@@ -37,7 +38,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode != QRErrorCode.NoError)
             {
-                server.ToLog(ErrorMessage.GetErrorMessage(_errorCode));
+                server.ToLog(LogEventLevel.Error,ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 

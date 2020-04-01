@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using Serilog.Events;
 
 namespace QueryReport.Handler.CommandHandler.Challenge
 {
@@ -25,11 +26,11 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 
             if (result.Count() != 1)
             {
-                server.ToLog("Can not find game server in game server list");
+                server.ToLog(LogEventLevel.Error,"Can not find game server in game server list");
                 return;
             }
             _gameServer = result.First();
-            server.ToLog("Challenge received game server is now available");
+            server.ToLog(LogEventLevel.Error,"Challenge received game server is now available");
             _gameServer.IsValidated = true;
         }
 

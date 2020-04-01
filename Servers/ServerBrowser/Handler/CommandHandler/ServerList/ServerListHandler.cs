@@ -98,7 +98,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             //we get secrete key from database
             if (!GetSecretKey())
             {
-                session.ToLog($"Unknown or unsupported game: {_request.GameName}");
+                session.ToLog(Serilog.Events.LogEventLevel.Error,$"Unknown or unsupported game: {_request.GameName}");
                 return;
             }
             session.LogPlainText(Encoding.ASCII.GetString(serverList.ToArray()));

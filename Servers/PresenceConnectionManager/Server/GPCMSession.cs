@@ -64,35 +64,16 @@ namespace PresenceConnectionManager
             }
         }
 
-        //when a user is loged in we update the sessionkey and the Guid to database
-        protected override void OnConnected()
-        {
-            Remote = Socket.RemoteEndPoint;
-            UserInfo.LoginProcess = LoginStatus.Connected;
-            ToLog($"[Conn] ID:{Id} IP:{Remote.ToString()}");
-            SendServerChallenge();
-        }
 
-        protected override void OnDisconnected()
-        {
-            UserInfo.LoginProcess = LoginStatus.Disconnected;
-            ToLog($"[Disc] ID:{Id} IP:{Remote.ToString()}");
-            RemoveGuidAndSessionKeyFromDatabase();
-        }
-
-        private void RemoveGuidAndSessionKeyFromDatabase()
-        {
-            GPCMServer.LoggedInSession.Remove(this.Id, out _);
-        }
 
         public void SendServerChallenge()
         {
             // Only send the login challenge once
             if (UserInfo.LoginProcess != LoginStatus.Connected)
             {
-                DisconnectByReason(DisconnectReason.ClientChallengeAlreadySent);
+                Disconnect();
                 // Throw the error                
-                ToLog(LogLevel.Warning, "The server challenge has already been sent. Cannot send another login challenge.");
+                ToLog(Serilog.Events.LogEventLevel.Warning, "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
             // We send the client the challenge key
@@ -103,16 +84,10 @@ namespace PresenceConnectionManager
             SendAsync(sendingBuffer);
         }
 
-        public void DisconnectByReason(DisconnectReason reason)
-        {
-            ToLog(reason.ToString());
-            Disconnect();
-        }
-
         public void StatusToLog(string status, string nick, uint pid, IPEndPoint remote, string reason)
         {
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
-            LogWriter.Log.Write(LogLevel.Info, statusString);
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Information, statusString);
         }
 
         public virtual string RequstFormatConversion(string message)

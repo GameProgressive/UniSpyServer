@@ -89,7 +89,7 @@ namespace PresenceConnectionManager.Handler
             }
             catch (Exception e)
             {
-                LogWriter.Log.WriteException(e);
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,e.ToString());
             }
         }
     }

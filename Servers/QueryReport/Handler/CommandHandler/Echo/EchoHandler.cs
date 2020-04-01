@@ -5,6 +5,7 @@ using QueryReport.Server;
 using System;
 using System.Net;
 using System.Linq;
+using Serilog.Events;
 namespace QueryReport.Handler.CommandHandler.Echo
 {
     public class EchoHandler : CommandHandlerBase
@@ -25,7 +26,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
 
             if (result == null||result.Count()!=1)
             {
-                server.ToLog("Can not find game server");
+                server.ToLog(LogEventLevel.Error,"Can not find game server");
                 return;
             }
 

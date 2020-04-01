@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using GameSpyLib.XMLConfig;
+using GameSpyLib.RetroSpyConfig;
 using System.Net;
 
 namespace Chat.Application
@@ -24,12 +25,13 @@ namespace Chat.Application
         /// Starts a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
-        protected override void StartServer(ServerConfiguration cfg)
+        protected override void StartServer(ServerConfig cfg)
         {
             if (cfg.Name == ServerName)
             {
-                Server = new ChatServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.Hostname), cfg.Port);
-                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
+                Server = new ChatServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
+                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
 

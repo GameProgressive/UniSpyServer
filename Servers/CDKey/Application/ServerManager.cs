@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using GameSpyLib.XMLConfig;
+using GameSpyLib.RetroSpyConfig;
 using System.Net;
 
 namespace CDKey.Application
@@ -10,7 +11,7 @@ namespace CDKey.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private CDKeyServer Server = null;
+        private CDKeyServer Server;
 
         /// <summary>
         /// Constructor
@@ -24,17 +25,13 @@ namespace CDKey.Application
         /// Starts a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
-        protected override void StartServer(ServerConfiguration cfg)
+        protected override void StartServer(ServerConfig cfg)
         {
-            //if (cfg.Disabled)
-            //    return;            
-            //LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
-            //LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
             if (cfg.Name == ServerName)
             {
-                // case "GPCM":
-                Server = new CDKeyServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.Hostname), cfg.Port);
-                LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", cfg.Name, cfg.Hostname, cfg.Port);
+                Server = new CDKeyServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
+                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
 

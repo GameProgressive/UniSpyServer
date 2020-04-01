@@ -1,10 +1,13 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using NetCoreServer;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using Serilog.Events;
+using GameSpyLib.Common;
 
 namespace GameSpyLib.Network
 {
@@ -27,7 +30,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = $"[{serverName}]";
+            ServerName = $"[{serverName}] ";
             Start();
         }
 
@@ -45,7 +48,7 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(string serverName, IPAddress address, int port) : base(address, port)
         {
-            ServerName = $"[{serverName}]";
+            ServerName = $"[{serverName}] ";
             Start();
         }
 
@@ -55,7 +58,7 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            LogWriter.Log.Write(LogLevel.Error, "{0}Error: {1}", ServerName, Enum.GetName(typeof(SocketError), error));
+            ToLog(LogEventLevel.Error, error.ToString());
         }
 
         /// <summary>
@@ -71,8 +74,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Send] UDP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
@@ -93,8 +95,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Send] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Send] UDP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.Send(endpoint, buffer, offset, size);
         }
@@ -132,38 +133,28 @@ namespace GameSpyLib.Network
             }
             byte[] temp = new byte[(int)size];
             Array.Copy(buffer, 0, temp, 0, (int)size);
-            if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Recv] UDP data: {FormatLogMessage(buffer, 0, (int)size)}");
+
+            ToLog(LogEventLevel.Debug, $"[Recv] UDP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
             ReceiveAsync();
 
             OnReceived(endpoint, temp);
         }
 
-        public virtual void ToLog(string text)
+        public virtual void ToLog(string message)
         {
-            ToLog(LogLevel.Info, text);
+            ToLog(LogEventLevel.Information, message);
         }
-        public virtual void ToLog(LogLevel level, string text)
+
+        public virtual void ToLog(LogEventLevel level, string text)
         {
-            text = ServerName + " " + text;
-            LogWriter.Log.Write(text, level);
+            LogWriter.ToLog(level, ServerName + text);
         }
 
         public virtual void UnknownDataRecived(byte[] text)
         {
             string buffer = Encoding.ASCII.GetString(text, 0, text.Length);
-            string errorMsg = string.Format("[Unknow] {0}", buffer);
-            ToLog(errorMsg);
+            ToLog(LogEventLevel.Error, "[Unknown] " + buffer);
         }
-        public virtual string FormatLogMessage(byte[] buffer)
-        {
-            return FormatLogMessage(buffer, 0, buffer.Length);
-        }
-        public virtual string FormatLogMessage(byte[] buffer, int index, int size)
-        {
-            return Regex.Replace(Encoding.ASCII.GetString(buffer, 0, size), @"[\x00-\x20]", "?");
-        }
-
     }
 }

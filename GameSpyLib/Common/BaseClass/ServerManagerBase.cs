@@ -3,20 +3,21 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Database.Entity;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using GameSpyLib.XMLConfig;
+using GameSpyLib.RetroSpyConfig;
+using Serilog.Events;
 using StackExchange.Redis;
 using System;
-using System.IO;
 using System.Linq;
+
 
 namespace GameSpyLib.Common
 {
     public abstract class ServerManagerBase : IDisposable
     {
         public readonly string RetroSpyVersion = "0.5";
-        public static string BasePath { get; protected set; }
-        public string LogPath { get; protected set; }
         public string ServerName { get; protected set; }
+        public static ConfigManager Config { get; protected set; }
+        public static LogWriter LogWriter { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
         public DatabaseEngine DBEngine;
 
@@ -24,48 +25,29 @@ namespace GameSpyLib.Common
 
         public ServerManagerBase(string serverName)
         {
-            BasePath = AppDomain.CurrentDomain.BaseDirectory;
             ServerName = serverName;
-            LoadLogWriter();
+            LogWriter = new LogWriter(serverName);
             StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
             LoadDatabaseConfig();
             LoadServerConfig();
         }
 
-        private void LoadLogWriter()
-        {
-            #region Path Setting
-            if (!Directory.Exists(BasePath))
-                Directory.CreateDirectory(BasePath);
-
-            LogPath = BasePath + @"/Logs/";
-
-            if (!Directory.Exists(LogPath))
-                Directory.CreateDirectory(LogPath);
-            #endregion
-            string logFileName = string.Format("{0}_{1}.log", ServerName, DateTime.Now.ToString("yyyy-MM-dd__HH_mm_ss"));
-            LogWriter.Log = new LogWriter(Path.Combine(LogPath, logFileName));
-            ConfigManager.Load();
-            //set the loglevel to system
-            LogWriter.Log.MiniumLogLevel = ConfigManager.xmlConfig.LogLevel;
-        }
-
         public void LoadServerConfig()
         {
-            LogWriter.Log.Write(LogLevel.Info, "+{0,-11}+{1,-14}+{2,-6}+", "-----------", "--------------", "------");
-            LogWriter.Log.Write(LogLevel.Info, "|{0,-11}|{1,-14}|{2,-6}|", "Server Name", "Host Name", "Port");
-            LogWriter.Log.Write(LogLevel.Info, "+{0,-11}+{1,-14}+{2,-6}+", "-----------", "--------------", "------");
+            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
+            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
             // Add all servers
-            foreach (ServerConfiguration cfg in ConfigManager.xmlConfig.Servers)
+            foreach (ServerConfig cfg in ConfigManager.Config.Servers)
             {
                 StartServer(cfg);
             }
-            LogWriter.Log.Write(LogLevel.Info, "+{0,-11}+{1,-14}+{2,-6}+", "-----------", "--------------", "------");
-            LogWriter.Log.Write("Server is successfully started! ", LogLevel.Info);
+            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            LogWriter.ToLog(LogEventLevel.Information, " Server is successfully started! ");
         }
 
 
-        protected abstract void StartServer(ServerConfiguration cfg);
+        protected abstract void StartServer(ServerConfig cfg);
 
         protected abstract void StopServer();
 
@@ -73,32 +55,37 @@ namespace GameSpyLib.Common
 
         private void LoadDatabaseConfig()
         {
-            DatabaseConfig dbConfig = ConfigManager.xmlConfig.Database;
-            DBEngine = dbConfig.Type;
+            DatabaseConfig dbConfig = ConfigManager.Config.Database;
+            DBEngine = (DatabaseEngine)Enum.Parse(typeof(DatabaseEngine), dbConfig.Type);
+
             // Determine which database is using and create the database connection
 
-            switch (dbConfig.Type)
+            switch (DBEngine)
             {
                 case DatabaseEngine.MySql:
-                    string mySqlConnStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}", dbConfig.Hostname, dbConfig.Databasename, dbConfig.Username, dbConfig.Password, dbConfig.Port, dbConfig.SslMode, dbConfig.SslCert, dbConfig.SslKey, dbConfig.SslCa);
+                    string mySqlConnStr =
+                        string.Format(
+                            "Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}",
+                            dbConfig.RemoteAddress, dbConfig.DatabaseName, dbConfig.UserName, dbConfig.Password,
+                            dbConfig.RemotePort, dbConfig.SslMode, dbConfig.SslCert, dbConfig.SslKey, dbConfig.SslCa);
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
                     using (var db = new retrospyContext())
                     {
-                        db.Users.Where(u=>u.Userid == 0);
+                        db.Users.Where(u => u.Userid == 0);
                     }
                     break;
                 case DatabaseEngine.SQLite:
-                    string SQLiteConnStr = "Data Source=" + dbConfig.Databasename + ";Version=3;New=False";
-                    
+                    string SQLiteConnStr = "Data Source=" + dbConfig.DatabaseName + ";Version=3;New=False";
+
                     break;
                 default:
                     throw new Exception("Unknown database engine!");
             }
-            LogWriter.Log.Write(LogLevel.Info, $"Successfully connected to the {dbConfig.Type}!");
+            LogWriter.Log.Information($"Successfully connected to the {dbConfig.Type}!");
 
-            RedisConfig redisConfig = ConfigManager.xmlConfig.Redis;
-            Redis = ConnectionMultiplexer.Connect(redisConfig.Hostname + redisConfig.Port);
-            LogWriter.Log.Write(LogLevel.Info, $"Successfully connected to Redis!");
+            RedisConfig redisConfig = ConfigManager.Config.Redis;
+            Redis = ConnectionMultiplexer.Connect(redisConfig.RemoteAddress + ":" + redisConfig.RemotePort.ToString());
+            LogWriter.Log.Information($"Successfully connected to Redis!");
 
         }
 

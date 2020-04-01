@@ -49,7 +49,7 @@ namespace QueryReport.Handler.CommandSwitcher
             }
             catch (Exception e)
             {
-                LogWriter.Log.WriteException(e);
+                server.ToLog(Serilog.Events.LogEventLevel.Error,e.ToString());
                 server.ReceiveAsync();
             }
         }

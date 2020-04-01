@@ -21,7 +21,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             if (_errorCode != GstatsErrorCode.NoError)
             {
-                session.ToLog(ErrorMessage.ToMsg(_errorCode));
+                session.ToLog(Serilog.Events.LogEventLevel.Error,ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             if (_errorCode == GstatsErrorCode.Database)
             {
-                session.ToLog(ErrorMessage.ToMsg(_errorCode));
+                session.ToLog(Serilog.Events.LogEventLevel.Error,ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             if (_errorCode != GstatsErrorCode.NoError)
             {
-                session.ToLog(ErrorMessage.ToMsg(_errorCode));
+                session.ToLog(Serilog.Events.LogEventLevel.Error,ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 

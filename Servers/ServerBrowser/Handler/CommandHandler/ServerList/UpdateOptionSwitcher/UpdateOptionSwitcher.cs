@@ -15,7 +15,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
             ServerListRequest request = new ServerListRequest();
             if (!request.Parse(recv))
             {
-                session.ToLog(LogLevel.Error, ErrorMessage.GetErrorMsg(SBErrorCode.Parse));
+                session.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.GetErrorMsg(SBErrorCode.Parse));
                 return;
             }
             switch (request.UpdateOption)

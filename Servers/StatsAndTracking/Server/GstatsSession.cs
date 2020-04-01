@@ -87,8 +87,8 @@ namespace StatsAndTracking
         /// <returns></returns>
         public string Encrypt(string plainText)
         {
-            if (LogWriter.Log.DebugSockets)
-                LogPlainText(plainText);
+
+            LogPlainText(plainText);
             string cipherText = XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type1) + @"\final\";
             return cipherText;
         }
@@ -102,8 +102,7 @@ namespace StatsAndTracking
         {
             cipherText = cipherText.Substring(0, cipherText.Length - 7);
             string plainText = XorEncoding.Encrypt(cipherText, XorEncoding.XorType.Type1) + @"\final\";
-            if (LogWriter.Log.DebugSockets)
-                LogPlainText(plainText);
+            LogPlainText(plainText);
             return plainText;
         }
     }

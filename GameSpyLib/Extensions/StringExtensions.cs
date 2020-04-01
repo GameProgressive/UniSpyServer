@@ -57,7 +57,7 @@ namespace GameSpyLib.Extensions
         /// <param name="buffer"></param>
         /// <param name="size"></param>
         /// <returns></returns>
-        public static string ReplaceUnreadableCharToHex(byte[] buffer,int index, int size)
+        public static string ReplaceUnreadableCharToHex(byte[] buffer, int index, int size)
         {
             return ReplaceUnreadableCharToHex(Encoding.ASCII.GetString(buffer, index, size));
         }
@@ -79,6 +79,15 @@ namespace GameSpyLib.Extensions
             Console.WriteLine("\t" + @"                         |_|   |__/                            ");
             Console.WriteLine("\t" + @" Version: " + version);
 
+        }
+
+        public static string FormatServerTableContext(string part1, string part2, string part3)
+        {
+            return string.Format("|{0,-11}|{1,-14}|{2,-6}|", part1, part2, part3);
+        }
+        public static string FormatServerTableHeader(string part1, string part2, string part3)
+        {
+            return string.Format("+{0,-11}+{1,-14}+{2,-6}+", part1, part2, part3);
         }
     }
 }

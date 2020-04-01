@@ -154,7 +154,7 @@ namespace GameSpyLib.Common
 
         public static void PrintReceivedGPDictToLogger(Dictionary<string, string> recv)
         {
-            LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}", recv.Keys.First(), string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray()));
+            ServerManagerBase.LogWriter.Log.Error("Received request {0} with content: {1}", recv.Keys.First(), string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray()));
         }
 
         /// <summary>
@@ -200,12 +200,12 @@ namespace GameSpyLib.Common
             }
             catch (RegexMatchTimeoutException e)
             {
-                LogWriter.Log.WriteException(e);
+                ServerManagerBase.LogWriter.Log.Error(e.ToString());
                 return false;
             }
             catch (ArgumentException e)
             {
-                LogWriter.Log.WriteException(e);
+                ServerManagerBase.LogWriter.Log.Error(e.ToString());
                 return false;
             }
 

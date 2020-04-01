@@ -51,7 +51,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
             }
             catch (Exception e)
             {
-                LogWriter.Log.WriteException(e);
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
         }
     }

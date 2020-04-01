@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameSpyLib.Logging;
+using Serilog.Events;
 
 namespace GameSpyLib.RetroSpyConfig
 {
@@ -9,6 +10,6 @@ namespace GameSpyLib.RetroSpyConfig
         public DatabaseConfig Database;
         public RedisConfig Redis;
         public List<ServerConfig> Servers;
-        public LogLevel LogLevel;
+        public LogEventLevel LogLevel;
     }
 }

@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
         {
             if (session.UserInfo.SDKRevision == 0)
             {
-                session.ToLog(GameSpyLib.Logging.LogLevel.Error, "[SDKRev] No sdkrevision!");
+                session.ToLog(Serilog.Events.LogEventLevel.Error, "[SDKRev] No sdkrevision!");
                 return;
             }
 

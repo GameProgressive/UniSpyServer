@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using GameSpyLib.Extensions;
+using Serilog.Events;
 
 namespace GameSpyLib.Network
 {
@@ -28,7 +29,7 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            LogWriter.Log.Write(LogLevel.Error, "{0} Error: {1}", ServerName, Enum.GetName(typeof(SocketError), error));
+            ToLog(LogEventLevel.Error, error.ToString());
         }
 
         /// <summary>
@@ -43,8 +44,8 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Send] TCP data: { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+
+            ToLog(LogEventLevel.Debug, $"[Send] TCP data: { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.SendAsync(buffer, offset, size);
         }
@@ -68,9 +69,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-
-            if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Send] TCP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Send] TCP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.Send(buffer, offset, size);
         }
@@ -98,12 +97,11 @@ namespace GameSpyLib.Network
         {
             if (size > 2048)
             {
-                ToLog("[Spam] client spam we ignored!");
+                ToLog(LogEventLevel.Error, "[Spam] client spam we ignored!");
                 return;
             }
 
-            if (LogWriter.Log.DebugSockets)
-                ToLog(LogLevel.Debug, $"[Recv] TCP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Recv] TCP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);
@@ -113,24 +111,19 @@ namespace GameSpyLib.Network
         protected override void OnConnected()
         {
             Remote = Socket.RemoteEndPoint;
-            ToLog($"[Conn] ID:{Id} IP:{Remote}");
+            ToLog(LogEventLevel.Information, $"[Conn] ID:{Id} IP:{Remote}");
             base.OnConnected();
         }
         protected override void OnDisconnected()
         {
             //We create our own RemoteEndPoint because when client disconnect, the session socket will dispose immidiatly
-            ToLog($"[Disc] ID:{Id} IP:{Remote}");
+            ToLog(LogEventLevel.Information, $"[Disc] ID:{Id} IP:{Remote}");
             base.OnDisconnected();
         }
 
-        public virtual void ToLog(string text)
+        public virtual void ToLog(LogEventLevel level, string text)
         {
-            ToLog(LogLevel.Info, text);
-        }
-        public virtual void ToLog(LogLevel level, string text)
-        {
-            text = ServerName + " " + text;
-            LogWriter.Log.Write(text, level);
+            LogWriter.ToLog(level,ServerName + text);
         }
 
         public virtual void UnKnownDataReceived(byte[] text)
@@ -140,7 +133,7 @@ namespace GameSpyLib.Network
 
         public virtual void UnknownDataReceived(string text)
         {
-            ToLog(LogLevel.Error, $"[Unknow] {text}");
+            ToLog(LogEventLevel.Error, $"[Unknow] {text}");
         }
 
         public virtual void UnknownDataReceived(Dictionary<string, string> recv)
@@ -150,7 +143,7 @@ namespace GameSpyLib.Network
 
         public virtual void LogPlainText(string data)
         {
-            ToLog($@"[Plain] {data}");
+            ToLog(LogEventLevel.Information, $@"[Plain] {data}");
         }
 
         public virtual void LogPlainText(byte[] data)

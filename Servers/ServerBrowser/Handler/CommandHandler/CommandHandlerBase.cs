@@ -2,7 +2,7 @@
 using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.SystemHandler.Error;
-
+using Serilog.Events;
 namespace ServerBrowser.Handler.CommandHandler
 {
     public abstract class CommandHandlerBase
@@ -21,7 +21,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             if (_errorCode != SBErrorCode.NoError)
             {
-                session.ToLog(LogLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
+                session.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             if (_errorCode != SBErrorCode.NoError)
             {
-                session.ToLog(LogLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
+                session.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
             if (_errorCode != SBErrorCode.NoError)
             {
-                session.ToLog(LogLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
+                session.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMsg(_errorCode));
                 return;
             }
 

@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Logging;
-using StatsAndTracking.Handler.CommandHandler.Auth;
+﻿using StatsAndTracking.Handler.CommandHandler.Auth;
 using StatsAndTracking.Handler.CommandHandler.AuthP;
 using StatsAndTracking.Handler.CommandHandler.GetPD;
 using StatsAndTracking.Handler.CommandHandler.GetPid;
@@ -49,7 +48,7 @@ namespace StatsAndTracking.Handler.CommandSwitcher
             }
             catch (Exception e)
             {
-                session.ToLog(LogLevel.Error, e.ToString());
+                session.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
         }
     }
