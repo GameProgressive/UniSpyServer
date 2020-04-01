@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net;
 
 namespace QueryReport.Entity.Structure.ReportData
@@ -30,9 +29,9 @@ namespace QueryReport.Entity.Structure.ReportData
         {
             StandardKeyValue.Clear();
             CustomKeyValue.Clear();
-            string[] keyValueArray = serverData.Split("\0",System.StringSplitOptions.RemoveEmptyEntries);
-            
-            for (int j = 0; j < keyValueArray.Length; j+=2)
+            string[] keyValueArray = serverData.Split("\0", System.StringSplitOptions.RemoveEmptyEntries);
+
+            for (int j = 0; j < keyValueArray.Length; j += 2)
             {
                 if (StandardKeys.Contains(keyValueArray[j]))
                 {

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ServerBrowser.Entity.Enumerator
+﻿namespace ServerBrowser.Entity.Enumerator
 {
     public enum SBClientRequestType
     {

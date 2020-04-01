@@ -1,13 +1,11 @@
 ﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using NetCoreServer;
+using Serilog.Events;
 using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Text.RegularExpressions;
-using Serilog.Events;
-using GameSpyLib.Common;
 
 namespace GameSpyLib.Network
 {

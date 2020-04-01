@@ -2,7 +2,6 @@
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
-using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using System.Text;
 

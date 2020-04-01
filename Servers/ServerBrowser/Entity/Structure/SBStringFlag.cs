@@ -1,5 +1,4 @@
-﻿using System;
-namespace ServerBrowser.Entity.Structure
+﻿namespace ServerBrowser.Entity.Structure
 {
     public class SBStringFlag
     {

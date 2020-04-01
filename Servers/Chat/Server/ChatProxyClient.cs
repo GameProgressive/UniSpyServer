@@ -1,5 +1,4 @@
-﻿using System;
-using GameSpyLib.Network;
+﻿using GameSpyLib.Network;
 namespace Chat.Server
 {
     public class ChatProxyClient : TemplateTcpClient

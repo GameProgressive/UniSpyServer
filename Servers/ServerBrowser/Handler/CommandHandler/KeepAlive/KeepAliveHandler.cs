@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ServerBrowser.Handler.CommandHandler.KeepAlive
+﻿namespace ServerBrowser.Handler.CommandHandler.KeepAlive
 {
     public class KeepAliveHandler
     {

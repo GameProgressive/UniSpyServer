@@ -1,6 +1,5 @@
-﻿using System;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Collections.Generic;
-using GameSpyLib.Database.DatabaseModel.MySql;
 
 namespace ServerBrowser.Handler.SystemHandler.Filter
 {

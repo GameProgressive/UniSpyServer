@@ -16,7 +16,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
         {
             //the 2 bytes are length of this request
             byte[] byteLength = new byte[2];
-            
+
             byteLength = BitConverter.GetBytes((ushort)(_keyValueData.Length + 2));
             List<byte> data = new List<byte>();
             data.AddRange(byteLength);

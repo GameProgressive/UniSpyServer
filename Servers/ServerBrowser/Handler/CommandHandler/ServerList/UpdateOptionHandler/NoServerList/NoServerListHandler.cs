@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using QueryReport.Entity.Structure;
-
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList
+﻿namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList
 {
     /// <summary>
     /// No server list update option only get ip and host port for client

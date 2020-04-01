@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel;
+﻿using GameSpyLib.Extensions;
+using System;
 using System.Text;
-using GameSpyLib.Encryption;
-using GameSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {
@@ -37,7 +35,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
 
         public PlayerSearchRequest(byte[] recv)
         {
-            ByteTools.SubBytes(recv, 3, 3 + 4).CopyTo(SearchOption,0);
+            ByteTools.SubBytes(recv, 3, 3 + 4).CopyTo(SearchOption, 0);
             ByteTools.SubBytes(recv, 7, 7 + 4).CopyTo(MaxResults, 0);
 
             int nameLength = BitConverter.ToInt32(ByteTools.SubBytes(recv, 11, 11 + 4));
@@ -48,7 +46,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             int messageLength = BitConverter.ToInt32(ByteTools.SubBytes(recv, 15 + nameLength, 4));
 
             _message = new byte[messageLength];
-            ByteTools.SubBytes(recv, 15 + nameLength + 4, messageLength).CopyTo(_message,0);
+            ByteTools.SubBytes(recv, 15 + nameLength + 4, messageLength).CopyTo(_message, 0);
         }
     }
 }

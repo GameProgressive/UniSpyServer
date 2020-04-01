@@ -1,7 +1,6 @@
-﻿using GameSpyLib.Network;
+﻿using GameSpyLib.Encryption;
+using GameSpyLib.Network;
 using ServerBrowser.Handler.CommandSwitcher;
-using GameSpyLib.Encryption;
-using System;
 
 namespace ServerBrowser
 {

@@ -6,10 +6,10 @@ using PresenceConnectionManager.Handler.CommandHandler.Buddy.Status;
 using PresenceConnectionManager.Handler.General.Login.LoginMethod;
 using PresenceConnectionManager.Handler.Profile.GetProfile;
 using PresenceConnectionManager.Handler.Profile.NewProfile;
+using PresenceConnectionManager.Handler.Profile.NewUser;
 using PresenceConnectionManager.Handler.Profile.RegisterNick;
 using PresenceConnectionManager.Handler.Profile.UpdatePro;
 using PresenceConnectionManager.Handler.Profile.UpdateUI;
-using PresenceConnectionManager.Handler.Profile.NewUser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,7 +89,7 @@ namespace PresenceConnectionManager.Handler
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,e.ToString());
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
         }
     }

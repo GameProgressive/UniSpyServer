@@ -1,9 +1,4 @@
 ﻿using Chat.Handler.CommandHandler.CRYPT;
-using Chat.Handler.CommandHandler.JOIN;
-using Chat.Handler.CommandHandler.LOGIN;
-using Chat.Handler.CommandHandler.NICK;
-using Chat.Handler.CommandHandler.USER;
-using Chat.Handler.CommandHandler.USRIP;
 
 namespace Chat.Handler.CommandSwitcher
 {
@@ -11,20 +6,20 @@ namespace Chat.Handler.CommandSwitcher
     {
         public static void Switch(ChatSession session, string data)
         {
-            string message = data.Split("\r\n",System.StringSplitOptions.RemoveEmptyEntries)[0];
+            string message = data.Split("\r\n", System.StringSplitOptions.RemoveEmptyEntries)[0];
 
-                string[] cmd = message.Trim(' ').Split(' ');
+            string[] cmd = message.Trim(' ').Split(' ');
 
-                switch (cmd[0])
-                {
-                    case "CRYPT":
-                        CRYPTHandler.Handle(session, cmd);
-                        break;
-                    default:
-                        session.ChatClientProxy.Send(data);
-                        break;
-                }
-            
+            switch (cmd[0])
+            {
+                case "CRYPT":
+                    CRYPTHandler.Handle(session, cmd);
+                    break;
+                default:
+                    session.ChatClientProxy.Send(data);
+                    break;
+            }
+
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using System;
+﻿using GameSpyLib.Extensions;
+using ServerBrowser.Entity.Enumerator;
+using System;
 using System.Linq;
 using System.Text;
-using GameSpyLib.Encryption;
-using GameSpyLib.Extensions;
-using ServerBrowser.Entity.Enumerator;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {

@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
-using System.Net;
-using GameSpyLib.RetroSpyConfig;
 using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using GameSpyLib.RetroSpyConfig;
+using System.Net;
 
 namespace ServerBrowser.Application
 {

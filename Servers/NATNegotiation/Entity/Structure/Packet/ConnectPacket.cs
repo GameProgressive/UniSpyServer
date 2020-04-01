@@ -1,7 +1,7 @@
-﻿using System;
+﻿using NatNegotiation.Entity.Enumerator;
+using System;
 using System.Collections.Generic;
 using System.Net;
-using NatNegotiation.Entity.Enumerator;
 
 namespace NatNegotiation.Entity.Structure.Packet
 {
@@ -13,7 +13,7 @@ namespace NatNegotiation.Entity.Structure.Packet
 
         public new static readonly int Size = BasePacket.Size + 8;
 
-        public bool Parse(EndPoint endPoint,byte[] recv)
+        public bool Parse(EndPoint endPoint, byte[] recv)
         {
             RemoteEndPoint = endPoint;
             return base.Parse(recv);

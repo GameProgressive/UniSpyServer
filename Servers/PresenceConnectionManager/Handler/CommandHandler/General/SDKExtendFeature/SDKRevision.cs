@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using PresenceConnectionManager.Entity.Structure;
+﻿using PresenceConnectionManager.Entity.Structure;
 
 namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
 {
@@ -31,13 +29,13 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
             {
                 //send new status info
             }
-     
+
             if ((session.UserInfo.SDKRevision ^ (uint)SDKRevisionType.GPINewListRetrevalOnLogin) != 0)
             {
                 //send buddy list and block list
             }
 
-            if ((session.UserInfo.SDKRevision ^ (uint)SDKRevisionType.GPIRemoteAuthIDSNotification)!=0)
+            if ((session.UserInfo.SDKRevision ^ (uint)SDKRevisionType.GPIRemoteAuthIDSNotification) != 0)
             {
                 //Remote auth
             }

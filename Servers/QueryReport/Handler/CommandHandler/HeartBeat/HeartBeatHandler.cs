@@ -1,11 +1,11 @@
-﻿using QueryReport.Entity.Structure;
+﻿using GameSpyLib.Extensions;
+using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
 using System.Linq;
 using System.Net;
 using System.Text;
-using GameSpyLib.Extensions;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
 {

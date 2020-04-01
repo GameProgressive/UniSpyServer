@@ -1,5 +1,4 @@
-﻿using System;
-namespace QueryReport.Handler.SystemHandler.FindGeographicLocation
+﻿namespace QueryReport.Handler.SystemHandler.FindGeographicLocation
 {
     public class FindGeoLocation
     {

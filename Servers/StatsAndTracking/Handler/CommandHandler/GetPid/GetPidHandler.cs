@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using StatsAndTracking.Entity.Enumerator;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace StatsAndTracking.Handler.CommandHandler.GetPid
 {
-    public class GetPidHandler:CommandHandlerBase
+    public class GetPidHandler : CommandHandlerBase
     {
         //\getpid\\nick\%s\keyhash\%s\lid\%d
         //\getpidr
@@ -14,11 +13,11 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPid
         public GetPidHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
-        
+
         protected override void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
-            if (!recv.ContainsKey("nick")||!recv.ContainsKey("keyhash"))
+            if (!recv.ContainsKey("nick") || !recv.ContainsKey("keyhash"))
             {
                 _errorCode = GstatsErrorCode.Parse;
                 return;

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.Encryption;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
 using QueryReport.Entity.Enumerator;
+using System;
+using System.Collections.Generic;
 
 namespace QueryReport.Entity.Structure.Packet
 {

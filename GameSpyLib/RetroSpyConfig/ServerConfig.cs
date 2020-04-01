@@ -1,5 +1,4 @@
-﻿using System;
-namespace GameSpyLib.RetroSpyConfig
+﻿namespace GameSpyLib.RetroSpyConfig
 {
     public class ServerConfig
     {

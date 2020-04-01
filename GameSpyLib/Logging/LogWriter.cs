@@ -1,11 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Text;
-using System.Timers;
-using GameSpyLib.Common;
+﻿using GameSpyLib.Common;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
+using System;
 
 namespace GameSpyLib.Logging
 {
@@ -70,5 +67,5 @@ namespace GameSpyLib.Logging
             ToLog(e.ToString());
         }
     }
-    
+
 }

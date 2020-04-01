@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Logging;
-using PresenceSearchPlayer.Handler.CommandHandler.Check;
+﻿using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using PresenceSearchPlayer.Handler.CommandHandler.Nick;
 using PresenceSearchPlayer.Handler.CommandHandler.Others;
@@ -9,7 +8,6 @@ using PresenceSearchPlayer.Handler.CommandHandler.Search;
 using PresenceSearchPlayer.Handler.CommandHandler.SearchUnique;
 using PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch;
 using PresenceSearchPlayer.Handler.CommandHandler.Valid;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 

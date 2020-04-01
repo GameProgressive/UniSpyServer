@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 
 namespace GameSpyLib.Encryption
 {
@@ -23,7 +22,7 @@ namespace GameSpyLib.Encryption
         /// </summary>
         /// <param name="secKey">game secret key</param>
         /// <param name="serverChallenge">can be null</param>
-        public GOAEncryption(byte[] secKey,byte[] clientChallenge ,byte[] serverChallenge)
+        public GOAEncryption(byte[] secKey, byte[] clientChallenge, byte[] serverChallenge)
         {
             State = new GOACryptState();
             _clientChallenge = clientChallenge;
@@ -31,7 +30,7 @@ namespace GameSpyLib.Encryption
             InitCryptKey(secKey);
         }
 
-        public GOAEncryption(string secKey,string clientChallenge, string serverChallenge)
+        public GOAEncryption(string secKey, string clientChallenge, string serverChallenge)
         {
             State = new GOACryptState();
             _clientChallenge = Encoding.ASCII.GetBytes(clientChallenge);

@@ -1,7 +1,5 @@
-﻿using QueryReport.Entity.Structure;
-using QueryReport.Server;
+﻿using QueryReport.Server;
 using System;
-using System.Collections.Generic;
 
 namespace QueryReport.Handler.CommandHandler.ServerList
 {

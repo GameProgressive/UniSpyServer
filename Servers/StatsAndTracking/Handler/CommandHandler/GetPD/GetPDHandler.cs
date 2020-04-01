@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.Database.DatabaseModel.MySql;
-using StatsAndTracking.Entity.Enumerator;
-using System.Linq;
-using System;
+﻿using StatsAndTracking.Entity.Enumerator;
+using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler.GetPD
 {

@@ -1,5 +1,4 @@
-﻿using System;
-using ServerBrowser.Entity.Enumerator;
+﻿using ServerBrowser.Entity.Enumerator;
 
 namespace ServerBrowser.Handler.SystemHandler.Error
 {

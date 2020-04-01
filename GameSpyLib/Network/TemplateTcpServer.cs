@@ -1,7 +1,5 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
 using NetCoreServer;
-using System;
 using System.Net;
 using System.Net.Sockets;
 

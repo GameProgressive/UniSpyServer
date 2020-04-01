@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;

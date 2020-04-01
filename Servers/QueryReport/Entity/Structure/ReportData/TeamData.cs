@@ -21,7 +21,7 @@ namespace QueryReport.Entity.Structure.ReportData
             StandardKeyValue.Clear();
             int teamCount = System.Convert.ToInt32(teamData[0]);
             teamData = teamData.Substring(1);
-            string[] dataPartition = teamData.Split("\0\0",System.StringSplitOptions.RemoveEmptyEntries);
+            string[] dataPartition = teamData.Split("\0\0", System.StringSplitOptions.RemoveEmptyEntries);
             string[] keys = dataPartition[0].Split("\0");
             string[] values = dataPartition[1].Split("\0");
 

@@ -1,12 +1,8 @@
 ﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler;
 using NATNegotiation.Handler.CommandHandler;
-using NATNegotiation.Handler.SystemHandler;
-using System;
 using System.Linq;
-using System.Net;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -44,7 +40,7 @@ namespace NatNegotiation.Handler.CommandHandler
             //other.SentConnectPacketTime = DateTime.Now;
         }
 
-        public static void SendDeadHeartBeatNotice(NatNegServer server, ClientInfo client,byte[] recv)
+        public static void SendDeadHeartBeatNotice(NatNegServer server, ClientInfo client, byte[] recv)
         {
             ConnectPacket connPacket = new ConnectPacket();
             connPacket.Parse(client.RemoteEndPoint, recv);

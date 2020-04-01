@@ -15,7 +15,7 @@ namespace StatsAndTracking.Handler.CommandSwitcher
     {
         public static void Switch(GStatsSession session, Dictionary<string, string> recv)
         {
-            
+
             try
             {
                 switch (recv.Keys.First())

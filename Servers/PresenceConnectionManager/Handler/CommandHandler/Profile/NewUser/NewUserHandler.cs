@@ -116,7 +116,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
                             goto case _newUserStatus.CheckSubProfile;
 
                         case _newUserStatus.ProfileExist:
-                            //we do nothing here
+                        //we do nothing here
 
                         case _newUserStatus.CheckSubProfile:
                             _subProfiles = db.Subprofiles

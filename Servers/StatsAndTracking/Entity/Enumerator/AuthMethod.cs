@@ -1,5 +1,4 @@
-﻿using System;
-namespace StatsAndTracking.Entity.Enumerator
+﻿namespace StatsAndTracking.Entity.Enumerator
 {
     public enum AuthMethod
     {

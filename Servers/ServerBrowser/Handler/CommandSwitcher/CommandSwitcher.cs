@@ -1,5 +1,4 @@
-﻿using ServerBrowser.Handler.CommandHandler.ServerList;
-using ServerBrowser.Entity.Enumerator;
+﻿using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.ServerInfo;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 

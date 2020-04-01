@@ -1,11 +1,10 @@
 ﻿using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
-using System;
-using System.Net;
-using System.Linq;
 using Serilog.Events;
+using System;
+using System.Linq;
+using System.Net;
 namespace QueryReport.Handler.CommandHandler.Echo
 {
     public class EchoHandler : CommandHandlerBase
@@ -18,15 +17,15 @@ namespace QueryReport.Handler.CommandHandler.Echo
         protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
             //TODO
-           var result =
-                RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
+            var result =
+                 RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
             //add recive echo packet on gameserverList
             //DedicatedGameServer game;
             //QRServer.GameServerList.TryGetValue(endPoint, out game);
 
-            if (result == null||result.Count()!=1)
+            if (result == null || result.Count() != 1)
             {
-                server.ToLog(LogEventLevel.Error,"Can not find game server");
+                server.ToLog(LogEventLevel.Error, "Can not find game server");
                 return;
             }
 

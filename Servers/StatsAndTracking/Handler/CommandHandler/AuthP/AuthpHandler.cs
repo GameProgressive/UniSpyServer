@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.Database.DatabaseModel.MySql;
-using System.Linq;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using StatsAndTracking.Entity.Enumerator;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace StatsAndTracking.Handler.CommandHandler.AuthP
 {

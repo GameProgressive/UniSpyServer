@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-using GameSpyLib.Encryption;
 
 namespace ServerBrowser.Entity.Structure.Packet.Response
 {
@@ -25,7 +23,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
 
 
             cryptHeader.AddRange(data);
- 
+
             return cryptHeader.ToArray();
         }
     }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using QueryReport.Entity.Structure.ReportData;
+using System;
 using System.Net;
-using QueryReport.Entity.Structure.ReportData;
 
 namespace QueryReport.Entity.Structure
 {

@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Handler.CommandHandler.JOIN
+﻿namespace Chat.Handler.CommandHandler.JOIN
 {
     public class JOINHandler
     {

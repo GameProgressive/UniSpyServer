@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
+using System;
 using System.Collections.Generic;
-using GameSpyLib.Database.DatabaseModel.MySql;
 
 namespace QueryReport.Entity.Structure.Group
 {
@@ -54,7 +53,7 @@ namespace QueryReport.Entity.Structure.Group
             StandardKeyValue.Add("maxwaiting", "200");
             StandardKeyValue.Add("maxplayers", "200");
             StandardKeyValue.Add("numservers", "0");
-            StandardKeyValue.Add("numplayers","0");
+            StandardKeyValue.Add("numplayers", "0");
             StandardKeyValue.Add("password", "");
             StandardKeyValue.Add("numGames", "0");
             StandardKeyValue.Add("numplaying", "0");

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using QueryReport.Entity.Enumerator;
+using System.Collections.Generic;
 using System.Text;
-using QueryReport.Entity.Enumerator;
 
 namespace QueryReport.Entity.Structure.Packet
 {

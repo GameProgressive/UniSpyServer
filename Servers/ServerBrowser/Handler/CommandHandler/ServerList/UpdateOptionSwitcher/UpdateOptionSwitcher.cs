@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Logging;
-using ServerBrowser.Entity.Enumerator;
+﻿using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.GeneralRequest;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList;

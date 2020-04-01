@@ -1,12 +1,11 @@
-﻿using System;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using Serilog.Events;
+using System;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using TcpClient = NetCoreServer.TcpClient;
-using GameSpyLib.Common;
-using Serilog.Events;
-using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
 
 namespace GameSpyLib.Network
 {

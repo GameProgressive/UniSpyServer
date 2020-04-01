@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 
 namespace GameSpyLib.Encryption
 {
-   public class XorEncoding
+    public class XorEncoding
     {
         public enum XorType : uint
         {
@@ -13,7 +11,7 @@ namespace GameSpyLib.Encryption
             Type2,
             Type3
         }
-        public static string Encrypt(byte[] plaintext,XorType type)
+        public static string Encrypt(byte[] plaintext, XorType type)
         {
             return Encrypt(plaintext.ToString(), type);
         }

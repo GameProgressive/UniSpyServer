@@ -1,7 +1,6 @@
-﻿using System;
+﻿using QueryReport.Entity.Structure;
 using System.Collections.Generic;
 using System.Net;
-using QueryReport.Entity.Structure;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers.Filter
 {

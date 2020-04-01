@@ -1,7 +1,5 @@
-﻿using System;
-using System.Net;
-using GameSpyLib.Encryption;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
+using System;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {
@@ -27,11 +25,11 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             {
                 return false;
             }
-            
+
             IP = BitConverter.ToInt32(ByteTools.SubBytes(recv, 3, 4));
 
             byte[] bytePort = new byte[2];
-            ByteTools.SubBytes(recv, 7, 2).CopyTo(bytePort, 0); 
+            ByteTools.SubBytes(recv, 7, 2).CopyTo(bytePort, 0);
 
             HostPort = BitConverter.ToUInt16(bytePort);
 

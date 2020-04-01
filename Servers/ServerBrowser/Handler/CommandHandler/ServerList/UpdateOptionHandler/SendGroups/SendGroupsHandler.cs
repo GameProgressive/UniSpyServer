@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GameSpyLib.Extensions;
-using QueryReport.Entity.Structure;
+﻿using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
+using System;
+using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.SendGroups
 {
     public class SendGroupsHandler : UpdateOptionHandlerBase
     {
         private PeerGroup _peerGroup;
-        
+
         public SendGroupsHandler(SBSession session, byte[] recv) : base(session, recv)
         {
         }
@@ -64,7 +62,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
                 //add has key flag
                 _dataList.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
-                
+
                 byte[] groupid = BitConverter.GetBytes(int.Parse(room.StandardKeyValue["groupid"]));
                 //need convert to big endian
                 Array.Reverse(groupid);

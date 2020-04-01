@@ -60,7 +60,7 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
         {
             using (var db = new retrospyContext())
             {
-                
+
                 var result = from p in db.Pstorage
                              where p.Profileid == _profileid && p.Dindex == _dindex && p.Ptype == _ptype
                              select p;
@@ -82,7 +82,7 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
                     ps = result.First();
                     ps.Data = _keyValueStr;
                 }
-                
+
                 db.SaveChanges();
             }
         }

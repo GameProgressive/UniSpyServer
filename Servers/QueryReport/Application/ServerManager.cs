@@ -27,7 +27,7 @@ namespace QueryReport.Application
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(ServerConfig cfg)
         {
-          
+
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":

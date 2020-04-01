@@ -1,8 +1,8 @@
-﻿using System.Net;
-using NatNegotiation.Entity.Enumerator;
+﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler.CommandHandler;
+using System.Net;
 
 namespace NatNegotiation.Handler.CommandHandler
 {

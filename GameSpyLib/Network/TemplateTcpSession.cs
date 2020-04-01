@@ -1,13 +1,13 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using NetCoreServer;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using GameSpyLib.Extensions;
-using Serilog.Events;
 
 namespace GameSpyLib.Network
 {
@@ -123,7 +123,7 @@ namespace GameSpyLib.Network
 
         public virtual void ToLog(LogEventLevel level, string text)
         {
-            LogWriter.ToLog(level,ServerName + text);
+            LogWriter.ToLog(level, ServerName + text);
         }
 
         public virtual void UnKnownDataReceived(byte[] text)

@@ -2,7 +2,6 @@
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler.CommandHandler;
-using System;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -17,7 +16,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
         {
-            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.AddressReply,client.RemoteEndPoint);
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.AddressReply, client.RemoteEndPoint);
         }
     }
 }

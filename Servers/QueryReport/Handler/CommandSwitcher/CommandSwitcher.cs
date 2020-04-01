@@ -1,11 +1,9 @@
-﻿using GameSpyLib.Logging;
-using QueryReport.Entity.Enumerator;
+﻿using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.CommandHandler.Available;
 using QueryReport.Handler.CommandHandler.Challenge;
 using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
-using QueryReport.Handler.SystemHandler.PeerSystem;
 using QueryReport.Server;
 using System;
 using System.Net;
@@ -49,7 +47,7 @@ namespace QueryReport.Handler.CommandSwitcher
             }
             catch (Exception e)
             {
-                server.ToLog(Serilog.Events.LogEventLevel.Error,e.ToString());
+                server.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
                 server.ReceiveAsync();
             }
         }

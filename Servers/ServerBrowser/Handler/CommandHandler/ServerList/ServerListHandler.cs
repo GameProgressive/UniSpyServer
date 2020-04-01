@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
@@ -12,6 +7,11 @@ using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Entity.Structure.Packet.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList
 {
@@ -98,7 +98,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
             //we get secrete key from database
             if (!GetSecretKey())
             {
-                session.ToLog(Serilog.Events.LogEventLevel.Error,$"Unknown or unsupported game: {_request.GameName}");
+                session.ToLog(Serilog.Events.LogEventLevel.Error, $"Unknown or unsupported game: {_request.GameName}");
                 return;
             }
             session.LogPlainText(Encoding.ASCII.GetString(serverList.ToArray()));

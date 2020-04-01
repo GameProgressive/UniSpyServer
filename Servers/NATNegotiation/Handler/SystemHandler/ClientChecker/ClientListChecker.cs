@@ -1,5 +1,5 @@
-﻿using System;
-using NatNegotiation;
+﻿using NatNegotiation;
+using System;
 
 namespace NATNegotiation.Handler.SystemHandler.ClientChecker
 {

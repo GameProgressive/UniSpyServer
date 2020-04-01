@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Serilog.Events;
 using System.Collections.Generic;
-using GameSpyLib.Logging;
-using Serilog.Events;
 
 namespace GameSpyLib.RetroSpyConfig
 {

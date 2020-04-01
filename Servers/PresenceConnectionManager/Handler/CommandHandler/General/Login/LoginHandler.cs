@@ -112,7 +112,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
 
             //if no login method found we can not continue.
-            session.ToLog(Serilog.Events.LogEventLevel.Error,"Unknown login method detected!");
+            session.ToLog(Serilog.Events.LogEventLevel.Error, "Unknown login method detected!");
             _errorCode = GPErrorCode.Parse;
         }
 

@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
 using NetCoreServer;
 using System;
 using System.Collections.Generic;
