@@ -15,7 +15,7 @@ namespace NatNegotiation
 
         private ClientListChecker _checker = new ClientListChecker();
 
-        public NatNegServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
+        public NatNegServer(IPAddress address, int port) : base(address, port)
         {
             _checker.StartCheck(this);
         }

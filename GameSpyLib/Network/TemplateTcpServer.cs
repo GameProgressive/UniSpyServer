@@ -11,19 +11,12 @@ namespace GameSpyLib.Network
     public class TemplateTcpServer : TcpServer
     {
         /// <summary>
-        /// The name of the server that is started, used primary in logging functions.
-        /// </summary>
-        public string ServerName { get; private set; }
-
-        /// <summary>
         /// Initialize TCP server with a given IP address and port number
         /// </summary>
-        /// <param name="serverName">The name of the server that will be started</param>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public TemplateTcpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
+        public TemplateTcpServer(IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = $"[{serverName}] ";
             Start();
         }
 
@@ -33,9 +26,8 @@ namespace GameSpyLib.Network
         /// <param name="serverName">The name of the server that will be started</param>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public TemplateTcpServer(string serverName, IPAddress address, int port) : base(address, port)
+        public TemplateTcpServer(IPAddress address, int port) : base(address, port)
         {
-            ServerName = $"[{serverName}] ";
             Start();
         }
 

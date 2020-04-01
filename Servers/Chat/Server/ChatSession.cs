@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Application;
+using Chat.Entity.Structure;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
@@ -38,7 +39,7 @@ namespace Chat
         /// </summary>
         public void ElevateSecurity(string secretKey)
         {
-            string Info = $"{ServerName} Elevating security for user {Id} with game {chatUserInfo.gameName}";
+            string Info = $"{ServerManager.ServerName} Elevating security for user {Id} with game {chatUserInfo.gameName}";
             ToLog(Serilog.Events.LogEventLevel.Information, Info);
 
             // 1. Generate the two keys

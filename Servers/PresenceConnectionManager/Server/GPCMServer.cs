@@ -19,8 +19,6 @@ namespace PresenceConnectionManager
         /// </summary>
         public const int ExpireTime = 20000;
 
-        public static DatabaseEngine DB;
-
         /// <summary>
         /// List of sucessfully logged in clients (Pid => Client Obj)
         /// </summary>
@@ -36,17 +34,12 @@ namespace PresenceConnectionManager
         /// </summary>
         public static System.Timers.Timer StatusTimer { get; protected set; }
 
-        /// <summary>
-        /// Indicates whether we are closing the server down
-        /// </summary>
-        public bool Exiting { get; private set; } = false;
 
         /// <summary>
         /// Creates a new instance of <see cref="GPCMClient"/>
         /// </summary>
-        public GPCMServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
+        public GPCMServer(IPAddress address, int port) : base( address, port)
         {
-            DB = engine;
         }
 
         protected override TcpSession CreateSession()
@@ -54,27 +47,5 @@ namespace PresenceConnectionManager
             return new GPCMSession(this);
         }
 
-        private bool _disposed;
-
-        protected override void Dispose(bool disposingManagedResources)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            _disposed = true;
-
-            if (disposingManagedResources)
-            {
-            }
-
-            PollTimer?.Stop();
-            PollTimer?.Dispose();
-            StatusTimer?.Stop();
-            StatusTimer?.Dispose();
-
-            base.Dispose(disposingManagedResources);
-        }
     }
 }

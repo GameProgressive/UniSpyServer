@@ -11,7 +11,6 @@ namespace ServerBrowser
     /// </summary>
     public class SBServer : TemplateTcpServer
     {
-        public static DatabaseEngine DB;
         /// <summary>
         /// we are not gamespy,
         /// for simplicity we use hard coded challenge
@@ -19,9 +18,8 @@ namespace ServerBrowser
         /// </summary>
         public static readonly string ServerChallenge = "0000000000";
 
-        public SBServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
+        public SBServer(IPAddress address, int port) : base( address, port)
         {
-            DB = engine;
         }
 
         protected override TcpSession CreateSession() { return new SBSession(this); }

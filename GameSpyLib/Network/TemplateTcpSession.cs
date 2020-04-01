@@ -16,11 +16,9 @@ namespace GameSpyLib.Network
     /// </summary>
     public class TemplateTcpSession : TcpSession
     {
-        public string ServerName;
         public EndPoint Remote;
         public TemplateTcpSession(TemplateTcpServer server) : base(server)
         {
-            ServerName = server.ServerName;
         }
 
         /// <summary>
@@ -123,7 +121,7 @@ namespace GameSpyLib.Network
 
         public virtual void ToLog(LogEventLevel level, string text)
         {
-            LogWriter.ToLog(level, ServerName + text);
+            LogWriter.ToLog(level, $"[{ ServerManagerBase.ServerName}]" + text);
         }
 
         public virtual void UnKnownDataReceived(byte[] text)

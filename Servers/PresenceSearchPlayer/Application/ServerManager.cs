@@ -28,7 +28,7 @@ namespace PresenceSearchPlayer
         {
             if (cfg.Name == ServerName)
             {
-                Server = new GPSPServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new GPSPServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }

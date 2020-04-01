@@ -33,7 +33,7 @@ namespace StatsAndTracking.Application
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":
-                Server = new GStatsServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new GStatsServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                      StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }

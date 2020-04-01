@@ -29,7 +29,7 @@ namespace NatNegotiation.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new NatNegServer(cfg.Name, DBEngine, IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new NatNegServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }

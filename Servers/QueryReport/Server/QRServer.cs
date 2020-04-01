@@ -20,7 +20,7 @@ namespace QueryReport.Server
 
         private ServerListChecker _checker = new ServerListChecker();
 
-        public QRServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
+        public QRServer(IPAddress address, int port) : base(address, port)
         {
             new PeerGroupHandler().LoadAllGameGroups();
             //The Time for servers to remain in the serverlist since the last ping in seconds.

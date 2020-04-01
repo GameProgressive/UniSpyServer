@@ -4,7 +4,7 @@ namespace Chat.Server
     public class ChatProxyClient : TemplateTcpClient
     {
         private ChatSession _session;
-        public ChatProxyClient(ChatSession session, string hostname, int port) : base("[proxy]", hostname, port)
+        public ChatProxyClient(ChatSession session, string hostname, int port) : base(hostname, port)
         {
             _session = session;
         }

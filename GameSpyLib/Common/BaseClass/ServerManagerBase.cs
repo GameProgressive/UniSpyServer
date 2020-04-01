@@ -14,12 +14,12 @@ namespace GameSpyLib.Common
 {
     public abstract class ServerManagerBase : IDisposable
     {
-        public readonly string RetroSpyVersion = "0.5";
-        public string ServerName { get; protected set; }
+        public readonly string RetroSpyVersion = "0.5.1";
+        public static string ServerName { get; protected set; }
         public static ConfigManager Config { get; protected set; }
         public static LogWriter LogWriter { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
-        public DatabaseEngine DBEngine;
+        public static DatabaseEngine DBEngine;
 
         protected bool Disposed = false;
 

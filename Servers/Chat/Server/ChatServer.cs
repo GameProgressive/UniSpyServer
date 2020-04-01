@@ -7,11 +7,8 @@ namespace Chat
 {
     public class ChatServer : TemplateTcpServer
     {
-        public static DatabaseEngine DB;
-
-        public ChatServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
+        public ChatServer(IPAddress address, int port) : base(address, port)
         {
-            DB = engine;
         }
 
         protected override TcpSession CreateSession()

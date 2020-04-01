@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Extensions;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using NetCoreServer;
 using Serilog.Events;
@@ -15,20 +16,13 @@ namespace GameSpyLib.Network
     public class TemplateUdpServer : UdpServer
     {
         /// <summary>
-        /// The name of the server that is started, used primary in logging functions.
-        /// </summary>
-        public string ServerName { get; private set; }
-
-
-        /// <summary>
         /// Initialize UDP server with a given IP address and port number
         /// </summary>
         /// <param name="serverName">The name of the server that will be started</param>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public TemplateUdpServer(string serverName, IPEndPoint endpoint) : base(endpoint)
+        public TemplateUdpServer(IPEndPoint endpoint) : base(endpoint)
         {
-            ServerName = $"[{serverName}] ";
             Start();
         }
 
@@ -44,9 +38,8 @@ namespace GameSpyLib.Network
         /// <param name="serverName">The name of the server that will be started</param>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public TemplateUdpServer(string serverName, IPAddress address, int port) : base(address, port)
+        public TemplateUdpServer(IPAddress address, int port) : base(address, port)
         {
-            ServerName = $"[{serverName}] ";
             Start();
         }
 
@@ -146,7 +139,7 @@ namespace GameSpyLib.Network
 
         public virtual void ToLog(LogEventLevel level, string text)
         {
-            LogWriter.ToLog(level, ServerName + text);
+            LogWriter.ToLog(level, $"[{ServerManagerBase.ServerName}] " + text);
         }
 
         public virtual void UnknownDataRecived(byte[] text)
