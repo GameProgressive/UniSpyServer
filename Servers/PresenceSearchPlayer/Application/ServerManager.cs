@@ -34,30 +34,9 @@ namespace PresenceSearchPlayer
             }
         }
 
-        /// <summary>
-        /// Stop a specific server
-        /// </summary>
-        /// <param name="cfg">The configuration of the specific server to stop</param>
         protected override void StopServer()
         {
-            Server?.Stop();
-        }
-
-        private bool _disposed = false;
-
-        protected override void Dispose(bool disposingManagedResources)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            if (disposingManagedResources)
-            {
-                LogWriter.Log.Dispose();
-            }
-
-            base.Dispose(disposingManagedResources);
+            Server?.Dispose();
         }
     }
 }

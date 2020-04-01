@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
+using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure.Packet.Request;
@@ -33,7 +34,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 return;
             }
             //we first check and get secrete key from database
-            if (!GetSecretKey())
+            if (!DataOperationExtensions.GetSecretKey(_request.GameName,out _secretKey))
             {
                 _errorCode = SBErrorCode.UnSupportedGame;
                 return;
@@ -98,25 +99,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected void CheckICMPSupport(List<byte> header, DedicatedGameServer server)
         {
 
-        }
-        protected bool GetSecretKey()
-        {
-            using (var db = new retrospyContext())
-            {
-                var result = from p in db.Games
-                             where p.Gamename == _request.GameName
-                             select new { p.Secretkey };
-
-                if (result.Count() == 1)
-                {
-                    _secretKey = result.First().Secretkey;
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
         }
 
         /// <summary>

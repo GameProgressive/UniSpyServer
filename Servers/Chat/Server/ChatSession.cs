@@ -12,11 +12,11 @@ namespace Chat
     {
         public ChatUserInfo chatUserInfo { get; set; }
 
-        public ChatProxyClient ChatClientProxy;
+        public ChatProxy  ChatClientProxy;
         public ChatSession(TemplateTcpServer server) : base(server)
         {
             chatUserInfo = new ChatUserInfo();
-            ChatClientProxy = new ChatProxyClient(this, "192.168.0.109", 6667);
+            ChatClientProxy = new ChatProxy(this);
             ChatClientProxy.ConnectAsync();
         }
 
@@ -42,18 +42,12 @@ namespace Chat
             string Info = $"{ServerManager.ServerName} Elevating security for user {Id} with game {chatUserInfo.gameName}";
             ToLog(Serilog.Events.LogEventLevel.Information, Info);
 
-            // 1. Generate the two keys
-            string clientKey = "0000000000000000";
-            //GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
-            string serverKey = "0000000000000000";
-            //GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
-
             // 2. Prepare two keys
-            ChatCrypt.Init(chatUserInfo.ClientCTX, clientKey, secretKey);
-            ChatCrypt.Init(chatUserInfo.ServerCTX, serverKey, secretKey);
+            ChatCrypt.Init(chatUserInfo.ClientCTX, ChatServer.ClientKey, secretKey);
+            ChatCrypt.Init(chatUserInfo.ServerCTX, ChatServer.ServerKey, secretKey);
 
             // 3. Response the crypt command
-            SendCommand(ChatRPL.SecureKey, "* " + clientKey + " " + serverKey);
+            SendCommand(ChatRPL.SecureKey, "* " + ChatServer.ClientKey + " " + ChatServer.ServerKey);
             // string buffer = $":s {ChatRPL.SecureKey} * {clientKey} {serverKey}";
             // 4. Start using encrypted connection
             chatUserInfo.encrypted = true;

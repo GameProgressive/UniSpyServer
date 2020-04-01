@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace GameSpyLib.Common
 {
-    public abstract class ServerManagerBase : IDisposable
+    public abstract class ServerManagerBase
     {
         public readonly string RetroSpyVersion = "0.5.1";
         public static string ServerName { get; protected set; }
@@ -87,38 +87,6 @@ namespace GameSpyLib.Common
             Redis = ConnectionMultiplexer.Connect(redisConfig.RemoteAddress + ":" + redisConfig.RemotePort.ToString());
             LogWriter.Log.Information($"Successfully connected to Redis!");
 
-        }
-
-
-        // 添加此代码以正确实现可处置模式。
-        public void Dispose()
-        {
-            // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
-            Dispose(true);
-            // TODO: 如果在以上内容中替代了终结器，则取消注释以下行。
-            // GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (Disposed) return;
-
-            if (disposing)
-            {
-                // TODO: 释放托管状态(托管对象)。
-                StopServer();
-            }
-
-            // TODO: 释放未托管的资源(未托管的对象)并在以下内容中替代终结器。
-            // TODO: 将大型字段设置为 null。
-            Disposed = true;
-        }
-
-        //TODO: 仅当以上 Dispose(bool disposing) 拥有用于释放未托管资源的代码时才替代终结器。
-        ~ServerManagerBase()
-        {
-            // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
-            Dispose(false);
         }
     }
 }

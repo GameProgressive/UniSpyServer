@@ -7,6 +7,10 @@ namespace Chat
 {
     public class ChatServer : TemplateTcpServer
     {
+        //we hard coded random key here for simplisity
+        public static readonly string ClientKey = "0000000000000000";
+       public static readonly string ServerKey = "0000000000000000";
+
         public ChatServer(IPAddress address, int port) : base(address, port)
         {
         }
@@ -14,15 +18,6 @@ namespace Chat
         protected override TcpSession CreateSession()
         {
             return new ChatSession(this);
-        }
-
-        protected override void Dispose(bool disposingManagedResources)
-        {
-            if (disposingManagedResources)
-            {
-            }
-
-            base.Dispose(disposingManagedResources);
         }
     }
 }

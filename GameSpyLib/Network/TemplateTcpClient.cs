@@ -1,8 +1,10 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
+using GameSpyLib.RetroSpyConfig;
 using Serilog.Events;
 using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
@@ -12,7 +14,14 @@ namespace GameSpyLib.Network
 {
     public class TemplateTcpClient : TcpClient
     {
-        public TemplateTcpClient(string hostname, int port) : base(hostname, port)
+        /// <summary>
+        /// We automatic connect to remote server address
+        /// </summary>
+        public TemplateTcpClient() : base
+            (
+                ConfigManager.Config.Servers.Where(s => s.Name == ServerManagerBase.ServerName).First().RemoteAddress
+               , ConfigManager.Config.Servers.Where(s => s.Name == ServerManagerBase.ServerName).First().RemotePort
+            )
         {
             ConnectAsync();
         }
