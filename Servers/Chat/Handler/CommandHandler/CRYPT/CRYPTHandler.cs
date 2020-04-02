@@ -35,25 +35,12 @@ namespace Chat.Handler.CommandHandler.CRYPT
         {
             base.ConstructResponse(session, recv);
 
-            string Info =
-                $"Elevating security for " +
-                $"{session.Socket.RemoteEndPoint} " +
-                $"with game {session.UserInfo.GameName}";
-
-            // 1. Generate the two keys
-            string clientKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
-            string serverKey = GameSpyRandom.GenerateRandomString(16, GameSpyRandom.StringType.Alpha);
-
-            session.ToLog(Serilog.Events.LogEventLevel.Information, Info);
             // 2. Prepare two keys
             ChatCrypt.Init(session.UserInfo.ClientCTX, ChatServer.ClientKey, _secretKey);
             ChatCrypt.Init(session.UserInfo.ServerCTX, ChatServer.ServerKey, _secretKey);
 
             // 3. Response the crypt command
             _sendingBuffer = ChatServer.GenerateChatCommand(ChatRPL.SecureKey, "* "+ChatServer.ClientKey +" "+ ChatServer.ServerKey);
-
-        
-
         }
 
         public override void Response(ChatSession session, string[] recv)

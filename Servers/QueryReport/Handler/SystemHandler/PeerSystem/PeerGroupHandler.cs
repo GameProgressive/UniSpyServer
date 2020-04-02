@@ -50,6 +50,12 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
 
                 foreach (var gameName in names)
                 {
+                    PeerGroup peer = RetroSpyRedisExtensions.GetGroupsList<PeerGroup>(gameName);
+                    if (peer.PeerRooms.Count!=0)
+                    {
+                        //group is already in memory, we do not need to load it again
+                        return;
+                    }
                     PeerGroup.Add(LoadGameRooms(gameName));
                     RetroSpyRedisExtensions.SetGroupList(gameName, LoadGameRooms(gameName));
                 }
