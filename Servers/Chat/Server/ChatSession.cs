@@ -15,13 +15,15 @@ namespace Chat
 
         public ChatProxy ChatClientProxy;
 
+        public bool IsRecievedProxyMsg = false;
         public ChatSession(TemplateTcpServer server) : base(server)
         {
             UserInfo = new ChatUserInfo();
+            ChatClientProxy = new ChatProxy(this);
         }
         protected override void OnDisconnected()
         {
-            ChatClientProxy.Disconnect();
+            ChatClientProxy.DisconnectAsync();
             base.OnDisconnected();
         }
         protected override void OnReceived(byte[] buffer, long offset, long size)

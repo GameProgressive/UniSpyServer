@@ -25,12 +25,7 @@ namespace Chat.Handler.CommandSwitcher
                     new LOGINHandler(session, cmd);
                     break;
                 default:
-                    if (session.ChatClientProxy == null)
-                    {
-                        session.ChatClientProxy = new ChatProxy(session);
-                        session.ChatClientProxy.Connect();
-                    }
-                    session.ChatClientProxy.Send(data);
+                    session.ChatClientProxy.SendAsync(data);
                     break;
             }
         }
