@@ -64,7 +64,7 @@ namespace GameSpyLib.Extensions
 
         public static string ReplaceUnreadableCharToHex(string buffer)
         {
-            return Regex.Replace(buffer,
+           return Regex.Replace(buffer,
                           @"\p{Cc}",
                           a => string.Format("[{0:X2}]", (byte)a.Value[0])
                         );

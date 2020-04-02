@@ -17,10 +17,10 @@ namespace Chat.Server
             _session = session;
         }
 
-        public override void OnReceived(string message)
+        protected override void OnReceived(string message)
         {
             base.OnReceived(message);
-            _session.SendAsync(message);
+            _session.Send(message);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
             }
         }
 
-        public void LoadAllGameGroups()
+        public void LoadAllGameGroupsToRedis()
         {
             using (var db = new retrospyContext())
             {

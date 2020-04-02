@@ -43,7 +43,7 @@ namespace GameSpyLib.Network
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
 
-            ToLog(LogEventLevel.Debug, $"[Send] TCP data: { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.SendAsync(buffer, offset, size);
         }
@@ -67,7 +67,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug, $"[Send] TCP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.Send(buffer, offset, size);
         }
@@ -99,7 +99,7 @@ namespace GameSpyLib.Network
                 return;
             }
 
-            ToLog(LogEventLevel.Debug, $"[Recv] TCP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);
@@ -121,7 +121,7 @@ namespace GameSpyLib.Network
 
         public virtual void ToLog(LogEventLevel level, string text)
         {
-            LogWriter.ToLog(level, $"[{ ServerManagerBase.ServerName}]" + text);
+            LogWriter.ToLog(level, $"[{ ServerManagerBase.ServerName}] " + text);
         }
 
         public virtual void UnKnownDataReceived(byte[] text)

@@ -1,4 +1,7 @@
 ﻿using Chat.Handler.CommandHandler.CRYPT;
+using Chat.Handler.CommandHandler.LOGIN;
+using Chat.Handler.CommandHandler.USRIP;
+using Chat.Server;
 
 namespace Chat.Handler.CommandSwitcher
 {
@@ -13,13 +16,23 @@ namespace Chat.Handler.CommandSwitcher
             switch (cmd[0])
             {
                 case "CRYPT":
-                    CRYPTHandler.Handle(session, cmd);
+                    new CRYPTHandler(session, cmd);
+                    break;
+                case "USRIP":
+                    new USRIPHandler(session, cmd);
+                    break;
+                case "LOGIN":
+                    new LOGINHandler(session, cmd);
                     break;
                 default:
+                    if (session.ChatClientProxy == null)
+                    {
+                        session.ChatClientProxy = new ChatProxy(session);
+                        session.ChatClientProxy.Connect();
+                    }
                     session.ChatClientProxy.Send(data);
                     break;
             }
-
         }
     }
 }

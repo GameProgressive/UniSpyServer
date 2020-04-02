@@ -65,7 +65,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug, $"[Send] UDP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
@@ -86,7 +86,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug, $"[Send] UDP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.Send(endpoint, buffer, offset, size);
         }
@@ -125,7 +125,7 @@ namespace GameSpyLib.Network
             byte[] temp = new byte[(int)size];
             Array.Copy(buffer, 0, temp, 0, (int)size);
 
-            ToLog(LogEventLevel.Debug, $"[Recv] UDP data: {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
             ReceiveAsync();
 

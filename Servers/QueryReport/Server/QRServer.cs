@@ -22,7 +22,7 @@ namespace QueryReport.Server
 
         public QRServer(IPAddress address, int port) : base(address, port)
         {
-            new PeerGroupHandler().LoadAllGameGroups();
+            new PeerGroupHandler().LoadAllGameGroupsToRedis();
             //The Time for servers to remain in the serverlist since the last ping in seconds.
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server

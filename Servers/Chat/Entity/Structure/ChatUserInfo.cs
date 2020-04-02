@@ -2,17 +2,17 @@
 {
     public class ChatUserInfo
     {
-        public string gameName = "";
-        public string nickname = "";
-        public string serverIP = "";
-        public string username = "";
-        public int namespaceID = 0;
-        public string uniqueNickname = "";
+        public string GameName = "";
+        public string NickName = "";
+        public string ServerIP = "";
+        public string UserName = "";
+        public int NameSpaceID = 0;
+        public string UniqueNickName = "";
 
         // secure connection
 
         public GSPeerChatCTX ClientCTX = new GSPeerChatCTX();
         public GSPeerChatCTX ServerCTX = new GSPeerChatCTX();
-        public bool encrypted = false;
+        public bool useEncryption = false;
     }
 }
