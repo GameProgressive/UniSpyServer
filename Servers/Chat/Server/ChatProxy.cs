@@ -20,6 +20,10 @@ namespace Chat.Server
         protected override void OnReceived(string message)
         {
             base.OnReceived(message);
+            if (message.Contains("NOTICE"))
+            {
+                return;
+            }
             _session.SendAsync(message);
         }
     }

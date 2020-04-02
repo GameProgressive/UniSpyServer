@@ -30,23 +30,7 @@ namespace GameSpyLib.Network
             ToLog(LogEventLevel.Error, error.ToString());
         }
 
-        /// <summary>
-        /// Send data to the client (asynchronous)
-        /// </summary>
-        /// <param name="buffer">Buffer to send</param>
-        /// <param name="offset">Buffer offset</param>
-        /// <param name="size">Buffer size</param>
-        /// <returns>'true' if the data was successfully sent, 'false' if the session is not connected</returns>
-        /// <remarks>
-        /// We override this method in order to let it print the data it transmits, please call "base.SendAsync" in your overrided function.
-        /// </remarks>
-        public override bool SendAsync(byte[] buffer, long offset, long size)
-        {
-
-            ToLog(LogEventLevel.Debug, $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
-
-            return base.SendAsync(buffer, offset, size);
-        }
+  
         protected long BaseSend(byte[] buffer, long offset, long size)
         {
             return base.Send(buffer, offset, size);
@@ -67,9 +51,28 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug, $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug,
+                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.Send(buffer, offset, size);
+        }
+        /// <summary>
+        /// Send data to the client (asynchronous)
+        /// </summary>
+        /// <param name="buffer">Buffer to send</param>
+        /// <param name="offset">Buffer offset</param>
+        /// <param name="size">Buffer size</param>
+        /// <returns>'true' if the data was successfully sent, 'false' if the session is not connected</returns>
+        /// <remarks>
+        /// We override this method in order to let it print the data it transmits, please call "base.SendAsync" in your overrided function.
+        /// </remarks>
+        public override bool SendAsync(byte[] buffer, long offset, long size)
+        {
+
+            ToLog(LogEventLevel.Debug,
+                $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+
+            return base.SendAsync(buffer, offset, size);
         }
         /// <summary>
         /// Our method to receive message and print in the console
@@ -99,7 +102,8 @@ namespace GameSpyLib.Network
                 return;
             }
 
-            ToLog(LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            ToLog(LogEventLevel.Debug,
+                $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);
