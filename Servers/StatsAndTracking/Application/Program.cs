@@ -21,7 +21,9 @@ namespace StatsAndTracking.Application
             {
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
-            Console.ReadKey();
+
+            Console.WriteLine("Press < Q > to exit... ");
+            while (Console.ReadKey().Key != ConsoleKey.Q) { }
         }
     }
 }
