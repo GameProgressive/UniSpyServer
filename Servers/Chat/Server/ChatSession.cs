@@ -10,19 +10,19 @@ namespace Chat
 {
     public class ChatSession : TemplateTcpSession
     {
-        public ChatUserInfo chatUserInfo { get; set; }
+        public ChatUserInfo UserInfo { get; set; }
 
         public ChatProxy  ChatClientProxy;
+
         public ChatSession(TemplateTcpServer server) : base(server)
         {
-            chatUserInfo = new ChatUserInfo();
+            UserInfo = new ChatUserInfo();
             ChatClientProxy = new ChatProxy(this);
-            ChatClientProxy.ConnectAsync();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            if (chatUserInfo.encrypted)
+            if (UserInfo.useEncryption)
             {
                 DecryptData(ref buffer, size);
             }
@@ -34,43 +34,16 @@ namespace Chat
             CommandSwitcher.Switch(this, data);
         }
 
-        /// <summary>
-        /// Elevates security, for use with CRYPT method.
-        /// </summary>
-        public void ElevateSecurity(string secretKey)
-        {
-            string Info = $"{ServerManager.ServerName} Elevating security for user {Id} with game {chatUserInfo.gameName}";
-            ToLog(Serilog.Events.LogEventLevel.Information, Info);
-
-            // 2. Prepare two keys
-            ChatCrypt.Init(chatUserInfo.ClientCTX, ChatServer.ClientKey, secretKey);
-            ChatCrypt.Init(chatUserInfo.ServerCTX, ChatServer.ServerKey, secretKey);
-
-            // 3. Response the crypt command
-            SendCommand(ChatRPL.SecureKey, "* " + ChatServer.ClientKey + " " + ChatServer.ServerKey);
-            // string buffer = $":s {ChatRPL.SecureKey} * {clientKey} {serverKey}";
-            // 4. Start using encrypted connection
-            chatUserInfo.encrypted = true;
-        }
-
-        public void SendCommand(int id, string data)
-        {
-            string stringToSend = ":s " + id + " " + data + "\r\n";
-            SendAsync(stringToSend);
-        }
-
         private void DecryptData(ref byte[] data, long size)
         {
-            ChatCrypt.Handle(chatUserInfo.ClientCTX, ref data, size);
+            ChatCrypt.Handle(UserInfo.ClientCTX, ref data, size);
         }
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-
             ToLog(Serilog.Events.LogEventLevel.Debug, $"[Send] IRC data: {Encoding.ASCII.GetString(buffer)}");
 
-
-            if (chatUserInfo.encrypted)
+            if (UserInfo.useEncryption)
             {
                 EncryptData(ref buffer, size);
             }
@@ -80,7 +53,7 @@ namespace Chat
 
         private void EncryptData(ref byte[] buffer, long size)
         {
-            ChatCrypt.Handle(chatUserInfo.ServerCTX, ref buffer, size);
+            ChatCrypt.Handle(UserInfo.ServerCTX, ref buffer, size);
         }
     }
 }
