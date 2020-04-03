@@ -13,4 +13,12 @@
     <PackageReference Include="SoapCore" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GameSpyServices\" />
+    <Folder Include="GameSpyServices\Sake\" />
+    <Folder Include="GameSpyServices\Authentication\" />
+    <Folder Include="GameSpyServices\Competitive\" />
+    <Folder Include="GameSpyServices\Direct2Game\" />
+    <Folder Include="GameSpyServices\Motd\" />
+  </ItemGroup>
 </Project>

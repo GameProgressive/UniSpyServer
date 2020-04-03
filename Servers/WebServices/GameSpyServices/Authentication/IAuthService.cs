@@ -1,14 +1,15 @@
 ﻿using System.ServiceModel;
-namespace Motd
+namespace PublicServices.Authentication
 {
     [ServiceContract]
-    public interface IMotdService
+    public interface IAuthService
     {
         [OperationContract]
-        string Test(string s);
+        string LoginUniqueNick(string s);
+
         [OperationContract]
         void XmlMethod(System.Xml.Linq.XElement xml);
         [OperationContract]
-        MotdServiceModel TestMotdServiceModel(MotdServiceModel inputModel);
+        AuthServiceModel TestAuthServiceModel(AuthServiceModel inputModel);
     }
 }
