@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Xml.Linq;
-namespace PublicServices.Competitive
+namespace Motd
 {
-    public class CompetitiveService : ICompetitiveService
+    public class MotdService : IMotdService
     {
         public string Test(string s)
         {
@@ -13,7 +13,7 @@ namespace PublicServices.Competitive
         {
             Console.WriteLine(xml.ToString());
         }
-        public CompetitiveServiceModel TestCompetitiveServiceModel(CompetitiveServiceModel customModel)
+        public MotdServiceModel TestMotdServiceModel(MotdServiceModel customModel)
         {
             return customModel;
         }

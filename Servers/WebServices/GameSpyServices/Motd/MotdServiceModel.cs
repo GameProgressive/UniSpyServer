@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
-namespace PublicServices.Authentication
+namespace Motd
 {
     [DataContract]
-    public class AuthServiceModel
+    public class MotdServiceModel
     {
         [DataMember]
         public int Id { get; set; }
