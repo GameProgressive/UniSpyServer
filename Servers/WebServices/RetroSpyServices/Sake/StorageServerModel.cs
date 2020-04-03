@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
-namespace PublicServices.Authentication
+namespace RetroSpyServices.Sake
 {
     [DataContract]
-    public class AuthServiceModel
+    public class StorageServerModel
     {
         [DataMember]
         public int Id { get; set; }

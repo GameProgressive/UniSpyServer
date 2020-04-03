@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Xml.Linq;
-namespace PublicServices.Competitive
+namespace RetroSpyServices.Direct2Game
 {
-    public class CompetitiveService : ICompetitiveService
+    public class Direct2GameService : IDirect2GameService
     {
         public string Test(string s)
         {
@@ -13,7 +13,7 @@ namespace PublicServices.Competitive
         {
             Console.WriteLine(xml.ToString());
         }
-        public CompetitiveServiceModel TestCompetitiveServiceModel(CompetitiveServiceModel customModel)
+        public Direct2GameServiceModel TestDirect2GameServiceModel(Direct2GameServiceModel customModel)
         {
             return customModel;
         }

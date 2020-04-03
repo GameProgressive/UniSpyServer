@@ -1,14 +1,14 @@
 ﻿using System.ServiceModel;
-namespace Motd
+namespace RetroSpyServices.Direct2Game
 {
     [ServiceContract]
-    public interface IMotdService
+    public interface IDirect2GameService
     {
         [OperationContract]
         string Test(string s);
         [OperationContract]
         void XmlMethod(System.Xml.Linq.XElement xml);
         [OperationContract]
-        MotdServiceModel TestMotdServiceModel(MotdServiceModel inputModel);
+        Direct2GameServiceModel TestDirect2GameServiceModel(Direct2GameServiceModel inputModel);
     }
 }

@@ -25,13 +25,13 @@ namespace WebServices
             services.AddSoapCore();
 
             // PublicServices
-            services.TryAddSingleton<PublicServices.Authentication.AuthService>();
-            services.TryAddSingleton<PublicServices.Competitive.CompetitiveService>();
-            services.TryAddSingleton<PublicServices.Direct2Game.Direct2GameService>();
+            services.TryAddSingleton<RetroSpyServices.Authentication.AuthService>();
+            services.TryAddSingleton<RetroSpyServices.Competitive.CompetitiveService>();
+            services.TryAddSingleton<RetroSpyServices.Direct2Game.Direct2GameService>();
 
             // Non-PublicServices
-            services.TryAddSingleton<Motd.MotdService>();
-            services.TryAddSingleton<Sake.StorageServer>();
+            services.TryAddSingleton<RetroSpyServices.Motd.MotdService>();
+            services.TryAddSingleton<RetroSpyServices.Sake.StorageServer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,7 +42,7 @@ namespace WebServices
             app.UseEndpoints(endpoints =>
             {
                 // PublicServices
-                endpoints.UseSoapEndpoint<PublicServices.Authentication.AuthService>("/AuthService/AuthService.asmx", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
+                endpoints.UseSoapEndpoint<RetroSpyServices.Authentication.AuthService>("/AuthService/AuthService.asmx", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
                 //endpoints.UseSoapEndpoint<PublicServices.Competitive.CompetitiveService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
                 //endpoints.UseSoapEndpoint<PublicServices.Direct2Game.Direct2GameService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
 

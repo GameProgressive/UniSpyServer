@@ -1,5 +1,5 @@
 ﻿using System.Runtime.Serialization;
-namespace Motd
+namespace RetroSpyServices.Motd
 {
     [DataContract]
     public class MotdServiceModel

@@ -1,17 +1,14 @@
 ﻿using System.ServiceModel;
-namespace Sake
+namespace RetroSpyServices.Motd
 {
     [ServiceContract]
-    public interface IStorageServer
+    public interface IMotdService
     {
         [OperationContract]
         string Test(string s);
-
-        string upload();
-
         [OperationContract]
         void XmlMethod(System.Xml.Linq.XElement xml);
         [OperationContract]
-        StorageServerModel TestStorageServerModel(StorageServerModel inputModel);
+        MotdServiceModel TestMotdServiceModel(MotdServiceModel inputModel);
     }
 }

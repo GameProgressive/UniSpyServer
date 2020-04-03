@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Xml.Linq;
-namespace PublicServices.Direct2Game
+namespace RetroSpyServices.Sake
 {
-    public class Direct2GameService : IDirect2GameService
+    public class StorageServer : Controller, IStorageServer
     {
         public string Test(string s)
         {
@@ -13,9 +14,14 @@ namespace PublicServices.Direct2Game
         {
             Console.WriteLine(xml.ToString());
         }
-        public Direct2GameServiceModel TestDirect2GameServiceModel(Direct2GameServiceModel customModel)
+        public StorageServerModel TestStorageServerModel(StorageServerModel customModel)
         {
             return customModel;
+        }
+
+        public string upload()
+        {
+            throw new NotImplementedException();
         }
     }
 

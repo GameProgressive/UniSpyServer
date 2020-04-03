@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
-namespace Motd
+namespace RetroSpyServices.Motd
 {
     public class MotdService : IMotdService
     {

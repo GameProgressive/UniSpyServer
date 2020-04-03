@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
-namespace PublicServices.Direct2Game
+namespace RetroSpyServices.Authentication
 {
     [DataContract]
-    public class Direct2GameServiceModel
+    public class AuthServiceModel
     {
         [DataMember]
         public int Id { get; set; }

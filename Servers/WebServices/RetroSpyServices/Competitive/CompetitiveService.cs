@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Xml.Linq;
-namespace Sake
+namespace RetroSpyServices.Competitive
 {
-    public class StorageServer : Controller, IStorageServer
+    public class CompetitiveService : ICompetitiveService
     {
         public string Test(string s)
         {
@@ -14,14 +13,9 @@ namespace Sake
         {
             Console.WriteLine(xml.ToString());
         }
-        public StorageServerModel TestStorageServerModel(StorageServerModel customModel)
+        public CompetitiveServiceModel TestCompetitiveServiceModel(CompetitiveServiceModel customModel)
         {
             return customModel;
-        }
-
-        public string upload()
-        {
-            throw new NotImplementedException();
         }
     }
 

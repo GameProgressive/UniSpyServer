@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
-namespace PublicServices.Competitive
+namespace RetroSpyServices.Direct2Game
 {
     [DataContract]
-    public class CompetitiveServiceModel
+    public class Direct2GameServiceModel
     {
         [DataMember]
         public int Id { get; set; }

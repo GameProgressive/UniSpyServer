@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
-namespace Sake
+namespace RetroSpyServices.Competitive
 {
     [DataContract]
-    public class StorageServerModel
+    public class CompetitiveServiceModel
     {
         [DataMember]
         public int Id { get; set; }

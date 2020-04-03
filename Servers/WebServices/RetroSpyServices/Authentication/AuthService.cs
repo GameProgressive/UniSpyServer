@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
-namespace PublicServices.Authentication
+namespace RetroSpyServices.Authentication
 {
     public class AuthService : IAuthService
     {

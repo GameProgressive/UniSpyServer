@@ -1,5 +1,5 @@
 ﻿using System.ServiceModel;
-namespace PublicServices.Authentication
+namespace RetroSpyServices.Authentication
 {
     [ServiceContract]
     public interface IAuthService

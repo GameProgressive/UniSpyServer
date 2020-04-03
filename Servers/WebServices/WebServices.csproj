@@ -14,11 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GameSpyServices\" />
-    <Folder Include="GameSpyServices\Sake\" />
-    <Folder Include="GameSpyServices\Authentication\" />
-    <Folder Include="GameSpyServices\Competitive\" />
-    <Folder Include="GameSpyServices\Direct2Game\" />
-    <Folder Include="GameSpyServices\Motd\" />
+    <Folder Include="RetroSpyServices\" />
+    <Folder Include="RetroSpyServices\Sake\" />
+    <Folder Include="RetroSpyServices\Authentication\" />
+    <Folder Include="RetroSpyServices\Competitive\" />
+    <Folder Include="RetroSpyServices\Direct2Game\" />
+    <Folder Include="RetroSpyServices\Motd\" />
   </ItemGroup>
 </Project>

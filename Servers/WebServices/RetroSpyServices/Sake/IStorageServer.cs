@@ -1,14 +1,17 @@
 ﻿using System.ServiceModel;
-namespace PublicServices.Competitive
+namespace RetroSpyServices.Sake
 {
     [ServiceContract]
-    public interface ICompetitiveService
+    public interface IStorageServer
     {
         [OperationContract]
         string Test(string s);
+
+        string upload();
+
         [OperationContract]
         void XmlMethod(System.Xml.Linq.XElement xml);
         [OperationContract]
-        CompetitiveServiceModel TestCompetitiveServiceModel(CompetitiveServiceModel inputModel);
+        StorageServerModel TestStorageServerModel(StorageServerModel inputModel);
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System.ServiceModel;
-namespace PublicServices.Direct2Game
+namespace RetroSpyServices.Competitive
 {
     [ServiceContract]
-    public interface IDirect2GameService
+    public interface ICompetitiveService
     {
         [OperationContract]
         string Test(string s);
         [OperationContract]
         void XmlMethod(System.Xml.Linq.XElement xml);
         [OperationContract]
-        Direct2GameServiceModel TestDirect2GameServiceModel(Direct2GameServiceModel inputModel);
+        CompetitiveServiceModel TestCompetitiveServiceModel(CompetitiveServiceModel inputModel);
     }
 }
