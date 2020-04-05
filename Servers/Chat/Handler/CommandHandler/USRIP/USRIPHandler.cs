@@ -22,7 +22,7 @@ namespace Chat.Handler.CommandHandler.USRIP
         public override void ConstructResponse(ChatSession session, string[] recv)
         {
             base.ConstructResponse(session, recv);
-            string IP = "0.0.0.0";//((IPEndPoint)session.Socket.RemoteEndPoint).Address.ToString();
+            string IP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.ToString();
 
            _sendingBuffer =  ChatServer.GenerateChatCommand(ChatRPL.USRIP,
                 session.UserInfo.NickName

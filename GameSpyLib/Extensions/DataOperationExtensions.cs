@@ -5,7 +5,7 @@ namespace GameSpyLib.Extensions
 {
     public class DataOperationExtensions
     {
-        public static bool GetSecretKey(string gameName,out string secretKey)
+        public static bool GetSecretKey(string gameName, out string secretKey)
         {
             using (var db = new retrospyContext())
             {
@@ -13,7 +13,7 @@ namespace GameSpyLib.Extensions
                              where p.Gamename == gameName
                              select new { p.Secretkey };
 
-                if (result.Count() == 1)
+                if (result.Count() == 1 && result.First() != null)
                 {
                     secretKey = result.First().Secretkey;
                     return true;

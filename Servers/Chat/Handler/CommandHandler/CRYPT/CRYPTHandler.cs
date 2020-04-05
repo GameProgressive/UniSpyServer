@@ -24,7 +24,7 @@ namespace Chat.Handler.CommandHandler.CRYPT
         public override void DataOperation(ChatSession session, string[] recv)
         {
             base.DataOperation(session, recv);
-            if (DataOperationExtensions.GetSecretKey(recv[3], out _secretKey) || _secretKey == null)
+            if (!DataOperationExtensions.GetSecretKey(recv[3], out _secretKey) || _secretKey == null)
             {
                 _sendingBuffer = ChatServer.GenerateChatCommand(ChatError.MoreParameters, "CRYPT :Secret key not found!");
                 return;

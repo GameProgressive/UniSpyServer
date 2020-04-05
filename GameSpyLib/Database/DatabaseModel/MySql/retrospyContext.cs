@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace GameSpyLib.Database.DatabaseModel.MySql
 {
@@ -145,20 +147,19 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Games>(entity =>
             {
+                entity.HasKey(e => e.Gameid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("games");
 
                 entity.HasComment("game list that contains all secret keys of games");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Gameid)
                     .HasName("id")
                     .IsUnique();
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Backendflags)
-                    .HasColumnName("backendflags")
+                entity.Property(e => e.Gameid)
+                    .HasColumnName("gameid")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.Description)
@@ -168,26 +169,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
 
-                entity.Property(e => e.Disabledservices)
-                    .HasColumnName("disabledservices")
-                    .HasColumnType("int(11)")
-                    .HasComment("1 = unavailable, 2 = temporarily unavailble, else available");
-
                 entity.Property(e => e.Gamename)
                     .IsRequired()
                     .HasColumnName("gamename")
-                    .HasColumnType("text")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
-
-                entity.Property(e => e.Keylist)
-                    .HasColumnName("keylist")
-                    .HasColumnType("text")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
-
-                entity.Property(e => e.Keytypelist)
-                    .HasColumnName("keytypelist")
                     .HasColumnType("text")
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
@@ -211,7 +195,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.ToTable("grouplist");
 
-                entity.HasComment("old game use this to create their game room");
+                entity.HasComment("Old games use this to create their game rooms");
 
                 entity.Property(e => e.Groupid)
                     .HasColumnName("groupid")
@@ -221,43 +205,12 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("gameid")
                     .HasColumnType("int(11)");
 
-                entity.Property(e => e.Maxwaiting)
-                    .HasColumnName("maxwaiting")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Name)
+                entity.Property(e => e.Roomname)
                     .IsRequired()
-                    .HasColumnName("name")
+                    .HasColumnName("roomname")
                     .HasColumnType("text")
                     .HasCharSet("latin1")
                     .HasCollation("latin1_swedish_ci");
-
-                entity.Property(e => e.Numplayers)
-                    .HasColumnName("numplayers")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Numservers)
-                    .HasColumnName("numservers")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Numwaiting)
-                    .HasColumnName("numwaiting")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Other)
-                    .IsRequired()
-                    .HasColumnName("other")
-                    .HasColumnType("text")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
-
-                entity.Property(e => e.Password)
-                    .HasColumnName("password")
-                    .HasColumnType("int(11)");
-
-                entity.Property(e => e.Updatetime)
-                    .HasColumnName("updatetime")
-                    .HasColumnType("int(11)");
             });
 
             modelBuilder.Entity<Messages>(entity =>

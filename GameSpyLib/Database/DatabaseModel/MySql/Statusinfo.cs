@@ -1,4 +1,7 @@
-﻿namespace GameSpyLib.Database.DatabaseModel.MySql
+﻿using System;
+using System.Collections.Generic;
+
+namespace GameSpyLib.Database.DatabaseModel.MySql
 {
     public partial class Statusinfo
     {

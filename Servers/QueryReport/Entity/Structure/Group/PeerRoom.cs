@@ -48,7 +48,7 @@ namespace QueryReport.Entity.Structure.Group
             CustomKeyValue = new Dictionary<string, string>();
 
             StandardKeyValue.Add("groupid", grouplist.Groupid.ToString());
-            StandardKeyValue.Add("hostname", grouplist.Name);
+            StandardKeyValue.Add("hostname", grouplist.Roomname);
             StandardKeyValue.Add("numwaiting", "0");
             StandardKeyValue.Add("maxwaiting", "200");
             StandardKeyValue.Add("maxplayers", "200");
@@ -57,7 +57,6 @@ namespace QueryReport.Entity.Structure.Group
             StandardKeyValue.Add("password", "");
             StandardKeyValue.Add("numGames", "0");
             StandardKeyValue.Add("numplaying", "0");
-            StandardKeyValue.Add("param", grouplist.Other);
 
             UpdateTime = DateTime.Now;
 
