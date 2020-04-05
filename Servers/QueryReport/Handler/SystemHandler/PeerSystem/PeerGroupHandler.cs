@@ -2,6 +2,7 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure.Group;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 

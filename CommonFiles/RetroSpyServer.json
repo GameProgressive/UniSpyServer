@@ -75,5 +75,5 @@
 
   ],
 
-  "LogLevel": "Debug"
+  "MinimumLogLevel": "Verbose"
 }

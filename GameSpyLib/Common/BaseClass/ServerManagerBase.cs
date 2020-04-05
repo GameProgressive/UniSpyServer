@@ -19,7 +19,6 @@ namespace GameSpyLib.Common
         public static ConfigManager Config { get; protected set; }
         public static LogWriter LogWriter { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
-        public static DatabaseEngine DBEngine;
 
         protected bool Disposed = false;
 
@@ -56,11 +55,9 @@ namespace GameSpyLib.Common
         private void LoadDatabaseConfig()
         {
             DatabaseConfig dbConfig = ConfigManager.Config.Database;
-            DBEngine = (DatabaseEngine)Enum.Parse(typeof(DatabaseEngine), dbConfig.Type);
-
             // Determine which database is using and create the database connection
 
-            switch (DBEngine)
+            switch (ConfigManager.Config.Database.Type)
             {
                 case DatabaseEngine.MySql:
                     string mySqlConnStr =

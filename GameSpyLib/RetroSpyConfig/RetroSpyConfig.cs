@@ -8,6 +8,6 @@ namespace GameSpyLib.RetroSpyConfig
         public DatabaseConfig Database;
         public RedisConfig Redis;
         public List<ServerConfig> Servers;
-        public LogEventLevel LogLevel;
+        public LogEventLevel MinimumLogLevel;
     }
 }

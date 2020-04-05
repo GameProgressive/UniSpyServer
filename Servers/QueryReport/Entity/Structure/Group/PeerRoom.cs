@@ -59,6 +59,8 @@ namespace QueryReport.Entity.Structure.Group
             StandardKeyValue.Add("numplaying", "0");
             StandardKeyValue.Add("param", grouplist.Other);
 
+            UpdateTime = DateTime.Now;
+
         }
         public PeerRoom()
         {

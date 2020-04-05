@@ -1,8 +1,10 @@
-﻿namespace GameSpyLib.RetroSpyConfig
+﻿using GameSpyLib.Database.Entity;
+
+namespace GameSpyLib.RetroSpyConfig
 {
     public class DatabaseConfig
     {
-        public string Type;
+        public DatabaseEngine Type;
         public string RemoteAddress;
         public int RemotePort;
         public string UserName;
