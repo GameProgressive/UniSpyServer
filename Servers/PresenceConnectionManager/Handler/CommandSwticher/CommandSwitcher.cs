@@ -30,31 +30,31 @@ namespace PresenceConnectionManager.Handler
                     //    break;
 
                     case "login"://login to retrospy
-                        new LoginHandler(session, recv);
+                        new LoginHandler().Handle(session, recv);
                         break;
 
                     case "getprofile"://get profile of a player
-                        new GetProfileHandler(session, recv);
+                        new GetProfileHandler().Handle(session, recv);
                         break;
 
                     case "addbuddy"://Send a request which adds an user to our friend list
-                        new AddBuddyHandler(session, recv);
+                        new AddBuddyHandler().Handle(session, recv);
                         break;
 
                     case "delbuddy"://delete a user from our friend list
-                        new DelBuddyHandler(session, recv);
+                        new DelBuddyHandler().Handle(session, recv);
                         break;
 
                     case "updateui"://update a user's email
-                        new UpdateUIHandler(session, recv);
+                        new UpdateUIHandler().Handle(session, recv);
                         break;
 
                     case "updatepro"://update a user's profile
-                        new UpdateProHandler(session, recv);
+                        new UpdateProHandler().Handle(session, recv);
                         break;
 
                     case "registernick"://update user's uniquenick
-                        new RegisterNickHandler(session, recv);
+                        new RegisterNickHandler().Handle(session, recv);
                         break;
 
                     case "logout"://logout from retrospy
@@ -63,15 +63,15 @@ namespace PresenceConnectionManager.Handler
                         break;
 
                     case "status"://update current logged in user's status info
-                        new StatusHandler(session, recv);
+                        new StatusHandler().Handle(session, recv);
                         break;
 
                     case "newuser"://create an new user
-                        new NewUserHandler(session, recv);
+                        new NewUserHandler().Handle(session, recv);
                         break;
 
                     case "addblock"://add an user to our block list
-                        new AddBlockHandler(session, recv);
+                        new AddBlockHandler().Handle(session, recv);
                         break;
 
                     case "ka":
@@ -79,7 +79,7 @@ namespace PresenceConnectionManager.Handler
                         break;
 
                     case "newprofile"://create an new profile
-                        new NewProfileHandler(session, recv);
+                        new NewProfileHandler().Handle(session, recv);
                         break;
 
                     default:

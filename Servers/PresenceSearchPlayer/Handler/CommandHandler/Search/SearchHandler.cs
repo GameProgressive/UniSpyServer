@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 {
     public class SearchHandler : CommandHandlerBase
     {
-        public SearchHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public SearchHandler() : base()
         {
         }
 

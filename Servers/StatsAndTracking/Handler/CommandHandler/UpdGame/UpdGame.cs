@@ -10,7 +10,7 @@ namespace StatsAndTracking.Handler.CommandHandler.UpdGame
         //	"\updgame\\sesskey\%d\done\%d\gamedata\%s"
         // or
         // "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
-        public UpdGameHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
+        public UpdGameHandler() : base()
         {
         }
     }

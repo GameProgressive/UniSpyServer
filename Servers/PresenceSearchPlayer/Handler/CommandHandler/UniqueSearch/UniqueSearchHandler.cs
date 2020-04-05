@@ -7,7 +7,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
     public class UniqueSearchHandler : CommandHandlerBase
     {
-        public UniqueSearchHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public UniqueSearchHandler() : base()
         {
         }
 

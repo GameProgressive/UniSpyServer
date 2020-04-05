@@ -27,7 +27,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewUser
             SubProfileExist
         }
 
-        public NewUserHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public NewUserHandler() : base()
         {
         }
 

@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdateUI
     /// </summary>
     public class UpdateUIHandler : CommandHandlerBase
     {
-        public UpdateUIHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public UpdateUIHandler() : base()
         {
         }
     }

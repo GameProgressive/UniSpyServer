@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
     {
         private uint _blockProfileid;
 
-        public AddBlockHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public AddBlockHandler() : base()
         {
         }
 

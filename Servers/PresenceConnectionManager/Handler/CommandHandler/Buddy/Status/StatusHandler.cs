@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
     {
         private uint _statusCode;
 
-        public StatusHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public StatusHandler() : base()
         {
         }
 

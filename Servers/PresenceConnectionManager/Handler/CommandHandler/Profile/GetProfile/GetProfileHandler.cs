@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         private uint _profileid;
 
-        public GetProfileHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public GetProfileHandler() : base()
         {
         }
 

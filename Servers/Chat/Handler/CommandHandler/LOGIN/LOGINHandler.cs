@@ -6,7 +6,7 @@ namespace Chat.Handler.CommandHandler.LOGIN
     public class LOGINHandler : CommandHandlerBase
     {
         int _namespaceID = 0;
-        public LOGINHandler(ChatSession session, string[] recv) : base(session, recv)
+        public LOGINHandler() : base()
         {
         }
 

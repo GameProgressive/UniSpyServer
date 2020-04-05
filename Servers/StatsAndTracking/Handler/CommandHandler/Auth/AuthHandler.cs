@@ -6,7 +6,7 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
     {
         GameSpyLib.Encryption.Crc16 _crc16 = new GameSpyLib.Encryption.Crc16(GameSpyLib.Encryption.Crc16Mode.Standard);
 
-        public AuthHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
+        public AuthHandler() : base()
         {
         }
 

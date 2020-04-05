@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
     public class RegisterNickHandler : CommandHandlerBase
     {
-        public RegisterNickHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public RegisterNickHandler() : base()
         {
         }
 

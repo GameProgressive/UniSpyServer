@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
         //\bm\<INVITE>\f\<from profileid>\msg\|p|<productid>|l|<location string>
         //\bm\<ping>\f\<from profileid>\msg\final\
         //\bm\<pong>\f\<from profileid>\final\
-        protected SendBuddyList(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        protected SendBuddyList() : base()
         {
         }
 

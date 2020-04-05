@@ -8,9 +8,8 @@ namespace ServerBrowser.Handler.CommandHandler
         protected SBErrorCode _errorCode = SBErrorCode.NoError;
         protected byte[] _sendingBuffer;
 
-        public CommandHandlerBase(SBSession session, byte[] recv)
+        public CommandHandlerBase()
         {
-            Handle(session, recv);
         }
 
         public virtual void Handle(SBSession session, byte[] recv)

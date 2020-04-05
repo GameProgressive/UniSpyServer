@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
@@ -13,7 +14,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
     {
         private DedicatedGameServer _gameServer;
 
-        public HeartBeatHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
+        public HeartBeatHandler() : base()
         {
         }
 
@@ -63,14 +64,14 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 //shutdown heart beat
                 serverData = dataPartition;
                 _gameServer.ServerData.Update(serverData, endPoint);
-                RetroSpyRedisExtensions.DeleteDedicatedGameServer(
+                RedisExtensions.DeleteDedicatedGameServer(
                     endPoint,
                     _gameServer.ServerData.StandardKeyValue["gamename"]
                     );
                 return;
             }
 
-            RetroSpyRedisExtensions.UpdateDedicatedGameServer(
+            RedisExtensions.UpdateDedicatedGameServer(
                endPoint,
                _gameServer.ServerData.StandardKeyValue["gamename"],
                _gameServer

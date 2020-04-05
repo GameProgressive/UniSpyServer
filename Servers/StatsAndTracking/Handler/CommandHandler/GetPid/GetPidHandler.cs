@@ -10,7 +10,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPid
         //\getpid\\nick\%s\keyhash\%s\lid\%d
         //\getpidr
         private uint _protileid;
-        public GetPidHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
+        public GetPidHandler() : base()
         {
         }
 

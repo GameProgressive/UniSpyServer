@@ -1,7 +1,9 @@
 ﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
+using ServerBrowser.Entity.Structure.Packet.Request;
 using System;
 using System.Text;
 
@@ -11,14 +13,14 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
     {
         private PeerGroup _peerGroup;
 
-        public SendGroupsHandler(SBSession session, byte[] recv) : base(session, recv)
+        public SendGroupsHandler(ServerListRequest request) : base(request)
         {
         }
 
         public override void DataOperation(SBSession session, byte[] recv)
         {
             base.DataOperation(session, recv);
-            _peerGroup = RetroSpyRedisExtensions.GetGroupsList<PeerGroup>(_request.GameName);
+            _peerGroup = RedisExtensions.GetGroupsList<PeerGroup>(_request.GameName);
             if (_peerGroup == null || _peerGroup.PeerRooms.Count == 0)
             {
                 _errorCode = SBErrorCode.NoGroupRoomFound;

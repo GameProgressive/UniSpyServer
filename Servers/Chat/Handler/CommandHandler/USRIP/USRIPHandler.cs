@@ -5,7 +5,7 @@ namespace Chat.Handler.CommandHandler.USRIP
 {
     public class USRIPHandler : CommandHandlerBase
     {
-        public USRIPHandler(ChatSession session, string[] recv) : base(session, recv)
+        public USRIPHandler() : base()
         {
         }
 

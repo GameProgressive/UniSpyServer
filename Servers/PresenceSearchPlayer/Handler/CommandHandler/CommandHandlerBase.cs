@@ -15,9 +15,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected ushort _operationID;
         protected uint _namespaceid = 0;
 
-        protected CommandHandlerBase(GPSPSession session, Dictionary<string, string> recv)
+        protected CommandHandlerBase()
         {
-            Handle(session, recv);
         }
 
         public virtual void Handle(GPSPSession session, Dictionary<string, string> recv)

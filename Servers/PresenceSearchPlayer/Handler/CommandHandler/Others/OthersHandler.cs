@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
     /// </summary>
     public class OthersHandler : CommandHandlerBase
     {
-        public OthersHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public OthersHandler() : base()
         {
         }
 

@@ -24,15 +24,15 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                 switch (command)
                 {
                     case "search":
-                        new SearchHandler(session, recv);
+                        new SearchHandler().Handle(session, recv);
                         break;
 
                     case "valid"://is email format valid
-                        new ValidHandler(session, recv);
+                        new ValidHandler().Handle(session, recv);
                         break;
 
                     case "nicks":// search an user with nick name
-                        new NickHandler(session, recv);
+                        new NickHandler().Handle(session, recv);
                         break;
 
                     //case "pmatch":
@@ -41,27 +41,27 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                     //    break;
 
                     case "check":
-                        new CheckHandler(session, recv);
+                        new CheckHandler().Handle(session, recv);
                         break;
 
                     case "newuser"://create an new user
-                        new NewUserHandler(session, recv);
+                        new NewUserHandler().Handle(session, recv);
                         break;
 
                     case "searchunique"://search an user with uniquenick
-                        new SearchUniqueHandler(session, recv);
+                        new SearchUniqueHandler().Handle(session, recv);
                         break;
 
                     case "others"://search 
-                        new OthersHandler(session, recv);
+                        new OthersHandler().Handle(session, recv);
                         break;
 
                     case "otherslist"://search other players friend list to see who is in his list?
-                        new OthersListHandler(session, recv);
+                        new OthersListHandler().Handle(session, recv);
                         break;
 
                     case "uniquesearch"://search a user with uniquenick and namespaceid
-                        new UniqueSearchHandler(session, recv);
+                        new UniqueSearchHandler().Handle(session, recv);
                         break;
 
                     default:

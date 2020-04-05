@@ -19,7 +19,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     break;
 
                 case SBClientRequestType.ServerInfoRequest:
-                    new ServerRulesHandler(session, recv);
+                    new ServerRulesHandler().Handle(session,recv);
                     break;
 
                 default:

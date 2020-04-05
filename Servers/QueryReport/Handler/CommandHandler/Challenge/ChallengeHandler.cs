@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
@@ -12,15 +13,14 @@ namespace QueryReport.Handler.CommandHandler.Challenge
     {
         DedicatedGameServer _gameServer;
         //we do not need to implement this to check the correctness of the challenge response
-        public ChallengeHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
+        public ChallengeHandler() : base()
         {
         }
 
         protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
             var result =
-                  RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
-            //QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
+                  RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
 
             if (result.Count() != 1)
             {
@@ -39,7 +39,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             // We send the echo packet to check the ping
             _sendingBuffer = echo.GenerateResponse();
 
-            RetroSpyRedisExtensions.UpdateDedicatedGameServer(
+            RedisExtensions.UpdateDedicatedGameServer(
                 endPoint,
                 _gameServer.ServerData.StandardKeyValue["gamename"],
                 _gameServer

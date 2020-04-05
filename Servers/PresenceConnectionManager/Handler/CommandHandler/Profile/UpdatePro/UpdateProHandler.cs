@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
     public class UpdateProHandler : CommandHandlerBase
     {
-        public UpdateProHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public UpdateProHandler() : base()
         {
         }
 

@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        public CheckHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public CheckHandler() : base()
         {
         }
 

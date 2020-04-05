@@ -11,12 +11,11 @@ namespace QueryReport.Handler.CommandHandler
         protected QRErrorCode _errorCode = QRErrorCode.NoError;
         protected byte[] _sendingBuffer;
 
-        protected CommandHandlerBase(QRServer server, EndPoint endPoint, byte[] recv)
+        protected CommandHandlerBase()
         {
-            Handle(server, endPoint, recv);
         }
 
-        protected virtual void Handle(QRServer server, EndPoint endPoint, byte[] recv)
+        public virtual void Handle(QRServer server, EndPoint endPoint, byte[] recv)
         {
             CheckRequest(server, endPoint, recv);
 

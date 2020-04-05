@@ -10,7 +10,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
         private uint _persistantStorageType;
         private uint _dataIndex;
 
-        public GetPDHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
+        public GetPDHandler() : base()
         {
         }
 

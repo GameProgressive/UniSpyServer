@@ -1,7 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Network;
-using GameSpyLib.RetroSpyConfig;
-using System.Linq;
+﻿using GameSpyLib.Network;
 
 namespace Chat.Server
 {

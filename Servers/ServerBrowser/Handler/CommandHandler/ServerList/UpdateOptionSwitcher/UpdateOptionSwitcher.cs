@@ -20,13 +20,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
             switch (request.UpdateOption)
             {
                 case SBServerListUpdateOption.NoServerList:
-                    new NoServerListHandler(session, recv);
+                    new NoServerListHandler(request).Handle(session, recv);
                     break;
                 case SBServerListUpdateOption.GeneralRequest:
-                    new GeneralRequestHandler(session, recv);
+                    new GeneralRequestHandler(request).Handle(session, recv);
                     break;
                 case SBServerListUpdateOption.SendGroups:
-                    new SendGroupsHandler(session, recv);
+                    new SendGroupsHandler(request).Handle(session, recv);
                     break;
                 case SBServerListUpdateOption.LimitResultCount:
                     break;

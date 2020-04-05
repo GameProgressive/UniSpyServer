@@ -4,7 +4,7 @@ namespace PresenceConnectionManager.Handler.General.KeepAlive
 {
     public class KAHandler : CommandHandlerBase
     {
-        protected KAHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        protected KAHandler() : base()
         {
         }
 

@@ -18,23 +18,24 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected byte[] _clientRemoteIP;
         protected byte[] _gameServerDefaultHostPort;
         protected string _secretKey;
-        protected ServerListRequest _request = new ServerListRequest();
+        protected ServerListRequest _request;
         protected List<byte> _dataList = new List<byte>();
-        public UpdateOptionHandlerBase(SBSession session, byte[] recv) : base(session, recv)
+        public UpdateOptionHandlerBase(ServerListRequest request) : base()
         {
+            _request = request;
         }
 
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
             //save client challenge in _request
-            if (!_request.Parse(recv))
+            if (_request == null)
             {
                 _errorCode = SBErrorCode.Parse;
                 return;
             }
             //we first check and get secrete key from database
-            if (!DataOperationExtensions.GetSecretKey(_request.GameName,out _secretKey))
+            if (!DataOperationExtensions.GetSecretKey(_request.GameName, out _secretKey))
             {
                 _errorCode = SBErrorCode.UnSupportedGame;
                 return;

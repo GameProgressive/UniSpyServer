@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
@@ -20,7 +21,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
     {
         private ServerRulesRequest _request;
         private DedicatedGameServer _gameServer;
-        public ServerRulesHandler(SBSession session, byte[] recv) : base(session, recv)
+        public ServerRulesHandler() : base()
         {
         }
 
@@ -39,7 +40,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
         public override void DataOperation(SBSession session, byte[] recv)
         {
             var result =
-                RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(
+                RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(
                     new IPAddress(BitConverter.GetBytes(_request.IP)).ToString());
             if (result.Count() != 1)
             {

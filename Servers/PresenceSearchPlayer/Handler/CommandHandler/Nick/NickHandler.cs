@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     /// </summary>
     public class NickHandler : CommandHandlerBase
     {
-        public NickHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public NickHandler() : base()
         {
         }
 

@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Entity.Enumerator;
@@ -25,7 +26,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
         private List<DedicatedGameServer> _redisServer;
         private PeerGroup _redisGroup;
 
-        public ServerListHandler(SBSession session, byte[] recv) : base(session, recv) { }
+        public ServerListHandler() : base() { }
 
         public override void CheckRequest(SBSession session, byte[] recv)
         {
@@ -47,7 +48,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     //_filteredServers =
                     //      GetServersFromQR.GetFilteredServer(new GetServersFromMemory(), _request.GameName, _request.Filter);
                     _redisServer =
-                        RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(_request.GameName);
+                        RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(_request.GameName);
                     break;
                 case SBServerListUpdateOption.NoServerList:
                     //we do not need to retrive server for this
@@ -56,7 +57,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                     break;
                 case SBServerListUpdateOption.SendGroups:
                     //we need to search group in database
-                    _redisGroup = RetroSpyRedisExtensions.GetGroupsList<PeerGroup>(_request.GameName);
+                    _redisGroup = RedisExtensions.GetGroupsList<PeerGroup>(_request.GameName);
                     break;
             }
             //we can use GetServersFromNetwork class in the future

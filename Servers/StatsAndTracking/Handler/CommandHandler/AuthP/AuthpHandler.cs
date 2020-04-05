@@ -14,7 +14,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
     {
         private uint _profileid;
         private AuthMethod _authMethod;
-        public AuthPHandler(GStatsSession session, Dictionary<string, string> recv) : base(session, recv)
+        public AuthPHandler() : base()
         {
             _authMethod = AuthMethod.Unknown;
         }

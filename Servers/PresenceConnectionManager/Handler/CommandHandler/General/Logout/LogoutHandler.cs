@@ -4,7 +4,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General.Logout
 {
     public class LogoutHandler : CommandHandlerBase
     {
-        protected LogoutHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        protected LogoutHandler() : base()
         {
         }
 

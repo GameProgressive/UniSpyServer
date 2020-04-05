@@ -10,12 +10,11 @@ namespace StatsAndTracking.Handler.CommandHandler
         protected uint _localId;
         protected GstatsErrorCode _errorCode = GstatsErrorCode.NoError;
 
-        protected CommandHandlerBase(GStatsSession session, Dictionary<string, string> recv)
+        protected CommandHandlerBase()
         {
-            Handle(session, recv);
         }
 
-        protected virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
+        public virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
         {
             CheckRequest(session, recv);
 

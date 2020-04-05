@@ -9,7 +9,7 @@ namespace Chat.Handler.CommandHandler.CRYPT
     public class CRYPTHandler : CommandHandlerBase
     {
         string _secretKey;
-        public CRYPTHandler(ChatSession session, string[] recv) : base(session, recv)
+        public CRYPTHandler() : base()
         {
         }
 

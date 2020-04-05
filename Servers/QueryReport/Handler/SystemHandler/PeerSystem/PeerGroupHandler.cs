@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure.Group;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,14 +51,14 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
 
                 foreach (var gameName in names)
                 {
-                    var result = RetroSpyRedisExtensions.SearchKeys(gameName);
-
+                    var result = RedisExtensions.SearchPeerGroupKeys(gameName);
+                 
                     if(result.Count()!=0)
                     {
                         continue;
                     }
                     PeerGroup.Add(LoadGameRooms(gameName));
-                    RetroSpyRedisExtensions.SetGroupList(gameName, LoadGameRooms(gameName));
+                    RedisExtensions.SetGroupList(gameName, LoadGameRooms(gameName));
                 }
             }
         }

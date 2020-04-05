@@ -11,9 +11,8 @@ namespace PresenceConnectionManager.Handler
         protected ushort _operationID;
         protected uint _namespaceid = 0;
 
-        protected CommandHandlerBase(GPCMSession session, Dictionary<string, string> recv)
+        protected CommandHandlerBase()
         {
-            Handle(session, recv);
         }
 
         public virtual void Handle(GPCMSession session, Dictionary<string, string> recv)

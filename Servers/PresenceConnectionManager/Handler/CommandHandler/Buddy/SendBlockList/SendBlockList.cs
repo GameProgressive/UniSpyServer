@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
     public class SendBlockList : CommandHandlerBase
     {
-        protected SendBlockList(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        protected SendBlockList() : base()
         {
         }
 

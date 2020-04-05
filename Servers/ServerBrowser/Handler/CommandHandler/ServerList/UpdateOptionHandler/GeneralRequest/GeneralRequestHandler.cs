@@ -1,7 +1,9 @@
 ﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
+using ServerBrowser.Entity.Structure.Packet.Request;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +13,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
     public class GeneralRequestHandler : UpdateOptionHandlerBase
     {
         List<DedicatedGameServer> _gameServer;
-        public GeneralRequestHandler(SBSession session, byte[] recv) : base(session, recv)
+        public GeneralRequestHandler(ServerListRequest request) : base(request)
         {
         }
 
@@ -19,7 +21,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
         {
             base.DataOperation(session, recv);
             _gameServer =
-                        RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(_request.GameName);
+                        RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(_request.GameName);
             if (_gameServer == null || _gameServer.Count == 0)
             {
                 _errorCode = SBErrorCode.NoServersFound;

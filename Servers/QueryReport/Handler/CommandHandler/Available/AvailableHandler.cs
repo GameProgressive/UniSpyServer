@@ -13,13 +13,8 @@ namespace QueryReport.Handler.CommandHandler.Available
         private readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
         private readonly byte AvailableCheckRequestPostfix = 0x00;
 
-        public AvailableHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
+        public AvailableHandler() : base()
         {
-        }
-
-        protected override void Handle(QRServer server, EndPoint endPoint, byte[] recv)
-        {
-            base.Handle(server, endPoint, recv);
         }
 
         protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)

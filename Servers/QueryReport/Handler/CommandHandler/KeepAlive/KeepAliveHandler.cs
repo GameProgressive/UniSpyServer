@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
@@ -10,7 +11,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 {
     public class KeepAliveHandler : CommandHandlerBase
     {
-        public KeepAliveHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
+        public KeepAliveHandler() : base()
         {
         }
 
@@ -19,9 +20,9 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             KeepAlivePacket packet = new KeepAlivePacket();
             packet.Parse(recv);
             _sendingBuffer = packet.GenerateResponse();
-            var gameServer = RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint).First();
+            var gameServer = RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint).First();
             gameServer.LastKeepAlive = DateTime.Now;
-            RetroSpyRedisExtensions.UpdateDedicatedGameServer
+            RedisExtensions.UpdateDedicatedGameServer
                 (
                 endPoint,
                 gameServer.ServerData.StandardKeyValue["gamename"],

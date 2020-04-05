@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Server;
 using Serilog.Events;
@@ -10,7 +11,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
     public class EchoHandler : CommandHandlerBase
     {
         DedicatedGameServer _gameServer;
-        public EchoHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
+        public EchoHandler() : base()
         {
         }
 
@@ -18,7 +19,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
         {
             //TODO
             var result =
-                 RetroSpyRedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
+                 RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
             //add recive echo packet on gameserverList
             //DedicatedGameServer game;
             //QRServer.GameServerList.TryGetValue(endPoint, out game);
@@ -36,7 +37,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
             //adding ping and value to dictionary
             _gameServer.ServerData.StandardKeyValue.Add("ping", Convert.ToString(ping));
 
-            RetroSpyRedisExtensions.UpdateDedicatedGameServer(
+            RedisExtensions.UpdateDedicatedGameServer(
                endPoint,
                _gameServer.ServerData.StandardKeyValue["gamename"],
                _gameServer

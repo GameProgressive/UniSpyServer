@@ -14,7 +14,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
     {
         private Crc16 _crc = new Crc16(Crc16Mode.Standard);
 
-        public LoginHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public LoginHandler() : base()
         {
         }
 

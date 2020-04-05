@@ -27,7 +27,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             SubProfileExist
         }
 
-        public NewUserHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public NewUserHandler() : base()
         {
         }
 

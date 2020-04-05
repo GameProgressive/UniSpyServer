@@ -21,25 +21,25 @@ namespace StatsAndTracking.Handler.CommandSwitcher
                 switch (recv.Keys.First())
                 {
                     case "auth":
-                        new AuthHandler(session, recv);
+                        new AuthHandler().Handle(session, recv);
                         break;
                     case "authp":
-                        new AuthPHandler(session, recv);
+                        new AuthPHandler().Handle(session, recv);
                         break;
                     case "getpid":
-                        new GetPidHandler(session, recv);
+                        new GetPidHandler().Handle(session, recv);
                         break;
                     case "getpd"://get player data
-                        new GetPDHandler(session, recv);
+                        new GetPDHandler().Handle(session, recv);
                         break;
                     case "setpd":
-                        new SetPDHandler(session, recv);
+                        new SetPDHandler().Handle(session, recv);
                         break;
                     case "updgame":
-                        new UpdGameHandler(session, recv);
+                        new UpdGameHandler().Handle(session, recv);
                         break;
                     case "newgame":
-                        new NewGameHandler(session, recv);
+                        new NewGameHandler().Handle(session, recv);
                         break;
                     default:
                         session.UnknownDataReceived(recv);

@@ -16,18 +16,15 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                 switch ((NatPacketType)recv[7])
                 {
                     case NatPacketType.Init:
-                        InitHandler init = new InitHandler();
-                        init.Handle(server, client, recv);
+                       new InitHandler().Handle(server, client, recv);
                         break;
 
                     case NatPacketType.AddressCheck:
-                        AddressHandler address = new AddressHandler();
-                        address.Handle(server, client, recv);
+                       new AddressHandler().Handle(server, client, recv);
                         break;
 
                     case NatPacketType.NatifyRequest:
-                        NatifyHandler natify = new NatifyHandler();
-                        natify.Handle(server, client, recv);
+                        new NatifyHandler().Handle(server, client, recv);
                         break;
 
                     case NatPacketType.ConnectAck:
@@ -35,13 +32,11 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                         break;
 
                     case NatPacketType.Report:
-                        ReportHandler report = new ReportHandler();
-                        report.Handle(server, client, recv);
+                        new ReportHandler().Handle(server, client, recv);
                         break;
 
                     case NatPacketType.ErtAck:
-                        ErtACKHandler ert = new ErtACKHandler();
-                        ert.Handle(server, client, recv);
+                     new ErtACKHandler().Handle(server, client, recv);
                         break;
 
                     default:

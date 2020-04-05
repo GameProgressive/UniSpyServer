@@ -8,7 +8,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
     public class ValidHandler : CommandHandlerBase
     {
-        public ValidHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public ValidHandler() : base()
         {
         }
 

@@ -7,9 +7,8 @@ namespace Chat.Handler.CommandHandler
     {
         protected string _sendingBuffer;
         protected ChatError _errorCode = ChatError.NoError;
-        public CommandHandlerBase(ChatSession session, string[] recv)
+        public CommandHandlerBase()
         {
-            Handle(session, recv);
         }
         public virtual void Handle(ChatSession session, string[] recv)
         {
