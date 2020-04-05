@@ -59,10 +59,6 @@ namespace QueryReport.Entity.Structure.Group
             StandardKeyValue.Add("numplaying", "0");
             StandardKeyValue.Add("param", grouplist.Other);
 
-            //RoomName = grouplist.Name;
-            //NumberPlaying = grouplist.Numplayers;
-            //OtherData = grouplist.Other;
-            //Password = grouplist.Password.ToString();
         }
         public PeerRoom()
         {

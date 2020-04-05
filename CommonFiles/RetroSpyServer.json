@@ -40,23 +40,23 @@
     {
       "Name": "SB",
       "ListeningAddress": "0.0.0.0",
-      "ListeningPort": "28910"
+      "ListeningPort": "28910",
+      "RemoteAddress": "",
+      "RemotePort": "28910"
     },
     {
       "Name": "QR",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "27900",
       "RemoteAddress": "",
-      "RemotePort": "29910"
+      "RemotePort": "27900"
     },
     {
-
       "Name": "NATNEG",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "27901",
       "RemoteAddress": "",
       "RemotePort": "27901"
-
     },
     {
       "Name": "GSTATS",

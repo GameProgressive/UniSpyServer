@@ -34,21 +34,5 @@ namespace QueryReport.Server
         {
             CommandSwitcher.Switch(this, endPoint, message);
         }
-
-        private bool _disposed;
-
-        protected override void Dispose(bool disposingManageResource)
-        {
-            if (_disposed)
-            {
-                return;
-            }
-
-            _disposed = true;
-
-            if (disposingManageResource)
-            {
-            }
-        }
     }
 }
