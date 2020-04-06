@@ -41,7 +41,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 
             RedisExtensions.UpdateDedicatedGameServer(
                 endPoint,
-                _gameServer.ServerData.StandardKeyValue["gamename"],
+                _gameServer.ServerData.KeyValue["gamename"],
                 _gameServer
                 );
 

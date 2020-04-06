@@ -35,11 +35,11 @@ namespace QueryReport.Handler.CommandHandler.Echo
             byte ping = (byte)DateTime.Now.Subtract(_gameServer.LastPing).TotalMilliseconds;
 
             //adding ping and value to dictionary
-            _gameServer.ServerData.StandardKeyValue.Add("ping", Convert.ToString(ping));
+            _gameServer.ServerData.KeyValue.Add("ping", Convert.ToString(ping));
 
             RedisExtensions.UpdateDedicatedGameServer(
                endPoint,
-               _gameServer.ServerData.StandardKeyValue["gamename"],
+               _gameServer.ServerData.KeyValue["gamename"],
                _gameServer
            );
         }

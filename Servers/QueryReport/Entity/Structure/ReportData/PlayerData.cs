@@ -10,19 +10,16 @@ namespace QueryReport.Entity.Structure.ReportData
                 "groupid","player_","score_","skill_","ping_","team_","deaths_","pid_"
             };
 
-        public List<Dictionary<string, string>> StandardKeyValue { get; protected set; }
-
-        public List<Dictionary<string, string>> CustomKeyValue { get; protected set; }
+        public List<Dictionary<string, string>> KeyValue { get; protected set; }
 
         public PlayerData()
         {
-            StandardKeyValue = new List<Dictionary<string, string>>();
-            CustomKeyValue = new List<Dictionary<string, string>>();
+            KeyValue = new List<Dictionary<string, string>>();
         }
 
         public void Update(string playerData)
         {
-            StandardKeyValue.Clear();
+            KeyValue.Clear();
             int playerCount = System.Convert.ToInt32(playerData[0]);
             playerData = playerData.Substring(1);
             string[] keyValue = playerData.Split("\0\0", System.StringSplitOptions.RemoveEmptyEntries);
@@ -38,7 +35,7 @@ namespace QueryReport.Entity.Structure.ReportData
                     temp.Add(keys[j], values[i * keys.Length + j]);
                 }
 
-                StandardKeyValue.Add(temp);
+                KeyValue.Add(temp);
             }
         }
     }

@@ -5,7 +5,7 @@ namespace QueryReport.Entity.Structure.ReportData
 {
     public class ServerData
     {
-        private static readonly List<string> StandardKeys =
+        private static readonly List<string> GameSpyStandardKey =
             new List<string>
             {
                 "hostname ", "gamever", "hostport", "mapname",
@@ -15,37 +15,31 @@ namespace QueryReport.Entity.Structure.ReportData
                 "localip0","localport","natneg","statechanged","gamename","hostname"
             };
 
-        public Dictionary<string, string> StandardKeyValue { get; protected set; }
-
-        public Dictionary<string, string> CustomKeyValue { get; protected set; }
+        public Dictionary<string, string> KeyValue { get; protected set; }
 
         public ServerData()
         {
-            StandardKeyValue = new Dictionary<string, string>();
-            CustomKeyValue = new Dictionary<string, string>();
+            KeyValue = new Dictionary<string, string>();
         }
 
         public void Update(string serverData, EndPoint endPoint)
         {
-            StandardKeyValue.Clear();
-            CustomKeyValue.Clear();
+            KeyValue.Clear();
             string[] keyValueArray = serverData.Split("\0", System.StringSplitOptions.RemoveEmptyEntries);
 
-            for (int j = 0; j < keyValueArray.Length; j += 2)
+            for (int i = 0; i < keyValueArray.Length; i += 2)
             {
-                if (StandardKeys.Contains(keyValueArray[j]))
-                {
-                    StandardKeyValue.Add(keyValueArray[j], keyValueArray[j + 1]);
-                }
-                else
-                {
-                    CustomKeyValue.Add(keyValueArray[j], keyValueArray[j + 1]);
-                }
+                KeyValue.Add(keyValueArray[i], keyValueArray[i + 1]);
             }
 
             //todo add the location
             //Data.Add("regionname","");
             //Data.Add("country","");
+        }
+
+        public void UpdateDictionary(string key, string value)
+        {
+            KeyValue.Add(key, value);
         }
     }
 }

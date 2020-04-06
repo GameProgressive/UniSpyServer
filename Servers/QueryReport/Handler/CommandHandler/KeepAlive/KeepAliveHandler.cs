@@ -25,7 +25,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             RedisExtensions.UpdateDedicatedGameServer
                 (
                 endPoint,
-                gameServer.ServerData.StandardKeyValue["gamename"],
+                gameServer.ServerData.KeyValue["gamename"],
                 gameServer);
         }
     }

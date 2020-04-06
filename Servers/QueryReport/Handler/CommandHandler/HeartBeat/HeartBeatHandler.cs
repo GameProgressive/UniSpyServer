@@ -66,14 +66,14 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 _gameServer.ServerData.Update(serverData, endPoint);
                 RedisExtensions.DeleteDedicatedGameServer(
                     endPoint,
-                    _gameServer.ServerData.StandardKeyValue["gamename"]
+                    _gameServer.ServerData.KeyValue["gamename"]
                     );
                 return;
             }
 
             RedisExtensions.UpdateDedicatedGameServer(
                endPoint,
-               _gameServer.ServerData.StandardKeyValue["gamename"],
+               _gameServer.ServerData.KeyValue["gamename"],
                _gameServer
            );
         }

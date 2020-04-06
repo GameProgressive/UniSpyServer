@@ -73,7 +73,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
                 foreach (var key in _request.Keys)
                 {
                     _dataList.Add(SBStringFlag.NTSStringFlag);
-                    _dataList.AddRange(Encoding.ASCII.GetBytes(server.ServerData.StandardKeyValue[key]));
+                    _dataList.AddRange(Encoding.ASCII.GetBytes(server.ServerData.KeyValue[key]));
                     _dataList.Add(SBStringFlag.StringSpliter);
                 }
             }

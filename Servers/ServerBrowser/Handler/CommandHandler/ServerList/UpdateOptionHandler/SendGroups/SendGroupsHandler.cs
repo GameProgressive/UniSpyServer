@@ -65,7 +65,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
                 _dataList.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
 
-                byte[] groupid = BitConverter.GetBytes(int.Parse(room.StandardKeyValue["groupid"]));
+                byte[] groupid = BitConverter.GetBytes(int.Parse(room.KeyValue["groupid"]));
                 //need convert to big endian
                 Array.Reverse(groupid);
                 _dataList.AddRange(groupid);
@@ -73,7 +73,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
                 foreach (var key in _request.Keys)
                 {
                     _dataList.Add(SBStringFlag.NTSStringFlag);
-                    _dataList.AddRange(Encoding.ASCII.GetBytes(room.StandardKeyValue[key]));
+                    _dataList.AddRange(Encoding.ASCII.GetBytes(room.KeyValue[key]));
                     _dataList.Add(SBStringFlag.StringSpliter);
                 }
             }
