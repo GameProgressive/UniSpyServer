@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using QueryReport.Application;
 
 namespace QueryReport.Entity.Structure.ReportData
 {
     public class ServerData
     {
-        private static readonly List<string> GameSpyStandardKey =
+        private static readonly List<string> StandardServerKeys =
             new List<string>
             {
                 "hostname ", "gamever", "hostport", "mapname",
@@ -25,11 +26,23 @@ namespace QueryReport.Entity.Structure.ReportData
         public void Update(string serverData, EndPoint endPoint)
         {
             KeyValue.Clear();
-            string[] keyValueArray = serverData.Split("\0", System.StringSplitOptions.RemoveEmptyEntries);
+            string[] kvArray = serverData.Split("\0");
 
-            for (int i = 0; i < keyValueArray.Length; i += 2)
+            for (int i = 0; i < kvArray.Length; i += 2)
             {
-                KeyValue.Add(keyValueArray[i], keyValueArray[i + 1]);
+                if (KeyValue.ContainsKey(kvArray[i]))
+                {
+                    if (KeyValue[kvArray[i]] == kvArray[i + 1])
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        ServerManager.LogWriter.Log.Fatal("Same key with different value has recieved!!!");
+                    }
+                }
+
+                KeyValue.Add(kvArray[i], kvArray[i + 1]);
             }
 
             //todo add the location

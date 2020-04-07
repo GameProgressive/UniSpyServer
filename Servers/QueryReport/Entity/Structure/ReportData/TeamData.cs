@@ -4,21 +4,19 @@ namespace QueryReport.Entity.Structure.ReportData
 {
     public class TeamData
     {
-        public List<Dictionary<string, string>> StandardKeyValue { get; protected set; }
+        public List<Dictionary<string, string>> KeyValue { get; protected set; }
 
-        public List<Dictionary<string, string>> CustomKeyValue { get; protected set; }
-
-        private readonly List<string> StandardKey = new List<string> { "team_t", "score_t", "nn_groupid" };
+        private readonly List<string> StandardTeamKey =
+            new List<string> { "team_t", "score_t", "nn_groupid" };
 
         public TeamData()
         {
-            StandardKeyValue = new List<Dictionary<string, string>>();
-            CustomKeyValue = new List<Dictionary<string, string>>();
+            KeyValue = new List<Dictionary<string, string>>();
         }
 
         public void Update(string teamData)
         {
-            StandardKeyValue.Clear();
+            KeyValue.Clear();
             int teamCount = System.Convert.ToInt32(teamData[0]);
             teamData = teamData.Substring(1);
             string[] dataPartition = teamData.Split("\0\0", System.StringSplitOptions.RemoveEmptyEntries);
@@ -34,7 +32,7 @@ namespace QueryReport.Entity.Structure.ReportData
                     temp.Add(keys[j], values[i * keys.Length + j]);
                 }
 
-                StandardKeyValue.Add(temp);
+                KeyValue.Add(temp);
             }
         }
     }

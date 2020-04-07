@@ -59,15 +59,23 @@ namespace GameSpyLib.Extensions
         /// <returns></returns>
         public static string ReplaceUnreadableCharToHex(byte[] buffer, int index, int size)
         {
-            return ReplaceUnreadableCharToHex(Encoding.ASCII.GetString(buffer, index, size));
+            return ReplaceUnreadableCharToHex(buffer.Take(size).ToArray());
         }
-
-        public static string ReplaceUnreadableCharToHex(string buffer)
+        public static string ReplaceUnreadableCharToHex(byte[] buffer)
         {
-           return Regex.Replace(buffer,
-                          @"\p{Cc}",
-                          a => string.Format("[{0:X2}]", (byte)a.Value[0])
-                        );
+            StringBuilder temp = new StringBuilder();
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                if (buffer[i] < 0x1F || buffer[i] > 0x7E)
+                {
+                    temp.Append(string.Format("[{0:X2}]",buffer[i]));
+                }
+                else
+                {
+                    temp.Append((char)buffer[i]);
+                }
+            }
+            return temp.ToString();
         }
 
         public static void ShowRetroSpyLogo(string version)

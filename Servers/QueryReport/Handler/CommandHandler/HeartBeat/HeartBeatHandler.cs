@@ -40,7 +40,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
 
-            int playerPos = dataPartition.IndexOf("player_", StringComparison.Ordinal);
+            int playerPos = dataPartition.IndexOf("player_\0", StringComparison.Ordinal);
 
             int teamPos = dataPartition.IndexOf("team_t\0", StringComparison.Ordinal);
 
@@ -57,6 +57,16 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 _gameServer.ServerData.Update(serverData, endPoint);
                 _gameServer.PlayerData.Update(playerData);
                 _gameServer.TeamData.Update(teamData);
+                _gameServer.LastHeartBeatPacket = DateTime.Now;
+            }
+            else if (playerPos != -1)
+            {
+                //normal heart beat
+                int playerLenth = dataPartition.Length - playerPos;
+                serverData = dataPartition.Substring(0, playerPos - 4);
+                playerData = dataPartition.Substring(playerPos - 1, playerLenth);
+                _gameServer.ServerData.Update(serverData, endPoint);
+                _gameServer.PlayerData.Update(playerData);
                 _gameServer.LastHeartBeatPacket = DateTime.Now;
             }
             else

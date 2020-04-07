@@ -150,7 +150,7 @@ namespace GameSpyLib.Network
 
         public virtual void LogPlainText(byte[] data)
         {
-            LogPlainText(Encoding.ASCII.GetString(data));
+            LogPlainText(StringExtensions.ReplaceUnreadableCharToHex(data));
         }
     }
 }

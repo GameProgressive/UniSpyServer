@@ -28,7 +28,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
                 return;
             }
             _gameServer = result.First();
-            server.ToLog(LogEventLevel.Error, "Challenge received game server is now available");
+            server.ToLog(LogEventLevel.Debug, "Challenge received game server is now available");
             _gameServer.IsValidated = true;
         }
 
@@ -44,9 +44,6 @@ namespace QueryReport.Handler.CommandHandler.Challenge
                 _gameServer.ServerData.KeyValue["gamename"],
                 _gameServer
                 );
-
-            //DedicatedGameServer gameServer;
-            //QRServer.GameServerList.TryGetValue(endPoint, out gameServer);
         }
     }
 }

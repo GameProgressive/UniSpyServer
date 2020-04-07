@@ -32,10 +32,9 @@ namespace Chat
             {
                 DecryptData(ref buffer, size);
             }
+            string data = Encoding.ASCII.GetString(buffer,0,(int)size);
 
-            string data = Encoding.UTF8.GetString(buffer, 0, (int)size);
-
-            ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
+            ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             CommandSwitcher.Switch(this, data);
         }
@@ -48,7 +47,7 @@ namespace Chat
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
             ToLog(Serilog.Events.LogEventLevel.Debug,
-                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(Encoding.ASCII.GetString(buffer))}");
+                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer,0,(int)size)}");
 
             if (UserInfo.useEncryption)
             {

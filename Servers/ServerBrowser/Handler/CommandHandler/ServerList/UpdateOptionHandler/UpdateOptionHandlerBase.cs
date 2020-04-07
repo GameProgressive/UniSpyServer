@@ -116,7 +116,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         }
         public override void Response(SBSession session, byte[] recv)
         {
-            session.LogPlainText(Encoding.ASCII.GetString(_dataList.ToArray()));
+            session.LogPlainText(_dataList.ToArray());
 
             GOAEncryption enc =
                 new GOAEncryption(_secretKey, _request.Challenge, SBServer.ServerChallenge);

@@ -13,6 +13,7 @@ namespace GameSpyLib.RetroSpyConfig
         {
             LoadConfigFile();
         }
+
         private static void LoadConfigFile()
         {
             FileStream fstream = File.OpenRead(@"RetroSpyServer.json");

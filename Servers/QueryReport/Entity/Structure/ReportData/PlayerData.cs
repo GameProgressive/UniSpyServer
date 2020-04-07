@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace QueryReport.Entity.Structure.ReportData
 {
     public class PlayerData
     {
-        private readonly List<string> StandardKey =
+        private readonly List<string> StandardPlayerKeys =
             new List<string>
             {
                 "groupid","player_","score_","skill_","ping_","team_","deaths_","pid_"
@@ -22,17 +23,22 @@ namespace QueryReport.Entity.Structure.ReportData
             KeyValue.Clear();
             int playerCount = System.Convert.ToInt32(playerData[0]);
             playerData = playerData.Substring(1);
-            string[] keyValue = playerData.Split("\0\0", System.StringSplitOptions.RemoveEmptyEntries);
-            string[] keys = keyValue[0].Split("\0");
-            string[] values = keyValue[1].Split("\0");
+            //only store first 2 arrays
+            string[] keyValue = playerData.Split("\0\0").Take(2).ToArray();
+
+            List<string> keys = keyValue[0].Split("\0")
+                 .Where(ks => ks.Contains("_", System.StringComparison.Ordinal))
+                 .ToList();
+
+            List<string> values = keyValue[1].Split("\0").ToList();
 
             for (int i = 0; i < playerCount; i++)
             {
                 Dictionary<string, string> temp = new Dictionary<string, string>();
 
-                for (int j = 0; j < keys.Length; j += 2)
+                for (int j = 0; j < keys.Count; j++)
                 {
-                    temp.Add(keys[j], values[i * keys.Length + j]);
+                    temp.Add(keys[j], values[i * keys.Count + j]);
                 }
 
                 KeyValue.Add(temp);

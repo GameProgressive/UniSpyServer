@@ -102,7 +102,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList
                 session.ToLog(Serilog.Events.LogEventLevel.Error, $"Unknown or unsupported game: {_request.GameName}");
                 return;
             }
-            session.LogPlainText(Encoding.ASCII.GetString(serverList.ToArray()));
+            session.LogPlainText(serverList.ToArray());
 
             GOAEncryption enc =
                 new GOAEncryption(_secretKey, _request.Challenge, SBServer.ServerChallenge);

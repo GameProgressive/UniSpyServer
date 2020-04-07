@@ -1,5 +1,4 @@
-﻿
-using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Database.Entity;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
