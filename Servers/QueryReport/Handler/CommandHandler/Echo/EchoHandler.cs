@@ -10,7 +10,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
 {
     public class EchoHandler : CommandHandlerBase
     {
-        DedicatedGameServer _gameServer;
+         GameServer _gameServer;
         public EchoHandler() : base()
         {
         }
@@ -19,7 +19,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
         {
             //TODO
             var result =
-                 RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
+                 RedisExtensions.GetDedicatedGameServers<GameServer>(endPoint);
             //add recive echo packet on gameserverList
             //DedicatedGameServer game;
             //QRServer.GameServerList.TryGetValue(endPoint, out game);

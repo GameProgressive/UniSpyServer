@@ -20,7 +20,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
     public class ServerRulesHandler : CommandHandlerBase
     {
         private ServerRulesRequest _request;
-        private DedicatedGameServer _gameServer;
+        private  GameServer _gameServer;
         public ServerRulesHandler() : base()
         {
         }
@@ -40,7 +40,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
         public override void DataOperation(SBSession session, byte[] recv)
         {
             var result =
-                RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(
+                RedisExtensions.GetDedicatedGameServers<GameServer>(
                     new IPAddress(BitConverter.GetBytes(_request.IP)).ToString());
             if (result.Count() != 1)
             {
@@ -93,7 +93,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
             }
             return data;
         }
-        private List<byte> GenerateServerInfoHeader(DedicatedGameServer server)
+        private List<byte> GenerateServerInfoHeader(GameServer server)
         {
             // you will only have HasKeysFlag or HasFullRule you can not have both
             List<byte> header = new List<byte>();
@@ -117,7 +117,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
 
             return header;
         }
-        private void CheckPrivateIP(List<byte> header, DedicatedGameServer server)
+        private void CheckPrivateIP(List<byte> header,  GameServer server)
         {
             // now we check if there are private ip
             if (server.ServerData.KeyValue.ContainsKey("localip0"))
@@ -133,7 +133,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
                 header.AddRange(address);
             }
         }
-        private void CheckNonStandardPort(List<byte> header, DedicatedGameServer server)
+        private void CheckNonStandardPort(List<byte> header,  GameServer server)
         {
             //we check host port is standard port or not
             if (server.ServerData.KeyValue.ContainsKey("hostport"))
@@ -148,7 +148,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
                 }
             }
         }
-        private void CheckPrivatePort(List<byte> header, DedicatedGameServer server)
+        private void CheckPrivatePort(List<byte> header,  GameServer server)
         {
             // we check private port here
             if (server.ServerData.KeyValue.ContainsKey("localport"))

@@ -12,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
 {
     public class GeneralRequestHandler : UpdateOptionHandlerBase
     {
-        List<DedicatedGameServer> _gameServer;
+        List<GameServer> _gameServer;
         public GeneralRequestHandler(ServerListRequest request) : base(request)
         {
         }
@@ -21,7 +21,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
         {
             base.DataOperation(session, recv);
             _gameServer =
-                        RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(_request.GameName);
+                        RedisExtensions.GetDedicatedGameServers<GameServer>(_request.GameName);
             if (_gameServer == null || _gameServer.Count == 0)
             {
                 _errorCode = SBErrorCode.NoServersFound;
@@ -80,7 +80,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
         }
 
 
-        protected override void GenerateServerInfoHeader(List<byte> header, DedicatedGameServer server)
+        protected override void GenerateServerInfoHeader(List<byte> header,  GameServer server)
         {
             //add has key flag
             header.Add((byte)GameServerFlags.HasKeysFlag);

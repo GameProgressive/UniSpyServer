@@ -12,7 +12,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
     public class HeartBeatHandler : CommandHandlerBase
     {
-        private DedicatedGameServer _gameServer;
+        private GameServer _gameServer;
 
         public HeartBeatHandler() : base()
         {
@@ -25,7 +25,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             //DedicatedGameServer gameServer = new DedicatedGameServer();
             //gameServer.Parse(endPoint, basePacket.InstantKey);
 
-            _gameServer = new DedicatedGameServer();
+            _gameServer = new GameServer();
             _gameServer.Parse(endPoint, basePacket.InstantKey); ;
             //_gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
 

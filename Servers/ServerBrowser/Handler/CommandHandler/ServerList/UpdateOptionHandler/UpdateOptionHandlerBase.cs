@@ -49,12 +49,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected virtual void GenerateServerKeys() { }
         protected virtual void GenerateUniqueValue() { }
         protected virtual void GenerateServersInfo() { }
-        protected virtual void GenerateServerInfoHeader(List<byte> header, DedicatedGameServer server) { }
+        protected virtual void GenerateServerInfoHeader(List<byte> header,  GameServer server) { }
 
 
 
 
-        protected void CheckPrivateIP(List<byte> header, DedicatedGameServer server)
+        protected void CheckPrivateIP(List<byte> header,  GameServer server)
         {
             // now we check if there are private ip
             if (server.ServerData.KeyValue.ContainsKey("localip0"))
@@ -70,7 +70,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 header.AddRange(address);
             }
         }
-        protected void CheckNonStandardPort(List<byte> header, DedicatedGameServer server)
+        protected void CheckNonStandardPort(List<byte> header,  GameServer server)
         {
             //we check host port is standard port or not
             if (server.ServerData.KeyValue.ContainsKey("hostport"))
@@ -85,7 +85,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 }
             }
         }
-        protected void CheckPrivatePort(List<byte> header, DedicatedGameServer server)
+        protected void CheckPrivatePort(List<byte> header,  GameServer server)
         {
             // we check private port here
             if (server.ServerData.KeyValue.ContainsKey("localport"))
@@ -97,7 +97,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 header.AddRange(localPort);
             }
         }
-        protected void CheckICMPSupport(List<byte> header, DedicatedGameServer server)
+        protected void CheckICMPSupport(List<byte> header,  GameServer server)
         {
 
         }

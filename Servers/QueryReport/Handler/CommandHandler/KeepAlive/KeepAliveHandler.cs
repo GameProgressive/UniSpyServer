@@ -20,7 +20,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             KeepAlivePacket packet = new KeepAlivePacket();
             packet.Parse(recv);
             _sendingBuffer = packet.GenerateResponse();
-            var gameServer = RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint).First();
+            var gameServer = RedisExtensions.GetDedicatedGameServers<GameServer>(endPoint).First();
             gameServer.LastKeepAlive = DateTime.Now;
             RedisExtensions.UpdateDedicatedGameServer
                 (

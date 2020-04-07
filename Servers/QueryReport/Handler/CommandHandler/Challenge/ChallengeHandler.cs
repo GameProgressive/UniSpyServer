@@ -11,7 +11,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 {
     public class ChallengeHandler : CommandHandlerBase
     {
-        DedicatedGameServer _gameServer;
+        GameServer _gameServer;
         //we do not need to implement this to check the correctness of the challenge response
         public ChallengeHandler() : base()
         {
@@ -20,11 +20,11 @@ namespace QueryReport.Handler.CommandHandler.Challenge
         protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
             var result =
-                  RedisExtensions.GetDedicatedGameServers<DedicatedGameServer>(endPoint);
+                  RedisExtensions.GetDedicatedGameServers<GameServer>(endPoint);
 
             if (result.Count() != 1)
             {
-                server.ToLog(LogEventLevel.Error, "Can not find game server in game server list");
+                _errorCode = Entity.Enumerator.QRErrorCode.Database;
                 return;
             }
             _gameServer = result.First();
