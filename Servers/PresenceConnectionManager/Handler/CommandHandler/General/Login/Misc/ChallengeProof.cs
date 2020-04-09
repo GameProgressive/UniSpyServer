@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Encryption;
+﻿using GameSpyLib.Extensions;
 using PresenceConnectionManager.Enumerator;
 using System.Text;
 

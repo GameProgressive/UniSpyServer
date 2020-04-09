@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
-namespace GameSpyLib.Encryption
+namespace GameSpyLib.Extensions
 {
     public static class StringExtensions
     {
@@ -49,6 +50,52 @@ namespace GameSpyLib.Encryption
                 if (Encoding == null) Encoding = Encoding.UTF8;
                 return Md5.ComputeHash(Encoding.GetBytes(input)).ToHex(upperCase);
             }
+        }
+        /// <summary>
+        /// Replace unreadable charactors to ? for logging
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public static string ReplaceUnreadableCharToHex(byte[] buffer, int index, int size)
+        {
+            return ReplaceUnreadableCharToHex(buffer.Take(size).ToArray());
+        }
+        public static string ReplaceUnreadableCharToHex(byte[] buffer)
+        {
+            StringBuilder temp = new StringBuilder();
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                if (buffer[i] < 0x1F || buffer[i] > 0x7E)
+                {
+                    temp.Append(string.Format("[{0:X2}]",buffer[i]));
+                }
+                else
+                {
+                    temp.Append((char)buffer[i]);
+                }
+            }
+            return temp.ToString();
+        }
+
+        public static void ShowRetroSpyLogo(string version)
+        {
+            Console.WriteLine(@"  ___     _           ___             ___                      ");
+            Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
+            Console.WriteLine(@" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
+            Console.WriteLine(@" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
+            Console.WriteLine(@"                         |_|   |__/                            ");
+            Console.WriteLine(@" Version: " + version);
+
+        }
+
+        public static string FormatServerTableContext(string part1, string part2, string part3)
+        {
+            return string.Format("|{0,-11}|{1,-14}|{2,-6}|", part1, part2, part3);
+        }
+        public static string FormatServerTableHeader(string part1, string part2, string part3)
+        {
+            return string.Format("+{0,-11}+{1,-14}+{2,-6}+", part1, part2, part3);
         }
     }
 }

@@ -26,6 +26,7 @@
         /// </summary>
         NN3
     }
+
     public enum NatPacketType : byte
     {
         Init,
@@ -54,8 +55,9 @@
         PacketMap3,
         PacketMap1b,
         NumPackets
-    };
-    public enum NatMappingScheme : byte
+    }
+
+    public enum NatNegotiationMappingScheme : byte
     {
         Unrecognized,
         PrivateAsPublic,
@@ -64,7 +66,8 @@
         Mixed,
         NumMappingSchemes
     }
-    public enum NatType
+
+    public enum NatNegotiationType
     {
         NoNat,
         FirewallOnly,

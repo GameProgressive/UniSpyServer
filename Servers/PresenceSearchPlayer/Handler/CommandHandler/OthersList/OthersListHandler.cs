@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
-    public class OthersListHandler : GPSPHandlerBase
+    public class OthersListHandler : CommandHandlerBase
     {
-        public OthersListHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public OthersListHandler() : base()
         {
         }
 
@@ -17,20 +17,23 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("opids") || !recv.ContainsKey("namespaceid"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             uint[] opids = recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
+
             try
             {
-                using (var db = new RetrospyDB())
+                using (var db = new retrospyContext())
                 {
                     _sendingBuffer = @"\otherslist\";
+
                     foreach (var pid in opids)
                     {
                         var info = from n in db.Subprofiles
@@ -39,6 +42,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
                         _sendingBuffer += @"\o\" + pid;
                         _sendingBuffer += @"\uniquenick\" + info.First().uniquenick;
                     }
+
                     _sendingBuffer += @"oldone\final\";
                 }
             }

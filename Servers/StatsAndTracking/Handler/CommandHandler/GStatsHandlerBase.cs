@@ -4,38 +4,43 @@ using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler
 {
-    public class GStatsHandlerBase
+    public class CommandHandlerBase
     {
         protected string _sendingBuffer;
         protected uint _localId;
         protected GstatsErrorCode _errorCode = GstatsErrorCode.NoError;
-        protected GStatsHandlerBase(GStatsSession session, Dictionary<string, string> recv)
+
+        protected CommandHandlerBase()
         {
-            Handle(session, recv);
         }
 
-        protected virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
+        public virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
         {
             CheckRequest(session, recv);
+
             if (_errorCode != GstatsErrorCode.NoError)
             {
-                session.ToLog(ErrorMessage.ToMsg(_errorCode));
+                session.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
-            DatabaseOperation(session, recv);
+
+            DataOperation(session, recv);
+
             if (_errorCode == GstatsErrorCode.Database)
             {
-                session.ToLog(ErrorMessage.ToMsg(_errorCode));
+                session.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
+
             ConstructResponse(session, recv);
+
             if (_errorCode != GstatsErrorCode.NoError)
             {
-                session.ToLog(ErrorMessage.ToMsg(_errorCode));
+                session.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
-            Response(session, recv);
 
+            Response(session, recv);
         }
 
         protected virtual void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
@@ -47,21 +52,32 @@ namespace StatsAndTracking.Handler.CommandHandler
                     _errorCode = GstatsErrorCode.Parse;
                 }
             }
-            else
+
+            //worms 3d use id not lid so we added an condition here
+            if (recv.ContainsKey("id"))
             {
-                _errorCode = GstatsErrorCode.Parse;
+                if (!uint.TryParse(recv["id"], out _localId))
+                {
+                    _errorCode = GstatsErrorCode.Parse;
+                }
             }
         }
-        protected virtual void DatabaseOperation(GStatsSession session, Dictionary<string, string> recv)
-        { }
+
+        protected virtual void DataOperation(GStatsSession session, Dictionary<string, string> recv)
+        {
+        }
+
         protected virtual void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
-        { }
+        {
+        }
+
         protected virtual void Response(GStatsSession session, Dictionary<string, string> recv)
         {
             if (_sendingBuffer == null)
             {
                 return;
             }
+
             session.SendAsync(_sendingBuffer);
         }
     }

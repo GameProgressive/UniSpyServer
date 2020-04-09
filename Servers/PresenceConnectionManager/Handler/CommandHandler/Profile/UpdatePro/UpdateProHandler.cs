@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using LinqToDB;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -8,9 +7,9 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
-    public class UpdateProHandler : GPCMHandlerBase
+    public class UpdateProHandler : CommandHandlerBase
     {
-        public UpdateProHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public UpdateProHandler() : base()
         {
         }
 
@@ -19,9 +18,9 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
             base.CheckRequest(session, recv);
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var profile = db.Profiles.Where(
                     p => p.Userid == session.UserInfo.Userid
@@ -35,7 +34,6 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                     s => s.Profileid == session.UserInfo.Profileid
                     && s.Namespaceid == session.UserInfo.NamespaceID
                     && s.Uniquenick == session.UserInfo.UniqueNick).First();
-
 
                 if (recv.ContainsKey("publicmask"))
                 {
@@ -59,6 +57,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                 if (recv.ContainsKey("icquin"))
                 {
                     uint icq;
+
                     uint.TryParse(recv["icquin"], out icq);
                     profile.Icquin = icq;
                 }
@@ -71,6 +70,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                 if (recv.ContainsKey("birthday"))
                 {
                     int date;
+
                     if (int.TryParse(recv["birthday"], out date))
                     {
                         int d = (int)((date >> 24) & 0xFF);
@@ -84,18 +84,19 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
                             profile.Birthyear = y;
                         }
                     }
+
                     if (recv.ContainsKey("sex"))
                     {
                         byte sex;
+
                         if (byte.TryParse(recv["sex"], out sex))
                         {
-                            profile.Sex = Convert.ToSByte(recv["sex"]);
+                            profile.Sex = Convert.ToByte(recv["sex"]);
                         }
-
                     }
+
                     if (recv.ContainsKey("zipcode"))
                     {
-
                         profile.Zipcode = recv["zipcode"];
                     }
 
@@ -109,4 +110,3 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
         }
     }
 }
-

@@ -6,6 +6,8 @@
     <StartupObject></StartupObject>
     <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
     <NoWin32Manifest>true</NoWin32Manifest>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,15 +29,11 @@
     <None Remove="Handler\CommandHandler\Buddy\**" />
     <None Remove="Handler\CommandHandler\Profile\**" />
     <None Remove="obj\**" />
+    <Compile Remove="Handler\CommandHandler\Buddy\BuddyMessage\Auth\EmptyClass.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-    <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
@@ -57,8 +55,12 @@
     <Compile Include="Handler\CommandHandler\Buddy\Status\StatusHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\GetProfile\GetProfileHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\NewProfile\NewProfileHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\NewUser\NewUserHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\RegisterNick\RegisterNickHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\UpdatePro\UpdateProHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\UpdateUI\UpdateUiHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
 </Project>

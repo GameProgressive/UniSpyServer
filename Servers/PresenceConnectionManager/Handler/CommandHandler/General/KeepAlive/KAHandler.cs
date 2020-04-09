@@ -2,9 +2,13 @@
 
 namespace PresenceConnectionManager.Handler.General.KeepAlive
 {
-    public class KAHandler : GPCMHandlerBase
+    public class KAHandler : CommandHandlerBase
     {
-        protected KAHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        protected KAHandler() : base()
+        {
+        }
+
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
         }
 

@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
-    public class UniqueSearchHandler : GPSPHandlerBase
+    public class UniqueSearchHandler : CommandHandlerBase
     {
-        public UniqueSearchHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public UniqueSearchHandler() : base()
         {
         }
 
@@ -16,27 +16,29 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("preferrednick"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
                              where n.Uniquenick == recv["preferrednick"] && n.Namespaceid == _namespaceid && n.Gamename == recv["gamename"]
                              select p.Profileid;
+
                 if (result.Count() == 0)
                 {
                     IsUniquenickExist = false;
                 }
             }
-
         }
+
         protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
         {
             if (!IsUniquenickExist)
@@ -47,7 +49,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             {
                 _sendingBuffer = @"\us\1\nick\choose another name\usdone\final\";
             }
-
         }
     }
 }

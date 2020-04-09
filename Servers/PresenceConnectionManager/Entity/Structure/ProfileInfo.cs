@@ -13,6 +13,5 @@
         public int Interest1;
         public int OwnerShip1;
         public int CountryTypeID;
-
     }
 }

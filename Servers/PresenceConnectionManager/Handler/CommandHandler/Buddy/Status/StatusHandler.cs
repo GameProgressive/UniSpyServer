@@ -3,16 +3,18 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
 {
-    public class StatusHandler : GPCMHandlerBase
+    public class StatusHandler : CommandHandlerBase
     {
         private uint _statusCode;
-        public StatusHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+
+        public StatusHandler() : base()
         {
         }
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (recv.ContainsKey("status"))
             {
                 if (!uint.TryParse(recv["status"], out _statusCode))
@@ -21,12 +23,12 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
                 }
             }
             else
+            {
                 _errorCode = GPErrorCode.Parse;
-
-
+            }
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             session.UserInfo.StatusCode = (GPStatus)_statusCode;
             session.UserInfo.StatusString = recv["statstring"];

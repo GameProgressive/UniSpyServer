@@ -10,10 +10,13 @@ namespace StatsAndTracking.Handler.SystemHandler
             {
                 case GstatsErrorCode.Parse:
                     return "Request parse error!";
+
                 case GstatsErrorCode.General:
                     return "General error!";
+
                 case GstatsErrorCode.Database:
                     return "Database error!";
+
                 default:
                     return "Unknown error!";
             }

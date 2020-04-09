@@ -1,9 +1,8 @@
-﻿using System;
-namespace QueryReport.Entity.Structure.Packet
+﻿namespace QueryReport.Entity.Structure.Packet
 {
-    public class KeepAlivePacket
+    public class KeepAlivePacket : BasePacket
     {
-        public KeepAlivePacket()
+        public KeepAlivePacket() : base()
         {
         }
     }

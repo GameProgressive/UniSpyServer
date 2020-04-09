@@ -1,23 +1,49 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
-using System;
+using Serilog.Events;
+using System.Linq;
 using System.Net;
+
 namespace QueryReport.Handler.CommandHandler.Challenge
 {
-    public class ChallengeHandler:QRHandlerBase
+    public class ChallengeHandler : CommandHandlerBase
     {
-        protected ChallengeHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
+        GameServer _gameServer;
+        //we do not need to implement this to check the correctness of the challenge response
+        public ChallengeHandler() : base()
         {
+        }
+
+        protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
+        {
+            var result =
+                  GameServer.GetGameServers(endPoint);
+
+            if (result.Count() != 1)
+            {
+                _errorCode = Entity.Enumerator.QRErrorCode.Database;
+                return;
+            }
+            _gameServer = result.First();
+            server.ToLog(LogEventLevel.Debug, "Challenge received game server is now available");
+            _gameServer.IsValidated = true;
         }
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            _sendingBuffer = new byte[7];
-            _sendingBuffer[0] = QR.QRMagic1;
-            _sendingBuffer[1] = QR.QRMagic2;
-            _sendingBuffer[2] = QRGameServer.ClientRegistered;
-            Array.Copy(recv, 1, _sendingBuffer, 3, 4);
+            EchoPacket echo = new EchoPacket();
+            echo.Parse(recv);
+            // We send the echo packet to check the ping
+            _sendingBuffer = echo.GenerateResponse();
+
+            GameServer.UpdateGameServer(
+                endPoint,
+                _gameServer.ServerData.KeyValue["gamename"],
+                _gameServer
+                );
         }
     }
 }

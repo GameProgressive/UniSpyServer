@@ -5,7 +5,6 @@
     /// </summary>
     public enum LoginType : uint
     {
-
         NotFound,
         /// <summary>
         /// Login with user combo (nick@email)

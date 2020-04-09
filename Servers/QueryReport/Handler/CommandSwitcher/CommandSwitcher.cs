@@ -1,7 +1,7 @@
-﻿using GameSpyLib.Logging;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.CommandHandler.Available;
 using QueryReport.Handler.CommandHandler.Challenge;
+using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
 using QueryReport.Server;
@@ -16,22 +16,30 @@ namespace QueryReport.Handler.CommandSwitcher
         {
             try
             {
-                switch (recv[0])
+                switch ((QRPacketType)recv[0])
                 {
-                    case QRClient.Avaliable:
-                        AvailableHandler available = new AvailableHandler(server, endPoint, recv);
+                    case QRPacketType.AvaliableCheck:
+                        new AvailableHandler().Handle(server, endPoint, recv);
                         break;
-                    // Note: BattleSpy make use of this despite not being used in both OpenSpy and the SDK.
-                    // Perhaps it was present on an older version of GameSpy SDK
-                    case QRGameServer.Challenge:
-                        ChallengeHandler.ServerChallengeResponse(server, endPoint, recv);
+
+                    //verify challenge to check game server is real or fake;
+                    //after verify we can add game server to server list
+                    case QRPacketType.Challenge:
+                        new ChallengeHandler().Handle(server, endPoint, recv);
                         break;
-                    case QRClient.Heartbeat: // HEARTBEAT
-                        HeartBeatHandler.HeartbeatResponse(server, endPoint, recv);
+
+                    case QRPacketType.HeartBeat: // HEARTBEAT
+                        new HeartBeatHandler().Handle(server, endPoint, recv);
                         break;
-                    case QRClient.KeepAlive:
-                        KeepAliveHandler.KeepAliveResponse(server, endPoint, recv);
+
+                    case QRPacketType.KeepAlive:
+                        new KeepAliveHandler().Handle(server, endPoint, recv);
                         break;
+
+                    case QRPacketType.EchoResponse:
+                        new EchoHandler().Handle(server, endPoint, recv);
+                        break;
+
                     default:
                         server.UnknownDataRecived(recv);
                         break;
@@ -39,7 +47,7 @@ namespace QueryReport.Handler.CommandSwitcher
             }
             catch (Exception e)
             {
-                LogWriter.Log.WriteException(e);
+                server.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
                 server.ReceiveAsync();
             }
         }

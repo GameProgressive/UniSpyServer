@@ -11,24 +11,17 @@ namespace ServerBrowser
     /// </summary>
     public class SBServer : TemplateTcpServer
     {
+        /// <summary>
+        /// we are not gamespy,
+        /// for simplicity we use hard coded challenge
+        /// to reduce computation cost of our program
+        /// </summary>
+        public static readonly string ServerChallenge = "0000000000";
 
-        public static DatabaseEngine DB;
-        public SBServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
+        public SBServer(IPAddress address, int port) : base( address, port)
         {
-            DB = engine;
         }
+
         protected override TcpSession CreateSession() { return new SBSession(this); }
-
-        private bool _disposed;
-        protected override void Dispose(bool disposingManagedResources)
-        {
-            if (_disposed) return;
-            _disposed = true;
-            if (disposingManagedResources)
-            {
-
-            }
-            base.Dispose(disposingManagedResources);
-        }
     }
 }

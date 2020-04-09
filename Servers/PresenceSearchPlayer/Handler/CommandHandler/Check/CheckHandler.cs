@@ -6,31 +6,31 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {
-    public class CheckHandler : GPSPHandlerBase
+    public class CheckHandler : CommandHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        public CheckHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public CheckHandler() : base()
         {
         }
+
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             if (!recv.ContainsKey("nick") || !recv.ContainsKey("email") || !recv.ContainsKey("passenc"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
+
             if (!GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
                 _errorCode = GPErrorCode.CheckBadMail;
             }
         }
 
-
-
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 if (db.Users.Where(e => e.Email == recv["email"]).Count() < 1)
                 {
@@ -61,6 +61,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
                 }
             }
         }
+
         protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
         {
             if (_errorCode != GPErrorCode.NoError)

@@ -1,7 +1,8 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Encryption;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using NetCoreServer;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -15,15 +16,9 @@ namespace GameSpyLib.Network
     /// </summary>
     public class TemplateTcpSession : TcpSession
     {
-        public string ServerName;
-        /// <summary>
-        /// Some server requires that clients should disconnect after send, we use this to determine whether disconnecting clients
-        /// </summary>
-        protected bool DisconnectAfterSend = false;
-        public EndPoint Remote;
+        private EndPoint _endPoint;
         public TemplateTcpSession(TemplateTcpServer server) : base(server)
         {
-            ServerName = server.ServerName;
         }
 
         /// <summary>
@@ -32,48 +27,17 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            LogWriter.Log.Write(LogLevel.Error, "{0} Error: {1}", ServerName, Enum.GetName(typeof(SocketError), error));
+            ToLog(LogEventLevel.Error, error.ToString());
         }
 
-        /// <summary>
-        /// Send data to the client (asynchronous)
-        /// </summary>
-        /// <param name="buffer">Buffer to send</param>
-        /// <param name="offset">Buffer offset</param>
-        /// <param name="size">Buffer size</param>
-        /// <returns>'true' if the data was successfully sent, 'false' if the session is not connected</returns>
-        /// <remarks>
-        /// We override this method in order to let it print the data it transmits, please call "base.SendAsync" in your overrided function.
-        /// </remarks>
-        public override bool SendAsync(byte[] buffer, long offset, long size)
-        {
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
-
-            bool returnValue = base.SendAsync(buffer, offset, size);
-
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
-        }
+  
         protected long BaseSend(byte[] buffer, long offset, long size)
         {
-            long returnValue = base.Send(buffer, offset, size);
-
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
+            return base.Send(buffer, offset, size);
         }
         protected bool BaseSendAsync(byte[] buffer, long offset, long size)
         {
-            bool returnValue = base.SendAsync(buffer, offset, size);
-
-            if (DisconnectAfterSend)
-                Disconnect();
-
-            return returnValue;
+            return base.SendAsync(buffer, offset, size);
         }
         /// <summary>
         /// Send data to the client (synchronous)
@@ -87,23 +51,39 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Send] TCP data: {1}", ServerName, Encoding.UTF8.GetString(buffer));
+            ToLog(LogEventLevel.Debug,
+                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
-            long returnValue = base.Send(buffer, offset, size);
+            return base.Send(buffer, offset, size);
+        }
+        /// <summary>
+        /// Send data to the client (asynchronous)
+        /// </summary>
+        /// <param name="buffer">Buffer to send</param>
+        /// <param name="offset">Buffer offset</param>
+        /// <param name="size">Buffer size</param>
+        /// <returns>'true' if the data was successfully sent, 'false' if the session is not connected</returns>
+        /// <remarks>
+        /// We override this method in order to let it print the data it transmits, please call "base.SendAsync" in your overrided function.
+        /// </remarks>
+        public override bool SendAsync(byte[] buffer, long offset, long size)
+        {
 
-            if (DisconnectAfterSend)
-                Disconnect();
+            ToLog(LogEventLevel.Debug,
+                $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
-            return returnValue;
+            return base.SendAsync(buffer, offset, size);
         }
         /// <summary>
         /// Our method to receive message and print in the console
         /// </summary>
         /// <param name="recv">message we recieved</param>
-        protected virtual void OnReceived(string message)
-        { }
+        protected virtual void OnReceived(string message) { }
 
+        protected virtual void OnReceived(byte[] buffer)
+        {
+            OnReceived(Encoding.ASCII.GetString(buffer));
+        }
         /// <summary>
         /// Handle buffer received notification
         /// </summary>
@@ -118,69 +98,60 @@ namespace GameSpyLib.Network
         {
             if (size > 2048)
             {
-                ToLog("[Spam] client spam we ignored!");
+                ToLog(LogEventLevel.Error, "[Spam] client spam we ignored!");
                 return;
             }
-            if (LogWriter.Log.DebugSockets)
-                LogWriter.Log.Write(LogLevel.Debug, "{0}[Recv] TCP data: {1}", ServerName, Encoding.UTF8.GetString(buffer, 0, (int)size));
 
-            OnReceived(Encoding.UTF8.GetString(buffer, 0, (int)size));
+            ToLog(LogEventLevel.Debug,
+                $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+
+            byte[] tempBuffer = new byte[size];
+            Array.Copy(buffer, 0, tempBuffer, 0, size);
+            OnReceived(tempBuffer);
         }
 
         protected override void OnConnected()
         {
-            Remote = Socket.RemoteEndPoint;
-            ToLog($"[Conn] ID:{Id} IP:{Remote.ToString()}");
+            _endPoint = Socket.RemoteEndPoint;
+            ToLog(LogEventLevel.Information, $"[Conn] IP:{_endPoint}");
             base.OnConnected();
         }
         protected override void OnDisconnected()
         {
-            ToLog($"[Disc] ID:{Id} IP:{Remote.ToString()}");
+            //We create our own RemoteEndPoint because when client disconnect, the session socket will dispose immidiatly
+            ToLog(LogEventLevel.Information, $"[Disc] IP:{_endPoint}");
             base.OnDisconnected();
         }
 
-        public virtual void ToLog(string text)
+        public virtual void ToLog(LogEventLevel level, string text)
         {
-            ToLog(LogLevel.Info, text);
-        }
-        public virtual void ToLog(LogLevel level, string text)
-        {
-            text = ServerName + text;
-            LogWriter.Log.Write(text, level);
+            LogWriter.ToLog(level, $"[{ ServerManagerBase.ServerName}] " + text);
         }
 
-        public virtual void UnknownDataRecived(string text, Dictionary<string, string> recv)
+        public virtual void UnKnownDataReceived(byte[] text)
         {
-            string errorMsg = string.Format("Received unknown data: {0}", text);
-            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
-            ToLog(errorMsg);
+            UnknownDataReceived(Encoding.ASCII.GetString(text));
         }
 
-        public virtual void UnknownDataRecived(Dictionary<string, string> recv)
+        public virtual void UnknownDataReceived(string text)
+        {
+            ToLog(LogEventLevel.Error, $"[Unknow] {text}");
+        }
+
+        public virtual void UnknownDataReceived(Dictionary<string, string> recv)
         {
             GameSpyUtils.PrintReceivedGPDictToLogger(recv);
         }
 
-        public virtual string RequstFormatConversion(string message)
+        public virtual void LogPlainText(string data)
         {
-            if (message.Contains("login"))
-            {
-                message = message.Replace(@"\-", @"\");
-                message = message.Replace('-', '\\');
+            ToLog(LogEventLevel.Information, $@"[Plain] {data}");
+        }
 
-                int pos = message.IndexesOf("\\")[1];
-
-                if (message.Substring(pos, 2) != "\\\\")
-                {
-                    message = message.Insert(pos, "\\");
-                }
-                return message;
-            }
-            else
-            {
-                return message;
-            }
-
+        public virtual void LogPlainText(byte[] data)
+        {
+            LogPlainText(StringExtensions.ReplaceUnreadableCharToHex(data));
         }
     }
 }
+

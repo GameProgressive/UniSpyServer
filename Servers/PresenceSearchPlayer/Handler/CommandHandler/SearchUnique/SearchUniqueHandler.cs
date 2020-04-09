@@ -9,27 +9,28 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    public class SearchUniqueHandler : GPSPHandlerBase
+    public class SearchUniqueHandler : CommandHandlerBase
     {
-        public SearchUniqueHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public SearchUniqueHandler() : base()
         {
         }
 
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("uniquenick") || !recv.ContainsKey("namespaces"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             string[] tempstr = recv["namespaces"].Trim(',').Split(',');
             uint[] nspaceid = Array.ConvertAll(tempstr, uint.Parse);
 
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 foreach (var id in nspaceid)
                 {
@@ -47,7 +48,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
                                      first = p.Firstname,
                                      last = p.Lastname
                                  };
+
                     var info = result.First();
+
                     _sendingBuffer = @"\bsr\" + info.profileid;
                     _sendingBuffer += @"\nick\" + info.nick;
                     _sendingBuffer += @"\uniquenick\" + info.uniquenick;
@@ -56,9 +59,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
                     _sendingBuffer += @"\lastname\" + info.last;
                     _sendingBuffer += @"\email\" + info.email;
                 }
+
                 _sendingBuffer += @"\bsrdone\\more\0\final\";
             }
         }
     }
 }
-
