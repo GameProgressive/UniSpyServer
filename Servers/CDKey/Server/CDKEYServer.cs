@@ -10,11 +10,10 @@ namespace CDKey
 {
     public class CDKeyServer : TemplateUdpServer
     {
-        public static DatabaseEngine DB;
-        public CDKeyServer(string serverName, DatabaseEngine engine, IPAddress address, int port) : base(serverName, address, port)
+        public CDKeyServer(IPAddress address, int port) : base(address, port)
         {
-            DB = engine;
         }
+
         /// <summary>
         ///  Called when a connection comes in on the CDKey server
         ///  known messages
@@ -24,7 +23,7 @@ namespace CDKey
         /// </summary>
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            string decrypted = Enctypex.XorEncoding(message, 0);
+            string decrypted = XorEncoding.Encrypt(message, XorEncoding.XorType.Type0);
             decrypted.Replace(@"\r\n", "").Replace("\0", "");
             string[] recieved = decrypted.TrimStart('\\').Split('\\');
             Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
@@ -36,27 +35,6 @@ namespace CDKey
             string errorMsg = string.Format("Received unknown data.");
             ToLog(errorMsg);
             GameSpyUtils.PrintReceivedGPDictToLogger(recv);
-        }
-        private bool _disposed;
-        protected override void Dispose(bool disposingManagedResources)
-        {
-            if (_disposed) return;
-            _disposed = true;
-            if (disposingManagedResources)
-            {
-
-            }
-            base.Dispose(disposingManagedResources);
-        }
-
-        public override long Send(byte[] buffer, long offset, long size)
-        {
-            return base.Send(buffer, offset, size);
-        }
-
-        public override bool SendAsync(EndPoint endpoint, byte[] buffer)
-        {
-            return base.SendAsync(endpoint, buffer);
         }
     }
 }

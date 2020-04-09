@@ -14,28 +14,32 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 {
-    public class SearchHandler : GPSPHandlerBase
+    public class SearchHandler : CommandHandlerBase
     {
-        public SearchHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public SearchHandler() : base()
         {
         }
 
         private uint _profileid;
         private uint _partnerid;
         private int _skip;
+
         protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("profileid") && !recv.ContainsKey("namespaceid") && !recv.ContainsKey("gamename") && !recv.ContainsKey("partnerid"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
+
             if (!uint.TryParse(recv["profileid"], out _profileid) || !uint.TryParse(recv["partnerid"], out _partnerid))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
+
             if (recv.ContainsKey("skip"))
             {
                 if (!int.TryParse(recv["skip"], out _skip))
@@ -43,15 +47,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                     _errorCode = GPErrorCode.Parse;
                     return;
                 }
-
             }
-
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
             //TODO verify the search condition whether needed namespaceid!!!!!
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 //we only need uniquenick to search a profile
                 if (recv.ContainsKey("uniquenick") && recv.ContainsKey("namespaceid"))
@@ -83,10 +85,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                         _sendingBuffer += @"\lastname\" + p.last;
                         _sendingBuffer += @"\email\" + p.email;
                     }
+
                     _sendingBuffer += @"\bsrdone\\more\0\final\";
-
-
-
                 }
                 else if (recv.ContainsKey("nick") && recv.ContainsKey("email"))
                 {
@@ -106,6 +106,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                                      first = p.Firstname,
                                      last = p.Lastname
                                  };
+
                     foreach (var p in result.Skip(_skip))
                     {
                         _sendingBuffer = @"\bsr\" + p.profileid;
@@ -116,6 +117,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                         _sendingBuffer += @"\lastname\" + p.last;
                         _sendingBuffer += @"\email\" + p.email;
                     }
+
                     _sendingBuffer += @"\bsrdone\\more\0\final\";
                 }
                 else if (recv.ContainsKey("nick"))
@@ -136,6 +138,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                                      first = p.Firstname,
                                      last = p.Lastname
                                  };
+
                     foreach (var p in result.Skip(_skip))
                     {
                         _sendingBuffer = @"\bsr\" + p.profileid;
@@ -146,6 +149,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                         _sendingBuffer += @"\lastname\" + p.last;
                         _sendingBuffer += @"\email\" + p.email;
                     }
+
                     _sendingBuffer += @"\bsrdone\\more\0\final\";
 
                 }
@@ -167,6 +171,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                                      first = p.Firstname,
                                      last = p.Lastname
                                  };
+
                     foreach (var p in result.Skip(_skip))
                     {
                         _sendingBuffer = @"\bsr\" + p.profileid;
@@ -177,6 +182,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                         _sendingBuffer += @"\lastname\" + p.last;
                         _sendingBuffer += @"\email\" + p.email;
                     }
+
                     _sendingBuffer += @"\bsrdone\\more\0\final\";
                 }
                 else
@@ -188,5 +194,3 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
         }
     }
 }
-
-

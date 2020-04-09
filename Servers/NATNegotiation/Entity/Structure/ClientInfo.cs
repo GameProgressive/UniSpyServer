@@ -1,7 +1,6 @@
 ﻿using NatNegotiation.Entity.Structure;
 using NatNegotiation.Entity.Structure.Packet;
 using System;
-using System.Linq;
 using System.Net;
 
 namespace NATNegotiation.Entity.Structure
@@ -9,7 +8,7 @@ namespace NATNegotiation.Entity.Structure
     public class ClientInfo
     {
         public byte Version;
-        public byte[] Cookie = new byte[4];
+        public int Cookie;
         public byte ClientIndex;
         public byte PortType;
         public bool IsConnected;
@@ -19,15 +18,10 @@ namespace NATNegotiation.Entity.Structure
         public bool IsGotReport;
         public GameInfo Game;
         public EndPoint RemoteEndPoint;
-        public byte[] GameName;
+        public string GameName;
 
-
-        public byte[] PublicIP => ((IPEndPoint)RemoteEndPoint).Address.GetAddressBytes();
-        public byte[] PublicPort => BitConverter.GetBytes(((IPEndPoint)RemoteEndPoint).Port).Take(2).ToArray();
-
-        public byte[] InternalIP = new byte[4];
-        public byte[] InternalPort = new byte[2];
-
+        public int InternalIP;
+        public short InternalPort;
 
         public DateTime ConnectPacketTime;
         public DateTime LastPacketTime;
@@ -49,6 +43,7 @@ namespace NATNegotiation.Entity.Structure
             ClientIndex = init.ClientIndex;
             IsGotInit = true;
         }
+
         public void Parse(ConnectPacket connect)
         {
 

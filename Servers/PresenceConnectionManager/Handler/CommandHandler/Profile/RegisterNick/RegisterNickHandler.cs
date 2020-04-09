@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using LinqToDB;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -7,42 +6,42 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
-    public class RegisterNickHandler : GPCMHandlerBase
+    public class RegisterNickHandler : CommandHandlerBase
     {
-        public RegisterNickHandler(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        public RegisterNickHandler() : base()
         {
         }
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
             base.CheckRequest(session, recv);
+
             if (!recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
+
             if (!recv.ContainsKey("uniquenick"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
-
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             try
             {
-                using (var db = new RetrospyDB())
+                using (var db = new retrospyContext())
                 {
                     db.Subprofiles.Where(s => s.Profileid == session.UserInfo.Profileid && s.Namespaceid == session.UserInfo.NamespaceID)
-                        .Set(s => s.Uniquenick, recv["uniquenick"])
-                        .Update();
+                        .First().Uniquenick = recv["uniquenick"];
+                    db.SaveChanges();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 _errorCode = GPErrorCode.DatabaseError;
             }
-
         }
 
         protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)

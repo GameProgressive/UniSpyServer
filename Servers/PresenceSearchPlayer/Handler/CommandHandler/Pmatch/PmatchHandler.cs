@@ -45,6 +45,7 @@
 //                _sendingBuffer += @"\nick\" + player["nick"];
 //                _sendingBuffer += @"\statuscode\" + player["status"];
 //            }
+//
 //            _sendingBuffer += @"\psrdone\final\";
 //        }
 //    }

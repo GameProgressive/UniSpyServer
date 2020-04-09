@@ -3,40 +3,54 @@ using System;
 
 namespace Chat.Handler.CommandHandler.LOGIN
 {
-    public class LOGINHandler
+    public class LOGINHandler : CommandHandlerBase
     {
-        public static void Handle(ChatSession session, string[] recv)
+        int _namespaceID = 0;
+        public LOGINHandler() : base()
         {
-            int namespaceid = 0;
-            if (!Int32.TryParse(recv[1], out namespaceid))
+        }
+
+        public override void CheckRequest(ChatSession session, string[] recv)
+        {
+            base.CheckRequest(session, recv);
+            if (!Int32.TryParse(recv[1], out _namespaceID))
             {
-                session.SendCommand(ChatError.MoreParameters, "LOGIN :Not enough parameters");
-                session.Disconnect();
+                _errorCode = ChatError.Parse;
                 return;
             }
-
-            session.chatUserInfo.namespaceID = namespaceid;
+            session.UserInfo.NameSpaceID = _namespaceID;
 
             if (recv[2] == "*")
             {
                 // Profile login, not handled yet!
-                session.SendCommand(ChatError.MoreParameters, "LOGIN :Not handled yet!");
-                session.Disconnect();
+                _errorCode = ChatError.Login_Failed;
                 return;
             }
 
             // Unique nickname login
-            session.chatUserInfo.uniqueNickname = recv[3];
+            session.UserInfo.UniqueNickName = recv[3];
             //session.chatUserInfo.password = recv[4];
+        }
 
-            session.SendCommand(ChatRPL.Login, "* 1 1");
+        public override void DataOperation(ChatSession session, string[] recv)
+        {
+            base.DataOperation(session, recv);
+            session.UserInfo.NickName = recv[1];
+        }
 
-            NICK.NICKHandler.Handle(session, recv);
+        public override void ConstructResponse(ChatSession session, string[] recv)
+        {
+            base.ConstructResponse(session, recv);
+            _sendingBuffer = ChatServer.GenerateChatCommand(ChatRPL.Login, "* 1 1");
+        }
 
-            session.Send("JOIN #retrospy\r\n");
-            session.SendCommand(ChatRPL.ToPic, "#retrospy Test!");
-            session.SendCommand(ChatRPL.EndOfNames, "#retrospy :End of names LIST");
-
+        public override void Response(ChatSession session, string[] recv)
+        {
+            base.Response(session, recv);
+            session.SendAsync($":{session.UserInfo.ServerIP} 001 {session.UserInfo.NickName} :Welcome!\r\n");
+            //session.Send("JOIN #retrospy\r\n");
+            session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.ToPic, "#retrospy Test!"));
+            session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.EndOfNames, "#retrospy :End of names LIST"));
         }
     }
 }

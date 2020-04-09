@@ -50,5 +50,4 @@
         /// </summary>
         All = 0xFFFFFFFF,
     };
-
 }

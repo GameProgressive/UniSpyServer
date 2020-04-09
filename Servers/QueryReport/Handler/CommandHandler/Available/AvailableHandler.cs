@@ -1,26 +1,20 @@
 ﻿using QueryReport.Entity.Enumerator;
 using QueryReport.Server;
 using System.Net;
-using System.Text;
 
 namespace QueryReport.Handler.CommandHandler.Available
 {
     /// <summary>
     /// AvailableCheckHandler
     /// </summary>
-    public class AvailableHandler:QRHandlerBase
+    public class AvailableHandler : CommandHandlerBase
     {
         private readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
         private readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
         private readonly byte AvailableCheckRequestPostfix = 0x00;
 
-        public AvailableHandler(QRServer server, EndPoint endPoint, byte[] recv) : base(server, endPoint, recv)
+        public AvailableHandler() : base()
         {
-        }
-
-        protected override void Handle(QRServer server, EndPoint endPoint, byte[] recv)
-        {
-            base.Handle(server, endPoint, recv);
         }
 
         protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
@@ -29,8 +23,10 @@ namespace QueryReport.Handler.CommandHandler.Available
             for (int i = 0; i < AvailableCheckRequestPrefix.Length; i++)
             {
                 if (recv[i] != AvailableCheckRequestPrefix[i])
+                {
                     _errorCode = QRErrorCode.Parse;
-                return;
+                    return;
+                }
             }
 
             //postfix check

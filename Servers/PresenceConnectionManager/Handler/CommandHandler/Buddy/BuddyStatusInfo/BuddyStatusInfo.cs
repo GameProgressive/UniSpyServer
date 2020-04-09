@@ -2,9 +2,9 @@
 
 namespace PresenceConnectionManager.Handler.Buddy.BuddyStatusInfo
 {
-    public class BuddyStatusInfo : GPCMHandlerBase
+    public class BuddyStatusInfo : CommandHandlerBase
     {
-        protected BuddyStatusInfo(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        protected BuddyStatusInfo() : base()
         {
         }
         //public static void SendBuddyStatusInfo(GPCMSession session, uint[] profileids)

@@ -4,20 +4,24 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
-    public class SendBlockList : GPCMHandlerBase
+    public class SendBlockList : CommandHandlerBase
     {
-        protected SendBlockList(GPCMSession session, Dictionary<string, string> recv) : base(session, recv)
+        protected SendBlockList() : base()
         {
         }
 
-        protected override void DataBaseOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
             if (session.UserInfo.BlockListSent)
-                return;
-            session.UserInfo.BlockListSent = true;
-            using (var db = new RetrospyDB())
             {
-                var buddies = db.Blockeds.Where(
+                return;
+            }
+
+            session.UserInfo.BlockListSent = true;
+
+            using (var db = new retrospyContext())
+            {
+                var buddies = db.Blocked.Where(
                     f => f.Profileid == session.UserInfo.Profileid
                 && f.Namespaceid == session.UserInfo.NamespaceID);
                 //if (buddies.Count() == 0)
@@ -28,10 +32,12 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
                 _sendingBuffer = @"\blk\" + buddies.Count() + @"\list\";
                 foreach (var b in buddies)
                 {
-
                     _sendingBuffer += b.Profileid;
+
                     if (b != buddies.Last())
+                    {
                         _sendingBuffer += @",";
+                    }
                 }
                 _sendingBuffer += @"\final\";
             }

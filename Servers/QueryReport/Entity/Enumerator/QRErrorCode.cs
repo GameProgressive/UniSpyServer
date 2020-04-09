@@ -20,5 +20,4 @@
         /// </summary>
         NoError
     }
-
 }

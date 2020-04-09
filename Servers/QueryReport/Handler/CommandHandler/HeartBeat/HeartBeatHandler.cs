@@ -1,4 +1,7 @@
-﻿using QueryReport.Entity.Structure;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
+using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
 using System.Linq;
@@ -7,118 +10,89 @@ using System.Text;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
-    public class HeartBeatHandler
+    public class HeartBeatHandler : CommandHandlerBase
     {
-        private byte[] testqr = { 0x3, 0xe6, 0x79, 0x72, 0xc6, 0x6c, 0x6f, 0x63, 0x61, 0x6c, 0x69, 0x70, 0x30, 0x0, 0x31, 0x39, 0x32, 0x2e, 0x31, 0x36, 0x38, 0x2e, 0x31, 0x2e, 0x31, 0x30, 0x32, 0x0, 0x6c, 0x6f, 0x63, 0x61, 0x6c, 0x70, 0x6f, 0x72, 0x74, 0x0, 0x31, 0x31, 0x31, 0x31, 0x31, 0x0, 0x6e, 0x61, 0x74, 0x6e, 0x65, 0x67, 0x0, 0x31, 0x0, 0x73, 0x74, 0x61, 0x74, 0x65, 0x63, 0x68, 0x61, 0x6e, 0x67, 0x65, 0x64, 0x0, 0x33, 0x0, 0x67, 0x61, 0x6d, 0x65, 0x6e, 0x61, 0x6d, 0x65, 0x0, 0x67, 0x6d, 0x74, 0x65, 0x73, 0x74, 0x0, 0x68, 0x6f, 0x73, 0x74, 0x6e, 0x61, 0x6d, 0x65, 0x0, 0x47, 0x61, 0x6d, 0x65, 0x53, 0x70, 0x79, 0x20, 0x51, 0x52, 0x32, 0x20, 0x53, 0x61, 0x6d, 0x70, 0x6c, 0x65, 0x0, 0x67, 0x61, 0x6d, 0x65, 0x76, 0x65, 0x72, 0x0, 0x32, 0x2e, 0x30, 0x30, 0x0, 0x68, 0x6f, 0x73, 0x74, 0x70, 0x6f, 0x72, 0x74, 0x0, 0x32, 0x35, 0x30, 0x30, 0x30, 0x0, 0x6d, 0x61, 0x70, 0x6e, 0x61, 0x6d, 0x65, 0x0, 0x67, 0x6d, 0x74, 0x6d, 0x61, 0x70, 0x31, 0x0, 0x67, 0x61, 0x6d, 0x65, 0x74, 0x79, 0x70, 0x65, 0x0, 0x61, 0x72, 0x65, 0x6e, 0x61, 0x0, 0x6e, 0x75, 0x6d, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x73, 0x0, 0x33, 0x0, 0x6e, 0x75, 0x6d, 0x74, 0x65, 0x61, 0x6d, 0x73, 0x0, 0x32, 0x0, 0x6d, 0x61, 0x78, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x73, 0x0, 0x33, 0x32, 0x0, 0x67, 0x61, 0x6d, 0x65, 0x6d, 0x6f, 0x64, 0x65, 0x0, 0x6f, 0x70, 0x65, 0x6e, 0x70, 0x6c, 0x61, 0x79, 0x69, 0x6e, 0x67, 0x0, 0x74, 0x65, 0x61, 0x6d, 0x70, 0x6c, 0x61, 0x79, 0x0, 0x31, 0x0, 0x66, 0x72, 0x61, 0x67, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x0, 0x30, 0x0, 0x74, 0x69, 0x6d, 0x65, 0x6c, 0x69, 0x6d, 0x69, 0x74, 0x0, 0x34, 0x30, 0x0, 0x67, 0x72, 0x61, 0x76, 0x69, 0x74, 0x79, 0x0, 0x38, 0x30, 0x30, 0x0, 0x72, 0x61, 0x6e, 0x6b, 0x69, 0x6e, 0x67, 0x6f, 0x6e, 0x0, 0x31, 0x0, 0x0, 0x0, 0x3, 0x70, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x5f, 0x0, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x0, 0x64, 0x65, 0x61, 0x74, 0x68, 0x73, 0x5f, 0x0, 0x70, 0x69, 0x6e, 0x67, 0x5f, 0x0, 0x74, 0x65, 0x61, 0x6d, 0x5f, 0x0, 0x74, 0x69, 0x6d, 0x65, 0x5f, 0x0, 0x0, 0x4a, 0x6f, 0x65, 0x20, 0x50, 0x6c, 0x61, 0x79, 0x65, 0x72, 0x0, 0x32, 0x39, 0x0, 0x32, 0x33, 0x0, 0x33, 0x33, 0x31, 0x0, 0x30, 0x0, 0x35, 0x35, 0x39, 0x0, 0x4c, 0x33, 0x33, 0x74, 0x20, 0x30, 0x6e, 0x33, 0x0, 0x39, 0x0, 0x31, 0x39, 0x0, 0x34, 0x31, 0x32, 0x0, 0x31, 0x0, 0x38, 0x35, 0x0, 0x52, 0x61, 0x70, 0x74, 0x6f, 0x72, 0x0, 0x31, 0x34, 0x0, 0x32, 0x34, 0x0, 0x33, 0x31, 0x37, 0x0, 0x30, 0x0, 0x34, 0x31, 0x33, 0x0, 0x0, 0x2, 0x74, 0x65, 0x61, 0x6d, 0x5f, 0x74, 0x0, 0x73, 0x63, 0x6f, 0x72, 0x65, 0x5f, 0x74, 0x0, 0x61, 0x76, 0x67, 0x70, 0x69, 0x6e, 0x67, 0x5f, 0x74, 0x0, 0x0, 0x52, 0x65, 0x64, 0x0, 0x34, 0x33, 0x36, 0x0, 0x31, 0x30, 0x38, 0x0, 0x42, 0x6c, 0x75, 0x65, 0x0, 0x39, 0x38, 0x0, 0x34, 0x35, 0x0 };
-        /// Client or server information come in
-        /// </summary>
-        /// <param name="server"></param>
-        /// <param name="packet"></param>
-        public static void HeartbeatResponse(QRServer server, EndPoint endPoint, byte[] buffer)
+        private GameServer _gameServer;
+
+        public HeartBeatHandler() : base()
+        {
+        }
+
+        protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
+        {
+            BasePacket basePacket = new BasePacket();
+            basePacket.Parse(recv);
+            //DedicatedGameServer gameServer = new DedicatedGameServer();
+            //gameServer.Parse(endPoint, basePacket.InstantKey);
+
+            _gameServer = new GameServer();
+            _gameServer.Parse(endPoint, basePacket.InstantKey); ;
+            //_gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
+
+            base.CheckRequest(server, endPoint, recv);
+        }
+
+        protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
 
-            byte[] recvKeys = new byte[4];
-            //we copy 4 bytes information prepare for reply 
-            Array.Copy(buffer, 1, recvKeys, 0, 4);
 
-            byte[] restData = buffer.Skip(5).ToArray();
-            string recvData = Encoding.UTF8.GetString(restData);
-            string[] dataFrag;
+            //Save server information.
+            string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
-            if (IsServerDataValid(recvData, out dataFrag))
+
+            int playerPos = dataPartition.IndexOf("player_\0", StringComparison.Ordinal);
+
+            int teamPos = dataPartition.IndexOf("team_t\0", StringComparison.Ordinal);
+
+            if (playerPos != -1 && teamPos != -1)
             {
-/*                serverData = dataFrag[0];
-                playerData = dataFrag[1];
-                teamData = dataFrag[2];*/
+                //normal heart beat
+                int playerLenth = teamPos - playerPos;
+                int teamLength = dataPartition.Length - teamPos;
+
+                serverData = dataPartition.Substring(0, playerPos - 4);
+                playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
+                teamData = dataPartition.Substring(teamPos - 1, teamLength);
+
+                _gameServer.ServerData.Update(serverData, endPoint);
+                _gameServer.PlayerData.Update(playerData);
+                _gameServer.TeamData.Update(teamData);
+                _gameServer.LastHeartBeatPacket = DateTime.Now;
+            }
+            else if (playerPos != -1)
+            {
+                //normal heart beat
+                int playerLenth = dataPartition.Length - playerPos;
+                serverData = dataPartition.Substring(0, playerPos - 4);
+                playerData = dataPartition.Substring(playerPos - 1, playerLenth);
+                _gameServer.ServerData.Update(serverData, endPoint);
+                _gameServer.PlayerData.Update(playerData);
+                _gameServer.LastHeartBeatPacket = DateTime.Now;
             }
             else
             {
-                //we revieved a wrong data, we have to send challege to game server
-              /*  byte[] sendingBuffer2 = GenerateChallenge(recvKeys, endPoint);
-
-                server.SendAsync(endPoint, sendingBuffer2);
-                string errorMsg = string.Format("[HeartBeat] Invalid Server Data Received From {0}:{1}-{2}", server.Endpoint.Address, server.Endpoint.Port, dataFrag[0]);
-                server.ToLog(errorMsg);*/
+                //shutdown heart beat
+                serverData = dataPartition;
+                _gameServer.ServerData.Update(serverData, endPoint);
+                GameServer.DeleteGameServer(
+                    endPoint,
+                    _gameServer.ServerData.KeyValue["gamename"]
+                    );
                 return;
             }
-            // We only care about the server data
-           /* string[] serverDataFrag = serverData.Split(new string[] { "\x00" }, StringSplitOptions.None);
-            //server.ToLog(LogLevel.Debug, string.Format("[QR] [HeartBeat] Data received From {0}", server.Socket.RemoteEndPoint.ToString()));
-            server.ToLog(LogLevel.Debug, string.Format("[QR] [HeartBeat] server info:{0} \t player info:{1} \t team info:{2}", serverData, playerData, teamData));*/
 
-            GameServerData gameServer = new GameServerData(server.Endpoint);
-            // set the country based off ip address if its IPv4
-
-            //we set the server variables
-           // SetServerVariables(gameServer, serverDataFrag, server.Endpoint);
-
-            byte[] sendingBuffer = GenerateChallenge(recvKeys, endPoint);
-
-            server.SendAsync(endPoint, sendingBuffer);
+            GameServer.UpdateGameServer(
+               endPoint,
+               _gameServer.ServerData.KeyValue["gamename"],
+               _gameServer
+           );
         }
 
-
-        private static bool IsServerDataValid(string recvData, out string[] dataFrag)
+        protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            dataFrag = recvData.Split(new string[] { "\x00\x00\x00", "\x00\x00\x02" }, StringSplitOptions.None);
-            if (dataFrag.Length != 3 && !recvData.EndsWith("\x00\x00"))
-            {
-                // server data is not valid so we ignore
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        private static byte[] GenerateChallenge(byte[] recvKeys, EndPoint endPoint)
-        {
-            byte[] sendingbuffer = new byte[24];
-            sendingbuffer[0] = QR.QRMagic1;
-            sendingbuffer[1] = QR.QRMagic2;
-            sendingbuffer[2] = QRGameServer.Challenge;
-            Array.Copy(recvKeys, 0, sendingbuffer, 3, 4);
-
-            // Challenge
-            sendingbuffer[7] = 0x54;
-            sendingbuffer[8] = 0x54;
-            sendingbuffer[9] = 0x54;
-
-            sendingbuffer[10] = 0x00;
-            sendingbuffer[11] = 0x00;
-
-
-
-            // IP
-            IPEndPoint iPEndPoint = (IPEndPoint)endPoint;
-            Array.Copy(iPEndPoint.Address.GetAddressBytes(), 0, sendingbuffer, 12, 4);
-            sendingbuffer[16] = 0;
-            sendingbuffer[17] = 0;
-            sendingbuffer[18] = 0;
-            sendingbuffer[19] = 0;
-
-            //Port
-            int port  = iPEndPoint.Port;
-            Array.Copy(BitConverter.GetBytes(port), 0, sendingbuffer, 20, 4);
-
-            return sendingbuffer;
-        }
-        private static void SaveQRinfo(byte[] buffer)
-        {
-            string savestr = "";
-
-            foreach (byte b in buffer)
-            {
-                savestr += @"0x" + Convert.ToString(b, 16) + " ,";
-            }
-            //log(savestr);
-            //byte[] serverData = new byte[buffer.Length - 5];
-
-
-            //string temp = Encoding.ASCII.GetString(serverData );
-            //string temp1 = temp.Substring(3, temp.Length-1);
-
-            //string[] temp2 = temp1.TrimStart('\0').Split('\0');
+            ChallengePacket packet = new ChallengePacket();
+            packet.Parse(endPoint, recv);
+            _sendingBuffer = packet.GenerateResponse();
         }
     }
 }

@@ -7,29 +7,13 @@ namespace PresenceSearchPlayer
 {
     public class GPSPServer : TemplateTcpServer
     {
-        /// <summary>
-        /// Database connection
-        /// </summary>
-        public static DatabaseEngine DBType { get; protected set; }
-        private bool _disposed;
-        public GPSPServer(string serverName, DatabaseEngine databaseType, IPAddress address, int port) : base(serverName, address, port)
+        public GPSPServer(IPAddress address, int port) : base(address, port)
         {
-            DBType = databaseType;
-        }
-        protected override TcpSession CreateSession() { return new GPSPSession(this); }
-
-
-        protected override void Dispose(bool disposingManagedResources)
-        {
-            if (_disposed) return;
-            _disposed = true;
-            if (disposingManagedResources)
-            {
-
-            }
-            base.Dispose(disposingManagedResources);
         }
 
-
+        protected override TcpSession CreateSession()
+        {
+            return new GPSPSession(this);
+        }
     }
 }

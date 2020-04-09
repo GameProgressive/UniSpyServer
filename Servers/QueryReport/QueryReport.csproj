@@ -4,6 +4,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -15,15 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MaxMind.GeoIP2" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,9 +30,19 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Entity\Structure\QRGeneralData.cs" />
     <Compile Remove="Handler\CommandHandler\HeartBeat\QRDBQuery.cs" />
+    <Compile Remove="Entity\Structure\GameServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entity\Structure\Packet\" />
+    <Folder Include="Handler\CommandHandler\Echo\" />
+    <Folder Include="Handler\CommandHandler\MessageACK\" />
+    <Folder Include="Handler\SystemHandler\ServerListChecker\" />
+    <Folder Include="Handler\SystemHandler\FindGeographicLocation\" />
+    <Folder Include="Handler\SystemHandler\ErrorMessage\" />
+    <Folder Include="Entity\Structure\Server\" />
+    <Folder Include="Entity\Structure\Group\" />
+    <Folder Include="Handler\SystemHandler\PeerSystem\" />
   </ItemGroup>
 </Project>

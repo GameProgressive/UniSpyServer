@@ -1,6 +1,5 @@
 ﻿namespace PresenceConnectionManager.Enumerator
 {
-
     public enum GPErrorCode : uint
     {
         // General.
@@ -30,6 +29,7 @@
         LoginBadPreAuth,
         LoginBadLoginTicket,
         LoginTicketExpired,
+
         // Newuser.
         ///////////
         NewUser = 0x0200,
@@ -134,7 +134,6 @@
         ///////////////
         RemoveBlock = 0x1300,
         RemoveBlockNotBlocked,
-
 
         //RetroSpy self defined NoError code
         NoError = 0xffff,

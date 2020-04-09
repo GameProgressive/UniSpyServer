@@ -2,10 +2,28 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>WebServices.Program</StartupObject>
+    <UserSecretsId>4e4ca5ab-cb18-409c-a769-880498fda2b2</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Custom' ">
+    <StartAction>Project</StartAction>
+    <ExternalConsole>true</ExternalConsole>
+    <ApplicationURL>http://localhost:5001</ApplicationURL>
+  </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
     <PackageReference Include="SoapCore" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="RetroSpyServices\" />
+    <Folder Include="RetroSpyServices\Sake\" />
+    <Folder Include="RetroSpyServices\Authentication\" />
+    <Folder Include="RetroSpyServices\Competitive\" />
+    <Folder Include="RetroSpyServices\Direct2Game\" />
+    <Folder Include="RetroSpyServices\Motd\" />
+  </ItemGroup>
 </Project>

@@ -8,9 +8,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
     /// <summary>
     /// Get buddy's information
     /// </summary>
-    public class OthersHandler : GPSPHandlerBase
+    public class OthersHandler : CommandHandlerBase
     {
-        public OthersHandler(GPSPSession session, Dictionary<string, string> recv) : base(session, recv)
+        public OthersHandler() : base()
         {
         }
 
@@ -31,15 +31,16 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
             base.CheckRequest(session, recv);
         }
 
-        protected override void DataBaseOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            using (var db = new RetrospyDB())
+            using (var db = new retrospyContext())
             {
                 var info = from b in db.Friends
                            where b.Profileid == _profileid && b.Namespaceid == _namespaceid
                            select b.Targetid;
 
                 _sendingBuffer = @"\others\";
+
                 foreach (var pid in info)
                 {
                     var b = from p in db.Profiles
@@ -54,6 +55,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                     _sendingBuffer += @"\last\" + b.First().last;
                     _sendingBuffer += @"\email\" + b.First().email;
                 }
+
                 _sendingBuffer += @"\odone\final\";
             }
         }
