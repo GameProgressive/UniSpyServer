@@ -21,7 +21,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
         {
             base.DataOperation(session, recv);
             _gameServer =
-                        RedisExtensions.GetDedicatedGameServers<GameServer>(_request.GameName);
+                        GameServer.GetGameServers(_request.GameName);
             if (_gameServer == null || _gameServer.Count == 0)
             {
                 _errorCode = SBErrorCode.NoServersFound;

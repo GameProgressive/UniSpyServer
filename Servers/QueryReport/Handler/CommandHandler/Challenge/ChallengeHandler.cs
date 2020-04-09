@@ -20,7 +20,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
         protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
             var result =
-                  RedisExtensions.GetDedicatedGameServers<GameServer>(endPoint);
+                  GameServer.GetGameServers(endPoint);
 
             if (result.Count() != 1)
             {
@@ -39,7 +39,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             // We send the echo packet to check the ping
             _sendingBuffer = echo.GenerateResponse();
 
-            RedisExtensions.UpdateDedicatedGameServer(
+            GameServer.UpdateGameServer(
                 endPoint,
                 _gameServer.ServerData.KeyValue["gamename"],
                 _gameServer

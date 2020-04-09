@@ -52,14 +52,14 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
 
                 foreach (var gameName in names)
                 {
-                    var result = RedisExtensions.SearchPeerGroupKeys(gameName);
+                    var result = Entity.Structure.Group.PeerGroup.SearchPeerGroupKeys(gameName);
                  
                     if(result.Count()!=0)
                     {
                         continue;
                     }
                     PeerGroup.Add(LoadGameRooms(gameName));
-                    RedisExtensions.SetGroupList(gameName, LoadGameRooms(gameName));
+                    Entity.Structure.Group.PeerGroup.SetGroupList(gameName, LoadGameRooms(gameName));
                 }
             }
         }

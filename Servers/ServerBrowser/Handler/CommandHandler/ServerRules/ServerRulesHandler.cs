@@ -40,7 +40,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
         public override void DataOperation(SBSession session, byte[] recv)
         {
             var result =
-                RedisExtensions.GetDedicatedGameServers<GameServer>(
+                GameServer.GetGameServers(
                     new IPAddress(BitConverter.GetBytes(_request.IP)).ToString());
             if (result.Count() != 1)
             {
