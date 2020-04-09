@@ -1,26 +1,20 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.General.KeepAlive
 {
-    public class KAHandler
+    public class KAHandler : CommandHandlerBase
     {
-        /// <summary>
-        /// Polls the connection, and checks for drops
-        /// </summary>
-        public static void SendKeepAlive(GPCMSession session)
+        protected KAHandler() : base()
         {
-            if (session.PlayerInfo.LoginProcess == LoginStatus.Completed)
-            {
-                // Try and send a Keep-Alive
-                try
-                {
-                    session.Send(@"\ka\\final\");
-                }
-                catch
-                {
-                    session.DisconnectByReason(DisconnectReason.KeepAliveFailed);
-                }
-            }
+        }
+
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        {
+        }
+
+        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
+        {
+            _sendingBuffer = @"\ka\\final\";
         }
     }
 }

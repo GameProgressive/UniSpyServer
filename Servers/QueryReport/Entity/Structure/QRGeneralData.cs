@@ -2,7 +2,7 @@
 
 namespace QueryReport.Entity.Structure
 {
-    public class GameInfo
+    public class GameServerInfo
     {
         public int ID;
         public string Name;
@@ -56,14 +56,14 @@ namespace QueryReport.Entity.Structure
 
     public class QRServerList
     {
-        public GameInfo Game = new GameInfo();
+        public GameServerInfo Game = new GameServerInfo();
         public byte Filter;
         public List<ServerList> ServerList = new List<ServerList>();
         public int NumServers;
     }
     public class QRServerRules
     {
-        public GameInfo Game = new GameInfo();
+        public GameServerInfo Game = new GameServerInfo();
         public uint IPaddress;
         public ushort Port;
         public CountryRegion Country = new CountryRegion();

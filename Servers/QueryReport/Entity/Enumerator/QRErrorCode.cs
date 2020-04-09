@@ -1,20 +1,20 @@
-﻿using System;
-namespace QueryReport.Entity.Enumerator
+﻿namespace QueryReport.Entity.Enumerator
 {
     public enum QRErrorCode : uint
     {
+        General,
         /// <summary>
         /// Error in request that send by client
         /// </summary>
-        RequestError,
+        Parse,
         /// <summary>
         /// Error in database
         /// </summary>
-        DatabaseError,
+        Database,
         /// <summary>
         /// Error in networks
         /// </summary>
-        NetworkError,
+        Network,
         /// <summary>
         /// No error in process data
         /// </summary>

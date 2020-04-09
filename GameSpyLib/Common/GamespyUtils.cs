@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Encryption;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Extensions;
 using NetCoreServer;
 using System;
 using System.Collections.Generic;
@@ -100,12 +99,13 @@ namespace GameSpyLib.Common
             return a;
         }
 
-        /// <summary>
+
+        /// </summary>
         /// Converts a trimmed presence message from the client string to a keyValue pair dictionary
         /// </summary>
         /// <param name="parts">The array of data from the client</param>
         /// <returns>A converted dictionary</returns>
-        public static Dictionary<string, string> ConvertGPResponseToKeyValue(string[] parts)
+        public static Dictionary<string, string> ConvertRequestToKeyValue(string[] parts)
         {
             Dictionary<string, string> data = new Dictionary<string, string>();
             try
@@ -127,6 +127,12 @@ namespace GameSpyLib.Common
         public static void ProcessPasswordInRetroSpyWay(Dictionary<string, string> dict)
         {
             string password;
+            if (dict.ContainsKey("passwordenc"))
+            {
+                //we do nothing with encoded password                
+                password = DecodePassword(dict["passwordenc"]);
+                dict.Add("passenc", StringExtensions.GetMD5Hash(password));
+            }
             if (dict.ContainsKey("passenc"))
             {
                 //we do nothing with encoded password                
@@ -147,7 +153,7 @@ namespace GameSpyLib.Common
 
         public static void PrintReceivedGPDictToLogger(Dictionary<string, string> recv)
         {
-            LogWriter.Log.Write(LogLevel.Debug, "Received request {0} with content: {1}", recv.Keys.First(), string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray()));
+            ServerManagerBase.LogWriter.Log.Error("Received request {0} with content: {1}", recv.Keys.First(), string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray()));
         }
 
         /// <summary>
@@ -193,12 +199,12 @@ namespace GameSpyLib.Common
             }
             catch (RegexMatchTimeoutException e)
             {
-                LogWriter.Log.WriteException(e);
+                ServerManagerBase.LogWriter.Log.Error(e.ToString());
                 return false;
             }
             catch (ArgumentException e)
             {
-                LogWriter.Log.WriteException(e);
+                ServerManagerBase.LogWriter.Log.Error(e.ToString());
                 return false;
             }
 
@@ -234,7 +240,7 @@ namespace GameSpyLib.Common
         /// <param name="month"></param>
         /// <param name="year"></param>
         /// <returns>True if the date is valid, otherwise false</returns>
-        public static bool IsValidDate(ushort day, ushort month, ushort year)
+        public static bool IsValidDate(int day, int month, int year)
         {
             // Check for a blank.
             /////////////////////

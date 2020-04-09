@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+
 namespace CDKey.Handler.CommandHandler.SKey
 {
     /// <summary>
@@ -27,6 +28,5 @@ namespace CDKey.Handler.CommandHandler.SKey
             //    //TODO cdkey invalid response
             //}                
         }
-
     }
 }

@@ -1,7 +1,7 @@
-﻿using GameSpyLib.Common;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 //last one we search with email this may get few profile so we can not return GPErrorCode
 //SearchWithEmail(client,dict );
 //\search\\sesskey\0\profileid\0\namespaceid\1\partnerid\0\nick\mycrysis\uniquenick\xiaojiuwo\email\koujiangheng@live.cn\gamename\gmtest\final\
@@ -14,83 +14,183 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 {
-    public class SearchHandler : GPSPHandlerBase
+    public class SearchHandler : CommandHandlerBase
     {
-        public SearchHandler(Dictionary<string, string> recv) : base(recv)
+        public SearchHandler() : base()
         {
         }
 
-        protected override void CheckRequest(GPSPSession session)
+        private uint _profileid;
+        private uint _partnerid;
+        private int _skip;
+
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("sesskey") && !_recv.ContainsKey("email") && !_recv.ContainsKey("uniquenick"))
+            base.CheckRequest(session, recv);
+
+            if (!recv.ContainsKey("profileid") && !recv.ContainsKey("namespaceid") && !recv.ContainsKey("gamename") && !recv.ContainsKey("partnerid"))
             {
                 _errorCode = GPErrorCode.Parse;
-            }
-        }
-
-        protected override void DataBaseOperation(GPSPSession session)
-        {
-            //TODO verify the search condition whether needed namespaceid!!!!!
-
-
-            //we only need uniquenick to search a profile
-            if (_recv.ContainsKey("uniquenick"))
-            {
-                _result
-                = SearchQuery.GetProfileFromUniquenick(_recv["uniquenick"], _namespaceid);
-            }
-            else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
-            {
-                _result = SearchQuery.GetProfileFromNickEmail(_recv["nick"], _recv["email"], _namespaceid);
-            }
-            else if (_recv.ContainsKey("nick"))
-            {
-                _result = SearchQuery.GetProfileFromNick(_recv["nick"], _namespaceid);
-            }
-            else if (_recv.ContainsKey("email"))
-            {
-                _result = SearchQuery.GetProfileFromEmail(_recv);
-            }
-            else
-            {
-                session.ToLog("Unknow search request received!");
                 return;
             }
+
+            if (!uint.TryParse(recv["profileid"], out _profileid) || !uint.TryParse(recv["partnerid"], out _partnerid))
+            {
+                _errorCode = GPErrorCode.Parse;
+                return;
+            }
+
+            if (recv.ContainsKey("skip"))
+            {
+                if (!int.TryParse(recv["skip"], out _skip))
+                {
+                    _errorCode = GPErrorCode.Parse;
+                    return;
+                }
+            }
         }
 
-        protected override void ConstructResponse(GPSPSession session)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            int index;
-            if (_result.Count == 1)
+            //TODO verify the search condition whether needed namespaceid!!!!!
+            using (var db = new retrospyContext())
             {
-                index = 0;
-            }
-            //We received request which needs more results.
-            else
-            {
-                if (_recv.ContainsKey("skip"))
+                //we only need uniquenick to search a profile
+                if (recv.ContainsKey("uniquenick") && recv.ContainsKey("namespaceid"))
                 {
-                    index = Convert.ToInt16(_recv["skip"]);
+                    var result = from p in db.Profiles
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Userid
+                                 where n.Uniquenick == recv["uniquenick"]
+                                 && n.Namespaceid == _namespaceid
+                                 && n.Gamename == recv["gamename"]
+                                 && n.Partnerid == _partnerid
+                                 select new
+                                 {
+                                     profileid = n.Profileid,
+                                     nick = p.Nick,
+                                     uniquenick = n.Uniquenick,
+                                     email = u.Email,
+                                     first = p.Firstname,
+                                     last = p.Lastname
+                                 };
+
+                    foreach (var p in result.Skip(_skip))
+                    {
+                        _sendingBuffer = @"\bsr\" + p.profileid;
+                        _sendingBuffer += @"\nick\" + p.nick;
+                        _sendingBuffer += @"\uniquenick\" + p.uniquenick;
+                        _sendingBuffer += @"\namespaceid\" + _namespaceid;
+                        _sendingBuffer += @"\firstname\" + p.first;
+                        _sendingBuffer += @"\lastname\" + p.last;
+                        _sendingBuffer += @"\email\" + p.email;
+                    }
+
+                    _sendingBuffer += @"\bsrdone\\more\0\final\";
+                }
+                else if (recv.ContainsKey("nick") && recv.ContainsKey("email"))
+                {
+                    var result = from p in db.Profiles
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Userid
+                                 where p.Nick == recv["nick"] && u.Email == recv["email"]
+                                 && n.Namespaceid == _namespaceid
+                                 && n.Gamename == recv["gamename"]
+                                 && n.Partnerid == _partnerid
+                                 select new
+                                 {
+                                     profileid = n.Profileid,
+                                     nick = p.Nick,
+                                     uniquenick = n.Uniquenick,
+                                     email = u.Email,
+                                     first = p.Firstname,
+                                     last = p.Lastname
+                                 };
+
+                    foreach (var p in result.Skip(_skip))
+                    {
+                        _sendingBuffer = @"\bsr\" + p.profileid;
+                        _sendingBuffer += @"\nick\" + p.nick;
+                        _sendingBuffer += @"\uniquenick\" + p.uniquenick;
+                        _sendingBuffer += @"\namespaceid\" + _namespaceid;
+                        _sendingBuffer += @"\firstname\" + p.first;
+                        _sendingBuffer += @"\lastname\" + p.last;
+                        _sendingBuffer += @"\email\" + p.email;
+                    }
+
+                    _sendingBuffer += @"\bsrdone\\more\0\final\";
+                }
+                else if (recv.ContainsKey("nick"))
+                {
+                    var result = from p in db.Profiles
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Userid
+                                 where p.Nick == recv["nick"]
+                                 && n.Namespaceid == _namespaceid
+                                 && n.Gamename == recv["gamename"]
+                                 && n.Partnerid == _partnerid
+                                 select new
+                                 {
+                                     profileid = n.Profileid,
+                                     nick = p.Nick,
+                                     uniquenick = n.Uniquenick,
+                                     email = u.Email,
+                                     first = p.Firstname,
+                                     last = p.Lastname
+                                 };
+
+                    foreach (var p in result.Skip(_skip))
+                    {
+                        _sendingBuffer = @"\bsr\" + p.profileid;
+                        _sendingBuffer += @"\nick\" + p.nick;
+                        _sendingBuffer += @"\uniquenick\" + p.uniquenick;
+                        _sendingBuffer += @"\namespaceid\" + _namespaceid;
+                        _sendingBuffer += @"\firstname\" + p.first;
+                        _sendingBuffer += @"\lastname\" + p.last;
+                        _sendingBuffer += @"\email\" + p.email;
+                    }
+
+                    _sendingBuffer += @"\bsrdone\\more\0\final\";
+
+                }
+                else if (recv.ContainsKey("email"))
+                {
+                    var result = from p in db.Profiles
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Userid
+                                 where u.Email == recv["email"]
+                                 && n.Namespaceid == _namespaceid
+                                 && n.Gamename == recv["gamename"]
+                                 && n.Partnerid == _partnerid
+                                 select new
+                                 {
+                                     profileid = n.Profileid,
+                                     nick = p.Nick,
+                                     uniquenick = n.Uniquenick,
+                                     email = u.Email,
+                                     first = p.Firstname,
+                                     last = p.Lastname
+                                 };
+
+                    foreach (var p in result.Skip(_skip))
+                    {
+                        _sendingBuffer = @"\bsr\" + p.profileid;
+                        _sendingBuffer += @"\nick\" + p.nick;
+                        _sendingBuffer += @"\uniquenick\" + p.uniquenick;
+                        _sendingBuffer += @"\namespaceid\" + _namespaceid;
+                        _sendingBuffer += @"\firstname\" + p.first;
+                        _sendingBuffer += @"\lastname\" + p.last;
+                        _sendingBuffer += @"\email\" + p.email;
+                    }
+
+                    _sendingBuffer += @"\bsrdone\\more\0\final\";
                 }
                 else
                 {
-                    index = 0;
+                    _errorCode = GPErrorCode.DatabaseError;
+                    return;
                 }
-            }
-            if (index < _result.Count)
-            {
-                _sendingBuffer = @"\bsr\" + Convert.ToUInt16(_result[index]["profileid"]);
-                _sendingBuffer += @"\nick\" + _result[index]["nick"];
-                _sendingBuffer += @"\uniquenick\" + _result[index]["uniquenick"];
-                _sendingBuffer += @"\namespaceid\" + Convert.ToUInt16(_result[index]["namespaceid"]);
-                _sendingBuffer += @"\firstname\" + _result[index]["firstname"];
-                _sendingBuffer += @"\lastname\" + _result[index]["lastname"];
-                _sendingBuffer += @"\email\" + _result[index]["email"];
-                _sendingBuffer += @"\bsrdone\\more\" + (_result.Count - 1) + @"\final\";
             }
         }
     }
 }
-
-

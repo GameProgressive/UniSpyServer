@@ -1,54 +1,52 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Profile.RegisterNick;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
-    public class RegisterNickHandler
+    public class RegisterNickHandler : CommandHandlerBase
     {
-        /// <summary>
-        /// update the uniquenick
-        /// </summary>
-        /// <param name="session"></param>
-        /// <param name="dict"></param>
-        public static void RegisterNick(GPCMSession session, Dictionary<string, string> dict)
+        public RegisterNickHandler() : base()
         {
-            GPErrorCode error = IsContainAllKeys(dict);
-            if (error != GPErrorCode.NoError)
-            {
-                GameSpyUtils.SendGPError(session, error, "Parsing error");
-                return;
-            }
-            string sendingBuffer;
+        }
 
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        {
+            base.CheckRequest(session, recv);
+
+            if (!recv.ContainsKey("sesskey"))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
+
+            if (!recv.ContainsKey("uniquenick"))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
+        }
+
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        {
             try
             {
-                RegisterNickQuery.UpdateUniquenick(dict["uniquenick"],session.PlayerInfo.SessionKey,Convert.ToUInt16(dict["patnerid"]));
-                sendingBuffer = @"\rn\final\";
-                session.Send(sendingBuffer);
+                using (var db = new retrospyContext())
+                {
+                    db.Subprofiles.Where(s => s.Profileid == session.UserInfo.Profileid && s.Namespaceid == session.UserInfo.NamespaceID)
+                        .First().Uniquenick = recv["uniquenick"];
+                    db.SaveChanges();
+                }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                LogWriter.Log.WriteException(e);
+                _errorCode = GPErrorCode.DatabaseError;
             }
-
-
-
         }
-        public static GPErrorCode IsContainAllKeys(Dictionary<string, string> dict)
+
+        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
         {
-            if (!dict.ContainsKey("sesskey"))
-            {
-                return GPErrorCode.Parse;
-            }
-            if (!dict.ContainsKey("uniquenick"))
-            {
-                return GPErrorCode.Parse;
-            }
-            return GPErrorCode.NoError;
+            _sendingBuffer = @"\rn\final\";
         }
     }
 }

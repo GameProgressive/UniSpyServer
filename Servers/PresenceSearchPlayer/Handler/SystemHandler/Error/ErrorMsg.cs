@@ -1,5 +1,4 @@
-﻿using System;
-using PresenceSearchPlayer.Enumerator;
+﻿using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Error
 {
@@ -37,14 +36,17 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                 case GPErrorCode.UdpLayer:
                     return "There was a problem with the UDP layer.";
 
+
                 // Search.
                 //////////
                 case GPErrorCode.Search:
                     return "There was an error searching for a profile.";
                 case GPErrorCode.SearchConnectionFailed:
-                    return "The search attempt failed to connect to the server.	";
+                    return "The search attempt failed to connect to the server.";
                 case GPErrorCode.SearchTimeOut:
-                    return "The search did not return in a timely fashion.	";
+                    return "The search did not return in a timely fashion.";
+
+
                 // Check.
                 /////////
                 case GPErrorCode.Check:
@@ -52,9 +54,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                 case GPErrorCode.CheckBadMail:
                     return "No account exists with the provided e-mail address.";
                 case GPErrorCode.CheckBadNick:
-                    return "No such profile exists for the provided e-mail adress.	";
+                    return "No such profile exists for the provided e-mail adress.";
                 case GPErrorCode.CheckBadPassword:
                     return "The password is incorrect.";
+
 
                 // Revoke.
                 //////////
@@ -62,6 +65,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                     return "There was an error revoking the buddy.";
                 case GPErrorCode.RevokeNotBuddy:
                     return "You are not a buddy of the profile.";
+
 
                 // Register cdkey.
                 //////////////////
@@ -75,9 +79,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                 case GPErrorCode.RegisterCDKeyAlreadyTaken:
                     return "The cdkey has already been registered to another profile.";
 
+
                 default:
                     return "General error.";
-
             }
         }
 

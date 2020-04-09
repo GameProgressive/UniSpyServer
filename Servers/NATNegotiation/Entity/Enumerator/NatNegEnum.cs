@@ -1,35 +1,63 @@
-﻿namespace NATNegotiation.Entity.Enumerator
+﻿namespace NatNegotiation.Entity.Enumerator
 {
+    public enum ConnectPacketFinishStatus : byte
+    {
+        NoError,
+        DeadHeartBeat,
+        InitPacketTimeOut
+    }
+
+    public enum NatPortType : byte
+    {
+        /// <summary>
+        /// Use game port for nat neg
+        /// </summary>
+        GP,
+        /// <summary>
+        /// IP and Port both restricted
+        /// </summary>
+        NN1,
+        /// <summary>
+        /// IP not restricted
+        /// </summary>
+        NN2,
+        /// <summary>
+        /// Port not restriced
+        /// </summary>
+        NN3
+    }
 
     public enum NatPacketType : byte
     {
-        Init = 0x00,
-        InitAck = 0x01,
-        ErtTest = 0x02,
-        ErtAck = 0x03,
-        StateUpdate = 0x04,
-        Connect = 0x05,
-        ConnectAck = 0x06,
-        ConnectPing = 0x07,
-        BackupTest = 0x08,
-        BackupAck = 0x09,
-        AddressCheck = 0x0A,
-        AddressReply = 0x0B,
-        NatifyRequest = 0x0C,
-        Report = 0x0D,
-        ReportAck = 0x0E,
-        PreInit = 0x0F,
-        PreInitAck = 0x10,
+        Init,
+        InitAck,
+        ErtTest,
+        ErtAck,
+        StateUpdate,
+        Connect,
+        ConnectAck,
+        ConnectPing,
+        BackupTest,
+        BackupAck,
+        AddressCheck,
+        AddressReply,
+        NatifyRequest,
+        Report,
+        ReportAck,
+        PreInit,
+        PreInitAck,
     }
-    enum NatifyPacket
+
+    internal enum NatifyPacket : byte
     {
         PacketMap1a,
         PacketMap2,
         PacketMap3,
         PacketMap1b,
         NumPackets
-    };
-    public enum NatMappingScheme
+    }
+
+    public enum NatNegotiationMappingScheme : byte
     {
         Unrecognized,
         PrivateAsPublic,
@@ -38,7 +66,8 @@
         Mixed,
         NumMappingSchemes
     }
-    public enum NatType
+
+    public enum NatNegotiationType
     {
         NoNat,
         FirewallOnly,
@@ -49,7 +78,8 @@
         Unknown,
         NumNatTypes
     }
-    enum NatPromiscuity
+
+    internal enum NatPromiscuity
     {
         Promiscuous,
         NotPromiscuous,

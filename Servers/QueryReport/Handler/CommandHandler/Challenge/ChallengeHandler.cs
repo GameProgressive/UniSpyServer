@@ -1,39 +1,49 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
-using System;
-using System.Net;
+using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
+using Serilog.Events;
+using System.Linq;
+using System.Net;
+
 namespace QueryReport.Handler.CommandHandler.Challenge
 {
-    public class ChallengeHandler
+    public class ChallengeHandler : CommandHandlerBase
     {
-        /// <summary>
-        /// Our hardcoded Server Validation code
-        /// </summary>
-        private static readonly byte[] ServerValidateCode = {
-                0x72, 0x62, 0x75, 0x67, 0x4a, 0x34, 0x34, 0x64, 0x34, 0x7a, 0x2b,
-                0x66, 0x61, 0x78, 0x30, 0x2f, 0x74, 0x74, 0x56, 0x56, 0x46, 0x64,
-                0x47, 0x62, 0x4d, 0x7a, 0x38, 0x41, 0x00
-            };
-
-
-        public static void ServerChallengeResponse(QRServer server, EndPoint endPoint, byte[] buffer)
+        GameServer _gameServer;
+        //we do not need to implement this to check the correctness of the challenge response
+        public ChallengeHandler() : base()
         {
+        }
 
-            byte[] challenge = new byte[90];
-            byte[] instancekey = new byte[4];
+        protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
+        {
+            var result =
+                  GameServer.GetGameServers(endPoint);
 
-            Array.Copy(buffer, 1, instancekey, 0, 4);
+            if (result.Count() != 1)
+            {
+                _errorCode = Entity.Enumerator.QRErrorCode.Database;
+                return;
+            }
+            _gameServer = result.First();
+            server.ToLog(LogEventLevel.Debug, "Challenge received game server is now available");
+            _gameServer.IsValidated = true;
+        }
 
-            byte[] sendingbuffer = new byte[7];
-            sendingbuffer[0] = QR.QRMagic1;
-            sendingbuffer[1] = QR.QRMagic2;
-            sendingbuffer[2] = QRGameServer.ClientRegistered;
-            Array.Copy(instancekey, 0, sendingbuffer, 3, 4);
+        protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
+        {
+            EchoPacket echo = new EchoPacket();
+            echo.Parse(recv);
+            // We send the echo packet to check the ping
+            _sendingBuffer = echo.GenerateResponse();
 
-            server.SendAsync(endPoint, sendingbuffer);
-
-            LogWriter.Log.Write("[QR] No impliment function for ServerChallengeResponse!", LogLevel.Debug);
+            GameServer.UpdateGameServer(
+                endPoint,
+                _gameServer.ServerData.KeyValue["gamename"],
+                _gameServer
+                );
         }
     }
 }

@@ -1,149 +1,231 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Enumerator;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.NewUser
 {
-    public class NewUserHandler
+    public class NewUserHandler : CommandHandlerBase
     {
-        /// <summary>
-        /// Creates an account and use new account to login
-        /// </summary>
-        /// <param name="session">The client that sended the data</param>
-        /// <param name="dict">The request that the stream sended</param>
-        public static void NewUser(GPCMSession session, Dictionary<string, string> dict)
+        private string _uniquenick;
+        private Users _users;
+        private Profiles _profiles;
+        private Subprofiles _subProfiles;
+
+        private enum _newUserStatus
         {
-            //Format the password for our database storage           
-            GPErrorCode error = IsRequestContainAllKeys(dict);
-            //if there do not recieved right <key,value> pairs we send error
-            if (error != GPErrorCode.NoError)
+            CheckAccount,
+            AccountNotExist,
+            AccountExist,
+            CheckProfile,
+            ProfileNotExist,
+            ProfileExist,
+            CheckSubProfile,
+            SubProfileNotExist,
+            SubProfileExist
+        }
+
+        public NewUserHandler() : base()
+        {
+        }
+
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        {
+            base.CheckRequest(session, recv);
+
+            if (!recv.ContainsKey("nick"))
             {
-                GameSpyUtils.SendGPError(session, error, "Error recieving request. Please check the input!");
+                _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            //Check the nick and uniquenick is formated correct and uniquenick is existed in database
-            string sendingBuffer;
-            error = IsEmailNickUniquenickValied(dict);
-            if (error != GPErrorCode.NoError)
+            if (!recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
-                sendingBuffer = string.Format(@"\nur\{0}\final\", (int)error);
-                session.Send(sendingBuffer);
+                _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            //if the request did not contain uniquenick and namespaceid we use our way to create it.
-            PreProcessRequest(dict);
-            //we get the userid in database. If no userid found according to email we create one 
-            //and store the new account into database.
-            int profileid = CreateAccount(dict);
-
-            if (profileid == -1)
+            if (!recv.ContainsKey("passenc"))
             {
-                GameSpyUtils.SendGPError(session, GPErrorCode.DatabaseError, "Account is existed, please use another one.");
+                _errorCode = GPErrorCode.Parse;
+                return;
+            }
+
+            if (recv.ContainsKey("uniquenick"))
+            {
+                _uniquenick = recv["uniquenick"];
+            }
+        }
+
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        {
+            using (var db = new retrospyContext())
+            {
+                try
+                {
+                    switch (_newUserStatus.CheckAccount)
+                    {
+                        case _newUserStatus.CheckAccount:
+                            int count = db.Users.Where(u => u.Email == recv["email"]).Select(u => u).Count();
+
+                            if (count == 0)
+                            {
+                                goto case _newUserStatus.AccountNotExist;
+                            }
+                            else
+                            {
+                                goto case _newUserStatus.AccountExist;
+                            }
+
+                        case _newUserStatus.AccountNotExist:
+                            _users = new Users { Email = recv["email"], Password = recv["passenc"] };
+                            db.Users.Add(_users);
+                            db.SaveChanges();
+                            goto case _newUserStatus.CheckProfile;
+
+                        case _newUserStatus.AccountExist:
+                            //we have to check password correctness
+                            _users = db.Users.Where(u => u.Email == recv["email"] && u.Password == recv["passenc"]).FirstOrDefault();
+                            if (_users == null)
+                            {
+                                _errorCode = GPErrorCode.NewUserBadPasswords;
+                                break;
+                            }
+                            else
+                            {
+                                goto case _newUserStatus.CheckProfile;
+                            }
+
+                        case _newUserStatus.CheckProfile:
+                            _profiles = db.Profiles.Where(p => p.Userid == _users.Userid && p.Nick == recv["nick"]).FirstOrDefault();
+                            if (_profiles == null)
+                            {
+                                goto case _newUserStatus.ProfileNotExist;
+                            }
+                            else
+                            {
+                                goto case _newUserStatus.ProfileExist;
+                            }
+
+                        case _newUserStatus.ProfileNotExist:
+                            _profiles = new Profiles { Userid = _users.Userid, Nick = recv["nick"] };
+                            db.Profiles.Add(_profiles);
+                            db.SaveChanges();
+                            goto case _newUserStatus.CheckSubProfile;
+
+                        case _newUserStatus.ProfileExist:
+                        //we do nothing here
+
+                        case _newUserStatus.CheckSubProfile:
+                            _subProfiles = db.Subprofiles
+                                .Where(s => s.Profileid == _profiles.Profileid
+                                && s.Uniquenick == _uniquenick
+                                && s.Namespaceid == _namespaceid).FirstOrDefault();
+                            if (_subProfiles == null)
+                            {
+                                goto case _newUserStatus.SubProfileNotExist;
+                            }
+                            else
+                            {
+                                goto case _newUserStatus.SubProfileExist;
+                            }
+
+                        case _newUserStatus.SubProfileNotExist:
+                            //we create subprofile and return
+                            _subProfiles = new Subprofiles { Profileid = _profiles.Profileid, Uniquenick = _uniquenick, Namespaceid = _namespaceid };
+                            db.Subprofiles.Add(_subProfiles);
+                            db.SaveChanges();
+                            break;
+
+                        case _newUserStatus.SubProfileExist:
+                            _errorCode = GPErrorCode.NewUserUniquenickInUse;
+                            break;
+                    }
+                }
+                catch (Exception)
+                {
+                    _errorCode = GPErrorCode.DatabaseError;
+                }
+
+                //update other information
+                if (_errorCode != GPErrorCode.DatabaseError)
+                {
+                    UpdateOtherInfo(recv);
+                }
+            }
+        }
+
+        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
+        {
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                _sendingBuffer = string.Format(@"\nur\{0}\final\", (uint)_errorCode);
             }
             else
             {
-                sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", profileid);
-                session.Send(sendingBuffer);
+                _sendingBuffer = string.Format(@"\nur\\userid\{0}\profileid\{1}\id\1\final\", _users.Userid, _subProfiles.Profileid);
             }
-
         }
 
-
-        public static GPErrorCode IsRequestContainAllKeys(Dictionary<string, string> dict)
+        private void UpdateOtherInfo(Dictionary<string, string> recv)
         {
-            if (!dict.ContainsKey("nick"))
+            using (var db = new retrospyContext())
             {
-                return GPErrorCode.Parse;
-            }
-            if (!dict.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(dict["email"]))
-            {
-                return GPErrorCode.Parse;
-            }
-            if (!dict.ContainsKey("passenc"))
-            {
-                if (!dict.ContainsKey("pass"))
+                uint partnerid;
+
+                if (recv.ContainsKey("partnerid"))
                 {
-                    return GPErrorCode.Parse;
+                    if (uint.TryParse(recv["partnerid"], out partnerid))
+                    {
+                        _subProfiles.Partnerid = partnerid;
+                    }
+                    else
+                    {
+                        _errorCode = GPErrorCode.Parse;
+                    }
                 }
-            }
 
-            if (!dict.ContainsKey("productid"))
-            {
-                return GPErrorCode.Parse;
-            }
-            return GPErrorCode.NoError;
-        }
+                uint productid;
 
-        /// <summary>
-        /// First we need to check the format of email,nick,uniquenick is correct 
-        /// and search uniquenick to find if a account is existed
-        /// </summary>
-        /// <returns></returns>
-        public static GPErrorCode IsEmailNickUniquenickValied(Dictionary<string, string> dict)
-        {
-            if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["nick"]))
-            {
-                return GPErrorCode.NewUserBadNick;
-            }
-            if (dict.ContainsKey("uniquenick"))
-            {
-                if (!GameSpyUtils.IsNickOrUniquenickFormatCorrect(dict["uniquenick"]))
+                if (recv.ContainsKey("productid"))
                 {
-                    return GPErrorCode.NewUserUniquenickInvalid;
+                    if (uint.TryParse(recv["productid"], out productid))
+                    {
+                        _subProfiles.Productid = productid;
+                    }
+                    else
+                    {
+                        _errorCode = GPErrorCode.Parse;
+                    }
                 }
-            }
-            return GPErrorCode.NoError;
-        }
 
-        public static void PreProcessRequest(Dictionary<string, string> dict)
-        {
-            if (!dict.ContainsKey("uniquenick"))
-            {
-                dict.Add("uniquenick", CreateUniquenickInRequest(dict));
-            }
-            else if (dict["uniquenick"] == "")
-            {
-                dict["uniquenick"] = CreateUniquenickInRequest(dict);
-            }
-            if (!dict.ContainsKey("namespaceid"))
-            {
-                dict.Add("namespaceid", "0");
-            }
-        }
-        public static string CreateUniquenickInRequest(Dictionary<string, string> dict)
-        {
-            string user = dict["email"];
-            int Pos = user.IndexOf('@');
-            //we add the nick and email to dictionary
-            string uniquenick = user.Substring(0, Pos);
-            return uniquenick;
-        }
+                if (recv.ContainsKey("gamename"))
+                {
+                    _subProfiles.Gamename = recv["gamename"];
+                }
 
-        /// <summary>
-        /// create account on our database
-        /// </summary>
-        /// <param name="dict"></param>
-        /// <returns>return profileid, if profile exsit returns -1</returns>
-        public static int CreateAccount(Dictionary<string, string> dict)
-        {
+                uint port;
 
-            //check is user exist in users table, if not exist we create
-            int userid = NewUserQuery.CreateUserOnTableUsers(dict);
+                if (recv.ContainsKey("port"))
+                {
+                    if (uint.TryParse(recv["port"], out port))
+                    {
+                        _subProfiles.Port = port;
+                    }
+                    else
+                    {
+                        _errorCode = GPErrorCode.Parse;
+                    }
+                }
 
-            //find or create a profile according to userid          
-            int profileid = NewUserQuery.CreateProfileOnTableProfiles(dict, userid);
-
-            bool IsCreationSuccess = NewUserQuery.CreateSubprofileOnTableNamespace(dict, profileid);
-
-            if (IsCreationSuccess)
-            {
-                return profileid;
-            }
-            else
-            {
-                return -1;
+                if (recv.ContainsKey("cdkeyenc"))
+                {
+                    _subProfiles.Cdkeyenc = recv["cdkeyenc"];
+                }
+                db.Subprofiles.Update(_subProfiles);
+                db.SaveChanges();
             }
         }
     }

@@ -1,48 +1,52 @@
 ﻿using GameSpyLib.Logging;
-using NATNegotiation.Entity.Enumerator;
-using NATNegotiation.Entity.Structure.Packet;
+using NatNegotiation.Entity.Enumerator;
+using NATNegotiation.Entity.Structure;
+using NATNegotiation.Handler.CommandHandler;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace NATNegotiation.Handler.CommandHandler.CommandSwitcher
+namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(NatNegServer server,byte[] message)
+        public static void Switch(NatNegServer server, ClientInfo client, byte[] recv)
         {
-            BasePacket basePacket = new BasePacket(message);
             try
             {
                 //BytesRecieved[7] is nnpacket.PacketType.
-                switch (basePacket.PacketType)
+                switch ((NatPacketType)recv[7])
                 {
-                    case NatPacketType.PreInit:
-                        //NatNegHandler.PreInitResponse(this, packet, nnpacket);
-                        break;
                     case NatPacketType.Init:
-                        InitHandler.InitResponse(server, message);
+                       new InitHandler().Handle(server, client, recv);
                         break;
+
                     case NatPacketType.AddressCheck:
-                        AddressHandler.AddressCheckResponse(server, message);
+                       new AddressHandler().Handle(server, client, recv);
                         break;
+
                     case NatPacketType.NatifyRequest:
-                        NatifyHandler.NatifyResponse(server, message);
+                        new NatifyHandler().Handle(server, client, recv);
                         break;
+
                     case NatPacketType.ConnectAck:
-                        ConnectHandler.ConnectResponse(server, message);
+                        client.IsGotConnectAck = true;
                         break;
+
                     case NatPacketType.Report:
-                        ReportHandler.ReportResponse(server, message);
+                        new ReportHandler().Handle(server, client, recv);
                         break;
+
+                    case NatPacketType.ErtAck:
+                     new ErtACKHandler().Handle(server, client, recv);
+                        break;
+
                     default:
-                        server.UnknownDataRecived(message);
+                        server.UnknownDataRecived(recv);
                         break;
                 }
             }
             catch (Exception e)
             {
-                LogWriter.Log.WriteException(e);
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
         }
     }

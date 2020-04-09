@@ -19,17 +19,23 @@ namespace CDKey.Handler.CommandHandler
                     case "ka":
                         Console.WriteLine("Received keep alive command");
                         break;
+
                     case "auth":
                         break;
+
                     case "resp":
                         break;
+
                     case "skey":
                         SKeyHandler.IsCDKeyValid(server, endPoint, recv);
                         break;
+
                     case "disc"://disconnect from server
                         break;
+
                     case "uon":
                         break;
+
                     default:
                         server.UnknownDataRecived(recv);
                         break;
@@ -37,7 +43,7 @@ namespace CDKey.Handler.CommandHandler
             }
             catch (Exception e)
             {
-                LogWriter.Log.WriteException(e);
+                LogWriter.WriteException(e);
             }
         }
     }

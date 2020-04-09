@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler.UpdGame
 {
     /// <summary>
-    /// Handles game snapshot
+    /// Handles game snapshot and update game data
     /// </summary>
-    public class UpdGame
+    public class UpdGameHandler : CommandHandlerBase
     {
         //	"\updgame\\sesskey\%d\done\%d\gamedata\%s"
-        // The above string is now: 
+        // or
         // "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
+        public UpdGameHandler() : base()
+        {
+        }
     }
 }

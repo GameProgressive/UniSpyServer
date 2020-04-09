@@ -1,70 +1,84 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 /////////////////////////Finished/////////////////////////////////
 namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
 {
-
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    public class NickHandler : GPSPHandlerBase
+    public class NickHandler : CommandHandlerBase
     {
-        public NickHandler(Dictionary<string, string> recv) : base(recv)
+        public NickHandler() : base()
         {
         }
 
-        protected override void CheckRequest(GPSPSession session)
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            if (!_recv.ContainsKey("email"))
+            base.CheckRequest(session, recv);
+
+            if (!recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;
 
             }
+
             // First, we try to receive an encoded password
-            if (!_recv.ContainsKey("passenc"))
+            if (!recv.ContainsKey("passenc"))
             {
                 // If the encoded password is not sended, we try receiving the password in plain text
-                if (!_recv.ContainsKey("pass"))
+                if (!recv.ContainsKey("pass"))
                 {
                     // No password is specified, we cannot continue                   
                     _errorCode = GPErrorCode.Parse;
                 }
-                if (!_recv.ContainsKey("namespaceid"))
+            }
+        }
+
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        {
+            try
+            {
+                using (var db = new retrospyContext())
                 {
-                    _recv.Add("namespaceid", "0");
+                    var players = from u in db.Users
+                                  join p in db.Profiles on u.Userid equals p.Userid
+                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                  where u.Email == recv["email"] && u.Password == recv["passenc"] && n.Namespaceid == _namespaceid
+                                  select new { nick = p.Nick, uniquenick = n.Uniquenick };
+
+                    if (players.Count() == 0)
+                    {
+                        _errorCode = GPErrorCode.CheckBadPassword;
+                    }
+
+                    _sendingBuffer = @"\nr\";
+
+                    foreach (var info in players)
+                    {
+                        _sendingBuffer += @"\nick\";
+                        _sendingBuffer += info.nick;
+                        _sendingBuffer += @"\uniquenick\";
+                        _sendingBuffer += info.uniquenick;
+                    }
+
+                    _sendingBuffer += @"\ndone\final\";
                 }
             }
-            base.CheckRequest(session);
+            catch
+            {
+                _errorCode = GPErrorCode.DatabaseError;
+            }
         }
 
-        protected override void DataBaseOperation(GPSPSession session)
+        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
         {
-            _result = NickQuery.RetriveNicknames(_recv["email"], _recv["passenc"], Convert.ToUInt16(_recv["namespaceid"]));
-        }
-
-        protected override void ConstructResponse(GPSPSession session)
-        {
-            if (_result == null)
+            if (_errorCode != GPErrorCode.NoError)
             {
                 _sendingBuffer = @"\nr\\ndone\final\";
             }
-            else
-            {
-                _sendingBuffer = @"\nr\";
-                foreach (Dictionary<string, object> player in _result)
-                {
-                    _sendingBuffer += @"\nick\";
-                    _sendingBuffer += player["nick"];
-                    _sendingBuffer += @"\uniquenick\";
-                    _sendingBuffer += player["uniquenick"];
-                }
-                _sendingBuffer += @"\ndone\final\";
-            }
-           
         }
     }
 }

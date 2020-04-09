@@ -1,43 +1,67 @@
-﻿using GameSpyLib.Encryption;
-using NATNegotiation.Entity.Enumerator;
+﻿using GameSpyLib.Extensions;
+using NatNegotiation.Entity.Enumerator;
 using System;
+using System.Collections.Generic;
+using System.Net;
 
-namespace NATNegotiation.Entity.Structure.Packet
+namespace NatNegotiation.Entity.Structure.Packet
 {
     public class InitPacket : BasePacket
     {
-        private static readonly int InitPacketSize = 9;
-        public static readonly int PacketSize = BasePacketSize + InitPacketSize;
+        public static new readonly int Size = BasePacket.Size + 9;
 
-        public byte PortType;
-        public byte ClientIndex;
-        public byte UseGamePort;
-        public uint LocalIp;
-        public ushort LocalPort;
+        public byte PortType { get; protected set; }
+        public byte ClientIndex { get; protected set; }
+        public byte UseGamePort { get; protected set; }
+        public int LocalIP;
+        public short LocalPort;
 
-        public InitPacket(byte[] data) : base(data)
+
+        public new void Parse(byte[] recv)
         {
-            PortType = data[13];//02
-            ClientIndex = data[14];//00
-            UseGamePort = data[15];//00
-            LocalIp = BitConverter.ToUInt32(ByteExtensions.SubBytes(data, 16, sizeof(uint)));//00 - 00 - 00 - 00
-            LocalPort = BitConverter.ToUInt16(ByteExtensions.SubBytes(data, 20, sizeof(ushort)));//00 - 00
-        }
-        public byte[] CreateReplyPacket()
-        {
-            byte[] TempBytes = new byte[GetReplyPacketSize()];
-            NatNegInfo.MagicData.CopyTo(TempBytes, 0);
-            TempBytes[magicDataLen] = Version;
-            TempBytes[magicDataLen + 1] = (byte)NatPacketType.InitAck;
-            BitConverter.GetBytes(Cookie).CopyTo(TempBytes, magicDataLen + 2);
-
-            TempBytes[BasePacketSize] = PortType;
-            TempBytes[BasePacketSize + 1] = ClientIndex;
-            TempBytes[BasePacketSize + 2] = UseGamePort;
-            BitConverter.GetBytes(LocalIp).CopyTo(TempBytes, BasePacketSize + 3);
-            BitConverter.GetBytes(LocalPort).CopyTo(TempBytes, BasePacketSize + 7);
-            return TempBytes;
+            base.Parse(recv);
+            PortType = recv[BasePacket.Size];//
+            ClientIndex = recv[BasePacket.Size + 1];//00
+            UseGamePort = recv[BasePacket.Size + 2];//00
+            LocalIP = BitConverter.ToInt32(ByteTools.SubBytes(recv, BasePacket.Size + 3, 4));
+            LocalPort = BitConverter.ToInt16(ByteTools.SubBytes(recv, BasePacket.Size + 7, 2));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="packetType"></param>
+        /// <param name="endPoint">public endpoint</param>
+        /// <returns></returns>
+        public byte[] GenerateResponse(NatPacketType packetType, EndPoint endPoint)
+        {
+            List<byte> data = new List<byte>();
+
+            data.AddRange(base.GenerateResponse(packetType));
+
+            data.Add(PortType);
+            data.Add(ClientIndex);
+            data.Add(UseGamePort);
+            data.AddRange(((IPEndPoint)endPoint).Address.GetAddressBytes());
+            data.AddRange(BitConverter.GetBytes((short)((IPEndPoint)endPoint).Port));
+
+            return data.ToArray();
+        }
+
+        public override byte[] GenerateResponse(NatPacketType packetType)
+        {
+
+            List<byte> data = new List<byte>();
+
+            data.AddRange(base.GenerateResponse(packetType));
+
+            data.Add(PortType);
+            data.Add(ClientIndex);
+            data.Add(UseGamePort);
+            data.AddRange(BitConverter.GetBytes(LocalIP));
+            data.AddRange(BitConverter.GetBytes(LocalPort));
+
+            return data.ToArray();
+        }
     }
 }

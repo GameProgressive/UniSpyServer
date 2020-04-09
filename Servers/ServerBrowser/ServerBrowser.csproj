@@ -4,11 +4,13 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
-    <NoStdLib></NoStdLib>
+    <NoStdLib>true</NoStdLib>
     <PlatformTarget>anycpu</PlatformTarget>
     <NoStdLib>true</NoStdLib>
   </PropertyGroup>
@@ -21,6 +23,8 @@
     <Compile Remove="Handler\Switcher\**" />
     <EmbeddedResource Remove="Handler\Switcher\**" />
     <None Remove="Handler\Switcher\**" />
+    <Compile Remove="Handler\CommandHandler\ServerList\UpdateOptionHandler\NoServerListHandler.cs" />
+    <Compile Remove="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroupsHandler.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,11 +33,27 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <Folder Include="Entity\Enumerator\" />
+    <Folder Include="Handler\CommandHandler\ServerList\" />
+    <Folder Include="Handler\SystemHandler\" />
+    <Folder Include="Entity\Structure\Packet\" />
+    <Folder Include="Handler\CommandHandler\ServerRules\" />
+    <Folder Include="Entity\Structure\Packet\Request\" />
+    <Folder Include="Entity\Structure\Packet\Response\" />
+    <Folder Include="Entity\Interface\" />
+    <Folder Include="Handler\SystemHandler\KeyType\" />
+    <Folder Include="Handler\CommandHandler\KeepAlive\" />
+    <Folder Include="Handler\SystemHandler\Filter\" />
+    <Folder Include="Handler\SystemHandler\Error\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionSwitcher\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\GeneralRequest\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\NoServerList\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroups\" />
+    <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\PushUpdates\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Handler\CommandSwitcher\" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
-
 </Project>

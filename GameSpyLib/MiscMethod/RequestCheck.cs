@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace GameSpyLib.MiscMethod
+﻿namespace GameSpyLib.MiscMethod
 {
     public class RequestCheck
     {

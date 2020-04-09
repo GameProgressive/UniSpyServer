@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CDKey.Handler.CommandHandler.Disc
+﻿namespace CDKey.Handler.CommandHandler.Disc
 {
     /// <summary>
     /// disconnect from cdkey server
@@ -14,7 +10,6 @@ namespace CDKey.Handler.CommandHandler.Disc
         /// </summary>
         public static void Handle()
         {
-
         }
     }
 }

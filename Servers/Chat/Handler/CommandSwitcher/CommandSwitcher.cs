@@ -1,45 +1,32 @@
-﻿using Chat.Handler.CommandHandler.NICK;
-using Chat.Handler.CommandHandler.USER;
-using Chat.Handler.CommandHandler.CRYPT;
-using Chat.Handler.CommandHandler.USRIP;
+﻿using Chat.Handler.CommandHandler.CRYPT;
 using Chat.Handler.CommandHandler.LOGIN;
+using Chat.Handler.CommandHandler.USRIP;
 
 namespace Chat.Handler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(ChatSession session, string[] recv)
+        public static void Switch(ChatSession session, string data)
         {
-            string command = recv[0];
-            switch (command)
+            string message = data.Split("\r\n", System.StringSplitOptions.RemoveEmptyEntries)[0];
+
+            string[] cmd = message.Trim(' ').Split(' ');
+
+            switch (cmd[0])
             {
-                case "USER":
-                    USERHandler.Handle(session, recv);
-                    break;
-                case "NICK":
-                    NICKHandler.Handle(session, recv);
-                    break;
                 case "CRYPT":
-                    CRYPTHandler.Handle(session, recv);
+                    new CRYPTHandler().Handle(session, cmd);
                     break;
                 case "USRIP":
-                    USRIPHandler.Handle(session, recv);
-                    break;
-                case "QUIT":
-                    session.Disconnect();
+                    new USRIPHandler().Handle(session, cmd);
                     break;
                 case "LOGIN":
-                    LOGINHandler.Handle(session, recv);
+                    new LOGINHandler().Handle(session, cmd);
                     break;
                 default:
-                    string singleRecv = "";
-                    foreach (string data in recv)
-                        singleRecv += data;
-
-                    session.ToLog("Unknown request: " + singleRecv);
+                    session.ChatClientProxy.SendAsync(data);
                     break;
             }
-
         }
     }
 }

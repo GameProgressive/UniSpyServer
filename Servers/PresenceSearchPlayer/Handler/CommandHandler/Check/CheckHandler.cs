@@ -1,66 +1,72 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
-using System;
 using System.Collections.Generic;
-using PresenceSearchPlayer.Handler.CommandHandler.Error;
+using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {
-    public class CheckHandler:GPSPHandlerBase
+    public class CheckHandler : CommandHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        public CheckHandler(Dictionary<string, string> recv) : base(recv)
+        public CheckHandler() : base()
         {
         }
-        protected override void CheckRequest(GPSPSession session)
+
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            if (!_recv.ContainsKey("nick") || !_recv.ContainsKey("email") || !_recv.ContainsKey("passenc"))
+            if (!recv.ContainsKey("nick") || !recv.ContainsKey("email") || !recv.ContainsKey("passenc"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
-            if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+
+            if (!GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
                 _errorCode = GPErrorCode.CheckBadMail;
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            if (!CheckQuery.FindEmail(_recv["email"]))
+            using (var db = new retrospyContext())
             {
-                _errorCode = GPErrorCode.CheckBadMail;
-                return;
-            }
-            if (!CheckQuery.CheckPassword(_recv["email"], _recv["passenc"]))
-            {
-                _errorCode = GPErrorCode.CheckBadPassword;
-                return;
-            }
+                if (db.Users.Where(e => e.Email == recv["email"]).Count() < 1)
+                {
+                    _errorCode = GPErrorCode.CheckBadMail;
+                    return;
+                }
 
-            if (!CheckQuery.FindNick(_recv["nick"]))
-            {
-                _errorCode = GPErrorCode.CheckBadNick;
-                return;
-            }
+                if (db.Users.Where(u => u.Email == recv["email"] && u.Password == recv["passenc"]).Count() < 1)
+                {
+                    _errorCode = GPErrorCode.CheckBadPassword;
+                    return;
+                }
 
-            _result = CheckQuery.GetProfileidFromNickEmailPassword(_recv["email"], _recv["passenc"], _recv["nick"]);
-            if (_result== null)
-            {
-                _errorCode = GPErrorCode.CheckBadNick;
+                var result = from p in db.Profiles
+                             join u in db.Users on p.Userid equals u.Userid
+                             where u.Email.Equals(recv["email"])
+                             && u.Password.Equals(recv["passenc"])
+                             && p.Nick.Equals(recv["nick"])
+                             select p.Profileid;
+
+                if (result.Count() == 1)
+                {
+                    _sendingBuffer = @"\cur\0\pid\" + result.First() + @"\final\";
+                }
+                else
+                {
+                    _errorCode = GPErrorCode.CheckBadNick;
+                }
             }
         }
 
-        protected override void ConstructResponse(GPSPSession session)
+        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
         {
             if (_errorCode != GPErrorCode.NoError)
             {
                 _sendingBuffer = @"\cur\" + (uint)_errorCode + @"\final\";
-            }
-            else
-            {
-                _sendingBuffer = @"\cur\0\pid\" + _result[0]["profileid"] + @"\final\";
             }
         }
     }

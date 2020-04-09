@@ -1,46 +1,52 @@
-﻿using GameSpyLib.Encryption;
-using NATNegotiation.Entity.Enumerator;
+﻿using GameSpyLib.Extensions;
+using NatNegotiation.Entity.Enumerator;
 using System;
+using System.Collections.Generic;
 
-namespace NATNegotiation.Entity.Structure.Packet
+namespace NatNegotiation.Entity.Structure.Packet
 {
     public class BasePacket
     {
+        public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public byte Version;
-        public NatPacketType PacketType;
+        public NatPacketType PacketType { get; set; }
         public int Cookie;
-        public int magicDataLen = NatNegInfo.MagicData.Length;
-        public static readonly int BasePacketSize = NatNegInfo.MagicData.Length + 6;
 
-        public BasePacket(byte[] data)
+        public static readonly int Size = 12;
+
+        public virtual bool Parse(byte[] recv)
         {
-            if (data.Length < BasePacketSize)
+            if (recv.Length < Size)
             {
-                return;
+                return false;
             }
 
-            byte[] sub = ByteExtensions.SubBytes(data, 0, magicDataLen);
-            //bool isEqual = Array.Equals(sub, NatNegInfo.MagicData);
-            if (sub[0] != NatNegInfo.MagicData[0] || sub[1] != NatNegInfo.MagicData[1] || sub[2] != NatNegInfo.MagicData[2])
-                return;
+            Version = recv[MagicData.Length];
+            PacketType = (NatPacketType)recv[MagicData.Length + 1];
+            Cookie = BitConverter.ToInt32(ByteTools.SubBytes(recv, MagicData.Length + 2, 4));
 
-            if (data[magicDataLen + 2] < 0 || data[magicDataLen + 2] > (byte)NatPacketType.PreInitAck)
-                return;
-
-            Version = data[magicDataLen];
-            PacketType = (NatPacketType)data[magicDataLen + 1];
-            Cookie = BitConverter.ToInt32(ByteExtensions.SubBytes(data, magicDataLen + 2, 4));
+            return true;
         }
 
+        public virtual byte[] GenerateResponse(NatPacketType packetType)
+        {
+            List<byte> data = new List<byte>();
+            data.AddRange(MagicData);
+            data.Add(Version);
+            data.Add((byte)packetType);
+            data.AddRange(BitConverter.GetBytes(Cookie));
+
+            return data.ToArray();
+        }
         /// <summary>
         /// Get repsonse packet size from natneg recieved packet type
         /// </summary>
         /// <param name="type">recieved packet type</param>
         /// <returns></returns>
-        protected int GetReplyPacketSize()
+        public int GetReplyPacketSize()
         {
             //The size is initially CommonInfo size
-            int size = BasePacketSize;
+            int size = BasePacket.Size;
 
             switch (PacketType)
             {
@@ -48,7 +54,9 @@ namespace NATNegotiation.Entity.Structure.Packet
                 case NatPacketType.PreInitAck:
                     size += 6;
                     break;
+
                 case NatPacketType.AddressCheck:
+                case NatPacketType.AddressReply:
                 case NatPacketType.NatifyRequest:
                 case NatPacketType.ErtTest:
                 case NatPacketType.ErtAck:
@@ -59,17 +67,18 @@ namespace NATNegotiation.Entity.Structure.Packet
                     size += 9;
                     break;
 
-                case NatPacketType.ConnectPing:
                 case NatPacketType.Connect:
+                case NatPacketType.ConnectPing:
                     size += 8;
                     break;
+
                 case NatPacketType.Report:
                     size += 61;
                     break;
+
                 default:
                     break;
             }
-
             return size;
         }
     }

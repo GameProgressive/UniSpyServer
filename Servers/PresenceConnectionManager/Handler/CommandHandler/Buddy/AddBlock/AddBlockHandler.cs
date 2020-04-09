@@ -1,26 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Enumerator;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.AddBlock
 {
-    public class AddBlockHandler:GPCMHandlerBase
+    public class AddBlockHandler : CommandHandlerBase
     {
-        public AddBlockHandler(Dictionary<string, string> recv) : base(recv)
+        private uint _blockProfileid;
+
+        public AddBlockHandler() : base()
         {
         }
-        protected override void CheckRequest(GPCMSession session)
+
+        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("profileid"))
+            base.CheckRequest(session, recv);
+
+            if (!recv.ContainsKey("profileid"))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
+
+            else if (!uint.TryParse(recv["profileid"], out _blockProfileid))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataBaseOperation(GPCMSession session)
+        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
         {
-            AddBlockQuery.UpdateBlockListInDatabase(session.PlayerInfo.Profileid, Convert.ToUInt16(_recv["profileid"]), session.PlayerInfo.NamespaceID);
+            using (var db = new retrospyContext())
+            {
+                if (db.Blocked.Where(b => b.Targetid == _blockProfileid && b.Namespaceid == session.UserInfo.NamespaceID && b.Profileid == session.UserInfo.Profileid).Count() == 0)
+                {
+                    Blocked blocked = new Blocked
+                    {
+                        Profileid = session.UserInfo.Profileid,
+                        Targetid = _blockProfileid,
+                        Namespaceid = session.UserInfo.NamespaceID
+                    };
+
+                    db.Blocked.Update(blocked);
+                }
+            }
         }
     }
 }

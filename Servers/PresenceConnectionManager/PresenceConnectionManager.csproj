@@ -6,6 +6,8 @@
     <StartupObject></StartupObject>
     <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
     <NoWin32Manifest>true</NoWin32Manifest>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -18,18 +20,47 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-    <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
+    <Compile Remove="Handler\CommandHandler\Buddy\**" />
+    <Compile Remove="Handler\CommandHandler\Profile\**" />
+    <Compile Remove="obj\**" />
+    <EmbeddedResource Remove="Handler\CommandHandler\Buddy\**" />
+    <EmbeddedResource Remove="Handler\CommandHandler\Profile\**" />
+    <EmbeddedResource Remove="obj\**" />
+    <None Remove="Handler\CommandHandler\Buddy\**" />
+    <None Remove="Handler\CommandHandler\Profile\**" />
+    <None Remove="obj\**" />
+    <Compile Remove="Handler\CommandHandler\Buddy\BuddyMessage\Auth\EmptyClass.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Entity\Interface\" />
+    <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Revoke\" />
+    <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Auth\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Handler\CommandHandler\General\Login\Misc\ChallangeVerify.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Handler\CommandHandler\Buddy\AddBlock\AddBlockHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\AddBuddy\AddBuddyHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\BuddyStatusInfo\BuddyStatusInfo.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\DelBuddy\DelBuddyHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\InviteTo\InviteToHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\SendBlockList\SendBlockList.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\SendBuddyList\SendBuddyList.cs" />
+    <Compile Include="Handler\CommandHandler\Buddy\Status\StatusHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\GetProfile\GetProfileHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\NewProfile\NewProfileHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\NewUser\NewUserHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\RegisterNick\RegisterNickHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\UpdatePro\UpdateProHandler.cs" />
+    <Compile Include="Handler\CommandHandler\Profile\UpdateUI\UpdateUiHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
 </Project>

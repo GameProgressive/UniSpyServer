@@ -1,41 +1,45 @@
-﻿using GameSpyLib.Common;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
-    public class UniqueSearchHandler:GPSPHandlerBase
+    public class UniqueSearchHandler : CommandHandlerBase
     {
-        public  UniqueSearchHandler(Dictionary<string, string> recv) : base(recv)
+        public UniqueSearchHandler() : base()
         {
         }
-        bool IsUniquenickExist;
-        uint namespaceid;       
-        
-        protected override void CheckRequest(GPSPSession session)
+
+        private bool IsUniquenickExist;
+
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            base.CheckRequest(session);
-            if (!_recv.ContainsKey("preferrednick"))
+            base.CheckRequest(session, recv);
+
+            if (!recv.ContainsKey("preferrednick"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
-                
+        }
 
-            if (_recv.ContainsKey("namespaceid"))
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        {
+            using (var db = new retrospyContext())
             {
-               if( !uint.TryParse(_recv["namespaceid"], out namespaceid))
+                var result = from p in db.Profiles
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
+                             where n.Uniquenick == recv["preferrednick"] && n.Namespaceid == _namespaceid && n.Gamename == recv["gamename"]
+                             select p.Profileid;
+
+                if (result.Count() == 0)
                 {
-                    _errorCode = GPErrorCode.Parse;
+                    IsUniquenickExist = false;
                 }
             }
         }
 
-        protected override void DataBaseOperation(GPSPSession session)
-        {
-            IsUniquenickExist = UniqueSearchQuery.IsUniqueNickExist(_recv["preferrednick"], namespaceid);
-
-        }
-        protected override void ConstructResponse(GPSPSession session)
+        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
         {
             if (!IsUniquenickExist)
             {
@@ -43,9 +47,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             }
             else
             {
-                _sendingBuffer = @"\us\1\nick\" + _recv["preferrednick"] + @"\usdone\final\";
+                _sendingBuffer = @"\us\1\nick\choose another name\usdone\final\";
             }
-            
         }
     }
 }

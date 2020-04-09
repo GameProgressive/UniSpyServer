@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PresenceConnectionManager.Enumerator
+﻿namespace PresenceConnectionManager.Enumerator
 {
     /// <summary>
     /// The status of the player
@@ -44,5 +40,4 @@ namespace PresenceConnectionManager.Enumerator
         /// </summary>
         Banned,
     };
-
 }

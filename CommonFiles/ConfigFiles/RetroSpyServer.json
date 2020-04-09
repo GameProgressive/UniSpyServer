@@ -1,0 +1,77 @@
+{
+  "DataBase": {
+    "Type": "MySql",
+    "RemoteAddress": "127.0.0.1",
+    "RemotePort": "3306",
+    "UserName": "root",
+    "Password": "0000",
+    "DatabaseName": "retrospy",
+    "SslMode": "Preferred",
+    "SslCert": "",
+    "SslKey": "",
+    "SslCa": ""
+  },
+  "Redis": {
+    "RemoteAddress": "127.0.0.1",
+    "RemotePort": "6379"
+  },
+  "Servers": [
+    {
+      "Name": "GPCM",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "29900",
+      "RemoteAddress": "",
+      "RemotePort": "29900"
+    },
+    {
+      "Name": "GPSP",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "29901",
+      "RemoteAddress": "",
+      "RemotePort": "29901"
+    },
+    {
+      "Name": "CDKEY",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "29910",
+      "RemoteAddress": "",
+      "RemotePort": "29910"
+    },
+    {
+      "Name": "SB",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "28910",
+      "RemoteAddress": "",
+      "RemotePort": "28910"
+    },
+    {
+      "Name": "QR",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "27900",
+      "RemoteAddress": "",
+      "RemotePort": "27900"
+    },
+    {
+      "Name": "NATNEG",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "27901",
+      "RemoteAddress": "",
+      "RemotePort": "27901"
+    },
+    {
+      "Name": "GSTATS",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "29920",
+      "RemoteAddress": "",
+      "RemotePort": "29920"
+    },
+    {
+      "Name": "CHAT",
+      "ListeningAddress": "0.0.0.0",
+      "ListeningPort": "6667",
+      "RemoteAddress": "",
+      "RemotePort": "6667"
+    }
+  ],
+  "MinimumLogLevel": "Verbose"
+}

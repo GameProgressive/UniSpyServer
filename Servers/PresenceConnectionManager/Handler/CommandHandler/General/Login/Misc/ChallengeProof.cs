@@ -1,7 +1,6 @@
-﻿using System.Text;
-using GameSpyLib.Encryption;
+﻿using GameSpyLib.Extensions;
 using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Structure;
+using System.Text;
 
 namespace PresenceConnectionManager.Handler.General.Login.Misc
 {

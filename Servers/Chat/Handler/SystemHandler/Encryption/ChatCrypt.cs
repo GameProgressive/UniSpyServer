@@ -11,7 +11,6 @@ namespace Chat.Handler.SystemHandler.Encryption
     /// </summary>
     public class ChatCrypt
     {
-
         /// <summary>
         /// Crypt or decrypt the data
         /// </summary>
@@ -48,7 +47,6 @@ namespace Chat.Handler.SystemHandler.Encryption
         /// <param name="gamekey"></param>
         public static void Init(GSPeerChatCTX ctx, string challengeKey, string secretKey)
         {
-
             byte[] challengeBytes = Encoding.ASCII.GetBytes(challengeKey);
             byte[] secretKeyBytes = Encoding.ASCII.GetBytes(secretKey);
 
@@ -59,7 +57,9 @@ namespace Chat.Handler.SystemHandler.Encryption
             for (int i = 0; i < challengeBytes.Length; i++, secretKeyIndex++)
             {
                 if (secretKeyIndex >= secretKeyBytes.Length)
+                {
                     secretKeyIndex = 0;
+                }
 
                 challengeBytes[i] ^= secretKeyBytes[secretKeyIndex];
             }
@@ -76,7 +76,9 @@ namespace Chat.Handler.SystemHandler.Encryption
             for (int i = 0, index2 = 0; i < ctx.GSPeerChatCrypt.Length; i++, index1++)
             {
                 if (index1 >= challengeBytes.Length)
+                {
                     index1 = 0;
+                }
 
                 index2 = (byte)((challengeBytes[index1] + ctx.GSPeerChatCrypt[i] + index2) % 256);
                 byte t = ctx.GSPeerChatCrypt[i];

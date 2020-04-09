@@ -1,6 +1,5 @@
 ﻿using PresenceConnectionManager.Enumerator;
 
-
 namespace PresenceConnectionManager.Handler.Error
 {
     public class ErrorMsg
@@ -36,7 +35,6 @@ namespace PresenceConnectionManager.Handler.Error
 
                 case GPErrorCode.UdpLayer:
                     return "There was a problem with the UDP layer.";
-
 
 
                 ///Login error message
@@ -97,14 +95,12 @@ namespace PresenceConnectionManager.Handler.Error
                     return "The uniquenick is already in use.";
 
 
-
                 ///UpdateUi
                 case GPErrorCode.UpdateUI:
                     return "There was an error updating the user information.";
 
                 case GPErrorCode.UpdateUIBadEmail:
                     return "A user with the email adress provided already exists.";
-
 
 
                 ///Newprofile
@@ -118,8 +114,7 @@ namespace PresenceConnectionManager.Handler.Error
                     return "A profile with the nickname provided already exists.";
 
 
-                // Updatepro.
-                /////////////
+                ///Updatepro
                 case GPErrorCode.UpdatePro:
                     return "There was an error updating the profile information.";
 
@@ -127,13 +122,12 @@ namespace PresenceConnectionManager.Handler.Error
                     return "A user with the nickname provided already exists.";
 
 
-                // Addbuddy.
-                ////////////
+                ///Addbuddy
                 case GPErrorCode.AddBuddy:
-                    return "There was an error adding a buddy. ";
+                    return "There was an error adding a buddy.";
 
                 case GPErrorCode.AddBuddyBadForm:
-                    return "The profile requesting to add a buddy is invaild. ";
+                    return "The profile requesting to add a buddy is invaild.";
 
                 case GPErrorCode.AddBuddyBadNew:
                     return "The profile requested is invalid.";
@@ -146,8 +140,7 @@ namespace PresenceConnectionManager.Handler.Error
                 //_return "Reserved for future use The profile requested is blocking you.";
 
 
-                // Authadd.
-                ///////////
+                ///Authadd
                 case GPErrorCode.AuthAdd:
                     return "There was an error authorizing an add buddy request.";
 
@@ -158,7 +151,7 @@ namespace PresenceConnectionManager.Handler.Error
                     return "The signature for the authorization is invalid.";
 
                 case GPErrorCode.Status:
-                    return "There was an error with the status string.	";
+                    return "There was an error with the status string.";
 
                 case GPErrorCode.Bm:
                     return "There was an error sending a buddy message.";
@@ -167,7 +160,7 @@ namespace PresenceConnectionManager.Handler.Error
                     return "The profile the message was to be sent to is not a buddy.";
 
                 case GPErrorCode.BmExtInfoNotSupported:
-                    return "The profile does not support extended info keys.	";
+                    return "The profile does not support extended info keys.";
 
                 case GPErrorCode.BmBuddyOffline:
                     return "The buddy to send a message to is offline.";
@@ -176,7 +169,7 @@ namespace PresenceConnectionManager.Handler.Error
                     return "There was an error getting profile info.";
 
                 case GPErrorCode.GetProfileBadProfile:
-                    return "The profile info was requested on is invalid.	";
+                    return "The profile info was requested on is invalid.";
 
                 case GPErrorCode.DelBuddy:
                     return "There was an error deleting the buddy.";
@@ -185,15 +178,13 @@ namespace PresenceConnectionManager.Handler.Error
                     return "The buddy to be deleted is not a buddy.";
 
                 case GPErrorCode.DelProfile:
-                    return "	There was an error deleting the profile.";
+                    return "There was an error deleting the profile.";
 
                 case GPErrorCode.DelProfileLastProfile:
-                    return "The last profile cannot be deleted.	";
+                    return "The last profile cannot be deleted.";
 
 
-
-                // AddBlock.
-                ////////////
+                ///AddBlock
                 case GPErrorCode.AddBlock:
                     return "There was an error adding the player to the blocked list.";
 
@@ -201,16 +192,15 @@ namespace PresenceConnectionManager.Handler.Error
                     return "The profile specified is already blocked.";
 
 
-                // RemoveBlock.
-                ///////////////
+                ///RemoveBlock
                 case GPErrorCode.RemoveBlock:
                     return "There was an error removing the player from the blocked list.";
 
                 case GPErrorCode.RemoveBlockNotBlocked:
                     return "The profile specified was not a member of the blocked list.";
 
-                // Registeruniquenick.
-                //////////////////////
+
+                ///Registeruniquenick
                 case GPErrorCode.RegisterUniquenick:
                     return "There was an error registering the uniquenick.";
                 case GPErrorCode.RegisterUniquenickTaken:
@@ -218,14 +208,14 @@ namespace PresenceConnectionManager.Handler.Error
                 case GPErrorCode.RegisterUniquenickReserved:
                     return "The uniquenick is reserved.";
                 case GPErrorCode.RegisterUniquenickBadNamespace:
-                    return "Tried to register a nick with no namespace set. ";
+                    return "Tried to register a nick with no namespace set.";
 
 
                 default:
                     return "General error.";
-
             }
         }
+
         /// <summary>
         /// Send a presence error
         /// </summary>

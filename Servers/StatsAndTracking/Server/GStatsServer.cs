@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Database.Entity;
-using GameSpyLib.Encryption;
 using GameSpyLib.Network;
 using NetCoreServer;
 using System.Net;
@@ -8,9 +7,6 @@ namespace StatsAndTracking
 {
     public class GStatsServer : TemplateTcpServer
     {
-        public static DatabaseDriver DB;
-
-        public bool Disposed = false;
         /// <summary>
         /// Default constructor
         /// </summary>
@@ -19,24 +15,11 @@ namespace StatsAndTracking
         /// If the databaseDriver is null, then the server will attempt to create it's own connection
         /// otherwise it will use the specified connection
         /// </param>
-        public GStatsServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
+        public GStatsServer(IPAddress address, int port) : base(address, port)
         {
-            //GStatsHandler.DBQuery = new GSTATSDBQuery(databaseDriver);
-            DB = databaseDriver;
         }
-        protected override TcpSession CreateSession() { return new GstatsSession(this); }
 
-        protected override void Dispose(bool disposingManagedResources)
-        {
-            if (disposingManagedResources)
-            {
+        protected override TcpSession CreateSession() { return new GStatsSession(this); }
 
-            }
-            DB.Close();
-            DB?.Dispose();
-            DB = null;
-
-            base.Dispose(disposingManagedResources);
-        }
     }
 }

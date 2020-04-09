@@ -1,47 +1,56 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
-    public class ValidHandler : GPSPHandlerBase
+    public class ValidHandler : CommandHandlerBase
     {
-        public ValidHandler(Dictionary<string, string> recv) : base(recv)
+        public ValidHandler() : base()
         {
         }
-        bool EmailValid;
-        
-        protected override void CheckRequest(GPSPSession session)
+
+        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
         {
-            if (!_recv.ContainsKey("email"))
+            if (!recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;
+                return;
             }
-            if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+
+            if (!GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
             {
                 _errorCode = GPErrorCode.Parse;
+                return;
             }
         }
 
-        protected override void ConstructResponse(GPSPSession session)
+        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
         {
-            if(EmailValid)
+            using (var db = new retrospyContext())
             {
-                session.Send(@"\vr\1\final\");
-            }
-            else
-            {
-                session.Send(@"\vr\0\final\");
-            }
-        }
+                var result = from u in db.Users
+                             join p in db.Profiles on u.Userid equals p.Userid
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
+                             //According to FSW partnerid is not nessesary
+                             where u.Email == recv["email"] && n.Gamename == recv["gamename"] && n.Namespaceid == _namespaceid
+                             select p.Profileid;
 
-        protected override void DataBaseOperation(GPSPSession session)
-        {
-            if (ValidQuery.IsEmailValid(_recv["email"]))
-            {
-                EmailValid = true;
+                if (result.Count() == 0)
+                {
+                    _sendingBuffer = @"\vr\0\final\";
+
+                }
+                else if (result.Count() == 1)
+                {
+                    _sendingBuffer = @"\vr\1\final\";
+                }
+                else
+                {
+                    _errorCode = GPErrorCode.DatabaseError;
+                }
             }
         }
     }

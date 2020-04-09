@@ -1,36 +1,51 @@
 ﻿using GameSpyLib.Database.Entity;
-using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using NATNegotiation.Entity.Enumerator;
-using NATNegotiation.Handler.CommandHandler;
-using NATNegotiation.Handler.CommandHandler.CommandSwitcher;
-using NATNegotiation.Entity.Structure.Packet;
+using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
+using NATNegotiation.Entity.Structure;
+using NATNegotiation.Handler.SystemHandler.ClientChecker;
 using System;
+using System.Collections.Concurrent;
 using System.Net;
 
-namespace NATNegotiation
+namespace NatNegotiation
 {
     public class NatNegServer : TemplateUdpServer
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dbdriver">If choose sqlite for database you should pass the connection to server
-        /// ,maybe NatNeg server dose not need connected to database.</param>
-        /// <param name="bindTo"></param>
-        /// <param name="MaxConnections"></param>
-        public NatNegServer(string serverName, DatabaseDriver databaseDriver, IPAddress address, int port) : base(serverName, address, port)
-        {
+        public static ConcurrentDictionary<EndPoint, ClientInfo> ClientList = new ConcurrentDictionary<EndPoint, ClientInfo>();
 
+        private ClientListChecker _checker = new ClientListChecker();
+
+        public NatNegServer(IPAddress address, int port) : base(address, port)
+        {
+            _checker.StartCheck(this);
         }
 
-        protected override void OnReceived(EndPoint endpoint, byte[] message)
+        protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
+            if (message.Length < 5)
+            {
+                return;
+            }
 
-            CommandSwitcher.Switch(this,message);
-            
+            //check and add client into clientList
+            ClientInfo client = ClientList.GetOrAdd(endPoint, new ClientInfo(endPoint));
+            client.LastPacketTime = DateTime.Now;
+            CommandSwitcher.Switch(this, client, message);
         }
 
+        private void CheckClientTimeOut(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            ToLog("Check timeout excuted!");
+
+            foreach (var c in ClientList.Values)
+            {
+                //Console.WriteLine(DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds);
+                if (DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds > 60)
+                {
+                    ToLog("Deleted client " + c.RemoteEndPoint.ToString());
+                    ClientList.TryRemove(c.RemoteEndPoint, out _);
+                }
+            }
+        }
     }
-
 }
