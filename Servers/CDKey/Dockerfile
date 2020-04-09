@@ -17,5 +17,5 @@ RUN dotnet publish "CDKey.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./CommonFiles/RetroSpyServer.xml .
+COPY ./CommonFiles/ConfigFiles/RetroSpyServer.json .
 ENTRYPOINT ["dotnet", "CDKey.dll"]

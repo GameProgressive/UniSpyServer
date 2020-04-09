@@ -12,7 +12,7 @@
     "SslCa": ""
   },
   "Redis": {
-    "RemoteAddress": "localhost",
+    "RemoteAddress": "127.0.0.1",
     "RemotePort": "6379"
   },
   "Servers": [
@@ -72,8 +72,6 @@
       "RemoteAddress": "",
       "RemotePort": "6667"
     }
-
   ],
-
   "MinimumLogLevel": "Verbose"
 }

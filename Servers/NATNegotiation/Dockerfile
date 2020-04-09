@@ -17,5 +17,5 @@ RUN dotnet publish "NATNegotiation.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./CommonFiles/RetroSpyServer.xml .
+COPY ./CommonFiles/ConfigFiles/RetroSpyServer.json .
 ENTRYPOINT ["dotnet", "NATNegotiation.dll"]
