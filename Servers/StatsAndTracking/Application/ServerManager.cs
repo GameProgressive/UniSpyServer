@@ -10,8 +10,6 @@ namespace StatsAndTracking.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private GStatsServer Server = null;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -37,15 +35,6 @@ namespace StatsAndTracking.Application
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                      StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
-        }
-
-        /// <summary>
-        /// Stop a specific server
-        /// </summary>
-        /// <param name="cfg">The configuration of the specific server to stop</param>
-        protected override void StopServer()
-        {
-            Server?.Stop();
         }
     }
 }

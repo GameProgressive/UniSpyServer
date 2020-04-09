@@ -34,7 +34,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
                 case SBServerListUpdateOption.PushUpdates:
                     // worms 3d send this after join group room
                     // we should send adhoc servers which are in this room to worms3d
-                    //This is FULL RULES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                     new PushUpdatesHandler(request).Handle(session, recv);
                     break;
             }

@@ -11,8 +11,6 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private GPCMServer Server = null;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -39,9 +37,6 @@ namespace PresenceConnectionManager.Application
         /// Stop a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to stop</param>
-        protected override void StopServer()
-        {
-            Server?.Dispose();
-        }
+
     }
 }

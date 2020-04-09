@@ -10,8 +10,6 @@ namespace PresenceSearchPlayer
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private GPSPServer Server = null;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -32,11 +30,6 @@ namespace PresenceSearchPlayer
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
-        }
-
-        protected override void StopServer()
-        {
-            Server?.Dispose();
         }
     }
 }

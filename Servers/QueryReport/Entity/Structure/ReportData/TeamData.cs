@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Linq;
 namespace QueryReport.Entity.Structure.ReportData
 {
     public class TeamData
@@ -20,7 +20,7 @@ namespace QueryReport.Entity.Structure.ReportData
             int teamCount = System.Convert.ToInt32(teamData[0]);
             teamData = teamData.Substring(1);
             string[] dataPartition = teamData.Split("\0\0", System.StringSplitOptions.RemoveEmptyEntries);
-            string[] keys = dataPartition[0].Split("\0");
+            string[] keys = dataPartition[0].Split("\0").Where(k=>k.Contains("_")).ToArray();
             string[] values = dataPartition[1].Split("\0");
 
             for (int i = 0; i < teamCount; i++)

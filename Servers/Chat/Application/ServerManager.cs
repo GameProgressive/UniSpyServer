@@ -11,8 +11,6 @@ namespace Chat.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private ChatServer Server = null;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -35,13 +33,5 @@ namespace Chat.Application
             }
         }
 
-        /// <summary>
-        /// Stop a specific server
-        /// </summary>
-        /// <param name="cfg">The configuration of the specific server to stop</param>
-        protected override void StopServer()
-        {
-            Server?.Dispose();
-        }
     }
 }

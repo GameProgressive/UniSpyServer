@@ -18,6 +18,7 @@ namespace GameSpyLib.Common
         public static ConfigManager Config { get; protected set; }
         public static LogWriter LogWriter { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
+        protected object Server;
 
         protected bool Disposed = false;
 
@@ -44,12 +45,7 @@ namespace GameSpyLib.Common
             LogWriter.ToLog(LogEventLevel.Information, " Server is successfully started! ");
         }
 
-
         protected abstract void StartServer(ServerConfig cfg);
-
-        protected abstract void StopServer();
-
-        //public abstract bool IsServerRunning();
 
         private void LoadDatabaseConfig()
         {

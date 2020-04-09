@@ -11,8 +11,6 @@ namespace NatNegotiation.Application
     /// </summary>
     public class ServerManager : ServerManagerBase
     {
-        private NatNegServer Server = null;
-
         /// <summary>
         /// Constructor
         /// </summary>
@@ -40,9 +38,6 @@ namespace NatNegotiation.Application
         /// Stop a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to stop</param>
-        protected override void StopServer()
-        {
-            Server?.Dispose();
-        }
+
     }
 }
