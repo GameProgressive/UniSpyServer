@@ -74,14 +74,14 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 //shutdown heart beat
                 serverData = dataPartition;
                 _gameServer.ServerData.Update(serverData, endPoint);
-                RedisExtensions.DeleteDedicatedGameServer(
+                GameServer.DeleteGameServer(
                     endPoint,
                     _gameServer.ServerData.KeyValue["gamename"]
                     );
                 return;
             }
 
-            RedisExtensions.UpdateDedicatedGameServer(
+            GameServer.UpdateGameServer(
                endPoint,
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer

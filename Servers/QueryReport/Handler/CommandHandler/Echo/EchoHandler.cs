@@ -19,7 +19,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
         {
             //TODO
             var result =
-                 RedisExtensions.GetDedicatedGameServers<GameServer>(endPoint);
+                 GameServer.GetGameServers(endPoint);
             //add recive echo packet on gameserverList
             //DedicatedGameServer game;
             //QRServer.GameServerList.TryGetValue(endPoint, out game);
@@ -37,7 +37,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
             //adding ping and value to dictionary
             _gameServer.ServerData.KeyValue.Add("ping", Convert.ToString(ping));
 
-            RedisExtensions.UpdateDedicatedGameServer(
+            GameServer.UpdateGameServer(
                endPoint,
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer

@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Encryption;
+﻿using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
@@ -7,9 +6,7 @@ using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
 {

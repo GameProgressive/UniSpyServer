@@ -20,7 +20,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
         public override void DataOperation(SBSession session, byte[] recv)
         {
             base.DataOperation(session, recv);
-            _peerGroup = RedisExtensions.GetGroupsList<PeerGroup>(_request.GameName);
+            _peerGroup = PeerGroup.GetGroupsList(_request.GameName);
             if (_peerGroup == null || _peerGroup.PeerRooms.Count == 0)
             {
                 _errorCode = SBErrorCode.NoGroupRoomFound;
