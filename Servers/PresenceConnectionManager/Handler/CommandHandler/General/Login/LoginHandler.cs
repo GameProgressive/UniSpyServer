@@ -20,14 +20,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
         protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
         {
-            if (recv.ContainsKey("id"))
-            {
-                if (!ushort.TryParse(recv["id"], out _operationID))
-                {
-                    _errorCode = GPErrorCode.Parse;
-                }
-            }
-
+            base.CheckRequest(session,recv);
             // Make sure we have all the required data to process this login
             if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
             {

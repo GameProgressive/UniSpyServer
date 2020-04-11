@@ -52,7 +52,7 @@ namespace PresenceConnectionManager
                 return;
             }
 
-            string[] commands = message.Split("\\final\\");
+            string[] commands = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (string command in commands)
             {
@@ -98,8 +98,8 @@ namespace PresenceConnectionManager
         {
             if (message.Contains("login"))
             {
-                message = message.Replace(@"\-", @"\");
-                message = message.Replace('-', '\\');
+                //message = message.Replace(@"\-", @"\");
+                //message = message.Replace('-', '\\');
 
                 int pos = message.IndexesOf("\\")[1];
 
