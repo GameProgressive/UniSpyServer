@@ -30,17 +30,17 @@ namespace GameSpyLib.Network
         protected override void OnConnected()
         {
             _endPoint = Socket.RemoteEndPoint;
-            ToLog(LogEventLevel.Information, $"[Proxy] [Conn] IRC server: {_endPoint}");
+            LogWriter.ToLog(LogEventLevel.Information, $"[Proxy] [Conn] IRC server: {_endPoint}");
         }
 
         protected override void OnDisconnected()
         {
-            ToLog(LogEventLevel.Information, $"[Proxy] [Disc] IRC server: {_endPoint}");
+            LogWriter.ToLog(LogEventLevel.Information, $"[Proxy] [Disc] IRC server: {_endPoint}");
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug,
+           LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Proxy] [Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
@@ -58,26 +58,21 @@ namespace GameSpyLib.Network
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug,
+            LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Proxy] [Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             return base.SendAsync(buffer, offset, size);
         }
 
         public override long Send(byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug,
+            LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Proxy] [Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             return base.Send(buffer, offset, size);
         }
 
         protected override void OnError(SocketError error)
         {
-            ToLog(LogEventLevel.Error, error.ToString());
-        }
-
-        public virtual void ToLog(LogEventLevel level, string text)
-        {
-            LogWriter.ToLog(level, $"[{ServerManagerBase.ServerName}] " + text);
+            LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         }
     }
 }

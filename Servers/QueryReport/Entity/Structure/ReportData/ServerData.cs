@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using GameSpyLib.Logging;
 using QueryReport.Application;
 
 namespace QueryReport.Entity.Structure.ReportData
@@ -38,7 +39,7 @@ namespace QueryReport.Entity.Structure.ReportData
                     }
                     else
                     {
-                        ServerManager.LogWriter.Log.Fatal("Same key with different value has recieved!!!");
+                        LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,"Same key with different value has recieved!!!");
                     }
                 }
 

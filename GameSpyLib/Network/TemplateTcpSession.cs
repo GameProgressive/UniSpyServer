@@ -28,7 +28,7 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            ToLog(LogEventLevel.Error, error.ToString());
+            LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         }
 
   
@@ -52,7 +52,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug,
+            LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.Send(buffer, offset, size);
@@ -70,7 +70,7 @@ namespace GameSpyLib.Network
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
 
-            ToLog(LogEventLevel.Debug,
+            LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.SendAsync(buffer, offset, size);
@@ -99,11 +99,11 @@ namespace GameSpyLib.Network
         {
             if (size > 2048)
             {
-                ToLog(LogEventLevel.Error, "[Spam] client spam we ignored!");
+                LogWriter.ToLog(LogEventLevel.Error, "[Spam] client spam we ignored!");
                 return;
             }
 
-            ToLog(LogEventLevel.Debug,
+            LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
@@ -114,21 +114,17 @@ namespace GameSpyLib.Network
         protected override void OnConnected()
         {
             _endPoint = Socket.RemoteEndPoint;
-            ToLog(LogEventLevel.Information, $"[Conn] IP:{_endPoint}");
+            LogWriter.ToLog(LogEventLevel.Information, $"[Conn] IP:{_endPoint}");
             base.OnConnected();
         }
         protected override void OnDisconnected()
         {
             //We create our own RemoteEndPoint because when client disconnect, the session socket will dispose immidiatly
-            ToLog(LogEventLevel.Information, $"[Disc] IP:{_endPoint}");
+            LogWriter.ToLog(LogEventLevel.Information, $"[Disc] IP:{_endPoint}");
             base.OnDisconnected();
         }
 
-        public virtual void ToLog(LogEventLevel level, string text)
-        {
-            LogWriter.ToLog(level, $"[{ ServerManagerBase.ServerName}] " + text);
-        }
-
+     
         public virtual void UnKnownDataReceived(byte[] text)
         {
             UnknownDataReceived(Encoding.ASCII.GetString(text));
@@ -136,7 +132,7 @@ namespace GameSpyLib.Network
 
         public virtual void UnknownDataReceived(string text)
         {
-            ToLog(LogEventLevel.Error, $"[Unknow] {text}");
+            LogWriter.ToLog(LogEventLevel.Error, $"[Unknow] {text}");
         }
 
         public virtual void UnknownDataReceived(Dictionary<string, string> recv)
@@ -146,7 +142,7 @@ namespace GameSpyLib.Network
 
         public virtual void LogPlainText(string data)
         {
-            ToLog(LogEventLevel.Information, $@"[Plain] {data}");
+            LogWriter.ToLog(LogEventLevel.Information, $@"[Plain] {data}");
         }
 
         public virtual void LogPlainText(byte[] data)

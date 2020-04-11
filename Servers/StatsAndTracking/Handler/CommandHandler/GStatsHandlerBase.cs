@@ -1,4 +1,5 @@
-﻿using StatsAndTracking.Entity.Enumerator;
+﻿using GameSpyLib.Logging;
+using StatsAndTracking.Entity.Enumerator;
 using StatsAndTracking.Handler.SystemHandler;
 using System.Collections.Generic;
 
@@ -19,7 +20,7 @@ namespace StatsAndTracking.Handler.CommandHandler
             CheckRequest(session, recv);
             if (_errorCode != GstatsErrorCode.NoError)
             {
-                session.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 
@@ -27,7 +28,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             if (_errorCode == GstatsErrorCode.Database)
             {
-                session.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 
@@ -35,7 +36,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             if (_errorCode != GstatsErrorCode.NoError)
             {
-                session.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 

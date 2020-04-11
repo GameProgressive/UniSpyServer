@@ -79,7 +79,9 @@ namespace PresenceConnectionManager
             {
                 Disconnect();
                 // Throw the error                
-                ToLog(Serilog.Events.LogEventLevel.Warning, "The server challenge has already been sent. Cannot send another login challenge.");
+                LogWriter.ToLog(
+                    Serilog.Events.LogEventLevel.Warning,
+                    "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
             UserInfo.ServerChallenge = GPCMServer.ServerChallenge;

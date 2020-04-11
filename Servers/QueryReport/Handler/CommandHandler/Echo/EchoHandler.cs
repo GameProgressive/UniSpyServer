@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Server;
@@ -26,7 +27,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
 
             if (result == null || result.Count() != 1)
             {
-                server.ToLog(LogEventLevel.Error, "Can not find game server");
+               LogWriter.ToLog(LogEventLevel.Error, "Can not find game server");
                 return;
             }
 

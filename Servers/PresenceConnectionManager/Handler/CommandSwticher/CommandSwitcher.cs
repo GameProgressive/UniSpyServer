@@ -20,10 +20,9 @@ namespace PresenceConnectionManager.Handler
     {
         public static void Switch(GPCMSession session, Dictionary<string, string> recv)
         {
-            string command = recv.Keys.First();
             try
             {
-                switch (command)
+                switch (recv.Keys.First())
                 {
                     //case "inviteto":
                     //    InviteToHandler.InvitePlayer(session, recv);

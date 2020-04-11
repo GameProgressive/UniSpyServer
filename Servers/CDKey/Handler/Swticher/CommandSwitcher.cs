@@ -43,7 +43,7 @@ namespace CDKey.Handler.CommandHandler
             }
             catch (Exception e)
             {
-                LogWriter.WriteException(e);
+                LogWriter.ToLog(e);
             }
         }
     }

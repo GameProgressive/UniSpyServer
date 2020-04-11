@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Logging;
 using NetCoreServer;
 using System.Net;
 using System.Net.Sockets;
@@ -35,8 +36,7 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            ServerManagerBase.LogWriter.Log.Error(error.ToString());
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,error.ToString());
         }
-
     }
 }

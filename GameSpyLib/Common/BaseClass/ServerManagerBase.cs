@@ -16,7 +16,6 @@ namespace GameSpyLib.Common
         public readonly string RetroSpyVersion = "0.5.1";
         public static string ServerName { get; protected set; }
         public static ConfigManager Config { get; protected set; }
-        public static LogWriter LogWriter { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
         protected object Server;
 
@@ -31,7 +30,6 @@ namespace GameSpyLib.Common
         {
             try
             {
-                LogWriter = new LogWriter(ServerName);
                 StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
                 LoadDatabaseConfig();
                 LoadServerConfig();
@@ -73,10 +71,11 @@ namespace GameSpyLib.Common
                             dbConfig.RemoteAddress, dbConfig.DatabaseName, dbConfig.UserName, dbConfig.Password,
                             dbConfig.RemotePort, dbConfig.SslMode, dbConfig.SslCert, dbConfig.SslKey, dbConfig.SslCa);
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
-                    using (var db = new retrospyContext())
-                    {
-                        db.Users.Where(u => u.Userid == 0);
-                    }
+                  
+                    //using (var db = new retrospyContext())
+                    //{
+                    //    db.Users.Where(u => u.Userid == 0);
+                    //}
                     break;
                 case DatabaseEngine.SQLite:
                     string SQLiteConnStr = "Data Source=" + dbConfig.DatabaseName + ";Version=3;New=False";
@@ -85,6 +84,12 @@ namespace GameSpyLib.Common
                 default:
                     throw new Exception("Unknown database engine!");
             }
+
+            if (!new retrospyContext().Database.CanConnect())
+            {
+                throw new Exception("Can not connect to database!");
+            }
+
             LogWriter.Log.Information($"Successfully connected to the {dbConfig.Type}!");
 
             RedisConfig redisConfig = ConfigManager.Config.Redis;

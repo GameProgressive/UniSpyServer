@@ -1,6 +1,7 @@
 ﻿using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Error;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PresenceConnectionManager.Handler
 {

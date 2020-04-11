@@ -16,9 +16,9 @@ namespace GameSpyLib.Logging
     public class LogWriter
     {
 
-        public Logger Log { get; protected set; }
+        public static Logger Log { get; protected set; }
 
-        public LogWriter(string serverName)
+        static LogWriter()
         {
             switch (ConfigManager.Config.MinimumLogLevel)
             {
@@ -27,16 +27,16 @@ namespace GameSpyLib.Logging
                 .MinimumLevel.Verbose()
                 .WriteTo.Console(
                outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{serverName}]-.log",
+                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+                .CreateLogger(); 
                     break;
                 case LogEventLevel.Information:
                     Log = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .WriteTo.Console(
                outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{serverName}]-.log",
+                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
                     break;
@@ -45,7 +45,7 @@ namespace GameSpyLib.Logging
                 .MinimumLevel.Debug()
                 .WriteTo.Console(
                outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{serverName}]-.log",
+                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
                     break;
@@ -54,7 +54,7 @@ namespace GameSpyLib.Logging
                 .MinimumLevel.Warning()
                 .WriteTo.Console(
                outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{serverName}]-.log",
+                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
                     break;
@@ -63,7 +63,7 @@ namespace GameSpyLib.Logging
                 .MinimumLevel.Error()
                 .WriteTo.Console(
                outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{serverName}]-.log",
+                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
                     break;
@@ -72,7 +72,7 @@ namespace GameSpyLib.Logging
                 .MinimumLevel.Fatal()
                 .WriteTo.Console(
                outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{serverName}]-.log",
+                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
                     break;
@@ -89,34 +89,36 @@ namespace GameSpyLib.Logging
             switch (level)
             {
                 case LogEventLevel.Verbose:
-                    ServerManagerBase.LogWriter.Log.Verbose(message);
+                    Log.Verbose($"[{ServerManagerBase.ServerName}] "+ message);
                     break;
                 case LogEventLevel.Information:
-                    ServerManagerBase.LogWriter.Log.Information(message);
+                   Log.Information($"[{ServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Debug:
-                    ServerManagerBase.LogWriter.Log.Debug(message);
+                    Log.Debug($"[{ServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Error:
-                    ServerManagerBase.LogWriter.Log.Error(message);
+                    Log.Error($"[{ServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Fatal:
-                    ServerManagerBase.LogWriter.Log.Fatal(message);
+                    Log.Fatal($"[{ServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Warning:
-                    ServerManagerBase.LogWriter.Log.Warning(message);
+                    Log.Warning($"[{ServerManagerBase.ServerName}] " + message);
                     break;
             }
+        }
+
+        public static void ToLog(Exception e)
+        {
+            ToLog(LogEventLevel.Error, e.ToString());
         }
 
         public static void ToLog(string message)
         {
             ToLog(LogEventLevel.Information, message);
         }
-        public static void WriteException(Exception e)
-        {
-            ToLog(e.ToString());
-        }
+
     }
 
 }

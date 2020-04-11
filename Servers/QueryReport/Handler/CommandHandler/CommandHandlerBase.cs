@@ -1,4 +1,5 @@
-﻿using QueryReport.Entity.Enumerator;
+﻿using GameSpyLib.Logging;
+using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.SystemHandler.ErrorMessage;
 using QueryReport.Server;
 using Serilog.Events;
@@ -21,7 +22,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode != QRErrorCode.NoError)
             {
-                server.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
+               LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 
@@ -29,7 +30,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode == QRErrorCode.Database)
             {
-                server.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
+               LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 
@@ -37,7 +38,7 @@ namespace QueryReport.Handler.CommandHandler
 
             if (_errorCode != QRErrorCode.NoError)
             {
-                server.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
+               LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
                 return;
             }
 

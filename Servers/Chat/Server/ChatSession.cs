@@ -4,6 +4,7 @@ using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
 using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using System.Text;
 
@@ -34,7 +35,7 @@ namespace Chat
             }
             string data = Encoding.ASCII.GetString(buffer,0,(int)size);
 
-            ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             CommandSwitcher.Switch(this, data);
         }
@@ -46,7 +47,7 @@ namespace Chat
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            ToLog(Serilog.Events.LogEventLevel.Debug,
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug,
                 $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer,0,(int)size)}");
 
             if (UserInfo.useEncryption)

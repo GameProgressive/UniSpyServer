@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
+using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
 //using PresenceConnectionManager.Handler.General.SDKExtendFeature;
 using PresenceConnectionManager.Handler.Error;
@@ -105,7 +106,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
 
             //if no login method found we can not continue.
-            session.ToLog(Serilog.Events.LogEventLevel.Error, "Unknown login method detected!");
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "Unknown login method detected!");
             _errorCode = GPErrorCode.Parse;
         }
 

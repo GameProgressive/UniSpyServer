@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
@@ -28,7 +29,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
                 return;
             }
             _gameServer = result.First();
-            server.ToLog(LogEventLevel.Debug, "Challenge received game server is now available");
+           LogWriter.ToLog(LogEventLevel.Debug, "Challenge received game server is now available");
             _gameServer.IsValidated = true;
         }
 

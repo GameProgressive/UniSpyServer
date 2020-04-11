@@ -1,4 +1,5 @@
-﻿using PresenceConnectionManager.Entity.Structure;
+﻿using GameSpyLib.Logging;
+using PresenceConnectionManager.Entity.Structure;
 
 namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
 {
@@ -11,7 +12,7 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
         {
             if (session.UserInfo.SDKRevision == 0)
             {
-                session.ToLog(Serilog.Events.LogEventLevel.Error, "[SDKRev] No sdkrevision!");
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "[SDKRev] No sdkrevision!");
                 return;
             }
 

@@ -47,7 +47,7 @@ namespace GameSpyLib.Network
         /// <param name="error">Socket error code</param>
         protected override void OnError(SocketError error)
         {
-            ToLog(LogEventLevel.Error, error.ToString());
+            LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug, $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.ToLog(LogEventLevel.Debug, $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.SendAsync(endpoint, buffer, offset, size);
         }
@@ -84,7 +84,7 @@ namespace GameSpyLib.Network
         /// </remarks>
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            ToLog(LogEventLevel.Debug, $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.ToLog(LogEventLevel.Debug, $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.Send(endpoint, buffer, offset, size);
         }
@@ -123,7 +123,7 @@ namespace GameSpyLib.Network
             byte[] temp = new byte[(int)size];
             Array.Copy(buffer, 0, temp, 0, (int)size);
 
-            ToLog(LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.ToLog(LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
             ReceiveAsync();
 
@@ -132,18 +132,13 @@ namespace GameSpyLib.Network
 
         public virtual void ToLog(string message)
         {
-            ToLog(LogEventLevel.Information, message);
-        }
-
-        public virtual void ToLog(LogEventLevel level, string text)
-        {
-            LogWriter.ToLog(level, $"[{ServerManagerBase.ServerName}] " + text);
+            LogWriter.ToLog(LogEventLevel.Information, message);
         }
 
         public virtual void UnknownDataRecived(byte[] text)
         {
             string buffer = Encoding.ASCII.GetString(text, 0, text.Length);
-            ToLog(LogEventLevel.Error, "[Unknown] " + buffer);
+            LogWriter.ToLog(LogEventLevel.Error, "[Unknown] " + buffer);
         }
     }
 }

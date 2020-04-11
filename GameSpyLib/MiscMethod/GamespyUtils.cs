@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using NetCoreServer;
 
 namespace GameSpyLib.MiscMethod
@@ -154,7 +155,11 @@ namespace GameSpyLib.MiscMethod
 
         public static void PrintReceivedGPDictToLogger(Dictionary<string, string> recv)
         {
-            ServerManagerBase.LogWriter.Log.Error("Received request {0} with content: {1}", recv.Keys.First(), string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray()));
+            LogWriter.ToLog(
+                String.Format(
+                    "Received request {0} with content: {1}",
+                    recv.Keys.First(),
+                    string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray())));
         }
 
         /// <summary>
@@ -200,12 +205,12 @@ namespace GameSpyLib.MiscMethod
             }
             catch (RegexMatchTimeoutException e)
             {
-                ServerManagerBase.LogWriter.Log.Error(e.ToString());
+                LogWriter.ToLog(e);
                 return false;
             }
             catch (ArgumentException e)
             {
-                ServerManagerBase.LogWriter.Log.Error(e.ToString());
+                LogWriter.ToLog(e);
                 return false;
             }
 
