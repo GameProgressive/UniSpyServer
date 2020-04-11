@@ -1,21 +1,20 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Logging;
 using System;
 
 namespace QueryReport.Application
 {
     internal class Program
     {
-        public static readonly string ServerName = "QR";
-
         private static ServerManager Manager;
 
         private static void Main(string[] args)
         {
-
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(ServerName);
+                Manager = new ServerManager(RetroSpyServerName.QR);
+                Manager.Start();
                 Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
             }
             catch (Exception e)

@@ -8,17 +8,15 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     internal class Program
     {
-        public static readonly string ServerName = "GPCM";
-
         private static ServerManager Manager;
 
         private static void Main(string[] args)
         {
-
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(ServerName);
+                Manager = new ServerManager(GameSpyLib.Common.RetroSpyServerName.GPCM);
+                Manager.Start();
                 Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
             }
             catch (Exception e)

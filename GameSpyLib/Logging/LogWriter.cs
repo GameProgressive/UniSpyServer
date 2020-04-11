@@ -83,28 +83,28 @@ namespace GameSpyLib.Logging
         /// Convient to print log
         /// </summary>
         /// <param name="level"></param>
-        /// <param name="error"></param>
-        public static void ToLog(LogEventLevel level, string error)
+        /// <param name="message"></param>
+        public static void ToLog(LogEventLevel level, string message)
         {
             switch (level)
             {
                 case LogEventLevel.Verbose:
-                    ServerManagerBase.LogWriter.Log.Verbose(error);
+                    ServerManagerBase.LogWriter.Log.Verbose(message);
                     break;
                 case LogEventLevel.Information:
-                    ServerManagerBase.LogWriter.Log.Information(error);
+                    ServerManagerBase.LogWriter.Log.Information(message);
                     break;
                 case LogEventLevel.Debug:
-                    ServerManagerBase.LogWriter.Log.Debug(error);
+                    ServerManagerBase.LogWriter.Log.Debug(message);
                     break;
                 case LogEventLevel.Error:
-                    ServerManagerBase.LogWriter.Log.Error(error);
+                    ServerManagerBase.LogWriter.Log.Error(message);
                     break;
                 case LogEventLevel.Fatal:
-                    ServerManagerBase.LogWriter.Log.Fatal(error);
+                    ServerManagerBase.LogWriter.Log.Fatal(message);
                     break;
                 case LogEventLevel.Warning:
-                    ServerManagerBase.LogWriter.Log.Warning(error);
+                    ServerManagerBase.LogWriter.Log.Warning(message);
                     break;
             }
         }

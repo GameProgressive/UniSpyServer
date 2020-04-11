@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Logging;
 using System;
 
 namespace CDKey.Application
@@ -8,8 +9,6 @@ namespace CDKey.Application
     /// </summary>
     internal class Program
     {
-        public static readonly string ServerName = "CDKEY";
-
         private static ServerManager Manager;
 
         private static void Main(string[] args)
@@ -18,7 +17,8 @@ namespace CDKey.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(ServerName);
+                Manager = new ServerManager(RetroSpyServerName.CDKEY);
+                Manager.Start();
                 Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
             }
             catch (Exception e)

@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
+using GameSpyLib.MiscMethod;
 using GameSpyLib.Network;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler;

@@ -1,12 +1,11 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Logging;
 using System;
 
 namespace ServerBrowser.Application
 {
     internal class Program
     {
-        public static readonly string ServerName = "SB";
-
         private static ServerManager Manager;
 
         private static void Main(string[] args)
@@ -15,7 +14,8 @@ namespace ServerBrowser.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(ServerName);
+                Manager = new ServerManager(RetroSpyServerName.SB);
+                Manager.Start();
                 Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
             }
             catch (Exception e)

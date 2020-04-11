@@ -2,6 +2,7 @@
 using GameSpyLib.Common;
 using GameSpyLib.Database.Entity;
 using GameSpyLib.Encryption;
+using GameSpyLib.MiscMethod;
 using GameSpyLib.Network;
 using System.Collections.Generic;
 using System.Net;

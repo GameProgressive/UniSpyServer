@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace GameSpyLib.Common
+namespace GameSpyLib.MiscMethod
 {
     public class GameSpyRandom
     {

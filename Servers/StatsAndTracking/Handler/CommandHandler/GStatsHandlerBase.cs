@@ -17,7 +17,6 @@ namespace StatsAndTracking.Handler.CommandHandler
         public virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
         {
             CheckRequest(session, recv);
-
             if (_errorCode != GstatsErrorCode.NoError)
             {
                 session.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));

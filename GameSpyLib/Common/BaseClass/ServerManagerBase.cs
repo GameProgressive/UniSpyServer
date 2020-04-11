@@ -11,17 +11,6 @@ using System.Linq;
 
 namespace GameSpyLib.Common
 {
-    public enum RetroSpyServerName
-    {
-        QR,
-        SB,
-        GPCM,
-        GPSP,
-        NATNEG,
-        CHAT,
-        CDKEY
-    }
-
     public abstract class ServerManagerBase
     {
         public readonly string RetroSpyVersion = "0.5.1";
@@ -33,13 +22,25 @@ namespace GameSpyLib.Common
 
         protected bool Disposed = false;
 
-        public ServerManagerBase(string serverName)
+        public ServerManagerBase(RetroSpyServerName serverName)
         {
-            ServerName = serverName;
-            LogWriter = new LogWriter(serverName);
-            StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
-            LoadDatabaseConfig();
-            LoadServerConfig();
+            ServerName = serverName.ToString();
+        }
+
+        public bool Start()
+        {
+            try
+            {
+                LogWriter = new LogWriter(ServerName);
+                StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
+                LoadDatabaseConfig();
+                LoadServerConfig();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         public void LoadServerConfig()
@@ -89,7 +90,6 @@ namespace GameSpyLib.Common
             RedisConfig redisConfig = ConfigManager.Config.Redis;
             Redis = ConnectionMultiplexer.Connect(redisConfig.RemoteAddress + ":" + redisConfig.RemotePort.ToString());
             LogWriter.Log.Information($"Successfully connected to Redis!");
-
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Logging;
 using System;
 
 namespace NatNegotiation.Application
@@ -8,8 +9,6 @@ namespace NatNegotiation.Application
     /// </summary>
     internal class Program
     {
-        public static readonly string ServerName = "NATNEG";
-
         private static ServerManager Manager;
 
         private static void Main(string[] args)
@@ -18,7 +17,8 @@ namespace NatNegotiation.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(ServerName);
+                Manager = new ServerManager(RetroSpyServerName.NATNEG);
+                Manager.Start();
                 Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
             }
             catch (Exception e)

@@ -15,7 +15,7 @@ namespace ServerBrowser.Application
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in XML config file</param>
-        public ServerManager(string serverName) : base(serverName)
+        public ServerManager(RetroSpyServerName serverName) : base(serverName)
         {
         }
 

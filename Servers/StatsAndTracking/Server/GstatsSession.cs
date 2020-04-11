@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Encryption;
+using GameSpyLib.MiscMethod;
 using GameSpyLib.Network;
 using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandSwitcher;

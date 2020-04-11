@@ -1,13 +1,14 @@
-﻿using GameSpyLib.Extensions;
-using NetCoreServer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using GameSpyLib.Common;
+using GameSpyLib.Extensions;
+using NetCoreServer;
 
-namespace GameSpyLib.Common
+namespace GameSpyLib.MiscMethod
 {
     public static class GameSpyUtils
     {

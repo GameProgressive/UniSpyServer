@@ -23,5 +23,7 @@
   <ItemGroup>
     <Folder Include="Database\DatabaseModel\MySql\" />
     <Folder Include="RetroSpyConfig\" />
+    <Folder Include="Common\Entity\" />
+    <Folder Include="Common\Entity\Enumerator\" />
   </ItemGroup>
 </Project>
