@@ -31,7 +31,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
                 return;
             }
             string[] strPart = _request.Filter.Split('=', System.StringSplitOptions.RemoveEmptyEntries);
-            string groupid = strPart[2];
+            string groupid = strPart[0];
             _gameSevers = _gameSevers.Where(g => g.ServerData.KeyValue["groupid"] == groupid).ToList();
         }
 
