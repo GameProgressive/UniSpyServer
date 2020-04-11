@@ -35,6 +35,7 @@ namespace GameSpyLib.Common
 
         public ServerManagerBase(string serverName)
         {
+            ServerName = serverName;
             LogWriter = new LogWriter(serverName);
             StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
             LoadDatabaseConfig();
