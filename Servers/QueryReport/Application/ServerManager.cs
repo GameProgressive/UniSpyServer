@@ -29,7 +29,7 @@ namespace QueryReport.Application
             if (cfg.Name == ServerName)
             {
                 // case "GPCM":
-                Server = new QRServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new QRServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                     GameSpyLib.Extensions.StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }

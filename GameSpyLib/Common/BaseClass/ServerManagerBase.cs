@@ -11,6 +11,17 @@ using System.Linq;
 
 namespace GameSpyLib.Common
 {
+    public enum RetroSpyServerName
+    {
+        QR,
+        SB,
+        GPCM,
+        GPSP,
+        NATNEG,
+        CHAT,
+        CDKEY
+    }
+
     public abstract class ServerManagerBase
     {
         public readonly string RetroSpyVersion = "0.5.1";
@@ -24,7 +35,6 @@ namespace GameSpyLib.Common
 
         public ServerManagerBase(string serverName)
         {
-            ServerName = serverName;
             LogWriter = new LogWriter(serverName);
             StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
             LoadDatabaseConfig();

@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
+using GameSpyLib.RetroSpyConfig;
 using System.Net;
 
 namespace StatsAndTracking.Application
@@ -22,18 +23,15 @@ namespace StatsAndTracking.Application
         /// Starts a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
-        protected override void StartServer(GameSpyLib.RetroSpyConfig.ServerConfig cfg)
+        protected override void StartServer(ServerConfig cfg)
         {
-            //if (cfg.Disabled)
-            //    return;            
-            //LogWriter.Log.Write("Starting {2} server at  {0}:{1}.", LogLevel.Info, cfg.Hostname, cfg.Port, cfg.Name);
-            //LogWriter.Log.Write("Maximum connections for {0} are {1}.", LogLevel.Info, cfg.Name, cfg.MaxConnections);
             if (cfg.Name == ServerName)
             {
-                // case "GPCM":
-                Server = new GStatsServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new GStatsServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                      StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                
             }
         }
     }

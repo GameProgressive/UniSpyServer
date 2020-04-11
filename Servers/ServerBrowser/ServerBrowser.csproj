@@ -51,6 +51,7 @@
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\NoServerList\" />
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroups\" />
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\PushUpdates\" />
+    <Folder Include="Handler\CommandHandler\Available\" />
   </ItemGroup>
 
   <ItemGroup>

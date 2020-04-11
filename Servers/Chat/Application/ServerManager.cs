@@ -27,7 +27,7 @@ namespace Chat.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new ChatServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new ChatServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }

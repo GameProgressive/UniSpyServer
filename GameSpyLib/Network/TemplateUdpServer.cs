@@ -23,7 +23,6 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(IPEndPoint endpoint) : base(endpoint)
         {
-            Start();
         }
 
         protected override void OnStarted()
@@ -40,7 +39,6 @@ namespace GameSpyLib.Network
         /// <param name="port">Port number</param>
         public TemplateUdpServer(IPAddress address, int port) : base(address, port)
         {
-            Start();
         }
 
         /// <summary>
