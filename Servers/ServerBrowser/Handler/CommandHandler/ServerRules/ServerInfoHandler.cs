@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
@@ -17,11 +18,11 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
     /// Get full rules for a server (for example, to get
     /// player information from a server that only has basic information so far)
     /// </summary>
-    public class ServerRulesHandler : CommandHandlerBase
+    public class ServerInfoHandler : CommandHandlerBase
     {
         private ServerRulesRequest _request;
         private  GameServer _gameServer;
-        public ServerRulesHandler() : base()
+        public ServerInfoHandler() : base()
         {
         }
 
@@ -34,11 +35,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
                 _errorCode = SBErrorCode.Parse;
                 return;
             }
-            base.DataOperation(session, recv);
+
         }
 
         public override void DataOperation(SBSession session, byte[] recv)
         {
+            base.DataOperation(session, recv);
             var result =
                 GameServer.GetGameServers(
                     new IPAddress(BitConverter.GetBytes(_request.IP)).ToString());
@@ -48,24 +50,25 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
                 return;
             }
 
-            //var servers = QueryReport.Server.QRServer.GameServerList.
-            //    Where(c => c.Value.RemoteIP == _request.IP
-            //    && c.Value.ServerData.StandardKeyValue["hostport"] == _request.HostPort.ToString());
-
             _gameServer = result.FirstOrDefault();
         }
 
         public override void ConstructResponse(SBSession session, byte[] recv)
         {
+            base.ConstructResponse(session,recv);
+
             List<byte> data = new List<byte>();
 
             data.Add((byte)SBServerResponseType.PushServerMessage);
+
             byte[] info = GenerateServerInfo().ToArray();
 
             // we add server info here
-            data.AddRange(GenerateServerInfo());
+            data.AddRange(info);
+            LogWriter.ToLog("[Plain] "+
+                StringExtensions.ReplaceUnreadableCharToHex(info));
 
-            byte[] byteLength = BitConverter.GetBytes((short)info.Length);
+            byte[] byteLength = BitConverter.GetBytes((short)(info.Length+2));
             if (BitConverter.IsLittleEndian)
             {
                 Array.Reverse(byteLength);
@@ -91,6 +94,27 @@ namespace ServerBrowser.Handler.CommandHandler.ServerInfo
                 data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
                 data.Add(SBStringFlag.StringSpliter);
             }
+            foreach (var player in _gameServer.PlayerData.KeyValueList)
+            {
+                foreach (var kv in player)
+                {
+                    data.AddRange(Encoding.ASCII.GetBytes(kv.Key));
+                    data.Add(SBStringFlag.StringSpliter);
+                    data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
+                    data.Add(SBStringFlag.StringSpliter);
+                }
+            }
+            foreach (var team in _gameServer.TeamData.KeyValueList)
+            {
+                foreach (var kv in team)
+                {
+                    data.AddRange(Encoding.ASCII.GetBytes(kv.Key));
+                    data.Add(SBStringFlag.StringSpliter);
+                    data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
+                    data.Add(SBStringFlag.StringSpliter);
+                }
+            }
+
             return data;
         }
         private List<byte> GenerateServerInfoHeader(GameServer server)

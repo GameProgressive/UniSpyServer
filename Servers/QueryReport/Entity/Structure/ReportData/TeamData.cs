@@ -39,7 +39,7 @@ namespace QueryReport.Entity.Structure.ReportData
                         continue;
                     }
 
-                    keyValue.Add(keys[j], values[i * keys.Count + j]);
+                    keyValue.Add(keys[j]+i.ToString(), values[i * keys.Count + j]);
                 }
 
                 KeyValueList.Add(keyValue);

@@ -46,7 +46,7 @@ namespace QueryReport.Entity.Structure.ReportData
                         LogWriter.ToLog($"Ignoring same player key value {keys[j]} : {values[i * keys.Count + j]}");
                         continue;
                     }
-                    keyValue.Add(keys[j], values[i * keys.Count + j]);
+                    keyValue.Add(keys[j]+i.ToString(), values[i * keys.Count + j]);
                 }
 
                 KeyValueList.Add(keyValue);

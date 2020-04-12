@@ -40,7 +40,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
                 //adding ping and value to dictionary
                 _gameServer.ServerData.KeyValue.Add("ping", Convert.ToString(ping));
             }
-
+            _gameServer.LastPing = DateTime.Now;
             GameServer.UpdateGameServer(
                endPoint,
                _gameServer.ServerData.KeyValue["gamename"],
