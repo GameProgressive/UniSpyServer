@@ -12,7 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerInfo
+namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 {
     /// <summary>
     /// Get full rules for a server (for example, to get

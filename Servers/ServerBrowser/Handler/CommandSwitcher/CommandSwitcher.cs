@@ -1,5 +1,5 @@
 ﻿using ServerBrowser.Entity.Enumerator;
-using ServerBrowser.Handler.CommandHandler.ServerInfo;
+using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 
 namespace ServerBrowser.Handler.CommandSwitcher
@@ -16,6 +16,12 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     break;
                 case SBClientRequestType.ServerInfoRequest:
                     new ServerInfoHandler().Handle(session,recv);
+                    break;
+                case SBClientRequestType.PlayerSearchRequest:
+                    break;
+                case SBClientRequestType.MapLoopRequest:
+                    break;
+                case SBClientRequestType.SendMessageRequest:
                     break;
                 default:
                     session.UnKnownDataReceived(recv);

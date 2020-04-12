@@ -37,12 +37,10 @@
     <Folder Include="Handler\CommandHandler\ServerList\" />
     <Folder Include="Handler\SystemHandler\" />
     <Folder Include="Entity\Structure\Packet\" />
-    <Folder Include="Handler\CommandHandler\ServerRules\" />
     <Folder Include="Entity\Structure\Packet\Request\" />
     <Folder Include="Entity\Structure\Packet\Response\" />
     <Folder Include="Entity\Interface\" />
     <Folder Include="Handler\SystemHandler\KeyType\" />
-    <Folder Include="Handler\CommandHandler\KeepAlive\" />
     <Folder Include="Handler\SystemHandler\Filter\" />
     <Folder Include="Handler\SystemHandler\Error\" />
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionSwitcher\" />
@@ -52,6 +50,8 @@
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroups\" />
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\PushUpdates\" />
     <Folder Include="Handler\CommandHandler\Available\" />
+    <Folder Include="Handler\CommandHandler\AdHoc\" />
+    <Folder Include="Handler\CommandHandler\AdHoc\ServerRules\" />
   </ItemGroup>
 
   <ItemGroup>
