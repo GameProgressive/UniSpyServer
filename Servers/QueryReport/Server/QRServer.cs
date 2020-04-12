@@ -18,16 +18,19 @@ namespace QueryReport.Server
 
         public bool HasInstantKey = false;
 
-        private ServerListChecker _checker = new ServerListChecker();
-
         public QRServer(IPAddress address, int port) : base(address, port)
+        {
+        }
+
+        public override bool Start()
         {
             new PeerGroupHandler().LoadAllGameGroupsToRedis();
             //The Time for servers to remain in the serverlist since the last ping in seconds.
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
             //is busy and cant refresh the server's TTL right away
-            _checker.StartCheck(this);
+            new ServerListManager().Start();
+            return base.Start();
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)

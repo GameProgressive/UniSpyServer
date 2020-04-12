@@ -1,25 +1,18 @@
-﻿using QueryReport.Server;
+﻿using GameSpyLib.Common.BaseClass;
+using QueryReport.Server;
 using System;
 
 namespace QueryReport.Handler.CommandHandler.ServerList
 {
-    public class ServerListChecker
+    public class ServerListManager : ExpireManagerBase
     {
-        private System.Timers.Timer _checkTimer = new System.Timers.Timer { Enabled = true, Interval = 10000, AutoReset = true };//10000
-
-        /// <summary>
-        /// Executed every 5 seconds or so... Removes all servers that haven't
-        /// reported in awhile
-        /// </summary>
-        public void StartCheck(QRServer server)
+        public ServerListManager()
         {
-            _checkTimer.Start();
-            _checkTimer.Elapsed += (s, e) => CheckClientTimeOut(server);
         }
 
-        private void CheckClientTimeOut(QRServer server)
+        protected override void CheckExpire()
         {
-            Console.WriteLine("Check timeout excuted!");
+            base.CheckExpire();
 
             // Remove servers that havent talked to us in awhile from the server list
             //foreach (string key in QRServer.ServersList.Keys)

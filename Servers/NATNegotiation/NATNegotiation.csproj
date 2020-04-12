@@ -23,16 +23,19 @@
 
   <ItemGroup>
     <Folder Include="Handler\SystemHandler\" />
-    <Folder Include="Handler\SystemHandler\ClientChecker\" />
     <Folder Include="Handler\CommandHandler\Address\" />
     <Folder Include="Handler\CommandHandler\Connect\" />
     <Folder Include="Handler\CommandHandler\ErtAck\" />
     <Folder Include="Handler\CommandHandler\Init\" />
     <Folder Include="Handler\CommandHandler\Natify\" />
     <Folder Include="Handler\CommandHandler\Report\" />
+    <Folder Include="Handler\SystemHandler\Timer\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Handler\SystemHandler\Timer\ClientListChecker.cs" />
   </ItemGroup>
 </Project>

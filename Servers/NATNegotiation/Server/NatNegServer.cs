@@ -2,7 +2,7 @@
 using GameSpyLib.Network;
 using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
 using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler.SystemHandler.ClientChecker;
+using NATNegotiation.Handler.SystemHandler.Timer;
 using System;
 using System.Collections.Concurrent;
 using System.Net;
@@ -13,11 +13,14 @@ namespace NatNegotiation
     {
         public static ConcurrentDictionary<EndPoint, ClientInfo> ClientList = new ConcurrentDictionary<EndPoint, ClientInfo>();
 
-        private ClientListChecker _checker = new ClientListChecker();
-
         public NatNegServer(IPAddress address, int port) : base(address, port)
+        { 
+        }
+
+        public override bool Start()
         {
-            _checker.StartCheck(this);
+            new ClientListManager().Start();
+            return base.Start();
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)

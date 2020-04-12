@@ -34,7 +34,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
             //groupid=12 or groupid null or groupid=null
             //we have to determin situations
             string groupid = strPart[0];
-            _gameSevers = _gameSevers.Where(g => g.ServerData.KeyValue["groupid"] == groupid).ToList();
+            //_gameSevers = _gameSevers.Where(g => g.ServerData.KeyValue["groupid"] == groupid).ToList();
         }
 
         public override void ConstructResponse(SBSession session, byte[] recv)
