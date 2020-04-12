@@ -1,4 +1,5 @@
-﻿using NatNegotiation;
+﻿using GameSpyLib.Logging;
+using NatNegotiation;
 using System;
 
 namespace NATNegotiation.Handler.SystemHandler.ClientChecker
@@ -15,14 +16,14 @@ namespace NATNegotiation.Handler.SystemHandler.ClientChecker
 
         private void CheckClientTimeOut(NatNegServer server)
         {
-            server.ToLog("Check timeout excuted!");
+            LogWriter.ToLog("Check timeout excuted!");
 
             foreach (var c in NatNegServer.ClientList.Values)
             {
                 //Console.WriteLine(DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds);
                 if (DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds > 60)
                 {
-                    server.ToLog("Deleted client " + c.RemoteEndPoint.ToString());
+                    LogWriter.ToLog("Deleted client " + c.RemoteEndPoint.ToString());
                     NatNegServer.ClientList.TryRemove(c.RemoteEndPoint, out _);
                 }
             }

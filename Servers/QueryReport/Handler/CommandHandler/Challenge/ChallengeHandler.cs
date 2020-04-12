@@ -29,7 +29,6 @@ namespace QueryReport.Handler.CommandHandler.Challenge
                 return;
             }
             _gameServer = result.First();
-           LogWriter.ToLog(LogEventLevel.Debug, "Challenge received game server is now available");
             _gameServer.IsValidated = true;
         }
 

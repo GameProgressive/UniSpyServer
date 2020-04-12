@@ -1,5 +1,7 @@
-﻿using PresenceSearchPlayer.Enumerator;
+﻿using GameSpyLib.Logging;
+using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
+using Serilog.Events;
 using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler
@@ -21,6 +23,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
         public virtual void Handle(GPSPSession session, Dictionary<string, string> recv)
         {
+            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+
             CheckRequest(session, recv);
 
             if (_errorCode != GPErrorCode.NoError)

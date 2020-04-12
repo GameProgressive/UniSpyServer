@@ -15,6 +15,8 @@ namespace ServerBrowser.Handler.CommandHandler
 
         public virtual void Handle(SBSession session, byte[] recv)
         {
+            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+
             CheckRequest(session, recv);
 
             if (_errorCode != SBErrorCode.NoError)

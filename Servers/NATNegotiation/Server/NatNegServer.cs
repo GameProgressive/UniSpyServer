@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Database.Entity;
+﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
 using NATNegotiation.Entity.Structure;
@@ -35,14 +35,14 @@ namespace NatNegotiation
 
         private void CheckClientTimeOut(object sender, System.Timers.ElapsedEventArgs e)
         {
-            ToLog("Check timeout excuted!");
+            LogWriter.ToLog("Check timeout excuted!");
 
             foreach (var c in ClientList.Values)
             {
                 //Console.WriteLine(DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds);
                 if (DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds > 60)
                 {
-                    ToLog("Deleted client " + c.RemoteEndPoint.ToString());
+                    LogWriter.ToLog("Deleted client " + c.RemoteEndPoint.ToString());
                     ClientList.TryRemove(c.RemoteEndPoint, out _);
                 }
             }

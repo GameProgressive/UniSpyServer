@@ -18,6 +18,8 @@ namespace QueryReport.Handler.CommandHandler
 
         public virtual void Handle(QRServer server, EndPoint endPoint, byte[] recv)
         {
+            LogWriter.ToLog(LogEventLevel.Debug,$"[{GetType().Name}] excuted.");
+
             CheckRequest(server, endPoint, recv);
 
             if (_errorCode != QRErrorCode.NoError)

@@ -1,38 +1,48 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameSpyLib.Logging;
+
 namespace QueryReport.Entity.Structure.ReportData
 {
     public class TeamData
     {
-        public List<Dictionary<string, string>> KeyValue { get; protected set; }
+        public List<Dictionary<string, string>> KeyValueList { get; protected set; }
 
         private readonly List<string> StandardTeamKey =
             new List<string> { "team_t", "score_t", "nn_groupid" };
 
         public TeamData()
         {
-            KeyValue = new List<Dictionary<string, string>>();
+            KeyValueList = new List<Dictionary<string, string>>();
         }
 
         public void Update(string teamData)
         {
-            KeyValue.Clear();
+            KeyValueList.Clear();
             int teamCount = System.Convert.ToInt32(teamData[0]);
             teamData = teamData.Substring(1);
-            string[] dataPartition = teamData.Split("\0\0", System.StringSplitOptions.RemoveEmptyEntries);
-            string[] keys = dataPartition[0].Split("\0").Where(k=>k.Contains("_")).ToArray();
-            string[] values = dataPartition[1].Split("\0");
+            string[] keyValueArray = teamData.Split("\0\0", System.StringSplitOptions.RemoveEmptyEntries);
+            List<string> keys = keyValueArray[0].Split("\0").Where(k=>k.Contains("_t")).ToList();
+            List<string> values = keyValueArray[1].Split("\0").ToList();
 
             for (int i = 0; i < teamCount; i++)
             {
-                Dictionary<string, string> temp = new Dictionary<string, string>();
+                Dictionary<string, string> keyValue = new Dictionary<string, string>();
 
-                for (int j = 0; j < keys.Length; j++)
+                for (int j = 0; j < keys.Count; j++)
                 {
-                    temp.Add(keys[j], values[i * keys.Length + j]);
+                    //we do not know why same key appears in key list
+                    //wrong implementing of GameSpySDK
+                    if (keyValue.ContainsKey(keys[j]))
+                    {
+                        LogWriter.ToLog($"Ignoring same team key value {keys[j]} : {values[i * keys.Count + j]}");
+                        continue;
+                    }
+
+                    keyValue.Add(keys[j], values[i * keys.Count + j]);
                 }
 
-                KeyValue.Add(temp);
+                KeyValueList.Add(keyValue);
             }
         }
     }

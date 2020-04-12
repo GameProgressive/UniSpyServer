@@ -1,5 +1,7 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using GameSpyLib.Logging;
+using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Error;
+using Serilog.Events;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -18,6 +20,8 @@ namespace PresenceConnectionManager.Handler
 
         public virtual void Handle(GPCMSession session, Dictionary<string, string> recv)
         {
+            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+
             CheckRequest(session, recv);
 
             if (_errorCode != GPErrorCode.NoError)

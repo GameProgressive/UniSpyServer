@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using GameSpyLib.Logging;
+using Serilog.Events;
 
 namespace CDKey.Handler.CommandHandler
 {
@@ -8,11 +10,13 @@ namespace CDKey.Handler.CommandHandler
 
         public CommandHandlerBase(CDKeyServer server, Dictionary<string, string> recv)
         {
-            Handle(server, recv);
+
         }
 
         public void Handle(CDKeyServer server, Dictionary<string, string> recv)
         {
+            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+
         }
 
         public virtual void CheckRequest(CDKeyServer server)

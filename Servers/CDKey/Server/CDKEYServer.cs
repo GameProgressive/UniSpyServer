@@ -1,7 +1,6 @@
-﻿using CDKey.Handler.CommandHandler;
-using GameSpyLib.Common;
-using GameSpyLib.Database.Entity;
+﻿using CDKey.Handler.CommandSwitcher;
 using GameSpyLib.Encryption;
+using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using GameSpyLib.Network;
 using System.Collections.Generic;
@@ -29,13 +28,6 @@ namespace CDKey
             string[] recieved = decrypted.TrimStart('\\').Split('\\');
             Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
             CommandSwitcher.Switch(this, endPoint, recv);
-        }
-
-        public void UnknownDataRecived(Dictionary<string, string> recv)
-        {
-            string errorMsg = string.Format("Received unknown data.");
-            ToLog(errorMsg);
-            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
         }
     }
 }

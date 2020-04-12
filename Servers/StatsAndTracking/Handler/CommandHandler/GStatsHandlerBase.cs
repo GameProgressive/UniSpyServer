@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Logging;
+using Serilog.Events;
 using StatsAndTracking.Entity.Enumerator;
 using StatsAndTracking.Handler.SystemHandler;
 using System.Collections.Generic;
@@ -17,6 +18,8 @@ namespace StatsAndTracking.Handler.CommandHandler
 
         public virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
         {
+            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+
             CheckRequest(session, recv);
             if (_errorCode != GstatsErrorCode.NoError)
             {

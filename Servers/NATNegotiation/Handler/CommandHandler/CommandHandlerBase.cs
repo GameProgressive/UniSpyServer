@@ -1,7 +1,9 @@
-﻿using NatNegotiation;
+﻿using GameSpyLib.Logging;
+using NatNegotiation;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Enumerator;
 using NATNegotiation.Entity.Structure;
+using Serilog.Events;
 
 namespace NATNegotiation.Handler.CommandHandler
 {
@@ -15,10 +17,11 @@ namespace NATNegotiation.Handler.CommandHandler
 
         public virtual void Handle(NatNegServer server, ClientInfo client, byte[] recv)
         {
+            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+
             ConvertRequest(client, recv);
             if (_errorCode != NNErrorCode.NoError)
             {
-                server.ToLog("Packet parse error!");
                 return;
             }
 

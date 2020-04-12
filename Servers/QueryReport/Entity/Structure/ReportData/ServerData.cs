@@ -27,28 +27,22 @@ namespace QueryReport.Entity.Structure.ReportData
         public void Update(string serverData, EndPoint endPoint)
         {
             KeyValue.Clear();
-            string[] kvArray = serverData.Split("\0");
+            string[] keyValueArray = serverData.Split("\0");
 
-            for (int i = 0; i < kvArray.Length; i += 2)
+            for (int i = 0; i < keyValueArray.Length; i += 2)
             {
-                if (KeyValue.ContainsKey(kvArray[i]))
+                if (KeyValue.ContainsKey(keyValueArray[i]))
                 {
-                    if (KeyValue[kvArray[i]] == kvArray[i + 1])
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,"Same key with different value has recieved!!!");
-                    }
+                    LogWriter.ToLog($"Ignoring same server key value {keyValueArray[i]} : {keyValueArray[i + 1]}");
+                    continue;
                 }
 
-                KeyValue.Add(kvArray[i], kvArray[i + 1]);
+                KeyValue.Add(keyValueArray[i], keyValueArray[i + 1]);
             }
 
             //todo add the location
-            //Data.Add("regionname","");
-            //Data.Add("country","");
+            KeyValue.Add("region","1");
+            KeyValue.Add("country","US");
         }
 
         public void UpdateDictionary(string key, string value)

@@ -1,4 +1,5 @@
-﻿using NatNegotiation.Entity.Enumerator;
+﻿using GameSpyLib.Logging;
+using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler.CommandHandler;
@@ -69,7 +70,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
             if (other.Count() < 1)
             {
-                server.ToLog("Can not find client2 that client1 tries to connect!");
+                LogWriter.ToLog("Can not find client2 that client1 tries to connect!");
                 return;
             }
 

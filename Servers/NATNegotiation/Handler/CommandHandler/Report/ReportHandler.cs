@@ -1,4 +1,5 @@
-﻿using NatNegotiation.Entity.Enumerator;
+﻿using GameSpyLib.Logging;
+using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler.CommandHandler;
@@ -29,7 +30,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void SendResponse(NatNegServer server, ClientInfo client)
         {
-            server.ToLog("Client: " + ((IPEndPoint)client.RemoteEndPoint).Address.ToString() + "natneg failed!");
+            LogWriter.ToLog("Client: " + ((IPEndPoint)client.RemoteEndPoint).Address.ToString() + "natneg failed!");
             base.SendResponse(server, client);
         }
     }

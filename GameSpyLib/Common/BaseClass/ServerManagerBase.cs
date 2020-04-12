@@ -62,7 +62,7 @@ namespace GameSpyLib.Common
             DatabaseConfig dbConfig = ConfigManager.Config.Database;
             // Determine which database is using and create the database connection
 
-            switch (ConfigManager.Config.Database.Type)
+            switch (dbConfig.Type)
             {
                 case DatabaseEngine.MySql:
                     string mySqlConnStr =
@@ -71,11 +71,7 @@ namespace GameSpyLib.Common
                             dbConfig.RemoteAddress, dbConfig.DatabaseName, dbConfig.UserName, dbConfig.Password,
                             dbConfig.RemotePort, dbConfig.SslMode, dbConfig.SslCert, dbConfig.SslKey, dbConfig.SslCa);
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
-                  
-                    //using (var db = new retrospyContext())
-                    //{
-                    //    db.Users.Where(u => u.Userid == 0);
-                    //}
+
                     break;
                 case DatabaseEngine.SQLite:
                     string SQLiteConnStr = "Data Source=" + dbConfig.DatabaseName + ";Version=3;New=False";
@@ -87,13 +83,19 @@ namespace GameSpyLib.Common
 
             if (!new retrospyContext().Database.CanConnect())
             {
-                throw new Exception("Can not connect to database!");
+                throw new Exception($"Can not connect to {ConfigManager.Config.Database.Type}!");
             }
 
-            LogWriter.Log.Information($"Successfully connected to the {dbConfig.Type}!");
+            LogWriter.Log.Information($"Successfully connected to {dbConfig.Type}!");
 
             RedisConfig redisConfig = ConfigManager.Config.Redis;
             Redis = ConnectionMultiplexer.Connect(redisConfig.RemoteAddress + ":" + redisConfig.RemotePort.ToString());
+
+            if (!Redis.IsConnected)
+            {
+                throw new Exception("Can not connect to Redis");
+            }
+
             LogWriter.Log.Information($"Successfully connected to Redis!");
         }
     }

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 
-namespace CDKey.Handler.CommandHandler
+namespace CDKey.Handler.CommandSwitcher
 {
     public class CommandSwitcher
     {
@@ -19,25 +19,20 @@ namespace CDKey.Handler.CommandHandler
                     case "ka":
                         Console.WriteLine("Received keep alive command");
                         break;
-
                     case "auth":
                         break;
-
                     case "resp":
                         break;
-
                     case "skey":
                         SKeyHandler.IsCDKeyValid(server, endPoint, recv);
                         break;
-
                     case "disc"://disconnect from server
                         break;
-
                     case "uon":
                         break;
 
                     default:
-                        server.UnknownDataRecived(recv);
+                        LogWriter.UnKnownDataRecieved(recv);
                         break;
                 }
             }

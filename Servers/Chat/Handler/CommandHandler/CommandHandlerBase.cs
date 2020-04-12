@@ -1,5 +1,7 @@
 ﻿using System;
 using Chat.Entity.Structure;
+using GameSpyLib.Logging;
+using Serilog.Events;
 
 namespace Chat.Handler.CommandHandler
 {
@@ -12,6 +14,8 @@ namespace Chat.Handler.CommandHandler
         }
         public virtual void Handle(ChatSession session, string[] recv)
         {
+            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+
             CheckRequest(session, recv);
             if (_errorCode != ChatError.NoError)
             {
