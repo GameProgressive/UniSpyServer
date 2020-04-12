@@ -342,5 +342,15 @@ namespace GameSpyLib.MiscMethod
                    !objTwoMinusPattern.IsMatch(strNumber) &&
                    objNumberPattern.IsMatch(strNumber);
         }
+
+        /// <summary>
+        /// Compute the interval of time
+        /// </summary>
+        /// <param name="time">old time</param>
+        /// <returns>milisecond</returns>
+        public static byte ComputeTimeInterval(DateTime old)
+        {
+           return (byte)DateTime.Now.Subtract(old).TotalMilliseconds;
+        }
     }
 }

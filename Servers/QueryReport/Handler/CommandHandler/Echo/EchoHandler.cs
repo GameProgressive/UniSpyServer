@@ -11,7 +11,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
 {
     public class EchoHandler : CommandHandlerBase
     {
-         GameServer _gameServer;
+        GameServer _gameServer;
         public EchoHandler() : base()
         {
         }
@@ -27,16 +27,19 @@ namespace QueryReport.Handler.CommandHandler.Echo
 
             if (result == null || result.Count() != 1)
             {
-               LogWriter.ToLog(LogEventLevel.Error, "Can not find game server");
+                LogWriter.ToLog(LogEventLevel.Error, "Can not find game server");
                 return;
             }
 
             _gameServer = result.First();
             //compute the ping           
-            byte ping = (byte)DateTime.Now.Subtract(_gameServer.LastPing).TotalMilliseconds;
-
-            //adding ping and value to dictionary
-            _gameServer.ServerData.KeyValue.Add("ping", Convert.ToString(ping));
+            
+            if (!_gameServer.ServerData.KeyValue.ContainsKey("ping"))
+            {
+                byte ping = GameSpyUtils.ComputeTimeInterval(_gameServer.LastPing);
+                //adding ping and value to dictionary
+                _gameServer.ServerData.KeyValue.Add("ping", Convert.ToString(ping));
+            }
 
             GameServer.UpdateGameServer(
                endPoint,

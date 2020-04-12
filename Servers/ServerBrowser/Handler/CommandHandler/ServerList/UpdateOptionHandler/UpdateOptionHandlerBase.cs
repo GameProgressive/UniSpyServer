@@ -2,11 +2,13 @@
 using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
+using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
 {
@@ -17,6 +19,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected string _secretKey;
         protected ServerListRequest _request;
         protected List<byte> _dataList = new List<byte>();
+        protected List<GameServer> _gameServers;
         public UpdateOptionHandlerBase(ServerListRequest request) : base()
         {
             _request = request;
@@ -39,14 +42,59 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             }
             //this is client public ip and default query port
             _clientRemoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
+
             //TODO   //check what is the default port
             _gameServerDefaultHostPort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
         }
 
-        protected virtual void GenerateServerKeys() { }
-        protected virtual void GenerateUniqueValue() { }
-        protected virtual void GenerateServersInfo() { }
-        protected virtual void GenerateServerInfoHeader(List<byte> header,  GameServer server) { }
+        protected virtual void GenerateServerKeys()
+        {
+            //we add the total number of the requested keys
+            _dataList.Add((byte)_request.Keys.Length);
+            //then we add the keys
+            foreach (var key in _request.Keys)
+            {
+                _dataList.Add((byte)SBKeyType.String);
+                _dataList.AddRange(Encoding.ASCII.GetBytes(key));
+                _dataList.Add(0);
+            }
+        }
+        protected virtual void GenerateUniqueValue()
+        {
+            //because we are using NTS string so we do not have any value here
+            _dataList.Add(0);
+        }
+        protected virtual void GenerateServersInfo()
+        {
+            foreach (var server in _gameServers)
+            {
+                List<byte> header = new List<byte>();
+                GenerateServerInfoHeader(header, server);
+                _dataList.AddRange(header);
+                foreach (var key in _request.Keys)
+                {
+                    _dataList.Add(SBStringFlag.NTSStringFlag);
+                    _dataList.AddRange(Encoding.ASCII.GetBytes(server.ServerData.KeyValue[key]));
+                    _dataList.Add(SBStringFlag.StringSpliter);
+                }
+            }
+        }
+
+        protected virtual void GenerateServerInfoHeader(List<byte> header, GameServer server)
+        {
+            //add has key flag
+            header.Add((byte)GameServerFlags.HasKeysFlag);
+            //we add server public ip here
+            header.AddRange(BitConverter.GetBytes(server.RemoteIP));
+            //we check host port is standard port or not
+            CheckNonStandardPort(header, server);
+            // now we check if there are private ip
+            CheckPrivateIP(header, server);
+            // we check private port here
+            CheckPrivatePort(header, server);
+            //we check icmp support here
+            CheckICMPSupport(header, server);
+        }
 
 
 
@@ -109,7 +157,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             base.ConstructResponse(session, recv);
             _dataList.AddRange(_clientRemoteIP);
             _dataList.AddRange(_gameServerDefaultHostPort);
-
         }
         public override void Response(SBSession session, byte[] recv)
         {

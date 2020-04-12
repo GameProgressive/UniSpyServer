@@ -23,6 +23,9 @@ namespace Chat.Handler.CommandSwitcher
                 case "LOGIN":
                     new LOGINHandler().Handle(session, cmd);
                     break;
+                case "SETCKEY":
+                    //TODO
+                    break;
                 default:
                     session.ChatClientProxy.SendAsync(data);
                     break;
