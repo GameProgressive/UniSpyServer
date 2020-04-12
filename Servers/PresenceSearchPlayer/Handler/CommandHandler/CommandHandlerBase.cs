@@ -23,7 +23,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
         public virtual void Handle(GPSPSession session, Dictionary<string, string> recv)
         {
-            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+            LogWriter.LogCurrentClass(this);
 
             CheckRequest(session, recv);
 

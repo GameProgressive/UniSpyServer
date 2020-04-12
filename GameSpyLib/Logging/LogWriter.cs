@@ -123,6 +123,11 @@ namespace GameSpyLib.Logging
         {
             ToLog(LogEventLevel.Error, $"[Unknown] {data}");
         }
+
+        public static void LogCurrentClass(object param)
+        {
+            ToLog(LogEventLevel.Debug, $"=>[{param.GetType().Name}]");
+        }
     }
 
 }

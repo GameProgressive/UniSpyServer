@@ -15,7 +15,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
         public virtual void Handle(SBSession session, byte[] recv)
         {
-            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+            LogWriter.LogCurrentClass(this);
 
             CheckRequest(session, recv);
 

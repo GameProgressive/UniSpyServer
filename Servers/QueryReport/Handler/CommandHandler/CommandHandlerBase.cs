@@ -18,7 +18,7 @@ namespace QueryReport.Handler.CommandHandler
 
         public virtual void Handle(QRServer server, EndPoint endPoint, byte[] recv)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,$"[{GetType().Name}] excuted.");
+            LogWriter.LogCurrentClass(this);
 
             CheckRequest(server, endPoint, recv);
 

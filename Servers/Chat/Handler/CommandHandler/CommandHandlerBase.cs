@@ -14,7 +14,7 @@ namespace Chat.Handler.CommandHandler
         }
         public virtual void Handle(ChatSession session, string[] recv)
         {
-            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+            LogWriter.LogCurrentClass(this);
 
             CheckRequest(session, recv);
             if (_errorCode != ChatError.NoError)

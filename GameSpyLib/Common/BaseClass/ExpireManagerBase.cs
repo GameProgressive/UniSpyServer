@@ -6,7 +6,10 @@ namespace GameSpyLib.Common.BaseClass
     public abstract class ExpireManagerBase
     { 
         protected static Timer _checkTimer;
-
+        /// <summary>
+        /// Because every resource we manage is global
+        /// so we do not parse any object to this class
+        /// </summary>
         public ExpireManagerBase()
         {
             //default settings
@@ -27,7 +30,5 @@ namespace GameSpyLib.Common.BaseClass
             //log which expire manager excuted
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose,$"=>[{GetType().Name}]");
         }
-
-
     }
 }

@@ -18,12 +18,12 @@ namespace StatsAndTracking.Handler.CommandHandler
 
         public virtual void Handle(GStatsSession session, Dictionary<string, string> recv)
         {
-            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+            LogWriter.LogCurrentClass(this);
 
             CheckRequest(session, recv);
             if (_errorCode != GstatsErrorCode.NoError)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 

@@ -15,7 +15,7 @@ namespace CDKey.Handler.CommandHandler
 
         public void Handle(CDKeyServer server, Dictionary<string, string> recv)
         {
-            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+            LogWriter.LogCurrentClass(this);
 
         }
 

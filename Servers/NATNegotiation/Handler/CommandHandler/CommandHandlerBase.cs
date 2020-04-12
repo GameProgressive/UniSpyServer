@@ -17,7 +17,7 @@ namespace NATNegotiation.Handler.CommandHandler
 
         public virtual void Handle(NatNegServer server, ClientInfo client, byte[] recv)
         {
-            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+            LogWriter.LogCurrentClass(this);
 
             ConvertRequest(client, recv);
             if (_errorCode != NNErrorCode.NoError)

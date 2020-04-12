@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Handler
 
         public virtual void Handle(GPCMSession session, Dictionary<string, string> recv)
         {
-            LogWriter.ToLog(LogEventLevel.Debug, $"[{GetType().Name}] excuted.");
+            LogWriter.LogCurrentClass(this);
 
             CheckRequest(session, recv);
 
