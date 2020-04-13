@@ -100,7 +100,7 @@ namespace PresenceConnectionManager
         {
             if (message.Contains("login"))
             {
-                //message = message.Replace(@"\-", @"\");
+                message = message.Replace(@"\-", @"\");
                 //message = message.Replace('-', '\\');
 
                 int pos = message.IndexesOf("\\")[1];

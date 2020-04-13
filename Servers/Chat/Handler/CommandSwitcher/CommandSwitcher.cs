@@ -26,8 +26,16 @@ namespace Chat.Handler.CommandSwitcher
                 case "SETCKEY":
                     //TODO
                     break;
+                case "GETCKEY":
+                    //TODO
+                    break;
+                case "SETCHANKEY":
+                    //TODO
+                    break;
+                case "UTM":
+                    //TODO
+                    break;
                 default:
-                    data = data.Replace("NICK *", "NICK xiaojiuwo");
                     session.ChatClientProxy.SendAsync(data);
                     break;
             }
