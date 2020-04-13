@@ -41,7 +41,7 @@ namespace QueryReport.Entity.Structure.ReportData
                 {
                     //we do not know why same key appears in key list
                     //wrong implementing of GameSpySDK
-                    if (keyValue.ContainsKey(keys[j]))
+                    if (keyValue.ContainsKey(keys[j]+i.ToString()))
                     {
                         LogWriter.ToLog($"Ignoring same player key value {keys[j]} : {values[i * keys.Count + j]}");
                         continue;
