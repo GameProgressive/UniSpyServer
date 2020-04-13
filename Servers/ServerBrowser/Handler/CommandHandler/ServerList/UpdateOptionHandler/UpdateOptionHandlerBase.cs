@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 using QueryReport.Entity.Structure;
+using Serilog.Events;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
@@ -25,7 +27,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             _request = request;
         }
 
-        public override void CheckRequest(SBSession session, byte[] recv)
+        protected override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
             //save client challenge in _request
@@ -64,6 +66,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             //because we are using NTS string so we do not have any value here
             _dataList.Add(0);
         }
+
         protected virtual void GenerateServersInfo()
         {
             foreach (var server in _gameServers)
@@ -114,8 +117,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
 
 
 
-
-        protected void CheckPrivateIP(List<byte> header,  GameServer server)
+        protected virtual void CheckPrivateIP(List<byte> header,  GameServer server)
         {
             // now we check if there are private ip
             if (server.ServerData.KeyValue.ContainsKey("localip0"))
@@ -131,12 +133,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 header.AddRange(address);
             }
         }
-        protected void CheckNonStandardPort(List<byte> header,  GameServer server)
+        protected virtual void CheckNonStandardPort(List<byte> header,  GameServer server)
         {
-            if (server.IsPeerServer)
-            {
-                return;
-            }
             //we check host port is standard port or not
             if (server.ServerData.KeyValue.ContainsKey("hostport"))
             {
@@ -150,7 +148,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 }
             }
         }
-        protected void CheckPrivatePort(List<byte> header,  GameServer server)
+        protected virtual void CheckPrivatePort(List<byte> header,  GameServer server)
         {
             // we check private port here
             if (server.ServerData.KeyValue.ContainsKey("localport"))
@@ -172,16 +170,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         /// </summary>
         /// <param name="session"></param>
         /// <param name="recv"></param>
-        public override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse(SBSession session, byte[] recv)
         {
             base.ConstructResponse(session, recv);
             _dataList.AddRange(_clientRemoteIP);
             _dataList.AddRange(_gameServerDefaultHostPort);
         }
-        public override void Response(SBSession session, byte[] recv)
-        {
-            session.LogPlainText(_dataList.ToArray());
 
+        protected override void Response(SBSession session, byte[] recv)
+        {
             GOAEncryption enc =
                 new GOAEncryption(_secretKey, _request.Challenge, SBServer.ServerChallenge);
 
@@ -194,7 +191,14 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             //refresh encryption state
             session.EncState = enc.State;
 
-            base.Response(session, recv);
+            if (_sendingBuffer == null || _sendingBuffer.Length < 4)
+            {
+                return;
+            }
+
+            LogWriter.ToLog(LogEventLevel.Debug,
+                $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(_dataList.ToArray(), 0, _dataList.Count)}");
+            session.BaseSendAsync(_sendingBuffer);
         }
     }
 }

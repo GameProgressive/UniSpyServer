@@ -44,25 +44,24 @@ namespace ServerBrowser.Handler.CommandHandler
             Response(session, recv);
         }
 
-        public virtual void CheckRequest(SBSession session, byte[] recv)
+        protected virtual void CheckRequest(SBSession session, byte[] recv)
         {
         }
 
-        public virtual void DataOperation(SBSession session, byte[] recv)
+        protected virtual void DataOperation(SBSession session, byte[] recv)
         {
         }
 
-        public virtual void ConstructResponse(SBSession session, byte[] recv)
+        protected virtual void ConstructResponse(SBSession session, byte[] recv)
         {
         }
 
-        public virtual void Response(SBSession session, byte[] recv)
+        protected virtual void Response(SBSession session, byte[] recv)
         {
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)
             {
                 return;
             }
-
             session.SendAsync(_sendingBuffer);
         }
     }

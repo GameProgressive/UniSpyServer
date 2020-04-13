@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using NetCoreServer;
@@ -13,7 +12,8 @@ using System.Text;
 namespace GameSpyLib.Network
 {
     /// <summary>
-    /// This is a template class that helps creating a TCP Session (formerly TCP stream) with logging functionality and ServerName, as required in the old network stack.
+    /// This is a template class that helps creating a TCP Session (formerly TCP stream)
+    /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
     public class TemplateTcpSession : TcpSession
     {
@@ -31,11 +31,30 @@ namespace GameSpyLib.Network
             LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         }
 
-  
+        public long BaseSend(string buffer)
+        {
+            return BaseSend(Encoding.ASCII.GetBytes(buffer));
+        }
+        public long BaseSend(byte[] buffer)
+        {
+            return BaseSend(buffer, 0, buffer.Length);
+        }
+
         protected long BaseSend(byte[] buffer, long offset, long size)
         {
             return base.Send(buffer, offset, size);
         }
+
+        public bool BaseSendAsync(string buffer)
+        {
+            return BaseSendAsync(Encoding.ASCII.GetBytes(buffer));
+        }
+
+        public bool BaseSendAsync(byte[] buffer)
+        {
+            return BaseSendAsync(buffer, 0, buffer.Length);
+        }
+
         protected bool BaseSendAsync(byte[] buffer, long offset, long size)
         {
             return base.SendAsync(buffer, offset, size);

@@ -16,7 +16,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
         {
         }
 
-        public override void DataOperation(SBSession session, byte[] recv)
+        protected override void DataOperation(SBSession session, byte[] recv)
         {
             base.DataOperation(session, recv);
             _peerGroup = PeerGroup.GetGroupsList(_request.GameName);
@@ -27,7 +27,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
             }
         }
 
-        public override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse(SBSession session, byte[] recv)
         {
             base.ConstructResponse(session, recv);
             GenerateServerKeys();

@@ -1,4 +1,5 @@
-﻿using QueryReport.Entity.Structure;
+﻿using System.Collections.Generic;
+using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
@@ -11,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
         {
         }
 
-        public override void DataOperation(SBSession session, byte[] recv)
+        protected override void DataOperation(SBSession session, byte[] recv)
         {
             base.DataOperation(session, recv);
             _gameServers =
@@ -24,7 +25,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
             }
         }
 
-        public override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse(SBSession session, byte[] recv)
         {
 
             base.ConstructResponse(session, recv);
@@ -36,6 +37,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
             GenerateServersInfo();
             //after all server information is added we add the end flag
             _dataList.AddRange(SBStringFlag.AllServerEndFlag);
+        }
+
+        protected override void CheckNonStandardPort(List<byte> header, GameServer server)
+        {
+            if (server.IsPeerServer)
+            {
+                return;
+            }
+            base.CheckNonStandardPort(header, server);
         }
     }
 }

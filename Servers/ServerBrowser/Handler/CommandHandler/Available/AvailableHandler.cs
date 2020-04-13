@@ -10,7 +10,7 @@ namespace ServerBrowser.Handler.CommandHandler.Available
         private readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
         private readonly byte AvailableCheckRequestPostfix = 0x00;
 
-        public override void CheckRequest(SBSession session, byte[] recv)
+        protected override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
             //prefix check
@@ -31,7 +31,7 @@ namespace ServerBrowser.Handler.CommandHandler.Available
             }
         }
 
-        public override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse(SBSession session, byte[] recv)
         {
             base.ConstructResponse(session, recv);
             _sendingBuffer = new byte[7];

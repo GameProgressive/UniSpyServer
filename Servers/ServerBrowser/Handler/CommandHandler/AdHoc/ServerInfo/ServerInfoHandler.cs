@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using QueryReport.Entity.Structure;
+using Serilog.Events;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
+using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler;
 
 namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 {
@@ -17,17 +17,17 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
     /// Get full rules for a server (for example, to get
     /// player information from a server that only has basic information so far)
     /// </summary>
-    public class ServerInfoHandler : CommandHandlerBase
+    public class ServerInfoHandler : UpdateOptionHandlerBase
     {
-        private AdHocRequest _request;
+        private new AdHocRequest _request;
         private GameServer _gameServer;
-        public ServerInfoHandler() : base()
+
+        public ServerInfoHandler() : base(null)
         {
         }
 
-        public override void CheckRequest(SBSession session, byte[] recv)
+        protected override void CheckRequest(SBSession session, byte[] recv)
         {
-            base.CheckRequest(session, recv);
             _request = new AdHocRequest();
             if (!_request.Parse(recv))
             {
@@ -37,10 +37,12 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 
         }
 
-        public override void DataOperation(SBSession session, byte[] recv)
+        protected override void DataOperation(SBSession session, byte[] recv)
         {
             base.DataOperation(session, recv);
-            var result = GameServer.GetServers( _request.TargetServerIP).Where(s=>s.ServerData.KeyValue["hostport"]==_request.TargetServerHostPort);
+            var result = GameServer.GetServers(_request.TargetServerIP)
+                .Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
+                .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);
 
             if (result.Count() != 1)
             {
@@ -50,33 +52,27 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
             _gameServer = result.FirstOrDefault();
         }
 
-        public override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse(SBSession session, byte[] recv)
         {
-            base.ConstructResponse(session, recv);
-
-            List<byte> data = new List<byte>();
-
-            data.Add((byte)SBServerResponseType.PushServerMessage);
+            _dataList.Add((byte)SBServerResponseType.PushServerMessage);
 
             byte[] info = GenerateServerInfo().ToArray();
 
             // we add server info here
-            data.AddRange(info);
+            _dataList.AddRange(info);
             LogWriter.ToLog("[Plain] " +
                 StringExtensions.ReplaceUnreadableCharToHex(info));
 
             byte[] msgLength =
                 ByteTools.GetBytes((short)(info.Length + 2), true);
 
-            data.InsertRange(0, msgLength);
-
+            _dataList.InsertRange(0, msgLength);
             GOAEncryption enc = new GOAEncryption(session.EncState);
-
-            _sendingBuffer = enc.Encrypt(data.ToArray());
+            _sendingBuffer = enc.Encrypt(_dataList.ToArray());
             session.EncState = enc.State;
         }
 
-        private List<byte> GenerateServerInfo()
+        protected virtual List<byte> GenerateServerInfo()
         {
             List<byte> data = new List<byte>();
             data.AddRange(GenerateServerInfoHeader(_gameServer));
@@ -111,7 +107,8 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 
             return data;
         }
-        private List<byte> GenerateServerInfoHeader(GameServer server)
+
+        protected virtual List<byte> GenerateServerInfoHeader(GameServer server)
         {
             // you will only have HasKeysFlag or HasFullRule you can not have both
             List<byte> header = new List<byte>();
@@ -132,52 +129,28 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
             CheckPrivatePort(header, server);
 
             //TODO we have to check icmp_ip_flag
+            CheckICMPSupport(header, server);
 
             return header;
         }
-        private void CheckPrivateIP(List<byte> header, GameServer server)
-        {
-            // now we check if there are private ip
-            if (server.ServerData.KeyValue.ContainsKey("localip0"))
-            {
-                header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.ServerData.KeyValue["localip0"]).GetAddressBytes();
-                header.AddRange(address);
-            }
-            else if (server.ServerData.KeyValue.ContainsKey("localip1"))
-            {
-                header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.ServerData.KeyValue["localip1"]).GetAddressBytes();
-                header.AddRange(address);
-            }
-        }
-        private void CheckNonStandardPort(List<byte> header, GameServer server)
-        {
-            //we check host port is standard port or not
-            if (server.ServerData.KeyValue.ContainsKey("hostport"))
-            {
-                if (server.ServerData.KeyValue["hostport"] != "6500")
-                {
-                    header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                    //we do not need to reverse port bytes
-                    byte[] port = BitConverter.GetBytes(ushort.Parse(server.ServerData.KeyValue["hostport"]));
 
-                    header.AddRange(port);
-                }
-            }
-        }
-        private void CheckPrivatePort(List<byte> header, GameServer server)
+        protected override void CheckNonStandardPort(List<byte> header, GameServer server)
         {
-            // we check private port here
-            if (server.ServerData.KeyValue.ContainsKey("localport"))
+            if (server.IsPeerServer)
             {
-                header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-                byte[] localPort =
-                 BitConverter.GetBytes(ushort.Parse(server.ServerData.KeyValue["localport"]));
-
-                header.AddRange(localPort);
+                return;
             }
+            base.CheckNonStandardPort(header, server);
         }
-
+        protected override void Response(SBSession session, byte[] recv)
+        {
+            if (_sendingBuffer == null || _sendingBuffer.Length < 4)
+            {
+                return;
+            }
+            LogWriter.ToLog(LogEventLevel.Debug,
+              $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(_dataList.ToArray(), 0, _dataList.Count)}");
+            session.BaseSendAsync(_sendingBuffer);
+        }
     }
 }
