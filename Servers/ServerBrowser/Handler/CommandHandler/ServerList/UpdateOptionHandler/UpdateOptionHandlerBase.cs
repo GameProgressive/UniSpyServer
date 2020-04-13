@@ -68,6 +68,22 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         {
             foreach (var server in _gameServers)
             {
+                //we check the server 
+                bool skipThisServer = false;
+                foreach (var key in _request.Keys)
+                {
+                    if (!server.ServerData.KeyValue.ContainsKey(key))
+                    {
+                        skipThisServer = true;
+                        break;
+                    }
+                }
+
+                if (skipThisServer)
+                {
+                    continue;
+                }
+
                 List<byte> header = new List<byte>();
                 GenerateServerInfoHeader(header, server);
                 _dataList.AddRange(header);
@@ -85,7 +101,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             //add has key flag
             header.Add((byte)GameServerFlags.HasKeysFlag);
             //we add server public ip here
-            header.AddRange(BitConverter.GetBytes(server.RemoteIP));
+            header.AddRange(ByteTools.GetIPBytes(server.RemoteIP));
             //we check host port is standard port or not
             CheckNonStandardPort(header, server);
             // now we check if there are private ip

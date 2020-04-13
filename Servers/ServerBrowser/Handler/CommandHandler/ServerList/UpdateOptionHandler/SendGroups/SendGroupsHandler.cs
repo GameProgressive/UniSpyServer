@@ -1,4 +1,5 @@
-﻿using QueryReport.Entity.Structure.Group;
+﻿using GameSpyLib.Extensions;
+using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
@@ -40,14 +41,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
 
             foreach (var room in _peerGroup.PeerRooms)
             {
-
                 //add has key flag
                 _dataList.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
+                
+                byte[] groupid = ByteTools.GetBytes(int.Parse(room.KeyValue["groupid"]), true);
 
-                byte[] groupid = BitConverter.GetBytes(int.Parse(room.KeyValue["groupid"]));
-                //need convert to big endian
-                Array.Reverse(groupid);
                 _dataList.AddRange(groupid);
 
                 foreach (var key in _request.Keys)

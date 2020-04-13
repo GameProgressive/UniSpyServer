@@ -1,9 +1,9 @@
 ﻿using GameSpyLib.Extensions;
-using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -26,7 +26,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             //gameServer.Parse(endPoint, basePacket.InstantKey);
 
             _gameServer = new GameServer();
-            _gameServer.Parse(endPoint, basePacket.InstantKey); ;
+            _gameServer.Parse(endPoint, basePacket.InstantKey);
             //_gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
 
             base.CheckRequest(server, endPoint, recv);
@@ -79,6 +79,18 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                     _gameServer.ServerData.KeyValue["gamename"]
                     );
                 return;
+            }
+
+            //make sure one ip address create one server
+            List<string> redisKeys = GameServer.SearchServerKeys(((IPEndPoint)endPoint).Address + "*" + _gameServer.ServerData.KeyValue["gamename"]);
+
+            foreach (var key in redisKeys)
+            {
+                if (key == GameServer.GenerateGameServerKey(endPoint, _gameServer.ServerData.KeyValue["gamename"]))
+                {
+                    continue;
+                }
+                GameServer.DeleteGameServer(key);
             }
 
             GameServer.UpdateGameServer(

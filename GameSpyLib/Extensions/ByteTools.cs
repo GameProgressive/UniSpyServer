@@ -27,83 +27,92 @@ namespace GameSpyLib.Extensions
             return temp;
         }
 
-        public static byte[] GetPortBytes(string port)
+        public static byte[] GetIPBytes(IPEndPoint endPoint, bool isReversingBytes = false)
         {
-            byte[] bytePort = BitConverter.GetBytes(ushort.Parse(port));
-            if (BitConverter.IsLittleEndian)
+            return GetBytes(endPoint.Address.GetAddressBytes(),isReversingBytes);
+        }
+
+        public static byte[] GetIPBytes(EndPoint endPoint, bool isReversingBytes = false)
+        {
+            return GetIPBytes((IPEndPoint)endPoint,isReversingBytes);
+        }
+
+        public static byte[] GetIPBytes(string strIP, bool isReversingBytes = false)
+        {
+            byte[] ip= IPAddress.Parse(strIP).GetAddressBytes();
+            return GetBytes(ip, isReversingBytes);
+        }
+
+        public static IPEndPoint GetIPEndPoint(byte[] ip, byte[] port)
+        {
+            return new IPEndPoint(BitConverter.ToInt32(ip), BitConverter.ToUInt16(port));
+        }
+
+        public static IPEndPoint GetIPEndPoint(int ip, ushort port)
+        {
+            return new IPEndPoint(ip, port);
+        }
+
+       
+        public static ushort ToUInt16(string value, bool isReversingBytes = false)
+        {
+            ushort data = ushort.Parse(value);
+            byte[] buffer = BitConverter.GetBytes(data);
+            return ToUInt16(buffer, isReversingBytes);
+        }
+
+        public static ushort ToUInt16(byte[] value, bool isReversingBytes = false)
+        {
+            if (isReversingBytes)
             {
-                Array.Reverse(bytePort);
+                Array.Reverse(value);
             }
-            return bytePort;
+            return BitConverter.ToUInt16(value);
         }
 
-        public static byte[] GetPortBytes(IPEndPoint endPoint)
+        public static int ToInt32(byte[] value,bool isReversingBytes = false)
         {
-            byte[] portBytes = BitConverter.GetBytes((short)endPoint.Port);
-
-            if (BitConverter.IsLittleEndian)
+            if (isReversingBytes)
             {
-                Array.Reverse(portBytes);
+                Array.Reverse(value);
             }
-            return portBytes;
-        }
-        public static byte[] GetPortBytes(EndPoint endPoint)
-        {
-            return GetPortBytes((IPEndPoint)endPoint);
+           return  BitConverter.ToInt32(value);
         }
 
-        public static byte[] GetIPBytes(string ip)
+        public static int ToInt32(string value, bool isReversingBytes = false)
         {
-            return IPAddress.Parse(ip).GetAddressBytes();
+            int data = int.Parse(value);
+            byte[] buffer = BitConverter.GetBytes(data);
+
+            return ToInt32(buffer, isReversingBytes);
         }
 
-        public static byte[] GetIPBytes(IPEndPoint endPoint)
+        public static byte[] GetBytes(int value, bool isReversingBytes = false)
         {
-            return endPoint.Address.GetAddressBytes();
+           return GetBytes(BitConverter.GetBytes(value), isReversingBytes);
         }
 
-        public static byte[] GetIPBytes(EndPoint endPoint)
+        public static byte[] GetBytes(short value, bool isReversingBytes = false)
         {
-            return GetIPBytes((IPEndPoint)endPoint);
+            return GetBytes(BitConverter.GetBytes(value), isReversingBytes);
         }
 
-        public static IPEndPoint GetIPEndFromIPAndPort(byte[] ip, byte[] port)
+        public static byte[] GetBytes(uint value, bool isReversingBytes = false)
         {
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(port);
-            }
-            return new IPEndPoint(BitConverter.ToInt32(ip), BitConverter.ToInt32(port));
+            return GetBytes(BitConverter.GetBytes(value), isReversingBytes);
         }
 
-        public static short GetMessageLength(byte[] data)
+        public static byte[] GetBytes(ushort value, bool isReversingBytes = false)
         {
-            if (BitConverter.IsLittleEndian)
+            return GetBytes(BitConverter.GetBytes(value), isReversingBytes);
+        }
+        public static byte[] GetBytes(byte[] data, bool isReversingBytes = false)
+        {
+            if (isReversingBytes)
             {
                 Array.Reverse(data);
             }
-            return BitConverter.ToInt16(data);
+            return data;
         }
-
-        public static byte[] ASCIIStrToBytes(string data)
-        {
-            return Encoding.ASCII.GetBytes(data);
-        }
-
-        public static string ByteToASCIIStr(byte[] data)
-        {
-            return Encoding.ASCII.GetString(data);
-        }
-
-        public static int BytesToInt(byte[] data)
-        {
-            return BitConverter.ToInt32(data);
-        }
-
-        public static byte[] IntToBytes(int data)
-        {
-            return BitConverter.GetBytes(data);
-        }
-
     }
 }

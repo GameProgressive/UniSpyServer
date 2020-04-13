@@ -27,8 +27,8 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         public DateTime LastPing { get; set; }
 
-        public int RemoteIP { get; set; }
-        public ushort RemotePort { get; set; }
+        public string RemoteIP { get; set; }
+        public string RemotePort { get; set; }
 
         /// <summary>
         /// Instant key used to verity the client
@@ -51,31 +51,45 @@ namespace QueryReport.Entity.Structure
 
         public void Parse(EndPoint endPoint, int instantKey)
         {
-            RemoteIP = BitConverter.ToInt32(((IPEndPoint)endPoint).Address.GetAddressBytes());
-            RemotePort = (ushort)((IPEndPoint)endPoint).Port;
+            RemoteIP = ((IPEndPoint)endPoint).Address.ToString();
+            RemotePort = ((IPEndPoint)endPoint).Port.ToString();
+
             InstantKey = instantKey;
         }
 
-        public static List<string> SearchDedicateServerKeys(string subKey)
+        public static List<string> SearchServerKeys(string subKey)
         {
             return RedisExtensions.SearchKeys(subKey, (int)RedisDBNumber.DedicatedServer);
         }
 
-        public static bool DeleteGameServer(EndPoint endPoint, string gameName)
+        public static bool DeleteGameServer(IPAddress address, string gameName)
         {
-            string key = GenerateDedicatedGameServerKey(endPoint, gameName);
+            string subKey = address.ToString() + "*" + gameName;
+            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.DedicatedServer);
+            return redis.KeyDelete(subKey);
+        }
+
+        public static bool DeleteGameServer(string key)
+        {
             var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.DedicatedServer);
             return redis.KeyDelete(key);
         }
 
-        public static string GenerateDedicatedGameServerKey(EndPoint end, string gameName)
+        public static bool DeleteGameServer(EndPoint endPoint, string gameName)
         {
-            return ((IPEndPoint)end).Address.ToString() + ":" + ((IPEndPoint)end).Port + " " + gameName;
+            string key = GenerateGameServerKey(endPoint, gameName);
+            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.DedicatedServer);
+            return redis.KeyDelete(key);
+        }
+
+        public static string GenerateGameServerKey(EndPoint end, string gameName)
+        {
+            return ((IPEndPoint)end).ToString() + " " + gameName;
         }
 
         public static void UpdateGameServer(EndPoint end, string gameName, GameServer gameServer)
         {
-            string key = GenerateDedicatedGameServerKey(end, gameName);
+            string key = GenerateGameServerKey(end, gameName);
             RedisExtensions.SerializeSet(key, gameServer, (int)RedisDBNumber.DedicatedServer);
         }
 
@@ -87,7 +101,7 @@ namespace QueryReport.Entity.Structure
         public static List<GameServer> GetGameServers(EndPoint end)
         {
             //we build search key as 192.168.1.1:1111 format
-            string subKey = ((IPEndPoint)end).Address.ToString() + ":" + ((IPEndPoint)end).Port;
+            string subKey = ((IPEndPoint)end).ToString();
 
             List<string> allServerKeys = RedisExtensions.SearchKeys(subKey, (int)RedisDBNumber.DedicatedServer);
             List<GameServer> gameServer = new List<GameServer>();

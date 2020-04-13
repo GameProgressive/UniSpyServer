@@ -54,33 +54,5 @@ namespace GameSpyLib.Extensions
         {
             return SearchKeys(gameName, (int)RedisDBNumber.PeerServer);
         }
-
-        //public static bool DeletePeerServer(EndPoint endPoint, string gameName)
-        //{
-        //    string key = GeneratePeerGameServerKey(endPoint, gameName);
-        //    var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.PeerServer);
-        //    return redis.KeyDelete(key);
-        //}
-
-        //public static string GeneratePeerGameServerKey(EndPoint end, string gameName)
-        //{
-        //    return GenerateDedicatedGameServerKey(end, gameName);
-        //}
-        //public static void UpdatePeerGameServer<T>(EndPoint end, string gameName, T gameServer)
-        //{
-        //    string key = GenerateDedicatedGameServerKey(end, gameName);
-        //    SerializeSet(key, gameServer, (int)RedisDBNumber.PeerServer);
-        //}
-
-        //public static List<T> GetPeerGameServers<T>(string subKey)
-        //{
-        //    List<string> allServerKeys = SearchKeys(subKey, (int)RedisDBNumber.PeerServer);
-        //    List<T> gameServer = new List<T>();
-        //    foreach (var key in allServerKeys)
-        //    {
-        //        gameServer.Add(SerilizeGet<T>(key, (int)RedisDBNumber.DedicatedServer));
-        //    }
-        //    return gameServer;
-        //}
     }
 }

@@ -12,7 +12,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
     public class ServerListRequest
     {
         public bool IsParsingFinished;
-        public short RequestLenth { get; protected set; }
         public byte RequestVersion { get; protected set; }
         public byte ProtocolVersion { get; protected set; }
         public byte EncodingVersion { get; protected set; }
@@ -41,16 +40,9 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         /// <param name="recv"></param>
         public bool Parse(byte[] recv)
         {
-            byte[] byteRequestLength = ByteTools.SubBytes(recv, 0, 2);
+            ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(recv, 0, 2), true);
 
-            if (BitConverter.IsLittleEndian)
-            {
-                Array.Reverse(byteRequestLength);
-            }
-
-            RequestLenth = BitConverter.ToInt16(byteRequestLength);
-
-            if (RequestLenth != recv.Length)
+            if (length != recv.Length)
             {
                 return false;
             }
@@ -92,14 +84,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
 
             if ((UpdateOption & SBServerListUpdateOption.LimitResultCount) != 0)
             {
-                byte[] byteMaxServer = Encoding.ASCII.GetBytes(remainData.Substring(0, 4));
-
-                if (BitConverter.IsLittleEndian)
-                {
-                    Array.Reverse(byteMaxServer);
-                }
-
-                MaxServers = BitConverter.ToInt32(byteMaxServer);
+                MaxServers = ByteTools.ToInt32(remainData.Substring(0, 4), true);
             }
 
             return true;
