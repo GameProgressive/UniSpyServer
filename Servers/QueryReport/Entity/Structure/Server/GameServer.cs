@@ -35,7 +35,7 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         public int InstantKey;
 
-        public bool IsValidated = false;
+        public bool IsPeerServer = false;
 
 
         public ServerData ServerData { get; set; }
@@ -57,40 +57,40 @@ namespace QueryReport.Entity.Structure
             InstantKey = instantKey;
         }
 
-        public static List<string> SearchServerKeys(string subKey)
+        public static List<string> GetMatchedKeys(string subKey)
         {
-            return RedisExtensions.SearchKeys(subKey, (int)RedisDBNumber.DedicatedServer);
+            return RedisExtensions.GetMatchedKeys(subKey, RedisDBNumber.GameServer);
         }
 
         public static bool DeleteGameServer(IPAddress address, string gameName)
         {
             string subKey = address.ToString() + "*" + gameName;
-            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.DedicatedServer);
+            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
             return redis.KeyDelete(subKey);
         }
 
-        public static bool DeleteGameServer(string key)
+        public static bool DeleteServer(string key)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.DedicatedServer);
+            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
             return redis.KeyDelete(key);
         }
 
-        public static bool DeleteGameServer(EndPoint endPoint, string gameName)
+        public static bool DeleteServer(EndPoint endPoint, string gameName)
         {
-            string key = GenerateGameServerKey(endPoint, gameName);
-            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.DedicatedServer);
+            string key = GenerateKey(endPoint, gameName);
+            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
             return redis.KeyDelete(key);
         }
 
-        public static string GenerateGameServerKey(EndPoint end, string gameName)
+        public static string GenerateKey(EndPoint end, string gameName)
         {
             return ((IPEndPoint)end).ToString() + " " + gameName;
         }
 
-        public static void UpdateGameServer(EndPoint end, string gameName, GameServer gameServer)
+        public static void UpdateServer(EndPoint end, string gameName, GameServer gameServer)
         {
-            string key = GenerateGameServerKey(end, gameName);
-            RedisExtensions.SerializeSet(key, gameServer, (int)RedisDBNumber.DedicatedServer);
+            string key = GenerateKey(end, gameName);
+            RedisExtensions.SerializeSet(key, gameServer, RedisDBNumber.GameServer);
         }
 
         /// <summary>
@@ -98,16 +98,16 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         /// <param name="end"></param>
         /// <returns></returns>
-        public static List<GameServer> GetGameServers(EndPoint end)
+        public static List<GameServer> GetServers(EndPoint end)
         {
             //we build search key as 192.168.1.1:1111 format
             string subKey = ((IPEndPoint)end).ToString();
 
-            List<string> allServerKeys = RedisExtensions.SearchKeys(subKey, (int)RedisDBNumber.DedicatedServer);
+            List<string> allServerKeys = RedisExtensions.GetMatchedKeys(subKey, RedisDBNumber.GameServer);
             List<GameServer> gameServer = new List<GameServer>();
             foreach (var key in allServerKeys)
             {
-                gameServer.Add(RedisExtensions.SerilizeGet<GameServer>(key, (int)RedisDBNumber.DedicatedServer));
+                gameServer.Add(RedisExtensions.SerilizeGet<GameServer>(key, RedisDBNumber.GameServer));
             }
             return gameServer;
         }
@@ -116,13 +116,13 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         /// <param name="subKey"></param>
         /// <returns></returns>
-        public static List<GameServer> GetGameServers(string subKey)
+        public static List<GameServer> GetServers(string subKey)
         {
-            List<string> allServerKeys = RedisExtensions.SearchKeys(subKey, (int)RedisDBNumber.DedicatedServer);
+            List<string> allServerKeys = RedisExtensions.GetMatchedKeys(subKey, RedisDBNumber.GameServer);
             List<GameServer> gameServer = new List<GameServer>();
             foreach (var key in allServerKeys)
             {
-                gameServer.Add(RedisExtensions.SerilizeGet<GameServer>(key, (int)RedisDBNumber.DedicatedServer));
+                gameServer.Add(RedisExtensions.SerilizeGet<GameServer>(key, RedisDBNumber.GameServer));
             }
             return gameServer;
         }

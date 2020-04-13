@@ -20,9 +20,9 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             KeepAlivePacket packet = new KeepAlivePacket();
             packet.Parse(recv);
             _sendingBuffer = packet.GenerateResponse();
-            var gameServer = GameServer.GetGameServers(endPoint).First();
+            var gameServer = GameServer.GetServers(endPoint).First();
             gameServer.LastKeepAlive = DateTime.Now;
-            GameServer.UpdateGameServer
+            GameServer.UpdateServer
                 (
                 endPoint,
                 gameServer.ServerData.KeyValue["gamename"],

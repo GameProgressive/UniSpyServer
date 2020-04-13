@@ -33,6 +33,8 @@
     <Compile Remove="Entity\Structure\QRGeneralData.cs" />
     <Compile Remove="Handler\CommandHandler\HeartBeat\QRDBQuery.cs" />
     <Compile Remove="Entity\Structure\GameServer.cs" />
+    <Compile Remove="Entity\Structure\Server\DedicatedServer.cs" />
+    <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entity\Structure\Packet\" />

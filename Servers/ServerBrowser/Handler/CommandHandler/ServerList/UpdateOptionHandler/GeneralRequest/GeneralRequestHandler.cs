@@ -15,7 +15,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
         {
             base.DataOperation(session, recv);
             _gameServers =
-                        GameServer.GetGameServers(_request.GameName);
+                        GameServer.GetServers(_request.GameName);
+
             if (_gameServers == null || _gameServers.Count == 0)
             {
                 _errorCode = SBErrorCode.NoServersFound;

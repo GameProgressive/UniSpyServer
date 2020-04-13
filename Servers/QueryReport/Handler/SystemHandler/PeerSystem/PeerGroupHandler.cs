@@ -1,8 +1,5 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Extensions;
-using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure.Group;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,11 +7,10 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
 {
     public class PeerGroupHandler
     {
-        public List<PeerGroup> PeerGroup { get; protected set; }
-
+        private List<PeerGroup> _peerGroup;
         public PeerGroupHandler()
         {
-            PeerGroup = new List<PeerGroup>();
+            _peerGroup = new List<PeerGroup>();
         }
 
         /// <summary>
@@ -52,14 +48,14 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
 
                 foreach (var gameName in names)
                 {
-                    var result = Entity.Structure.Group.PeerGroup.SearchPeerGroupKeys(gameName);
-                 
-                    if(result.Count()!=0)
+                    var result = PeerGroup.SearchPeerGroupKeys(gameName);
+
+                    if (result.Count() != 0)
                     {
                         continue;
                     }
-                    PeerGroup.Add(LoadGameRooms(gameName));
-                    Entity.Structure.Group.PeerGroup.SetGroupList(gameName, LoadGameRooms(gameName));
+                    _peerGroup.Add(LoadGameRooms(gameName));
+                    PeerGroup.SetGroupList(gameName, LoadGameRooms(gameName));
                 }
             }
         }

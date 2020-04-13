@@ -1,8 +1,11 @@
 ﻿using GameSpyLib.Database.Entity;
+using GameSpyLib.Extensions;
 using GameSpyLib.Network;
+using QueryReport.Entity.Structure.Group;
 using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
 using QueryReport.Handler.SystemHandler.PeerSystem;
+using System.Collections.Generic;
 using System.Net;
 
 namespace QueryReport.Server

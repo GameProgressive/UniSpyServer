@@ -1,4 +1,5 @@
-﻿using QueryReport.Entity.Structure;
+﻿using System.Linq;
+using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
@@ -17,10 +18,16 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
         public override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
-            _gameServers = GameServer.GetGameServers(_request.GameName);
+            _gameServers = GameServer.GetServers(_request.GameName).Where(g=>g.IsPeerServer=true).ToList();
             if (_gameServers == null)
             {
                 _errorCode = SBErrorCode.DataOperation;
+                return;
+            }
+
+            if (_gameServers.Count() == 0)
+            {
+                _errorCode = SBErrorCode.NoServersFound;
                 return;
             }
             //**************Currently we do not handle filter**********************

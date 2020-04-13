@@ -40,7 +40,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
         public override void DataOperation(SBSession session, byte[] recv)
         {
             base.DataOperation(session, recv);
-            var result = GameServer.GetGameServers( _request.TargetServerIP).Where(s=>s.ServerData.KeyValue["hostport"]==_request.TargetServerHostPort);
+            var result = GameServer.GetServers( _request.TargetServerIP).Where(s=>s.ServerData.KeyValue["hostport"]==_request.TargetServerHostPort);
 
             if (result.Count() != 1)
             {

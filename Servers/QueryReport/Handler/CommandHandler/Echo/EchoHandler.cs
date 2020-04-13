@@ -20,7 +20,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
         {
             //TODO
             var result =
-                 GameServer.GetGameServers(endPoint);
+                 GameServer.GetServers(endPoint);
             //add recive echo packet on gameserverList
             //DedicatedGameServer game;
             //QRServer.GameServerList.TryGetValue(endPoint, out game);
@@ -41,7 +41,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
                 _gameServer.ServerData.KeyValue.Add("ping", Convert.ToString(ping));
             }
             _gameServer.LastPing = DateTime.Now;
-            GameServer.UpdateGameServer(
+            GameServer.UpdateServer(
                endPoint,
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer

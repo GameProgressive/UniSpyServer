@@ -7,26 +7,39 @@ namespace GameSpyLib.Extensions
 {
     public enum RedisDBNumber
     {
-        DedicatedServer = 0,
-        PeerGroup = 1,
-        PeerServer = 2
+        PeerGroup = 0,
+        GameServer = 1,
     }
 
     public class RedisExtensions
     {
-        #region General Methods
-        public static bool SerializeSet<T>(string key, T value, int dbNumber)
+        public static bool SerializeSet<T>(string key, T value, RedisDBNumber dbNumber)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase(dbNumber);
+            var redis = ServerManagerBase.Redis.GetDatabase((int)dbNumber);
             string jsonStr = JsonConvert.SerializeObject(value);
             return redis.StringSet(key, jsonStr);
         }
 
-        public static T SerilizeGet<T>(string key, int dbNumber)
+        public static T SerilizeGet<T>(string key, RedisDBNumber dbNumber)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase(dbNumber);
+            var redis = ServerManagerBase.Redis.GetDatabase((int)dbNumber);
             T t = JsonConvert.DeserializeObject<T>(redis.StringGet(key));
             return t;
+        }
+
+        public static List<string> GetAllKeys(RedisDBNumber dbNumber)
+        {
+            List<string> matchKeys = new List<string>();
+
+            foreach (var end in ServerManagerBase.Redis.GetEndPoints())
+            {
+                var server = ServerManagerBase.Redis.GetServer(end);
+                foreach (var key in server.Keys((int)dbNumber))
+                {
+                    matchKeys.Add(key);
+                }
+            }
+            return matchKeys;
         }
 
         /// <summary>
@@ -34,25 +47,20 @@ namespace GameSpyLib.Extensions
         /// </summary>
         /// <param name="subStringOfKey">the substring of a key</param>
         /// <returns></returns>
-        public static List<string> SearchKeys(string subStringOfKey, int dbNumber)
+        public static List<string> GetMatchedKeys(string subStringOfKey, RedisDBNumber dbNumber)
         {
             List<string> matchKeys = new List<string>();
 
             foreach (var end in ServerManagerBase.Redis.GetEndPoints())
             {
                 var server = ServerManagerBase.Redis.GetServer(end);
-                foreach (var key in server.Keys(dbNumber, pattern: $"*{subStringOfKey}*"))
+                foreach (var key in server.Keys((int)dbNumber, pattern: $"*{subStringOfKey}*"))
                 {
                     matchKeys.Add(key);
                 }
             }
             return matchKeys;
         }
-        #endregion
 
-        public static List<string> SearchPeerServerKeys(string gameName)
-        {
-            return SearchKeys(gameName, (int)RedisDBNumber.PeerServer);
-        }
     }
 }

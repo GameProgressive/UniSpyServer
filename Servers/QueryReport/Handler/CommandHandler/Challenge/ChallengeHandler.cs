@@ -21,7 +21,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
         protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
         {
             var result =
-                  GameServer.GetGameServers(endPoint);
+                  GameServer.GetServers(endPoint);
 
             if (result.Count() != 1)
             {
@@ -29,7 +29,6 @@ namespace QueryReport.Handler.CommandHandler.Challenge
                 return;
             }
             _gameServer = result.First();
-            _gameServer.IsValidated = true;
         }
 
         protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
@@ -39,7 +38,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             // We send the echo packet to check the ping
             _sendingBuffer = echo.GenerateResponse();
 
-            GameServer.UpdateGameServer(
+            GameServer.UpdateServer(
                 endPoint,
                 _gameServer.ServerData.KeyValue["gamename"],
                 _gameServer

@@ -11,6 +11,12 @@ namespace QueryReport.Entity.Structure.Group
         public int GameID { get; set; }
         public List<PeerRoom> PeerRooms { get; set; }
 
+        public static List<string> PeerGroupKeyList
+        {
+            get
+            { return GetAllKeys(); }
+        }
+
         public PeerGroup()
         {
             PeerRooms = new List<PeerRoom>();
@@ -24,7 +30,12 @@ namespace QueryReport.Entity.Structure.Group
 
         public static List<string> SearchPeerGroupKeys(string subKey)
         {
-            return RedisExtensions.SearchKeys(subKey, (int)RedisDBNumber.PeerGroup);
+            return RedisExtensions.GetMatchedKeys(subKey, (int)RedisDBNumber.PeerGroup);
+        }
+
+        public static List<string> GetAllKeys()
+        {
+           return RedisExtensions.GetAllKeys(RedisDBNumber.PeerGroup);
         }
 
         public static PeerGroup GetGroupsList(string gameName)

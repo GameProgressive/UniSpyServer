@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Group;
 using QueryReport.Entity.Structure.Packet;
+using QueryReport.Handler.SystemHandler.PeerSystem;
 using QueryReport.Server;
 using System;
 using System.Collections.Generic;
@@ -74,7 +76,12 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 //shutdown heart beat
                 serverData = dataPartition;
                 _gameServer.ServerData.Update(serverData, endPoint);
-                GameServer.DeleteGameServer(
+                if (PeerGroup.PeerGroupKeyList.Contains(_gameServer.ServerData.KeyValue["gamename"])
+                     && !_gameServer.ServerData.KeyValue.ContainsKey("hostport"))
+                {
+                    _gameServer.IsPeerServer = true;
+                }
+                GameServer.DeleteServer(
                     endPoint,
                     _gameServer.ServerData.KeyValue["gamename"]
                     );
@@ -82,18 +89,24 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             }
 
             //make sure one ip address create one server
-            List<string> redisKeys = GameServer.SearchServerKeys(((IPEndPoint)endPoint).Address + "*" + _gameServer.ServerData.KeyValue["gamename"]);
+            List<string> redisKeys = GameServer.GetMatchedKeys(((IPEndPoint)endPoint).Address + "*" + _gameServer.ServerData.KeyValue["gamename"]);
 
             foreach (var key in redisKeys)
             {
-                if (key == GameServer.GenerateGameServerKey(endPoint, _gameServer.ServerData.KeyValue["gamename"]))
+                if (key == GameServer.GenerateKey(endPoint, _gameServer.ServerData.KeyValue["gamename"]))
                 {
                     continue;
                 }
-                GameServer.DeleteGameServer(key);
+                GameServer.DeleteServer(key);
             }
 
-            GameServer.UpdateGameServer(
+            if (PeerGroup.PeerGroupKeyList.Contains(_gameServer.ServerData.KeyValue["gamename"])
+                && !_gameServer.ServerData.KeyValue.ContainsKey("hostport"))
+            {
+                _gameServer.IsPeerServer = true;
+            }
+
+            GameServer.UpdateServer(
                endPoint,
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer
