@@ -133,6 +133,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         }
         protected void CheckNonStandardPort(List<byte> header,  GameServer server)
         {
+            if (server.IsPeerServer)
+            {
+                return;
+            }
             //we check host port is standard port or not
             if (server.ServerData.KeyValue.ContainsKey("hostport"))
             {

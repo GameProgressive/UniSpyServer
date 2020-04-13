@@ -27,6 +27,7 @@ namespace Chat.Handler.CommandSwitcher
                     //TODO
                     break;
                 default:
+                    data = data.Replace("NICK *", "NICK xiaojiuwo");
                     session.ChatClientProxy.SendAsync(data);
                     break;
             }
