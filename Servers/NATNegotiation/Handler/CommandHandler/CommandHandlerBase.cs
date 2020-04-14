@@ -50,8 +50,7 @@ namespace NATNegotiation.Handler.CommandHandler
             {
                 return;
             }
-
-            server.Send(client.RemoteEndPoint, _sendingBuffer);
+            server.SendAsync(client.RemoteEndPoint, _sendingBuffer);
         }
     }
 }

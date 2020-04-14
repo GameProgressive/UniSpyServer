@@ -31,20 +31,6 @@ namespace GameSpyLib.Network
             LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         }
 
-        public long BaseSend(string buffer)
-        {
-            return BaseSend(Encoding.ASCII.GetBytes(buffer));
-        }
-        public long BaseSend(byte[] buffer)
-        {
-            return BaseSend(buffer, 0, buffer.Length);
-        }
-
-        protected long BaseSend(byte[] buffer, long offset, long size)
-        {
-            return base.Send(buffer, offset, size);
-        }
-
         public bool BaseSendAsync(string buffer)
         {
             return BaseSendAsync(Encoding.ASCII.GetBytes(buffer));
@@ -59,33 +45,7 @@ namespace GameSpyLib.Network
         {
             return base.SendAsync(buffer, offset, size);
         }
-        /// <summary>
-        /// Send data to the client (synchronous)
-        /// </summary>
-        /// <param name="buffer">Buffer to send</param>
-        /// <param name="offset">Buffer offset</param>
-        /// <param name="size">Buffer size</param>
-        /// <returns>Size of sent data</returns>
-        /// <remarks>
-        /// We override this method in order to let it print the data it transmits, please call "base.Send" in your overrided function.
-        /// </remarks>
-        public override long Send(byte[] buffer, long offset, long size)
-        {
-            LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
-            return base.Send(buffer, offset, size);
-        }
-        /// <summary>
-        /// Send data to the client (asynchronous)
-        /// </summary>
-        /// <param name="buffer">Buffer to send</param>
-        /// <param name="offset">Buffer offset</param>
-        /// <param name="size">Buffer size</param>
-        /// <returns>'true' if the data was successfully sent, 'false' if the session is not connected</returns>
-        /// <remarks>
-        /// We override this method in order to let it print the data it transmits, please call "base.SendAsync" in your overrided function.
-        /// </remarks>
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
 

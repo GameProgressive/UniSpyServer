@@ -48,7 +48,6 @@ namespace Chat.Handler.CommandHandler.LOGIN
         {
             base.Response(session, recv);
             session.SendAsync($":{session.UserInfo.ServerIP} 001 {session.UserInfo.NickName} :Welcome!\r\n");
-            //session.Send("JOIN #retrospy\r\n");
             session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.ToPic, "#retrospy Test!"));
             session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.EndOfNames, "#retrospy :End of names LIST"));
         }

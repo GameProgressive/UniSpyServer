@@ -50,17 +50,6 @@ namespace StatsAndTracking
             CommandSwitcher.Switch(this, dict);
         }
 
-        /// <summary>
-        /// Encrypt and send
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public override long Send(string plainText)
-        {
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $@"[Send] {plainText}\final\");
-           
-            return BaseSend(Encrypt(plainText));
-        }
 
         /// <summary>
         /// Encrypt and send async
@@ -71,7 +60,6 @@ namespace StatsAndTracking
         {
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $@"[Send] {plainText}\final\");
             
-
             return BaseSendAsync(Encrypt(plainText));
         }
 
