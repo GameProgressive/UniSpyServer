@@ -119,7 +119,7 @@ namespace GameSpyLib.Logging
             ToLog(LogEventLevel.Information, message);
         }
 
-        public static void UnKnownDataRecieved(object data)
+        public static void UnknownDataRecieved(object data)
         {
             ToLog(LogEventLevel.Error, $"[Unknown] {data}");
         }

@@ -1,10 +1,12 @@
-﻿using GameSpyLib.Common;
+﻿using GameSpyLib.Logging;
 using GameSpyLib.Encryption;
 using GameSpyLib.MiscMethod;
 using GameSpyLib.Network;
 using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandSwitcher;
 using System.Collections.Generic;
+using System;
+using System.Text;
 
 namespace StatsAndTracking
 {
@@ -23,11 +25,20 @@ namespace StatsAndTracking
             SendAsync(GenerateServerChallenge());
             base.OnConnected();
         }
+        protected override void OnReceived(byte[] buffer, long offset, long size)
+        {
+            if (size < 2 && size > 2048)
+            {
+                return;
+            }
 
+            string plainText = Decrypt(buffer, offset, size);
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {plainText}");
+
+            OnReceived(plainText);
+        }
         protected override void OnReceived(string message)
         {
-            message = Decrypt(message);
-
             if (message[0] != '\\')
             {
                 return;
@@ -39,23 +50,16 @@ namespace StatsAndTracking
             CommandSwitcher.Switch(this, dict);
         }
 
-        public override long Send(byte[] buffer, long offset, long size)
-        {
-            return BaseSend(buffer, offset, size);
-        }
-
-        public override bool SendAsync(byte[] buffer, long offset, long size)
-        {
-            return BaseSendAsync(buffer, offset, size);
-        }
         /// <summary>
         /// Encrypt and send
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public override long Send(string text)
+        public override long Send(string plainText)
         {
-            return base.Send(Encrypt(text));
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $@"[Send] {plainText}\final\");
+           
+            return BaseSend(Encrypt(plainText));
         }
 
         /// <summary>
@@ -63,9 +67,12 @@ namespace StatsAndTracking
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public override bool SendAsync(string text)
+        public override bool SendAsync(string plainText)
         {
-            return base.SendAsync(Encrypt(text));
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $@"[Send] {plainText}\final\");
+            
+
+            return BaseSendAsync(Encrypt(plainText));
         }
 
         /// <summary>
@@ -80,30 +87,21 @@ namespace StatsAndTracking
             return $@"\challenge\{PlayerData.Challenge}";
         }
 
-        /// <summary>
-        /// Encrypt using XOR with type3 method
-        /// </summary>
-        /// <param name="plainText"></param>
-        /// <returns></returns>
-        public string Encrypt(string plainText)
-        {
 
-            LogPlainText(plainText);
-            string cipherText = XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type1) + @"\final\";
-            return cipherText;
+        protected string Decrypt(byte[] buffer, long offset, long size)
+        {
+            byte[] temp = new byte[(int)size];
+            Array.Copy(buffer, 0, temp, 0, (int)size);
+            //remove final
+            string cipherText = Encoding.ASCII.GetString(temp);
+            cipherText = cipherText.Substring(0, cipherText.Length - 7);
+
+            return XorEncoding.Encrypt(cipherText, XorEncoding.XorType.Type1) + @"\final\";
         }
 
-        /// <summary>
-        /// Decrypt using XOR with type3 method
-        /// </summary>
-        /// <param name="cipherText"></param>
-        /// <returns></returns>
-        public string Decrypt(string cipherText)
+        protected string Encrypt(string plainText)
         {
-            cipherText = cipherText.Substring(0, cipherText.Length - 7);
-            string plainText = XorEncoding.Encrypt(cipherText, XorEncoding.XorType.Type1) + @"\final\";
-            LogPlainText(plainText);
-            return plainText;
+            return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type1) + @"\final\";
         }
     }
 }

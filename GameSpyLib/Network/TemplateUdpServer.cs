@@ -98,9 +98,11 @@ namespace GameSpyLib.Network
             ReceiveAsync();
         }
 
+        protected virtual void OnReceived(EndPoint endPoint, string message)
+        { }
         protected virtual void OnReceived(EndPoint endPoint, byte[] message)
         {
-
+            OnReceived(endPoint, Encoding.ASCII.GetString(message));
         }
         /// <summary>
         /// Handle datagram received notification

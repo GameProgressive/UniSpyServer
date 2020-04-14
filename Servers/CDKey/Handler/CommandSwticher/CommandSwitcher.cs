@@ -32,7 +32,7 @@ namespace CDKey.Handler.CommandSwitcher
                         break;
 
                     default:
-                        LogWriter.UnKnownDataRecieved(recv);
+                        LogWriter.UnknownDataRecieved(recv);
                         break;
                 }
             }

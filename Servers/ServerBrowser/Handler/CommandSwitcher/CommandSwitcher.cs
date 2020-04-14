@@ -1,4 +1,5 @@
-﻿using ServerBrowser.Entity.Enumerator;
+﻿using GameSpyLib.Logging;
+using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 
@@ -22,9 +23,11 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.MapLoopRequest:
                     break;
                 case SBClientRequestType.SendMessageRequest:
+                    //TODO
+                    //Cryptorx's game use this command
                     break;
                 default:
-                    session.UnKnownDataReceived(recv);
+                    LogWriter.UnknownDataRecieved(recv);
                     break;
             }
         }
