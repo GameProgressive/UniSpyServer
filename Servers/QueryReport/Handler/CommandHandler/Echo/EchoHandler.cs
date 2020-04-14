@@ -31,16 +31,9 @@ namespace QueryReport.Handler.CommandHandler.Echo
                 return;
             }
 
-            _gameServer = result.First();
-            //compute the ping           
-            
-            if (!_gameServer.ServerData.KeyValue.ContainsKey("ping"))
-            {
-                byte ping = GameSpyUtils.ComputeTimeInterval(_gameServer.LastPing);
-                //adding ping and value to dictionary
-                _gameServer.ServerData.KeyValue.Add("ping", Convert.ToString(ping));
-            }
-            _gameServer.LastPing = DateTime.Now;
+            _gameServer = result.FirstOrDefault();
+
+            _gameServer.LastPacket = DateTime.Now;
             GameServer.UpdateServer(
                endPoint,
                _gameServer.ServerData.KeyValue["gamename"],

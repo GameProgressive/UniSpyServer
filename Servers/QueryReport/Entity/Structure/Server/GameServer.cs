@@ -15,17 +15,7 @@ namespace QueryReport.Entity.Structure
         /// <summary>
         /// Last valid heart beat packet time
         /// </summary>
-        public DateTime LastHeartBeatPacket { get; set; }
-
-        /// <summary>
-        /// Last keep alive packet time
-        /// </summary>
-        public DateTime LastKeepAlive { get; set; }
-
-        /// <summary>
-        /// Last ping packet time
-        /// </summary>
-        public DateTime LastPing { get; set; }
+        public DateTime LastPacket { get; set; }
 
         public string RemoteIP { get; set; }
         public string RemotePort { get; set; }

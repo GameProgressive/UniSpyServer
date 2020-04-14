@@ -59,7 +59,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 _gameServer.ServerData.Update(serverData, endPoint);
                 _gameServer.PlayerData.Update(playerData);
                 _gameServer.TeamData.Update(teamData);
-                _gameServer.LastHeartBeatPacket = DateTime.Now;
+                _gameServer.LastPacket = DateTime.Now;
             }
             else if (playerPos != -1)
             {
@@ -69,7 +69,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 playerData = dataPartition.Substring(playerPos - 1, playerLenth);
                 _gameServer.ServerData.Update(serverData, endPoint);
                 _gameServer.PlayerData.Update(playerData);
-                _gameServer.LastHeartBeatPacket = DateTime.Now;
+                _gameServer.LastPacket = DateTime.Now;
             }
             else
             {

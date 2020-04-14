@@ -21,7 +21,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             packet.Parse(recv);
             _sendingBuffer = packet.GenerateResponse();
             var gameServer = GameServer.GetServers(endPoint).First();
-            gameServer.LastKeepAlive = DateTime.Now;
+            gameServer.LastPacket = DateTime.Now;
             GameServer.UpdateServer
                 (
                 endPoint,
