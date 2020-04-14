@@ -38,14 +38,5 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
             //after all server information is added we add the end flag
             _dataList.AddRange(SBStringFlag.AllServerEndFlag);
         }
-
-        protected override void CheckNonStandardPort(List<byte> header, GameServer server)
-        {
-            if (server.IsPeerServer)
-            {
-                return;
-            }
-            base.CheckNonStandardPort(header, server);
-        }
     }
 }

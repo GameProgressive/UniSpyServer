@@ -19,7 +19,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
         protected override void CheckRequest(SBSession session, byte[] recv)
         {
             base.CheckRequest(session, recv);
-            _gameServers = GameServer.GetServers(_request.GameName).Where(g=>g.IsPeerServer=true).ToList();
+            _gameServers = GameServer.GetServers(_request.GameName);
             if (_gameServers == null)
             {
                 _errorCode = SBErrorCode.DataOperation;
@@ -45,15 +45,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
             GenerateServersInfo();
             //add end server flag
             _dataList.AddRange(SBStringFlag.AllServerEndFlag);
-        }
-
-        protected override void CheckNonStandardPort(List<byte> header, GameServer server)
-        {
-            if (server.IsPeerServer)
-            {
-                return;
-            }
-            base.CheckNonStandardPort(header, server);
         }
     }
 }

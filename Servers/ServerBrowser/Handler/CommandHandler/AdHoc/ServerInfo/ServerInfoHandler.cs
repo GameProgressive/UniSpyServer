@@ -134,14 +134,6 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
             return header;
         }
 
-        protected override void CheckNonStandardPort(List<byte> header, GameServer server)
-        {
-            if (server.IsPeerServer)
-            {
-                return;
-            }
-            base.CheckNonStandardPort(header, server);
-        }
         protected override void Response(SBSession session, byte[] recv)
         {
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)

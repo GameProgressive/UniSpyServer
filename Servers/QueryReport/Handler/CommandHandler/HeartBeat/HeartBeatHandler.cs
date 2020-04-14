@@ -76,35 +76,29 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 //shutdown heart beat
                 serverData = dataPartition;
                 _gameServer.ServerData.Update(serverData, endPoint);
-                if (PeerGroup.PeerGroupKeyList.Contains(_gameServer.ServerData.KeyValue["gamename"])
-                     && !_gameServer.ServerData.KeyValue.ContainsKey("hostport"))
-                {
-                    _gameServer.IsPeerServer = true;
-                }
-                GameServer.DeleteServer(
-                    endPoint,
-                    _gameServer.ServerData.KeyValue["gamename"]
-                    );
+                //if (PeerGroup.PeerGroupKeyList.Contains(_gameServer.ServerData.KeyValue["gamename"])
+                //     && !_gameServer.ServerData.KeyValue.ContainsKey("hostport"))
+                //{
+                //    _gameServer.IsPeerServer = true;
+                //}
+                //GameServer.DeleteServer(
+                //    endPoint,
+                //    _gameServer.ServerData.KeyValue["gamename"]
+                //    );
                 return;
             }
 
-            //make sure one ip address create one server
-            List<string> redisKeys = GameServer.GetMatchedKeys(((IPEndPoint)endPoint).Address + "*" + _gameServer.ServerData.KeyValue["gamename"]);
+            ////make sure one ip address create one server
+            //List<string> redisKeys = GameServer.GetMatchedKeys(((IPEndPoint)endPoint).Address + "*" + _gameServer.ServerData.KeyValue["gamename"]);
 
-            foreach (var key in redisKeys)
-            {
-                if (key == GameServer.GenerateKey(endPoint, _gameServer.ServerData.KeyValue["gamename"]))
-                {
-                    continue;
-                }
-                GameServer.DeleteServer(key);
-            }
-
-            if (PeerGroup.PeerGroupKeyList.Contains(_gameServer.ServerData.KeyValue["gamename"])
-                && !_gameServer.ServerData.KeyValue.ContainsKey("hostport"))
-            {
-                _gameServer.IsPeerServer = true;
-            }
+            //foreach (var key in redisKeys)
+            //{
+            //    if (key == GameServer.GenerateKey(endPoint, _gameServer.ServerData.KeyValue["gamename"]))
+            //    {
+            //        continue;
+            //    }
+            //    GameServer.DeleteServer(key);
+            //}
 
             GameServer.UpdateServer(
                endPoint,

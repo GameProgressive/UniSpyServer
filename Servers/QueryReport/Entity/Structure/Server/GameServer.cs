@@ -35,9 +35,6 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         public int InstantKey;
 
-        public bool IsPeerServer = false;
-
-
         public ServerData ServerData { get; set; }
         public PlayerData PlayerData { get; set; }
         public TeamData TeamData { get; set; }
