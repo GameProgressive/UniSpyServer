@@ -4,30 +4,36 @@ using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Entity.Structure;
 using NatNegotiation.Handler.CommandHandler;
 using System.Linq;
+using GameSpyLib.Common.Entity.Interface;
+using NatNegotiation.Server;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
     public class ConnectHandler : CommandHandlerBase
     {
-        public static void SendConnectPacket(NatNegServer server, ClientInfo client, ClientInfo other)
+        public ConnectHandler(IClient _clientInfo, NatNegClientInfo clientInfo, byte[] _recv) : base(_clientInfo, clientInfo, _recv)
+        {
+        }
+
+        public static void SendConnectPacket()
         {
             //ConnectPacket connPacket = new ConnectPacket
             //{
             //    PacketType = (byte)NatPacketType.Connect,
-            //    Cookie = client.Cookie,
+            //    Cookie = _clientInfo.Cookie,
             //    Finished = 0,
-            //    RemoteIP = client.PublicIP,
-            //    RemotePort = client.PublicPort,
+            //    RemoteIP = _clientInfo.PublicIP,
+            //    RemotePort = _clientInfo.PublicPort,
             //};
-            //connPacket.Parse(client.RemoteEndPoint, recv);
+            //connPacket.Parse(_clientInfo.RemoteEndPoint, _recv);
 
             //byte[] buffer = connPacket.GenerateByteArray();
 
-            //server.SendAsync(client.RemoteEndPoint, buffer);
-            //client.SentConnectPacketTime = DateTime.Now;
-            //client.IsConnected = true;
+            //server.SendAsync(_clientInfo.RemoteEndPoint, buffer);
+            //_clientInfo.SentConnectPacketTime = DateTime.Now;
+            //_clientInfo.IsConnected = true;
 
-            //send to other client
+            //send to other _clientInfo
             //if (other == null)
             //{
             //    return; 
@@ -41,29 +47,29 @@ namespace NatNegotiation.Handler.CommandHandler
             //other.SentConnectPacketTime = DateTime.Now;
         }
 
-        public static void SendDeadHeartBeatNotice(NatNegServer server, ClientInfo client, byte[] recv)
+        public void SendDeadHeartBeatNotice()
         {
             ConnectPacket connPacket = new ConnectPacket();
-            connPacket.Parse(client.RemoteEndPoint, recv);
+            connPacket.Parse(_clientInfo.RemoteEndPoint, _recv);
             byte[] buffer = connPacket.GenerateResponse(NatPacketType.Connect);
-            server.SendAsync(client.RemoteEndPoint, buffer);
+            _client.SendAsync(buffer);
         }
 
-        protected override void CheckRequest(ClientInfo client, byte[] recv)
+        protected override void CheckRequest()
         {
             _connPacket = new ConnectPacket();
-            _connPacket.Parse(recv);
+            _connPacket.Parse(_recv);
         }
 
-        protected override void DataOperation(ClientInfo client, byte[] recv)
+        protected override void DataOperation()
         {
         }
 
-        protected override void ConstructResponse(ClientInfo client, byte[] recv)
+        protected override void ConstructResponse()
         {
         }
 
-        protected override void  Response(NatNegServer server, ClientInfo client)
+        protected override void  Response()
         {
             var other = NatNegServer.ClientList.Values.Where(
                 c => c.RemoteEndPoint == _connPacket.RemoteEndPoint);
@@ -74,9 +80,11 @@ namespace NatNegotiation.Handler.CommandHandler
                 return;
             }
 
-            ClientInfo client2 = other.First();
+            NatNegClientInfo client2 = other.First();
+
             _sendingBuffer = _connPacket.GenerateResponse(NatPacketType.Connect);
-            server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);
+
+            _client.Server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);
         }
     }
 }

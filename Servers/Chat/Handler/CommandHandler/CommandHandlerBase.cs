@@ -1,7 +1,6 @@
-﻿using System;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
-using Serilog.Events;
 
 namespace Chat.Handler.CommandHandler
 {
@@ -9,47 +8,51 @@ namespace Chat.Handler.CommandHandler
     {
         protected string _sendingBuffer;
         protected ChatError _errorCode = ChatError.NoError;
-        public CommandHandlerBase()
+        protected ChatSession _session;
+        protected string[] _recv;
+        public CommandHandlerBase(IClient client, string[] recv)
         {
+            _session = (ChatSession)client.GetInstance();
+            _recv = recv;
         }
-        public virtual void Handle(ChatSession session, string[] recv)
+        public virtual void Handle()
         {
             LogWriter.LogCurrentClass(this);
 
-            CheckRequest(session, recv);
+            CheckRequest();
             if (_errorCode != ChatError.NoError)
             {
                 return;
             }
 
-            DataOperation(session, recv);
+            DataOperation();
             if (_errorCode != ChatError.NoError)
             {
                 return;
             }
 
-            ConstructResponse(session, recv);
+            ConstructResponse();
             if (_errorCode != ChatError.NoError)
             {
                 return;
             }
 
-            Response(session, recv);
+            Response();
         }
-        public virtual void CheckRequest(ChatSession session, string[] recv)
+        public virtual void CheckRequest()
         { }
-        public virtual void DataOperation(ChatSession session, string[] recv)
+        public virtual void DataOperation()
         { }
-        public virtual void ConstructResponse(ChatSession session, string[] recv)
+        public virtual void ConstructResponse()
         { }
 
-        public virtual void Response(ChatSession session, string[] recv)
+        public virtual void Response()
         {
             if (_sendingBuffer == null)
             {
                 return;
             }
-            session.SendAsync(_sendingBuffer);
+            _session.SendAsync(_sendingBuffer);
         }
     }
 }

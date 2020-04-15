@@ -1,25 +1,30 @@
 ﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Entity.Structure;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
     public class ErtACKHandler : CommandHandlerBase
     {
-        protected override void CheckRequest(ClientInfo client, byte[] recv)
+        public ErtACKHandler(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client, clientInfo, recv)
+        {
+        }
+
+        protected override void CheckRequest()
         {
             _initPacket = new InitPacket();
-            _initPacket.Parse(recv);
+            _initPacket.Parse(_recv);
         }
 
-        protected override void DataOperation(ClientInfo client, byte[] recv)
+        protected override void DataOperation()
         {
-            client.Parse(_initPacket);
+            _clientInfo.Parse(_initPacket);
         }
 
-        protected override void ConstructResponse(ClientInfo client, byte[] recv)
+        protected override void ConstructResponse()
         {
-            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtAck, client.RemoteEndPoint);
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtAck, _clientInfo.RemoteEndPoint);
         }
     }
 }

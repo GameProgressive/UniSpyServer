@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Chat
 {
-    public class ChatSession : TemplateTcpSession
+    public class ChatSession : TemplateTcpClient
     {
         public ChatUserInfo UserInfo { get; set; }
 

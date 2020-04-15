@@ -1,7 +1,6 @@
-﻿using Chat.Application;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Handler.SystemHandler.Encryption;
-using GameSpyLib.Common;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
 
 namespace Chat.Handler.CommandHandler.CRYPT
@@ -9,45 +8,45 @@ namespace Chat.Handler.CommandHandler.CRYPT
     public class CRYPTHandler : CommandHandlerBase
     {
         string _secretKey;
-        public CRYPTHandler() : base()
+
+        public CRYPTHandler(IClient client, string[] recv) : base(client, recv)
         {
         }
 
-        public override void CheckRequest(ChatSession session, string[] recv)
+        public override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
             // CRYPT des 1 gamename
-            session.UserInfo.GameName = recv[3];
-
+            _session.UserInfo.GameName = _recv[3];
         }
 
-        public override void DataOperation(ChatSession session, string[] recv)
+        public override void DataOperation()
         {
-            base.DataOperation(session, recv);
-            if (!DataOperationExtensions.GetSecretKey(recv[3], out _secretKey) || _secretKey == null)
+            base.DataOperation();
+            if (!DataOperationExtensions.GetSecretKey(_recv[3], out _secretKey) || _secretKey == null)
             {
                 _sendingBuffer = ChatServer.GenerateChatCommand(ChatError.MoreParameters, "CRYPT :Secret key not found!");
                 return;
             }
         }
 
-        public override void ConstructResponse(ChatSession session, string[] recv)
+        public override void ConstructResponse()
         {
-            base.ConstructResponse(session, recv);
+            base.ConstructResponse();
 
             // 2. Prepare two keys
-            ChatCrypt.Init(session.UserInfo.ClientCTX, ChatServer.ClientKey, _secretKey);
-            ChatCrypt.Init(session.UserInfo.ServerCTX, ChatServer.ServerKey, _secretKey);
+            ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatServer.ClientKey, _secretKey);
+            ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatServer.ServerKey, _secretKey);
 
             // 3. Response the crypt command
             _sendingBuffer = ChatServer.GenerateChatCommand(ChatRPL.SecureKey, "* "+ChatServer.ClientKey +" "+ ChatServer.ServerKey);
         }
 
-        public override void Response(ChatSession session, string[] recv)
+        public override void Response()
         {
-            base.Response(session, recv);
+            base.Response();
             //set use encryption flag to true
-            session.UserInfo.useEncryption = true;
+            _session.UserInfo.useEncryption = true;
         }
     }
 }

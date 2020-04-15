@@ -2,21 +2,25 @@
 using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Entity.Structure;
 using NatNegotiation.Handler.CommandHandler;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
     public class AddressHandler : CommandHandlerBase
     {
-
-        protected override void CheckRequest(ClientInfo client, byte[] recv)
+        public AddressHandler(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client, clientInfo, recv)
         {
-            _initPacket = new InitPacket();
-            _initPacket.Parse(recv);
         }
 
-        protected override void ConstructResponse(ClientInfo client, byte[] recv)
+        protected override void CheckRequest()
         {
-            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.AddressReply, client.RemoteEndPoint);
+            _initPacket = new InitPacket();
+            _initPacket.Parse(_recv);
+        }
+
+        protected override void ConstructResponse()
+        {
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.AddressReply, _clientInfo.RemoteEndPoint);
         }
     }
 }

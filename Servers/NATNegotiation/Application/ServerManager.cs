@@ -2,6 +2,7 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
+using NatNegotiation.Server;
 using System.Net;
 
 namespace NatNegotiation.Application

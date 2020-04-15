@@ -2,7 +2,7 @@
 
 namespace Chat.Server
 {
-    public class ChatProxy : TemplateTcpClient
+    public class ChatProxy : TemplateTcpProxy
     {
         /// <summary>
         /// we save session here

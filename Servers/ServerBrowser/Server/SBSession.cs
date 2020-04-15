@@ -4,7 +4,7 @@ using ServerBrowser.Handler.CommandSwitcher;
 
 namespace ServerBrowser
 {
-    public class SBSession : TemplateTcpSession
+    public class SBSession : TemplateTcpClient
     {
         public GOACryptState EncState;
 

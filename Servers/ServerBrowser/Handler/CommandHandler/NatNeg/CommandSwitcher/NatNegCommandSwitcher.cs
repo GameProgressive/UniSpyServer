@@ -19,10 +19,10 @@ namespace ServerBrowser.Handler.CommandHandler.NatNeg.CommandSwitcher
             //    return;
             //}
             //check and add client into clientList
-            ClientInfo client =
+            NatNegClientInfo client =
                 SBServer.ClientList.GetOrAdd(
                     session.Socket.RemoteEndPoint,
-                    new ClientInfo(session.Socket.RemoteEndPoint)
+                    new NatNegClientInfo(session.Socket.RemoteEndPoint)
                     );
 
             client.LastPacketTime = DateTime.Now;

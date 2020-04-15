@@ -2,25 +2,30 @@
 using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Entity.Structure;
 using NatNegotiation.Handler.CommandHandler;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
     public class NatifyHandler : CommandHandlerBase
     {
-        protected override void CheckRequest(ClientInfo client, byte[] recv)
+        public NatifyHandler(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client, clientInfo, recv)
+        {
+        }
+
+        protected override void CheckRequest()
         {
             _initPacket = new InitPacket();
-            _initPacket.Parse(recv);
+            _initPacket.Parse(_recv);
         }
 
-        protected override void DataOperation(ClientInfo client, byte[] recv)
+        protected override void DataOperation()
         {
-            client.Version = _initPacket.Version;
+            _clientInfo.Version = _initPacket.Version;
         }
 
-        protected override void ConstructResponse(ClientInfo client, byte[] recv)
+        protected override void ConstructResponse()
         {
-            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtTest, client.RemoteEndPoint);
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtTest, _clientInfo.RemoteEndPoint);
         }
     }
 }

@@ -25,5 +25,11 @@
     <Folder Include="RetroSpyConfig\" />
     <Folder Include="Common\Entity\" />
     <Folder Include="Common\Entity\Enumerator\" />
+    <Folder Include="Common\Entity\Interface\" />
+    <Folder Include="Network\Tcp\" />
+    <Folder Include="Network\Udp\" />
+    <Folder Include="Network\Tcp\Proxy\" />
+    <Folder Include="Network\Tcp\Server\" />
+    <Folder Include="Network\Udp\Server\" />
   </ItemGroup>
 </Project>

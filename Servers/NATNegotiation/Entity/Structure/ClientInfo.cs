@@ -5,7 +5,7 @@ using System.Net;
 
 namespace NatNegotiation.Entity.Structure
 {
-    public class ClientInfo
+    public class NatNegClientInfo
     {
         public byte Version;
         public int Cookie;
@@ -27,9 +27,9 @@ namespace NatNegotiation.Entity.Structure
         public DateTime LastPacketTime;
         public DateTime SentConnectPacketTime;
 
-        public ClientInfo TargetClient;
+        public NatNegClientInfo TargetClient;
 
-        public ClientInfo(EndPoint end)
+        public NatNegClientInfo(EndPoint end)
         {
             RemoteEndPoint = end;
             LastPacketTime = DateTime.Now;

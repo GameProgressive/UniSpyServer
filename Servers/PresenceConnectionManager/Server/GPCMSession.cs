@@ -18,7 +18,7 @@ namespace PresenceConnectionManager
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    public class GPCMSession : TemplateTcpSession
+    public class GPCMSession : TemplateTcpClient
     {
         /// <summary>
         /// Indicates whether this player successfully completed the login process

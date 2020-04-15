@@ -1,13 +1,12 @@
-﻿using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
-using NetCoreServer;
-using Serilog.Events;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using NetCoreServer;
+using Serilog.Events;
 
 namespace GameSpyLib.Network
 {
@@ -15,10 +14,11 @@ namespace GameSpyLib.Network
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class TemplateTcpSession : TcpSession
+    public class TemplateTcpClient : TcpSession, IClient
     {
         private EndPoint _endPoint;
-        public TemplateTcpSession(TemplateTcpServer server) : base(server)
+
+        public TemplateTcpClient(TemplateTcpServer server) : base(server)
         {
         }
 
@@ -46,6 +46,11 @@ namespace GameSpyLib.Network
             return base.SendAsync(buffer, offset, size);
         }
 
+        public override bool SendAsync(string text)
+        {
+            return base.SendAsync(text);
+        }
+
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
 
@@ -64,16 +69,7 @@ namespace GameSpyLib.Network
         {
             OnReceived(Encoding.ASCII.GetString(buffer));
         }
-        /// <summary>
-        /// Handle buffer received notification
-        /// </summary>
-        /// <param name="buffer">Received buffer</param>
-        /// <param name="offset">Received buffer offset</param>
-        /// <param name="size">Received buffer size</param>
-        /// <remarks>
-        /// Notification is called when another chunk of buffer was received from the client
-        /// We override this method in order to let it print the data it transmits, please call "base.OnReceived" in your overrided function
-        /// </remarks>
+
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             if (size > 2048)
@@ -103,30 +99,22 @@ namespace GameSpyLib.Network
             base.OnDisconnected();
         }
 
-     
-        public virtual void UnKnownDataReceived(byte[] text)
+        public object GetInstance()
         {
-            UnknownDataReceived(Encoding.ASCII.GetString(text));
+            return this;
         }
 
-        public virtual void UnknownDataReceived(string text)
+        bool IClient.BaseSendAsync(byte[] buffer, long offset, long size)
         {
-            LogWriter.ToLog(LogEventLevel.Error, $"[Unknow] {text}");
+            return BaseSendAsync(buffer, offset, size);
         }
-
-        public virtual void UnknownDataReceived(Dictionary<string, string> recv)
+        bool IClient.BaseSendAsync(byte[] buffer)
         {
-            GameSpyUtils.PrintReceivedGPDictToLogger(recv);
+            return BaseSendAsync(buffer);
         }
-
-        public virtual void LogPlainText(string data)
+        bool IClient.BaseSendAsync(string buffer)
         {
-            LogWriter.ToLog(LogEventLevel.Information, $@"[Plain] {data}");
-        }
-
-        public virtual void LogPlainText(byte[] data)
-        {
-            LogPlainText(StringExtensions.ReplaceUnreadableCharToHex(data));
+            return BaseSendAsync(buffer);
         }
     }
 }

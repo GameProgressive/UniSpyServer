@@ -19,7 +19,7 @@ namespace ServerBrowser
         /// </summary>
         public static readonly string ServerChallenge = "0000000000";
 
-        public static ConcurrentDictionary<EndPoint, ClientInfo> ClientList = new ConcurrentDictionary<EndPoint, ClientInfo>();
+        public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
 
         public SBServer(IPAddress address, int port) : base( address, port)
         {

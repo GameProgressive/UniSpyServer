@@ -1,33 +1,24 @@
 ﻿using System.Net;
 using Chat.Entity.Structure;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.USRIP
 {
     public class USRIPHandler : CommandHandlerBase
     {
-        public USRIPHandler() : base()
+        public USRIPHandler(IClient client, string[] recv) : base(client, recv)
         {
         }
 
-        public override void CheckRequest(ChatSession session, string[] recv)
+        public override void ConstructResponse()
         {
-            base.CheckRequest(session, recv);
-        }
-
-        public override void DataOperation(ChatSession session, string[] recv)
-        {
-            base.DataOperation(session, recv);
-        }
-
-        public override void ConstructResponse(ChatSession session, string[] recv)
-        {
-            base.ConstructResponse(session, recv);
-            string IP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.ToString();
+            base.ConstructResponse();
+            string IP = ((IPEndPoint)_session.Socket.RemoteEndPoint).Address.ToString();
 
            _sendingBuffer =  ChatServer.GenerateChatCommand(ChatRPL.USRIP,
-                session.UserInfo.NickName
-                + " :" + session.UserInfo.NickName
-                + "=+ " + session.UserInfo.UserName
+                _session.UserInfo.NickName
+                + " :" + _session.UserInfo.NickName
+                + "=+ " + _session.UserInfo.UserName
                 + "@" +
                 IP);
         }

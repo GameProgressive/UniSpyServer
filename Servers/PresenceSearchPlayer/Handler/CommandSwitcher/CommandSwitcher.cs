@@ -1,4 +1,5 @@
-﻿using GameSpyLib.MiscMethod;
+﻿using GameSpyLib.Logging;
+using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
@@ -10,6 +11,7 @@ using PresenceSearchPlayer.Handler.CommandHandler.Search;
 using PresenceSearchPlayer.Handler.CommandHandler.SearchUnique;
 using PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch;
 using PresenceSearchPlayer.Handler.CommandHandler.Valid;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -85,14 +87,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                             break;
 
                         default:
-                            session.UnknownDataReceived(recv);
+                            LogWriter.UnknownDataRecieved(message);
                             break;
                     }
                 }
             }
-            catch
+            catch(Exception e)
             {
-                session.UnknownDataReceived(message);
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,e.ToString());
             }
         }
     }

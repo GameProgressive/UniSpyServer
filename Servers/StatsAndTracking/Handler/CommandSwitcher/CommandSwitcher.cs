@@ -50,7 +50,7 @@ namespace StatsAndTracking.Handler.CommandSwitcher
                         new NewGameHandler().Handle(session, recv);
                         break;
                     default:
-                        session.UnknownDataReceived(recv);
+                        LogWriter.UnknownDataRecieved(message);
                         break;
                 }
             }

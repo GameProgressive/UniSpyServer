@@ -4,6 +4,7 @@ using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Entity.Structure;
 using NatNegotiation.Handler.CommandHandler;
 using System.Net;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -12,26 +13,30 @@ namespace NatNegotiation.Handler.CommandHandler
     /// </summary>
     public class ReportHandler : CommandHandlerBase
     {
-        protected override void CheckRequest(ClientInfo client, byte[] recv)
+        public ReportHandler(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client, clientInfo, recv)
+        {
+        }
+
+        protected override void CheckRequest()
         {
             _reportPacket = new ReportPacket();
-            _reportPacket.Parse(recv);
+            _reportPacket.Parse(_recv);
         }
 
-        protected override void DataOperation(ClientInfo client, byte[] recv)
+        protected override void DataOperation()
         {
-            client.IsGotReport = true;
+            _clientInfo.IsGotReport = true;
         }
 
-        protected override void ConstructResponse(ClientInfo client, byte[] recv)
+        protected override void ConstructResponse()
         {
             _sendingBuffer = _reportPacket.GenerateResponse(NatPacketType.ReportAck);
         }
 
-        protected override void  Response(NatNegServer server, ClientInfo client)
+        protected override void Response()
         {
-            LogWriter.ToLog("Client: " + ((IPEndPoint)client.RemoteEndPoint).Address.ToString() + "natneg failed!");
-            base.Response(server, client);
+            LogWriter.ToLog("Client: " + ((IPEndPoint)_clientInfo.RemoteEndPoint).Address.ToString() + "natneg failed!");
+            base.Response();
         }
     }
 }

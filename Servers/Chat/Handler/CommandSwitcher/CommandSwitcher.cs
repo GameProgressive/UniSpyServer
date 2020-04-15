@@ -15,13 +15,13 @@ namespace Chat.Handler.CommandSwitcher
             switch (cmd[0])
             {
                 case "CRYPT":
-                    new CRYPTHandler().Handle(session, cmd);
+                    new CRYPTHandler(session, cmd).Handle();
                     break;
                 case "USRIP":
-                    new USRIPHandler().Handle(session, cmd);
+                    new USRIPHandler(session, cmd).Handle();
                     break;
                 case "LOGIN":
-                    new LOGINHandler().Handle(session, cmd);
+                    new LOGINHandler(session, cmd).Handle();
                     break;
                 case "SETCKEY":
                     //TODO

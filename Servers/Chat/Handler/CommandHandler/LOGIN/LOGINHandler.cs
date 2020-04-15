@@ -1,4 +1,5 @@
 ﻿using Chat.Entity.Structure;
+using GameSpyLib.Common.Entity.Interface;
 using System;
 
 namespace Chat.Handler.CommandHandler.LOGIN
@@ -6,21 +7,22 @@ namespace Chat.Handler.CommandHandler.LOGIN
     public class LOGINHandler : CommandHandlerBase
     {
         int _namespaceID = 0;
-        public LOGINHandler() : base()
+
+        public LOGINHandler(IClient client, string[] recv) : base(client, recv)
         {
         }
 
-        public override void CheckRequest(ChatSession session, string[] recv)
+        public override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
-            if (!Int32.TryParse(recv[1], out _namespaceID))
+            base.CheckRequest();
+            if (!Int32.TryParse(_recv[1], out _namespaceID))
             {
                 _errorCode = ChatError.Parse;
                 return;
             }
-            session.UserInfo.NameSpaceID = _namespaceID;
+            _session.UserInfo.NameSpaceID = _namespaceID;
 
-            if (recv[2] == "*")
+            if (_recv[2] == "*")
             {
                 // Profile login, not handled yet!
                 _errorCode = ChatError.Login_Failed;
@@ -28,28 +30,28 @@ namespace Chat.Handler.CommandHandler.LOGIN
             }
 
             // Unique nickname login
-            session.UserInfo.UniqueNickName = recv[3];
-            //session.chatUserInfo.password = recv[4];
+            _session.UserInfo.UniqueNickName = _recv[3];
+            //_session.chatUserInfo.password = _recv[4];
         }
 
-        public override void DataOperation(ChatSession session, string[] recv)
+        public override void DataOperation()
         {
-            base.DataOperation(session, recv);
-            session.UserInfo.NickName = recv[1];
+            base.DataOperation();
+            _session.UserInfo.NickName = _recv[1];
         }
 
-        public override void ConstructResponse(ChatSession session, string[] recv)
+        public override void ConstructResponse()
         {
-            base.ConstructResponse(session, recv);
+            base.ConstructResponse();
             _sendingBuffer = ChatServer.GenerateChatCommand(ChatRPL.Login, "* 1 1");
         }
 
-        public override void Response(ChatSession session, string[] recv)
+        public override void Response()
         {
-            base.Response(session, recv);
-            session.SendAsync($":{session.UserInfo.ServerIP} 001 {session.UserInfo.NickName} :Welcome!\r\n");
-            session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.ToPic, "#retrospy Test!"));
-            session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.EndOfNames, "#retrospy :End of names LIST"));
+            base.Response();
+            _session.SendAsync($":{_session.UserInfo.ServerIP} 001 {_session.UserInfo.NickName} :Welcome!\r\n");
+            _session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.ToPic, "#retrospy Test!"));
+            _session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.EndOfNames, "#retrospy :End of names LIST"));
         }
     }
 }

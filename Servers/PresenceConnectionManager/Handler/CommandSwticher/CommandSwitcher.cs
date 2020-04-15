@@ -104,7 +104,7 @@ namespace PresenceConnectionManager.Handler
                             break;
 
                         default:
-                            session.UnknownDataReceived(message);
+                            LogWriter.UnknownDataRecieved(message);
                             break;
                     }
                 }

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPSession : TemplateTcpSession
+    public class GPSPSession : TemplateTcpClient
     {
         public uint OperationID;
         public GPSPSession(GPSPServer server) : base(server)
@@ -16,9 +16,7 @@ namespace PresenceSearchPlayer
 
         protected override void OnReceived(string message)
         {
-           
-                CommandSwitcher.Switch(this, message);
-   
+            CommandSwitcher.Switch(this, message);
         }
     }
 }

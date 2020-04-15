@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using NetCoreServer;
 using Serilog.Events;
@@ -24,6 +23,7 @@ namespace GameSpyLib.Network
         public TemplateUdpServer(IPEndPoint endpoint) : base(endpoint)
         {
         }
+        protected virtual object CreateClient(EndPoint endPoint) { return new TemplateUdpClient(this,endPoint); }
 
         protected override void OnStarted()
         {
@@ -48,6 +48,13 @@ namespace GameSpyLib.Network
         protected override void OnError(SocketError error)
         {
             LogWriter.ToLog(LogEventLevel.Error, error.ToString());
+        }
+
+        public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
+        {
+            LogWriter.ToLog(LogEventLevel.Debug,
+                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            return base.Send(endpoint, buffer, offset, size);
         }
 
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
@@ -76,15 +83,16 @@ namespace GameSpyLib.Network
             ReceiveAsync();
         }
 
-        protected virtual void OnReceived(EndPoint endPoint, string message)
-        { }
+        protected virtual void OnReceived(EndPoint endPoint, string message) { }
+
         protected virtual void OnReceived(EndPoint endPoint, byte[] message)
         {
             OnReceived(endPoint, Encoding.ASCII.GetString(message));
         }
 
-        protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
+        protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
+            ReceiveAsync();
             // Need at least 2 bytes
             if (size < 2 && size > 2048)
             {
@@ -96,9 +104,8 @@ namespace GameSpyLib.Network
             LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
-            ReceiveAsync();
 
-            OnReceived(endpoint, temp);
+            OnReceived(endPoint, temp);
         }
     }
 }
