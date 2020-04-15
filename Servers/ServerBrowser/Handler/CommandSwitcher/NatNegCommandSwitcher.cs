@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Linq;
 using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure;
-using NatNegotiation.Entity.Structure.Packet;
+using NatNegotiation.Handler.CommandHandler;
 
-namespace ServerBrowser.Handler.CommandHandler.NatNeg.CommandSwitcher
+namespace ServerBrowser.Handler.CommandSwitcher
 {
     public class NatNegCommandSwitcher
     {
@@ -24,33 +23,32 @@ namespace ServerBrowser.Handler.CommandHandler.NatNeg.CommandSwitcher
                     session.Socket.RemoteEndPoint,
                     new NatNegClientInfo(session.Socket.RemoteEndPoint)
                     );
-
             client.LastPacketTime = DateTime.Now;
 
             //BytesRecieved[7] is nnpacket.PacketType.
             switch ((NatPacketType)recv[7])
             {
                 case NatPacketType.Init:
-                    //new InitHandler().Handle(server, client, recv);
+                    new InitHandler(session, client, recv).Handle();
                     LogWriter.ToLog(NatPacketType.Init.ToString());
                     break;
                 case NatPacketType.AddressCheck:
-                    //new AddressHandler().Handle(server, client, recv);
+                    new AddressHandler(session, client, recv).Handle();
                     LogWriter.ToLog(NatPacketType.AddressCheck.ToString());
                     break;
                 case NatPacketType.NatifyRequest:
-                    // new NatifyHandler().Handle(server, client, recv);
+                    new NatifyHandler(session, client, recv).Handle();
                     LogWriter.ToLog(NatPacketType.NatifyRequest.ToString());
                     break;
                 case NatPacketType.ConnectAck:
                     client.IsGotConnectAck = true;
                     break;
                 case NatPacketType.Report:
-                    //new ReportHandler().Handle(server, client, recv);
+                    new ReportHandler(session, client, recv).Handle();
                     LogWriter.ToLog(NatPacketType.Report.ToString());
                     break;
                 case NatPacketType.ErtAck:
-                    // new ErtACKHandler().Handle(server, client, recv);
+                    new ErtACKHandler(session, client, recv).Handle();
                     LogWriter.ToLog(NatPacketType.ErtAck.ToString());
                     break;
                 default:

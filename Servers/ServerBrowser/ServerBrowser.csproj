@@ -52,9 +52,6 @@
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\PushUpdates\" />
     <Folder Include="Handler\CommandHandler\AdHoc\" />
     <Folder Include="Handler\CommandHandler\AdHoc\ServerInfo\" />
-    <Folder Include="Handler\CommandHandler\NatNeg\" />
-    <Folder Include="Handler\CommandHandler\NatNeg\CommandSwitcher\" />
-    <Folder Include="Handler\CommandHandler\NatNeg\CommandHandler\" />
   </ItemGroup>
 
   <ItemGroup>

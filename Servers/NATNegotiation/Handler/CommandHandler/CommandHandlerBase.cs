@@ -16,13 +16,13 @@ namespace NatNegotiation.Handler.CommandHandler
         protected InitPacket _initPacket;
         protected ConnectPacket _connPacket;
         protected ReportPacket _reportPacket;
-        protected NatNegClient _client;
+        protected IClient _client;
         protected NatNegClientInfo _clientInfo;
         protected byte[] _recv;
 
         public CommandHandlerBase(IClient client, NatNegClientInfo clientInfo, byte[] recv)
         {
-            _client = (NatNegClient)client.GetInstance();
+            _client = client;
             _clientInfo = clientInfo;
             _recv = recv;
         }
@@ -62,7 +62,7 @@ namespace NatNegotiation.Handler.CommandHandler
             {
                 return;
             }
-            _client.SendAsync(_sendingBuffer);
+            _client.Send(_sendingBuffer);
         }
     }
 }

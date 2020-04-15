@@ -14,6 +14,7 @@ namespace GameSpyLib.Network
     /// </summary>
     public class TemplateUdpServer : UdpServer
     {
+
         /// <summary>
         /// Initialize UDP server with a given IP address and port number
         /// </summary>
@@ -92,7 +93,7 @@ namespace GameSpyLib.Network
 
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
-            ReceiveAsync();
+
             // Need at least 2 bytes
             if (size < 2 && size > 2048)
             {
@@ -104,7 +105,7 @@ namespace GameSpyLib.Network
             LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
-
+            ReceiveAsync();
             OnReceived(endPoint, temp);
         }
     }

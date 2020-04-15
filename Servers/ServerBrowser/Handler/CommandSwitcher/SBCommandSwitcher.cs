@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
-using ServerBrowser.Handler.CommandHandler.NatNeg.CommandSwitcher;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 
 namespace ServerBrowser.Handler.CommandSwitcher

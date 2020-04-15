@@ -9,6 +9,9 @@ namespace NatNegotiation.Server
     public class NatNegServer : TemplateUdpServer
     {
         public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
+        // Server sessions
+        protected readonly ConcurrentDictionary<EndPoint, NatNegClient> Clients
+            = new ConcurrentDictionary<EndPoint, NatNegClient>();
 
         public NatNegServer(IPAddress address, int port) : base(address, port)
         {
@@ -20,6 +23,7 @@ namespace NatNegotiation.Server
             return base.Start();
         }
 
+
         protected override object CreateClient(EndPoint endPoint)
         {
             return new NatNegClient(this, endPoint);
@@ -27,7 +31,14 @@ namespace NatNegotiation.Server
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            CommandSwitcher.Switch((NatNegClient)CreateClient(endPoint), message);
+            NatNegClient client;
+            if (!Clients.TryGetValue(endPoint, out client))
+            {
+                client = (NatNegClient)CreateClient(endPoint);
+                Clients.TryAdd(endPoint, client);
+            }
+
+            CommandSwitcher.Switch(client, message);
         }
     }
 }

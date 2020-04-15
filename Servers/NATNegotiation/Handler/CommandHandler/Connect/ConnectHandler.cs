@@ -6,6 +6,7 @@ using NatNegotiation.Handler.CommandHandler;
 using System.Linq;
 using GameSpyLib.Common.Entity.Interface;
 using NatNegotiation.Server;
+using GameSpyLib.Network;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -83,8 +84,7 @@ namespace NatNegotiation.Handler.CommandHandler
             NatNegClientInfo client2 = other.First();
 
             _sendingBuffer = _connPacket.GenerateResponse(NatPacketType.Connect);
-
-            _client.Server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);
+            //_client.Server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);
         }
     }
 }
