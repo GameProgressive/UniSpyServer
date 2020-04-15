@@ -12,26 +12,26 @@ namespace NatNegotiation.Handler.CommandHandler
     /// </summary>
     public class ReportHandler : CommandHandlerBase
     {
-        protected override void ConvertRequest(ClientInfo client, byte[] recv)
+        protected override void CheckRequest(ClientInfo client, byte[] recv)
         {
             _reportPacket = new ReportPacket();
             _reportPacket.Parse(recv);
         }
 
-        protected override void ProcessInformation(ClientInfo client, byte[] recv)
+        protected override void DataOperation(ClientInfo client, byte[] recv)
         {
             client.IsGotReport = true;
         }
 
-        protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
+        protected override void ConstructResponse(ClientInfo client, byte[] recv)
         {
             _sendingBuffer = _reportPacket.GenerateResponse(NatPacketType.ReportAck);
         }
 
-        protected override void SendResponse(NatNegServer server, ClientInfo client)
+        protected override void  Response(NatNegServer server, ClientInfo client)
         {
             LogWriter.ToLog("Client: " + ((IPEndPoint)client.RemoteEndPoint).Address.ToString() + "natneg failed!");
-            base.SendResponse(server, client);
+            base.Response(server, client);
         }
     }
 }

@@ -8,13 +8,13 @@ namespace NatNegotiation.Handler.CommandHandler
     public class AddressHandler : CommandHandlerBase
     {
 
-        protected override void ConvertRequest(ClientInfo client, byte[] recv)
+        protected override void CheckRequest(ClientInfo client, byte[] recv)
         {
             _initPacket = new InitPacket();
             _initPacket.Parse(recv);
         }
 
-        protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
+        protected override void ConstructResponse(ClientInfo client, byte[] recv)
         {
             _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.AddressReply, client.RemoteEndPoint);
         }

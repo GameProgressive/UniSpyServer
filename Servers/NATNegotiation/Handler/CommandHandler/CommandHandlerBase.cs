@@ -19,32 +19,32 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             LogWriter.LogCurrentClass(this);
 
-            ConvertRequest(client, recv);
+            CheckRequest(client, recv);
             if (_errorCode != NNErrorCode.NoError)
             {
                 return;
             }
 
-            ProcessInformation(client, recv);
+            DataOperation(client, recv);
 
-            ConstructResponsePacket(client, recv);
+            ConstructResponse(client, recv);
 
-            SendResponse(server, client);
+            Response(server, client);
         }
 
-        protected virtual void ConvertRequest(ClientInfo client, byte[] recv)
+        protected virtual void CheckRequest(ClientInfo client, byte[] recv)
         {
         }
 
-        protected virtual void ProcessInformation(ClientInfo client, byte[] recv)
+        protected virtual void DataOperation(ClientInfo client, byte[] recv)
         {
         }
 
-        protected virtual void ConstructResponsePacket(ClientInfo client, byte[] recv)
+        protected virtual void ConstructResponse(ClientInfo client, byte[] recv)
         {
         }
 
-        protected virtual void SendResponse(NatNegServer server, ClientInfo client)
+        protected virtual void Response(NatNegServer server, ClientInfo client)
         {
             if (_sendingBuffer == null)
             {

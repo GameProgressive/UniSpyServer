@@ -49,21 +49,21 @@ namespace NatNegotiation.Handler.CommandHandler
             server.SendAsync(client.RemoteEndPoint, buffer);
         }
 
-        protected override void ConvertRequest(ClientInfo client, byte[] recv)
+        protected override void CheckRequest(ClientInfo client, byte[] recv)
         {
             _connPacket = new ConnectPacket();
             _connPacket.Parse(recv);
         }
 
-        protected override void ProcessInformation(ClientInfo client, byte[] recv)
+        protected override void DataOperation(ClientInfo client, byte[] recv)
         {
         }
 
-        protected override void ConstructResponsePacket(ClientInfo client, byte[] recv)
+        protected override void ConstructResponse(ClientInfo client, byte[] recv)
         {
         }
 
-        protected override void SendResponse(NatNegServer server, ClientInfo client)
+        protected override void  Response(NatNegServer server, ClientInfo client)
         {
             var other = NatNegServer.ClientList.Values.Where(
                 c => c.RemoteEndPoint == _connPacket.RemoteEndPoint);

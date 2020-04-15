@@ -11,11 +11,13 @@ namespace ServerBrowser.Handler.CommandHandler.NatNeg.CommandSwitcher
     {
         public static void Switch(SBSession session, byte[] recv)
         {
-            if (!recv.Take(6).SequenceEqual(BasePacket.MagicData))
-            {
-                //ignore it
-                return;
-            }
+            //we block this for now because we need @Cryptorx get information for us
+
+            //if (!recv.Take(6).SequenceEqual(BasePacket.MagicData))
+            //{
+            //    //ignore it
+            //    return;
+            //}
             //check and add client into clientList
             ClientInfo client =
                 SBServer.ClientList.GetOrAdd(
@@ -30,28 +32,27 @@ namespace ServerBrowser.Handler.CommandHandler.NatNeg.CommandSwitcher
             {
                 case NatPacketType.Init:
                     //new InitHandler().Handle(server, client, recv);
+                    LogWriter.ToLog(NatPacketType.Init.ToString());
                     break;
-
                 case NatPacketType.AddressCheck:
                     //new AddressHandler().Handle(server, client, recv);
+                    LogWriter.ToLog(NatPacketType.AddressCheck.ToString());
                     break;
-
                 case NatPacketType.NatifyRequest:
                     // new NatifyHandler().Handle(server, client, recv);
+                    LogWriter.ToLog(NatPacketType.NatifyRequest.ToString());
                     break;
-
                 case NatPacketType.ConnectAck:
                     client.IsGotConnectAck = true;
                     break;
-
                 case NatPacketType.Report:
                     //new ReportHandler().Handle(server, client, recv);
+                    LogWriter.ToLog(NatPacketType.Report.ToString());
                     break;
-
                 case NatPacketType.ErtAck:
                     // new ErtACKHandler().Handle(server, client, recv);
+                    LogWriter.ToLog(NatPacketType.ErtAck.ToString());
                     break;
-
                 default:
                     LogWriter.UnknownDataRecieved(recv);
                     break;
