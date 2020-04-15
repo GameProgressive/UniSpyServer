@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
-using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler.CommandHandler;
+using NatNegotiation.Entity.Structure;
+using NatNegotiation.Handler.CommandHandler;
 using System.Linq;
 
 namespace NatNegotiation.Handler.CommandHandler

@@ -39,15 +39,9 @@ namespace StatsAndTracking
         }
         protected override void OnReceived(string message)
         {
-            if (message[0] != '\\')
-            {
-                return;
-            }
 
-            string[] recieved = message.TrimStart('\\').Split('\\');
-            Dictionary<string, string> dict = GameSpyUtils.ConvertRequestToKeyValue(recieved);
 
-            CommandSwitcher.Switch(this, dict);
+            CommandSwitcher.Switch(this, message);
         }
 
 

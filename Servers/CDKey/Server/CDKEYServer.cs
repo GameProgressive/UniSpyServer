@@ -18,10 +18,8 @@ namespace CDKey
 
         protected override void OnReceived(EndPoint endPoint, string message)
         {
-            message.Replace(@"\r\n", "").Replace("\0", "");
-            string[] keyValueArray = message.TrimStart('\\').Split('\\');
-            Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(keyValueArray);
-            CommandSwitcher.Switch(this, endPoint, recv);
+       
+            CommandSwitcher.Switch(this, endPoint, message);
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)

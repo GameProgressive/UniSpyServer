@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
     <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
+    <ProjectReference Include="..\NATNegotiation\NATNegotiation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,9 +50,11 @@
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\NoServerList\" />
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroups\" />
     <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\PushUpdates\" />
-    <Folder Include="Handler\CommandHandler\Available\" />
     <Folder Include="Handler\CommandHandler\AdHoc\" />
     <Folder Include="Handler\CommandHandler\AdHoc\ServerInfo\" />
+    <Folder Include="Handler\CommandHandler\NatNeg\" />
+    <Folder Include="Handler\CommandHandler\NatNeg\CommandSwitcher\" />
+    <Folder Include="Handler\CommandHandler\NatNeg\CommandHandler\" />
   </ItemGroup>
 
   <ItemGroup>

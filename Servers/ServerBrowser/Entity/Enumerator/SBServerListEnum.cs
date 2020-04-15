@@ -7,7 +7,8 @@
         SendMessageRequest,
         KeepAliveReply,
         MapLoopRequest,
-        PlayerSearchRequest
+        PlayerSearchRequest,
+        NatNegRequest = 0x1E
     }
 
     public enum SBServerResponseType

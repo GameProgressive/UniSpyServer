@@ -3,7 +3,7 @@ using GameSpyLib.Logging;
 using NatNegotiation;
 using System;
 
-namespace NATNegotiation.Handler.SystemHandler.Timer
+namespace NatNegotiation.Handler.SystemHandler.Timer
 {
     public class ClientListManager : ExpireManagerBase
     {

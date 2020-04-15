@@ -1,11 +1,11 @@
 ﻿using GameSpyLib.Logging;
 using NatNegotiation;
 using NatNegotiation.Entity.Structure.Packet;
-using NATNegotiation.Entity.Enumerator;
-using NATNegotiation.Entity.Structure;
+using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Structure;
 using Serilog.Events;
 
-namespace NATNegotiation.Handler.CommandHandler
+namespace NatNegotiation.Handler.CommandHandler
 {
     public class CommandHandlerBase
     {

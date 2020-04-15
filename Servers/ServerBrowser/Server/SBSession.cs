@@ -14,7 +14,7 @@ namespace ServerBrowser
 
         protected override void OnReceived(byte[] message)
         {
-            CommandSwitcher.Switch(this, message);
+            SBCommandSwitcher.Switch(this, message);
         }
     }
 }

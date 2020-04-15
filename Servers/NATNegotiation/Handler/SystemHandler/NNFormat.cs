@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace NATNegotiation.Handler.SystemHandler
+namespace NatNegotiation.Handler.SystemHandler
 {
     public class NNFormat
     {

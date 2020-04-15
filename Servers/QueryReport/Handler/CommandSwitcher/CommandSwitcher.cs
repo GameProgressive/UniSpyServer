@@ -42,7 +42,7 @@ namespace QueryReport.Handler.CommandSwitcher
                         break;
 
                     default:
-                        server.UnknownDataRecived(recv);
+                        LogWriter.UnknownDataRecieved(recv);
                         break;
                 }
             }

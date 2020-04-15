@@ -100,11 +100,5 @@ namespace GameSpyLib.Network
 
             OnReceived(endpoint, temp);
         }
-
-        public virtual void UnknownDataRecived(byte[] text)
-        {
-            string buffer = Encoding.ASCII.GetString(text, 0, text.Length);
-            LogWriter.ToLog(LogEventLevel.Error, "[Unknown] " + buffer);
-        }
     }
 }

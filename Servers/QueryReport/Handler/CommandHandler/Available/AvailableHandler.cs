@@ -9,9 +9,9 @@ namespace QueryReport.Handler.CommandHandler.Available
     /// </summary>
     public class AvailableHandler : CommandHandlerBase
     {
-        private readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
-        private readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
-        private readonly byte AvailableCheckRequestPostfix = 0x00;
+        private static readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
+        private static readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
+        private static readonly byte AvailableCheckRequestPostfix = 0x00;
 
         public AvailableHandler() : base()
         {

@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Logging;
+using GameSpyLib.MiscMethod;
 using StatsAndTracking.Handler.CommandHandler.Auth;
 using StatsAndTracking.Handler.CommandHandler.AuthP;
 using StatsAndTracking.Handler.CommandHandler.GetPD;
@@ -14,11 +15,17 @@ namespace StatsAndTracking.Handler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(GStatsSession session, Dictionary<string, string> recv)
+        public static void Switch(GStatsSession session, string message)
         {
-
             try
             {
+                if (message[0] != '\\')
+                {
+                    return;
+                }
+                string[] recieved = message.TrimStart('\\').Split('\\');
+                Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
+
                 switch (recv.Keys.First())
                 {
                     case "auth":

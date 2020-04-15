@@ -1,17 +1,22 @@
 ﻿using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
-using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler.CommandHandler;
+using NatNegotiation.Entity.Structure;
+using NatNegotiation.Handler.CommandHandler;
 using System;
+using System.Net;
 
 namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(NatNegServer server, ClientInfo client, byte[] recv)
+        public static void Switch(NatNegServer server,EndPoint endPoint, byte[] recv)
         {
             try
             {
+                //check and add client into clientList
+                ClientInfo client = NatNegServer.ClientList.GetOrAdd(endPoint, new ClientInfo(endPoint));
+                client.LastPacketTime = DateTime.Now;
+
                 //BytesRecieved[7] is nnpacket.PacketType.
                 switch ((NatPacketType)recv[7])
                 {
@@ -40,7 +45,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                         break;
 
                     default:
-                        server.UnknownDataRecived(recv);
+                        LogWriter.UnknownDataRecieved(recv);
                         break;
                 }
             }

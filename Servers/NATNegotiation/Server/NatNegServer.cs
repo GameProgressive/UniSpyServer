@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
-using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler.SystemHandler.Timer;
+using NatNegotiation.Entity.Structure;
+using NatNegotiation.Handler.SystemHandler.Timer;
 using System;
 using System.Collections.Concurrent;
 using System.Net;
@@ -25,15 +25,7 @@ namespace NatNegotiation
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            if (message.Length < 5)
-            {
-                return;
-            }
-
-            //check and add client into clientList
-            ClientInfo client = ClientList.GetOrAdd(endPoint, new ClientInfo(endPoint));
-            client.LastPacketTime = DateTime.Now;
-            CommandSwitcher.Switch(this, client, message);
+            CommandSwitcher.Switch(this,endPoint,message);
         }
 
         private void CheckClientTimeOut(object sender, System.Timers.ElapsedEventArgs e)

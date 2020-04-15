@@ -1,8 +1,8 @@
 ﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
-using NATNegotiation.Entity.Structure;
+using NatNegotiation.Entity.Structure;
 
-namespace NATNegotiation.Handler.CommandHandler
+namespace NatNegotiation.Handler.CommandHandler
 {
     public class ErtACKHandler : CommandHandlerBase
     {

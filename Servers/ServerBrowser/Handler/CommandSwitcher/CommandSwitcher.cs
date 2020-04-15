@@ -1,11 +1,12 @@
 ﻿using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
+using ServerBrowser.Handler.CommandHandler.NatNeg.CommandSwitcher;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class CommandSwitcher
+    public class SBCommandSwitcher
     {
         public static void Switch(SBSession session, byte[] recv)
         {
@@ -25,6 +26,9 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.SendMessageRequest:
                     //TODO
                     //Cryptorx's game use this command
+                    break;
+                case SBClientRequestType.NatNegRequest:
+                    NatNegCommandSwitcher.Switch(session, recv);
                     break;
                 default:
                     LogWriter.UnknownDataRecieved(recv);

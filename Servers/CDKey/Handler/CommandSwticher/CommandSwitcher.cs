@@ -1,5 +1,6 @@
 ﻿using CDKey.Handler.CommandHandler.SKey;
 using GameSpyLib.Logging;
+using GameSpyLib.MiscMethod;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,12 @@ namespace CDKey.Handler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(CDKeyServer server, EndPoint endPoint, Dictionary<string, string> recv)
+        public static void Switch(CDKeyServer server, EndPoint endPoint, string message)
         {
+            message.Replace(@"\r\n", "").Replace("\0", "");
+            string[] keyValueArray = message.TrimStart('\\').Split('\\');
+            Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(keyValueArray);
+
             try
             {
                 switch (recv.Keys.First())
@@ -32,7 +37,7 @@ namespace CDKey.Handler.CommandSwitcher
                         break;
 
                     default:
-                        LogWriter.UnknownDataRecieved(recv);
+                        LogWriter.UnknownDataRecieved(message);
                         break;
                 }
             }

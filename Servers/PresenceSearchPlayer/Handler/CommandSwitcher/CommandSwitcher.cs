@@ -1,4 +1,6 @@
-﻿using PresenceSearchPlayer.Handler.CommandHandler.Check;
+﻿using GameSpyLib.MiscMethod;
+using PresenceSearchPlayer.Enumerator;
+using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using PresenceSearchPlayer.Handler.CommandHandler.Nick;
 using PresenceSearchPlayer.Handler.CommandHandler.Others;
@@ -15,63 +17,82 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     public class CommandSwitcher
     {
-        public static void Switch(GPSPSession session, Dictionary<string, string> recv)
+        public static void Switch(GPSPSession session, string message)
         {
-            string command = recv.Keys.First();
 
             try
             {
-                switch (command)
+                if (message[0] != '\\')
                 {
-                    case "search":
-                        new SearchHandler().Handle(session, recv);
-                        break;
+                    GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "An invalid request was sended.");
+                    return;
+                }
 
-                    case "valid"://is email format valid
-                        new ValidHandler().Handle(session, recv);
-                        break;
+                string[] commands = message.Split("\\final\\", System.StringSplitOptions.RemoveEmptyEntries);
 
-                    case "nicks":// search an user with nick name
-                        new NickHandler().Handle(session, recv);
-                        break;
+                foreach (string command in commands)
+                {
+                    if (command.Length < 1)
+                    {
+                        continue;
+                    }
 
-                    //case "pmatch":
-                    //    PmatchHandler pmatch = new PmatchHandler(recv);
-                    //    pmatch.Handle(session);
-                    //    break;
+                    // Read client message, and parse it into key value pairs
+                    string[] recieved = command.TrimStart('\\').Split('\\');
+                    Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
 
-                    case "check":
-                        new CheckHandler().Handle(session, recv);
-                        break;
+                    switch (recv.Keys.First())
+                    {
+                        case "search":
+                            new SearchHandler().Handle(session, recv);
+                            break;
 
-                    case "newuser"://create an new user
-                        new NewUserHandler().Handle(session, recv);
-                        break;
+                        case "valid"://is email format valid
+                            new ValidHandler().Handle(session, recv);
+                            break;
 
-                    case "searchunique"://search an user with uniquenick
-                        new SearchUniqueHandler().Handle(session, recv);
-                        break;
+                        case "nicks":// search an user with nick name
+                            new NickHandler().Handle(session, recv);
+                            break;
 
-                    case "others"://search 
-                        new OthersHandler().Handle(session, recv);
-                        break;
+                        //case "pmatch":
+                        //    PmatchHandler pmatch = new PmatchHandler(recv);
+                        //    pmatch.Handle(session);
+                        //    break;
 
-                    case "otherslist"://search other players friend list to see who is in his list?
-                        new OthersListHandler().Handle(session, recv);
-                        break;
+                        case "check":
+                            new CheckHandler().Handle(session, recv);
+                            break;
 
-                    case "uniquesearch"://search a user with uniquenick and namespaceid
-                        new UniqueSearchHandler().Handle(session, recv);
-                        break;
+                        case "newuser"://create an new user
+                            new NewUserHandler().Handle(session, recv);
+                            break;
 
-                    default:
-                        session.UnknownDataReceived(recv);
-                        break;
+                        case "searchunique"://search an user with uniquenick
+                            new SearchUniqueHandler().Handle(session, recv);
+                            break;
+
+                        case "others"://search 
+                            new OthersHandler().Handle(session, recv);
+                            break;
+
+                        case "otherslist"://search other players friend list to see who is in his list?
+                            new OthersListHandler().Handle(session, recv);
+                            break;
+
+                        case "uniquesearch"://search a user with uniquenick and namespaceid
+                            new UniqueSearchHandler().Handle(session, recv);
+                            break;
+
+                        default:
+                            session.UnknownDataReceived(recv);
+                            break;
+                    }
                 }
             }
             catch
             {
-                session.UnknownDataReceived(recv);
+                session.UnknownDataReceived(message);
             }
         }
     }

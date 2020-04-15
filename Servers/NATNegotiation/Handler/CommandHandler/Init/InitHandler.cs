@@ -1,7 +1,7 @@
 ﻿using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
-using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler.CommandHandler;
+using NatNegotiation.Entity.Structure;
+using NatNegotiation.Handler.CommandHandler;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
