@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Extensions;
 using GameSpyLib.RetroSpyConfig;
 using Serilog;
 using Serilog.Core;
@@ -119,9 +120,13 @@ namespace GameSpyLib.Logging
             ToLog(LogEventLevel.Information, message);
         }
 
-        public static void UnknownDataRecieved(object data)
+        public static void UnknownDataRecieved(string data)
         {
             ToLog(LogEventLevel.Error, $"[Unknown] {data}");
+        }
+        public static void UnknownDataRecieved(byte[] data)
+        {
+            ToLog(LogEventLevel.Error, $"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
         }
 
         public static void LogCurrentClass(object param)
