@@ -65,10 +65,7 @@ namespace GameSpyLib.Common
                     string SQLiteConnStr = "Data Source=" + dbConfig.DatabaseName + ";Version=3;New=False";
                     //TODO: SQLite
                     throw new Exception("SQLite is not yet supported!");
-
-                //break;
-                default:
-                    throw new Exception("Unknown database engine!");
+                    //break;
             }
 
             try
