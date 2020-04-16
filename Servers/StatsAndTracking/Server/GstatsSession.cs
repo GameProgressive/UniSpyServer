@@ -10,7 +10,7 @@ using System.Text;
 
 namespace StatsAndTracking
 {
-    public class GStatsSession : TemplateTcpClient
+    public class GStatsSession : TemplateTcpSession
     {
 
         public PlayerData PlayerData { get; set; }

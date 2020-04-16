@@ -5,20 +5,16 @@ using GameSpyLib.RetroSpyConfig;
 using Serilog.Events;
 using StackExchange.Redis;
 using System;
-using System.Linq;
 
 
 namespace GameSpyLib.Common
 {
     public abstract class ServerManagerBase
     {
-        public readonly string RetroSpyVersion = "0.5.1";
+        public readonly string RetroSpyVersion = "0.5.2";
         public static string ServerName { get; protected set; }
-        public static ConfigManager Config { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
         protected object Server;
-
-        protected bool Disposed = false;
 
         public ServerManagerBase(RetroSpyServerName serverName)
         {
@@ -63,14 +59,13 @@ namespace GameSpyLib.Common
                             dbConfig.RemoteAddress, dbConfig.DatabaseName, dbConfig.UserName, dbConfig.Password,
                             dbConfig.RemotePort, dbConfig.SslMode, dbConfig.SslCert, dbConfig.SslKey, dbConfig.SslCa);
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
-
                     break;
                 case "SQLite":
                     string SQLiteConnStr = "Data Source=" + dbConfig.DatabaseName + ";Version=3;New=False";
                     //TODO: SQLite
                     throw new Exception("SQLite is not yet supported!");
 
-                    //break;
+                //break;
                 default:
                     throw new Exception("Unknown database engine!");
             }

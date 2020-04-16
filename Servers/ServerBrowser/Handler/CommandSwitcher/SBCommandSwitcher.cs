@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using System.Linq;
+using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
@@ -9,6 +10,12 @@ namespace ServerBrowser.Handler.CommandSwitcher
     {
         public static void Switch(SBSession session, byte[] recv)
         {
+            if (recv.Take(6).SequenceEqual(NatNegotiation.Entity.Structure.Packet.BasePacket.MagicData))
+            {
+                NatNegCommandSwitcher.Switch(session, recv);
+                return;
+            }
+
             //we do not need to handle GOA query because it is handled by game server
             switch ((SBClientRequestType)recv[2])
             {
@@ -25,9 +32,6 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.SendMessageRequest:
                     //TODO
                     //Cryptorx's game use this command
-                    break;
-                case SBClientRequestType.NatNegRequest:
-                    NatNegCommandSwitcher.Switch(session, recv);
                     break;
                 default:
                     LogWriter.UnknownDataRecieved(recv);

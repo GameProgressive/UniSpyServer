@@ -14,11 +14,11 @@ namespace GameSpyLib.Network
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class TemplateTcpClient : TcpSession, IClient
+    public class TemplateTcpSession : TcpSession, IClient
     {
         private EndPoint _endPoint;
 
-        public TemplateTcpClient(TemplateTcpServer server) : base(server)
+        public TemplateTcpSession(TemplateTcpServer server) : base(server)
         {
         }
 
@@ -94,7 +94,8 @@ namespace GameSpyLib.Network
         }
         protected override void OnDisconnected()
         {
-            //We create our own RemoteEndPoint because when client disconnect, the session socket will dispose immidiatly
+            //We create our own RemoteEndPoint because when client disconnect,
+            //the session socket will dispose immidiatly
             LogWriter.ToLog(LogEventLevel.Information, $"[Disc] IP:{_endPoint}");
             base.OnDisconnected();
         }

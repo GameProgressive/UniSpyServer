@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Logging;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
-using Serilog.Events;
 using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPSession : TemplateTcpClient
+    public class GPSPSession : TemplateTcpSession
     {
         public uint OperationID;
         public GPSPSession(GPSPServer server) : base(server)
