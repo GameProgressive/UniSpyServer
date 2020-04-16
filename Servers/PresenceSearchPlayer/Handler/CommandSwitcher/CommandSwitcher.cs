@@ -11,6 +11,7 @@ using PresenceSearchPlayer.Handler.CommandHandler.Search;
 using PresenceSearchPlayer.Handler.CommandHandler.SearchUnique;
 using PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch;
 using PresenceSearchPlayer.Handler.CommandHandler.Valid;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,15 +47,15 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                     switch (recv.Keys.First())
                     {
                         case "search":
-                            new SearchHandler().Handle(session, recv);
+                            new SearchHandler(session, recv).Handle();
                             break;
 
                         case "valid"://is email format valid
-                            new ValidHandler().Handle(session, recv);
+                            new ValidHandler(session, recv).Handle();
                             break;
 
                         case "nicks":// search an user with nick name
-                            new NickHandler().Handle(session, recv);
+                            new NickHandler(session, recv).Handle();
                             break;
 
                         //case "pmatch":
@@ -63,27 +64,27 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                         //    break;
 
                         case "check":
-                            new CheckHandler().Handle(session, recv);
+                            new CheckHandler(session, recv).Handle();
                             break;
 
                         case "newuser"://create an new user
-                            new NewUserHandler().Handle(session, recv);
+                            new NewUserHandler(session, recv).Handle();
                             break;
 
                         case "searchunique"://search an user with uniquenick
-                            new SearchUniqueHandler().Handle(session, recv);
+                            new SearchUniqueHandler(session, recv).Handle();
                             break;
 
                         case "others"://search 
-                            new OthersHandler().Handle(session, recv);
+                            new OthersHandler(session, recv).Handle();
                             break;
 
                         case "otherslist"://search other players friend list to see who is in his list?
-                            new OthersListHandler().Handle(session, recv);
+                            new OthersListHandler(session, recv).Handle();
                             break;
 
                         case "uniquesearch"://search a user with uniquenick and namespaceid
-                            new UniqueSearchHandler().Handle(session, recv);
+                            new UniqueSearchHandler(session, recv).Handle();
                             break;
 
                         default:
@@ -94,7 +95,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
             }
             catch(Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,e.ToString());
+                LogWriter.ToLog(e);
             }
         }
     }

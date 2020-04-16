@@ -1,32 +1,33 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
-    public class OthersListHandler : CommandHandlerBase
+    public class OthersListHandler : PSPCommandHandlerBase
     {
-        public OthersListHandler() : base()
+        public OthersListHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
         //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
         //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
 
-        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (!recv.ContainsKey("opids") || !recv.ContainsKey("namespaceid"))
+            if (!_recv.ContainsKey("opids") || !_recv.ContainsKey("namespaceid"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
-            uint[] opids = recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
+            uint[] opids = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
 
             try
             {

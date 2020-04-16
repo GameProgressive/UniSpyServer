@@ -1,33 +1,35 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using GameSpyLib.Common.Entity.Interface;
+using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
-    public class AddBuddyHandler : CommandHandlerBase
+    public class AddBuddyHandler :  PCMCommandHandlerBase
     {
-        public AddBuddyHandler() : base()
-        {
-        }
 
         private uint _friendPid;
 
-        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        public AddBuddyHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
-            base.CheckRequest(session, recv);
+        }
 
-            if (!recv.ContainsKey("sesskey") || !recv.ContainsKey("newprofileid") || !recv.ContainsKey("reason"))
+        protected override void CheckRequest()
+        {
+            base.CheckRequest();
+
+            if (!_recv.ContainsKey("sesskey") || !_recv.ContainsKey("newprofileid") || !_recv.ContainsKey("reason"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
 
-            if (!uint.TryParse(recv["newprofileid"], out _friendPid))
+            if (!uint.TryParse(_recv["newprofileid"], out _friendPid))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             //Check if the friend is online
             //if(online)

@@ -1,7 +1,7 @@
 ﻿
 namespace PresenceConnectionManager.Entity.Structure
 {
-    public enum SDKRevisionType
+    public enum SDKRevisionType : uint
     {
         /// <summary>
         /// Extended message support

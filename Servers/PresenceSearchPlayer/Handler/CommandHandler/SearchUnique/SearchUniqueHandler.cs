@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -9,25 +10,25 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    public class SearchUniqueHandler : CommandHandlerBase
+    public class SearchUniqueHandler : PSPCommandHandlerBase
     {
-        public SearchUniqueHandler() : base()
+        public SearchUniqueHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (!recv.ContainsKey("uniquenick") || !recv.ContainsKey("namespaces"))
+            if (!_recv.ContainsKey("uniquenick") || !_recv.ContainsKey("namespaces"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
-            string[] tempstr = recv["namespaces"].Trim(',').Split(',');
+            string[] tempstr = _recv["namespaces"].Trim(',').Split(',');
             uint[] nspaceid = Array.ConvertAll(tempstr, uint.Parse);
 
             using (var db = new retrospyContext())
@@ -37,7 +38,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
-                                 where n.Uniquenick == recv["uniquenick"]
+                                 where n.Uniquenick == _recv["uniquenick"]
                                  && n.Namespaceid == _namespaceid
                                  select new
                                  {

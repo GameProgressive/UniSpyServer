@@ -59,7 +59,7 @@
         ForcedLogout,
 
         /// <summary>
-        /// A new login detected with the old player session still logged in
+        /// A new login detected with the old player _session still logged in
         /// </summary>
         NewLoginDetected,
 

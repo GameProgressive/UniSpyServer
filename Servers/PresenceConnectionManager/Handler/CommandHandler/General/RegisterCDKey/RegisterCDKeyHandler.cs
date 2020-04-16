@@ -1,47 +1,48 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceConnectionManager.Handler.General.RegisterCDKey
 {
-    public class RegisterCDKeyHandler : CommandHandlerBase
+    public class RegisterCDKeyHandler :  PCMCommandHandlerBase
     {
-        public RegisterCDKeyHandler() : base()
+        public RegisterCDKeyHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (!recv.ContainsKey("cdkeyenc"))
+            if (!_recv.ContainsKey("cdkeyenc"))
             {
                 _errorCode = Enumerator.GPErrorCode.Parse;
             }
         }
 
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
-                var result = db.Subprofiles.Where(s => s.Profileid == session.UserInfo.Profileid
-                && s.Namespaceid == session.UserInfo.NamespaceID
-                && s.Productid == session.UserInfo.productID);
+                var result = db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.Profileid
+                && s.Namespaceid == _session.UserInfo.NamespaceID
+                && s.Productid == _session.UserInfo.productID);
 
                 if (result.Count() == 0 || result.Count() > 1)
                 {
                     _errorCode = Enumerator.GPErrorCode.DatabaseError;
                 }
 
-                db.Subprofiles.Where(s => s.Profileid == session.UserInfo.Profileid
-            && s.Namespaceid == session.UserInfo.NamespaceID
-            && s.Productid == session.UserInfo.productID).FirstOrDefault()
-            .Cdkeyenc = recv["cdkeyenc"];
+                db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.Profileid
+            && s.Namespaceid == _session.UserInfo.NamespaceID
+            && s.Productid == _session.UserInfo.productID).FirstOrDefault()
+            .Cdkeyenc = _recv["cdkeyenc"];
                 db.SaveChanges();
             }
         }
 
-        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
             _sendingBuffer = @"\rc\final\";
         }

@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Encryption;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
@@ -11,84 +12,85 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 {
-    public class LoginHandler : CommandHandlerBase
+    public class LoginHandler :  PCMCommandHandlerBase
     {
-        private Crc16 _crc = new Crc16(Crc16Mode.Standard);
+        private Crc16 _crc;
 
-        public LoginHandler() : base()
+        public LoginHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _crc = new Crc16(Crc16Mode.Standard);
         }
 
-        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session,recv);
+            base.CheckRequest();
             // Make sure we have all the required data to process this login
-            if (!recv.ContainsKey("challenge") || !recv.ContainsKey("response"))
+            if (!_recv.ContainsKey("challenge") || !_recv.ContainsKey("response"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            ParseDataBasedOnLoginType(session, recv);
+            ParseDataBasedOnLoginType();
 
-            ParseOtherData(session, recv);
+            ParseOtherData();
         }
 
-        public override void Handle(GPCMSession session, Dictionary<string, string> recv)
+        public override void Handle()
         {
-            CheckRequest(session, recv);
+            CheckRequest();
             if (_errorCode != GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
+                ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
                 return;
             }
 
-            DataOperation(session, recv);
+            DataOperation();
             if (_errorCode != GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
+                ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
                 return;
             }
 
-            ConstructResponse(session, recv);
+            ConstructResponse();
             if (_errorCode == GPErrorCode.ConstructResponseError)
             {
-                ErrorMsg.SendGPCMError(session, _errorCode, _operationID);
+                ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
                 return;
             }
 
-            Response(session, recv);
+            Response();
         }
 
         /// <summary>
         /// Parse everything into PlayerInfo, so we can use it later.
         /// </summary>
-        /// <param name="session"></param>
-        private void ParseDataBasedOnLoginType(GPCMSession session, Dictionary<string, string> recv)
+        /// <param name="_session"></param>
+        private void ParseDataBasedOnLoginType()
         {
-            session.UserInfo.UserChallenge = recv["challenge"];
+            _session.UserInfo.UserChallenge = _recv["challenge"];
 
-            if (recv.ContainsKey("uniquenick"))
+            if (_recv.ContainsKey("uniquenick"))
             {
-                session.UserInfo.LoginType = LoginType.Uniquenick;
-                session.UserInfo.UniqueNick = recv["uniquenick"];
-                session.UserInfo.UserData = recv["uniquenick"];
+                _session.UserInfo.LoginType = LoginType.Uniquenick;
+                _session.UserInfo.UniqueNick = _recv["uniquenick"];
+                _session.UserInfo.UserData = _recv["uniquenick"];
                 return;
             }
 
-            if (recv.ContainsKey("authtoken"))
+            if (_recv.ContainsKey("authtoken"))
             {
-                session.UserInfo.LoginType = LoginType.AuthToken;
-                session.UserInfo.AuthToken = recv["authtoken"];
-                session.UserInfo.UserData = recv["authtoken"];
+                _session.UserInfo.LoginType = LoginType.AuthToken;
+                _session.UserInfo.AuthToken = _recv["authtoken"];
+                _session.UserInfo.UserData = _recv["authtoken"];
                 return;
             }
 
-            if (recv.ContainsKey("user"))
+            if (_recv.ContainsKey("user"))
             {
-                session.UserInfo.LoginType = LoginType.Nick;
-                session.UserInfo.UserData = recv["user"];
-                string user = recv["user"];
+                _session.UserInfo.LoginType = LoginType.Nick;
+                _session.UserInfo.UserData = _recv["user"];
+                string user = _recv["user"];
 
                 int Pos = user.IndexOf('@');
                 if (Pos == -1 || Pos < 1 || (Pos + 1) >= user.Length)
@@ -99,9 +101,9 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 string nick = user.Substring(0, Pos);
                 string email = user.Substring(Pos + 1);
 
-                session.UserInfo.Nick = nick;
-                session.UserInfo.Email = email;
-                session.UserInfo.LoginType = LoginType.Nick;
+                _session.UserInfo.Nick = nick;
+                _session.UserInfo.Email = email;
+                _session.UserInfo.LoginType = LoginType.Nick;
                 return;
             }
 
@@ -110,19 +112,19 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             _errorCode = GPErrorCode.Parse;
         }
 
-        private void ParseOtherData(GPCMSession session, Dictionary<string, string> recv)
+        private void ParseOtherData()
         {
-            if (recv.ContainsKey("partnerid"))
+            if (_recv.ContainsKey("partnerid"))
             {
-                if (!uint.TryParse(recv["partnerid"], out session.UserInfo.PartnerID))
+                if (!uint.TryParse(_recv["partnerid"], out _session.UserInfo.PartnerID))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
             }
 
-            if (recv.ContainsKey("namespaceid"))
+            if (_recv.ContainsKey("namespaceid"))
             {
-                if (!uint.TryParse(recv["namespaceid"], out session.UserInfo.NamespaceID))
+                if (!uint.TryParse(_recv["namespaceid"], out _session.UserInfo.NamespaceID))
                 {
                     // the default namespaceid = 0
                     _errorCode = GPErrorCode.Parse;
@@ -130,81 +132,81 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
 
             //store sdkrevision
-            if (recv.ContainsKey("sdkrevision"))
+            if (_recv.ContainsKey("sdkrevision"))
             {
-                if (!uint.TryParse(recv["sdkrevision"], out session.UserInfo.SDKRevision))
+                if (!uint.TryParse(_recv["sdkrevision"], out _session.UserInfo.SDKRevision))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
             }
 
-            if (recv.ContainsKey("gamename"))
+            if (_recv.ContainsKey("gamename"))
             {
-                session.UserInfo.GameName = recv["gamename"];
+                _session.UserInfo.GameName = _recv["gamename"];
             }
 
-            if (recv.ContainsKey("port"))
+            if (_recv.ContainsKey("port"))
             {
-                if (!uint.TryParse(recv["port"], out session.UserInfo.PeerPort))
+                if (!uint.TryParse(_recv["port"], out _session.UserInfo.PeerPort))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
             }
 
-            if (recv.ContainsKey("quiet"))
+            if (_recv.ContainsKey("quiet"))
             {
-                if (!uint.TryParse(recv["quiet"], out session.UserInfo.QuietModeFlag))
+                if (!uint.TryParse(_recv["quiet"], out _session.UserInfo.QuietModeFlag))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
             }
         }
 
-        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
-            session.UserInfo.SessionKey
-                = _crc.ComputeChecksum(session.UserInfo.Nick + session.UserInfo.UniqueNick + session.UserInfo.NamespaceID);
+            _session.UserInfo.SessionKey
+                = _crc.ComputeChecksum(_session.UserInfo.Nick + _session.UserInfo.UniqueNick + _session.UserInfo.NamespaceID);
 
             string responseProof = ChallengeProof.GenerateProof
             (
-                session.UserInfo.UserData,
-                session.UserInfo.LoginType,
-                session.UserInfo.PartnerID,
-                session.UserInfo.ServerChallenge,
-                session.UserInfo.UserChallenge,
-                session.UserInfo.PasswordHash
+                _session.UserInfo.UserData,
+                _session.UserInfo.LoginType,
+                _session.UserInfo.PartnerID,
+                _session.UserInfo.ServerChallenge,
+                _session.UserInfo.UserChallenge,
+                _session.UserInfo.PasswordHash
             );
 
-            _sendingBuffer = @"\lc\2\sesskey\" + session.UserInfo.SessionKey;
+            _sendingBuffer = @"\lc\2\sesskey\" + _session.UserInfo.SessionKey;
             _sendingBuffer += @"\proof\" + responseProof;
-            _sendingBuffer += @"\userid\" + session.UserInfo.Userid;
-            _sendingBuffer += @"\profileid\" + session.UserInfo.Profileid;
+            _sendingBuffer += @"\userid\" + _session.UserInfo.Userid;
+            _sendingBuffer += @"\profileid\" + _session.UserInfo.Profileid;
 
-            if (session.UserInfo.LoginType != LoginType.Nick)
+            if (_session.UserInfo.LoginType != LoginType.Nick)
             {
-                _sendingBuffer += @"\uniquenick\" + session.UserInfo.UniqueNick;
+                _sendingBuffer += @"\uniquenick\" + _session.UserInfo.UniqueNick;
             }
 
-            _sendingBuffer += @"\lt\" + session.Id.ToString().Replace("-", "").Substring(0, 22) + "__";
+            _sendingBuffer += @"\lt\" + _session.Id.ToString().Replace("-", "").Substring(0, 22) + "__";
             _sendingBuffer += @"\id\" + _operationID + @"\final\";
 
-            session.UserInfo.LoginProcess = LoginStatus.Completed;
+            _session.UserInfo.LoginProcess = LoginStatus.Completed;
         }
 
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
-            switch (session.UserInfo.LoginType)
+            switch (_session.UserInfo.LoginType)
             {
                 case LoginType.Nick:
-                    NickEmailLogin(session);
+                    NickEmailLogin();
                     break;
 
                 case LoginType.Uniquenick:
-                    UniquenickLogin(session);
+                    UniquenickLogin();
                     break;
 
                 case LoginType.AuthToken:
-                    AuthtokenLogin(session);
+                    AuthtokenLogin();
                     break;
             }
 
@@ -214,7 +216,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 return;
             }
 
-            if (!session.UserInfo.IsEmailVerified)
+            if (!_session.UserInfo.IsEmailVerified)
             {
                 _errorCode = GPErrorCode.LoginBadEmail;
                 return;
@@ -222,26 +224,26 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
             // Check the status of the account.
             // If the single profile is banned, the account or the player status
-            if (session.UserInfo.IsBlocked)
+            if (_session.UserInfo.IsBlocked)
             {
                 _errorCode = GPErrorCode.LoginProfileDeleted;
                 return;
             }
 
-            if (!IsChallengeCorrect(session, recv))
+            if (!IsChallengeCorrect())
             {
                 _errorCode = GPErrorCode.LoginBadPassword;
                 return;
             }
         }
 
-        private void NickEmailLogin(GPCMSession session)
+        private void NickEmailLogin()
         {
             //Check email existence
             using (var db = new retrospyContext())
             {
                 var email = from u in db.Users
-                            where u.Email == session.UserInfo.Email
+                            where u.Email == _session.UserInfo.Email
                             select u.Userid;
 
                 if (email.Count() == 0)
@@ -254,9 +256,9 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                           where u.Email == session.UserInfo.Email
-                           && p.Nick == session.UserInfo.Nick
-                           && n.Namespaceid == session.UserInfo.NamespaceID
+                           where u.Email == _session.UserInfo.Email
+                           && p.Nick == _session.UserInfo.Nick
+                           && n.Namespaceid == _session.UserInfo.NamespaceID
                            select new
                            {
                                userid = u.Userid,
@@ -269,12 +271,12 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
                 if (info.Count() == 1)
                 {
-                    session.UserInfo.Userid = info.First().userid;
-                    session.UserInfo.Profileid = info.First().profileid;
-                    session.UserInfo.UniqueNick = info.First().uniquenick;
-                    session.UserInfo.PasswordHash = info.First().password;
-                    session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
-                    session.UserInfo.IsBlocked = info.First().blocked;
+                    _session.UserInfo.Userid = info.First().userid;
+                    _session.UserInfo.Profileid = info.First().profileid;
+                    _session.UserInfo.UniqueNick = info.First().uniquenick;
+                    _session.UserInfo.PasswordHash = info.First().password;
+                    _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
+                    _session.UserInfo.IsBlocked = info.First().blocked;
                 }
                 else
                 {
@@ -283,15 +285,15 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
         }
 
-        private void UniquenickLogin(GPCMSession session)
+        private void UniquenickLogin()
         {
             using (var db = new retrospyContext())
             {
                 var info = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
                            join u in db.Users on p.Userid equals u.Userid
-                           where n.Uniquenick == session.UserInfo.UniqueNick
-                           && n.Namespaceid == session.UserInfo.NamespaceID
+                           where n.Uniquenick == _session.UserInfo.UniqueNick
+                           && n.Namespaceid == _session.UserInfo.NamespaceID
                            select new
                            {
                                userid = u.Userid,
@@ -309,12 +311,12 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 }
                 else if (info.Count() == 1)
                 {
-                    session.UserInfo.Userid = info.First().userid;
-                    session.UserInfo.Profileid = info.First().profileid;
-                    session.UserInfo.UniqueNick = info.First().uniquenick;
-                    session.UserInfo.PasswordHash = info.First().password;
-                    session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
-                    session.UserInfo.IsBlocked = info.First().blocked;
+                    _session.UserInfo.Userid = info.First().userid;
+                    _session.UserInfo.Profileid = info.First().profileid;
+                    _session.UserInfo.UniqueNick = info.First().uniquenick;
+                    _session.UserInfo.PasswordHash = info.First().password;
+                    _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
+                    _session.UserInfo.IsBlocked = info.First().blocked;
                 }
                 else
                 {
@@ -323,15 +325,15 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
         }
 
-        private void AuthtokenLogin(GPCMSession session)
+        private void AuthtokenLogin()
         {
             using (var db = new retrospyContext())
             {
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                           where n.Authtoken == session.UserInfo.AuthToken && n.Partnerid == session.UserInfo.PartnerID
-                           && n.Namespaceid == session.UserInfo.NamespaceID
+                           where n.Authtoken == _session.UserInfo.AuthToken && n.Partnerid == _session.UserInfo.PartnerID
+                           && n.Namespaceid == _session.UserInfo.NamespaceID
                            select new
                            {
                                profileid = n.Profileid,
@@ -346,14 +348,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
                 if (info.Count() == 1)
                 {
-                    session.UserInfo.Userid = info.First().userid;
-                    session.UserInfo.Profileid = info.First().profileid;
-                    session.UserInfo.UniqueNick = info.First().uniquenick;
-                    session.UserInfo.PasswordHash = info.First().password;
-                    session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
-                    session.UserInfo.IsBlocked = info.First().blocked;
-                    session.UserInfo.Nick = info.First().nick;
-                    session.UserInfo.Email = info.First().email;
+                    _session.UserInfo.Userid = info.First().userid;
+                    _session.UserInfo.Profileid = info.First().profileid;
+                    _session.UserInfo.UniqueNick = info.First().uniquenick;
+                    _session.UserInfo.PasswordHash = info.First().password;
+                    _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
+                    _session.UserInfo.IsBlocked = info.First().blocked;
+                    _session.UserInfo.Nick = info.First().nick;
+                    _session.UserInfo.Email = info.First().email;
                 }
                 else
                 {
@@ -362,27 +364,27 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
         }
 
-        protected override void Response(GPCMSession session, Dictionary<string, string> recv)
+        protected override void Response()
         {
-            base.Response(session, recv);
-            session.UserInfo.StatusCode = GPStatus.Online;
-            GPCMServer.LoggedInSession.GetOrAdd(session.Id, session);
-            SDKRevision.ExtendedFunction(session);
+            base.Response();
+            _session.UserInfo.StatusCode = GPStatus.Online;
+            GPCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
+            SDKRevision.ExtendedFunction(_session);
         }
 
-        protected bool IsChallengeCorrect(GPCMSession session, Dictionary<string, string> recv)
+        protected bool IsChallengeCorrect()
         {
             string response = ChallengeProof.GenerateProof
             (
-                session.UserInfo.UserData,
-                session.UserInfo.LoginType,
-                session.UserInfo.PartnerID,
-                session.UserInfo.UserChallenge,
-                session.UserInfo.ServerChallenge,
-                session.UserInfo.PasswordHash
+                _session.UserInfo.UserData,
+                _session.UserInfo.LoginType,
+                _session.UserInfo.PartnerID,
+                _session.UserInfo.UserChallenge,
+                _session.UserInfo.ServerChallenge,
+                _session.UserInfo.PasswordHash
             );
 
-            if (recv["response"] == response)
+            if (_recv["response"] == response)
             {
                 return true;
             }

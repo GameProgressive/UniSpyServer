@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,27 +10,27 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    public class NickHandler : CommandHandlerBase
+    public class NickHandler : PSPCommandHandlerBase
     {
-        public NickHandler() : base()
+        public NickHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (!recv.ContainsKey("email"))
+            if (!_recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;
 
             }
 
             // First, we try to receive an encoded password
-            if (!recv.ContainsKey("passenc"))
+            if (!_recv.ContainsKey("passenc"))
             {
                 // If the encoded password is not sended, we try receiving the password in plain text
-                if (!recv.ContainsKey("pass"))
+                if (!_recv.ContainsKey("pass"))
                 {
                     // No password is specified, we cannot continue                   
                     _errorCode = GPErrorCode.Parse;
@@ -37,7 +38,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
             }
         }
 
-        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             try
             {
@@ -46,7 +47,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                     var players = from u in db.Users
                                   join p in db.Profiles on u.Userid equals p.Userid
                                   join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                  where u.Email == recv["email"] && u.Password == recv["passenc"] && n.Namespaceid == _namespaceid
+                                  where u.Email == _recv["email"] && u.Password == _recv["passenc"] && n.Namespaceid == _namespaceid
                                   select new { nick = p.Nick, uniquenick = n.Uniquenick };
 
                     if (players.Count() == 0)
@@ -73,7 +74,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
             }
         }
 
-        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
             if (_errorCode != GPErrorCode.NoError)
             {

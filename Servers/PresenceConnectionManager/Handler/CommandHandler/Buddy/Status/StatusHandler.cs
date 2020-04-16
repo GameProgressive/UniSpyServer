@@ -1,23 +1,24 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using GameSpyLib.Common.Entity.Interface;
+using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
 {
-    public class StatusHandler : CommandHandlerBase
+    public class StatusHandler :  PCMCommandHandlerBase
     {
         private uint _statusCode;
 
-        public StatusHandler() : base()
+        public StatusHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (recv.ContainsKey("status"))
+            if (_recv.ContainsKey("status"))
             {
-                if (!uint.TryParse(recv["status"], out _statusCode))
+                if (!uint.TryParse(_recv["status"], out _statusCode))
                 {
                     _errorCode = GPErrorCode.Parse;
                 }
@@ -28,11 +29,11 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
             }
         }
 
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
-            session.UserInfo.StatusCode = (GPStatus)_statusCode;
-            session.UserInfo.StatusString = recv["statstring"];
-            session.UserInfo.LocationString = recv["locstring"];
+            _session.UserInfo.StatusCode = (GPStatus)_statusCode;
+            _session.UserInfo.StatusString = _recv["statstring"];
+            _session.UserInfo.LocationString = _recv["locstring"];
         }
     }
 }

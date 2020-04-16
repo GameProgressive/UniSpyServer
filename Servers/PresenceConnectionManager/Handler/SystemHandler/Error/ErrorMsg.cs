@@ -1,4 +1,5 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using GameSpyLib.Common.Entity.Interface;
+using PresenceConnectionManager.Enumerator;
 
 namespace PresenceConnectionManager.Handler.Error
 {
@@ -19,7 +20,7 @@ namespace PresenceConnectionManager.Handler.Error
                     return "This request cannot be processed because you are not logged in.";
 
                 case GPErrorCode.BadSessionKey:
-                    return "This request cannot be processed because the session key is invalid.";
+                    return "This request cannot be processed because the _session key is invalid.";
 
                 case GPErrorCode.DatabaseError:
                     return "Can not find information in database";
@@ -219,14 +220,14 @@ namespace PresenceConnectionManager.Handler.Error
         /// <summary>
         /// Send a presence error
         /// </summary>
-        /// <param name="session">The stream that will receive the error</param>
+        /// <param name="client">The stream that will receive the error</param>
         /// <param name="errorCode">The error code</param>
         /// <param name="operationID">The operation id</param>
-        public static void SendGPCMError(GPCMSession session, GPErrorCode errorCode, uint operationID)
+        public static void SendGPCMError(IClient client, GPErrorCode errorCode, uint operationID)
         {
             string errorMsg = ErrorMsg.GetErrorMsg(errorCode);
             string sendingBuffer = string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\{2}\final\", (uint)errorCode, errorMsg, operationID);
-            session.SendAsync(sendingBuffer);
+            client.SendAsync(sendingBuffer);
         }
     }
 }

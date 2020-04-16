@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,8 +8,15 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
     /// <summary>
     /// Send friendlist, friends message, friends add request to player when he logged in.
     /// </summary>
-    public class SendBuddyList : CommandHandlerBase
+    public class SendBuddyList :  PCMCommandHandlerBase
     {
+
+
+        public SendBuddyList(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        {
+
+        }
+
         //**********************************************************
         //\bm\<MESSAGE>\f\<from profileid>\msg\<>\final\
         //\bm\<UTM>\f\<from profileid>\msg\<>\final\
@@ -19,29 +27,27 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
         //\bm\<INVITE>\f\<from profileid>\msg\|p|<productid>|l|<location string>
         //\bm\<ping>\f\<from profileid>\msg\final\
         //\bm\<pong>\f\<from profileid>\final\
-        protected SendBuddyList() : base()
+
+
+        protected override void ConstructResponse()
         {
+            base.ConstructResponse();
         }
 
-        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
-            base.ConstructResponse(session, recv);
-        }
-
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
-        {
-            if (session.UserInfo.BuddiesSent)
+            if (_session.UserInfo.BuddiesSent)
             {
                 return;
             }
 
-            session.UserInfo.BuddiesSent = true;
+            _session.UserInfo.BuddiesSent = true;
 
             using (var db = new retrospyContext())
             {
                 var buddies = db.Friends.Where(
-                    f => f.Profileid == session.UserInfo.Profileid
-                && f.Namespaceid == session.UserInfo.NamespaceID);
+                    f => f.Profileid == _session.UserInfo.Profileid
+                && f.Namespaceid == _session.UserInfo.NamespaceID);
                 //if (buddies.Count() == 0)
                 //{
                 //    _sendingBuffer = @"\bdy\0\list\\final\";

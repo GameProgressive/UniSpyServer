@@ -1,47 +1,48 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
-    public class UniqueSearchHandler : CommandHandlerBase
+    public class UniqueSearchHandler : PSPCommandHandlerBase
     {
-        public UniqueSearchHandler() : base()
+        private bool _isUniquenickExist;
+
+        public UniqueSearchHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        private bool IsUniquenickExist;
-
-        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (!recv.ContainsKey("preferrednick"))
+            if (!_recv.ContainsKey("preferrednick"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             where n.Uniquenick == recv["preferrednick"] && n.Namespaceid == _namespaceid && n.Gamename == recv["gamename"]
+                             where n.Uniquenick == _recv["preferrednick"] && n.Namespaceid == _namespaceid && n.Gamename == _recv["gamename"]
                              select p.Profileid;
 
                 if (result.Count() == 0)
                 {
-                    IsUniquenickExist = false;
+                    _isUniquenickExist = false;
                 }
             }
         }
 
-        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
-            if (!IsUniquenickExist)
+            if (!_isUniquenickExist)
             {
                 _sendingBuffer = @"us\0\usdone\final";
             }

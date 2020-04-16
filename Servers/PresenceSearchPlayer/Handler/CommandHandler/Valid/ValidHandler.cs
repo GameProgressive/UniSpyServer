@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;
@@ -7,28 +8,28 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
-    public class ValidHandler : CommandHandlerBase
+    public class ValidHandler :  PSPCommandHandlerBase
     {
-        public ValidHandler() : base()
+        public ValidHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            if (!recv.ContainsKey("email"))
+            if (!_recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            if (!GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
+            if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
         }
 
-        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
@@ -36,7 +37,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                              join p in db.Profiles on u.Userid equals p.Userid
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
                              //According to FSW partnerid is not nessesary
-                             where u.Email == recv["email"] && n.Gamename == recv["gamename"] && n.Namespaceid == _namespaceid
+                             where u.Email == _recv["email"] && n.Gamename == _recv["gamename"] && n.Namespaceid == _namespaceid
                              select p.Profileid;
 
                 if (result.Count() == 0)

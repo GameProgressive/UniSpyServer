@@ -1,29 +1,30 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
-    public class SendBlockList : CommandHandlerBase
+    public class SendBlockList :  PCMCommandHandlerBase
     {
-        protected SendBlockList() : base()
+        public SendBlockList(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
-            if (session.UserInfo.BlockListSent)
+            if (_session.UserInfo.BlockListSent)
             {
                 return;
             }
 
-            session.UserInfo.BlockListSent = true;
+            _session.UserInfo.BlockListSent = true;
 
             using (var db = new retrospyContext())
             {
                 var buddies = db.Blocked.Where(
-                    f => f.Profileid == session.UserInfo.Profileid
-                && f.Namespaceid == session.UserInfo.NamespaceID);
+                    f => f.Profileid == _session.UserInfo.Profileid
+                && f.Namespaceid == _session.UserInfo.NamespaceID);
                 //if (buddies.Count() == 0)
                 //{
                 //    _sendingBuffer = @"\blk\0\list\\final\";

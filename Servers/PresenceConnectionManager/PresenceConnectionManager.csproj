@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
+    <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -55,7 +56,6 @@
     <Compile Include="Handler\CommandHandler\Buddy\Status\StatusHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\GetProfile\GetProfileHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\NewProfile\NewProfileHandler.cs" />
-    <Compile Include="Handler\CommandHandler\Profile\NewUser\NewUserHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\RegisterNick\RegisterNickHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\UpdatePro\UpdateProHandler.cs" />
     <Compile Include="Handler\CommandHandler\Profile\UpdateUI\UpdateUiHandler.cs" />

@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace PresenceConnectionManager.Handler.General.KeepAlive
 {
-    public class KAHandler : CommandHandlerBase
+    public class KAHandler :  PCMCommandHandlerBase
     {
-        protected KAHandler() : base()
+        public KAHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
-        {
-        }
-
-        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
             _sendingBuffer = @"\ka\\final\";
         }

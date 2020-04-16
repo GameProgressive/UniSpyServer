@@ -1,4 +1,5 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using GameSpyLib.Common.Entity.Interface;
+using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,49 +8,46 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
     /// <summary>
     /// This function sets which games the local profile can be invited to.
     /// </summary>
-    public class InviteToHandler : CommandHandlerBase
+    public class InviteToHandler : PCMCommandHandlerBase
     {
-        //session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
-        protected InviteToHandler() : base()
+        //_session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
+        public InviteToHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        private uint _productid;
-
-        private uint _profileid;
         //public static GPCMDBQuery DBQuery = null;
 
-        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (!recv.ContainsKey("productid") || !recv.ContainsKey("sesskey"))
+            if (!_recv.ContainsKey("productid") || !_recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
 
-            if (!recv.ContainsKey("sesskey"))
+            if (!_recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
 
-            if (!uint.TryParse(recv["productid"], out _productid))
+            if (!uint.TryParse(_recv["productid"], out _productid))
             {
                 _errorCode = GPErrorCode.Parse;
             }
 
-            if (!uint.TryParse(recv["profileid"], out _profileid))
+            if (!uint.TryParse(_recv["profileid"], out _profileid))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
-            base.ConstructResponse(session, recv);
+            base.ConstructResponse();
         }
 
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             var user = GPCMServer.LoggedInSession.Values.Where(
                 u => u.UserInfo.productID == _productid
@@ -63,7 +61,7 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
             //parse user to buddy message system
         }
 
-        protected override void Response(GPCMSession session, Dictionary<string, string> recv)
+        protected override void Response()
         {
         }
     }

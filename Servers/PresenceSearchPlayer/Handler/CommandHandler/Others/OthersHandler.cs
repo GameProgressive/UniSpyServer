@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,30 +9,32 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
     /// <summary>
     /// Get buddy's information
     /// </summary>
-    public class OthersHandler : CommandHandlerBase
+    public class OthersHandler : PSPCommandHandlerBase
     {
-        public OthersHandler() : base()
-        {
-        }
+
 
         private uint _profileid;
 
-        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
+        public OthersHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
-            if (!recv.ContainsKey("profileid") || !recv.ContainsKey("namespaceid"))
-            {
-                _errorCode = GPErrorCode.Parse;
-            }
-
-            if (!recv.ContainsKey("profileid") && !uint.TryParse(recv["profileid"], out _profileid))
-            {
-                _errorCode = GPErrorCode.Parse;
-            }
-
-            base.CheckRequest(session, recv);
         }
 
-        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
+        {
+            if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
+
+            if (!_recv.ContainsKey("profileid") && !uint.TryParse(_recv["profileid"], out _profileid))
+            {
+                _errorCode = GPErrorCode.Parse;
+            }
+
+            base.CheckRequest();
+        }
+
+        protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
@@ -46,7 +49,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                     var b = from p in db.Profiles
                             join n in db.Subprofiles on p.Profileid equals n.Profileid
                             join u in db.Users on p.Userid equals u.Userid
-                            where n.Namespaceid == _namespaceid && n.Profileid == pid && n.Gamename == recv["gamename"]
+                            where n.Namespaceid == _namespaceid && n.Profileid == pid && n.Gamename == _recv["gamename"]
                             select new { profileid = p.Profileid, nick = p.Nick, uniquenick = n.Uniquenick, last = p.Lastname, first = p.Firstname, email = u.Userid };
                     _sendingBuffer += @"\o\" + b.First().profileid;
                     _sendingBuffer += @"\nick\" + b.First().nick;
@@ -60,7 +63,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
             }
         }
 
-        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
             if (_errorCode == GPErrorCode.DatabaseError)
             {

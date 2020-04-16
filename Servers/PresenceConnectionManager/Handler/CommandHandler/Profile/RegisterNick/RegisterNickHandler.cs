@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -6,35 +7,35 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
-    public class RegisterNickHandler : CommandHandlerBase
+    public class RegisterNickHandler :  PCMCommandHandlerBase
     {
-        public RegisterNickHandler() : base()
+        public RegisterNickHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (!recv.ContainsKey("sesskey"))
+            if (!_recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
 
-            if (!recv.ContainsKey("uniquenick"))
+            if (!_recv.ContainsKey("uniquenick"))
             {
                 _errorCode = GPErrorCode.Parse;
             }
         }
 
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             try
             {
                 using (var db = new retrospyContext())
                 {
-                    db.Subprofiles.Where(s => s.Profileid == session.UserInfo.Profileid && s.Namespaceid == session.UserInfo.NamespaceID)
-                        .First().Uniquenick = recv["uniquenick"];
+                    db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.Profileid && s.Namespaceid == _session.UserInfo.NamespaceID)
+                        .First().Uniquenick = _recv["uniquenick"];
                     db.SaveChanges();
                 }
             }
@@ -44,7 +45,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
             }
         }
 
-        protected override void ConstructResponse(GPCMSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
             _sendingBuffer = @"\rn\final\";
         }

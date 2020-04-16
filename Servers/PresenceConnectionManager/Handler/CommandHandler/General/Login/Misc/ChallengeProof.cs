@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Handler.General.Login.Misc
         /// <param name="serverChallenge">First challenge key</param>
         /// <param name="clientChallenge">Second challenge key</param>
         /// <returns>
-        ///     The proof verification MD5 hash string that can be compared to what the session sends,
+        ///     The proof verification MD5 hash string that can be compared to what the _session sends,
         ///     to verify that the users entered password matches the specific user data in the database.
         /// </returns>
         public static string GenerateProof(string userData, LoginType loginType, uint partnerID, string serverChallenge, string clientChallenge, string passwordHash)

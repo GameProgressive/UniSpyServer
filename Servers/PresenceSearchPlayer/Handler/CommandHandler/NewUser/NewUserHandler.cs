@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;
@@ -8,14 +9,18 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 {
-    public class NewUserHandler : CommandHandlerBase
+    public class NewUserHandler : PSPCommandHandlerBase
     {
         private string _uniquenick;
         private Users _users;
         private Profiles _profiles;
         private Subprofiles _subProfiles;
 
-        private enum _newUserStatus
+        public NewUserHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        {
+        }
+
+        protected enum _newUserStatus
         {
             CheckAccount,
             AccountNotExist,
@@ -28,39 +33,35 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             SubProfileExist
         }
 
-        public NewUserHandler() : base()
+        protected override void CheckRequest()
         {
-        }
+            base.CheckRequest();
 
-        protected override void CheckRequest(GPSPSession session, Dictionary<string, string> recv)
-        {
-            base.CheckRequest(session, recv);
-
-            if (!recv.ContainsKey("nick"))
+            if (!_recv.ContainsKey("nick"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            if (!recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(recv["email"]))
+            if (!_recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            if (!recv.ContainsKey("passenc"))
+            if (!_recv.ContainsKey("passenc"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            if (recv.ContainsKey("uniquenick"))
+            if (_recv.ContainsKey("uniquenick"))
             {
-                _uniquenick = recv["uniquenick"];
+                _uniquenick = _recv["uniquenick"];
             }
         }
 
-        protected override void DataOperation(GPSPSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
@@ -69,7 +70,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                     switch (_newUserStatus.CheckAccount)
                     {
                         case _newUserStatus.CheckAccount:
-                            int count = db.Users.Where(u => u.Email == recv["email"]).Select(u => u).Count();
+                            int count = db.Users.Where(u => u.Email == _recv["email"]).Select(u => u).Count();
                             if (count == 0)
                             {
                                 goto case _newUserStatus.AccountNotExist;
@@ -80,14 +81,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.AccountNotExist:
-                            _users = new Users { Email = recv["email"], Password = recv["passenc"] };
+                            _users = new Users { Email = _recv["email"], Password = _recv["passenc"] };
                             db.Users.Add(_users);
                             db.SaveChanges();
                             goto case _newUserStatus.CheckProfile;
 
                         case _newUserStatus.AccountExist:
                             //we have to check password correctness
-                            _users = db.Users.Where(u => u.Email == recv["email"] && u.Password == recv["passenc"]).FirstOrDefault();
+                            _users = db.Users.Where(u => u.Email == _recv["email"] && u.Password == _recv["passenc"]).FirstOrDefault();
                             if (_users == null)
                             {
                                 _errorCode = GPErrorCode.NewUserBadPasswords;
@@ -99,7 +100,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.CheckProfile:
-                            _profiles = db.Profiles.Where(p => p.Userid == _users.Userid && p.Nick == recv["nick"]).FirstOrDefault();
+                            _profiles = db.Profiles.Where(p => p.Userid == _users.Userid && p.Nick == _recv["nick"]).FirstOrDefault();
                             if (_profiles == null)
                             {
                                 goto case _newUserStatus.ProfileNotExist;
@@ -110,7 +111,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.ProfileNotExist:
-                            _profiles = new Profiles { Userid = _users.Userid, Nick = recv["nick"] };
+                            _profiles = new Profiles { Userid = _users.Userid, Nick = _recv["nick"] };
                             db.Profiles.Add(_profiles);
                             db.SaveChanges();
                             goto case _newUserStatus.CheckSubProfile;
@@ -152,32 +153,34 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 //update other information
                 if (_errorCode != GPErrorCode.DatabaseError)
                 {
-                    UpdateOtherInfo(recv);
+                    UpdateOtherInfo(_recv);
                 }
             }
         }
 
-        protected override void ConstructResponse(GPSPSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = string.Format(@"\nur\{0}\final\", (uint)_errorCode);
+                _sendingBuffer = string.Format(@"\nur\{0}\final\", _errorCode);
             }
             else
             {
-                _sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _subProfiles.Profileid);
+                //GPCM
+                _sendingBuffer = string.Format(@"\nur\0\userid\{0}\profileid\{1}\id\1\final\", _users.Userid, _subProfiles.Profileid);
+                //_sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _subProfiles.Profileid);
             }
         }
 
-        private void UpdateOtherInfo(Dictionary<string, string> recv)
+        private void UpdateOtherInfo(Dictionary<string, string> _recv)
         {
             using (var db = new retrospyContext())
             {
                 uint partnerid;
 
-                if (recv.ContainsKey("partnerid"))
+                if (_recv.ContainsKey("partnerid"))
                 {
-                    if (uint.TryParse(recv["partnerid"], out partnerid))
+                    if (uint.TryParse(_recv["partnerid"], out partnerid))
                     {
                         _subProfiles.Partnerid = partnerid;
                     }
@@ -189,9 +192,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
                 uint productid;
 
-                if (recv.ContainsKey("productid"))
+                if (_recv.ContainsKey("productid"))
                 {
-                    if (uint.TryParse(recv["productid"], out productid))
+                    if (uint.TryParse(_recv["productid"], out productid))
                     {
                         _subProfiles.Productid = productid;
                     }
@@ -201,16 +204,16 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                     }
                 }
 
-                if (recv.ContainsKey("gamename"))
+                if (_recv.ContainsKey("gamename"))
                 {
-                    _subProfiles.Gamename = recv["gamename"];
+                    _subProfiles.Gamename = _recv["gamename"];
                 }
 
                 uint port;
 
-                if (recv.ContainsKey("port"))
+                if (_recv.ContainsKey("port"))
                 {
-                    if (uint.TryParse(recv["port"], out port))
+                    if (uint.TryParse(_recv["port"], out port))
                     {
                         _subProfiles.Port = port;
                     }
@@ -220,9 +223,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                     }
                 }
 
-                if (recv.ContainsKey("cdkeyenc"))
+                if (_recv.ContainsKey("cdkeyenc"))
                 {
-                    _subProfiles.Cdkeyenc = recv["cdkeyenc"];
+                    _subProfiles.Cdkeyenc = _recv["cdkeyenc"];
                 }
                 db.Subprofiles.Update(_subProfiles);
                 db.SaveChanges();

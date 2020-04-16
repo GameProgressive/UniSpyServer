@@ -8,7 +8,7 @@ using PresenceConnectionManager.Handler.CommandHandler.Buddy.Status;
 using PresenceConnectionManager.Handler.General.Login.LoginMethod;
 using PresenceConnectionManager.Handler.Profile.GetProfile;
 using PresenceConnectionManager.Handler.Profile.NewProfile;
-using PresenceConnectionManager.Handler.Profile.NewUser;
+using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using PresenceConnectionManager.Handler.Profile.RegisterNick;
 using PresenceConnectionManager.Handler.Profile.UpdatePro;
 using PresenceConnectionManager.Handler.Profile.UpdateUI;
@@ -47,35 +47,35 @@ namespace PresenceConnectionManager.Handler
                     switch (recv.Keys.First())
                     {
                         //case "inviteto":
-                        //    InviteToHandler.InvitePlayer(session, recv);
+                        //    InviteToHandler.InvitePlayer();
                         //    break;
 
                         case "login"://login to retrospy
-                            new LoginHandler().Handle(session, recv);
+                            new LoginHandler(session, recv).Handle();
                             break;
 
                         case "getprofile"://get profile of a player
-                            new GetProfileHandler().Handle(session, recv);
+                            new GetProfileHandler(session, recv).Handle();
                             break;
 
                         case "addbuddy"://Send a request which adds an user to our friend list
-                            new AddBuddyHandler().Handle(session, recv);
+                            new AddBuddyHandler(session, recv).Handle();
                             break;
 
                         case "delbuddy"://delete a user from our friend list
-                            new DelBuddyHandler().Handle(session, recv);
+                            new DelBuddyHandler(session, recv).Handle();
                             break;
 
                         case "updateui"://update a user's email
-                            new UpdateUIHandler().Handle(session, recv);
+                            new UpdateUIHandler(session, recv).Handle();
                             break;
 
                         case "updatepro"://update a user's profile
-                            new UpdateProHandler().Handle(session, recv);
+                            new UpdateProHandler(session, recv).Handle();
                             break;
 
                         case "registernick"://update user's uniquenick
-                            new RegisterNickHandler().Handle(session, recv);
+                            new RegisterNickHandler(session, recv).Handle();
                             break;
 
                         case "logout"://logout from retrospy
@@ -84,23 +84,23 @@ namespace PresenceConnectionManager.Handler
                             break;
 
                         case "status"://update current logged in user's status info
-                            new StatusHandler().Handle(session, recv);
+                            new StatusHandler(session, recv).Handle();
                             break;
 
                         case "newuser"://create an new user
-                            new NewUserHandler().Handle(session, recv);
+                            new NewUserHandler(session, recv).Handle();
                             break;
 
                         case "addblock"://add an user to our block list
-                            new AddBlockHandler().Handle(session, recv);
+                            new AddBlockHandler(session, recv).Handle();
                             break;
 
                         case "ka":
-                            //KAHandler.SendKeepAlive(session);
+                            //KAHandler.SendKeepAlive(_session);
                             break;
 
                         case "newprofile"://create an new profile
-                            new NewProfileHandler().Handle(session, recv);
+                            new NewProfileHandler(session, recv).Handle();
                             break;
 
                         default:

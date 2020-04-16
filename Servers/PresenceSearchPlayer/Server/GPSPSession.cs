@@ -9,7 +9,6 @@ namespace PresenceSearchPlayer
 {
     public class GPSPSession : TemplateTcpSession
     {
-        public uint OperationID;
         public GPSPSession(GPSPServer server) : base(server)
         {
         }

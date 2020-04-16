@@ -1,20 +1,22 @@
 ﻿using System.Collections.Generic;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace PresenceConnectionManager.Handler.Buddy.BuddyStatusInfo
 {
-    public class BuddyStatusInfo : CommandHandlerBase
+    public class BuddyStatusInfo :  PCMCommandHandlerBase
     {
-        protected BuddyStatusInfo() : base()
+
+        public BuddyStatusInfo(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
-        //public static void SendBuddyStatusInfo(GPCMSession session, uint[] profileids)
+        //public static void SendBuddyStatusInfo(GPCMSession _session, uint[] profileids)
         //{
         //    Dictionary<string, object> result;
 
         //    foreach (uint profileid in profileids)
         //    {
         //        string sendingBuffer = @"\bm\" + (uint)GPBasic.BmStatus + @"\f\";
-        //        result = SendBuddiesQuery.GetStatusInfo(profileid, session.PlayerInfo.NamespaceID);
+        //        result = SendBuddiesQuery.GetStatusInfo(profileid, _session.PlayerInfo.NamespaceID);
         //        sendingBuffer += profileid + @"\msg\";
         //        sendingBuffer += @"|s|" + Convert.ToUInt32(result["status"]);
         //        sendingBuffer += @"|ss|" + result["statstring"].ToString();
@@ -23,7 +25,7 @@ namespace PresenceConnectionManager.Handler.Buddy.BuddyStatusInfo
         //        sendingBuffer += @"|p|" + Convert.ToUInt32(result["port"]);
         //        sendingBuffer += @"|qm|" + result["quietflags"] + @"\final\";
 
-        //        session.SendAsync(sendingBuffer);
+        //        _session.SendAsync(sendingBuffer);
         //    }
     }
 }

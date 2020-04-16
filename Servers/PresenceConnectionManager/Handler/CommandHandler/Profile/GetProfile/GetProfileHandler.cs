@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceConnectionManager.Enumerator;
@@ -7,46 +8,44 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.GetProfile
 {
-    public class GetProfileHandler : CommandHandlerBase
+    public class GetProfileHandler :  PCMCommandHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
-        private uint _profileid;
-
-        public GetProfileHandler() : base()
+        public GetProfileHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
-        protected override void CheckRequest(GPCMSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
 
-            if (!recv.ContainsKey("profileid"))
+            if (!_recv.ContainsKey("profileid"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            if (!recv.ContainsKey("sesskey"))
+            if (!_recv.ContainsKey("sesskey"))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
 
-            if (uint.TryParse(recv["profileid"], out _profileid))
+            if (uint.TryParse(_recv["profileid"], out _profileid))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
         }
 
-        protected override void DataOperation(GPCMSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
                              join s in db.Subprofiles on p.Profileid equals s.Profileid
                              join u in db.Users on p.Userid equals u.Userid
-                             where p.Profileid == _profileid && s.Namespaceid == session.UserInfo.NamespaceID
+                             where p.Profileid == _profileid && s.Namespaceid == _session.UserInfo.NamespaceID
                              select new
                              {
                                  nick = p.Nick,

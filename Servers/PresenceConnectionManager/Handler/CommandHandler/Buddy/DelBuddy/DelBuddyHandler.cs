@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace PresenceConnectionManager.Handler.Buddy.DelBuddy
 {
     /// <summary>
     /// handles dell buddy request,remove friends from friends list
     /// </summary>
-    public class DelBuddyHandler : CommandHandlerBase
+    public class DelBuddyHandler : PCMCommandHandlerBase
     {
         //GPCMSession _session;
         //Dictionary<string, string> _recv;
-        public DelBuddyHandler() : base()
+
+        //delete friend in database then send bm_revoke message to friend
+        public DelBuddyHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
-        //delete friend in database then send bm_revoke message to friend
     }
 }
