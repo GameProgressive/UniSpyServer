@@ -30,7 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
     <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
-    <ProjectReference Include="..\NATNegotiation\NATNegotiation.csproj" />
+    <ProjectReference Include="..\NatNegotiation\NatNegotiation.csproj" />
   </ItemGroup>
 
   <ItemGroup>

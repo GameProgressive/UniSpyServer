@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat", "Servers\Chat\Chat.c
 		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NATNegotiation", "Servers\NATNegotiation\NATNegotiation.csproj", "{F730E447-5CA9-49FA-84D8-4C9C6FEF3D56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NatNegotiation", "Servers\NatNegotiation\NatNegotiation.csproj", "{F730E447-5CA9-49FA-84D8-4C9C6FEF3D56}"
 	ProjectSection(ProjectDependencies) = postProject
 		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
 	EndProjectSection

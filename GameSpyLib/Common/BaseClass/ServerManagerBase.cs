@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Database.Entity;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
@@ -28,17 +27,10 @@ namespace GameSpyLib.Common
 
         public bool Start()
         {
-            try
-            {
-                StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
-                LoadDatabaseConfig();
-                LoadServerConfig();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
+            LoadDatabaseConfig();
+            LoadServerConfig();
+            return true;
         }
 
         public void LoadServerConfig()
@@ -64,7 +56,7 @@ namespace GameSpyLib.Common
 
             switch (dbConfig.Type)
             {
-                case DatabaseEngine.MySql:
+                case "MySql":
                     string mySqlConnStr =
                         string.Format(
                             "Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}",
@@ -73,29 +65,35 @@ namespace GameSpyLib.Common
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
 
                     break;
-                case DatabaseEngine.SQLite:
+                case "SQLite":
                     string SQLiteConnStr = "Data Source=" + dbConfig.DatabaseName + ";Version=3;New=False";
+                    //TODO: SQLite
+                    throw new Exception("SQLite is not yet supported!");
 
-                    break;
+                    //break;
                 default:
                     throw new Exception("Unknown database engine!");
             }
 
-            if (!new retrospyContext().Database.CanConnect())
+            try
             {
-                throw new Exception($"Can not connect to {ConfigManager.Config.Database.Type}!");
+                new retrospyContext().Database.CanConnect();
             }
-
+            catch (Exception e)
+            {
+                throw new Exception($"Can not connect to {ConfigManager.Config.Database.Type}!", e);
+            }
             LogWriter.Log.Information($"Successfully connected to {dbConfig.Type}!");
 
-            RedisConfig redisConfig = ConfigManager.Config.Redis;
-            Redis = ConnectionMultiplexer.Connect(redisConfig.RemoteAddress + ":" + redisConfig.RemotePort.ToString());
-
-            if (!Redis.IsConnected)
+            try
             {
-                throw new Exception("Can not connect to Redis");
+                RedisConfig redisConfig = ConfigManager.Config.Redis;
+                Redis = ConnectionMultiplexer.Connect(redisConfig.RemoteAddress + ":" + redisConfig.RemotePort.ToString());
             }
-
+            catch (Exception e)
+            {
+                throw new Exception("Can not connect to Redis", e);
+            }
             LogWriter.Log.Information($"Successfully connected to Redis!");
         }
     }
