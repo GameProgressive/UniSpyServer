@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common.BaseClass;
+using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Check;
@@ -16,11 +17,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler
+namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {
-    public class CommandSwitcher
+    public class PSPCommandSwitcher : CommandSwitcherBase
     {
-        public static void Switch(GPSPSession session, string message)
+        public void Switch(GPSPSession session, string message)
         {
 
             try
@@ -93,7 +94,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 LogWriter.ToLog(e);
             }

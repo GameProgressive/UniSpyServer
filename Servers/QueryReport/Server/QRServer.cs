@@ -48,7 +48,7 @@ namespace QueryReport.Server
                 Clients.TryAdd(endPoint, client);
             }
 
-            CommandSwitcher.Switch(client, message);
+          new  QRCommandSwitcher().Switch(client, message);
         }
     }
 }

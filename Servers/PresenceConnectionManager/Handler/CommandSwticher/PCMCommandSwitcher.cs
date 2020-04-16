@@ -15,12 +15,13 @@ using PresenceConnectionManager.Handler.Profile.UpdateUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameSpyLib.Common.BaseClass;
 
 namespace PresenceConnectionManager.Handler
 {
-    public class CommandSwitcher
+    public class PCMCommandSwitcher:CommandSwitcherBase
     {
-        public static void Switch(GPCMSession session, string message)
+        public void Switch(GPCMSession session, string message)
         {
             try
             {

@@ -18,11 +18,11 @@ namespace ServerBrowser
         {
             if (message.Take(6).SequenceEqual(BasePacket.MagicData))
             {
-                NatNegCommandSwitcher.Switch(this, message);
+                new NatNegCommandSwitcher().Switch(this, message);
             }
             else
             {
-                SBCommandSwitcher.Switch(this, message);
+                new SBCommandSwitcher().Switch(this, message);
             }
         }
     }

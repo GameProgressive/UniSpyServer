@@ -37,7 +37,7 @@ namespace Chat
 
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
-            CommandSwitcher.Switch(this, data);
+          new  ChatCommandSwitcher().Switch(this, data);
         }
 
         private void DecryptData(ref byte[] data, long size)

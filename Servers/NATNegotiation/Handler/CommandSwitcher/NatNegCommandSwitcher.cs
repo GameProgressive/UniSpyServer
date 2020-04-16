@@ -6,9 +6,9 @@ using System;
 
 namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
-    public class CommandSwitcher
+    public class NatNegCommandSwitcher
     {
-        public static void Switch(NatNegClient client, byte[] recv)
+        public void Switch(NatNegClient client, byte[] recv)
         {
             try
             {

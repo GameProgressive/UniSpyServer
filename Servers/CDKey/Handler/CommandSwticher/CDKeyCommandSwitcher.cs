@@ -1,4 +1,5 @@
 ﻿using CDKey.Handler.CommandHandler.SKey;
+using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
@@ -9,9 +10,9 @@ using System.Net;
 
 namespace CDKey.Handler.CommandSwitcher
 {
-    public class CommandSwitcher
+    public class CDKeyCommandSwitcher : CommandSwitcherBase
     {
-        public static void Switch(IClient client, string message)
+        public void Switch(IClient client, string message)
         {
             message.Replace(@"\r\n", "").Replace("\0", "");
             string[] keyValueArray = message.TrimStart('\\').Split('\\');

@@ -1,4 +1,5 @@
 ﻿using System;
+using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure;
@@ -6,9 +7,9 @@ using NatNegotiation.Handler.CommandHandler;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class NatNegCommandSwitcher
+    public class NatNegCommandSwitcher:CommandSwitcherBase
     {
-        public static void Switch(SBSession client, byte[] recv)
+        public void Switch(SBSession client, byte[] recv)
         {
             //check and add client into clientList
             NatNegClientInfo clientInfo =

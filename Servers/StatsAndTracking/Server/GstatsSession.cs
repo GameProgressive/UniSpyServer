@@ -39,9 +39,7 @@ namespace StatsAndTracking
         }
         protected override void OnReceived(string message)
         {
-
-
-            CommandSwitcher.Switch(this, message);
+           new StatsCommandSwitcher().Switch(this, message);
         }
 
 

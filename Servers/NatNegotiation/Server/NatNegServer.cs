@@ -38,7 +38,7 @@ namespace NatNegotiation.Server
                 Clients.TryAdd(endPoint, client);
             }
 
-            CommandSwitcher.Switch(client, message);
+            new NatNegCommandSwitcher().Switch(client, message);
         }
     }
 }

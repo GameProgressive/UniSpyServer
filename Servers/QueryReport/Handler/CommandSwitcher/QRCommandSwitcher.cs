@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.BaseClass;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.CommandHandler.Available;
@@ -12,9 +13,9 @@ using System.Net;
 
 namespace QueryReport.Handler.CommandSwitcher
 {
-    public class CommandSwitcher
+    public class QRCommandSwitcher:CommandSwitcherBase
     {
-        public static void Switch(IClient client, byte[] recv)
+        public void Switch(IClient client, byte[] recv)
         {
             try
             {

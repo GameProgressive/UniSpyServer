@@ -1,12 +1,13 @@
 ﻿using Chat.Handler.CommandHandler.CRYPT;
 using Chat.Handler.CommandHandler.LOGIN;
 using Chat.Handler.CommandHandler.USRIP;
+using GameSpyLib.Common.BaseClass;
 
 namespace Chat.Handler.CommandSwitcher
 {
-    public class CommandSwitcher
+    public class ChatCommandSwitcher : CommandSwitcherBase
     {
-        public static void Switch(ChatSession session, string data)
+        public void Switch(ChatSession session, string data)
         {
             string message = data.Split("\r\n", System.StringSplitOptions.RemoveEmptyEntries)[0];
 

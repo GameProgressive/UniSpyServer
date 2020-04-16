@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
@@ -6,9 +7,9 @@ using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCommandSwitcher
+    public class SBCommandSwitcher:CommandSwitcherBase
     {
-        public static void Switch(SBSession session, byte[] recv)
+        public void Switch(SBSession session, byte[] recv)
         {
             //we do not need to handle GOA query because it is handled by game server
             switch ((SBClientRequestType)recv[2])

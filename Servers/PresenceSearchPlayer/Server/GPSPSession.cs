@@ -1,9 +1,5 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.MiscMethod;
-using GameSpyLib.Network;
-using PresenceSearchPlayer.Enumerator;
-using PresenceSearchPlayer.Handler.CommandHandler;
-using System.Collections.Generic;
+﻿using GameSpyLib.Network;
+using PresenceSearchPlayer.Handler.CommandSwitcher;
 
 namespace PresenceSearchPlayer
 {
@@ -15,7 +11,7 @@ namespace PresenceSearchPlayer
 
         protected override void OnReceived(string message)
         {
-            CommandSwitcher.Switch(this, message);
+           new PSPCommandSwitcher().Switch(this, message);
         }
     }
 }
