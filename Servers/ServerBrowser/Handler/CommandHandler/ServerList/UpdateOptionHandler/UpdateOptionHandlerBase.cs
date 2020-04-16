@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Encryption;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using QueryReport.Entity.Structure;
@@ -14,22 +15,23 @@ using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
 {
-    public abstract class UpdateOptionHandlerBase : CommandHandlerBase
+    public abstract class UpdateOptionHandlerBase : SBCommandHandlerBase
     {
         protected byte[] _clientRemoteIP;
         protected byte[] _gameServerDefaultHostPort;
         protected string _secretKey;
         protected ServerListRequest _request;
-        protected List<byte> _dataList = new List<byte>();
+        protected List<byte> _dataList;
         protected List<GameServer> _gameServers;
-        public UpdateOptionHandlerBase(ServerListRequest request) : base()
+        public UpdateOptionHandlerBase(ServerListRequest request,IClient client,byte[] recv) : base(client,recv)
         {
             _request = request;
+            _dataList = new List<byte>();
         }
 
-        protected override void CheckRequest(SBSession session, byte[] recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
             //save client challenge in _request
             if (_request == null)
             {
@@ -43,20 +45,21 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 return;
             }
             //this is client public ip and default query port
+            SBSession session = (SBSession)_client.GetInstance();
             _clientRemoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
 
             //TODO   //check what is the default port
             _gameServerDefaultHostPort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
         }
 
-        protected override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse()
         {
-            base.ConstructResponse(session, recv);
+            base.ConstructResponse();
             _dataList.AddRange(_clientRemoteIP);
             _dataList.AddRange(_gameServerDefaultHostPort);
         }
 
-        protected override void Response(SBSession session, byte[] recv)
+        protected override void Response()
         {
             GOAEncryption enc =
                 new GOAEncryption(_secretKey, _request.Challenge, SBServer.ServerChallenge);
@@ -68,6 +71,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                      SBServer.ServerChallenge
                 );
             //refresh encryption state
+            SBSession session = (SBSession)_client.GetInstance();
             session.EncState = enc.State;
 
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)

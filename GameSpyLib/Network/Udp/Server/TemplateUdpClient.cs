@@ -5,7 +5,7 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace GameSpyLib.Network
 {
-    public class TemplateUdpClient : IClient
+    public abstract class TemplateUdpClient : IClient
     {
         public TemplateUdpServer Server { get; }
 

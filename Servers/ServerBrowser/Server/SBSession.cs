@@ -1,5 +1,7 @@
-﻿using GameSpyLib.Encryption;
+﻿using System.Linq;
+using GameSpyLib.Encryption;
 using GameSpyLib.Network;
+using NatNegotiation.Entity.Structure.Packet;
 using ServerBrowser.Handler.CommandSwitcher;
 
 namespace ServerBrowser
@@ -14,7 +16,14 @@ namespace ServerBrowser
 
         protected override void OnReceived(byte[] message)
         {
-            SBCommandSwitcher.Switch(this, message);
+            if (message.Take(6).SequenceEqual(BasePacket.MagicData))
+            {
+                NatNegCommandSwitcher.Switch(this, message);
+            }
+            else
+            {
+                SBCommandSwitcher.Switch(this, message);
+            }
         }
     }
 }

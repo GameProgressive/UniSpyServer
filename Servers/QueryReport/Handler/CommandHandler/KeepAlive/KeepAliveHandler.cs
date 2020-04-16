@@ -1,30 +1,29 @@
-﻿using GameSpyLib.Extensions;
-using GameSpyLib.MiscMethod;
+﻿using System;
+using System.Linq;
+using GameSpyLib.Common.Entity.Interface;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
-using System;
-using System.Linq;
-using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.KeepAlive
 {
-    public class KeepAliveHandler : CommandHandlerBase
+    public class KeepAliveHandler : QRCommandHandlerBase
     {
-        public KeepAliveHandler() : base()
+        public KeepAliveHandler(IClient client,byte[] recv) : base(client,recv)
         {
         }
 
-        protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
+        protected override void ConstructeResponse()
         {
             KeepAlivePacket packet = new KeepAlivePacket();
-            packet.Parse(recv);
+            packet.Parse(_recv);
             _sendingBuffer = packet.GenerateResponse();
-            var gameServer = GameServer.GetServers(endPoint).First();
+            QRClient client = (QRClient)_client.GetInstance();
+            var gameServer = GameServer.GetServers(client.RemoteEndPoint).First();
             gameServer.LastPacket = DateTime.Now;
             GameServer.UpdateServer
                 (
-                endPoint,
+                client.RemoteEndPoint,
                 gameServer.ServerData.KeyValue["gamename"],
                 gameServer);
         }

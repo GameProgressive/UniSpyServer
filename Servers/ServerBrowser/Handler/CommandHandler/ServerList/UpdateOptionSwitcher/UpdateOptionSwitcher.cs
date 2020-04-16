@@ -22,20 +22,20 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
             switch (request.UpdateOption)
             {
                 case SBServerListUpdateOption.NoServerList:
-                    new NoServerListHandler(request).Handle(session, recv);
+                    new NoServerListHandler(request, session, recv).Handle();
                     break;
                 case SBServerListUpdateOption.GeneralRequest:
-                    new GeneralRequestHandler(request).Handle(session, recv);
+                    new GeneralRequestHandler(request, session, recv).Handle();
                     break;
                 case SBServerListUpdateOption.SendGroups:
-                    new SendGroupsHandler(request).Handle(session, recv);
+                    new SendGroupsHandler(request, session, recv).Handle();
                     break;
                 case SBServerListUpdateOption.LimitResultCount:
                     break;
                 case SBServerListUpdateOption.PushUpdates:
                     // worms 3d send this after join group room
                     // we should send adhoc servers which are in this room to worms3d
-                    new PushUpdatesHandler(request).Handle(session, recv);
+                    new PushUpdatesHandler(request, session, recv).Handle();
                     break;
             }
         }

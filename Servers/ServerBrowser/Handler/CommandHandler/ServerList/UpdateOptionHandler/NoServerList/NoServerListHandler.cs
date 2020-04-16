@@ -1,4 +1,5 @@
-﻿using ServerBrowser.Entity.Structure.Packet.Request;
+﻿using GameSpyLib.Common.Entity.Interface;
+using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList
 {
@@ -8,7 +9,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.No
     /// </summary>
     public class NoServerListHandler : UpdateOptionHandlerBase
     {
-        public NoServerListHandler( ServerListRequest request) : base(request)
+        public NoServerListHandler( ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
         {
         }
     }

@@ -14,7 +14,7 @@ namespace GameSpyLib.Network
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class TemplateTcpSession : TcpSession, IClient
+    public abstract class TemplateTcpSession : TcpSession, IClient
     {
         private EndPoint _endPoint;
 

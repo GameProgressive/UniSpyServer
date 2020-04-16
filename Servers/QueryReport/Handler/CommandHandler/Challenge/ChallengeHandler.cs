@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Extensions;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
@@ -10,18 +11,19 @@ using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.Challenge
 {
-    public class ChallengeHandler : CommandHandlerBase
+    public class ChallengeHandler : QRCommandHandlerBase
     {
         GameServer _gameServer;
         //we do not need to implement this to check the correctness of the challenge response
-        public ChallengeHandler() : base()
+        public ChallengeHandler(IClient client, byte[] recv) : base(client,recv)
         {
         }
 
-        protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
+        protected override void DataOperation()
         {
+            QRClient client = (QRClient)_client.GetInstance();
             var result =
-                  GameServer.GetServers(endPoint);
+                  GameServer.GetServers(client.RemoteEndPoint);
 
             if (result.Count() != 1)
             {
@@ -31,15 +33,17 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             _gameServer = result.First();
         }
 
-        protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
+        protected override void ConstructeResponse()
         {
             EchoPacket echo = new EchoPacket();
-            echo.Parse(recv);
+            echo.Parse(_recv);
             // We send the echo packet to check the ping
             _sendingBuffer = echo.GenerateResponse();
 
+            QRClient client = (QRClient)_client.GetInstance();
+
             GameServer.UpdateServer(
-                endPoint,
+                client.RemoteEndPoint,
                 _gameServer.ServerData.KeyValue["gamename"],
                 _gameServer
                 );

@@ -12,7 +12,7 @@ namespace GameSpyLib.Network
     /// <summary>
     /// This is a template class that helps creating a UDP Server with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class TemplateUdpServer : UdpServer
+    public abstract class TemplateUdpServer : UdpServer
     {
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace GameSpyLib.Network
         public TemplateUdpServer(IPEndPoint endpoint) : base(endpoint)
         {
         }
-        protected virtual object CreateClient(EndPoint endPoint) { return new TemplateUdpClient(this,endPoint); }
+        protected abstract object CreateClient(EndPoint endPoint);
 
         protected override void OnStarted()
         {

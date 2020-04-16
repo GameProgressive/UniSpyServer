@@ -5,7 +5,7 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class InitHandler : CommandHandlerBase
+    public class InitHandler : NatNegCommandHandlerBase
     {
         public InitHandler(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client, clientInfo, recv)
         {

@@ -4,6 +4,7 @@ using QueryReport.Entity.Structure.Group;
 using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
 using QueryReport.Handler.SystemHandler.PeerSystem;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 
@@ -11,11 +12,9 @@ namespace QueryReport.Server
 {
     public class QRServer : TemplateUdpServer
     {
-        /// <summary>
-        /// A List of all servers that have sent data to this master server, and are active in the last 30 seconds or so
-        /// </summary>
-        //public static ConcurrentDictionary<EndPoint, DedicatedGameServer> GameServerList = new ConcurrentDictionary<EndPoint, DedicatedGameServer>();
 
+        public static ConcurrentDictionary<EndPoint, QRClient> Clients
+                                         = new ConcurrentDictionary<EndPoint, QRClient>();
         public bool IsChallengeSent = false;
 
         public bool HasInstantKey = false;
@@ -35,9 +34,21 @@ namespace QueryReport.Server
             return base.Start();
         }
 
+        protected override object CreateClient(EndPoint endPoint)
+        {
+            return new QRClient(this, endPoint);
+        }
+
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            CommandSwitcher.Switch(this, endPoint, message);
+            QRClient client;
+            if (!Clients.TryGetValue(endPoint, out client))
+            {
+                client = (QRClient)CreateClient(endPoint);
+                Clients.TryAdd(endPoint, client);
+            }
+
+            CommandSwitcher.Switch(client, message);
         }
     }
 }

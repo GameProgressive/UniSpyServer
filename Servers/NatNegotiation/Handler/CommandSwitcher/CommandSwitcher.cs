@@ -14,7 +14,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
             {
                 //check and add client into clientList
                 NatNegClientInfo clientInfo =
-                    NatNegServer.ClientList.GetOrAdd(client.RemoteEndPoint, new NatNegClientInfo(client.RemoteEndPoint));
+                    NatNegServer.ClientInfoList.GetOrAdd(client.RemoteEndPoint, new NatNegClientInfo(client.RemoteEndPoint));
                 clientInfo.LastPacketTime = DateTime.Now;
 
                 //BytesRecieved[7] is nnpacket.PacketType.

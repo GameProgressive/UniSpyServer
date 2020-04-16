@@ -11,7 +11,7 @@ namespace NatNegotiation.Handler.CommandHandler
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-    public class ReportHandler : CommandHandlerBase
+    public class ReportHandler : NatNegCommandHandlerBase
     {
         public ReportHandler(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client, clientInfo, recv)
         {

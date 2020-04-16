@@ -1,25 +1,31 @@
 ﻿using CDKey.Handler.CommandSwitcher;
 using GameSpyLib.Encryption;
 using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
 using GameSpyLib.Network;
 using Serilog.Events;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Net;
 
-namespace CDKey
+namespace CDKey.Server
 {
     public class CDKeyServer : TemplateUdpServer
     {
+        protected readonly ConcurrentDictionary<EndPoint, CDKeyClient> Clients
+     = new ConcurrentDictionary<EndPoint, CDKeyClient>();
         public CDKeyServer(IPAddress address, int port) : base(address, port)
         {
         }
 
         protected override void OnReceived(EndPoint endPoint, string message)
         {
-       
-            CommandSwitcher.Switch(this, endPoint, message);
+            CDKeyClient client;
+            if (!Clients.TryGetValue(endPoint, out client))
+            {
+                client = (CDKeyClient)CreateClient(endPoint);
+                Clients.TryAdd(endPoint, client);
+            }
+            CommandSwitcher.Switch(client, message);
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
@@ -44,6 +50,11 @@ namespace CDKey
         protected string Encrypt(string plainText)
         {
             return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type0);
+        }
+
+        protected override object CreateClient(EndPoint endPoint)
+        {
+            return new CDKeyClient(this, endPoint);
         }
     }
 }

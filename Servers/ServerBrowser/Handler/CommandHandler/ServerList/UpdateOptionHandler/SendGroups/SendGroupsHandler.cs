@@ -1,9 +1,9 @@
-﻿using GameSpyLib.Extensions;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
-using System;
 using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.SendGroups
@@ -12,13 +12,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
     {
         private PeerGroup _peerGroup;
 
-        public SendGroupsHandler(ServerListRequest request) : base(request)
+        public SendGroupsHandler(ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
         {
         }
 
-        protected override void DataOperation(SBSession session, byte[] recv)
+        protected override void DataOperation()
         {
-            base.DataOperation(session, recv);
+            base.DataOperation();
             _peerGroup = PeerGroup.GetGroupsList(_request.GameName);
             if (_peerGroup == null || _peerGroup.PeerRooms.Count == 0)
             {
@@ -27,9 +27,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
             }
         }
 
-        protected override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse()
         {
-            base.ConstructResponse(session, recv);
+            base.ConstructResponse();
             GenerateServerKeys();
             GenerateUniqueValue();
             GenerateServersInfo();
@@ -44,7 +44,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
                 //add has key flag
                 _dataList.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
-                
+
                 byte[] groupid = ByteTools.GetBytes(int.Parse(room.KeyValue["groupid"]), true);
 
                 _dataList.AddRange(groupid);

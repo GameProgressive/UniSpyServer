@@ -3,7 +3,7 @@ using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
 using System.Net;
-
+using CDKey.Server;
 namespace CDKey.Application
 {
     /// <summary>

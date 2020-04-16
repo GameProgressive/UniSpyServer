@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Net;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace CDKey.Handler.CommandHandler.SKey
 {
@@ -14,7 +15,7 @@ namespace CDKey.Handler.CommandHandler.SKey
         /// </summary>
         /// <param name="str">MD5cdkey string</param>
         /// <returns></returns>
-        public static void IsCDKeyValid(CDKeyServer server, EndPoint endPoint, Dictionary<string, string> recv)
+        public static void IsCDKeyValid(IClient client, Dictionary<string, string> recv)
         {
             //if (DBQuery.IsCDKeyValidate(recv["skey"]))
             //{

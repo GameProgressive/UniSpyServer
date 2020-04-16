@@ -9,7 +9,7 @@ namespace GameSpyLib.Network
     /// <summary>
     /// This is a template class that helps creating a TCP Server with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class TemplateTcpServer : TcpServer
+    public abstract class TemplateTcpServer : TcpServer
     {
         /// <summary>
         /// Initialize TCP server with a given IP address and port number

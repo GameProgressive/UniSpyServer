@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameSpyLib.Common.Entity.Interface;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
@@ -8,13 +9,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
 {
     public class GeneralRequestHandler : UpdateOptionHandlerBase
     {
-        public GeneralRequestHandler(ServerListRequest request) : base(request)
+        public GeneralRequestHandler(ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
         {
         }
 
-        protected override void DataOperation(SBSession session, byte[] recv)
+        protected override void DataOperation()
         {
-            base.DataOperation(session, recv);
+            base.DataOperation();
             _gameServers =
                         GameServer.GetServers(_request.GameName);
 
@@ -25,10 +26,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
             }
         }
 
-        protected override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse()
         {
 
-            base.ConstructResponse(session, recv);
+            base.ConstructResponse();
 
             GenerateServerKeys();
             //we use NTS string so total unique value list is 0

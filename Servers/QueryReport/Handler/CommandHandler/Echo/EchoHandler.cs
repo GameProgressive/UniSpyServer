@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Extensions;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
@@ -9,18 +10,19 @@ using System.Linq;
 using System.Net;
 namespace QueryReport.Handler.CommandHandler.Echo
 {
-    public class EchoHandler : CommandHandlerBase
+    public class EchoHandler : QRCommandHandlerBase
     {
         GameServer _gameServer;
-        public EchoHandler() : base()
+        public EchoHandler(IClient client,byte[] recv) : base(client,recv)
         {
         }
 
-        protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
+        protected override void DataOperation()
         {
             //TODO
+            QRClient client = (QRClient)_client.GetInstance();
             var result =
-                 GameServer.GetServers(endPoint);
+                 GameServer.GetServers(client.RemoteEndPoint);
             //add recive echo packet on gameserverList
             //DedicatedGameServer game;
             //QRServer.GameServerList.TryGetValue(endPoint, out game);
@@ -34,8 +36,9 @@ namespace QueryReport.Handler.CommandHandler.Echo
             _gameServer = result.FirstOrDefault();
 
             _gameServer.LastPacket = DateTime.Now;
+
             GameServer.UpdateServer(
-               endPoint,
+               client.RemoteEndPoint,
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer
            );

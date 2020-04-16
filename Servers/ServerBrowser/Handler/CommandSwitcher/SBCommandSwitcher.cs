@@ -10,12 +10,6 @@ namespace ServerBrowser.Handler.CommandSwitcher
     {
         public static void Switch(SBSession session, byte[] recv)
         {
-            if (recv.Take(6).SequenceEqual(NatNegotiation.Entity.Structure.Packet.BasePacket.MagicData))
-            {
-                NatNegCommandSwitcher.Switch(session, recv);
-                return;
-            }
-
             //we do not need to handle GOA query because it is handled by game server
             switch ((SBClientRequestType)recv[2])
             {
@@ -23,7 +17,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     UpdateOptionSwitcher.Switch(session, recv);
                     break;
                 case SBClientRequestType.ServerInfoRequest:
-                    new ServerInfoHandler().Handle(session,recv);
+                    new ServerInfoHandler(session,recv).Handle();
                     break;
                 case SBClientRequestType.PlayerSearchRequest:
                     break;

@@ -6,30 +6,29 @@ using NatNegotiation.Entity.Structure;
 using Serilog.Events;
 using GameSpyLib.Common.Entity.Interface;
 using NatNegotiation.Server;
+using GameSpyLib.Common.BaseClass;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class CommandHandlerBase
+    public class NatNegCommandHandlerBase:CommandHandlerBase
     {
         protected NNErrorCode _errorCode = NNErrorCode.NoError;
         protected byte[] _sendingBuffer;
         protected InitPacket _initPacket;
         protected ConnectPacket _connPacket;
         protected ReportPacket _reportPacket;
-        protected IClient _client;
         protected NatNegClientInfo _clientInfo;
         protected byte[] _recv;
 
-        public CommandHandlerBase(IClient client, NatNegClientInfo clientInfo, byte[] recv)
+        public NatNegCommandHandlerBase(IClient client, NatNegClientInfo clientInfo, byte[] recv):base(client)
         {
-            _client = client;
             _clientInfo = clientInfo;
             _recv = recv;
         }
 
-        public virtual void Handle()
+        public override void Handle()
         {
-            LogWriter.LogCurrentClass(this);
+            base.Handle();
 
             CheckRequest();
             if (_errorCode != NNErrorCode.NoError)

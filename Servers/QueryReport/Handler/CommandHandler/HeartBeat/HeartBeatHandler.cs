@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Extensions;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Group;
 using QueryReport.Entity.Structure.Packet;
@@ -12,34 +13,35 @@ using System.Text;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
-    public class HeartBeatHandler : CommandHandlerBase
+    public class HeartBeatHandler : QRCommandHandlerBase
     {
         private GameServer _gameServer;
 
-        public HeartBeatHandler() : base()
+        public HeartBeatHandler(IClient client,byte[] recv) : base(client,recv)
         {
         }
 
-        protected override void CheckRequest(QRServer server, EndPoint endPoint, byte[] recv)
+        protected override void CheckRequest()
         {
             BasePacket basePacket = new BasePacket();
-            basePacket.Parse(recv);
+            basePacket.Parse(_recv);
             //DedicatedGameServer gameServer = new DedicatedGameServer();
             //gameServer.Parse(endPoint, basePacket.InstantKey);
 
             _gameServer = new GameServer();
-            _gameServer.Parse(endPoint, basePacket.InstantKey);
+            QRClient client = (QRClient)_client.GetInstance();
+            _gameServer.Parse(client.RemoteEndPoint, basePacket.InstantKey);
             //_gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
 
-            base.CheckRequest(server, endPoint, recv);
+            base.CheckRequest();
         }
 
-        protected override void DataOperation(QRServer server, EndPoint endPoint, byte[] recv)
+        protected override void DataOperation()
         {
 
 
             //Save server information.
-            string dataPartition = Encoding.ASCII.GetString(recv.Skip(5).ToArray());
+            string dataPartition = Encoding.ASCII.GetString(_recv.Skip(5).ToArray());
             string serverData, playerData, teamData;
 
             int playerPos = dataPartition.IndexOf("player_\0", StringComparison.Ordinal);
@@ -56,7 +58,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 playerData = dataPartition.Substring(playerPos - 1, playerLenth - 2);
                 teamData = dataPartition.Substring(teamPos - 1, teamLength);
 
-                _gameServer.ServerData.Update(serverData, endPoint);
+                _gameServer.ServerData.Update(serverData);
                 _gameServer.PlayerData.Update(playerData);
                 _gameServer.TeamData.Update(teamData);
                 _gameServer.LastPacket = DateTime.Now;
@@ -67,7 +69,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 int playerLenth = dataPartition.Length - playerPos;
                 serverData = dataPartition.Substring(0, playerPos - 4);
                 playerData = dataPartition.Substring(playerPos - 1, playerLenth);
-                _gameServer.ServerData.Update(serverData, endPoint);
+                _gameServer.ServerData.Update(serverData);
                 _gameServer.PlayerData.Update(playerData);
                 _gameServer.LastPacket = DateTime.Now;
             }
@@ -75,7 +77,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             {
                 //shutdown heart beat
                 serverData = dataPartition;
-                _gameServer.ServerData.Update(serverData, endPoint);
+                _gameServer.ServerData.Update(serverData);
                 //if (PeerGroup.PeerGroupKeyList.Contains(_gameServer.ServerData.KeyValue["gamename"])
                 //     && !_gameServer.ServerData.KeyValue.ContainsKey("hostport"))
                 //{
@@ -99,18 +101,19 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             //    }
             //    GameServer.DeleteServer(key);
             //}
-
+            QRClient client = (QRClient)_client.GetInstance();
             GameServer.UpdateServer(
-               endPoint,
+               client.RemoteEndPoint,
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer
            );
         }
 
-        protected override void ConstructeResponse(QRServer server, EndPoint endPoint, byte[] recv)
+        protected override void ConstructeResponse()
         {
             ChallengePacket packet = new ChallengePacket();
-            packet.Parse(endPoint, recv);
+            QRClient client = (QRClient)_client.GetInstance();
+            packet.Parse(client.RemoteEndPoint, _recv);
             _sendingBuffer = packet.GenerateResponse();
         }
     }

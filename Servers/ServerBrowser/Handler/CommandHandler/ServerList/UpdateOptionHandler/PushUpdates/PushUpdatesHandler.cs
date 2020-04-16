@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using GameSpyLib.Common.Entity.Interface;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
@@ -12,13 +13,13 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
     /// </summary>
     public class PushUpdatesHandler : UpdateOptionHandlerBase
     {
-        public PushUpdatesHandler(ServerListRequest request) : base(request)
+        public PushUpdatesHandler(ServerListRequest request,IClient client,byte[] recv) : base(request,client,recv)
         {
         }
 
-        protected override void CheckRequest(SBSession session, byte[] recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
+            base.CheckRequest();
             _gameServers = GameServer.GetServers(_request.GameName);
             if (_gameServers == null)
             {
@@ -34,9 +35,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
             //**************Currently we do not handle filter**********************
         }
 
-        protected override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse()
         {
-            base.ConstructResponse(session, recv);
+            base.ConstructResponse();
             //add server key number
             GenerateServerKeys();
             //add unique values number

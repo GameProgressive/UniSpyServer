@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
@@ -22,24 +23,26 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
         private new AdHocRequest _request;
         private GameServer _gameServer;
 
-        public ServerInfoHandler() : base(null)
-        {
-        }
-
-        protected override void CheckRequest(SBSession session, byte[] recv)
+        public ServerInfoHandler(IClient client, byte[] recv) : base(null, client, recv)
         {
             _request = new AdHocRequest();
-            if (!_request.Parse(recv))
+        }
+
+        protected override void CheckRequest()
+        {
+            //we do not call base method because we have our own check method
+            //base.CheckRequest();
+
+            if (!_request.Parse(_recv))
             {
                 _errorCode = SBErrorCode.Parse;
                 return;
             }
-
         }
 
-        protected override void DataOperation(SBSession session, byte[] recv)
+        protected override void DataOperation()
         {
-            base.DataOperation(session, recv);
+            base.DataOperation();
             var result = GameServer.GetServers(_request.TargetServerIP)
                 .Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);
@@ -52,7 +55,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
             _gameServer = result.FirstOrDefault();
         }
 
-        protected override void ConstructResponse(SBSession session, byte[] recv)
+        protected override void ConstructResponse()
         {
             _dataList.Add((byte)SBServerResponseType.PushServerMessage);
 
@@ -67,6 +70,9 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
                 ByteTools.GetBytes((short)(info.Length + 2), true);
 
             _dataList.InsertRange(0, msgLength);
+
+            SBSession session = (SBSession)_client.GetInstance();
+
             GOAEncryption enc = new GOAEncryption(session.EncState);
             _sendingBuffer = enc.Encrypt(_dataList.ToArray());
             session.EncState = enc.State;
@@ -134,7 +140,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
             return header;
         }
 
-        protected override void Response(SBSession session, byte[] recv)
+        protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)
             {
@@ -142,7 +148,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
             }
             LogWriter.ToLog(LogEventLevel.Debug,
               $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(_dataList.ToArray(), 0, _dataList.Count)}");
-            session.BaseSendAsync(_sendingBuffer);
+            _client.BaseSendAsync(_sendingBuffer);
         }
     }
 }

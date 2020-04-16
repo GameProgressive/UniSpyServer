@@ -1,4 +1,5 @@
 ﻿using CDKey.Handler.CommandHandler.SKey;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using System;
@@ -10,7 +11,7 @@ namespace CDKey.Handler.CommandSwitcher
 {
     public class CommandSwitcher
     {
-        public static void Switch(CDKeyServer server, EndPoint endPoint, string message)
+        public static void Switch(IClient client, string message)
         {
             message.Replace(@"\r\n", "").Replace("\0", "");
             string[] keyValueArray = message.TrimStart('\\').Split('\\');
@@ -29,7 +30,7 @@ namespace CDKey.Handler.CommandSwitcher
                     case "resp":
                         break;
                     case "skey":
-                        SKeyHandler.IsCDKeyValid(server, endPoint, recv);
+                        SKeyHandler.IsCDKeyValid(client, recv);
                         break;
                     case "disc"://disconnect from server
                         break;

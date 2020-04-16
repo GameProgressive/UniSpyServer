@@ -24,7 +24,7 @@ namespace QueryReport.Entity.Structure.ReportData
             KeyValue = new Dictionary<string, string>();
         }
 
-        public void Update(string serverData, EndPoint endPoint)
+        public void Update(string serverData)
         {
             KeyValue.Clear();
             string[] keyValueArray = serverData.Split("\0");

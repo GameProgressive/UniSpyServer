@@ -8,7 +8,7 @@ namespace NatNegotiation.Server
 {
     public class NatNegServer : TemplateUdpServer
     {
-        public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
+        public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientInfoList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
         // Server sessions
         protected readonly ConcurrentDictionary<EndPoint, NatNegClient> Clients
             = new ConcurrentDictionary<EndPoint, NatNegClient>();

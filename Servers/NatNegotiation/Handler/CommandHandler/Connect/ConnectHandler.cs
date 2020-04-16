@@ -10,7 +10,7 @@ using GameSpyLib.Network;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class ConnectHandler : CommandHandlerBase
+    public class ConnectHandler : NatNegCommandHandlerBase
     {
         public ConnectHandler(IClient _clientInfo, NatNegClientInfo clientInfo, byte[] _recv) : base(_clientInfo, clientInfo, _recv)
         {
@@ -72,7 +72,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void  Response()
         {
-            var other = NatNegServer.ClientList.Values.Where(
+            var other = NatNegServer.ClientInfoList.Values.Where(
                 c => c.RemoteEndPoint == _connPacket.RemoteEndPoint);
 
             if (other.Count() < 1)

@@ -1,23 +1,27 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common.BaseClass;
+using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Logging;
 using Serilog.Events;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.SystemHandler.Error;
 namespace ServerBrowser.Handler.CommandHandler
 {
-    public abstract class CommandHandlerBase
+    public abstract class SBCommandHandlerBase : CommandHandlerBase
     {
         protected SBErrorCode _errorCode = SBErrorCode.NoError;
         protected byte[] _sendingBuffer;
+        protected byte[] _recv;
 
-        public CommandHandlerBase()
+        public SBCommandHandlerBase(IClient client, byte[] recv):base(client)
         {
+            _recv = recv;
         }
 
-        public virtual void Handle(SBSession session, byte[] recv)
+        public override void Handle()
         {
-            LogWriter.LogCurrentClass(this);
+            base.Handle();
 
-            CheckRequest(session, recv);
+            CheckRequest();
 
             if (_errorCode != SBErrorCode.NoError)
             {
@@ -25,7 +29,7 @@ namespace ServerBrowser.Handler.CommandHandler
                 return;
             }
 
-            DataOperation(session, recv);
+            DataOperation();
 
             if (_errorCode != SBErrorCode.NoError)
             {
@@ -33,7 +37,7 @@ namespace ServerBrowser.Handler.CommandHandler
                 return;
             }
 
-            ConstructResponse(session, recv);
+            ConstructResponse();
 
             if (_errorCode != SBErrorCode.NoError)
             {
@@ -41,28 +45,28 @@ namespace ServerBrowser.Handler.CommandHandler
                 return;
             }
 
-            Response(session, recv);
+            Response();
         }
 
-        protected virtual void CheckRequest(SBSession session, byte[] recv)
+        protected virtual void CheckRequest()
         {
         }
 
-        protected virtual void DataOperation(SBSession session, byte[] recv)
+        protected virtual void DataOperation()
         {
         }
 
-        protected virtual void ConstructResponse(SBSession session, byte[] recv)
+        protected virtual void ConstructResponse()
         {
         }
 
-        protected virtual void Response(SBSession session, byte[] recv)
+        protected virtual void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)
             {
                 return;
             }
-            session.SendAsync(_sendingBuffer);
+            _client.SendAsync(_sendingBuffer);
         }
     }
 }

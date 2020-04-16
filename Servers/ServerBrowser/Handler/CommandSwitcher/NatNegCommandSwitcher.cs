@@ -10,13 +10,6 @@ namespace ServerBrowser.Handler.CommandSwitcher
     {
         public static void Switch(SBSession client, byte[] recv)
         {
-            //we block this for now because we need @Cryptorx get information for us
-
-            //if (!recv.Take(6).SequenceEqual(BasePacket.MagicData))
-            //{
-            //    //ignore it
-            //    return;
-            //}
             //check and add client into clientList
             NatNegClientInfo clientInfo =
                 SBServer.ClientList.GetOrAdd(
