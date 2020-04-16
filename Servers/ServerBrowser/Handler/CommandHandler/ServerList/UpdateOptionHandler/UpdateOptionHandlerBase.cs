@@ -23,7 +23,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected ServerListRequest _request;
         protected List<byte> _dataList;
         protected List<GameServer> _gameServers;
-        public UpdateOptionHandlerBase(ServerListRequest request,IClient client,byte[] recv) : base(client,recv)
+        public UpdateOptionHandlerBase(ServerListRequest request, IClient client, byte[] recv) : base(client, recv)
         {
             _request = request;
             _dataList = new List<byte>();
@@ -158,46 +158,63 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
 
         protected virtual void CheckPrivateIP(List<byte> header, GameServer server)
         {
+            string localIP = "";
             // now we check if there are private ip
             if (server.ServerData.KeyValue.ContainsKey("localip0"))
             {
-                header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.ServerData.KeyValue["localip0"]).GetAddressBytes();
-                header.AddRange(address);
+                localIP = server.ServerData.KeyValue["localip0"];
             }
             else if (server.ServerData.KeyValue.ContainsKey("localip1"))
             {
-                header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-                byte[] address = IPAddress.Parse(server.ServerData.KeyValue["localip1"]).GetAddressBytes();
-                header.AddRange(address);
+                localIP = server.ServerData.KeyValue["localip1"];
             }
+            if (localIP == "")
+            {
+                return;
+            }
+            header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
+            byte[] address = IPAddress.Parse(localIP).GetAddressBytes();
+            header.AddRange(address);
+
         }
         protected virtual void CheckNonStandardPort(List<byte> header, GameServer server)
         {
             //we check host port is standard port or not
-            if (server.ServerData.KeyValue.ContainsKey("hostport"))
+            if (!server.ServerData.KeyValue.ContainsKey("hostport"))
             {
-                if (server.ServerData.KeyValue["hostport"] != "6500")
-                {
-                    header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                    //we do not need to reverse port bytes
-                    byte[] port = BitConverter.GetBytes(ushort.Parse(server.ServerData.KeyValue["hostport"]));
+                return;
+            }
+            if (server.ServerData.KeyValue["hostport"] == "")
+            {
+                return;
+            }
 
-                    header.AddRange(port);
-                }
+            if (server.ServerData.KeyValue["hostport"] != "6500")
+            {
+                header[0] ^= (byte)GameServerFlags.NonStandardPort;
+                //we do not need to reverse port bytes
+                byte[] port = BitConverter.GetBytes(ushort.Parse(server.ServerData.KeyValue["hostport"]));
+
+                header.AddRange(port);
             }
         }
         protected virtual void CheckPrivatePort(List<byte> header, GameServer server)
         {
             // we check private port here
-            if (server.ServerData.KeyValue.ContainsKey("localport"))
+            if (!server.ServerData.KeyValue.ContainsKey("localport"))
             {
-                header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-                byte[] localPort =
-                 BitConverter.GetBytes(ushort.Parse(server.ServerData.KeyValue["localport"]));
-
-                header.AddRange(localPort);
+                return;
             }
+            if (server.ServerData.KeyValue["localport"] == "")
+            {
+                return;
+            }
+
+            header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
+            byte[] localPort =
+             BitConverter.GetBytes(ushort.Parse(server.ServerData.KeyValue["localport"]));
+
+            header.AddRange(localPort);
         }
         protected void CheckICMPSupport(List<byte> header, GameServer server)
         {

@@ -13,7 +13,7 @@ using TcpClient = NetCoreServer.TcpClient;
 namespace GameSpyLib.Network
 {
 
-    public class TemplateTcpProxy : TcpClient
+    public abstract class TemplateTcpProxy : TcpClient
     {
         private EndPoint _endPoint;
         /// <summary>

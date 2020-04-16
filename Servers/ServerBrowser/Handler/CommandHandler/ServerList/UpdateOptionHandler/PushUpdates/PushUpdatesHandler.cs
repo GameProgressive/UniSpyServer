@@ -29,7 +29,6 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
 
             if (_gameServers.Count() == 0)
             {
-                _errorCode = SBErrorCode.NoServersFound;
                 return;
             }
             //**************Currently we do not handle filter**********************
