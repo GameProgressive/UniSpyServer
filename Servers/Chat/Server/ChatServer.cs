@@ -1,5 +1,4 @@
 ﻿using Chat.Entity.Structure;
-using GameSpyLib.Database.Entity;
 using GameSpyLib.Network;
 using NetCoreServer;
 using System.Net;

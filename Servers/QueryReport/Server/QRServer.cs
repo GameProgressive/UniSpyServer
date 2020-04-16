@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Database.Entity;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
 using GameSpyLib.Network;
 using QueryReport.Entity.Structure.Group;
 using QueryReport.Handler.CommandHandler.ServerList;
