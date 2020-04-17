@@ -1,23 +1,33 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Entity.Interface;
+using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatCommand;
+using Chat.Server;
+using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Logging;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class CommandHandlerBase
+    public abstract class ChatCommandHandlerBase:CommandHandlerBase
     {
+        protected ChatError _errorCode;
+        protected ChatCommandBase _cmd;
+        public string CommandName;
         protected string _sendingBuffer;
-        protected ChatError _errorCode = ChatError.NoError;
         protected ChatSession _session;
-        protected string[] _recv;
-        public CommandHandlerBase(IClient client, string[] recv)
+
+        public ChatCommandHandlerBase(IClient client, ChatCommandBase cmd, string sendingBuffer):base(client)
         {
+            _errorCode = ChatError.NoError;
+            _cmd = cmd;
             _session = (ChatSession)client.GetInstance();
-            _recv = recv;
+            _sendingBuffer = sendingBuffer;
         }
-        public virtual void Handle()
+
+        public abstract void SetCommandName();
+
+        public override void Handle()
         {
-            LogWriter.LogCurrentClass(this);
+            base.Handle();
 
             CheckRequest();
             if (_errorCode != ChatError.NoError)
@@ -32,10 +42,6 @@ namespace Chat.Handler.CommandHandler
             }
 
             ConstructResponse();
-            if (_errorCode != ChatError.NoError)
-            {
-                return;
-            }
 
             Response();
         }
@@ -45,14 +51,15 @@ namespace Chat.Handler.CommandHandler
         { }
         public virtual void ConstructResponse()
         { }
+        public virtual void Response() { }
 
-        public virtual void Response()
+        public object GetInstance()
+        { return this; }
+
+        public string GetHandlerName()
         {
-            if (_sendingBuffer == null)
-            {
-                return;
-            }
-            _session.SendAsync(_sendingBuffer);
+            return CommandName;
         }
+       
     }
 }

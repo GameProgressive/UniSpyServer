@@ -105,10 +105,6 @@ namespace GameSpyLib.Network
             return this;
         }
 
-        bool IClient.BaseSendAsync(byte[] buffer, long offset, long size)
-        {
-            return BaseSendAsync(buffer, offset, size);
-        }
         bool IClient.BaseSendAsync(byte[] buffer)
         {
             return BaseSendAsync(buffer);

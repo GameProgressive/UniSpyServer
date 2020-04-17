@@ -1,45 +1,34 @@
-﻿using Chat.Handler.CommandHandler.CRYPT;
-using Chat.Handler.CommandHandler.LOGIN;
-using Chat.Handler.CommandHandler.USRIP;
+﻿using System;
+using System.Collections.Generic;
+using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatCommand;
+using Chat.Server;
 using GameSpyLib.Common.BaseClass;
+using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandSwitcher
 {
+    /// <summary>
+    /// Process request to Commands
+    /// </summary>
     public class ChatCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(ChatSession session, string data)
+        public void Switch(IClient client, string buffer)
         {
-            string message = data.Split("\r\n", System.StringSplitOptions.RemoveEmptyEntries)[0];
+            List<ChatCommandBase> cmds = new List<ChatCommandBase>();
 
-            string[] cmd = message.Trim(' ').Split(' ');
-
-            switch (cmd[0])
+            string[] requests = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
+            foreach (var r in requests)
             {
-                case "CRYPT":
-                    new CRYPTHandler(session, cmd).Handle();
-                    break;
-                case "USRIP":
-                    new USRIPHandler(session, cmd).Handle();
-                    break;
-                case "LOGIN":
-                    new LOGINHandler(session, cmd).Handle();
-                    break;
-                case "SETCKEY":
-                    //TODO
-                    break;
-                case "GETCKEY":
-                    //TODO
-                    break;
-                case "SETCHANKEY":
-                    //TODO
-                    break;
-                case "UTM":
-                    //TODO
-                    break;
-                default:
-                    session.ChatClientProxy.SendAsync(data);
-                    break;
+                ChatBasicCommand basicCommand = new ChatBasicCommand(r);
+                //TODO Generate accordingly command
+                Type cmdType = Type.GetType(basicCommand.GetType().Namespace + "." + basicCommand.CommandName);
+
+                ChatCommandBase cmd = (ChatCommandBase)Activator.CreateInstance(cmdType,r);
+                cmds.Add(cmd);
             }
+
+            ChatServer.CommandManager.HandleCommands(client,cmds);
         }
     }
 }

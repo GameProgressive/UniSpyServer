@@ -1,9 +1,12 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure.ChatCommand;
+using Chat.Handler.CommandHandler.CRYPT;
+using Chat.Handler.CommandSwitcher;
+using Chat.Handler.SystemHandler.ChatSessionManage;
 using GameSpyLib.Network;
 using NetCoreServer;
 using System.Net;
 
-namespace Chat
+namespace Chat.Server
 {
     public class ChatServer : TemplateTcpServer
     {
@@ -11,27 +14,23 @@ namespace Chat
         public static readonly string ClientKey = "0000000000000000";
         public static readonly string ServerKey = "0000000000000000";
 
+        public static ChatCommandBaseManager CommandManager;
+        public static ChatSessionManager SessionManager;
+
         public ChatServer(IPAddress address, int port) : base(address, port)
         {
+            SessionManager = new ChatSessionManager();
+            CommandManager = new ChatCommandBaseManager();
+            //use this to add command into chatserver
+            CommandManager.AddCommand(new CRYPT(),typeof(CRYPTHandler));
         }
 
         protected override TcpSession CreateSession()
         {
-            return new ChatSession(this);
-        }
-
-
-        public static string GenerateChatCommand(ChatRPL chatRPL, string message)
-        {
-            return GenerateChatCommand((int)chatRPL, message);
-        }
-        public static string GenerateChatCommand(ChatError error, string message)
-        {
-            return GenerateChatCommand((int)error, message);
-        }
-        public static string GenerateChatCommand(int flag, string message)
-        {
-            return ":s " + flag + " " + message + "\r\n";
+            //add sessions to session manager
+            ChatSession session = new ChatSession(this);
+            ChatSessionManager.Sessions.TryAdd(session.Id, session);
+            return session;
         }
     }
 }

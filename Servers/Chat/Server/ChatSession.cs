@@ -1,66 +1,57 @@
-﻿using Chat.Application;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.Encryption;
-using Chat.Server;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using System.Text;
 
-namespace Chat
+namespace Chat.Server
 {
     public class ChatSession : TemplateTcpSession
     {
-        public ChatUserInfo UserInfo { get; set; }
+        public ChatClientInfo ClientInfo;
 
-        public ChatProxy ChatClientProxy;
+        public ChatSession(ChatServer server) : base(server)
+        {
+            ClientInfo = new ChatClientInfo();
+        }
 
-        public bool IsRecievedProxyMsg = false;
-        public ChatSession(TemplateTcpServer server) : base(server)
+        protected override void OnReceived(string message)
         {
-            UserInfo = new ChatUserInfo();
-            ChatClientProxy = new ChatProxy(this);
+            base.OnReceived(message);
+
+            new ChatCommandSwitcher().Switch(this, message);
         }
-        protected override void OnDisconnected()
-        {
-            ChatClientProxy.DisconnectAsync();
-            base.OnDisconnected();
-        }
+
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            if (UserInfo.useEncryption)
+            if (ClientInfo.UseEncryption)
             {
                 DecryptData(ref buffer, size);
             }
-            string data = Encoding.ASCII.GetString(buffer,0,(int)size);
-
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
-
-          new  ChatCommandSwitcher().Switch(this, data);
-        }
-
-        private void DecryptData(ref byte[] data, long size)
-        {
-            ChatCrypt.Handle(UserInfo.ClientCTX, ref data, size);
         }
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug,
-                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer,0,(int)size)}");
+                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
-            if (UserInfo.useEncryption)
+            if (ClientInfo.UseEncryption)
             {
                 EncryptData(ref buffer, size);
             }
-
             return BaseSendAsync(buffer, offset, size);
+        }
+
+        private void DecryptData(ref byte[] data, long size)
+        {
+            ChatCrypt.Handle(ClientInfo.ClientCTX, ref data, size);
         }
 
         private void EncryptData(ref byte[] buffer, long size)
         {
-            ChatCrypt.Handle(UserInfo.ServerCTX, ref buffer, size);
+            ChatCrypt.Handle(ClientInfo.ServerCTX, ref buffer, size);
         }
     }
 }

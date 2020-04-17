@@ -1,18 +1,33 @@
-﻿namespace Chat.Entity.Structure
-{
-    public class ChatUserInfo
-    {
-        public string GameName = "";
-        public string NickName = "";
-        public string ServerIP = "";
-        public string UserName = "";
-        public int NameSpaceID = 0;
-        public string UniqueNickName = "";
+﻿using System.Linq;
+using Chat.Entity.Interface;
 
+namespace Chat.Entity.Structure
+{
+    public class ChatClientInfo
+    {
+        //indicates which channel this user is in
+        public ChatChannel CurrentChannel { get; protected set; }
+
+        public string GameName { get; set; }
+        public string NickName { get; set; }
+        public string ServerIP { get; set; }
+        public string UserName { get; set; }
+        public int NameSpaceID { get; set; }
+        public string UniqueNickName { get; set; }
+        public string GameSecretKey;
         // secure connection
 
-        public GSPeerChatCTX ClientCTX = new GSPeerChatCTX();
-        public GSPeerChatCTX ServerCTX = new GSPeerChatCTX();
-        public bool useEncryption = false;
+        public GSPeerChatCTX ClientCTX;
+        public GSPeerChatCTX ServerCTX;
+
+        public bool UseEncryption;
+
+        public ChatClientInfo()
+        {
+            NameSpaceID = 0;
+            UseEncryption = false;
+            ClientCTX = new GSPeerChatCTX();
+            ServerCTX = new GSPeerChatCTX();
+        }
     }
 }

@@ -1,57 +1,68 @@
-﻿using Chat.Entity.Structure;
-using GameSpyLib.Common.Entity.Interface;
-using System;
+﻿//using Chat.Entity.Structure;
+//using Chat.Entity.Structure.ChatCommand;
+//using Chat.Entity.Structure.Enumerator.Request;
+//using Chat.Server;
+//using GameSpyLib.Common.Entity.Interface;
+//using System;
 
-namespace Chat.Handler.CommandHandler.LOGIN
-{
-    public class LOGINHandler : CommandHandlerBase
-    {
-        int _namespaceID = 0;
+//namespace Chat.Handler.CommandHandler.LOGIN
+//{
+//    public class LOGINHandler : ChatCommandHandlerBase
+//    {
+//        int _namespaceID = 0;
+//        string _password;
+//        string _uniqueNick;
 
-        public LOGINHandler(IClient client, string[] recv) : base(client, recv)
-        {
-        }
+//        public LOGINHandler(IClient client, ChatCommandBase cmd, string response) : base(client, cmd, response)
+//        {
+//        }
 
-        public override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!Int32.TryParse(_recv[1], out _namespaceID))
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-            _session.UserInfo.NameSpaceID = _namespaceID;
+//        public override void CheckRequest()
+//        {
+//            base.CheckRequest();
 
-            if (_recv[2] == "*")
-            {
-                // Profile login, not handled yet!
-                _errorCode = ChatError.Login_Failed;
-                return;
-            }
+//            if (!Int32.TryParse(_cmd.Param[0], out _namespaceID))
+//            {
+//                _errorCode = ChatError.Parse;
+//                return;
+//            }
+//            _clientInfo.NameSpaceID = _namespaceID;
 
-            // Unique nickname login
-            _session.UserInfo.UniqueNickName = _recv[3];
-            //_session.chatUserInfo.password = _recv[4];
-        }
+//            if (_cmd.Param[1] == "*")
+//            {
+//                // Profile login, not handled yet!
+//                _errorCode = ChatError.LoginFailed;
+//                return;
+//            }
 
-        public override void DataOperation()
-        {
-            base.DataOperation();
-            _session.UserInfo.NickName = _recv[1];
-        }
+//            // Unique nickname login
+//            _uniqueNick = _cmd.Param[2];
+//            _password = _cmd.Param[3];
+//        }
 
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
-            _sendingBuffer = ChatServer.GenerateChatCommand(ChatRPL.Login, "* 1 1");
-        }
+//        public override void DataOperation()
+//        {
+//            base.DataOperation();
+//            _clientInfo.NickName = _cmd.Param[1];
+//        }
 
-        public override void Response()
-        {
-            base.Response();
-            _session.SendAsync($":{_session.UserInfo.ServerIP} 001 {_session.UserInfo.NickName} :Welcome!\r\n");
-            _session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.ToPic, "#retrospy Test!"));
-            _session.SendAsync(ChatServer.GenerateChatCommand(ChatRPL.EndOfNames, "#retrospy :End of names LIST"));
-        }
-    }
-}
+//        public override void ConstructResponse()
+//        {
+//            base.ConstructResponse();
+//            _sendingBuffer = ChatCommandBase.BuildCommandString(ChatResponse.Login, "* 1 1");
+//        }
+
+//        public override void Response()
+//        {
+//            base.Response();
+//            _session.SendAsync($":{_session.ClientInfo.ServerIP} 001 {_session.ClientInfo.NickName} :Welcome!\r\n");
+//            _session.SendAsync(ChatServer.GenerateChatCommandBase(ChatResponse.ToPic, "#retrospy Test!"));
+//            _session.SendAsync(ChatServer.GenerateChatCommandBase(ChatResponse.EndOfNames, "#retrospy :End of names LIST"));
+//        }
+
+//        public override void SetCommandName()
+//        {
+//            CommandName = ChatRequest.LOGIN.ToString();
+//        }
+//    }
+//}

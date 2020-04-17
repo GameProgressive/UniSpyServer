@@ -24,4 +24,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Entity\Enumerator\" />
+    <Folder Include="Handler\SystemHandler\ChatChannelManage\" />
+    <Folder Include="Entity\Interface\" />
+    <Folder Include="Handler\SystemHandler\ChatSessionManage\" />
+    <Folder Include="Entity\Structure\ChatCommand\" />
+  </ItemGroup>
 </Project>

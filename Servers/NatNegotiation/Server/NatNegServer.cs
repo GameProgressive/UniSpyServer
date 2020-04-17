@@ -8,13 +8,14 @@ namespace NatNegotiation.Server
 {
     public class NatNegServer : TemplateUdpServer
     {
-        public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientInfoList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
-        // Server sessions
-        protected readonly ConcurrentDictionary<EndPoint, NatNegClient> Clients
-            = new ConcurrentDictionary<EndPoint, NatNegClient>();
+        public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientInfoList;
+        
+        protected readonly ConcurrentDictionary<EndPoint, NatNegClient> Clients;
 
         public NatNegServer(IPAddress address, int port) : base(address, port)
         {
+            ClientInfoList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
+            Clients = new ConcurrentDictionary<EndPoint, NatNegClient>();
         }
 
         public override bool Start()

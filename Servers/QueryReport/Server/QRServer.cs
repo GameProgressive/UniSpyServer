@@ -1,11 +1,8 @@
-﻿using GameSpyLib.Extensions;
-using GameSpyLib.Network;
-using QueryReport.Entity.Structure.Group;
+﻿using GameSpyLib.Network;
 using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
 using QueryReport.Handler.SystemHandler.PeerSystem;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Net;
 
 namespace QueryReport.Server
@@ -13,14 +10,17 @@ namespace QueryReport.Server
     public class QRServer : TemplateUdpServer
     {
 
-        public static ConcurrentDictionary<EndPoint, QRClient> Clients
-                                         = new ConcurrentDictionary<EndPoint, QRClient>();
-        public bool IsChallengeSent = false;
+        public static ConcurrentDictionary<EndPoint, QRClient> Clients;
 
-        public bool HasInstantKey = false;
+        public bool IsChallengeSent;
+
+        public bool HasInstantKey;
 
         public QRServer(IPAddress address, int port) : base(address, port)
         {
+            Clients = new ConcurrentDictionary<EndPoint, QRClient>();
+            IsChallengeSent = false;
+            HasInstantKey = false;
         }
 
         public override bool Start()
@@ -48,7 +48,7 @@ namespace QueryReport.Server
                 Clients.TryAdd(endPoint, client);
             }
 
-          new  QRCommandSwitcher().Switch(client, message);
+            new QRCommandSwitcher().Switch(client, message);
         }
     }
 }

@@ -11,12 +11,6 @@ namespace Chat.Handler.SystemHandler.Encryption
     /// </summary>
     public class ChatCrypt
     {
-        /// <summary>
-        /// Crypt or decrypt the data
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name=""></param>
-        /// <param name="data"></param>
         public static void Handle(GSPeerChatCTX ctx, ref byte[] data, long size)
         {
             byte num1 = ctx.GSPeerChat1;

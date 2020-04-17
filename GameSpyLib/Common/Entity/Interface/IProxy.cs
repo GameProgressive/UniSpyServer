@@ -1,10 +1,8 @@
 ﻿using System;
 namespace GameSpyLib.Common.Entity.Interface
 {
-    public interface IClient
+    public interface IProxy
     {
-        public object GetInstance();
-
         public long Send(byte[] buffer, long offset, long size);
         public long Send(string text);
         public long Send(byte[] buffer);
@@ -15,5 +13,6 @@ namespace GameSpyLib.Common.Entity.Interface
 
         public bool BaseSendAsync(string buffer);
         public bool BaseSendAsync(byte[] buffer);
+        public bool BaseSendAsync(byte[] buffer, long offset, long size);
     }
 }
