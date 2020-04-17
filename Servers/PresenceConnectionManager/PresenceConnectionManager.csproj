@@ -61,6 +61,6 @@
     <Compile Include="Handler\CommandHandler\Profile\UpdateUI\UpdateUiHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
-﻿using Chat.Entity.Structure;
+﻿using System;
+using System.Text;
+using Chat.Entity.Structure;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.Encryption;
 using GameSpyLib.Extensions;
@@ -30,6 +32,9 @@ namespace Chat.Server
                 DecryptData(ref buffer, size);
             }
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            byte[] temp = new byte[size];
+            Array.Copy(buffer, temp, size);
+            OnReceived(Encoding.ASCII.GetString(temp));
         }
 
         public override bool SendAsync(byte[] buffer, long offset, long size)

@@ -36,7 +36,7 @@ namespace Chat.Handler.CommandSwitcher
                 }
                 else
                 {
-                    throw new NotImplementedException("Not implemented chat command!");
+                    continue;
                 }
             }
             //if there are multiple commands in one request,

@@ -14,8 +14,8 @@ namespace Chat.Entity.Structure.ChatCommand
             GameName = _requestFrag[3];
         }
 
-        public CRYPT() : base(ChatRequest.CRYPT)
-        { }
+        public CRYPT() : base(ChatRequest.CRYPT) { }
+
 
         public override string BuildCommandString(params string[] param)
         {
