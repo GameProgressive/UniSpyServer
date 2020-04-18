@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using Chat.Entity.Structure.ChatChannel;
 
 namespace Chat.Entity.Structure
 {
     public class ChatClientInfo
     {
         //indicates which channel this user is in
-        public List<ChatChannel> JoinedChannels { get; protected set; }
+        public List<ChatChannelBase> JoinedChannels { get; protected set; }
 
         public string GameName { get; set; }
         public string NickName { get; set; }
@@ -27,7 +28,7 @@ namespace Chat.Entity.Structure
             UseEncryption = false;
             ClientCTX = new GSPeerChatCTX();
             ServerCTX = new GSPeerChatCTX();
-            JoinedChannels = new List<ChatChannel>();
+            JoinedChannels = new List<ChatChannelBase>();
         }
     }
 }
