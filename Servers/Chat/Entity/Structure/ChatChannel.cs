@@ -16,7 +16,7 @@ namespace Chat.Entity.Structure
         public ChatChannel()
         {
             MaxNumberUser = 200;
-            ChannelMode = ChatChannelMode.Moderated;
+           // ChannelMode = ChatChannelMode.Moderated;
             Channelid = Guid.NewGuid();
             Users = new ConcurrentDictionary<Guid, ChatSession>();
         }

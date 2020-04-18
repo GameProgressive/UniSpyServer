@@ -97,5 +97,20 @@ namespace GameSpyLib.Extensions
         {
             return string.Format("+{0,-11}+{1,-14}+{2,-6}+", part1, part2, part3);
         }
+
+
+        public static Dictionary<string,string> ConvertKVStrToDic(string kvStr)
+        {
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            List<string> keyValueList =
+               kvStr.TrimStart('\\').Split("\\", StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            for (int i = 0; i < keyValueList.Count; i = i + 2)
+            {
+                dic.TryAdd(keyValueList[i], keyValueList[i + 1]);
+            }
+
+            return dic;
+        }
     }
 }

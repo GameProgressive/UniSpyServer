@@ -3,8 +3,16 @@ using System.Linq;
 
 namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
-    public class LOGIN:ChatCommandBase
+    public class LOGIN : ChatCommandBase
     {
+        public LOGIN()
+        {
+        }
+
+        public LOGIN(string request) : base(request)
+        {
+        }
+
         public string NameSpaceID { get; protected set; }
         public string ProfileNick { get; protected set; }
         public string Email { get; protected set; }
@@ -14,27 +22,30 @@ namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 
         public override bool Parse()
         {
-           bool frag = base.Parse();
+            if (!base.Parse())
+            {
+                return false;
+            }
 
-            NameSpaceID = _cmdParameters[0];
-            if (_cmdParameters.Contains("*"))
+            NameSpaceID = _cmdParams[0];
+            if (_cmdParams.Contains("*"))
             {
                 IsUniqueNickLogin = false;
-                PasswordHash = _cmdParameters[1];
+                PasswordHash = _cmdParams[1];
 
-                if (LongParameter.Where(c => c.Equals("@")).Count() != 2)
+                if (_longParam.Where(c => c.Equals("@")).Count() != 2)
                 {
                     return false;
                 }
-                int profilenickIndex = LongParameter.IndexOf("@");
+                int profilenickIndex = _longParam.IndexOf("@");
 
-                ProfileNick = LongParameter.Substring(1, profilenickIndex - 1);
-                Email = LongParameter.Substring(profilenickIndex);
+                ProfileNick = _longParam.Substring(1, profilenickIndex - 1);
+                Email = _longParam.Substring(profilenickIndex);
             }
             else
             {
-                UniqueNick = _cmdParameters[1];
-                PasswordHash = _cmdParameters[2];
+                UniqueNick = _cmdParams[1];
+                PasswordHash = _cmdParams[2];
             }
 
             return true;

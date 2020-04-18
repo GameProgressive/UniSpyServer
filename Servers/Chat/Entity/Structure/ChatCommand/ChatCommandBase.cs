@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameSpyLib.Logging;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
@@ -9,8 +10,8 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public string CommandName { get; protected set; }
         protected string Prefix;
-        protected List<string> _cmdParameters;
-        protected string LongParameter;
+        protected List<string> _cmdParams;
+        protected string _longParam;
         private List<string> _requestFrag;
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace Chat.Entity.Structure.ChatCommand
         public ChatCommandBase(string request)
         {
             _request = request;
+            LogWriter.LogCurrentClass(this);
         }
 
         public virtual bool Parse()
@@ -54,7 +56,7 @@ namespace Chat.Entity.Structure.ChatCommand
             indexOfColon = _request.IndexOf(':');
             if (indexOfColon != 0)
             {
-                LongParameter = _request.Substring(indexOfColon);
+                _longParam = _request.Substring(indexOfColon);
                 //reset the request string
                 _request = _request.Remove(indexOfColon);
             }
@@ -62,7 +64,7 @@ namespace Chat.Entity.Structure.ChatCommand
             _requestFrag = _request.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
 
             CommandName = _requestFrag[0];
-            _cmdParameters = _requestFrag.Skip(1).ToList();
+            _cmdParams = _requestFrag.Skip(1).ToList();
             return true;
         }
 

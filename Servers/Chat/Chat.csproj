@@ -32,5 +32,6 @@
     <Folder Include="Entity\Structure\ChatCommand\" />
     <Folder Include="Entity\Structure\ChatCommand\ChatMessage\" />
     <Folder Include="Entity\Structure\ChatCommand\ChatBasic\" />
+    <Folder Include="Entity\Structure\ChatCommand\ChatChannel\" />
   </ItemGroup>
 </Project>

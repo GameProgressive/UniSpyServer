@@ -1,24 +1,25 @@
 ﻿using System;
 namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
-    public class NICK:ChatCommandBase
+    public class LIST:ChatCommandBase
     {
-        public NICK()
+        public string Filter { get; protected set; }
+
+        public LIST()
         {
         }
 
-        public NICK(string request) : base(request)
+        public LIST(string request) : base(request)
         {
         }
 
-        public string NickName { get; protected set; }
         public override bool Parse()
         {
             if (!base.Parse())
             {
                 return false;
             }
-            NickName = _longParam;
+            Filter = _cmdParams[0];
             return true;
         }
     }

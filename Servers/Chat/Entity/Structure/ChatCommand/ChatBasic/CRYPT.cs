@@ -18,12 +18,15 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public override bool Parse()
         {
-           bool flag = base.Parse();
+            if (!base.Parse())
+            {
+                return false;
+            }
 
-            VersionID = _cmdParameters[1];
-            GameName = _cmdParameters[2];
+            VersionID = _cmdParams[1];
+            GameName = _cmdParams[2];
 
-            return flag;
+            return true;
         }
 
         public override string BuildCommandString(params string[] param)

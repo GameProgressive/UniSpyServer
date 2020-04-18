@@ -3,15 +3,26 @@ namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
     public class LOGINPREAUTH : ChatCommandBase
     {
+        public LOGINPREAUTH()
+        {
+        }
+
+        public LOGINPREAUTH(string request) : base(request)
+        {
+        }
+
         public string AuthToken { get; protected set; }
         public string PartnerChallenge { get; protected set; }
 
         public override bool Parse()
         {
-         bool flag=   base.Parse();
-            AuthToken = _cmdParameters[0];
-            PartnerChallenge = _cmdParameters[1];
-            return flag;
+            if (!base.Parse())
+            {
+                return false;
+            }
+            AuthToken = _cmdParams[0];
+            PartnerChallenge = _cmdParams[1];
+            return true;
         }
     }
 }

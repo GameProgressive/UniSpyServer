@@ -10,10 +10,13 @@ namespace Chat.Entity.Structure.ChatCommand.ChatMessage
 
         public override bool Parse()
         {
-            bool flag = base.Parse();
-            ChannelName = _cmdParameters[0];
-            Message = LongParameter;
-            return flag;
+            if (!base.Parse())
+            {
+                return false;
+            }
+            ChannelName = _cmdParams[0];
+            Message = _longParam;
+            return true;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace Chat.Handler.CommandHandler.CRYPT
 {
     public class CRYPTHandler : ChatCommandHandlerBase
     {
-        string _secretKey;
         Entity.Structure.ChatCommand.CRYPT _cryptCmd;
         public CRYPTHandler(IClient client, ChatCommandBase cmd, string response) : base(client, cmd, response)
         {
@@ -42,8 +41,8 @@ namespace Chat.Handler.CommandHandler.CRYPT
             base.ConstructResponse();
 
             // 2. Prepare two keys
-            ChatCrypt.Init(_session.ClientInfo.ClientCTX, ChatServer.ClientKey, _secretKey);
-            ChatCrypt.Init(_session.ClientInfo.ServerCTX, ChatServer.ServerKey, _secretKey);
+            ChatCrypt.Init(_session.ClientInfo.ClientCTX, ChatServer.ClientKey, _session.ClientInfo.GameSecretKey);
+            ChatCrypt.Init(_session.ClientInfo.ServerCTX, ChatServer.ServerKey, _session.ClientInfo.GameSecretKey);
 
             // 3. Response the crypt command
             _sendingBuffer = ChatCommandBase.BuildCommandString(ChatResponse.SecureKey, "* " + ChatServer.ClientKey + " " + ChatServer.ServerKey);
