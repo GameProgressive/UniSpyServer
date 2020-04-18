@@ -30,6 +30,7 @@
     <Folder Include="Handler\CommandHandler\Natify\" />
     <Folder Include="Handler\CommandHandler\Report\" />
     <Folder Include="Handler\SystemHandler\Timer\" />
+    <Folder Include="Handler\CommandSwitcher\" />
   </ItemGroup>
 
   <ItemGroup>
