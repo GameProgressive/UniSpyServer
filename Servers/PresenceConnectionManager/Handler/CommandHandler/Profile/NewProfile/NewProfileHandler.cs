@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.NewProfile
 {
-    public class NewProfileHandler :  PCMCommandHandlerBase
+    public class NewProfileHandler : PCMCommandHandlerBase
     {
         public NewProfileHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
@@ -37,7 +37,8 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
                     Profiles profiles = new Profiles
                     {
                         Profileid = _session.UserInfo.Profileid,
-                        Nick = _recv["nick"], Userid = _session.UserInfo.Userid
+                        Nick = _recv["nick"],
+                        Userid = _session.UserInfo.Userid
                     };
                     db.Add(profiles);
                 }

@@ -1,13 +1,12 @@
-﻿using System;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using NetCoreServer;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using GameSpyLib.Common;
-using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
-using NetCoreServer;
 
 namespace GameSpyLib.MiscMethod
 {
@@ -350,7 +349,7 @@ namespace GameSpyLib.MiscMethod
         /// <returns>milisecond</returns>
         public static byte ComputeTimeInterval(DateTime old)
         {
-           return (byte)DateTime.Now.Subtract(old).TotalMilliseconds;
+            return (byte)DateTime.Now.Subtract(old).TotalMilliseconds;
         }
     }
 }

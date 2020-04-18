@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using GameSpyLib.Logging;
-using QueryReport.Application;
+﻿using GameSpyLib.Logging;
+using System.Collections.Generic;
 
 namespace QueryReport.Entity.Structure.ReportData
 {
@@ -41,8 +39,8 @@ namespace QueryReport.Entity.Structure.ReportData
             }
 
             //todo add the location
-            KeyValue.Add("region","1");
-            KeyValue.Add("country","US");
+            KeyValue.Add("region", "1");
+            KeyValue.Add("country", "US");
         }
 
         public void UpdateDictionary(string key, string value)

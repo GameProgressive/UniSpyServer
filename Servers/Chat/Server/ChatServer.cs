@@ -22,7 +22,7 @@ namespace Chat.Server
             SessionManager = new ChatSessionManager();
             CommandManager = new ChatCommandBaseManager();
             //use this to add command into chatserver
-            CommandManager.AddCommand(new CRYPT(),typeof(CRYPTHandler));
+            CommandManager.AddCommand(new CRYPT(), typeof(CRYPTHandler));
         }
 
         protected override TcpSession CreateSession()

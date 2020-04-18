@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.Buddy.BuddyStatusInfo
 {
-    public class BuddyStatusInfo :  PCMCommandHandlerBase
+    public class BuddyStatusInfo : PCMCommandHandlerBase
     {
 
         public BuddyStatusInfo(IClient client, Dictionary<string, string> recv) : base(client, recv)

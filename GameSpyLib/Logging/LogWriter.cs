@@ -30,7 +30,7 @@ namespace GameSpyLib.Logging
                outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
-                .CreateLogger(); 
+                .CreateLogger();
                     break;
                 case LogEventLevel.Information:
                     Log = new LoggerConfiguration()
@@ -90,10 +90,10 @@ namespace GameSpyLib.Logging
             switch (level)
             {
                 case LogEventLevel.Verbose:
-                    Log.Verbose($"[{ServerManagerBase.ServerName}] "+ message);
+                    Log.Verbose($"[{ServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Information:
-                   Log.Information($"[{ServerManagerBase.ServerName}] " + message);
+                    Log.Information($"[{ServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Debug:
                     Log.Debug($"[{ServerManagerBase.ServerName}] " + message);

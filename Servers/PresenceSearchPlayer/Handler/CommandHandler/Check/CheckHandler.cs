@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;
@@ -8,12 +7,12 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {
-    public class CheckHandler :  PSPCommandHandlerBase
+    public class CheckHandler : PSPCommandHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        public CheckHandler(IClient client,Dictionary<string, string> recv) : base(client,recv)
+        public CheckHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

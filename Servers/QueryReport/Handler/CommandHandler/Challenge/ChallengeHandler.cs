@@ -1,13 +1,8 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
-using Serilog.Events;
 using System.Linq;
-using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.Challenge
 {
@@ -15,7 +10,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
     {
         GameServer _gameServer;
         //we do not need to implement this to check the correctness of the challenge response
-        public ChallengeHandler(IClient client, byte[] recv) : base(client,recv)
+        public ChallengeHandler(IClient client, byte[] recv) : base(client, recv)
         {
         }
 

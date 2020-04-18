@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatChannel
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatChannel
 {
     public class SETGROUP : ChatChannelCommandBase
     {
@@ -13,7 +12,7 @@ namespace Chat.Entity.Structure.ChatCommand.ChatChannel
             {
                 return false;
             }
-            if(_cmdParams.Count!=1)
+            if (_cmdParams.Count != 1)
             { return false; }
             GroupName = _cmdParams[0];
             return true;

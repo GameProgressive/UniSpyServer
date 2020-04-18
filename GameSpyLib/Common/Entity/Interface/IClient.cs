@@ -1,5 +1,4 @@
-﻿using System;
-namespace GameSpyLib.Common.Entity.Interface
+﻿namespace GameSpyLib.Common.Entity.Interface
 {
     public interface IClient
     {

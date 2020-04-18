@@ -1,5 +1,4 @@
-﻿using System;
-namespace GameSpyLib.Common.BaseClass
+﻿namespace GameSpyLib.Common.BaseClass
 {
     public class CommandSwitcherBase
     {

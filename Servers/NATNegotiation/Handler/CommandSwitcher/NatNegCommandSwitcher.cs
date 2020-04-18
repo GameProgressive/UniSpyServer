@@ -21,10 +21,10 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                 switch ((NatPacketType)recv[7])
                 {
                     case NatPacketType.Init:
-                       new InitHandler(client, clientInfo, recv).Handle();
+                        new InitHandler(client, clientInfo, recv).Handle();
                         break;
                     case NatPacketType.AddressCheck:
-                       new AddressHandler(client, clientInfo, recv).Handle();
+                        new AddressHandler(client, clientInfo, recv).Handle();
                         break;
                     case NatPacketType.NatifyRequest:
                         new NatifyHandler(client, clientInfo, recv).Handle();
@@ -36,7 +36,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                         new ReportHandler(client, clientInfo, recv).Handle();
                         break;
                     case NatPacketType.ErtAck:
-                     new ErtACKHandler(client, clientInfo, recv).Handle();
+                        new ErtACKHandler(client, clientInfo, recv).Handle();
                         break;
                     default:
                         LogWriter.UnknownDataRecieved(recv);

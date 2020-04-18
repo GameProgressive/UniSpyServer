@@ -1,5 +1,4 @@
-﻿using NatNegotiation.Entity.Structure;
-using NatNegotiation.Entity.Structure.Packet;
+﻿using NatNegotiation.Entity.Structure.Packet;
 using System;
 using System.Net;
 

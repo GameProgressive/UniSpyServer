@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
     public class WHOIS : ChatCommandBase
     {
@@ -9,9 +8,9 @@ namespace Chat.Entity.Structure.ChatCommand.ChatBasic
         }
         public override bool Parse()
         {
-            if(! base.Parse())
+            if (!base.Parse())
             { return false; }
-            if(_cmdParams.Count!=1)
+            if (_cmdParams.Count != 1)
             {
                 return false;
             }

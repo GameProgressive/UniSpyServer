@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.Enumerator
+﻿namespace Chat.Entity.Structure.Enumerator
 {
     public enum ChatServerMessage
     {

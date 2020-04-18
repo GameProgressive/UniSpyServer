@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
-    public class MODE:ChatCommandBase
+    public class MODE : ChatCommandBase
     {
         public MODE(string request) : base(request)
         {

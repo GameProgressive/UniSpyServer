@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
-    public class AddBuddyHandler :  PCMCommandHandlerBase
+    public class AddBuddyHandler : PCMCommandHandlerBase
     {
 
         private uint _friendPid;

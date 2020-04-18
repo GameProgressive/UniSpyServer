@@ -1,7 +1,6 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatChannel
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatChannel
 {
-    public class KICK:ChatChannelCommandBase
+    public class KICK : ChatChannelCommandBase
     {
         public KICK(string request) : base(request)
         {
@@ -14,7 +13,7 @@ namespace Chat.Entity.Structure.ChatCommand.ChatChannel
         {
             if (!base.Parse())
                 return false;
-            if(_cmdParams.Count!=1)
+            if (_cmdParams.Count != 1)
             {
                 return false;
             }

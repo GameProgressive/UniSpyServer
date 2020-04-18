@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
@@ -7,7 +6,7 @@ using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCommandSwitcher:CommandSwitcherBase
+    public class SBCommandSwitcher : CommandSwitcherBase
     {
         public void Switch(SBSession session, byte[] recv)
         {
@@ -18,7 +17,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     UpdateOptionSwitcher.Switch(session, recv);
                     break;
                 case SBClientRequestType.ServerInfoRequest:
-                    new ServerInfoHandler(session,recv).Handle();
+                    new ServerInfoHandler(session, recv).Handle();
                     break;
                 case SBClientRequestType.PlayerSearchRequest:
                     break;

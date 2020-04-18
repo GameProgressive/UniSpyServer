@@ -1,12 +1,10 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
-using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Entity.Structure;
-using NatNegotiation.Handler.CommandHandler;
-using System.Linq;
-using GameSpyLib.Common.Entity.Interface;
+using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Server;
-using GameSpyLib.Network;
+using System.Linq;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -70,7 +68,7 @@ namespace NatNegotiation.Handler.CommandHandler
         {
         }
 
-        protected override void  Response()
+        protected override void Response()
         {
             var other = NatNegServer.ClientInfoList.Values.Where(
                 c => c.RemoteEndPoint == _connPacket.RemoteEndPoint);

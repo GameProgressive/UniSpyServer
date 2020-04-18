@@ -1,11 +1,11 @@
-﻿using System;
-using System.Text;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using System;
+using System.Text;
 
 namespace Chat.Server
 {

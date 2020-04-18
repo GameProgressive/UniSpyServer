@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Net;
 
 namespace GameSpyLib.Extensions
 {

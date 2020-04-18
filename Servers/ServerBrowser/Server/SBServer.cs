@@ -21,7 +21,7 @@ namespace ServerBrowser
 
         public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
 
-        public SBServer(IPAddress address, int port) : base( address, port)
+        public SBServer(IPAddress address, int port) : base(address, port)
         {
         }
 

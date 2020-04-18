@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
     public class REGISTERNICK : ChatCommandBase
     {

@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceConnectionManager.Enumerator;
@@ -8,7 +7,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.GetProfile
 {
-    public class GetProfileHandler :  PCMCommandHandlerBase
+    public class GetProfileHandler : PCMCommandHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         public GetProfileHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)

@@ -1,13 +1,13 @@
-﻿using System;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure;
 using NatNegotiation.Handler.CommandHandler;
+using System;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class NatNegCommandSwitcher:CommandSwitcherBase
+    public class NatNegCommandSwitcher : CommandSwitcherBase
     {
         public void Switch(SBSession client, byte[] recv)
         {

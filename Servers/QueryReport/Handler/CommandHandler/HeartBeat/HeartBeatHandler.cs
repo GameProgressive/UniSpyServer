@@ -1,14 +1,9 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Group;
 using QueryReport.Entity.Structure.Packet;
-using QueryReport.Handler.SystemHandler.PeerSystem;
 using QueryReport.Server;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
@@ -17,7 +12,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
     {
         private GameServer _gameServer;
 
-        public HeartBeatHandler(IClient client,byte[] recv) : base(client,recv)
+        public HeartBeatHandler(IClient client, byte[] recv) : base(client, recv)
         {
         }
 

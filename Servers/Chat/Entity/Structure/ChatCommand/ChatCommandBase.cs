@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GameSpyLib.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameSpyLib.Logging;
 
 namespace Chat.Entity.Structure.ChatCommand
 {

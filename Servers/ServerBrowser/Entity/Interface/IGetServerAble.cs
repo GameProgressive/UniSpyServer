@@ -15,6 +15,6 @@ namespace ServerBrowser.Entity.Interface
         /// </summary>
         /// <param name="gameName"></param>
         /// <returns></returns>
-        public IEnumerable<KeyValuePair<EndPoint,  GameServer>> GetOnlineServers(string gameName);
+        public IEnumerable<KeyValuePair<EndPoint, GameServer>> GetOnlineServers(string gameName);
     }
 }

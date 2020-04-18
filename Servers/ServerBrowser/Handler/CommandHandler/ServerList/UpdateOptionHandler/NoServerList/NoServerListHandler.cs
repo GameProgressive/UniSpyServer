@@ -9,7 +9,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.No
     /// </summary>
     public class NoServerListHandler : UpdateOptionHandlerBase
     {
-        public NoServerListHandler( ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
+        public NoServerListHandler(ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
         {
         }
     }

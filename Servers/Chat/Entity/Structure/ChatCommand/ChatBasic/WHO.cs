@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
     public class WHO : ChatCommandBase
     {
@@ -11,11 +10,11 @@ namespace Chat.Entity.Structure.ChatCommand.ChatBasic
         }
         public override bool Parse()
         {
-            if(! base.Parse())
+            if (!base.Parse())
             {
                 return false;
             }
-            if(_cmdParams.Count!=1)
+            if (_cmdParams.Count != 1)
             { return false; }
             NickName = _cmdParams[0];
             return true;

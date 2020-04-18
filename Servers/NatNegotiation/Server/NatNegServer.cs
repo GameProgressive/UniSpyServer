@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Network;
-using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
 using NatNegotiation.Entity.Structure;
+using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
 using System.Collections.Concurrent;
 using System.Net;
 
@@ -9,7 +9,7 @@ namespace NatNegotiation.Server
     public class NatNegServer : TemplateUdpServer
     {
         public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientInfoList;
-        
+
         protected readonly ConcurrentDictionary<EndPoint, NatNegClient> Clients;
 
         public NatNegServer(IPAddress address, int port) : base(address, port)

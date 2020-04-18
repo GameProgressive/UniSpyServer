@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
 {
-    public class StatusHandler :  PCMCommandHandlerBase
+    public class StatusHandler : PCMCommandHandlerBase
     {
         private uint _statusCode;
 

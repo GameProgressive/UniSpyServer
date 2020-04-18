@@ -1,7 +1,6 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
-    public class NAMES:ChatCommandBase
+    public class NAMES : ChatCommandBase
     {
         public NAMES(string request) : base(request)
         {
@@ -11,12 +10,12 @@ namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 
         public override bool Parse()
         {
-            if(!base.Parse())
+            if (!base.Parse())
             {
                 return false;
             }
             if (_cmdParams.Count != 1)
-                return false;   
+                return false;
             ChannelName = _cmdParams[0];
             return true;
         }

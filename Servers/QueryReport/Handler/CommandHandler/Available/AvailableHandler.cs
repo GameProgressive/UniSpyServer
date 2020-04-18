@@ -1,7 +1,5 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using QueryReport.Entity.Enumerator;
-using QueryReport.Server;
-using System.Net;
 
 namespace QueryReport.Handler.CommandHandler.Available
 {

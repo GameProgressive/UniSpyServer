@@ -1,6 +1,4 @@
 ﻿using GameSpyLib.Common.BaseClass;
-using QueryReport.Server;
-using System;
 
 namespace QueryReport.Handler.CommandHandler.ServerList
 {

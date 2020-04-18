@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Extensions;
-using System;
 using System.Net;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
@@ -18,7 +17,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
 
         public bool Parse(byte[] recv)
         {
-            ushort length =ByteTools.ToUInt16( ByteTools.SubBytes(recv, 0, 2),true);
+            ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(recv, 0, 2), true);
 
             if (length != recv.Length)
             {

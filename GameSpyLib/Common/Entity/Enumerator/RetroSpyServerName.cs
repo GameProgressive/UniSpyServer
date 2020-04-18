@@ -1,5 +1,4 @@
-﻿using System;
-namespace GameSpyLib.Common
+﻿namespace GameSpyLib.Common
 {
     public enum RetroSpyServerName
     {

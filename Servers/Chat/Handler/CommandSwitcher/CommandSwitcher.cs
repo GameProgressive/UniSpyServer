@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Entity.Structure.ChatCommand;
 using Chat.Server;
 using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace Chat.Handler.CommandSwitcher
 {
@@ -30,14 +30,14 @@ namespace Chat.Handler.CommandSwitcher
                     continue;
                 }
 
-                ChatCommandBase cmd = (ChatCommandBase)Activator.CreateInstance(cmdType,r);
+                ChatCommandBase cmd = (ChatCommandBase)Activator.CreateInstance(cmdType, r);
                 cmds.Add(cmd);
             }
             if (cmds.Count == 0)
             {
                 return;
             }
-            ChatServer.CommandManager.HandleCommands(client,cmds);
+            ChatServer.CommandManager.HandleCommands(client, cmds);
         }
     }
 }

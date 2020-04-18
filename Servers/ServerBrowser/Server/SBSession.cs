@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using GameSpyLib.Encryption;
+﻿using GameSpyLib.Encryption;
 using GameSpyLib.Network;
 using NatNegotiation.Entity.Structure.Packet;
 using ServerBrowser.Handler.CommandSwitcher;
+using System.Linq;
 
 namespace ServerBrowser
 {

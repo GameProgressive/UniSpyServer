@@ -1,5 +1,4 @@
 ﻿using System;
-using Chat.Entity.Structure.Enumerator.Request;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
@@ -14,7 +13,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public CRYPT() : base()
         { }
-        
+
 
         public override bool Parse()
         {

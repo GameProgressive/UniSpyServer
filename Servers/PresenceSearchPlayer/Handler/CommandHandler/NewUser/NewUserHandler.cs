@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;

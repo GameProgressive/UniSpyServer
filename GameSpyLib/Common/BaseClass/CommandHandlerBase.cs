@@ -1,5 +1,4 @@
-﻿using System;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 
 namespace GameSpyLib.Common.BaseClass

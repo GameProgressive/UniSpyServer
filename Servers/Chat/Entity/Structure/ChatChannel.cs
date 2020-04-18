@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Chat.Server;
+using System;
 using System.Collections.Concurrent;
 using System.Linq;
-using Chat.Entity.Enumerator;
-using Chat.Server;
 
 namespace Chat.Entity.Structure
 {
@@ -16,7 +15,7 @@ namespace Chat.Entity.Structure
         public ChatChannel()
         {
             MaxNumberUser = 200;
-           // ChannelMode = ChatChannelMode.Moderated;
+            // ChannelMode = ChatChannelMode.Moderated;
             Channelid = Guid.NewGuid();
             Users = new ConcurrentDictionary<Guid, ChatSession>();
         }

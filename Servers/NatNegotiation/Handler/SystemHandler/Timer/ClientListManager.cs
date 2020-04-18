@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
-using NatNegotiation;
 using NatNegotiation.Server;
 using System;
 

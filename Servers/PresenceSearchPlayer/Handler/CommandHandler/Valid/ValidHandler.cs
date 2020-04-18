@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;
@@ -8,7 +7,7 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
-    public class ValidHandler :  PSPCommandHandlerBase
+    public class ValidHandler : PSPCommandHandlerBase
     {
         public ValidHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {

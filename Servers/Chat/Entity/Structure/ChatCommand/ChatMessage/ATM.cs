@@ -1,7 +1,6 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatMessage
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatMessage
 {
-    public class ATM:ChatMessageCommandBase
+    public class ATM : ChatMessageCommandBase
     {
 
     }

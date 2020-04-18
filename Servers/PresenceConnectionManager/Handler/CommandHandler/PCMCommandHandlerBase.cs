@@ -1,15 +1,12 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Logging;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Error;
-using Serilog.Events;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace PresenceConnectionManager.Handler
 {
-    public class PCMCommandHandlerBase:CommandHandlerBase
+    public class PCMCommandHandlerBase : CommandHandlerBase
     {
         protected GPErrorCode _errorCode;
         protected string _sendingBuffer;
@@ -19,7 +16,7 @@ namespace PresenceConnectionManager.Handler
         protected uint _productid;
         protected Dictionary<string, string> _recv;
         protected GPCMSession _session;
-        public PCMCommandHandlerBase(IClient client, Dictionary<string, string> recv):base(client)
+        public PCMCommandHandlerBase(IClient client, Dictionary<string, string> recv) : base(client)
         {
             _recv = recv;
             _errorCode = GPErrorCode.NoError;

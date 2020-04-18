@@ -31,7 +31,7 @@ namespace StatsAndTracking.Application
 
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
                      StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
-                
+
             }
         }
     }

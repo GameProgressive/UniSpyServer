@@ -1,10 +1,8 @@
-﻿using GameSpyLib.Logging;
-using GameSpyLib.Encryption;
-using GameSpyLib.MiscMethod;
+﻿using GameSpyLib.Encryption;
+using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandSwitcher;
-using System.Collections.Generic;
 using System;
 using System.Text;
 
@@ -39,7 +37,7 @@ namespace StatsAndTracking
         }
         protected override void OnReceived(string message)
         {
-           new StatsCommandSwitcher().Switch(this, message);
+            new StatsCommandSwitcher().Switch(this, message);
         }
 
 
@@ -51,7 +49,7 @@ namespace StatsAndTracking
         public override bool SendAsync(string plainText)
         {
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $@"[Send] {plainText}\final\");
-            
+
             return BaseSendAsync(Encrypt(plainText));
         }
 

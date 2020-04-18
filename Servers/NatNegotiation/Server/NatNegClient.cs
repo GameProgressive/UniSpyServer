@@ -1,6 +1,5 @@
-﻿using System;
+﻿using GameSpyLib.Network;
 using System.Net;
-using GameSpyLib.Network;
 namespace NatNegotiation.Server
 {
     public class NatNegClient : TemplateUdpClient

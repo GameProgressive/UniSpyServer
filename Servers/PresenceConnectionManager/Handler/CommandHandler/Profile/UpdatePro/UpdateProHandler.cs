@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceConnectionManager.Enumerator;
@@ -9,7 +8,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
-    public class UpdateProHandler :  PCMCommandHandlerBase
+    public class UpdateProHandler : PCMCommandHandlerBase
     {
         public UpdateProHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {

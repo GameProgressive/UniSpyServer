@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Enumerator
+﻿namespace Chat.Entity.Enumerator
 {
     public enum ChatChannelMode
     {

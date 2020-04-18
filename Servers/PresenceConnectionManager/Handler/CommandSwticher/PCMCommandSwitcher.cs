@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common.BaseClass;
+using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Buddy.AddBlock;
@@ -8,18 +9,17 @@ using PresenceConnectionManager.Handler.CommandHandler.Buddy.Status;
 using PresenceConnectionManager.Handler.General.Login.LoginMethod;
 using PresenceConnectionManager.Handler.Profile.GetProfile;
 using PresenceConnectionManager.Handler.Profile.NewProfile;
-using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using PresenceConnectionManager.Handler.Profile.RegisterNick;
 using PresenceConnectionManager.Handler.Profile.UpdatePro;
 using PresenceConnectionManager.Handler.Profile.UpdateUI;
+using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameSpyLib.Common.BaseClass;
 
 namespace PresenceConnectionManager.Handler
 {
-    public class PCMCommandSwitcher:CommandSwitcherBase
+    public class PCMCommandSwitcher : CommandSwitcherBase
     {
         public void Switch(GPCMSession session, string message)
         {

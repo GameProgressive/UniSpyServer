@@ -13,7 +13,7 @@ namespace QueryReport.Handler.CommandHandler
         protected byte[] _sendingBuffer;
         protected byte[] _recv;
 
-        protected QRCommandHandlerBase(IClient client, byte[] recv):base(client)
+        protected QRCommandHandlerBase(IClient client, byte[] recv) : base(client)
         {
             _recv = recv;
         }

@@ -1,7 +1,7 @@
-﻿using NatNegotiation.Entity.Enumerator;
-using NatNegotiation.Entity.Structure.Packet;
+﻿using GameSpyLib.Common.Entity.Interface;
+using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure;
-using GameSpyLib.Common.Entity.Interface;
+using NatNegotiation.Entity.Structure.Packet;
 
 namespace NatNegotiation.Handler.CommandHandler
 {

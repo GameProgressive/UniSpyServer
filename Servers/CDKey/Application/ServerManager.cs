@@ -1,9 +1,9 @@
-﻿using GameSpyLib.Common;
+﻿using CDKey.Server;
+using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
 using System.Net;
-using CDKey.Server;
 namespace CDKey.Application
 {
     /// <summary>

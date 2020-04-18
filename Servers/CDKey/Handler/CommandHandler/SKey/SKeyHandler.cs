@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
+using System.Collections.Generic;
 
 namespace CDKey.Handler.CommandHandler.SKey
 {

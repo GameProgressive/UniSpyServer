@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.Profile.UpdateUI
 {

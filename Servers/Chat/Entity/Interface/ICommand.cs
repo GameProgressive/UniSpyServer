@@ -1,7 +1,4 @@
-﻿using Chat.Entity.Structure;
-using GameSpyLib.Common.Entity.Interface;
-
-namespace Chat.Entity.Interface
+﻿namespace Chat.Entity.Interface
 {
     public interface ICommandHandler
     {

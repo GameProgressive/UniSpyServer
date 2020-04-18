@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure
+﻿namespace Chat.Entity.Structure
 {
     /// <summary>
     /// response code

@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
@@ -11,6 +8,9 @@ using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 {

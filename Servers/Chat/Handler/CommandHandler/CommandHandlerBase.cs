@@ -1,5 +1,4 @@
-﻿using Chat.Entity.Interface;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Server;
 using GameSpyLib.Common.BaseClass;
@@ -7,7 +6,7 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public abstract class ChatCommandHandlerBase:CommandHandlerBase
+    public abstract class ChatCommandHandlerBase : CommandHandlerBase
     {
         protected ChatError _errorCode;
         protected ChatCommandBase _cmd;
@@ -15,7 +14,7 @@ namespace Chat.Handler.CommandHandler
         protected string _sendingBuffer;
         protected ChatSession _session;
 
-        public ChatCommandHandlerBase(IClient client, ChatCommandBase cmd, string sendingBuffer):base(client)
+        public ChatCommandHandlerBase(IClient client, ChatCommandBase cmd, string sendingBuffer) : base(client)
         {
             _errorCode = ChatError.NoError;
             _cmd = cmd;
@@ -60,6 +59,6 @@ namespace Chat.Handler.CommandHandler
         {
             return CommandName;
         }
-       
+
     }
 }

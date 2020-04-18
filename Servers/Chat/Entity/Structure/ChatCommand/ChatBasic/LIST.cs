@@ -1,7 +1,6 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
-    public class LIST:ChatCommandBase
+    public class LIST : ChatCommandBase
     {
         public string Filter { get; protected set; }
 

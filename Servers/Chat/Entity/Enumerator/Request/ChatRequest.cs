@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.Enumerator.Request
+﻿namespace Chat.Entity.Structure.Enumerator.Request
 {
     public enum ChatRequestType
     {

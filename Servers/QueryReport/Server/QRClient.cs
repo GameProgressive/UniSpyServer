@@ -1,6 +1,5 @@
-﻿using System;
+﻿using GameSpyLib.Network;
 using System.Net;
-using GameSpyLib.Network;
 
 namespace QueryReport.Server
 {

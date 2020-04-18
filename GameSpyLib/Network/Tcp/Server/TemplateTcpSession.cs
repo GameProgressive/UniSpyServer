@@ -1,12 +1,12 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using NetCoreServer;
 using Serilog.Events;
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 
 namespace GameSpyLib.Network
 {

@@ -1,10 +1,10 @@
-﻿using System.Timers;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Logging;
+using System.Timers;
 
 namespace GameSpyLib.Common.BaseClass
 {
     public abstract class ExpireManagerBase
-    { 
+    {
         protected static Timer _checkTimer;
         /// <summary>
         /// Because every resource we manage is global
@@ -15,7 +15,9 @@ namespace GameSpyLib.Common.BaseClass
             //default settings
             _checkTimer = new Timer
             {
-                Enabled = true, Interval = 10000, AutoReset = true
+                Enabled = true,
+                Interval = 10000,
+                AutoReset = true
             };//10000
         }
 
@@ -28,7 +30,7 @@ namespace GameSpyLib.Common.BaseClass
         protected virtual void CheckExpire()
         {
             //log which expire manager excuted
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose,$"=>[{GetType().Name}]");
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose, $"=>[{GetType().Name}]");
         }
     }
 }

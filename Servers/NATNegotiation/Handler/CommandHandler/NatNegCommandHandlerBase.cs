@@ -1,16 +1,12 @@
-﻿using GameSpyLib.Logging;
-using NatNegotiation;
-using NatNegotiation.Entity.Structure.Packet;
+﻿using GameSpyLib.Common.BaseClass;
+using GameSpyLib.Common.Entity.Interface;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure;
-using Serilog.Events;
-using GameSpyLib.Common.Entity.Interface;
-using NatNegotiation.Server;
-using GameSpyLib.Common.BaseClass;
+using NatNegotiation.Entity.Structure.Packet;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class NatNegCommandHandlerBase:CommandHandlerBase
+    public class NatNegCommandHandlerBase : CommandHandlerBase
     {
         protected NNErrorCode _errorCode = NNErrorCode.NoError;
         protected byte[] _sendingBuffer;
@@ -20,7 +16,7 @@ namespace NatNegotiation.Handler.CommandHandler
         protected NatNegClientInfo _clientInfo;
         protected byte[] _recv;
 
-        public NatNegCommandHandlerBase(IClient client, NatNegClientInfo clientInfo, byte[] recv):base(client)
+        public NatNegCommandHandlerBase(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client)
         {
             _clientInfo = clientInfo;
             _recv = recv;

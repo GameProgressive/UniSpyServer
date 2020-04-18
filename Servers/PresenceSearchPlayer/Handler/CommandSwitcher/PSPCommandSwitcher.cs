@@ -12,7 +12,6 @@ using PresenceSearchPlayer.Handler.CommandHandler.Search;
 using PresenceSearchPlayer.Handler.CommandHandler.SearchUnique;
 using PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch;
 using PresenceSearchPlayer.Handler.CommandHandler.Valid;
-using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;

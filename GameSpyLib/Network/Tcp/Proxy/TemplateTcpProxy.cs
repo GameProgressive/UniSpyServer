@@ -1,13 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
-using GameSpyLib.Common;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
 using Serilog.Events;
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using TcpClient = NetCoreServer.TcpClient;
 
 namespace GameSpyLib.Network
@@ -40,8 +40,8 @@ namespace GameSpyLib.Network
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-           LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Proxy] [Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.ToLog(LogEventLevel.Debug,
+                 $"[Proxy] [Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);

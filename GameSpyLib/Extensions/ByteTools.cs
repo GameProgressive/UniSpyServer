@@ -29,17 +29,17 @@ namespace GameSpyLib.Extensions
 
         public static byte[] GetIPBytes(IPEndPoint endPoint, bool isReversingBytes = false)
         {
-            return GetBytes(endPoint.Address.GetAddressBytes(),isReversingBytes);
+            return GetBytes(endPoint.Address.GetAddressBytes(), isReversingBytes);
         }
 
         public static byte[] GetIPBytes(EndPoint endPoint, bool isReversingBytes = false)
         {
-            return GetIPBytes((IPEndPoint)endPoint,isReversingBytes);
+            return GetIPBytes((IPEndPoint)endPoint, isReversingBytes);
         }
 
         public static byte[] GetIPBytes(string strIP, bool isReversingBytes = false)
         {
-            byte[] ip= IPAddress.Parse(strIP).GetAddressBytes();
+            byte[] ip = IPAddress.Parse(strIP).GetAddressBytes();
             return GetBytes(ip, isReversingBytes);
         }
 
@@ -53,7 +53,7 @@ namespace GameSpyLib.Extensions
             return new IPEndPoint(ip, port);
         }
 
-       
+
         public static ushort ToUInt16(string value, bool isReversingBytes = false)
         {
             ushort data = ushort.Parse(value);
@@ -70,13 +70,13 @@ namespace GameSpyLib.Extensions
             return BitConverter.ToUInt16(value);
         }
 
-        public static int ToInt32(byte[] value,bool isReversingBytes = false)
+        public static int ToInt32(byte[] value, bool isReversingBytes = false)
         {
             if (isReversingBytes)
             {
                 Array.Reverse(value);
             }
-           return  BitConverter.ToInt32(value);
+            return BitConverter.ToInt32(value);
         }
 
         public static int ToInt32(string value, bool isReversingBytes = false)
@@ -89,7 +89,7 @@ namespace GameSpyLib.Extensions
 
         public static byte[] GetBytes(int value, bool isReversingBytes = false)
         {
-           return GetBytes(BitConverter.GetBytes(value), isReversingBytes);
+            return GetBytes(BitConverter.GetBytes(value), isReversingBytes);
         }
 
         public static byte[] GetBytes(short value, bool isReversingBytes = false)

@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         /// </summary>
         protected string _sendingBuffer;
         protected ushort _operationID;
-        protected uint _namespaceid ;
+        protected uint _namespaceid;
         protected Dictionary<string, string> _recv;
 
         public PSPCommandHandlerBase(IClient client, Dictionary<string, string> recv) : base(client)

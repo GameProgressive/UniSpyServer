@@ -1,10 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
+using System.Linq;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.PushUpdates
 {
@@ -13,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
     /// </summary>
     public class PushUpdatesHandler : UpdateOptionHandlerBase
     {
-        public PushUpdatesHandler(ServerListRequest request,IClient client,byte[] recv) : base(request,client,recv)
+        public PushUpdatesHandler(ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
         {
         }
 

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
+using System.Collections.Generic;
 
 namespace CDKey.Handler.CommandHandler
 {
-    public class CDKeyCommandHandlerBase:CommandHandlerBase
+    public class CDKeyCommandHandlerBase : CommandHandlerBase
     {
         protected string _sendingBuffer;
 
@@ -14,7 +14,7 @@ namespace CDKey.Handler.CommandHandler
 
         public override void Handle()
         {
-           
+
 
         }
 

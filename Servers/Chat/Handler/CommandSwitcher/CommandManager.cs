@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.CommandHandler;
 using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace Chat.Handler.CommandSwitcher
 {
@@ -16,12 +15,12 @@ namespace Chat.Handler.CommandSwitcher
             AvailableCommands = new Dictionary<string, Type>();
         }
 
-        public void AddCommand(ChatCommandBase cmd,Type cmdHandlerType)
+        public void AddCommand(ChatCommandBase cmd, Type cmdHandlerType)
         {
             AvailableCommands.TryAdd(cmd.CommandName, cmdHandlerType);
         }
 
-        public bool HandleCommands(IClient client,List<ChatCommandBase> cmds)
+        public bool HandleCommands(IClient client, List<ChatCommandBase> cmds)
         {
             string sendingBuffer = "";
             foreach (var cmd in cmds)

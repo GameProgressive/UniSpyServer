@@ -7,13 +7,11 @@ using QueryReport.Handler.CommandHandler.Challenge;
 using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
-using QueryReport.Server;
 using System;
-using System.Net;
 
 namespace QueryReport.Handler.CommandSwitcher
 {
-    public class QRCommandSwitcher:CommandSwitcherBase
+    public class QRCommandSwitcher : CommandSwitcherBase
     {
         public void Switch(IClient client, byte[] recv)
         {
@@ -50,7 +48,7 @@ namespace QueryReport.Handler.CommandSwitcher
             }
             catch (Exception e)
             {
-               LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
         }
     }

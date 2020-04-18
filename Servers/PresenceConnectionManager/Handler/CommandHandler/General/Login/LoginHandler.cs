@@ -12,7 +12,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 {
-    public class LoginHandler :  PCMCommandHandlerBase
+    public class LoginHandler : PCMCommandHandlerBase
     {
         private Crc16 _crc;
 

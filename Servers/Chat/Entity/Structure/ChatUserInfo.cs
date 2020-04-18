@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Chat.Entity.Interface;
 
 namespace Chat.Entity.Structure
 {

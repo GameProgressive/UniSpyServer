@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Chat.Entity.Structure;
+using System;
 using System.Collections.Concurrent;
-using Chat.Entity.Structure;
 
 namespace Chat.Handler.SystemHandler.ChannelManage
 {

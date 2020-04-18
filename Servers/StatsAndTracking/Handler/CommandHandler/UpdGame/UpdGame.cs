@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace StatsAndTracking.Handler.CommandHandler.UpdGame
+﻿namespace StatsAndTracking.Handler.CommandHandler.UpdGame
 {
     /// <summary>
     /// Handles game snapshot and update game data

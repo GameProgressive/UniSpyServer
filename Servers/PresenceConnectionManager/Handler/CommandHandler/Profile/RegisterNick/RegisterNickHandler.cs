@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
-    public class RegisterNickHandler :  PCMCommandHandlerBase
+    public class RegisterNickHandler : PCMCommandHandlerBase
     {
         public RegisterNickHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {

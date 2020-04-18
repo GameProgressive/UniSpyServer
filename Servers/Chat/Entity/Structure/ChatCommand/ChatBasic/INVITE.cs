@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
     public class INVITE : ChatCommandBase
     {
@@ -14,7 +13,7 @@ namespace Chat.Entity.Structure.ChatCommand.ChatBasic
             {
                 return false;
             }
-            if(_cmdParams.Count!=2)
+            if (_cmdParams.Count != 2)
             { return false; }
 
             ChannelName = _cmdParams[0];

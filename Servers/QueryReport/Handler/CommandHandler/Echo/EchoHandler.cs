@@ -1,19 +1,16 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
 using QueryReport.Entity.Structure;
 using QueryReport.Server;
 using Serilog.Events;
 using System;
 using System.Linq;
-using System.Net;
 namespace QueryReport.Handler.CommandHandler.Echo
 {
     public class EchoHandler : QRCommandHandlerBase
     {
         GameServer _gameServer;
-        public EchoHandler(IClient client,byte[] recv) : base(client,recv)
+        public EchoHandler(IClient client, byte[] recv) : base(client, recv)
         {
         }
 

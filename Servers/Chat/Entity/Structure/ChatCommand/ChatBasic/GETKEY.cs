@@ -34,7 +34,7 @@ namespace Chat.Entity.Structure.ChatCommand.ChatBasic
             }
 
             List<string> keyList =
-                _longParam.TrimStart('\\').Split('\\',StringSplitOptions.RemoveEmptyEntries).ToList();
+                _longParam.TrimStart('\\').Split('\\', StringSplitOptions.RemoveEmptyEntries).ToList();
 
             foreach (var key in keyList)
             {

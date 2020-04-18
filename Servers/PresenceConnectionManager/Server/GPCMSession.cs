@@ -1,13 +1,10 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
 using GameSpyLib.Network;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler;
 using PresenceConnectionManager.Structure;
 using System;
-using System.Collections.Generic;
 using System.Net;
 
 namespace PresenceConnectionManager
@@ -44,8 +41,8 @@ namespace PresenceConnectionManager
 
         protected override void OnReceived(string message)
         {
-           new     PCMCommandSwitcher().Switch(this, message);
-            
+            new PCMCommandSwitcher().Switch(this, message);
+
         }
 
 

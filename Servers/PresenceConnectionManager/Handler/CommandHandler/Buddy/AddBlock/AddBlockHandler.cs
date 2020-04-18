@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.AddBlock
 {
-    public class AddBlockHandler :  PCMCommandHandlerBase
+    public class AddBlockHandler : PCMCommandHandlerBase
     {
         protected uint _blockProfileid;
 

@@ -1,5 +1,4 @@
-﻿using System;
-namespace GameSpyLib.Database
+﻿namespace GameSpyLib.Database
 {
     public enum DatabaseType
     {

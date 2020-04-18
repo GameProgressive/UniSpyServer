@@ -25,7 +25,7 @@ namespace CDKey.Server
                 client = (CDKeyClient)CreateClient(endPoint);
                 Clients.TryAdd(endPoint, client);
             }
-           new  CDKeyCommandSwitcher().Switch(client, message);
+            new CDKeyCommandSwitcher().Switch(client, message);
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GameSpyLib.Common.Entity.Interface;
+using System;
 using System.Net;
 using System.Text;
-using GameSpyLib.Common.Entity.Interface;
 
 namespace GameSpyLib.Network
 {

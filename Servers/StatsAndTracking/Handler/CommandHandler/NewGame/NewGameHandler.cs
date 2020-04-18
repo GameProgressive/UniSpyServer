@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace StatsAndTracking.Handler.CommandHandler.NewGame
+﻿namespace StatsAndTracking.Handler.CommandHandler.NewGame
 {
     public class NewGameHandler : CommandHandlerBase
     {

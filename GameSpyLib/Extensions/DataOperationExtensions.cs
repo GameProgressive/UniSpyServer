@@ -1,5 +1,4 @@
-﻿using System;
-using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Linq;
 namespace GameSpyLib.Extensions
 {

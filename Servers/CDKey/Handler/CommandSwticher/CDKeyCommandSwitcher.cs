@@ -6,7 +6,6 @@ using GameSpyLib.MiscMethod;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 
 namespace CDKey.Handler.CommandSwitcher
 {

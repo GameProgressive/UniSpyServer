@@ -1,10 +1,9 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
-using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Entity.Structure;
-using NatNegotiation.Handler.CommandHandler;
+using NatNegotiation.Entity.Structure.Packet;
 using System.Net;
-using GameSpyLib.Common.Entity.Interface;
 
 namespace NatNegotiation.Handler.CommandHandler
 {

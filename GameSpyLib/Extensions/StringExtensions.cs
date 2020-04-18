@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace GameSpyLib.Extensions
 {
@@ -68,7 +67,7 @@ namespace GameSpyLib.Extensions
             {
                 if (buffer[i] < 0x1F || buffer[i] > 0x7E)
                 {
-                    temp.Append(string.Format("[{0:X2}]",buffer[i]));
+                    temp.Append(string.Format("[{0:X2}]", buffer[i]));
                 }
                 else
                 {
@@ -99,7 +98,7 @@ namespace GameSpyLib.Extensions
         }
 
 
-        public static Dictionary<string,string> ConvertKVStrToDic(string kvStr)
+        public static Dictionary<string, string> ConvertKVStrToDic(string kvStr)
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
             List<string> keyValueList =

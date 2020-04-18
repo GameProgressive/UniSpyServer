@@ -1,7 +1,6 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
 {
-    public class NICK:ChatCommandBase
+    public class NICK : ChatCommandBase
     {
         public NICK()
         {

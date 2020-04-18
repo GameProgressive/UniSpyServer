@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 {
-    public class SendBlockList :  PCMCommandHandlerBase
+    public class SendBlockList : PCMCommandHandlerBase
     {
         public SendBlockList(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {

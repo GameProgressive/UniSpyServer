@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Chat.Server;
+using System;
 using System.Collections.Concurrent;
-using Chat.Server;
 
 namespace Chat.Handler.SystemHandler.ChatSessionManage
 {
