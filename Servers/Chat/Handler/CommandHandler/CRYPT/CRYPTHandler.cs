@@ -61,7 +61,7 @@ namespace Chat.Handler.CommandHandler.CRYPT
 
         public override void SetCommandName()
         {
-            CommandName = ChatRequest.CRYPT.ToString();
+            CommandName = ChatRequestType.CRYPT.ToString();
         }
     }
 }

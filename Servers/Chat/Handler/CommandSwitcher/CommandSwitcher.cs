@@ -20,7 +20,7 @@ namespace Chat.Handler.CommandSwitcher
             string[] requests = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
             foreach (var r in requests)
             {
-                ChatBasicCommand basicCommand = new ChatBasicCommand(r);
+                BASIC basicCommand = new BASIC(r);
                 //TODO Generate accordingly command
                 Type cmdType = Type.GetType(basicCommand.GetType().Namespace + "." + basicCommand.CommandName);
 

@@ -13,13 +13,8 @@ namespace Chat.Entity.Structure.ChatCommand
         {
         }
 
-        public USRIP() : base(ChatRequest.USRIP)
+        public USRIP() : base()
         {
-        }
-
-        public override string BuildCommandString(params string[] param)
-        {
-            throw new NotImplementedException();
         }
     }
 }

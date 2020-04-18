@@ -10,12 +10,21 @@ namespace Chat.Entity.Structure.ChatCommand
         //CRYPT des %d %s
         public CRYPT(string request) : base(request)
         {
-            VersionID = _requestFrag[2];
-            GameName = _requestFrag[3];
         }
 
-        public CRYPT() : base(ChatRequest.CRYPT) { }
+        public CRYPT() : base()
+        { }
+        
 
+        public override bool Parse()
+        {
+           bool flag = base.Parse();
+
+            VersionID = _cmdParameters[1];
+            GameName = _cmdParameters[2];
+
+            return flag;
+        }
 
         public override string BuildCommandString(params string[] param)
         {

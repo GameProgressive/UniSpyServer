@@ -30,5 +30,7 @@
     <Folder Include="Entity\Interface\" />
     <Folder Include="Handler\SystemHandler\ChatSessionManage\" />
     <Folder Include="Entity\Structure\ChatCommand\" />
+    <Folder Include="Entity\Structure\ChatCommand\ChatMessage\" />
+    <Folder Include="Entity\Structure\ChatCommand\ChatBasic\" />
   </ItemGroup>
 </Project>

@@ -29,7 +29,7 @@ namespace Chat.Handler.CommandHandler.USRIP
 
         public override void SetCommandName()
         {
-            CommandName = ChatRequest.USRIP.ToString();
+            CommandName = ChatRequestType.USRIP.ToString();
         }
     }
 }

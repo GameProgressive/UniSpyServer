@@ -1,7 +1,7 @@
 ﻿using System;
 namespace Chat.Entity.Structure.Enumerator.Request
 {
-    public enum ChatRequest
+    public enum ChatRequestType
     {
         CRYPT,
         USRIP,
