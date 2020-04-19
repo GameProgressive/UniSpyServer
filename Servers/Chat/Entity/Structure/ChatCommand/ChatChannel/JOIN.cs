@@ -6,13 +6,17 @@
         public string Password { get; protected set; }
         public override bool Parse(string request)
         {
-            bool flag = base.Parse(request);
-            if (_cmdParams.Count != 2)
+            if (!base.Parse(request))
+            { return false; }
+            if (_cmdParams.Count > 2)
             {
                 return false;
             }
-            Password = _cmdParams[1];
-            return flag;
+            if(_cmdParams.Count==2)
+            {
+                Password = _cmdParams[1];
+            }
+            return true;
         }
     }
 }

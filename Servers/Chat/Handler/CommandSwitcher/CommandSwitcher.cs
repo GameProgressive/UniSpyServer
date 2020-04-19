@@ -44,6 +44,7 @@ namespace Chat.Handler.CommandSwitcher
 
                 if (!cmd.Parse(request))
                 {
+                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, $"{cmd.CommandName} Parsing failed!");
                     continue;
                 }
                 cmds.Add(cmd);
@@ -53,7 +54,6 @@ namespace Chat.Handler.CommandSwitcher
             {
                 return;
             }
-
             ChatServer.CommandManager.HandleCommands(client, cmds);
         }
     }
