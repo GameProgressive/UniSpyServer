@@ -23,7 +23,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public override string BuildRPL(params string[] param)
         {
-            throw new NotImplementedException();
+            return BuildLiteRPL(ChatResponseType.SecureKey, "*", param[0], param[1]);
         }
     }
 }

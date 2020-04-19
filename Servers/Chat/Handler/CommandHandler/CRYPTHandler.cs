@@ -46,17 +46,14 @@ namespace Chat.Handler.CommandHandler
             ChatCrypt.Init(_session.ClientInfo.ServerCTX, ChatServer.ServerKey, _session.ClientInfo.GameSecretKey);
 
             // 3. Response the crypt command
-            _sendingBuffer = ChatCommandBase.BuildBasicRPL(ChatResponseType.SecureKey, "* " + ChatServer.ClientKey + " " + ChatServer.ServerKey);
+            _sendingBuffer = _cryptCmd.BuildRPL(ChatServer.ClientKey, ChatServer.ServerKey);
         }
 
         public override void Response()
         {
-            base.Response();
             //set use encryption flag to true
             _client.SendAsync(_sendingBuffer);
             _session.ClientInfo.UseEncryption = true;
-            //we do not want send again so we make sendingbuffer as null;
-            _sendingBuffer = "";
         }
     }
 }

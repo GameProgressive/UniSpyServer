@@ -73,9 +73,34 @@ namespace Chat.Entity.Structure.ChatCommand
             throw new NotImplementedException();
         }
 
+
         public static string BuildBasicRPL(object cmdCode, string message,params string[] cmdParam)
         {
             return BuildBasicRPL((int)cmdCode, message,cmdParam);
+        }
+
+        public static string BuildLiteRPL(ChatResponseType cmdCode, params string[] cmdParam)
+        {
+            return BuildLiteRPL((int)cmdCode, cmdParam);
+        }
+
+        public static string BuildLiteRPL(int cmdCode, params string[] cmdParam)
+        {
+            string asciiCode = cmdCode.ToString();
+
+            if (asciiCode.Length < 3)
+            {
+                asciiCode = "00" + asciiCode;
+            }
+
+            string buffer = $":{ChatServer.ServerDomain} {asciiCode} ";
+            foreach (var p in cmdParam)
+            {
+                buffer += $"{p} ";
+            }
+            buffer += "\r\n";
+
+            return buffer;
         }
         public static string BuildBasicRPL(int cmdCode, string message,params string[] cmdParam)
         {
@@ -96,7 +121,7 @@ namespace Chat.Entity.Structure.ChatCommand
             return buffer;
         }
 
-        public static string BuildBasicRPL(string message, params string[] cmdParam)
+        public static string BuildMessageRPL(string message, params string[] cmdParam)
         {
             string buffer = $":{ChatServer.ServerDomain} ";
             foreach (var p in cmdParam)

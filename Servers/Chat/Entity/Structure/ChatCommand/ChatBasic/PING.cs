@@ -6,7 +6,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public override string BuildRPL(params string[] param)
         {
-            return BuildBasicRPL("D45406C4", GetType().Name);
+            return BuildMessageRPL("D45406C4", GetType().Name);
         }
     }
 }
