@@ -38,48 +38,5 @@ namespace NatNegotiation.Entity.Structure.Packet
 
             return data.ToArray();
         }
-        /// <summary>
-        /// Get repsonse packet size from natneg recieved packet type
-        /// </summary>
-        /// <param name="type">recieved packet type</param>
-        /// <returns></returns>
-        public int GetReplyPacketSize()
-        {
-            //The size is initially CommonInfo size
-            int size = BasePacket.Size;
-
-            switch (PacketType)
-            {
-                case NatPacketType.PreInit:
-                case NatPacketType.PreInitAck:
-                    size += 6;
-                    break;
-
-                case NatPacketType.AddressCheck:
-                case NatPacketType.AddressReply:
-                case NatPacketType.NatifyRequest:
-                case NatPacketType.ErtTest:
-                case NatPacketType.ErtAck:
-                case NatPacketType.Init:
-                case NatPacketType.InitAck:
-                case NatPacketType.ConnectAck:
-                case NatPacketType.ReportAck:
-                    size += 9;
-                    break;
-
-                case NatPacketType.Connect:
-                case NatPacketType.ConnectPing:
-                    size += 8;
-                    break;
-
-                case NatPacketType.Report:
-                    size += 61;
-                    break;
-
-                default:
-                    break;
-            }
-            return size;
-        }
     }
 }

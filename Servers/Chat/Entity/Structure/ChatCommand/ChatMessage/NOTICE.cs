@@ -1,4 +1,4 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatMessage
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class NOTICE : ChatMessageCommandBase
     {

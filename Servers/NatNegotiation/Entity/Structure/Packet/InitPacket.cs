@@ -16,7 +16,6 @@ namespace NatNegotiation.Entity.Structure.Packet
         public int LocalIP;
         public short LocalPort;
 
-
         public new void Parse(byte[] recv)
         {
             base.Parse(recv);

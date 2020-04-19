@@ -3,7 +3,7 @@
     /// <summary>
     /// response code
     /// </summary>
-    public enum ChatResponse
+    public enum ChatResponseType
     {
         Welcome = 001,
         UserIP = 302,

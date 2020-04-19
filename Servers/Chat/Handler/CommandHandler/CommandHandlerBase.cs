@@ -10,19 +10,15 @@ namespace Chat.Handler.CommandHandler
     {
         protected ChatError _errorCode;
         protected ChatCommandBase _cmd;
-        public string CommandName;
-        protected string _sendingBuffer;
+        protected string _sendingBuffer = "";
         protected ChatSession _session;
 
-        public ChatCommandHandlerBase(IClient client, ChatCommandBase cmd, string sendingBuffer) : base(client)
+        public ChatCommandHandlerBase(IClient client, ChatCommandBase cmd) : base(client)
         {
             _errorCode = ChatError.NoError;
             _cmd = cmd;
             _session = (ChatSession)client.GetInstance();
-            _sendingBuffer = sendingBuffer;
         }
-
-        public abstract void SetCommandName();
 
         public override void Handle()
         {
@@ -50,15 +46,13 @@ namespace Chat.Handler.CommandHandler
         { }
         public virtual void ConstructResponse()
         { }
-        public virtual void Response() { }
-
-        public object GetInstance()
-        { return this; }
-
-        public string GetHandlerName()
+        public virtual void Response()
         {
-            return CommandName;
+            if (_sendingBuffer == "" || _sendingBuffer.Length < 3)
+            {
+                return;
+            }
+            _client.SendAsync(_sendingBuffer);
         }
-
     }
 }

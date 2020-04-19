@@ -1,21 +1,13 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class REGISTERNICK : ChatCommandBase
     {
-        public REGISTERNICK()
-        {
-        }
-
-        public REGISTERNICK(string request) : base(request)
-        {
-        }
-
         public string NamespaceID { get; protected set; }
         public string UniqueNick { get; protected set; }
         public string CDKey { get; protected set; }
-        public override bool Parse()
+        public override bool Parse(string request)
         {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }

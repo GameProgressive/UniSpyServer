@@ -1,14 +1,12 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class WHOIS : ChatCommandBase
     {
         public string UserName { get; protected set; }
-        public WHOIS(string request) : base(request)
+
+        public override bool Parse(string request)
         {
-        }
-        public override bool Parse()
-        {
-            if (!base.Parse())
+            if (!base.Parse(request))
             { return false; }
             if (_cmdParams.Count != 1)
             {

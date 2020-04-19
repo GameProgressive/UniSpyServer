@@ -1,20 +1,12 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class CDKEY : ChatCommandBase
     {
         public string CDKey { get; protected set; }
-
-        public CDKEY(string request) : base(request)
+        
+        public override bool Parse(string request)
         {
-        }
-
-        public CDKEY()
-        {
-        }
-
-        public override bool Parse()
-        {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }

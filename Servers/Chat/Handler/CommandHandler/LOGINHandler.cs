@@ -5,7 +5,7 @@
 //using GameSpyLib.Common.Entity.Interface;
 //using System;
 
-//namespace Chat.Handler.CommandHandler.LOGIN
+//namespace Chat.Handler.CommandHandler
 //{
 //    public class LOGINHandler : ChatCommandHandlerBase
 //    {

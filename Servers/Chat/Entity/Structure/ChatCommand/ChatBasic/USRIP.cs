@@ -2,16 +2,9 @@
 {
     public class USRIP : ChatCommandBase
     {
-        /// <summary>
-        /// USRIP command only have a command name
-        /// </summary>
-        /// <param name="request"></param>
-        public USRIP(string request) : base(request)
+        public override string BuildRPL(params string[] param)
         {
-        }
-
-        public USRIP() : base()
-        {
+            return base.BuildRPL(param);
         }
     }
 }

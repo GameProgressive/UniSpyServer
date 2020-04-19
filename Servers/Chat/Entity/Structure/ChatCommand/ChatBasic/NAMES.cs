@@ -1,16 +1,13 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class NAMES : ChatCommandBase
     {
-        public NAMES(string request) : base(request)
-        {
-        }
 
         public string ChannelName { get; protected set; }
 
-        public override bool Parse()
+        public override bool Parse(string request)
         {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }

@@ -1,15 +1,13 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class INVITE : ChatCommandBase
     {
         public string ChannelName { get; protected set; }
         public string UserName { get; protected set; }
-        public INVITE(string request) : base(request)
+
+        public override bool Parse(string request)
         {
-        }
-        public override bool Parse()
-        {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }

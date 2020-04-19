@@ -1,20 +1,12 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class LIST : ChatCommandBase
     {
         public string Filter { get; protected set; }
 
-        public LIST()
+        public override bool Parse(string request)
         {
-        }
-
-        public LIST(string request) : base(request)
-        {
-        }
-
-        public override bool Parse()
-        {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }

@@ -1,19 +1,13 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class LISTLIMIT : ChatCommandBase
     {
         public int MaxNumberOfChannels { get; protected set; }
         public string Filter { get; protected set; }
-        public LISTLIMIT()
-        {
-        }
 
-        public LISTLIMIT(string request) : base(request)
+        public override bool Parse(string request)
         {
-        }
-        public override bool Parse()
-        {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }

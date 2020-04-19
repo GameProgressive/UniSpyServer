@@ -1,17 +1,13 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatChannel
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class KICK : ChatChannelCommandBase
     {
-        public KICK(string request) : base(request)
-        {
-        }
-
         public string UserName { get; protected set; }
         public string Reason { get; protected set; }
 
-        public override bool Parse()
+        public override bool Parse(string request)
         {
-            if (!base.Parse())
+            if (!base.Parse(request))
                 return false;
             if (_cmdParams.Count != 1)
             {

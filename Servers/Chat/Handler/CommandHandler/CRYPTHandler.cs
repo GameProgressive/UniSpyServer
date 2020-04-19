@@ -1,19 +1,20 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.Enumerator.Request;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
 
-namespace Chat.Handler.CommandHandler.CRYPT
+namespace Chat.Handler.CommandHandler
 {
     public class CRYPTHandler : ChatCommandHandlerBase
     {
-        Entity.Structure.ChatCommand.CRYPT _cryptCmd;
-        public CRYPTHandler(IClient client, ChatCommandBase cmd, string response) : base(client, cmd, response)
+        CRYPT _cryptCmd;
+
+        public CRYPTHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _cryptCmd = (Entity.Structure.ChatCommand.CRYPT)_cmd;
+            _cryptCmd = (CRYPT)_cmd;
         }
 
         public override void CheckRequest()
@@ -31,7 +32,7 @@ namespace Chat.Handler.CommandHandler.CRYPT
             if (!DataOperationExtensions.GetSecretKey(_session.ClientInfo.GameName, out _session.ClientInfo.GameSecretKey)
                 || _session.ClientInfo.GameSecretKey == null)
             {
-                _sendingBuffer = ChatCommandBase.BuildCommandString(ChatError.MoreParameters, $"{CommandName} :Secret key not found!");
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "secret key not found!");
                 return;
             }
         }
@@ -45,7 +46,7 @@ namespace Chat.Handler.CommandHandler.CRYPT
             ChatCrypt.Init(_session.ClientInfo.ServerCTX, ChatServer.ServerKey, _session.ClientInfo.GameSecretKey);
 
             // 3. Response the crypt command
-            _sendingBuffer = ChatCommandBase.BuildCommandString(ChatResponse.SecureKey, "* " + ChatServer.ClientKey + " " + ChatServer.ServerKey);
+            _sendingBuffer = ChatCommandBase.BuildBasicRPL(ChatResponseType.SecureKey, "* " + ChatServer.ClientKey + " " + ChatServer.ServerKey);
         }
 
         public override void Response()
@@ -56,11 +57,6 @@ namespace Chat.Handler.CommandHandler.CRYPT
             _session.ClientInfo.UseEncryption = true;
             //we do not want send again so we make sendingbuffer as null;
             _sendingBuffer = "";
-        }
-
-        public override void SetCommandName()
-        {
-            CommandName = ChatRequestType.CRYPT.ToString();
         }
     }
 }

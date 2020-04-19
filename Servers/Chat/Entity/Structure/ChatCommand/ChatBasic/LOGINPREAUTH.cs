@@ -1,21 +1,14 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class LOGINPREAUTH : ChatCommandBase
     {
-        public LOGINPREAUTH()
-        {
-        }
-
-        public LOGINPREAUTH(string request) : base(request)
-        {
-        }
 
         public string AuthToken { get; protected set; }
         public string PartnerChallenge { get; protected set; }
 
-        public override bool Parse()
+        public override bool Parse(string request)
         {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }

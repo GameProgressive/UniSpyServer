@@ -7,17 +7,10 @@ namespace Chat.Entity.Structure.ChatCommand
         public string VersionID { get; protected set; }
         public string GameName { get; protected set; }
         //CRYPT des %d %s
-        public CRYPT(string request) : base(request)
+
+        public override bool Parse(string request)
         {
-        }
-
-        public CRYPT() : base()
-        { }
-
-
-        public override bool Parse()
-        {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }
@@ -28,7 +21,7 @@ namespace Chat.Entity.Structure.ChatCommand
             return true;
         }
 
-        public override string BuildCommandString(params string[] param)
+        public override string BuildRPL(params string[] param)
         {
             throw new NotImplementedException();
         }

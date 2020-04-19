@@ -1,47 +1,33 @@
-﻿using Chat.Server;
+﻿using Chat.Entity.Structure.ChatCommand;
+using Chat.Server;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Chat.Entity.Structure.ChatChannel
 {
     public class ChatChannelBase
     {
-        public Guid Channelid { get; protected set; }
-        public uint MaxNumberUser { get; protected set; }
-        public ChatChannelMode ChannelMode { get; protected set; }
-        public List<Guid> BanList { get; protected set; }
-        public ConcurrentDictionary<Guid, ChatSession> Users;
-        public List<ChatSession> ChannelOperators { get; protected set; }
-        public ChatSession ChannelCreator { get; protected set; }
-        public DateTime ChannelLifeTime { get; protected set; }
-        public DateTime ChannelCreatedTime { get; protected set; }
+        public ChatChannelProperty Property;
 
-        public ChatChannelBase(ChatSession channelCreator,DateTime lifeTime)
+        public ChatChannelBase(ChatSession creator)
         {
-            MaxNumberUser = 200;
+            Property = new ChatChannelProperty(creator);
+        }
+        public ChatChannelBase(ChatSession creator, DateTime lifeTime)
+        {
+            Property = new ChatChannelProperty(creator, lifeTime);
             // ChannelMode = ChatChannelMode.Moderated;
-            Channelid = Guid.NewGuid();
-            BanList = new List<Guid>();
-            Users = new ConcurrentDictionary<Guid, ChatSession>();
-            ChannelOperators = new List<ChatSession>();
-            ChannelCreator = channelCreator;
-            ChannelLifeTime = lifeTime;
-            ChannelCreatedTime = DateTime.Now;
         }
 
-        public ChatChannelBase(uint maxNumberUser, ChatChannelMode channelMode,DateTime lifeTime,ChatSession channelCreator)
+        public ChatChannelBase(ChatSession creator, DateTime lifeTime, uint maxUser)
         {
-            MaxNumberUser = maxNumberUser;
-            ChannelMode = channelMode;
-            Channelid = Guid.NewGuid();
-            Users = new ConcurrentDictionary<Guid, ChatSession>();
-            ChannelCreator = channelCreator;
-            ChannelLifeTime = lifeTime;
-            ChannelCreatedTime = DateTime.Now;
+            Property = new ChatChannelProperty(creator, lifeTime, maxUser);
         }
 
+        public bool Create(ChatCommandBase cmd)
+        {
+            return Property.SetProperties(cmd);
+        }
         /// <summary>
         /// Send message to all users in this channel
         /// except the sender
@@ -49,7 +35,7 @@ namespace Chat.Entity.Structure.ChatChannel
         /// <returns></returns>
         public virtual bool MultiCast(ChatSession sender, string message)
         {
-            var others = Users.Values.Where(user => user != sender);
+            var others = Property.ChannelUsers.Values.Where(user => user != sender);
 
             foreach (var o in others)
             {
@@ -67,13 +53,21 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             return false;
         }
+
         public virtual bool LeaveChannel(ChatSession session)
+        {
+            Property.ChannelUsers.TryRemove(session.Id, out _);
+            return true;
+        }
+
+        public virtual bool LeaveChannel(ChatSession session, string reason)
         {
             return false;
         }
-        public virtual bool LeaveChannel(ChatSession session,string reason)
+
+        public string GetAvailableCommands()
         {
-            return false;
+            throw new NotImplementedException();
         }
     }
 }

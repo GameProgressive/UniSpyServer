@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+namespace Chat.Entity.Structure.ChatCommand
 {
     public class GETKEY : ChatCommandBase
     {
         public string Target { get; protected set; }
         public string Cookie { get; protected set; }
         public List<string> Keys { get; protected set; }
-        public GETKEY(string request) : base(request)
+
+        public override bool Parse(string request)
         {
-        }
-        public override bool Parse()
-        {
-            if (!base.Parse())
+            if (!base.Parse(request))
             { return false; }
 
             if (_cmdParams.Count < 3)

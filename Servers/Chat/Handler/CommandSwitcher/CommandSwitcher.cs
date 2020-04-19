@@ -18,25 +18,42 @@ namespace Chat.Handler.CommandSwitcher
             List<ChatCommandBase> cmds = new List<ChatCommandBase>();
 
             string[] requests = buffer.Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-            foreach (var r in requests)
+            // first we convert request into our ChatCommand class
+            // next we handle each command
+            foreach (var request in requests)
             {
-                BASIC basicCommand = new BASIC(r);
-                //TODO Generate accordingly command
-                Type cmdType = Type.GetType(basicCommand.GetType().Namespace + "." + basicCommand.CommandName);
+                ChatCommandBase basicCmd = new ChatCommandBase();
 
-                if (cmdType == null)
+                if (!basicCmd.Parse(request))
                 {
-                    LogWriter.ToLog($"{basicCommand.CommandName} Not implemented yet");
+                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,"Invalid request!");
                     continue;
                 }
 
-                ChatCommandBase cmd = (ChatCommandBase)Activator.CreateInstance(cmdType, r);
+                //TODO create command according to its name
+                Type cmdType =
+                    Type.GetType(basicCmd.GetType().Namespace + "." + basicCmd.CommandName);
+
+                if (cmdType == null)
+                {
+                    LogWriter.ToLog($"{basicCmd.CommandName} Not implemented yet");
+                    continue;
+                }
+
+                ChatCommandBase cmd = (ChatCommandBase)Activator.CreateInstance(cmdType);
+
+                if (!cmd.Parse(request))
+                {
+                    continue;
+                }
                 cmds.Add(cmd);
             }
+
             if (cmds.Count == 0)
             {
                 return;
             }
+
             ChatServer.CommandManager.HandleCommands(client, cmds);
         }
     }

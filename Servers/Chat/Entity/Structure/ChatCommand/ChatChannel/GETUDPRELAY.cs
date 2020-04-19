@@ -1,9 +1,6 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatChannel
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class GETUDPRELAY : ChatChannelCommandBase
     {
-        public GETUDPRELAY(string request) : base(request)
-        {
-        }
     }
 }

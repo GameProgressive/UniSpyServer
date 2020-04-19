@@ -58,5 +58,15 @@ namespace Chat.Server
         {
             ChatCrypt.Handle(ClientInfo.ServerCTX, ref buffer, size);
         }
+
+        protected override void OnDisconnected()
+        {
+            foreach (var c in ClientInfo.JoinedChannels)
+            {
+                c.LeaveChannel(this);
+            }
+
+            base.OnDisconnected();
+        }
     }
 }

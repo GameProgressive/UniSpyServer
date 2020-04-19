@@ -1,16 +1,14 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class WHO : ChatCommandBase
     {
         //TODO becareful there are channel name
         public string ChannelName { get; protected set; }
         public string NickName { get; protected set; }
-        public WHO(string request) : base(request)
+
+        public override bool Parse(string request)
         {
-        }
-        public override bool Parse()
-        {
-            if (!base.Parse())
+            if (!base.Parse(request))
             {
                 return false;
             }

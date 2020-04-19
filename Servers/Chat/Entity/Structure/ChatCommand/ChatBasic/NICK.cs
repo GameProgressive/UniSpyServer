@@ -1,23 +1,22 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatBasic
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class NICK : ChatCommandBase
     {
-        public NICK()
-        {
-        }
-
-        public NICK(string request) : base(request)
-        {
-        }
 
         public string NickName { get; protected set; }
-        public override bool Parse()
+
+        public override string BuildRPL(params string[] cmdParam)
         {
-            if (!base.Parse())
+            return BuildBasicRPL(ChatResponseType.Welcome, "Welcome to RetroSpy!", cmdParam[0]);
+        }
+
+        public override bool Parse(string request)
+        {
+            if (!base.Parse(request))
             {
                 return false;
             }
-            NickName = _longParam;
+            NickName = _cmdParams[0];
             return true;
         }
     }

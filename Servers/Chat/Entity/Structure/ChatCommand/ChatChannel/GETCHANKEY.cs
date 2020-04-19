@@ -1,9 +1,6 @@
-﻿namespace Chat.Entity.Structure.ChatCommand.ChatChannel
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class GETCHANKEY : ChatChannelCommandBase
     {
-        public GETCHANKEY()
-        {
-        }
     }
 }

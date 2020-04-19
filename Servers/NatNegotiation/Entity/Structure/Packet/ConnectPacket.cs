@@ -11,8 +11,6 @@ namespace NatNegotiation.Entity.Structure.Packet
         public byte GotYourData { get; set; }
         public byte Finished { get; set; }
 
-        public new static readonly int Size = BasePacket.Size + 8;
-
         public bool Parse(EndPoint endPoint, byte[] recv)
         {
             RemoteEndPoint = endPoint;
