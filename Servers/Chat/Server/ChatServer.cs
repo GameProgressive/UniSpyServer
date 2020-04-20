@@ -1,6 +1,8 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.CommandHandler;
 using Chat.Handler.CommandSwitcher;
+using Chat.Handler.SystemHandler.ChannelManage;
+using Chat.Handler.SystemHandler.ChatCommandManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using GameSpyLib.Network;
 using NetCoreServer;
@@ -17,13 +19,17 @@ namespace Chat.Server
 
         public static ChatCommandManager CommandManager;
         public static ChatSessionManager SessionManager;
+        public static ChatChannelManager ChannelManager;
 
         public ChatServer(IPAddress address, int port) : base(address, port)
         {
             SessionManager = new ChatSessionManager();
             CommandManager = new ChatCommandManager();
+            ChannelManager = new ChatChannelManager();
             //use this to add command into chatserver
-            AddCommand();
+            CommandManager.Start();
+            ChannelManager.Start();
+            SessionManager.Start();
         }
 
         protected override TcpSession CreateSession()
@@ -34,13 +40,5 @@ namespace Chat.Server
             return session;
         }
 
-        protected void AddCommand()
-        {
-            CommandManager
-                .AddCommand(new CRYPT(), typeof(CRYPTHandler))
-                .AddCommand(new USRIP(), typeof(USRIPHandler))
-                .AddCommand(new USER(), typeof(USERHandler))
-                .AddCommand(new NICK(), typeof(NICKHandler));
-        }
     }
 }

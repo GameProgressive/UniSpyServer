@@ -20,10 +20,13 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     new ServerInfoHandler(session, recv).Handle();
                     break;
                 case SBClientRequestType.PlayerSearchRequest:
+                    throw new System.NotImplementedException();
                     break;
                 case SBClientRequestType.MapLoopRequest:
+                    throw new System.NotImplementedException();
                     break;
                 case SBClientRequestType.SendMessageRequest:
+                    throw new System.NotImplementedException();
                     //TODO
                     //Cryptorx's game use this command
                     break;

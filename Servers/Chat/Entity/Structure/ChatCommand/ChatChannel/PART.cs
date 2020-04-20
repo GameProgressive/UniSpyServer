@@ -4,6 +4,11 @@
     {
         public string Reason { get; protected set; }
 
+        public string BuildResponse(string channelName)
+        {
+            return BuildMessage("","PART",$"{channelName}");
+        }
+
         public override bool Parse(string request)
         {
             if (!base.Parse(request))

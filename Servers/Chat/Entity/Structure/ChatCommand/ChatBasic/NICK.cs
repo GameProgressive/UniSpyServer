@@ -5,9 +5,9 @@
 
         public string NickName { get; protected set; }
 
-        public override string BuildRPL(params string[] cmdParam)
+        public string BuildResponse(string nickName)
         {
-            return BuildBasicRPL(ChatResponseType.Welcome, "Welcome to RetroSpy!", cmdParam[0]);
+            return BuildRPL("www.rspy.cc",ChatResponseType.Welcome, nickName,"Welcome to RetroSpy!");
         }
 
         public override bool Parse(string request)

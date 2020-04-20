@@ -44,9 +44,9 @@ namespace Chat.Entity.Structure.ChatCommand
             }
 
             indexOfColon = request.IndexOf(':');
-            if (indexOfColon != 0&&indexOfColon!=-1)
+            if (indexOfColon != 0 && indexOfColon != -1)
             {
-                _longParam = request.Substring(indexOfColon+1);
+                _longParam = request.Substring(indexOfColon + 1);
                 //reset the request string
                 request = request.Remove(indexOfColon);
             }
@@ -68,23 +68,35 @@ namespace Chat.Entity.Structure.ChatCommand
         }
 
         //Some command need impelemt this method
-        public virtual string BuildRPL(params string[] cmdParam)
+
+        public static string BuildRPL(string prefix, ChatResponseType cmdCode, string cmdParam, string message)
         {
-            throw new NotImplementedException();
+            return BuildRPL(prefix, (int)cmdCode, cmdParam, message);
         }
-
-
-        public static string BuildBasicRPL(object cmdCode, string message,params string[] cmdParam)
+        public static string BuildMessage(string prefix, string cmdParam, string message)
         {
-            return BuildBasicRPL((int)cmdCode, message,cmdParam);
-        }
+            string buffer = "";
 
-        public static string BuildLiteRPL(ChatResponseType cmdCode, params string[] cmdParam)
-        {
-            return BuildLiteRPL((int)cmdCode, cmdParam);
-        }
+            if (prefix != "")
+            {
+                buffer = $":{prefix} ";
+            }
 
-        public static string BuildLiteRPL(int cmdCode, params string[] cmdParam)
+            buffer += $"{cmdParam} ";
+
+
+            if (message != "")
+            {
+                buffer += $":{ message}\r\n";
+            }
+            else
+            {
+                buffer += "\r\n";
+            }
+
+            return buffer;
+        }
+        protected static string BuildRPL(string prefix, int cmdCode, string cmdParam, string message)
         {
             string asciiCode = cmdCode.ToString();
 
@@ -92,45 +104,27 @@ namespace Chat.Entity.Structure.ChatCommand
             {
                 asciiCode = "00" + asciiCode;
             }
+            string buffer = "";
 
-            string buffer = $":{ChatServer.ServerDomain} {asciiCode} ";
-            foreach (var p in cmdParam)
+            if (prefix != "")
             {
-                buffer += $"{p} ";
-            }
-            buffer += "\r\n";
-
-            return buffer;
-        }
-        public static string BuildBasicRPL(int cmdCode, string message,params string[] cmdParam)
-        {
-            string asciiCode = cmdCode.ToString();
-
-            if (asciiCode.Length < 3)
-            {
-                asciiCode = "00" + asciiCode;
+                buffer = $":{prefix} ";
             }
 
-            string buffer = $":{ChatServer.ServerDomain} {asciiCode} ";
-            foreach (var p in cmdParam)
+            buffer += $"{asciiCode} {cmdParam} ";
+
+            if (message != "")
             {
-                buffer += $"{p} ";
+                buffer += $":{ message}\r\n";
             }
-            buffer += $":{message}\r\n";
+            else
+            {
+                buffer += "\r\n";
+            }
 
             return buffer;
         }
 
-        public static string BuildMessageRPL(string message, params string[] cmdParam)
-        {
-            string buffer = $":{ChatServer.ServerDomain} ";
-            foreach (var p in cmdParam)
-            {
-                buffer += $"{p} ";
-            }
-            buffer += $":{message}\r\n";
 
-            return buffer;
-        }
     }
 }

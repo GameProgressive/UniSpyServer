@@ -4,6 +4,7 @@ namespace Chat.Entity.Structure.ChatCommand
 {
     public class CRYPT : ChatCommandBase
     {
+
         public string VersionID { get; protected set; }
         public string GameName { get; protected set; }
         //CRYPT des %d %s
@@ -21,9 +22,9 @@ namespace Chat.Entity.Structure.ChatCommand
             return true;
         }
 
-        public override string BuildRPL(params string[] param)
+        public string BuildResponse(string clientCtx,string serverCtx)
         {
-            return BuildLiteRPL(ChatResponseType.SecureKey, "*", param[0], param[1]);
+            return BuildRPL("",ChatResponseType.SecureKey, $"* {clientCtx} {serverCtx}","");
         }
     }
 }

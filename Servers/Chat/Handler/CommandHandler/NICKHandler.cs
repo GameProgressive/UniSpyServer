@@ -22,7 +22,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            _sendingBuffer = _nickCmd.BuildRPL(_session.ClientInfo.NickName);
+            _sendingBuffer = _nickCmd.BuildResponse(_session.ClientInfo.NickName);
         }
     }
 }

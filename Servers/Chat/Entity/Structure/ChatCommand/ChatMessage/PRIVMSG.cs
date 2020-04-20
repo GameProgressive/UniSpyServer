@@ -4,7 +4,7 @@ namespace Chat.Entity.Structure.ChatCommand
 {
     public class PRIVMSG : ChatMessageCommandBase
     {
-        public override string BuildRPL(params string[] param)
+        public string BuildResponse(params string[] param)
         {
             throw new NotImplementedException();
         }

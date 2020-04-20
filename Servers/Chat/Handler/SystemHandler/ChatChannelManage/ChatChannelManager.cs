@@ -7,11 +7,11 @@ namespace Chat.Handler.SystemHandler.ChannelManage
 {
     public class ChatChannelManager
     {
-        public static ConcurrentDictionary<Guid, ChatChannelBase> Channels;
+        public static ConcurrentDictionary<string, ChatChannelBase> Channels;
 
         public ChatChannelManager()
         {
-            Channels = new ConcurrentDictionary<Guid, ChatChannelBase>();
+            Channels = new ConcurrentDictionary<string, ChatChannelBase>();
         }
         public void Start()
         { }

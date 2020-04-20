@@ -1,10 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 namespace Chat.Entity.Structure.ChatCommand
 {
     public class MODE : ChatCommandBase
     {
-        public string NickName { get; protected set; }
-        public string Mode { get; protected set; }
+        //request :
+        //"MODE %s +q", connection->nick);
+        //"MODE %s -q", connection->nick);
+
+        //"MODE %s +k %s", channel, password);
+        //"MODE %s -k %s", channel, password);
+
+        // "MODE %s +l %d", channel, limit);
+        //"MODE %s -l", channel);
+
+        //"MODE %s +b", channel);
+        //"MODE %s +b %s", channel, ban
+        //"MODE %s -b %s", channel, ban);
+
+        //"MODE %s %co %s", channel, sign, user);
+        //"MODE %s %cv %s", channel, sign, user);
+
+        public string ChannelName { get; protected set; }
+        public List<string> Modes { get; protected set; }
 
         public override bool Parse(string request)
         {
@@ -12,9 +31,23 @@ namespace Chat.Entity.Structure.ChatCommand
             {
                 return false;
             }
-            NickName = _cmdParams[0];
-            Mode = _cmdParams[1];
+
+            if (_cmdParams.Count == 1)
+            {
+                ChannelName = _cmdParams[0];
+                return true;
+            }
+
+            foreach (var c in _cmdParams.Skip(1))
+            {
+                Modes.Add(c);
+            }
             return true;
+        }
+
+        public string GenerateResponse(string modes)
+        {
+            return BuildMessage("www.rspy.cc", $"MODE {ChannelName} {modes}", "");
         }
     }
 }

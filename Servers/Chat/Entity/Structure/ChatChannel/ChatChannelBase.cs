@@ -9,24 +9,15 @@ namespace Chat.Entity.Structure.ChatChannel
     {
         public ChatChannelProperty Property;
 
-        public ChatChannelBase(ChatSession creator)
+        public ChatChannelBase()
         {
-            Property = new ChatChannelProperty(creator);
-        }
-        public ChatChannelBase(ChatSession creator, DateTime lifeTime)
-        {
-            Property = new ChatChannelProperty(creator, lifeTime);
-            // ChannelMode = ChatChannelMode.Moderated;
+            Property = new ChatChannelProperty();
         }
 
-        public ChatChannelBase(ChatSession creator, DateTime lifeTime, uint maxUser)
+        public void CreateChannel(ChatSession creator, ChatCommandBase cmd)
         {
-            Property = new ChatChannelProperty(creator, lifeTime, maxUser);
-        }
-
-        public bool Create(ChatCommandBase cmd)
-        {
-            return Property.SetProperties(cmd);
+            Property.SetProperties(creator,cmd);
+            creator.ClientInfo.JoinedChannels.Add(this);
         }
         /// <summary>
         /// Send message to all users in this channel
@@ -35,7 +26,7 @@ namespace Chat.Entity.Structure.ChatChannel
         /// <returns></returns>
         public virtual bool MultiCast(ChatSession sender, string message)
         {
-            var others = Property.ChannelUsers.Values.Where(user => user != sender);
+            var others = Property.ChannelUsers.Where(user => user != sender);
 
             foreach (var o in others)
             {
@@ -47,21 +38,36 @@ namespace Chat.Entity.Structure.ChatChannel
 
         public virtual bool JoinChannel(ChatSession session)
         {
-            return false;
-        }
-        public virtual bool JoinChannel(ChatSession session, string reason)
-        {
-            return false;
+            if (Property.ChannelMode.ModesKV['i'] == '+')
+            {
+                //invited only
+                return false;
+            }
+            if (Property.BanList.Where(c => c.Id == session.Id).Count() == 1)
+            {
+                return false;
+            }
+            if (Property.ChannelUsers.Where(c => c.Id == session.Id).Count() == 1)
+            {
+                //this man is already in channel
+                return false;
+            }
+            if (session.ClientInfo.JoinedChannels.Where(c => c.Property.ChannelName == Property.ChannelName).Count() == 0)
+                session.ClientInfo.JoinedChannels.Add(this);
+            return true;
         }
 
         public virtual bool LeaveChannel(ChatSession session)
         {
-            Property.ChannelUsers.TryRemove(session.Id, out _);
+            Property.ChannelUsers.Remove(session);
             return true;
         }
 
         public virtual bool LeaveChannel(ChatSession session, string reason)
         {
+            Property.ChannelUsers.Remove(session);
+            string buffer = new PART().BuildResponse(Property.ChannelName);
+            MultiCast(session, buffer);
             return false;
         }
 

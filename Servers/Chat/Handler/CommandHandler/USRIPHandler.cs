@@ -8,22 +8,20 @@ namespace Chat.Handler.CommandHandler
 {
     public class USRIPHandler : ChatCommandHandlerBase
     {
+        USRIP _usripCmd { get { return (USRIP)_cmd; } }
+
         public USRIPHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
         {
+
         }
 
         public override void ConstructResponse()
         {
             base.ConstructResponse();
 
-            string IP = ((IPEndPoint)_session.Socket.RemoteEndPoint).Address.ToString();
+            string ip = ((IPEndPoint)_session.Socket.RemoteEndPoint).Address.ToString();
 
-            _sendingBuffer = ChatCommandBase.BuildBasicRPL(ChatResponseType.UserIP,
-                 _session.ClientInfo.NickName
-                 + " :" + _session.ClientInfo.NickName
-                 + "=+ " + _session.ClientInfo.UserName
-                 + "@" +
-                 IP);
+            _sendingBuffer = _usripCmd.BuildResponse(ip);
         }
     }
 }

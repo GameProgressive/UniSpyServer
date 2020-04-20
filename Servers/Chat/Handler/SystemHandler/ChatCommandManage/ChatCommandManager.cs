@@ -5,7 +5,7 @@ using GameSpyLib.Logging;
 using System;
 using System.Collections.Generic;
 
-namespace Chat.Handler.CommandSwitcher
+namespace Chat.Handler.SystemHandler.ChatCommandManage
 {
     public class ChatCommandManager
     {
@@ -14,6 +14,15 @@ namespace Chat.Handler.CommandSwitcher
         public ChatCommandManager()
         {
             AvailableCommands = new Dictionary<string, Type>();
+        }
+        public void Start()
+        {
+            AddCommand(new CRYPT(), typeof(CRYPTHandler));
+            AddCommand(new USRIP(), typeof(USRIPHandler));
+            AddCommand(new USER(), typeof(USERHandler));
+            AddCommand(new NICK(), typeof(NICKHandler));
+            AddCommand(new JOIN(), typeof(JOINHandler));
+            AddCommand(new MODE(),typeof(MODEHandler));
         }
 
         public ChatCommandManager AddCommand(ChatCommandBase cmd, Type cmdHandlerType)

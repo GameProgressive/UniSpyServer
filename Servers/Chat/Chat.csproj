@@ -35,5 +35,6 @@
     <Folder Include="Entity\Structure\ChatCommand\ChatChannel\" />
     <Folder Include="Entity\Structure\ChatChannel\" />
     <Folder Include="Entity\Structure\ChatUser\" />
+    <Folder Include="Handler\SystemHandler\ChatCommandManage\" />
   </ItemGroup>
 </Project>

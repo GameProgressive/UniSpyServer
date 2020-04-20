@@ -29,12 +29,14 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-            if (!DataOperationExtensions.GetSecretKey(_session.ClientInfo.GameName, out _session.ClientInfo.GameSecretKey)
-                || _session.ClientInfo.GameSecretKey == null)
+            string secretKey;
+            if (!DataOperationExtensions.GetSecretKey(_session.ClientInfo.GameName, out secretKey)
+                || secretKey== null)
             {
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "secret key not found!");
                 return;
             }
+            _session.ClientInfo.GameSecretKey = secretKey;
         }
 
         public override void ConstructResponse()
@@ -46,7 +48,7 @@ namespace Chat.Handler.CommandHandler
             ChatCrypt.Init(_session.ClientInfo.ServerCTX, ChatServer.ServerKey, _session.ClientInfo.GameSecretKey);
 
             // 3. Response the crypt command
-            _sendingBuffer = _cryptCmd.BuildRPL(ChatServer.ClientKey, ChatServer.ServerKey);
+            _sendingBuffer = _cryptCmd.BuildResponse(ChatServer.ClientKey, ChatServer.ServerKey);
         }
 
         public override void Response()

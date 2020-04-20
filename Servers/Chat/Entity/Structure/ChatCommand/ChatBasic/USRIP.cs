@@ -2,9 +2,9 @@
 {
     public class USRIP : ChatCommandBase
     {
-        public override string BuildRPL(params string[] param)
+        public string BuildResponse(string ip)
         {
-            return base.BuildRPL(param);
+            return BuildRPL("", ChatResponseType.UserIP, "", $"@{ip}");
         }
     }
 }

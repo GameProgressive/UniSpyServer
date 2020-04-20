@@ -21,14 +21,15 @@ namespace Chat.Handler.CommandHandler
 
         public override void DataOperation()
         {
-            
+            _session.ClientInfo.UserName = _user.UserName;
+            _session.ClientInfo.Name = _user.Name;
             base.DataOperation();
         }
 
-        public override void ConstructResponse()
-        {
-            _sendingBuffer = new PING().BuildRPL();
-            base.ConstructResponse();
-        }
+        //public override void ConstructResponse()
+        //{
+        //    _sendingBuffer = new PING().BuildResponse();
+        //    base.ConstructResponse();
+        //}
     }
 }
