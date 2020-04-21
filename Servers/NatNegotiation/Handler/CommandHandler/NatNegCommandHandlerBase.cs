@@ -28,15 +28,21 @@ namespace NatNegotiation.Handler.CommandHandler
             base.Handle();
 
             CheckRequest();
-            if (_errorCode != NNErrorCode.NoError)
+            if (_errorCode > NNErrorCode.NoError)
             {
                 return;
             }
 
             DataOperation();
-
+            if (_errorCode > NNErrorCode.NoError)
+            {
+                return;
+            }
             ConstructResponse();
-
+            if (_errorCode > NNErrorCode.NoError)
+            {
+                return;
+            }
             Response();
         }
 

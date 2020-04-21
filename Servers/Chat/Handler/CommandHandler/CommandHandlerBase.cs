@@ -20,24 +20,28 @@ namespace Chat.Handler.CommandHandler
             _session = (ChatSession)client.GetInstance();
         }
 
+        //if we use this structure the error response should also write to _sendingBuffer
         public override void Handle()
         {
             base.Handle();
 
             CheckRequest();
-            if (_errorCode != ChatError.NoError)
+            if (_errorCode < ChatError.NoError)
             {
                 return;
             }
 
             DataOperation();
-            if (_errorCode != ChatError.NoError)
+            if (_errorCode < ChatError.NoError)
             {
                 return;
             }
 
             ConstructResponse();
-
+            if (_errorCode < ChatError.NoError)
+            {
+                return;
+            }
             Response();
         }
         public virtual void CheckRequest()

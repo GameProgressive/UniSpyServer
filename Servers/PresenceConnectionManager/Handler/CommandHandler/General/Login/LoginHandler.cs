@@ -36,31 +36,31 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             ParseOtherData();
         }
 
-        public override void Handle()
-        {
-            CheckRequest();
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
-                return;
-            }
+        //public override void Handle()
+        //{
+        //    CheckRequest();
+        //    if (_errorCode != GPErrorCode.NoError)
+        //    {
+        //        ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
+        //        return;
+        //    }
 
-            DataOperation();
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
-                return;
-            }
+        //    DataOperation();
+        //    if (_errorCode != GPErrorCode.NoError)
+        //    {
+        //        ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
+        //        return;
+        //    }
 
-            ConstructResponse();
-            if (_errorCode == GPErrorCode.ConstructResponseError)
-            {
-                ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
-                return;
-            }
+        //    ConstructResponse();
+        //    if (_errorCode < GPErrorCode.NoError)
+        //    {
+        //        ErrorMsg.SendGPCMError(_session, _errorCode, _operationID);
+        //        return;
+        //    }
 
-            Response();
-        }
+        //    Response();
+        //}
 
         /// <summary>
         /// Parse everything into PlayerInfo, so we can use it later.

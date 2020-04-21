@@ -33,7 +33,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             CheckRequest();
 
-            if (_errorCode != GPErrorCode.NoError)
+            if (_errorCode < GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPSPError(_client, _errorCode, _operationID);
                 return;
@@ -41,7 +41,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             DataOperation();
 
-            if (_errorCode == GPErrorCode.DatabaseError)
+            if (_errorCode < GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPSPError(_client, _errorCode, _operationID);
                 return;
@@ -49,7 +49,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             ConstructResponse();
 
-            if (_errorCode == GPErrorCode.ConstructResponseError)
+            if (_errorCode < GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPSPError(_client, GPErrorCode.General, _operationID);
                 return;

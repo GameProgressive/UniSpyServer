@@ -40,7 +40,7 @@ namespace PresenceConnectionManager.Handler
 
             DataOperation();
 
-            if (_errorCode == GPErrorCode.DatabaseError)
+            if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
                 ErrorMsg.SendGPCMError(_client, _errorCode, _operationID);
@@ -49,7 +49,7 @@ namespace PresenceConnectionManager.Handler
 
             ConstructResponse();
 
-            if (_errorCode == GPErrorCode.ConstructResponseError)
+            if (_errorCode < GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPCMError(_client, _errorCode, _operationID);
                 return;

@@ -15,6 +15,7 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
         {
             AvailableCommands = new Dictionary<string, Type>();
         }
+
         public void Start()
         {
             AddCommand(new CRYPT(), typeof(CRYPTHandler));
@@ -23,6 +24,7 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             AddCommand(new NICK(), typeof(NICKHandler));
             AddCommand(new JOIN(), typeof(JOINHandler));
             AddCommand(new MODE(),typeof(MODEHandler));
+            AddCommand(new NAMES(), typeof(NAMESHandler));
         }
 
         public ChatCommandManager AddCommand(ChatCommandBase cmd, Type cmdHandlerType)

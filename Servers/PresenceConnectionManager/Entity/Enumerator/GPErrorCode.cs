@@ -13,6 +13,9 @@
         ForcedDisconnect,
         ConnectionClose,
         UdpLayer,
+        //RetroSpy self defined NoError code
+        NoError,
+
 
         // Login.
         /////////
@@ -134,9 +137,5 @@
         ///////////////
         RemoveBlock = 0x1300,
         RemoveBlockNotBlocked,
-
-        //RetroSpy self defined NoError code
-        NoError = 0xffff,
-        ConstructResponseError,
     }
 }

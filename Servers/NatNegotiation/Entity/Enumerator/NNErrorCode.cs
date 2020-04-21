@@ -2,6 +2,7 @@
 {
     public enum NNErrorCode
     {
+        NoError,
         RequestError,
         MagicDataError,
         VersionError,
@@ -9,7 +10,6 @@
         CookieError,
         InitPacketError,
         ConnectPacketError,
-        ReportPacketError,
-        NoError
+        ReportPacketError
     }
 }

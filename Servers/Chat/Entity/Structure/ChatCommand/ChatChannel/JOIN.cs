@@ -7,11 +7,6 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public string Password { get; protected set; }
 
-        public string BuildResponse(string nickName,string userName)
-        {
-            return BuildMessage($"{nickName}!{userName}@{ChatServer.ServerDomain}", "JOIN", $"{ChannelName}");
-        }
-
         public override bool Parse(string request)
         {
             if (!base.Parse(request))

@@ -1,5 +1,6 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Handler.CommandSwitcher;
+using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
@@ -61,11 +62,10 @@ namespace Chat.Server
 
         protected override void OnDisconnected()
         {
-            foreach (var c in ClientInfo.JoinedChannels)
+            foreach (var c in ChatChannelManager.Channels.Values)
             {
-                c.LeaveChannel(this);
+                c.LeaveChannel(this, "");
             }
-
             base.OnDisconnected();
         }
     }

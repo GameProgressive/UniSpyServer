@@ -5,7 +5,7 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class MODEHandler:ChatCommandHandlerBase
+    public class MODEHandler : ChatCommandHandlerBase
     {
         MODE _modeCmd;
         public MODEHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)

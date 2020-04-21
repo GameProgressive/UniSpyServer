@@ -1,6 +1,5 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,18 +8,6 @@ namespace Chat.Entity.Structure.ChatChannel
     public class ChatChannelMode
     {
         public Dictionary<char, char> ModesKV;
-        //public bool IsStandardChannel { get; protected set; }
-        //public bool IsQuietChannel { get; protected set; }
-        //public bool IsModerate { get; protected set; }
-        //public bool IsAllowOutsideMessage { get; protected set; }
-        //public bool IsInvitedOnly { get; protected set; }
-        //public bool IsAnonymous { get; protected set; }
-        //public bool IsPrivateChannel { get; protected set; }
-        //public bool IsSecretChannel { get; protected set; }
-        //public bool IsReop { get; protected set; }
-        //public bool IsOnlyChannelOperatorsChangeTopic { get; protected set; }
-        //public bool IsChannelOperatorsObeyChannelLimit { get; protected set; }
-        //public bool IsUsingPassword { get; protected set; }
 
         /// <summary>
         /// default constructor
@@ -55,7 +42,7 @@ namespace Chat.Entity.Structure.ChatChannel
             //    I - set/remove an invitation mask to automatically override the invite-only flag;
 
             ModesKV.Add('a', '+');
-            ModesKV.Add('i', '+');
+            ModesKV.Add('i', '-');
             ModesKV.Add('m', '+');
             ModesKV.Add('n', '+');
             ModesKV.Add('q', '-');
