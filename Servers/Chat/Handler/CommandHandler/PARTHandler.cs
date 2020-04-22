@@ -23,7 +23,13 @@ namespace Chat.Handler.CommandHandler
         {
             base.DataOperation();
             ChatChannelBase channel;
-            channel = _session.ClientInfo.JoinedChannels.Where(c => c.Property.ChannelName == _partCmd.ChannelName).First();
+            if (_session.ClientInfo.JoinedChannels.Count == 0)
+            {
+                _errorCode = Entity.Structure.ChatError.DataOperation;
+                return;
+            }
+            channel = _session.ClientInfo.JoinedChannels.
+                Where(c => c.Property.ChannelName == _partCmd.ChannelName).First();
             if (channel==null)
             {
                 _errorCode = Entity.Structure.ChatError.DataOperation;

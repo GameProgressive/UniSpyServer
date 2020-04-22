@@ -5,6 +5,14 @@ namespace Chat.Entity.Structure.ChatCommand
 {
     public class MODE : ChatCommandBase
     {
+        public string ChannelName { get; protected set; }
+        public List<string> Modes { get; protected set; }
+
+        public MODE()
+        {
+            Modes = new List<string>();
+        }
+
         //request :
         //"MODE %s +q", connection->nick);
         //"MODE %s -q", connection->nick);
@@ -22,8 +30,6 @@ namespace Chat.Entity.Structure.ChatCommand
         //"MODE %s %co %s", channel, sign, user);
         //"MODE %s %cv %s", channel, sign, user);
 
-        public string ChannelName { get; protected set; }
-        public List<string> Modes { get; protected set; }
 
         public override bool Parse(string request)
         {
