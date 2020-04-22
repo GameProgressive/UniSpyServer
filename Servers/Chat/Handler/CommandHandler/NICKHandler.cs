@@ -50,7 +50,8 @@ namespace Chat.Handler.CommandHandler
                 ChatServer.ServerDomain, ChatResponseType.Welcome,
                 _nickCmd.NickName, "Welcome to RetroSpy!");
             //check this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //_sendingBuffer += ChatCommandBase.BuildMessageRPL(_nickCmd.NickName, $"MODE {_nickCmd.NickName}", "+iwx");
+            //_sendingBuffer += ChatCommandBase.BuildMessageRPL(
+            //_nickCmd.NickName, $"MODE {_nickCmd.NickName}", "+iwx");
         }
     }
 }

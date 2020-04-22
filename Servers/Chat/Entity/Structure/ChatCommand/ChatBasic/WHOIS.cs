@@ -2,7 +2,7 @@
 {
     public class WHOIS : ChatCommandBase
     {
-        public string UserName { get; protected set; }
+        public string NickName { get; protected set; }
 
         public override bool Parse(string request)
         {
@@ -13,7 +13,7 @@
                 return false;
             }
 
-            UserName = _cmdParams[0];
+            NickName = _cmdParams[0];
             return true;
         }
     }

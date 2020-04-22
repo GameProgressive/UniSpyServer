@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Linq;
+using System.Net;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Server;
 
@@ -22,12 +23,14 @@ namespace Chat.Entity.Structure.ChatChannel
 
         public bool JoinChannel(ChatSession joiner)
         {
-            //first we send join information to all user in this channel
+            AddBindOnUserAndChannel(joiner);
 
+
+            //first we send join information to all user in this channel
             MultiCastJoin(joiner);
 
 
-            AddBindOnUserAndChannel(joiner);
+
 
             //then we send user list which already in this channel ???????????
             SendChannelUsersToJoiner(joiner);
@@ -59,7 +62,7 @@ namespace Chat.Entity.Structure.ChatChannel
                        $"{joiner.ClientInfo.NickName}!{joiner.ClientInfo.UserName}@{((IPEndPoint)joiner.Socket.RemoteEndPoint).Address}",
                        "JOIN", $"{Property.ChannelName}");
 
-            
+
             string modes = Property.ChannelMode.GetChannelMode();
             joinMessage += ChatCommandBase.BuildMessageRPL(
                                           $"{ChatServer.ServerDomain}", $"MODE {Property.ChannelName} {modes}", "");
@@ -93,7 +96,7 @@ namespace Chat.Entity.Structure.ChatChannel
             string modes = Property.ChannelMode.GetChannelMode();
 
             string buffer = ChatCommandBase.BuildMessageRPL(
-                ChatServer.ServerDomain, $"{Property.ChannelName} {modes}", "");
+                ChatServer.ServerDomain, $"MODE {Property.ChannelName} {modes}", "");
 
             string nicks = "";
             foreach (var user in Property.ChannelUsers)
@@ -135,15 +138,15 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             if (!Property.ChannelUsers.Contains(joiner))
                 Property.ChannelUsers.Add(joiner);
-            
+
             if (!joiner.ClientInfo.JoinedChannels.Contains(this))
                 joiner.ClientInfo.JoinedChannels.Add(this);
-            
+
         }
         public void RemoveBindOnUserAndChannel(ChatSession leaver)
         {
             if (!Property.ChannelUsers.Contains(leaver))
-                Property.ChannelUsers.Remove(leaver);
+                Property.ChannelUsers.TryTake(out leaver);
 
             if (!leaver.ClientInfo.JoinedChannels.Contains(this))
                 leaver.ClientInfo.JoinedChannels.Remove(this);
