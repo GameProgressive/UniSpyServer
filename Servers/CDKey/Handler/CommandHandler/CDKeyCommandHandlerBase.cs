@@ -14,25 +14,30 @@ namespace CDKey.Handler.CommandHandler
 
         public override void Handle()
         {
+            CheckRequest();
 
+            DataOperation();
 
+            ConstructResponse();
+
+            Response();
         }
 
         public virtual void CheckRequest()
         {
         }
 
-        public virtual void DataBaseOperation()
+        public virtual void DataOperation()
         {
         }
 
-        public virtual void CheckDatabaseResult()
+        public virtual void ConstructResponse()
         {
         }
 
         public virtual void Response()
         {
-            if (_sendingBuffer == null || _sendingBuffer == "")
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {
                 return;
             }

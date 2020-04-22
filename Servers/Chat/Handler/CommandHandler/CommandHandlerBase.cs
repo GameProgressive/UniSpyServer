@@ -6,11 +6,27 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
+    /// <summary>
+    /// error code condition is complicated
+    /// there are 2 types error code
+    /// 1.irc numeric error code
+    /// 2.self defined code
+    /// we do not want to send self defined code, so if we find errorCode < noerror
+    /// we just return.
+    /// if error code bigger than noerror we need to process it in ConstructResponse()
+    ///we also need to check the error code != noerror in ConstructResponse()
+    /// </summary>
     public abstract class ChatCommandHandlerBase : CommandHandlerBase
     {
         protected ChatError _errorCode;
         protected ChatCommandBase _cmd;
-        protected string _sendingBuffer = "";
+        /// <summary>
+        /// Generic response buffer
+        /// if some handler have multiple response
+        /// only use this for sending error message
+        /// </summary>
+        protected string _sendingBuffer;
+
         protected ChatSession _session;
 
         public ChatCommandHandlerBase(IClient client, ChatCommandBase cmd) : base(client)
@@ -52,7 +68,7 @@ namespace Chat.Handler.CommandHandler
         { }
         public virtual void Response()
         {
-            if (_sendingBuffer == "" || _sendingBuffer.Length < 3)
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {
                 return;
             }

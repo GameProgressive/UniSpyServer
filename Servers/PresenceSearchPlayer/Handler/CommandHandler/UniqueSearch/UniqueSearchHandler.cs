@@ -30,7 +30,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             {
                 var result = from p in db.Profiles
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             where n.Uniquenick == _recv["preferrednick"] && n.Namespaceid == _namespaceid && n.Gamename == _recv["gamename"]
+                             where n.Uniquenick == _recv["preferrednick"]
+                             && n.Namespaceid == _namespaceid
+                             && n.Gamename == _recv["gamename"]
                              select p.Profileid;
 
                 if (result.Count() == 0)

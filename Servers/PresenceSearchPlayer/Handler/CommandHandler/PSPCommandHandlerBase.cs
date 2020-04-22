@@ -83,10 +83,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
         protected virtual void Response()
         {
-            if (_sendingBuffer != null)
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {
-                _client.SendAsync(_sendingBuffer);
+                return;
             }
+            _client.SendAsync(_sendingBuffer);
         }
     }
 }

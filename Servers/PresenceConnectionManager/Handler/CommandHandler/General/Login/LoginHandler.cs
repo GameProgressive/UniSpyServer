@@ -162,36 +162,6 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
         }
 
-        protected override void ConstructResponse()
-        {
-            _session.UserInfo.SessionKey
-                = _crc.ComputeChecksum(_session.UserInfo.Nick + _session.UserInfo.UniqueNick + _session.UserInfo.NamespaceID);
-
-            string responseProof = ChallengeProof.GenerateProof
-            (
-                _session.UserInfo.UserData,
-                _session.UserInfo.LoginType,
-                _session.UserInfo.PartnerID,
-                _session.UserInfo.ServerChallenge,
-                _session.UserInfo.UserChallenge,
-                _session.UserInfo.PasswordHash
-            );
-
-            _sendingBuffer = @"\lc\2\sesskey\" + _session.UserInfo.SessionKey;
-            _sendingBuffer += @"\proof\" + responseProof;
-            _sendingBuffer += @"\userid\" + _session.UserInfo.Userid;
-            _sendingBuffer += @"\profileid\" + _session.UserInfo.Profileid;
-
-            if (_session.UserInfo.LoginType != LoginType.Nick)
-            {
-                _sendingBuffer += @"\uniquenick\" + _session.UserInfo.UniqueNick;
-            }
-
-            _sendingBuffer += @"\lt\" + _session.Id.ToString().Replace("-", "").Substring(0, 22) + "__";
-            _sendingBuffer += @"\id\" + _operationID + @"\final\";
-
-            _session.UserInfo.LoginProcess = LoginStatus.Completed;
-        }
 
         protected override void DataOperation()
         {
@@ -236,6 +206,38 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 return;
             }
         }
+
+        protected override void ConstructResponse()
+        {
+            _session.UserInfo.SessionKey
+                = _crc.ComputeChecksum(_session.UserInfo.Nick + _session.UserInfo.UniqueNick + _session.UserInfo.NamespaceID);
+
+            string responseProof = ChallengeProof.GenerateProof
+            (
+                _session.UserInfo.UserData,
+                _session.UserInfo.LoginType,
+                _session.UserInfo.PartnerID,
+                _session.UserInfo.ServerChallenge,
+                _session.UserInfo.UserChallenge,
+                _session.UserInfo.PasswordHash
+            );
+
+            _sendingBuffer = @"\lc\2\sesskey\" + _session.UserInfo.SessionKey;
+            _sendingBuffer += @"\proof\" + responseProof;
+            _sendingBuffer += @"\userid\" + _session.UserInfo.Userid;
+            _sendingBuffer += @"\profileid\" + _session.UserInfo.Profileid;
+
+            if (_session.UserInfo.LoginType != LoginType.Nick)
+            {
+                _sendingBuffer += @"\uniquenick\" + _session.UserInfo.UniqueNick;
+            }
+
+            _sendingBuffer += @"\lt\" + _session.Id.ToString().Replace("-", "").Substring(0, 22) + "__";
+            _sendingBuffer += @"\id\" + _operationID + @"\final\";
+
+            _session.UserInfo.LoginProcess = LoginStatus.Completed;
+        }
+
 
         private void NickEmailLogin()
         {

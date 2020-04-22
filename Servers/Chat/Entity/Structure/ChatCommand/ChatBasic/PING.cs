@@ -6,7 +6,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public string BuildResponse(params string[] param)
         {
-            return BuildMessage("","PING","www.rspy.cc");
+            return BuildMessageRPL("","PING","www.rspy.cc");
         }
     }
 }

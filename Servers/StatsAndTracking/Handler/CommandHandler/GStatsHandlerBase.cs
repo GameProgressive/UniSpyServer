@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler
 {
+    /// <summary>
+    /// we only use selfdefine error code here
+    /// so we do not need to send it to client
+    /// </summary>
     public class CommandHandlerBase
     {
         protected string _sendingBuffer;
@@ -31,7 +35,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             if (_errorCode == GstatsErrorCode.Database)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 
@@ -39,7 +43,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             if (_errorCode != GstatsErrorCode.NoError)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
             }
 

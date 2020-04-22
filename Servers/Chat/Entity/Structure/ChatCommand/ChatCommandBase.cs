@@ -67,13 +67,22 @@ namespace Chat.Entity.Structure.ChatCommand
             return true;
         }
 
+        public static string BuildErrorRPL(ChatError errorCode, string cmdParam, string message)
+        {
+            return BuildNumericRPL(ChatServer.ServerDomain, (int)errorCode, cmdParam, message);
+        }
+
+        public static string BuildErrorRPL(string prefix, ChatError errorCode, string cmdParam, string message)
+        {
+            return BuildNumericRPL(prefix, (int)errorCode, cmdParam, message);
+        }
         //Some command need impelemt this method
 
-        public static string BuildRPL(string prefix, ChatResponseType cmdCode, string cmdParam, string message)
+        public static string BuildNormalRPL(string prefix, ChatResponseType cmdCode, string cmdParam, string message)
         {
-            return BuildRPL(prefix, (int)cmdCode, cmdParam, message);
+            return BuildNumericRPL(prefix, (int)cmdCode, cmdParam, message);
         }
-        public static string BuildMessage(string prefix, string cmdParam, string message)
+        public static string BuildMessageRPL(string prefix, string cmdParam, string message)
         {
             string buffer = "";
 
@@ -82,12 +91,12 @@ namespace Chat.Entity.Structure.ChatCommand
                 buffer = $":{prefix} ";
             }
 
-            buffer += $"{cmdParam} ";
+            buffer += $"{cmdParam}";
 
 
             if (message != "")
             {
-                buffer += $":{ message}\r\n";
+                buffer += $" :{ message}\r\n";
             }
             else
             {
@@ -96,7 +105,8 @@ namespace Chat.Entity.Structure.ChatCommand
 
             return buffer;
         }
-        protected static string BuildRPL(string prefix, int cmdCode, string cmdParam, string message)
+
+        protected static string BuildNumericRPL(string prefix, int cmdCode, string cmdParam, string message)
         {
             string asciiCode = cmdCode.ToString();
 
@@ -111,11 +121,11 @@ namespace Chat.Entity.Structure.ChatCommand
                 buffer = $":{prefix} ";
             }
 
-            buffer += $"{asciiCode} {cmdParam} ";
+            buffer += $"{asciiCode} {cmdParam}";
 
             if (message != "")
             {
-                buffer += $":{ message}\r\n";
+                buffer += $" :{message}\r\n";
             }
             else
             {

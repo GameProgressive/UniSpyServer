@@ -7,6 +7,10 @@ using NatNegotiation.Entity.Structure.Packet;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
+    /// <summary>
+    /// because we are using self defined error code so we do not need
+    /// to send it to client, when we detect errorCode != noerror we just log it
+    /// </summary>
     public class NatNegCommandHandlerBase : CommandHandlerBase
     {
         protected NNErrorCode _errorCode = NNErrorCode.NoError;
@@ -28,18 +32,18 @@ namespace NatNegotiation.Handler.CommandHandler
             base.Handle();
 
             CheckRequest();
-            if (_errorCode > NNErrorCode.NoError)
+            if (_errorCode != NNErrorCode.NoError)
             {
                 return;
             }
 
             DataOperation();
-            if (_errorCode > NNErrorCode.NoError)
+            if (_errorCode != NNErrorCode.NoError)
             {
                 return;
             }
             ConstructResponse();
-            if (_errorCode > NNErrorCode.NoError)
+            if (_errorCode != NNErrorCode.NoError)
             {
                 return;
             }

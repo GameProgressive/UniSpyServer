@@ -23,7 +23,7 @@ namespace Chat.Handler.CommandHandler
 
         public override void ConstructResponse()
         {
-            _channel.SendChannelUsers(_session);
+            _channel.SendChannelUsersToJoiner(_session);
 
             base.ConstructResponse();
         }

@@ -1,9 +1,11 @@
 ﻿using System.Linq;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Logging;
 
 namespace Chat.Handler.CommandHandler
 {
@@ -45,40 +47,41 @@ namespace Chat.Handler.CommandHandler
             if (_channel.Property.ChannelMode.ModesKV['i'] == '+')
             {
                 //invited only
+                _errorCode = ChatError.InviteOnlyChan;
                 return;
             }
             if (_channel.Property.BanList.Where(c => c.Equals(_session)).Count() == 1)
             {
+                _errorCode = ChatError.BannedFromChan;
                 return;
             }
 
-            if (_channel.Property.ChannelUsers.Where(u => u.Equals(_session)).Count() != 0)
-            {
-                //already in channel
-                return;
-            }
+            //if (_channel.Property.ChannelUsers.Where(u => u.Equals(_session)).Count() != 0)
+            //{
+            //    //already in channel
+            //    _errorCode = ChatError.DataOperation;
+            //    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "You already in this channel");
+            //    //force disconnect
+            //    _session.Disconnect();
+            //    return;
+            //}
 
-            //first we send join information to all user in this channel
-            MultiCaseJoin();
-
-            _channel.AddBindOnUserAndChannel(_session);
-            //send channel mode to joiner
-            _channel.SendChannelModes(_session);
-            //then we send user list which already in this channel ???????????
-            _channel.SendChannelUsers(_session);
-
+            //if all pass we excute join channel
+            _channel.JoinChannel(_session);
+            
         }
 
-        protected void MultiCaseJoin()
+        public override void ConstructResponse()
         {
-            //first we send join information to all user in this channel
-            string joinMessage =
-            ChatCommandBase.BuildMessage(
-           $"{_session.ClientInfo.NickName}!{_session.ClientInfo.UserName}@{ChatServer.ServerDomain}",
-           "JOIN", $"{_channel.Property.ChannelName}");
-
-            _channel.MultiCast(joinMessage);
+            base.ConstructResponse();
+            //TODO
+            //we construct error response here
+            if (_errorCode > ChatError.NoError)
+            {
+                _sendingBuffer =
+                    ChatCommandBase.BuildErrorRPL("",
+                    _errorCode, $"* {_joinCmd.ChannelName}", "");
+            }
         }
-
     }
 }

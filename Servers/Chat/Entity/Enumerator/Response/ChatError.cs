@@ -3,10 +3,10 @@
     public enum ChatError
     {
         //our customized error
-        NoError,
         Parse,
         DataOperation,
         ConstructResponse,
+        NoError,
 
         //irc standard error
         NoSuchNick = 401,
@@ -25,6 +25,5 @@
         UniqueNIickExpired = 710,
         RegisterNickFailed = 711,
 
-       
     }
 }

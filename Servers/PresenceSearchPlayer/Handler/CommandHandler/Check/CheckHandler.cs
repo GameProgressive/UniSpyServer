@@ -12,6 +12,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
+
         public CheckHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
@@ -54,7 +55,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 
                 if (result.Count() == 1)
                 {
-                    _sendingBuffer = @"\cur\0\pid\" + result.First() + @"\final\";
+                    _sendingBuffer = @$"\cur\0\pid\{result.FirstOrDefault()}\final\";
                 }
                 else
                 {
@@ -67,7 +68,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         {
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = @"\cur\" + (uint)_errorCode + @"\final\";
+                _sendingBuffer = @$"\cur\{ _errorCode}\final\";
             }
         }
     }

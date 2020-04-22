@@ -30,29 +30,36 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            try
             {
-                var result = from u in db.Users
-                             join p in db.Profiles on u.Userid equals p.Userid
-                             join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             //According to FSW partnerid is not nessesary
-                             where u.Email == _recv["email"] && n.Gamename == _recv["gamename"] && n.Namespaceid == _namespaceid
-                             select p.Profileid;
+                using (var db = new retrospyContext())
+                {
+                    var result = from u in db.Users
+                                 join p in db.Profiles on u.Userid equals p.Userid
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 //According to FSW partnerid is not nessesary
+                                 where u.Email == _recv["email"]
+                                 && n.Gamename == _recv["gamename"]
+                                 && n.Namespaceid == _namespaceid
+                                 select p.Profileid;
 
-                if (result.Count() == 0)
-                {
-                    _sendingBuffer = @"\vr\0\final\";
+                    if (result.Count() == 0)
+                    {
+                        _sendingBuffer = @"\vr\0\final\";
 
-                }
-                else if (result.Count() == 1)
-                {
-                    _sendingBuffer = @"\vr\1\final\";
-                }
-                else
-                {
-                    _errorCode = GPErrorCode.DatabaseError;
+                    }
+                    else if (result.Count() == 1)
+                    {
+                        _sendingBuffer = @"\vr\1\final\";
+                    }
+
                 }
             }
+            catch
+            {
+                _errorCode = GPErrorCode.DatabaseError;
+            }
+
         }
     }
 }

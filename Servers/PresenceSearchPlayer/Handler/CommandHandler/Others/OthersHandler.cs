@@ -21,17 +21,21 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
 
         protected override void CheckRequest()
         {
+
+            base.CheckRequest();
+
             if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
             {
                 _errorCode = GPErrorCode.Parse;
+                return;
             }
 
             if (!_recv.ContainsKey("profileid") && !uint.TryParse(_recv["profileid"], out _profileid))
             {
                 _errorCode = GPErrorCode.Parse;
+                return;
             }
 
-            base.CheckRequest();
         }
 
         protected override void DataOperation()
@@ -50,25 +54,27 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                             join n in db.Subprofiles on p.Profileid equals n.Profileid
                             join u in db.Users on p.Userid equals u.Userid
                             where n.Namespaceid == _namespaceid && n.Profileid == pid && n.Gamename == _recv["gamename"]
-                            select new { profileid = p.Profileid, nick = p.Nick, uniquenick = n.Uniquenick, last = p.Lastname, first = p.Firstname, email = u.Userid };
-                    _sendingBuffer += @"\o\" + b.First().profileid;
-                    _sendingBuffer += @"\nick\" + b.First().nick;
-                    _sendingBuffer += @"\uniquenick\" + b.First().uniquenick;
-                    _sendingBuffer += @"\first\" + b.First().first;
-                    _sendingBuffer += @"\last\" + b.First().last;
-                    _sendingBuffer += @"\email\" + b.First().email;
+                            select new
+                            {
+                                profileid = p.Profileid,
+                                nick = p.Nick,
+                                uniquenick = n.Uniquenick,
+                                last = p.Lastname,
+                                first = p.Firstname,
+                                email = u.Userid
+                            };
+
+                    var result = b.FirstOrDefault();
+
+                    _sendingBuffer += @"\o\" + result.profileid;
+                    _sendingBuffer += @"\nick\" + result.nick;
+                    _sendingBuffer += @"\uniquenick\" + result.uniquenick;
+                    _sendingBuffer += @"\first\" + result.first;
+                    _sendingBuffer += @"\last\" + result.last;
+                    _sendingBuffer += @"\email\" + result.email;
                 }
 
                 _sendingBuffer += @"\odone\final\";
-            }
-        }
-
-        protected override void ConstructResponse()
-        {
-            if (_errorCode == GPErrorCode.DatabaseError)
-            {
-                _sendingBuffer = @"\others\\odone\final\";
-                return;
             }
         }
     }

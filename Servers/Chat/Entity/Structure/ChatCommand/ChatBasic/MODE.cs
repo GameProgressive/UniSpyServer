@@ -47,7 +47,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public string GenerateResponse(string modes)
         {
-            return BuildMessage("www.rspy.cc", $"MODE {ChannelName} {modes}", "");
+            return BuildMessageRPL("www.rspy.cc", $"MODE {ChannelName} {modes}", "");
         }
     }
 }

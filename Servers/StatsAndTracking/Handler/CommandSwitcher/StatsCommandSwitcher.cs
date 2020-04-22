@@ -1,4 +1,7 @@
-﻿using GameSpyLib.Common.BaseClass;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using StatsAndTracking.Handler.CommandHandler.Auth;
@@ -8,9 +11,6 @@ using StatsAndTracking.Handler.CommandHandler.GetPid;
 using StatsAndTracking.Handler.CommandHandler.NewGame;
 using StatsAndTracking.Handler.CommandHandler.SetPD;
 using StatsAndTracking.Handler.CommandHandler.UpdGame;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace StatsAndTracking.Handler.CommandSwitcher
 {

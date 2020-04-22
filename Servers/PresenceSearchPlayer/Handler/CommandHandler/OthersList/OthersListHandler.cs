@@ -37,11 +37,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 
                     foreach (var pid in opids)
                     {
-                        var info = from n in db.Subprofiles
+                        var result = from n in db.Subprofiles
                                    where n.Profileid == pid && n.Namespaceid == _namespaceid
                                    select new { uniquenick = n.Uniquenick };
-                        _sendingBuffer += @"\o\" + pid;
-                        _sendingBuffer += @"\uniquenick\" + info.First().uniquenick;
+
+                        var info = result.FirstOrDefault();
+
+                        _sendingBuffer += $@"\o\{pid}";
+                        _sendingBuffer += $@"\uniquenick\{info.uniquenick}";
                     }
 
                     _sendingBuffer += @"oldone\final\";

@@ -23,7 +23,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
             if (!_recv.ContainsKey("email"))
             {
                 _errorCode = GPErrorCode.Parse;
-
+                return;
             }
 
             // First, we try to receive an encoded password
@@ -34,6 +34,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                 {
                     // No password is specified, we cannot continue                   
                     _errorCode = GPErrorCode.Parse;
+                    return;
                 }
             }
         }

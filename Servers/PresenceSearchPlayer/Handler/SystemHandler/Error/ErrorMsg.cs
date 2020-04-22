@@ -94,8 +94,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
         /// <param name="operationID">The operation id</param>
         public static void SendGPSPError(IClient client, GPErrorCode errorCode, uint operationID)
         {
-            string errorMsg = ErrorMsg.GetErrorMsg(errorCode);
-            string sendingBuffer = string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\{2}\final\", (uint)errorCode, errorMsg, operationID);
+            string errorMsg = GetErrorMsg(errorCode);
+            string sendingBuffer = $@"\error\\err\{errorCode}\fatal\\errmsg\{errorMsg}\id\{operationID}\final\";
             client.SendAsync(sendingBuffer);
         }
     }

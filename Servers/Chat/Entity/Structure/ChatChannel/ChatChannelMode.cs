@@ -41,9 +41,9 @@ namespace Chat.Entity.Structure.ChatChannel
             //    e - set/remove an exception mask to override a ban mask;
             //    I - set/remove an invitation mask to automatically override the invite-only flag;
 
-            ModesKV.Add('a', '+');
+            ModesKV.Add('a', '-');
             ModesKV.Add('i', '-');
-            ModesKV.Add('m', '+');
+            ModesKV.Add('m', '-');
             ModesKV.Add('n', '+');
             ModesKV.Add('q', '-');
             ModesKV.Add('p', '-');

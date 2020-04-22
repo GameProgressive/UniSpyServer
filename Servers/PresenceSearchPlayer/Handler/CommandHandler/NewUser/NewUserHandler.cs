@@ -134,7 +134,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
                         case _newUserStatus.SubProfileNotExist:
                             //we create subprofile and return
-                            _subProfiles = new Subprofiles { Profileid = _profiles.Profileid, Uniquenick = _uniquenick, Namespaceid = _namespaceid };
+                            _subProfiles = new Subprofiles
+                            {
+                                Profileid = _profiles.Profileid,
+                                Uniquenick = _uniquenick,
+                                Namespaceid = _namespaceid
+                            };
+
                             db.Subprofiles.Add(_subProfiles);
                             db.SaveChanges();
                             break;
@@ -161,12 +167,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         {
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = string.Format(@"\nur\{0}\final\", _errorCode);
+                _sendingBuffer = $@"\nur\{_errorCode}\final\";
             }
             else
             {
                 //GPCM
-                _sendingBuffer = string.Format(@"\nur\0\userid\{0}\profileid\{1}\id\1\final\", _users.Userid, _subProfiles.Profileid);
+                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\id\1\final\";
                 //_sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _subProfiles.Profileid);
             }
         }

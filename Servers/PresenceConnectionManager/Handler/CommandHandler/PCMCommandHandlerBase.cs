@@ -6,6 +6,10 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler
 {
+    /// <summary>
+    /// Because all errors are sent by SendGPError()
+    /// so we if the error code != noerror we send it
+    /// </summary>
     public class PCMCommandHandlerBase : CommandHandlerBase
     {
         protected GPErrorCode _errorCode;
@@ -49,7 +53,7 @@ namespace PresenceConnectionManager.Handler
 
             ConstructResponse();
 
-            if (_errorCode < GPErrorCode.NoError)
+            if (_errorCode != GPErrorCode.NoError)
             {
                 ErrorMsg.SendGPCMError(_client, _errorCode, _operationID);
                 return;
@@ -83,11 +87,10 @@ namespace PresenceConnectionManager.Handler
 
         protected virtual void Response()
         {
-            if (_sendingBuffer == null)
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {
                 return;
             }
-
             _client.SendAsync(_sendingBuffer);
         }
     }
