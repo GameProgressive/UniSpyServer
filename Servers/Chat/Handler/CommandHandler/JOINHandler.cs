@@ -40,11 +40,11 @@ namespace Chat.Handler.CommandHandler
             if (_channel == null)
             {
                 _channel = new ChatChannelBase();
-                _channel.CreateChannel(_session, _cmd);
+                _channel.CreateChannel(_session, _joinCmd);
                 ChatChannelManager.Channels.TryAdd(_joinCmd.ChannelName, _channel);
             }
             //channel.JoinChannel(_session);
-            if (_channel.Property.ChannelMode.ModesKV['i'] == '+')
+            if (_channel.Property.ChannelMode.IsInviteOnly)
             {
                 //invited only
                 _errorCode = ChatError.InviteOnlyChan;

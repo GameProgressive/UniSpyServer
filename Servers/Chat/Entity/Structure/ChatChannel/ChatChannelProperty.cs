@@ -12,8 +12,8 @@ namespace Chat.Entity.Structure.ChatChannel
         public uint MaxNumberUser { get; set; }
         public ChatChannelMode ChannelMode { get; set; }
         public DateTime ChannelCreatedTime { get; set; }
-        public ConcurrentBag<ChatSession> ChannelOperators { get; set; }
         public ChatSession ChannelCreator { get; set; }
+        public ConcurrentBag<ChatSession> ChannelOperators { get; set; }
         public ConcurrentBag<ChatSession> BanList { get; set; }
         public ConcurrentBag<ChatSession> MuteUserList { get; set; }
         public ConcurrentBag<ChatSession> ChannelUsers { get; set; }
@@ -22,20 +22,25 @@ namespace Chat.Entity.Structure.ChatChannel
 
         public ChatChannelProperty()
         {
-            MaxNumberUser = 200;
             ChannelCreatedTime = DateTime.Now;
             ChannelMode = new ChatChannelMode();
             ChannelOperators = new ConcurrentBag<ChatSession>();
             BanList = new ConcurrentBag<ChatSession>();
             MuteUserList = new ConcurrentBag<ChatSession>();
             ChannelUsers = new ConcurrentBag<ChatSession>();
-            
         }
 
-        public void SetProperties(ChatSession changer,ChatCommandBase cmd)
+        public void SetDefaultProperties(ChatSession creator, JOIN cmd)
+        {
+            MaxNumberUser = 200;
+            ChannelCreator = creator;
+            ChannelName = cmd.ChannelName;
+            ChannelMode.SetDefaultModes();
+        }
+
+        public void SetProperties(ChatSession changer,MODE cmd)
         {
             ChannelCreator = changer;
-            ChannelName = ((JOIN)cmd).ChannelName;
             ChannelMode.SetModes(cmd);
             //at here we do some mode command
             //password
