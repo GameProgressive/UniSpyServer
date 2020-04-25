@@ -20,14 +20,14 @@ namespace Chat.Handler.CommandHandler
         {
             base.DataOperation();
             var result = from s in ChatSessionManager.Sessions.Values
-                         where s.ClientInfo.NickName == _whoisCmd.NickName
+                         where s.UserInfo.NickName == _whoisCmd.NickName
                          select new
                          {
-                             nickName = s.ClientInfo.NickName,
-                             name = s.ClientInfo.Name,
-                             userName = s.ClientInfo.UserName,
+                             nickName = s.UserInfo.NickName,
+                             name = s.UserInfo.Name,
+                             userName = s.UserInfo.UserName,
                              address = ((IPEndPoint)s.Socket.RemoteEndPoint).Address,
-                             joinedChannel = s.ClientInfo.JoinedChannels.Select(c => c.Property.ChannelName)
+                             joinedChannel = s.UserInfo.JoinedChannels.Select(c => c.Property.ChannelName)
                          };
 
             if (result.Count() != 1)
@@ -76,7 +76,7 @@ namespace Chat.Handler.CommandHandler
             {
                 _sendingBuffer = ChatCommandBase.BuildErrorRPL(ChatServer.ServerDomain,
                     _errorCode,
-                    $"{_session.ClientInfo.NickName} {_whoisCmd.NickName}", "No such nick.");
+                    $"{_session.UserInfo.NickName} {_whoisCmd.NickName}", "No such nick.");
             }
             else
             {

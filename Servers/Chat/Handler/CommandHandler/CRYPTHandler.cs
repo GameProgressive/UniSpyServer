@@ -23,20 +23,20 @@ namespace Chat.Handler.CommandHandler
 
             // CRYPT des 1 gamename
             //_clientInfo.GameName = _recv[3];
-            _session.ClientInfo.GameName = _cryptCmd.GameName;
+            _session.UserInfo.GameName = _cryptCmd.GameName;
         }
 
         public override void DataOperation()
         {
             base.DataOperation();
             string secretKey;
-            if (!DataOperationExtensions.GetSecretKey(_session.ClientInfo.GameName, out secretKey)
+            if (!DataOperationExtensions.GetSecretKey(_session.UserInfo.GameName, out secretKey)
                 || secretKey== null)
             {
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "secret key not found!");
                 return;
             }
-            _session.ClientInfo.GameSecretKey = secretKey;
+            _session.UserInfo.GameSecretKey = secretKey;
         }
 
         public override void ConstructResponse()
@@ -44,8 +44,8 @@ namespace Chat.Handler.CommandHandler
             base.ConstructResponse();
 
             // 2. Prepare two keys
-            ChatCrypt.Init(_session.ClientInfo.ClientCTX, ChatServer.ClientKey, _session.ClientInfo.GameSecretKey);
-            ChatCrypt.Init(_session.ClientInfo.ServerCTX, ChatServer.ServerKey, _session.ClientInfo.GameSecretKey);
+            ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatServer.ClientKey, _session.UserInfo.GameSecretKey);
+            ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatServer.ServerKey, _session.UserInfo.GameSecretKey);
 
             // 3. Response the crypt command
             _sendingBuffer = _cryptCmd.BuildResponse(ChatServer.ClientKey, ChatServer.ServerKey);
@@ -55,7 +55,7 @@ namespace Chat.Handler.CommandHandler
         {
             //set use encryption flag to true
             _client.SendAsync(_sendingBuffer);
-            _session.ClientInfo.UseEncryption = true;
+            _session.UserInfo.UseEncryption = true;
         }
     }
 }

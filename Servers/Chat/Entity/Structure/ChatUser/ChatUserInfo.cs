@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Chat.Entity.Structure.ChatChannel;
 
-namespace Chat.Entity.Structure
+namespace Chat.Entity.Structure.ChatUser
 {
-    public class ChatClientInfo
+    public class ChatUserInfo
     {
         //indicates which channel this user is in
         public List<ChatChannelBase> JoinedChannels { get; set; }
@@ -23,7 +23,7 @@ namespace Chat.Entity.Structure
 
         public bool UseEncryption;
 
-        public ChatClientInfo()
+        public ChatUserInfo()
         {
             NameSpaceID = 0;
             UseEncryption = false;

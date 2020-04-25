@@ -7,94 +7,85 @@ namespace Chat.Entity.Structure.ChatChannel
 {
     public class ChatChannelMode
     {
-        public Dictionary<char, char> ModesKV;
+        //i - toggle the invite-only channel flag;
+        public bool IsInviteOnly { get; protected set; }
+        //p - toggle the private channel flag;
+        public bool IsPrivateChannel { get; protected set; }
+        //s - toggle the secret channel flag;
+        public bool IsSecretChannel { get; protected set; }
+        //m - toggle the moderated channel;
+        public bool IsModeratedChannel { get; protected set; }
+        //n - toggle the no messages to channel from clients on the outside;
+        public bool IsAllowExternalMessage { get; protected set; }
+        //t - toggle the topic settable by channel operator only flag;
+        public bool IsTopicOnlySetByChannelOperator { get; protected set; }
 
         /// <summary>
         /// default constructor
         /// </summary>
         public ChatChannelMode()
         {
-            ModesKV = new Dictionary<char, char>();
-            SetDefaultModes();
-            //SetStandardChannel();
-            //SetModerate();
-            //SetAllowOutsideMsg();
+
         }
+
         public void SetDefaultModes()
         {
-            //    O - give "channel creator" status;
-            //    o - give / take channel operator privilege;
-            //    v - give / take the voice privilege;
-            //    a - toggle the anonymous channel flag;
-            //    i - toggle the invite-only channel flag;
-            //    m - toggle the moderated channel;
-            //    n - toggle the no messages to channel from clients on the
-            //        outside;
-            //    q - toggle the quiet channel flag;
-            //    p - toggle the private channel flag;
-            //    s - toggle the secret channel flag;
-            //    r - toggle the server reop channel flag;
-            //    t - toggle the topic settable by channel operator only flag;
-            //    k - set/remove the channel key(password);
-            //    l - set/remove the user limit to channel;
-            //    b - set/remove ban mask to keep users out;
-            //    e - set/remove an exception mask to override a ban mask;
-            //    I - set/remove an invitation mask to automatically override the invite-only flag;
-
-            ModesKV.Add('a', '-');
-            ModesKV.Add('i', '-');
-            ModesKV.Add('m', '-');
-            ModesKV.Add('n', '+');
-            ModesKV.Add('q', '-');
-            ModesKV.Add('p', '-');
-            ModesKV.Add('s', '-');
-            ModesKV.Add('r', '-');
-            ModesKV.Add('t', '+');
-            ModesKV.Add('I', '-');
+            IsModeratedChannel = true;
+            IsTopicOnlySetByChannelOperator = true;
         }
 
-        public void SetModes(ChatCommandBase cmd)
+        public void SetModes(MODE cmd)
         {
-            //when we really recieved mode command we do folloing
-            if (cmd.CommandName == "MODE")
+            switch (cmd.RequestType)
             {
-                MODE modeCmd = (MODE)cmd;
-                List<string> setMode = modeCmd.Modes.Where(m => m.Contains('+') || m.Contains('-')).ToList();
-                foreach (var m in setMode)
-                {
-                    ChangeMode(m);
-                }
+
             }
+            ////when we really recieved mode command we do folloing
+            //if (cmd.CommandName == "MODE")
+            //{
+            //    MODE modeCmd = (MODE)cmd;
+            //    List<string> setMode = modeCmd.Modes.Where(m => m.Contains('+') || m.Contains('-')).ToList();
+            //    foreach (var m in setMode)
+            //    {
+            //        ChangeMode(m);
+            //    }
+            //}
 
         }
 
         public void ChangeMode(string cmd)
         {
-            foreach (var m in ModesKV.Keys)
-            {
-                if (cmd.Contains(m))
-                {
-                    if (!cmd.Contains(ModesKV[m]))
-                    {
-                        //first char is the flag
-                        ModesKV[m] = cmd[0];
-                    }
-                }
-                else
-                {
-                    LogWriter.ToLog($"Unsupported channel mode: {m}");
-                }
-            }
+            
         }
 
         public string GetChannelMode()
         {
-            var mode = ModesKV.Where(c => c.Value == '+').Select(c=>c.Key);
-            string buffer="+";
-            foreach (var k in mode)
+            string buffer = "+";
+            if (IsInviteOnly)
             {
-                buffer += k;
+                buffer += "i";
             }
+            if (IsPrivateChannel)
+            {
+                buffer += "p";
+            }
+            if (IsSecretChannel)
+            {
+                buffer += "s";
+            }
+            if (IsModeratedChannel)
+            {
+                buffer += "m";
+            }
+            if (IsAllowExternalMessage)
+            {
+                buffer += "n";
+            }
+            if (IsTopicOnlySetByChannelOperator)
+            {
+                buffer += "t";
+            }
+
             //response is like +nt
             return buffer;
         }

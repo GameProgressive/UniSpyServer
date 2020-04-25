@@ -19,7 +19,7 @@ namespace Chat.Handler.CommandHandler
         public override void CheckRequest()
         {
             if (ChatSessionManager.Sessions.
-                Where(s => s.Value.ClientInfo.NickName == _nickCmd.NickName).Count() != 0)
+                Where(s => s.Value.UserInfo.NickName == _nickCmd.NickName).Count() != 0)
             {
                 _errorCode = ChatError.NickNameInUse;
             }
@@ -33,7 +33,7 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
-            _session.ClientInfo.NickName = _nickCmd.NickName;
+            _session.UserInfo.NickName = _nickCmd.NickName;
         }
 
         public override void ConstructResponse()

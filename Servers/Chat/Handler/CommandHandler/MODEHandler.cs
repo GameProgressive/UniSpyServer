@@ -21,7 +21,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             string modes =
-                _session.ClientInfo.JoinedChannels.
+                _session.UserInfo.JoinedChannels.
                 Where(c => c.Property.ChannelName == _modeCmd.ChannelName)
                 .First().Property.ChannelMode.GetChannelMode();
             _sendingBuffer = _modeCmd.GenerateResponse(modes);

@@ -6,6 +6,7 @@ using Chat.Handler.SystemHandler.ChatCommandManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using GameSpyLib.Network;
 using NetCoreServer;
+using System.Collections.Generic;
 using System.Net;
 
 namespace Chat.Server

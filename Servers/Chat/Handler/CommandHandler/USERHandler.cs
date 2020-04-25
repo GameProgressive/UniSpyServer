@@ -22,8 +22,8 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
-            _session.ClientInfo.UserName = _user.UserName;
-            _session.ClientInfo.Name = _user.Name;
+            _session.UserInfo.UserName = _user.UserName;
+            _session.UserInfo.Name = _user.Name;
             base.DataOperation();
         }
 

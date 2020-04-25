@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure.ChatUser;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.Encryption;
@@ -12,11 +12,11 @@ namespace Chat.Server
 {
     public class ChatSession : TemplateTcpSession
     {
-        public ChatClientInfo ClientInfo;
+        public ChatUserInfo UserInfo;
 
         public ChatSession(ChatServer server) : base(server)
         {
-            ClientInfo = new ChatClientInfo();
+            UserInfo = new ChatUserInfo();
         }
 
         protected override void OnReceived(string message)
@@ -28,7 +28,7 @@ namespace Chat.Server
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            if (ClientInfo.UseEncryption)
+            if (UserInfo.UseEncryption)
             {
                 DecryptData(ref buffer, size);
             }
@@ -43,7 +43,7 @@ namespace Chat.Server
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug,
                 $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
-            if (ClientInfo.UseEncryption)
+            if (UserInfo.UseEncryption)
             {
                 EncryptData(ref buffer, size);
             }
@@ -52,12 +52,12 @@ namespace Chat.Server
 
         private void DecryptData(ref byte[] data, long size)
         {
-            ChatCrypt.Handle(ClientInfo.ClientCTX, ref data, size);
+            ChatCrypt.Handle(UserInfo.ClientCTX, ref data, size);
         }
 
         private void EncryptData(ref byte[] buffer, long size)
         {
-            ChatCrypt.Handle(ClientInfo.ServerCTX, ref buffer, size);
+            ChatCrypt.Handle(UserInfo.ServerCTX, ref buffer, size);
         }
 
         protected override void OnDisconnected()
