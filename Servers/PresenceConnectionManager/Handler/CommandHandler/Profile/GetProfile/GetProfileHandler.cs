@@ -30,7 +30,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
                 return;
             }
 
-            if (uint.TryParse(_recv["profileid"], out _profileid))
+            if (!uint.TryParse(_recv["profileid"], out _profileid))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
