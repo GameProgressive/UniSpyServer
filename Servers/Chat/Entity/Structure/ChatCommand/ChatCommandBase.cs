@@ -71,16 +71,23 @@ namespace Chat.Entity.Structure.ChatCommand
         {
             return BuildNumericRPL(ChatServer.ServerDomain, (int)errorCode, cmdParam, message);
         }
-
         public static string BuildErrorRPL(string prefix, ChatError errorCode, string cmdParam, string message)
         {
             return BuildNumericRPL(prefix, (int)errorCode, cmdParam, message);
         }
-        //Some command need impelemt this method
 
+        public static string BuildNormalRPL(ChatResponseType cmdCode, string cmdParam, string message)
+        {
+            return BuildNumericRPL("", (int)cmdCode, cmdParam, message);
+        }
         public static string BuildNormalRPL(string prefix, ChatResponseType cmdCode, string cmdParam, string message)
         {
             return BuildNumericRPL(prefix, (int)cmdCode, cmdParam, message);
+        }
+
+        public static string BuildMessageRPL(string cmdParam, string message)
+        {
+            return BuildMessageRPL("", cmdParam, message);
         }
         public static string BuildMessageRPL(string prefix, string cmdParam, string message)
         {
@@ -105,6 +112,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
             return buffer;
         }
+
 
         protected static string BuildNumericRPL(string prefix, int cmdCode, string cmdParam, string message)
         {
@@ -134,7 +142,5 @@ namespace Chat.Entity.Structure.ChatCommand
 
             return buffer;
         }
-
-
     }
 }

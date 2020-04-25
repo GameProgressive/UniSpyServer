@@ -104,7 +104,7 @@ namespace Chat.Entity.Structure.ChatChannel
                 if (user == Property.ChannelCreator)
                 { nicks += "@" + user.UserInfo.NickName + " "; }
                 else
-                { nicks += user.UserInfo.NickName; }
+                { nicks += user.UserInfo.NickName+" "; }
             }
             //if user equals last user in channel we do not add space after it
             nicks = nicks.Substring(0, nicks.Length - 1);

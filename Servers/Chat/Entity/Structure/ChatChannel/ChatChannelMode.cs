@@ -34,28 +34,77 @@ namespace Chat.Entity.Structure.ChatChannel
             IsTopicOnlySetByChannelOperator = true;
         }
 
-        public void SetModes(MODE cmd)
+        public void ChangeModes(MODE cmd)
         {
             switch (cmd.RequestType)
             {
-
+                case ModeRequestType.SetChannelModes:
+                    SetChannelModes(cmd);
+                    break;
+                case ModeRequestType.SetChannelModesWithUserLimit:
+                    SetChannelModes(cmd);
+                    break;
             }
-            ////when we really recieved mode command we do folloing
-            //if (cmd.CommandName == "MODE")
-            //{
-            //    MODE modeCmd = (MODE)cmd;
-            //    List<string> setMode = modeCmd.Modes.Where(m => m.Contains('+') || m.Contains('-')).ToList();
-            //    foreach (var m in setMode)
-            //    {
-            //        ChangeMode(m);
-            //    }
-            //}
-
         }
 
-        public void ChangeMode(string cmd)
+        private void SetChannelModes(MODE cmd)
         {
-            
+            List<string> flags = new List<string>();
+            for (int i = 0; i < cmd.ModeFlag.Length; i += 2)
+            {
+                flags.Add($"{cmd.ModeFlag[i]}{cmd.ModeFlag[i + 1]}");
+            }
+            foreach (var f in flags)
+            {
+                SetModeByFlag(f);
+            }
+        }
+
+        private void SetModeByFlag(string flag)
+        {
+            //XiXpXsXmXnXtXlXe
+            switch (flag)
+            {
+                case "+i":
+                    IsInviteOnly = true;
+                    break;
+                case "-i":
+                    IsInviteOnly = false;
+                    break;
+                case "+p":
+                    IsPrivateChannel = true;
+                    break;
+                case "-p":
+                    IsPrivateChannel = false;
+                    break;
+                case "+s":
+                    IsSecretChannel = true;
+                    break;
+                case "-s":
+                    IsSecretChannel = false;
+                    break;
+                case "+m":
+                    IsModeratedChannel = true;
+                    break;
+                case "-m":
+                    IsModeratedChannel = false;
+                    break;
+                case "+n":
+                    IsAllowExternalMessage = true;
+                    break;
+                case "-n":
+                    IsAllowExternalMessage = false;
+                    break;
+                case "+t":
+                    IsTopicOnlySetByChannelOperator = true;
+                    break;
+                case "-t":
+                    IsTopicOnlySetByChannelOperator = false;
+                    break;
+                case "+e":
+                case "-e":
+                    break;
+            }
         }
 
         public string GetChannelMode()
