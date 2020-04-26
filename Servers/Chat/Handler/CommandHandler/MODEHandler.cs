@@ -43,12 +43,19 @@ namespace Chat.Handler.CommandHandler
             }
 
             //we check if the user is operator in channel
-            if (!_channel.Property.ChannelOperators.Contains(_session))
+            ChatChannelUser user;
+            if (!_channel.GetChannelUser(_session, out user))
             {
                 _errorCode = ChatError.DataOperation;
                 return;
             }
-            _channel.Property.SetProperties(_session,_modeCmd);
+
+            if (!user.IsChannelOperator)
+            {
+                _errorCode = ChatError.DataOperation;
+                return;
+            }
+            _channel.Property.SetProperties(user,_modeCmd);
 
         }
 

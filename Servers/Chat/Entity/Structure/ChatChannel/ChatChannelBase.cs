@@ -2,6 +2,7 @@
 using System.Net;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Server;
+using GameSpyLib.Logging;
 
 namespace Chat.Entity.Structure.ChatChannel
 {
@@ -14,52 +15,57 @@ namespace Chat.Entity.Structure.ChatChannel
             Property = new ChatChannelProperty();
         }
 
-        public void CreateChannel(ChatSession creator, JOIN cmd)
+        public void CreateChannel(ChatChannelUser creator, JOIN cmd)
         {
-            Property.SetDefaultProperties(creator,cmd);
-            JoinChannel(creator);
+            //simple check for avoiding program crash
+            if (Property.ChannelUsers.Count() != 0)
+            {
+                return;
+            }
+            Property.SetDefaultProperties(creator, cmd);
         }
 
 
-        public bool JoinChannel(ChatSession joiner)
+        public void JoinChannel(ChatChannelUser joiner)
         {
-            AddBindOnUserAndChannel(joiner);
+            //simple check for avoiding program crash
+            if (IsUserExisted(joiner))
+            {
+                return;
+            }
 
+            AddBindOnUserAndChannel(joiner);
 
             //first we send join information to all user in this channel
             MultiCastJoin(joiner);
-
-
-
 
             //then we send user list which already in this channel ???????????
             SendChannelUsersToJoiner(joiner);
 
             //send channel mode to joiner
             SendChannelModesToJoiner(joiner);
-
-            return true;
         }
 
-        public bool LeaveChannel(ChatSession leaver, string message)
+        public void LeaveChannel(ChatChannelUser leaver, string message)
         {
-            if (!Property.ChannelUsers.Contains(leaver))
+            if (!IsUserExisted(leaver))
             {
-                return false;
+                return;
             }
 
             RemoveBindOnUserAndChannel(leaver);
 
             MultiCastLeave(leaver, message);
 
-            return true;
+            return;
         }
 
-        protected void MultiCastJoin(ChatSession joiner)
+        protected void MultiCastJoin(ChatChannelUser joiner)
         {
+            string ip = ((IPEndPoint)joiner.Session.Socket.RemoteEndPoint).Address.ToString();
             string joinMessage =
                    ChatCommandBase.BuildMessageRPL(
-                       $"{joiner.UserInfo.NickName}!{joiner.UserInfo.UserName}@{((IPEndPoint)joiner.Socket.RemoteEndPoint).Address}",
+                       $"{joiner.UserInfo.NickName}!{joiner.UserInfo.UserName}@{ip}",
                        "JOIN", $"{Property.ChannelName}");
 
 
@@ -69,7 +75,8 @@ namespace Chat.Entity.Structure.ChatChannel
 
             MultiCast(joinMessage);
         }
-        protected void MultiCastLeave(ChatSession leaver, string message)
+
+        protected void MultiCastLeave(ChatChannelUser leaver, string message)
         {
             string leaveMessage = ChatCommandBase.BuildMessageRPL(
                 $"{leaver.UserInfo.NickName}!{leaver.UserInfo.UserName}@{ChatServer.ServerDomain}",
@@ -85,13 +92,13 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             foreach (var o in Property.ChannelUsers)
             {
-                o.SendAsync(message);
+                o.Session.SendAsync(message);
             }
 
             return true;
         }
 
-        public void SendChannelUsersToJoiner(ChatSession joiner)
+        public void SendChannelUsersToJoiner(ChatChannelUser joiner)
         {
             string modes = Property.ChannelMode.GetChannelMode();
 
@@ -101,27 +108,32 @@ namespace Chat.Entity.Structure.ChatChannel
             string nicks = "";
             foreach (var user in Property.ChannelUsers)
             {
-                if (user == Property.ChannelCreator)
-                { nicks += "@" + user.UserInfo.NickName + " "; }
+                if (user.IsChannelCreator)
+                {
+                    nicks += "@" + user.UserInfo.NickName + " ";
+                }
                 else
-                { nicks += user.UserInfo.NickName+" "; }
+                {
+                    nicks += user.UserInfo.NickName + " ";
+                }
             }
             //if user equals last user in channel we do not add space after it
             nicks = nicks.Substring(0, nicks.Length - 1);
 
             //check the message :@<nickname> whether broadcast char @ ?
-            buffer += ChatCommandBase.BuildNormalRPL("www.rspy.cc",
+            buffer += ChatCommandBase.BuildNormalRPL(
                ChatResponseType.NameReply,
-               $"{ joiner.UserInfo.NickName} = { Property.ChannelName}",
+               $"{joiner.UserInfo.NickName} = {Property.ChannelName}",
                $"{nicks}");
-            buffer += ChatCommandBase.BuildNormalRPL("www.rspy.cc",
+            buffer += ChatCommandBase.BuildNormalRPL(
                 ChatResponseType.EndOfNames,
                 $"{joiner.UserInfo.NickName} {Property.ChannelName}",
                 @"End of /NAMES list.");
 
-            joiner.SendAsync(buffer);
+            joiner.Session.SendAsync(buffer);
         }
-        public void SendChannelModesToJoiner(ChatSession joiner)
+
+        public void SendChannelModesToJoiner(ChatChannelUser joiner)
         {
             string modes = Property.ChannelMode.GetChannelMode();
             string modesMessage =
@@ -130,11 +142,11 @@ namespace Chat.Entity.Structure.ChatChannel
                     ChatResponseType.ChannelModels,
                     $"{joiner.UserInfo.NickName} {Property.ChannelName} {modes}", "");
 
-            joiner.SendAsync(modesMessage);
+            joiner.Session.SendAsync(modesMessage);
         }
 
 
-        public void AddBindOnUserAndChannel(ChatSession joiner)
+        protected void AddBindOnUserAndChannel(ChatChannelUser joiner)
         {
             if (!Property.ChannelUsers.Contains(joiner))
                 Property.ChannelUsers.Add(joiner);
@@ -143,13 +155,42 @@ namespace Chat.Entity.Structure.ChatChannel
                 joiner.UserInfo.JoinedChannels.Add(this);
 
         }
-        public void RemoveBindOnUserAndChannel(ChatSession leaver)
+        protected void RemoveBindOnUserAndChannel(ChatChannelUser leaver)
         {
             if (!Property.ChannelUsers.Contains(leaver))
                 Property.ChannelUsers.TryTake(out leaver);
 
             if (!leaver.UserInfo.JoinedChannels.Contains(this))
                 leaver.UserInfo.JoinedChannels.Remove(this);
+        }
+
+        public bool GetChannelUser(ChatSession session, out ChatChannelUser user)
+        {
+            var result = Property.ChannelUsers.Where(u => u.Session.Equals(session));
+            if (result.Count() == 1)
+            {
+                user = result.First();
+                return true;
+            }
+            user = null;
+            return false;
+        }
+
+        public bool IsUserBanned(ChatChannelUser user)
+        {
+            if (Property.BanList.Where(u => u.Session.Equals(user.Session)).Count() == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+        public bool IsUserExisted(ChatChannelUser user)
+        {
+            if (Property.ChannelUsers.Where(u => u.Session.Equals(user.Session)).Count() == 1)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

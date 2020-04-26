@@ -1,11 +1,8 @@
-﻿using System.Linq;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChannelManage;
-using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Logging;
 
 namespace Chat.Handler.CommandHandler
 {
@@ -16,6 +13,7 @@ namespace Chat.Handler.CommandHandler
     {
         JOIN _joinCmd;
         ChatChannelBase _channel;
+        ChatChannelUser _channelUser;
         public JOINHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
         {
             _joinCmd = (JOIN)cmd;
@@ -30,45 +28,25 @@ namespace Chat.Handler.CommandHandler
         //发送频道模式给此用户
         //发送频道用户列表给此用户
         //_errorCode>1024
-
+        public override void CheckRequest()
+        {
+            base.CheckRequest();
+            ChatChannelManager.GetChannel(_joinCmd.ChannelName, out _channel);
+        }
 
         public override void DataOperation()
         {
             base.DataOperation();
 
-            ChatChannelManager.Channels.TryGetValue(_joinCmd.ChannelName, out _channel);
+            _channelUser = new ChatChannelUser(_session);
+
+            //if there do not have a channel we create it 
             if (_channel == null)
             {
-                _channel = new ChatChannelBase();
-                _channel.CreateChannel(_session, _joinCmd);
-                ChatChannelManager.Channels.TryAdd(_joinCmd.ChannelName, _channel);
-            }
-            //channel.JoinChannel(_session);
-            if (_channel.Property.ChannelMode.IsInviteOnly)
-            {
-                //invited only
-                _errorCode = ChatError.InviteOnlyChan;
-                return;
-            }
-            if (_channel.Property.BanList.Where(c => c.Equals(_session)).Count() == 1)
-            {
-                _errorCode = ChatError.BannedFromChan;
-                return;
+                CreateChannel();
             }
 
-            //if (_channel.Property.ChannelUsers.Where(u => u.Equals(_session)).Count() != 0)
-            //{
-            //    //already in channel
-            //    _errorCode = ChatError.DataOperation;
-            //    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "You already in this channel");
-            //    //force disconnect
-            //    _session.Disconnect();
-            //    return;
-            //}
-
-            //if all pass we excute join channel
-            _channel.JoinChannel(_session);
-            
+            JoinChannel();
         }
 
         public override void ConstructResponse()
@@ -82,6 +60,39 @@ namespace Chat.Handler.CommandHandler
                     ChatCommandBase.BuildErrorRPL("",
                     _errorCode, $"* {_joinCmd.ChannelName}", "");
             }
+        }
+
+        public void CreateChannel()
+        {
+            _channel = new ChatChannelBase();
+            _channelUser.SetCreatorProperties();
+            _channel.CreateChannel(_channelUser, _joinCmd);
+            ChatChannelManager.AddChannel(_joinCmd.ChannelName, _channel);
+        }
+
+        public void JoinChannel()
+        {
+            //channel.JoinChannel(_session);
+            if (_channel.Property.ChannelMode.IsInviteOnly)
+            {
+                //invited only
+                _errorCode = ChatError.InviteOnlyChan;
+                return;
+            }
+
+            if (_channel.IsUserBanned(_channelUser))
+            {
+                _errorCode = ChatError.BannedFromChan;
+                return;
+            }
+            if (_channel.IsUserExisted(_channelUser))
+            {
+                _errorCode = ChatError.DataOperation;
+                return;
+            }
+            //if all pass, it mean  we excute join channel
+            _channelUser.SetDefaultProperties();
+            _channel.JoinChannel(_channelUser);
         }
     }
 }

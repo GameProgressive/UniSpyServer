@@ -1,8 +1,6 @@
-﻿using System;
-using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChannelManage;
-using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -23,7 +21,16 @@ namespace Chat.Handler.CommandHandler
 
         public override void ConstructResponse()
         {
-            _channel.SendChannelUsersToJoiner(_session);
+            ChatChannelUser user;
+
+            //can not find any user
+            if (!_channel.GetChannelUser(_session, out user))
+            {
+                _errorCode = Entity.Structure.ChatError.DataOperation;
+                return;
+            }
+
+            _channel.SendChannelUsersToJoiner(user);
 
             base.ConstructResponse();
         }

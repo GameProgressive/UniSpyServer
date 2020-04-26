@@ -35,7 +35,14 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = Entity.Structure.ChatError.DataOperation;
                 return;
             }
-            channel.LeaveChannel(_session,_partCmd.Reason);
+
+            ChatChannelUser user;
+            if (!channel.GetChannelUser(_session, out user))
+            {
+                _errorCode = Entity.Structure.ChatError.DataOperation;
+                return;
+            }
+            channel.LeaveChannel(user, _partCmd.Reason);
         }
     }
 }

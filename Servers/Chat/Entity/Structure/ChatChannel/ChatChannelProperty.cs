@@ -13,11 +13,8 @@ namespace Chat.Entity.Structure.ChatChannel
         public uint MaxNumberUser { get; set; }
         public ChatChannelMode ChannelMode { get; set; }
         public DateTime ChannelCreatedTime { get; set; }
-        public ChatSession ChannelCreator { get; set; }
-        public ConcurrentBag<ChatSession> ChannelOperators { get; set; }
-        public ConcurrentBag<ChatSession> BanList { get; set; }
-        public ConcurrentBag<ChatSession> MutedList { get; set; }
-        public ConcurrentBag<ChatSession> ChannelUsers { get; set; }
+        public ConcurrentBag<ChatChannelUser> BanList { get; set; }
+        public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
         public string Password { get; set; }
 
 
@@ -25,16 +22,13 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             ChannelCreatedTime = DateTime.Now;
             ChannelMode = new ChatChannelMode();
-            ChannelOperators = new ConcurrentBag<ChatSession>();
-            BanList = new ConcurrentBag<ChatSession>();
-            MutedList = new ConcurrentBag<ChatSession>();
-            ChannelUsers = new ConcurrentBag<ChatSession>();
+            BanList = new ConcurrentBag<ChatChannelUser>();
+            ChannelUsers = new ConcurrentBag<ChatChannelUser>();
         }
 
-        public void SetDefaultProperties(ChatSession creator, JOIN cmd)
+        public void SetDefaultProperties(ChatChannelUser creator, JOIN cmd)
         {
             MaxNumberUser = 200;
-            ChannelCreator = creator;
             ChannelName = cmd.ChannelName;
             ChannelMode.SetDefaultModes();
         }
@@ -46,7 +40,7 @@ namespace Chat.Entity.Structure.ChatChannel
         /// </summary>
         /// <param name="changer"></param>
         /// <param name="cmd"></param>
-        public void SetProperties(ChatSession changer, MODE cmd)
+        public void SetProperties(ChatChannelUser changer, MODE cmd)
         {
             switch (cmd.RequestType)
             {
@@ -107,7 +101,7 @@ namespace Chat.Entity.Structure.ChatChannel
             {
                 return;
             }
-            ChatSession user = result.First();
+            ChatChannelUser user = result.First();
 
             if (BanList.Where(u => u.UserInfo.NickName == cmd.NickName).Count() == 1)
             {
@@ -121,7 +115,7 @@ namespace Chat.Entity.Structure.ChatChannel
             var result = BanList.Where(u => u.UserInfo.NickName == cmd.NickName);
             if (result.Count() == 1)
             {
-                ChatSession user = result.First();
+                ChatChannelUser user = result.First();
                 BanList.TryTake(out user);
                 return;
             }
@@ -153,14 +147,14 @@ namespace Chat.Entity.Structure.ChatChannel
             {
                 return;
             }
-            ChatSession user = result.First();
+            ChatChannelUser user = result.First();
 
             //if this user is already in operator we do not add it
-            if (ChannelOperators.Where(u => u.Equals(user)).Count() != 0)
+            if (user.IsChannelOperator)
             {
                 return;
             }
-            ChannelOperators.Add(user);
+            user.SetChannelOperator(true);
         }
         private void RemoveChannelOperator(MODE cmd)
         {
@@ -169,11 +163,11 @@ namespace Chat.Entity.Structure.ChatChannel
             {
                 return;
             }
-            ChatSession user = result.First();
+            ChatChannelUser user = result.First();
 
-            if (ChannelOperators.Contains(user))
+            if (user.IsChannelCreator)
             {
-                ChannelOperators.TryTake(out user);
+                user.SetChannelCreator(false);
             }
         }
         private void EnableUserVoicePermission(MODE cmd)
@@ -184,11 +178,11 @@ namespace Chat.Entity.Structure.ChatChannel
                 return;
             }
 
-            ChatSession user = result.First();
+            ChatChannelUser user = result.First();
 
-            if (MutedList.Contains(user))
+            if (user.IsVoiceable)
             {
-                MutedList.TryTake(out user);
+                user.SetVoicePermission(true);
             }
 
         }
@@ -200,10 +194,10 @@ namespace Chat.Entity.Structure.ChatChannel
                 return;
             }
 
-            ChatSession user = result.First();
-            if (!MutedList.Contains(user))
+            ChatChannelUser user = result.First();
+            if (user.IsVoiceable)
             {
-                MutedList.Add(user);
+                user.SetVoicePermission(false);
             }
         }
     }
