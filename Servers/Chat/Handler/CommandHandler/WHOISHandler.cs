@@ -35,6 +35,7 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = Entity.Structure.ChatError.DataOperation;
                 return;
             }
+
             var info = result.FirstOrDefault();
             _sendingBuffer = ChatCommandBase.BuildNormalRPL(
                 ChatServer.ServerDomain,
@@ -51,22 +52,19 @@ namespace Chat.Handler.CommandHandler
                     channels += $"@{c} ";
                 }
 
+
                 _sendingBuffer += ChatCommandBase.BuildNormalRPL(
                     ChatServer.ServerDomain,
                     Entity.Structure.ChatResponseType.WhoIsChannels,
                     $"{info.nickName} {info.name}",
                     channels
                     );
-                _sendingBuffer += ChatCommandBase.BuildNormalRPL(
-                        ChatServer.ServerDomain,
-                        Entity.Structure.ChatResponseType.EndOfWhoIs,
-                        $"{info.nickName} {info.name}", "End of /WHOIS list."
-                        );
             }
-            else
-            {
-                _errorCode = Entity.Structure.ChatError.NoSuchNick;
-            }
+            _sendingBuffer += ChatCommandBase.BuildNormalRPL(
+                    ChatServer.ServerDomain,
+                    Entity.Structure.ChatResponseType.EndOfWhoIs,
+                    $"{info.nickName} {info.name}", "End of /WHOIS list."
+                    );
         }
 
         public override void ConstructResponse()
@@ -77,11 +75,6 @@ namespace Chat.Handler.CommandHandler
                 _sendingBuffer = ChatCommandBase.BuildErrorRPL(ChatServer.ServerDomain,
                     _errorCode,
                     $"{_session.UserInfo.NickName} {_whoisCmd.NickName}", "No such nick.");
-            }
-            else
-            {
-                _errorCode = Entity.Structure.ChatError.ConstructResponse;
-                return;
             }
         }
 

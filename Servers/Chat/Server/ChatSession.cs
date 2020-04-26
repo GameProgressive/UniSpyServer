@@ -2,6 +2,7 @@
 using Chat.Entity.Structure.ChatUser;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
+using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Handler.SystemHandler.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
@@ -42,14 +43,25 @@ namespace Chat.Server
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug,
-                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             if (UserInfo.UseEncryption)
             {
                 EncryptData(ref buffer, size);
             }
-            return BaseSendAsync(buffer, offset, size);
+
+
+
+            if (UserInfo.IsQuietMode)
+            {
+                return false;
+            }
+
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug,
+                    $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+
+            BaseSendAsync(buffer, offset, size);
+
+            return true;
         }
 
         private void DecryptData(ref byte[] data, long size)
@@ -70,6 +82,9 @@ namespace Chat.Server
                     c.Property.ChannelUsers.Where(u => u.Session.Equals(this)).First();
                 c.LeaveChannel(user, "");
             }
+
+            ChatSessionManager.RemoveSession(this);
+
             base.OnDisconnected();
         }
     }

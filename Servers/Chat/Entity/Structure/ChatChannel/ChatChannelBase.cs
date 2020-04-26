@@ -157,10 +157,10 @@ namespace Chat.Entity.Structure.ChatChannel
         }
         protected void RemoveBindOnUserAndChannel(ChatChannelUser leaver)
         {
-            if (!Property.ChannelUsers.Contains(leaver))
+            if (Property.ChannelUsers.Contains(leaver))
                 Property.ChannelUsers.TryTake(out leaver);
 
-            if (!leaver.UserInfo.JoinedChannels.Contains(this))
+            if (leaver.UserInfo.JoinedChannels.Contains(this))
                 leaver.UserInfo.JoinedChannels.Remove(this);
         }
 

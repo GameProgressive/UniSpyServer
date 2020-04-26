@@ -7,6 +7,7 @@ namespace Chat.Entity.Structure.ChatChannel
 {
     public class ChatChannelMode
     {
+
         //i - toggle the invite-only channel flag;
         public bool IsInviteOnly { get; protected set; }
         //p - toggle the private channel flag;

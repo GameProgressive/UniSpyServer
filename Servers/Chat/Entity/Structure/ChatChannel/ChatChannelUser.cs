@@ -10,7 +10,6 @@ namespace Chat.Entity.Structure.ChatChannel
             Session = session;
             UserInfo = session.UserInfo;
         }
-
         public bool IsVoiceable { get; protected set; }
         public bool IsChannelCreator { get; protected set; }
         public bool IsChannelOperator { get; protected set; }

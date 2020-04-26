@@ -37,9 +37,8 @@ namespace Chat.Server
         {
             //add sessions to session manager
             ChatSession session = new ChatSession(this);
-            ChatSessionManager.Sessions.TryAdd(session.Id, session);
+            ChatSessionManager.AddSession(session);
             return session;
         }
-
     }
 }

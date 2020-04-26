@@ -74,10 +74,6 @@ namespace Chat.Entity.Structure.ChatChannel
                 case ModeRequestType.DisableUserVoicePermission:
                     DisableUserVoicePermission(cmd);
                     break;
-                case ModeRequestType.EnableUserQuietFlag:
-                    break;
-                case ModeRequestType.DisableUserQuietFlag:
-                    break;
                 case ModeRequestType.SetChannelModesWithUserLimit:
                     AddChannelUserLimits(cmd);
                     goto default;

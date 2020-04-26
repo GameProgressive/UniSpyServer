@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Server;
@@ -18,8 +16,7 @@ namespace Chat.Handler.CommandHandler
 
         public override void CheckRequest()
         {
-            if (ChatSessionManager.Sessions.
-                Where(s => s.Value.UserInfo.NickName == _nickCmd.NickName).Count() != 0)
+            if (ChatSessionManager.IsNickNameExisted(_nickCmd.NickName))
             {
                 _errorCode = ChatError.NickNameInUse;
             }

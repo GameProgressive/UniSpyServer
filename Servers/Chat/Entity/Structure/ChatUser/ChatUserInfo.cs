@@ -7,7 +7,7 @@ namespace Chat.Entity.Structure.ChatUser
     {
         //indicates which channel this user is in
         public List<ChatChannelBase> JoinedChannels { get; set; }
-
+        public bool IsQuietMode { get; protected set; }
         public string GameName { get; set; }
         public string NickName { get; set; }
         public string UserName { get; set; }
@@ -27,9 +27,14 @@ namespace Chat.Entity.Structure.ChatUser
         {
             NameSpaceID = 0;
             UseEncryption = false;
+            IsQuietMode = false;
             ClientCTX = new GSPeerChatCTX();
             ServerCTX = new GSPeerChatCTX();
             JoinedChannels = new List<ChatChannelBase>();
+        }
+        public void SetQuietModeFlag(bool flag)
+        {
+            IsQuietMode = flag;
         }
     }
 }
