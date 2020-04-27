@@ -44,24 +44,20 @@ namespace Chat.Server
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
 
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug,
+                    $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+
             if (UserInfo.UseEncryption)
             {
                 EncryptData(ref buffer, size);
             }
-
-
 
             if (UserInfo.IsQuietMode)
             {
                 return false;
             }
 
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug,
-                    $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
-
-            BaseSendAsync(buffer, offset, size);
-
-            return true;
+            return BaseSendAsync(buffer, offset, size);
         }
 
         private void DecryptData(ref byte[] data, long size)

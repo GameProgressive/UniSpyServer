@@ -19,8 +19,17 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             packet.Parse(_recv);
             _sendingBuffer = packet.GenerateResponse();
             QRClient client = (QRClient)_client.GetInstance();
-            var gameServer = GameServer.GetServers(client.RemoteEndPoint).First();
+            var result = GameServer.GetServers(client.RemoteEndPoint);
+            if (result.Count != 1)
+            {
+                _errorCode = Entity.Enumerator.QRErrorCode.Database;
+                return;
+            }
+
+            GameServer gameServer = result.First();
+
             gameServer.LastPacket = DateTime.Now;
+
             GameServer.UpdateServer
                 (
                 client.RemoteEndPoint,

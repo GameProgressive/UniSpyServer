@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Server;
 using System.Linq;
 using GameSpyLib.Logging;
+using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.ChatChannel
 {
     public class ChatChannelProperty
     {
-        public string ChannelName { get; set; }
-        public uint MaxNumberUser { get; set; }
+        public string ChannelName { get; protected set; }
+        public uint MaxNumberUser { get; protected set; }
         public ChatChannelMode ChannelMode { get; set; }
-        public DateTime ChannelCreatedTime { get; set; }
+        public DateTime ChannelCreatedTime { get; protected set; }
         public ConcurrentBag<ChatChannelUser> BanList { get; set; }
         public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
         public string Password { get; set; }
-
+        public Dictionary<string, string> ChannelKeyValue { get; protected set; }
+        public string ChannelTopic { get; protected set; }
 
         public ChatChannelProperty()
         {
@@ -196,5 +197,11 @@ namespace Chat.Entity.Structure.ChatChannel
                 user.SetVoicePermission(false);
             }
         }
+
+        public void ChangeTopic(string topic)
+        {
+            ChannelTopic = topic;
+        }
+
     }
 }

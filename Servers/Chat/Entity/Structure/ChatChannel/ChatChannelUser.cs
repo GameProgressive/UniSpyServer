@@ -1,20 +1,25 @@
 ﻿using Chat.Entity.Structure.ChatUser;
 using Chat.Server;
+using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.ChatChannel
 {
     public class ChatChannelUser
     {
-        public ChatChannelUser(ChatSession session)
-        {
-            Session = session;
-            UserInfo = session.UserInfo;
-        }
         public bool IsVoiceable { get; protected set; }
         public bool IsChannelCreator { get; protected set; }
         public bool IsChannelOperator { get; protected set; }
         public ChatSession Session { get; protected set; }
         public ChatUserInfo UserInfo { get; protected set; }
+
+        public Dictionary<string, string> UserKeyValue { get; protected set; }
+
+        public ChatChannelUser(ChatSession session)
+        {
+            Session = session;
+            UserInfo = session.UserInfo;
+            UserKeyValue = new Dictionary<string, string>();
+        }
 
         public void SetDefaultProperties()
         {
@@ -44,6 +49,11 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             IsChannelOperator = flag;
             return this;
+        }
+
+        public void SetUserKeyValue(Dictionary<string,string> data)
+        {
+            UserKeyValue = data;
         }
     }
 }
