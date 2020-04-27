@@ -16,7 +16,7 @@ namespace Chat.Entity.Structure.ChatChannel
         public ConcurrentBag<ChatChannelUser> BanList { get; set; }
         public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
         public string Password { get; set; }
-        public Dictionary<string, string> ChannelKeyValue { get; protected set; }
+        public Dictionary<string,string> ChannelKeyValue { get; protected set; }
         public string ChannelTopic { get; protected set; }
 
         public ChatChannelProperty()
@@ -25,6 +25,7 @@ namespace Chat.Entity.Structure.ChatChannel
             ChannelMode = new ChatChannelMode();
             BanList = new ConcurrentBag<ChatChannelUser>();
             ChannelUsers = new ConcurrentBag<ChatChannelUser>();
+            ChannelKeyValue = new Dictionary<string, string>();
         }
 
         public void SetDefaultProperties(ChatChannelUser creator, JOIN cmd)
@@ -198,10 +199,13 @@ namespace Chat.Entity.Structure.ChatChannel
             }
         }
 
-        public void ChangeTopic(string topic)
+        public void SetChannelTopic(string topic)
         {
             ChannelTopic = topic;
         }
-
+        public void SetChannelCookie(Dictionary<string,string> kv)
+        {
+            ChannelKeyValue = kv;
+        }
     }
 }

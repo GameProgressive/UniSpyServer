@@ -5,11 +5,11 @@ namespace Chat.Entity.Structure.ChatCommand
 {
     public class SETCHANKEY : ChatChannelCommandBase
     {
-        public Dictionary<string, string> KeyValues { get; protected set; }
+        public Dictionary<string, string> KeyValue { get; protected set; }
 
         public SETCHANKEY()
         {
-            KeyValues = new Dictionary<string, string>();
+            KeyValue = new Dictionary<string, string>();
         }
 
         public override bool Parse(string request)
@@ -21,7 +21,9 @@ namespace Chat.Entity.Structure.ChatCommand
             if (_longParam == null)
                 return false;
 
-            KeyValues = StringExtensions.ConvertKVStrToDic(_longParam);
+            _longParam = _longParam.Substring(1);
+
+            KeyValue = StringExtensions.ConvertKVStrToDic(_longParam);
 
             return true;
         }

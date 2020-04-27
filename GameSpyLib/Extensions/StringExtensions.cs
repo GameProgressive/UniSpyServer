@@ -111,5 +111,24 @@ namespace GameSpyLib.Extensions
 
             return dic;
         }
+        public static string ConvertDicKVToStr(Dictionary<string, string> kv)
+        {
+            string buffer = @"\";
+            foreach (var data in kv)
+            {
+                buffer += data.Key + @"\" + data.Value + @"\";
+            }
+
+            buffer = buffer.Substring(0, buffer.Length - 1);
+
+            return buffer;
+        }
+
+        public static List<string> ConvertKeyStrToList(string keyStr)
+        {
+            List<string> data = keyStr.Split(@"\",StringSplitOptions.RemoveEmptyEntries).ToList();
+
+           return data;
+        }
     }
 }

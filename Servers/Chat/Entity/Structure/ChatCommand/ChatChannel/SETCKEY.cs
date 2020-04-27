@@ -6,6 +6,7 @@ namespace Chat.Entity.Structure.ChatCommand
     public class SETCKEY : ChatChannelCommandBase
     {
         public string UserName { get; protected set; }
+
         public Dictionary<string, string> KeyValues { get; protected set; }
 
         public SETCKEY()
@@ -18,6 +19,10 @@ namespace Chat.Entity.Structure.ChatCommand
             { return false; }
             if (_longParam == null)
             { return false; }
+
+            UserName = _cmdParams[1];
+
+            _longParam = _longParam.Substring(1);
 
             KeyValues = StringExtensions.ConvertKVStrToDic(_longParam);
 
