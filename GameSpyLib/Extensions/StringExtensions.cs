@@ -102,7 +102,7 @@ namespace GameSpyLib.Extensions
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
             List<string> keyValueList =
-               kvStr.TrimStart('\\').Split("\\", StringSplitOptions.RemoveEmptyEntries).ToList();
+               kvStr.Split("\\", StringSplitOptions.RemoveEmptyEntries).ToList();
 
             for (int i = 0; i < keyValueList.Count; i = i + 2)
             {

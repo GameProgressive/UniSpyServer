@@ -74,8 +74,13 @@ namespace Chat.Server
         {
             foreach (var c in ChatChannelManager.Channels.Values)
             {
-                ChatChannelUser user =
-                    c.Property.ChannelUsers.Where(u => u.Session.Equals(this)).First();
+                ChatChannelUser user;
+
+                if (!c.GetChannelUser(this, out user))
+                {
+                    continue;
+                }
+
                 c.LeaveChannel(user, "");
             }
 
