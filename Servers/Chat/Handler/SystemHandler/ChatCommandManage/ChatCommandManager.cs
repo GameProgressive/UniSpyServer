@@ -30,7 +30,7 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             AddCommand(new SETCKEY(), typeof(SETCKEYHandler));
             AddCommand(new SETCHANKEY(), typeof(SETCHANKEYHandler));
             AddCommand(new GETCKEY(), typeof(GETCKEYHandler));
-
+            AddCommand(new PRIVMSG(), typeof(PRIVMSGHandler));
         }
 
         public ChatCommandManager AddCommand(ChatCommandBase cmd, Type cmdHandlerType)

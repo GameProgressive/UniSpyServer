@@ -97,6 +97,19 @@ namespace Chat.Entity.Structure.ChatChannel
 
             return true;
         }
+        public virtual bool MultiCastExceptSender(ChatChannelUser sender, string message)
+        {
+            foreach (var o in Property.ChannelUsers)
+            {
+                if (o.Session.Id == sender.Session.Id)
+                {
+                    continue;
+                }
+                o.Session.SendAsync(message);
+            }
+
+            return true;
+        }
 
         public void SendChannelUsersToJoiner(ChatChannelUser joiner)
         {

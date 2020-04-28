@@ -61,8 +61,13 @@ namespace Chat.Handler.CommandHandler
                         flags += @"\" + k + @"\" + user.UserKeyValue[k];
                     }
                 }
+                //we do not have key value so we do not construct getckey response
+                //if (flags == "")
+                //{
+                //    return;
+                //}
                 flags += "\0";
-
+                
                 _sendingBuffer +=
               ChatCommandBase.BuildNormalRPL(
                   ChatResponseType.GetCKey,
