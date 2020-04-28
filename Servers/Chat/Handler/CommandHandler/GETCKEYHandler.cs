@@ -24,9 +24,11 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = ChatError.Parse;
                 return;
             }
+
+            //check whether user1 will get user2's key value by single search
             if (!_channel.GetChannelUser(_session, out _user))
             {
-                _errorCode = ChatError.Parse;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
         }
@@ -36,11 +38,11 @@ namespace Chat.Handler.CommandHandler
             base.DataOperation();
             switch (_cmd.RequestType)
             {
-                case GetKeyType.GetAllChannelUserKeyValue:
-                    GetAllChannelUserKeyValue();
+                case GetKeyType.GetChannelUsersKeyValue:
+                    GetChannelUsersKeyValue();
                     break;
                 case GetKeyType.GetChannelUserKeyValue:
-                    GetUserKeyValue();
+                    GetChannelUserKeyValue();
                     break;
             }
 
@@ -48,58 +50,50 @@ namespace Chat.Handler.CommandHandler
         }
 
 
-        private void GetAllChannelUserKeyValue()
+        private void GetChannelUsersKeyValue()
         {
             _sendingBuffer = "";
             foreach(var user in _channel.Property.ChannelUsers)
             {
-                string flags = "";
-                foreach (var k in _cmd.Keys)
-                {
-                    if (user.UserKeyValue.ContainsKey(k))
-                    {
-                        flags += @"\" + k + @"\" + user.UserKeyValue[k];
-                    }
-                }
-                //we do not have key value so we do not construct getckey response
-                //if (flags == "")
-                //{
-                //    return;
-                //}
-                flags += "\0";
-                
-                _sendingBuffer +=
-              ChatCommandBase.BuildNormalRPL(
-                  ChatResponseType.GetCKey,
-                  $"{_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}", "");
+                GetUserKeyValue(user);
             }
         }
-
-        private void GetUserKeyValue()
+        private void GetChannelUserKeyValue()
         {
+            GetUserKeyValue(_user);
+        }
+        private void GetUserKeyValue(ChatChannelUser user)
+        {
+            //we do not have key value so we do not construct getckey response
+            if (user.UserKeyValue.Count == 0)
+            {
+                return;
+            }
+
             string flags = "";
             foreach (var k in _cmd.Keys)
             {
-                if (_user.UserKeyValue.ContainsKey(k))
+                if (user.UserKeyValue.ContainsKey(k))
                 {
-                    flags += @"\" + k + @"\" + _user.UserKeyValue[k];
+                    flags += @"\" + k + @"\" + user.UserKeyValue[k];
                 }
             }
+
             flags += "\0";
 
             _sendingBuffer +=
-          ChatCommandBase.BuildNormalRPL(
+          ChatCommandBase.BuildNormalRPL(ChatServer.ServerDomain,
               ChatResponseType.GetCKey,
-              $"{_channel.Property.ChannelName} {_user.UserInfo.NickName} {_cmd.Cookie} {flags} param5", "");
+              $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}", "");
         }
 
         private void BuildGetCKeyEndMessage()
         {
             _sendingBuffer +=
-                ChatCommandBase.BuildNormalRPL(
+                ChatCommandBase.BuildNormalRPL(ChatServer.ServerDomain,
                 ChatResponseType.EndGetCKey,
-                $"{_channel.Property.ChannelName} {_cmd.Cookie} param3 param4",
-                "End Of GETCKEY.");
+                $"* {_channel.Property.ChannelName} {_cmd.Cookie}",
+                "End Of /GETCKEY.");
         }
     }
 }

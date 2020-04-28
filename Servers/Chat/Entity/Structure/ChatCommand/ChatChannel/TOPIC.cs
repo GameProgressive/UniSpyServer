@@ -2,7 +2,7 @@
 {
     public class TOPIC : ChatChannelCommandBase
     {
-        public string Topic { get; protected set; }
+        public string ChannelTopic { get; protected set; }
 
         public override bool Parse(string request)
         {
@@ -12,11 +12,11 @@
             }
             if (_longParam == null)
             {
-                Topic = "";
+                ChannelTopic = "";
             }
             else
             {
-                Topic = _longParam;
+                ChannelTopic = _longParam;
             }
             return true;
         }

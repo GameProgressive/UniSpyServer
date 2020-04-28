@@ -31,6 +31,8 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             AddCommand(new SETCHANKEY(), typeof(SETCHANKEYHandler));
             AddCommand(new GETCKEY(), typeof(GETCKEYHandler));
             AddCommand(new PRIVMSG(), typeof(PRIVMSGHandler));
+            AddCommand(new TOPIC(),typeof(TOPICHandler));
+            AddCommand(new PING(), typeof(PINGHandler));
         }
 
         public ChatCommandManager AddCommand(ChatCommandBase cmd, Type cmdHandlerType)
