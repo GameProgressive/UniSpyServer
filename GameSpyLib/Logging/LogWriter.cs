@@ -131,7 +131,7 @@ namespace GameSpyLib.Logging
 
         public static void LogCurrentClass(object param)
         {
-            ToLog(LogEventLevel.Debug, $"[ => ] [{param.GetType().Name}]");
+            ToLog(LogEventLevel.Verbose, $"[ => ] [{param.GetType().Name}]");
         }
     }
 
