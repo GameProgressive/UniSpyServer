@@ -51,10 +51,12 @@ namespace Chat.Entity.Structure.ChatChannel
         private void SetChannelModes(MODE cmd)
         {
             List<string> flags = new List<string>();
+            if(cmd.ModeFlag!=null)
             for (int i = 0; i < cmd.ModeFlag.Length; i += 2)
             {
                 flags.Add($"{cmd.ModeFlag[i]}{cmd.ModeFlag[i + 1]}");
             }
+
             foreach (var f in flags)
             {
                 SetModeByFlag(f);

@@ -84,7 +84,7 @@ namespace GameSpyLib.Extensions
             Console.WriteLine(@" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
             Console.WriteLine(@" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
             Console.WriteLine(@"                         |_|   |__/                            ");
-            Console.WriteLine(@" Version: " + version);
+            Console.WriteLine(@"Version: " + version);
 
         }
 

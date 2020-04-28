@@ -2,6 +2,7 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
+using System;
 using System.Net;
 
 namespace StatsAndTracking.Application
@@ -29,7 +30,7 @@ namespace StatsAndTracking.Application
             {
                 Server = new GStatsServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
 
-                LogWriter.Log.Information(
+                Console.WriteLine(
                      StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
 
             }

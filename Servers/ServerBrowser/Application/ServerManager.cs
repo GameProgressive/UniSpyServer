@@ -2,6 +2,7 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
+using System;
 using System.Net;
 
 namespace ServerBrowser.Application
@@ -34,7 +35,7 @@ namespace ServerBrowser.Application
             if (cfg.Name == ServerName)
             {
                 Server = new SBServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
-                LogWriter.Log.Information(
+                Console.WriteLine(
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }

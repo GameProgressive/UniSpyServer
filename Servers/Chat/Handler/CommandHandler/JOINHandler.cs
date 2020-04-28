@@ -45,8 +45,10 @@ namespace Chat.Handler.CommandHandler
             {
                 CreateChannel();
             }
-
-            JoinChannel();
+            else
+            {
+                JoinChannel();
+            }
         }
 
         public override void ConstructResponse()

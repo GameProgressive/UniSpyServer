@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;
 using GameSpyLib.Logging;
 
@@ -23,6 +24,8 @@ namespace Chat.Entity.Structure.ChatChannel
                 return;
             }
             Property.SetDefaultProperties(creator, cmd);
+
+            JoinChannel(creator);
         }
 
 
@@ -33,8 +36,8 @@ namespace Chat.Entity.Structure.ChatChannel
             {
                 return;
             }
-
             AddBindOnUserAndChannel(joiner);
+
 
             //first we send join information to all user in this channel
             MultiCastJoin(joiner);

@@ -5,8 +5,10 @@
         UserUTM,
         ChannelUTM
     }
+
     public class UTM : ChatMessageCommandBase
     {
+        public UTMCmdType RequestType { get; protected set; }
         public string NickName { get; protected set; }
 
         public override bool Parse(string request)
@@ -15,7 +17,20 @@
             {
                 return false;
             }
+            if (_cmdParams.Count != 2)
+            {
+                return false;
+            }
 
+            if (_cmdParams[0].Contains("#"))
+            {
+                RequestType = UTMCmdType.ChannelUTM;
+            }
+            else
+            {
+                RequestType = UTMCmdType.UserUTM;
+                NickName = _cmdParams[0];
+            }
 
             return true;
         }

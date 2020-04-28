@@ -2,6 +2,7 @@
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
 using QueryReport.Server;
+using System;
 using System.Net;
 
 namespace QueryReport.Application
@@ -30,7 +31,7 @@ namespace QueryReport.Application
             {
                 // case "GPCM":
                 Server = new QRServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
-                LogWriter.Log.Information(
+                Console.WriteLine(
                     GameSpyLib.Extensions.StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }

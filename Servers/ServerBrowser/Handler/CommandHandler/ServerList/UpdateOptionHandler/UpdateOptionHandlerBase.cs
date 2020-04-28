@@ -48,8 +48,12 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             SBSession session = (SBSession)_client.GetInstance();
             _clientRemoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
 
-            //TODO   //check what is the default port
-            _gameServerDefaultHostPort = BitConverter.GetBytes((ushort)(6500 & 0xFFFF));
+            //TODO   //default port should be hton format
+            ushort defaultPort = 6500;
+            byte[] defaultPortBytes = BitConverter.GetBytes(defaultPort);
+            Array.Reverse(defaultPortBytes);
+            ushort htonDefaultPort = BitConverter.ToUInt16(defaultPortBytes);
+            _gameServerDefaultHostPort = BitConverter.GetBytes(htonDefaultPort);
         }
 
         protected override void ConstructResponse()
@@ -179,6 +183,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         }
         protected virtual void CheckNonStandardPort(List<byte> header, GameServer server)
         {
+            //we do not know how this works
+            return;
             //we check host port is standard port or not
             if (!server.ServerData.KeyValue.ContainsKey("hostport"))
             {
@@ -200,6 +206,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         }
         protected virtual void CheckPrivatePort(List<byte> header, GameServer server)
         {
+            //currently we do not how know private port works
+            return;
             // we check private port here
             if (!server.ServerData.KeyValue.ContainsKey("localport"))
             {

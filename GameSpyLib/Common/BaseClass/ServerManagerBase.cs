@@ -32,16 +32,16 @@ namespace GameSpyLib.Common
 
         public void LoadServerConfig()
         {
-            LogWriter.Log.Information(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            LogWriter.Log.Information(StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
-            LogWriter.Log.Information(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            Console.WriteLine(StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
+            Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
             // Add all servers
             foreach (ServerConfig cfg in ConfigManager.Config.Servers)
             {
                 StartServer(cfg);
             }
-            LogWriter.Log.Information(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            LogWriter.Log.Information(" Server is successfully started! ");
+            Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            Console.WriteLine("Server is successfully started! ");
         }
 
         protected abstract void StartServer(ServerConfig cfg);
@@ -76,7 +76,7 @@ namespace GameSpyLib.Common
             {
                 throw new Exception($"Can not connect to {ConfigManager.Config.Database.Type}!", e);
             }
-            LogWriter.Log.Information($"Successfully connected to {dbConfig.Type}!");
+            Console.WriteLine($"Successfully connected to {dbConfig.Type}!");
 
             try
             {
@@ -87,7 +87,7 @@ namespace GameSpyLib.Common
             {
                 throw new Exception("Can not connect to Redis", e);
             }
-            LogWriter.Log.Information($"Successfully connected to Redis!");
+            Console.WriteLine($"Successfully connected to Redis!");
         }
     }
 }

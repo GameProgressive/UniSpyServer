@@ -11,6 +11,12 @@ namespace Chat.Handler.SystemHandler.Encryption
     /// </summary>
     public class ChatCrypt
     {
+        public const string DigitsHex = "0123456789abcdef";
+        public const string DigitsCrypt = "aFl4uOD9sfWq1vGp";
+        public const string NewDigitsCrypt = "qJ1h4N9cP3lzD0Ka";
+        public const uint IPXorMask = 0xc3801dc7;
+
+
         public static void Handle(GSPeerChatCTX ctx, ref byte[] data, long size)
         {
             byte num1 = ctx.GSPeerChat1;
@@ -79,6 +85,12 @@ namespace Chat.Handler.SystemHandler.Encryption
                 ctx.GSPeerChatCrypt[i] = ctx.GSPeerChatCrypt[index2];
                 ctx.GSPeerChatCrypt[index2] = t;
             }
+        }
+
+
+        public static bool EncodeIP()
+        {
+            return false;
         }
     }
 }

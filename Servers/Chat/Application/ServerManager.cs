@@ -3,6 +3,7 @@ using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
+using System;
 using System.Net;
 
 namespace Chat.Application
@@ -29,7 +30,7 @@ namespace Chat.Application
             if (cfg.Name == ServerName)
             {
                 Server = new ChatServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
-                LogWriter.Log.Information(
+                Console.WriteLine(
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }

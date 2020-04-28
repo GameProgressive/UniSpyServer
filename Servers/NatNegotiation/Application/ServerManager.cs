@@ -3,6 +3,7 @@ using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
 using NatNegotiation.Server;
+using System;
 using System.Net;
 
 namespace NatNegotiation.Application
@@ -29,7 +30,7 @@ namespace NatNegotiation.Application
             if (cfg.Name == ServerName)
             {
                 Server = new NatNegServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
-                LogWriter.Log.Information(
+                Console.WriteLine(
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
