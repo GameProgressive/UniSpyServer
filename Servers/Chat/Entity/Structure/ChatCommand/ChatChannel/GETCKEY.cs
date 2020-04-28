@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using GameSpyLib.Extensions;
 
-namespace Chat.Entity.Structure.ChatCommand.ChatChannel
+namespace Chat.Entity.Structure.ChatCommand
 {
     public enum GetKeyType
     {
-        GetChannelKeyValue,
-        GetUserKeyValue
+        GetAllChannelUserKeyValue,
+        GetChannelUserKeyValue
     }
     public class GETCKEY : ChatChannelCommandBase
     {
@@ -43,11 +43,11 @@ namespace Chat.Entity.Structure.ChatCommand.ChatChannel
 
             if (NickName == "*")
             {
-                RequestType = GetKeyType.GetChannelKeyValue;
+                RequestType = GetKeyType.GetAllChannelUserKeyValue;
             }
             else
             {
-                RequestType = GetKeyType.GetUserKeyValue;
+                RequestType = GetKeyType.GetChannelUserKeyValue;
             }
 
             Cookie = _cmdParams[2];

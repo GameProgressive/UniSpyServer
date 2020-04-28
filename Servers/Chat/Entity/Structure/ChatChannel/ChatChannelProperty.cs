@@ -16,7 +16,7 @@ namespace Chat.Entity.Structure.ChatChannel
         public ConcurrentBag<ChatChannelUser> BanList { get; set; }
         public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
         public string Password { get; set; }
-        public Dictionary<string,string> ChannelKeyValue { get; protected set; }
+        public Dictionary<string, string> ChannelKeyValue { get; protected set; }
         public string ChannelTopic { get; protected set; }
 
         public ChatChannelProperty()
@@ -203,7 +203,7 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             ChannelTopic = topic;
         }
-        public void SetChannelCookie(Dictionary<string,string> kv)
+        public void SetChannelKeyValue(Dictionary<string, string> kv)
         {
             ChannelKeyValue = kv;
         }

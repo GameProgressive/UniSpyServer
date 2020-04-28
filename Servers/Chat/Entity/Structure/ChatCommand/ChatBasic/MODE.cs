@@ -5,7 +5,7 @@ namespace Chat.Entity.Structure.ChatCommand
 {
     //request:
     //"MODE <nick> +/-q"
-    
+
     //"MODE <channel name> +/-k <password>"
 
     // "MODE <channel name> +l <limit number>"

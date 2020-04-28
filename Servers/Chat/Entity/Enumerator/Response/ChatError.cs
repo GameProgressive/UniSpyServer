@@ -6,6 +6,7 @@
         Parse,
         DataOperation,
         ConstructResponse,
+        NotChannelOperator,
         NoError,
 
         //irc standard error

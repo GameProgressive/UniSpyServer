@@ -28,8 +28,8 @@ namespace PresenceConnectionManager.Application
             if (cfg.Name == ServerName)
             {
                 Server = new GPCMServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
-                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                LogWriter.Log.Information(
+                      StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
 

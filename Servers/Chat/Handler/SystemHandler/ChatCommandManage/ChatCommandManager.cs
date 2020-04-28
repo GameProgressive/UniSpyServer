@@ -27,6 +27,10 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             AddCommand(new NAMES(), typeof(NAMESHandler));
             AddCommand(new PART(), typeof(PARTHandler));
             AddCommand(new WHOIS(), typeof(WHOISHandler));
+            AddCommand(new SETCKEY(), typeof(SETCKEYHandler));
+            AddCommand(new SETCHANKEY(), typeof(SETCHANKEYHandler));
+            AddCommand(new GETCKEY(), typeof(GETCKEYHandler));
+
         }
 
         public ChatCommandManager AddCommand(ChatCommandBase cmd, Type cmdHandlerType)

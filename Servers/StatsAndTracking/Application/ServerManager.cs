@@ -29,7 +29,7 @@ namespace StatsAndTracking.Application
             {
                 Server = new GStatsServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
 
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Information,
+                LogWriter.Log.Information(
                      StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
 
             }

@@ -32,16 +32,16 @@ namespace GameSpyLib.Common
 
         public void LoadServerConfig()
         {
-            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
-            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            LogWriter.Log.Information(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            LogWriter.Log.Information(StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
+            LogWriter.Log.Information(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
             // Add all servers
             foreach (ServerConfig cfg in ConfigManager.Config.Servers)
             {
                 StartServer(cfg);
             }
-            LogWriter.ToLog(LogEventLevel.Information, StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            LogWriter.ToLog(LogEventLevel.Information, " Server is successfully started! ");
+            LogWriter.Log.Information(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            LogWriter.Log.Information(" Server is successfully started! ");
         }
 
         protected abstract void StartServer(ServerConfig cfg);

@@ -172,8 +172,11 @@ namespace Chat.Entity.Structure.ChatChannel
                 user = result.First();
                 return true;
             }
-            user = null;
-            return false;
+            else
+            {
+                user = null;
+                return false;
+            }
         }
 
         public bool IsUserBanned(ChatChannelUser user)
@@ -186,11 +189,7 @@ namespace Chat.Entity.Structure.ChatChannel
         }
         public bool IsUserExisted(ChatChannelUser user)
         {
-            if (Property.ChannelUsers.Where(u => u.Session.Equals(user.Session)).Count() == 1)
-            {
-                return true;
-            }
-            return false;
+            return GetChannelUser(user.Session, out _);
         }
     }
 }

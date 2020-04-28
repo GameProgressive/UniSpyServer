@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Chat.Entity.Structure.ChatChannel;
+using Chat.Handler.SystemHandler.ChannelManage;
 
 namespace Chat.Entity.Structure.ChatUser
 {
@@ -35,6 +37,26 @@ namespace Chat.Entity.Structure.ChatUser
         public void SetQuietModeFlag(bool flag)
         {
             IsQuietMode = flag;
+        }
+
+        public bool IsJoinedChannel(string channelName)
+        {
+            return GetJoinedChannel(channelName, out _);
+        }
+
+        public bool GetJoinedChannel(string channelName,out ChatChannelBase channel)
+        {
+            var result = JoinedChannels.Where(c => c.Property.ChannelName == channelName);
+            if (result.Count() == 1)
+            {
+                channel = result.First();
+                return true;
+            }
+            else
+            {
+                channel = null;
+                return false;
+            }
         }
     }
 }
