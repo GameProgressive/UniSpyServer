@@ -25,7 +25,7 @@ namespace QueryReport.Entity.Structure.ReportData
         public void Update(string serverData)
         {
             KeyValue.Clear();
-            string[] keyValueArray = serverData.Split("\0");
+            string[] keyValueArray = serverData.Split("\0",System.StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 0; i < keyValueArray.Length; i += 2)
             {

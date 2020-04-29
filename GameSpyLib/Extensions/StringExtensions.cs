@@ -79,11 +79,11 @@ namespace GameSpyLib.Extensions
 
         public static void ShowRetroSpyLogo(string version)
         {
-            Console.WriteLine(@"  ___     _           ___             ___                      ");
-            Console.WriteLine(@" | _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
-            Console.WriteLine(@" |   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
-            Console.WriteLine(@" |_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
-            Console.WriteLine(@"                         |_|   |__/                            ");
+            Console.WriteLine(@" ___     _           ___             ___                      ");
+            Console.WriteLine(@"| _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
+            Console.WriteLine(@"|   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
+            Console.WriteLine(@"|_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
+            Console.WriteLine(@"                        |_|   |__/                            ");
             Console.WriteLine(@"Version: " + version);
 
         }

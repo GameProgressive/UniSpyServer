@@ -11,12 +11,12 @@ namespace Chat.Handler.CommandHandler
     /// </summary>
     public class JOINHandler : ChatCommandHandlerBase
     {
-        JOIN _joinCmd;
+        new JOIN _cmd;
         ChatChannelBase _channel;
-        ChatChannelUser _channelUser;
+        ChatChannelUser _user;
         public JOINHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _joinCmd = (JOIN)cmd;
+            _cmd = (JOIN)cmd;
         }
 
         //1.筛选出所要加入的频道，如果不存在则创建
@@ -31,23 +31,24 @@ namespace Chat.Handler.CommandHandler
         public override void CheckRequest()
         {
             base.CheckRequest();
-            ChatChannelManager.GetChannel(_joinCmd.ChannelName, out _channel);
+            
         }
 
         public override void DataOperation()
         {
             base.DataOperation();
 
-            _channelUser = new ChatChannelUser(_session);
+            _user = new ChatChannelUser(_session);
 
-            //if there do not have a channel we create it 
-            if (_channel == null)
+            if (ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
             {
-                CreateChannel();
+                //join
+                JoinChannel();
             }
             else
             {
-                JoinChannel();
+                //create
+                CreateChannel();
             }
         }
 
@@ -60,16 +61,32 @@ namespace Chat.Handler.CommandHandler
             {
                 _sendingBuffer =
                     ChatCommandBase.BuildErrorRPL("",
-                    _errorCode, $"* {_joinCmd.ChannelName}", "");
+                    _errorCode, $"* {_cmd.ChannelName}", "");
             }
         }
 
         public void CreateChannel()
         {
             _channel = new ChatChannelBase();
-            _channelUser.SetCreatorProperties();
-            _channel.CreateChannel(_channelUser, _joinCmd);
-            ChatChannelManager.AddChannel(_joinCmd.ChannelName, _channel);
+            _user.SetCreatorProperties();
+            _channel.Property.SetDefaultProperties(_user, _cmd);
+
+            //simple check for avoiding program crash
+            if (!_channel.IsUserExisted(_user))
+            {
+                _channel.AddBindOnUserAndChannel(_user);
+            }
+
+            //first we send join information to all user in this channel
+            _channel.MultiCastJoin(_user);
+
+            //then we send user list which already in this channel ???????????
+            _channel.SendChannelUsersToJoiner(_user);
+
+            //send channel mode to joiner
+            _channel.SendChannelModesToJoiner(_user);
+
+            ChatChannelManager.AddChannel(_cmd.ChannelName, _channel);
         }
 
         public void JoinChannel()
@@ -82,19 +99,36 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
 
-            if (_channel.IsUserBanned(_channelUser))
+            if (_channel.IsUserBanned(_user))
             {
                 _errorCode = ChatError.BannedFromChan;
                 return;
             }
-            if (_channel.IsUserExisted(_channelUser))
+
+            if (_channel.Property.ChannelUsers.Count == 0)
             {
-                _errorCode = ChatError.DataOperation;
-                return;
+                _user.SetCreatorProperties();
             }
-            //if all pass, it mean  we excute join channel
-            _channelUser.SetDefaultProperties();
-            _channel.JoinChannel(_channelUser);
+            else
+            {
+                //if all pass, it mean  we excute join channel
+                _user.SetDefaultProperties();
+            }
+
+            //simple check for avoiding program crash
+            if (!_channel.IsUserExisted(_user))
+            {
+                _channel.AddBindOnUserAndChannel(_user);
+            }
+
+            //first we send join information to all user in this channel
+            _channel.MultiCastJoin(_user);
+
+            //then we send user list which already in this channel ???????????
+            _channel.SendChannelUsersToJoiner(_user);
+
+            //send channel mode to joiner
+            _channel.SendChannelModesToJoiner(_user);
         }
     }
 }

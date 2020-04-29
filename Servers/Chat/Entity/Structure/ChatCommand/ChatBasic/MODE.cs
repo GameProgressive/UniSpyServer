@@ -145,14 +145,17 @@ namespace Chat.Entity.Structure.ChatCommand
                     if (_cmdParams.Count == 3)
                     {
                         ChannelName = _cmdParams[0];
+                        ModeFlag = _cmdParams[1];
                         LimitNumber = uint.Parse(_cmdParams[2]);
                         RequestType = ModeRequestType.SetChannelModesWithUserLimit;
+                      
                         return true;
                     }
                     // "MODE <channel name> <mode flags>"
                     else
                     {
                         ChannelName = _cmdParams[0];
+                        ModeFlag = _cmdParams[1];
                         RequestType = ModeRequestType.SetChannelModes;
                         return true;
                     }

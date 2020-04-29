@@ -72,16 +72,17 @@ namespace Chat.Server
 
         protected override void OnDisconnected()
         {
-            foreach (var c in ChatChannelManager.Channels.Values)
+            foreach (var channel in ChatChannelManager.Channels.Values)
             {
                 ChatChannelUser user;
 
-                if (!c.GetChannelUser(this, out user))
+                if (!channel.GetChannelUser(this, out user))
                 {
                     continue;
                 }
 
-                c.LeaveChannel(user, "");
+                channel.RemoveBindOnUserAndChannel(user);
+                channel.MultiCastLeave(user, "Disconnected");
             }
 
             ChatSessionManager.RemoveSession(this);

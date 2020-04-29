@@ -38,7 +38,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             _dataPartition = Encoding.ASCII.GetString(_recv.Skip(5).ToArray());
 
             //keep this for debug
-            string[] temp = _dataPartition.Split("\0\0",StringSplitOptions.RemoveEmptyEntries);
+            string[] temp = _dataPartition.Split("\0\0", StringSplitOptions.RemoveEmptyEntries);
 
             _playerPos = _dataPartition.IndexOf("player_\0", StringComparison.Ordinal);
             _teamPos = _dataPartition.IndexOf("team_t\0", StringComparison.Ordinal);
