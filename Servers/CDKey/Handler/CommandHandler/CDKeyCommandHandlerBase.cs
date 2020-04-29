@@ -8,7 +8,7 @@ namespace CDKey.Handler.CommandHandler
     {
         protected string _sendingBuffer;
 
-        public CDKeyCommandHandlerBase(IClient client, Dictionary<string, string> recv) : base(client)
+        public CDKeyCommandHandlerBase(ISession client, Dictionary<string, string> recv) : base(client)
         {
         }
 
@@ -41,7 +41,7 @@ namespace CDKey.Handler.CommandHandler
             {
                 return;
             }
-            _client.SendAsync(_sendingBuffer);
+            _session.SendAsync(_sendingBuffer);
         }
     }
 }

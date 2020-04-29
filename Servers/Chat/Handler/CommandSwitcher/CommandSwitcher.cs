@@ -13,7 +13,7 @@ namespace Chat.Handler.CommandSwitcher
     /// </summary>
     public class ChatCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(IClient client, string buffer)
+        public void Switch(ISession client, string buffer)
         {
             List<ChatCommandBase> cmds = new List<ChatCommandBase>();
 

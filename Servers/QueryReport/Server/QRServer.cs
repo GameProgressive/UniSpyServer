@@ -10,7 +10,7 @@ namespace QueryReport.Server
     public class QRServer : TemplateUdpServer
     {
 
-        public static ConcurrentDictionary<EndPoint, QRClient> Clients;
+        public static ConcurrentDictionary<EndPoint, QRSession> Clients;
 
         public bool IsChallengeSent;
 
@@ -18,7 +18,7 @@ namespace QueryReport.Server
 
         public QRServer(IPAddress address, int port) : base(address, port)
         {
-            Clients = new ConcurrentDictionary<EndPoint, QRClient>();
+            Clients = new ConcurrentDictionary<EndPoint, QRSession>();
             IsChallengeSent = false;
             HasInstantKey = false;
         }
@@ -36,15 +36,15 @@ namespace QueryReport.Server
 
         protected override object CreateClient(EndPoint endPoint)
         {
-            return new QRClient(this, endPoint);
+            return new QRSession(this, endPoint);
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            QRClient client;
+            QRSession client;
             if (!Clients.TryGetValue(endPoint, out client))
             {
-                client = (QRClient)CreateClient(endPoint);
+                client = (QRSession)CreateClient(endPoint);
                 Clients.TryAdd(endPoint, client);
             }
 

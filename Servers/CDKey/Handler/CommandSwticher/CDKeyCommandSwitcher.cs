@@ -11,7 +11,7 @@ namespace CDKey.Handler.CommandSwitcher
 {
     public class CDKeyCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(IClient client, string message)
+        public void Switch(ISession client, string message)
         {
             message.Replace(@"\r\n", "").Replace("\0", "");
             string[] keyValueArray = message.TrimStart('\\').Split('\\');

@@ -12,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler
         protected byte[] _sendingBuffer;
         protected byte[] _recv;
 
-        public SBCommandHandlerBase(IClient client, byte[] recv) : base(client)
+        public SBCommandHandlerBase(ISession client, byte[] recv) : base(client)
         {
             _recv = recv;
         }
@@ -66,7 +66,7 @@ namespace ServerBrowser.Handler.CommandHandler
             {
                 return;
             }
-            _client.SendAsync(_sendingBuffer);
+            _session.SendAsync(_sendingBuffer);
         }
     }
 }

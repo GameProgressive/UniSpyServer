@@ -5,7 +5,7 @@ namespace QueryReport.Handler.CommandHandler.ClientMessageACK
 {
     public class MessageACKHandler : QRCommandHandlerBase
     {
-        protected MessageACKHandler(IClient client, byte[] recv) : base(client, recv)
+        protected MessageACKHandler(ISession session, byte[] recv) : base(session, recv)
         {
             throw new NotImplementedException();
         }

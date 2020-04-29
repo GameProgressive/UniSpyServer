@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
 {
     public class NewProfileHandler : PCMCommandHandlerBase
     {
-        public NewProfileHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public NewProfileHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

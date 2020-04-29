@@ -12,7 +12,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     /// </summary>
     public class NickHandler : PSPCommandHandlerBase
     {
-        public NickHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public NickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

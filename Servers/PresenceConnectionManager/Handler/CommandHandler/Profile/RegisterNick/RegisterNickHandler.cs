@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
     public class RegisterNickHandler : PCMCommandHandlerBase
     {
-        public RegisterNickHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public RegisterNickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

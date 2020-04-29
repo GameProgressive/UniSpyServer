@@ -10,7 +10,7 @@ namespace Chat.Handler.CommandHandler
         ChatChannelUser _user;
         ChatChannelBase _channel;
         new UTM _cmd;
-        public UTMHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public UTMHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (UTM)cmd;
         }

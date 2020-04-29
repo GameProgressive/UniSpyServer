@@ -10,13 +10,13 @@ namespace QueryReport.Handler.CommandHandler.Challenge
     {
         GameServer _gameServer;
         //we do not need to implement this to check the correctness of the challenge response
-        public ChallengeHandler(IClient client, byte[] recv) : base(client, recv)
+        public ChallengeHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
 
         protected override void DataOperation()
         {
-            QRClient client = (QRClient)_client.GetInstance();
+            QRSession client = (QRSession)_session.GetInstance();
             var result =
                   GameServer.GetServers(client.RemoteEndPoint);
 
@@ -35,7 +35,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             // We send the echo packet to check the ping
             _sendingBuffer = echo.GenerateResponse();
 
-            QRClient client = (QRClient)_client.GetInstance();
+            QRSession client = (QRSession)_session.GetInstance();
 
             GameServer.UpdateServer(
                 client.RemoteEndPoint,

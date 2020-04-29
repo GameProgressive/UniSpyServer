@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
 
         private uint _profileid;
 
-        public OthersHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public OthersHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

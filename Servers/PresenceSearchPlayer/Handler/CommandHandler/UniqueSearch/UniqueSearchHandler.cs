@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
     {
         private bool _isUniquenickExist;
 
-        public UniqueSearchHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public UniqueSearchHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

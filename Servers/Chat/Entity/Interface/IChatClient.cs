@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Interface
 {
-    public interface IChatClient : IClient
+    public interface IChatClient : ISession
     {
 
     }

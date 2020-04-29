@@ -9,7 +9,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 {
     public class KeepAliveHandler : QRCommandHandlerBase
     {
-        public KeepAliveHandler(IClient client, byte[] recv) : base(client, recv)
+        public KeepAliveHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
 
@@ -18,7 +18,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             KeepAlivePacket packet = new KeepAlivePacket();
             packet.Parse(_recv);
             _sendingBuffer = packet.GenerateResponse();
-            QRClient client = (QRClient)_client.GetInstance();
+            QRSession client = (QRSession)_session.GetInstance();
             var result = GameServer.GetServers(client.RemoteEndPoint);
             if (result.Count != 1)
             {

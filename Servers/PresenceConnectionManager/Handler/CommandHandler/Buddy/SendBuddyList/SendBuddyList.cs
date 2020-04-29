@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
     {
 
 
-        public SendBuddyList(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public SendBuddyList(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
 
         }

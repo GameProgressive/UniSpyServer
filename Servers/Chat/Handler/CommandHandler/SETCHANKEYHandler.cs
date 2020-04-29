@@ -10,7 +10,7 @@ namespace Chat.Handler.CommandHandler
         new SETCHANKEY _cmd;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public SETCHANKEYHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public SETCHANKEYHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (SETCHANKEY)cmd;
         }

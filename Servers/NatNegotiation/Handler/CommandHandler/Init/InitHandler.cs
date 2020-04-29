@@ -7,7 +7,7 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class InitHandler : NatNegCommandHandlerBase
     {
-        public InitHandler(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client, clientInfo, recv)
+        public InitHandler(ISession session, NatNegClientInfo clientInfo, byte[] recv) : base(session, clientInfo, recv)
         {
         }
 

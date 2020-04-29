@@ -10,7 +10,7 @@ namespace Chat.Handler.CommandHandler
         new PRIVMSG _cmd;
         private ChatChannelBase _channel;
         private ChatChannelUser _user;
-        public PRIVMSGHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public PRIVMSGHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (PRIVMSG)cmd;
         }

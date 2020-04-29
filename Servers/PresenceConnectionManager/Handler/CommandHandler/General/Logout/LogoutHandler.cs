@@ -5,7 +5,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General.Logout
 {
     public class LogoutHandler : PCMCommandHandlerBase
     {
-        public LogoutHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public LogoutHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

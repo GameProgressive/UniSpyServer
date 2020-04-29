@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
     public class GetProfileHandler : PCMCommandHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
-        public GetProfileHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public GetProfileHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

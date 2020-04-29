@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
     {
         protected uint _blockProfileid;
 
-        public AddBlockHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public AddBlockHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

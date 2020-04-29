@@ -23,7 +23,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected ServerListRequest _request;
         protected List<byte> _dataList;
         protected List<GameServer> _gameServers;
-        public UpdateOptionHandlerBase(ServerListRequest request, IClient client, byte[] recv) : base(client, recv)
+        public UpdateOptionHandlerBase(ServerListRequest request, ISession client, byte[] recv) : base(client, recv)
         {
             _request = request;
             _dataList = new List<byte>();
@@ -45,7 +45,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 return;
             }
             //this is client public ip and default query port
-            SBSession session = (SBSession)_client.GetInstance();
+            SBSession session = (SBSession)_session.GetInstance();
             _clientRemoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
 
             //TODO   //default port should be hton format
@@ -75,7 +75,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                      SBServer.ServerChallenge
                 );
             //refresh encryption state
-            SBSession session = (SBSession)_client.GetInstance();
+            SBSession session = (SBSession)_session.GetInstance();
             session.EncState = enc.State;
 
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)

@@ -10,7 +10,7 @@ namespace Chat.Handler.CommandHandler
     {
         MODE _modeCmd;
         ChatChannelBase _channel;
-        public MODEHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public MODEHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _modeCmd = (MODE)cmd;
         }

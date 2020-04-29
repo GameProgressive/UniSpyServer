@@ -13,7 +13,7 @@ namespace QueryReport.Handler.CommandSwitcher
 {
     public class QRCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(IClient client, byte[] recv)
+        public void Switch(ISession client, byte[] recv)
         {
             try
             {

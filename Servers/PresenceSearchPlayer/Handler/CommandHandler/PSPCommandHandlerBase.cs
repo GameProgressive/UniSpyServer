@@ -19,7 +19,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected uint _namespaceid;
         protected Dictionary<string, string> _recv;
 
-        public PSPCommandHandlerBase(IClient client, Dictionary<string, string> recv) : base(client)
+        public PSPCommandHandlerBase(ISession client, Dictionary<string, string> recv) : base(client)
         {
             _recv = recv;
             _errorCode = GPErrorCode.NoError;
@@ -35,7 +35,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             if (_errorCode < GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPSPError(_client, _errorCode, _operationID);
+                ErrorMsg.SendGPSPError(_session, _errorCode, _operationID);
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             if (_errorCode < GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPSPError(_client, _errorCode, _operationID);
+                ErrorMsg.SendGPSPError(_session, _errorCode, _operationID);
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             if (_errorCode < GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPSPError(_client, GPErrorCode.General, _operationID);
+                ErrorMsg.SendGPSPError(_session, GPErrorCode.General, _operationID);
                 return;
             }
 
@@ -87,7 +87,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
             {
                 return;
             }
-            _client.SendAsync(_sendingBuffer);
+            _session.SendAsync(_sendingBuffer);
         }
     }
 }

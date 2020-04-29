@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         private Profiles _profiles;
         private Subprofiles _subProfiles;
 
-        public NewUserHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public NewUserHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

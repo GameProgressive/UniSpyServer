@@ -21,7 +21,7 @@ namespace NatNegotiation.Handler.CommandHandler
         protected NatNegClientInfo _clientInfo;
         protected byte[] _recv;
 
-        public NatNegCommandHandlerBase(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client)
+        public NatNegCommandHandlerBase(ISession client, NatNegClientInfo clientInfo, byte[] recv) : base(client)
         {
             _clientInfo = clientInfo;
             _recv = recv;
@@ -68,7 +68,7 @@ namespace NatNegotiation.Handler.CommandHandler
             {
                 return;
             }
-            _client.Send(_sendingBuffer);
+            _session.Send(_sendingBuffer);
         }
     }
 }

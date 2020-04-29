@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GameSpyLib.Network
 {
-    public abstract class TemplateUdpClient : IClient
+    public abstract class TemplateUdpSession : ISession
     {
         public TemplateUdpServer Server { get; }
 
@@ -13,7 +13,7 @@ namespace GameSpyLib.Network
 
         public EndPoint RemoteEndPoint { get; }
 
-        public TemplateUdpClient(TemplateUdpServer server, EndPoint endPoint)
+        public TemplateUdpSession(TemplateUdpServer server, EndPoint endPoint)
         {
             Id = Guid.NewGuid();
             Server = server;

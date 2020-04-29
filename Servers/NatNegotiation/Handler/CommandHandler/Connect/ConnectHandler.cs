@@ -10,7 +10,7 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class ConnectHandler : NatNegCommandHandlerBase
     {
-        public ConnectHandler(IClient _clientInfo, NatNegClientInfo clientInfo, byte[] _recv) : base(_clientInfo, clientInfo, _recv)
+        public ConnectHandler(ISession session, NatNegClientInfo clientInfo, byte[] _recv) : base(session, clientInfo, _recv)
         {
         }
 
@@ -51,7 +51,7 @@ namespace NatNegotiation.Handler.CommandHandler
             ConnectPacket connPacket = new ConnectPacket();
             connPacket.Parse(_clientInfo.RemoteEndPoint, _recv);
             byte[] buffer = connPacket.GenerateResponse(NatPacketType.Connect);
-            _client.SendAsync(buffer);
+            _session.SendAsync(buffer);
         }
 
         protected override void CheckRequest()

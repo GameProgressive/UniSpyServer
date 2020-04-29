@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBuddy
 
         private uint _friendPid;
 
-        public AddBuddyHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public AddBuddyHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

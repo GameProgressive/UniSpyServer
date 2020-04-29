@@ -8,7 +8,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
     public class OthersListHandler : PSPCommandHandlerBase
     {
-        public OthersListHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public OthersListHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

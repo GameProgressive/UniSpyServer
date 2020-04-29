@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler
     {
         USER _user;
 
-        public USERHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public USERHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _user = (USER)cmd;
         }

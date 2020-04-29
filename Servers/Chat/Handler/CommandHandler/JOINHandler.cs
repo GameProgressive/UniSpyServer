@@ -14,7 +14,7 @@ namespace Chat.Handler.CommandHandler
         new JOIN _cmd;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public JOINHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public JOINHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (JOIN)cmd;
         }

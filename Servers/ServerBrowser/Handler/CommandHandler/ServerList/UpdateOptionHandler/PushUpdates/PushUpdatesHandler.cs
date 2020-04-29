@@ -12,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Pu
     /// </summary>
     public class PushUpdatesHandler : UpdateOptionHandlerBase
     {
-        public PushUpdatesHandler(ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
+        public PushUpdatesHandler(ServerListRequest request, ISession client, byte[] recv) : base(request, client, recv)
         {
         }
 

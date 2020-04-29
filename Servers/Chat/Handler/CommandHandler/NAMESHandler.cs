@@ -9,7 +9,7 @@ namespace Chat.Handler.CommandHandler
     {
         NAMES _namesCmd;
         ChatChannelBase _channel;
-        public NAMESHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public NAMESHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _namesCmd = (NAMES)cmd;
         }

@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.General.RegisterCDKey
 {
     public class RegisterCDKeyHandler : PCMCommandHandlerBase
     {
-        public RegisterCDKeyHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public RegisterCDKeyHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

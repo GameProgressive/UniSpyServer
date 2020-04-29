@@ -12,7 +12,7 @@ namespace Chat.Handler.CommandHandler
     {
         CRYPT _cryptCmd;
 
-        public CRYPTHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public CRYPTHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cryptCmd = (CRYPT)_cmd;
         }
@@ -54,7 +54,7 @@ namespace Chat.Handler.CommandHandler
         public override void Response()
         {
             //set use encryption flag to true
-            _client.SendAsync(_sendingBuffer);
+            _session.SendAsync(_sendingBuffer);
             _session.UserInfo.UseEncryption = true;
         }
     }

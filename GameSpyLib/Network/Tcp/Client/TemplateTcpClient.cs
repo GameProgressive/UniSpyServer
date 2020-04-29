@@ -13,13 +13,13 @@ using TcpClient = NetCoreServer.TcpClient;
 namespace GameSpyLib.Network
 {
 
-    public abstract class TemplateTcpProxy : TcpClient
+    public abstract class TemplateTcpClient : TcpClient
     {
         private EndPoint _endPoint;
         /// <summary>
         /// We automatic connect to remote server address
         /// </summary>
-        public TemplateTcpProxy() : base
+        public TemplateTcpClient() : base
             (
                 ConfigManager.Config.Servers.Where(s => s.Name == ServerManagerBase.ServerName).First().RemoteAddress
                , ConfigManager.Config.Servers.Where(s => s.Name == ServerManagerBase.ServerName).First().RemotePort

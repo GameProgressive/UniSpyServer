@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
 
-        public CheckHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public CheckHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

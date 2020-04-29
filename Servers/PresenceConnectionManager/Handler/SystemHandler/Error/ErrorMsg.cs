@@ -223,7 +223,7 @@ namespace PresenceConnectionManager.Handler.Error
         /// <param name="client">The stream that will receive the error</param>
         /// <param name="errorCode">The error code</param>
         /// <param name="operationID">The operation id</param>
-        public static void SendGPCMError(IClient client, GPErrorCode errorCode, uint operationID)
+        public static void SendGPCMError(ISession client, GPErrorCode errorCode, uint operationID)
         {
             string errorMsg = ErrorMsg.GetErrorMsg(errorCode);
             string sendingBuffer = string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\{2}\final\", (uint)errorCode, errorMsg, operationID);

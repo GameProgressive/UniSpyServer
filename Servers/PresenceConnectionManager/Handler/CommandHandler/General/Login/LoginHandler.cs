@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
     {
         private Crc16 _crc;
 
-        public LoginHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public LoginHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
             _crc = new Crc16(Crc16Mode.Standard);
         }

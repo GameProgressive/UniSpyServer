@@ -8,7 +8,7 @@ namespace Chat.Handler.CommandHandler
     public class QUITHandler : ChatCommandHandlerBase
     {
         new QUIT _cmd;
-        public QUITHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public QUITHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (QUIT)cmd;
         }

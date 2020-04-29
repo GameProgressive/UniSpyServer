@@ -8,7 +8,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Ge
 {
     public class GeneralRequestHandler : UpdateOptionHandlerBase
     {
-        public GeneralRequestHandler(ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
+        public GeneralRequestHandler(ServerListRequest request, ISession client, byte[] recv) : base(request, client, recv)
         {
         }
 

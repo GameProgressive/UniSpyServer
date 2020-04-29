@@ -12,7 +12,7 @@ namespace NatNegotiation.Handler.CommandHandler
     /// </summary>
     public class ReportHandler : NatNegCommandHandlerBase
     {
-        public ReportHandler(IClient client, NatNegClientInfo clientInfo, byte[] recv) : base(client, clientInfo, recv)
+        public ReportHandler(ISession session, NatNegClientInfo clientInfo, byte[] recv) : base(session, clientInfo, recv)
         {
         }
 

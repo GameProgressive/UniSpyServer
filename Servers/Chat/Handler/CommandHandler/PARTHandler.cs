@@ -10,7 +10,7 @@ namespace Chat.Handler.CommandHandler
         new PART _cmd;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public PARTHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public PARTHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (PART)cmd;
         }

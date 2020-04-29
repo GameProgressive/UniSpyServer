@@ -19,7 +19,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         private int _playerPos, _teamPos;
         private int _playerLenth, _teamLength;
 
-        public HeartBeatHandler(IClient client, byte[] recv) : base(client, recv)
+        public HeartBeatHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
 
@@ -31,7 +31,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             //gameServer.Parse(endPoint, basePacket.InstantKey);
 
             _gameServer = new GameServer();
-            QRClient client = (QRClient)_client.GetInstance();
+            QRSession client = (QRSession)_session.GetInstance();
             _gameServer.Parse(client.RemoteEndPoint, basePacket.InstantKey);
             //_gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
             //Save server information.
@@ -93,7 +93,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
             CheckSpamGameServer();
 
-            QRClient client = (QRClient)_client.GetInstance();
+            QRSession client = (QRSession)_session.GetInstance();
             GameServer.UpdateServer(
                client.RemoteEndPoint,
                _gameServer.ServerData.KeyValue["gamename"],
@@ -104,7 +104,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         protected override void ConstructeResponse()
         {
             ChallengePacket packet = new ChallengePacket();
-            QRClient client = (QRClient)_client.GetInstance();
+            QRSession client = (QRSession)_session.GetInstance();
             packet.Parse(client.RemoteEndPoint, _recv);
             _sendingBuffer = packet.GenerateResponse();
         }
@@ -144,7 +144,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         private void CheckSpamGameServer()
         {
-            QRClient qrClient = (QRClient)_client.GetInstance();
+            QRSession qrClient = (QRSession)_session.GetInstance();
             //make sure one ip address create one server on each game
             List<string> redisKeys =
                 GameServer.GetMatchedKeys(((IPEndPoint)qrClient.RemoteEndPoint).Address

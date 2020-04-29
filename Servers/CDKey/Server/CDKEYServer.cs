@@ -11,18 +11,18 @@ namespace CDKey.Server
 {
     public class CDKeyServer : TemplateUdpServer
     {
-        protected readonly ConcurrentDictionary<EndPoint, CDKeyClient> Clients
-     = new ConcurrentDictionary<EndPoint, CDKeyClient>();
+        protected readonly ConcurrentDictionary<EndPoint, CDKeySession> Clients
+     = new ConcurrentDictionary<EndPoint, CDKeySession>();
         public CDKeyServer(IPAddress address, int port) : base(address, port)
         {
         }
 
         protected override void OnReceived(EndPoint endPoint, string message)
         {
-            CDKeyClient client;
+            CDKeySession client;
             if (!Clients.TryGetValue(endPoint, out client))
             {
-                client = (CDKeyClient)CreateClient(endPoint);
+                client = (CDKeySession)CreateClient(endPoint);
                 Clients.TryAdd(endPoint, client);
             }
             new CDKeyCommandSwitcher().Switch(client, message);
@@ -54,7 +54,7 @@ namespace CDKey.Server
 
         protected override object CreateClient(EndPoint endPoint)
         {
-            return new CDKeyClient(this, endPoint);
+            return new CDKeySession(this, endPoint);
         }
     }
 }

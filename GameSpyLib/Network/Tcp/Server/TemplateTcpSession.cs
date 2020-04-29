@@ -14,7 +14,7 @@ namespace GameSpyLib.Network
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class TemplateTcpSession : TcpSession, IClient
+    public abstract class TemplateTcpSession : TcpSession, ISession
     {
         private EndPoint _endPoint;
 
@@ -105,11 +105,11 @@ namespace GameSpyLib.Network
             return this;
         }
 
-        bool IClient.BaseSendAsync(byte[] buffer)
+        bool ISession.BaseSendAsync(byte[] buffer)
         {
             return BaseSendAsync(buffer);
         }
-        bool IClient.BaseSendAsync(string buffer)
+        bool ISession.BaseSendAsync(string buffer)
         {
             return BaseSendAsync(buffer);
         }

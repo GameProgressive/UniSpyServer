@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Handler
         protected uint _productid;
         protected Dictionary<string, string> _recv;
         protected GPCMSession _session;
-        public PCMCommandHandlerBase(IClient client, Dictionary<string, string> recv) : base(client)
+        public PCMCommandHandlerBase(ISession client, Dictionary<string, string> recv) : base(client)
         {
             _recv = recv;
             _errorCode = GPErrorCode.NoError;
@@ -38,7 +38,7 @@ namespace PresenceConnectionManager.Handler
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
-                ErrorMsg.SendGPCMError(_client, _errorCode, _operationID);
+                ErrorMsg.SendGPCMError(base._session, _errorCode, _operationID);
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace PresenceConnectionManager.Handler
             if (_errorCode != GPErrorCode.NoError)
             {
                 //TODO
-                ErrorMsg.SendGPCMError(_client, _errorCode, _operationID);
+                ErrorMsg.SendGPCMError(base._session, _errorCode, _operationID);
                 return;
             }
 
@@ -55,7 +55,7 @@ namespace PresenceConnectionManager.Handler
 
             if (_errorCode != GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPCMError(_client, _errorCode, _operationID);
+                ErrorMsg.SendGPCMError(base._session, _errorCode, _operationID);
                 return;
             }
 
@@ -91,7 +91,7 @@ namespace PresenceConnectionManager.Handler
             {
                 return;
             }
-            _client.SendAsync(_sendingBuffer);
+            base._session.SendAsync(_sendingBuffer);
         }
     }
 }

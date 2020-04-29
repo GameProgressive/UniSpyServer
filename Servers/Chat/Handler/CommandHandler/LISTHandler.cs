@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler
     {
         LIST _listCmd;
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
-        public LISTHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public LISTHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _listCmd = (LIST)cmd;
         }

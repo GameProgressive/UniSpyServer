@@ -41,7 +41,7 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             return this;
         }
 
-        public bool HandleCommands(IClient client, List<ChatCommandBase> cmds)
+        public bool HandleCommands(ISession client, List<ChatCommandBase> cmds)
         {
             foreach (var cmd in cmds)
             {

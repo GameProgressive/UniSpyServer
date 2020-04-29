@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
 {
     public class UpdateProHandler : PCMCommandHandlerBase
     {
-        public UpdateProHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public UpdateProHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

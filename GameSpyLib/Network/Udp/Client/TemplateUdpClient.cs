@@ -1,16 +1,15 @@
-﻿
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UdpClient = NetCoreServer.UdpClient;
 
-namespace GameSpyLib.Network.Udp.Server
+namespace GameSpyLib.Network.Udp
 {
-    public class TemplateUdpProxy : UdpClient
+    public class TemplateUdpClient : UdpClient
     {
 
-        public TemplateUdpProxy(IPAddress address, int port) : base(address, port)
+        public TemplateUdpClient(IPAddress address, int port) : base(address, port)
         {
         }
         protected override void OnConnected()

@@ -9,7 +9,7 @@ namespace Chat.Handler.CommandHandler
         new TOPIC _cmd;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public TOPICHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public TOPICHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (TOPIC)cmd;
         }

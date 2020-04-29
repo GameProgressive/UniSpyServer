@@ -10,7 +10,7 @@ namespace Chat.Handler.CommandHandler
     {
         USRIP _usripCmd { get { return (USRIP)_cmd; } }
 
-        public USRIPHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public USRIPHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
 
         }

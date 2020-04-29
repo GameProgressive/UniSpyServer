@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
     public class InviteToHandler : PCMCommandHandlerBase
     {
         //_session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
-        public InviteToHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public InviteToHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

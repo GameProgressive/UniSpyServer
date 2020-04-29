@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler
         new GETCKEY _cmd;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public GETCKEYHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public GETCKEYHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (GETCKEY)cmd;
         }

@@ -22,7 +22,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
         private uint _partnerid;
         private int _skip;
 
-        public SearchHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public SearchHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

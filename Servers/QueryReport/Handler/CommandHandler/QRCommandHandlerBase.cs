@@ -13,7 +13,7 @@ namespace QueryReport.Handler.CommandHandler
         protected byte[] _sendingBuffer;
         protected byte[] _recv;
 
-        protected QRCommandHandlerBase(IClient client, byte[] recv) : base(client)
+        protected QRCommandHandlerBase(ISession session, byte[] recv) : base(session)
         {
             _recv = recv;
         }
@@ -62,7 +62,7 @@ namespace QueryReport.Handler.CommandHandler
                 return;
             }
 
-            _client.SendAsync(_sendingBuffer);
+            _session.SendAsync(_sendingBuffer);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
     /// </summary>
     public class SearchUniqueHandler : PSPCommandHandlerBase
     {
-        public SearchUniqueHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public SearchUniqueHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

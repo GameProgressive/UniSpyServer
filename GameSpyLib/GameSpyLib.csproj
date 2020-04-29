@@ -28,8 +28,9 @@
     <Folder Include="Common\Entity\Interface\" />
     <Folder Include="Network\Tcp\" />
     <Folder Include="Network\Udp\" />
-    <Folder Include="Network\Tcp\Proxy\" />
+    <Folder Include="Network\Tcp\Client\" />
     <Folder Include="Network\Tcp\Server\" />
     <Folder Include="Network\Udp\Server\" />
+    <Folder Include="Network\Udp\Client\" />
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.Se
     {
         private PeerGroup _peerGroup;
 
-        public SendGroupsHandler(ServerListRequest request, IClient client, byte[] recv) : base(request, client, recv)
+        public SendGroupsHandler(ServerListRequest request, ISession client, byte[] recv) : base(request, client, recv)
         {
         }
 

@@ -10,14 +10,14 @@ namespace QueryReport.Handler.CommandHandler.Echo
     public class EchoHandler : QRCommandHandlerBase
     {
         GameServer _gameServer;
-        public EchoHandler(IClient client, byte[] recv) : base(client, recv)
+        public EchoHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
 
         protected override void DataOperation()
         {
             //TODO
-            QRClient client = (QRClient)_client.GetInstance();
+            QRSession client = (QRSession)_session.GetInstance();
             var result =
                  GameServer.GetServers(client.RemoteEndPoint);
             //add recive echo packet on gameserverList

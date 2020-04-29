@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Handler.Buddy.DelBuddy
         //Dictionary<string, string> _recv;
 
         //delete friend in database then send bm_revoke message to friend
-        public DelBuddyHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public DelBuddyHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
     }

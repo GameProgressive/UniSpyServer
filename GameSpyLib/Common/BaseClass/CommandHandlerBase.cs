@@ -5,10 +5,10 @@ namespace GameSpyLib.Common.BaseClass
 {
     public abstract class CommandHandlerBase
     {
-        protected IClient _client;
-        public CommandHandlerBase(IClient client)
+        protected ISession _session;
+        public CommandHandlerBase(ISession session)
         {
-            _client = client;
+            _session = session;
         }
 
         public virtual void Handle()

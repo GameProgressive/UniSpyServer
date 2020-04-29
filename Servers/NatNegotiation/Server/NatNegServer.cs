@@ -10,12 +10,12 @@ namespace NatNegotiation.Server
     {
         public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientInfoList;
 
-        protected readonly ConcurrentDictionary<EndPoint, NatNegClient> Clients;
+        protected readonly ConcurrentDictionary<EndPoint, NatNegSession> Clients;
 
         public NatNegServer(IPAddress address, int port) : base(address, port)
         {
             ClientInfoList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
-            Clients = new ConcurrentDictionary<EndPoint, NatNegClient>();
+            Clients = new ConcurrentDictionary<EndPoint, NatNegSession>();
         }
 
         public override bool Start()
@@ -27,15 +27,15 @@ namespace NatNegotiation.Server
 
         protected override object CreateClient(EndPoint endPoint)
         {
-            return new NatNegClient(this, endPoint);
+            return new NatNegSession(this, endPoint);
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            NatNegClient client;
+            NatNegSession client;
             if (!Clients.TryGetValue(endPoint, out client))
             {
-                client = (NatNegClient)CreateClient(endPoint);
+                client = (NatNegSession)CreateClient(endPoint);
                 Clients.TryAdd(endPoint, client);
             }
 

@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler
         ChatChannelUser _user;
         SETCKEY _setckeyCmd;
         ChatChannelBase _channel;
-        public SETCKEYHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public SETCKEYHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _setckeyCmd = (SETCKEY)cmd;
         }

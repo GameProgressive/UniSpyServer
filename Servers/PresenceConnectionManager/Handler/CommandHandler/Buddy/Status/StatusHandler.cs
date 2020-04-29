@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
     {
         private uint _statusCode;
 
-        public StatusHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public StatusHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 

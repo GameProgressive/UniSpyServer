@@ -6,7 +6,7 @@ namespace Chat.Handler.CommandHandler
 {
     public class PINGHandler : ChatCommandHandlerBase
     {
-        public PINGHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public PINGHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
         }
 

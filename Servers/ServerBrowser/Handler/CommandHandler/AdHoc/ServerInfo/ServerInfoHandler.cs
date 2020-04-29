@@ -23,7 +23,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
         private new AdHocRequest _request;
         private GameServer _gameServer;
 
-        public ServerInfoHandler(IClient client, byte[] recv) : base(null, client, recv)
+        public ServerInfoHandler(ISession client, byte[] recv) : base(null, client, recv)
         {
             _request = new AdHocRequest();
         }
@@ -71,7 +71,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 
             _dataList.InsertRange(0, msgLength);
 
-            SBSession session = (SBSession)_client.GetInstance();
+            SBSession session = (SBSession)_session.GetInstance();
 
             GOAEncryption enc = new GOAEncryption(session.EncState);
             _sendingBuffer = enc.Encrypt(_dataList.ToArray());
@@ -148,7 +148,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
             }
             LogWriter.ToLog(LogEventLevel.Debug,
               $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(_dataList.ToArray(), 0, _dataList.Count)}");
-            _client.BaseSendAsync(_sendingBuffer);
+            _session.BaseSendAsync(_sendingBuffer);
         }
     }
 }

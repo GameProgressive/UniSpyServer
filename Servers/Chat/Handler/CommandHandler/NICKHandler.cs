@@ -9,7 +9,7 @@ namespace Chat.Handler.CommandHandler
     public class NICKHandler : ChatCommandHandlerBase
     {
         NICK _nickCmd;
-        public NICKHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public NICKHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _nickCmd = (NICK)cmd;
         }

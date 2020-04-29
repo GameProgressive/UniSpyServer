@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler
     public class WHOISHandler : ChatCommandHandlerBase
     {
         WHOIS _whoisCmd;
-        public WHOISHandler(IClient client, ChatCommandBase cmd) : base(client, cmd)
+        public WHOISHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _whoisCmd = (WHOIS)cmd;
         }

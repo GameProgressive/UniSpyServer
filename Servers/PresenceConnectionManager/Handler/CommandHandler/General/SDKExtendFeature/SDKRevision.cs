@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
         /// <summary>
         /// Tell server send back extra information according to the number of  sdkrevision
         /// </summary>
-        public static void ExtendedFunction(IClient client)
+        public static void ExtendedFunction(ISession client)
         {
             GPCMSession _session = (GPCMSession)client.GetInstance();
             if (_session.UserInfo.SDKRevision == 0)

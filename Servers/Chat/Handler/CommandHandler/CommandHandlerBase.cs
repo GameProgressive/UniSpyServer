@@ -29,7 +29,7 @@ namespace Chat.Handler.CommandHandler
 
         protected ChatSession _session;
 
-        public ChatCommandHandlerBase(IClient client, ChatCommandBase cmd) : base(client)
+        public ChatCommandHandlerBase(ISession client, ChatCommandBase cmd) : base(client)
         {
             _errorCode = ChatError.NoError;
             _cmd = cmd;
@@ -72,7 +72,7 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
-            _client.SendAsync(_sendingBuffer);
+            base._session.SendAsync(_sendingBuffer);
         }
     }
 }

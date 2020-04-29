@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Handler.Profile.UpdateUI
     /// </summary>
     public class UpdateUIHandler : PCMCommandHandlerBase
     {
-        public UpdateUIHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public UpdateUIHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
     }

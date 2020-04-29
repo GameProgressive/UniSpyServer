@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
     public class ValidHandler : PSPCommandHandlerBase
     {
-        public ValidHandler(IClient client, Dictionary<string, string> recv) : base(client, recv)
+        public ValidHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
 
