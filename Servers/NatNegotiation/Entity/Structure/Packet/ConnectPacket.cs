@@ -13,8 +13,12 @@ namespace NatNegotiation.Entity.Structure.Packet
 
         public bool Parse(EndPoint endPoint, byte[] recv)
         {
+            if (!base.Parse(recv))
+            {
+                return false;
+            }
             RemoteEndPoint = endPoint;
-            return base.Parse(recv);
+            return true;
         }
 
         public override byte[] GenerateResponse(NatPacketType packetType)

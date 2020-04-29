@@ -1,9 +1,7 @@
 ﻿using GameSpyLib.Database;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
-using Serilog.Events;
 using StackExchange.Redis;
 using System;
 
@@ -12,7 +10,7 @@ namespace GameSpyLib.Common
 {
     public abstract class ServerManagerBase
     {
-        public readonly string RetroSpyVersion = "0.5.2";
+        public static readonly string RetroSpyVersion = "0.5.2";
         public static string ServerName { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
         protected object Server;
@@ -22,12 +20,11 @@ namespace GameSpyLib.Common
             ServerName = serverName.ToString();
         }
 
-        public bool Start()
+        public virtual void Start()
         {
-            StringExtensions.ShowRetroSpyLogo(RetroSpyVersion);
+            ShowRetroSpyLogo();
             LoadDatabaseConfig();
             LoadServerConfig();
-            return true;
         }
 
         public void LoadServerConfig()
@@ -88,6 +85,16 @@ namespace GameSpyLib.Common
                 throw new Exception("Can not connect to Redis", e);
             }
             Console.WriteLine($"Successfully connected to Redis!");
+        }
+
+        public static void ShowRetroSpyLogo()
+        {
+            Console.WriteLine(@" ___     _           ___             ___                      ");
+            Console.WriteLine(@"| _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
+            Console.WriteLine(@"|   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
+            Console.WriteLine(@"|_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
+            Console.WriteLine(@"                        |_|   |__/                            ");
+            Console.WriteLine(@"Version: " + RetroSpyVersion);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace StatsAndTracking.Application
                 //create a instance of ServerManager class
                 Manager = new ServerManager(RetroSpyServerName.GSTATS);
                 Manager.Start();
-                Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
+                Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)
             {

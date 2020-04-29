@@ -17,9 +17,12 @@ namespace NatNegotiation.Entity.Structure.Packet
         public NatNegotiationMappingScheme MappingScheme; //int
         public string GameName;
 
-        public new void Parse(byte[] recv)
+        public override bool Parse(byte[] recv)
         {
-            base.Parse(recv);
+            if (!base.Parse(recv))
+            {
+                return false;
+            }
             PortType = recv[13];
             ClientIndex = recv[14];
             NegResult = recv[15];
@@ -27,6 +30,8 @@ namespace NatNegotiation.Entity.Structure.Packet
             NatType = (NatNegotiationType)BitConverter.ToInt32(ByteTools.SubBytes(recv, 17, sizeof(int)));
             MappingScheme = (NatNegotiationMappingScheme)BitConverter.ToInt32(ByteTools.SubBytes(recv, 19, sizeof(int)));
             GameName = Encoding.ASCII.GetString(ByteTools.SubBytes(recv, 23, recv.Length - 23));
+
+            return true;
         }
 
         public override byte[] GenerateResponse(NatPacketType packetType)

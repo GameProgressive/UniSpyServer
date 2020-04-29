@@ -8,9 +8,9 @@
 
         public new static readonly int Size = BasePacket.Size + 6;
 
-        public new void Parse(byte[] recv)
+        public override bool Parse(byte[] recv)
         {
-            base.Parse(recv);
+            return base.Parse(recv);
         }
     }
 }

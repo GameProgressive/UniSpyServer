@@ -16,7 +16,6 @@ namespace NatNegotiation.Entity.Structure
         public bool IsGotErtAck;
         public bool IsGotReport;
         public GameInfo Game;
-        public EndPoint RemoteEndPoint;
         public string GameName;
 
         public int InternalIP;
@@ -28,9 +27,8 @@ namespace NatNegotiation.Entity.Structure
 
         public NatNegUserInfo TargetClient;
 
-        public NatNegUserInfo(EndPoint end)
+        public NatNegUserInfo()
         {
-            RemoteEndPoint = end;
             LastPacketTime = DateTime.Now;
         }
 

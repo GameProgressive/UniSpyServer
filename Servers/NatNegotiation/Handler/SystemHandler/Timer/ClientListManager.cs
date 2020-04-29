@@ -11,13 +11,13 @@ namespace NatNegotiation.Handler.SystemHandler.Timer
         {
             base.CheckExpire();
 
-            foreach (var c in NatNegServer.ClientInfoList.Values)
+            foreach (var c in NatNegServer.Sessions.Values)
             {
                 //Console.WriteLine(DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds);
-                if (DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds > 60)
+                if (DateTime.Now.Subtract(c.UserInfo.LastPacketTime).TotalSeconds > 60)
                 {
                     LogWriter.ToLog("Deleted client " + c.RemoteEndPoint.ToString());
-                    NatNegServer.ClientInfoList.TryRemove(c.RemoteEndPoint, out _);
+                    NatNegServer.Sessions.TryRemove(c.RemoteEndPoint, out _);
                 }
             }
         }

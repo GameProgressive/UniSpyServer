@@ -3,7 +3,7 @@ using GameSpyLib.Common.Entity.Interface;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure;
 using NatNegotiation.Entity.Structure.Packet;
-
+using NatNegotiation.Server;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -18,13 +18,13 @@ namespace NatNegotiation.Handler.CommandHandler
         protected InitPacket _initPacket;
         protected ConnectPacket _connPacket;
         protected ReportPacket _reportPacket;
-        protected NatNegUserInfo _userInfo;
+        protected new NatNegSession _session;
         protected byte[] _recv;
 
-        public NatNegCommandHandlerBase(ISession session, NatNegUserInfo userInfo, byte[] recv) : base(session)
+        public NatNegCommandHandlerBase(ISession session, byte[] recv) : base(session)
         {
-            _userInfo = userInfo;
             _recv = recv;
+            _session = (NatNegSession)session.GetInstance();
         }
 
         public override void Handle()

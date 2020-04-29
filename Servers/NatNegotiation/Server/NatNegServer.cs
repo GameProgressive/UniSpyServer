@@ -8,14 +8,11 @@ namespace NatNegotiation.Server
 {
     public class NatNegServer : TemplateUdpServer
     {
-        public static ConcurrentDictionary<EndPoint, NatNegUserInfo> ClientInfoList;
-
-        protected readonly ConcurrentDictionary<EndPoint, NatNegSession> Clients;
+        public static ConcurrentDictionary<EndPoint, NatNegSession> Sessions;
 
         public NatNegServer(IPAddress address, int port) : base(address, port)
         {
-            ClientInfoList = new ConcurrentDictionary<EndPoint, NatNegUserInfo>();
-            Clients = new ConcurrentDictionary<EndPoint, NatNegSession>();
+            Sessions = new ConcurrentDictionary<EndPoint, NatNegSession>();
         }
 
         public override bool Start()
@@ -32,14 +29,14 @@ namespace NatNegotiation.Server
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            NatNegSession client;
-            if (!Clients.TryGetValue(endPoint, out client))
+            NatNegSession session;
+            if (!Sessions.TryGetValue(endPoint, out session))
             {
-                client = (NatNegSession)CreateSession(endPoint);
-                Clients.TryAdd(endPoint, client);
+                session = (NatNegSession)CreateSession(endPoint);
+                Sessions.TryAdd(endPoint, session);
             }
 
-            new NatNegCommandSwitcher().Switch(client, message);
+            new NatNegCommandSwitcher().Switch(session, message);
         }
     }
 }

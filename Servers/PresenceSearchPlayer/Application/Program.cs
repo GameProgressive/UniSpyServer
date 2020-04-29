@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Logging;
 using System;
 
 namespace PresenceSearchPlayer
@@ -12,9 +13,9 @@ namespace PresenceSearchPlayer
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(GameSpyLib.Common.RetroSpyServerName.GPSP);
+                Manager = new ServerManager(RetroSpyServerName.GPSP);
                 Manager.Start();
-                Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
+                Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)
             {

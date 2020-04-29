@@ -16,14 +16,18 @@ namespace NatNegotiation.Entity.Structure.Packet
         public int LocalIP;
         public short LocalPort;
 
-        public new void Parse(byte[] recv)
+        public override bool Parse(byte[] recv)
         {
-            base.Parse(recv);
+            if (!base.Parse(recv))
+            {
+                return false;
+            }
             PortType = recv[BasePacket.Size];//
             ClientIndex = recv[BasePacket.Size + 1];//00
             UseGamePort = recv[BasePacket.Size + 2];//00
             LocalIP = BitConverter.ToInt32(ByteTools.SubBytes(recv, BasePacket.Size + 3, 4));
             LocalPort = BitConverter.ToInt16(ByteTools.SubBytes(recv, BasePacket.Size + 7, 2));
+            return true;
         }
 
         /// <summary>
@@ -41,6 +45,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             data.Add(PortType);
             data.Add(ClientIndex);
             data.Add(UseGamePort);
+
             data.AddRange(((IPEndPoint)endPoint).Address.GetAddressBytes());
             data.AddRange(BitConverter.GetBytes((short)((IPEndPoint)endPoint).Port));
 

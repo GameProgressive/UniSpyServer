@@ -8,35 +8,32 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
     public class NatNegCommandSwitcher
     {
-        public void Switch(NatNegSession client, byte[] recv)
+        public void Switch(NatNegSession session, byte[] recv)
         {
             try
             {
-                //check and add client into clientList
-                NatNegUserInfo clientInfo =
-                    NatNegServer.ClientInfoList.GetOrAdd(client.RemoteEndPoint, new NatNegUserInfo(client.RemoteEndPoint));
-                clientInfo.LastPacketTime = DateTime.Now;
+                session.UserInfo.LastPacketTime = DateTime.Now;
 
                 //BytesRecieved[7] is nnpacket.PacketType.
                 switch ((NatPacketType)recv[7])
                 {
                     case NatPacketType.Init:
-                        new InitHandler(client, clientInfo, recv).Handle();
+                        new InitHandler(session, recv).Handle();
                         break;
                     case NatPacketType.AddressCheck:
-                        new AddressHandler(client, clientInfo, recv).Handle();
+                        new AddressHandler(session, recv).Handle();
                         break;
                     case NatPacketType.NatifyRequest:
-                        new NatifyHandler(client, clientInfo, recv).Handle();
+                        new NatifyHandler(session, recv).Handle();
                         break;
                     case NatPacketType.ConnectAck:
-                        clientInfo.IsGotConnectAck = true;
+                        session.UserInfo.IsGotConnectAck = true;
                         break;
                     case NatPacketType.Report:
-                        new ReportHandler(client, clientInfo, recv).Handle();
+                        new ReportHandler(session, recv).Handle();
                         break;
                     case NatPacketType.ErtAck:
-                        new ErtACKHandler(client, clientInfo, recv).Handle();
+                        new ErtACKHandler(session, recv).Handle();
                         break;
                     default:
                         LogWriter.UnknownDataRecieved(recv);

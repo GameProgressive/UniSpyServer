@@ -10,7 +10,7 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class ConnectHandler : NatNegCommandHandlerBase
     {
-        public ConnectHandler(ISession session, NatNegUserInfo clientInfo, byte[] _recv) : base(session, clientInfo, _recv)
+        public ConnectHandler(ISession session, byte[] _recv) : base(session, _recv)
         {
         }
 
@@ -49,7 +49,7 @@ namespace NatNegotiation.Handler.CommandHandler
         public void SendDeadHeartBeatNotice()
         {
             ConnectPacket connPacket = new ConnectPacket();
-            connPacket.Parse(_userInfo.RemoteEndPoint, _recv);
+            connPacket.Parse(_session.RemoteEndPoint, _recv);
             byte[] buffer = connPacket.GenerateResponse(NatPacketType.Connect);
             _session.SendAsync(buffer);
         }
@@ -70,16 +70,16 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void Response()
         {
-            var other = NatNegServer.ClientInfoList.Values.Where(
+            var result = NatNegServer.Sessions.Values.Where(
                 c => c.RemoteEndPoint == _connPacket.RemoteEndPoint);
 
-            if (other.Count() < 1)
+            if (result.Count() < 1)
             {
                 LogWriter.ToLog("Can not find client2 that client1 tries to connect!");
                 return;
             }
 
-            NatNegUserInfo client2 = other.First();
+            NatNegSession user2 = result.First();
 
             _sendingBuffer = _connPacket.GenerateResponse(NatPacketType.Connect);
             //_client.Server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);

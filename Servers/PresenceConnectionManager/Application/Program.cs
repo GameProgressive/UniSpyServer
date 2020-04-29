@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Logging;
 using System;
 
 namespace PresenceConnectionManager.Application
@@ -17,7 +18,7 @@ namespace PresenceConnectionManager.Application
                 //create a instance of ServerManager class
                 Manager = new ServerManager(GameSpyLib.Common.RetroSpyServerName.GPCM);
                 Manager.Start();
-                Console.Title = "RetroSpy Server " + Manager.RetroSpyVersion;
+                Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)
             {

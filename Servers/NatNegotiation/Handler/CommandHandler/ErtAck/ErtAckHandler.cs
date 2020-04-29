@@ -7,7 +7,7 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class ErtACKHandler : NatNegCommandHandlerBase
     {
-        public ErtACKHandler(ISession session, NatNegUserInfo clientInfo, byte[] recv) : base(session, clientInfo, recv)
+        public ErtACKHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
 
@@ -19,12 +19,12 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void DataOperation()
         {
-            _userInfo.Parse(_initPacket);
+            _session.UserInfo.Parse(_initPacket);
         }
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtAck, _userInfo.RemoteEndPoint);
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtAck, _session.RemoteEndPoint);
         }
     }
 }
