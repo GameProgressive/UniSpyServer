@@ -27,7 +27,7 @@ namespace Chat.Handler.CommandHandler
         /// </summary>
         protected string _sendingBuffer;
 
-        protected ChatSession _session;
+        new protected ChatSession _session;
 
         public ChatCommandHandlerBase(ISession client, ChatCommandBase cmd) : base(client)
         {

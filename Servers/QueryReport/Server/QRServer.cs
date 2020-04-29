@@ -34,7 +34,7 @@ namespace QueryReport.Server
             return base.Start();
         }
 
-        protected override object CreateClient(EndPoint endPoint)
+        protected override object CreateSession(EndPoint endPoint)
         {
             return new QRSession(this, endPoint);
         }
@@ -44,7 +44,7 @@ namespace QueryReport.Server
             QRSession client;
             if (!Clients.TryGetValue(endPoint, out client))
             {
-                client = (QRSession)CreateClient(endPoint);
+                client = (QRSession)CreateSession(endPoint);
                 Clients.TryAdd(endPoint, client);
             }
 

@@ -7,7 +7,7 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class AddressHandler : NatNegCommandHandlerBase
     {
-        public AddressHandler(ISession session, NatNegClientInfo clientInfo, byte[] recv) : base(session, clientInfo, recv)
+        public AddressHandler(ISession session, NatNegUserInfo clientInfo, byte[] recv) : base(session, clientInfo, recv)
         {
         }
 
@@ -19,7 +19,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.AddressReply, _clientInfo.RemoteEndPoint);
+            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.AddressReply, _userInfo.RemoteEndPoint);
         }
     }
 }

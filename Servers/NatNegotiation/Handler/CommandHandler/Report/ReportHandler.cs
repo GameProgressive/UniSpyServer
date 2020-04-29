@@ -12,7 +12,7 @@ namespace NatNegotiation.Handler.CommandHandler
     /// </summary>
     public class ReportHandler : NatNegCommandHandlerBase
     {
-        public ReportHandler(ISession session, NatNegClientInfo clientInfo, byte[] recv) : base(session, clientInfo, recv)
+        public ReportHandler(ISession session, NatNegUserInfo clientInfo, byte[] recv) : base(session, clientInfo, recv)
         {
         }
 
@@ -24,7 +24,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void DataOperation()
         {
-            _clientInfo.IsGotReport = true;
+            _userInfo.IsGotReport = true;
         }
 
         protected override void ConstructResponse()
@@ -34,7 +34,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void Response()
         {
-            LogWriter.ToLog("Client: " + ((IPEndPoint)_clientInfo.RemoteEndPoint).Address.ToString() + "natneg failed!");
+            LogWriter.ToLog("Client: " + ((IPEndPoint)_userInfo.RemoteEndPoint).Address.ToString() + "natneg failed!");
             base.Response();
         }
     }

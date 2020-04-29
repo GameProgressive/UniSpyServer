@@ -24,7 +24,7 @@ namespace GameSpyLib.Network
         public TemplateUdpServer(IPEndPoint endpoint) : base(endpoint)
         {
         }
-        protected abstract object CreateClient(EndPoint endPoint);
+        protected abstract object CreateSession(EndPoint endPoint);
 
         protected override void OnStarted()
         {

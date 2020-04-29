@@ -11,7 +11,7 @@ namespace CDKey.Server
 {
     public class CDKeyServer : TemplateUdpServer
     {
-        protected readonly ConcurrentDictionary<EndPoint, CDKeySession> Clients
+        protected readonly ConcurrentDictionary<EndPoint, CDKeySession> Sessions
      = new ConcurrentDictionary<EndPoint, CDKeySession>();
         public CDKeyServer(IPAddress address, int port) : base(address, port)
         {
@@ -19,13 +19,13 @@ namespace CDKey.Server
 
         protected override void OnReceived(EndPoint endPoint, string message)
         {
-            CDKeySession client;
-            if (!Clients.TryGetValue(endPoint, out client))
+            CDKeySession session;
+            if (!Sessions.TryGetValue(endPoint, out session))
             {
-                client = (CDKeySession)CreateClient(endPoint);
-                Clients.TryAdd(endPoint, client);
+                session = (CDKeySession)CreateSession(endPoint);
+                Sessions.TryAdd(endPoint, session);
             }
-            new CDKeyCommandSwitcher().Switch(client, message);
+            new CDKeyCommandSwitcher().Switch(session, message);
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
@@ -52,7 +52,7 @@ namespace CDKey.Server
             return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type0);
         }
 
-        protected override object CreateClient(EndPoint endPoint)
+        protected override object CreateSession(EndPoint endPoint)
         {
             return new CDKeySession(this, endPoint);
         }

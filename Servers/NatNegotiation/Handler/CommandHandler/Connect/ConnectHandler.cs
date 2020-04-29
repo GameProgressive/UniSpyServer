@@ -10,7 +10,7 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class ConnectHandler : NatNegCommandHandlerBase
     {
-        public ConnectHandler(ISession session, NatNegClientInfo clientInfo, byte[] _recv) : base(session, clientInfo, _recv)
+        public ConnectHandler(ISession session, NatNegUserInfo clientInfo, byte[] _recv) : base(session, clientInfo, _recv)
         {
         }
 
@@ -49,7 +49,7 @@ namespace NatNegotiation.Handler.CommandHandler
         public void SendDeadHeartBeatNotice()
         {
             ConnectPacket connPacket = new ConnectPacket();
-            connPacket.Parse(_clientInfo.RemoteEndPoint, _recv);
+            connPacket.Parse(_userInfo.RemoteEndPoint, _recv);
             byte[] buffer = connPacket.GenerateResponse(NatPacketType.Connect);
             _session.SendAsync(buffer);
         }
@@ -79,7 +79,7 @@ namespace NatNegotiation.Handler.CommandHandler
                 return;
             }
 
-            NatNegClientInfo client2 = other.First();
+            NatNegUserInfo client2 = other.First();
 
             _sendingBuffer = _connPacket.GenerateResponse(NatPacketType.Connect);
             //_client.Server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);

@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Network;
-using NatNegotiation.Entity.Structure;
 using NetCoreServer;
 using System.Collections.Concurrent;
 using System.Net;
@@ -18,8 +17,6 @@ namespace ServerBrowser
         /// to reduce computation cost of our program
         /// </summary>
         public static readonly string ServerChallenge = "0000000000";
-
-        public static ConcurrentDictionary<EndPoint, NatNegClientInfo> ClientList = new ConcurrentDictionary<EndPoint, NatNegClientInfo>();
 
         public SBServer(IPAddress address, int port) : base(address, port)
         {

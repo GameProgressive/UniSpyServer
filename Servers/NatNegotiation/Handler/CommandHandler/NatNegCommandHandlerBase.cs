@@ -18,12 +18,12 @@ namespace NatNegotiation.Handler.CommandHandler
         protected InitPacket _initPacket;
         protected ConnectPacket _connPacket;
         protected ReportPacket _reportPacket;
-        protected NatNegClientInfo _clientInfo;
+        protected NatNegUserInfo _userInfo;
         protected byte[] _recv;
 
-        public NatNegCommandHandlerBase(ISession client, NatNegClientInfo clientInfo, byte[] recv) : base(client)
+        public NatNegCommandHandlerBase(ISession session, NatNegUserInfo userInfo, byte[] recv) : base(session)
         {
-            _clientInfo = clientInfo;
+            _userInfo = userInfo;
             _recv = recv;
         }
 

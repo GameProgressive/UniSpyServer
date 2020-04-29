@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Handler.Buddy.BuddyStatusInfo
     public class BuddyStatusInfo : PCMCommandHandlerBase
     {
 
-        public BuddyStatusInfo(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        public BuddyStatusInfo(ISession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
         //public static void SendBuddyStatusInfo(GPCMSession _session, uint[] profileids)

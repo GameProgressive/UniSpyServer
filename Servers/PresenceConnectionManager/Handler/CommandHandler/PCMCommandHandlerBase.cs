@@ -19,14 +19,14 @@ namespace PresenceConnectionManager.Handler
         protected uint _profileid;
         protected uint _productid;
         protected Dictionary<string, string> _recv;
-        protected GPCMSession _session;
-        public PCMCommandHandlerBase(ISession client, Dictionary<string, string> recv) : base(client)
+        new protected GPCMSession _session;
+        public PCMCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
         {
             _recv = recv;
             _errorCode = GPErrorCode.NoError;
             _operationID = 1;
             _namespaceid = 0;
-            _session = (GPCMSession)client.GetInstance();
+            _session = (GPCMSession)session.GetInstance();
         }
 
         public override void Handle()

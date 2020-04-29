@@ -8,12 +8,13 @@ namespace ServerBrowser.Handler.CommandHandler
 {
     public abstract class SBCommandHandlerBase : CommandHandlerBase
     {
-        protected SBErrorCode _errorCode = SBErrorCode.NoError;
+        protected SBErrorCode _errorCode;
         protected byte[] _sendingBuffer;
         protected byte[] _recv;
 
         public SBCommandHandlerBase(ISession client, byte[] recv) : base(client)
         {
+            _errorCode = SBErrorCode.NoError;
             _recv = recv;
         }
 

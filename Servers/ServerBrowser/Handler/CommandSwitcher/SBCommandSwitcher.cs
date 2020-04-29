@@ -1,7 +1,9 @@
-﻿using GameSpyLib.Common.BaseClass;
+﻿using System.Linq;
+using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
+using ServerBrowser.Handler.CommandHandler.NatNeg;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
 
 namespace ServerBrowser.Handler.CommandSwitcher
@@ -27,6 +29,9 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     //TODO
                     //Cryptorx's game use this command
                     break;
+                case SBClientRequestType.NatNegCookieRequest:
+                    new NatNegCookieHandler(session,recv).Handle();
+                        break;
                 default:
                     LogWriter.UnknownDataRecieved(recv);
                     break;
