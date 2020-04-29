@@ -47,6 +47,7 @@ namespace QueryReport.Entity.Structure.ReportData
                         continue;
                     }
                     keyValue.Add(keys[j] + i.ToString(), values[i * keys.Count + j]);
+                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose, $"{keys[j] + i.ToString()}:{values[i * keys.Count + j]}");
                 }
 
                 KeyValueList.Add(keyValue);
