@@ -26,6 +26,12 @@ namespace QueryReport.Entity.Structure.ReportData
         {
             KeyValue.Clear();
             string[] keyValueArray = serverData.Split("\0",System.StringSplitOptions.RemoveEmptyEntries);
+            string tempDebug = "";
+            for (int i = 0; i < keyValueArray.Length; i++)
+            {
+                tempDebug += keyValueArray[i] + @"\";
+            }
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose, tempDebug);
 
             for (int i = 0; i < keyValueArray.Length; i += 2)
             {
@@ -34,7 +40,7 @@ namespace QueryReport.Entity.Structure.ReportData
                     LogWriter.ToLog($"Ignoring same server key value {keyValueArray[i]} : {keyValueArray[i + 1]}");
                     continue;
                 }
-
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose, $"{keyValueArray[i]}:{keyValueArray[i + 1]} added");
                 KeyValue.Add(keyValueArray[i], keyValueArray[i + 1]);
             }
 
