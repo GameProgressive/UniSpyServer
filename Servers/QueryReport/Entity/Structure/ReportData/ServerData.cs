@@ -1,4 +1,6 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using Serilog.Events;
 using System.Collections.Generic;
 
 namespace QueryReport.Entity.Structure.ReportData
@@ -24,9 +26,11 @@ namespace QueryReport.Entity.Structure.ReportData
 
         public void Update(string serverData)
         {
+            LogWriter.ToLog(LogEventLevel.Debug,
+                StringExtensions.ReplaceUnreadableCharToHex(serverData));
+
             KeyValue.Clear();
             string[] keyValueArray = serverData.Split("\0");
-            string tempDebug = "";
 
             for (int i = 0; i < keyValueArray.Length; i += 2)
             {
@@ -35,7 +39,13 @@ namespace QueryReport.Entity.Structure.ReportData
                     LogWriter.ToLog($"Ignoring same server key value {keyValueArray[i]} : {keyValueArray[i + 1]}");
                     continue;
                 }
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose, $"{keyValueArray[i]}:{keyValueArray[i + 1]}");
+
+                if (keyValueArray[i] == "")
+                {
+                    LogWriter.ToLog(LogEventLevel.Verbose, "Skiping empty key value");
+                    continue;
+                }
+                LogWriter.ToLog(LogEventLevel.Verbose, $"{keyValueArray[i]}:{keyValueArray[i + 1]}");
                 KeyValue.Add(keyValueArray[i], keyValueArray[i + 1]);
             }
 

@@ -76,6 +76,10 @@ namespace GameSpyLib.Extensions
             }
             return temp.ToString();
         }
+        public static string ReplaceUnreadableCharToHex(string buffer)
+        {
+            return ReplaceUnreadableCharToHex(Encoding.ASCII.GetBytes(buffer));
+        }
 
         public static string FormatServerTableContext(string part1, string part2, string part3)
         {

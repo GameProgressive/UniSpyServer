@@ -104,7 +104,7 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = ChatError.BannedFromChan;
                 return;
             }
-
+            //if there are no players in this channel we set first joined player as creator and operator
             if (_channel.Property.ChannelUsers.Count == 0)
             {
                 _user.SetCreatorProperties();

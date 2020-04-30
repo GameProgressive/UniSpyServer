@@ -75,11 +75,9 @@ namespace Chat.Handler.CommandHandler
             {
                 if (user.UserKeyValue.ContainsKey(k))
                 {
-                    flags += @"\" + k + @"\" + user.UserKeyValue[k];
+                    flags += @"\" + user.UserInfo.UserName + @"\" + user.UserKeyValue[k];
                 }
             }
-
-            flags += "\0";
 
             _sendingBuffer +=
           ChatCommandBase.BuildNormalRPL(ChatServer.ServerDomain,

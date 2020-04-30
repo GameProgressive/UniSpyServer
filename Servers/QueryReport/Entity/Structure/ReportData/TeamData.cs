@@ -1,4 +1,6 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Extensions;
+using GameSpyLib.Logging;
+using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,6 +20,9 @@ namespace QueryReport.Entity.Structure.ReportData
 
         public void Update(string teamData)
         {
+            LogWriter.ToLog(LogEventLevel.Debug,
+                    StringExtensions.ReplaceUnreadableCharToHex(teamData));
+
             KeyValueList.Clear();
             int teamCount = System.Convert.ToInt32(teamData[0]);
             teamData = teamData.Substring(1);
@@ -40,7 +45,7 @@ namespace QueryReport.Entity.Structure.ReportData
                     }
 
                     keyValue.Add(keys[j] + i.ToString(), values[i * keys.Count + j]);
-                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose, $"{keys[j] + i.ToString()}:{values[i * keys.Count + j]}");
+                    LogWriter.ToLog(LogEventLevel.Verbose, $"{keys[j] + i.ToString()}:{values[i * keys.Count + j]}");
                 }
 
                 KeyValueList.Add(keyValue);

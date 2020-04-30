@@ -138,7 +138,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         private void ParseServerData()
         {
-            _serverData = _dataPartition.Substring(0, _dataPartition.Length - 8);
+            _serverData = _dataPartition;
             _gameServer.ServerData.Update(_serverData);
         }
 

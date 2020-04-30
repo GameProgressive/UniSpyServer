@@ -78,6 +78,7 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
             _channel.MultiCastExceptSender(_user,_sendingBuffer);
+            //_channel.MultiCast(_sendingBuffer);
         }
 
     }
