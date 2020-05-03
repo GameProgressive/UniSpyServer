@@ -1514,7 +1514,7 @@ INSERT INTO `games` (`gameid`, `gamename`, `secretkey`, `description`, `querypor
 	(1417,'thps4pcr',NULL,'Tony Hawk: Pro Skater 4 (PC) Rerelease',6500),
 	(1418,'thps4pcram',NULL,'Tony Hawk: Pro Skater 4  Automatch (PC) Rerelease',6500),
 	(1419,'bf2ddostest',NULL,'Battlefield 2 DDoS testing',6500),
-	(1420,'flatout2pc',NULL,'FlatOut 2 (PC)',6500),
+	(1420,'flatout2pc','GtGLyx','FlatOut 2 (PC)',6500),
 	(1421,'smrailroads',NULL,'Sid Meier\'s Railroads!',6500),
 	(1422,'cc3tibwars',NULL,'Command & Conquer 3: Tiberium Wars',6500),
 	(1423,'topspin2pc',NULL,'Top Spin 2 (PC)',6500),
