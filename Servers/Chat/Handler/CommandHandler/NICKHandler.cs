@@ -39,11 +39,11 @@ namespace Chat.Handler.CommandHandler
 
             if (_errorCode > ChatError.NoError)
             {
-                _sendingBuffer = ChatCommandBase.BuildErrorRPL(
+                _sendingBuffer = ChatCommandBase.BuildNumericErrorRPL(
                     _errorCode,$"* {_nickCmd.NickName}","Nick name in use!");
                 return;
             }
-            _sendingBuffer = ChatCommandBase.BuildNormalRPL(
+            _sendingBuffer = ChatCommandBase.BuildNumericRPL(
                 ChatServer.ServerDomain, ChatResponseType.Welcome,
                 _nickCmd.NickName, "Welcome to RetroSpy!");
             //check this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -8,6 +8,7 @@ namespace Chat.Entity.Structure.ChatCommand
 {
     public class ChatCommandBase
     {
+        public string RawRequest { get; protected set; }
         public string CommandName { get; protected set; }
         protected string Prefix;
         protected List<string> _cmdParams;
@@ -24,6 +25,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public virtual bool Parse(string request)
         {
+            RawRequest = request;
             LogWriter.LogCurrentClass(this);
             // at most 2 colon character
             // we do not sure about all command
@@ -61,26 +63,34 @@ namespace Chat.Entity.Structure.ChatCommand
             {
                 return false;
             }
-
-            _cmdParams = dataFrag.Skip(1).ToList();
-
+            if (dataFrag.Count > 1)
+            {
+                _cmdParams = dataFrag.Skip(1).ToList();
+            }
             return true;
         }
 
-        public static string BuildErrorRPL(ChatError errorCode, string cmdParam, string message)
+        public static string BuildMessageErrorRPL(string errorMsg)
+        {
+            return BuildMessageRPL("ERROR", errorMsg);
+        }
+
+        public static string BuildNumericErrorRPL(ChatError errorCode, string cmdParam, string message)
         {
             return BuildNumericRPL(ChatServer.ServerDomain, (int)errorCode, cmdParam, message);
         }
-        public static string BuildErrorRPL(string prefix, ChatError errorCode, string cmdParam, string message)
+
+        public static string BuildNumericErrorRPL(string prefix, ChatError errorCode, string cmdParam, string message)
         {
             return BuildNumericRPL(prefix, (int)errorCode, cmdParam, message);
         }
 
-        public static string BuildNormalRPL(ChatResponseType cmdCode, string cmdParam, string message)
+        public static string BuildNumericRPL(ChatResponseType cmdCode, string cmdParam, string message)
         {
             return BuildNumericRPL("", (int)cmdCode, cmdParam, message);
         }
-        public static string BuildNormalRPL(string prefix, ChatResponseType cmdCode, string cmdParam, string message)
+
+        public static string BuildNumericRPL(string prefix, ChatResponseType cmdCode, string cmdParam, string message)
         {
             return BuildNumericRPL(prefix, (int)cmdCode, cmdParam, message);
         }
@@ -112,7 +122,6 @@ namespace Chat.Entity.Structure.ChatCommand
 
             return buffer;
         }
-
 
         protected static string BuildNumericRPL(string prefix, int cmdCode, string cmdParam, string message)
         {

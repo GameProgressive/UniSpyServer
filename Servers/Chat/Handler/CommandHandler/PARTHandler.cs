@@ -36,7 +36,7 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
           
-            if (!_channel.GetChannelUser(_session, out _user))
+            if (!_channel.GetChannelUserBySession(_session, out _user))
             {
                 return;
             }

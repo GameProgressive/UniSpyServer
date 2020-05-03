@@ -36,5 +36,39 @@ namespace Chat.Handler.SystemHandler.ChatSessionManage
                 return false;
             }
         }
+
+        public static bool IsSessionWithUserNameExisted(string userName)
+        {
+            return GetSessionByUserName(userName, out _);
+        }
+        public static bool GetSessionByNickName(string nickName, out ChatSession session)
+        {
+            var result = Sessions.Values.Where(s => s.UserInfo.NickName == nickName);
+            if (result.Count() == 1)
+            {
+                session = result.First();
+                return true;
+            }
+            else
+            {
+                session = null;
+                return false;
+            }
+
+        }
+        public static bool GetSessionByUserName(string userName, out ChatSession session)
+        {
+            var result = Sessions.Values.Where(s => s.UserInfo.UserName == userName);
+            if (result.Count() == 1)
+            {
+                session = result.First();
+                return true;
+            }
+            else
+            {
+                session = null;
+                return false;
+            }
+        }
     }
 }

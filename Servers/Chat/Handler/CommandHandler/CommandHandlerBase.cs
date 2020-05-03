@@ -29,11 +29,11 @@ namespace Chat.Handler.CommandHandler
 
         new protected ChatSession _session;
 
-        public ChatCommandHandlerBase(ISession client, ChatCommandBase cmd) : base(client)
+        public ChatCommandHandlerBase(ISession session, ChatCommandBase cmd) : base(session)
         {
             _errorCode = ChatError.NoError;
             _cmd = cmd;
-            _session = (ChatSession)client.GetInstance();
+            _session = (ChatSession)session.GetInstance();
         }
 
         //if we use this structure the error response should also write to _sendingBuffer

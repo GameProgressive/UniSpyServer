@@ -22,7 +22,7 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
-            if (!_channel.GetChannelUser(_session, out _user))
+            if (!_channel.GetChannelUserBySession(_session, out _user))
             {
                 _errorCode = Entity.Structure.ChatError.Parse;
                 return;
@@ -36,7 +36,16 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
-            _channel.Property.SetChannelTopic(_cmd.ChannelTopic);
+            switch (_cmd.RequestType)
+            {
+                case TOPICCmdType.GetChannelTopic:
+                    GetChannelTopic();
+                    break;
+                case TOPICCmdType.SetChannelTopic:
+                    SetChannelTopic();
+                    break;
+            }
+
         }
 
         public override void ConstructResponse()
@@ -44,16 +53,30 @@ namespace Chat.Handler.CommandHandler
             base.ConstructResponse();
             if (_errorCode > Entity.Structure.ChatError.NoError)
             {
-
+                //we handle error code response here
+            }
+        }
+        private void GetChannelTopic()
+        {
+            if (_channel.Property.ChannelTopic == "" || _channel.Property.ChannelTopic == null)
+            {
+                _sendingBuffer =
+                    ChatCommandBase.BuildNumericRPL(
+                        Entity.Structure.ChatResponseType.NoTopic,
+                        _channel.Property.ChannelName, "");
             }
             else
             {
                 _sendingBuffer =
-                    ChatCommandBase.BuildMessageRPL(
+                        ChatCommandBase.BuildMessageRPL(
                         $"TOPIC {_channel.Property.ChannelName}",
                         _channel.Property.ChannelTopic);
             }
-        }
 
+        }
+        private void SetChannelTopic()
+        {
+            _channel.Property.SetChannelTopic(_cmd.ChannelTopic);
+        }
     }
 }

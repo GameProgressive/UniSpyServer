@@ -5,25 +5,25 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class SETCHANKEYHandler : ChatCommandHandlerBase
+    public class NOTICEHandler : ChatCommandHandlerBase
     {
-        new SETCHANKEY _cmd;
+        new NOTICE _cmd;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public SETCHANKEYHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public NOTICEHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
         {
-            _cmd = (SETCHANKEY)cmd;
+            _cmd = (NOTICE)cmd;
         }
 
         public override void CheckRequest()
         {
             base.CheckRequest();
-
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
                 _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
+
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
                 _errorCode = Entity.Structure.ChatError.Parse;
@@ -34,12 +34,29 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-            if (!_user.IsChannelOperator)
+            _sendingBuffer =
+                ChatCommandBase.BuildMessageRPL(
+                    $"NOTICE {_cmd.ChannelName}",_cmd.Message);
+        }
+
+        public override void ConstructResponse()
+        {
+            base.ConstructResponse();
+            if (_errorCode > Entity.Structure.ChatError.NoError)
             {
-                _errorCode = Entity.Structure.ChatError.NotChannelOperator;
+                //todo send error here
+                _sendingBuffer = "";
+            }
+        }
+
+
+        public override void Response()
+        {
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            {
                 return;
             }
-            _channel.Property.SetChannelKeyValue(_cmd.KeyValue);
+            _channel.MultiCast(_sendingBuffer);
         }
     }
 }

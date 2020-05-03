@@ -15,7 +15,7 @@
         List = 322,
         ListEnd = 323,
         ChannelModels = 324,
-        NoToPic = 331,
+        NoTopic = 331,
         ToPic = 332,
         WhoReply = 352,
         NameReply = 353,

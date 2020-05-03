@@ -32,7 +32,7 @@ namespace Chat.Handler.CommandHandler
             if (_errorCode > ChatError.NoError)
             {
                 _sendingBuffer =
-                    ChatCommandBase.BuildErrorRPL("",
+                    ChatCommandBase.BuildNumericErrorRPL("",
                     _errorCode, $"{_user.NickName} newnick param2", "");
             }
             //_sendingBuffer = new PING().BuildResponse();

@@ -76,7 +76,7 @@ namespace Chat.Server
             {
                 ChatChannelUser user;
 
-                if (!channel.GetChannelUser(this, out user))
+                if (!channel.GetChannelUserBySession(this, out user))
                 {
                     continue;
                 }

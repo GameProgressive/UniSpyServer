@@ -26,7 +26,7 @@ namespace Chat.Handler.CommandHandler
             }
 
             //check whether user1 will get user2's key value by single search
-            if (!_channel.GetChannelUser(_session, out _user))
+            if (!_channel.GetChannelUserBySession(_session, out _user))
             {
                 _errorCode = ChatError.DataOperation;
                 return;
@@ -79,8 +79,9 @@ namespace Chat.Handler.CommandHandler
                 }
             }
 
+            //todo check the paramemter 
             _sendingBuffer +=
-          ChatCommandBase.BuildNormalRPL(ChatServer.ServerDomain,
+          ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
               ChatResponseType.GetCKey,
               $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}", "");
         }
@@ -88,7 +89,7 @@ namespace Chat.Handler.CommandHandler
         private void BuildGetCKeyEndMessage()
         {
             _sendingBuffer +=
-                ChatCommandBase.BuildNormalRPL(ChatServer.ServerDomain,
+                ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
                 ChatResponseType.EndGetCKey,
                 $"* {_channel.Property.ChannelName} {_cmd.Cookie}",
                 "End Of /GETCKEY.");

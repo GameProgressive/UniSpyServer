@@ -93,11 +93,11 @@ namespace Chat.Entity.Structure.ChatChannel
             nicks = nicks.Substring(0, nicks.Length - 1);
 
             //check the message :@<nickname> whether broadcast char @ ?
-            buffer += ChatCommandBase.BuildNormalRPL(
+            buffer += ChatCommandBase.BuildNumericRPL(
                ChatResponseType.NameReply,
                $"{joiner.UserInfo.NickName} = {Property.ChannelName}",
                $"{nicks}");
-            buffer += ChatCommandBase.BuildNormalRPL(
+            buffer += ChatCommandBase.BuildNumericRPL(
                 ChatResponseType.EndOfNames,
                 $"{joiner.UserInfo.NickName} {Property.ChannelName}",
                 @"End of /NAMES list.");
@@ -109,7 +109,7 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             string modes = Property.ChannelMode.GetChannelMode();
             string modesMessage =
-                ChatCommandBase.BuildNormalRPL(
+                ChatCommandBase.BuildNumericRPL(
                     ChatServer.ServerDomain,
                     ChatResponseType.ChannelModels,
                     $"{joiner.UserInfo.NickName} {Property.ChannelName} {modes}", "");
@@ -136,7 +136,7 @@ namespace Chat.Entity.Structure.ChatChannel
                 leaver.UserInfo.JoinedChannels.Remove(this);
         }
 
-        public bool GetChannelUser(ChatSession session, out ChatChannelUser user)
+        public bool GetChannelUserBySession(ChatSession session, out ChatChannelUser user)
         {
             var result = Property.ChannelUsers.Where(u => u.Session.Equals(session));
             if (result.Count() == 1)
@@ -153,15 +153,66 @@ namespace Chat.Entity.Structure.ChatChannel
 
         public bool IsUserBanned(ChatChannelUser user)
         {
-            if (Property.BanList.Where(u => u.Session.Equals(user.Session)).Count() == 1)
+            if (Property.BanList.Where(u => u.Session.Id == user.Session.Id).Count() == 1)
             {
                 return true;
             }
-            return false;
+            else
+            {
+                return false;
+            }
         }
+
+        public bool IsUserBanned(ChatSession session)
+        {
+            if (Property.BanList.Where(u => u.Session.Id == session.Id).Count() == 1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public bool IsUserExisted(ChatChannelUser user)
         {
-            return GetChannelUser(user.Session, out _);
+            return GetChannelUserBySession(user.Session, out _);
+        }
+
+        public bool IsUserExisted(ChatSession session)
+        {
+            return GetChannelUserBySession(session, out _);
+        }
+
+        public bool GetChannelUserByUserName(string username, out ChatChannelUser user)
+        {
+            var result = Property.ChannelUsers.Where(u => u.Session.UserInfo.UserName == username);
+            if (result.Count() == 1)
+            {
+                user = result.First();
+                return true;
+            }
+            else
+            {
+                user = null;
+                return false;
+            }
+        }
+
+        public bool GetChannelUserByNickName(string nickname, out ChatChannelUser user)
+        {
+            var result = Property.ChannelUsers.Where(u => u.Session.UserInfo.NickName == nickname);
+            if (result.Count() == 1)
+            {
+                user = result.First();
+                return true;
+            }
+            else
+            {
+                user = null;
+                return false;
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Chat.Handler.CommandHandler
             ChatChannelUser user;
 
             //can not find any user
-            if (!_channel.GetChannelUser(_session, out user))
+            if (!_channel.GetChannelUserBySession(_session, out user))
             {
                 _errorCode = Entity.Structure.ChatError.DataOperation;
                 return;

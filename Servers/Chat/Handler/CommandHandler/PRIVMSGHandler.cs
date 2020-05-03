@@ -24,7 +24,7 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
 
-            if (!_channel.GetChannelUser(_session, out _user))
+            if (!_channel.GetChannelUserBySession(_session, out _user))
             {
                 _errorCode = Entity.Structure.ChatError.Parse;
                 return;

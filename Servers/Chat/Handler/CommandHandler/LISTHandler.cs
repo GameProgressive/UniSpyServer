@@ -20,7 +20,7 @@ namespace Chat.Handler.CommandHandler
         {
             base.DataOperation();
             //add list response header
-            _sendingBuffer = ChatCommandBase.BuildNormalRPL(
+            _sendingBuffer = ChatCommandBase.BuildNumericRPL(
                    ChatServer.ServerDomain, ChatResponseType.ListStart,
                    $"{_session.UserInfo.NickName} Channel", "");
 
@@ -33,7 +33,7 @@ namespace Chat.Handler.CommandHandler
                 }
             }
             //add list response tail
-            _sendingBuffer += ChatCommandBase.BuildNormalRPL(
+            _sendingBuffer += ChatCommandBase.BuildNumericRPL(
                 ChatServer.ServerDomain, ChatResponseType.ListEnd,
                 _session.UserInfo.NickName, "End of /LIST");
         }

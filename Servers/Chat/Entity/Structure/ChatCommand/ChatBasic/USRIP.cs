@@ -4,7 +4,7 @@
     {
         public string BuildResponse(string ip)
         {
-            return BuildNormalRPL("", ChatResponseType.UserIP, "", $"@{ip}");
+            return BuildNumericRPL("", ChatResponseType.UserIP, "", $"@{ip}");
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Chat.Handler.CommandHandler
 
             foreach (var channel in _session.UserInfo.JoinedChannels)
             {
-                if (!channel.GetChannelUser(_session,out user))
+                if (!channel.GetChannelUserBySession(_session,out user))
                 {
                     continue;
                 }

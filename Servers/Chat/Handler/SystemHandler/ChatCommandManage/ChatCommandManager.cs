@@ -33,6 +33,9 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             AddCommand(new PRIVMSG(), typeof(PRIVMSGHandler));
             AddCommand(new TOPIC(),typeof(TOPICHandler));
             AddCommand(new PING(), typeof(PINGHandler));
+            AddCommand(new UTM(), typeof(UTMHandler));
+            AddCommand(new ATM(), typeof(ATMHandler));
+            AddCommand(new KICK(), typeof(KICKHandler));
         }
 
         public ChatCommandManager AddCommand(ChatCommandBase cmd, Type cmdHandlerType)

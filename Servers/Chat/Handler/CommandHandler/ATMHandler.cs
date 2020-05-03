@@ -1,18 +1,18 @@
-﻿using Chat.Entity.Structure;
+﻿using System;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-
-    public class UTMHandler : ChatCommandHandlerBase
+    public class ATMHandler : ChatCommandHandlerBase
     {
+        new ATM _cmd;
         ChatChannelBase _channel;
-        new UTM _cmd;
-        public UTMHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        ChatChannelUser _user;
+        public ATMHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
         {
-            _cmd = (UTM)cmd;
+            _cmd = (ATM)cmd;
         }
 
         public override void CheckRequest()
@@ -20,20 +20,16 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-            if (!_channel.IsUserExisted(_session))
-            {
-                _errorCode = ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
 
-            if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _))
+            if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
+
         }
 
         public override void DataOperation()
@@ -41,15 +37,15 @@ namespace Chat.Handler.CommandHandler
             base.DataOperation();
             switch (_cmd.RequestType)
             {
-                case UTMCmdType.ChannelUTM:
+                case ATMCmdType.ChannelATM:
                     _sendingBuffer =
-                        ChatCommandBase.BuildMessageRPL(
-                            $"UTM {_channel.Property.ChannelName}", _cmd.Message);
+                       ChatCommandBase.BuildMessageRPL(
+                           $"ATM {_channel.Property.ChannelName} ", _cmd.Message);
                     break;
-                case UTMCmdType.UserUTM:
+                case ATMCmdType.UserATM:
                     _sendingBuffer =
-                        ChatCommandBase.BuildMessageRPL(
-                            $"UTM {_cmd.NickName}", _cmd.Message);
+                       ChatCommandBase.BuildMessageRPL(
+                           $"ATM {_cmd.NickName}", _cmd.Message);
                     break;
             }
         }
@@ -57,9 +53,9 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            if (_errorCode > ChatError.NoError)
+            if (_errorCode > Entity.Structure.ChatError.NoError)
             {
-                //todo send error to client;
+                //todo send error RPL here
             }
         }
 
@@ -69,6 +65,7 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
+
             _channel.MultiCast(_sendingBuffer);
         }
     }

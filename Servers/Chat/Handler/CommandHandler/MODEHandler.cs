@@ -59,14 +59,14 @@ namespace Chat.Handler.CommandHandler
 
             if (_errorCode > ChatError.NoError)
             {
-                ChatCommandBase.BuildErrorRPL(_errorCode, "", "no channel found");
+                ChatCommandBase.BuildNumericErrorRPL(_errorCode, "", "no channel found");
             }
         }
         private void ProcessOtherModeRequest()
         {
             //we check if the user is operator in channel
             ChatChannelUser user;
-            if (!_channel.GetChannelUser(_session, out user))
+            if (!_channel.GetChannelUserBySession(_session, out user))
             {
                 _errorCode = ChatError.DataOperation;
                 return;

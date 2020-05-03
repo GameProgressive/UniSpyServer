@@ -10,6 +10,7 @@
         ClientMessage = 0x06,
         RequireIPVerify = 0x09,
         ClientRegistered = 0x0A,
+
         //Client request
         HeartBeat = 0x03,
         EchoResponse = 0x05,
