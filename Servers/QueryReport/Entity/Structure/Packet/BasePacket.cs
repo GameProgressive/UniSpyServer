@@ -11,13 +11,17 @@ namespace QueryReport.Entity.Structure.Packet
         public QRPacketType PacketType { get; protected set; }
         public int InstantKey { get; protected set; }
 
-        public virtual void Parse(byte[] recv)
+        public virtual bool Parse(byte[] recv)
         {
+            if (recv.Length < 3)
+                return false;
+
             PacketType = (QRPacketType)recv[0];
             InstantKey = BitConverter.ToInt32(ByteTools.SubBytes(recv, 1, 4));
+            return true;
         }
 
-        public virtual byte[] GenerateResponse()
+        public virtual byte[] BuildResponse()
         {
             List<byte> data = new List<byte>();
             data.AddRange(MagicData);
@@ -26,5 +30,18 @@ namespace QueryReport.Entity.Structure.Packet
 
             return data.ToArray();
         }
+
+        public BasePacket SetPacketType(QRPacketType packetType)
+        {
+            PacketType = packetType;
+            return this;
+        }
+
+        public BasePacket SetInstanceKey(int instantKey)
+        {
+            InstantKey = instantKey;
+            return this;
+        }
+
     }
 }

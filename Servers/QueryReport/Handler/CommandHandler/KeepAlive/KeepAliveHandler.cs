@@ -17,7 +17,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
         {
             KeepAlivePacket packet = new KeepAlivePacket();
             packet.Parse(_recv);
-            _sendingBuffer = packet.GenerateResponse();
+            _sendingBuffer = packet.BuildResponse();
             QRSession client = (QRSession)_session.GetInstance();
             var result = GameServer.GetServers(client.RemoteEndPoint);
             if (result.Count != 1)

@@ -11,11 +11,11 @@ namespace QueryReport.Entity.Structure.Packet
             throw new NotImplementedException();
         }
 
-        public override byte[] GenerateResponse()
+        public override byte[] BuildResponse()
         {
             List<byte> data = new List<byte>();
             PacketType = QRPacketType.ADDError;
-            data.AddRange(base.GenerateResponse());
+            data.AddRange(base.BuildResponse());
 
             return data.ToArray();
         }

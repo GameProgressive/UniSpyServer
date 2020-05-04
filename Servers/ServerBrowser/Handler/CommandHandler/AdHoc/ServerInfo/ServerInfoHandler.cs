@@ -123,7 +123,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
             header.Add((byte)GameServerFlags.HasFullRulesFlag);
 
             //we add server public ip here
-            header.AddRange(ByteTools.GetIPBytes(server.RemoteIP));
+            header.AddRange(ByteTools.GetIPBytes(server.RemoteQueryReportIP));
 
             //we check host port is standard port or not
             CheckNonStandardPort(header, server);

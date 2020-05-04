@@ -33,7 +33,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             EchoPacket echo = new EchoPacket();
             echo.Parse(_recv);
             // We send the echo packet to check the ping
-            _sendingBuffer = echo.GenerateResponse();
+            _sendingBuffer = echo.BuildResponse();
 
             QRSession client = (QRSession)_session.GetInstance();
 

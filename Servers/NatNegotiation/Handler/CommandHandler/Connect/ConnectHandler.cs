@@ -50,7 +50,7 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             ConnectPacket connPacket = new ConnectPacket();
             connPacket.Parse(_session.RemoteEndPoint, _recv);
-            byte[] buffer = connPacket.GenerateResponse(NatPacketType.Connect);
+            byte[] buffer = connPacket.BuildResponse(NatPacketType.Connect);
             _session.SendAsync(buffer);
         }
 
@@ -81,7 +81,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
             NatNegSession user2 = result.First();
 
-            _sendingBuffer = _connPacket.GenerateResponse(NatPacketType.Connect);
+            _sendingBuffer = _connPacket.BuildResponse(NatPacketType.Connect);
             //_client.Server.SendAsync(client2.RemoteEndPoint, _sendingBuffer);
         }
     }

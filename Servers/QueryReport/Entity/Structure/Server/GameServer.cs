@@ -17,13 +17,8 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         public DateTime LastPacket { get; set; }
 
-        public string RemoteIP { get; set; }
-        public string RemotePort { get; set; }
-
-        /// <summary>
-        /// Instant key used to verity the client
-        /// </summary>
-        public int InstantKey;
+        public string RemoteQueryReportIP { get; protected set; }
+        public string RemoteQueryReportPort { get; protected set; }
 
         public ServerData ServerData { get; set; }
         public PlayerData PlayerData { get; set; }
@@ -36,12 +31,10 @@ namespace QueryReport.Entity.Structure
             TeamData = new TeamData();
         }
 
-        public void Parse(EndPoint endPoint, int instantKey)
+        public void Parse(EndPoint endPoint)
         {
-            RemoteIP = ((IPEndPoint)endPoint).Address.ToString();
-            RemotePort = ((IPEndPoint)endPoint).Port.ToString();
-
-            InstantKey = instantKey;
+            RemoteQueryReportIP = ((IPEndPoint)endPoint).Address.ToString();
+            RemoteQueryReportPort = ((IPEndPoint)endPoint).Port.ToString();
         }
 
         public static List<string> GetMatchedKeys(string subKey)

@@ -28,7 +28,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             return true;
         }
 
-        public virtual byte[] GenerateResponse(NatPacketType packetType)
+        public virtual byte[] BuildResponse(NatPacketType packetType)
         {
             List<byte> data = new List<byte>();
             data.AddRange(MagicData);
@@ -37,6 +37,12 @@ namespace NatNegotiation.Entity.Structure.Packet
             data.AddRange(BitConverter.GetBytes(Cookie));
 
             return data.ToArray();
+        }
+
+        public BasePacket SetPacketType(NatPacketType type)
+        {
+            PacketType = type;
+            return this;
         }
     }
 }

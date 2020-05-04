@@ -13,7 +13,7 @@ namespace ServerBrowser.Handler.CommandHandler.NatNeg
     /// <summary>
     /// we need forward this to game server
     /// </summary>
-    public class NatNegCookieHandler:SBCommandHandlerBase
+    public class NatNegCookieHandler : SBCommandHandlerBase
     {
         new SBSession _session;
         private AdHocRequest _request;
@@ -52,7 +52,7 @@ namespace ServerBrowser.Handler.CommandHandler.NatNeg
         {
             base.DataOperation();
             _natNegCookie.GameServerRemoteIP = _request.TargetServerIP;
-            _natNegCookie.GameServerRemotePort = _gameServer.RemotePort;
+            _natNegCookie.GameServerRemotePort = _gameServer.RemoteQueryReportPort;
             _natNegCookie.NatNegMessage = _recv;
         }
 
@@ -64,7 +64,7 @@ namespace ServerBrowser.Handler.CommandHandler.NatNeg
         protected override void Response()
         {
             ISubscriber sub = ServerManagerBase.Redis.GetSubscriber();
-      
+
             string jsonStr = JsonConvert.SerializeObject(_natNegCookie);
 
             sub.Publish("NatNegCookieChannel", jsonStr);

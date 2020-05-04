@@ -3,6 +3,7 @@ using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.SystemHandler.ErrorMessage;
+using QueryReport.Server;
 using Serilog.Events;
 
 namespace QueryReport.Handler.CommandHandler
@@ -12,10 +13,11 @@ namespace QueryReport.Handler.CommandHandler
         protected QRErrorCode _errorCode = QRErrorCode.NoError;
         protected byte[] _sendingBuffer;
         protected byte[] _recv;
-
+        protected new QRSession _session;
         protected QRCommandHandlerBase(ISession session, byte[] recv) : base(session)
         {
             _recv = recv;
+            _session = (QRSession)session;
         }
 
         public override void Handle()

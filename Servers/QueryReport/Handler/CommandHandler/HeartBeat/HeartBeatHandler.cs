@@ -26,14 +26,19 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         protected override void CheckRequest()
         {
             BasePacket basePacket = new BasePacket();
-            basePacket.Parse(_recv);
-            //DedicatedGameServer gameServer = new DedicatedGameServer();
-            //gameServer.Parse(endPoint, basePacket.InstantKey);
+
+            if (!basePacket.Parse(_recv))
+            {
+                _errorCode = QRErrorCode.Parse;
+                return;
+            }
 
             _gameServer = new GameServer();
-            QRSession client = (QRSession)_session.GetInstance();
-            _gameServer.Parse(client.RemoteEndPoint, basePacket.InstantKey);
-            //_gameServer = QRServer.GameServerList.GetOrAdd(endPoint, gameServer);
+
+            _session.SetInstantKey(basePacket.InstantKey);
+            _gameServer.Parse(_session.RemoteEndPoint);
+
+
             //Save server information.
             _dataPartition = Encoding.ASCII.GetString(_recv.Skip(5).ToArray());
 
@@ -106,7 +111,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             ChallengePacket packet = new ChallengePacket();
             QRSession client = (QRSession)_session.GetInstance();
             packet.Parse(client.RemoteEndPoint, _recv);
-            _sendingBuffer = packet.GenerateResponse();
+            _sendingBuffer = packet.BuildResponse();
         }
 
         private void ParseServerTeamPlayerData()
@@ -144,15 +149,16 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         private void CheckSpamGameServer()
         {
-            QRSession qrClient = (QRSession)_session.GetInstance();
             //make sure one ip address create one server on each game
             List<string> redisKeys =
-                GameServer.GetMatchedKeys(((IPEndPoint)qrClient.RemoteEndPoint).Address
+                GameServer.GetMatchedKeys(((IPEndPoint)_session.RemoteEndPoint).Address
                 + "*" + _gameServer.ServerData.KeyValue["gamename"]);
 
             foreach (var key in redisKeys)
             {
-                if (key == GameServer.GenerateKey(qrClient.RemoteEndPoint, _gameServer.ServerData.KeyValue["gamename"]))
+                if (key == GameServer.GenerateKey(
+                        _session.RemoteEndPoint,
+                        _gameServer.ServerData.KeyValue["gamename"]))
                 {
                     continue;
                 }

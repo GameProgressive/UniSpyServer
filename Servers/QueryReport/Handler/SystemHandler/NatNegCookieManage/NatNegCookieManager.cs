@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using Newtonsoft.Json;
-using QueryReport.Application;
+using QueryReport.Entity.Enumerator;
 using QueryReport.Entity.Structure.NatNeg;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
@@ -37,6 +34,7 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
         }
         public void SendNatNegCookieToGameServer(string data)
         {
+            LogWriter.LogCurrentClass(this);
             NatNegCookie cookie = JsonConvert.DeserializeObject<NatNegCookie>(data);
             IPAddress address = IPAddress.Parse(cookie.GameServerRemoteIP);
             int port = int.Parse(cookie.GameServerRemotePort);
@@ -51,7 +49,9 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
             }
 
             byte[] clientPacket =
-                new ClientMessagePacket().GenerateResponse(cookie.NatNegMessage);
+                new ClientMessagePacket()
+                .SetInstanceKey(session.InstantKey)
+                .BuildResponse();
 
             session.SendAsync(clientPacket);
         }

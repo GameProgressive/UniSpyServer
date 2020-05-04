@@ -13,9 +13,9 @@ namespace NatNegotiation.Entity.Structure.Packet
         public byte PortType { get; protected set; }
         public byte ClientIndex { get; protected set; }
         public byte UseGamePort { get; protected set; }
-        public int LocalIP;
-        public short LocalPort;
-
+        public string LocalIP;
+        public ushort LocalPort;
+        private EndPoint _endPoint;
         public override bool Parse(byte[] recv)
         {
             if (!base.Parse(recv))
@@ -25,47 +25,47 @@ namespace NatNegotiation.Entity.Structure.Packet
             PortType = recv[BasePacket.Size];//
             ClientIndex = recv[BasePacket.Size + 1];//00
             UseGamePort = recv[BasePacket.Size + 2];//00
-            LocalIP = BitConverter.ToInt32(ByteTools.SubBytes(recv, BasePacket.Size + 3, 4));
-            LocalPort = BitConverter.ToInt16(ByteTools.SubBytes(recv, BasePacket.Size + 7, 2));
+
+            LocalIP = HtonsExtensions.
+                BytesToIPString(
+                ByteTools.SubBytes(recv, BasePacket.Size + 3, 4));
+
+            LocalPort = HtonsExtensions.
+                BytesToUshortPort(
+                ByteTools.SubBytes(recv, BasePacket.Size + 7, 2));
+
             return true;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="packetType"></param>
-        /// <param name="endPoint">public endpoint</param>
-        /// <returns></returns>
-        public byte[] GenerateResponse(NatPacketType packetType, EndPoint endPoint)
+        public override byte[] BuildResponse(NatPacketType packetType)
         {
+
             List<byte> data = new List<byte>();
 
-            data.AddRange(base.GenerateResponse(packetType));
+            data.AddRange(base.BuildResponse(packetType));
 
             data.Add(PortType);
             data.Add(ClientIndex);
             data.Add(UseGamePort);
 
-            data.AddRange(((IPEndPoint)endPoint).Address.GetAddressBytes());
-            data.AddRange(BitConverter.GetBytes((short)((IPEndPoint)endPoint).Port));
+            if (_endPoint == null)
+            {
+                data.AddRange(HtonsExtensions.IPStringToBytes(LocalIP));
+                data.AddRange(HtonsExtensions.PortToUshortBytes(LocalPort));
+            }
+            else
+            {
+                data.AddRange(((IPEndPoint)_endPoint).Address.GetAddressBytes());
+                data.AddRange(BitConverter.GetBytes((short)((IPEndPoint)_endPoint).Port));
+            }
 
             return data.ToArray();
         }
 
-        public override byte[] GenerateResponse(NatPacketType packetType)
+        public InitPacket SetEndPoint(EndPoint end)
         {
-
-            List<byte> data = new List<byte>();
-
-            data.AddRange(base.GenerateResponse(packetType));
-
-            data.Add(PortType);
-            data.Add(ClientIndex);
-            data.Add(UseGamePort);
-            data.AddRange(BitConverter.GetBytes(LocalIP));
-            data.AddRange(BitConverter.GetBytes(LocalPort));
-
-            return data.ToArray();
+            _endPoint = end;
+            return this;
         }
     }
 }

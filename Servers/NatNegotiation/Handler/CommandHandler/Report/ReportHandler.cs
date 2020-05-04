@@ -29,7 +29,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _reportPacket.GenerateResponse(NatPacketType.ReportAck);
+            _sendingBuffer = _reportPacket.BuildResponse(NatPacketType.ReportAck);
         }
 
         protected override void Response()

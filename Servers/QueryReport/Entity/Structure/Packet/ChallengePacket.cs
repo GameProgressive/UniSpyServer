@@ -1,4 +1,5 @@
-﻿using QueryReport.Entity.Enumerator;
+﻿using GameSpyLib.Extensions;
+using QueryReport.Entity.Enumerator;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -7,31 +8,31 @@ namespace QueryReport.Entity.Structure.Packet
 {
     public class ChallengePacket : BasePacket
     {
-        public int RemoteIP { get; protected set; }
-        public int RemotePort { get; protected set; }
+        public string RemoteIP { get; protected set; }
+        public string RemotePort { get; protected set; }
 
         public void Parse(EndPoint endPoint, byte[] recv)
         {
             base.Parse(recv);
-            RemoteIP = BitConverter.ToInt32(((IPEndPoint)endPoint).Address.GetAddressBytes());
-            RemotePort = ((IPEndPoint)endPoint).Port;
+            RemoteIP = HtonsExtensions.EndPointToIP(endPoint);
+            RemotePort = HtonsExtensions.EndPointToPort(endPoint);
         }
 
-        public override byte[] GenerateResponse()
+        public override byte[] BuildResponse()
         {
             //change packet type to challenge
             List<byte> data = new List<byte>();
 
             PacketType = QRPacketType.Challenge;
 
-            data.AddRange(base.GenerateResponse());
+            data.AddRange(base.BuildResponse());
             //Challenge
             data.AddRange(new byte[] { 0x54, 0x54, 0x54, 0x00, 0x00 });
             //IP
-            data.AddRange(BitConverter.GetBytes(RemoteIP));
+            data.AddRange(HtonsExtensions.IPStringToBytes(RemoteIP));
             data.AddRange(new byte[] { 0x00, 0x00, 0x00, 0x00 });
             //port
-            data.AddRange(BitConverter.GetBytes(RemotePort));
+            data.AddRange(HtonsExtensions.PortToIntBytes(RemotePort));
 
             return data.ToArray();
         }

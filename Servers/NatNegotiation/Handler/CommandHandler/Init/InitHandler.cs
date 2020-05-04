@@ -24,7 +24,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.InitAck);
+            _sendingBuffer = _initPacket.BuildResponse(NatPacketType.InitAck);
         }
     }
 }

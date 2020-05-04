@@ -24,7 +24,9 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _initPacket.GenerateResponse(NatPacketType.ErtTest, _session.RemoteEndPoint);
+            _sendingBuffer =
+                _initPacket.SetEndPoint(_session.RemoteEndPoint)
+                .BuildResponse(NatPacketType.ErtTest);
         }
     }
 }

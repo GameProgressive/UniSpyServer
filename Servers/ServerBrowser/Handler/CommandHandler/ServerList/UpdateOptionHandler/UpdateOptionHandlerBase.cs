@@ -149,7 +149,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             //add has key flag
             header.Add((byte)GameServerFlags.HasKeysFlag);
             //we add server public ip here
-            header.AddRange(ByteTools.GetIPBytes(server.RemoteIP));
+            header.AddRange(ByteTools.GetIPBytes(server.RemoteQueryReportIP));
             //we check host port is standard port or not
             CheckNonStandardPort(header, server);
             // now we check if there are private ip
@@ -179,12 +179,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             }
 
             header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-            byte[] address = HtonsExtensions.IPToBytes(localIP);
+            byte[] address = HtonsExtensions.IPStringToBytes(localIP);
             header.AddRange(address);
-
         }
+
         protected virtual void CheckNonStandardPort(List<byte> header, GameServer server)
         {
+            ///only dedicated server have different query report port and host port
+            ///the query report port and host port are the same on peer server
+            ///so we do not need to check this for peer server
             //we check host port is standard port or not
             if (!server.ServerData.KeyValue.ContainsKey("hostport"))
             {
@@ -200,12 +203,15 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 header[0] ^= (byte)GameServerFlags.NonStandardPort;
                 //we do not need htons here
                 byte[] port =
-                     HtonsExtensions.PortToBytes(
+                     HtonsExtensions.PortToIntBytes(
                          server.ServerData.KeyValue["hostport"]);
-
-                header.AddRange(port);
+                byte[] htonPort =
+                    HtonsExtensions.PortToHtonUshortBytes(
+                        server.ServerData.KeyValue["hostport"]);
+                header.AddRange(htonPort);
             }
         }
+
         protected virtual void CheckPrivatePort(List<byte> header, GameServer server)
         {
             // we check private port here
@@ -220,15 +226,16 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
 
             byte[] port =
-                HtonsExtensions.PortToBytes(
+                HtonsExtensions.PortToIntBytes(
                     server.ServerData.KeyValue["privateport"]);
 
             header.AddRange(port);
         }
+
         protected void CheckICMPSupport(List<byte> header, GameServer server)
         {
             header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
-            byte[] address = HtonsExtensions.IPToBytes(server.RemoteIP);
+            byte[] address = HtonsExtensions.IPStringToBytes(server.RemoteQueryReportIP);
             header.AddRange(address);
         }
     }

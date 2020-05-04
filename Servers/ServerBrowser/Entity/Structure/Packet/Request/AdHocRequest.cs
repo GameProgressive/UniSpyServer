@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Extensions;
+using System;
 using System.Net;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
@@ -19,8 +20,14 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         {
             ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(recv, 0, 2), true);
 
+            if(recv.Length<length)
+            {
+                return false;
+            }
+
             byte[] ip = ByteTools.SubBytes(recv, 3, 4);
             byte[] port = ByteTools.SubBytes(recv, 7, 2);
+            Array.Reverse(port);
 
             IPEndPoint iPEnd = ByteTools.GetIPEndPoint(ip, port);
 
