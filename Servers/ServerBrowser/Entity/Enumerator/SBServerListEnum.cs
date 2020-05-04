@@ -8,7 +8,6 @@
         KeepAliveReply,
         MapLoopRequest,
         PlayerSearchRequest,
-        NatNegCookieRequest = 0x1e
     }
 
     public enum SBServerResponseType

@@ -163,6 +163,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected virtual void CheckPrivateIP(List<byte> header, GameServer server)
         {
             string localIP = "";
+
             // now we check if there are private ip
             if (server.ServerData.KeyValue.ContainsKey("localip0"))
             {
@@ -176,8 +177,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             {
                 return;
             }
+
             header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-            byte[] address = IPAddress.Parse(localIP).GetAddressBytes();
+            byte[] address = HtonsExtensions.IPToBytes(localIP);
             header.AddRange(address);
 
         }
@@ -196,8 +198,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             if (server.ServerData.KeyValue["hostport"] != "6500")
             {
                 header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                //we do not need to reverse port bytes
-                byte[] port = BitConverter.GetBytes(ushort.Parse(server.ServerData.KeyValue["hostport"]));
+                //we do not need htons here
+                byte[] port =
+                     HtonsExtensions.PortToBytes(
+                         server.ServerData.KeyValue["hostport"]);
 
                 header.AddRange(port);
             }
@@ -213,18 +217,18 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             {
                 return;
             }
-
             header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-            byte[] localPort =
-             BitConverter.GetBytes(ushort.Parse(server.ServerData.KeyValue["localport"]));
 
-            header.AddRange(localPort);
+            byte[] port =
+                HtonsExtensions.PortToBytes(
+                    server.ServerData.KeyValue["privateport"]);
+
+            header.AddRange(port);
         }
         protected void CheckICMPSupport(List<byte> header, GameServer server)
         {
             header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
-            string localIP = server.RemoteIP;
-            byte[] address = IPAddress.Parse(localIP).GetAddressBytes();
+            byte[] address = HtonsExtensions.IPToBytes(server.RemoteIP);
             header.AddRange(address);
         }
     }

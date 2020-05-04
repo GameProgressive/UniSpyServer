@@ -1,7 +1,8 @@
 ﻿using GameSpyLib.Network;
-using QueryReport.Handler.CommandHandler.ServerList;
 using QueryReport.Handler.CommandSwitcher;
+using QueryReport.Handler.SystemHandler.NatNegCookieManage;
 using QueryReport.Handler.SystemHandler.PeerSystem;
+using QueryReport.Handler.SystemHandler.QRSessionManage;
 using System.Collections.Concurrent;
 using System.Net;
 
@@ -10,7 +11,7 @@ namespace QueryReport.Server
     public class QRServer : TemplateUdpServer
     {
 
-        public static ConcurrentDictionary<EndPoint, QRSession> Clients;
+
 
         public bool IsChallengeSent;
 
@@ -18,7 +19,6 @@ namespace QueryReport.Server
 
         public QRServer(IPAddress address, int port) : base(address, port)
         {
-            Clients = new ConcurrentDictionary<EndPoint, QRSession>();
             IsChallengeSent = false;
             HasInstantKey = false;
         }
@@ -30,7 +30,8 @@ namespace QueryReport.Server
             //This value must be greater than 20 seconds, as that is the ping rate of the server
             //Suggested value is 30 seconds, this gives the server some time if the master server
             //is busy and cant refresh the server's TTL right away
-            new ServerListManager().Start();
+            new QRSessionManager().Start();
+            new NatNegCookieManager().Start();
             return base.Start();
         }
 
@@ -41,14 +42,13 @@ namespace QueryReport.Server
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            QRSession client;
-            if (!Clients.TryGetValue(endPoint, out client))
+            QRSession session;
+            if (!QRSessionManager.Sessions.TryGetValue(endPoint, out session))
             {
-                client = (QRSession)CreateSession(endPoint);
-                Clients.TryAdd(endPoint, client);
+                session = (QRSession)CreateSession(endPoint);
+                QRSessionManager.Sessions.TryAdd(endPoint, session);
             }
-
-            new QRCommandSwitcher().Switch(client, message);
+            new QRCommandSwitcher().Switch(session, message);
         }
     }
 }

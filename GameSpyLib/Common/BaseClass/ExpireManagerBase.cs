@@ -21,7 +21,7 @@ namespace GameSpyLib.Common.BaseClass
             };//10000
         }
 
-        public void Start()
+        public virtual void Start()
         {
             _checkTimer.Start();
             _checkTimer.Elapsed += (s, e) => CheckExpire();
@@ -30,7 +30,7 @@ namespace GameSpyLib.Common.BaseClass
         protected virtual void CheckExpire()
         {
             //log which expire manager excuted
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Verbose, $"=>[{GetType().Name}]");
+            LogWriter.LogCurrentClass(this);
         }
     }
 }

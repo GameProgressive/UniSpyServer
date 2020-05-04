@@ -8,6 +8,7 @@ namespace GameSpyLib.Extensions
     {
         PeerGroup = 0,
         GameServer = 1,
+        NatNeg = 2
     }
 
     public class RedisExtensions

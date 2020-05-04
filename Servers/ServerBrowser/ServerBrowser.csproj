@@ -30,6 +30,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
     <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
+    <ProjectReference Include="..\NatNegotiation\NatNegotiation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +53,7 @@
     <Folder Include="Handler\CommandHandler\AdHoc\" />
     <Folder Include="Handler\CommandHandler\AdHoc\ServerInfo\" />
     <Folder Include="Handler\CommandHandler\NatNeg\" />
+    <Folder Include="Handler\CommandHandler\AdHoc\SendMessage\" />
   </ItemGroup>
 
   <ItemGroup>
