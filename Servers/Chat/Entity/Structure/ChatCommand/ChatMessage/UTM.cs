@@ -17,7 +17,7 @@
             {
                 return false;
             }
-            if (_cmdParams.Count != 2)
+            if (_cmdParams.Count != 1)
             {
                 return false;
             }

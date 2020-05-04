@@ -29,11 +29,12 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
 
-            if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _))
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
+            if (_cmd.RequestType == UTMCmdType.UserUTM)
+                if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _))
+                {
+                    _errorCode = ChatError.Parse;
+                    return;
+                }
         }
 
         public override void DataOperation()

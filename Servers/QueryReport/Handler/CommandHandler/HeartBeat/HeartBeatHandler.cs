@@ -98,9 +98,8 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
             CheckSpamGameServer();
 
-            QRSession client = (QRSession)_session.GetInstance();
             GameServer.UpdateServer(
-               client.RemoteEndPoint,
+               _session.RemoteEndPoint,
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer
            );
@@ -109,8 +108,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         protected override void ConstructeResponse()
         {
             ChallengePacket packet = new ChallengePacket();
-            QRSession client = (QRSession)_session.GetInstance();
-            packet.Parse(client.RemoteEndPoint, _recv);
+            packet.Parse(_session.RemoteEndPoint, _recv);
             _sendingBuffer = packet.BuildResponse();
         }
 

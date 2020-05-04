@@ -17,8 +17,8 @@ namespace QueryReport.Entity.Structure
         /// </summary>
         public DateTime LastPacket { get; set; }
 
-        public string RemoteQueryReportIP { get; protected set; }
-        public string RemoteQueryReportPort { get; protected set; }
+        public string RemoteQueryReportIP { get; set; }
+        public string RemoteQueryReportPort { get; set; }
 
         public ServerData ServerData { get; set; }
         public PlayerData PlayerData { get; set; }
