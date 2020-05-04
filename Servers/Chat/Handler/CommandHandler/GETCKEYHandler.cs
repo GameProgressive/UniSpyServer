@@ -75,7 +75,7 @@ namespace Chat.Handler.CommandHandler
             {
                 if (user.UserKeyValue.ContainsKey(k))
                 {
-                    flags += @"\" + user.UserInfo.UserName + @"\" + user.UserKeyValue[k];
+                    flags += @"\" + user.UserInfo.NickName + @"\" + user.UserKeyValue[k];
                 }
             }
 
