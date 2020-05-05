@@ -37,13 +37,6 @@ namespace Chat.Handler.CommandHandler
         {
             base.DataOperation();
 
-            ///i guess the first getkey request tells us
-            ///about the cookies and requested keys
-            ///so we store it, when user setkey we broad cast
-            ///the getkey response to everyone in channel
-
-            _user.SetCookie(_cmd.Cookie);
-
             switch (_cmd.RequestType)
             {
                 case GetKeyType.GetChannelUsersKeyValue:

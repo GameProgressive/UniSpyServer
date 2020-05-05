@@ -74,10 +74,6 @@ namespace Chat.Handler.CommandHandler
         {
             foreach (var user in _channel.Property.ChannelUsers)
             {
-                if (user.Cookie == null)
-                {
-                    return;
-                }
 
                 string flags = "";
                 foreach (var dic in _cmd.KeyValues)
