@@ -74,8 +74,7 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
-            // _channel.MultiCastExceptSender(_user, _sendingBuffer);
-            _channel.MultiCast(_sendingBuffer);
+            _channel.MultiCastExceptSender(_user, _sendingBuffer);
         }
 
         private void BuildNormalMessage()

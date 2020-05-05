@@ -67,28 +67,30 @@ namespace Chat.Handler.CommandHandler
                 //TODO
                 //build error response here
                 //_sendingBuffer = ChatCommandBase.BuildErrorRPL(_errorCode,"")
+                return;
             }
+
+            string flags = "";
+            foreach (var dic in _cmd.KeyValues)
+            {
+                flags += @"\" + dic.Key + @"\" + dic.Value;
+            }
+
+            //todo check the paramemter 
+            _sendingBuffer =
+            ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
+                  ChatResponseType.GetCKey,
+                  $"* {_channel.Property.ChannelName} {_user.UserInfo.NickName} BCAST {flags}", "");
+
         }
 
         public override void Response()
         {
-            foreach (var user in _channel.Property.ChannelUsers)
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {
-
-                string flags = "";
-                foreach (var dic in _cmd.KeyValues)
-                {
-                    flags += @"\" + dic.Key + @"\" + dic.Value;
-                }
-
-                //todo check the paramemter 
-                string buffer =
-                ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
-                      ChatResponseType.GetCKey,
-                      $"* {_channel.Property.ChannelName} {_user.UserInfo.NickName} BCAST {flags}", "");
-
-                user.Session.SendAsync(buffer);
+                return;
             }
+            _channel.MultiCast(_sendingBuffer);
         }
     }
 }
