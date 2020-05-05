@@ -36,24 +36,34 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
+
+            ///i guess the first getkey request tells us
+            ///about the cookies and requested keys
+            ///so we store it, when user setkey we broad cast
+            ///the getkey response to everyone in channel
+
+            _user.SetCookie(_cmd.Cookie);
+
             switch (_cmd.RequestType)
             {
                 case GetKeyType.GetChannelUsersKeyValue:
                     GetChannelUsersKeyValue();
+                    BuildGetCKeyEndMessage();
                     break;
                 case GetKeyType.GetChannelUserKeyValue:
                     GetChannelUserKeyValue();
+                    BuildGetCKeyEndMessage();
                     break;
             }
 
-            BuildGetCKeyEndMessage();
+           
         }
 
 
         private void GetChannelUsersKeyValue()
         {
             _sendingBuffer = "";
-            foreach(var user in _channel.Property.ChannelUsers)
+            foreach (var user in _channel.Property.ChannelUsers)
             {
                 GetUserKeyValue(user);
             }
@@ -75,7 +85,7 @@ namespace Chat.Handler.CommandHandler
             {
                 if (user.UserKeyValue.ContainsKey(k))
                 {
-                    flags += @"\" + user.UserInfo.NickName + @"\" + user.UserKeyValue[k];
+                    flags += @"\" + user.UserInfo.UserName + @"\" + user.UserKeyValue[k];
                 }
             }
 

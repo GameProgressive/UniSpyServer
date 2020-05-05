@@ -9,6 +9,7 @@ namespace Chat.Entity.Structure.ChatChannel
         public bool IsVoiceable { get; protected set; }
         public bool IsChannelCreator { get; protected set; }
         public bool IsChannelOperator { get; protected set; }
+        public string Cookie { get; set; }
         public ChatSession Session { get; protected set; }
         public ChatUserInfo UserInfo { get; protected set; }
 
@@ -19,6 +20,10 @@ namespace Chat.Entity.Structure.ChatChannel
             Session = session;
             UserInfo = session.UserInfo;
             UserKeyValue = new Dictionary<string, string>();
+        }
+
+        public ChatChannelUser()
+        {
         }
 
         public void SetDefaultProperties()
@@ -54,6 +59,11 @@ namespace Chat.Entity.Structure.ChatChannel
         public void SetUserKeyValue(Dictionary<string,string> data)
         {
             UserKeyValue = data;
+        }
+
+        public void SetCookie(string cookie)
+        {
+            Cookie = cookie;
         }
     }
 }

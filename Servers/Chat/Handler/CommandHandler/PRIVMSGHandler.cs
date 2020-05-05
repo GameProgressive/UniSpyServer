@@ -1,4 +1,6 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
+using System.Text;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Common.Entity.Interface;
@@ -59,16 +61,11 @@ namespace Chat.Handler.CommandHandler
             base.ConstructResponse();
             if (_errorCode > Entity.Structure.ChatError.NoError)
             {
-                _sendingBuffer = "";
+                //
+                return;
             }
-            else
-            {
-                string ip = ((IPEndPoint)_user.Session.Socket.RemoteEndPoint).Address.ToString();
-                _sendingBuffer =
-                    ChatCommandBase.BuildMessageRPL(
-                        $"{_user.UserInfo.NickName}!{_user.UserInfo.UserName}@{ip}",
-                        $"PRIVMSG {_channel.Property.ChannelName}", _cmd.Message);
-            }
+
+            BuildNormalMessage();
         }
 
         public override void Response()
@@ -77,9 +74,17 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
-            _channel.MultiCastExceptSender(_user,_sendingBuffer);
-            //_channel.MultiCast(_sendingBuffer);
+            // _channel.MultiCastExceptSender(_user, _sendingBuffer);
+            _channel.MultiCast(_sendingBuffer);
         }
 
+        private void BuildNormalMessage()
+        {
+            string ip = ((IPEndPoint)_user.Session.Socket.RemoteEndPoint).Address.ToString();
+            _sendingBuffer =
+                ChatCommandBase.BuildMessageRPL(
+                    $"{_user.UserInfo.NickName}!{_user.UserInfo.UserName}@{ip}",
+                    $"PRIVMSG {_channel.Property.ChannelName}", _cmd.Message);
+        }
     }
 }

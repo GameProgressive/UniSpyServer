@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChannelManage;
+using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -9,38 +12,38 @@ namespace Chat.Handler.CommandHandler
     public class SETCKEYHandler : ChatCommandHandlerBase
     {
         ChatChannelUser _user;
-        SETCKEY _setckeyCmd;
+        new SETCKEY _cmd;
         ChatChannelBase _channel;
         public SETCKEYHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _setckeyCmd = (SETCKEY)cmd;
+            _cmd = (SETCKEY)cmd;
         }
 
         public override void CheckRequest()
         {
             base.CheckRequest();
 
-            if (_session.UserInfo.NickName != _setckeyCmd.NickName)
+            if (_session.UserInfo.NickName != _cmd.NickName)
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
 
-            if (!_session.UserInfo.IsJoinedChannel(_setckeyCmd.ChannelName))
+            if (!_session.UserInfo.IsJoinedChannel(_cmd.ChannelName))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
 
-            if (!ChatChannelManager.GetChannel(_setckeyCmd.ChannelName, out _channel))
+            if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
         }
@@ -48,22 +51,47 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-            if (_setckeyCmd.NickName != _user.UserInfo.NickName)
+            if (_cmd.NickName != _user.UserInfo.NickName)
             {
-                _errorCode = Entity.Structure.ChatError.DataOperation;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
-            _user.SetUserKeyValue(_setckeyCmd.KeyValues);
+            _user.SetUserKeyValue(_cmd.KeyValues);
         }
 
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            if (_errorCode > Entity.Structure.ChatError.NoError)
+            if (_errorCode > ChatError.NoError)
             {
                 //TODO
                 //build error response here
                 //_sendingBuffer = ChatCommandBase.BuildErrorRPL(_errorCode,"")
+            }
+        }
+
+        public override void Response()
+        {
+            foreach (var user in _channel.Property.ChannelUsers)
+            {
+                if (user.Cookie == null)
+                {
+                    return;
+                }
+
+                string flags = "";
+                foreach (var dic in _cmd.KeyValues)
+                {
+                    flags += @"\" + dic.Key + @"\" + dic.Value;
+                }
+
+                //todo check the paramemter 
+                string buffer =
+                ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
+                      ChatResponseType.GetCKey,
+                      $"* {_channel.Property.ChannelName} {_user.UserInfo.NickName} BCAST {flags}", "");
+
+                user.Session.SendAsync(buffer);
             }
         }
     }
