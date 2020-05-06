@@ -59,6 +59,7 @@ services:
     image: gameprogressive/qr
     ports:
     - "27900:27900"
+    - "27900:27900/udp"
     stdin_open: true
     tty: true
 
