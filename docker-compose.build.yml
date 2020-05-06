@@ -25,7 +25,7 @@ services:
   natneg:
     build:
       context: .
-      dockerfile: ./Servers/NATNegotiation/Dockerfile
+      dockerfile: ./Servers/NatNegotiation/Dockerfile
     image: gameprogressive/natneg
     ports:
     - "27901:27901"
