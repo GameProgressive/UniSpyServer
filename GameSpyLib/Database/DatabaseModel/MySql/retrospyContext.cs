@@ -31,7 +31,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(RetroSpyMySqlConnStr, x => x.ServerVersion("8.0.18-mysql"));
+                optionsBuilder.UseMySql(RetroSpyMySqlConnStr, x => x.ServerVersion("10.4.6-mariadb"));
             }
         }
 
@@ -41,7 +41,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
             {
                 entity.ToTable("addrequests");
 
-                entity.HasComment("friend add request");
+                entity.HasComment("Friend request.");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id")
@@ -52,7 +52,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Namespaceid)
                     .HasColumnName("namespaceid")
@@ -67,16 +67,16 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("reason")
                     .HasColumnType("varchar(255)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Syncrequested)
                     .IsRequired()
                     .HasColumnName("syncrequested")
                     .HasColumnType("varchar(255)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Targetid)
                     .HasColumnName("targetid")
@@ -93,7 +93,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
             {
                 entity.ToTable("blocked");
 
-                entity.HasComment("block list");
+                entity.HasComment("Block list.");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id")
@@ -120,7 +120,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
             {
                 entity.ToTable("friends");
 
-                entity.HasComment("friend list");
+                entity.HasComment("Friend list.");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id")
@@ -150,7 +150,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.ToTable("games");
 
-                entity.HasComment("game list that contains all secret keys of games");
+                entity.HasComment("Game list.");
 
                 entity.HasIndex(e => e.Gameid)
                     .HasName("id")
@@ -164,15 +164,17 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .IsRequired()
                     .HasColumnName("description")
                     .HasColumnType("text")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
+
+                entity.Property(e => e.Disabled).HasColumnName("disabled");
 
                 entity.Property(e => e.Gamename)
                     .IsRequired()
                     .HasColumnName("gamename")
                     .HasColumnType("text")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Queryport)
                     .HasColumnName("queryport")
@@ -182,8 +184,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.Property(e => e.Secretkey)
                     .HasColumnName("secretkey")
                     .HasColumnType("text")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
             });
 
             modelBuilder.Entity<Grouplist>(entity =>
@@ -193,7 +195,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.ToTable("grouplist");
 
-                entity.HasComment("Old games use this to create their game rooms");
+                entity.HasComment("Old games use grouplist to create their game rooms.");
 
                 entity.Property(e => e.Groupid)
                     .HasColumnName("groupid")
@@ -207,15 +209,15 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .IsRequired()
                     .HasColumnName("roomname")
                     .HasColumnType("text")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
             });
 
             modelBuilder.Entity<Messages>(entity =>
             {
                 entity.ToTable("messages");
 
-                entity.HasComment("friend (buddy) messages");
+                entity.HasComment("Friend messages.");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id")
@@ -223,12 +225,12 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Date)
                     .HasColumnName("date")
                     .HasColumnType("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                    .HasDefaultValueSql("'current_timestamp()'")
                     .ValueGeneratedOnAddOrUpdate();
 
                 entity.Property(e => e.From)
@@ -239,8 +241,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .IsRequired()
                     .HasColumnName("message")
                     .HasColumnType("varchar(200)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Namespaceid)
                     .HasColumnName("namespaceid")
@@ -252,14 +254,14 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.Property(e => e.Type)
                     .HasColumnName("type")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int(11) unsigned");
             });
 
             modelBuilder.Entity<Partner>(entity =>
             {
                 entity.ToTable("partner");
 
-                entity.HasComment("partner information, these information are used for authentication and login.");
+                entity.HasComment("Partner information, these information are used for authentication and login.");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id")
@@ -267,18 +269,18 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Name)
                     .IsRequired()
                     .HasColumnName("name")
                     .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_unicode_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Partnerid)
                     .HasColumnName("partnerid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int(11) unsigned");
             });
 
             modelBuilder.Entity<Profiles>(entity =>
@@ -288,7 +290,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.ToTable("profiles");
 
-                entity.HasComment("user's profiles.");
+                entity.HasComment("User profiles.");
 
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid")
@@ -309,8 +311,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("aim")
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("'0'")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Birthday)
                     .HasColumnName("birthday")
@@ -335,8 +337,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.Property(e => e.City)
                     .HasColumnName("city")
                     .HasColumnType("text")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Connectiontype)
                     .HasColumnName("connectiontype")
@@ -348,8 +350,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("countrycode")
                     .HasColumnType("varchar(3)")
                     .HasDefaultValueSql("'1'")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Cpubrandid)
                     .HasColumnName("cpubrandid")
@@ -364,15 +366,15 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("firstname")
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Homepage)
                     .HasColumnName("homepage")
                     .HasColumnType("varchar(75)")
                     .HasDefaultValueSql("'rspy.org'")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Icquin)
                     .HasColumnName("icquin")
@@ -399,8 +401,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("lastname")
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Latitude)
                     .HasColumnName("latitude")
@@ -410,8 +412,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("location")
                     .HasColumnType("varchar(127)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Longitude)
                     .HasColumnName("longitude")
@@ -431,8 +433,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("nick")
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Occupationid)
                     .HasColumnName("occupationid")
@@ -470,8 +472,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("statstring")
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("'I love RetroSpy'")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Status)
                     .HasColumnName("status")
@@ -481,14 +483,14 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.Property(e => e.Streeaddr)
                     .HasColumnName("streeaddr")
                     .HasColumnType("text")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Streetaddr)
                     .HasColumnName("streetaddr")
                     .HasColumnType("text")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Subscription)
                     .HasColumnName("subscription")
@@ -505,8 +507,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.Property(e => e.Videocard1string)
                     .HasColumnName("videocard1string")
                     .HasColumnType("text")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Videocard2ram)
                     .HasColumnName("videocard2ram")
@@ -515,15 +517,15 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.Property(e => e.Videocard2string)
                     .HasColumnName("videocard2string")
                     .HasColumnType("text")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Zipcode)
                     .HasColumnName("zipcode")
                     .HasColumnType("varchar(10)")
                     .HasDefaultValueSql("'00000'")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Profiles)
@@ -536,8 +538,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
             {
                 entity.ToTable("pstorage");
 
-                entity.HasComment(@"persistant storage.
-old game use this to store game data.");
+                entity.HasComment("Old games use pstorage to store game data.");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id")
@@ -554,8 +555,8 @@ old game use this to store game data.");
                     .HasColumnName("data")
                     .HasColumnType("varchar(200)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_unicode_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Dindex)
                     .HasColumnName("dindex")
@@ -563,7 +564,7 @@ old game use this to store game data.");
 
                 entity.Property(e => e.Profileid)
                     .HasColumnName("profileid")
-                    .HasColumnType("int(10) unsigned");
+                    .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Ptype)
                     .HasColumnName("ptype")
@@ -580,7 +581,7 @@ old game use this to store game data.");
             {
                 entity.ToTable("statusinfo");
 
-                entity.HasComment("Buddy Status Info table");
+                entity.HasComment("Buddy status info.");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id")
@@ -596,35 +597,35 @@ old game use this to store game data.");
                 entity.Property(e => e.Buddyip)
                     .HasColumnName("buddyip")
                     .HasColumnType("varchar(16)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Gamemapname)
                     .HasColumnName("gamemapname")
                     .HasColumnType("varchar(33)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Gametype)
                     .HasColumnName("gametype")
                     .HasColumnType("varchar(33)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Gamevariant)
                     .HasColumnName("gamevariant")
                     .HasColumnType("varchar(33)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Hostip)
                     .HasColumnName("hostip")
                     .HasColumnType("varchar(16)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Hostport)
                     .HasColumnName("hostport")
@@ -633,8 +634,8 @@ old game use this to store game data.");
                 entity.Property(e => e.Hostprivateip)
                     .HasColumnName("hostprivateip")
                     .HasColumnType("varchar(16)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Namespaceid)
                     .HasColumnName("namespaceid")
@@ -657,15 +658,15 @@ old game use this to store game data.");
                     .HasColumnName("quietmodefalgs")
                     .HasColumnType("enum('NONE','MESSAGE','UTMS','LIST','ALL')")
                     .HasDefaultValueSql("'NONE'")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Richstatus)
                     .HasColumnName("richstatus")
                     .HasColumnType("varchar(256)")
                     .HasDefaultValueSql("''")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.Property(e => e.Sessionflags)
                     .HasColumnName("sessionflags")
@@ -675,8 +676,8 @@ old game use this to store game data.");
                     .HasColumnName("statusstate")
                     .HasColumnType("enum('OFFLINE','ONLINE','PLAYING','STAGING','CHATTING','AWAY')")
                     .HasDefaultValueSql("'OFFLINE'")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8")
+                    .HasCollation("utf8_general_ci");
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Statusinfo)
@@ -689,7 +690,7 @@ old game use this to store game data.");
             {
                 entity.ToTable("subprofiles");
 
-                entity.HasComment("user's subprofiles");
+                entity.HasComment("User subprofiles.");
 
                 entity.HasIndex(e => e.Id)
                     .HasName("id")
@@ -705,14 +706,14 @@ old game use this to store game data.");
                 entity.Property(e => e.Authtoken)
                     .HasColumnName("authtoken")
                     .HasColumnType("varchar(255)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Cdkeyenc)
                     .HasColumnName("cdkeyenc")
                     .HasColumnType("varchar(50)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Firewall)
                     .HasColumnName("firewall")
@@ -721,8 +722,8 @@ old game use this to store game data.");
                 entity.Property(e => e.Gamename)
                     .HasColumnName("gamename")
                     .HasColumnType("text")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Namespaceid)
                     .HasColumnName("namespaceid")
@@ -748,8 +749,8 @@ old game use this to store game data.");
                 entity.Property(e => e.Uniquenick)
                     .HasColumnName("uniquenick")
                     .HasColumnType("varchar(50)")
-                    .HasCharSet("latin1")
-                    .HasCollation("latin1_swedish_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Subprofiles)
@@ -765,7 +766,7 @@ old game use this to store game data.");
 
                 entity.ToTable("users");
 
-                entity.HasComment("user's account information");
+                entity.HasComment("User account information.");
 
                 entity.HasIndex(e => e.Userid)
                     .HasName("userid")
@@ -780,7 +781,7 @@ old game use this to store game data.");
                 entity.Property(e => e.Createddate)
                     .HasColumnName("createddate")
                     .HasColumnType("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                    .HasDefaultValueSql("'current_timestamp()'");
 
                 entity.Property(e => e.Deleted).HasColumnName("deleted");
 
@@ -788,8 +789,8 @@ old game use this to store game data.");
                     .IsRequired()
                     .HasColumnName("email")
                     .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Emailverified)
                     .IsRequired()
@@ -799,21 +800,21 @@ old game use this to store game data.");
                 entity.Property(e => e.Lastip)
                     .HasColumnName("lastip")
                     .HasColumnType("varchar(16)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Lastonline)
                     .HasColumnName("lastonline")
                     .HasColumnType("timestamp")
-                    .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                    .HasDefaultValueSql("'current_timestamp()'")
                     .ValueGeneratedOnAddOrUpdate();
 
                 entity.Property(e => e.Password)
                     .IsRequired()
                     .HasColumnName("password")
                     .HasColumnType("varchar(32)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
             });
 
             OnModelCreatingPartial(modelBuilder);
