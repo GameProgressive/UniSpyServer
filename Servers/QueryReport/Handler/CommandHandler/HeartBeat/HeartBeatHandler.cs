@@ -144,10 +144,9 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
             string gameServerRedisKey = GameServer.GenerateKey(_session.RemoteEndPoint, gameName);
 
-            string address = ((IPEndPoint)_session.RemoteEndPoint).Address.ToString();
             //make sure one ip address create one server on each game
             List<string> redisSimilarKeys =
-                GameServer.GetMatchedKeys($"{address}*{gameName}");
+                GameServer.GetSimilarKeys(_session.RemoteEndPoint, gameName);
 
             //we check if the database have multiple game server if it contains
             if (redisSimilarKeys.Contains(gameServerRedisKey))
@@ -161,7 +160,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                     {
                         continue;
                     }
-                    GameServer.DeleteServer(key);
+                    GameServer.DeleteSpecificServer(key);
                 }
             }
             else //redis do not have this server we create then update

@@ -3,6 +3,8 @@ using System.Net;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;
+using GameSpyLib.Extensions;
+using QueryReport.Entity.Structure;
 
 namespace Chat.Entity.Structure.ChatChannel
 {
@@ -258,6 +260,9 @@ namespace Chat.Entity.Structure.ChatChannel
                 user.Session.SendAsync(kickMsg);
             }
             ChatChannelManager.RemoveChannel(this);
+            GameServer.DeleteSimilarServer(
+                kicker.Session.Socket.RemoteEndPoint,
+                kicker.Session.UserInfo.GameName);
         }
     }
 }

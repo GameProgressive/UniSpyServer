@@ -37,25 +37,37 @@ namespace QueryReport.Entity.Structure
             RemoteQueryReportPort = ((IPEndPoint)endPoint).Port.ToString();
         }
 
-        public static List<string> GetMatchedKeys(string subKey)
+        public static List<string> GetSimilarKeys(string subKey)
         {
             return RedisExtensions.GetMatchedKeys(subKey, RedisDBNumber.GameServer);
         }
 
-        public static bool DeleteGameServer(IPAddress address, string gameName)
+        public static List<string> GetSimilarKeys(EndPoint endPoint, string gameName)
         {
-            string subKey = address.ToString() + "*" + gameName;
+            string address = ((IPEndPoint)endPoint).Address.ToString();
+            return GetSimilarKeys($"{address}*{gameName}");
+        }
+        public static bool DeleteSimilarServer(EndPoint endPoint, string gameName)
+        {
+            string address = ((IPEndPoint)endPoint).Address.ToString();
+            string subKey = address + "*" + gameName;
+            List<string> keys = GetSimilarKeys(subKey);
             var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
-            return redis.KeyDelete(subKey);
+            foreach (var key in keys)
+            {
+                DeleteSpecificServer(key);
+            }
+
+            return true;
         }
 
-        public static bool DeleteServer(string key)
+        public static bool DeleteSpecificServer(string key)
         {
             var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
             return redis.KeyDelete(key);
         }
 
-        public static bool DeleteServer(EndPoint endPoint, string gameName)
+        public static bool DeleteSpecificServer(EndPoint endPoint, string gameName)
         {
             string key = GenerateKey(endPoint, gameName);
             var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
