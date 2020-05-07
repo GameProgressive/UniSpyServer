@@ -61,6 +61,5 @@ namespace GameSpyLib.Extensions
             }
             return matchKeys;
         }
-
     }
 }

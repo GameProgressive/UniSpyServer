@@ -1,8 +1,10 @@
-﻿using Chat.Entity.Structure;
+﻿using System.Collections.Generic;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChannelManage;
 using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 
 namespace Chat.Handler.CommandHandler
 {
@@ -31,7 +33,7 @@ namespace Chat.Handler.CommandHandler
         public override void CheckRequest()
         {
             base.CheckRequest();
-            
+
         }
 
         public override void DataOperation()
@@ -68,6 +70,12 @@ namespace Chat.Handler.CommandHandler
         public void CreateChannel()
         {
             _channel = new ChatChannelBase();
+
+            if (IsPeerServer(_cmd.ChannelName))
+            {
+                _channel.Property.SetPeerServerFlag(true);            
+            }
+
             _user.SetCreatorProperties();
             _channel.Property.SetDefaultProperties(_user, _cmd);
 
@@ -104,16 +112,10 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = ChatError.BannedFromChan;
                 return;
             }
-            //if there are no players in this channel we set first joined player as creator and operator
-            if (_channel.Property.ChannelUsers.Count == 0)
-            {
-                _user.SetCreatorProperties();
-            }
-            else
-            {
-                //if all pass, it mean  we excute join channel
-                _user.SetDefaultProperties();
-            }
+
+            //if all pass, it mean  we excute join channel
+            _user.SetDefaultProperties();
+
 
             //simple check for avoiding program crash
             if (!_channel.IsUserExisted(_user))
@@ -129,6 +131,24 @@ namespace Chat.Handler.CommandHandler
 
             //send channel mode to joiner
             _channel.SendChannelModesToJoiner(_user);
+        }
+
+        private bool IsPeerServer(string name)
+        {
+            string[] buffer = name.Split('!', System.StringSplitOptions.RemoveEmptyEntries);
+           
+            if (buffer.Length != 3)
+            {
+                return false;
+            }
+
+            List<string> peerGameKeys = RedisExtensions.GetAllKeys(RedisDBNumber.PeerGroup);
+            if (buffer[2].Length > 2 && peerGameKeys.Contains(buffer[1]))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

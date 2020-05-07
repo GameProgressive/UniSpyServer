@@ -45,12 +45,13 @@ namespace Chat.Handler.CommandHandler
             switch (_cmd.RequestType)
             {
                 case UTMCmdType.ChannelUTM:
-                    _sendingBuffer =
-                        _user.BuildChannelMessage($"UTM {_channel.Property.ChannelName} {_cmd.Message}");
+                    ChatCommandBase.BuildMessageRPL(
+                    $"UTM {_channel.Property.ChannelName}", _cmd.Message);
                     break;
                 case UTMCmdType.UserUTM:
                     _sendingBuffer =
-                        _user.BuildChannelMessage($"UTM {_cmd.NickName} {_cmd.Message}");
+                       ChatCommandBase.BuildMessageRPL(
+                       $"UTM {_cmd.NickName}", _cmd.Message);
                     break;
             }
         }

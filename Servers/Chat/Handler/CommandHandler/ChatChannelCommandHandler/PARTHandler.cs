@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure;
+﻿using System.Linq;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Common.Entity.Interface;
@@ -40,10 +41,8 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
- 
-            _channel.RemoveBindOnUserAndChannel(_user);
 
-            _channel.MultiCastLeave(_user, _cmd.Reason);
+            _channel.LeaveChannel(_user, _cmd.Reason);
         }
     }
 }

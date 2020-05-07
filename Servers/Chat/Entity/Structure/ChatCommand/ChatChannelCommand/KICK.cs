@@ -1,4 +1,6 @@
-﻿namespace Chat.Entity.Structure.ChatCommand
+﻿using Chat.Entity.Structure.ChatChannel;
+
+namespace Chat.Entity.Structure.ChatCommand
 {
     public class KICK : ChatChannelCommandBase
     {
@@ -9,7 +11,7 @@
         {
             if (!base.Parse(request))
                 return false;
-            if (_cmdParams.Count != 1)
+            if (_cmdParams.Count != 2)
             {
                 return false;
             }
@@ -18,6 +20,13 @@
                 return false;
             Reason = _longParam;
             return true;
+        }
+
+        public static string BuildKickMessage(ChatChannelBase channel, ChatChannelUser kicker, ChatChannelUser kickee, string reason)
+        {
+            return BuildMessageRPL(
+                $"{channel.Property.ChannelName} {kicker.UserInfo.NickName} {kickee.UserInfo.NickName}",
+                reason);
         }
     }
 }

@@ -25,5 +25,13 @@ namespace Chat.Handler.SystemHandler.ChannelManage
         {
             return Channels.TryAdd(name, channel);
         }
+        public static bool RemoveChannel(string name)
+        {
+            return Channels.TryRemove(name, out _);
+        }
+        public static bool RemoveChannel(ChatChannelBase channel)
+        {
+            return RemoveChannel(channel.Property.ChannelName);
+        }
     }
 }

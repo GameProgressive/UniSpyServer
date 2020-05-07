@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Net;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;
 
 namespace Chat.Entity.Structure.ChatChannel
@@ -32,9 +33,10 @@ namespace Chat.Entity.Structure.ChatChannel
 
         public void MultiCastLeave(ChatChannelUser leaver, string message)
         {
-            string leaveMessage = ChatCommandBase.BuildMessageRPL(
-                $"{leaver.UserInfo.NickName}!{leaver.UserInfo.UserName}@{ChatServer.ServerDomain}",
-                $"PART {Property.ChannelName}", message);
+            string leaveMessage = leaver.BuildChannelMessage($"PART {Property.ChannelName}", message);
+                //ChatCommandBase.BuildMessageRPL(
+                //$"{leaver.UserInfo.NickName}!{leaver.UserInfo.UserName}@{leaver.Session.Socket.}",
+                //$"PART {Property.ChannelName}", message);
             MultiCast(leaveMessage);
         }
         /// <summary>
@@ -213,6 +215,49 @@ namespace Chat.Entity.Structure.ChatChannel
                 user = null;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// because Join channel has its own command class
+        /// so we do not add join channel inside this class
+        /// leave channel do not have its IRC command and used many places
+        /// </summary>
+        /// <param name="session"></param>
+        public void LeaveChannel(ChatSession session,string reason)
+        {
+            ChatChannelUser user;
+
+            if (!GetChannelUserBySession(session, out user))
+            {
+                return;
+            }
+            LeaveChannel(user,reason);
+        }
+
+        public void LeaveChannel(ChatChannelUser user,string reason)
+        {
+            RemoveBindOnUserAndChannel(user);
+
+            if (Property.IsPeerServer)
+            {
+                RemoveAllUserAndShutDownChannel(user);
+            }
+            else
+            {
+                MultiCastLeave(user, reason);
+            }
+        }
+
+        private void RemoveAllUserAndShutDownChannel(ChatChannelUser kicker)
+        {
+            foreach (var user in Property.ChannelUsers)
+            {
+                //kick all user out
+                string kickMsg =
+                    KICK.BuildKickMessage(this,kicker,user,"Creator leaves channel");
+                user.Session.SendAsync(kickMsg);
+            }
+            ChatChannelManager.RemoveChannel(this);
         }
     }
 }

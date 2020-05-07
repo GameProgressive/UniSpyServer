@@ -18,6 +18,12 @@ namespace Chat.Entity.Structure.ChatChannel
         public string Password { get; set; }
         public Dictionary<string, string> ChannelKeyValue { get; protected set; }
         public string ChannelTopic { get; protected set; }
+        public bool IsPeerServer { get; protected set; }
+        public ChatChannelProperty SetPeerServerFlag(bool flag)
+        {
+            IsPeerServer = flag;
+            return this;
+        }
 
         public ChatChannelProperty()
         {

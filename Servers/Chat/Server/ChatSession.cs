@@ -1,5 +1,4 @@
-﻿using Chat.Entity.Structure.ChatChannel;
-using Chat.Entity.Structure.ChatUser;
+﻿using Chat.Entity.Structure.ChatUser;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
@@ -8,7 +7,6 @@ using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
 using System;
-using System.Linq;
 using System.Text;
 
 namespace Chat.Server
@@ -74,15 +72,7 @@ namespace Chat.Server
         {
             foreach (var channel in ChatChannelManager.Channels.Values)
             {
-                ChatChannelUser user;
-
-                if (!channel.GetChannelUserBySession(this, out user))
-                {
-                    continue;
-                }
-
-                channel.RemoveBindOnUserAndChannel(user);
-                channel.MultiCastLeave(user, "Disconnected");
+                channel.LeaveChannel(this,"Disconnected");
             }
 
             ChatSessionManager.RemoveSession(this);
