@@ -25,7 +25,7 @@ services:
   natneg:
     build:
       context: .
-      dockerfile: ./Servers/NATNegotiation/Dockerfile
+      dockerfile: ./Servers/NatNegotiation/Dockerfile
     image: gameprogressive/natneg
     ports:
     - "27901:27901"
@@ -59,6 +59,7 @@ services:
     image: gameprogressive/qr
     ports:
     - "27900:27900"
+    - "27900:27900/udp"
     stdin_open: true
     tty: true
 
