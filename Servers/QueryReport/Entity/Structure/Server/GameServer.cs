@@ -64,7 +64,7 @@ namespace QueryReport.Entity.Structure
 
         public static string GenerateKey(EndPoint end, string gameName)
         {
-            return ((IPEndPoint)end).ToString() + " " + gameName;
+            return $"{(IPEndPoint)end} {gameName}";
         }
 
         public static void UpdateServer(EndPoint end, string gameName, GameServer gameServer)

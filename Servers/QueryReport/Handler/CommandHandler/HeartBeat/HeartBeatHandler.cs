@@ -33,12 +33,6 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 return;
             }
 
-            _gameServer = new GameServer();
-
-            _session.SetInstantKey(basePacket.InstantKey);
-            _gameServer.Parse(_session.RemoteEndPoint);
-
-
             //Save server information.
             _dataPartition = Encoding.ASCII.GetString(_recv.Skip(5).ToArray());
 
@@ -80,6 +74,8 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void DataOperation()
         {
+            CheckSpamGameServer();
+
             switch (_reportType)
             {
                 case HeartBeatReportType.ServerTeamPlayerData:
@@ -92,8 +88,6 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                     ParseServerData();
                     break;
             }
-
-            CheckSpamGameServer();
 
             GameServer.UpdateServer(
                _session.RemoteEndPoint,
@@ -144,20 +138,36 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         private void CheckSpamGameServer()
         {
-            //make sure one ip address create one server on each game
-            List<string> redisKeys =
-                GameServer.GetMatchedKeys(((IPEndPoint)_session.RemoteEndPoint).Address
-                + "*" + _gameServer.ServerData.KeyValue["gamename"]);
+            List<string> tempKeyVal = _dataPartition.Split('\0').ToList();
+            int indexOfGameName = tempKeyVal.IndexOf("gamename");
+            string gameName = tempKeyVal[indexOfGameName + 1];
 
-            foreach (var key in redisKeys)
+            string gameServerRedisKey = GameServer.GenerateKey(_session.RemoteEndPoint, gameName);
+
+            string address = ((IPEndPoint)_session.RemoteEndPoint).Address.ToString();
+            //make sure one ip address create one server on each game
+            List<string> redisSimilarKeys =
+                GameServer.GetMatchedKeys($"{address}*{gameName}");
+
+            //we check if the database have multiple game server if it contains
+            if (redisSimilarKeys.Contains(gameServerRedisKey))
             {
-                if (key == GameServer.GenerateKey(
-                        _session.RemoteEndPoint,
-                        _gameServer.ServerData.KeyValue["gamename"]))
+                //save remote server data to local
+                _gameServer = GameServer.GetServers(gameServerRedisKey).First();
+                //delete all servers except this server
+                foreach (var key in redisSimilarKeys)
                 {
-                    continue;
+                    if (key == gameServerRedisKey)
+                    {
+                        continue;
+                    }
+                    GameServer.DeleteServer(key);
                 }
-                GameServer.DeleteServer(key);
+            }
+            else //redis do not have this server we create then update
+            {
+                _gameServer = new GameServer();
+                _gameServer.Parse(_session.RemoteEndPoint);
             }
         }
     }
