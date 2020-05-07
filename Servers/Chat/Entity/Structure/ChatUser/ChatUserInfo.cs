@@ -1,29 +1,95 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Chat.Entity.Structure.ChatChannel;
-using Chat.Handler.SystemHandler.ChannelManage;
 
 namespace Chat.Entity.Structure.ChatUser
 {
     public class ChatUserInfo
     {
         //indicates which channel this user is in
-        public List<ChatChannelBase> JoinedChannels { get; set; }
+        public List<ChatChannelBase> JoinedChannels { get; protected set; }
         public bool IsQuietMode { get; protected set; }
-        public string GameName { get; set; }
-        public string NickName { get; set; }
-        public string UserName { get; set; }
-        public string Name { get; set; }
-        public string ServerIP { get; set; }
-        public int NameSpaceID { get; set; }
-        public string UniqueNickName { get; set; }
-        public string GameSecretKey { get; set; }
+        public ChatUserInfo SetQuietModeFlag(bool flag)
+        {
+            IsQuietMode = flag;
+            return this;
+        }
+
+        public string GameName { get; protected set; }
+        public ChatUserInfo SetGameName(string gameName)
+        {
+            GameName = gameName;
+            return this;
+        }
+        public string NickName { get; protected set; }
+        public ChatUserInfo SetNickName(string nickName)
+        {
+            NickName = nickName;
+            return this;
+        }
+        public string UserName { get; protected set; }
+        public ChatUserInfo SetUserName(string userName)
+        {
+            UserName = userName;
+            return this;
+        }
+        public string Name { get; protected set; }
+        public ChatUserInfo SetName(string name)
+        {
+            Name = name;
+            return this;
+        }
+        public string ServerIP { get; protected set; }
+        public ChatUserInfo SetServerIP(string ip)
+        {
+            ServerIP = ip;
+            return this;
+        }
+        public int NameSpaceID { get; protected set; }
+        public ChatUserInfo SetNameSpaceID(int namespaceid)
+        {
+            NameSpaceID = namespaceid;
+            return this;
+        }
+        public string UniqueNickName { get; protected set; }
+        public ChatUserInfo SetUniqueNickName(string uniquenick)
+        {
+            UniqueNickName = uniquenick;
+            return this;
+        }
+        public string GameSecretKey { get; protected set; }
+        public ChatUserInfo SetGameSecretKey(string key)
+        {
+            GameSecretKey = key;
+            return this;
+        }
+        public bool IsLogedIn { get; protected set; }
+        public ChatUserInfo SetLoginFlag(bool flag)
+        {
+            IsLogedIn = flag;
+            return this;
+        }
+
         // secure connection
+        public GSPeerChatCTX ClientCTX { get; protected set; }
+        public ChatUserInfo SetClientCTX(GSPeerChatCTX ctx)
+        {
+            ClientCTX = ctx;
+            return this;
+        }
+        public GSPeerChatCTX ServerCTX { get; protected set; }
+        public ChatUserInfo SetServerCTX(GSPeerChatCTX ctx)
+        {
+            ServerCTX = ctx;
+            return this;
+        }
 
-        public GSPeerChatCTX ClientCTX { get; set; }
-        public GSPeerChatCTX ServerCTX { get; set; }
-
-        public bool UseEncryption;
+        public bool UseEncryption { get; protected set; }
+        public ChatUserInfo SetUseEncryptionFlag(bool flag)
+        {
+            UseEncryption = flag;
+            return this;
+        }
 
         public ChatUserInfo()
         {
@@ -33,18 +99,14 @@ namespace Chat.Entity.Structure.ChatUser
             ClientCTX = new GSPeerChatCTX();
             ServerCTX = new GSPeerChatCTX();
             JoinedChannels = new List<ChatChannelBase>();
+            IsLogedIn = false;
         }
-        public void SetQuietModeFlag(bool flag)
-        {
-            IsQuietMode = flag;
-        }
-
+       
         public bool IsJoinedChannel(string channelName)
         {
             return GetJoinedChannel(channelName, out _);
         }
-
-        public bool GetJoinedChannel(string channelName,out ChatChannelBase channel)
+        public bool GetJoinedChannel(string channelName, out ChatChannelBase channel)
         {
             var result = JoinedChannels.Where(c => c.Property.ChannelName == channelName);
             if (result.Count() == 1)

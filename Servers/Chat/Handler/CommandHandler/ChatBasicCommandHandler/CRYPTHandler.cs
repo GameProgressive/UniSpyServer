@@ -23,7 +23,7 @@ namespace Chat.Handler.CommandHandler
 
             // CRYPT des 1 gamename
             //_clientInfo.GameName = _recv[3];
-            _session.UserInfo.GameName = _cryptCmd.GameName;
+            _session.UserInfo.SetGameName(_cryptCmd.GameName);
         }
 
         public override void DataOperation()
@@ -31,12 +31,12 @@ namespace Chat.Handler.CommandHandler
             base.DataOperation();
             string secretKey;
             if (!DataOperationExtensions.GetSecretKey(_session.UserInfo.GameName, out secretKey)
-                || secretKey== null)
+                || secretKey == null)
             {
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "secret key not found!");
                 return;
             }
-            _session.UserInfo.GameSecretKey = secretKey;
+            _session.UserInfo.SetGameSecretKey(secretKey);
         }
 
         public override void ConstructResponse()
@@ -55,7 +55,7 @@ namespace Chat.Handler.CommandHandler
         {
             //set use encryption flag to true
             _session.SendAsync(_sendingBuffer);
-            _session.UserInfo.UseEncryption = true;
+            _session.UserInfo.SetUseEncryptionFlag(true);
         }
     }
 }

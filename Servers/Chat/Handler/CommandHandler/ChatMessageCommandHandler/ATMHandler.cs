@@ -38,14 +38,14 @@ namespace Chat.Handler.CommandHandler
             switch (_cmd.RequestType)
             {
                 case ATMCmdType.ChannelATM:
-                    _sendingBuffer =
-                       ChatCommandBase.BuildMessageRPL(
-                           $"ATM {_channel.Property.ChannelName} ", _cmd.Message);
+                    _sendingBuffer = _user.BuildChannelMessage($"ATM {_channel.Property.ChannelName} {_cmd.Message}");
+                    //ChatCommandBase.BuildMessageRPL(
+                    //    $"ATM {_channel.Property.ChannelName} ", _cmd.Message);
                     break;
                 case ATMCmdType.UserATM:
-                    _sendingBuffer =
-                       ChatCommandBase.BuildMessageRPL(
-                           $"ATM {_cmd.NickName}", _cmd.Message);
+                    _sendingBuffer = _user.BuildChannelMessage($"ATM {_cmd.NickName} {_cmd.Message}");
+                    //ChatCommandBase.BuildMessageRPL(
+                    //    $"ATM {_cmd.NickName}", _cmd.Message);
                     break;
             }
         }

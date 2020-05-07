@@ -78,12 +78,12 @@ namespace Chat.Handler.CommandHandler
         }
 
         private void BuildNormalMessage()
-        {
-            string ip = ((IPEndPoint)_user.Session.Socket.RemoteEndPoint).Address.ToString();
-            _sendingBuffer =
-                ChatCommandBase.BuildMessageRPL(
-                    $"{_user.UserInfo.NickName}!{_user.UserInfo.UserName}@{ip}",
-                    $"PRIVMSG {_channel.Property.ChannelName}", _cmd.Message);
+        { 
+            _sendingBuffer = _user.BuildChannelMessage($"PRIVMSG {_channel.Property.ChannelName}", _cmd.Message);
+            //_sendingBuffer =
+            //    ChatCommandBase.BuildMessageRPL(
+            //        $"{_user.UserInfo.NickName}!{_user.UserInfo.UserName}@{ip}",
+            //        $"PRIVMSG {_channel.Property.ChannelName}", _cmd.Message);
         }
     }
 }

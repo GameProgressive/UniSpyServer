@@ -7,7 +7,7 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class USERHandler: ChatCommandHandlerBase
+    public class USERHandler : ChatCommandHandlerBase
     {
         USER _user;
 
@@ -22,8 +22,8 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
-            _session.UserInfo.UserName = _user.UserName;
-            _session.UserInfo.Name = _user.Name;
+            _session.UserInfo.SetUserName(_user.UserName);
+            _session.UserInfo.SetName(_user.Name);
             base.DataOperation();
         }
 

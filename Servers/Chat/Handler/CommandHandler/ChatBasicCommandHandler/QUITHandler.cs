@@ -8,6 +8,7 @@ namespace Chat.Handler.CommandHandler
     public class QUITHandler : ChatCommandHandlerBase
     {
         new QUIT _cmd;
+        ChatChannelUser _user;
         public QUITHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (QUIT)cmd;
@@ -17,17 +18,17 @@ namespace Chat.Handler.CommandHandler
         {
             base.DataOperation();
 
-            ChatChannelUser user;
+
 
             foreach (var channel in _session.UserInfo.JoinedChannels)
             {
-                if (!channel.GetChannelUserBySession(_session,out user))
+                if (!channel.GetChannelUserBySession(_session,out _user))
                 {
                     continue;
                 }
 
-                channel.RemoveBindOnUserAndChannel(user);
-                channel.MultiCastLeave(user, _cmd.Reason);
+                channel.RemoveBindOnUserAndChannel(_user);
+                channel.MultiCastLeave(_user, _cmd.Reason);
             }
             ChatSessionManager.RemoveSession(_session);
         }

@@ -1,6 +1,8 @@
-﻿using Chat.Entity.Structure.ChatUser;
+﻿using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatUser;
 using Chat.Server;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Chat.Entity.Structure.ChatChannel
 {
@@ -55,9 +57,20 @@ namespace Chat.Entity.Structure.ChatChannel
             return this;
         }
 
-        public void SetUserKeyValue(Dictionary<string,string> data)
+        public void SetUserKeyValue(Dictionary<string, string> data)
         {
             UserKeyValue = data;
+        }
+
+        public string BuildChannelMessage(string cmdParam, string message)
+        {
+            string address = ((IPEndPoint)Session.Socket.RemoteEndPoint).Address.ToString();
+            return ChatCommandBase.BuildMessageRPL(
+                    $"{UserInfo.NickName}!{UserInfo.UserName}@{address}", cmdParam, message);
+        }
+        public string BuildChannelMessage(string cmdParam)
+        {
+            return BuildChannelMessage(cmdParam,"");
         }
     }
 }

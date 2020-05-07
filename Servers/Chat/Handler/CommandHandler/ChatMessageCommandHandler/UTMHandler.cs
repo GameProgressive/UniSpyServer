@@ -10,6 +10,7 @@ namespace Chat.Handler.CommandHandler
     {
         ChatChannelBase _channel;
         new UTM _cmd;
+        ChatChannelUser _user;
         public UTMHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (UTM)cmd;
@@ -23,7 +24,7 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = ChatError.Parse;
                 return;
             }
-            if (!_channel.IsUserExisted(_session))
+            if (!_channel.GetChannelUserBySession(_session, out _user))
             {
                 _errorCode = ChatError.Parse;
                 return;
@@ -40,17 +41,16 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
+          
             switch (_cmd.RequestType)
             {
                 case UTMCmdType.ChannelUTM:
                     _sendingBuffer =
-                        ChatCommandBase.BuildMessageRPL(
-                            $"UTM {_channel.Property.ChannelName}", _cmd.Message);
+                        _user.BuildChannelMessage($"UTM {_channel.Property.ChannelName} {_cmd.Message}");
                     break;
                 case UTMCmdType.UserUTM:
                     _sendingBuffer =
-                        ChatCommandBase.BuildMessageRPL(
-                            $"UTM {_cmd.NickName}", _cmd.Message);
+                        _user.BuildChannelMessage($"UTM {_cmd.NickName} {_cmd.Message}");
                     break;
             }
         }

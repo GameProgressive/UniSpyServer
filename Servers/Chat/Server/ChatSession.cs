@@ -15,7 +15,7 @@ namespace Chat.Server
 {
     public class ChatSession : TemplateTcpSession
     {
-        public ChatUserInfo UserInfo;
+        public ChatUserInfo UserInfo { get; protected set; }
 
         public ChatSession(ChatServer server) : base(server)
         {

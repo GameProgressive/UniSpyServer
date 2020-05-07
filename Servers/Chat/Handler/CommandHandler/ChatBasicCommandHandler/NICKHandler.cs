@@ -30,7 +30,7 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
-            _session.UserInfo.NickName = _nickCmd.NickName;
+            _session.UserInfo.SetNickName(_nickCmd.NickName);
         }
 
         public override void ConstructResponse()
@@ -40,12 +40,13 @@ namespace Chat.Handler.CommandHandler
             if (_errorCode > ChatError.NoError)
             {
                 _sendingBuffer = ChatCommandBase.BuildNumericErrorRPL(
-                    _errorCode,$"* {_nickCmd.NickName}","Nick name in use!");
+                    _errorCode, $"* {_nickCmd.NickName}", "Nick name in use!");
                 return;
             }
             _sendingBuffer = ChatCommandBase.BuildNumericRPL(
                 ChatServer.ServerDomain, ChatResponseType.Welcome,
                 _nickCmd.NickName, "Welcome to RetroSpy!");
+            _session.UserInfo.SetLoginFlag(true);
             //check this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             //_sendingBuffer += ChatCommandBase.BuildMessageRPL(
             //_nickCmd.NickName, $"MODE {_nickCmd.NickName}", "+iwx");

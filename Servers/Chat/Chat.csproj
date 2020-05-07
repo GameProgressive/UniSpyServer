@@ -30,11 +30,14 @@
     <Folder Include="Entity\Interface\" />
     <Folder Include="Handler\SystemHandler\ChatSessionManage\" />
     <Folder Include="Entity\Structure\ChatCommand\" />
-    <Folder Include="Entity\Structure\ChatCommand\ChatMessage\" />
-    <Folder Include="Entity\Structure\ChatCommand\ChatBasic\" />
-    <Folder Include="Entity\Structure\ChatCommand\ChatChannel\" />
+    <Folder Include="Entity\Structure\ChatCommand\ChatMessageCommand\" />
+    <Folder Include="Entity\Structure\ChatCommand\ChatBasicCommand\" />
+    <Folder Include="Entity\Structure\ChatCommand\ChatChannelCommand\" />
     <Folder Include="Entity\Structure\ChatChannel\" />
     <Folder Include="Entity\Structure\ChatUser\" />
     <Folder Include="Handler\SystemHandler\ChatCommandManage\" />
+    <Folder Include="Handler\CommandHandler\ChatBasicCommandHandler\" />
+    <Folder Include="Handler\CommandHandler\ChatChannelCommandHandler\" />
+    <Folder Include="Handler\CommandHandler\ChatMessageCommandHandler\" />
   </ItemGroup>
 </Project>

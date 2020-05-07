@@ -7,10 +7,8 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public override bool Parse(string request)
         {
-            if( base.Parse(request))
-            {
-                return false;
-            }
+            base.Parse(request);
+
             if (_longParam == null)
             {
                 return false;
