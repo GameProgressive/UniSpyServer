@@ -5,9 +5,9 @@ namespace Chat.Entity.Structure.ChatCommand
     {
         public string Reason { get; protected set; }
 
-        public override bool Parse(string request)
+        public override bool Parse(string recv)
         {
-            base.Parse(request);
+            base.Parse(recv);
 
             if (_longParam == null)
             {

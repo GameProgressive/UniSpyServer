@@ -56,7 +56,7 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = ChatError.DataOperation;
                 return;
             }
-            _user.SetUserKeyValue(_cmd.KeyValues);
+            _user.UpdateUserKeyValue(_cmd.KeyValues);
         }
 
         public override void ConstructResponse()
@@ -69,19 +69,7 @@ namespace Chat.Handler.CommandHandler
                 //_sendingBuffer = ChatCommandBase.BuildErrorRPL(_errorCode,"")
                 return;
             }
-
-            string flags = "";
-            foreach (var dic in _cmd.KeyValues)
-            {
-                flags += @"\" + dic.Key + @"\" + dic.Value;
-            }
-
-            //todo check the paramemter 
-            _sendingBuffer =
-            ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
-                  ChatResponseType.GetCKey,
-                  $"* {_channel.Property.ChannelName} {_user.UserInfo.NickName} BCAST {flags}", "");
-
+            BuildBCASTReply();
         }
 
         public override void Response()
@@ -91,6 +79,22 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
             _channel.MultiCast(_sendingBuffer);
+        }
+
+        private void BuildBCASTReply()
+        {
+            //we only broadcast the b_flags
+            string flags = "";
+            if (_cmd.KeyValues.ContainsKey("b_flags"))
+            {
+                flags += @"\" + "b_flags" + @"\" + _cmd.KeyValues["b_flags"];
+            }
+
+            //todo check the paramemter 
+            _sendingBuffer =
+            ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
+                  ChatResponseType.GetCKey,
+                  $"* {_channel.Property.ChannelName} {_user.UserInfo.NickName} BCAST {flags}", "");
         }
     }
 }

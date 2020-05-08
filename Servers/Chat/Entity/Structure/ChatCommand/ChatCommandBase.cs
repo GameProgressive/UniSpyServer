@@ -23,37 +23,37 @@ namespace Chat.Entity.Structure.ChatCommand
             CommandName = GetType().Name;
         }
 
-        public virtual bool Parse(string request)
+        public virtual bool Parse(string recv)
         {
-            RawRequest = request;
+            RawRequest = recv;
             LogWriter.LogCurrentClass(this);
             // at most 2 colon character
             // we do not sure about all command
             // so i block this code here
             List<string> dataFrag = new List<string>();
 
-            if (request.Where(r => r.Equals(':')).Count() > 2)
+            if (recv.Where(r => r.Equals(':')).Count() > 2)
             {
                 return false;
             }
 
-            int indexOfColon = request.IndexOf(':');
+            int indexOfColon = recv.IndexOf(':');
             if (indexOfColon == 0 && indexOfColon != -1)
             {
-                int prefixIndex = request.IndexOf(' ');
-                Prefix = request.Substring(indexOfColon, prefixIndex);
-                request = request.Substring(prefixIndex);
+                int prefixIndex = recv.IndexOf(' ');
+                Prefix = recv.Substring(indexOfColon, prefixIndex);
+                recv = recv.Substring(prefixIndex);
             }
 
-            indexOfColon = request.IndexOf(':');
+            indexOfColon = recv.IndexOf(':');
             if (indexOfColon != 0 && indexOfColon != -1)
             {
-                _longParam = request.Substring(indexOfColon + 1);
+                _longParam = recv.Substring(indexOfColon + 1);
                 //reset the request string
-                request = request.Remove(indexOfColon);
+                recv = recv.Remove(indexOfColon);
             }
 
-            dataFrag = request.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+            dataFrag = recv.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
 
             if (CommandName == "ChatCommandBase")
             {

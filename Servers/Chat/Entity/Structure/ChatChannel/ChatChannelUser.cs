@@ -32,6 +32,8 @@ namespace Chat.Entity.Structure.ChatChannel
             IsVoiceable = true;
             IsChannelCreator = false;
             IsChannelOperator = false;
+            UserKeyValue.Add("username", UserInfo.UserName);
+            UserKeyValue.Add("b_flags", "s");
         }
 
         public void SetCreatorProperties()
@@ -39,6 +41,8 @@ namespace Chat.Entity.Structure.ChatChannel
             IsVoiceable = true;
             IsChannelCreator = true;
             IsChannelOperator = true;
+            UserKeyValue.Add("username", UserInfo.UserName);
+            UserKeyValue.Add("b_flags", "sh");
         }
 
         public ChatChannelUser SetVoicePermission(bool flag = true)
@@ -57,9 +61,20 @@ namespace Chat.Entity.Structure.ChatChannel
             return this;
         }
 
-        public void SetUserKeyValue(Dictionary<string, string> data)
+        public void UpdateUserKeyValue(Dictionary<string, string> data)
         {
-            UserKeyValue = data;
+            foreach (var key in data.Keys)
+            {
+                if (UserKeyValue.ContainsKey(key))
+                {
+                    //we update the key value
+                    UserKeyValue[key] = data[key];
+                }
+                else
+                {
+                    UserKeyValue.Add(key, data[key]);
+                }
+            }
         }
 
         public string BuildChannelMessage(string cmdParam, string message)
@@ -68,6 +83,7 @@ namespace Chat.Entity.Structure.ChatChannel
             return ChatCommandBase.BuildMessageRPL(
                     $"{UserInfo.NickName}!{UserInfo.UserName}@{address}", cmdParam, message);
         }
+
         public string BuildChannelMessage(string cmdParam)
         {
             return BuildChannelMessage(cmdParam,"");

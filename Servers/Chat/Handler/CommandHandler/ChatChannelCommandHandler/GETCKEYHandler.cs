@@ -65,6 +65,7 @@ namespace Chat.Handler.CommandHandler
         {
             GetUserKeyValue(_user);
         }
+
         private void GetUserKeyValue(ChatChannelUser user)
         {
             //we do not have key value so we do not construct getckey response

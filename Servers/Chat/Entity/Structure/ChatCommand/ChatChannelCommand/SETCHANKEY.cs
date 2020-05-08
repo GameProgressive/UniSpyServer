@@ -12,9 +12,9 @@ namespace Chat.Entity.Structure.ChatCommand
             KeyValue = new Dictionary<string, string>();
         }
 
-        public override bool Parse(string request)
+        public override bool Parse(string recv)
         {
-            if (!base.Parse(request))
+            if (!base.Parse(recv))
             {
                 return false;
             }

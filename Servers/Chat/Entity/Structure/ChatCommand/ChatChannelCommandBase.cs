@@ -4,9 +4,9 @@
     {
         public string ChannelName { get; protected set; }
 
-        public override bool Parse(string request)
+        public override bool Parse(string recv)
         {
-            if (!base.Parse(request))
+            if (!base.Parse(recv))
             {
                 return false;
             }
