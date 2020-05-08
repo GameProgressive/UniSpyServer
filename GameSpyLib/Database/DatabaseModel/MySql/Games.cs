@@ -7,5 +7,6 @@
         public string Secretkey { get; set; }
         public string Description { get; set; }
         public int Queryport { get; set; }
+        public bool Disabled { get; set; }
     }
 }
