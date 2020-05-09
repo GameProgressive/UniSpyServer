@@ -50,7 +50,7 @@ namespace GameSpyLib.Common
 
             switch (dbConfig.Type)
             {
-                case DatabaseType.MySql:
+                case DatabaseTypes.MySql:
                     string mySqlConnStr =
                         string.Format(
                             "Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}",
@@ -58,11 +58,6 @@ namespace GameSpyLib.Common
                             dbConfig.RemotePort, dbConfig.SslMode, dbConfig.SslCert, dbConfig.SslKey, dbConfig.SslCa);
                     retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
                     break;
-                case DatabaseType.SQLite:
-                    string SQLiteConnStr = "Data Source=" + dbConfig.DatabaseName + ";Version=3;New=False";
-                    //TODO: SQLite
-                    throw new Exception("SQLite is not yet supported!");
-                    //break;
             }
 
             try
