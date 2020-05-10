@@ -26,7 +26,7 @@ namespace Chat.Handler.CommandHandler
             //can not find any user
             if (!_channel.GetChannelUserBySession(_session, out user))
             {
-                _errorCode = Entity.Structure.ChatError.DataOperation;
+                _systemError = Entity.Structure.ChatError.DataOperation;
                 return;
             }
 
@@ -40,7 +40,7 @@ namespace Chat.Handler.CommandHandler
             ChatChannelManager.Channels.TryGetValue(_namesCmd.ChannelName, out _channel);
             if (_channel == null)
             {
-                _errorCode = Entity.Structure.ChatError.DataOperation;
+                _systemError = Entity.Structure.ChatError.DataOperation;
             }
             base.DataOperation();
         }

@@ -1,5 +1,6 @@
 ﻿namespace Chat.Entity.Structure
 {
+
     /// <summary>
     /// response code
     /// </summary>

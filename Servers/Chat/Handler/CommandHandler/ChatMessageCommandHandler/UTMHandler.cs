@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -21,19 +22,19 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
 
             if (_cmd.RequestType == UTMCmdType.UserUTM)
                 if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _))
                 {
-                    _errorCode = ChatError.Parse;
+                    _systemError = ChatError.Parse;
                     return;
                 }
         }
@@ -41,17 +42,18 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-          
+
             switch (_cmd.RequestType)
             {
                 case UTMCmdType.ChannelUTM:
-                    ChatCommandBase.BuildMessageRPL(
-                    $"UTM {_channel.Property.ChannelName}", _cmd.Message);
+                    _sendingBuffer = _user.BuildReply(ChatReply.UTM, _channel.Property.ChannelName, _cmd.Message);
+                    // ChatCommandBase.BuildMessageRPL(""
+                    //$"UTM {_channel.Property.ChannelName}", _cmd.Message);
                     break;
                 case UTMCmdType.UserUTM:
-                    _sendingBuffer =
-                       ChatCommandBase.BuildMessageRPL(
-                       $"UTM {_cmd.NickName}", _cmd.Message);
+                    _sendingBuffer = _user.BuildReply(ChatReply.UTM, _cmd.NickName, _cmd.Message);
+                       //ChatCommandBase.BuildMessageRPL(
+                       //$"UTM {_cmd.NickName}", _cmd.Message);
                     break;
             }
         }
@@ -59,7 +61,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            if (_errorCode > ChatError.NoError)
+            if (_systemError > ChatError.NoError)
             {
                 //todo send error to client;
             }
@@ -71,7 +73,9 @@ namespace Chat.Handler.CommandHandler
             {
                 return;
             }
+
             _channel.MultiCast(_sendingBuffer);
+
         }
     }
 }

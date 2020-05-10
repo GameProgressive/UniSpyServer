@@ -1,6 +1,7 @@
 ﻿using System;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -20,13 +21,13 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = Entity.Structure.ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = Entity.Structure.ChatError.Parse;
                 return;
             }
         }
@@ -34,21 +35,10 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-            _sendingBuffer =
-                ChatCommandBase.BuildMessageRPL(
-                    $"NOTICE {_cmd.ChannelName}",_cmd.Message);
+            _sendingBuffer = 
+                ChatCommandBase.BuildReply(ChatReply.NOTICE,
+                    $"{_cmd.ChannelName}", _cmd.Message);
         }
-
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
-            if (_errorCode > Entity.Structure.ChatError.NoError)
-            {
-                //todo send error here
-                _sendingBuffer = "";
-            }
-        }
-
 
         public override void Response()
         {

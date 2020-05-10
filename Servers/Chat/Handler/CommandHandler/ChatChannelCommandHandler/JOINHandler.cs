@@ -2,6 +2,7 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
@@ -59,12 +60,12 @@ namespace Chat.Handler.CommandHandler
             base.ConstructResponse();
             //TODO
             //we construct error response here
-            if (_errorCode > ChatError.NoError)
-            {
-                _sendingBuffer =
-                    ChatCommandBase.BuildNumericErrorRPL("",
-                    _errorCode, $"* {_cmd.ChannelName}", "");
-            }
+            //if (_systemError > ChatError.NoError)
+            //{
+            //    //_sendingBuffer =
+            //    //    ChatCommandBase.BuildNumericErrorRPL("",
+            //    //    _systemError, $"* {_cmd.ChannelName}", "");
+            //}
         }
 
         public void CreateChannel()
@@ -73,7 +74,7 @@ namespace Chat.Handler.CommandHandler
 
             if (IsPeerServer(_cmd.ChannelName))
             {
-                _channel.Property.SetPeerServerFlag(true);            
+                _channel.Property.SetPeerServerFlag(true);
             }
 
             _user.SetCreatorProperties();
@@ -103,13 +104,15 @@ namespace Chat.Handler.CommandHandler
             if (_channel.Property.ChannelMode.IsInviteOnly)
             {
                 //invited only
-                _errorCode = ChatError.InviteOnlyChan;
+                _systemError = ChatError.IRCError;
+                _ircErrorCode = IRCError.InviteOnlyChan;
                 return;
             }
 
             if (_channel.IsUserBanned(_user))
             {
-                _errorCode = ChatError.BannedFromChan;
+                _systemError = ChatError.IRCError;
+                _ircErrorCode = IRCError.BannedFromChan;
                 return;
             }
 
@@ -136,7 +139,7 @@ namespace Chat.Handler.CommandHandler
         private bool IsPeerServer(string name)
         {
             string[] buffer = name.Split('!', System.StringSplitOptions.RemoveEmptyEntries);
-           
+
             if (buffer.Length != 3)
             {
                 return false;

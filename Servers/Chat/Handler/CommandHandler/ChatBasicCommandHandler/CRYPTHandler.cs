@@ -1,5 +1,6 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
@@ -48,7 +49,13 @@ namespace Chat.Handler.CommandHandler
             ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatServer.ServerKey, _session.UserInfo.GameSecretKey);
 
             // 3. Response the crypt command
-            _sendingBuffer = _cryptCmd.BuildResponse(ChatServer.ClientKey, ChatServer.ServerKey);
+            _sendingBuffer =
+                _session.UserInfo.BuildReply(
+                    ChatReply.SecureKey,
+                    $"* {ChatServer.ClientKey} {ChatServer.ServerKey}");
+                //ChatCommandBase.BuildRPLWithoutMiddleTailing(
+                //    ChatRPL.SecureKey,
+                //    $"{ChatCommandBase.PlaceHolder} {ChatServer.ClientKey} {ChatServer.ServerKey}");
         }
 
         public override void Response()

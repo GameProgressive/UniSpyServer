@@ -21,10 +21,5 @@ namespace Chat.Entity.Structure.ChatCommand
 
             return true;
         }
-
-        public string BuildResponse(string clientCtx,string serverCtx)
-        {
-            return BuildNumericRPL("",ChatResponseType.SecureKey, $"* {clientCtx} {serverCtx}","");
-        }
     }
 }

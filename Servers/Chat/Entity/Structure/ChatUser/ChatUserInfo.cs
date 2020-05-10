@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChatCommand;
 
 namespace Chat.Entity.Structure.ChatUser
 {
     public class ChatUserInfo
     {
         //indicates which channel this user is in
-        public List<ChatChannelBase> JoinedChannels { get; protected set; }
+        public ConcurrentBag<ChatChannelBase> JoinedChannels { get; protected set; }
         public bool IsQuietMode { get; protected set; }
         public ChatUserInfo SetQuietModeFlag(bool flag)
         {
@@ -98,10 +100,10 @@ namespace Chat.Entity.Structure.ChatUser
             IsQuietMode = false;
             ClientCTX = new GSPeerChatCTX();
             ServerCTX = new GSPeerChatCTX();
-            JoinedChannels = new List<ChatChannelBase>();
+            JoinedChannels = new ConcurrentBag<ChatChannelBase>();
             IsLogedIn = false;
         }
-       
+
         public bool IsJoinedChannel(string channelName)
         {
             return GetJoinedChannel(channelName, out _);
@@ -119,6 +121,16 @@ namespace Chat.Entity.Structure.ChatUser
                 channel = null;
                 return false;
             }
+        }
+
+        public string BuildReply(string command, string cmdParams)
+        {
+            return ChatCommandBase.BuildReply(this, command, cmdParams, "");
+        }
+
+        public string BuildReply(string command, string cmdParams, string tailing)
+        {
+            return ChatCommandBase.BuildReply(this, command, cmdParams, tailing);
         }
     }
 }

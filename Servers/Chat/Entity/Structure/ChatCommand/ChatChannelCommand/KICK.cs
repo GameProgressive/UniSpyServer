@@ -1,4 +1,5 @@
 ﻿using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChatResponse;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
@@ -24,7 +25,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public static string BuildKickMessage(ChatChannelBase channel, ChatChannelUser kicker, ChatChannelUser kickee, string reason)
         {
-            return BuildMessageRPL(
+            return BuildReply(ChatReply.KICK,
                 $"{channel.Property.ChannelName} {kicker.UserInfo.NickName} {kickee.UserInfo.NickName}",
                 reason);
         }

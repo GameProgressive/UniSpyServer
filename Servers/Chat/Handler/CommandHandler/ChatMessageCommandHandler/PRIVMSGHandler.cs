@@ -3,6 +3,7 @@ using System.Net;
 using System.Text;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -22,13 +23,13 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = Entity.Structure.ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = Entity.Structure.ChatError.Parse;
                 return;
             }
         }
@@ -59,7 +60,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            if (_errorCode > Entity.Structure.ChatError.NoError)
+            if (_systemError > Entity.Structure.ChatError.NoError)
             {
                 //
                 return;
@@ -79,7 +80,7 @@ namespace Chat.Handler.CommandHandler
 
         private void BuildNormalMessage()
         { 
-            _sendingBuffer = _user.BuildChannelMessage($"PRIVMSG {_channel.Property.ChannelName}", _cmd.Message);
+            _sendingBuffer = _user.BuildReply(ChatReply.PRIVMSG,$"{_channel.Property.ChannelName}", _cmd.Message);
             //_sendingBuffer =
             //    ChatCommandBase.BuildMessageRPL(
             //        $"{_user.UserInfo.NickName}!{_user.UserInfo.UserName}@{ip}",

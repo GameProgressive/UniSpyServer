@@ -1,10 +1,8 @@
-﻿using System;
-using System.Linq;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
-using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -25,25 +23,25 @@ namespace Chat.Handler.CommandHandler
 
             if (_session.UserInfo.NickName != _cmd.NickName)
             {
-                _errorCode = ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
 
             if (!_session.UserInfo.IsJoinedChannel(_cmd.ChannelName))
             {
-                _errorCode = ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
 
             if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
         }
@@ -53,7 +51,7 @@ namespace Chat.Handler.CommandHandler
             base.DataOperation();
             if (_cmd.NickName != _user.UserInfo.NickName)
             {
-                _errorCode = ChatError.DataOperation;
+                _systemError = ChatError.DataOperation;
                 return;
             }
             _user.UpdateUserKeyValue(_cmd.KeyValues);
@@ -62,13 +60,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            if (_errorCode > ChatError.NoError)
-            {
-                //TODO
-                //build error response here
-                //_sendingBuffer = ChatCommandBase.BuildErrorRPL(_errorCode,"")
-                return;
-            }
+
             BuildBCASTReply();
         }
 
@@ -92,9 +84,9 @@ namespace Chat.Handler.CommandHandler
 
             //todo check the paramemter 
             _sendingBuffer =
-            ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
-                  ChatResponseType.GetCKey,
-                  $"* {_channel.Property.ChannelName} {_user.UserInfo.NickName} BCAST {flags}", "");
+            ChatCommandBase.BuildReply(
+                  ChatReply.GetCKey,
+                  $"* {_channel.Property.ChannelName} {_user.UserInfo.NickName} BCAST {flags}");
         }
     }
 }

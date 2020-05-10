@@ -1,5 +1,7 @@
-﻿using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -20,13 +22,13 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _kicker))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
             if (!_kicker.IsChannelOperator)
@@ -36,7 +38,7 @@ namespace Chat.Handler.CommandHandler
             }
             if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _kickee))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
         }
@@ -46,10 +48,13 @@ namespace Chat.Handler.CommandHandler
         {
             base.DataOperation();
             _sendingBuffer =
-                ChatCommandBase.BuildMessageRPL(
-                    $"KICK {_channel.Property.ChannelName} {_kicker.UserInfo.NickName} {_kickee.UserInfo.NickName}",
-                    _cmd.Reason
-                    );
+                ChatCommandBase.BuildReply(ChatReply.KICK,
+                $"KICK {_channel.Property.ChannelName} {_kicker.UserInfo.NickName} {_kickee.UserInfo.NickName}",
+                _cmd.Reason);
+            //ChatCommandBase.BuildMessageRPL(
+            //    $"KICK {_channel.Property.ChannelName} {_kicker.UserInfo.NickName} {_kickee.UserInfo.NickName}",
+            //    _cmd.Reason
+            //    );
         }
 
         public override void ConstructResponse()

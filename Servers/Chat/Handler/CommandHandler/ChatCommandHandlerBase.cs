@@ -18,7 +18,8 @@ namespace Chat.Handler.CommandHandler
     /// </summary>
     public abstract class ChatCommandHandlerBase : CommandHandlerBase
     {
-        protected ChatError _errorCode;
+        protected ChatError _systemError;
+        protected string _ircErrorCode;
         protected ChatCommandBase _cmd;
         /// <summary>
         /// Generic response buffer
@@ -31,7 +32,7 @@ namespace Chat.Handler.CommandHandler
 
         public ChatCommandHandlerBase(ISession session, ChatCommandBase cmd) : base(session)
         {
-            _errorCode = ChatError.NoError;
+            _systemError = ChatError.NoError;
             _cmd = cmd;
             _session = (ChatSession)session.GetInstance();
         }
@@ -42,22 +43,39 @@ namespace Chat.Handler.CommandHandler
             base.Handle();
 
             CheckRequest();
-            if (_errorCode < ChatError.NoError)
+
+            if (_systemError != ChatError.NoError)
             {
+                if (_systemError == ChatError.IRCError && _ircErrorCode != null)
+                {
+                    _session.SendAsync(ChatCommandBase.BuildErrorReply(_ircErrorCode));
+                }
                 return;
             }
 
             DataOperation();
-            if (_errorCode < ChatError.NoError)
+            if (_systemError != ChatError.NoError)
             {
+                if (_systemError == ChatError.IRCError && _ircErrorCode != null)
+                {
+                    _session.SendAsync(
+                        ChatCommandBase.BuildErrorReply(_ircErrorCode)
+                        );
+                }
                 return;
             }
 
             ConstructResponse();
-            if (_errorCode < ChatError.NoError)
+
+            if (_systemError != ChatError.NoError)
             {
+                if (_systemError == ChatError.IRCError && _ircErrorCode != null)
+                {
+                    _session.SendAsync(ChatCommandBase.BuildErrorReply(_ircErrorCode));
+                }
                 return;
             }
+
             Response();
         }
         public virtual void CheckRequest()

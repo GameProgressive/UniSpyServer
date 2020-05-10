@@ -1,4 +1,6 @@
-﻿namespace Chat.Entity.Structure.ChatCommand
+﻿using Chat.Entity.Structure.ChatResponse;
+
+namespace Chat.Entity.Structure.ChatCommand
 {
     public class USER : ChatCommandBase
     {
@@ -10,7 +12,7 @@
 
         public string BuildResponse(params string[] cmdParam)
         {
-            return new PING().BuildResponse();
+            return BuildReply(ChatReply.PING, "www.rspy.cc");
         }
 
         public override bool Parse(string recv)

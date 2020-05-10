@@ -2,6 +2,7 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Server;
@@ -49,7 +50,8 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
             ChatChannelBase channel;
             if (!ChatChannelManager.GetChannel(_cmd.Name, out channel))
             {
-                _errorCode = ChatError.NoSuchChannel;
+                _systemError = ChatError.IRCError;
+                _ircErrorCode = IRCError.NoSuchChannel;
                 return;
             }
             _sendingBuffer = "";
@@ -72,23 +74,24 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
             }
             else
             {
-                _errorCode = ChatError.NoSuchNick;
+                _systemError = ChatError.IRCError;
+                _ircErrorCode = IRCError.NoSuchNick;
             }
         }
 
         private void AppendEndOfWhoRPL()
         {
-            _sendingBuffer += ChatCommandBase.BuildNumericRPL(ChatResponseType.EndOfWho, $"* {_session.UserInfo.NickName} param3", "");
+            _sendingBuffer += ChatCommandBase.BuildReply(ChatReply.EndOfWho, $"* {_session.UserInfo.NickName} param3");
         }
 
         private string BuildWhoRPLForSingleUser(string channelName, ChatSession session)
         {
             string address = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.ToString();
             return
-                ChatCommandBase.BuildNumericRPL(
-                    ChatResponseType.WhoReply,
+                ChatCommandBase.BuildReply(
+                    ChatReply.WhoReply,
                     $"* {channelName} " +
-                    $"{session.UserInfo.UserName} {address} {session.UserInfo.NickName} param6 param7 param8", "");
+                    $"{session.UserInfo.UserName} {address} {session.UserInfo.NickName} param6 param7 param8");
         }
     }
 }

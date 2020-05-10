@@ -164,10 +164,5 @@ namespace Chat.Entity.Structure.ChatCommand
             }
             return false;
         }
-
-        public string GenerateResponse(string modes)
-        {
-            return BuildMessageRPL("www.rspy.cc", $"MODE {ChannelName} {modes}", "");
-        }
     }
 }

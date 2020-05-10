@@ -77,16 +77,44 @@ namespace Chat.Entity.Structure.ChatChannel
             }
         }
 
-        public string BuildChannelMessage(string cmdParam, string message)
+        public string BuildReply(string command, string cmdParams)
         {
-            string address = ((IPEndPoint)Session.Socket.RemoteEndPoint).Address.ToString();
-            return ChatCommandBase.BuildMessageRPL(
-                    $"{UserInfo.NickName}!{UserInfo.UserName}@{address}", cmdParam, message);
+            return Session.UserInfo.BuildReply(command, cmdParams);
         }
 
-        public string BuildChannelMessage(string cmdParam)
+        public string BuildReply(string command, string cmdParams, string tailing)
         {
-            return BuildChannelMessage(cmdParam,"");
+            return Session.UserInfo.BuildReply(command, cmdParams, tailing);
+        }
+
+        //public string BuildChannelMessage(string command, string cmdParam, string tailing)
+        //{
+        //    return ChatCommandBase.BuildRPL(UserInfo, command, cmdParam, tailing);
+        //    //BuildMessageRPL(
+        //    //    $"{UserInfo.NickName}!{UserInfo.UserName}@{ChatServer.ServerDomain}", cmdParam, message);
+        //}
+
+        //public string BuildChannelMessage(string command, string cmdParam)
+        //{
+        //    return BuildChannelMessage(command, cmdParam, "");
+        //}
+
+        public string GetBFlagsString()
+        {
+            return @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"];
+        }
+
+        public string GetValuesString(List<string> keys)
+        {
+            string values = "";
+            foreach (var key in keys)
+            {
+                if (UserKeyValue.ContainsKey(key))
+                {
+                    values += @"\" + UserKeyValue[key];
+                }
+            }
+            return values;
         }
     }
 }

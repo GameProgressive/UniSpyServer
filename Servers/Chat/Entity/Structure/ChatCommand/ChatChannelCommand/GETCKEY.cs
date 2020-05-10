@@ -6,8 +6,8 @@ namespace Chat.Entity.Structure.ChatCommand
 {
     public enum GetKeyType
     {
-        GetChannelUsersKeyValue,
-        GetChannelUserKeyValue
+        GetChannelAllUserKeyValue,
+        GetChannelSpecificUserKeyValue
     }
     public class GETCKEY : ChatChannelCommandBase
     {
@@ -43,11 +43,11 @@ namespace Chat.Entity.Structure.ChatCommand
 
             if (NickName == "*")
             {
-                RequestType = GetKeyType.GetChannelUsersKeyValue;
+                RequestType = GetKeyType.GetChannelAllUserKeyValue;
             }
             else
             {
-                RequestType = GetKeyType.GetChannelUserKeyValue;
+                RequestType = GetKeyType.GetChannelSpecificUserKeyValue;
             }
 
             Cookie = _cmdParams[2];

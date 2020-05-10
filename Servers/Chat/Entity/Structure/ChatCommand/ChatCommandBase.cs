@@ -1,4 +1,8 @@
-﻿using Chat.Server;
+﻿using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatUser;
+using Chat.Handler.SystemHandler.ChatErrorMessage;
+using Chat.Server;
 using GameSpyLib.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,6 +12,7 @@ namespace Chat.Entity.Structure.ChatCommand
 {
     public class ChatCommandBase
     {
+        public const string PlaceHolder = "*";
         public string RawRequest { get; protected set; }
         public string CommandName { get; protected set; }
         protected string Prefix;
@@ -70,36 +75,166 @@ namespace Chat.Entity.Structure.ChatCommand
             return true;
         }
 
-        public static string BuildMessageErrorRPL(string errorMsg)
+        //public static string BuildMessageErrorRPL(string errorMsg)
+        //{
+        //    return BuildMessageRPL("ERROR", errorMsg);
+        //}
+
+        //public static string BuildNumericErrorRPL(ChatError errorCode, string cmdParam, string message)
+        //{
+        //    return BuildNumericRPL(ChatServer.ServerDomain, (int)errorCode, cmdParam, message);
+        //}
+
+        //public static string BuildNumericErrorRPL(string prefix, ChatError errorCode, string cmdParam, string message)
+        //{
+        //    return BuildNumericRPL(prefix, (int)errorCode, cmdParam, message);
+        //}
+
+        //public static string BuildNumericRPL(ChatResponseType cmdCode, string cmdParam, string message)
+        //{
+        //    return BuildNumericRPL(ChatServer.ServerDomain, (int)cmdCode, cmdParam, message);
+        //}
+
+        //public static string BuildNumericRPL(string prefix, ChatResponseType cmdCode, string cmdParam, string message)
+        //{
+        //    return BuildNumericRPL(prefix, (int)cmdCode, cmdParam, message);
+        //}
+
+        //public static string BuildMessageRPL(string cmdParam, string message)
+        //{
+        //    return BuildMessageRPL("", cmdParam, message);
+        //}
+        //public static string BuildMessageRPL(string prefix, string cmdParam, string message)
+        //{
+        //    string buffer = "";
+
+        //    if (prefix != "")
+        //    {
+        //        buffer = $":{prefix} ";
+        //    }
+
+        //    buffer += $"{cmdParam}";
+
+
+        //    if (message != "")
+        //    {
+        //        buffer += $" :{ message}\r\n";
+        //    }
+        //    else
+        //    {
+        //        buffer += "\r\n";
+        //    }
+
+        //    return buffer;
+        //}
+
+        //protected static string BuildNumericRPL(string prefix, int cmdCode, string cmdParam, string message)
+        //{
+        //    string asciiCode = cmdCode.ToString();
+
+        //    if (asciiCode.Length < 3)
+        //    {
+        //        asciiCode = "00" + asciiCode;
+        //    }
+        //    string buffer = "";
+
+        //    if (prefix != "")
+        //    {
+        //        buffer = $":{prefix} ";
+        //    }
+
+        //    buffer += $"{asciiCode} {cmdParam}";
+
+        //    if (message != "")
+        //    {
+        //        buffer += $" :{message}\r\n";
+        //    }
+        //    else
+        //    {
+        //        buffer += "\r\n";
+        //    }
+
+        //    return buffer;
+        //}
+
+
+        //public static string BuildErrorRPL(string errorCode)
+        //{
+        //    string errorMsg = ChatErrorMessageBuilder.GetErrorMessage(errorCode);
+        //    return BuildRPLWithoutMiddle(errorCode, "", errorMsg);
+        //}
+
+        //public static string BuildErrorRPL(ChatUserInfo userInfo, string errorCode)
+        //{
+        //    string errorMsg = ChatErrorMessageBuilder.GetErrorMessage(errorCode);
+        //    return BuildRPLWithoutMiddle(userInfo, errorCode, "", errorMsg);
+        //}
+
+        //public static string BuildRPLWithoutMiddleTailing(string command, string cmdParams)
+        //{
+        //    return BuildRPL(ChatServer.ServerDomain, "", command, cmdParams, "");
+        //}
+
+        //public static string BuildRPLWithoutMiddleTailing(ChatUserInfo userInfo, string command, string cmdParams)
+        //{
+        //    return BuildRPLWithoutMiddle(userInfo, command, cmdParams, "");
+        //}
+
+        //public static string BuildRPLWithoutTailing(ChatUserInfo userInfo, string command, string cmdParams, string tailing)
+        //{
+        //    return BuildRPL(userInfo, PlaceHolder, command, cmdParams, tailing);
+        //}
+
+        //public static string BuildRPLWithoutMiddle(string command, string cmdParams, string tailing)
+        //{
+        //    return BuildRPL(ChatServer.ServerDomain, "", command, cmdParams, tailing);
+        //}
+
+        //public static string BuildRPLWithoutMiddle(ChatUserInfo userinfo, string command, string cmdParams, string tailing)
+        //{
+        //    return BuildRPL(userinfo, "", command, cmdParams, tailing);
+        //}
+
+        public static string BuildErrorReply(string errorCode)
         {
-            return BuildMessageRPL("ERROR", errorMsg);
+            string errorMsg = ChatErrorMessageBuilder.GetErrorMessage(errorCode);
+            return BuildReply(errorCode, "", errorMsg);
         }
 
-        public static string BuildNumericErrorRPL(ChatError errorCode, string cmdParam, string message)
+        public static string BuildReply(string command)
         {
-            return BuildNumericRPL(ChatServer.ServerDomain, (int)errorCode, cmdParam, message);
+            return BuildReply(command, "");
         }
 
-        public static string BuildNumericErrorRPL(string prefix, ChatError errorCode, string cmdParam, string message)
+        public static string BuildReply(string command, string cmdParams)
         {
-            return BuildNumericRPL(prefix, (int)errorCode, cmdParam, message);
+            return BuildReply(command, cmdParams, "");
         }
 
-        public static string BuildNumericRPL(ChatResponseType cmdCode, string cmdParam, string message)
+        public static string BuildReply(string command, string cmdParams, string tailing)
         {
-            return BuildNumericRPL("", (int)cmdCode, cmdParam, message);
+            return BuildReply(ChatServer.ServerDomain, command, cmdParams, tailing);
         }
 
-        public static string BuildNumericRPL(string prefix, ChatResponseType cmdCode, string cmdParam, string message)
+        public static string BuildReply(ChatUserInfo userInfo, string command)
         {
-            return BuildNumericRPL(prefix, (int)cmdCode, cmdParam, message);
+            return BuildReply(userInfo, command, "");
         }
 
-        public static string BuildMessageRPL(string cmdParam, string message)
+        public static string BuildReply(ChatUserInfo userInfo, string command, string cmdParams)
         {
-            return BuildMessageRPL("", cmdParam, message);
+            return BuildReply(userInfo, command, cmdParams, "");
         }
-        public static string BuildMessageRPL(string prefix, string cmdParam, string message)
+
+
+        public static string BuildReply(ChatUserInfo userInfo, string command, string cmdParams, string tailing)
+        {
+            string prefix = $"{userInfo.NickName}!{userInfo.UserName}@{ChatServer.ServerDomain}";
+
+            return BuildReply(prefix, command, cmdParams, tailing);
+        }
+
+        protected static string BuildReply(string prefix, string command, string cmdParams, string tailing)
         {
             string buffer = "";
 
@@ -108,41 +243,11 @@ namespace Chat.Entity.Structure.ChatCommand
                 buffer = $":{prefix} ";
             }
 
-            buffer += $"{cmdParam}";
+            buffer += $"{command} {cmdParams}";
 
-
-            if (message != "")
+            if (tailing != "")
             {
-                buffer += $" :{ message}\r\n";
-            }
-            else
-            {
-                buffer += "\r\n";
-            }
-
-            return buffer;
-        }
-
-        protected static string BuildNumericRPL(string prefix, int cmdCode, string cmdParam, string message)
-        {
-            string asciiCode = cmdCode.ToString();
-
-            if (asciiCode.Length < 3)
-            {
-                asciiCode = "00" + asciiCode;
-            }
-            string buffer = "";
-
-            if (prefix != "")
-            {
-                buffer = $":{prefix} ";
-            }
-
-            buffer += $"{asciiCode} {cmdParam}";
-
-            if (message != "")
-            {
-                buffer += $" :{message}\r\n";
+                buffer += $" :{tailing}\r\n";
             }
             else
             {

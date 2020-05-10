@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -21,14 +22,14 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = ChatError.Parse;
+                _systemError = ChatError.Parse;
                 return;
             }
 
             //check whether user1 will get user2's key value by single search
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatError.DataOperation;
+                _systemError = ChatError.DataOperation;
                 return;
             }
         }
@@ -39,21 +40,18 @@ namespace Chat.Handler.CommandHandler
 
             switch (_cmd.RequestType)
             {
-                case GetKeyType.GetChannelUsersKeyValue:
-                    GetChannelUsersKeyValue();
-                    BuildGetCKeyEndMessage();
+                case GetKeyType.GetChannelAllUserKeyValue:
+                    GetChannelAllUserKeyValue();
                     break;
-                case GetKeyType.GetChannelUserKeyValue:
-                    GetChannelUserKeyValue();
-                    BuildGetCKeyEndMessage();
+                case GetKeyType.GetChannelSpecificUserKeyValue:
+                    GetChannelSpecificUserKeyValue();
                     break;
             }
 
-           
+            BuildGetCKeyEndMessage();
         }
 
-
-        private void GetChannelUsersKeyValue()
+        private void GetChannelAllUserKeyValue()
         {
             _sendingBuffer = "";
             foreach (var user in _channel.Property.ChannelUsers)
@@ -61,42 +59,72 @@ namespace Chat.Handler.CommandHandler
                 GetUserKeyValue(user);
             }
         }
-        private void GetChannelUserKeyValue()
+        private void GetChannelSpecificUserKeyValue()
         {
-            GetUserKeyValue(_user);
+            ChatChannelUser user;
+            if (!_channel.GetChannelUserByNickName(_cmd.NickName, out user))
+            {
+                _systemError = ChatError.IRCError;
+                _ircErrorCode = IRCError.NoSuchNick;
+                return;
+            }
+            GetUserKeyValue(user);
         }
 
+        private void GetUserBFlagsOnly(ChatChannelUser user)
+        {
+            string flags = user.GetBFlagsString();
+
+            _sendingBuffer +=
+                user.BuildReply(ChatReply.GetCKey,
+                $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}");
+        //ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
+        //    ChatResponseType.GetCKey,
+        //    $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}", "");
+        }
         private void GetUserKeyValue(ChatChannelUser user)
         {
             //we do not have key value so we do not construct getckey response
             if (user.UserKeyValue.Count == 0)
             {
+                _systemError = ChatError.DataOperation;
                 return;
             }
 
-            string flags = "";
-            foreach (var k in _cmd.Keys)
+            if (_cmd.Keys.Count == 1 && _cmd.Keys.Contains("b_flags"))
             {
-                if (user.UserKeyValue.ContainsKey(k))
-                {
-                    flags += @"\" + user.UserInfo.UserName + @"\" + user.UserKeyValue[k];
-                }
+                GetUserBFlagsOnly(user);
             }
+            else
+            {
+                GetAllKeyValues(user);
+            }
+        }
+
+        private void GetAllKeyValues(ChatChannelUser user)
+        {
+            string flags = user.GetValuesString(_cmd.Keys);
 
             //todo check the paramemter 
             _sendingBuffer +=
-          ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
-              ChatResponseType.GetCKey,
-              $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}", "");
+                user.BuildReply(ChatReply.GetCKey,
+                $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}");
+            //ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
+            //    ChatResponseType.GetCKey,
+            //    $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}", "");
         }
+
 
         private void BuildGetCKeyEndMessage()
         {
             _sendingBuffer +=
-                ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
-                ChatResponseType.EndGetCKey,
+                _user.BuildReply(ChatReply.EndGetCKey,
                 $"* {_channel.Property.ChannelName} {_cmd.Cookie}",
                 "End Of /GETCKEY.");
+            //ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
+            //ChatResponseType.EndGetCKey,
+            //$"* {_channel.Property.ChannelName} {_cmd.Cookie}",
+            //"End Of /GETCKEY.");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -20,13 +21,13 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = Entity.Structure.ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = Entity.Structure.ChatError.Parse;
+                _systemError = Entity.Structure.ChatError.Parse;
                 return;
             }
 
@@ -38,12 +39,12 @@ namespace Chat.Handler.CommandHandler
             switch (_cmd.RequestType)
             {
                 case ATMCmdType.ChannelATM:
-                    _sendingBuffer = _user.BuildChannelMessage($"ATM {_channel.Property.ChannelName} {_cmd.Message}");
+                    _sendingBuffer = _user.BuildReply(ChatReply.ATM,$"{_channel.Property.ChannelName} {_cmd.Message}");
                     //ChatCommandBase.BuildMessageRPL(
                     //    $"ATM {_channel.Property.ChannelName} ", _cmd.Message);
                     break;
                 case ATMCmdType.UserATM:
-                    _sendingBuffer = _user.BuildChannelMessage($"ATM {_cmd.NickName} {_cmd.Message}");
+                    _sendingBuffer = _user.BuildReply(ChatReply.ATM,$"{_cmd.NickName} {_cmd.Message}");
                     //ChatCommandBase.BuildMessageRPL(
                     //    $"ATM {_cmd.NickName}", _cmd.Message);
                     break;
@@ -53,7 +54,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            if (_errorCode > Entity.Structure.ChatError.NoError)
+            if (_systemError > Entity.Structure.ChatError.NoError)
             {
                 //todo send error RPL here
             }

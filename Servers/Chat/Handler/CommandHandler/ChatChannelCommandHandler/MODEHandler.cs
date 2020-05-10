@@ -2,44 +2,47 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
+using Chat.Handler.SystemHandler.ChannelManage;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
     public class MODEHandler : ChatCommandHandlerBase
     {
-        MODE _modeCmd;
+       new MODE _cmd;
         ChatChannelBase _channel;
+        ChatChannelUser _user;
         public MODEHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _modeCmd = (MODE)cmd;
+            _cmd = (MODE)cmd;
         }
 
         public override void CheckRequest()
         {
             base.CheckRequest();
-            var result = _session.UserInfo.JoinedChannels.
-                Where(c => c.Property.ChannelName == _modeCmd.ChannelName);
-            if (result.Count() != 1)
+            if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
             {
-                _errorCode = ChatError.NoSuchChannel;
+                _systemError = ChatError.IRCError;
+                _ircErrorCode = IRCError.NoSuchChannel;
                 return;
             }
-            _channel = result.First();
+            if (!_channel.GetChannelUserBySession(_session, out _user))
+            {
+                _systemError = ChatError.IRCError;
+                _ircErrorCode = IRCError.NoSuchNick;
+                return;
+            }
         }
 
         public override void DataOperation()
         {
             base.DataOperation();
 
-            switch (_modeCmd.RequestType)
+            switch (_cmd.RequestType)
             {
                 case ModeRequestType.GetChannelModes:
-                    string modes =
-                _session.UserInfo.JoinedChannels.
-                Where(c => c.Property.ChannelName == _modeCmd.ChannelName)
-                .First().Property.ChannelMode.GetChannelMode();
-                    _sendingBuffer = ChatCommandBase.BuildMessageRPL($"MODE {_modeCmd.ChannelName} {modes}", "");
+                    GetChannelModes();
                     break;
                 case ModeRequestType.EnableUserQuietFlag:
                     _session.UserInfo.SetQuietModeFlag(true);
@@ -53,31 +56,35 @@ namespace Chat.Handler.CommandHandler
             }
         }
 
-        public override void ConstructResponse()
+        public void GetChannelModes()
         {
-            base.ConstructResponse();
 
-            if (_errorCode > ChatError.NoError)
-            {
-                ChatCommandBase.BuildNumericErrorRPL(_errorCode, "", "no channel found");
-            }
+
+            string modes =
+             _channel.Property.ChannelMode.GetChannelMode();
+            //_sendingBuffer = ChatCommandBase.BuildMessageRPL($"MODE {_cmd.ChannelName} {modes}", "");
+            _sendingBuffer = _user.BuildReply(ChatReply.MODE, $"{_channel.Property.ChannelName} {modes}");
+                //ChatCommandBase.BuildRPLWithoutMiddleTailing(
+                //    _user.UserInfo, ChatRPL.MODE,
+                //    $"{_channel.Property.ChannelName} {modes}");
         }
+
         private void ProcessOtherModeRequest()
         {
             //we check if the user is operator in channel
             ChatChannelUser user;
             if (!_channel.GetChannelUserBySession(_session, out user))
             {
-                _errorCode = ChatError.DataOperation;
+                _systemError = ChatError.DataOperation;
                 return;
             }
 
             if (!user.IsChannelOperator)
             {
-                _errorCode = ChatError.DataOperation;
+                _systemError = ChatError.DataOperation;
                 return;
             }
-            _channel.Property.SetProperties(user, _modeCmd);
+            _channel.Property.SetProperties(user, _cmd);
         }
 
     }

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Net;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChatSessionManage;
-using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -32,14 +31,13 @@ namespace Chat.Handler.CommandHandler
 
             if (result.Count() != 1)
             {
-                _errorCode = Entity.Structure.ChatError.DataOperation;
+                _systemError = Entity.Structure.ChatError.DataOperation;
                 return;
             }
 
             var info = result.FirstOrDefault();
-            _sendingBuffer = ChatCommandBase.BuildNumericRPL(
-                ChatServer.ServerDomain,
-                Entity.Structure.ChatResponseType.WhoIsUser,
+            _sendingBuffer = ChatCommandBase.BuildReply(
+               ChatReply.WhoIsUser,
                 $"{info.nickName} {info.name} {info.userName} {info.address} *",
                 info.userName);
 
@@ -53,30 +51,17 @@ namespace Chat.Handler.CommandHandler
                 }
 
 
-                _sendingBuffer += ChatCommandBase.BuildNumericRPL(
-                    ChatServer.ServerDomain,
-                    Entity.Structure.ChatResponseType.WhoIsChannels,
+                _sendingBuffer += ChatCommandBase.BuildReply(
+                    ChatReply.WhoIsChannels,
                     $"{info.nickName} {info.name}",
                     channels
                     );
             }
-            _sendingBuffer += ChatCommandBase.BuildNumericRPL(
-                    ChatServer.ServerDomain,
-                    Entity.Structure.ChatResponseType.EndOfWhoIs,
-                    $"{info.nickName} {info.name}", "End of /WHOIS list."
+            _sendingBuffer += ChatCommandBase.BuildReply(
+                    ChatReply.EndOfWhoIs,
+                    $"{info.nickName} {info.name}",
+                    "End of /WHOIS list."
                     );
         }
-
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
-            if (_errorCode == Entity.Structure.ChatError.NoSuchNick)
-            {
-                _sendingBuffer = ChatCommandBase.BuildNumericErrorRPL(ChatServer.ServerDomain,
-                    _errorCode,
-                    $"{_session.UserInfo.NickName} {_whoisCmd.NickName}", "No such nick.");
-            }
-        }
-
     }
 }

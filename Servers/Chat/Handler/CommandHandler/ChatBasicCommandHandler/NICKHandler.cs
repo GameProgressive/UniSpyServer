@@ -1,5 +1,6 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
@@ -18,7 +19,8 @@ namespace Chat.Handler.CommandHandler
         {
             if (ChatSessionManager.IsNickNameExisted(_nickCmd.NickName))
             {
-                _errorCode = ChatError.NickNameInUse;
+                _systemError = ChatError.IRCError;
+                _ircErrorCode = IRCError.NickNameInUse;
             }
             base.CheckRequest();
         }
@@ -26,10 +28,6 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-            if (_errorCode > ChatError.NoError)
-            {
-                return;
-            }
             _session.UserInfo.SetNickName(_nickCmd.NickName);
         }
 
@@ -37,16 +35,18 @@ namespace Chat.Handler.CommandHandler
         {
             base.ConstructResponse();
 
-            if (_errorCode > ChatError.NoError)
-            {
-                _sendingBuffer = ChatCommandBase.BuildNumericErrorRPL(
-                    _errorCode, $"* {_nickCmd.NickName}", "Nick name in use!");
-                return;
-            }
-            _sendingBuffer = ChatCommandBase.BuildNumericRPL(
-                ChatServer.ServerDomain, ChatResponseType.Welcome,
-                _nickCmd.NickName, "Welcome to RetroSpy!");
+            _sendingBuffer = _session.UserInfo.BuildReply(ChatReply.Welcome, _nickCmd.NickName, "Welcome to RetrosSpy!");
+                //ChatCommandBase.BuildRPLWithoutMiddle(
+                //    ChatRPL.Welcome, _nickCmd.NickName,
+                //    "Welcome to RetroSpy!");
+
+               // ChatCommandBase.BuildNumericRPL(
+               // ChatServer.ServerDomain, ChatResponseType.Welcome,
+               //_nickCmd.NickName, "Welcome to RetroSpy!");
+
             _session.UserInfo.SetLoginFlag(true);
+
+           
             //check this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             //_sendingBuffer += ChatCommandBase.BuildMessageRPL(
             //_nickCmd.NickName, $"MODE {_nickCmd.NickName}", "+iwx");
