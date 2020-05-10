@@ -9,7 +9,7 @@ namespace Chat.Server
 {
     public class ChatServer : TemplateTcpServer
     {
-        public const string ServerDomain = "www.rspy.cc";
+        public const string ServerDomain = "rspy.cc";
         //we hard coded random key here for simplisity
         public static readonly string ClientKey = "0000000000000000";
         public static readonly string ServerKey = "0000000000000000";
