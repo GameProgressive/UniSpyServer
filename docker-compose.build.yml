@@ -29,6 +29,7 @@ services:
     image: gameprogressive/natneg
     ports:
     - "27901:27901"
+    - "27901:27901/udp"
     stdin_open: true
     tty: true
 
