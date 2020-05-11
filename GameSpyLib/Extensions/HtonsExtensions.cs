@@ -5,25 +5,25 @@ namespace GameSpyLib.Extensions
 {
     public class HtonsExtensions
     {
-        public static byte[] PortToHtonUshortBytes(ushort port)
+        public static byte[] UshortPortToHtonBytes(ushort port)
         {
             byte[] buffer = BitConverter.GetBytes(port);
             Array.Reverse(buffer);
             return buffer;
         }
 
-        public static byte[] PortToHtonUshortBytes(string portStr)
+        public static byte[] UshortPortToHtonBytes(string portStr)
         {
             ushort port = ushort.Parse(portStr);
-            return PortToHtonUshortBytes(port);
+            return UshortPortToHtonBytes(port);
         }
 
-        public static byte[] PortToUshortBytes(string portStr)
+        public static byte[] UshortPortToBytes(string portStr)
         {
             ushort port = ushort.Parse(portStr);
-            return PortToUshortBytes(port);
+            return UshortPortToBytes(port);
         }
-        public static byte[] PortToUshortBytes(ushort port)
+        public static byte[] UshortPortToBytes(ushort port)
         {
             return BitConverter.GetBytes(port);
         }

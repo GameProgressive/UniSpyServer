@@ -206,7 +206,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                      HtonsExtensions.PortToIntBytes(
                          server.ServerData.KeyValue["hostport"]);
                 byte[] htonPort =
-                    HtonsExtensions.PortToHtonUshortBytes(
+                    HtonsExtensions.UshortPortToHtonBytes(
                         server.ServerData.KeyValue["hostport"]);
                 header.AddRange(htonPort);
             }

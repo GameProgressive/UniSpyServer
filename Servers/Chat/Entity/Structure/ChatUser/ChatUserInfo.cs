@@ -123,9 +123,13 @@ namespace Chat.Entity.Structure.ChatUser
             }
         }
 
+        public string BuildReply(string command)
+        {
+            return BuildReply(command, "");
+        }
         public string BuildReply(string command, string cmdParams)
         {
-            return ChatCommandBase.BuildReply(this, command, cmdParams, "");
+            return BuildReply(command, cmdParams, "");
         }
 
         public string BuildReply(string command, string cmdParams, string tailing)

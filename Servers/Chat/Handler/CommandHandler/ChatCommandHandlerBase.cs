@@ -18,8 +18,7 @@ namespace Chat.Handler.CommandHandler
     /// </summary>
     public abstract class ChatCommandHandlerBase : CommandHandlerBase
     {
-        protected ChatError _systemError;
-        protected string _ircErrorCode;
+        protected ChatError _errorCode;
         protected ChatCommandBase _cmd;
         /// <summary>
         /// Generic response buffer
@@ -32,7 +31,7 @@ namespace Chat.Handler.CommandHandler
 
         public ChatCommandHandlerBase(ISession session, ChatCommandBase cmd) : base(session)
         {
-            _systemError = ChatError.NoError;
+            _errorCode = ChatError.NoError;
             _cmd = cmd;
             _session = (ChatSession)session.GetInstance();
         }
@@ -44,34 +43,32 @@ namespace Chat.Handler.CommandHandler
 
             CheckRequest();
 
-            if (_systemError != ChatError.NoError)
+            if (_errorCode != ChatError.NoError)
             {
-                if (_systemError == ChatError.IRCError && _ircErrorCode != null)
+                if (_errorCode == ChatError.IRCError)
                 {
-                    _session.SendAsync(ChatCommandBase.BuildErrorReply(_ircErrorCode));
+                    SendErrorMessage();
                 }
                 return;
             }
 
             DataOperation();
-            if (_systemError != ChatError.NoError)
+            if (_errorCode != ChatError.NoError)
             {
-                if (_systemError == ChatError.IRCError && _ircErrorCode != null)
+                if (_errorCode == ChatError.IRCError)
                 {
-                    _session.SendAsync(
-                        ChatCommandBase.BuildErrorReply(_ircErrorCode)
-                        );
+                    SendErrorMessage();
                 }
                 return;
             }
 
             ConstructResponse();
 
-            if (_systemError != ChatError.NoError)
+            if (_errorCode != ChatError.NoError)
             {
-                if (_systemError == ChatError.IRCError && _ircErrorCode != null)
+                if (_errorCode == ChatError.IRCError)
                 {
-                    _session.SendAsync(ChatCommandBase.BuildErrorReply(_ircErrorCode));
+                    SendErrorMessage();
                 }
                 return;
             }
@@ -85,6 +82,15 @@ namespace Chat.Handler.CommandHandler
         public virtual void ConstructResponse()
         { }
         public virtual void Response()
+        {
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            {
+                return;
+            }
+            base._session.SendAsync(_sendingBuffer);
+        }
+
+        private void SendErrorMessage()
         {
             if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {

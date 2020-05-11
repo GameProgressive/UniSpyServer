@@ -50,8 +50,7 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
             ChatChannelBase channel;
             if (!ChatChannelManager.GetChannel(_cmd.Name, out channel))
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.NoSuchChannel;
+                _errorCode = ChatError.IRCError;
                 return;
             }
             _sendingBuffer = "";
@@ -74,8 +73,7 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
             }
             else
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.NoSuchNick;
+                _errorCode = ChatError.IRCError;
             }
         }
 

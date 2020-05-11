@@ -27,13 +27,13 @@ namespace Chat.Handler.CommandHandler
 
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
-                _systemError = ChatError.DataOperation;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
 
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = ChatError.DataOperation;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
           

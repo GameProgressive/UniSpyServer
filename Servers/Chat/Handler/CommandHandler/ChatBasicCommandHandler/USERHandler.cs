@@ -15,7 +15,7 @@ namespace Chat.Handler.CommandHandler
 
         public override void DataOperation()
         {
-            if (_systemError != ChatError.NoError)
+            if (_errorCode != ChatError.NoError)
             {
                 return;
             }

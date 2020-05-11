@@ -20,12 +20,12 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = Entity.Structure.ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = Entity.Structure.ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
         }
@@ -52,7 +52,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            if (_systemError > Entity.Structure.ChatError.NoError)
+            if (_errorCode > Entity.Structure.ChatError.NoError)
             {
                 //we handle error code response here
             }
@@ -80,9 +80,28 @@ namespace Chat.Handler.CommandHandler
         {
             _channel.Property.SetChannelTopic(_cmd.ChannelTopic);
             _sendingBuffer =
-                ChatCommandBase.BuildReply(ChatReply.Topic,
+                ChatCommandBase.BuildReply(ChatReply.TOPIC,
                 _channel.Property.ChannelName,
                 _channel.Property.ChannelTopic);
+        }
+
+        public override void Response()
+        {
+            base.Response();
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            {
+                return;
+            }
+            switch (_cmd.RequestType)
+            {
+                case TOPICCmdType.GetChannelTopic:
+                    _session.SendAsync(_sendingBuffer);
+                    break;
+                case TOPICCmdType.SetChannelTopic:
+                    _channel.MultiCast(_sendingBuffer);
+                    break;
+            }
+
         }
     }
 }

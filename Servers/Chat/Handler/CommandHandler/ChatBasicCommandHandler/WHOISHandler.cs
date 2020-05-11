@@ -31,7 +31,7 @@ namespace Chat.Handler.CommandHandler
 
             if (result.Count() != 1)
             {
-                _systemError = Entity.Structure.ChatError.DataOperation;
+                _errorCode = Entity.Structure.ChatError.DataOperation;
                 return;
             }
 

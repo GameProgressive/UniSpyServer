@@ -22,13 +22,13 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _kicker))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
             if (!_kicker.IsChannelOperator)
@@ -38,7 +38,7 @@ namespace Chat.Handler.CommandHandler
             }
             if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _kickee))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
         }
@@ -47,14 +47,9 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-            _sendingBuffer =
-                ChatCommandBase.BuildReply(ChatReply.KICK,
+            _sendingBuffer = _kicker.BuildReply(ChatReply.KICK,
                 $"KICK {_channel.Property.ChannelName} {_kicker.UserInfo.NickName} {_kickee.UserInfo.NickName}",
                 _cmd.Reason);
-            //ChatCommandBase.BuildMessageRPL(
-            //    $"KICK {_channel.Property.ChannelName} {_kicker.UserInfo.NickName} {_kickee.UserInfo.NickName}",
-            //    _cmd.Reason
-            //    );
         }
 
         public override void ConstructResponse()

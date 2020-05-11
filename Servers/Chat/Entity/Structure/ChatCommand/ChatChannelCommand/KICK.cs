@@ -16,18 +16,23 @@ namespace Chat.Entity.Structure.ChatCommand
             {
                 return false;
             }
-            NickName = _cmdParams[0];
+            NickName = _cmdParams[1];
             if (_longParam == null)
                 return false;
             Reason = _longParam;
             return true;
         }
 
+        public static string BuildKickMessage(ChatChannelBase channel, ChatChannelUser kicker, ChatChannelUser kickee)
+        {
+            return BuildKickMessage(channel, kicker, kickee, "");
+        }
         public static string BuildKickMessage(ChatChannelBase channel, ChatChannelUser kicker, ChatChannelUser kickee, string reason)
         {
-            return BuildReply(ChatReply.KICK,
-                $"{channel.Property.ChannelName} {kicker.UserInfo.NickName} {kickee.UserInfo.NickName}",
-                reason);
+            return kicker.BuildReply(
+                        ChatReply.KICK,
+                        $"{channel.Property.ChannelName} {kickee.UserInfo.NickName}",
+                        reason);
         }
     }
 }

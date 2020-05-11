@@ -22,14 +22,14 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
 
             //check whether user1 will get user2's key value by single search
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = ChatError.DataOperation;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
         }
@@ -64,8 +64,7 @@ namespace Chat.Handler.CommandHandler
             ChatChannelUser user;
             if (!_channel.GetChannelUserByNickName(_cmd.NickName, out user))
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.NoSuchNick;
+                _errorCode = ChatError.IRCError;
                 return;
             }
             GetUserKeyValue(user);
@@ -78,16 +77,16 @@ namespace Chat.Handler.CommandHandler
             _sendingBuffer +=
                 user.BuildReply(ChatReply.GetCKey,
                 $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}");
-        //ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
-        //    ChatResponseType.GetCKey,
-        //    $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}", "");
+            //ChatCommandBase.BuildNumericRPL(ChatServer.ServerDomain,
+            //    ChatResponseType.GetCKey,
+            //    $"* {_channel.Property.ChannelName} {user.UserInfo.NickName} {_cmd.Cookie} {flags}", "");
         }
         private void GetUserKeyValue(ChatChannelUser user)
         {
             //we do not have key value so we do not construct getckey response
             if (user.UserKeyValue.Count == 0)
             {
-                _systemError = ChatError.DataOperation;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
 

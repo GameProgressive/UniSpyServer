@@ -7,12 +7,12 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class ChatChannelCommandHandlerBase : ChatCommandHandlerBase
+    public class ChatJoinedChannelHandlerBase : ChatLogedInHandlerBase
     {
         ChatChannelBase _channel;
         ChatChannelUser _user;
         new ChatChannelCommandBase _cmd;
-        public ChatChannelCommandHandlerBase(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        public ChatJoinedChannelHandlerBase(ISession session, ChatCommandBase cmd) : base(session, cmd)
         {
             _cmd = (ChatChannelCommandBase)cmd;
         }
@@ -20,21 +20,26 @@ namespace Chat.Handler.CommandHandler
         public override void CheckRequest()
         {
             base.CheckRequest();
-            if (_session.UserInfo.JoinedChannels.Count == 0)
+
+            if (_errorCode != ChatError.NoError)
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.NoSuchChannel;
                 return;
             }
+
+            if (_session.UserInfo.JoinedChannels.Count == 0)
+            {
+                _errorCode = ChatError.IRCError;
+                return;
+            }
+
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.NoSuchChannel;
+                _errorCode = ChatError.IRCError;
                 return;
             }
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
         }

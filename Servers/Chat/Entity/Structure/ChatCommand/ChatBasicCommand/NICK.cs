@@ -1,4 +1,7 @@
-﻿namespace Chat.Entity.Structure.ChatCommand
+﻿using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatUser;
+
+namespace Chat.Entity.Structure.ChatCommand
 {
     public class NICK : ChatCommandBase
     {

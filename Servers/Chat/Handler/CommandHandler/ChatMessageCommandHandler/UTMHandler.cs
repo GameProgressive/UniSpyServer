@@ -22,19 +22,19 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.IRCError;
                 return;
             }
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.IRCError;
                 return;
             }
 
             if (_cmd.RequestType == UTMCmdType.UserUTM)
                 if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _))
                 {
-                    _systemError = ChatError.Parse;
+                    _errorCode = ChatError.IRCError;
                     return;
                 }
         }
@@ -47,13 +47,9 @@ namespace Chat.Handler.CommandHandler
             {
                 case UTMCmdType.ChannelUTM:
                     _sendingBuffer = _user.BuildReply(ChatReply.UTM, _channel.Property.ChannelName, _cmd.Message);
-                    // ChatCommandBase.BuildMessageRPL(""
-                    //$"UTM {_channel.Property.ChannelName}", _cmd.Message);
                     break;
                 case UTMCmdType.UserUTM:
                     _sendingBuffer = _user.BuildReply(ChatReply.UTM, _cmd.NickName, _cmd.Message);
-                       //ChatCommandBase.BuildMessageRPL(
-                       //$"UTM {_cmd.NickName}", _cmd.Message);
                     break;
             }
         }
@@ -61,7 +57,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            if (_systemError > ChatError.NoError)
+            if (_errorCode > ChatError.NoError)
             {
                 //todo send error to client;
             }

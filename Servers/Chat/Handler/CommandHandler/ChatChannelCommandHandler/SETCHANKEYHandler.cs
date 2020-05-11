@@ -21,12 +21,12 @@ namespace Chat.Handler.CommandHandler
 
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = Entity.Structure.ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = Entity.Structure.ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
         }
@@ -36,7 +36,7 @@ namespace Chat.Handler.CommandHandler
             base.DataOperation();
             if (!_user.IsChannelOperator)
             {
-                _systemError = Entity.Structure.ChatError.NotChannelOperator;
+                _errorCode = Entity.Structure.ChatError.NotChannelOperator;
                 return;
             }
             _channel.Property.SetChannelKeyValue(_cmd.KeyValue);

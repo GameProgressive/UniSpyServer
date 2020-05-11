@@ -2,7 +2,6 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
@@ -55,19 +54,6 @@ namespace Chat.Handler.CommandHandler
             }
         }
 
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
-            //TODO
-            //we construct error response here
-            //if (_systemError > ChatError.NoError)
-            //{
-            //    //_sendingBuffer =
-            //    //    ChatCommandBase.BuildNumericErrorRPL("",
-            //    //    _systemError, $"* {_cmd.ChannelName}", "");
-            //}
-        }
-
         public void CreateChannel()
         {
             _channel = new ChatChannelBase();
@@ -104,15 +90,13 @@ namespace Chat.Handler.CommandHandler
             if (_channel.Property.ChannelMode.IsInviteOnly)
             {
                 //invited only
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.InviteOnlyChan;
+                _errorCode = ChatError.IRCError;
                 return;
             }
 
             if (_channel.IsUserBanned(_user))
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.BannedFromChan;
+                _errorCode = ChatError.IRCError;
                 return;
             }
 

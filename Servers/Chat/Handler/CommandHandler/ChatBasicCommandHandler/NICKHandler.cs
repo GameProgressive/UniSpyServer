@@ -2,7 +2,6 @@
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChatSessionManage;
-using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -19,8 +18,8 @@ namespace Chat.Handler.CommandHandler
         {
             if (ChatSessionManager.IsNickNameExisted(_nickCmd.NickName))
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.NickNameInUse;
+                _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
             }
             base.CheckRequest();
         }
@@ -35,14 +34,8 @@ namespace Chat.Handler.CommandHandler
         {
             base.ConstructResponse();
 
-            _sendingBuffer = _session.UserInfo.BuildReply(ChatReply.Welcome, _nickCmd.NickName, "Welcome to RetrosSpy!");
-                //ChatCommandBase.BuildRPLWithoutMiddle(
-                //    ChatRPL.Welcome, _nickCmd.NickName,
-                //    "Welcome to RetroSpy!");
-
-               // ChatCommandBase.BuildNumericRPL(
-               // ChatServer.ServerDomain, ChatResponseType.Welcome,
-               //_nickCmd.NickName, "Welcome to RetroSpy!");
+            _sendingBuffer =
+                ChatReply.BuildWelcomeReply(_session.UserInfo);
 
             _session.UserInfo.SetLoginFlag(true);
 

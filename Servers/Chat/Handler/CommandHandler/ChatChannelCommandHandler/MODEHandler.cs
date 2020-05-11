@@ -23,14 +23,12 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.NoSuchChannel;
+                _errorCode = ChatError.IRCError;
                 return;
             }
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = ChatError.IRCError;
-                _ircErrorCode = IRCError.NoSuchNick;
+                _errorCode = ChatError.IRCError;
                 return;
             }
         }
@@ -75,13 +73,13 @@ namespace Chat.Handler.CommandHandler
             ChatChannelUser user;
             if (!_channel.GetChannelUserBySession(_session, out user))
             {
-                _systemError = ChatError.DataOperation;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
 
             if (!user.IsChannelOperator)
             {
-                _systemError = ChatError.DataOperation;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
             _channel.Property.SetProperties(user, _cmd);

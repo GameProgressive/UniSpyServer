@@ -41,6 +41,5 @@
     <Folder Include="Handler\CommandHandler\ChatChannelCommandHandler\" />
     <Folder Include="Handler\CommandHandler\ChatMessageCommandHandler\" />
     <Folder Include="Entity\Structure\ChatResponse\" />
-    <Folder Include="Handler\SystemHandler\ChatErrorMessage\" />
   </ItemGroup>
 </Project>

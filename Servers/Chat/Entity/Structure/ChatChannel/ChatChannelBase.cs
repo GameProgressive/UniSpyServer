@@ -18,30 +18,23 @@ namespace Chat.Entity.Structure.ChatChannel
 
         public void MultiCastJoin(ChatChannelUser joiner)
         {
-            string joinMessage = joiner.BuildReply(ChatReply.JOIN, Property.ChannelName);
-            //ChatCommandBase.BuildReply(joiner.UserInfo, ChatRPL.JOIN, Property.ChannelName);
-            //ChatCommandBase.BuildMessageRPL(
-            //    $"{joiner.UserInfo.NickName}!{joiner.UserInfo.UserName}@{ChatServer.ServerDomain}",
-            //    "JOIN", $"{Property.ChannelName}");
-
-            string modes = Property.ChannelMode.GetChannelMode();
-            joinMessage += joiner.BuildReply(ChatReply.MODE, $"{Property.ChannelName} {modes}");
-            //ChatCommandBase.BuildRPLWithUserPrefix(joiner.UserInfo, ChatRPL.MODE, $"{Property.ChannelName} {modes}");
-            //ChatCommandBase.BuildMessageRPL(
-            //                          $"{ChatServer.ServerDomain}", $"MODE {Property.ChannelName} {modes}", "");
+            string joinMessage =
+                joiner.BuildReply(ChatReply.JOIN, Property.ChannelName);
+            string modes =
+                Property.ChannelMode.GetChannelMode();
+            joinMessage +=
+                joiner.BuildReply(ChatReply.MODE,
+                $"{Property.ChannelName} {modes}");
 
             MultiCast(joinMessage);
         }
 
         public void MultiCastLeave(ChatChannelUser leaver, string message)
         {
-            string leaveMessage = leaver.BuildReply(ChatReply.PART, Property.ChannelName, message);
-            //ChatCommandBase.BuildRPLWithUserPrefix(
-            //    leaver.UserInfo, ChatRPL.PART, Property.ChannelName, message);
-            //leaver.BuildChannelMessage($"PART {Property.ChannelName}", message);
-            //ChatCommandBase.BuildMessageRPL(
-            //$"{leaver.UserInfo.NickName}!{leaver.UserInfo.UserName}@{leaver.Session.Socket.}",
-            //$"PART {Property.ChannelName}", message);
+            string leaveMessage =
+                leaver.BuildReply(ChatReply.PART,
+                Property.ChannelName, message);
+
             MultiCast(leaveMessage);
         }
         /// <summary>
@@ -102,24 +95,16 @@ namespace Chat.Entity.Structure.ChatChannel
             nicks = nicks.Substring(0, nicks.Length - 1);
 
             //check the message :@<nickname> whether broadcast char @ ?
-            buffer += ChatCommandBase.BuildReply(ChatReply.NameReply, $"{joiner.UserInfo.NickName} = {Property.ChannelName}", nicks);
-            //ChatCommandBase.BuildRPLWithUserPrefix(
-            //    joiner.UserInfo,
-            //    ChatRPL.NameReply,
-            //    $"{joiner.UserInfo.NickName} = {Property.ChannelName}", nicks);
-            // ChatCommandBase.BuildNumericRPL(
-            //ChatResponseType.NameReply,
-            //$"{joiner.UserInfo.NickName} = {Property.ChannelName}",
-            //$"{nicks}");
+            buffer +=
+                ChatCommandBase.BuildReply(
+                    ChatReply.NameReply,
+                    $"{joiner.UserInfo.NickName} = {Property.ChannelName}",
+                    nicks);
+
             buffer +=
                 ChatCommandBase.BuildReply(ChatReply.EndOfNames,
                     $"{joiner.UserInfo.NickName} {Property.ChannelName}",
                     @"End of /NAMES list.");
-
-            //ChatCommandBase.BuildNumericRPL(
-            //ChatResponseType.EndOfNames,
-            //$"{joiner.UserInfo.NickName} {Property.ChannelName}",
-            //@"End of /NAMES list.");
 
             joiner.Session.SendAsync(buffer);
         }
@@ -127,16 +112,10 @@ namespace Chat.Entity.Structure.ChatChannel
         public void SendChannelModesToJoiner(ChatChannelUser joiner)
         {
             string modes = Property.ChannelMode.GetChannelMode();
+
             string modesMessage =
                 joiner.BuildReply(ChatReply.ChannelModels,
                 $"{joiner.UserInfo.NickName} {Property.ChannelName} {modes}");
-                //ChatCommandBase.BuildRPLWithUserPrefix(
-                //    joiner.UserInfo, ChatRPL.ChannelModels,
-                //    $"{joiner.UserInfo.NickName} {Property.ChannelName} {modes}");
-            //ChatCommandBase.BuildNumericRPL(
-            //    ChatServer.ServerDomain,
-            //    ChatResponseType.ChannelModels,
-            //    $"{joiner.UserInfo.NickName} {Property.ChannelName} {modes}", "");
 
             joiner.Session.SendAsync(modesMessage);
         }
@@ -280,11 +259,13 @@ namespace Chat.Entity.Structure.ChatChannel
             foreach (var user in Property.ChannelUsers)
             {
                 //kick all user out
-                string kickMsg =
-                    KICK.BuildKickMessage(this, kicker, user, "Creator leaves channel");
+                string kickMsg = KICK.BuildKickMessage(this, kicker, user, "Creator leaves channel");
+
                 user.Session.SendAsync(kickMsg);
             }
+
             ChatChannelManager.RemoveChannel(this);
+
             GameServer.DeleteSimilarServer(
                 kicker.Session.RemoteEndPoint,
                 kicker.Session.UserInfo.GameName);

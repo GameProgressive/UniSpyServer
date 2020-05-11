@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Extensions;
 using NatNegotiation.Entity.Enumerator;
-using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -13,9 +12,10 @@ namespace NatNegotiation.Entity.Structure.Packet
         public byte PortType { get; protected set; }
         public byte ClientIndex { get; protected set; }
         public byte UseGamePort { get; protected set; }
-        public string LocalIP;
-        public ushort LocalPort;
-        private EndPoint _endPoint;
+        public string LocalIP { get; protected set; }
+        public ushort LocalPort { get; protected set; }
+
+
         public override bool Parse(byte[] recv)
         {
             if (!base.Parse(recv))
@@ -48,23 +48,16 @@ namespace NatNegotiation.Entity.Structure.Packet
             data.Add(ClientIndex);
             data.Add(UseGamePort);
 
-            if (_endPoint == null)
-            {
-                data.AddRange(HtonsExtensions.IPStringToBytes(LocalIP));
-                data.AddRange(HtonsExtensions.PortToUshortBytes(LocalPort));
-            }
-            else
-            {
-                data.AddRange(((IPEndPoint)_endPoint).Address.GetAddressBytes());
-                data.AddRange(BitConverter.GetBytes((short)((IPEndPoint)_endPoint).Port));
-            }
+            data.AddRange(HtonsExtensions.IPStringToBytes(LocalIP));
+            data.AddRange(HtonsExtensions.UshortPortToBytes(LocalPort));
 
             return data.ToArray();
         }
 
-        public InitPacket SetEndPoint(EndPoint end)
+        public InitPacket SetIPAndPortForResponse(EndPoint end)
         {
-            _endPoint = end;
+            LocalIP = ((IPEndPoint)end).Address.ToString();
+            LocalPort = (ushort)((IPEndPoint)end).Port;
             return this;
         }
     }

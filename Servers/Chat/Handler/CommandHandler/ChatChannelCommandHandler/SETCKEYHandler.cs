@@ -23,25 +23,25 @@ namespace Chat.Handler.CommandHandler
 
             if (_session.UserInfo.NickName != _cmd.NickName)
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
 
             if (!_session.UserInfo.IsJoinedChannel(_cmd.ChannelName))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
 
             if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = ChatError.Parse;
+                _errorCode = ChatError.Parse;
                 return;
             }
         }
@@ -51,7 +51,7 @@ namespace Chat.Handler.CommandHandler
             base.DataOperation();
             if (_cmd.NickName != _user.UserInfo.NickName)
             {
-                _systemError = ChatError.DataOperation;
+                _errorCode = ChatError.DataOperation;
                 return;
             }
             _user.UpdateUserKeyValue(_cmd.KeyValues);

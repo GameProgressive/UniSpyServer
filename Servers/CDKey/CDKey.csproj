@@ -26,7 +26,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entity\Enumerator \" />
-  </ItemGroup>
 </Project>

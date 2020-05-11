@@ -21,13 +21,13 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = Entity.Structure.ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = Entity.Structure.ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
 
@@ -48,15 +48,6 @@ namespace Chat.Handler.CommandHandler
                     //ChatCommandBase.BuildMessageRPL(
                     //    $"ATM {_cmd.NickName}", _cmd.Message);
                     break;
-            }
-        }
-
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
-            if (_systemError > Entity.Structure.ChatError.NoError)
-            {
-                //todo send error RPL here
             }
         }
 

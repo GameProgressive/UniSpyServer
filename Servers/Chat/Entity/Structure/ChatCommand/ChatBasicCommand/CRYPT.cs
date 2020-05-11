@@ -1,4 +1,5 @@
 ﻿using System;
+using Chat.Entity.Structure.ChatResponse;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
@@ -21,5 +22,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
             return true;
         }
+
+
     }
 }

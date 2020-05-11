@@ -1,21 +1,21 @@
-﻿using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
+using Serilog.Events;
 
 namespace Chat.Handler.CommandHandler
 {
     public class CRYPTHandler : ChatCommandHandlerBase
     {
-        CRYPT _cryptCmd;
+        new CRYPT _cmd;
 
         public CRYPTHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _cryptCmd = (CRYPT)_cmd;
+            _cmd = (CRYPT)cmd;
         }
 
         public override void CheckRequest()
@@ -23,8 +23,7 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
 
             // CRYPT des 1 gamename
-            //_clientInfo.GameName = _recv[3];
-            _session.UserInfo.SetGameName(_cryptCmd.GameName);
+            _session.UserInfo.SetGameName(_cmd.GameName);
         }
 
         public override void DataOperation()
@@ -34,7 +33,7 @@ namespace Chat.Handler.CommandHandler
             if (!DataOperationExtensions.GetSecretKey(_session.UserInfo.GameName, out secretKey)
                 || secretKey == null)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "secret key not found!");
+                LogWriter.ToLog(LogEventLevel.Error, "secret key not found!");
                 return;
             }
             _session.UserInfo.SetGameSecretKey(secretKey);
@@ -50,12 +49,8 @@ namespace Chat.Handler.CommandHandler
 
             // 3. Response the crypt command
             _sendingBuffer =
-                _session.UserInfo.BuildReply(
-                    ChatReply.SecureKey,
-                    $"* {ChatServer.ClientKey} {ChatServer.ServerKey}");
-                //ChatCommandBase.BuildRPLWithoutMiddleTailing(
-                //    ChatRPL.SecureKey,
-                //    $"{ChatCommandBase.PlaceHolder} {ChatServer.ClientKey} {ChatServer.ServerKey}");
+               ChatReply.
+               BuildCryptReply(ChatServer.ClientKey, ChatServer.ServerKey);
         }
 
         public override void Response()

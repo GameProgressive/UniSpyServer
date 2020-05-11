@@ -21,13 +21,13 @@ namespace Chat.Handler.CommandHandler
             base.CheckRequest();
             if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
             {
-                _systemError = Entity.Structure.ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = Entity.Structure.ChatError.Parse;
+                _errorCode = Entity.Structure.ChatError.Parse;
                 return;
             }
         }
@@ -35,9 +35,9 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-            _sendingBuffer = 
-                ChatCommandBase.BuildReply(ChatReply.NOTICE,
-                    $"{_cmd.ChannelName}", _cmd.Message);
+            _sendingBuffer = _user.BuildReply(ChatReply.NOTICE, $"{_cmd.ChannelName}", _cmd.Message);
+            //ChatCommandBase.BuildReply(ChatReply.NOTICE,
+            //    $"{_cmd.ChannelName}", _cmd.Message);
         }
 
         public override void Response()

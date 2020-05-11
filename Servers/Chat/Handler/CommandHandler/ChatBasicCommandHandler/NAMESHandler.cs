@@ -1,5 +1,7 @@
-﻿using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -7,42 +9,34 @@ namespace Chat.Handler.CommandHandler
 {
     public class NAMESHandler : ChatCommandHandlerBase
     {
-        NAMES _namesCmd;
+        new NAMES _cmd;
         ChatChannelBase _channel;
+        ChatChannelUser _user;
         public NAMESHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _namesCmd = (NAMES)cmd;
+            _cmd = (NAMES)cmd;
         }
 
         public override void CheckRequest()
         {
             base.CheckRequest();
-        }
-
-        public override void ConstructResponse()
-        {
-            ChatChannelUser user;
-
             //can not find any user
-            if (!_channel.GetChannelUserBySession(_session, out user))
+            if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _systemError = Entity.Structure.ChatError.DataOperation;
+                _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                 return;
             }
-
-            _channel.SendChannelUsersToJoiner(user);
-
-            base.ConstructResponse();
+            if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
+            {
+                _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
+            }
         }
 
-        public override void DataOperation()
+        public override void Response()
         {
-            ChatChannelManager.Channels.TryGetValue(_namesCmd.ChannelName, out _channel);
-            if (_channel == null)
-            {
-                _systemError = Entity.Structure.ChatError.DataOperation;
-            }
-            base.DataOperation();
+            _channel.SendChannelUsersToJoiner(_user);
         }
     }
 }

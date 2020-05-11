@@ -1,4 +1,7 @@
 ﻿using System;
+using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatUser;
+
 namespace Chat.Entity.Structure.ChatResponse
 {
     public class ChatReply
@@ -35,6 +38,7 @@ namespace Chat.Entity.Structure.ChatResponse
         public const string UTM = "UTM";
         public const string ATM = "ATM";
         public const string PING = "PING";
+        public const string PONG = "PONG";
         public const string NICK = "NICK";
         public const string JOIN = "JOIN";
         public const string PART = "PART";
@@ -46,5 +50,22 @@ namespace Chat.Entity.Structure.ChatResponse
         public const string ERROR = "ERROR";
         public const string INVITE = "INVITE";
 
+
+        public static string BuildWelcomeReply(ChatUserInfo userInfo)
+        {
+            return userInfo.BuildReply(
+                  Welcome, userInfo.NickName, "Welcome to RetrosSpy!");
+        }
+
+        public static string BuildCryptReply(string clientKey, string serverKey)
+        {
+            return ChatCommandBase.BuildReply(
+                    SecureKey,
+                    $"* {clientKey} {serverKey}");
+        }
+        public static string BuildPingReply(ChatUserInfo userInfo)
+        {
+            return userInfo.BuildReply(PONG);
+        }
     }
 }

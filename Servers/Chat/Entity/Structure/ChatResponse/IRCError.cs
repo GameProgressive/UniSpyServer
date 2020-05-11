@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatUser;
+
 namespace Chat.Entity.Structure.ChatResponse
 {
-    public class IRCError
+    public class ChatIRCError
     {
         //irc standard error
         public const string NoSuchNick = "401";
@@ -19,5 +23,86 @@ namespace Chat.Entity.Structure.ChatResponse
         public const string NoUniqueNick = "709";
         public const string UniqueNIickExpired = "710";
         public const string RegisterNickFailed = "711";
+
+
+        #region channel error RPL
+        protected static string BuildChannelError(string ircError, string channelName)
+        {
+            return ChatCommandBase.BuildReply(ircError, $"* {channelName} 0");
+        }
+        public static string BuildBadChanMaskError(string channelName)
+        {
+            return BuildChannelError(ChatIRCError.BadChanMask, channelName);
+        }
+
+        public static string BuildBadChannelKeyError(string channelName)
+        {
+            return BuildChannelError(ChatIRCError.BannedFromChan, channelName);
+        }
+
+        public static string BuildBannedFromChannelError(string channelName)
+        {
+            return BuildChannelError(ChatIRCError.BadChannelKey, channelName);
+        }
+
+        public static string BuildChannelIsFullError(string channelName)
+        {
+            return BuildChannelError(ChatIRCError.ChannelIsFull, channelName);
+        }
+
+        public static string BuildInvitedOnlyChannelError(string channelName)
+        {
+            return BuildChannelError(ChatIRCError.InviteOnlyChan, channelName);
+        }
+        public static string BuildNoSuchChannelError(string channelName)
+        {
+            return BuildChannelError(ChatIRCError.NoSuchChannel, channelName);
+        }
+        #endregion
+
+        public static string BuildNickNameInUseError(string oldNick, string newNick)
+        {
+            return ChatCommandBase.BuildReply(ChatIRCError.NickNameInUse, $"{oldNick} {newNick} 0");
+        }
+
+        public static string BuildLoginFailedError()
+        {
+            return ChatCommandBase.BuildReply(ChatIRCError.LoginFailed);
+        }
+
+        public static string BuildNoUniqueNickError()
+        {
+            return ChatCommandBase.BuildReply(ChatIRCError.NoUniqueNick);
+        }
+
+        public static string BuildUniquenickExpireError()
+        {
+            return ChatCommandBase.BuildReply(ChatIRCError.UniqueNIickExpired);
+        }
+
+        public static string BuildRegisterNickFailedError(List<string> nickNames)
+        {
+            string suggestNicks = "";
+
+            foreach (var nick in nickNames)
+            {
+                suggestNicks += @"\" + nick;
+            }
+            return ChatCommandBase.BuildReply(ChatIRCError.RegisterNickFailed, $"* numberOfSuggestNick {suggestNicks} 0");
+        }
+
+        public static string BuildErrOneUSNickNameError(ChatUserInfo info)
+        {
+            return info.BuildReply(ChatIRCError.ErrOneUSNickName);
+        }
+
+        public static string BuildNoSuchNickError()
+        {
+            return ChatCommandBase.BuildReply(ChatIRCError.NoSuchNick);
+        }
+
+
+
+
     }
 }
