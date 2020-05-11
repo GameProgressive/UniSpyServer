@@ -2,7 +2,7 @@
 {
     public partial class Pstorage
     {
-        public uint Id { get; set; }
+        public uint Pstorageid { get; set; }
         public uint Profileid { get; set; }
         public uint Ptype { get; set; }
         public uint Dindex { get; set; }

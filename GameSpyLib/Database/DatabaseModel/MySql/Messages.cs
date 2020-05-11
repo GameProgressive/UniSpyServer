@@ -4,7 +4,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 {
     public partial class Messages
     {
-        public uint Id { get; set; }
+        public uint Messageid { get; set; }
         public uint? Namespaceid { get; set; }
         public uint? Type { get; set; }
         public uint From { get; set; }
@@ -13,3 +13,4 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
         public string Message { get; set; }
     }
 }
+

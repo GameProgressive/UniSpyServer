@@ -2,7 +2,7 @@
 {
     public partial class Blocked
     {
-        public uint Id { get; set; }
+        public uint Blockid { get; set; }
         public uint Profileid { get; set; }
         public uint Namespaceid { get; set; }
         public uint Targetid { get; set; }

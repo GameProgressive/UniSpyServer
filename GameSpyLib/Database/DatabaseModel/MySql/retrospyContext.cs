@@ -39,11 +39,14 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
         {
             modelBuilder.Entity<Addrequests>(entity =>
             {
+                entity.HasKey(e => e.Addrequestid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("addrequests");
 
                 entity.HasComment("Friend request.");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Addrequestid)
                     .HasName("id")
                     .IsUnique();
 
@@ -53,8 +56,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.Property(e => e.Addrequestid)
+                    .HasColumnName("addrequestid")
                     .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Namespaceid)
@@ -94,11 +97,14 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Blocked>(entity =>
             {
+                entity.HasKey(e => e.Blockid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("blocked");
 
                 entity.HasComment("Block list.");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Blockid)
                     .HasName("id")
                     .IsUnique();
 
@@ -108,8 +114,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.Property(e => e.Blockid)
+                    .HasColumnName("blockid")
                     .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Namespaceid)
@@ -133,11 +139,14 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Friends>(entity =>
             {
+                entity.HasKey(e => e.Friendid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("friends");
 
                 entity.HasComment("Friend list.");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Friendid)
                     .HasName("id")
                     .IsUnique();
 
@@ -147,8 +156,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.Property(e => e.Friendid)
+                    .HasColumnName("friendid")
                     .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Namespaceid)
@@ -172,17 +181,20 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Games>(entity =>
             {
+                entity.HasKey(e => e.Gameid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("games");
 
                 entity.HasComment("Game list.");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Gameid)
                     .HasName("id")
                     .IsUnique();
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(11)");
+                entity.Property(e => e.Gameid)
+                    .HasColumnName("gameid")
+                    .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Description)
                     .IsRequired()
@@ -202,7 +214,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.Property(e => e.Queryport)
                     .HasColumnName("queryport")
-                    .HasColumnType("int(11)")
+                    .HasColumnType("int(11) unsigned")
                     .HasDefaultValueSql("'6500'");
 
                 entity.Property(e => e.Secretkey)
@@ -214,6 +226,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Grouplist>(entity =>
             {
+                entity.HasKey(e => e.Groupid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("grouplist");
 
                 entity.HasComment("Old games use grouplist to create their game rooms.");
@@ -221,17 +236,17 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.HasIndex(e => e.Gameid)
                     .HasName("gameid");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Groupid)
                     .HasName("id")
                     .IsUnique();
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(11)");
+                entity.Property(e => e.Groupid)
+                    .HasColumnName("groupid")
+                    .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Gameid)
                     .HasColumnName("gameid")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Roomname)
                     .IsRequired()
@@ -249,19 +264,22 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Messages>(entity =>
             {
+                entity.HasKey(e => e.Messageid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("messages");
 
                 entity.HasComment("Friend messages.");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Messageid)
                     .HasName("id")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Namespaceid)
                     .HasName("namespaceid");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.Property(e => e.Messageid)
+                    .HasColumnName("messageid")
                     .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Date)
@@ -300,41 +318,40 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.HasComment("Partner information, these information are used for authentication and login.");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Partnerid)
                     .HasName("id")
                     .IsUnique();
-
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasColumnType("int(11) unsigned");
-
-                entity.Property(e => e.Name)
-                    .IsRequired()
-                    .HasColumnName("name")
-                    .HasColumnType("varchar(50)")
-                    .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Partnerid)
                     .HasColumnName("partnerid")
                     .HasColumnType("int(11) unsigned");
+
+                entity.Property(e => e.Partnername)
+                    .IsRequired()
+                    .HasColumnName("partnername")
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
             });
 
             modelBuilder.Entity<Profiles>(entity =>
             {
+                entity.HasKey(e => e.Profileid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("profiles");
 
                 entity.HasComment("User profiles.");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Profileid)
                     .HasName("id")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Userid)
                     .HasName("userid");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.Property(e => e.Profileid)
+                    .HasColumnName("profileid")
                     .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Adminrights)
@@ -494,7 +511,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.Property(e => e.Serverflag)
                     .HasColumnName("serverflag")
-                    .HasColumnType("int(1)");
+                    .HasColumnType("int(1) unsigned");
 
                 entity.Property(e => e.Sex)
                     .HasColumnName("sex")
@@ -574,15 +591,15 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.HasComment("Old games use pstorage to store game data.");
 
-                entity.HasIndex(e => e.Id)
-                    .HasName("id")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.HasIndex(e => e.Pstorageid)
+                    .HasName("id")
+                    .IsUnique();
+
+                entity.Property(e => e.Pstorageid)
+                    .HasColumnName("pstorageid")
                     .HasColumnType("int(4) unsigned");
 
                 entity.Property(e => e.Data)
@@ -617,18 +634,18 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.HasComment("Buddy status info.");
 
-                entity.HasIndex(e => e.Id)
-                    .HasName("id")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.Namespaceid)
                     .HasName("namespaceid");
 
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.HasIndex(e => e.Statusinfoid)
+                    .HasName("id")
+                    .IsUnique();
+
+                entity.Property(e => e.Statusinfoid)
+                    .HasColumnName("statusinfoid")
                     .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Buddyip)
@@ -725,22 +742,28 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Subprofiles>(entity =>
             {
+                entity.HasKey(e => e.Subprofileid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("subprofiles");
 
                 entity.HasComment("User subprofiles.");
 
-                entity.HasIndex(e => e.Id)
-                    .HasName("id")
-                    .IsUnique();
-
                 entity.HasIndex(e => e.Namespaceid)
                     .HasName("namespaceid");
+
+                entity.HasIndex(e => e.Partnerid)
+                    .HasName("partnerid");
 
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.HasIndex(e => e.Subprofileid)
+                    .HasName("id")
+                    .IsUnique();
+
+                entity.Property(e => e.Subprofileid)
+                    .HasColumnName("subprofileid")
                     .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Authtoken)
@@ -775,7 +798,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.Property(e => e.Port)
                     .HasColumnName("port")
-                    .HasColumnType("int(10) unsigned")
+                    .HasColumnType("int(5) unsigned")
                     .HasDefaultValueSql("'0'");
 
                 entity.Property(e => e.Productid)
@@ -792,6 +815,12 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
 
+                entity.HasOne(d => d.Partner)
+                    .WithMany(p => p.Subprofiles)
+                    .HasForeignKey(d => d.Partnerid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_subprofiles_partner");
+
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Subprofiles)
                     .HasForeignKey(d => d.Profileid)
@@ -801,16 +830,19 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Users>(entity =>
             {
+                entity.HasKey(e => e.Userid)
+                    .HasName("PRIMARY");
+
                 entity.ToTable("users");
 
                 entity.HasComment("User account information.");
 
-                entity.HasIndex(e => e.Id)
+                entity.HasIndex(e => e.Userid)
                     .HasName("id")
                     .IsUnique();
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
+                entity.Property(e => e.Userid)
+                    .HasColumnName("userid")
                     .HasColumnType("int(11) unsigned");
 
                 entity.Property(e => e.Banned).HasColumnName("banned");

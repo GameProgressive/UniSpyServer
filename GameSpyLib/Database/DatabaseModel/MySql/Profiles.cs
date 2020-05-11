@@ -14,10 +14,10 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
             Subprofiles = new HashSet<Subprofiles>();
         }
 
-        public uint Id { get; set; }
+        public uint Profileid { get; set; }
         public uint Userid { get; set; }
         public string Nick { get; set; }
-        public int Serverflag { get; set; }
+        public uint Serverflag { get; set; }
         public byte? Status { get; set; }
         public string Statstring { get; set; }
         public string Location { get; set; }

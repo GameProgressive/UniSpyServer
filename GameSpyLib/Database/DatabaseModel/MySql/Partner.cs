@@ -1,9 +1,17 @@
-﻿namespace GameSpyLib.Database.DatabaseModel.MySql
+﻿using System.Collections.Generic;
+
+namespace GameSpyLib.Database.DatabaseModel.MySql
 {
     public partial class Partner
     {
-        public uint Id { get; set; }
+        public Partner()
+        {
+            Subprofiles = new HashSet<Subprofiles>();
+        }
+
         public uint Partnerid { get; set; }
-        public string Name { get; set; }
+        public string Partnername { get; set; }
+
+        public virtual ICollection<Subprofiles> Subprofiles { get; set; }
     }
 }
