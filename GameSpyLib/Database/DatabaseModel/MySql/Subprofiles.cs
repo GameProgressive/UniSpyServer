@@ -4,8 +4,8 @@
     {
         public uint Id { get; set; }
         public uint Profileid { get; set; }
-        public string Uniquenick { get; set; }
         public uint Namespaceid { get; set; }
+        public string Uniquenick { get; set; }
         public uint Partnerid { get; set; }
         public uint? Productid { get; set; }
         public string Gamename { get; set; }

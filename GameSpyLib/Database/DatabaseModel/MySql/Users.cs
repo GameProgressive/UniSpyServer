@@ -10,12 +10,12 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
             Profiles = new HashSet<Profiles>();
         }
 
-        public uint Userid { get; set; }
+        public uint Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         public bool? Emailverified { get; set; }
-        public bool Deleted { get; set; }
         public bool Banned { get; set; }
+        public bool Deleted { get; set; }
         public string Lastip { get; set; }
         public DateTime? Lastonline { get; set; }
         public DateTime Createddate { get; set; }

@@ -7,15 +7,17 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
         public Profiles()
         {
             Addrequests = new HashSet<Addrequests>();
+            Blocked = new HashSet<Blocked>();
+            Friends = new HashSet<Friends>();
             Pstorage = new HashSet<Pstorage>();
             Statusinfo = new HashSet<Statusinfo>();
             Subprofiles = new HashSet<Subprofiles>();
         }
 
-        public uint Profileid { get; set; }
+        public uint Id { get; set; }
         public uint Userid { get; set; }
-        public int Serverflag { get; set; }
         public string Nick { get; set; }
+        public int Serverflag { get; set; }
         public byte? Status { get; set; }
         public string Statstring { get; set; }
         public string Location { get; set; }
@@ -58,6 +60,8 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
         public virtual Users User { get; set; }
         public virtual ICollection<Addrequests> Addrequests { get; set; }
+        public virtual ICollection<Blocked> Blocked { get; set; }
+        public virtual ICollection<Friends> Friends { get; set; }
         public virtual ICollection<Pstorage> Pstorage { get; set; }
         public virtual ICollection<Statusinfo> Statusinfo { get; set; }
         public virtual ICollection<Subprofiles> Subprofiles { get; set; }
