@@ -30,7 +30,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPid
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
-                             join s in db.Subprofiles on p.Profileid equals s.Profileid
+                             join s in db.Subprofiles on p.Id equals s.Profileid
                              where s.Cdkeyenc == recv["cdkeyhash"] && p.Nick == recv["nick"]
                              select s.Profileid;
                 if (result.Count() != 1)

@@ -36,8 +36,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
                 foreach (var id in nspaceid)
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                 join u in db.Users on p.Userid equals u.Userid
+                                 join n in db.Subprofiles on p.Id equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Id
                                  where n.Uniquenick == _recv["uniquenick"]
                                  && n.Namespaceid == _namespaceid
                                  select new

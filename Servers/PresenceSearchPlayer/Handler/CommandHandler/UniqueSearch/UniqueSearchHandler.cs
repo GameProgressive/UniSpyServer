@@ -29,11 +29,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
-                             join n in db.Subprofiles on p.Profileid equals n.Profileid
+                             join n in db.Subprofiles on p.Id equals n.Profileid
                              where n.Uniquenick == _recv["preferrednick"]
                              && n.Namespaceid == _namespaceid
                              && n.Gamename == _recv["gamename"]
-                             select p.Profileid;
+                             select p.Id;
 
                 if (result.Count() == 0)
                 {

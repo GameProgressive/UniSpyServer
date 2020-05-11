@@ -51,17 +51,17 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                 foreach (var pid in info)
                 {
                     var b = from p in db.Profiles
-                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                            join u in db.Users on p.Userid equals u.Userid
+                            join n in db.Subprofiles on p.Id equals n.Profileid
+                            join u in db.Users on p.Userid equals u.Id
                             where n.Namespaceid == _namespaceid && n.Profileid == pid && n.Gamename == _recv["gamename"]
                             select new
                             {
-                                profileid = p.Profileid,
+                                profileid = p.Id,
                                 nick = p.Nick,
                                 uniquenick = n.Uniquenick,
                                 last = p.Lastname,
                                 first = p.Firstname,
-                                email = u.Userid
+                                email = u.Id
                             };
 
                     var result = b.FirstOrDefault();

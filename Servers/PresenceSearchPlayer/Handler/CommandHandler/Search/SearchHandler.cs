@@ -61,8 +61,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                 join u in db.Users on p.Userid equals u.Userid
+                                 join n in db.Subprofiles on p.Id equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Id
                                  where n.Uniquenick == _recv["uniquenick"]
                                  && n.Namespaceid == _namespaceid
                                  && n.Gamename == _recv["gamename"]
@@ -93,8 +93,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                 join u in db.Users on p.Userid equals u.Userid
+                                 join n in db.Subprofiles on p.Id equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Id
                                  where p.Nick == _recv["nick"] && u.Email == _recv["email"]
                                  && n.Namespaceid == _namespaceid
                                  && n.Gamename == _recv["gamename"]
@@ -125,8 +125,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 else if (_recv.ContainsKey("nick"))
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                 join u in db.Users on p.Userid equals u.Userid
+                                 join n in db.Subprofiles on p.Id equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Id
                                  where p.Nick == _recv["nick"]
                                  && n.Namespaceid == _namespaceid
                                  && n.Gamename == _recv["gamename"]
@@ -158,8 +158,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 else if (_recv.ContainsKey("email"))
                 {
                     var result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                 join u in db.Users on p.Userid equals u.Userid
+                                 join n in db.Subprofiles on p.Id equals n.Profileid
+                                 join u in db.Users on p.Userid equals u.Id
                                  where u.Email == _recv["email"]
                                  && n.Namespaceid == _namespaceid
                                  && n.Gamename == _recv["gamename"]

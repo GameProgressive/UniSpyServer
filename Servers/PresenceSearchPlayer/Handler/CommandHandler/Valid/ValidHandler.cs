@@ -35,13 +35,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                 using (var db = new retrospyContext())
                 {
                     var result = from u in db.Users
-                                 join p in db.Profiles on u.Userid equals p.Userid
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 join p in db.Profiles on u.Id equals p.Userid
+                                 join n in db.Subprofiles on p.Id equals n.Profileid
                                  //According to FSW partnerid is not nessesary
                                  where u.Email == _recv["email"]
                                  && n.Gamename == _recv["gamename"]
                                  && n.Namespaceid == _namespaceid
-                                 select p.Profileid;
+                                 select p.Id;
 
                     if (result.Count() == 0)
                     {

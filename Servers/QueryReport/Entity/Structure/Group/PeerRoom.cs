@@ -21,7 +21,7 @@ namespace QueryReport.Entity.Structure.Group
         {
             KeyValue = new Dictionary<string, string>();
 
-            KeyValue.Add("groupid", grouplist.Groupid.ToString());
+            KeyValue.Add("groupid", grouplist.Id.ToString());
             KeyValue.Add("hostname", grouplist.Roomname);
             KeyValue.Add("numwaiting", "0");
             KeyValue.Add("maxwaiting", "200");
