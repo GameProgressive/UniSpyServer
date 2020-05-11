@@ -246,7 +246,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             {
                 var email = from u in db.Users
                             where u.Email == _session.UserInfo.Email
-                            select u.Id;
+                            select u.Userid;
 
                 if (email.Count() == 0)
                 {
@@ -256,15 +256,15 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 
                 //Grab information from database
                 var info = from u in db.Users
-                           join p in db.Profiles on u.Id equals p.Userid
-                           join n in db.Subprofiles on p.Id equals n.Profileid
+                           join p in db.Profiles on u.Userid equals p.Userid
+                           join n in db.Subprofiles on p.Profileid equals n.Profileid
                            where u.Email == _session.UserInfo.Email
                            && p.Nick == _session.UserInfo.Nick
                            && n.Namespaceid == _session.UserInfo.NamespaceID
                            select new
                            {
-                               userid = u.Id,
-                               profileid = p.Id,
+                               userid = u.Userid,
+                               profileid = p.Profileid,
                                uniquenick = n.Uniquenick,
                                password = u.Password,
                                emailVerified = u.Emailverified,
@@ -292,14 +292,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             using (var db = new retrospyContext())
             {
                 var info = from n in db.Subprofiles
-                           join p in db.Profiles on n.Profileid equals p.Id
-                           join u in db.Users on p.Userid equals u.Id
+                           join p in db.Profiles on n.Profileid equals p.Profileid
+                           join u in db.Users on p.Userid equals u.Userid
                            where n.Uniquenick == _session.UserInfo.UniqueNick
                            && n.Namespaceid == _session.UserInfo.NamespaceID
                            select new
                            {
-                               userid = u.Id,
-                               profileid = p.Id,
+                               userid = u.Userid,
+                               profileid = p.Profileid,
                                uniquenick = n.Uniquenick,
                                password = u.Password,
                                emailVerified = u.Emailverified,
@@ -332,8 +332,8 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             using (var db = new retrospyContext())
             {
                 var info = from u in db.Users
-                           join p in db.Profiles on u.Id equals p.Userid
-                           join n in db.Subprofiles on p.Id equals n.Profileid
+                           join p in db.Profiles on u.Userid equals p.Userid
+                           join n in db.Subprofiles on p.Profileid equals n.Profileid
                            where n.Authtoken == _session.UserInfo.AuthToken && n.Partnerid == _session.UserInfo.PartnerID
                            && n.Namespaceid == _session.UserInfo.NamespaceID
                            select new
@@ -341,7 +341,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                                profileid = n.Profileid,
                                nick = p.Nick,
                                uniquenick = n.Uniquenick,
-                               userid = u.Id,
+                               userid = u.Userid,
                                email = u.Email,
                                password = u.Password,
                                emailVerified = u.Emailverified,

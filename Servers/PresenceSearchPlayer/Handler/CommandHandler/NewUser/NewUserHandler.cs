@@ -99,7 +99,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.CheckProfile:
-                            _profiles = db.Profiles.Where(p => p.Userid == _users.Id && p.Nick == _recv["nick"]).FirstOrDefault();
+                            _profiles = db.Profiles.Where(p => p.Userid == _users.Userid && p.Nick == _recv["nick"]).FirstOrDefault();
                             if (_profiles == null)
                             {
                                 goto case _newUserStatus.ProfileNotExist;
@@ -110,7 +110,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.ProfileNotExist:
-                            _profiles = new Profiles { Userid = _users.Id, Nick = _recv["nick"] };
+                            _profiles = new Profiles { Userid = _users.Userid, Nick = _recv["nick"] };
                             db.Profiles.Add(_profiles);
                             db.SaveChanges();
                             goto case _newUserStatus.CheckSubProfile;
@@ -120,7 +120,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
                         case _newUserStatus.CheckSubProfile:
                             _subProfiles = db.Subprofiles
-                                .Where(s => s.Profileid == _profiles.Id
+                                .Where(s => s.Profileid == _profiles.Profileid
                                 && s.Uniquenick == _uniquenick
                                 && s.Namespaceid == _namespaceid).FirstOrDefault();
                             if (_subProfiles == null)
@@ -136,7 +136,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             //we create subprofile and return
                             _subProfiles = new Subprofiles
                             {
-                                Profileid = _profiles.Id,
+                                Profileid = _profiles.Profileid,
                                 Uniquenick = _uniquenick,
                                 Namespaceid = _namespaceid
                             };
@@ -172,7 +172,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             else
             {
                 //GPCM
-                _sendingBuffer = $@"\nur\0\userid\{_users.Id}\profileid\{_subProfiles.Profileid}\id\1\final\";
+                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\id\1\final\";
                 //_sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _subProfiles.Profileid);
             }
         }

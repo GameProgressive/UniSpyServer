@@ -99,8 +99,8 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
-                             where p.Id == _profileid
-                             select p.Id;
+                             where p.Profileid == _profileid
+                             select p.Profileid;
                 if (result.Count() != 1)
                 {
                     _errorCode = GstatsErrorCode.Database;
@@ -114,7 +114,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
             using (var db = new retrospyContext())
             {
                 var result = from s in db.Subprofiles
-                             join p in db.Profiles on s.Profileid equals p.Id
+                             join p in db.Profiles on s.Profileid equals p.Profileid
                              where s.Cdkeyenc == recv["cdkeyhash"] && p.Nick == recv["nick"]
                              select s.Profileid;
                 if (result.Count() != 1)

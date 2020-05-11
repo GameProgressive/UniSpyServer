@@ -28,7 +28,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
             {
                 if (_recv.ContainsKey("replace"))
                 {
-                    db.Profiles.Where(p => p.Id == _session.UserInfo.Profileid
+                    db.Profiles.Where(p => p.Profileid == _session.UserInfo.Profileid
                     && p.Nick == _recv["oldnick"]).First().Nick = _recv["nick"];
                     db.SaveChanges();
                 }
@@ -36,7 +36,7 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
                 {
                     Profiles profiles = new Profiles
                     {
-                        Id = _session.UserInfo.Profileid,
+                        Profileid = _session.UserInfo.Profileid,
                         Nick = _recv["nick"],
                         Userid = _session.UserInfo.Userid
                     };

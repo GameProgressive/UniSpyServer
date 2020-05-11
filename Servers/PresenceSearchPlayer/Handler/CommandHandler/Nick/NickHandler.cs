@@ -46,8 +46,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                 using (var db = new retrospyContext())
                 {
                     var players = from u in db.Users
-                                  join p in db.Profiles on u.Id equals p.Userid
-                                  join n in db.Subprofiles on p.Id equals n.Profileid
+                                  join p in db.Profiles on u.Userid equals p.Userid
+                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                   where u.Email == _recv["email"] && u.Password == _recv["passenc"] && n.Namespaceid == _namespaceid
                                   select new { nick = p.Nick, uniquenick = n.Uniquenick };
 

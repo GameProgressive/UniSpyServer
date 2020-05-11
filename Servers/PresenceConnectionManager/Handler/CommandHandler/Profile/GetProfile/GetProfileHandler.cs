@@ -42,13 +42,13 @@ namespace PresenceConnectionManager.Handler.Profile.GetProfile
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
-                             join s in db.Subprofiles on p.Id equals s.Profileid
-                             join u in db.Users on p.Userid equals u.Id
-                             where p.Id == _profileid && s.Namespaceid == _session.UserInfo.NamespaceID
+                             join s in db.Subprofiles on p.Profileid equals s.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
+                             where p.Profileid == _profileid && s.Namespaceid == _session.UserInfo.NamespaceID
                              select new
                              {
                                  nick = p.Nick,
-                                 profileid = p.Id,
+                                 profileid = p.Profileid,
                                  uniquenick = s.Uniquenick,
                                  email = u.Email,
                                  firstname = p.Firstname,

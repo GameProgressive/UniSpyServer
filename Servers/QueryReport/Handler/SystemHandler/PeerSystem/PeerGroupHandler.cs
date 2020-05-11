@@ -23,7 +23,7 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
             using (var db = new retrospyContext())
             {
                 var result = from g in db.Games
-                             join gl in db.Grouplist on g.Id equals gl.Gameid
+                             join gl in db.Grouplist on g.Gameid equals gl.Gameid
                              where g.Gamename == gameName
                              select gl;
                 PeerGroup group = new PeerGroup(result.First(), gameName);
@@ -42,7 +42,7 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
             using (var db = new retrospyContext())
             {
                 var names = from gl in db.Grouplist
-                            join g in db.Games on gl.Gameid equals g.Id
+                            join g in db.Games on gl.Gameid equals g.Gameid
                             select g.Gamename;
                 names = names.Distinct();
 

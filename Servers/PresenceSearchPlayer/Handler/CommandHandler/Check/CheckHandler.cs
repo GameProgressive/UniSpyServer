@@ -47,11 +47,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
                 }
 
                 var result = from p in db.Profiles
-                             join u in db.Users on p.Userid equals u.Id
+                             join u in db.Users on p.Userid equals u.Userid
                              where u.Email.Equals(_recv["email"])
                              && u.Password.Equals(_recv["passenc"])
                              && p.Nick.Equals(_recv["nick"])
-                             select p.Id;
+                             select p.Profileid;
 
                 if (result.Count() == 1)
                 {

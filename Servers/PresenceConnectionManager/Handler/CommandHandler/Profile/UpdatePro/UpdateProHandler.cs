@@ -25,11 +25,11 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
             {
                 var profile = db.Profiles.Where(
                     p => p.Userid == _session.UserInfo.Userid
-                    && p.Id == _session.UserInfo.Profileid
+                    && p.Profileid == _session.UserInfo.Profileid
                     && p.Nick == p.Nick).First();
 
                 var user = db.Users.Where(
-                    u => u.Id == _session.UserInfo.Userid).First();
+                    u => u.Userid == _session.UserInfo.Userid).First();
 
                 var subprofile = db.Subprofiles.Where(
                     s => s.Profileid == _session.UserInfo.Profileid
