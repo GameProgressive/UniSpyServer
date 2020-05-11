@@ -8,7 +8,7 @@ namespace QueryReport.Entity.Structure.Group
     public class PeerGroup
     {
         public string GameName { get; protected set; }
-        public int GameID { get; protected set; }
+        public uint GameID { get; protected set; }
         public List<PeerRoom> PeerRooms { get; protected set; }
 
         public PeerGroup()
