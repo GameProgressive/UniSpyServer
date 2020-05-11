@@ -9,8 +9,8 @@ namespace Chat.Handler.CommandHandler
 {
     public class ChatJoinedChannelHandlerBase : ChatLogedInHandlerBase
     {
-        ChatChannelBase _channel;
-        ChatChannelUser _user;
+        protected ChatChannelBase _channel;
+        protected ChatChannelUser _user;
         new ChatChannelCommandBase _cmd;
         public ChatJoinedChannelHandlerBase(ISession session, ChatCommandBase cmd) : base(session, cmd)
         {
@@ -29,19 +29,24 @@ namespace Chat.Handler.CommandHandler
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
                 _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
                 return;
             }
 
-            if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
+            if (!_session.UserInfo.GetJoinedChannelByName(_cmd.ChannelName, out _channel))
             {
                 _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
                 return;
             }
+
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
                 _errorCode = ChatError.Parse;
+                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                 return;
             }
+
         }
     }
 }

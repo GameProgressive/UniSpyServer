@@ -17,7 +17,8 @@ namespace Chat.Server
 
         public ChatSession(ChatServer server) : base(server)
         {
-            UserInfo = new ChatUserInfo();
+            UserInfo = new ChatUserInfo()
+                .SetDefaultUserInfo(RemoteEndPoint);
         }
 
         protected override void OnReceived(string message)

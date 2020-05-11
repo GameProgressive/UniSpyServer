@@ -1,5 +1,6 @@
 ﻿using System;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
@@ -13,7 +14,7 @@ namespace Chat.Handler.CommandHandler
         public override void ConstructResponse()
         {
             base.ConstructResponse();
-            _sendingBuffer = "PONG\r\n";
+            _sendingBuffer = ChatReply.BuildPingReply(_session.UserInfo);
         }
     }
 }

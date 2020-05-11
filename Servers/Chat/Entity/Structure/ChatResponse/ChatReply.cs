@@ -1,4 +1,5 @@
 ﻿using System;
+using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatUser;
 
@@ -66,6 +67,62 @@ namespace Chat.Entity.Structure.ChatResponse
         public static string BuildPingReply(ChatUserInfo userInfo)
         {
             return userInfo.BuildReply(PONG);
+        }
+
+        public static string BuildUserIPReply(string ip)
+        {
+           return ChatCommandBase.BuildReply(UserIP, "", $"@{ip}");
+        }
+
+        public static string BuildWhoReply(string channelName,ChatUserInfo userInfo, string modes)
+        {
+            return ChatCommandBase.BuildReply(
+                    WhoReply,
+                    $"* {channelName} " +
+                    $"{userInfo.UserName} {userInfo.PublicIPAddress} * {userInfo.NickName} {modes} param7");
+        }
+
+        public static string BuildEndOfWhoReply(ChatUserInfo userInfo)
+        {
+            return ChatCommandBase.BuildReply(EndOfWho, $"* {userInfo.NickName} param3");
+        }
+
+        public static string BuildWhoIsUserReply(ChatUserInfo userInfo)
+        {
+           return ChatCommandBase.BuildReply(
+               ChatReply.WhoIsUser,
+                $"{userInfo.NickName} {userInfo.Name} {userInfo.UserName} {userInfo.PublicIPAddress} *",
+                userInfo.UserName);
+        }
+        public static string BuildWhoIsChannelReply(ChatUserInfo userInfo,string channelName)
+        {
+            return ChatCommandBase.BuildReply(
+                    WhoIsChannels,
+                    $"{userInfo.NickName} {userInfo.Name}",
+                    channelName
+                    );
+        }
+
+        public static string BuildEndOfWhoIsReply(ChatUserInfo userInfo)
+        {
+            return ChatCommandBase.BuildReply(
+                    ChatReply.EndOfWhoIs,
+                    $"{userInfo.NickName} {userInfo.Name}",
+                    "End of /WHOIS list."
+                    );
+        }
+
+        public static string BuildGetCKeyReply(ChatChannelUser user,string channelName, string cookie,string flags)
+        {
+            return user.BuildReply(GetCKey,
+                $"* {channelName} {user.UserInfo.NickName} {cookie} {flags}");
+        }
+
+        public static string BuildEndOfGetCKeyReply(ChatChannelUser user, string channelName, string cookie)
+        {
+          return  user.BuildReply(ChatReply.EndGetCKey,
+                $"* {channelName} {cookie}",
+                "End Of /GETCKEY.");
         }
     }
 }

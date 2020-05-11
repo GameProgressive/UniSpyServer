@@ -2,8 +2,8 @@
 {
     public enum WHOType
     {
-        UserSearch,
-        ChannelSearch
+        GetChannelUsersInfo,
+        GetUserInfo
     }
     public class WHO : ChatCommandBase
     {
@@ -25,11 +25,11 @@
 
             if (Name.Contains("#"))
             {
-                RequestType = WHOType.ChannelSearch;
+                RequestType = WHOType.GetChannelUsersInfo;
             }
             else
             {
-                RequestType = WHOType.UserSearch;
+                RequestType = WHOType.GetUserInfo;
             }
             return true;
         }

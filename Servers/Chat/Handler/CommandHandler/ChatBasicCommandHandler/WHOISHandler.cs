@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using System.Net;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatUser;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -9,59 +9,62 @@ namespace Chat.Handler.CommandHandler
 {
     public class WHOISHandler : ChatCommandHandlerBase
     {
-        WHOIS _whoisCmd;
+        new WHOIS _cmd;
+        ChatUserInfo _userInfo;
         public WHOISHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _whoisCmd = (WHOIS)cmd;
+            _cmd = (WHOIS)cmd;
+        }
+
+        public override void CheckRequest()
+        {
+            base.CheckRequest();
+            if (_errorCode != Entity.Structure.ChatError.NoError)
+            {
+                return;
+            }
+
+            var result = from s in ChatSessionManager.Sessions.Values
+                         where s.UserInfo.NickName == _cmd.NickName
+                         select s.UserInfo;
+
+            if (result.Count() != 1)
+            {
+                _errorCode = Entity.Structure.ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                return;
+            }
+            _userInfo = result.FirstOrDefault();
         }
 
         public override void DataOperation()
         {
             base.DataOperation();
-            var result = from s in ChatSessionManager.Sessions.Values
-                         where s.UserInfo.NickName == _whoisCmd.NickName
-                         select new
-                         {
-                             nickName = s.UserInfo.NickName,
-                             name = s.UserInfo.Name,
-                             userName = s.UserInfo.UserName,
-                             address = ((IPEndPoint)s.Socket.RemoteEndPoint).Address,
-                             joinedChannel = s.UserInfo.JoinedChannels.Select(c => c.Property.ChannelName)
-                         };
 
-            if (result.Count() != 1)
+            _sendingBuffer =
+                ChatReply.BuildWhoIsUserReply(_userInfo);
+
+            BuildJoinedChannelReply();
+
+            _sendingBuffer +=
+                ChatReply.BuildEndOfWhoIsReply(_userInfo);
+        }
+
+        private void BuildJoinedChannelReply()
+        {
+            if (_userInfo.JoinedChannels.Count() != 0)
             {
-                _errorCode = Entity.Structure.ChatError.DataOperation;
-                return;
-            }
-
-            var info = result.FirstOrDefault();
-            _sendingBuffer = ChatCommandBase.BuildReply(
-               ChatReply.WhoIsUser,
-                $"{info.nickName} {info.name} {info.userName} {info.address} *",
-                info.userName);
-
-            if (info.joinedChannel.Count() != 0)
-            {
-                string channels = "";
+                string channelNames = "";
                 //todo remove last space
-                foreach (var c in info.joinedChannel)
+                foreach (var channel in _userInfo.JoinedChannels)
                 {
-                    channels += $"@{c} ";
+                    channelNames += $"@{channel.Property.ChannelName} ";
                 }
 
+                _sendingBuffer +=
+                    ChatReply.BuildWhoIsChannelReply(_userInfo, channelNames);
 
-                _sendingBuffer += ChatCommandBase.BuildReply(
-                    ChatReply.WhoIsChannels,
-                    $"{info.nickName} {info.name}",
-                    channels
-                    );
             }
-            _sendingBuffer += ChatCommandBase.BuildReply(
-                    ChatReply.EndOfWhoIs,
-                    $"{info.nickName} {info.name}",
-                    "End of /WHOIS list."
-                    );
         }
     }
 }

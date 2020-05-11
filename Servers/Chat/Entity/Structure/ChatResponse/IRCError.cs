@@ -32,52 +32,56 @@ namespace Chat.Entity.Structure.ChatResponse
         }
         public static string BuildBadChanMaskError(string channelName)
         {
-            return BuildChannelError(ChatIRCError.BadChanMask, channelName);
+            return BuildChannelError(BadChanMask, channelName);
         }
 
         public static string BuildBadChannelKeyError(string channelName)
         {
-            return BuildChannelError(ChatIRCError.BannedFromChan, channelName);
+            return BuildChannelError(BannedFromChan, channelName);
         }
 
         public static string BuildBannedFromChannelError(string channelName)
         {
-            return BuildChannelError(ChatIRCError.BadChannelKey, channelName);
+            return BuildChannelError(BadChannelKey, channelName);
         }
 
         public static string BuildChannelIsFullError(string channelName)
         {
-            return BuildChannelError(ChatIRCError.ChannelIsFull, channelName);
+            return BuildChannelError(ChannelIsFull, channelName);
         }
 
         public static string BuildInvitedOnlyChannelError(string channelName)
         {
-            return BuildChannelError(ChatIRCError.InviteOnlyChan, channelName);
+            return BuildChannelError(InviteOnlyChan, channelName);
         }
         public static string BuildNoSuchChannelError(string channelName)
         {
-            return BuildChannelError(ChatIRCError.NoSuchChannel, channelName);
+            return BuildChannelError(NoSuchChannel, channelName);
+        }
+        public static string BuildToManyChannelError(string channelName)
+        {
+            return BuildChannelError(TooManyChannels, channelName);
         }
         #endregion
 
         public static string BuildNickNameInUseError(string oldNick, string newNick)
         {
-            return ChatCommandBase.BuildReply(ChatIRCError.NickNameInUse, $"{oldNick} {newNick} 0");
+            return ChatCommandBase.BuildReply(NickNameInUse, $"{oldNick} {newNick} 0");
         }
 
         public static string BuildLoginFailedError()
         {
-            return ChatCommandBase.BuildReply(ChatIRCError.LoginFailed);
+            return ChatCommandBase.BuildReply(LoginFailed);
         }
 
         public static string BuildNoUniqueNickError()
         {
-            return ChatCommandBase.BuildReply(ChatIRCError.NoUniqueNick);
+            return ChatCommandBase.BuildReply(NoUniqueNick);
         }
 
         public static string BuildUniquenickExpireError()
         {
-            return ChatCommandBase.BuildReply(ChatIRCError.UniqueNIickExpired);
+            return ChatCommandBase.BuildReply(UniqueNIickExpired);
         }
 
         public static string BuildRegisterNickFailedError(List<string> nickNames)
@@ -88,20 +92,18 @@ namespace Chat.Entity.Structure.ChatResponse
             {
                 suggestNicks += @"\" + nick;
             }
-            return ChatCommandBase.BuildReply(ChatIRCError.RegisterNickFailed, $"* numberOfSuggestNick {suggestNicks} 0");
+            return ChatCommandBase.BuildReply(RegisterNickFailed, $"* numberOfSuggestNick {suggestNicks} 0");
         }
 
         public static string BuildErrOneUSNickNameError(ChatUserInfo info)
         {
-            return info.BuildReply(ChatIRCError.ErrOneUSNickName);
+            return info.BuildReply(ErrOneUSNickName);
         }
 
         public static string BuildNoSuchNickError()
         {
-            return ChatCommandBase.BuildReply(ChatIRCError.NoSuchNick);
+            return ChatCommandBase.BuildReply(NoSuchNick);
         }
-
-
 
 
     }

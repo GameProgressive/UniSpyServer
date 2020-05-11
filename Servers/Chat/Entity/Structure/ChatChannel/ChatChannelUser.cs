@@ -116,5 +116,22 @@ namespace Chat.Entity.Structure.ChatChannel
             }
             return values;
         }
+
+        public string GetUserModes()
+        {
+            string buffer = "";
+
+            if (IsChannelOperator)
+            {
+                buffer += "@";
+            }
+
+            if (IsVoiceable)
+            {
+                buffer += "+";
+            }
+
+            return buffer;
+        }
     }
 }

@@ -7,12 +7,10 @@ using System.Net;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class USRIPHandler : ChatCommandHandlerBase
+    public class USRIPHandler : ChatLogedInHandlerBase
     {
-        new USRIP _cmd;
         public USRIPHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _cmd = (USRIP)cmd;
         }
 
         public override void ConstructResponse()
@@ -21,7 +19,7 @@ namespace Chat.Handler.CommandHandler
 
             string ip = ((IPEndPoint)_session.Socket.RemoteEndPoint).Address.ToString();
 
-            _sendingBuffer = ChatCommandBase.BuildReply(ChatReply.UserIP, "", $"@{ip}");
+            _sendingBuffer = ChatReply.BuildUserIPReply(ip);
         }
     }
 }

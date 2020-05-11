@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 
@@ -11,6 +12,8 @@ namespace Chat.Entity.Structure.ChatUser
         //indicates which channel this user is in
         public ConcurrentBag<ChatChannelBase> JoinedChannels { get; protected set; }
         public bool IsQuietMode { get; protected set; }
+        public string PublicIPAddress { get; protected set; }
+
         public ChatUserInfo SetQuietModeFlag(bool flag)
         {
             IsQuietMode = flag;
@@ -95,20 +98,27 @@ namespace Chat.Entity.Structure.ChatUser
 
         public ChatUserInfo()
         {
-            NameSpaceID = 0;
-            UseEncryption = false;
-            IsQuietMode = false;
             ClientCTX = new GSPeerChatCTX();
             ServerCTX = new GSPeerChatCTX();
             JoinedChannels = new ConcurrentBag<ChatChannelBase>();
-            IsLogedIn = false;
         }
+
+        public ChatUserInfo SetDefaultUserInfo(EndPoint endPoint)
+        {
+            NameSpaceID = 0;
+            UseEncryption = false;
+            IsQuietMode = false;
+            IsLogedIn = false;
+            PublicIPAddress = ((IPEndPoint)endPoint).Address.ToString();
+            return this;
+        }
+
 
         public bool IsJoinedChannel(string channelName)
         {
-            return GetJoinedChannel(channelName, out _);
+            return GetJoinedChannelByName(channelName, out _);
         }
-        public bool GetJoinedChannel(string channelName, out ChatChannelBase channel)
+        public bool GetJoinedChannelByName(string channelName, out ChatChannelBase channel)
         {
             var result = JoinedChannels.Where(c => c.Property.ChannelName == channelName);
             if (result.Count() == 1)

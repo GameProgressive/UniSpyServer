@@ -18,7 +18,7 @@ namespace Chat.Handler.CommandHandler
         public override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
+            if (!_session.UserInfo.GetJoinedChannelByName(_cmd.ChannelName, out _channel))
             {
                 _errorCode = Entity.Structure.ChatError.Parse;
                 return;

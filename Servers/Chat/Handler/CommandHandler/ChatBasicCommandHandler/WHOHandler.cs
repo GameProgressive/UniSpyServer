@@ -10,7 +10,10 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
 {
-    public class WHOHandler : ChatCommandHandlerBase
+    /// <summary>
+    /// Get a channel user information
+    /// </summary>
+    public class WHOHandler : ChatLogedInHandlerBase
     {
         new WHO _cmd;
 
@@ -19,33 +22,22 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
             _cmd = (WHO)cmd;
         }
 
-        public override void CheckRequest()
-        {
-            base.CheckRequest();
-
-        }
-
         public override void DataOperation()
         {
             base.DataOperation();
             switch (_cmd.RequestType)
             {
-                case WHOType.ChannelSearch:
-                    ChannelSearch();
+                case WHOType.GetChannelUsersInfo:
+                    GetChannelUsersInfo();
                     break;
-                case WHOType.UserSearch:
-                    UserSearch();
+                case WHOType.GetUserInfo:
+                    GetUserInfo();
                     break;
             }
-            AppendEndOfWhoRPL();
+            BuildEndOfWhoReply();
         }
 
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
-        }
-
-        private void ChannelSearch()
+        private void GetChannelUsersInfo()
         {
             ChatChannelBase channel;
             if (!ChatChannelManager.GetChannel(_cmd.Name, out channel))
@@ -54,42 +46,56 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
                 return;
             }
             _sendingBuffer = "";
+
             foreach (var user in channel.Property.ChannelUsers)
             {
-                BuildWhoRPLForSingleUser("#unknown", user.Session);
+                _sendingBuffer +=
+                    ChatReply.BuildWhoReply(
+                        channel.Property.ChannelName,
+                        user.UserInfo,user.GetUserModes());
             }
         }
-        private void UserSearch()
+
+        /// <summary>
+        /// Send all channel user information
+        /// </summary>
+        private void GetUserInfo()
         {
             ChatSession session;
 
             if (ChatSessionManager.GetSessionByNickName(_cmd.Name, out session))
             {
-                BuildWhoRPLForSingleUser("#unknown", session);
+                BuildWhoReplyForUser(session);
             }
             else if (ChatSessionManager.GetSessionByUserName(_cmd.Name, out session))
             {
-                BuildWhoRPLForSingleUser("#unknown", session);
+                BuildWhoReplyForUser(session);
             }
-            else
+            else //todo check whether we need this error
             {
                 _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
             }
         }
 
-        private void AppendEndOfWhoRPL()
+        private void BuildEndOfWhoReply()
         {
-            _sendingBuffer += ChatCommandBase.BuildReply(ChatReply.EndOfWho, $"* {_session.UserInfo.NickName} param3");
+            _sendingBuffer += ChatReply.BuildEndOfWhoReply(_session.UserInfo);
         }
 
-        private string BuildWhoRPLForSingleUser(string channelName, ChatSession session)
+        private void BuildWhoReplyForUser(ChatSession session)
         {
-            string address = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.ToString();
-            return
-                ChatCommandBase.BuildReply(
-                    ChatReply.WhoReply,
-                    $"* {channelName} " +
-                    $"{session.UserInfo.UserName} {address} {session.UserInfo.NickName} param6 param7 param8");
+            _sendingBuffer = "";
+            foreach (var channel in session.UserInfo.JoinedChannels)
+            {
+                ChatChannelUser user;
+                channel.GetChannelUserBySession(session, out user);
+                _sendingBuffer +=
+                    ChatReply.BuildWhoReply(
+                        channel.Property.ChannelName,
+                        session.UserInfo,
+                        user.GetUserModes());
+            }
         }
     }
 }

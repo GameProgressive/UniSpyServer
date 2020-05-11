@@ -15,19 +15,9 @@ namespace Chat.Handler.CommandHandler
 
         public override void DataOperation()
         {
-            if (_errorCode != ChatError.NoError)
-            {
-                return;
-            }
+            base.DataOperation();
             _session.UserInfo.SetUserName(_user.UserName);
             _session.UserInfo.SetName(_user.Name);
-            base.DataOperation();
-        }
-
-        public override void ConstructResponse()
-        {
-            //_sendingBuffer = new PING().BuildResponse();
-            base.ConstructResponse();
         }
     }
 }

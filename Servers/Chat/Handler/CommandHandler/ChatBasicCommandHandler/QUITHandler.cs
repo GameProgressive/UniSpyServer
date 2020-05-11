@@ -4,7 +4,7 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class QUITHandler : ChatCommandHandlerBase
+    public class QUITHandler : ChatLogedInHandlerBase
     {
         new QUIT _cmd;
         public QUITHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)

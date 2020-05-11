@@ -31,7 +31,7 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
 
-            if (!_session.UserInfo.GetJoinedChannel(_cmd.ChannelName, out _channel))
+            if (!_session.UserInfo.GetJoinedChannelByName(_cmd.ChannelName, out _channel))
             {
                 _errorCode = ChatError.DataOperation;
                 return;

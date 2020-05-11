@@ -2,6 +2,7 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
@@ -11,7 +12,7 @@ namespace Chat.Handler.CommandHandler
     /// <summary>
     /// Game will only join one channel at one time
     /// </summary>
-    public class JOINHandler : ChatCommandHandlerBase
+    public class JOINHandler : ChatLogedInHandlerBase
     {
         new JOIN _cmd;
         ChatChannelBase _channel;
@@ -33,7 +34,17 @@ namespace Chat.Handler.CommandHandler
         public override void CheckRequest()
         {
             base.CheckRequest();
+            if (_errorCode != ChatError.NoError)
+            {
+                return;
+            }
 
+            //game spy only allow one player join one chat room
+            if (_session.UserInfo.JoinedChannels.Count > 1)
+            {
+                _sendingBuffer =
+                    ChatIRCError.BuildToManyChannelError(_cmd.ChannelName);
+            }
         }
 
         public override void DataOperation()
