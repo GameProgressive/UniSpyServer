@@ -83,10 +83,8 @@ namespace Chat.Handler.CommandHandler
             }
 
             //todo check the paramemter 
-            _sendingBuffer =
-            ChatCommandBase.BuildReply(
-                  ChatReply.GetCKey,
-                  $"* {_channel.Property.ChannelName} {_user.UserInfo.NickName} BCAST {flags}");
+            _sendingBuffer = ChatReply.BuildGetCKeyReply(_user, _channel.Property.ChannelName, "BCAST", flags);
+          
         }
     }
 }

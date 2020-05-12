@@ -19,12 +19,15 @@ namespace Chat.Entity.Structure.ChatChannel
         public void MultiCastJoin(ChatChannelUser joiner)
         {
             string joinMessage =
-                joiner.BuildReply(ChatReply.JOIN, Property.ChannelName);
+                ChatReply.BuildJoinReply(
+                    joiner, Property.ChannelName);
+            
             string modes =
                 Property.ChannelMode.GetChannelMode();
+
             joinMessage +=
-                joiner.BuildReply(ChatReply.MODE,
-                $"{Property.ChannelName} {modes}");
+                ChatReply.BuildModeReply(
+                    joiner, Property.ChannelName, modes);
 
             MultiCast(joinMessage);
         }
@@ -32,8 +35,8 @@ namespace Chat.Entity.Structure.ChatChannel
         public void MultiCastLeave(ChatChannelUser leaver, string message)
         {
             string leaveMessage =
-                leaver.BuildReply(ChatReply.PART,
-                Property.ChannelName, message);
+                ChatReply.BuildPartReply(
+                    leaver, Property.ChannelName, message);
 
             MultiCast(leaveMessage);
         }
@@ -69,10 +72,9 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             string modes = Property.ChannelMode.GetChannelMode();
 
-            string buffer = joiner.BuildReply(ChatReply.MODE, $"{Property.ChannelName} {modes}");
-            // ChatCommandBase.BuildRPLWithUserPrefix(joiner.UserInfo, ChatRPL.MODE, $"{Property.ChannelName} {modes}");
-            //ChatCommandBase.BuildMessageRPL(
-            //ChatServer.ServerDomain, $"MODE {Property.ChannelName} {modes}", "");
+            string buffer =
+                ChatReply.BuildModeReply(
+                joiner, Property.ChannelName, modes);
 
             string nicks = "";
             foreach (var user in Property.ChannelUsers)
@@ -95,16 +97,11 @@ namespace Chat.Entity.Structure.ChatChannel
             nicks = nicks.Substring(0, nicks.Length - 1);
 
             //check the message :@<nickname> whether broadcast char @ ?
-            buffer +=
-                ChatCommandBase.BuildReply(
-                    ChatReply.NameReply,
-                    $"{joiner.UserInfo.NickName} = {Property.ChannelName}",
-                    nicks);
+            buffer += ChatReply.BuildNameReply(
+                joiner.UserInfo.NickName, Property.ChannelName, nicks);
 
-            buffer +=
-                ChatCommandBase.BuildReply(ChatReply.EndOfNames,
-                    $"{joiner.UserInfo.NickName} {Property.ChannelName}",
-                    @"End of /NAMES list.");
+            buffer += ChatReply.BuildEndOfNameReply(
+                joiner.UserInfo.NickName, Property.ChannelName);
 
             joiner.Session.SendAsync(buffer);
         }
@@ -114,8 +111,8 @@ namespace Chat.Entity.Structure.ChatChannel
             string modes = Property.ChannelMode.GetChannelMode();
 
             string modesMessage =
-                joiner.BuildReply(ChatReply.ChannelModels,
-                $"{joiner.UserInfo.NickName} {Property.ChannelName} {modes}");
+                ChatReply.BuildChannelModesReply(
+                    joiner, Property.ChannelName, modes);
 
             joiner.Session.SendAsync(modesMessage);
         }
@@ -259,7 +256,9 @@ namespace Chat.Entity.Structure.ChatChannel
             foreach (var user in Property.ChannelUsers)
             {
                 //kick all user out
-                string kickMsg = KICK.BuildKickMessage(this, kicker, user, "Creator leaves channel");
+                string kickMsg =
+                    ChatReply.BuildKickReply(
+                    Property.ChannelName, kicker, user, "Server Hoster leaves channel");
 
                 user.Session.SendAsync(kickMsg);
             }

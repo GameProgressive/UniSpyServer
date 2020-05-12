@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
@@ -79,12 +76,10 @@ namespace Chat.Handler.CommandHandler
         }
 
         private void BuildNormalMessage()
-        { 
-            _sendingBuffer = _user.BuildReply(ChatReply.PRIVMSG,$"{_channel.Property.ChannelName}", _cmd.Message);
-            //_sendingBuffer =
-            //    ChatCommandBase.BuildMessageRPL(
-            //        $"{_user.UserInfo.NickName}!{_user.UserInfo.UserName}@{ip}",
-            //        $"PRIVMSG {_channel.Property.ChannelName}", _cmd.Message);
+        {
+            _sendingBuffer =
+                ChatReply.BuildPrivMsgReply(_user,
+                _channel.Property.ChannelName, _cmd.Message);
         }
     }
 }

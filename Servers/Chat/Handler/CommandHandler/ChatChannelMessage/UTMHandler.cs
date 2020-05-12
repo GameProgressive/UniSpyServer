@@ -46,20 +46,15 @@ namespace Chat.Handler.CommandHandler
             switch (_cmd.RequestType)
             {
                 case UTMCmdType.ChannelUTM:
-                    _sendingBuffer = _user.BuildReply(ChatReply.UTM, _channel.Property.ChannelName, _cmd.Message);
+                    _sendingBuffer =
+                        ChatReply.BuildUTMReply(
+                            _user,_channel.Property.ChannelName, _cmd.Message);
                     break;
                 case UTMCmdType.UserUTM:
-                    _sendingBuffer = _user.BuildReply(ChatReply.UTM, _cmd.NickName, _cmd.Message);
+                    _sendingBuffer =
+                        ChatReply.BuildUTMReply(
+                        _user, _channel.Property.ChannelName, _cmd.Message);
                     break;
-            }
-        }
-
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
-            if (_errorCode > ChatError.NoError)
-            {
-                //todo send error to client;
             }
         }
 

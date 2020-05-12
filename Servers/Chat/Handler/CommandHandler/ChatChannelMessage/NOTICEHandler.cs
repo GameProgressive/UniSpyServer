@@ -35,9 +35,8 @@ namespace Chat.Handler.CommandHandler
         public override void DataOperation()
         {
             base.DataOperation();
-            _sendingBuffer = _user.BuildReply(ChatReply.NOTICE, $"{_cmd.ChannelName}", _cmd.Message);
-            //ChatCommandBase.BuildReply(ChatReply.NOTICE,
-            //    $"{_cmd.ChannelName}", _cmd.Message);
+            _sendingBuffer = 
+            ChatReply.BuildNoticeReply(_user, _cmd.ChannelName, _cmd.Message);
         }
 
         public override void Response()

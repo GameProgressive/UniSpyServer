@@ -62,17 +62,15 @@ namespace Chat.Handler.CommandHandler
             if (_channel.Property.ChannelTopic == "" || _channel.Property.ChannelTopic == null)
             {
                 _sendingBuffer =
-                    ChatCommandBase.BuildReply(
-                        ChatReply.NoTopic,
-                        _channel.Property.ChannelName);
+                    ChatReply.BuildNoTopicReply(
+                    _channel.Property.ChannelName);
             }
             else
             {
                 _sendingBuffer =
-                        ChatCommandBase.BuildReply(
-                            ChatReply.TOPIC,
-                        _channel.Property.ChannelName,
-                        _channel.Property.ChannelTopic);
+                    ChatReply.BuildTopicReply(
+                    _channel.Property.ChannelName,
+                    _channel.Property.ChannelTopic);
             }
         }
         
@@ -80,9 +78,9 @@ namespace Chat.Handler.CommandHandler
         {
             _channel.Property.SetChannelTopic(_cmd.ChannelTopic);
             _sendingBuffer =
-                ChatCommandBase.BuildReply(ChatReply.TOPIC,
-                _channel.Property.ChannelName,
-                _channel.Property.ChannelTopic);
+                ChatReply.BuildTopicReply(
+                    _channel.Property.ChannelName,
+                    _channel.Property.ChannelTopic);
         }
 
         public override void Response()

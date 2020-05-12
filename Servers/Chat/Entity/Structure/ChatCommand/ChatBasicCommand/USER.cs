@@ -10,11 +10,6 @@ namespace Chat.Entity.Structure.ChatCommand
         public string NickName { get; protected set; }
         public string Name { get; protected set; }
 
-        public string BuildResponse(params string[] cmdParam)
-        {
-            return BuildReply(ChatReply.PING, "www.rspy.cc");
-        }
-
         public override bool Parse(string recv)
         {
             if (!base.Parse(recv))

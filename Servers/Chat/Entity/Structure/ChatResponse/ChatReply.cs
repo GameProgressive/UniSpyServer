@@ -1,5 +1,4 @@
-﻿using System;
-using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatUser;
 
@@ -7,49 +6,49 @@ namespace Chat.Entity.Structure.ChatResponse
 {
     public class ChatReply
     {
-        public const string Welcome = "001";
-        public const string UserIP = "302";
-        public const string WhoIsUser = "311";
-        public const string EndOfWho = "315";
-        public const string EndOfWhoIs = "318";
-        public const string WhoIsChannels = "319";
-        public const string ListStart = "321";
-        public const string List = "322";
-        public const string ListEnd = "323";
-        public const string ChannelModels = "324";
-        public const string NoTopic = "331";
-        public const string Topic = "332";
-        public const string WhoReply = "352";
-        public const string NameReply = "353";
-        public const string EndOfNames = "366";
-        public const string BanList = "367";
-        public const string EndOfBanList = "368";
-        public const string GetKey = "700";
-        public const string EndGetKey = "701";
-        public const string GetCKey = "702";
-        public const string EndGetCKey = "703";
-        public const string GetCHANKey = "704";
-        public const string SecureKey = "705";
-        public const string CDKey = "706";
-        public const string Login = "707";
-        public const string GetUDPRelay = "712";
+        private const string Welcome = "001";
+        private const string UserIP = "302";
+        private const string WhoIsUser = "311";
+        private const string EndOfWho = "315";
+        private const string EndOfWhoIs = "318";
+        private const string WhoIsChannels = "319";
+        private const string ListStart = "321";
+        private const string List = "322";
+        private const string ListEnd = "323";
+        private const string ChannelModels = "324";
+        private const string NoTopic = "331";
+        private const string Topic = "332";
+        private const string WhoReply = "352";
+        private const string NameReply = "353";
+        private const string EndOfNames = "366";
+        private const string BanList = "367";
+        private const string EndOfBanList = "368";
+        private const string GetKey = "700";
+        private const string EndGetKey = "701";
+        private const string GetCKey = "702";
+        private const string EndGetCKey = "703";
+        private const string GetCHANKey = "704";
+        private const string SecureKey = "705";
+        private const string CDKey = "706";
+        private const string Login = "707";
+        private const string GetUDPRelay = "712";
 
-        public const string PRIVMSG = "PRIVMSG";
-        public const string NOTICE = "NOTICE";
-        public const string UTM = "UTM";
-        public const string ATM = "ATM";
-        public const string PING = "PING";
-        public const string PONG = "PONG";
-        public const string NICK = "NICK";
-        public const string JOIN = "JOIN";
-        public const string PART = "PART";
-        public const string KICK = "KICK";
-        public const string QUIT = "QUIT";
-        public const string KILL = "KILL";
-        public const string TOPIC = "TOPIC";
-        public const string MODE = "MODE";
-        public const string ERROR = "ERROR";
-        public const string INVITE = "INVITE";
+        private const string PRIVMSG = "PRIVMSG";
+        private const string NOTICE = "NOTICE";
+        private const string UTM = "UTM";
+        private const string ATM = "ATM";
+        private const string PING = "PING";
+        private const string PONG = "PONG";
+        private const string NICK = "NICK";
+        private const string JOIN = "JOIN";
+        private const string PART = "PART";
+        private const string KICK = "KICK";
+        private const string QUIT = "QUIT";
+        private const string KILL = "KILL";
+        private const string TOPIC = "TOPIC";
+        private const string MODE = "MODE";
+        private const string ERROR = "ERROR";
+        private const string INVITE = "INVITE";
 
 
         public static string BuildWelcomeReply(ChatUserInfo userInfo)
@@ -71,10 +70,10 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildUserIPReply(string ip)
         {
-           return ChatCommandBase.BuildReply(UserIP, "", $"@{ip}");
+            return ChatCommandBase.BuildReply(UserIP, "", $"@{ip}");
         }
 
-        public static string BuildWhoReply(string channelName,ChatUserInfo userInfo, string modes)
+        public static string BuildWhoReply(string channelName, ChatUserInfo userInfo, string modes)
         {
             return ChatCommandBase.BuildReply(
                     WhoReply,
@@ -89,12 +88,12 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildWhoIsUserReply(ChatUserInfo userInfo)
         {
-           return ChatCommandBase.BuildReply(
-               ChatReply.WhoIsUser,
-                $"{userInfo.NickName} {userInfo.Name} {userInfo.UserName} {userInfo.PublicIPAddress} *",
-                userInfo.UserName);
+            return ChatCommandBase.BuildReply(
+                WhoIsUser,
+                 $"{userInfo.NickName} {userInfo.Name} {userInfo.UserName} {userInfo.PublicIPAddress} *",
+                 userInfo.UserName);
         }
-        public static string BuildWhoIsChannelReply(ChatUserInfo userInfo,string channelName)
+        public static string BuildWhoIsChannelReply(ChatUserInfo userInfo, string channelName)
         {
             return ChatCommandBase.BuildReply(
                     WhoIsChannels,
@@ -106,13 +105,13 @@ namespace Chat.Entity.Structure.ChatResponse
         public static string BuildEndOfWhoIsReply(ChatUserInfo userInfo)
         {
             return ChatCommandBase.BuildReply(
-                    ChatReply.EndOfWhoIs,
+                    EndOfWhoIs,
                     $"{userInfo.NickName} {userInfo.Name}",
                     "End of /WHOIS list."
                     );
         }
 
-        public static string BuildGetCKeyReply(ChatChannelUser user,string channelName, string cookie,string flags)
+        public static string BuildGetCKeyReply(ChatChannelUser user, string channelName, string cookie, string flags)
         {
             return user.BuildReply(GetCKey,
                 $"* {channelName} {user.UserInfo.NickName} {cookie} {flags}");
@@ -120,9 +119,94 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildEndOfGetCKeyReply(ChatChannelUser user, string channelName, string cookie)
         {
-          return  user.BuildReply(ChatReply.EndGetCKey,
-                $"* {channelName} {cookie}",
-                "End Of /GETCKEY.");
+            return user.BuildReply(EndGetCKey,
+                  $"* {channelName} {cookie}",
+                  "End Of /GETCKEY.");
+        }
+
+        public static string BuildKickReply(string channelName, ChatChannelUser kicker, ChatChannelUser kickee, string reason)
+        {
+            return kicker.BuildReply(KICK,
+                $"KICK {channelName} {kicker.UserInfo.NickName} {kickee.UserInfo.NickName}",
+               reason);
+        }
+
+        public static string BuildModeReply(ChatChannelUser user, string channelName, string modes)
+        {
+            return user.BuildReply(MODE, $"{channelName} {modes}");
+        }
+
+        public static string BuildListStartReply(ChatUserInfo userInfo, ChatChannelProperty property)
+        {
+            return userInfo.BuildReply(ListStart,
+                      $"param1 {property.ChannelName} {property.ChannelUsers.Count} {property.ChannelTopic}");
+        }
+        public static string BuildListEndReply(ChatUserInfo userInfo)
+        {
+            return userInfo.BuildReply(ListEnd);
+        }
+
+        public static string BuildNoticeReply(ChatChannelUser user, string channelName, string message)
+        {
+            return user.BuildReply(NOTICE, $"{channelName}", message);
+        }
+
+        public static string BuildPrivMsgReply(ChatChannelUser user, string channelName, string message)
+        {
+            return user.BuildReply(PRIVMSG, $"{channelName}", message);
+        }
+
+        public static string BuildUTMReply(ChatChannelUser user, string name, string message)
+        {
+            return user.BuildReply(UTM, name, message);
+        }
+
+        public static string BuildJoinReply(ChatChannelUser user, string channelName)
+        {
+            return user.BuildReply(JOIN, channelName);
+        }
+
+        public static string BuildPartReply(ChatChannelUser user, string channelName, string reason)
+        {
+            return user.BuildReply(PART, channelName, reason);
+        }
+
+        public static string BuildNameReply(string nickName, string channelName, string nicks)
+        {
+            return ChatCommandBase.BuildReply(
+                    NameReply,
+                    $"{nickName} = {channelName}", nicks);
+        }
+
+        public static string BuildEndOfNameReply(string nickName, string channelName)
+        {
+            return ChatCommandBase.BuildReply(EndOfNames,
+                    $"{nickName} {channelName}", @"End of /NAMES list.");
+        }
+
+        public static string BuildChannelModesReply(ChatChannelUser user, string channelName, string modes)
+        {
+            return user.BuildReply(ChannelModels,
+                $"{user.UserInfo.NickName} {channelName} {modes}");
+        }
+
+        public static string BuildATMReply(ChatChannelUser user, string name, string message)
+        {
+            return user.BuildReply(ATM, $"{name} {message}");
+        }
+
+        public static string BuildNoTopicReply(string channelName)
+        {
+            return ChatCommandBase.BuildReply(
+                        ChatReply.NoTopic,
+                        channelName);
+        }
+        public static string BuildTopicReply(string channelName, string channelTopic)
+        {
+         return  ChatCommandBase.BuildReply(
+                            ChatReply.TOPIC,
+                        channelName,
+                        channelTopic);
         }
     }
 }

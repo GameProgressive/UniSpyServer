@@ -23,16 +23,6 @@ namespace Chat.Entity.Structure.ChatCommand
             return true;
         }
 
-        public static string BuildKickMessage(ChatChannelBase channel, ChatChannelUser kicker, ChatChannelUser kickee)
-        {
-            return BuildKickMessage(channel, kicker, kickee, "");
-        }
-        public static string BuildKickMessage(ChatChannelBase channel, ChatChannelUser kicker, ChatChannelUser kickee, string reason)
-        {
-            return kicker.BuildReply(
-                        ChatReply.KICK,
-                        $"{channel.Property.ChannelName} {kickee.UserInfo.NickName}",
-                        reason);
-        }
+
     }
 }

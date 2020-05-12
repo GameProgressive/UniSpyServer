@@ -6,7 +6,8 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class LISTHandler : ChatCommandHandlerBase
+    //todo unfinished
+    public class LISTHandler : ChatLogedInHandlerBase
     {
         new LIST _cmd;
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
@@ -35,26 +36,13 @@ namespace Chat.Handler.CommandHandler
 
         public void BuildListRPL(ChatChannelBase channel)
         {
-            _sendingBuffer = _session.UserInfo.BuildReply(ChatReply.ListStart,
-                    $"{_session.UserInfo.NickName} Channel");
-            //ChatCommandBase.BuildRPL(_session.UserInfo,
-            //        ChatRPL.ListStart,
-            //        $"{_session.UserInfo.NickName} Channel");
+            _sendingBuffer = ChatReply.BuildListStartReply(_session.UserInfo, channel.Property);
         }
 
         public void BuildEndOfListRPL()
         {
-            _sendingBuffer += _session.UserInfo.BuildReply(ChatReply.ListEnd,
-                     _session.UserInfo.NickName, "End of /LIST");
-            //ChatCommandBase.BuildRPL(
-            //        ChatRPL.ListEnd,
-            //         _session.UserInfo.NickName, "End of /LIST");
+            _sendingBuffer += ChatReply.BuildListEndReply(_session.UserInfo);
         }
 
-        public override void CheckRequest()
-        {
-            base.CheckRequest();
-
-        }
     }
 }
