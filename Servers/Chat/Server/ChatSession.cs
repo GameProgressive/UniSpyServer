@@ -17,8 +17,7 @@ namespace Chat.Server
 
         public ChatSession(ChatServer server) : base(server)
         {
-            UserInfo = new ChatUserInfo()
-                .SetDefaultUserInfo(RemoteEndPoint);
+            UserInfo = new ChatUserInfo();
         }
 
         protected override void OnReceived(string message)
@@ -73,13 +72,18 @@ namespace Chat.Server
         {
             foreach (var channel in ChatChannelManager.Channels.Values)
             {
-                channel.LeaveChannel(this,"Disconnected");
+                channel.LeaveChannel(this, "Disconnected");
             }
 
             ChatSessionManager.RemoveSession(this);
 
             base.OnDisconnected();
         }
-      
+
+        protected override void OnConnected()
+        {
+            base.OnConnected();
+            UserInfo.SetDefaultUserInfo(RemoteEndPoint);
+        }
     }
 }

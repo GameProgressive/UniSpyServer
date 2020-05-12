@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;

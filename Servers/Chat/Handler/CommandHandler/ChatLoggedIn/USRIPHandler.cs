@@ -1,13 +1,11 @@
-﻿using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
-using Chat.Entity.Structure.Enumerator.Request;
 using GameSpyLib.Common.Entity.Interface;
 using System.Net;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class USRIPHandler : ChatLogedInHandlerBase
+    public class USRIPHandler : ChatCommandHandlerBase
     {
         public USRIPHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {

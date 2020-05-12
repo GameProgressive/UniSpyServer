@@ -1,16 +1,49 @@
 ﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class MODEHandler : ChatJoinedChannelHandlerBase
+    public class MODEHandler : ChatLogedInHandlerBase
     {
        new MODE _cmd;
+        ChatChannelBase _channel;
+        ChatChannelUser _user;
         public MODEHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
             _cmd = (MODE)cmd;
+        }
+
+        public override void CheckRequest()
+        {
+            base.CheckRequest();
+            if (_errorCode != ChatError.NoError)
+            {
+                return;
+            }
+
+            if (_session.UserInfo.JoinedChannels.Count == 0)
+            {
+                _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
+                return;
+            }
+
+            if (!_session.UserInfo.GetJoinedChannelByName(_cmd.ChannelName, out _channel))
+            {
+                _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
+                return;
+            }
+
+            if (!_channel.GetChannelUserBySession(_session, out _user))
+            {
+                _errorCode = ChatError.Parse;
+                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                return;
+            }
         }
 
         public override void DataOperation()
