@@ -24,6 +24,20 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
 
+            switch (_cmd.RequestType)
+            {
+                case ModeRequestType.EnableUserQuietFlag:
+                case ModeRequestType.DisableUserQuietFlag:
+                    //we do not need to find user and its channel here
+                    break;
+                default:
+                    GetChannelAndUser();
+                    break;
+            }
+           
+        }
+        private void GetChannelAndUser()
+        {
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
                 _errorCode = ChatError.IRCError;
