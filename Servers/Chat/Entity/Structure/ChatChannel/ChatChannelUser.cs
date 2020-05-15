@@ -1,8 +1,6 @@
-﻿using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatUser;
+﻿using Chat.Entity.Structure.ChatUser;
 using Chat.Server;
 using System.Collections.Generic;
-using System.Net;
 
 namespace Chat.Entity.Structure.ChatChannel
 {
@@ -86,18 +84,6 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             return Session.UserInfo.BuildReply(command, cmdParams, tailing);
         }
-
-        //public string BuildChannelMessage(string command, string cmdParam, string tailing)
-        //{
-        //    return ChatCommandBase.BuildRPL(UserInfo, command, cmdParam, tailing);
-        //    //BuildMessageRPL(
-        //    //    $"{UserInfo.NickName}!{UserInfo.UserName}@{ChatServer.ServerDomain}", cmdParam, message);
-        //}
-
-        //public string BuildChannelMessage(string command, string cmdParam)
-        //{
-        //    return BuildChannelMessage(command, cmdParam, "");
-        //}
 
         public string GetBFlagsString()
         {

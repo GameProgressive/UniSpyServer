@@ -27,7 +27,7 @@ namespace Chat.Entity.Structure.ChatResponse
         private const string EndGetKey = "701";
         private const string GetCKey = "702";
         private const string EndGetCKey = "703";
-        private const string GetCHANKey = "704";
+        private const string GetChanKey = "704";
         private const string SecureKey = "705";
         private const string CDKey = "706";
         private const string Login = "707";
@@ -197,16 +197,23 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildNoTopicReply(string channelName)
         {
-            return ChatCommandBase.BuildReply(
-                        ChatReply.NoTopic,
-                        channelName);
+            return
+                ChatCommandBase.BuildReply(NoTopic, channelName);
         }
         public static string BuildTopicReply(string channelName, string channelTopic)
         {
-         return  ChatCommandBase.BuildReply(
-                            ChatReply.TOPIC,
-                        channelName,
-                        channelTopic);
+            return
+                   ChatCommandBase.BuildReply(TOPIC, channelName, channelTopic);
+        }
+
+        public static string BuildLoginReply(uint userid, uint profileid)
+        {
+            return ChatCommandBase.BuildReply(Login, $"param1 {userid} {profileid}");
+        }
+
+        public static string BuildGetChanKeyReply(ChatChannelUser user, string channelName, string cookie, string flags)
+        {
+            return user.BuildReply(GetChanKey, $"param1 {channelName} {cookie} {flags}");
         }
     }
 }

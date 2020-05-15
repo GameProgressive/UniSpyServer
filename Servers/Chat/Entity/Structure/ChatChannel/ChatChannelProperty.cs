@@ -209,9 +209,19 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             ChannelTopic = topic;
         }
-        public void SetChannelKeyValue(Dictionary<string, string> kv)
+        public void SetChannelKeyValue(Dictionary<string, string> keyValue)
         {
-            ChannelKeyValue = kv;
+            foreach (var kv in keyValue)
+            {
+                if (ChannelKeyValue.ContainsKey(kv.Key))
+                {
+                    ChannelKeyValue[kv.Key] = kv.Value;
+                }
+                else
+                {
+                    ChannelKeyValue.Add(kv.Key, kv.Value);
+                }
+            }
         }
     }
 }

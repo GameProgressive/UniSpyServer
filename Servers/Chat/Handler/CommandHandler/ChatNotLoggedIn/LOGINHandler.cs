@@ -1,68 +1,107 @@
-﻿//using Chat.Entity.Structure;
-//using Chat.Entity.Structure.ChatCommand;
-//using Chat.Entity.Structure.Enumerator.Request;
-//using Chat.Server;
-//using GameSpyLib.Common.Entity.Interface;
-//using System;
+﻿using System.Linq;
+using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
+using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
+using GameSpyLib.Extensions;
+using GameSpyLib.MiscMethod;
 
-//namespace Chat.Handler.CommandHandler
-//{
-//    public class LOGINHandler : ChatCommandHandlerBase
-//    {
-//        int _namespaceID = 0;
-//        string _password;
-//        string _uniqueNick;
+namespace Chat.Handler.CommandHandler
+{
+    public class LOGINHandler : ChatCommandHandlerBase
+    {
 
-//        public LOGINHandler(IClient client, ChatCommandBase cmd, string response) : base(client, cmd, response)
-//        {
-//        }
+        string _password;
+        new LOGIN _cmd;
+        uint _profileid;
+        uint _userid;
+        public LOGINHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        {
+            _cmd = (LOGIN)cmd;
+        }
 
-//        public override void CheckRequest()
-//        {
-//            base.CheckRequest();
+        public override void CheckRequest()
+        {
+            base.CheckRequest();
+            //we decoded gamespy encoded password then get md5 of it 
+            _password = GameSpyUtils.DecodePassword(_cmd.PasswordHash);
+            _password = StringExtensions.GetMD5Hash(_password);
+        }
 
-//            if (!Int32.TryParse(_cmd.Param[0], out _namespaceID))
-//            {
-//                _errorCode = ChatError.Parse;
-//                return;
-//            }
-//            _clientInfo.NameSpaceID = _namespaceID;
+        public override void DataOperation()
+        {
+            base.DataOperation();
+            switch (_cmd.RequestType)
+            {
+                case LoginType.NickAndEmailLogin:
+                    NickAndEmailLogin();
+                    break;
+                case LoginType.UniqueNickLogin:
+                    UniqueNickLogin();
+                    break;
+            }
 
-//            if (_cmd.Param[1] == "*")
-//            {
-//                // Profile login, not handled yet!
-//                _errorCode = ChatError.LoginFailed;
-//                return;
-//            }
+        }
 
-//            // Unique nickname login
-//            _uniqueNick = _cmd.Param[2];
-//            _password = _cmd.Param[3];
-//        }
+        public override void ConstructResponse()
+        {
+            base.ConstructResponse();
+            _sendingBuffer = ChatReply.BuildLoginReply(_userid, _profileid);
+        }
 
-//        public override void DataOperation()
-//        {
-//            base.DataOperation();
-//            _clientInfo.NickName = _cmd.Param[1];
-//        }
 
-//        public override void ConstructResponse()
-//        {
-//            base.ConstructResponse();
-//            _sendingBuffer = ChatCommandBase.BuildCommandString(ChatResponse.Login, "* 1 1");
-//        }
+        public void NickAndEmailLogin()
+        {
+            using (var db = new retrospyContext())
+            {
+                var result = from u in db.Users
+                             join p in db.Profiles on u.Userid equals p.Userid
+                             where u.Email == _cmd.Email
+                             && p.Nick == _cmd.NickName
+                             && u.Password == _password
+                             select new
+                             {
+                                 userid = u.Userid,
+                                 profileid = p.Profileid,
+                                 emailVerified = u.Emailverified,
+                                 banned = u.Banned
+                             };
 
-//        public override void Response()
-//        {
-//            base.Response();
-//            _session.SendAsync($":{_session.ClientInfo.ServerIP} 001 {_session.ClientInfo.NickName} :Welcome!\r\n");
-//            _session.SendAsync(ChatServer.GenerateChatCommandBase(ChatResponse.ToPic, "#retrospy Test!"));
-//            _session.SendAsync(ChatServer.GenerateChatCommandBase(ChatResponse.EndOfNames, "#retrospy :End of names LIST"));
-//        }
-
-//        public override void SetCommandName()
-//        {
-//            CommandName = ChatRequest.LOGIN.ToString();
-//        }
-//    }
-//}
+                if (result.Count() != 1)
+                {
+                    _errorCode = ChatError.DataOperation;
+                    return;
+                }
+                _profileid = result.First().profileid;
+                _userid = result.First().userid;
+            }
+        }
+        public void UniqueNickLogin()
+        {
+            using (var db = new retrospyContext())
+            {
+                var result = from n in db.Subprofiles
+                           join p in db.Profiles on n.Profileid equals p.Profileid
+                           join u in db.Users on p.Userid equals u.Userid
+                           where n.Uniquenick == _cmd.UniqueNick
+                           && n.Namespaceid == _cmd.NameSpaceID
+                           select new
+                           {
+                               userid = u.Userid,
+                               profileid = p.Profileid,
+                               uniquenick = n.Uniquenick,
+                               emailVerified = u.Emailverified,
+                               banned = u.Banned
+                           };
+                if (result.Count() != 1)
+                {
+                    _errorCode = ChatError.DataOperation;
+                    return;
+                }
+                _profileid = result.First().profileid;
+                _userid = result.First().userid;
+            }
+        }
+    }
+}

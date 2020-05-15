@@ -130,13 +130,13 @@ namespace GameSpyLib.MiscMethod
             string password;
             if (dict.ContainsKey("passwordenc"))
             {
-                //we do nothing with encoded password                
+                //we decoded gamespy encoded password then get md5 of it         
                 password = DecodePassword(dict["passwordenc"]);
                 dict.Add("passenc", StringExtensions.GetMD5Hash(password));
             }
             if (dict.ContainsKey("passenc"))
             {
-                //we do nothing with encoded password                
+                //we decoded gamespy encoded password then get md5 of it  
                 password = DecodePassword(dict["passenc"]);
                 dict["passenc"] = StringExtensions.GetMD5Hash(password);
             }

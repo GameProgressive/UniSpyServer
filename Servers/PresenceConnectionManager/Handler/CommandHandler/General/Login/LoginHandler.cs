@@ -271,19 +271,18 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                                blocked = u.Banned
                            };
 
-                if (info.Count() == 1)
-                {
-                    _session.UserInfo.Userid = info.First().userid;
-                    _session.UserInfo.Profileid = info.First().profileid;
-                    _session.UserInfo.UniqueNick = info.First().uniquenick;
-                    _session.UserInfo.PasswordHash = info.First().password;
-                    _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
-                    _session.UserInfo.IsBlocked = info.First().blocked;
-                }
-                else
+                if (info.Count() != 1)
                 {
                     _errorCode = GPErrorCode.DatabaseError;
+                    return;
+                  
                 }
+                _session.UserInfo.Userid = info.First().userid;
+                _session.UserInfo.Profileid = info.First().profileid;
+                _session.UserInfo.UniqueNick = info.First().uniquenick;
+                _session.UserInfo.PasswordHash = info.First().password;
+                _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
+                _session.UserInfo.IsBlocked = info.First().blocked;
             }
         }
 
@@ -306,24 +305,17 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                                blocked = u.Banned
                            };
 
-                if (info.Count() == 0)
+                if (info.Count() != 1)
                 {
                     _errorCode = GPErrorCode.LoginBadUniquenick;
                     return;
                 }
-                else if (info.Count() == 1)
-                {
-                    _session.UserInfo.Userid = info.First().userid;
-                    _session.UserInfo.Profileid = info.First().profileid;
-                    _session.UserInfo.UniqueNick = info.First().uniquenick;
-                    _session.UserInfo.PasswordHash = info.First().password;
-                    _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
-                    _session.UserInfo.IsBlocked = info.First().blocked;
-                }
-                else
-                {
-                    _errorCode = GPErrorCode.DatabaseError;
-                }
+                _session.UserInfo.Userid = info.First().userid;
+                _session.UserInfo.Profileid = info.First().profileid;
+                _session.UserInfo.UniqueNick = info.First().uniquenick;
+                _session.UserInfo.PasswordHash = info.First().password;
+                _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
+                _session.UserInfo.IsBlocked = info.First().blocked;
             }
         }
 
@@ -348,21 +340,19 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                                blocked = u.Banned
                            };
 
-                if (info.Count() == 1)
-                {
-                    _session.UserInfo.Userid = info.First().userid;
-                    _session.UserInfo.Profileid = info.First().profileid;
-                    _session.UserInfo.UniqueNick = info.First().uniquenick;
-                    _session.UserInfo.PasswordHash = info.First().password;
-                    _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
-                    _session.UserInfo.IsBlocked = info.First().blocked;
-                    _session.UserInfo.Nick = info.First().nick;
-                    _session.UserInfo.Email = info.First().email;
-                }
-                else
+                if (info.Count() != 1)
                 {
                     _errorCode = GPErrorCode.DatabaseError;
+                    return;
                 }
+                _session.UserInfo.Userid = info.First().userid;
+                _session.UserInfo.Profileid = info.First().profileid;
+                _session.UserInfo.UniqueNick = info.First().uniquenick;
+                _session.UserInfo.PasswordHash = info.First().password;
+                _session.UserInfo.IsEmailVerified = (bool)info.First().emailVerified;
+                _session.UserInfo.IsBlocked = info.First().blocked;
+                _session.UserInfo.Nick = info.First().nick;
+                _session.UserInfo.Email = info.First().email;
             }
         }
 
