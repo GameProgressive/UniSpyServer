@@ -31,7 +31,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(RetroSpyMySqlConnStr, x => x.ServerVersion("10.4.6-mariadb"));
+                optionsBuilder.UseMySql(RetroSpyMySqlConnStr, x => x.ServerVersion("10.4.11-mariadb"));
             }
         }
 
@@ -862,9 +862,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Emailverified)
-                    .IsRequired()
                     .HasColumnName("emailverified")
-                    .HasDefaultValueSql("'1'");
+                    .HasColumnType("bit(1)")
+                    .HasDefaultValueSql("b'1'");
 
                 entity.Property(e => e.Lastip)
                     .HasColumnName("lastip")

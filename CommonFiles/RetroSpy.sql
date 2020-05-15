@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `blocked` (
   KEY `namespaceid` (`namespaceid`),
   CONSTRAINT `FK_blocked_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
   CONSTRAINT `FK_blocked_subprofiles` FOREIGN KEY (`namespaceid`) REFERENCES `subprofiles` (`namespaceid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='Block list.';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='Block list.';
 
 /*!40000 ALTER TABLE `blocked` DISABLE KEYS */;
 /*!40000 ALTER TABLE `blocked` ENABLE KEYS */;
@@ -4602,7 +4602,7 @@ CREATE TABLE IF NOT EXISTS `partner` (
 
 /*!40000 ALTER TABLE `partner` DISABLE KEYS */;
 INSERT INTO `partner` (`partnerid`, `partnername`) VALUES
-	(1, 'GameSpy');
+	(0, 'GameSpy');
 /*!40000 ALTER TABLE `partner` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `profiles` (
@@ -4657,7 +4657,7 @@ CREATE TABLE IF NOT EXISTS `profiles` (
 
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
 INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `serverflag`, `status`, `statstring`, `location`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `icquin`, `quietflags`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `adminrights`) VALUES
-	(1, 1, 'spyguy', 0, 0, '', 'earth', 'spy', 'guy', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, '00000', '1', 'rspy.org', 0, 0, 0, 0, 0, '', '', '', 0, 0, 0, '', 0, '', 0, 0, 0);
+	(1, 1, 'spyguy', 0, 0, 'I love RetroSpy', 'earth', 'spy', 'guy', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, '00000', '1', 'rspy.org', 0, 0, 0, 0, 0, '', '', '', 0, 0, 0, '', 0, '', 0, 0, 0);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `pstorage` (
@@ -4706,10 +4706,10 @@ CREATE TABLE IF NOT EXISTS `statusinfo` (
 CREATE TABLE IF NOT EXISTS `subprofiles` (
   `subprofileid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(11) unsigned NOT NULL,
+  `uniquenick` varchar(50) DEFAULT NULL,
   `namespaceid` int(11) unsigned NOT NULL DEFAULT 0,
   `partnerid` int(11) unsigned NOT NULL DEFAULT 0,
   `productid` int(11) unsigned DEFAULT NULL,
-  `uniquenick` varchar(50) DEFAULT NULL,
   `gamename` text DEFAULT NULL,
   `cdkeyenc` varchar(50) DEFAULT NULL,
   `firewall` tinyint(1) DEFAULT 0,
@@ -4725,15 +4725,15 @@ CREATE TABLE IF NOT EXISTS `subprofiles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='User subprofiles.';
 
 /*!40000 ALTER TABLE `subprofiles` DISABLE KEYS */;
-INSERT INTO `subprofiles` (`subprofileid`, `profileid`, `namespaceid`, `partnerid`, `productid`, `uniquenick`, `gamename`, `cdkeyenc`, `firewall`, `port`, `authtoken`) VALUES
-	(1, 1, 1, 1, 0, 'spyguy', 'gmtest', NULL, 0, 0, 'example_token');
+INSERT INTO `subprofiles` (`subprofileid`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `cdkeyenc`, `firewall`, `port`, `authtoken`) VALUES
+	(1, 1, 'spyguy', 0, 0, NULL, 'gmtest', NULL, 0, 0, 'example_token');
 /*!40000 ALTER TABLE `subprofiles` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `users` (
   `userid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `emailverified` tinyint(1) NOT NULL DEFAULT 1,
+  `emailverified` bit(1) NOT NULL DEFAULT b'1',
   `banned` tinyint(1) NOT NULL DEFAULT 0,
   `deleted` tinyint(1) NOT NULL DEFAULT 0,
   `lastip` varchar(16) DEFAULT NULL,
@@ -4745,7 +4745,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`userid`, `email`, `password`, `emailverified`, `banned`, `deleted`, `lastip`, `lastonline`, `createddate`) VALUES
-	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1, 0, 0, '127.0.0.1:80', '2020-02-13 12:39:48', '2019-08-11 09:07:27');
+	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', b'1', 0, 0, '127.0.0.1', '2020-05-15 21:17:00', '2019-08-11 09:07:27');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

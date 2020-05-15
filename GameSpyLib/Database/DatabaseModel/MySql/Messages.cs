@@ -13,4 +13,3 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
         public string Message { get; set; }
     }
 }
-
