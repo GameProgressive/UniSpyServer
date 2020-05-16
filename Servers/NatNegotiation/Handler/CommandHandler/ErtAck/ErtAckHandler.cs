@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure;
 using NatNegotiation.Entity.Structure.Packet;

@@ -5,6 +5,7 @@ using GameSpyLib.Logging;
 using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.CommandHandler.Available;
 using QueryReport.Handler.CommandHandler.Challenge;
+using QueryReport.Handler.CommandHandler.ClientMessage;
 using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
@@ -14,28 +15,31 @@ namespace QueryReport.Handler.CommandSwitcher
 {
     public class QRCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(ISession client, byte[] recv)
+        public void Switch(ISession session, byte[] recv)
         {
             try
             {
                 switch ((QRPacketType)recv[0])
                 {
                     case QRPacketType.AvaliableCheck:
-                        new AvailableHandler(client, recv).Handle();
+                        new AvailableHandler(session, recv).Handle();
                         break;
                     //verify challenge to check game server is real or fake;
                     //after verify we can add game server to server list
                     case QRPacketType.Challenge:
-                        new ChallengeHandler(client, recv).Handle();
+                        new ChallengeHandler(session, recv).Handle();
                         break;
                     case QRPacketType.HeartBeat: // HEARTBEAT
-                        new HeartBeatHandler(client, recv).Handle();
+                        new HeartBeatHandler(session, recv).Handle();
                         break;
                     case QRPacketType.KeepAlive:
-                        new KeepAliveHandler(client, recv).Handle();
+                        new KeepAliveHandler(session, recv).Handle();
                         break;
                     case QRPacketType.EchoResponse:
-                        new EchoHandler(client, recv).Handle();
+                        new EchoHandler(session, recv).Handle();
+                        break;
+                    case QRPacketType.ClientMessageACK:
+                        new ClientMessageACKHandler(session, recv).Handle();
                         break;
                     default:
                         LogWriter.UnknownDataRecieved(recv);

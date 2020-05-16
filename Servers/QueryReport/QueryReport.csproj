@@ -48,5 +48,6 @@
     <Folder Include="Handler\SystemHandler\PeerSystem\" />
     <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
     <Folder Include="Entity\Structure\NatNeg\" />
+    <Folder Include="Handler\CommandHandler\ClientMessage\" />
   </ItemGroup>
 </Project>

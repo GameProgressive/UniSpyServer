@@ -15,8 +15,15 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 
         protected override void ConstructeResponse()
         {
+
             KeepAlivePacket packet = new KeepAlivePacket();
             packet.Parse(_recv);
+
+            if (_session.InstantKey != packet.InstantKey)
+            {
+                _session.SetInstantKey(packet.InstantKey);
+            }
+
             _sendingBuffer = packet.BuildResponse();
             QRSession client = (QRSession)_session.GetInstance();
             var result = GameServer.GetServers(client.RemoteEndPoint);
@@ -25,7 +32,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
                 _errorCode = Entity.Enumerator.QRErrorCode.Database;
                 return;
             }
-
+            
             GameServer gameServer = result.First();
 
             gameServer.LastPacket = DateTime.Now;

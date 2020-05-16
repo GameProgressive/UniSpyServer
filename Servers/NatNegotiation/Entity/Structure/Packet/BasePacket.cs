@@ -10,7 +10,7 @@ namespace NatNegotiation.Entity.Structure.Packet
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public byte Version;
         public NatPacketType PacketType { get; set; }
-        public int Cookie;
+        public uint Cookie;
 
         public static readonly int Size = 12;
 
@@ -23,7 +23,7 @@ namespace NatNegotiation.Entity.Structure.Packet
 
             Version = recv[MagicData.Length];
             PacketType = (NatPacketType)recv[MagicData.Length + 1];
-            Cookie = BitConverter.ToInt32(ByteTools.SubBytes(recv, MagicData.Length + 2, 4));
+            Cookie = BitConverter.ToUInt32(ByteTools.SubBytes(recv, MagicData.Length + 2, 4));
 
             return true;
         }

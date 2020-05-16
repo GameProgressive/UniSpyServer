@@ -30,10 +30,15 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 
         protected override void ConstructeResponse()
         {
-            EchoPacket echo = new EchoPacket();
-            echo.Parse(_recv);
+            EchoPacket packet = new EchoPacket();
+            packet.Parse(_recv);
+            if (_session.InstantKey != packet.InstantKey)
+            {
+                _session.SetInstantKey(packet.InstantKey);
+            }
+
             // We send the echo packet to check the ping
-            _sendingBuffer = echo.BuildResponse();
+            _sendingBuffer = packet.BuildResponse();
 
             QRSession client = (QRSession)_session.GetInstance();
 

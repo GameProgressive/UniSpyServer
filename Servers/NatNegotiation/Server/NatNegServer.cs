@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Network;
-using NatNegotiation.Entity.Structure;
 using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
+using NatNegotiation.Handler.SystemHandler.NegotiationSession;
 using System.Collections.Concurrent;
 using System.Net;
 
@@ -18,6 +18,7 @@ namespace NatNegotiation.Server
         public override bool Start()
         {
             //new ClientListManager().Start();
+            new NatNegotiatorPool().Start();
             return base.Start();
         }
 

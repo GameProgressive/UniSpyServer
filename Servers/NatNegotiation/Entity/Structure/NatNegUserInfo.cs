@@ -1,4 +1,5 @@
-﻿using NatNegotiation.Entity.Structure.Packet;
+﻿using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Structure.Packet;
 using System;
 using System.Net;
 
@@ -7,9 +8,9 @@ namespace NatNegotiation.Entity.Structure
     public class NatNegUserInfo
     {
         public byte Version;
-        public int Cookie;
+        public uint Cookie;
         public byte ClientIndex;
-        public byte PortType;
+        public NatPortType PortType;
         public bool IsConnected;
         public bool IsGotInit;
         public bool IsGotConnectAck;
@@ -39,11 +40,6 @@ namespace NatNegotiation.Entity.Structure
             PortType = init.PortType;
             ClientIndex = init.ClientIndex;
             IsGotInit = true;
-        }
-
-        public void Parse(ConnectPacket connect)
-        {
-
         }
     }
 }

@@ -25,6 +25,8 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void CheckRequest()
         {
+            base.CheckRequest();
+
             BasePacket basePacket = new BasePacket();
 
             if (!basePacket.Parse(_recv))
@@ -51,16 +53,6 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             else if (_playerPos == -1 && _teamPos == -1)
             {
                 _reportType = HeartBeatReportType.ServerData;
-
-                //if (PeerGroup.PeerGroupKeyList.Contains(_gameServer.ServerData.KeyValue["gamename"])
-                //     && !_gameServer.ServerData.KeyValue.ContainsKey("hostport"))
-                //{
-                //    _gameServer.IsPeerServer = true;
-                //}
-                //GameServer.DeleteServer(
-                //    endPoint,
-                //    _gameServer.ServerData.KeyValue["gamename"]
-                //    );
             }
             else
             {
@@ -68,8 +60,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 return;
             }
 
-
-            base.CheckRequest();
+            _session.SetInstantKey(basePacket.InstantKey);
         }
 
         protected override void DataOperation()
@@ -94,6 +85,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer
            );
+
         }
 
         protected override void ConstructeResponse()

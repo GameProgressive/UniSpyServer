@@ -223,5 +223,18 @@ namespace Chat.Entity.Structure.ChatChannel
                 }
             }
         }
+
+        public string GetChannelValueString(List<string> keys)
+        {
+            string values = "";
+            foreach (var key in keys)
+            {
+                if (ChannelKeyValue.ContainsKey(key))
+                {
+                    values += @"\" + ChannelKeyValue[key];
+                }
+            }
+            return values;
+        }
     }
 }

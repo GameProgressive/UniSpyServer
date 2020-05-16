@@ -9,7 +9,7 @@ namespace NatNegotiation.Entity.Structure.Packet
     {
         public static new readonly int Size = BasePacket.Size + 9;
 
-        public byte PortType { get; protected set; }
+        public NatPortType PortType { get; protected set; }
         public byte ClientIndex { get; protected set; }
         public byte UseGamePort { get; protected set; }
         public string LocalIP { get; protected set; }
@@ -22,7 +22,7 @@ namespace NatNegotiation.Entity.Structure.Packet
             {
                 return false;
             }
-            PortType = recv[BasePacket.Size];//
+            PortType = (NatPortType)recv[BasePacket.Size];//
             ClientIndex = recv[BasePacket.Size + 1];//00
             UseGamePort = recv[BasePacket.Size + 2];//00
 
@@ -44,7 +44,7 @@ namespace NatNegotiation.Entity.Structure.Packet
 
             data.AddRange(base.BuildResponse(packetType));
 
-            data.Add(PortType);
+            data.Add((byte)PortType);
             data.Add(ClientIndex);
             data.Add(UseGamePort);
 
@@ -58,6 +58,12 @@ namespace NatNegotiation.Entity.Structure.Packet
         {
             LocalIP = ((IPEndPoint)end).Address.ToString();
             LocalPort = (ushort)((IPEndPoint)end).Port;
+            return this;
+        }
+
+        public InitPacket SetPortType(NatPortType type)
+        {
+            PortType = type;
             return this;
         }
     }

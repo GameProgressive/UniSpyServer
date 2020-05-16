@@ -14,8 +14,8 @@ namespace QueryReport.Entity.Structure.Packet
         public void Parse(EndPoint endPoint, byte[] recv)
         {
             base.Parse(recv);
-            RemoteIP = HtonsExtensions.EndPointToIP(endPoint);
-            RemotePort = HtonsExtensions.EndPointToPort(endPoint);
+            RemoteIP = HtonsExtensions.EndPointToIPString(endPoint);
+            RemotePort = HtonsExtensions.EndPointToPortString(endPoint);
         }
 
         public override byte[] BuildResponse()
