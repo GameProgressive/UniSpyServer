@@ -50,9 +50,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasName("id")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Namespaceid)
-                    .HasName("namespaceid");
-
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
@@ -108,9 +105,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasName("id")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Namespaceid)
-                    .HasName("namespaceid");
-
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
@@ -149,9 +143,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.HasIndex(e => e.Friendid)
                     .HasName("id")
                     .IsUnique();
-
-                entity.HasIndex(e => e.Namespaceid)
-                    .HasName("namespaceid");
 
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
@@ -274,9 +265,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                 entity.HasIndex(e => e.Messageid)
                     .HasName("id")
                     .IsUnique();
-
-                entity.HasIndex(e => e.Namespaceid)
-                    .HasName("namespaceid");
 
                 entity.Property(e => e.Messageid)
                     .HasColumnName("messageid")
@@ -634,9 +622,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.HasComment("Buddy status info.");
 
-                entity.HasIndex(e => e.Namespaceid)
-                    .HasName("namespaceid");
-
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
@@ -749,9 +734,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.HasComment("User subprofiles.");
 
-                entity.HasIndex(e => e.Namespaceid)
-                    .HasName("namespaceid");
-
                 entity.HasIndex(e => e.Partnerid)
                     .HasName("partnerid");
 
@@ -862,9 +844,9 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Emailverified)
+                    .IsRequired()
                     .HasColumnName("emailverified")
-                    .HasColumnType("bit(1)")
-                    .HasDefaultValueSql("b'1'");
+                    .HasDefaultValueSql("'1'");
 
                 entity.Property(e => e.Lastip)
                     .HasColumnName("lastip")

@@ -17,9 +17,7 @@ CREATE TABLE IF NOT EXISTS `addrequests` (
   PRIMARY KEY (`addrequestid`),
   UNIQUE KEY `id` (`addrequestid`),
   KEY `profileid` (`profileid`),
-  KEY `namespaceid` (`namespaceid`),
-  CONSTRAINT `FK_addrequests_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
-  CONSTRAINT `FK_addrequests_subprofiles` FOREIGN KEY (`namespaceid`) REFERENCES `subprofiles` (`namespaceid`)
+  CONSTRAINT `FK_addrequests_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='Friend request.';
 
 /*!40000 ALTER TABLE `addrequests` DISABLE KEYS */;
@@ -33,9 +31,7 @@ CREATE TABLE IF NOT EXISTS `blocked` (
   PRIMARY KEY (`blockid`),
   UNIQUE KEY `id` (`blockid`),
   KEY `profileid` (`profileid`),
-  KEY `namespaceid` (`namespaceid`),
-  CONSTRAINT `FK_blocked_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
-  CONSTRAINT `FK_blocked_subprofiles` FOREIGN KEY (`namespaceid`) REFERENCES `subprofiles` (`namespaceid`)
+  CONSTRAINT `FK_blocked_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='Block list.';
 
 /*!40000 ALTER TABLE `blocked` DISABLE KEYS */;
@@ -46,12 +42,10 @@ CREATE TABLE IF NOT EXISTS `friends` (
   `profileid` int(11) unsigned NOT NULL,
   `namespaceid` int(11) unsigned NOT NULL,
   `targetid` int(11) unsigned NOT NULL,
-  PRIMARY KEY (`friendid`),
+  PRIMARY KEY (`friendid`) USING BTREE,
   UNIQUE KEY `id` (`friendid`),
   KEY `profileid` (`profileid`),
-  KEY `namespaceid` (`namespaceid`),
-  CONSTRAINT `FK_friends_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
-  CONSTRAINT `FK_friends_subprofiles` FOREIGN KEY (`namespaceid`) REFERENCES `subprofiles` (`namespaceid`)
+  CONSTRAINT `FK_friends_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='Friend list.';
 
 /*!40000 ALTER TABLE `friends` DISABLE KEYS */;
@@ -4585,9 +4579,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `message` varchar(200) NOT NULL,
   PRIMARY KEY (`messageid`),
-  UNIQUE KEY `id` (`messageid`),
-  KEY `namespaceid` (`namespaceid`),
-  CONSTRAINT `FK_messages_subprofiles` FOREIGN KEY (`namespaceid`) REFERENCES `subprofiles` (`namespaceid`)
+  UNIQUE KEY `id` (`messageid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='Friend messages.';
 
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
@@ -4602,7 +4594,7 @@ CREATE TABLE IF NOT EXISTS `partner` (
 
 /*!40000 ALTER TABLE `partner` DISABLE KEYS */;
 INSERT INTO `partner` (`partnerid`, `partnername`) VALUES
-	(0, 'GameSpy');
+	(0, 'RetroSpy');
 /*!40000 ALTER TABLE `partner` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `profiles` (
@@ -4695,9 +4687,7 @@ CREATE TABLE IF NOT EXISTS `statusinfo` (
   PRIMARY KEY (`statusinfoid`),
   UNIQUE KEY `id` (`statusinfoid`),
   KEY `profileid` (`profileid`),
-  KEY `namespaceid` (`namespaceid`),
-  CONSTRAINT `FK_statusinfo_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`),
-  CONSTRAINT `FK_statusinfo_subprofiles` FOREIGN KEY (`namespaceid`) REFERENCES `subprofiles` (`namespaceid`)
+  CONSTRAINT `FK_statusinfo_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Buddy status info.';
 
 /*!40000 ALTER TABLE `statusinfo` DISABLE KEYS */;
@@ -4715,10 +4705,9 @@ CREATE TABLE IF NOT EXISTS `subprofiles` (
   `firewall` tinyint(1) DEFAULT 0,
   `port` int(5) unsigned DEFAULT 0,
   `authtoken` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`subprofileid`),
+  PRIMARY KEY (`subprofileid`) USING BTREE,
   UNIQUE KEY `id` (`subprofileid`),
   KEY `profileid` (`profileid`),
-  KEY `namespaceid` (`namespaceid`),
   KEY `partnerid` (`partnerid`),
   CONSTRAINT `FK_subprofiles_partner` FOREIGN KEY (`partnerid`) REFERENCES `partner` (`partnerid`),
   CONSTRAINT `FK_subprofiles_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
@@ -4733,19 +4722,19 @@ CREATE TABLE IF NOT EXISTS `users` (
   `userid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(50) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `emailverified` tinyint(1) NOT NULL DEFAULT b'1',
-  `banned` tinyint(1) NOT NULL DEFAULT 0,
-  `deleted` tinyint(1) NOT NULL DEFAULT 0,
+  `emailverified` tinyint(1) NOT NULL DEFAULT 1,
   `lastip` varchar(16) DEFAULT NULL,
   `lastonline` timestamp NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `createddate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `banned` tinyint(1) NOT NULL DEFAULT 0,
+  `deleted` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`userid`),
   UNIQUE KEY `id` (`userid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='User account information.';
 
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` (`userid`, `email`, `password`, `emailverified`, `banned`, `deleted`, `lastip`, `lastonline`, `createddate`) VALUES
-	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', b'1', 0, 0, '127.0.0.1', '2020-05-15 21:17:00', '2019-08-11 09:07:27');
+INSERT INTO `users` (`userid`, `email`, `password`, `emailverified`, `lastip`, `lastonline`, `createddate`, `banned`, `deleted`) VALUES
+	(1, 'spyguy@gamespy.com', '4a7d1ed414474e4033ac29ccb8653d9b', 1, '127.0.0.1', '2020-05-15 21:17:00', '2019-08-11 09:07:27', 0, 0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

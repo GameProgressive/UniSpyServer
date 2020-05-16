@@ -4,7 +4,7 @@ namespace GameSpyLib.RetroSpyConfig
 {
     public class DatabaseConfig
     {
-        public DatabaseTypes Type;
+        public DatabaseType Type;
         public string RemoteAddress;
         public int RemotePort;
         public string UserName;

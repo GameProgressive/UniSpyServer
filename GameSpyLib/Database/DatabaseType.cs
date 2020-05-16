@@ -1,6 +1,6 @@
 ﻿namespace GameSpyLib.Database
 {
-    public enum DatabaseTypes
+    public enum DatabaseType
     {
         MySql
     }

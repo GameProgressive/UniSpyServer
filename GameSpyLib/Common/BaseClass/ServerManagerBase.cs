@@ -32,7 +32,7 @@ namespace GameSpyLib.Common
             Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
             Console.WriteLine(StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
             Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            // Add all servers
+            //Add all servers
             foreach (ServerConfig cfg in ConfigManager.Config.Servers)
             {
                 StartServer(cfg);
@@ -46,11 +46,11 @@ namespace GameSpyLib.Common
         private void LoadDatabaseConfig()
         {
             DatabaseConfig dbConfig = ConfigManager.Config.Database;
-            // Determine which database is using and create the database connection
+            //Determine which database is used and establish the database connection.
 
             switch (dbConfig.Type)
             {
-                case DatabaseTypes.MySql:
+                case DatabaseType.MySql:
                     string mySqlConnStr =
                         string.Format(
                             "Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}",
