@@ -7,6 +7,7 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class NatifyHandler : NatNegCommandHandlerBase
     {
+        protected InitPacket _initPacket;
         public NatifyHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
@@ -17,16 +18,12 @@ namespace NatNegotiation.Handler.CommandHandler
             _initPacket.Parse(_recv);
         }
 
-        protected override void DataOperation()
-        {
-            _session.UserInfo.Version = _initPacket.Version;
-        }
-
         protected override void ConstructResponse()
         {
             _sendingBuffer =
                 _initPacket.SetIPAndPortForResponse(_session.RemoteEndPoint)
-                .BuildResponse(NatPacketType.ErtTest);
+                .SetPacketType(NatPacketType.ErtTest)
+                .BuildResponse();
         }
     }
 }

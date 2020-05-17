@@ -12,6 +12,7 @@ namespace NatNegotiation.Handler.CommandHandler
     /// </summary>
     public class ReportHandler : NatNegCommandHandlerBase
     {
+        protected ReportPacket _reportPacket;
         public ReportHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
@@ -24,12 +25,12 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void DataOperation()
         {
-            _session.UserInfo.IsGotReport = true;
+            _session.UserInfo.SetIsGotReportPacketFlag();
         }
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _reportPacket.BuildResponse(NatPacketType.ReportAck);
+            _sendingBuffer = _reportPacket.BuildResponse();
         }
 
         protected override void Response()

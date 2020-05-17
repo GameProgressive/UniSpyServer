@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
-using NatNegotiation.Entity.Structure;
 using NatNegotiation.Server;
 using System;
 
@@ -12,8 +11,6 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
         {
             try
             {
-                session.UserInfo.LastPacketTime = DateTime.Now;
-
                 //BytesRecieved[7] is nnpacket.PacketType.
                 switch ((NatPacketType)recv[7])
                 {
@@ -21,13 +18,13 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
                         new InitHandler(session, recv).Handle();
                         break;
                     case NatPacketType.AddressCheck:
-                        new AddressHandler(session, recv).Handle();
+                        new AddressCheckHandler(session, recv).Handle();
                         break;
                     case NatPacketType.NatifyRequest:
                         new NatifyHandler(session, recv).Handle();
                         break;
                     case NatPacketType.ConnectAck:
-                        session.UserInfo.IsGotConnectAck = true;
+                        session.UserInfo.SetIsGotConnectAckPacketFlag();
                         break;
                     case NatPacketType.Report:
                         new ReportHandler(session, recv).Handle();

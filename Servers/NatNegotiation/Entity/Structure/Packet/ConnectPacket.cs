@@ -20,10 +20,12 @@ namespace NatNegotiation.Entity.Structure.Packet
 
 
 
-        public override byte[] BuildResponse(NatPacketType packetType)
+        public override byte[] BuildResponse()
         {
             List<byte> data = new List<byte>();
-            data.AddRange(base.BuildResponse(packetType));
+
+            PacketType = NatPacketType.Connect;
+            data.AddRange(base.BuildResponse());
 
             data.AddRange(HtonsExtensions.
                 EndPointToIPBytes(RemoteEndPoint));

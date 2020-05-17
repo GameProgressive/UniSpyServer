@@ -14,7 +14,7 @@ namespace NatNegotiation.Handler.SystemHandler.Timer
             foreach (var c in NatNegServer.Sessions.Values)
             {
                 //Console.WriteLine(DateTime.Now.Subtract(c.LastPacketTime).TotalSeconds);
-                if (DateTime.Now.Subtract(c.UserInfo.LastPacketTime).TotalSeconds > 60)
+                if (DateTime.Now.Subtract(c.UserInfo.LastPacketRecieveTime).TotalSeconds > 60)
                 {
                     LogWriter.ToLog("Deleted client " + c.RemoteEndPoint.ToString());
                     NatNegServer.Sessions.TryRemove(c.RemoteEndPoint, out _);

@@ -37,12 +37,12 @@ namespace NatNegotiation.Entity.Structure.Packet
             return true;
         }
 
-        public override byte[] BuildResponse(NatPacketType packetType)
+        public override byte[] BuildResponse()
         {
 
             List<byte> data = new List<byte>();
 
-            data.AddRange(base.BuildResponse(packetType));
+            data.AddRange(base.BuildResponse());
 
             data.Add((byte)PortType);
             data.Add(ClientIndex);

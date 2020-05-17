@@ -4,10 +4,10 @@ using NatNegotiation.Entity.Structure.Packet;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
-    public class ErtACKHandler : NatNegCommandHandlerBase
+    public class AddressCheckHandler : NatNegCommandHandlerBase
     {
         protected InitPacket _initPacket;
-        public ErtACKHandler(ISession session, byte[] recv) : base(session, recv)
+        public AddressCheckHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
 
@@ -17,17 +17,16 @@ namespace NatNegotiation.Handler.CommandHandler
             _initPacket.Parse(_recv);
         }
 
-        protected override void DataOperation()
-        {
-            _session.UserInfo.Parse(_initPacket);
-        }
-
         protected override void ConstructResponse()
         {
             _sendingBuffer =
-                _initPacket.SetIPAndPortForResponse(_session.RemoteEndPoint)
-                .SetPacketType(NatPacketType.ErtAck)
+                _initPacket
+                .SetIPAndPortForResponse(_session.RemoteEndPoint)
+                .SetPacketType(NatPacketType.AddressReply)
                 .BuildResponse();
+
+            _session.UserInfo.SetIsGotAddressCheckPacketFlag().
+                UpdateLastPacketReceiveTime();
         }
     }
 }

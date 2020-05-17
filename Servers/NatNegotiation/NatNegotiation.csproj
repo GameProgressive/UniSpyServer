@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Handler\SystemHandler\" />
-    <Folder Include="Handler\CommandHandler\Address\" />
+    <Folder Include="Handler\CommandHandler\AddressCheck\" />
     <Folder Include="Handler\CommandHandler\ConnectACK\" />
     <Folder Include="Handler\CommandHandler\ErtAck\" />
     <Folder Include="Handler\CommandHandler\Init\" />

@@ -12,6 +12,7 @@ namespace NatNegotiation.Handler.CommandHandler
 {
     public class InitHandler : NatNegCommandHandlerBase
     {
+        protected InitPacket _initPacket;
         public InitHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
@@ -36,7 +37,9 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _initPacket.BuildResponse(NatPacketType.InitAck);
+            _sendingBuffer = _initPacket
+                .SetPacketType(NatPacketType.InitAck)
+                .BuildResponse();
         }
 
 
@@ -76,11 +79,20 @@ namespace NatNegotiation.Handler.CommandHandler
             LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiator {negotiator.RemoteEndPoint}");
             LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiatee {negotiatee.RemoteEndPoint}");
 
-            //ConnectPacket testPacket = new ConnectPacket();
-            //byte[] testData = testPacket.Parse(_initPacket).
-            //        SetRemoteEndPoint(_session.RemoteEndPoint).
-            //        BuildResponse(NatPacketType.Connect);
-            //_session.SendAsync(testData);
+            ConnectPacket packetToNegotiator = new ConnectPacket();
+            byte[] dataToNegotiator = packetToNegotiator.Parse(_initPacket).
+                    SetRemoteEndPoint(negotiatee.RemoteEndPoint).
+                    BuildResponse();
+
+            ConnectPacket packetToNegotiatee = new ConnectPacket();
+            byte[] dataToNegotiatee = packetToNegotiatee.Parse(_initPacket).
+                SetRemoteEndPoint(negotiator.RemoteEndPoint).
+                BuildResponse();
+
+
+            negotiator.SendAsync(dataToNegotiator);
+            negotiatee.SendAsync(dataToNegotiatee);
+
         }
     }
 }

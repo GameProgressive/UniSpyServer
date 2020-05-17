@@ -28,12 +28,12 @@ namespace NatNegotiation.Entity.Structure.Packet
             return true;
         }
 
-        public virtual byte[] BuildResponse(NatPacketType packetType)
+        public virtual byte[] BuildResponse()
         {
             List<byte> data = new List<byte>();
             data.AddRange(MagicData);
             data.Add(Version);
-            data.Add((byte)packetType);
+            data.Add((byte)PacketType);
             data.AddRange(BitConverter.GetBytes(Cookie));
 
             return data.ToArray();

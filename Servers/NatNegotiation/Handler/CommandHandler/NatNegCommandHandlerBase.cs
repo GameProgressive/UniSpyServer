@@ -1,8 +1,6 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using NatNegotiation.Entity.Enumerator;
-using NatNegotiation.Entity.Structure;
-using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Server;
 
 namespace NatNegotiation.Handler.CommandHandler
@@ -13,11 +11,8 @@ namespace NatNegotiation.Handler.CommandHandler
     /// </summary>
     public class NatNegCommandHandlerBase : CommandHandlerBase
     {
-        protected NNErrorCode _errorCode = NNErrorCode.NoError;
+        protected NNErrorCode _errorCode;
         protected byte[] _sendingBuffer;
-        protected InitPacket _initPacket;
-        protected ConnectPacket _connPacket;
-        protected ReportPacket _reportPacket;
         protected new NatNegSession _session;
         protected byte[] _recv;
 
@@ -25,6 +20,7 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             _recv = recv;
             _session = (NatNegSession)session.GetInstance();
+            _errorCode = NNErrorCode.NoError;
         }
 
         public override void Handle()
@@ -52,6 +48,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected virtual void CheckRequest()
         {
+            _session.UserInfo.UpdateLastPacketReceiveTime();
         }
 
         protected virtual void DataOperation()
