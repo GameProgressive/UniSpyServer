@@ -100,4 +100,14 @@
         PromiscuityNotApplicable,
         NumPromiscuityTypes
     }
+
+    public enum NatNegotiationResult
+    {
+        Success,
+        DeadBeatPartner,
+        InitTimeOut,
+        PingTimeOut,
+        UnknownError,
+        NoResult
+    }
 }

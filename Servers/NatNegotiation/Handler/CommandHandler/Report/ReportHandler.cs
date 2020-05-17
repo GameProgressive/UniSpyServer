@@ -1,9 +1,7 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
-using NatNegotiation.Entity.Structure;
 using NatNegotiation.Entity.Structure.Packet;
-using System.Net;
+using NatNegotiation.Handler.SystemHandler.NatNegotiatorManage;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -26,17 +24,19 @@ namespace NatNegotiation.Handler.CommandHandler
         protected override void DataOperation()
         {
             _session.UserInfo.SetIsGotReportPacketFlag();
+
+            if (_reportPacket.NatResult != NatNegotiationResult.Success)
+            {
+                NatNegotiatorPool.FindNatNegotiatorsAndSendConnectPacket(NatPortType.GP, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiatorPool.FindNatNegotiatorsAndSendConnectPacket(NatPortType.NN1, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiatorPool.FindNatNegotiatorsAndSendConnectPacket(NatPortType.NN2, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiatorPool.FindNatNegotiatorsAndSendConnectPacket(NatPortType.NN3, _reportPacket.Version, _reportPacket.Cookie);
+            }
         }
 
         protected override void ConstructResponse()
         {
             _sendingBuffer = _reportPacket.BuildResponse();
-        }
-
-        protected override void Response()
-        {
-            LogWriter.ToLog("Client: " + ((IPEndPoint)_session.RemoteEndPoint).Address.ToString() + "natneg failed!");
-            base.Response();
         }
     }
 }

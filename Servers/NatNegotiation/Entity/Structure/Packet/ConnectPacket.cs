@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Extensions;
 using NatNegotiation.Entity.Enumerator;
-using System;
 using System.Collections.Generic;
 using System.Net;
 
@@ -32,6 +31,7 @@ namespace NatNegotiation.Entity.Structure.Packet
 
             data.AddRange(HtonsExtensions.
                 EndPointToHtonsPortBytes(RemoteEndPoint));
+
             data.Add(GotYourData);
             data.Add(Finished);
 
@@ -44,10 +44,10 @@ namespace NatNegotiation.Entity.Structure.Packet
             return this;
         }
 
-        public ConnectPacket Parse(InitPacket initPacket)
+        public ConnectPacket SetVersionAndCookie(byte version, uint cookie)
         {
-            Version = initPacket.Version;
-            Cookie = initPacket.Cookie;
+            Version = version;
+            Cookie = cookie;
             return this;
         }
 

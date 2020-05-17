@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Network;
 using NatNegotiation.Handler.CommandHandler.CommandSwitcher;
-using NatNegotiation.Handler.SystemHandler.NegotiationSession;
+using NatNegotiation.Handler.SystemHandler.NatNegotiatorManage;
 using System.Collections.Concurrent;
 using System.Net;
 

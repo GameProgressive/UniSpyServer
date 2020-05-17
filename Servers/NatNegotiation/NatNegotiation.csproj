@@ -31,7 +31,7 @@
     <Folder Include="Handler\CommandHandler\Report\" />
     <Folder Include="Handler\SystemHandler\Timer\" />
     <Folder Include="Handler\CommandSwitcher\" />
-    <Folder Include="Handler\SystemHandler\NegotiationSession\" />
+    <Folder Include="Handler\SystemHandler\NatNegotiatorManage\" />
   </ItemGroup>
 
   <ItemGroup>
