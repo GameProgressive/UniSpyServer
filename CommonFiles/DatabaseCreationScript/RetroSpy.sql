@@ -4595,6 +4595,8 @@ CREATE TABLE IF NOT EXISTS `partner` (
 /*!40000 ALTER TABLE `partner` DISABLE KEYS */;
 INSERT INTO `partner` (`partnerid`, `partnername`) VALUES
 	(0, 'RetroSpy');
+INSERT INTO `partner` (`partnerid`, `partnername`) VALUES
+	(95, 'Crytek');	
 /*!40000 ALTER TABLE `partner` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `profiles` (
