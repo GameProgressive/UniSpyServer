@@ -9,6 +9,7 @@ services:
     image: gameprogressive/cdkey
     ports:
     - "29910:29910"
+    - "29910:29910/udp"
     stdin_open: true
     tty: true
 

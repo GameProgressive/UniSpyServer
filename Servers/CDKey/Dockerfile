@@ -1,6 +1,7 @@
 FROM mcr.microsoft.com/dotnet/core/runtime:3.1.2-alpine3.11 AS base
 WORKDIR /app
 EXPOSE 29910
+EXPOSE 29910/udp
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102-alpine3.11 AS build
 WORKDIR /src
