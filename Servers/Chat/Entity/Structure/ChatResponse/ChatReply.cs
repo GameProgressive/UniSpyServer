@@ -146,19 +146,19 @@ namespace Chat.Entity.Structure.ChatResponse
             return userInfo.BuildReply(ListEnd);
         }
 
-        public static string BuildNoticeReply(ChatChannelUser user, string channelName, string message)
+        public static string BuildNoticeReply(ChatUserInfo info, string targetName, string message)
         {
-            return user.BuildReply(NOTICE, $"{channelName}", message);
+            return info.BuildReply(NOTICE, $"{targetName}", message);
         }
 
-        public static string BuildPrivMsgReply(ChatChannelUser user, string channelName, string message)
+        public static string BuildPrivMsgReply(ChatUserInfo info, string targetName, string message)
         {
-            return user.BuildReply(PRIVMSG, $"{channelName}", message);
+            return info.BuildReply(PRIVMSG, $"{targetName}", message);
         }
 
-        public static string BuildUTMReply(ChatChannelUser user, string name, string message)
+        public static string BuildUTMReply(ChatUserInfo info, string name, string message)
         {
-            return user.BuildReply(UTM, name, message);
+            return info.BuildReply(UTM, name, message);
         }
 
         public static string BuildJoinReply(ChatChannelUser user, string channelName)
@@ -190,9 +190,9 @@ namespace Chat.Entity.Structure.ChatResponse
                 $"{user.UserInfo.NickName} {channelName} {modes}");
         }
 
-        public static string BuildATMReply(ChatChannelUser user, string name, string message)
+        public static string BuildATMReply(ChatUserInfo info, string name, string message)
         {
-            return user.BuildReply(ATM, $"{name} {message}");
+            return info.BuildReply(ATM, $"{name} {message}");
         }
 
         public static string BuildNoTopicReply(string channelName)
@@ -214,6 +214,15 @@ namespace Chat.Entity.Structure.ChatResponse
         public static string BuildGetChanKeyReply(ChatChannelUser user, string channelName, string cookie, string flags)
         {
             return user.BuildReply(GetChanKey, $"param1 {channelName} {cookie} {flags}");
+        }
+
+        public static string BuildGetKeyReply(ChatUserInfo info, string cookie, string flags)
+        {
+            return info.BuildReply(GetKey, $"param1 {info.NickName} {cookie} {flags}");
+        }
+        public static string BuildEndOfGetKeyReply(ChatUserInfo info, string cookie)
+        {
+            return info.BuildReply(EndGetKey, $"param1 param2 {cookie} param4","End of GETKEY.");
         }
     }
 }

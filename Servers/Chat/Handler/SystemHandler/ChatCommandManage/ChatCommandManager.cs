@@ -27,6 +27,9 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             AddCommand(new NAMES(), typeof(NAMESHandler));
             AddCommand(new PART(), typeof(PARTHandler));
             AddCommand(new WHOIS(), typeof(WHOISHandler));
+
+            AddCommand(new GETKEY(), typeof(GETKEYHandler));
+            //AddCommand(new SETKEY(), typeof(SETKEYHandler));
             AddCommand(new SETCKEY(), typeof(SETCKEYHandler));
             AddCommand(new GETCKEY(), typeof(GETCKEYHandler));
             AddCommand(new SETCHANKEY(), typeof(SETCHANKEYHandler));
@@ -34,11 +37,13 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             AddCommand(new PRIVMSG(), typeof(PRIVMSGHandler));
             AddCommand(new TOPIC(),typeof(TOPICHandler));
             AddCommand(new PING(), typeof(PINGHandler));
-            AddCommand(new UTM(), typeof(UTMHandler));
-            AddCommand(new ATM(), typeof(ATMHandler));
+
             AddCommand(new KICK(), typeof(KICKHandler));
             AddCommand(new QUIT(), typeof(QUITHandler));
             AddCommand(new LOGIN(), typeof(LOGINHandler));
+            AddCommand(new NOTICE(), typeof(NOTICEHandler));
+            AddCommand(new UTM(), typeof(UTMHandler));
+            AddCommand(new ATM(), typeof(ATMHandler));
         }
 
         public ChatCommandManager AddCommand(ChatCommandBase cmd, Type cmdHandlerType)

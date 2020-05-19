@@ -6,7 +6,7 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class KICKHandler : ChatJoinedChannelHandlerBase
+    public class KICKHandler : ChatChannelHandlerBase
     {
         new KICK _cmd;
         ChatChannelUser _kickee;

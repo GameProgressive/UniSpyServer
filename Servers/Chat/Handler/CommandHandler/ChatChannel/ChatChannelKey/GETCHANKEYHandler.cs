@@ -1,11 +1,15 @@
-﻿using System;
-using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class GETCHANKEYHandler : ChatJoinedChannelHandlerBase
+    // Sets channel key/values.
+    // If user is NULL or "", the keys will be set on the channel.
+    // Otherwise, they will be set on the user,
+    // Only ops can set channel keys on other users.
+    // Set a value to NULL or "" to clear that key.
+    public class GETCHANKEYHandler : ChatChannelHandlerBase
     {
         new GETCHANKEY _cmd;
         string _values;

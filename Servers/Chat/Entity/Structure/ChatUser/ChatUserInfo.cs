@@ -14,6 +14,14 @@ namespace Chat.Entity.Structure.ChatUser
         public bool IsQuietMode { get; protected set; }
         public string PublicIPAddress { get; protected set; }
 
+
+        public ChatUserInfo()
+        {
+            ClientCTX = new GSPeerChatCTX();
+            ServerCTX = new GSPeerChatCTX();
+            JoinedChannels = new ConcurrentBag<ChatChannelBase>();
+        }
+
         public ChatUserInfo SetQuietModeFlag(bool flag)
         {
             IsQuietMode = flag;
@@ -96,12 +104,6 @@ namespace Chat.Entity.Structure.ChatUser
             return this;
         }
 
-        public ChatUserInfo()
-        {
-            ClientCTX = new GSPeerChatCTX();
-            ServerCTX = new GSPeerChatCTX();
-            JoinedChannels = new ConcurrentBag<ChatChannelBase>();
-        }
 
         public ChatUserInfo SetDefaultUserInfo(EndPoint endPoint)
         {

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
@@ -11,7 +10,8 @@ using GameSpyLib.Common.Entity.Interface;
 namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
 {
     /// <summary>
-    /// Get a channel user information
+    /// Get a channel user's basic information
+    /// same as WHOIS
     /// </summary>
     public class WHOHandler : ChatLogedInHandlerBase
     {

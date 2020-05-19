@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
+
     public class SETCKEY : ChatChannelCommandBase
     {
         public string NickName { get; protected set; }

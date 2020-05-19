@@ -74,7 +74,8 @@ namespace Chat.Handler.CommandHandler
                 _channel.Property.SetPeerServerFlag(true);
             }
 
-            _user.SetCreatorProperties();
+            _user.SetDefaultProperties(true);
+
             _channel.Property.SetDefaultProperties(_user, _cmd);
 
             //simple check for avoiding program crash

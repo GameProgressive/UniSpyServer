@@ -15,7 +15,7 @@ namespace Chat.Entity.Structure.ChatCommand
             Keys = new List<string>();
         }
 
-        public string Target { get; protected set; }
+        public string NickName { get; protected set; }
         public string Cookie { get; protected set; }
 
         public List<string> Keys { get; protected set; }
@@ -40,7 +40,7 @@ namespace Chat.Entity.Structure.ChatCommand
                 return false;
             }
 
-            Target = _cmdParams[0];
+            NickName = _cmdParams[0];
             Cookie = _cmdParams[1];
 
             _longParam = _longParam.Substring(0, _longParam.Length - 2);

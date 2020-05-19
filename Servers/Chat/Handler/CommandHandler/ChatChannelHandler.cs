@@ -7,12 +7,13 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class ChatJoinedChannelHandlerBase : ChatLogedInHandlerBase
+    public class ChatChannelHandlerBase : ChatLogedInHandlerBase
     {
         protected ChatChannelBase _channel;
         protected ChatChannelUser _user;
         new ChatChannelCommandBase _cmd;
-        public ChatJoinedChannelHandlerBase(ISession session, ChatCommandBase cmd) : base(session, cmd)
+
+        public ChatChannelHandlerBase(ISession session, ChatCommandBase cmd) : base(session, cmd)
         {
             _cmd = (ChatChannelCommandBase)cmd;
         }

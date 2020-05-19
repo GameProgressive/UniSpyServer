@@ -3,7 +3,7 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class PARTHandler : ChatJoinedChannelHandlerBase
+    public class PARTHandler : ChatChannelHandlerBase
     {
         new PART _cmd;
         public PARTHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)

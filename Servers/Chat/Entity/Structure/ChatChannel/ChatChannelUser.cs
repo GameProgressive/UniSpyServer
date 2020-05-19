@@ -21,26 +21,21 @@ namespace Chat.Entity.Structure.ChatChannel
             UserKeyValue = new Dictionary<string, string>();
         }
 
-        public ChatChannelUser()
-        {
-        }
-
-        public void SetDefaultProperties()
+        public void SetDefaultProperties(bool isCreator = false)
         {
             IsVoiceable = true;
             IsChannelCreator = false;
             IsChannelOperator = false;
             UserKeyValue.Add("username", UserInfo.UserName);
-            UserKeyValue.Add("b_flags", "s");
-        }
 
-        public void SetCreatorProperties()
-        {
-            IsVoiceable = true;
-            IsChannelCreator = true;
-            IsChannelOperator = true;
-            UserKeyValue.Add("username", UserInfo.UserName);
-            UserKeyValue.Add("b_flags", "sh");
+            if (isCreator)
+            {
+                UserKeyValue.Add("b_flags", "sh");
+            }
+            else
+            {
+                UserKeyValue.Add("b_flags", "s");
+            }
         }
 
         public ChatChannelUser SetVoicePermission(bool flag = true)
@@ -90,7 +85,7 @@ namespace Chat.Entity.Structure.ChatChannel
             return @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"];
         }
 
-        public string GetValuesString(List<string> keys)
+        public string GetUserValuesString(List<string> keys)
         {
             string values = "";
             foreach (var key in keys)

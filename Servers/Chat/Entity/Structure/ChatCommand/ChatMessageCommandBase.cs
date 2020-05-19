@@ -1,8 +1,15 @@
 ﻿namespace Chat.Entity.Structure.ChatCommand
 {
-    public class ChatMessageCommandBase : ChatCommandBase
+    public enum ChatMessageType
     {
-        public string ChannelName { get; protected set; }
+        ChannelMessage,
+        UserMessage
+    }
+
+    public class ChatMessageCommandBase : ChatChannelCommandBase
+    {
+        public ChatMessageType RequestType { get; protected set; }
+        public string NickName { get; protected set; }
         public string Message { get; protected set; }
 
         public override bool Parse(string recv)
@@ -11,7 +18,18 @@
             {
                 return false;
             }
-            ChannelName = _cmdParams[0];
+
+            if (_cmdParams[0].Contains("#"))
+            {
+                RequestType = ChatMessageType.ChannelMessage;
+            }
+            else
+            {
+                RequestType = ChatMessageType.UserMessage;
+                ChannelName = null;
+                NickName = _cmdParams[0];
+            }
+
             Message = _longParam;
             return true;
         }

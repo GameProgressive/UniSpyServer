@@ -6,7 +6,8 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class GETCKEYHandler : ChatJoinedChannelHandlerBase
+
+    public class GETCKEYHandler : ChatChannelHandlerBase
     {
         new GETCKEY _cmd;
 
@@ -59,6 +60,7 @@ namespace Chat.Handler.CommandHandler
                     user, _channel.Property.ChannelName,
                     _cmd.Cookie, flags);
         }
+
         private void GetUserKeyValue(ChatChannelUser user)
         {
             //we do not have key value so we do not construct getckey response
@@ -80,7 +82,7 @@ namespace Chat.Handler.CommandHandler
 
         private void GetAllKeyValues(ChatChannelUser user)
         {
-            string flags = user.GetValuesString(_cmd.Keys);
+            string flags = user.GetUserValuesString(_cmd.Keys);
 
             //todo check the paramemter 
             _sendingBuffer +=

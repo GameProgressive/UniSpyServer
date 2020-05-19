@@ -5,7 +5,12 @@ using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler
 {
-    public class SETCHANKEYHandler : ChatJoinedChannelHandlerBase
+    // Sets channel key/values.
+    // If user is NULL or "", the keys will be set on the channel.
+    // Otherwise, they will be set on the user,
+    // Only ops can set channel keys on other users.
+    // Set a value to NULL or "" to clear that key.
+    public class SETCHANKEYHandler : ChatChannelHandlerBase
     {
         new SETCHANKEY _cmd;
 

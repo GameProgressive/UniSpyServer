@@ -8,26 +8,29 @@ namespace Chat.Handler.CommandHandler
 {
     public class NICKHandler : ChatCommandHandlerBase
     {
-        NICK _nickCmd;
+        new NICK _cmd;
         public NICKHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
         {
-            _nickCmd = (NICK)cmd;
+            _cmd = (NICK)cmd;
         }
 
         public override void CheckRequest()
         {
-            if (ChatSessionManager.IsNickNameExisted(_nickCmd.NickName))
+
+            base.CheckRequest();
+
+            if (ChatSessionManager.IsNickNameExisted(_cmd.NickName))
             {
                 _errorCode = ChatError.IRCError;
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
             }
-            base.CheckRequest();
+
         }
 
         public override void DataOperation()
         {
             base.DataOperation();
-            _session.UserInfo.SetNickName(_nickCmd.NickName);
+            _session.UserInfo.SetNickName(_cmd.NickName);
         }
 
         public override void ConstructResponse()
@@ -39,7 +42,7 @@ namespace Chat.Handler.CommandHandler
 
             _session.UserInfo.SetLoginFlag(true);
 
-           
+
             //check this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             //_sendingBuffer += ChatCommandBase.BuildMessageRPL(
             //_nickCmd.NickName, $"MODE {_nickCmd.NickName}", "+iwx");
