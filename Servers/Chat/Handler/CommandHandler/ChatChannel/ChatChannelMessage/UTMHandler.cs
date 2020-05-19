@@ -23,14 +23,26 @@ namespace Chat.Handler.CommandHandler
                 case ChatMessageType.ChannelMessage:
                     _sendingBuffer =
                         ChatReply.BuildUTMReply(
-                            _user.UserInfo, _cmd.NickName, _cmd.Message);
+                            _user.UserInfo, _cmd.ChannelName, _cmd.Message);
+                   // MultiCastUTM();
                     break;
                 case ChatMessageType.UserMessage:
                     _sendingBuffer =
                         ChatReply.BuildUTMReply(
-                        _otherSession.UserInfo, _channel.Property.ChannelName, _cmd.Message);
+                        _otherSession.UserInfo, _cmd.NickName, _cmd.Message);
                     break;
             }
         }
+
+        private void MultiCastUTM()
+        {
+            foreach (var user in _channel.Property.ChannelUsers)
+            {
+                string message = ChatReply.BuildUTMReply(
+                            user.UserInfo, _cmd.ChannelName, _cmd.Message);
+                user.Session.SendAsync(message);
+            }
+        }
+
     }
 }

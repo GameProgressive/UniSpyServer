@@ -23,7 +23,7 @@ namespace Chat.Handler.CommandHandler
                 case ChatMessageType.ChannelMessage:
                     _sendingBuffer =
                         ChatReply.BuildATMReply(
-                        _user.UserInfo, _channel.Property.ChannelName, _cmd.Message);
+                        _user.UserInfo, _cmd.ChannelName, _cmd.Message);
                     break;
                 case ChatMessageType.UserMessage:
                     _sendingBuffer =
