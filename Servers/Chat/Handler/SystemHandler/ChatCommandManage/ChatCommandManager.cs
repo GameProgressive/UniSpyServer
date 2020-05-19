@@ -1,5 +1,7 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.CommandHandler;
+using Chat.Handler.CommandHandler.ChatBasicCommandHandler;
+using Chat.Handler.CommandHandler.ChatChannel.ChatChannelKey;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using System;
@@ -18,32 +20,42 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
 
         public void Start()
         {
-            AddCommand(new CRYPT(), typeof(CRYPTHandler));
-            AddCommand(new USRIP(), typeof(USRIPHandler));
-            AddCommand(new USER(), typeof(USERHandler));
-            AddCommand(new NICK(), typeof(NICKHandler));
+            //ChatChannelKey
+            AddCommand(new GETCHANKEY(), typeof(GETCHANKEYHandler));
+            AddCommand(new SETCHANKEY(), typeof(SETCHANKEYHandler));
+            AddCommand(new GETCKEY(), typeof(GETCKEYHandler));
+            AddCommand(new SETCKEY(), typeof(SETCKEYHandler));
+            AddCommand(new GETKEY(), typeof(GETKEYHandler));
+            AddCommand(new SETKEY(), typeof(SETKEYHandler));
+
+            //ChatChannelMessage
+            AddCommand(new ATM(), typeof(ATMHandler));
+            AddCommand(new NOTICE(), typeof(NOTICEHandler));
+            AddCommand(new PRIVMSG(), typeof(PRIVMSGHandler));
+            AddCommand(new UTM(), typeof(UTMHandler));
+
+            //ChatChannel
             AddCommand(new JOIN(), typeof(JOINHandler));
-            AddCommand(new MODE(),typeof(MODEHandler));
-            AddCommand(new NAMES(), typeof(NAMESHandler));
+            AddCommand(new KICK(), typeof(KICKHandler));
+            AddCommand(new MODE(), typeof(MODEHandler));
             AddCommand(new PART(), typeof(PARTHandler));
+            AddCommand(new TOPIC(), typeof(TOPICHandler));
+
+            //ChatLoggedIn
+            //AddCommand(new GETUDPRELAY(), typeof(GETUDPRELAYHandler));
+            //AddCommand(new LIST(), typeof(LISTHandler));
+            AddCommand(new NAMES(), typeof(NAMESHandler));
+            AddCommand(new PING(), typeof(PINGHandler));
+            AddCommand(new QUIT(), typeof(QUITHandler));
+            AddCommand(new USER(), typeof(USERHandler));
+            AddCommand(new USRIP(), typeof(USRIPHandler));
+            AddCommand(new WHO(), typeof(WHOHandler));
             AddCommand(new WHOIS(), typeof(WHOISHandler));
 
-            AddCommand(new GETKEY(), typeof(GETKEYHandler));
-            //AddCommand(new SETKEY(), typeof(SETKEYHandler));
-            AddCommand(new SETCKEY(), typeof(SETCKEYHandler));
-            AddCommand(new GETCKEY(), typeof(GETCKEYHandler));
-            AddCommand(new SETCHANKEY(), typeof(SETCHANKEYHandler));
-            AddCommand(new GETCHANKEY(), typeof(GETCHANKEYHandler));
-            AddCommand(new PRIVMSG(), typeof(PRIVMSGHandler));
-            AddCommand(new TOPIC(),typeof(TOPICHandler));
-            AddCommand(new PING(), typeof(PINGHandler));
-
-            AddCommand(new KICK(), typeof(KICKHandler));
-            AddCommand(new QUIT(), typeof(QUITHandler));
+            //ChatNotLoggedIn
+            AddCommand(new CRYPT(), typeof(CRYPTHandler));
             AddCommand(new LOGIN(), typeof(LOGINHandler));
-            AddCommand(new NOTICE(), typeof(NOTICEHandler));
-            AddCommand(new UTM(), typeof(UTMHandler));
-            AddCommand(new ATM(), typeof(ATMHandler));
+            AddCommand(new NICK(), typeof(NICKHandler));
         }
 
         public ChatCommandManager AddCommand(ChatCommandBase cmd, Type cmdHandlerType)
