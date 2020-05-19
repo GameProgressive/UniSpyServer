@@ -46,9 +46,9 @@ namespace Chat.Entity.Structure.ChatChannel
         /// <returns></returns>
         public virtual bool MultiCast(string message)
         {
-            foreach (var o in Property.ChannelUsers)
+            foreach (var user in Property.ChannelUsers)
             {
-                o.Session.SendAsync(message);
+                user.Session.SendAsync(message);
             }
 
             return true;
