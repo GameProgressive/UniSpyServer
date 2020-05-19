@@ -76,10 +76,10 @@ namespace Chat.Entity.Structure.ChatUser
             GameSecretKey = key;
             return this;
         }
-        public bool IsLogedIn { get; protected set; }
+        public bool IsLoggedIn { get; protected set; }
         public ChatUserInfo SetLoginFlag(bool flag)
         {
-            IsLogedIn = flag;
+            IsLoggedIn = flag;
             return this;
         }
 
@@ -110,7 +110,7 @@ namespace Chat.Entity.Structure.ChatUser
             NameSpaceID = 0;
             UseEncryption = false;
             IsQuietMode = false;
-            IsLogedIn = false;
+            IsLoggedIn = false;
             PublicIPAddress = ((IPEndPoint)endPoint).Address.ToString();
             return this;
         }

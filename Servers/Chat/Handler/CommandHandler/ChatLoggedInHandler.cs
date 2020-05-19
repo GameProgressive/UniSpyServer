@@ -13,7 +13,7 @@ namespace Chat.Handler.CommandHandler
 
         public override void Handle()
         {
-            if (!_session.UserInfo.IsLogedIn)
+            if (!_session.UserInfo.IsLoggedIn)
             {
                 return;
             }
