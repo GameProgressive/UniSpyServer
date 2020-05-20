@@ -35,11 +35,6 @@ namespace Chat.Entity.Structure.ChatCommand
                 return false;
             }
 
-            if (_longParam.Last() != '\0')
-            {
-                return false;
-            }
-
             NickName = _cmdParams[0];
             Cookie = _cmdParams[1];
 

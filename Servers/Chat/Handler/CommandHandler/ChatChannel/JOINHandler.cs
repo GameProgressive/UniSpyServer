@@ -40,7 +40,7 @@ namespace Chat.Handler.CommandHandler
             }
 
             //game spy only allow one player join one chat room
-            if (_session.UserInfo.JoinedChannels.Count > 1)
+            if (_session.UserInfo.JoinedChannels.Count > 2)
             {
                 _sendingBuffer =
                     ChatIRCError.BuildToManyChannelError(_cmd.ChannelName);

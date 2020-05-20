@@ -72,7 +72,7 @@ namespace GameSpyLib.Network
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            if (size > 2048)
+            if (size > 4096)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "[Spam] client spam we ignored!");
                 return;
