@@ -28,7 +28,7 @@ namespace Chat.Handler.CommandHandler
         private void BuildUserMessage()
         {
             _sendingBuffer =
-                ChatReply.BuildPrivMsgReply(_otherSession.UserInfo, _cmd.NickName, _cmd.Message);
+                ChatReply.BuildPrivMsgReply(_user.UserInfo, _cmd.NickName, _cmd.Message);
         }
 
         private void BuildChannelMessage()

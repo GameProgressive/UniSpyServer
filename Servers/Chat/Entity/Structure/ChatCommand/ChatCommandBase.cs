@@ -96,7 +96,14 @@ namespace Chat.Entity.Structure.ChatCommand
             return BuildReply(userInfo, command, cmdParams, "");
         }
 
-
+        /// <summary>
+        /// Build the message
+        /// </summary>
+        /// <param name="userInfo">this is prefix used to indicate the message source</param>
+        /// <param name="command"></param>
+        /// <param name="cmdParams"></param>
+        /// <param name="tailing"></param>
+        /// <returns></returns>
         public static string BuildReply(ChatUserInfo userInfo, string command, string cmdParams, string tailing)
         {
             string prefix = $"{userInfo.NickName}!{userInfo.UserName}@{ChatServer.ServerDomain}";

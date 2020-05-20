@@ -18,10 +18,12 @@ namespace Chat.Handler.CommandHandler
             switch (_cmd.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
-                    _sendingBuffer = ChatReply.BuildNoticeReply(_user.UserInfo, _cmd.NickName, _cmd.Message);
+                    _sendingBuffer = ChatReply.BuildNoticeReply(
+                            _user.UserInfo, _cmd.NickName, _cmd.Message);
                     break;
                 case ChatMessageType.UserMessage:
-                    _sendingBuffer = ChatReply.BuildNoticeReply(_otherSession.UserInfo, _cmd.NickName, _cmd.Message);
+                    _sendingBuffer = ChatReply.BuildNoticeReply(
+                        _user.UserInfo, _cmd.NickName, _cmd.Message);
                     break;
             }
         }

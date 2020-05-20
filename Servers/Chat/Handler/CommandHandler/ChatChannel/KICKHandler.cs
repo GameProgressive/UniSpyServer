@@ -25,6 +25,7 @@ namespace Chat.Handler.CommandHandler
 
             if (!_user.IsChannelOperator)
             {
+                _errorCode = ChatError.NotChannelOperator;
                 return;
             }
             if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _kickee))
@@ -42,11 +43,6 @@ namespace Chat.Handler.CommandHandler
                 ChatReply.BuildKickReply(
                     _channel.Property.ChannelName,
                     _user, _kickee, _cmd.Reason);
-        }
-
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
         }
 
         public override void Response()

@@ -146,14 +146,14 @@ namespace Chat.Entity.Structure.ChatResponse
             return userInfo.BuildReply(ListEnd);
         }
 
-        public static string BuildNoticeReply(ChatUserInfo info, string targetName, string message)
+        public static string BuildNoticeReply(ChatUserInfo senderInfo, string targetName, string message)
         {
-            return info.BuildReply(NOTICE, $"{targetName}", message);
+            return senderInfo.BuildReply(NOTICE, $"{targetName}", message);
         }
 
-        public static string BuildPrivMsgReply(ChatUserInfo info, string targetName, string message)
+        public static string BuildPrivMsgReply(ChatUserInfo senderInfo, string targetName, string message)
         {
-            return info.BuildReply(PRIVMSG, $"{targetName}", message);
+            return senderInfo.BuildReply(PRIVMSG, $"{targetName}", message);
         }
 
         public static string BuildUTMReply(ChatUserInfo info, string name, string message)
@@ -161,14 +161,14 @@ namespace Chat.Entity.Structure.ChatResponse
             return info.BuildReply(UTM, name, message);
         }
 
-        public static string BuildJoinReply(ChatChannelUser user, string channelName)
+        public static string BuildJoinReply(ChatChannelUser joiner, string channelName)
         {
-            return user.BuildReply(JOIN, channelName);
+            return joiner.BuildReply(JOIN, channelName);
         }
 
-        public static string BuildPartReply(ChatChannelUser user, string channelName, string reason)
+        public static string BuildPartReply(ChatChannelUser leaver, string channelName, string reason)
         {
-            return user.BuildReply(PART, channelName, reason);
+            return leaver.BuildReply(PART, channelName, reason);
         }
 
         public static string BuildNameReply(string nickName, string channelName, string nicks)

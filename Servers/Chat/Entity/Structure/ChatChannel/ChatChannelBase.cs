@@ -53,6 +53,7 @@ namespace Chat.Entity.Structure.ChatChannel
 
             return true;
         }
+
         public virtual bool MultiCastExceptSender(ChatChannelUser sender, string message)
         {
             foreach (var o in Property.ChannelUsers)
