@@ -89,10 +89,12 @@ namespace Chat.Entity.Structure.ChatChannel
                 }
             }
 
-            if (nicks.Length < 3)
+            // crysis2's nickname is * length =1 
+            if (nicks.Length < 1)
             {
                 return;
             }
+
             //if user equals last user in channel we do not add space after it
             nicks = nicks.Substring(0, nicks.Length - 1);
 
