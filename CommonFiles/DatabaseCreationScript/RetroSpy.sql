@@ -4594,9 +4594,8 @@ CREATE TABLE IF NOT EXISTS `partner` (
 
 /*!40000 ALTER TABLE `partner` DISABLE KEYS */;
 INSERT INTO `partner` (`partnerid`, `partnername`) VALUES
-	(0, 'RetroSpy');
-INSERT INTO `partner` (`partnerid`, `partnername`) VALUES
-	(95, 'Crytek');	
+	(0, 'RetroSpy'),
+	(95, 'Crytek');
 /*!40000 ALTER TABLE `partner` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `profiles` (
@@ -4710,8 +4709,6 @@ CREATE TABLE IF NOT EXISTS `subprofiles` (
   PRIMARY KEY (`subprofileid`) USING BTREE,
   UNIQUE KEY `id` (`subprofileid`),
   KEY `profileid` (`profileid`),
-  KEY `partnerid` (`partnerid`),
-  CONSTRAINT `FK_subprofiles_partner` FOREIGN KEY (`partnerid`) REFERENCES `partner` (`partnerid`),
   CONSTRAINT `FK_subprofiles_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC COMMENT='User subprofiles.';
 

@@ -14,7 +14,6 @@
         public uint? Port { get; set; }
         public string Authtoken { get; set; }
 
-        public virtual Partner Partner { get; set; }
         public virtual Profiles Profile { get; set; }
     }
 }

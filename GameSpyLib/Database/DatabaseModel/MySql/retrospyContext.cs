@@ -734,9 +734,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
 
                 entity.HasComment("User subprofiles.");
 
-                entity.HasIndex(e => e.Partnerid)
-                    .HasName("partnerid");
-
                 entity.HasIndex(e => e.Profileid)
                     .HasName("profileid");
 
@@ -796,12 +793,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
-
-                entity.HasOne(d => d.Partner)
-                    .WithMany(p => p.Subprofiles)
-                    .HasForeignKey(d => d.Partnerid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_subprofiles_partner");
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Subprofiles)
