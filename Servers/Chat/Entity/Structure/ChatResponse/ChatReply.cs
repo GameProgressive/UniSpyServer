@@ -111,15 +111,15 @@ namespace Chat.Entity.Structure.ChatResponse
                     );
         }
 
-        public static string BuildGetCKeyReply(ChatChannelUser user, string channelName, string cookie, string flags)
+        public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)
         {
-            return user.BuildReply(GetCKey,
-                $"* {channelName} {user.UserInfo.NickName} {cookie} {flags}");
+            return ChatCommandBase.BuildReply(GetCKey,
+                $"* {channelName} {nickname} {cookie} {flags}");
         }
 
-        public static string BuildEndOfGetCKeyReply(ChatChannelUser user, string channelName, string cookie)
+        public static string BuildEndOfGetCKeyReply(string channelName, string cookie)
         {
-            return user.BuildReply(EndGetCKey,
+            return ChatCommandBase.BuildReply(EndGetCKey,
                   $"* {channelName} {cookie}",
                   "End Of /GETCKEY.");
         }
@@ -131,9 +131,9 @@ namespace Chat.Entity.Structure.ChatResponse
                reason);
         }
 
-        public static string BuildModeReply(ChatChannelUser user, string channelName, string modes)
+        public static string BuildModeReply(string channelName, string modes)
         {
-            return user.BuildReply(MODE, $"{channelName} {modes}");
+            return ChatCommandBase.BuildReply(MODE, $"{channelName} {modes}");
         }
 
         public static string BuildListStartReply(ChatUserInfo userInfo, ChatChannelProperty property)
@@ -186,7 +186,7 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildChannelModesReply(ChatChannelUser user, string channelName, string modes)
         {
-            return user.BuildReply(ChannelModels,
+            return ChatCommandBase.BuildReply(ChannelModels,
                 $"{user.UserInfo.NickName} {channelName} {modes}");
         }
 
@@ -222,7 +222,7 @@ namespace Chat.Entity.Structure.ChatResponse
         }
         public static string BuildEndOfGetKeyReply(ChatUserInfo info, string cookie)
         {
-            return info.BuildReply(EndGetKey, $"param1 param2 {cookie} param4","End of GETKEY.");
+            return info.BuildReply(EndGetKey, $"param1 param2 {cookie} param4", "End of GETKEY.");
         }
     }
 }

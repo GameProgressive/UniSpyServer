@@ -26,7 +26,7 @@ namespace Chat.Entity.Structure.ChatChannel
 
             joinMessage +=
                 ChatReply.BuildModeReply(
-                    joiner, Property.ChannelName, modes);
+                   Property.ChannelName, modes);
 
             MultiCast(joinMessage);
         }
@@ -74,7 +74,7 @@ namespace Chat.Entity.Structure.ChatChannel
 
             string buffer =
                 ChatReply.BuildModeReply(
-                joiner, Property.ChannelName, modes);
+               Property.ChannelName, modes);
 
             string nicks = "";
             foreach (var user in Property.ChannelUsers)
@@ -241,7 +241,7 @@ namespace Chat.Entity.Structure.ChatChannel
         {
             if (Property.IsPeerServer && user.IsChannelCreator)
             {
-                RemoveAllUserAndShutDownChannel(user);
+                KickAllUserAndShutDownChannel(user);
             }
             else
             {
@@ -251,7 +251,7 @@ namespace Chat.Entity.Structure.ChatChannel
             RemoveBindOnUserAndChannel(user);
         }
 
-        private void RemoveAllUserAndShutDownChannel(ChatChannelUser kicker)
+        private void KickAllUserAndShutDownChannel(ChatChannelUser kicker)
         {
             foreach (var user in Property.ChannelUsers)
             {

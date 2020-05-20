@@ -90,14 +90,20 @@ namespace Chat.Handler.CommandHandler
             //todo check the paramemter
             if (IsSetOthersKeyValue)
             {
-                _sendingBuffer = ChatReply.BuildGetCKeyReply(_otherUser, _channel.Property.ChannelName, "BCAST", flags);
+                _sendingBuffer =
+                    ChatReply.BuildGetCKeyReply(
+                        _otherUser.UserInfo.NickName,
+                        _channel.Property.ChannelName,
+                        "BCAST", flags);
             }
             else
             {
-                _sendingBuffer = ChatReply.BuildGetCKeyReply(_user, _channel.Property.ChannelName, "BCAST", flags);
+                _sendingBuffer =
+                    ChatReply.BuildGetCKeyReply(
+                        _user.UserInfo.NickName,
+                        _channel.Property.ChannelName,
+                        "BCAST", flags);
             }
-      
-          
         }
     }
 }

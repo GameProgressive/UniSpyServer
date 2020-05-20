@@ -27,7 +27,7 @@ namespace Chat.Handler.CommandHandler
                 case ChatMessageType.UserMessage:
                     _sendingBuffer =
                         ChatReply.BuildUTMReply(
-                        _user.UserInfo, _cmd.NickName, _cmd.Message);
+                        _session.UserInfo, _cmd.NickName, _cmd.Message);
                     break;
             }
         }

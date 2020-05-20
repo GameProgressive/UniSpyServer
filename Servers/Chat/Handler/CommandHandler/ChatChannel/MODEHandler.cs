@@ -88,7 +88,7 @@ namespace Chat.Handler.CommandHandler
 
             _sendingBuffer =
                 ChatReply.BuildModeReply(
-                _user, _channel.Property.ChannelName, modes);
+                 _channel.Property.ChannelName, modes);
         }
 
         private void ProcessOtherModeRequest()

@@ -57,7 +57,7 @@ namespace Chat.Handler.CommandHandler
             string flags = user.GetBFlagsString();
 
             _sendingBuffer += ChatReply.BuildGetCKeyReply(
-                    user, _channel.Property.ChannelName,
+                    user.UserInfo.NickName, _channel.Property.ChannelName,
                     _cmd.Cookie, flags);
         }
 
@@ -87,7 +87,8 @@ namespace Chat.Handler.CommandHandler
             //todo check the paramemter 
             _sendingBuffer +=
                 ChatReply.BuildGetCKeyReply(
-                    user, _channel.Property.ChannelName,
+                    user.UserInfo.NickName,
+                    _channel.Property.ChannelName,
                     _cmd.Cookie, flags);
         }
 
@@ -96,7 +97,7 @@ namespace Chat.Handler.CommandHandler
         {
             _sendingBuffer +=
                 ChatReply.BuildEndOfGetCKeyReply(
-                    _user, _channel.Property.ChannelName,
+                  _channel.Property.ChannelName,
                     _cmd.Cookie);
         }
     }

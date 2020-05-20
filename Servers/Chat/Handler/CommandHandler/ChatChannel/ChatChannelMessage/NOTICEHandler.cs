@@ -19,11 +19,11 @@ namespace Chat.Handler.CommandHandler
             {
                 case ChatMessageType.ChannelMessage:
                     _sendingBuffer = ChatReply.BuildNoticeReply(
-                            _user.UserInfo, _cmd.NickName, _cmd.Message);
+                            _user.UserInfo, _cmd.ChannelName, _cmd.Message);
                     break;
                 case ChatMessageType.UserMessage:
                     _sendingBuffer = ChatReply.BuildNoticeReply(
-                        _user.UserInfo, _cmd.NickName, _cmd.Message);
+                        _session.UserInfo, _cmd.NickName, _cmd.Message);
                     break;
             }
         }
