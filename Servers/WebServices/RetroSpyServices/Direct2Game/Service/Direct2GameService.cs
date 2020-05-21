@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Xml.Linq;
-namespace RetroSpyServices.Motd
+using RetroSpyServices.Direct2Game.Entity.Interface;
+using RetroSpyServices.Direct2Game.Entity.Structure.Model;
+
+namespace RetroSpyServices.Direct2Game.Service
 {
-    public class MotdService : IMotdService
+    public class Direct2GameService : IDirect2GameService
     {
         public string Test(string s)
         {
@@ -13,7 +16,7 @@ namespace RetroSpyServices.Motd
         {
             Console.WriteLine(xml.ToString());
         }
-        public MotdServiceModel TestMotdServiceModel(MotdServiceModel customModel)
+        public Direct2GameServiceModel TestDirect2GameServiceModel(Direct2GameServiceModel customModel)
         {
             return customModel;
         }

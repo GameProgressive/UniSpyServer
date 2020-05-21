@@ -1,5 +1,8 @@
 ﻿using System.ServiceModel;
-namespace RetroSpyServices.Authentication
+using System.Xml.Linq;
+using RetroSpyServices.Authentication.Entity.Structure.Model;
+
+namespace RetroSpyServices.Authentication.Entity.Interface
 {
     [ServiceContract]
     public interface IAuthService
@@ -8,8 +11,10 @@ namespace RetroSpyServices.Authentication
         string LoginUniqueNick(string s);
 
         [OperationContract]
-        void XmlMethod(System.Xml.Linq.XElement xml);
+        void XmlMethod(XElement xml);
+
         [OperationContract]
         AuthServiceModel TestAuthServiceModel(AuthServiceModel inputModel);
+
     }
 }

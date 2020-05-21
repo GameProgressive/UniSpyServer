@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
-namespace RetroSpyServices.Motd
+namespace RetroSpyServices.Direct2Game.Entity.Structure.Model
 {
     [DataContract]
-    public class MotdServiceModel
+    public class Direct2GameServiceModel
     {
         [DataMember]
         public int Id { get; set; }

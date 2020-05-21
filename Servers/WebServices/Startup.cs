@@ -4,6 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using RetroSpyServices.Authentication.Service;
+using RetroSpyServices.Sake.Service;
 using SoapCore;
 using System.ServiceModel;
 
@@ -24,14 +26,14 @@ namespace WebServices
             services.AddRouting();
             services.AddSoapCore();
 
-            // PublicServices
-            services.TryAddSingleton<RetroSpyServices.Authentication.AuthService>();
-            services.TryAddSingleton<RetroSpyServices.Competitive.CompetitiveService>();
-            services.TryAddSingleton<RetroSpyServices.Direct2Game.Direct2GameService>();
+            //// PublicServices
+            //services.TryAddSingleton<RetroSpyServices.Authentication.AuthService>();
+            //services.TryAddSingleton<RetroSpyServices.Competitive.CompetitiveService>();
+            //services.TryAddSingleton<RetroSpyServices.Direct2Game.Direct2GameService>();
 
             // Non-PublicServices
-            services.TryAddSingleton<RetroSpyServices.Motd.MotdService>();
-            services.TryAddSingleton<RetroSpyServices.Sake.StorageServer>();
+            // services.TryAddSingleton<RetroSpyServices.Motd.MotdService>();
+            services.TryAddSingleton<SakeStorageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,13 +44,17 @@ namespace WebServices
             app.UseEndpoints(endpoints =>
             {
                 // PublicServices
-                endpoints.UseSoapEndpoint<RetroSpyServices.Authentication.AuthService>("/AuthService/AuthService.asmx", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
+                endpoints.UseSoapEndpoint<AuthService>(
+                    "/AuthService/AuthService.asmx",
+                    new BasicHttpBinding(), SoapSerializer.XmlSerializer);
                 //endpoints.UseSoapEndpoint<PublicServices.Competitive.CompetitiveService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
                 //endpoints.UseSoapEndpoint<PublicServices.Direct2Game.Direct2GameService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
 
                 // Non-PublicServices
                 //endpoints.UseSoapEndpoint<Motd.MotdService>("/motd/motd.asp", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
-                //endpoints.UseSoapEndpoint<Sake.StorageServer>("/SakeStorageServer/StorageServer.asmx", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
+                endpoints.UseSoapEndpoint<SakeStorageService>(
+                    "/SakeStorageServer/StorageServer.asmx",
+                    new BasicHttpBinding(), SoapSerializer.XmlSerializer);
             });
         }
     }

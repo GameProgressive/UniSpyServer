@@ -1,13 +1,15 @@
 ﻿using System.Runtime.Serialization;
-namespace RetroSpyServices.Sake
+namespace RetroSpyServices.Competitive.Entity.Structure.Model
 {
     [DataContract]
-    public class StorageServerModel
+    public class CompetitiveServiceModel
     {
         [DataMember]
         public int Id { get; set; }
+
         [DataMember]
         public string Name { get; set; }
+
         [DataMember]
         public string Email { get; set; }
     }

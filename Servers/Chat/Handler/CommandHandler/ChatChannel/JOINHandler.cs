@@ -44,6 +44,7 @@ namespace Chat.Handler.CommandHandler
             {
                 _sendingBuffer =
                     ChatIRCError.BuildToManyChannelError(_cmd.ChannelName);
+                return;
             }
         }
 
@@ -109,18 +110,27 @@ namespace Chat.Handler.CommandHandler
             if (_channel.IsUserBanned(_user))
             {
                 _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildBannedFromChannelError(_channel.Property.ChannelName);
                 return;
             }
-
+            if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
+            {
+                _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildChannelIsFullError(_channel.Property.ChannelName);
+                return;
+            }
             //if all pass, it mean  we excute join channel
             _user.SetDefaultProperties();
 
 
             //simple check for avoiding program crash
-            if (!_channel.IsUserExisted(_user))
+            if (_channel.IsUserExisted(_user))
             {
-                _channel.AddBindOnUserAndChannel(_user);
+                _errorCode = ChatError.UserAlreadyInChannel;
+                return;
             }
+
+            _channel.AddBindOnUserAndChannel(_user);
 
             //first we send join information to all user in this channel
             _channel.MultiCastJoin(_user);

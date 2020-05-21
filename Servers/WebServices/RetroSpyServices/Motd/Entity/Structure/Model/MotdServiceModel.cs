@@ -1,8 +1,8 @@
 ﻿using System.Runtime.Serialization;
-namespace RetroSpyServices.Competitive
+namespace RetroSpyServices.Motd.Entity.Structure.Model
 {
     [DataContract]
-    public class CompetitiveServiceModel
+    public class MotdServiceModel
     {
         [DataMember]
         public int Id { get; set; }

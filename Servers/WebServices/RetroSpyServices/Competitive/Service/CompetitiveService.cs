@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Xml.Linq;
-namespace RetroSpyServices.Competitive
+using RetroSpyServices.Competitive.Entity.Interface;
+using RetroSpyServices.Competitive.Entity.Structure.Model;
+
+namespace RetroSpyServices.Competitive.Service
 {
     public class CompetitiveService : ICompetitiveService
     {
