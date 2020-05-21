@@ -12,7 +12,7 @@ namespace RetroSpyServices.Sake.Entity.Interface
         public void DeleteRecord(XElement request);
 
         [OperationContract]
-        public void GetRecordLimit(XElement request);
+        public void GetRecordLimit(SakeGetRecordLimitModel request);
 
         [OperationContract]
         public void GetRandomRecords(XElement request);
