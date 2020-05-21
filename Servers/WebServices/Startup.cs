@@ -5,6 +5,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using RetroSpyServices.Authentication.Service;
+using RetroSpyServices.Competitive.Service;
+using RetroSpyServices.Direct2Game.Service;
+using RetroSpyServices.Motd.Service;
 using RetroSpyServices.Sake.Service;
 using SoapCore;
 using System.ServiceModel;
@@ -23,16 +26,15 @@ namespace WebServices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRouting();
-            services.AddSoapCore();
+            services
+                .AddRouting()
+                .AddSoapCore();
 
-            //// PublicServices
-            //services.TryAddSingleton<RetroSpyServices.Authentication.AuthService>();
-            //services.TryAddSingleton<RetroSpyServices.Competitive.CompetitiveService>();
-            //services.TryAddSingleton<RetroSpyServices.Direct2Game.Direct2GameService>();
-
-            // Non-PublicServices
-            // services.TryAddSingleton<RetroSpyServices.Motd.MotdService>();
+            //PublicServices
+            //services.TryAddSingleton<AuthService>();
+            //services.TryAddSingleton<CompetitiveService>();
+            //services.TryAddSingleton<Direct2GameService>();
+            //services.TryAddSingleton<MotdService>();
             services.TryAddSingleton<SakeStorageService>();
         }
 

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
 {
     [DataContract]
-    public class SakeDeleteModel
+    public class SakeDeleteRecordModel
     {
         [DataMember(Name = "DeleteRecord")]
         public string DeleteRecord { get; set; }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml;
+using System.Xml.Linq;
 using RetroSpyServices.Sake.Entity.Interface;
 using WebServices.RetroSpyServices.Sake.Entity.Structure.Model;
 
@@ -7,47 +8,47 @@ namespace RetroSpyServices.Sake.Service
 {
     public class SakeStorageService : ISakeStorageService
     {
-        public void CreateRecord(XmlElement request)
+        public void CreateRecord(XElement request)
+        {
+            Console.WriteLine(request.ToString());
+        }
+
+        public void DeleteRecord(XElement request)
         {
             throw new NotImplementedException();
         }
 
-        public bool DeleteRecord(SakeDeleteModel request)
+        public void GetMyRecords(XElement request)
         {
             throw new NotImplementedException();
         }
 
-        public void GetMyRecords(XmlElement request)
+        public void GetRandomRecords(XElement request)
         {
             throw new NotImplementedException();
         }
 
-        public void GetRandomRecords(XmlElement request)
+        public void GetRecordLimit(XElement request)
         {
             throw new NotImplementedException();
         }
 
-        public void GetRecordLimit(XmlElement request)
+        public void GetSpecificRecords(XElement request)
         {
             throw new NotImplementedException();
         }
 
-        public void GetSpecificRecords(XmlElement request)
+        public void RateRecord(XElement request)
         {
             throw new NotImplementedException();
         }
 
-        public void RateRecord(XmlElement request)
+        public void SearchForRecords(XElement request)
         {
             throw new NotImplementedException();
         }
 
-        public void SearchForRecords(XmlElement request)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void UpdateRecord(XmlElement request)
+        public void UpdateRecord(XElement request)
         {
             throw new NotImplementedException();
         }

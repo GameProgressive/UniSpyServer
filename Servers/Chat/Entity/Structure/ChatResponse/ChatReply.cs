@@ -77,13 +77,13 @@ namespace Chat.Entity.Structure.ChatResponse
         {
             return ChatCommandBase.BuildReply(
                     WhoReply,
-                    $"* {channelName} " +
-                    $"{userInfo.UserName} {userInfo.PublicIPAddress} * {userInfo.NickName} {modes} param7");
+                    $"param1 {channelName} " +
+                    $"{userInfo.UserName} {userInfo.PublicIPAddress} param5 {userInfo.NickName} {modes} param8");
         }
 
-        public static string BuildEndOfWhoReply(ChatUserInfo userInfo)
+        public static string BuildEndOfWhoReply(string name)
         {
-            return ChatCommandBase.BuildReply(EndOfWho, $"* {userInfo.NickName} param3");
+            return ChatCommandBase.BuildReply(EndOfWho, $"param1 {name} param3","End of WHO.");
         }
 
         public static string BuildWhoIsUserReply(ChatUserInfo userInfo)

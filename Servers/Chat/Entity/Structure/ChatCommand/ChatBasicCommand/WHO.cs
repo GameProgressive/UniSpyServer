@@ -8,7 +8,9 @@
     public class WHO : ChatCommandBase
     {
         //TODO becareful there are channel name
-        public string Name { get; protected set; }
+        public string ChannelName { get; protected set; }
+        public string NickName { get; protected set; }
+
         public WHOType RequestType { get; protected set; }
         public override bool Parse(string recv)
         {
@@ -21,15 +23,15 @@
                 return false;
             }
 
-            Name = _cmdParams[0];
-
-            if (Name.Contains("#"))
+            if (_cmdParams[0].Contains("#"))
             {
                 RequestType = WHOType.GetChannelUsersInfo;
+                NickName = _cmdParams[0];
             }
             else
             {
                 RequestType = WHOType.GetUserInfo;
+                ChannelName = _cmdParams[0];
             }
             return true;
         }

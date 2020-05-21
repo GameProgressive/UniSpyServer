@@ -34,15 +34,15 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
                     GetUserInfo();
                     break;
             }
-            BuildEndOfWhoReply();
         }
 
         private void GetChannelUsersInfo()
         {
             ChatChannelBase channel;
-            if (!ChatChannelManager.GetChannel(_cmd.Name, out channel))
+            if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out channel))
             {
                 _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
                 return;
             }
             _sendingBuffer = "";
@@ -52,8 +52,10 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
                 _sendingBuffer +=
                     ChatReply.BuildWhoReply(
                         channel.Property.ChannelName,
-                        user.UserInfo,user.GetUserModes());
+                        user.UserInfo, user.GetUserModes());
             }
+            _sendingBuffer +=
+                ChatReply.BuildEndOfWhoReply(channel.Property.ChannelName);
         }
 
         /// <summary>
@@ -63,24 +65,14 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
         {
             ChatSession session;
 
-            if (ChatSessionManager.GetSessionByNickName(_cmd.Name, out session))
-            {
-                BuildWhoReplyForUser(session);
-            }
-            else if (ChatSessionManager.GetSessionByUserName(_cmd.Name, out session))
-            {
-                BuildWhoReplyForUser(session);
-            }
-            else //todo check whether we need this error
+            if (!ChatSessionManager.GetSessionByUserName(_cmd.NickName, out session))
             {
                 _errorCode = ChatError.IRCError;
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                return;
             }
-        }
 
-        private void BuildEndOfWhoReply()
-        {
-            _sendingBuffer += ChatReply.BuildEndOfWhoReply(_session.UserInfo);
+            BuildWhoReplyForUser(session);
         }
 
         private void BuildWhoReplyForUser(ChatSession session)
@@ -96,6 +88,8 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
                         session.UserInfo,
                         user.GetUserModes());
             }
+            _sendingBuffer +=
+                ChatReply.BuildEndOfWhoReply(session.UserInfo.NickName);
         }
     }
 }
