@@ -11,8 +11,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
     /// </summary>
     public class OthersHandler : PSPCommandHandlerBase
     {
-
-
         private uint _profileid;
 
         public OthersHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
@@ -21,7 +19,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
 
         protected override void CheckRequest()
         {
-
             base.CheckRequest();
 
             if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
@@ -35,7 +32,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                 _errorCode = GPErrorCode.Parse;
                 return;
             }
-
         }
 
         protected override void DataOperation()

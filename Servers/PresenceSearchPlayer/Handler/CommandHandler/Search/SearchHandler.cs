@@ -17,7 +17,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 {
     public class SearchHandler : PSPCommandHandlerBase
     {
-
         private uint _profileid;
         private uint _partnerid;
         private int _skip;

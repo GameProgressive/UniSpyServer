@@ -171,7 +171,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             }
             else
             {
-                //GPCM
                 _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\id\1\final\";
                 //_sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _subProfiles.Profileid);
             }

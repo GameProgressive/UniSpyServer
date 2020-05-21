@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General.Logout
 
         protected override void DataOperation()
         {
-            GPCMServer.LoggedInSession.Remove(_session.Id, out _);
+            PCMServer.LoggedInSession.Remove(_session.Id, out _);
         }
     }
 }

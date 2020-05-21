@@ -34,21 +34,21 @@ services:
     stdin_open: true
     tty: true
 
-  gpcm:
+  pcm:
     build:
       context: .
       dockerfile: ./Servers/PresenceConnectionManager/Dockerfile
-    image: gameprogressive/gpcm
+    image: gameprogressive/pcm
     ports:
     - "29900:29900"
     stdin_open: true
     tty: true
 
-  gpsp:
+  psp:
     build:
       context: .
       dockerfile: ./Servers/PresenceSearchPlayer/Dockerfile
-    image: gameprogressive/gpsp
+    image: gameprogressive/psp
     ports:
     - "29901:29901"
     stdin_open: true

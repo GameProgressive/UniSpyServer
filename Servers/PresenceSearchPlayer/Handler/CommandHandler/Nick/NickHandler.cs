@@ -26,13 +26,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                 return;
             }
 
-            // First, we try to receive an encoded password
+            //First, we try to receive an encoded password
             if (!_recv.ContainsKey("passenc"))
             {
-                // If the encoded password is not sended, we try receiving the password in plain text
+                //If the encoded password is not sended, we try receiving the password in plain text
                 if (!_recv.ContainsKey("pass"))
                 {
-                    // No password is specified, we cannot continue                   
+                    //No password is specified, we cannot continue                   
                     _errorCode = GPErrorCode.Parse;
                     return;
                 }

@@ -17,14 +17,14 @@
   },
   "Servers": [
     {
-      "Name": "GPCM",
+      "Name": "PCM",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "29900",
       "RemoteAddress": "",
       "RemotePort": "29900"
     },
     {
-      "Name": "GPSP",
+      "Name": "PSP",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "29901",
       "RemoteAddress": "",

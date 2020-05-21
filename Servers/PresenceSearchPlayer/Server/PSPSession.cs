@@ -3,9 +3,9 @@ using PresenceSearchPlayer.Handler.CommandSwitcher;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPSession : TemplateTcpSession
+    public class PSPSession : TemplateTcpSession
     {
-        public GPSPSession(GPSPServer server) : base(server)
+        public PSPSession(PSPServer server) : base(server)
         {
         }
 

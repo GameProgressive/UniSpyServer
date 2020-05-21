@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
         /// </summary>
         public static void ExtendedFunction(ISession client)
         {
-            GPCMSession _session = (GPCMSession)client.GetInstance();
+            PCMSession _session = (PCMSession)client.GetInstance();
             if (_session.UserInfo.SDKRevision == 0)
             {
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "[SDKRev] No sdkrevision!");

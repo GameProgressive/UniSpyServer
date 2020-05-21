@@ -16,7 +16,6 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
         //replace a existed nick with new nick
         //@"  \newprofile\sesskey\<>\nick\<>\replace\1\oldnick\<>\id\1\final\"
 
-
         protected override void CheckRequest()
         {
             base.CheckRequest();

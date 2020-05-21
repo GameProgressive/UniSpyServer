@@ -20,7 +20,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {
     public class PSPCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(GPSPSession session, string message)
+        public void Switch(PSPSession session, string message)
         {
 
             try

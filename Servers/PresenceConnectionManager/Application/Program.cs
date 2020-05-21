@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(GameSpyLib.Common.RetroSpyServerName.GPCM);
+                Manager = new ServerManager(GameSpyLib.Common.RetroSpyServerName.PCM);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

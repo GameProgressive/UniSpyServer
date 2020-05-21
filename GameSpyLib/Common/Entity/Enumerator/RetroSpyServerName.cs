@@ -4,8 +4,8 @@
     {
         QR,
         SB,
-        GPCM,
-        GPSP,
+        PCM,
+        PSP,
         NATNEG,
         CHAT,
         GSTATS,

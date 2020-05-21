@@ -15,7 +15,7 @@ namespace PresenceConnectionManager
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    public class GPCMSession : TemplateTcpSession
+    public class PCMSession : TemplateTcpSession
     {
         /// <summary>
         /// Indicates whether this player successfully completed the login process
@@ -29,7 +29,7 @@ namespace PresenceConnectionManager
 
         public UserInfo UserInfo = new UserInfo();
 
-        public GPCMSession(TemplateTcpServer server) : base(server)
+        public PCMSession(TemplateTcpServer server) : base(server)
         {
         }
 
@@ -59,9 +59,9 @@ namespace PresenceConnectionManager
                     "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
-            UserInfo.ServerChallenge = GPCMServer.ServerChallenge;
+            UserInfo.ServerChallenge = PCMServer.ServerChallenge;
             UserInfo.LoginProcess = LoginStatus.Processing;
-            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", GPCMServer.ServerChallenge, 1);
+            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", PCMServer.ServerChallenge, 1);
             SendAsync(sendingBuffer);
         }
 

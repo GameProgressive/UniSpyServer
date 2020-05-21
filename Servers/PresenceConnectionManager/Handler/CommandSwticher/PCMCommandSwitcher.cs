@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.Handler
 {
     public class PCMCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(GPCMSession session, string message)
+        public void Switch(PCMSession session, string message)
         {
             try
             {
@@ -81,7 +81,7 @@ namespace PresenceConnectionManager.Handler
 
                         case "logout"://logout from retrospy
                             session.Disconnect();
-                            GPCMServer.LoggedInSession.TryRemove(session.Id, out _);
+                            PCMServer.LoggedInSession.TryRemove(session.Id, out _);
                             break;
 
                         case "status"://update current logged in user's status info

@@ -24,7 +24,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            // Make sure we have all the required data to process this login
+            //Make sure we have all the required data to process this login.
             if (!_recv.ContainsKey("challenge") || !_recv.ContainsKey("response"))
             {
                 _errorCode = GPErrorCode.Parse;
@@ -162,7 +162,6 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
         }
 
-
         protected override void DataOperation()
         {
             switch (_session.UserInfo.LoginType)
@@ -180,7 +179,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                     break;
             }
 
-            //check if errorcode equals database error we stop
+            //check if errorcode equals database error we stop.
             if (_errorCode == GPErrorCode.DatabaseError)
             {
                 return;
@@ -193,7 +192,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             }
 
             // Check the status of the account.
-            // If the single profile is banned, the account or the player status
+            // If the single profile is banned, the account or the player status.
             if (_session.UserInfo.IsBlocked)
             {
                 _errorCode = GPErrorCode.LoginProfileDeleted;
@@ -360,7 +359,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         {
             base.Response();
             _session.UserInfo.StatusCode = GPStatus.Online;
-            GPCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
+            PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
             SDKRevision.ExtendedFunction(_session);
         }
 

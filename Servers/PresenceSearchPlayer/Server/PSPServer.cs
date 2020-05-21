@@ -4,15 +4,15 @@ using System.Net;
 
 namespace PresenceSearchPlayer
 {
-    public class GPSPServer : TemplateTcpServer
+    public class PSPServer : TemplateTcpServer
     {
-        public GPSPServer(IPAddress address, int port) : base(address, port)
+        public PSPServer(IPAddress address, int port) : base(address, port)
         {
         }
 
         protected override TcpSession CreateSession()
         {
-            return new GPSPSession(this);
+            return new PSPSession(this);
         }
     }
 }

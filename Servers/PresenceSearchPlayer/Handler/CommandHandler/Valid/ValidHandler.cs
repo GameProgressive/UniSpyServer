@@ -59,7 +59,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
             {
                 _errorCode = GPErrorCode.DatabaseError;
             }
-
         }
     }
 }

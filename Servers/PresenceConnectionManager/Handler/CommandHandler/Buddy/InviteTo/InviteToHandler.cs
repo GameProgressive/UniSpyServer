@@ -49,7 +49,7 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
 
         protected override void DataOperation()
         {
-            var user = GPCMServer.LoggedInSession.Values.Where(
+            var user = PCMServer.LoggedInSession.Values.Where(
                 u => u.UserInfo.productID == _productid
                 && u.UserInfo.Profileid == _profileid);
 

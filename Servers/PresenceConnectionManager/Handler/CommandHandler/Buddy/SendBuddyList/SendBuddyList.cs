@@ -6,7 +6,7 @@ using System.Linq;
 namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
 {
     /// <summary>
-    /// Send friendlist, friends message, friends add request to player when he logged in.
+    /// Send friendlist, friends message, friends add request to player when logged in.
     /// </summary>
     public class SendBuddyList : PCMCommandHandlerBase
     {

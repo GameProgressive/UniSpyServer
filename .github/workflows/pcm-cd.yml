@@ -1,4 +1,4 @@
-name: CD - GPCM
+name: CD - PCM
 
 on:
   push:
@@ -34,20 +34,20 @@ jobs:
       DOCKER_HUB_KEY: ${{ secrets.DOCKER_HUB_KEY }}
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy GPCM to staging
+      - name: Deploy PCM to staging
         if: github.ref == 'refs/heads/candidate'
         uses: elgohr/Publish-Docker-Github-Action@2.12
         with:
-          name: gameprogressive/gpcm
+          name: gameprogressive/pcm
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
           dockerfile: ./Servers/PresenceConnectionManager/Dockerfile
-      - name: Deploy GPCM to production
+      - name: Deploy PCM to production
         if: github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@2.12
         with:
-          name: gameprogressive/gpcm
+          name: gameprogressive/pcm
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
