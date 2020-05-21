@@ -3,7 +3,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure
 {
     public class SakeConstant
     {
-        public const string SakeNameSpace = "ns1";
+        public const string SakeNameSpace = "ns1:";
         public const string Values = SakeNameSpace + "values";
         public const string RecordField = SakeNameSpace + "RecordField";
         public const string Name = SakeNameSpace + "RecordField";
@@ -20,13 +20,23 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure
         public const string BinaryDataValue = SakeNameSpace + "binaryDataValue";
 
 
+        public const string Filter = SakeNameSpace + "filter";
+        public const string Sort = SakeNameSpace + "sort";
+        public const string Max = SakeNameSpace + "max";
+        public const string Surrounding = SakeNameSpace + "surrounding";
+        public const string OwnerID = SakeNameSpace + "surrounding";
+        public const string CacheFlag = SakeNameSpace + "cacheFlag";
+        public const string Offset = SakeNameSpace + "offset";
 
-        public const string GameID = SakeNameSpace + "ns1:gameid";
-        public const string SecretKey = SakeNameSpace + "ns1:secretKey";
-        public const string LoginTicket = SakeNameSpace + "ns1:loginTicket";
-        public const string TableID = SakeNameSpace + "ns1:tableid";
-        public const string RecordID = SakeNameSpace + "ns1:recordid";
 
+        public const string GameID = SakeNameSpace + "gameid";
+        public const string SecretKey = SakeNameSpace + "secretKey";
+        public const string LoginTicket = SakeNameSpace + "loginTicket";
+        public const string TableID = SakeNameSpace + "tableid";
+        public const string RecordID = SakeNameSpace + "recordid";
+        public const string RecordIDs = SakeNameSpace + "recordids";
+        public const string Fields = SakeNameSpace + "fields";
+        public const string Rating = SakeNameSpace + "rating";
 
     }
 }
