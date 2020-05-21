@@ -26,12 +26,12 @@
             if (_cmdParams[0].Contains("#"))
             {
                 RequestType = WHOType.GetChannelUsersInfo;
-                NickName = _cmdParams[0];
+                ChannelName = _cmdParams[0];
             }
             else
             {
                 RequestType = WHOType.GetUserInfo;
-                ChannelName = _cmdParams[0];
+                NickName = _cmdParams[0];
             }
             return true;
         }
