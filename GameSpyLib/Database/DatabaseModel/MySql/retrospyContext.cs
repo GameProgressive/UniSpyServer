@@ -23,6 +23,7 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
         public virtual DbSet<Partner> Partner { get; set; }
         public virtual DbSet<Profiles> Profiles { get; set; }
         public virtual DbSet<Pstorage> Pstorage { get; set; }
+        public virtual DbSet<Sakestorage> Sakestorage { get; set; }
         public virtual DbSet<Statusinfo> Statusinfo { get; set; }
         public virtual DbSet<Subprofiles> Subprofiles { get; set; }
         public virtual DbSet<Users> Users { get; set; }
@@ -202,11 +203,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
-
-                entity.Property(e => e.Queryport)
-                    .HasColumnName("queryport")
-                    .HasColumnType("int(11) unsigned")
-                    .HasDefaultValueSql("'6500'");
 
                 entity.Property(e => e.Secretkey)
                     .HasColumnName("secretkey")
@@ -614,6 +610,28 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
                     .HasForeignKey(d => d.Profileid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_pstorage_profiles");
+            });
+
+            modelBuilder.Entity<Sakestorage>(entity =>
+            {
+                entity.ToTable("sakestorage");
+
+                entity.HasComment("Sake storage system.");
+
+                entity.HasIndex(e => e.Sakestorageid)
+                    .HasName("sakestorageid")
+                    .IsUnique();
+
+                entity.Property(e => e.Sakestorageid)
+                    .HasColumnName("sakestorageid")
+                    .HasColumnType("int(11) unsigned");
+
+                entity.Property(e => e.Tableid)
+                    .IsRequired()
+                    .HasColumnName("tableid")
+                    .HasColumnType("varchar(50)")
+                    .HasCharSet("utf8mb4")
+                    .HasCollation("utf8mb4_general_ci");
             });
 
             modelBuilder.Entity<Statusinfo>(entity =>

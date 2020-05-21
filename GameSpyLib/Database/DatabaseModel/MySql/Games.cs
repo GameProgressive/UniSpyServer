@@ -13,7 +13,6 @@ namespace GameSpyLib.Database.DatabaseModel.MySql
         public string Gamename { get; set; }
         public string Secretkey { get; set; }
         public string Description { get; set; }
-        public uint Queryport { get; set; }
         public bool Disabled { get; set; }
 
         public virtual ICollection<Grouplist> Grouplist { get; set; }
