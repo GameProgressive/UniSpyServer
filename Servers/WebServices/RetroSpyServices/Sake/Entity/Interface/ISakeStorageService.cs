@@ -1,6 +1,6 @@
 ﻿using System.ServiceModel;
-using System.Xml.Linq;
-using RetroSpyServices.Sake.Entity.Structure.Model;
+using System.Xml;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Model;
 
 namespace RetroSpyServices.Sake.Entity.Interface
 {
@@ -8,14 +8,30 @@ namespace RetroSpyServices.Sake.Entity.Interface
     public interface ISakeStorageService
     {
         [OperationContract]
-        string Test(string s);
-
-        string Upload();
+        public bool DeleteRecord(SakeDeleteModel request);
 
         [OperationContract]
-        void XmlMethod(XElement xml);
+        public void GetRecordLimit(XmlElement request);
 
         [OperationContract]
-        SakeStorageModel TestStorageServerModel(SakeStorageModel inputModel);
+        public void GetRandomRecords(XmlElement request);
+
+        [OperationContract]
+        public void GetMyRecords(XmlElement request);
+
+        [OperationContract]
+        public void SearchForRecords(XmlElement request);
+
+        [OperationContract]
+        public void GetSpecificRecords(XmlElement request);
+
+        [OperationContract]
+        public void CreateRecord(XmlElement request);
+
+        [OperationContract]
+        public void RateRecord(XmlElement request);
+
+        [OperationContract]
+        public void UpdateRecord(XmlElement request);
     }
 }

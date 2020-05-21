@@ -1,33 +1,55 @@
 ﻿using System;
-using System.Xml.Linq;
+using System.Xml;
 using RetroSpyServices.Sake.Entity.Interface;
-using RetroSpyServices.Sake.Entity.Structure.Model;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Model;
 
 namespace RetroSpyServices.Sake.Service
 {
     public class SakeStorageService : ISakeStorageService
     {
-        public string Test(string s)
+        public void CreateRecord(XmlElement request)
         {
-            Console.WriteLine("Test Method Executed!");
-            return s;
+            throw new NotImplementedException();
         }
 
-        public void XmlMethod(XElement xml)
+        public bool DeleteRecord(SakeDeleteModel request)
         {
-            Console.WriteLine(xml.ToString());
+            throw new NotImplementedException();
         }
 
-        public SakeStorageModel TestStorageServerModel(SakeStorageModel customModel)
+        public void GetMyRecords(XmlElement request)
         {
-            return customModel;
+            throw new NotImplementedException();
         }
 
-        public string Upload()
+        public void GetRandomRecords(XmlElement request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetRecordLimit(XmlElement request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetSpecificRecords(XmlElement request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RateRecord(XmlElement request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SearchForRecords(XmlElement request)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateRecord(XmlElement request)
         {
             throw new NotImplementedException();
         }
     }
-
-
 }
