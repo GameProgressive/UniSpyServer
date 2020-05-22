@@ -27,5 +27,7 @@
     <Folder Include="Network\Tcp\Server\" />
     <Folder Include="Network\Udp\Server\" />
     <Folder Include="Network\Udp\Client\" />
+    <Folder Include="Network\Http\" />
+    <Folder Include="Network\Http\Server\" />
   </ItemGroup>
 </Project>
