@@ -16,10 +16,16 @@ namespace NatNegotiation.Application
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ServerManager(RetroSpyServerName serverName) : base(serverName)
+        public ServerManager(string serverName) : base(serverName)
         {
         }
 
+        public override void Start()
+        {
+            ShowRetroSpyLogo();
+            //LoadDatabaseConfig();
+            LoadServerConfig();
+        }
         /// <summary>
         /// Starts a specific server
         /// </summary>

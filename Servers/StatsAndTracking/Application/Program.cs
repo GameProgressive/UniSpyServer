@@ -13,7 +13,7 @@ namespace StatsAndTracking.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.GSTATS);
+                Manager = new ServerManager(RetroSpyServerName.GameStatus);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

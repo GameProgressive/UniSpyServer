@@ -15,9 +15,9 @@ namespace GameSpyLib.Common
         public static ConnectionMultiplexer Redis { get; protected set; }
         protected object Server;
 
-        public ServerManagerBase(RetroSpyServerName serverName)
+        public ServerManagerBase(string serverName)
         {
-            ServerName = serverName.ToString();
+            ServerName = serverName;
         }
 
         public virtual void Start()
@@ -43,7 +43,7 @@ namespace GameSpyLib.Common
 
         protected abstract void StartServer(ServerConfig cfg);
 
-        private void LoadDatabaseConfig()
+        protected void LoadDatabaseConfig()
         {
             DatabaseConfig dbConfig = ConfigManager.Config.Database;
             //Determine which database is used and establish the database connection.

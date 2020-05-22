@@ -14,7 +14,7 @@ namespace ServerBrowser.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.SB);
+                Manager = new ServerManager(RetroSpyServerName.ServerBrowser);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

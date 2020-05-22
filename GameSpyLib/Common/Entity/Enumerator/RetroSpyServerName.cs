@@ -1,14 +1,14 @@
 ﻿namespace GameSpyLib.Common
 {
-    public enum RetroSpyServerName
+    public class RetroSpyServerName
     {
-        QR,
-        SB,
-        PCM,
-        PSP,
-        NATNEG,
-        CHAT,
-        GSTATS,
-        CDKEY
+        public const string QueryReport = "QR";
+        public const string ServerBrowser = "SB";
+        public const string PresenceConnectionManager = "PCM";
+        public const string PresenceSearchPlayer = "PSP";
+        public const string NatNegotiation = "NATNEG";
+        public const string Chat = "CHAT";
+        public const string GameStatus = "GSTATS";
+        public const string CDKey = "CDKEY";
     }
 }

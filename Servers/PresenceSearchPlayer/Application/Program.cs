@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.PSP);
+                Manager = new ServerManager(RetroSpyServerName.PresenceSearchPlayer);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

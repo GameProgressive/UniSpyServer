@@ -13,7 +13,7 @@ namespace QueryReport.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.QR);
+                Manager = new ServerManager(RetroSpyServerName.QueryReport);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

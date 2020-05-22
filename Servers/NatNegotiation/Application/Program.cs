@@ -17,7 +17,7 @@ namespace NatNegotiation.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.NATNEG);
+                Manager = new ServerManager(RetroSpyServerName.NatNegotiation);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

@@ -15,7 +15,7 @@ namespace CDKey.Application
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ServerManager(RetroSpyServerName serverName) : base(serverName)
+        public ServerManager(string serverName) : base(serverName)
         {
         }
 

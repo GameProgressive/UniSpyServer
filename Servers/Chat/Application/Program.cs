@@ -16,7 +16,7 @@ namespace Chat.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.CHAT);
+                Manager = new ServerManager(RetroSpyServerName.Chat);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
