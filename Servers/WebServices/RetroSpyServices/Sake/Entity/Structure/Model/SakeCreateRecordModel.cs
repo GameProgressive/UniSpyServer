@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
 {
@@ -35,6 +36,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
         //</SOAP-ENV:Envelope>
     public class SakeCreateRecordModel : SakeBaseModel
     {
-
+        [DataMember(Name = SakeConstant.Values)]
+        public List<SakeRecordField> Values;
     }
 }
