@@ -71,13 +71,6 @@
       "ListeningPort": "6667",
       "RemoteAddress": "",
       "RemotePort": "6667"
-    },
-    {
-      "Name": "WEB",
-      "ListeningAddress": "0.0.0.0",
-      "ListeningPort": "80",
-      "RemoteAddress": "",
-      "RemotePort": "80"
     }
   ],
   "MinimumLogLevel": "Verbose"

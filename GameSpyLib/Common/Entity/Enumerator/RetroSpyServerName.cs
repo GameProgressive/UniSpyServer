@@ -10,6 +10,5 @@
         public const string Chat = "CHAT";
         public const string GameStatus = "GSTATS";
         public const string CDKey = "CDKEY";
-        public const string WebServer = "WEB";
     }
 }
