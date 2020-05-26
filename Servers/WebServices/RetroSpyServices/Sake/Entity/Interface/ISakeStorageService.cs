@@ -5,14 +5,14 @@ using WebServices.RetroSpyServices.Sake.Entity.Structure.Model;
 
 namespace RetroSpyServices.Sake.Entity.Interface
 {
-    [ServiceContract]
+    [ServiceContract(Namespace = "http://gamespy.com/sake")]
     public interface ISakeStorageService
     {
         [OperationContract]
         public void DeleteRecord(XElement request);
 
         [OperationContract]
-        public void GetRecordLimit(SakeGetRecordLimitModel request);
+        public void GetRecordLimit(XElement request);
 
         [OperationContract]
         public void GetRandomRecords(XElement request);

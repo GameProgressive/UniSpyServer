@@ -28,7 +28,7 @@ namespace RetroSpyServices.Sake.Service
             throw new NotImplementedException();
         }
 
-        public void GetRecordLimit(SakeGetRecordLimitModel request)
+        public void GetRecordLimit(XElement request)
         {
             throw new NotImplementedException();
         }

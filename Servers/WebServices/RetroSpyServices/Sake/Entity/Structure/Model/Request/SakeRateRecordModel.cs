@@ -3,9 +3,9 @@ using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
 {
-    public class SakeRateRecordModel : SakeBaseModel
+    public class SakeRateRecordRequest : SakeRequestBase
     {
-        [DataMember(Name = SakeConstant.Rating)]
+        [DataMember(Name = SakeXmlLable.Rating)]
         public uint Rating;
     }
 }

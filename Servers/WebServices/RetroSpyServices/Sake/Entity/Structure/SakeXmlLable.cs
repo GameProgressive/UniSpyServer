@@ -1,12 +1,12 @@
 ﻿using System;
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure
 {
-    public class SakeConstant
+    public class SakeXmlLable
     {
         public const string SakeNameSpace = "ns1:";
         public const string Values = SakeNameSpace + "values";
         public const string RecordField = SakeNameSpace + "RecordField";
-        public const string Name = SakeNameSpace + "RecordField";
+        public const string Name = SakeNameSpace + "name";
         public const string Value = SakeNameSpace + "value";
         public const string ByteValue = SakeNameSpace + "byteValue";
         public const string ShortValue = SakeNameSpace + "shortValue";

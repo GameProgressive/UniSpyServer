@@ -17,7 +17,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
      //               nicks
      //               </ns1:tableid>
      //           </ns1:GetRecordLimit>
-    public class SakeGetRecordLimitModel : SakeBaseModel
+    public class SakeGetRecordLimitRecord : SakeRequestBase
     {
 
     }
