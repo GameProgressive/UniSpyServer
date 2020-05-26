@@ -27,7 +27,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
                 //        </ns1:string>
                 //    </ns1:fields>
                 //</ns1:GetRandomRecords>
-    public class SakeGetRamdomRecordModel:SakeBaseModel
+    public class SakeGetRamdomRecordRequest:SakeRequestBase
     {
         public uint Max;
         

@@ -3,21 +3,21 @@ using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
 {
-    public class SakeBaseModel
+    public class SakeRequestBase
     {
-        [DataMember(Name = SakeConstant.GameID)]
+        [DataMember(Name = SakeXmlLable.GameID)]
         public string GameID { get; set; }
 
-        [DataMember(Name = SakeConstant.SecretKey)]
+        [DataMember(Name = SakeXmlLable.SecretKey)]
         public string SecretKey { get; set; }
 
-        [DataMember(Name = SakeConstant.LoginTicket)]
+        [DataMember(Name = SakeXmlLable.LoginTicket)]
         public string LoginTicket { get; set; }
 
-        [DataMember(Name = SakeConstant.TableID)]
+        [DataMember(Name = SakeXmlLable.TableID)]
         public string TableID { get; set; }
 
-        [DataMember(Name = SakeConstant.RecordID)]
+        [DataMember(Name = SakeXmlLable.RecordID)]
         public uint RecordID { get; set; }
     }
 }

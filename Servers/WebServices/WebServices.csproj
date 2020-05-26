@@ -46,5 +46,7 @@
     <Folder Include="RetroSpyServices\Competitive\Entity\Structure\Model\" />
     <Folder Include="RetroSpyServices\Competitive\Service\" />
     <Folder Include="RetroSpyServices\Sake\Entity\Structure\Basic\" />
+    <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\Request\" />
+    <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\Response\" />
   </ItemGroup>
 </Project>

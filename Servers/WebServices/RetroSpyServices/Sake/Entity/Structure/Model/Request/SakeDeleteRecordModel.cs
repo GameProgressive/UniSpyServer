@@ -3,9 +3,9 @@ using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
 {
-    public class SakeValue
+    [DataContract]
+    public class SakeDeleteRecordRequest : SakeRequestBase
     {
-        [DataMember(Name = SakeConstant.AsciiStringValue]
-        public string AsciiStringValue;
+
     }
 }

@@ -59,7 +59,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
     //                    </ns1:string>
     //                </ns1:fields>
     //            </ns1:GetMyRecords>
-    public class SakeGetMyRecords:SakeBaseModel
+    public class SakeGetMyRecordsRequest:SakeRequestBase
     {
        
     }
