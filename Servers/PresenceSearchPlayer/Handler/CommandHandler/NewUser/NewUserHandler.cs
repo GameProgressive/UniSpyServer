@@ -169,10 +169,15 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             {
                 _sendingBuffer = $@"\nur\{_errorCode}\final\";
             }
-            else
+            else if (ServerManager.ServerName == "PSP")
             {
+                //PSP NewUser
+                _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}\final\";
+            }
+            else if (ServerManager.ServerName == "PCM")
+            {
+                //PCM NewUser
                 _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\id\1\final\";
-                //_sendingBuffer = string.Format(@"\nur\0\pid\{0}\final\", _subProfiles.Profileid);
             }
         }
 

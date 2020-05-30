@@ -35,7 +35,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 return;
             }
 
-            if (!uint.TryParse(_recv["profileid"], out _profileid) || !uint.TryParse(_recv["partnerid"], out _partnerid))
+            if (uint.TryParse(_recv["partnerid"], out _partnerid))
+            {
+                return;
+            }
+
+            if (!uint.TryParse(_recv["profileid"], out _profileid))
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
