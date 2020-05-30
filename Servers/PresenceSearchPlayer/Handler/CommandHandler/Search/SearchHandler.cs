@@ -29,14 +29,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
         {
             base.CheckRequest();
 
-            if (!_recv.ContainsKey("profileid") && !_recv.ContainsKey("namespaceid") && !_recv.ContainsKey("gamename") && !_recv.ContainsKey("partnerid"))
+            if (!_recv.ContainsKey("profileid") && !_recv.ContainsKey("namespaceid") && !_recv.ContainsKey("gamename"))
             {
                 _errorCode = GPErrorCode.Parse;
-                return;
-            }
-
-            if (uint.TryParse(_recv["partnerid"], out _partnerid))
-            {
                 return;
             }
 
@@ -44,6 +39,15 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
             {
                 _errorCode = GPErrorCode.Parse;
                 return;
+            }
+
+            if (_recv.ContainsKey("partnerid"))
+            {
+                if (!uint.TryParse(_recv["partnerid"], out _partnerid))
+                {
+                    _errorCode = GPErrorCode.Parse;
+                    return;
+                }
             }
 
             if (_recv.ContainsKey("skip"))
