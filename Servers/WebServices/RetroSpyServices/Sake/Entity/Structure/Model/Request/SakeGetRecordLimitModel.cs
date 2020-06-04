@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
+namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
      //<ns1:GetRecordLimit>
      //           <ns1:gameid>
@@ -17,7 +17,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
      //               nicks
      //               </ns1:tableid>
      //           </ns1:GetRecordLimit>
-    public class SakeGetRecordLimitRecord : SakeRequestBase
+    public class SakeGetRecordLimitRecordRequest : SakeRequestBase
     {
 
     }

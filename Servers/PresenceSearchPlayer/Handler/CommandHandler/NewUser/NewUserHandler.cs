@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common;
+using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;
@@ -169,12 +170,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             {
                 _sendingBuffer = $@"\nur\{_errorCode}\final\";
             }
-            else if (ServerManager.ServerName == "PSP")
+            else if (ServerManagerBase.ServerName
+                == RetroSpyServerName.PresenceSearchPlayer)
             {
                 //PSP NewUser
                 _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}\final\";
             }
-            else if (ServerManager.ServerName == "PCM")
+            else if (ServerManagerBase.ServerName
+                == RetroSpyServerName.PresenceConnectionManager)
             {
                 //PCM NewUser
                 _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\id\1\final\";

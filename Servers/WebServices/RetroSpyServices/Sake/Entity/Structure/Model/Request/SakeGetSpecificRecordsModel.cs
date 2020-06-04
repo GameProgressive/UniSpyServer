@@ -1,5 +1,5 @@
 ﻿using System;
-namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
+namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
     //<SOAP-ENV:Body>
     //        <ns1:GetSpecificRecords>

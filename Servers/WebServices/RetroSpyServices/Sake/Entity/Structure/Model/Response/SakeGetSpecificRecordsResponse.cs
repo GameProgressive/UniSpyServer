@@ -6,5 +6,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Response
     [DataContract(Name = "GetSpecificRecords")]
     public class SakeGetSpecificRecordsResponse
     {
+        [DataMember(Name = "score")]
+        public string Score;
     }
 }

@@ -4723,7 +4723,7 @@ CREATE TABLE IF NOT EXISTS `subprofiles` (
 
 /*!40000 ALTER TABLE `subprofiles` DISABLE KEYS */;
 INSERT INTO `subprofiles` (`subprofileid`, `profileid`, `uniquenick`, `namespaceid`, `partnerid`, `productid`, `gamename`, `cdkeyenc`, `firewall`, `port`, `authtoken`) VALUES
-	(1, 1, 'spyguy', 0, 0, NULL, 'gmtest', NULL, 0, 0, 'example_token');
+	(1, 1, 'spyguy', 1, 0, NULL, 'gmtest', NULL, 0, 0, 'example_token');
 /*!40000 ALTER TABLE `subprofiles` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `users` (

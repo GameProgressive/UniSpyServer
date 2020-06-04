@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
+namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
     //<ns1:SearchForRecords>
     //            <ns1:gameid>

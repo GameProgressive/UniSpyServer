@@ -2,7 +2,7 @@
 using System.Runtime.Serialization;
 using WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Basic;
 
-namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
+namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
         //    <SOAP-ENV:Body>
         //    <ns1:CreateRecord>

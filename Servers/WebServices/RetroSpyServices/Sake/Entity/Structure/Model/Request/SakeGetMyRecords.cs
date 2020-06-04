@@ -1,5 +1,5 @@
 ﻿using System;
-namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model
+namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
     //<ns1:GetMyRecords>
     //            <ns1:gameid>
