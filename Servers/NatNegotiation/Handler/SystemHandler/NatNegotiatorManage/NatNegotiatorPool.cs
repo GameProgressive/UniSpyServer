@@ -23,18 +23,22 @@ namespace NatNegotiation.Handler.SystemHandler.NatNegotiatorManage
 
         public static void FindNatNegotiatorsAndSendConnectPacket(NatPortType portType, byte version, uint cookie)
         {
+            //find Sessions according to the partern
             Dictionary<string, NatNegSession> result = Sessions
                  .Where(s => s.Key.Contains(portType.ToString()))
                   .ToDictionary(s => s.Key, s => s.Value);
 
+            //there are at least a pair of session
             if (result.Count < 2)
             {
                 LogWriter.ToLog(LogEventLevel.Debug, "No match found we contine wait.");
                 return;
             }
 
+            //find the pairs
             var negotiatorPairs = result.Where(s => s.Value.UserInfo.Cookie == cookie);
 
+            //find negitiators and negotiatees by cookie
             var negotiators = negotiatorPairs.Where(s => s.Value.UserInfo.ClientIndex == 0);
             var negotiatees = negotiatorPairs.Where(s => s.Value.UserInfo.ClientIndex == 1);
 
