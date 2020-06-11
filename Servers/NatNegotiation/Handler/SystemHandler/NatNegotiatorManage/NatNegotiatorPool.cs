@@ -23,9 +23,9 @@ namespace NatNegotiation.Handler.SystemHandler.NatNegotiatorManage
 
         public static void FindNatNegotiatorsAndSendConnectPacket(NatPortType portType, byte version, uint cookie)
         {
-            List<NatNegSession> result = Sessions.
-                        Where(s => s.Key.Contains(portType.ToString())).
-                        Select(s => s.Value).ToList();
+            Dictionary<string, NatNegSession> result = Sessions
+                 .Where(s => s.Key.Contains(portType.ToString()))
+                  .ToDictionary(s => s.Key, s => s.Value);
 
             if (result.Count < 2)
             {
@@ -33,12 +33,10 @@ namespace NatNegotiation.Handler.SystemHandler.NatNegotiatorManage
                 return;
             }
 
-            var negotiatorPairs = result.Where(s => s.UserInfo.Cookie == cookie);
+            var negotiatorPairs = result.Where(s => s.Value.UserInfo.Cookie == cookie);
 
-            var negotiators = negotiatorPairs.Where(s => s.UserInfo.ClientIndex == 0);
-
-
-            var negotiatees = negotiatorPairs.Where(s => s.UserInfo.ClientIndex == 1);
+            var negotiators = negotiatorPairs.Where(s => s.Value.UserInfo.ClientIndex == 0);
+            var negotiatees = negotiatorPairs.Where(s => s.Value.UserInfo.ClientIndex == 1);
 
             if (negotiators.Count() < 1 || negotiatees.Count() < 1)
             {
@@ -47,26 +45,29 @@ namespace NatNegotiation.Handler.SystemHandler.NatNegotiatorManage
             var negotiator = negotiators.First();
             var negotiatee = negotiatees.First();
 
-            LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiator {negotiator.RemoteEndPoint}");
-            LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiatee {negotiatee.RemoteEndPoint}");
+            LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiator {negotiator.Value.RemoteEndPoint}");
+            LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiatee {negotiatee.Value.RemoteEndPoint}");
 
             ConnectPacket packetToNegotiator = new ConnectPacket();
             byte[] dataToNegotiator = packetToNegotiator
                 .SetVersionAndCookie(version, cookie)
-                .SetRemoteEndPoint(negotiatee.RemoteEndPoint)
+                .SetRemoteEndPoint(negotiatee.Value.RemoteEndPoint)
                 .BuildResponse();
 
             ConnectPacket packetToNegotiatee = new ConnectPacket();
             byte[] dataToNegotiatee = packetToNegotiatee
                 .SetVersionAndCookie(version, cookie)
-                .SetRemoteEndPoint(negotiator.RemoteEndPoint)
+                .SetRemoteEndPoint(negotiator.Value.RemoteEndPoint)
                 .BuildResponse();
 
-            negotiator.UserInfo.UpdateRetryNatNegotiationTime();
-            negotiatee.UserInfo.UpdateRetryNatNegotiationTime();
+            negotiator.Value.UserInfo.UpdateRetryNatNegotiationTime();
+            negotiatee.Value.UserInfo.UpdateRetryNatNegotiationTime();
 
-            negotiator.SendAsync(dataToNegotiator);
-            negotiatee.SendAsync(dataToNegotiatee);
+            negotiator.Value.SendAsync(dataToNegotiator);
+            negotiatee.Value.SendAsync(dataToNegotiatee);
+
+            Sessions.TryRemove(negotiatee.Key, out _);
+            Sessions.TryRemove(negotiator.Key, out _);
 
         }
     }
