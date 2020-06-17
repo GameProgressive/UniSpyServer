@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-    <PackageReference Include="SoapCore" Version="1.0.0" />
+    <PackageReference Include="System.ServiceModel.Http" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,5 +48,9 @@
     <Folder Include="RetroSpyServices\Sake\Entity\Structure\Basic\" />
     <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\Request\" />
     <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\Response\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SOAPMiddleware\SOAPMiddleware.csproj" />
   </ItemGroup>
 </Project>

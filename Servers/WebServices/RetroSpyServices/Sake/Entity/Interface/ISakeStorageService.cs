@@ -9,13 +9,13 @@ namespace RetroSpyServices.Sake.Entity.Interface
     [ServiceContract(Namespace = "http://gamespy.com/sake")]
     public interface ISakeStorageService
     {
-        [OperationContract]
-        public void DeleteRecord(SakeDeleteRecordRequest request);
+        /*[OperationContract]
+        public void DeleteRecord(SakeDeleteRecordRequest request);*/
 
         [OperationContract]
         public void GetRecordLimit(SakeGetRecordLimitRecordRequest request);
 
-        [OperationContract]
+        /*[OperationContract]
         public void GetRandomRecords(SakeGetRamdomRecordRequest request);
 
         [OperationContract]
@@ -34,6 +34,6 @@ namespace RetroSpyServices.Sake.Entity.Interface
         public void RateRecord(SakeRateRecordRequest request);
 
         [OperationContract]
-        public void UpdateRecord(SakeUpdateRecordRequest request);
+        public void UpdateRecord(SakeUpdateRecordRequest request);*/
     }
 }

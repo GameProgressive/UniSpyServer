@@ -36,17 +36,29 @@ namespace SOAPMiddleware
             // Deserialize request wrapper and object
             using (var xmlReader = requestMessage.GetReaderAtBodyContents())
             {
-                // Find the element for the operation's data
-                xmlReader.ReadStartElement(operation.Name, operation.Contract.Namespace);
-
-                for (int i = 0; i < parameters.Length; i++)
+                if (xmlReader.IsStartElement(operation.Name, operation.Contract.Namespace))
                 {
-                    var parameterName = parameters[i].GetCustomAttribute<MessageParameterAttribute>()?.Name ?? parameters[i].Name;
-                    xmlReader.MoveToStartElement(parameterName, operation.Contract.Namespace);
-                    if (xmlReader.IsStartElement(parameterName, operation.Contract.Namespace))
+
+                    for (int i = 0; i < parameters.Length; i++)
                     {
-                        var serializer = new DataContractSerializer(parameters[i].ParameterType, parameterName, operation.Contract.Namespace);
-                        arguments.Add(serializer.ReadObject(xmlReader, verifyObjectName: true));
+                        if (parameters[i].ParameterType.IsClass)
+                        {
+                            var serializer = new DataContractSerializer(parameters[i].ParameterType, operation.Name, operation.Contract.Namespace);
+                            arguments.Add(serializer.ReadObject(xmlReader, verifyObjectName: true));
+                        }
+                        else
+                        {
+                            // Find the element for the operation's data
+                            xmlReader.ReadStartElement(operation.Name, operation.Contract.Namespace);
+
+                            var parameterName = parameters[i].GetCustomAttribute<MessageParameterAttribute>()?.Name ?? parameters[i].Name;
+                            xmlReader.MoveToStartElement(parameterName, operation.Contract.Namespace);
+                            if (xmlReader.IsStartElement(parameterName, operation.Contract.Namespace))
+                            {
+                                var serializer = new DataContractSerializer(parameters[i].ParameterType, parameterName, operation.Contract.Namespace);
+                                arguments.Add(serializer.ReadObject(xmlReader, verifyObjectName: true));
+                            }
+                        }
                     }
                 }
             }

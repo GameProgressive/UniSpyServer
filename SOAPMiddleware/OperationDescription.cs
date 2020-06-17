@@ -19,7 +19,7 @@ namespace SOAPMiddleware
         {
             Contract = contract;
             Name = contractAttribute.Name ?? operationMethod.Name;
-            SoapAction = contractAttribute.Action ?? $"{contract.Namespace.TrimEnd('/')}/{contract.Name}/{Name}";
+            SoapAction = contractAttribute.Action ?? $"{contract.Namespace.TrimEnd('/')}/{Name}";
             IsOneWay = contractAttribute.IsOneWay;
             ReplyAction = contractAttribute.ReplyAction;
             DispatchMethod = operationMethod;

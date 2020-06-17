@@ -9,7 +9,7 @@ namespace RetroSpyServices.Sake.Service
 {
     public class SakeStorageService : ISakeStorageService
     {
-        public void CreateRecord(SakeCreateRecordRequest request)
+        /*public void CreateRecord(SakeCreateRecordRequest request)
         {
             Console.WriteLine(request.ToString());
         }
@@ -27,14 +27,14 @@ namespace RetroSpyServices.Sake.Service
         public void GetRandomRecords(SakeGetRamdomRecordRequest request)
         {
             throw new NotImplementedException();
-        }
+        }*/
 
         public void GetRecordLimit(SakeGetRecordLimitRecordRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public void GetSpecificRecords(SakeGetSpecificRecordsRequest request)
+        /*public void GetSpecificRecords(SakeGetSpecificRecordsRequest request)
         {
             throw new NotImplementedException();
         }
@@ -52,6 +52,6 @@ namespace RetroSpyServices.Sake.Service
         public void UpdateRecord(SakeUpdateRecordRequest request)
         {
             throw new NotImplementedException();
-        }
+        }*/
     }
 }
