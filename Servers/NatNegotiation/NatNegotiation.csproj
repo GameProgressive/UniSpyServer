@@ -18,10 +18,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Handler\SystemHandler\" />
     <Folder Include="Handler\CommandHandler\AddressCheck\" />
     <Folder Include="Handler\CommandHandler\ConnectACK\" />
@@ -39,5 +35,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Handler\SystemHandler\Timer\ClientListChecker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
 </Project>

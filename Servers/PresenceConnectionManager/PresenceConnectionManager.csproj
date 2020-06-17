@@ -33,8 +33,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
     <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
+    <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

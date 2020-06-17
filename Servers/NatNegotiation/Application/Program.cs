@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using System;
-
 namespace NatNegotiation.Application
 {
     /// <summary>

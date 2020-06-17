@@ -21,10 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Resource\GeoLite2-Country.mmdb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -49,5 +45,8 @@
     <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
     <Folder Include="Entity\Structure\NatNeg\" />
     <Folder Include="Handler\CommandHandler\ClientMessage\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
 </Project>

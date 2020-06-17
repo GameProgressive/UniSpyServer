@@ -51,6 +51,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SOAPMiddleware\SOAPMiddleware.csproj" />
+    <ProjectReference Include="..\..\Library\SOAPMiddleware\SOAPMiddleware.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>

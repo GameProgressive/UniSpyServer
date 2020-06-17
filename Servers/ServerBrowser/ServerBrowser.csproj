@@ -28,9 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
     <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
     <ProjectReference Include="..\NatNegotiation\NatNegotiation.csproj" />
+    <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
