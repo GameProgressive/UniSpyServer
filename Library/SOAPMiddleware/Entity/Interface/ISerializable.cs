@@ -1,9 +1,11 @@
 ﻿using System;
 namespace SOAPMiddleware.Entity.Interface
 {
-    public interface ISerializable
+    public interface ISoapSerializable
     {
-         void Serilize();
-         void DeSerilize();
+        bool IsStartElement();
+        void ReadStartElement();
+        void Serilize();
+        void Deserilize();
     }
 }

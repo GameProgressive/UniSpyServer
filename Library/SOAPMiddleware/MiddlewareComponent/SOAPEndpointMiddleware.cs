@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SOAPMiddleware.MiddlewareComponent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace SOAPMiddleware
         private readonly string _endpointPath;
         private readonly MessageEncoder _messageEncoder;
         private readonly ServiceDescription _service;
+        private readonly int _maxSizeOfHeader = 0x10000;
 
         public SOAPEndpointMiddleware(RequestDelegate next, Type serviceType, string path, MessageEncoder encoder)
         {
@@ -28,54 +30,59 @@ namespace SOAPMiddleware
             _service = new ServiceDescription(serviceType);
         }
 
-        private object[] GetRequestArguments(Message requestMessage, OperationDescription operation)
-        {
-            var parameters = operation.DispatchMethod.GetParameters();
-            var arguments = new List<object>();
+        //private object[] GetRequestArguments(Message requestMessage, OperationDescription operation)
+        //{
+        //    ParameterInfo[] parameters = operation.DispatchMethod.GetParameters();
+        //    List<object> arguments = new List<object>();
 
-            // Deserialize request wrapper and object
-            using (var xmlReader = requestMessage.GetReaderAtBodyContents())
-            {
-                if (xmlReader.IsStartElement(operation.Name, operation.Contract.Namespace))
-                {
+        //    // Deserialize request wrapper and object
+        //    using (var xmlReader = requestMessage.GetReaderAtBodyContents())
+        //    {
+        //        if (xmlReader.IsStartElement(operation.Name, operation.Contract.Namespace))
+        //        {
 
-                    for (int i = 0; i < parameters.Length; i++)
-                    {
-                        if (parameters[i].ParameterType.IsClass)
-                        {
-                            var serializer = new DataContractSerializer(parameters[i].ParameterType, operation.Name, operation.Contract.Namespace);
-                            arguments.Add(serializer.ReadObject(xmlReader, verifyObjectName: true));
-                        }
-                        else
-                        {
-                            // Find the element for the operation's data
-                            xmlReader.ReadStartElement(operation.Name, operation.Contract.Namespace);
+        //            for (int i = 0; i < parameters.Length; i++)
+        //            {
+        //                if (parameters[i].ParameterType.IsClass)
+        //                {
+        //                    var serializer = new DataContractSerializer(parameters[i].ParameterType, operation.Name, operation.Contract.Namespace);
+        //                    arguments.Add(serializer.ReadObject(xmlReader, verifyObjectName: true));
+        //                }
+        //                else
+        //                {
+        //                    // Find the element for the operation's data
+        //                    xmlReader.ReadStartElement(operation.Name, operation.Contract.Namespace);
 
-                            var parameterName = parameters[i].GetCustomAttribute<MessageParameterAttribute>()?.Name ?? parameters[i].Name;
-                            xmlReader.MoveToStartElement(parameterName, operation.Contract.Namespace);
-                            if (xmlReader.IsStartElement(parameterName, operation.Contract.Namespace))
-                            {
-                                var serializer = new DataContractSerializer(parameters[i].ParameterType, parameterName, operation.Contract.Namespace);
-                                arguments.Add(serializer.ReadObject(xmlReader, verifyObjectName: true));
-                            }
-                        }
-                    }
-                }
-            }
+        //                    var parameterName = parameters[i].GetCustomAttribute<MessageParameterAttribute>()?.Name ?? parameters[i].Name;
+        //                    xmlReader.MoveToStartElement(parameterName, operation.Contract.Namespace);
+        //                    if (xmlReader.IsStartElement(parameterName, operation.Contract.Namespace))
+        //                    {
+        //                        var serializer = new DataContractSerializer(parameters[i].ParameterType, parameterName, operation.Contract.Namespace);
+        //                        arguments.Add(serializer.ReadObject(xmlReader, verifyObjectName: true));
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
 
-            return arguments.ToArray();
-        }
+        //    return arguments.ToArray();
+        //}
 
         public async Task Invoke(HttpContext httpContext, IServiceProvider serviceProvider)
         {
             if (httpContext.Request.Path.Equals(_endpointPath, StringComparison.Ordinal))
             {
-                Message responseMessage;
+
 
                 // Read request message
-                var requestMessage = _messageEncoder.ReadMessage(httpContext.Request.Body, 0x10000, httpContext.Request.ContentType);
+                Message requestMessage =
+                    _messageEncoder.ReadMessage(
+                                httpContext.Request.Body,
+                                _maxSizeOfHeader,
+                                httpContext.Request.ContentType);
 
-                var soapAction = httpContext.Request.Headers["SOAPAction"].ToString().Trim('\"');
+                string soapAction = httpContext.Request.Headers["SOAPAction"].ToString().Trim('\"');
+
                 if (!string.IsNullOrEmpty(soapAction))
                 {
                     requestMessage.Headers.Action = soapAction;
@@ -91,7 +98,10 @@ namespace SOAPMiddleware
                 var serviceInstance = serviceProvider.GetService(_service.ServiceType);
 
                 // Get operation arguments from message
-                var arguments = GetRequestArguments(requestMessage, operation);
+                var arguments =
+                    new ArgumentParser()
+                    .GetRequestArguments(requestMessage, operation);
+                //var arguments = GetRequestArguments(requestMessage, operation);
 
                 // Invoke Operation method
                 var responseObject = operation.DispatchMethod.Invoke(serviceInstance, arguments.ToArray());
@@ -99,6 +109,8 @@ namespace SOAPMiddleware
                 // Create response message
                 var resultName = operation.DispatchMethod.ReturnParameter.GetCustomAttribute<MessageParameterAttribute>()?.Name ?? operation.Name + "Result";
                 var bodyWriter = new ServiceBodyWriter(operation.Contract.Namespace, operation.Name + "Response", resultName, responseObject);
+
+                Message responseMessage;
                 responseMessage = Message.CreateMessage(_messageEncoder.MessageVersion, operation.ReplyAction, bodyWriter);
 
                 httpContext.Response.ContentType = httpContext.Request.ContentType; // _messageEncoder.ContentType;

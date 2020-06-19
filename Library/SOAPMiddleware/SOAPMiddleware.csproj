@@ -16,5 +16,6 @@
     <Folder Include="Entity\Interface\" />
     <Folder Include="Serializer\" />
     <Folder Include="MiddlewareComponent\" />
+    <Folder Include="Parser\" />
   </ItemGroup>
 </Project>
