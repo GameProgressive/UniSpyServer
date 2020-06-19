@@ -10,7 +10,7 @@ namespace SOAPMiddleware.MiddlewareComponent
 {
     public class ArgumentParser
     {
-        public object GetArgumentsForNonClass(XmlDictionaryReader xmlReader, OperationDescription operation, ParameterInfo param)
+        private object GetArgumentsForNonClass(XmlDictionaryReader xmlReader, OperationDescription operation, ParameterInfo param)
         {
             // Find the element for the operation's data
             xmlReader.ReadStartElement(operation.Name, operation.Contract.Namespace);
@@ -33,7 +33,7 @@ namespace SOAPMiddleware.MiddlewareComponent
             return serializer.ReadObject(xmlReader, verifyObjectName: true);
         }
 
-        public object GetArgumentsForClass(XmlDictionaryReader xmlReader, OperationDescription operation, ParameterInfo param)
+        private object GetArgumentsForClass(XmlDictionaryReader xmlReader, OperationDescription operation, ParameterInfo param)
         {
             DataContractSerializer serializer =
                 new DataContractSerializer(
