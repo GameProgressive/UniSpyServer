@@ -72,8 +72,6 @@ namespace SOAPMiddleware
         {
             if (httpContext.Request.Path.Equals(_endpointPath, StringComparison.Ordinal))
             {
-
-
                 // Read request message
                 Message requestMessage =
                     _messageEncoder.ReadMessage(
@@ -88,7 +86,10 @@ namespace SOAPMiddleware
                     requestMessage.Headers.Action = soapAction;
                 }
 
-                var operation = _service.Operations.Where(o => o.SoapAction.Equals(requestMessage.Headers.Action, StringComparison.Ordinal)).FirstOrDefault();
+                var operation =
+                    _service.Operations.Where(
+                        o => o.SoapAction.Equals(requestMessage.Headers.Action, StringComparison.Ordinal)).FirstOrDefault();
+
                 if (operation == null)
                 {
                     throw new InvalidOperationException($"No operation found for specified action: {requestMessage.Headers.Action}");
@@ -107,11 +108,20 @@ namespace SOAPMiddleware
                 var responseObject = operation.DispatchMethod.Invoke(serviceInstance, arguments.ToArray());
 
                 // Create response message
-                var resultName = operation.DispatchMethod.ReturnParameter.GetCustomAttribute<MessageParameterAttribute>()?.Name ?? operation.Name + "Result";
-                var bodyWriter = new ServiceBodyWriter(operation.Contract.Namespace, operation.Name + "Response", resultName, responseObject);
+                var resultName = operation.DispatchMethod.ReturnParameter
+                    .GetCustomAttribute<MessageParameterAttribute>()?.Name ?? $"{operation.Name}Result";
 
-                Message responseMessage;
-                responseMessage = Message.CreateMessage(_messageEncoder.MessageVersion, operation.ReplyAction, bodyWriter);
+                var bodyWriter = new ServiceBodyWriter(
+                    operation.Contract.Namespace,
+                    $"{operation.Name}Response",
+                    resultName,
+                    responseObject);
+
+                Message responseMessage =
+                    Message.CreateMessage(
+                        _messageEncoder.MessageVersion,
+                        operation.ReplyAction,
+                        bodyWriter);
 
                 httpContext.Response.ContentType = httpContext.Request.ContentType; // _messageEncoder.ContentType;
                 httpContext.Response.Headers["SOAPAction"] = responseMessage.Headers.Action;
