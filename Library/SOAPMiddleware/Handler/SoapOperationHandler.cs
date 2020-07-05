@@ -5,6 +5,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using Microsoft.AspNetCore.Http;
 using SOAPMiddleware.MiddlewareComponent;
+using SOAPMiddleware.Serializer;
 
 namespace SOAPMiddleware.Handler
 {

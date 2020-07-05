@@ -5,7 +5,7 @@ using System.ServiceModel.Channels;
 using System.Text;
 using System.Xml;
 
-namespace SOAPMiddleware
+namespace SOAPMiddleware.Serializer
 {
     public class ServiceBodyWriter : BodyWriter
     {

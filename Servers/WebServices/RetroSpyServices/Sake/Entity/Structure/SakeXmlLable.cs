@@ -3,7 +3,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure
 {
     public class SakeXmlLable
     {
-        public const string SakeNameSpace = "ns1:";
+        public const string SakeNameSpace = "http://gamespy.com/sake";
         public const string Values = "values";
         public const string RecordField = "RecordField";
         public const string Name = "name";
@@ -37,6 +37,5 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure
         public const string RecordIDs = "recordids";
         public const string Fields = "fields";
         public const string Rating = "rating";
-
     }
 }

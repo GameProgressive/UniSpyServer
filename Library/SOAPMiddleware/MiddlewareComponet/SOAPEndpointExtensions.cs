@@ -1,7 +1,7 @@
-﻿using SOAPMiddleware;
+﻿using Microsoft.AspNetCore.Builder;
 using System.ServiceModel.Channels;
 
-namespace Microsoft.AspNetCore.Builder
+namespace SOAPMiddleware.MiddlewareComponent
 {
     // Extension method used to add the middleware to the HTTP request pipeline.
     public static class SOAPEndpointExtensions
@@ -13,7 +13,10 @@ namespace Microsoft.AspNetCore.Builder
 
         public static IApplicationBuilder UseSOAPEndpoint<T>(this IApplicationBuilder builder, string path, Binding binding)
         {
-            var encoder = binding.CreateBindingElements().Find<MessageEncodingBindingElement>()?.CreateMessageEncoderFactory().Encoder;
+            var encoder = binding.CreateBindingElements()
+                .Find<MessageEncodingBindingElement>()
+                ?.CreateMessageEncoderFactory().Encoder;
+
             return builder.UseMiddleware<SOAPEndpointMiddleware>(typeof(T), path, encoder);
         }
     }

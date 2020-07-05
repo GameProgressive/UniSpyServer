@@ -259,7 +259,6 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
                            where u.Email == _session.UserInfo.Email
                            && p.Nick == _session.UserInfo.Nick
-                           && n.Namespaceid == _session.UserInfo.NamespaceID
                            select new
                            {
                                userid = u.Userid,

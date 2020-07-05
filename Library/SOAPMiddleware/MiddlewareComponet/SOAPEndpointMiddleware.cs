@@ -4,7 +4,7 @@ using System;
 using System.ServiceModel.Channels;
 using System.Threading.Tasks;
 
-namespace SOAPMiddleware
+namespace SOAPMiddleware.MiddlewareComponent
 {
     public class SOAPEndpointMiddleware
     {
@@ -27,8 +27,8 @@ namespace SOAPMiddleware
         {
             if (httpContext.Request.Path.Equals(_endpointPath, StringComparison.Ordinal))
             {
-                new SoapOperationHandler(httpContext, serviceProvider,_serviceType, _msgEncoder)
-                    .HandleSOAPOperation();
+                new SoapOperationHandler(httpContext, serviceProvider, _serviceType, _msgEncoder)
+                       .HandleSOAPOperation();
             }
             else
             {

@@ -11,7 +11,7 @@ using RetroSpyServices.Direct2Game.Service;
 using RetroSpyServices.Motd.Service;
 using RetroSpyServices.Sake.Service;
 using System.ServiceModel;
-
+using SOAPMiddleware.MiddlewareComponent;
 namespace WebServices
 {
     public class Startup
