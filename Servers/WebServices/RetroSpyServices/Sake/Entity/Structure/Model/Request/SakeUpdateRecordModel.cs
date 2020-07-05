@@ -133,6 +133,5 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     //            </ns1:UpdateRecord>
     public class SakeUpdateRecordRequest : SakeRequestBase
     {
-
     }
 }

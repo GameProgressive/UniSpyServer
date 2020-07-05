@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.Serialization;
+
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
 
@@ -29,7 +31,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
                 //</ns1:GetRandomRecords>
     public class SakeGetRamdomRecordRequest:SakeRequestBase
     {
+        [DataMember(Name = SakeXmlLable.Max)]
         public uint Max;
-        
     }
 }

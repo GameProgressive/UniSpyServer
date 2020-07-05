@@ -21,7 +21,7 @@
         <Folder Include="Entity\Interface\" />
         <Folder Include="Serializer\" />
         <Folder Include="MiddlewareComponet\" />
-        <Folder Include="Parser\" />
+        <Folder Include="Reader\" />
         <Folder Include="Handler\" />
     </ItemGroup>
 </Project>

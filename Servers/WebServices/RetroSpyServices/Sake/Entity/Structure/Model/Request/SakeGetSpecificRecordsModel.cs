@@ -43,6 +43,5 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     //            </ns1:GetSpecificRecords>
     public class SakeGetSpecificRecordsRequest : SakeRequestBase
     {
-
     }
 }

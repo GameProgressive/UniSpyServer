@@ -20,6 +20,5 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     [DataContract(Name = "GetRecordLimit"), KnownType(typeof(SakeRequestBase))]
     public class SakeGetRecordLimitRecordRequest : SakeRequestBase
     {
-
     }
 }

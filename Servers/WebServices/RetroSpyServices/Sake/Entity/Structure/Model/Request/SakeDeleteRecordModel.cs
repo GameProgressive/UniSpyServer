@@ -6,6 +6,5 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     [DataContract]
     public class SakeDeleteRecordRequest : SakeRequestBase
     {
-
     }
 }

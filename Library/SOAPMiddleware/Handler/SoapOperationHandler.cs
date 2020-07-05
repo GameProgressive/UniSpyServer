@@ -4,7 +4,7 @@ using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using Microsoft.AspNetCore.Http;
-using SOAPMiddleware.MiddlewareComponent;
+using SOAPMiddleware.Reader;
 using SOAPMiddleware.Serializer;
 
 namespace SOAPMiddleware.Handler
@@ -16,10 +16,10 @@ namespace SOAPMiddleware.Handler
         private readonly MessageEncoder _msgEncoder;
         private readonly int _maxSizeOfHeader = 0x10000;
         private readonly ServiceDescription _service;
-        private OperationDescription _operation;
+        private OperationDescription _operationDescription;
         private object _responseObject;
 
-        public SoapOperationHandler(HttpContext httpContext, IServiceProvider serviceProvider, Type serviceType,MessageEncoder encoder)
+        public SoapOperationHandler(HttpContext httpContext, IServiceProvider serviceProvider, Type serviceType, MessageEncoder encoder)
         {
             _httpContext = httpContext;
             _msgEncoder = encoder;
@@ -50,11 +50,11 @@ namespace SOAPMiddleware.Handler
                 requestMessage.Headers.Action = soapAction;
             }
 
-            _operation =
+            _operationDescription =
                 _service.Operations.Where(
                     o => o.SoapAction.Equals(requestMessage.Headers.Action, StringComparison.Ordinal)).FirstOrDefault();
 
-            if (_operation == null)
+            if (_operationDescription == null)
             {
                 throw new InvalidOperationException($"No operation found for specified action: {requestMessage.Headers.Action}");
             }
@@ -64,30 +64,30 @@ namespace SOAPMiddleware.Handler
 
             // Get operation arguments from message
             var arguments =
-                new ArgumentParser()
-                .GetRequestArguments(requestMessage, _operation);
+                new HttpObjectReader(requestMessage, _operationDescription)
+                        .GetRequestArguments();
 
             // Invoke Operation method
-            _responseObject = _operation.DispatchMethod.Invoke(serviceInstance, arguments.ToArray());
+            _responseObject = _operationDescription.DispatchMethod.Invoke(serviceInstance, arguments.ToArray());
 
         }
 
         private void HandleSOAPResponse()
         {
             // Create response message
-            var resultName = _operation.DispatchMethod.ReturnParameter
-                .GetCustomAttribute<MessageParameterAttribute>()?.Name ?? $"{_operation.Name}Result";
+            var resultName = _operationDescription.DispatchMethod.ReturnParameter
+                .GetCustomAttribute<MessageParameterAttribute>()?.Name ?? $"{_operationDescription.Name}Result";
 
             var bodyWriter = new ServiceBodyWriter(
-                _operation.Contract.Namespace,
-                $"{_operation.Name}Response",
+                _operationDescription.Contract.Namespace,
+                $"{_operationDescription.Name}Response",
                 resultName,
                 _responseObject);
 
             Message responseMessage =
                 Message.CreateMessage(
                     _msgEncoder.MessageVersion,
-                    _operation.ReplyAction,
+                    _operationDescription.ReplyAction,
                     bodyWriter);
 
             _httpContext.Response.ContentType = _httpContext.Request.ContentType; // _messageEncoder.ContentType;

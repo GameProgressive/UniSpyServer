@@ -25,6 +25,10 @@ namespace SOAPMiddleware.Serializer
         protected override void OnWriteBodyContents(XmlDictionaryWriter writer)
         {
             writer.WriteStartElement(EnvelopeName, ServiceNamespace);
+
+            if (Result == null)
+                return;
+
             var serializer = new DataContractSerializer(Result.GetType(), ResultName, ServiceNamespace);
             serializer.WriteObject(writer, Result);
             writer.WriteEndElement();

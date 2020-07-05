@@ -66,7 +66,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
         public uint OwnerID;
 
         [DataMember(Name = SakeXmlLable.CacheFlag)]
-        public bool cacheFlag;
+        public bool CacheFlag;
 
         //    <ns1:fields>
         //<ns1:string>
