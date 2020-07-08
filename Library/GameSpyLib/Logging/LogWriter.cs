@@ -21,63 +21,34 @@ namespace GameSpyLib.Logging
 
         static LogWriter()
         {
+            LoggerConfiguration logConfig = new LoggerConfiguration();
+
             switch (ConfigManager.Config.MinimumLogLevel)
             {
                 case LogEventLevel.Verbose:
-                    Log = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Console(
-               outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
-                outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+                    logConfig.MinimumLevel.Verbose();
                     break;
                 case LogEventLevel.Information:
-                    Log = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.Console(
-               outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
-                outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+                    logConfig.MinimumLevel.Information();
                     break;
                 case LogEventLevel.Debug:
-                    Log = new LoggerConfiguration()
-                .MinimumLevel.Debug()
-                .WriteTo.Console(
-               outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
-                outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+                    logConfig.MinimumLevel.Debug();
                     break;
                 case LogEventLevel.Warning:
-                    Log = new LoggerConfiguration()
-                .MinimumLevel.Warning()
-                .WriteTo.Console(
-               outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
-                outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+                    logConfig.MinimumLevel.Warning();
                     break;
                 case LogEventLevel.Error:
-                    Log = new LoggerConfiguration()
-                .MinimumLevel.Error()
-                .WriteTo.Console(
-               outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
-                outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
-                .CreateLogger();
+                    logConfig.MinimumLevel.Error();
                     break;
                 case LogEventLevel.Fatal:
-                    Log = new LoggerConfiguration()
-                .MinimumLevel.Fatal()
-                .WriteTo.Console(
-               outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
+                    logConfig.MinimumLevel.Fatal();
+                    break;
+            }
+            Log = logConfig
+                .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
-                    break;
-            }
         }
 
         /// <summary>
