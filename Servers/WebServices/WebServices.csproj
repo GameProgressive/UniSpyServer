@@ -6,6 +6,7 @@
         <UserSecretsId>4e4ca5ab-cb18-409c-a769-880498fda2b2</UserSecretsId>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
+        <OutputType>Exe</OutputType>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <PlatformTarget>AnyCPU</PlatformTarget>
@@ -13,6 +14,11 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'WebServices' ">
+      <StartAction>Project</StartAction>
+      <ExternalConsole>true</ExternalConsole>
+      <ApplicationURL>http://localhost:38612</ApplicationURL>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

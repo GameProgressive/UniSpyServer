@@ -12,6 +12,7 @@ using RetroSpyServices.Motd.Service;
 using RetroSpyServices.Sake.Service;
 using System.ServiceModel;
 using SOAPMiddleware.MiddlewareComponent;
+using Serilog;
 
 namespace WebServices
 {
@@ -27,6 +28,9 @@ namespace WebServices
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //use serilog as our logger
+            //services.AddSingleton(Log.Logger);
+
             services.Configure<IISServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
