@@ -35,7 +35,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     //        </ns1:CreateRecord>
     //    </SOAP-ENV:Body>
     //</SOAP-ENV:Envelope>
-    [DataContract(Name = "CreateRecord"), KnownType(typeof(SakeRequestBase))]
+    [DataContract, KnownType(typeof(SakeRequestBase))]
     public class SakeCreateRecordRequest : SakeRequestBase
     {
         [DataMember(Name = SakeXmlLable.Values,Order = 5)]

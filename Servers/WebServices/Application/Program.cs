@@ -14,26 +14,14 @@ namespace WebServices
                 .UseUrls("http://*:80")
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseStartup<Startup>()
-                .ConfigureLogging(x =>
+                .ConfigureLogging(logger =>
                 {
-                    x.AddDebug();
-                    x.AddConsole();
+                    logger.AddDebug();
+                    logger.AddConsole();
                 })
                 .Build();
 
             host.Run();
         }
-
-        //public static void Main(string[] args)
-        //{
-        //    CreateHostBuilder(args).Build().Run();
-        //}
-
-        //public static IHostBuilder CreateHostBuilder(string[] args) =>
-        //    Host.CreateDefaultBuilder(args)
-        //        .ConfigureWebHostDefaults(webBuilder =>
-        //        {
-        //            webBuilder.UseStartup<Startup>();
-        //        });
     }
 }

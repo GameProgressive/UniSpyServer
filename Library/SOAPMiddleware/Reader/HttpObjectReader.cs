@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.ServiceModel;
@@ -13,7 +14,7 @@ namespace SOAPMiddleware.Reader
         OperationDescription _operationDesciption;
         ParameterInfo[] _paramInfoArray;
         List<object> _argumentList;
-        XmlDictionaryReader _xmlReader;
+        XmlReader _xmlReader;
 
         public HttpObjectReader(Message requestMsg, OperationDescription operationDescription)
         {
@@ -21,11 +22,11 @@ namespace SOAPMiddleware.Reader
             _operationDesciption = operationDescription;
             _paramInfoArray = operationDescription.DispatchMethod.GetParameters();
             _argumentList = new List<object>();
-            _xmlReader = _requestMsg.GetReaderAtBodyContents();
         }
 
         public List<object> GetRequestArguments()
         {
+            _xmlReader = _requestMsg.GetReaderAtBodyContents();
             // Deserialize request wrapper and object
             bool IsStartElement = _xmlReader.IsStartElement(
                 _operationDesciption.Name, _operationDesciption.Contract.Namespace);
@@ -66,6 +67,24 @@ namespace SOAPMiddleware.Reader
                     _operationDesciption.Name,
                     _operationDesciption.Contract.Namespace);
 
+            //test code here
+
+            //while (_xmlReader.Read())
+            //{
+            //    Console.WriteLine(_xmlReader.NodeType);
+            //    if (_xmlReader.NodeType == XmlNodeType.Element)
+            //    {
+            //        Console.WriteLine(_xmlReader.Name);
+            //    }
+            //    else
+            //    {
+            //        Console.WriteLine(_xmlReader.Value);
+            //    }
+            //}
+
+            //_xmlReader.MoveToFirstAttribute();
+
+
             return serializer.ReadObject(_xmlReader, verifyObjectName: true);
         }
 
@@ -76,20 +95,24 @@ namespace SOAPMiddleware.Reader
 
             string paramName = param.GetCustomAttribute<MessageParameterAttribute>()?.Name ?? param.Name;
 
-            _xmlReader.MoveToStartElement(paramName, _operationDesciption.Contract.Namespace);
+            //_xmlReader.MoveToStartElement(paramName, _operationDesciption.Contract.Namespace);
 
             if (!_xmlReader.IsStartElement(paramName, _operationDesciption.Contract.Namespace))
             {
                 return null;
             }
+            else
+            {
+                return GetObjectForClass(param);
+            }
 
-            DataContractSerializer serializer =
-                  new DataContractSerializer(
-                      param.ParameterType,
-                      paramName,
-                      _operationDesciption.Contract.Namespace);
+            //DataContractSerializer serializer =
+            //      new DataContractSerializer(
+            //          param.ParameterType,
+            //          paramName,
+            //          _operationDesciption.Contract.Namespace);
 
-            return serializer.ReadObject(_xmlReader, verifyObjectName: true);
+            //return serializer.ReadObject(_xmlReader, verifyObjectName: true);
         }
     }
 }

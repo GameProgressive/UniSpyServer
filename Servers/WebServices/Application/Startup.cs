@@ -12,6 +12,7 @@ using RetroSpyServices.Motd.Service;
 using RetroSpyServices.Sake.Service;
 using System.ServiceModel;
 using SOAPMiddleware.MiddlewareComponent;
+
 namespace WebServices
 {
     public class Startup
@@ -49,18 +50,18 @@ namespace WebServices
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseRouting();
-
+            
             /*app.UseEndpoints(endpoints =>
             {
                 // PublicServices
                 /*endpoints.UseSoapEndpoint<AuthService>(
                     "/AuthService/AuthService.asmx",
                     new BasicHttpBinding(), SoapSerializer.XmlSerializer);*/
-                //endpoints.UseSoapEndpoint<PublicServices.Competitive.CompetitiveService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
-                //endpoints.UseSoapEndpoint<PublicServices.Direct2Game.Direct2GameService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
+            //endpoints.UseSoapEndpoint<PublicServices.Competitive.CompetitiveService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
+            //endpoints.UseSoapEndpoint<PublicServices.Direct2Game.Direct2GameService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
 
-                // Non-PublicServices
-                //endpoints.UseSoapEndpoint<Motd.MotdService>("/motd/motd.asp", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
+            // Non-PublicServices
+            //endpoints.UseSoapEndpoint<Motd.MotdService>("/motd/motd.asp", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
             //});
 
             app.UseSOAPEndpoint<SakeStorageService>(
