@@ -12,7 +12,6 @@ using RetroSpyServices.Motd.Service;
 using RetroSpyServices.Sake.Service;
 using System.ServiceModel;
 using SOAPMiddleware.MiddlewareComponent;
-using Serilog;
 
 namespace WebServices
 {

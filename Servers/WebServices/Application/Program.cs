@@ -16,38 +16,15 @@ namespace WebServices
         private static ServerManager Manager;
         public static void Main(string[] args)
         {
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            var location = System.Reflection.Assembly.GetEntryAssembly().Location;
+            var directory = Path.GetDirectoryName(location);
+            Console.WriteLine(directory);
             //Log.Logger = new LoggerConfiguration()
             //.Enrich.FromLogContext()
             //.WriteTo.Console()
             //.CreateLogger();
 
-            //try
-            //{
-            //   // Log.Information("Starting up");
-
-            //    var host = new WebHostBuilder()
-            //            .UseKestrel(x => x.AllowSynchronousIO = true)
-            //            .UseUrls("http://*:80")
-            //            .UseContentRoot(Directory.GetCurrentDirectory())
-            //            .UseStartup<Startup>()
-            //            .ConfigureLogging(logBuilder =>
-            //            {
-            //                logBuilder.ClearProviders();
-            //                logBuilder.AddDebug();
-            //                logBuilder.AddConsole();
-            //            })
-            //            .Build();
-
-            //    host.Run();
-            //}
-            //catch (Exception ex)
-            //{
-            //  //  Log.Fatal(ex, "Application start-up failed");
-            //}
-            //finally
-            //{
-            //   // Log.CloseAndFlush();
-            //}
             try
             {
                 Manager = new ServerManager(RetroSpyServerName.WebServices);
@@ -57,8 +34,6 @@ namespace WebServices
             {
                 LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
-
         }
-
     }
 }

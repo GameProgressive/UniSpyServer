@@ -11,6 +11,7 @@ namespace WebServices.Application
 {
     public class ServerManager : ServerManagerBase
     {
+        IWebHost _host;
         public ServerManager(string serverName) : base(serverName)
         {
         }
@@ -21,23 +22,23 @@ namespace WebServices.Application
             //currently we do not need database connection
             //LoadDatabaseConfig();
             LoadServerConfig();
+            _host.Run();
         }
 
         protected override void StartServer(ServerConfig cfg)
         {
             if (cfg.Name == ServerName)
             {
-                var host = new WebHostBuilder()
+                _host = new WebHostBuilder()
                        .UseKestrel(x => x.AllowSynchronousIO = true)
                        .UseUrls($"{cfg.ListeningAddress}:{cfg.ListeningPort}")
-                       .UseContentRoot(Directory.GetCurrentDirectory())
+                       //.UseContentRoot(Directory.GetCurrentDirectory())
                        .UseSerilog()
                        .UseStartup<Startup>()
                        .Build();
 
-                host.Run();
-                Console.WriteLine(
-                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                Console.WriteLine(StringExtensions
+                  .FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

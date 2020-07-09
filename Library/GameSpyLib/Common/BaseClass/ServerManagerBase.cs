@@ -27,7 +27,7 @@ namespace GameSpyLib.Common
             LoadServerConfig();
         }
 
-        public void LoadServerConfig()
+        protected void LoadServerConfig()
         {
             Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
             Console.WriteLine(StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
