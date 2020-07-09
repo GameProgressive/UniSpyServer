@@ -41,6 +41,11 @@ namespace GameSpyLib.Common
             Console.WriteLine("Server is successfully started! ");
         }
 
+        /// <summary>
+        /// Over write the specific functions you want to start the server
+        /// You can start all servers if you want
+        /// </summary>
+        /// <param name="cfg"></param>
         protected abstract void StartServer(ServerConfig cfg);
 
         protected void LoadDatabaseConfig()
