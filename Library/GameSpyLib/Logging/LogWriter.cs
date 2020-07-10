@@ -17,7 +17,7 @@ namespace GameSpyLib.Logging
     public class LogWriter
     {
 
-        public static Logger Log { get; protected set; }
+        //private static Logger Log;
 
         static LogWriter()
         {
@@ -44,7 +44,7 @@ namespace GameSpyLib.Logging
                     logConfig.MinimumLevel.Fatal();
                     break;
             }
-            Log = logConfig
+            Log.Logger = logConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)

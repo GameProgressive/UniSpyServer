@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatsAndTracking", "Servers
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDKey", "Servers\CDKey\CDKey.csproj", "{C679E140-ED80-4D1E-BD94-C54C4158BDD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServices", "Servers\WebServices\WebServices.csproj", "{CDB3EC25-B4DB-4914-8553-42D002AFF275}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices", "Servers\WebServices\WebServices.csproj", "{CDB3EC25-B4DB-4914-8553-42D002AFF275}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{3DC251C8-F841-4D22-81DB-A7D4D4C25F37}"
 EndProject
