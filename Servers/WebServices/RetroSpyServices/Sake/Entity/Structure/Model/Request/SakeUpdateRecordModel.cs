@@ -131,6 +131,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     //                    </ns1:RecordField>
     //                </ns1:values>
     //            </ns1:UpdateRecord>
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class SakeUpdateRecordRequest : SakeRequestBase
     {
     }

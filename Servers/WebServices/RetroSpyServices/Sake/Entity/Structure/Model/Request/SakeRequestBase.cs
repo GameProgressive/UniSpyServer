@@ -1,25 +1,23 @@
-﻿using System;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
-    [DataContract]
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class SakeRequestBase
     {
-        [DataMember(Name = SakeXmlLable.GameID, Order = 0)]
+        [DataMember(Name = SakeXmlLable.GameID)]
         public string GameID { get; set; }
 
-        [DataMember(Name = SakeXmlLable.SecretKey, Order = 1)]
+        [DataMember(Name = SakeXmlLable.SecretKey)]
         public string SecretKey { get; set; }
 
-        [DataMember(Name = SakeXmlLable.LoginTicket, Order = 2)]
+        [DataMember(Name = SakeXmlLable.LoginTicket)]
         public string LoginTicket { get; set; }
 
-        [DataMember(Name = SakeXmlLable.TableID, Order = 3)]
+        [DataMember(Name = SakeXmlLable.TableID)]
         public string TableID { get; set; }
 
-        [DataMember(Name = SakeXmlLable.RecordID, Order = 4)]
+        [DataMember(Name = SakeXmlLable.RecordID)]
         public uint RecordID { get; set; }
     }
 }

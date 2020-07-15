@@ -45,6 +45,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     //                    </ns1:string>
     //                </ns1:fields>
     //            </ns1:SearchForRecords>
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class SakeSearchForRecordRequest : SakeRequestBase
     {
         [DataMember(Name = SakeXmlLable.Filter)]

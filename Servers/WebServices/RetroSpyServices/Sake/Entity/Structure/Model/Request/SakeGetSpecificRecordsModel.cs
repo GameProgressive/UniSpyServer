@@ -41,6 +41,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     //                    </ns1:string>
     //                </ns1:fields>
     //            </ns1:GetSpecificRecords>
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class SakeGetSpecificRecordsRequest : SakeRequestBase
     {
     }

@@ -51,8 +51,9 @@ namespace SOAPMiddleware.Handler
             }
 
             _operationDescription =
-                _service.Operations.Where(
-                    o => o.SoapAction.Equals(requestMessage.Headers.Action, StringComparison.Ordinal)).FirstOrDefault();
+                _service.Operations.Where(o => o.SoapAction
+                .Equals(requestMessage.Headers.Action, StringComparison.Ordinal))
+                .FirstOrDefault();
 
             if (_operationDescription == null)
             {
@@ -64,7 +65,7 @@ namespace SOAPMiddleware.Handler
 
             // Get operation arguments from message
             var arguments =
-                new HttpObjectReader(requestMessage, _operationDescription)
+                new SOAPObjectReader(requestMessage, _operationDescription)
                         .GetRequestArguments();
 
             // Invoke Operation method

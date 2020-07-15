@@ -17,7 +17,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     //               nicks
     //               </ns1:tableid>
     //           </ns1:GetRecordLimit>
-    [DataContract(Name = "GetRecordLimit"), KnownType(typeof(SakeRequestBase))]
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class SakeGetRecordLimitRecordRequest : SakeRequestBase
     {
     }

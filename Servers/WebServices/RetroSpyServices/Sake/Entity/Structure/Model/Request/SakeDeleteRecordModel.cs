@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
-    [DataContract]
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class SakeDeleteRecordRequest : SakeRequestBase
     {
     }

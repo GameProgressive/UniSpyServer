@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace SOAPMiddleware.Reader
 {
-    public class HttpObjectReader
+    public class SOAPObjectReader
     {
         Message _requestMsg;
         OperationDescription _operationDesciption;
@@ -16,7 +16,7 @@ namespace SOAPMiddleware.Reader
         List<object> _argumentList;
         XmlReader _xmlReader;
 
-        public HttpObjectReader(Message requestMsg, OperationDescription operationDescription)
+        public SOAPObjectReader(Message requestMsg, OperationDescription operationDescription)
         {
             _requestMsg = requestMsg;
             _operationDesciption = operationDescription;
@@ -58,7 +58,12 @@ namespace SOAPMiddleware.Reader
                     GetObjectForNonClass(param));
             }
         }
-
+        /// <summary>
+        /// This function execute means http content is success fullly readed in to xmlreader
+        /// If data contract can not correctly serialization plz check your DataContract class
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
         private object GetObjectForClass(ParameterInfo param)
         {
             DataContractSerializer serializer =
@@ -66,23 +71,6 @@ namespace SOAPMiddleware.Reader
                     param.ParameterType,
                     _operationDesciption.Name,
                     _operationDesciption.Contract.Namespace);
-
-            //test code here
-
-            //while (_xmlReader.Read())
-            //{
-            //    Console.WriteLine(_xmlReader.NodeType);
-            //    if (_xmlReader.NodeType == XmlNodeType.Element)
-            //    {
-            //        Console.WriteLine(_xmlReader.Name);
-            //    }
-            //    else
-            //    {
-            //        Console.WriteLine(_xmlReader.Value);
-            //    }
-            //}
-
-            //_xmlReader.MoveToFirstAttribute();
 
 
             return serializer.ReadObject(_xmlReader, verifyObjectName: true);
