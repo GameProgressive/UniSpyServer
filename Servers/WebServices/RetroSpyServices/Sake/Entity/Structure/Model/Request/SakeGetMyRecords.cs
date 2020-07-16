@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
+
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
     //<ns1:GetMyRecords>
@@ -62,5 +66,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class SakeGetMyRecordsRequest : SakeRequestBase
     {
+        [DataMember(Name = SakeXmlLable.Fields)]
+        public List<Dictionary<string,string>> Fields;
     }
 }

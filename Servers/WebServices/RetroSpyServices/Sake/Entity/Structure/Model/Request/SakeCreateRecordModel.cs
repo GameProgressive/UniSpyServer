@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
-using WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Basic;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
 {
@@ -39,6 +38,36 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
     public class SakeCreateRecordRequest : SakeRequestBase
     {
         [DataMember(Name = SakeXmlLable.Values)]
-        public string KeyValues;
+        public Values Values;
+    }
+
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    public class Values
+    {
+        [DataMember(Name = SakeXmlLable.RecordField)]
+        public RecordField RecordFieldList { get; set; }
+    }
+
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    public class RecordField
+    {
+        [DataMember(Name = SakeXmlLable.Name)]
+        public string Name { get; set; }
+        [DataMember(Name = SakeXmlLable.Value)]
+        public Value Value { get; set; }
+    }
+
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    public class Value
+    {
+        [DataMember(Name =SakeXmlLable.AsciiStringValue)]
+        public AsciiStringValue AsciiStringValue { get; set; }
+    }
+
+    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    public class AsciiStringValue
+    {
+        [DataMember(Name =SakeXmlLable.Value)]
+        public string Value { get; set; }
     }
 }

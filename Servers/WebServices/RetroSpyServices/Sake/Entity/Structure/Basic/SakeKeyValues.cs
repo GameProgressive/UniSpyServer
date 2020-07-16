@@ -8,6 +8,10 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Basic
     (Name = "values",
     ItemName = "RecordField",
     KeyName = "name",
-    ValueName = "value")]
-    public class SakeKeyValues : Dictionary<string, string> { }
+    ValueName = "value",
+    Namespace = SakeXmlLable.SakeNameSpace)]
+    public class SakeKeyValues
+    {
+
+    }
 }
