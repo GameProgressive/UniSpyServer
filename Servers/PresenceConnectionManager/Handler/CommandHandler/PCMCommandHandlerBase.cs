@@ -69,6 +69,7 @@ namespace PresenceConnectionManager.Handler
                 if (!ushort.TryParse(_recv["id"], out _operationID))
                 {
                     _errorCode = GPErrorCode.Parse;
+                    return;
                 }
             }
 
@@ -77,13 +78,24 @@ namespace PresenceConnectionManager.Handler
                 if (!uint.TryParse(_recv["namespaceid"], out _namespaceid))
                 {
                     _errorCode = GPErrorCode.Parse;
+                    return;
                 }
             }
         }
 
         protected virtual void DataOperation() { }
 
-        protected virtual void ConstructResponse() { }
+        protected virtual void ConstructResponse()
+        {
+            //if (_operationID != 0)
+            //{
+            //    _sendingBuffer += $@"{_operationID}\final\";
+            //}
+            //else
+            //{
+            //    _sendingBuffer += @"\final\";
+            //}
+        }
 
         protected virtual void Response()
         {

@@ -57,6 +57,7 @@
         <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\Request\" />
         <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\Response\" />
         <Folder Include="Application\" />
+        <Folder Include="RetroSpyServices\Sake\CommandHandler\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Library\SOAPMiddleware\SOAPMiddleware.csproj">

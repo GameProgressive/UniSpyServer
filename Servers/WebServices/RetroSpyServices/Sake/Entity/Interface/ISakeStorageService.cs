@@ -1,6 +1,7 @@
 ﻿using System.ServiceModel;
 using WebServices.RetroSpyServices.Sake.Entity.Structure;
 using WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Response;
 
 namespace RetroSpyServices.Sake.Entity.Interface
 {
@@ -8,30 +9,30 @@ namespace RetroSpyServices.Sake.Entity.Interface
     public interface ISakeStorageService
     {
         [OperationContract]
-        public void DeleteRecord(SakeDeleteRecordRequest request);
+        public SakeDeleteRecordResponse DeleteRecord(SakeDeleteRecordRequest request);
 
         [OperationContract]
-        public void GetRecordLimit(SakeGetRecordLimitRecordRequest request);
+        public SakeGetRecordLimitReponse GetRecordLimit(SakeGetRecordLimitRequest request);
 
         [OperationContract]
-        public void GetRandomRecords(SakeGetRamdomRecordRequest request);
+        public SakeGetRandomRecordResponse GetRandomRecords(SakeGetRamdomRecordRequest request);
 
         [OperationContract]
-        public void GetMyRecords(SakeGetMyRecordsRequest request);
+        public SakeGetMyRecordsResponse GetMyRecords(SakeGetMyRecordsRequest request);
 
         [OperationContract]
-        public void SearchForRecords(SakeSearchForRecordRequest request);
+        public SakeSearchForRecordResponse SearchForRecords(SakeSearchForRecordRequest request);
 
         [OperationContract]
-        public void GetSpecificRecords(SakeGetSpecificRecordsRequest request);
+        public SakeGetSpecificRecordsResponse GetSpecificRecords(SakeGetSpecificRecordsRequest request);
 
         [OperationContract]
-        public void CreateRecord(SakeCreateRecordRequest request);
+        public SakeCreateRecordResponse CreateRecord(SakeCreateRecordRequest request);
 
         [OperationContract]
-        public void RateRecord(SakeRateRecordRequest request);
+        public SakeRateRecordResponse RateRecord(SakeRateRecordRequest request);
 
         [OperationContract]
-        public void UpdateRecord(SakeUpdateRecordRequest request);
+        public SakeUpdateRecordResponse UpdateRecord(SakeUpdateRecordRequest request);
     }
 }

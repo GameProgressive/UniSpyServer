@@ -48,6 +48,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
         protected override void ConstructResponse()
         {
             _sendingBuffer = $@"\rn\\id\{_operationID}\final\";
+            base.ConstructResponse();
         }
     }
 }
