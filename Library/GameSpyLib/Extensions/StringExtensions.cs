@@ -123,5 +123,33 @@ namespace GameSpyLib.Extensions
 
            return data;
         }
+
+        /// <summary>
+        /// Check the validation of response string
+        /// </summary>
+        /// <returns>return true if the string is valid</returns>
+        public static bool CheckResponseValidation(string buffer)
+        {
+            if (buffer == null || buffer == "" || buffer.Length < 3)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static bool CheckResponseValidation(byte[] buffer)
+        {
+            if (buffer == null && buffer.Length < 3)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }
