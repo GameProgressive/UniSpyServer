@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
+using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
@@ -18,7 +20,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected ushort _operationID;
         protected uint _namespaceid;
         protected Dictionary<string, string> _recv;
-
+        protected RequestModelBase _request;
         public PSPCommandHandlerBase(ISession client, Dictionary<string, string> recv) : base(client)
         {
             _recv = recv;
@@ -29,7 +31,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
         public override void Handle()
         {
-            LogWriter.LogCurrentClass(this);
+            //LogWriter.LogCurrentClass(this);
 
             CheckRequest();
 
@@ -60,30 +62,49 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
         protected virtual void CheckRequest()
         {
-            if (_recv.ContainsKey("id"))
-            {
-                if (!ushort.TryParse(_recv["id"], out _operationID))
-                {
-                    _errorCode = GPErrorCode.Parse;
-                }
-            }
+            //if (_recv.ContainsKey("id"))
+            //{
+            //    if (!ushort.TryParse(_recv["id"], out _operationID))
+            //    {
+            //        _errorCode = GPErrorCode.Parse;
+            //    }
+            //}
 
-            if (_recv.ContainsKey("namespaceid"))
-            {
-                if (!uint.TryParse(_recv["namespaceid"], out _namespaceid))
-                {
-                    _errorCode = GPErrorCode.Parse;
-                }
-            }
+            //if (_recv.ContainsKey("namespaceid"))
+            //{
+            //    if (!uint.TryParse(_recv["namespaceid"], out _namespaceid))
+            //    {
+            //        _errorCode = GPErrorCode.Parse;
+            //    }
+            //}
         }
 
         protected virtual void DataOperation() { }
 
-        protected virtual void ConstructResponse() { }
+        /// <summary>
+        /// The general message and error response should be writing in this child method.
+        /// The base method only handles postfix adding and response validate checking.
+        /// </summary>
+        protected virtual void ConstructResponse()
+        {
+            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
+            {
+                return;
+            }
+
+            if (_request.OperationID != 0)
+            {
+                _sendingBuffer += $@"id\{_operationID}\final\";
+            }
+            else
+            {
+                _sendingBuffer += @"\final\";
+            }
+        }
 
         protected virtual void Response()
         {
-            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
             {
                 return;
             }

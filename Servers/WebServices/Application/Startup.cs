@@ -5,13 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using RetroSpyServices.Authentication.Service;
-using RetroSpyServices.Competitive.Service;
-using RetroSpyServices.Direct2Game.Service;
-using RetroSpyServices.Motd.Service;
-using RetroSpyServices.Sake.Service;
 using System.ServiceModel;
 using SOAPMiddleware.MiddlewareComponent;
+using RetroSpyServices.Sake.Handler.Service;
 
 namespace WebServices
 {

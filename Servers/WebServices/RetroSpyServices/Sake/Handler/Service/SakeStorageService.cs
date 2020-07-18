@@ -1,16 +1,17 @@
 ﻿using System;
 using RetroSpyServices.Sake.Entity.Interface;
-using WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request;
-using WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Response;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Request;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Response;
+using WebServices.RetroSpyServices.Sake.Handler.CommandHandler;
 
-namespace RetroSpyServices.Sake.Service
+namespace RetroSpyServices.Sake.Handler.Service
 {
     public class SakeStorageService : ISakeStorageService
     {
         public SakeCreateRecordResponse CreateRecord(SakeCreateRecordRequest request)
         {
-            Console.WriteLine(request.ToString());
-            return null;
+            CreateRecordHandler createRecord = new CreateRecordHandler(request);
+            return (SakeCreateRecordResponse)createRecord.Handle();
         }
 
         public SakeDeleteRecordResponse DeleteRecord(SakeDeleteRecordRequest request)

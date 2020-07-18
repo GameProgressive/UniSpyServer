@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request
+namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
 {
     //<SOAP-ENV:Body>
     //        <ns1:GetSpecificRecords>

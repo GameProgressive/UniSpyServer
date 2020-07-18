@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Error;
 using System.Collections.Generic;
@@ -99,7 +100,7 @@ namespace PresenceConnectionManager.Handler
 
         protected virtual void Response()
         {
-            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
             {
                 return;
             }

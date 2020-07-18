@@ -98,5 +98,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
             string sendingBuffer = $@"\error\\err\{errorCode}\fatal\\errmsg\{errorMsg}\id\{operationID}\final\";
             client.SendAsync(sendingBuffer);
         }
+
+        public static string BuildGPErrorMsg(GPErrorCode errorCode)
+        {
+            return $@"\error\\err\{errorCode}\fatal\\errmsg\{GetErrorMsg(errorCode)}";
+        }
     }
 }

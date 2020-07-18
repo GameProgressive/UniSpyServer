@@ -7,11 +7,17 @@ using System.Linq;
 /////////////////////////Finished/////////////////////////////////
 namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
 {
+    internal class NickDBData
+    {
+        public string Nick;
+        public string Uniquenick;
+    }
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
     public class NickHandler : PSPCommandHandlerBase
     {
+        List<NickDBData> dBDatas;
         public NickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
@@ -45,20 +51,28 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
             {
                 using (var db = new retrospyContext())
                 {
-                    var players = from u in db.Users
-                                  join p in db.Profiles on u.Userid equals p.Userid
-                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                  where u.Email == _recv["email"] && u.Password == _recv["passenc"] && n.Namespaceid == _namespaceid
-                                  select new { nick = p.Nick, uniquenick = n.Uniquenick };
+                    var result = from u in db.Users
+                                 join p in db.Profiles on u.Userid equals p.Userid
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 where u.Email == _recv["email"] && u.Password == _recv["passenc"] && n.Namespaceid == _namespaceid
+                                 select new { nick = p.Nick, uniquenick = n.Uniquenick };
 
-                    if (players.Count() == 0)
+                    //we need this way to make our codes simple
+                    //foreach (var r in result)
+                    //{
+                    //    NickDBData data = new NickDBData { Nick = r.nick, Uniquenick = r.uniquenick };
+                    //    dBDatas.Add(data);
+                    //}
+
+
+                    if (result.Count() == 0)
                     {
                         _errorCode = GPErrorCode.CheckBadPassword;
                     }
 
                     _sendingBuffer = @"\nr\";
 
-                    foreach (var info in players)
+                    foreach (var info in result)
                     {
                         _sendingBuffer += @"\nick\";
                         _sendingBuffer += info.nick;

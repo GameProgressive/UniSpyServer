@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Extensions;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Server;
 
@@ -61,7 +62,7 @@ namespace NatNegotiation.Handler.CommandHandler
 
         protected virtual void Response()
         {
-            if (_sendingBuffer == null)
+            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
             {
                 return;
             }

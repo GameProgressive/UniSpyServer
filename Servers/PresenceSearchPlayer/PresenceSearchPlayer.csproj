@@ -28,4 +28,8 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Entity\Structure\" />
+      <Folder Include="Entity\Structure\Model\" />
+    </ItemGroup>
 </Project>

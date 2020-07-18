@@ -32,7 +32,6 @@
         <Folder Include="RetroSpyServices\Sake\Entity\Interface\" />
         <Folder Include="RetroSpyServices\Sake\Entity\" />
         <Folder Include="RetroSpyServices\Sake\Entity\Structure\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\" />
         <Folder Include="RetroSpyServices\Motd\Entity\" />
         <Folder Include="RetroSpyServices\Motd\Entity\Interface\" />
         <Folder Include="RetroSpyServices\Motd\Entity\Structure\" />
@@ -53,11 +52,12 @@
         <Folder Include="RetroSpyServices\Competitive\Entity\Structure\" />
         <Folder Include="RetroSpyServices\Competitive\Entity\Structure\Model\" />
         <Folder Include="RetroSpyServices\Competitive\Service\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Basic\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\Request\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Model\Response\" />
+        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Request\" />
+        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Response\" />
         <Folder Include="Application\" />
         <Folder Include="RetroSpyServices\Sake\CommandHandler\" />
+        <Folder Include="RetroSpyServices\Sake\CommandHandler\CreateRecord\" />
+        <Folder Include="RetroSpyServices\Sake\Handler\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Library\SOAPMiddleware\SOAPMiddleware.csproj">

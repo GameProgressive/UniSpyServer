@@ -1,7 +1,7 @@
 ﻿using System.ServiceModel;
 using WebServices.RetroSpyServices.Sake.Entity.Structure;
-using WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Request;
-using WebServices.RetroSpyServices.Sake.Entity.Structure.Model.Response;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Request;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Response;
 
 namespace RetroSpyServices.Sake.Entity.Interface
 {
