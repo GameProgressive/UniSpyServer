@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
     }
 
 
-    public class SearchRequestModel : RequestModelBase
+    public class SearchRequestModel : PSPRequestModelBase
     {
         public int SkipNumber { get; protected set; }
         public SearchRequestType RequestType { get; protected set; }

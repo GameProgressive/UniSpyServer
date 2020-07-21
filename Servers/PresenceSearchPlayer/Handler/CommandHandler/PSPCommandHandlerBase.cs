@@ -1,10 +1,8 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
-using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler
@@ -17,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         /// the decision formula should use _result.Count==0
         /// </summary>
         protected string _sendingBuffer;
-        protected RequestModelBase _request;
+        protected PSPRequestModelBase _request;
         public PSPCommandHandlerBase(ISession client, Dictionary<string, string> recv) : base(client)
         {
             _errorCode = GPErrorCode.NoError;
@@ -68,7 +66,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             if (_request.OperationID != 0)
             {
-                _sendingBuffer += $@"id\{_request.OperationID}\final\";
+                _sendingBuffer += $@"\id\{_request.OperationID}\final\";
             }
             else
             {

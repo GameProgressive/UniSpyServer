@@ -6,7 +6,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
 {
-    public class SearchUniqueRequestModel : RequestModelBase
+    public class SearchUniqueRequestModel : PSPRequestModelBase
     {
         public List<uint> Namespaces { get; protected set; }
         public SearchUniqueRequestModel(Dictionary<string, string> recv) : base(recv)

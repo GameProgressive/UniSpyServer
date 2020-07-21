@@ -6,7 +6,7 @@ using PresenceSearchPlayer.Enumerator;
 namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
 
-    public class UniqueSearchRequestModel : RequestModelBase
+    public class UniqueSearchRequestModel : PSPRequestModelBase
     {
         public string PreferredNick;
         public UniqueSearchRequestModel(Dictionary<string, string> recv) : base(recv)

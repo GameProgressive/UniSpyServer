@@ -6,7 +6,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
-    public class OthersListRequestModel : RequestModelBase
+    public class OthersListRequestModel : PSPRequestModelBase
     {
         public List<uint> ProfileIDs { get; protected set; }
 

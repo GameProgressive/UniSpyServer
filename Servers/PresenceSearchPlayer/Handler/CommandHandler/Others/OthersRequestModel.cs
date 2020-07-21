@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Others
 {
-    public class OthersRequestModel : RequestModelBase
+    public class OthersRequestModel : PSPRequestModelBase
     {
         public OthersRequestModel(Dictionary<string, string> recv) : base(recv)
         {

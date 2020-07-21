@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {
-    public class CheckRequestModel : RequestModelBase
+    public class CheckRequestModel : PSPRequestModelBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
 

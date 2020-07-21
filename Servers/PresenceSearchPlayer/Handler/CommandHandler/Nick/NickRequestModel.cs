@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
 {
-    public class NickRequestModel : RequestModelBase
+    public class NickRequestModel : PSPRequestModelBase
     {
         public NickRequestModel(Dictionary<string, string> recv) : base(recv)
         {

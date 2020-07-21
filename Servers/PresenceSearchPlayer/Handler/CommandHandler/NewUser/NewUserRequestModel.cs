@@ -6,7 +6,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 {
-    public class NewUserRequestModel : RequestModelBase
+    public class NewUserRequestModel : PSPRequestModelBase
     {
         public NewUserRequestModel(Dictionary<string, string> recv) : base(recv)
         {

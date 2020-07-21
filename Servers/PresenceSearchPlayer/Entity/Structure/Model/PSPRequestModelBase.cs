@@ -4,7 +4,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Model
 {
-    public class RequestModelBase
+    public class PSPRequestModelBase
     {
         protected Dictionary<string, string> _recv;
         public string Nick { get; protected set; }
@@ -18,7 +18,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
         public uint ProfileID { get; protected set; }
         public ushort OperationID { get; protected set; }
 
-        public RequestModelBase(Dictionary<string, string> recv)
+        public PSPRequestModelBase(Dictionary<string, string> recv)
         {
             _recv = recv;
         }

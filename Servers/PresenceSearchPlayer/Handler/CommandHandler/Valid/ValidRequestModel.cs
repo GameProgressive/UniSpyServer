@@ -6,7 +6,7 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
-    public class ValidRequestModel : RequestModelBase
+    public class ValidRequestModel : PSPRequestModelBase
     {
         public ValidRequestModel(Dictionary<string, string> recv) : base(recv)
         {
