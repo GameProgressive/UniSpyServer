@@ -14,7 +14,7 @@ namespace StatsAndTracking.Handler.CommandHandler
     {
         protected string _sendingBuffer;
         protected uint _localId;
-        protected GstatsErrorCode _errorCode = GstatsErrorCode.NoError;
+        protected GStatsErrorCode _errorCode = GStatsErrorCode.NoError;
 
         protected CommandHandlerBase()
         {
@@ -25,7 +25,7 @@ namespace StatsAndTracking.Handler.CommandHandler
             LogWriter.LogCurrentClass(this);
 
             CheckRequest(session, recv);
-            if (_errorCode != GstatsErrorCode.NoError)
+            if (_errorCode != GStatsErrorCode.NoError)
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
@@ -33,7 +33,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             DataOperation(session, recv);
 
-            if (_errorCode == GstatsErrorCode.Database)
+            if (_errorCode == GStatsErrorCode.Database)
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
@@ -41,7 +41,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
             ConstructResponse(session, recv);
 
-            if (_errorCode != GstatsErrorCode.NoError)
+            if (_errorCode != GStatsErrorCode.NoError)
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
@@ -56,7 +56,7 @@ namespace StatsAndTracking.Handler.CommandHandler
             {
                 if (!uint.TryParse(recv["lid"], out _localId))
                 {
-                    _errorCode = GstatsErrorCode.Parse;
+                    _errorCode = GStatsErrorCode.Parse;
                 }
             }
 
@@ -65,7 +65,7 @@ namespace StatsAndTracking.Handler.CommandHandler
             {
                 if (!uint.TryParse(recv["id"], out _localId))
                 {
-                    _errorCode = GstatsErrorCode.Parse;
+                    _errorCode = GStatsErrorCode.Parse;
                 }
             }
         }

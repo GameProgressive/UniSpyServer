@@ -29,6 +29,7 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Handler\CommandHandler\GetPid\" />
+        <Folder Include="Entity\Structure\Model\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />

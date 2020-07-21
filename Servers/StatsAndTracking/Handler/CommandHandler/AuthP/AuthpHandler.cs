@@ -28,7 +28,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                 //we parse profileid here
                 if (!uint.TryParse(recv["pid"], out _profileid))
                 {
-                    _errorCode = GstatsErrorCode.Parse;
+                    _errorCode = GStatsErrorCode.Parse;
                 }
                 _authMethod = AuthMethod.ProfileIDAuth;
             }
@@ -42,7 +42,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
             }
             else
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
             }
 
 
@@ -66,7 +66,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                     FrindProfileByCDKeyHash(recv);
                     break;
                 default:
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     break;
             }
 
@@ -88,7 +88,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     return;
                 }
                 _profileid = result.First();
@@ -103,7 +103,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                              select p.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     return;
                 }
                 _profileid = result.First();
@@ -119,7 +119,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     return;
                 }
                 _profileid = result.First();

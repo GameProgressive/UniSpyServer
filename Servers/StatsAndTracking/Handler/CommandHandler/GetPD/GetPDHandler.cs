@@ -21,26 +21,26 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
             {
                 if (!uint.TryParse(recv["pid"], out _profileid))
                 {
-                    _errorCode = GstatsErrorCode.Parse;
+                    _errorCode = GStatsErrorCode.Parse;
                     return;
                 }
             }
             else
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
                 return;
             }
             if (recv.ContainsKey("ptype"))
             {
                 if (!uint.TryParse(recv["ptype"], out _persistantStorageType))
                 {
-                    _errorCode = GstatsErrorCode.Parse;
+                    _errorCode = GStatsErrorCode.Parse;
                     return;
                 }
             }
             else
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
                 return;
             }
 
@@ -48,13 +48,13 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
             {
                 if (!uint.TryParse(recv["dindex"], out _dataIndex))
                 {
-                    _errorCode = GstatsErrorCode.Parse;
+                    _errorCode = GStatsErrorCode.Parse;
                     return;
                 }
             }
             else
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
                 return;
             }
         }

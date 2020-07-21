@@ -24,25 +24,25 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
 
             if (!uint.TryParse(recv["pid"], out _profileid))
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
                 return;
             }
 
             if (!uint.TryParse(recv["ptype"], out _ptype))
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
                 return;
             }
 
             if (!uint.TryParse(recv["dindex"], out _dindex))
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
                 return;
             }
 
             if (!uint.TryParse(recv["length"], out _length))
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
                 return;
             }
 

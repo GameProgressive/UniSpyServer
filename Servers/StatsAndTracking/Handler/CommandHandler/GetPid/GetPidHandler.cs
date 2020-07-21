@@ -19,7 +19,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPid
             base.CheckRequest(session, recv);
             if (!recv.ContainsKey("nick") || !recv.ContainsKey("keyhash"))
             {
-                _errorCode = GstatsErrorCode.Parse;
+                _errorCode = GStatsErrorCode.Parse;
                 return;
             }
         }
@@ -35,7 +35,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPid
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     return;
                 }
                 _protileid = result.First();

@@ -4,17 +4,17 @@ namespace StatsAndTracking.Handler.SystemHandler
 {
     public class ErrorMessage
     {
-        public static string ToMsg(GstatsErrorCode error)
+        public static string ToMsg(GStatsErrorCode error)
         {
             switch (error)
             {
-                case GstatsErrorCode.Parse:
+                case GStatsErrorCode.Parse:
                     return "Request parse error!";
 
-                case GstatsErrorCode.General:
+                case GStatsErrorCode.General:
                     return "General error!";
 
-                case GstatsErrorCode.Database:
+                case GStatsErrorCode.Database:
                     return "Database error!";
 
                 default:
