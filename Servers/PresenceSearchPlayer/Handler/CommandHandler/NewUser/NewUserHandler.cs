@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -11,13 +10,15 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 {
     public class NewUserHandler : PSPCommandHandlerBase
     {
-        private string _uniquenick;
         private Users _users;
         private Profiles _profiles;
         private Subprofiles _subProfiles;
-
+        protected new NewUserRequestModel _request;
+        private Dictionary<string, string> _recv;
         public NewUserHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _recv = recv;
+            _request = new NewUserRequestModel(recv);
         }
 
         protected enum _newUserStatus
@@ -35,30 +36,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
         protected override void CheckRequest()
         {
-            base.CheckRequest();
-
-            if (!_recv.ContainsKey("nick"))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
-
-            if (!_recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
-
-            if (!_recv.ContainsKey("passenc"))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
-
-            if (_recv.ContainsKey("uniquenick"))
-            {
-                _uniquenick = _recv["uniquenick"];
-            }
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
@@ -70,7 +48,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                     switch (_newUserStatus.CheckAccount)
                     {
                         case _newUserStatus.CheckAccount:
-                            int count = db.Users.Where(u => u.Email == _recv["email"]).Select(u => u).Count();
+                            int count = db.Users.Where(u => u.Email == _request.Email).Select(u => u).Count();
                             if (count == 0)
                             {
                                 goto case _newUserStatus.AccountNotExist;
@@ -81,14 +59,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.AccountNotExist:
-                            _users = new Users { Email = _recv["email"], Password = _recv["passenc"] };
+                            _users = new Users { Email = _request.Email, Password = _request.PassEnc };
                             db.Users.Add(_users);
                             db.SaveChanges();
                             goto case _newUserStatus.CheckProfile;
 
                         case _newUserStatus.AccountExist:
                             //we have to check password correctness
-                            _users = db.Users.Where(u => u.Email == _recv["email"] && u.Password == _recv["passenc"]).FirstOrDefault();
+                            _users = db.Users.Where(u => u.Email == _request.Email && u.Password == _request.PassEnc).FirstOrDefault();
                             if (_users == null)
                             {
                                 _errorCode = GPErrorCode.NewUserBadPasswords;
@@ -100,7 +78,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.CheckProfile:
-                            _profiles = db.Profiles.Where(p => p.Userid == _users.Userid && p.Nick == _recv["nick"]).FirstOrDefault();
+                            _profiles = db.Profiles.Where(p => p.Userid == _users.Userid && p.Nick == _request.Nick).FirstOrDefault();
                             if (_profiles == null)
                             {
                                 goto case _newUserStatus.ProfileNotExist;
@@ -111,7 +89,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.ProfileNotExist:
-                            _profiles = new Profiles { Userid = _users.Userid, Nick = _recv["nick"] };
+                            _profiles = new Profiles { Userid = _users.Userid, Nick = _request.Nick };
                             db.Profiles.Add(_profiles);
                             db.SaveChanges();
                             goto case _newUserStatus.CheckSubProfile;
@@ -122,8 +100,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         case _newUserStatus.CheckSubProfile:
                             _subProfiles = db.Subprofiles
                                 .Where(s => s.Profileid == _profiles.Profileid
-                                && s.Uniquenick == _uniquenick
-                                && s.Namespaceid == _namespaceid).FirstOrDefault();
+                                && s.Uniquenick == _request.Uniquenick
+                                && s.Namespaceid == _request.NamespaceID).FirstOrDefault();
                             if (_subProfiles == null)
                             {
                                 goto case _newUserStatus.SubProfileNotExist;
@@ -138,8 +116,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             _subProfiles = new Subprofiles
                             {
                                 Profileid = _profiles.Profileid,
-                                Uniquenick = _uniquenick,
-                                Namespaceid = _namespaceid
+                                Uniquenick = _request.Uniquenick,
+                                Namespaceid = _request.NamespaceID
                             };
 
                             db.Subprofiles.Add(_subProfiles);
@@ -159,7 +137,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 //update other information
                 if (_errorCode != GPErrorCode.DatabaseError)
                 {
-                    UpdateOtherInfo(_recv);
+                    UpdateOtherInfo();
                 }
             }
         }
@@ -168,23 +146,26 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         {
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = $@"\nur\{_errorCode}\final\";
+                _sendingBuffer = $@"\nur\{_errorCode}";
+                return;
             }
-            else if (ServerManagerBase.ServerName
+
+            if (ServerManagerBase.ServerName
                 == RetroSpyServerName.PresenceSearchPlayer)
             {
                 //PSP NewUser
-                _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}\final\";
+                _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}";
             }
             else if (ServerManagerBase.ServerName
                 == RetroSpyServerName.PresenceConnectionManager)
             {
                 //PCM NewUser
-                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\id\1\final\";
+                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}";
             }
+            base.ConstructResponse();
         }
 
-        private void UpdateOtherInfo(Dictionary<string, string> _recv)
+        private void UpdateOtherInfo()
         {
             using (var db = new retrospyContext())
             {

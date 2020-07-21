@@ -1,15 +1,24 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 {
+    internal class OthersListDBResult
+    {
+        public uint ProfileID;
+        public string Uniquenick;
+    }
     public class OthersListHandler : PSPCommandHandlerBase
     {
+        protected new OthersListRequestModel _request;
+        private List<OthersListDBResult> _result;
+
         public OthersListHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new OthersListRequestModel(recv);
+            _result = new List<OthersListDBResult>();
         }
 
         //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
@@ -17,43 +26,38 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 
         protected override void CheckRequest()
         {
-            base.CheckRequest();
-
-            if (!_recv.ContainsKey("opids") || !_recv.ContainsKey("namespaceid"))
-            {
-                _errorCode = GPErrorCode.Parse;
-            }
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
         {
-            uint[] opids = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToArray();
-
-            try
+            using (var db = new retrospyContext())
             {
-                using (var db = new retrospyContext())
+                _sendingBuffer = @"\otherslist\";
+
+                foreach (var pid in _request.ProfileIDs)
                 {
-                    _sendingBuffer = @"\otherslist\";
+                    var result = from n in db.Subprofiles
+                                 where n.Profileid == pid && n.Namespaceid == _request.NamespaceID
+                                 //select new { uniquenick = n.Uniquenick };
+                                 select new OthersListDBResult { ProfileID = n.Profileid, Uniquenick = n.Uniquenick };
 
-                    foreach (var pid in opids)
-                    {
-                        var result = from n in db.Subprofiles
-                                   where n.Profileid == pid && n.Namespaceid == _namespaceid
-                                   select new { uniquenick = n.Uniquenick };
-
-                        var info = result.FirstOrDefault();
-
-                        _sendingBuffer += $@"\o\{pid}";
-                        _sendingBuffer += $@"\uniquenick\{info.uniquenick}";
-                    }
-
-                    _sendingBuffer += @"oldone\final\";
+                    _result.AddRange(result.ToList());
                 }
             }
-            catch
+        }
+
+        protected override void ConstructResponse()
+        {
+            _sendingBuffer = @"\otherslist\";
+            foreach (var info in _result)
             {
-                _errorCode = GPErrorCode.DatabaseError;
+                _sendingBuffer += $@"\o\{info.ProfileID}";
+                _sendingBuffer += $@"\uniquenick\{info.Uniquenick}";
             }
+
+            _sendingBuffer += @"oldone";
+            base.ConstructResponse();
         }
     }
 }

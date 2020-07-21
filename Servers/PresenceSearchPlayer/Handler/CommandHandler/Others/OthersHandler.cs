@@ -1,77 +1,97 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
+using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Others
 {
+    internal class OthersHandlerDataModel
+    {
+        public uint Profileid;
+        public string Nick;
+        public string Uniquenick;
+        public string Lastname;
+        public string Firstname;
+        public uint Userid;
+        public string Email;
+    }
     /// <summary>
     /// Get buddy's information
     /// </summary>
     public class OthersHandler : PSPCommandHandlerBase
     {
-        private uint _profileid;
-
+        protected new OthersRequestModel _request;
+        private List<OthersHandlerDataModel> _result;
         public OthersHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new OthersRequestModel(recv);
+            _result = new List<OthersHandlerDataModel>();
         }
 
         protected override void CheckRequest()
         {
-            base.CheckRequest();
-
-            if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
-
-            if (!_recv.ContainsKey("profileid") && !uint.TryParse(_recv["profileid"], out _profileid))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
-                var info = from b in db.Friends
-                           where b.Profileid == _profileid && b.Namespaceid == _namespaceid
-                           select b.Targetid;
+                var result = from b in db.Friends
+                             where b.Profileid == _request.ProfileID && b.Namespaceid == _request.NamespaceID
+                             select b.Targetid;
 
-                _sendingBuffer = @"\others\";
-
-                foreach (var pid in info)
+                foreach (var info in result)
                 {
                     var b = from p in db.Profiles
                             join n in db.Subprofiles on p.Profileid equals n.Profileid
                             join u in db.Users on p.Userid equals u.Userid
-                            where n.Namespaceid == _namespaceid && n.Profileid == pid && n.Gamename == _recv["gamename"]
-                            select new
+                            where n.Namespaceid == _request.NamespaceID
+                            && n.Profileid == info && n.Gamename == _request.GameName
+                            select new OthersHandlerDataModel
                             {
-                                profileid = p.Profileid,
-                                nick = p.Nick,
-                                uniquenick = n.Uniquenick,
-                                last = p.Lastname,
-                                first = p.Firstname,
-                                email = u.Userid
+                                Profileid = p.Profileid,
+                                Nick = p.Nick,
+                                Uniquenick = n.Uniquenick,
+                                Lastname = p.Lastname,
+                                Firstname = p.Firstname,
+                                Userid = u.Userid,
+                                Email = u.Email
                             };
 
-                    var result = b.FirstOrDefault();
-
-                    _sendingBuffer += @"\o\" + result.profileid;
-                    _sendingBuffer += @"\nick\" + result.nick;
-                    _sendingBuffer += @"\uniquenick\" + result.uniquenick;
-                    _sendingBuffer += @"\first\" + result.first;
-                    _sendingBuffer += @"\last\" + result.last;
-                    _sendingBuffer += @"\email\" + result.email;
+                    _result.Add(b.First());
                 }
-
-                _sendingBuffer += @"\odone\final\";
             }
         }
+
+
+        protected override void ConstructResponse()
+        {
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
+                return;
+            }
+            else
+            {
+                _sendingBuffer = @"\others\";
+
+                foreach (var info in _result)
+                {
+                    _sendingBuffer += @"\o\" + info.Profileid;
+                    _sendingBuffer += @"\nick\" + info.Nick;
+                    _sendingBuffer += @"\uniquenick\" + info.Uniquenick;
+                    _sendingBuffer += @"\first\" + info.Firstname;
+                    _sendingBuffer += @"\last\" + info.Lastname;
+                    _sendingBuffer += @"\email\" + info.Email;
+                }
+                _sendingBuffer += @"\odone";
+            }
+
+            base.ConstructResponse();
+        }
+
     }
 }

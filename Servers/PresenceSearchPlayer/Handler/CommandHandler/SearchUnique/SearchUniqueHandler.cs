@@ -7,62 +7,76 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
 {
+    internal class SearchUniqueDBResult
+    {
+        public uint Profileid;
+        public string Nick;
+        public string Uniquenick;
+        public string Email;
+        public string Firstname;
+        public string Lastname;
+        public uint NamespaceID;
+    }
+
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
     public class SearchUniqueHandler : PSPCommandHandlerBase
     {
+        protected new SearchUniqueRequestModel _request;
+        private List<SearchUniqueDBResult> _result;
         public SearchUniqueHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new SearchUniqueRequestModel(recv);
         }
 
         protected override void CheckRequest()
         {
-            base.CheckRequest();
-
-            if (!_recv.ContainsKey("uniquenick") || !_recv.ContainsKey("namespaces"))
-            {
-                _errorCode = GPErrorCode.Parse;
-            }
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
         {
-            string[] tempstr = _recv["namespaces"].Trim(',').Split(',');
-            uint[] nspaceid = Array.ConvertAll(tempstr, uint.Parse);
-
             using (var db = new retrospyContext())
             {
-                foreach (var id in nspaceid)
+                foreach (var id in _request.Namespaces)
                 {
                     var result = from p in db.Profiles
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  join u in db.Users on p.Userid equals u.Userid
-                                 where n.Uniquenick == _recv["uniquenick"]
-                                 && n.Namespaceid == _namespaceid
-                                 select new
+                                 where n.Uniquenick == _request.Uniquenick
+                                 && n.Namespaceid == id
+                                 select new SearchUniqueDBResult
                                  {
-                                     profileid = n.Profileid,
-                                     nick = p.Nick,
-                                     uniquenick = n.Uniquenick,
-                                     email = u.Email,
-                                     first = p.Firstname,
-                                     last = p.Lastname
+                                     Profileid = n.Profileid,
+                                     Nick = p.Nick,
+                                     Uniquenick = n.Uniquenick,
+                                     Email = u.Email,
+                                     Firstname = p.Firstname,
+                                     Lastname = p.Lastname,
+                                     NamespaceID = n.Namespaceid
                                  };
-
-                    var info = result.First();
-
-                    _sendingBuffer = @"\bsr\" + info.profileid;
-                    _sendingBuffer += @"\nick\" + info.nick;
-                    _sendingBuffer += @"\uniquenick\" + info.uniquenick;
-                    _sendingBuffer += @"\namespaceid\" + _namespaceid;
-                    _sendingBuffer += @"\firstname\" + info.first;
-                    _sendingBuffer += @"\lastname\" + info.last;
-                    _sendingBuffer += @"\email\" + info.email;
+                    _result = result.ToList();
                 }
-
-                _sendingBuffer += @"\bsrdone\\more\0\final\";
             }
+        }
+
+        protected override void ConstructResponse()
+        {
+            _sendingBuffer = @"\bsr";
+            foreach (var info in _result)
+            {
+                _sendingBuffer += info.Profileid;
+                _sendingBuffer += @"\nick\" + info.Nick;
+                _sendingBuffer += @"\uniquenick\" + info.Uniquenick;
+                _sendingBuffer += @"\namespaceid\" + info.NamespaceID;
+                _sendingBuffer += @"\firstname\" + info.Firstname;
+                _sendingBuffer += @"\lastname\" + info.Lastname;
+                _sendingBuffer += @"\email\" + info.Email;
+            }
+            _sendingBuffer += @"\bsrdone\\more\0";
+
+            base.ConstructResponse();
         }
     }
 }

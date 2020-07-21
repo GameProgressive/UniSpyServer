@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler
 {
-    public class PSPCommandHandlerBase : CommandHandlerBase
+    public abstract class PSPCommandHandlerBase : CommandHandlerBase
     {
         protected GPErrorCode _errorCode;
         /// <summary>
@@ -17,27 +17,20 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         /// the decision formula should use _result.Count==0
         /// </summary>
         protected string _sendingBuffer;
-        protected ushort _operationID;
-        protected uint _namespaceid;
-        protected Dictionary<string, string> _recv;
         protected RequestModelBase _request;
         public PSPCommandHandlerBase(ISession client, Dictionary<string, string> recv) : base(client)
         {
-            _recv = recv;
             _errorCode = GPErrorCode.NoError;
-            _namespaceid = 0;
-            _operationID = 1;
         }
 
         public override void Handle()
         {
-            //LogWriter.LogCurrentClass(this);
+            base.Handle();
 
             CheckRequest();
 
             if (_errorCode < GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPSPError(_session, _errorCode, _operationID);
                 return;
             }
 
@@ -45,7 +38,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             if (_errorCode < GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPSPError(_session, _errorCode, _operationID);
                 return;
             }
 
@@ -53,33 +45,15 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             if (_errorCode < GPErrorCode.NoError)
             {
-                ErrorMsg.SendGPSPError(_session, GPErrorCode.General, _operationID);
                 return;
             }
 
             Response();
         }
 
-        protected virtual void CheckRequest()
-        {
-            //if (_recv.ContainsKey("id"))
-            //{
-            //    if (!ushort.TryParse(_recv["id"], out _operationID))
-            //    {
-            //        _errorCode = GPErrorCode.Parse;
-            //    }
-            //}
+        protected abstract void CheckRequest();
 
-            //if (_recv.ContainsKey("namespaceid"))
-            //{
-            //    if (!uint.TryParse(_recv["namespaceid"], out _namespaceid))
-            //    {
-            //        _errorCode = GPErrorCode.Parse;
-            //    }
-            //}
-        }
-
-        protected virtual void DataOperation() { }
+        protected abstract void DataOperation();
 
         /// <summary>
         /// The general message and error response should be writing in this child method.
@@ -94,7 +68,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             if (_request.OperationID != 0)
             {
-                _sendingBuffer += $@"id\{_operationID}\final\";
+                _sendingBuffer += $@"id\{_request.OperationID}\final\";
             }
             else
             {

@@ -8,8 +8,9 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
     {
         protected Dictionary<string, string> _recv;
         public string Nick { get; protected set; }
+        public string Uniquenick { get; protected set; }
         public string Email { get; protected set; }
-        public uint PartnetID { get; protected set; }
+        public uint PartnerID { get; protected set; }
         public string PassEnc { get; protected set; }
         public string Password { get; protected set; }
         public string GameName { get; protected set; }
@@ -22,19 +23,15 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
             _recv = recv;
         }
 
-        public virtual bool Parse(out GPErrorCode errorCode)
+        public virtual GPErrorCode Parse()
         {
-            errorCode = GPErrorCode.NoError;
-
             if (_recv.ContainsKey("id"))
             {
                 ushort operationID;
                 if (!ushort.TryParse(_recv["id"], out operationID))
                 {
-                    errorCode = GPErrorCode.Parse;
-                    return false;
+                    return GPErrorCode.Parse;
                 }
-
                 OperationID = operationID;
             }
 
@@ -43,14 +40,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
                 uint namespaceID;
                 if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                 {
-                    errorCode = GPErrorCode.Parse;
-                    return false;
+                    return GPErrorCode.Parse;
                 }
 
                 NamespaceID = namespaceID;
             }
 
-            return true;
+            return GPErrorCode.NoError;
         }
     }
 }

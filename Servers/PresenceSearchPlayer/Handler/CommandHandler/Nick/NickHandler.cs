@@ -1,13 +1,14 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Enumerator;
+using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
 using System.Linq;
 
-/////////////////////////Finished/////////////////////////////////
+/////////////////////////Finished?/////////////////////////////////
 namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
 {
-    internal class NickDBData
+    internal class NickHandlerDataModel
     {
         public string Nick;
         public string Uniquenick;
@@ -17,32 +18,16 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     /// </summary>
     public class NickHandler : PSPCommandHandlerBase
     {
-        List<NickDBData> dBDatas;
+        List<NickHandlerDataModel> nickDBResults;
+        protected new NickRequestModel _request;
         public NickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new NickRequestModel(recv);
         }
 
         protected override void CheckRequest()
         {
-            base.CheckRequest();
-
-            if (!_recv.ContainsKey("email"))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
-
-            //First, we try to receive an encoded password
-            if (!_recv.ContainsKey("passenc"))
-            {
-                //If the encoded password is not sended, we try receiving the password in plain text
-                if (!_recv.ContainsKey("pass"))
-                {
-                    //No password is specified, we cannot continue                   
-                    _errorCode = GPErrorCode.Parse;
-                    return;
-                }
-            }
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
@@ -54,33 +39,18 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                     var result = from u in db.Users
                                  join p in db.Profiles on u.Userid equals p.Userid
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                 where u.Email == _recv["email"] && u.Password == _recv["passenc"] && n.Namespaceid == _namespaceid
-                                 select new { nick = p.Nick, uniquenick = n.Uniquenick };
-
-                    //we need this way to make our codes simple
-                    //foreach (var r in result)
-                    //{
-                    //    NickDBData data = new NickDBData { Nick = r.nick, Uniquenick = r.uniquenick };
-                    //    dBDatas.Add(data);
-                    //}
-
+                                 where u.Email == _request.Email
+                                 && u.Password ==_request.PassEnc
+                                 && n.Namespaceid == _request.NamespaceID
+                                 select new NickHandlerDataModel { Nick = p.Nick, Uniquenick = n.Uniquenick };
 
                     if (result.Count() == 0)
                     {
                         _errorCode = GPErrorCode.CheckBadPassword;
                     }
 
-                    _sendingBuffer = @"\nr\";
-
-                    foreach (var info in result)
-                    {
-                        _sendingBuffer += @"\nick\";
-                        _sendingBuffer += info.nick;
-                        _sendingBuffer += @"\uniquenick\";
-                        _sendingBuffer += info.uniquenick;
-                    }
-
-                    _sendingBuffer += @"\ndone\final\";
+                    //we store data in strong type so we can use in next step
+                    nickDBResults = result.ToList();
                 }
             }
             catch
@@ -91,10 +61,25 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
 
         protected override void ConstructResponse()
         {
+            _sendingBuffer = @"\nr\";
+
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = @"\nr\\ndone\final\";
+                _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
             }
+            else
+            {
+                foreach (var info in nickDBResults)
+                {
+                    _sendingBuffer += @"\nick\";
+                    _sendingBuffer += info.Nick;
+                    _sendingBuffer += @"\uniquenick\";
+                    _sendingBuffer += info.Uniquenick;
+                }
+
+                _sendingBuffer += @"\ndone";
+            }
+            base.ConstructResponse();
         }
     }
 }

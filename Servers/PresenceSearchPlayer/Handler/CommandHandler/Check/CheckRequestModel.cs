@@ -5,32 +5,35 @@ using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {
-    public class CheckRequestModel:RequestModelBase
+    public class CheckRequestModel : RequestModelBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
 
         public CheckRequestModel(Dictionary<string, string> recv) : base(recv)
         {
         }
-      
-        public override bool Parse(out GPErrorCode errorCode)
+
+        public override GPErrorCode Parse()
         {
-            if (!base.Parse(out errorCode))
-                return false;
+            var flag = base.Parse();
+            if (flag != GPErrorCode.NoError)
+                return flag;
 
             if (!_recv.ContainsKey("nick") || !_recv.ContainsKey("email") || !_recv.ContainsKey("passenc"))
             {
-                errorCode = GPErrorCode.Parse;
-                return false;
+                return GPErrorCode.Parse;
             }
+
 
             if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
-                errorCode = GPErrorCode.CheckBadMail;
-                return false;
+                return GPErrorCode.CheckBadMail;
             }
+            Nick = _recv["nick"];
+            PassEnc = _recv["passenc"];
+            Email = _recv["email"];
 
-            return true;
+            return GPErrorCode.NoError;
         }
     }
 }

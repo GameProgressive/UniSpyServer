@@ -20,7 +20,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 
         protected override void CheckRequest()
         {
-            _request.Parse(out _errorCode);
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
@@ -48,7 +48,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 
                 if (result.Count() == 1)
                 {
-                    _profileid = result.First(); 
+                    _profileid = result.First();
                 }
                 else
                 {

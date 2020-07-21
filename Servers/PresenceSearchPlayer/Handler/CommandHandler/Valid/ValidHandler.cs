@@ -9,56 +9,55 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
     public class ValidHandler : PSPCommandHandlerBase
     {
+        protected new ValidRequestModel _request;
+        private bool _isAccountValid;
         public ValidHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new ValidRequestModel(recv);
         }
 
         protected override void CheckRequest()
         {
-            if (!_recv.ContainsKey("email"))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
-
-            if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
-            {
-                _errorCode = GPErrorCode.Parse;
-                return;
-            }
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
         {
-            try
+            using (var db = new retrospyContext())
             {
-                using (var db = new retrospyContext())
+                var result = from u in db.Users
+                             join p in db.Profiles on u.Userid equals p.Userid
+                             join n in db.Subprofiles on p.Profileid equals n.Profileid
+                             //According to FSW partnerid is not nessesary
+                             where u.Email == _request.Email
+                             && n.Gamename == _request.GameName
+                             && n.Namespaceid == _request.NamespaceID
+                             select p.Profileid;
+
+                if (result.Count() == 0)
                 {
-                    var result = from u in db.Users
-                                 join p in db.Profiles on u.Userid equals p.Userid
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                 //According to FSW partnerid is not nessesary
-                                 where u.Email == _recv["email"]
-                                 && n.Gamename == _recv["gamename"]
-                                 && n.Namespaceid == _namespaceid
-                                 select p.Profileid;
-
-                    if (result.Count() == 0)
-                    {
-                        _sendingBuffer = @"\vr\0\final\";
-
-                    }
-                    else if (result.Count() == 1)
-                    {
-                        _sendingBuffer = @"\vr\1\final\";
-                    }
-
+                    _isAccountValid = false;
                 }
+                else if (result.Count() == 1)
+                {
+                    _sendingBuffer = @"\vr\1\final\";
+                }
+
             }
-            catch
+
+        }
+        protected override void ConstructResponse()
+        {
+            if (_isAccountValid)
             {
-                _errorCode = GPErrorCode.DatabaseError;
+                _sendingBuffer = @"\vr\1";
             }
+            else
+            {
+                _sendingBuffer = @"\vr\0";
+            }
+
+            base.ConstructResponse();
         }
     }
 }
