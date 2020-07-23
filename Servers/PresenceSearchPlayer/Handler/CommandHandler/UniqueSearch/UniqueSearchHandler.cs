@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
     public class UniqueSearchHandler : PSPCommandHandlerBase
     {
-        protected new UniqueSearchRequestModel _request;
+        protected new UniqueSearchRequest _request;
         private bool _isUniquenickExist;
 
         public UniqueSearchHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new UniqueSearchRequest(recv);
         }
 
         protected override void CheckRequest()

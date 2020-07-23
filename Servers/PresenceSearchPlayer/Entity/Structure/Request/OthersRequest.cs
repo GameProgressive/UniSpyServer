@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.Others
+namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class OthersRequestModel : PSPRequestModelBase
+    public class OthersRequest : PSPRequestModelBase
     {
-        public OthersRequestModel(Dictionary<string, string> recv) : base(recv)
+        public OthersRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 

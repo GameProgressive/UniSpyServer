@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
@@ -13,12 +14,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         private Users _users;
         private Profiles _profiles;
         private Subprofiles _subProfiles;
-        protected new NewUserRequestModel _request;
+        protected new NewUserRequest _request;
         private Dictionary<string, string> _recv;
         public NewUserHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
             _recv = recv;
-            _request = new NewUserRequestModel(recv);
+            _request = new NewUserRequest(recv);
         }
 
         protected enum _newUserStatus

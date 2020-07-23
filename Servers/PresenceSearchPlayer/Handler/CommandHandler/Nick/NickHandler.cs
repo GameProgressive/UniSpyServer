@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
@@ -19,10 +20,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     public class NickHandler : PSPCommandHandlerBase
     {
         List<NickHandlerDataModel> nickDBResults;
-        protected new NickRequestModel _request;
+        protected new NickRequest _request;
         public NickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
-            _request = new NickRequestModel(recv);
+            _request = new NickRequest(recv);
         }
 
         protected override void CheckRequest()

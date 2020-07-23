@@ -49,6 +49,7 @@
         <Folder Include="Handler\CommandHandler\AdHoc\ServerInfo\" />
         <Folder Include="Handler\CommandHandler\NatNeg\" />
         <Folder Include="Handler\CommandHandler\AdHoc\SendMessage\" />
+        <Folder Include="Entity\BaseClass\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

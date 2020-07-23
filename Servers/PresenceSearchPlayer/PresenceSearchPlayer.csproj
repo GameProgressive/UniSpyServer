@@ -21,7 +21,6 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Handler\CommandHandler\NewUser\NewUserHandler.cs" />
-        <Compile Include="Handler\CommandHandler\NewUser\NewUserRequestModel.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
@@ -31,6 +30,7 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Entity\Structure\" />
-      <Folder Include="Entity\Structure\Model\" />
+      <Folder Include="Entity\BaseClass\" />
+      <Folder Include="Entity\Structure\Request\" />
     </ItemGroup>
 </Project>

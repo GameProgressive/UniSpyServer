@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
+namespace PresenceSearchPlayer.Entity.Structure.Request
 {
 
-    public class UniqueSearchRequestModel : PSPRequestModelBase
+    public class UniqueSearchRequest : PSPRequestModelBase
     {
         public string PreferredNick;
-        public UniqueSearchRequestModel(Dictionary<string, string> recv) : base(recv)
+        public UniqueSearchRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 

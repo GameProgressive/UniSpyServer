@@ -3,13 +3,13 @@ using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.Check
+namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class CheckRequestModel : PSPRequestModelBase
+    public class CheckRequest : PSPRequestModelBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
 
-        public CheckRequestModel(Dictionary<string, string> recv) : base(recv)
+        public CheckRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 

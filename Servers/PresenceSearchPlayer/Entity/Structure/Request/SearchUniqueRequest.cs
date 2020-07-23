@@ -4,14 +4,14 @@ using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
+namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class OthersListRequestModel : PSPRequestModelBase
+    public class SearchUniqueRequest : PSPRequestModelBase
     {
-        public List<uint> ProfileIDs { get; protected set; }
-
-        public OthersListRequestModel(Dictionary<string, string> recv) : base(recv)
+        public List<uint> Namespaces { get; protected set; }
+        public SearchUniqueRequest(Dictionary<string, string> recv) : base(recv)
         {
+           
         }
 
         public override GPErrorCode Parse()
@@ -22,15 +22,15 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
                 return flag;
             }
 
-            if (!_recv.ContainsKey("opids") || !_recv.ContainsKey("namespaceid"))
+            if (!_recv.ContainsKey("uniquenick") || !_recv.ContainsKey("namespaces"))
             {
                 return GPErrorCode.Parse;
             }
 
-            ProfileIDs = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
+            Uniquenick = _recv["uniquenick"];
+            Namespaces = _recv["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
 
             return GPErrorCode.NoError;
-
         }
     }
 }

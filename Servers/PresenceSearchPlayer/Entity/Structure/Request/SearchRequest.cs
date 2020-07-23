@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.Search
+namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     public enum SearchRequestType
     {
@@ -13,12 +13,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
     }
 
 
-    public class SearchRequestModel : PSPRequestModelBase
+    public class SearchRequest : PSPRequestModelBase
     {
         public int SkipNumber { get; protected set; }
         public SearchRequestType RequestType { get; protected set; }
 
-        public SearchRequestModel(Dictionary<string, string> recv) : base(recv)
+        public SearchRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 

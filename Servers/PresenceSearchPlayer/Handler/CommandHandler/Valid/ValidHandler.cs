@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.MiscMethod;
-using PresenceSearchPlayer.Enumerator;
+using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,11 +8,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
     public class ValidHandler : PSPCommandHandlerBase
     {
-        protected new ValidRequestModel _request;
+        protected new ValidRequest _request;
         private bool _isAccountValid;
         public ValidHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
-            _request = new ValidRequestModel(recv);
+            _request = new ValidRequest(recv);
         }
 
         protected override void CheckRequest()

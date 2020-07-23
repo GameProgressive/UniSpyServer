@@ -41,6 +41,7 @@
         <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
         <Folder Include="Entity\Structure\NatNeg\" />
         <Folder Include="Handler\CommandHandler\ClientMessage\" />
+        <Folder Include="Entity\BaseClass\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />

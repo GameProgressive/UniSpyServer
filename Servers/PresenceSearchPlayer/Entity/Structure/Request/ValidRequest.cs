@@ -4,11 +4,11 @@ using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
+namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class ValidRequestModel : PSPRequestModelBase
+    public class ValidRequest : PSPRequestModelBase
     {
-        public ValidRequestModel(Dictionary<string, string> recv) : base(recv)
+        public ValidRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 

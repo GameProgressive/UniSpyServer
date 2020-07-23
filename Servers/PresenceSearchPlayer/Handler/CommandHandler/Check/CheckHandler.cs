@@ -2,6 +2,7 @@
 using System.Linq;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
@@ -11,11 +12,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        protected new CheckRequestModel _request;
+        protected new CheckRequest _request;
         uint _profileid;
         public CheckHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
-            _request = new CheckRequestModel(recv);
+            _request = new CheckRequest(recv);
         }
 
         protected override void CheckRequest()

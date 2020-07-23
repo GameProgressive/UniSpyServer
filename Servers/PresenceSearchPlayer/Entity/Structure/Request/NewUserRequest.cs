@@ -4,11 +4,11 @@ using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
+namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class NewUserRequestModel : PSPRequestModelBase
+    public class NewUserRequest : PSPRequestModelBase
     {
-        public NewUserRequestModel(Dictionary<string, string> recv) : base(recv)
+        public NewUserRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 

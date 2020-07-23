@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,12 +13,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
     }
     public class OthersListHandler : PSPCommandHandlerBase
     {
-        protected new OthersListRequestModel _request;
+        protected new OthersListRequest _request;
         private List<OthersListDBResult> _result;
 
         public OthersListHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
-            _request = new OthersListRequestModel(recv);
+            _request = new OthersListRequest(recv);
             _result = new List<OthersListDBResult>();
         }
 

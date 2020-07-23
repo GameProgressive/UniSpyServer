@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +29,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 
     public class SearchHandler : PSPCommandHandlerBase
     {
-        protected new SearchRequestModel _request;
+        protected new SearchRequest _request;
         private List<SearchDBResult> _result;
         public SearchHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
-            _request = new SearchRequestModel(recv);
+            _request = new SearchRequest(recv);
             _result = new List<SearchDBResult>();
         }
 
