@@ -1,68 +1,28 @@
-﻿using StatsAndTracking.Entity.Enumerator;
+﻿using GameSpyLib.Common.Entity.Interface;
+using StatsAndTracking.Entity.Enumerator;
+using StatsAndTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler.GetPD
 {
-    public class GetPDHandler : CommandHandlerBase
+    public class GetPDHandler : GStatsCommandHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
-        private uint _profileid;
-        private uint _persistantStorageType;
-        private uint _dataIndex;
+        protected new GetPDRequest _request;
 
-        public GetPDHandler() : base()
+        public GetPDHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
         {
+            _request = new GetPDRequest(recv);
         }
 
-        protected override void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
-            if (recv.ContainsKey("pid"))
-            {
-                if (!uint.TryParse(recv["pid"], out _profileid))
-                {
-                    _errorCode = GStatsErrorCode.Parse;
-                    return;
-                }
-            }
-            else
-            {
-                _errorCode = GStatsErrorCode.Parse;
-                return;
-            }
-            if (recv.ContainsKey("ptype"))
-            {
-                if (!uint.TryParse(recv["ptype"], out _persistantStorageType))
-                {
-                    _errorCode = GStatsErrorCode.Parse;
-                    return;
-                }
-            }
-            else
-            {
-                _errorCode = GStatsErrorCode.Parse;
-                return;
-            }
-
-            if (recv.ContainsKey("dindex"))
-            {
-                if (!uint.TryParse(recv["dindex"], out _dataIndex))
-                {
-                    _errorCode = GStatsErrorCode.Parse;
-                    return;
-                }
-            }
-            else
-            {
-                _errorCode = GStatsErrorCode.Parse;
-                return;
-            }
+            _errorCode = _request.Parse();
         }
 
 
-        protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
-            base.DataOperation(session, recv);
             //search player data in database;
 
             //using (var db = new retrospyContext())
@@ -81,9 +41,9 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
             //    //throw new NotImplementedException();
             //}
         }
-        protected override void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
-            _sendingBuffer = $@"\getpdr\1\pid\{recv["pid"]}\lid\{_localId}\mod\1234\length\5\data\mydata";
+            _sendingBuffer = $@"\getpdr\1\pid\{_request.ProfileID}\lid\{_request.OperationID}\mod\1234\length\5\data\mydata";
         }
     }
 }

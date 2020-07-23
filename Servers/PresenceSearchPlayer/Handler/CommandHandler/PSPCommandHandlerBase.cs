@@ -5,6 +5,7 @@ using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
 
+
 namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     public abstract class PSPCommandHandlerBase : CommandHandlerBase
@@ -16,7 +17,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         /// </summary>
         protected string _sendingBuffer;
         protected PSPRequestModelBase _request;
-        public PSPCommandHandlerBase(ISession client, Dictionary<string, string> recv) : base(client)
+        public PSPCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
         {
             _errorCode = GPErrorCode.NoError;
         }

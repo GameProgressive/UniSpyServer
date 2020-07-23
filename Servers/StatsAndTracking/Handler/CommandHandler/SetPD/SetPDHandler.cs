@@ -1,5 +1,7 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using StatsAndTracking.Entity.Enumerator;
+using StatsAndTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,61 +10,30 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
     /// <summary>
     /// Set persist storage data
     /// </summary>
-    internal class SetPDHandler : CommandHandlerBase
+    internal class SetPDHandler : GStatsCommandHandlerBase
     {
         //@"\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"
-        private string _keyValueStr = "";
-        private uint _profileid, _ptype, _dindex, _length;
+        protected new SetPDRequest _request;
 
-        public SetPDHandler() : base()
+        public SetPDHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
         {
+            _request = new SetPDRequest(recv);
         }
 
-        protected override void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
-        {
-            base.CheckRequest(session, recv);
-
-            if (!uint.TryParse(recv["pid"], out _profileid))
-            {
-                _errorCode = GStatsErrorCode.Parse;
-                return;
-            }
-
-            if (!uint.TryParse(recv["ptype"], out _ptype))
-            {
-                _errorCode = GStatsErrorCode.Parse;
-                return;
-            }
-
-            if (!uint.TryParse(recv["dindex"], out _dindex))
-            {
-                _errorCode = GStatsErrorCode.Parse;
-                return;
-            }
-
-            if (!uint.TryParse(recv["length"], out _length))
-            {
-                _errorCode = GStatsErrorCode.Parse;
-                return;
-            }
-
-            //we extract the key value data
-            foreach (var d in recv.Skip(5))
-            {
-                if (d.Key.ToString() == "lid")
-                    break;
-                _keyValueStr += @"\" + d.Key + @"\" + d.Value;
-            }
-
+        protected override void CheckRequest()
+        { 
+            _errorCode = _request.Parse();
         }
 
-        protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
 
                 var result = from p in db.Pstorage
-                             where p.Profileid == _profileid && p.Dindex == _dindex && p.Ptype == _ptype
+                             where p.Profileid == _request.ProfileID
+                             && p.Dindex == _request.DataIndex
+                             && p.Ptype == (uint)_request.StorageType
                              select p;
 
                 Pstorage ps;
@@ -70,17 +41,17 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
                 {
                     //insert a new record in database
                     ps = new Pstorage();
-                    ps.Dindex = _dindex;
-                    ps.Profileid = _profileid;
-                    ps.Ptype = _ptype;
-                    ps.Data = _keyValueStr;
+                    ps.Dindex = _request.DataIndex;
+                    ps.Profileid = _request.ProfileID;
+                    ps.Ptype = (uint)_request.StorageType;
+                    ps.Data = _request.KeyValueString;
                     db.Pstorage.Add(ps);
                 }
                 else if (result.Count() == 1)
                 {
                     //update an existed record in database
                     ps = result.First();
-                    ps.Data = _keyValueStr;
+                    ps.Data = _request.KeyValueString;
                 }
 
                 db.SaveChanges();
