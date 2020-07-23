@@ -8,9 +8,8 @@ namespace StatsAndTracking.Handler.CommandHandler.UpdGame
     /// </summary>
     public class UpdGameHandler : GStatsCommandHandlerBase
     {
-        //	"\updgame\\sesskey\%d\done\%d\gamedata\%s"
-        // or
-        // "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
+        //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
+        //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
         public UpdGameHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }

@@ -8,6 +8,7 @@ namespace StatsAndTracking.Entity.Structure.Request
     {
         public string Nick { get; protected set; }
         public string KeyHash { get; protected set; }
+
         public GetPIDRequest(Dictionary<string, string> recv) : base(recv)
         {
         }

@@ -9,8 +9,8 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPID
 {
     public class GetPIDHandler : GStatsCommandHandlerBase
     {
-        //\getpid\\nick\%s\keyhash\%s\lid\%d
-        //\getpidr
+        //request \getpid\\nick\%s\keyhash\%s\lid\%d
+        //response \getpidr
         private uint _protileid;
         protected new GetPIDRequest _request;
         public GetPIDHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
