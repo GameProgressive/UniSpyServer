@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
@@ -13,10 +14,16 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     }
 
 
-    public class SearchRequest : PSPRequestModelBase
+    public class SearchRequest : PSPRequestBase
     {
         public int SkipNumber { get; protected set; }
         public SearchRequestType RequestType { get; protected set; }
+        public string GameName { get; private set; }
+        public uint ProfileID { get; private set; }
+        public uint PartnerID { get; private set; }
+        public string Email { get; private set; }
+        public string Nick { get; private set; }
+        public string Uniquenick { get; private set; }
 
         public SearchRequest(Dictionary<string, string> recv) : base(recv)
         {
@@ -34,6 +41,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             {
                 return GPErrorCode.Parse;
             }
+
             GameName = _recv["gamename"];
 
             uint profileID;
@@ -66,10 +74,18 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
             {
                 RequestType = SearchRequestType.UniquenickNamespaceIDSearch;
+                Uniquenick = _recv["uniquenick"];
             }
             else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
             {
                 RequestType = SearchRequestType.NickEmailSearch;
+                Nick = _recv["nick"];
+                Email = _recv["email"];
+            }
+            else if (_recv.ContainsKey("nick"))
+            {
+                RequestType = SearchRequestType.NickSearch;
+                Nick = _recv["nick"];
             }
             else
             {

@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
 
-    public class UniqueSearchRequest : PSPRequestModelBase
+    public class UniqueSearchRequest : PSPRequestBase
     {
         public string PreferredNick;
         public UniqueSearchRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
+
+        public string GameName { get; private set; }
 
         public override GPErrorCode Parse()
         {
@@ -27,6 +28,12 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
 
             PreferredNick = _recv["preferrednick"];
+
+            if (!_recv.ContainsKey("gamename"))
+            {
+                return GPErrorCode.Parse;
+            }
+            GameName = _recv["gamename"];
 
             return GPErrorCode.NoError;
         }

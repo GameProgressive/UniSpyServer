@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
-using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Handler.Error
 {
@@ -228,6 +228,12 @@ namespace PresenceConnectionManager.Handler.Error
             string errorMsg = ErrorMsg.GetErrorMsg(errorCode);
             string sendingBuffer = string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\{2}\final\", (uint)errorCode, errorMsg, operationID);
             client.SendAsync(sendingBuffer);
+        }
+
+        public static string BuildGPErrorMsg(GPErrorCode errorCode)
+        {
+            string errorMsg = GetErrorMsg(errorCode);
+            return $@"\error\\err\{ errorCode}\fatal\\errmsg\{errorMsg}";
         }
     }
 }

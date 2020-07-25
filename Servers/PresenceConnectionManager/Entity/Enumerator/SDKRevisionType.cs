@@ -1,5 +1,5 @@
 ﻿
-namespace PresenceConnectionManager.Entity.Structure
+namespace PresenceConnectionManager.Entity.Enumerator
 {
     public enum SDKRevisionType : uint
     {

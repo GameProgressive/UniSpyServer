@@ -25,6 +25,7 @@
         <Folder Include="Handler\SystemHandler\Timer\" />
         <Folder Include="Handler\CommandSwitcher\" />
         <Folder Include="Handler\SystemHandler\NatNegotiatorManage\" />
+        <Folder Include="Entity\BaseClass\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

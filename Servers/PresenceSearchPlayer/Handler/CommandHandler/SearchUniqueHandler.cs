@@ -24,14 +24,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
     /// </summary>
     public class SearchUniqueHandler : PSPCommandHandlerBase
     {
-        protected new SearchUniqueRequest _request;
+        protected SearchUniqueRequest _request;
         private List<SearchUniqueDBResult> _result;
         public SearchUniqueHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
             _request = new SearchUniqueRequest(recv);
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -64,6 +64,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
 
         protected override void ConstructResponse()
         {
+            if (_errorCode != Entity.Enumerator.GPErrorCode.NoError)
+            {
+                BuildErrorResponse();
+                return;
+            }
+
             _sendingBuffer = @"\bsr";
             foreach (var info in _result)
             {
@@ -77,7 +83,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
             }
             _sendingBuffer += @"\bsrdone\\more\0";
 
-            base.ConstructResponse();
         }
     }
 }

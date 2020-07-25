@@ -1,4 +1,4 @@
-﻿namespace PresenceConnectionManager.Enumerator
+﻿namespace PresenceConnectionManager.Entity.Enumerator
 {
     /// <summary>
     /// This enumerator contains the masks used to hide certain informations.

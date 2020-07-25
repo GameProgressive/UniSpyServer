@@ -14,6 +14,7 @@ namespace Chat.Entity.Structure.ChatCommand
             {
                 return false;
             }
+
             if (_cmdParams.Count == 0)
             {
                 NickName = _longParam;

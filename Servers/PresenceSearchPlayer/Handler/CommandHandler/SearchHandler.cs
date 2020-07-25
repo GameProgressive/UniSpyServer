@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 
     public class SearchHandler : PSPCommandHandlerBase
     {
-        protected new SearchRequest _request;
+        protected SearchRequest _request;
         private List<SearchDBResult> _result;
         public SearchHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
@@ -37,7 +38,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
             _result = new List<SearchDBResult>();
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -55,9 +56,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                                      join n in db.Subprofiles on p.Profileid equals n.Profileid
                                      join u in db.Users on p.Userid equals u.Userid
                                      where p.Nick == _request.Nick
-                                     && n.Namespaceid == _request.NamespaceID
-                                     && n.Gamename == _request.GameName
-                                     && n.Partnerid == _request.PartnerID
+                                     //&& n.Namespaceid == _request.NamespaceID
                                      select new SearchDBResult
                                      {
                                          Profileid = n.Profileid,
@@ -76,8 +75,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                                      join u in db.Users on p.Userid equals u.Userid
                                      where p.Nick == _request.Nick && u.Email ==_request.Email
                                      //&& n.Namespaceid == _request.NamespaceID
-                                     && n.Gamename == _request.GameName
-                                     && n.Partnerid == _request.PartnerID
+                                     //&& n.Gamename == _request.GameName
+                                     //&& n.Partnerid == _request.PartnerID
                                      select new SearchDBResult
                                      {
                                          Profileid = n.Profileid,
@@ -97,8 +96,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                                      join u in db.Users on p.Userid equals u.Userid
                                      where n.Uniquenick == _request.Uniquenick
                                      && n.Namespaceid == _request.NamespaceID
-                                     && n.Gamename == _request.GameName
-                                     && n.Partnerid == _request.PartnerID
+                                     //&& n.Gamename == _request.GameName
+                                     //&& n.Partnerid == _request.PartnerID
                                      select new SearchDBResult
                                      {
                                          Profileid = n.Profileid,
@@ -118,6 +117,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 
         protected override void ConstructResponse()
         {
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                BuildErrorResponse();
+                return;
+            }
+
             _sendingBuffer = @"\bsr\";
             foreach (var info in _result.Skip(_request.SkipNumber))
             {
@@ -130,8 +135,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                 _sendingBuffer += @"\email\" + info.Email;
             }
 
-            _sendingBuffer += @"\bsrdone\\more\0";
-            base.ConstructResponse();
+            _sendingBuffer += @"\bsrdone\\more\0\final\";
         }
 
     }

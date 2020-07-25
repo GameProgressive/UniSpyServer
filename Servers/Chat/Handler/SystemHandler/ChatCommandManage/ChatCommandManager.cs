@@ -4,6 +4,7 @@ using Chat.Handler.CommandHandler.ChatBasicCommandHandler;
 using Chat.Handler.CommandHandler.ChatChannel.ChatChannelKey;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 
@@ -78,7 +79,7 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
                 }
                 else
                 {
-                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, $"{cmd.CommandName}Handler not implemented!");
+                    LogWriter.ToLog(LogEventLevel.Error, $"{cmd.CommandName}Handler not implemented!");
                     continue;
                 }
             }

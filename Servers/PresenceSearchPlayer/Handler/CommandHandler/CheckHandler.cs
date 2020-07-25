@@ -2,8 +2,8 @@
 using System.Linq;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
-using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Check
 {
@@ -12,14 +12,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        protected new CheckRequest _request;
+        protected CheckRequest _request;
         uint _profileid;
         public CheckHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
             _request = new CheckRequest(recv);
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -62,13 +62,24 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
         {
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = @$"\cur\{ _errorCode}";
+                BuildErrorResponse();
+                return;
+            }
+
+            _sendingBuffer = @$"\cur\0\pid\{_profileid}\final\";
+
+        }
+
+        protected override void BuildErrorResponse()
+        {
+            if (_errorCode< GPErrorCode.Check|| _errorCode> GPErrorCode.CheckBadPassword)
+            {
+                base.BuildErrorResponse();
             }
             else
             {
-                _sendingBuffer = @$"\cur\0\pid\{_profileid}";
+                _sendingBuffer = @$"\cur\{ _errorCode}\final\";
             }
-            base.ConstructResponse();
         }
     }
 }

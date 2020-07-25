@@ -37,6 +37,8 @@
         <Folder Include="Entity\Interface\" />
         <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Revoke\" />
         <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Auth\" />
+        <Folder Include="Entity\Structure\Request\" />
+        <Folder Include="Entity\BaseClass\" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="Handler\CommandHandler\General\Login\Misc\ChallangeVerify.cs" />

@@ -25,4 +25,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entity\BaseClass\" />
+    <Folder Include="Entity\Structure\Request\" />
+  </ItemGroup>
 </Project>

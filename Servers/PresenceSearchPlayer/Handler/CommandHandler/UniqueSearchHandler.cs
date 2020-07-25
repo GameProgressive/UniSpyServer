@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
@@ -10,7 +11,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
 {
     public class UniqueSearchHandler : PSPCommandHandlerBase
     {
-        protected new UniqueSearchRequest _request;
+        protected UniqueSearchRequest _request;
         private bool _isUniquenickExist;
 
         public UniqueSearchHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
@@ -18,7 +19,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             _request = new UniqueSearchRequest(recv);
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -31,7 +32,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
                              where n.Uniquenick == _request.PreferredNick
                              && n.Namespaceid == _request.NamespaceID
-                             && n.Gamename == _request.GameName
+                             //&& n.Gamename == _request.GameName
                              select p.Profileid;
 
                 if (result.Count() == 0)
@@ -45,7 +46,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
         {
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
+                BuildErrorResponse();
                 return;
             }
 
@@ -55,7 +56,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             }
             else
             {
-                _sendingBuffer = @"\us\1\nick\choose another name\usdone\final\";
+                _sendingBuffer = @"\us\1\nick\Choose another name\usdone\final\";
             }
         }
     }

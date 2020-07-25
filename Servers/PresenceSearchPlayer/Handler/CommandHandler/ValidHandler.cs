@@ -8,14 +8,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
 {
     public class ValidHandler : PSPCommandHandlerBase
     {
-        protected new ValidRequest _request;
+        protected ValidRequest _request;
         private bool _isAccountValid;
         public ValidHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
             _request = new ValidRequest(recv);
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -39,7 +39,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
                 }
                 else if (result.Count() == 1)
                 {
-                    _sendingBuffer = @"\vr\1\final\";
+                    _isAccountValid = true;
                 }
 
             }
@@ -47,16 +47,20 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
         }
         protected override void ConstructResponse()
         {
+            if (_errorCode != Entity.Enumerator.GPErrorCode.NoError)
+            {
+                BuildErrorResponse();
+                return;
+            }
+
             if (_isAccountValid)
             {
-                _sendingBuffer = @"\vr\1";
+                _sendingBuffer = @"\vr\1\final\";
             }
             else
             {
-                _sendingBuffer = @"\vr\0";
+                _sendingBuffer = @"\vr\0\final\";
             }
-
-            base.ConstructResponse();
         }
     }
 }

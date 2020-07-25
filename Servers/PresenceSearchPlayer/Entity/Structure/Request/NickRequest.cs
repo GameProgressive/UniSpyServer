@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class NickRequest : PSPRequestModelBase
+    public class NickRequest : PSPRequestBase
     {
         public NickRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
+
+        public string Password { get; private set; }
+        public string PassEnc { get; private set; }
+        public string Email { get; private set; }
 
         public override GPErrorCode Parse()
         {

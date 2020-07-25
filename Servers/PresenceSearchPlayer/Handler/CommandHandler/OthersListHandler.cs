@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
     }
     public class OthersListHandler : PSPCommandHandlerBase
     {
-        protected new OthersListRequest _request;
+        protected OthersListRequest _request;
         private List<OthersListDBResult> _result;
 
         public OthersListHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
@@ -25,7 +26,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
         //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
         //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -50,6 +51,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
 
         protected override void ConstructResponse()
         {
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                BuildErrorResponse();
+                return;
+            }
+
             _sendingBuffer = @"\otherslist\";
             foreach (var info in _result)
             {
@@ -58,7 +65,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
             }
 
             _sendingBuffer += @"oldone";
-            base.ConstructResponse();
+
         }
     }
 }

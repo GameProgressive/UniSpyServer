@@ -1,24 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using PresenceSearchPlayer.Enumerator;
+﻿using System.Collections.Generic;
+using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Model
 {
-    public class PSPRequestModelBase
+    public class PSPRequestBase
     {
         protected Dictionary<string, string> _recv;
-        public string Nick { get; protected set; }
-        public string Uniquenick { get; protected set; }
-        public string Email { get; protected set; }
-        public uint PartnerID { get; protected set; }
-        public string PassEnc { get; protected set; }
-        public string Password { get; protected set; }
-        public string GameName { get; protected set; }
+
         public uint NamespaceID { get; protected set; }
-        public uint ProfileID { get; protected set; }
         public ushort OperationID { get; protected set; }
 
-        public PSPRequestModelBase(Dictionary<string, string> recv)
+        public PSPRequestBase(Dictionary<string, string> recv)
         {
             _recv = recv;
         }

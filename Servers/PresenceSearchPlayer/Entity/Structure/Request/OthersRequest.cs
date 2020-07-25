@@ -1,15 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class OthersRequest : PSPRequestModelBase
+    public class OthersRequest : PSPRequestBase
     {
         public OthersRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
+
+        public uint ProfileID { get; private set; }
+        public string GameName { get; private set; }
 
         public override GPErrorCode Parse()
         {

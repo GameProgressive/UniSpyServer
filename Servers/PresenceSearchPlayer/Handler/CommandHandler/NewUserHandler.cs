@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
-using PresenceSearchPlayer.Enumerator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,11 +14,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         private Users _users;
         private Profiles _profiles;
         private Subprofiles _subProfiles;
-        protected new NewUserRequest _request;
-        private Dictionary<string, string> _recv;
+        protected NewUserRequest _request;
         public NewUserHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
-            _recv = recv;
             _request = new NewUserRequest(recv);
         }
 
@@ -35,7 +33,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             SubProfileExist
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -147,7 +145,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         {
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = $@"\nur\{_errorCode}";
+                BuildErrorResponse();
                 return;
             }
 
@@ -155,72 +153,58 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 == RetroSpyServerName.PresenceSearchPlayer)
             {
                 //PSP NewUser
-                _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}";
+                _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}\final\";
             }
             else if (ServerManagerBase.ServerName
                 == RetroSpyServerName.PresenceConnectionManager)
             {
                 //PCM NewUser
-                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}";
+                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\final\";
             }
-            base.ConstructResponse();
+        }
+
+        protected override void BuildErrorResponse()
+        {
+            if (_errorCode >= GPErrorCode.NewUser && _errorCode <= GPErrorCode.NewUserUniquenickInvalid)
+            {
+                _sendingBuffer = $@"\nur\{_errorCode}\final\";
+            }
+            else
+            {
+                base.BuildErrorResponse();
+            }
         }
 
         private void UpdateOtherInfo()
         {
             using (var db = new retrospyContext())
             {
-                uint partnerid;
 
-                if (_recv.ContainsKey("partnerid"))
+                if (_request.HasPartnerIDFlag)
                 {
-                    if (uint.TryParse(_recv["partnerid"], out partnerid))
-                    {
-                        _subProfiles.Partnerid = partnerid;
-                    }
-                    else
-                    {
-                        _errorCode = GPErrorCode.Parse;
-                    }
+                    _subProfiles.Partnerid = _request.PartnerID;
                 }
 
-                uint productid;
-
-                if (_recv.ContainsKey("productid"))
+                if (_request.HasProductIDFlag)
                 {
-                    if (uint.TryParse(_recv["productid"], out productid))
-                    {
-                        _subProfiles.Productid = productid;
-                    }
-                    else
-                    {
-                        _errorCode = GPErrorCode.Parse;
-                    }
+                    _subProfiles.Productid = _request.ProductID;
                 }
 
-                if (_recv.ContainsKey("gamename"))
+                if (_request.HasGameNameFlag)
                 {
-                    _subProfiles.Gamename = _recv["gamename"];
+                    _subProfiles.Gamename = _request.GameName;
                 }
 
-                uint port;
-
-                if (_recv.ContainsKey("port"))
+                if (_request.HasGamePortFlag)
                 {
-                    if (uint.TryParse(_recv["port"], out port))
-                    {
-                        _subProfiles.Port = port;
-                    }
-                    else
-                    {
-                        _errorCode = GPErrorCode.Parse;
-                    }
+                    _subProfiles.Port = _request.GamePort;
                 }
 
-                if (_recv.ContainsKey("cdkeyenc"))
+                if (_request.HasCDKeyEncFlag)
                 {
-                    _subProfiles.Cdkeyenc = _recv["cdkeyenc"];
+                    _subProfiles.Cdkeyenc = _request.CDKeyEnc;
                 }
+
                 db.Subprofiles.Update(_subProfiles);
                 db.SaveChanges();
             }

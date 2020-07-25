@@ -13,6 +13,8 @@ namespace CDKey.Server
     {
         protected readonly ConcurrentDictionary<EndPoint, CDKeySession> Sessions
      = new ConcurrentDictionary<EndPoint, CDKeySession>();
+
+
         public CDKeyServer(IPAddress address, int port) : base(address, port)
         {
         }

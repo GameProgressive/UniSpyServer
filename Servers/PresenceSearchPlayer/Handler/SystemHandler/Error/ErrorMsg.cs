@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Error
@@ -101,7 +102,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
 
         public static string BuildGPErrorMsg(GPErrorCode errorCode)
         {
-            return $@"\error\\err\{errorCode}\fatal\\errmsg\{GetErrorMsg(errorCode)}";
+            return $@"\error\\err\{errorCode}\fatal\\errmsg\{GetErrorMsg(errorCode)}\final\";
         }
     }
 }

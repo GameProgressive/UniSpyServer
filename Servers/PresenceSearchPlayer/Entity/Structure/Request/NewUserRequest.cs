@@ -1,20 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameSpyLib.MiscMethod;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class NewUserRequest : PSPRequestModelBase
+    public class NewUserRequest : PSPRequestBase
     {
+        public uint ProductID { get; protected set; }
+        public uint GamePort { get; protected set; }
+        public string CDKeyEnc { get; protected set; }
+
+        public bool HasGameNameFlag { get; protected set; }
+        public bool HasProductIDFlag { get; protected set; }
+        public bool HasCDKeyEncFlag { get; protected set; }
+        public bool HasPartnerIDFlag { get; protected set; }
+        public bool HasGamePortFlag { get; protected set; }
+
+        public string Nick { get; private set; }
+        public string Email { get; private set; }
+        public string PassEnc { get; private set; }
+        public string Uniquenick { get; private set; }
+        public uint PartnerID { get; private set; }
+        public string GameName { get; private set; }
+
         public NewUserRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 
         public override GPErrorCode Parse()
         {
-           var flag = base.Parse();
+            var flag = base.Parse();
             if (flag != GPErrorCode.NoError)
             {
                 return flag;
@@ -22,7 +38,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             if (!_recv.ContainsKey("nick"))
             {
-               return GPErrorCode.Parse;
+                return GPErrorCode.Parse;
             }
 
             if (!_recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
@@ -32,7 +48,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             if (!_recv.ContainsKey("passenc"))
             {
-               return GPErrorCode.Parse;
+                return GPErrorCode.Parse;
             }
             Nick = _recv["nick"];
             Email = _recv["email"];
@@ -41,6 +57,56 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             if (_recv.ContainsKey("uniquenick"))
             {
                 Uniquenick = _recv["uniquenick"];
+            }
+
+            return ParseOtherInfo();
+        }
+
+        private GPErrorCode ParseOtherInfo()
+        {
+
+            //parse other info
+            if (_recv.ContainsKey("partnerid"))
+            {
+                uint partnerid;
+                if (!uint.TryParse(_recv["partnerid"], out partnerid))
+                {
+                    return GPErrorCode.Parse;
+                }
+                PartnerID = partnerid;
+            }
+
+
+
+            if (_recv.ContainsKey("productid"))
+            {
+                uint productid;
+                if (uint.TryParse(_recv["productid"], out productid))
+                {
+                    return GPErrorCode.Parse;
+                }
+                ProductID = productid;
+            }
+
+            if (_recv.ContainsKey("gamename"))
+            {
+                GameName = _recv["gamename"];
+            }
+
+
+            if (_recv.ContainsKey("port"))
+            {
+                uint port;
+                if (!uint.TryParse(_recv["port"], out port))
+                {
+                    return GPErrorCode.Parse;
+                }
+                GamePort = port;
+            }
+
+            if (_recv.ContainsKey("cdkeyenc"))
+            {
+                CDKeyEnc = _recv["cdkeyenc"];
             }
 
             return GPErrorCode.NoError;

@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
-using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
+using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
 
 
@@ -16,7 +16,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         /// the decision formula should use _result.Count==0
         /// </summary>
         protected string _sendingBuffer;
-        protected PSPRequestModelBase _request;
         public PSPCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
         {
             _errorCode = GPErrorCode.NoError;
@@ -26,10 +25,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         {
             base.Handle();
 
-            CheckRequest();
+            RequestCheck();
 
             if (_errorCode < GPErrorCode.NoError)
             {
+                ConstructResponse();
+                Response();
                 return;
             }
 
@@ -37,43 +38,23 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
             if (_errorCode < GPErrorCode.NoError)
             {
+                ConstructResponse();
+                Response();
                 return;
             }
 
             ConstructResponse();
-
-            if (_errorCode < GPErrorCode.NoError)
-            {
-                return;
-            }
-
             Response();
         }
 
-        protected abstract void CheckRequest();
-
+        protected abstract void RequestCheck();
         protected abstract void DataOperation();
 
         /// <summary>
         /// The general message and error response should be writing in this child method.
         /// The base method only handles postfix adding and response validate checking.
         /// </summary>
-        protected virtual void ConstructResponse()
-        {
-            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
-            {
-                return;
-            }
-
-            if (_request.OperationID != 0)
-            {
-                _sendingBuffer += $@"\id\{_request.OperationID}\final\";
-            }
-            else
-            {
-                _sendingBuffer += @"\final\";
-            }
-        }
+        protected abstract void ConstructResponse();
 
         protected virtual void Response()
         {
@@ -82,6 +63,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                 return;
             }
             _session.SendAsync(_sendingBuffer);
+        }
+
+        /// <summary>
+        /// Customize the error response string
+        /// </summary>
+        protected virtual void BuildErrorResponse()
+        {
+            _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
         }
     }
 }

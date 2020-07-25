@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
+using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
@@ -43,7 +45,6 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                     // Read client message, and parse it into key value pairs
                     string[] recieved = command.TrimStart('\\').Split('\\');
                     Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
-
                     switch (recv.Keys.First())
                     {
                         case "search":

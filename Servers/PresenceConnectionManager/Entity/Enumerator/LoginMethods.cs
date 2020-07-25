@@ -1,4 +1,4 @@
-﻿namespace PresenceConnectionManager.Enumerator
+﻿namespace PresenceConnectionManager.Entity.Enumerator
 {
     /// <summary>
     /// This enumation defins the supported login method for the users.

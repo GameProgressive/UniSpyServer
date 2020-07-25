@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
@@ -20,13 +21,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     public class NickHandler : PSPCommandHandlerBase
     {
         List<NickHandlerDataModel> nickDBResults;
-        protected new NickRequest _request;
+        protected NickRequest _request;
         public NickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
             _request = new NickRequest(recv);
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -41,7 +42,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                                  join p in db.Profiles on u.Userid equals p.Userid
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  where u.Email == _request.Email
-                                 && u.Password ==_request.PassEnc
+                                 && u.Password == _request.PassEnc
                                  && n.Namespaceid == _request.NamespaceID
                                  select new NickHandlerDataModel { Nick = p.Nick, Uniquenick = n.Uniquenick };
 
@@ -62,25 +63,22 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = @"\nr\";
-
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
+                BuildErrorResponse();
+                return;
             }
-            else
-            {
-                foreach (var info in nickDBResults)
-                {
-                    _sendingBuffer += @"\nick\";
-                    _sendingBuffer += info.Nick;
-                    _sendingBuffer += @"\uniquenick\";
-                    _sendingBuffer += info.Uniquenick;
-                }
 
-                _sendingBuffer += @"\ndone";
+            _sendingBuffer = @"\nr\";
+            foreach (var info in nickDBResults)
+            {
+                _sendingBuffer += @"\nick\";
+                _sendingBuffer += info.Nick;
+                _sendingBuffer += @"\uniquenick\";
+                _sendingBuffer += info.Uniquenick;
             }
-            base.ConstructResponse();
+            _sendingBuffer += @"\ndone\final\";
+
         }
     }
 }

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class OthersListRequest : PSPRequestModelBase
+    public class OthersListRequest : PSPRequestBase
     {
         public List<uint> ProfileIDs { get; protected set; }
 

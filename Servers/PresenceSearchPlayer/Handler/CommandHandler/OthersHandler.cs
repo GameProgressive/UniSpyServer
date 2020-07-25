@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
@@ -23,7 +24,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
     /// </summary>
     public class OthersHandler : PSPCommandHandlerBase
     {
-        protected new OthersRequest _request;
+        protected OthersRequest _request;
         private List<OthersHandlerDataModel> _result;
         public OthersHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
@@ -31,7 +32,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
             _result = new List<OthersHandlerDataModel>();
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             _errorCode = _request.Parse();
         }
@@ -72,26 +73,25 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
         {
             if (_errorCode != GPErrorCode.NoError)
             {
-                _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
+                BuildErrorResponse();
                 return;
             }
-            else
+
+            _sendingBuffer = @"\others\";
+
+            foreach (var info in _result)
             {
-                _sendingBuffer = @"\others\";
-
-                foreach (var info in _result)
-                {
-                    _sendingBuffer += @"\o\" + info.Profileid;
-                    _sendingBuffer += @"\nick\" + info.Nick;
-                    _sendingBuffer += @"\uniquenick\" + info.Uniquenick;
-                    _sendingBuffer += @"\first\" + info.Firstname;
-                    _sendingBuffer += @"\last\" + info.Lastname;
-                    _sendingBuffer += @"\email\" + info.Email;
-                }
-                _sendingBuffer += @"\odone";
+                _sendingBuffer += @"\o\" + info.Profileid;
+                _sendingBuffer += @"\nick\" + info.Nick;
+                _sendingBuffer += @"\uniquenick\" + info.Uniquenick;
+                _sendingBuffer += @"\first\" + info.Firstname;
+                _sendingBuffer += @"\last\" + info.Lastname;
+                _sendingBuffer += @"\email\" + info.Email;
             }
+            _sendingBuffer += @"\odone\final\";
 
-            base.ConstructResponse();
+
+
         }
 
     }
