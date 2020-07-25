@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Extensions;
-using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Entity.Enumerator;
 using System.Text;
 
-namespace PresenceConnectionManager.Handler.General.Login.Misc
+namespace PresenceConnectionManager.Structure
 {
     public class ChallengeProof
     {

@@ -35,28 +35,27 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Entity\Interface\" />
-        <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Revoke\" />
-        <Folder Include="Handler\CommandHandler\Buddy\BuddyMessage\Auth\" />
         <Folder Include="Entity\Structure\Request\" />
         <Folder Include="Entity\BaseClass\" />
+        <Folder Include="Entity\Structure\Info\" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="Handler\CommandHandler\General\Login\Misc\ChallangeVerify.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Handler\CommandHandler\Buddy\AddBlock\AddBlockHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\AddBuddy\AddBuddyHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\BuddyStatusInfo\BuddyStatusInfo.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\DelBuddy\DelBuddyHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\InviteTo\InviteToHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\SendBlockList\SendBlockList.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\SendBuddyList\SendBuddyList.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\Status\StatusHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Profile\GetProfile\GetProfileHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Profile\NewProfile\NewProfileHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Profile\RegisterNick\RegisterNickHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Profile\UpdatePro\UpdateProHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Profile\UpdateUI\UpdateUiHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Profile\GetProfileHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Profile\NewProfileHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Profile\RegisterNickHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Profile\UpdateProHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Profile\UpdateUIHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Buddy\AddBlockHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Buddy\AddBuddyHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Buddy\BuddyStatusInfo.cs" />
+        <Compile Include="Handler\CommandHandler\Buddy\DelBuddyHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Buddy\InviteToHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Buddy\SendBlockList.cs" />
+        <Compile Include="Handler\CommandHandler\Buddy\SendBuddyList.cs" />
+        <Compile Include="Handler\CommandHandler\Buddy\StatusHandler.cs" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

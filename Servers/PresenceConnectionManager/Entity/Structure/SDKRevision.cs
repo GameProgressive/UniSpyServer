@@ -1,8 +1,9 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
+using PresenceConnectionManager.Entity.Enumerator;
 using PresenceConnectionManager.Entity.Structure;
 
-namespace PresenceConnectionManager.Handler.General.SDKExtendFeature
+namespace PresenceConnectionManager.Entity.Structure
 {
     public static class SDKRevision
     {
