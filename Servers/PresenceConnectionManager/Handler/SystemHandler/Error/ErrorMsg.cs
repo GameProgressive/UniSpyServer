@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using PresenceConnectionManager.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Handler.Error
 {

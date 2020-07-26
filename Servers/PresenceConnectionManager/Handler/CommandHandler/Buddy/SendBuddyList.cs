@@ -46,7 +46,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
             using (var db = new retrospyContext())
             {
                 var buddies = db.Friends.Where(
-                    f => f.Profileid == _session.UserInfo.Profileid
+                    f => f.Profileid == _session.UserInfo.ProfileID
                 && f.Namespaceid == _session.UserInfo.NamespaceID);
                 //if (buddies.Count() == 0)
                 //{

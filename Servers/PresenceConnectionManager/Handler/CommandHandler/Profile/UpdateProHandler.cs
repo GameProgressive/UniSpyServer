@@ -24,15 +24,15 @@ namespace PresenceConnectionManager.Handler.Profile.UpdatePro
             using (var db = new retrospyContext())
             {
                 var profile = db.Profiles.Where(
-                    p => p.Userid == _session.UserInfo.Userid
-                    && p.Profileid == _session.UserInfo.Profileid
+                    p => p.Userid == _session.UserInfo.UserID
+                    && p.Profileid == _session.UserInfo.ProfileID
                     && p.Nick == p.Nick).First();
 
                 var user = db.Users.Where(
-                    u => u.Userid == _session.UserInfo.Userid).First();
+                    u => u.Userid == _session.UserInfo.UserID).First();
 
                 var subprofile = db.Subprofiles.Where(
-                    s => s.Profileid == _session.UserInfo.Profileid
+                    s => s.Profileid == _session.UserInfo.ProfileID
                     && s.Namespaceid == _session.UserInfo.NamespaceID
                     && s.Uniquenick == _session.UserInfo.UniqueNick).First();
 

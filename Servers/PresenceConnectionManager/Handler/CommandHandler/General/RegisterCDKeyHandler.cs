@@ -25,18 +25,18 @@ namespace PresenceConnectionManager.Handler.General.RegisterCDKey
         {
             using (var db = new retrospyContext())
             {
-                var result = db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.Profileid
+                var result = db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.ProfileID
                 && s.Namespaceid == _session.UserInfo.NamespaceID
-                && s.Productid == _session.UserInfo.productID);
+                && s.Productid == _session.UserInfo.ProductID);
 
                 if (result.Count() == 0 || result.Count() > 1)
                 {
                     _errorCode = Enumerator.GPErrorCode.DatabaseError;
                 }
 
-                db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.Profileid
+                db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.ProfileID
             && s.Namespaceid == _session.UserInfo.NamespaceID
-            && s.Productid == _session.UserInfo.productID).FirstOrDefault()
+            && s.Productid == _session.UserInfo.ProductID).FirstOrDefault()
             .Cdkeyenc = _recv["cdkeyenc"];
                 db.SaveChanges();
             }

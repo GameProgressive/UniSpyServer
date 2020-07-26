@@ -30,17 +30,14 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Entity\Structure\Packet\" />
-        <Folder Include="Handler\CommandHandler\Echo\" />
-        <Folder Include="Handler\CommandHandler\MessageACK\" />
         <Folder Include="Handler\SystemHandler\QRSessionManage\" />
         <Folder Include="Handler\SystemHandler\GeoIPManage\" />
         <Folder Include="Handler\SystemHandler\ErrorMessage\" />
-        <Folder Include="Entity\Structure\Server\" />
-        <Folder Include="Entity\Structure\Group\" />
+        <Folder Include="Entity\Structure\ServerData\" />
+        <Folder Include="Entity\Structure\GroupData\" />
         <Folder Include="Handler\SystemHandler\PeerSystem\" />
         <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
         <Folder Include="Entity\Structure\NatNeg\" />
-        <Folder Include="Handler\CommandHandler\ClientMessage\" />
         <Folder Include="Entity\BaseClass\" />
     </ItemGroup>
     <ItemGroup>

@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
-using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,8 +49,8 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
         protected override void DataOperation()
         {
             var user = PCMServer.LoggedInSession.Values.Where(
-                u => u.UserInfo.productID == _productid
-                && u.UserInfo.Profileid == _profileid);
+                u => u.UserInfo.ProductID == _productid
+                && u.UserInfo.ProfileID == _profileid);
 
             if (user.Count() == 0)
             {

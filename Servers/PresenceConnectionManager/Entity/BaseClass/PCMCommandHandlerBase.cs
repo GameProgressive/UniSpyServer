@@ -1,9 +1,8 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
-using PresenceConnectionManager.Entity.BaseClass;
-using PresenceConnectionManager.Entity.Enumerator;
 using PresenceConnectionManager.Handler.Error;
+using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler
@@ -16,7 +15,6 @@ namespace PresenceConnectionManager.Handler
     {
         protected GPErrorCode _errorCode;
         protected string _sendingBuffer;
-        protected PCMRequestBase _request;
         new protected PCMSession _session;
         public PCMCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
         {
@@ -51,26 +49,11 @@ namespace PresenceConnectionManager.Handler
             Response();
         }
 
-        protected abstract void CheckRequest();
+        protected virtual void CheckRequest() { }
 
-        protected abstract void DataOperation();
+        protected virtual void DataOperation() { }
 
-        protected virtual void ConstructResponse()
-        {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorMessage();
-            }
-
-            if (_request.OperationID != 0)
-            {
-                _sendingBuffer += $@"\{_request.OperationID}\final\";
-            }
-            else
-            {
-                _sendingBuffer += @"\final\";
-            }
-        }
+        protected virtual void ConstructResponse() { }
 
         protected virtual void Response()
         {

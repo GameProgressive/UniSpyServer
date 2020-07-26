@@ -1,7 +1,8 @@
 ﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Entity.Enumerator;
+using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler;
 using PresenceConnectionManager.Structure;
 using System;
@@ -20,17 +21,20 @@ namespace PresenceConnectionManager
         /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
-        public bool CompletedLoginProcess { get; set; } = false;
+        public bool CompletedLoginProcess;
 
         /// <summary>
         /// Indicates the date and time this connection was created
         /// </summary>
-        public readonly DateTime Created = DateTime.Now;
+        public readonly DateTime CreateTime;
 
-        public UserInfo UserInfo = new UserInfo();
+        public UserInfo UserInfo;
 
         public PCMSession(TemplateTcpServer server) : base(server)
         {
+            UserInfo = new UserInfo();
+            CreateTime = new DateTime();
+            CompletedLoginProcess = false;
         }
 
         protected override void OnConnected()
@@ -45,12 +49,10 @@ namespace PresenceConnectionManager
 
         }
 
-
-
         public void SendServerChallenge()
         {
             // Only send the login challenge once
-            if (UserInfo.LoginProcess != LoginStatus.Connected)
+            if (UserInfo.LoginStatus != LoginStatus.Connected)
             {
                 Disconnect();
                 // Throw the error                
@@ -59,9 +61,8 @@ namespace PresenceConnectionManager
                     "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
-            UserInfo.ServerChallenge = PCMServer.ServerChallenge;
-            UserInfo.LoginProcess = LoginStatus.Processing;
-            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", PCMServer.ServerChallenge, 1);
+            UserInfo.LoginStatus = LoginStatus.Processing;
+            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", ChallengeProofData.ServerChallenge, 1);
             SendAsync(sendingBuffer);
         }
 
@@ -76,7 +77,6 @@ namespace PresenceConnectionManager
             if (message.Contains("login"))
             {
                 message = message.Replace(@"\-", @"\");
-                //message = message.Replace('-', '\\');
 
                 int pos = message.IndexesOf("\\")[1];
 

@@ -1,4 +1,5 @@
 ﻿namespace PresenceConnectionManager.Entity.Enumerator
+{ 
     public enum DisconnectReason : int
     {
         /// <summary>

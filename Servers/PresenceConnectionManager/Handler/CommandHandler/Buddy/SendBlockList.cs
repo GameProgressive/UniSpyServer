@@ -23,7 +23,7 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
             using (var db = new retrospyContext())
             {
                 var buddies = db.Blocked.Where(
-                    f => f.Profileid == _session.UserInfo.Profileid
+                    f => f.Profileid == _session.UserInfo.ProfileID
                 && f.Namespaceid == _session.UserInfo.NamespaceID);
                 //if (buddies.Count() == 0)
                 //{

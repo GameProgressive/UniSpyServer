@@ -5,16 +5,15 @@
     /// </summary>
     public enum LoginType : uint
     {
-        NotFound,
         /// <summary>
         /// Login with user combo (nick@email)
         /// </summary>
-        Nick,
+        NickEmail,
 
         /// <summary>
         /// Login with unique nickname
         /// </summary>
-        Uniquenick,
+        UniquenickNamespaceID,
 
         /// <summary>
         /// Pre-authenticated login

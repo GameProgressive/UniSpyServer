@@ -1,4 +1,4 @@
-﻿using PresenceConnectionManager.Enumerator;
+﻿using PresenceConnectionManager.Entity.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Structure
@@ -8,12 +8,12 @@ namespace PresenceConnectionManager.Structure
         /// <summary>
         /// The connected clients Player Id
         /// </summary>
-        public uint Profileid;
+        public uint ProfileID;
 
         /// <summary>
         /// User ID in database
         /// </summary>
-        public uint Userid;
+        public uint UserID;
 
         /// <summary>
         /// The connected clients Nick
@@ -33,40 +33,27 @@ namespace PresenceConnectionManager.Structure
         /// <summary>
         /// The connected clients Unique Nick
         /// </summary>
-        public string UniqueNick = "";
+        public string UniqueNick;
 
-        /// <summary>
-        /// store the information of a user, if using the uniquenick login the userdatawill be his uniquenick if using
-        /// authtoken userdata will be authtoken, if using nouniquenick login the userdata will be nick and email.
-        /// </summary>
-        public string UserData;
+        public uint PartnerID;
 
-        /// <summary>
-        /// The clients password, MD5 hashed from UTF8 bytes
-        /// </summary>
-        public string PasswordHash;
-
+        public uint NamespaceID;
         /// <summary>
         /// Gets the current status of the player
         /// </summary>
         public PlayerStatus PlayerStatus = PlayerStatus.Offline;
 
-
         public string UserChallenge;
-
-        public string ServerChallenge;
 
         public ushort SessionKey;
 
-        public LoginStatus LoginProcess;
+        public LoginStatus LoginStatus;
 
-        public uint PartnerID;
 
-        public uint NamespaceID = 0;
 
         public uint SDKRevision;
 
-        public uint productID;
+        public uint ProductID;
 
         /////////////////////////User status//////////////////////////
         public GPStatus StatusCode;
@@ -89,22 +76,12 @@ namespace PresenceConnectionManager.Structure
 
         public bool BlockListSent;
 
-        public LoginType LoginType;
-
-        public DisconnectReason DisconReason;
-
         public string GameName;
 
-        public List<Dictionary<string, object>> FriendList = new List<Dictionary<string, object>>();
-
-        public bool IsEmailVerified;
-
-        public bool IsBlocked;
-
-        public uint PeerPort;
+        public uint GamePort;
 
         public uint QuietModeFlag;
 
-        public string LoginTicket;
+        public string LoginTicket = "0000000000000000000000__";
     }
 }

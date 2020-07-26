@@ -47,14 +47,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
             Response();
         }
 
-        protected abstract void RequestCheck();
-        protected abstract void DataOperation();
+        protected virtual void RequestCheck() { }
+        protected virtual void DataOperation() { }
 
         /// <summary>
         /// The general message and error response should be writing in this child method.
         /// The base method only handles postfix adding and response validate checking.
         /// </summary>
-        protected abstract void ConstructResponse();
+        protected virtual void ConstructResponse() { }
 
         protected virtual void Response()
         {

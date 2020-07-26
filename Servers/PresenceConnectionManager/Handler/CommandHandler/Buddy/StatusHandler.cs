@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
-using PresenceConnectionManager.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status

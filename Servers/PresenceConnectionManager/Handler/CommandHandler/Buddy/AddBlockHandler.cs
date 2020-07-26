@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using PresenceConnectionManager.Enumerator;
+using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,11 +35,11 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
             {
                 if (db.Blocked.Where(b => b.Targetid == _blockProfileid
                 && b.Namespaceid == _session.UserInfo.NamespaceID
-                && b.Profileid == _session.UserInfo.Profileid).Count() == 0)
+                && b.Profileid == _session.UserInfo.ProfileID).Count() == 0)
                 {
                     Blocked blocked = new Blocked
                     {
-                        Profileid = _session.UserInfo.Profileid,
+                        Profileid = _session.UserInfo.ProfileID,
                         Targetid = _blockProfileid,
                         Namespaceid = _session.UserInfo.NamespaceID
                     };

@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using PresenceConnectionManager.Entity.Enumerator;
+﻿using System.Collections.Generic;
+using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.BaseClass
 {
     public abstract class PCMRequestBase
     {
         protected Dictionary<string, string> _recv;
-        public uint NamespaceID { get; protected set; }
+        //public uint NamespaceID { get; protected set; }
         public uint OperationID { get; protected set; }
 
         public PCMRequestBase(Dictionary<string,string> recv)
@@ -27,15 +26,15 @@ namespace PresenceConnectionManager.Entity.BaseClass
                 OperationID = operationID;
             }
 
-            if (_recv.ContainsKey("namespaceid"))
-            {
-                uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
-                {
-                    return GPErrorCode.Parse;
-                }
-                NamespaceID = namespaceID;
-            }
+            //if (_recv.ContainsKey("namespaceid"))
+            //{
+            //    uint namespaceID;
+            //    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+            //    {
+            //        return GPErrorCode.Parse;
+            //    }
+            //    NamespaceID = namespaceID;
+            //}
 
             return GPErrorCode.NoError;
         }

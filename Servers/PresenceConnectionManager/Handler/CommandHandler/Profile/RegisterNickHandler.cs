@@ -34,7 +34,7 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
             {
                 using (var db = new retrospyContext())
                 {
-                    db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.Profileid && s.Namespaceid == _session.UserInfo.NamespaceID)
+                    db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.ProfileID && s.Namespaceid == _session.UserInfo.NamespaceID)
                         .First().Uniquenick = _recv["uniquenick"];
                     db.SaveChanges();
                 }
