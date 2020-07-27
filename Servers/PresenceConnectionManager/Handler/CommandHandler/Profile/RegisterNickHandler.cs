@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Entity.Structure.Request.Profile;
+using PresenceSearchPlayer.Entity.Enumerator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +10,15 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
 {
     public class RegisterNickHandler : PCMCommandHandlerBase
     {
+        protected RegisterNickRequest _request;
         public RegisterNickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new RegisterNickRequest(recv);
         }
 
         protected override void CheckRequest()
         {
-            base.CheckRequest();
-
-            if (!_recv.ContainsKey("sesskey"))
-            {
-                _errorCode = GPErrorCode.Parse;
-            }
-
-            if (!_recv.ContainsKey("uniquenick"))
-            {
-                _errorCode = GPErrorCode.Parse;
-            }
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
@@ -34,21 +27,21 @@ namespace PresenceConnectionManager.Handler.Profile.RegisterNick
             {
                 using (var db = new retrospyContext())
                 {
-                    db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.ProfileID && s.Namespaceid == _session.UserInfo.NamespaceID)
-                        .First().Uniquenick = _recv["uniquenick"];
+                    db.Subprofiles.Where(s => s.Subprofileid == _session.UserData.SubProfileID)
+                        .FirstOrDefault().Uniquenick = _request.UniqueNick;
                     db.SaveChanges();
                 }
             }
-            catch (Exception)
+            catch
             {
                 _errorCode = GPErrorCode.DatabaseError;
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            _sendingBuffer = $@"\rn\\id\{_operationID}\final\";
-            base.ConstructResponse();
+            base.BuildNormalResponse();
+            _sendingBuffer = $@"\rn\\id\{_request.OperationID}\final\";
         }
     }
 }

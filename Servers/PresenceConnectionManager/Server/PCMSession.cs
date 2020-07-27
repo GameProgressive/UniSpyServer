@@ -4,7 +4,7 @@ using GameSpyLib.Network;
 using PresenceConnectionManager.Entity.Enumerator;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler;
-using PresenceConnectionManager.Structure;
+using PresenceConnectionManager.Structure.Data;
 using System;
 using System.Net;
 
@@ -28,11 +28,11 @@ namespace PresenceConnectionManager
         /// </summary>
         public readonly DateTime CreateTime;
 
-        public UserInfo UserInfo;
+        public UserData UserData;
 
         public PCMSession(TemplateTcpServer server) : base(server)
         {
-            UserInfo = new UserInfo();
+            UserData = new UserData();
             CreateTime = new DateTime();
             CompletedLoginProcess = false;
         }
@@ -52,7 +52,7 @@ namespace PresenceConnectionManager
         public void SendServerChallenge()
         {
             // Only send the login challenge once
-            if (UserInfo.LoginStatus != LoginStatus.Connected)
+            if (UserData.LoginStatus != LoginStatus.Connected)
             {
                 Disconnect();
                 // Throw the error                
@@ -61,7 +61,7 @@ namespace PresenceConnectionManager
                     "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
-            UserInfo.LoginStatus = LoginStatus.Processing;
+            UserData.LoginStatus = LoginStatus.Processing;
             string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", ChallengeProofData.ServerChallenge, 1);
             SendAsync(sendingBuffer);
         }

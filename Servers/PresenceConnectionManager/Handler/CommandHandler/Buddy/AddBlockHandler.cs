@@ -34,14 +34,14 @@ namespace PresenceConnectionManager.Handler.Buddy.AddBlock
             using (var db = new retrospyContext())
             {
                 if (db.Blocked.Where(b => b.Targetid == _blockProfileid
-                && b.Namespaceid == _session.UserInfo.NamespaceID
-                && b.Profileid == _session.UserInfo.ProfileID).Count() == 0)
+                && b.Namespaceid == _session.UserData.NamespaceID
+                && b.Profileid == _session.UserData.ProfileID).Count() == 0)
                 {
                     Blocked blocked = new Blocked
                     {
-                        Profileid = _session.UserInfo.ProfileID,
+                        Profileid = _session.UserData.ProfileID,
                         Targetid = _blockProfileid,
-                        Namespaceid = _session.UserInfo.NamespaceID
+                        Namespaceid = _session.UserData.NamespaceID
                     };
 
                     db.Blocked.Update(blocked);

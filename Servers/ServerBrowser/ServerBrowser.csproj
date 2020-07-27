@@ -20,8 +20,6 @@
         <Compile Remove="Handler\Switcher\**" />
         <EmbeddedResource Remove="Handler\Switcher\**" />
         <None Remove="Handler\Switcher\**" />
-        <Compile Remove="Handler\CommandHandler\ServerList\UpdateOptionHandler\NoServerListHandler.cs" />
-        <Compile Remove="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroupsHandler.cs" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
@@ -39,16 +37,9 @@
         <Folder Include="Handler\SystemHandler\KeyType\" />
         <Folder Include="Handler\SystemHandler\Filter\" />
         <Folder Include="Handler\SystemHandler\Error\" />
-        <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionSwitcher\" />
         <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\" />
-        <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\GeneralRequest\" />
-        <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\NoServerList\" />
-        <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\SendGroups\" />
-        <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\PushUpdates\" />
         <Folder Include="Handler\CommandHandler\AdHoc\" />
-        <Folder Include="Handler\CommandHandler\AdHoc\ServerInfo\" />
         <Folder Include="Handler\CommandHandler\NatNeg\" />
-        <Folder Include="Handler\CommandHandler\AdHoc\SendMessage\" />
         <Folder Include="Entity\BaseClass\" />
     </ItemGroup>
     <ItemGroup>

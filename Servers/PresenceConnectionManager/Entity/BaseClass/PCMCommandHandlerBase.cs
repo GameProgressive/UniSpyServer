@@ -53,7 +53,20 @@ namespace PresenceConnectionManager.Handler
 
         protected virtual void DataOperation() { }
 
-        protected virtual void ConstructResponse() { }
+        /// <summary>
+        /// Usually we do not need to override this method
+        /// </summary>
+        protected virtual void ConstructResponse()
+        {
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                BuildErrorResponse();
+            }
+            else
+            {
+                BuildNormalResponse();
+            }
+        }
 
         protected virtual void Response()
         {
@@ -64,9 +77,11 @@ namespace PresenceConnectionManager.Handler
             base._session.SendAsync(_sendingBuffer);
         }
 
-        protected virtual void BuildErrorMessage()
+        protected virtual void BuildErrorResponse()
         {
             _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
         }
+
+        protected virtual void BuildNormalResponse() { }
     }
 }

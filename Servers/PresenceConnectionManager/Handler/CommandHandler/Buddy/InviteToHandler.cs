@@ -49,8 +49,8 @@ namespace PresenceConnectionManager.Handler.Buddy.InviteTo
         protected override void DataOperation()
         {
             var user = PCMServer.LoggedInSession.Values.Where(
-                u => u.UserInfo.ProductID == _productid
-                && u.UserInfo.ProfileID == _profileid);
+                u => u.UserData.ProductID == _productid
+                && u.UserData.ProfileID == _profileid);
 
             if (user.Count() == 0)
             {

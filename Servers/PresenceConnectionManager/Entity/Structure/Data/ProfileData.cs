@@ -1,6 +1,6 @@
-﻿namespace PresenceConnectionManager.Entity.Structure
+﻿namespace PresenceConnectionManager.Entity.Structure.Data
 {
-    public class ProfileInfo
+    public class ProfileData
     {
         public string Location;
         public string Fristname;

@@ -5,10 +5,10 @@ using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage
 {
-    public class SendMessageRequestHandler:SBCommandHandlerBase
+    public class SendMessageHandler:SBCommandHandlerBase
     {
         private AdHocRequest _request;
-        public SendMessageRequestHandler(ISession client, byte[] recv) : base(client, recv)
+        public SendMessageHandler(ISession client, byte[] recv) : base(client, recv)
         {
             _request = new AdHocRequest();
         }

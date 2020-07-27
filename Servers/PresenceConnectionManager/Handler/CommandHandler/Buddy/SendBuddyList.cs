@@ -36,18 +36,18 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
 
         protected override void DataOperation()
         {
-            if (_session.UserInfo.BuddiesSent)
+            if (_session.UserData.BuddiesSent)
             {
                 return;
             }
 
-            _session.UserInfo.BuddiesSent = true;
+            _session.UserData.BuddiesSent = true;
 
             using (var db = new retrospyContext())
             {
                 var buddies = db.Friends.Where(
-                    f => f.Profileid == _session.UserInfo.ProfileID
-                && f.Namespaceid == _session.UserInfo.NamespaceID);
+                    f => f.Profileid == _session.UserData.ProfileID
+                && f.Namespaceid == _session.UserData.NamespaceID);
                 //if (buddies.Count() == 0)
                 //{
                 //    _sendingBuffer = @"\bdy\0\list\\final\";

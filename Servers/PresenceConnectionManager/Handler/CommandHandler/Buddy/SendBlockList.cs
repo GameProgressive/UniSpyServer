@@ -13,18 +13,18 @@ namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
 
         protected override void DataOperation()
         {
-            if (_session.UserInfo.BlockListSent)
+            if (_session.UserData.BlockListSent)
             {
                 return;
             }
 
-            _session.UserInfo.BlockListSent = true;
+            _session.UserData.BlockListSent = true;
 
             using (var db = new retrospyContext())
             {
                 var buddies = db.Blocked.Where(
-                    f => f.Profileid == _session.UserInfo.ProfileID
-                && f.Namespaceid == _session.UserInfo.NamespaceID);
+                    f => f.Profileid == _session.UserData.ProfileID
+                && f.Namespaceid == _session.UserData.NamespaceID);
                 //if (buddies.Count() == 0)
                 //{
                 //    _sendingBuffer = @"\blk\0\list\\final\";

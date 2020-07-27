@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
+using PresenceConnectionManager.Entity.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
@@ -30,9 +31,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
 
         protected override void DataOperation()
         {
-            _session.UserInfo.StatusCode = (GPStatus)_statusCode;
-            _session.UserInfo.StatusString = _recv["statstring"];
-            _session.UserInfo.LocationString = _recv["locstring"];
+            _session.UserData.UserStatus = (GPStatus)_statusCode;
+            _session.UserData.StatusString = _recv["statstring"];
+            _session.UserData.LocationString = _recv["locstring"];
         }
     }
 }

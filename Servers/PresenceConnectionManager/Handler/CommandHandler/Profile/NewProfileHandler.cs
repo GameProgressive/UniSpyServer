@@ -1,5 +1,7 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceConnectionManager.Entity.Structure.Request.Profile;
+using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,38 +9,51 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
 {
     public class NewProfileHandler : PCMCommandHandlerBase
     {
+        protected NewProfileRequest _request;
         public NewProfileHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new NewProfileRequest(recv);
         }
-
-        //create a new profile with new nick 
-        // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"
-        //replace a existed nick with new nick
-        //@"  \newprofile\sesskey\<>\nick\<>\replace\1\oldnick\<>\id\1\final\"
 
         protected override void CheckRequest()
         {
-            base.CheckRequest();
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
-                if (_recv.ContainsKey("replace"))
+                if (_request.IsReplaceNickName)
                 {
-                    db.Profiles.Where(p => p.Profileid == _session.UserInfo.ProfileID
-                    && p.Nick == _recv["oldnick"]).First().Nick = _recv["nick"];
+                    var result = from p in db.Profiles
+                                 where p.Profileid == _session.UserData.ProfileID
+                                 && p.Nick == _request.OldNick
+                                 select p;
+
+                    if (result.Count() != 1)
+                    {
+                        _errorCode = GPErrorCode.DatabaseError;
+                    }
+                    else
+                    {
+                        result.First().Nick = _request.NewNick;
+                    }
+
+                    db.Profiles.Where(p => p.Profileid == _session.UserData.ProfileID
+                    && p.Nick == _request.OldNick).First().Nick = _request.NewNick;
+
                     db.SaveChanges();
                 }
                 else
                 {
                     Profiles profiles = new Profiles
                     {
-                        Profileid = _session.UserInfo.ProfileID,
-                        Nick = _recv["nick"],
-                        Userid = _session.UserInfo.UserID
+                        Profileid = _session.UserData.ProfileID,
+                        Nick = _request.NewNick,
+                        Userid = _session.UserData.UserID
                     };
+
                     db.Add(profiles);
                 }
             }

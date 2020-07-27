@@ -35,7 +35,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.SendMessageRequest:
                     //TODO
                     //Cryptorx's game use this command
-                    new SendMessageRequestHandler(session, recv).Handle();
+                    new SendMessageHandler(session, recv).Handle();
                     break;
                 default:
                     LogWriter.UnknownDataRecieved(recv);

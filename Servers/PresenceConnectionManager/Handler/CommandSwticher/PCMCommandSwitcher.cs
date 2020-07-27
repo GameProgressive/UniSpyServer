@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
-using PresenceConnectionManager.Enumerator;
 using PresenceConnectionManager.Handler.Buddy.AddBlock;
 using PresenceConnectionManager.Handler.Buddy.AddBuddy;
 using PresenceConnectionManager.Handler.Buddy.DelBuddy;

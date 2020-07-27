@@ -1,43 +1,26 @@
-﻿using PresenceConnectionManager.Entity.Enumerator;
-using System.Collections.Generic;
+﻿using GameSpyLib.Database.DatabaseModel.MySql;
+using PresenceConnectionManager.Entity.Enumerator;
 
-namespace PresenceConnectionManager.Structure
+namespace PresenceConnectionManager.Structure.Data
 {
-    public class UserInfo
+    public class UserData
     {
-        /// <summary>
-        /// The connected clients Player Id
-        /// </summary>
-        public uint ProfileID;
-
-        /// <summary>
-        /// User ID in database
-        /// </summary>
         public uint UserID;
-
-        /// <summary>
-        /// The connected clients Nick
-        /// </summary>
+        public uint ProfileID;
+        public uint SubProfileID;
         public string Nick;
-
-        /// <summary>
-        /// The connected clients Email Address
-        /// </summary>
+        public string UniqueNick;
         public string Email;
-
+        public uint PartnerID;
+        public uint NamespaceID;
+        public uint ProductID;
+        public string GameName;
         /// <summary>
         /// The connected clients Authentication Token
         /// </summary>
         public string AuthToken;
 
-        /// <summary>
-        /// The connected clients Unique Nick
-        /// </summary>
-        public string UniqueNick;
 
-        public uint PartnerID;
-
-        public uint NamespaceID;
         /// <summary>
         /// Gets the current status of the player
         /// </summary>
@@ -45,18 +28,18 @@ namespace PresenceConnectionManager.Structure
 
         public string UserChallenge;
 
-        public ushort SessionKey;
+        public const ushort SessionKey = 0000;
 
         public LoginStatus LoginStatus;
 
-
-
         public uint SDKRevision;
 
-        public uint ProductID;
+        public uint GamePort;
+
+        public uint QuietModeFlag;
 
         /////////////////////////User status//////////////////////////
-        public GPStatus StatusCode;
+        public GPStatus UserStatus;
 
         public string StatusString;
 
@@ -76,12 +59,8 @@ namespace PresenceConnectionManager.Structure
 
         public bool BlockListSent;
 
-        public string GameName;
 
-        public uint GamePort;
 
-        public uint QuietModeFlag;
-
-        public string LoginTicket = "0000000000000000000000__";
+        public const string LoginTicket = "0000000000000000000000__";
     }
 }

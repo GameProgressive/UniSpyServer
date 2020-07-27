@@ -4,9 +4,9 @@ using GameSpyLib.Encryption;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Entity.Enumerator;
 using PresenceConnectionManager.Entity.Structure;
-using PresenceConnectionManager.Entity.Structure.Request;
+using PresenceConnectionManager.Entity.Structure.Request.General;
 using PresenceConnectionManager.Structure;
-//using PresenceConnectionManager.Handler.General.SDKExtendFeature;
+using PresenceConnectionManager.Structure.Data;
 using PresenceSearchPlayer.Entity.Enumerator;
 using Serilog.Events;
 using System.Collections.Generic;
@@ -16,8 +16,8 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
 {
     internal class LoginDBResult
     {
-        public uint Userid;
-        public uint Profileid;
+        public uint UserID;
+        public uint ProfileID;
         public string Nick;
         public string Email;
         public string UniqueNick;
@@ -25,6 +25,7 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
         public bool EmailVerifiedFlag;
         public bool BannedFlag;
         public uint NamespaceID;
+        public uint SubProfileID;
     }
 
     public class LoginHandler : PCMCommandHandlerBase
@@ -45,15 +46,15 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             switch (_request.LoginType)
             {
                 case LoginType.NickEmail:
-                    _session.UserInfo.Nick = _request.Nick;
-                    _session.UserInfo.Email = _request.Email;
+                    _session.UserData.Nick = _request.Nick;
+                    _session.UserData.Email = _request.Email;
                     break;
                 case LoginType.UniquenickNamespaceID:
-                    _session.UserInfo.UniqueNick = _request.Uniquenick;
-                    _session.UserInfo.NamespaceID = _request.NamespaceID;
+                    _session.UserData.UniqueNick = _request.Uniquenick;
+                    _session.UserData.NamespaceID = _request.NamespaceID;
                     break;
                 case LoginType.AuthToken:
-                    _session.UserInfo.AuthToken = _request.AuthToken;
+                    _session.UserData.AuthToken = _request.AuthToken;
                     break;
                 default:
                     LogWriter.ToLog(LogEventLevel.Error, "Unknown login method detected!");
@@ -104,23 +105,29 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 _errorCode = GPErrorCode.LoginProfileDeleted;
                 return;
             }
-
-           
         }
 
-        protected override void ConstructResponse()
+        protected override void Response()
         {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorMessage();
-                return;
-            }
+            base.Response();
+            _session.UserData.UserStatus = GPStatus.Online;
+            _session.UserData.UserID = _result.UserID;
+            _session.UserData.ProfileID = _result.ProfileID;
+            _session.UserData.SubProfileID = _result.SubProfileID;
+            //_session.UserData.ProductID =
+            _session.UserData.GameName = _request.GameName;
+            _session.UserData.GamePort = _request.GamePort;
+            _session.UserData.LoginStatus = LoginStatus.Completed;
 
-            string checkSumStr = _result.Nick
-                + _result.UniqueNick
-                + _result.NamespaceID;
+            PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
+            SDKRevision.ExtendedFunction(_session);
+        }
 
-            _session.UserInfo.SessionKey = _crc.ComputeChecksum(checkSumStr);
+        protected override void BuildNormalResponse()
+        {
+            //string checkSumStr = _result.Nick + _result.UniqueNick + _result.NamespaceID;
+
+            //_session.UserData.SessionKey = _crc.ComputeChecksum(checkSumStr);
 
             ChallengeProofData proofData = new ChallengeProofData(
               _request.UserData,
@@ -132,36 +139,27 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
             string responseProof =
                 ChallengeProof.GenerateProof(proofData);
 
-            _sendingBuffer = @"\lc\2\sesskey\" + _session.UserInfo.SessionKey;
+            _sendingBuffer = @"\lc\2\sesskey\" + UserData.SessionKey;
             _sendingBuffer += @"\proof\" + responseProof;
-            _sendingBuffer += @"\userid\" + _session.UserInfo.UserID;
-            _sendingBuffer += @"\profileid\" + _session.UserInfo.ProfileID;
+            _sendingBuffer += @"\userid\" + _result.UserID;
+            _sendingBuffer += @"\profileid\" + _result.ProfileID;
 
             if (_request.LoginType != LoginType.NickEmail)
             {
-                _sendingBuffer += @"\uniquenick\" + _session.UserInfo.UniqueNick;
+                _sendingBuffer += @"\uniquenick\" + _result.UniqueNick;
             }
-            _sendingBuffer += @$"\lt\{_session.UserInfo.LoginTicket}";
+            _sendingBuffer += @$"\lt\{UserData.LoginTicket}";
             _sendingBuffer += $@"\id\{_request.OperationID}\final\";
 
-            _session.UserInfo.LoginStatus = LoginStatus.Completed;
+            _session.UserData.LoginStatus = LoginStatus.Completed;
         }
-
-        protected override void Response()
-        {
-            base.Response();
-            _session.UserInfo.StatusCode = GPStatus.Online;
-            PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
-            SDKRevision.ExtendedFunction(_session);
-        }
-
         private void NickEmailLogin()
         {
             //Check email existence
             using (var db = new retrospyContext())
             {
                 var email = from u in db.Users
-                            where u.Email == _session.UserInfo.Email
+                            where u.Email == _session.UserData.Email
                             select u.Userid;
 
                 if (email.Count() == 0)
@@ -174,13 +172,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                           where u.Email == _session.UserInfo.Email
-                           && p.Nick == _session.UserInfo.Nick
+                           where u.Email == _session.UserData.Email
+                           && p.Nick == _session.UserData.Nick
                            select new LoginDBResult
                            {
                                Email = u.Email,
-                               Userid = u.Userid,
-                               Profileid = p.Profileid,
+                               UserID = u.Userid,
+                               ProfileID = p.Profileid,
+                               SubProfileID = n.Subprofileid,
                                Nick = p.Nick,
                                UniqueNick = n.Uniquenick,
                                PasswordHash = u.Password,
@@ -207,13 +206,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 var info = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
                            join u in db.Users on p.Userid equals u.Userid
-                           where n.Uniquenick == _session.UserInfo.UniqueNick
-                           && n.Namespaceid == _session.UserInfo.NamespaceID
+                           where n.Uniquenick == _session.UserData.UniqueNick
+                           && n.Namespaceid == _session.UserData.NamespaceID
                            select new LoginDBResult
                            {
                                Email = u.Email,
-                               Userid = u.Userid,
-                               Profileid = p.Profileid,
+                               UserID = u.Userid,
+                               ProfileID = p.Profileid,
+                               SubProfileID = n.Subprofileid,
                                Nick = p.Nick,
                                UniqueNick = n.Uniquenick,
                                PasswordHash = u.Password,
@@ -238,13 +238,14 @@ namespace PresenceConnectionManager.Handler.General.Login.LoginMethod
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                           where n.Authtoken == _session.UserInfo.AuthToken && n.Partnerid == _session.UserInfo.PartnerID
-                           && n.Namespaceid == _session.UserInfo.NamespaceID
+                           where n.Authtoken == _session.UserData.AuthToken && n.Partnerid == _session.UserData.PartnerID
+                           && n.Namespaceid == _session.UserData.NamespaceID
                            select new LoginDBResult
                            {
                                Email = u.Email,
-                               Userid = u.Userid,
-                               Profileid = p.Profileid,
+                               UserID = u.Userid,
+                               ProfileID = p.Profileid,
+                               SubProfileID = n.Subprofileid,
                                Nick = p.Nick,
                                UniqueNick = n.Uniquenick,
                                PasswordHash = u.Password,

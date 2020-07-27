@@ -9,19 +9,9 @@ namespace PresenceConnectionManager.Handler.General.KeepAlive
         {
         }
 
-        protected override void CheckRequest()
-        {
-            throw new System.NotImplementedException();
-        }
-
         protected override void ConstructResponse()
         {
             _sendingBuffer = @"\ka\\final\";
-        }
-
-        protected override void DataOperation()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
