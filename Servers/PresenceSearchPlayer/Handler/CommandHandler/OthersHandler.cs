@@ -69,14 +69,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
         }
 
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
             _sendingBuffer = @"\others\";
 
             foreach (var info in _result)
@@ -89,9 +83,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
                 _sendingBuffer += @"\email\" + info.Email;
             }
             _sendingBuffer += @"\odone\final\";
-
-
-
         }
 
     }

@@ -61,14 +61,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
             _sendingBuffer = @"\nr\";
             foreach (var info in nickDBResults)
             {

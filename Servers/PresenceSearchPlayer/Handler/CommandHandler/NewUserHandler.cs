@@ -141,28 +141,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             }
         }
 
-        protected override void ConstructResponse()
-        {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
-            if (ServerManagerBase.ServerName
-                == RetroSpyServerName.PresenceSearchPlayer)
-            {
-                //PSP NewUser
-                _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}\final\";
-            }
-            else if (ServerManagerBase.ServerName
-                == RetroSpyServerName.PresenceConnectionManager)
-            {
-                //PCM NewUser
-                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\final\";
-            }
-        }
-
         protected override void BuildErrorResponse()
         {
             if (_errorCode >= GPErrorCode.NewUser && _errorCode <= GPErrorCode.NewUserUniquenickInvalid)
@@ -172,6 +150,23 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             else
             {
                 base.BuildErrorResponse();
+            }
+        }
+
+        protected override void BuildNormalResponse()
+        {
+            base.BuildNormalResponse();
+            if (ServerManagerBase.ServerName
+             == RetroSpyServerName.PresenceSearchPlayer)
+            {
+                //PSP NewUser
+                _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}\final\";
+            }
+            else if (ServerManagerBase.ServerName
+                == RetroSpyServerName.PresenceConnectionManager)
+            {
+                //PCM NewUser
+                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\final\";
             }
         }
 

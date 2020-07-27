@@ -115,14 +115,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
             _sendingBuffer = @"\bsr\";
             foreach (var info in _result.Skip(_request.SkipNumber))
             {

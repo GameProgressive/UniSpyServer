@@ -51,10 +51,19 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected virtual void DataOperation() { }
 
         /// <summary>
-        /// The general message and error response should be writing in this child method.
-        /// The base method only handles postfix adding and response validate checking.
+        /// Usually we do not need to override this function
         /// </summary>
-        protected virtual void ConstructResponse() { }
+        protected virtual void ConstructResponse()
+        {
+            if (_errorCode != GPErrorCode.NoError)
+            {
+                BuildErrorResponse();
+            }
+            else
+            {
+                BuildNormalResponse();
+            }
+        }
 
         protected virtual void Response()
         {
@@ -72,5 +81,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         {
             _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
         }
+        protected virtual void BuildNormalResponse()
+        { }
     }
 }

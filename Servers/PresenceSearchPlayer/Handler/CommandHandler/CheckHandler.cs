@@ -58,21 +58,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
             _sendingBuffer = @$"\cur\0\pid\{_profileid}\final\";
-
         }
 
         protected override void BuildErrorResponse()
         {
-            if (_errorCode< GPErrorCode.Check|| _errorCode> GPErrorCode.CheckBadPassword)
+            if (_errorCode < GPErrorCode.Check || _errorCode > GPErrorCode.CheckBadPassword)
             {
                 base.BuildErrorResponse();
             }

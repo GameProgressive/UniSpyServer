@@ -62,14 +62,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.SearchUnique
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            if (_errorCode != Entity.Enumerator.GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
             _sendingBuffer = @"\bsr";
             foreach (var info in _result)
             {

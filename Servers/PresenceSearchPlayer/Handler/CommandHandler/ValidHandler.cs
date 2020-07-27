@@ -45,14 +45,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
             }
 
         }
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            if (_errorCode != Entity.Enumerator.GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
             if (_isAccountValid)
             {
                 _sendingBuffer = @"\vr\1\final\";

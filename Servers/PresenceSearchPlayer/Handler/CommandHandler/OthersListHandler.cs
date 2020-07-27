@@ -49,14 +49,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
             _sendingBuffer = @"\otherslist\";
             foreach (var info in _result)
             {

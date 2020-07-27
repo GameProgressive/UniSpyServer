@@ -42,14 +42,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.UniqueSearch
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-                return;
-            }
-
             if (!_isUniquenickExist)
             {
                 _sendingBuffer = @"us\0\usdone\final";
