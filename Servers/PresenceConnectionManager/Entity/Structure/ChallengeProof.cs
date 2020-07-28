@@ -28,8 +28,8 @@ namespace PresenceConnectionManager.Structure
             StringBuilder responseString = new StringBuilder(data.PasswordHash);
             responseString.Append(' ', 48); // 48 spaces
             responseString.Append(tempUserData);
-            responseString.Append(ChallengeProofData.ServerChallenge);
-            responseString.Append(data.UserChallenge);
+            responseString.Append(data.Challenge1);
+            responseString.Append(data.Challenge2);
             responseString.Append(data.PasswordHash);
 
             string hashString = responseString.ToString().GetMD5Hash();

@@ -28,15 +28,15 @@ namespace PresenceConnectionManager.Structure.Data
 
         public string UserChallenge;
 
-        public const ushort SessionKey = 0000;
+        public const ushort SessionKey = 1111;
 
         public LoginStatus LoginStatus;
 
-        public uint SDKRevision;
+        public SDKRevisionType SDKRevision;
 
         public uint GamePort;
 
-        public uint QuietModeFlag;
+        public GPBasic QuietModeFlag;
 
         /////////////////////////User status//////////////////////////
         public GPStatus UserStatus;

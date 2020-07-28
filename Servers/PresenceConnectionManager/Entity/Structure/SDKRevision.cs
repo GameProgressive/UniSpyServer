@@ -19,32 +19,32 @@ namespace PresenceConnectionManager.Entity.Structure
                 return;
             }
 
-            if ((_session.UserData.SDKRevision ^ (uint)SDKRevisionType.GPINewAuthNotification) != 0)
+            if ((_session.UserData.SDKRevision ^ SDKRevisionType.GPINewAuthNotification) != 0)
             {
                 //Send add friend request
             }
 
-            if ((_session.UserData.SDKRevision ^ (uint)SDKRevisionType.GPINewRevokeNotification) != 0)
+            if ((_session.UserData.SDKRevision ^ SDKRevisionType.GPINewRevokeNotification) != 0)
             {
                 //send revoke request
             }
 
-            if ((_session.UserData.SDKRevision ^ (uint)SDKRevisionType.GPINewStatusNotification) != 0)
+            if ((_session.UserData.SDKRevision ^ SDKRevisionType.GPINewStatusNotification) != 0)
             {
                 //send new status info
             }
 
-            if ((_session.UserData.SDKRevision ^ (uint)SDKRevisionType.GPINewListRetrevalOnLogin) != 0)
+            if ((_session.UserData.SDKRevision ^ SDKRevisionType.GPINewListRetrevalOnLogin) != 0)
             {
                 //send buddy list and block list
             }
 
-            if ((_session.UserData.SDKRevision ^ (uint)SDKRevisionType.GPIRemoteAuthIDSNotification) != 0)
+            if ((_session.UserData.SDKRevision ^ SDKRevisionType.GPIRemoteAuthIDSNotification) != 0)
             {
                 //Remote auth
             }
 
-            if ((_session.UserData.SDKRevision ^ (uint)SDKRevisionType.GPINewCDKeyRegistration) != 0)
+            if ((_session.UserData.SDKRevision ^ SDKRevisionType.GPINewCDKeyRegistration) != 0)
             {
                 //register cdkey with product id
             }

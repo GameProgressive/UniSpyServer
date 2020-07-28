@@ -118,6 +118,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
             _session.UserData.GameName = _request.GameName;
             _session.UserData.GamePort = _request.GamePort;
             _session.UserData.LoginStatus = LoginStatus.Completed;
+            _session.UserData.SDKRevision = _request.SDKType;
 
             PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
             SDKRevision.ExtendedFunction(_session);
@@ -133,8 +134,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
               _request.UserData,
               _request.LoginType,
               _request.PartnerID,
-             _request.UserChallenge,
-             _result.PasswordHash);
+              ChallengeProofData.ServerChallenge,
+              _request.UserChallenge,
+              _result.PasswordHash);
 
             string responseProof =
                 ChallengeProof.GenerateProof(proofData);
@@ -153,6 +155,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
 
             _session.UserData.LoginStatus = LoginStatus.Completed;
         }
+
         private void NickEmailLogin()
         {
             //Check email existence
@@ -270,6 +273,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
                 _request.LoginType,
                 _request.PartnerID,
                _request.UserChallenge,
+               ChallengeProofData.ServerChallenge,
                _result.PasswordHash);
 
             string response = ChallengeProof.GenerateProof(proofData);

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Entity.BaseClass;
 using PresenceConnectionManager.Entity.Enumerator;
@@ -20,6 +19,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
         public string Nick { get; protected set; }
         public string Email { get; protected set; }
         public SDKRevisionType SDKType { get; protected set; }
+
         public LoginRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
@@ -84,7 +84,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
         public uint GamePort { get; protected set; }
         public uint PartnerID { get; protected set; }
         public string GameName { get; private set; }
-        public uint QuietModeFlag { get; private set; }
+        public QuietModeType QuietMode { get; private set; }
 
         private GPErrorCode ParseOtherData()
         {
@@ -133,7 +133,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                     return GPErrorCode.Parse;
                 }
 
-                QuietModeFlag = quiet;
+                QuietMode = (QuietModeType)quiet;
             }
 
             return GPErrorCode.NoError;
