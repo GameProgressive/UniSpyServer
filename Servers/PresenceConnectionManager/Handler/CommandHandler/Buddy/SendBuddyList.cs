@@ -3,7 +3,7 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Buddy.SendBuddies
+namespace PresenceConnectionManager.Handler.Buddy
 {
     /// <summary>
     /// Send friendlist, friends message, friends add request to player when logged in.

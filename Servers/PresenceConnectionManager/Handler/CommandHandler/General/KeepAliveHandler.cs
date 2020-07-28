@@ -1,11 +1,11 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.General.KeepAlive
+namespace PresenceConnectionManager.Handler.General
 {
     public class KeepAliveHandler : PCMCommandHandlerBase
     {
-        public KeepAliveHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        public KeepAliveHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
         {
         }
 

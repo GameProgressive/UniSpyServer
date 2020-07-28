@@ -3,7 +3,7 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Buddy.SendBlockList
+namespace PresenceConnectionManager.Handler.Buddy
 {
     public class SendBlockList : PCMCommandHandlerBase
     {

@@ -1,112 +1,84 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.MiscMethod;
-using System;
+using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Profile.UpdatePro
+namespace PresenceConnectionManager.Handler.Profile
 {
     public class UpdateProHandler : PCMCommandHandlerBase
     {
+        protected UpdateProRequest _request;
         public UpdateProHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
+            _request = new UpdateProRequest(recv);
         }
 
         protected override void CheckRequest()
         {
-            base.CheckRequest();
+            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())
             {
-                var profile = db.Profiles.Where(
+                Profiles profile = db.Profiles.Where(
                     p => p.Userid == _session.UserData.UserID
                     && p.Profileid == _session.UserData.ProfileID
                     && p.Nick == p.Nick).First();
 
-                var user = db.Users.Where(
+                Users user = db.Users.Where(
                     u => u.Userid == _session.UserData.UserID).First();
 
-                var subprofile = db.Subprofiles.Where(
+                Subprofiles subprofile = db.Subprofiles.Where(
                     s => s.Profileid == _session.UserData.ProfileID
                     && s.Namespaceid == _session.UserData.NamespaceID
                     && s.Uniquenick == _session.UserData.UniqueNick).First();
 
-                if (_recv.ContainsKey("publicmask"))
+                if (_request.HasPublicMaskFlag)
                 {
-                    PublicMasks mask;
-                    if (Enum.TryParse(_recv["publicmask"], out mask))
-                    {
-                        profile.Publicmask = (int)mask;
-                    }
+                    profile.Publicmask = (int)_request.PublicMask;
+                }
+                if (_request.HasFirstNameFlag)
+                {
+                    profile.Firstname = _request.FirstName;
+                }
+                if (_request.HasLastNameFlag)
+                {
+                    profile.Lastname = _request.LastName;
+                }
+                if (_request.HasICQFlag)
+                {
+                    profile.Icquin = _request.ICQUIN;
+                }
+                if (_request.HasHomePageFlag)
+                {
+                    profile.Homepage = _request.HomePage;
+                }
+                if (_request.HasBirthdayFlag)
+                {
+                    profile.Birthday = _request.BirthDay;
+                    profile.Birthmonth = _request.BirthMonth;
+                    profile.Birthyear = _request.BirthYear;
+                }
+                if (_request.HasSexFlag)
+                {
+                    profile.Sex = _request.Sex;
                 }
 
-                if (_recv.ContainsKey("firstname"))
+                if (_request.HasZipCode)
                 {
-                    profile.Firstname = _recv["firstname"];
+                    profile.Zipcode = _request.ZipCode;
+                }
+                if (_request.HasCountryCode)
+                {
+                    profile.Countrycode = _request.CountryCode;
                 }
 
-                if (_recv.ContainsKey("lastname"))
-                {
-                    profile.Lastname = _recv["lastname"];
-                }
-
-                if (_recv.ContainsKey("icquin"))
-                {
-                    uint icq;
-
-                    uint.TryParse(_recv["icquin"], out icq);
-                    profile.Icquin = icq;
-                }
-
-                if (_recv.ContainsKey("homepage"))
-                {
-                    profile.Homepage = _recv["homepage"];
-                }
-
-                if (_recv.ContainsKey("birthday"))
-                {
-                    int date;
-
-                    if (int.TryParse(_recv["birthday"], out date))
-                    {
-                        int d = (int)((date >> 24) & 0xFF);
-                        ushort m = (ushort)((date >> 16) & 0xFF);
-                        ushort y = (ushort)(date & 0xFFFF);
-
-                        if (GameSpyUtils.IsValidDate(d, m, y))
-                        {
-                            profile.Birthday = d;
-                            profile.Birthmonth = m;
-                            profile.Birthyear = y;
-                        }
-                    }
-
-                    if (_recv.ContainsKey("sex"))
-                    {
-                        byte sex;
-
-                        if (byte.TryParse(_recv["sex"], out sex))
-                        {
-                            profile.Sex = Convert.ToByte(_recv["sex"]);
-                        }
-                    }
-
-                    if (_recv.ContainsKey("zipcode"))
-                    {
-                        profile.Zipcode = _recv["zipcode"];
-                    }
-
-                    if (_recv.ContainsKey("countrycode"))
-                    {
-                        profile.Countrycode = _recv["countrycode"];
-                    }
-                    db.Update(profile);
-                }
+                db.Update(profile);
             }
         }
     }
 }
+

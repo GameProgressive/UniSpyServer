@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.Buddy.BuddyStatusInfo
+namespace PresenceConnectionManager.Handler.Buddy
 {
     public class BuddyStatusInfo : PCMCommandHandlerBase
     {

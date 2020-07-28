@@ -51,7 +51,6 @@
         <Compile Include="Handler\CommandHandler\Profile\RegisterNickHandler.cs" />
         <Compile Include="Handler\CommandHandler\Profile\UpdateProHandler.cs" />
         <Compile Include="Handler\CommandHandler\Profile\UpdateUIHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\AddBlockHandler.cs" />
         <Compile Include="Handler\CommandHandler\Buddy\AddBuddyHandler.cs" />
         <Compile Include="Handler\CommandHandler\Buddy\BuddyStatusInfo.cs" />
         <Compile Include="Handler\CommandHandler\Buddy\DelBuddyHandler.cs" />
@@ -59,6 +58,9 @@
         <Compile Include="Handler\CommandHandler\Buddy\SendBlockList.cs" />
         <Compile Include="Handler\CommandHandler\Buddy\SendBuddyList.cs" />
         <Compile Include="Handler\CommandHandler\Buddy\StatusHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Profile\AddBlockHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Profile\RemoveBlockHandler.cs" />
+        <Compile Include="Handler\CommandHandler\Profile\RegisterCDKeyHandler.cs" Condition=" '$(EnableDefaultCompileItems)' == 'true' " />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

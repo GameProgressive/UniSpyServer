@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Profile.RegisterNick
+namespace PresenceConnectionManager.Handler.Profile
 {
     public class RegisterNickHandler : PCMCommandHandlerBase
     {

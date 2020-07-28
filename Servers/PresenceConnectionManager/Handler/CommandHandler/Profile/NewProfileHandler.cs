@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Profile.NewProfile
+namespace PresenceConnectionManager.Handler.Profile
 {
     public class NewProfileHandler : PCMCommandHandlerBase
     {
@@ -57,6 +57,12 @@ namespace PresenceConnectionManager.Handler.Profile.NewProfile
                     db.Add(profiles);
                 }
             }
+        }
+
+        protected override void BuildNormalResponse()
+        {
+            base.BuildNormalResponse();
+            _sendingBuffer = $@"\npr\\profileid\{_session.UserData.ProfileID}\id\{_request.OperationID}\final\";
         }
     }
 }

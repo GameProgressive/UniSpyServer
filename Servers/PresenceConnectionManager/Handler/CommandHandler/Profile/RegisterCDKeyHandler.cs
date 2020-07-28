@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.General.RegisterCDKey
+namespace PresenceConnectionManager.Handler.Profile
 {
     public class RegisterCDKeyHandler : PCMCommandHandlerBase
     {

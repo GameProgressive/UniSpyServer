@@ -2,7 +2,7 @@
 using PresenceConnectionManager.Entity.Enumerator;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.Buddy.Status
+namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
 {
     public class StatusHandler : PCMCommandHandlerBase
     {

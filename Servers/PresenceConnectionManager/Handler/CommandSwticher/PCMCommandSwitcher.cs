@@ -1,33 +1,28 @@
-﻿using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
-using PresenceConnectionManager.Handler.Buddy.AddBlock;
-using PresenceConnectionManager.Handler.Buddy.AddBuddy;
-using PresenceConnectionManager.Handler.Buddy.DelBuddy;
-using PresenceConnectionManager.Handler.CommandHandler.Buddy.Status;
-using PresenceConnectionManager.Handler.General.Login.LoginMethod;
-using PresenceConnectionManager.Handler.Profile.GetProfile;
-using PresenceConnectionManager.Handler.Profile.NewProfile;
-using PresenceConnectionManager.Handler.Profile.RegisterNick;
-using PresenceConnectionManager.Handler.Profile.UpdatePro;
-using PresenceConnectionManager.Handler.Profile.UpdateUI;
-using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameSpyLib.Common.BaseClass;
+using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Logging;
+using GameSpyLib.MiscMethod;
+using PresenceConnectionManager.Handler.CommandHandler.General;
+using PresenceConnectionManager.Handler.General;
+using PresenceConnectionManager.Handler.Profile;
+using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
+using Serilog.Events;
 
 namespace PresenceConnectionManager.Handler
 {
     public class PCMCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(PCMSession session, string message)
+        public void Switch(ISession session, string message)
         {
             try
             {
-                message = session.RequstFormatConversion(message);
+                message = ((PCMSession)session.GetInstance()).RequstFormatConversion(message);
                 if (message[0] != '\\')
                 {
-                    GameSpyUtils.SendGPError(session, GPErrorCode.General, "An invalid request was sended.");
+                    LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
                     return;
                 }
                 string[] commands = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
@@ -46,26 +41,29 @@ namespace PresenceConnectionManager.Handler
 
                     switch (recv.Keys.First())
                     {
-                        //case "inviteto":
-                        //    InviteToHandler.InvitePlayer();
-                        //    break;
-
+                        #region General handler
                         case "login"://login to retrospy
                             new LoginHandler(session, recv).Handle();
                             break;
 
+                        case "logout"://logout from retrospy
+                            new LogoutHandler(session, recv).Handle();
+                            break;
+                        case "ka":
+                            new KeepAliveHandler(session, recv).Handle();
+                            break;
+                        #endregion
+
+                        #region Profile handler
                         case "getprofile"://get profile of a player
                             new GetProfileHandler(session, recv).Handle();
                             break;
-
-                        case "addbuddy"://Send a request which adds an user to our friend list
-                            new AddBuddyHandler(session, recv).Handle();
+                        case "registernick"://update user's uniquenick
+                            new RegisterNickHandler(session, recv).Handle();
                             break;
-
-                        case "delbuddy"://delete a user from our friend list
-                            new DelBuddyHandler(session, recv).Handle();
+                        case "newuser"://create an new user
+                            new NewUserHandler(session, recv).Handle();
                             break;
-
                         case "updateui"://update a user's email
                             new UpdateUIHandler(session, recv).Handle();
                             break;
@@ -73,36 +71,31 @@ namespace PresenceConnectionManager.Handler
                         case "updatepro"://update a user's profile
                             new UpdateProHandler(session, recv).Handle();
                             break;
-
-                        case "registernick"://update user's uniquenick
-                            new RegisterNickHandler(session, recv).Handle();
-                            break;
-
-                        case "logout"://logout from retrospy
-                            session.Disconnect();
-                            PCMServer.LoggedInSession.TryRemove(session.Id, out _);
-                            break;
-
-                        case "status"://update current logged in user's status info
-                            new StatusHandler(session, recv).Handle();
-                            break;
-
-                        case "newuser"://create an new user
-                            new NewUserHandler(session, recv).Handle();
-                            break;
-
-                        case "addblock"://add an user to our block list
-                            new AddBlockHandler(session, recv).Handle();
-                            break;
-
-                        case "ka":
-                            //KAHandler.SendKeepAlive(_session);
-                            break;
-
                         case "newprofile"://create an new profile
                             new NewProfileHandler(session, recv).Handle();
                             break;
+                        #endregion
 
+                        #region Buddy handler
+                        case "addbuddy"://Send a request which adds an user to our friend list
+                            new AddBuddyHandler(session, recv).Handle();
+                            break;
+                        case "delbuddy"://delete a user from our friend list
+                            new DelBuddyHandler(session, recv).Handle();
+                            break;
+                        case "status"://update current logged in user's status info
+                            new StatusHandler(session, recv).Handle();
+                            break;
+                        case "addblock"://add an user to our block list
+                            new AddBlockHandler(session, recv).Handle();
+                            break;
+                        case "removeblock":
+                            break;
+
+                        //case "inviteto":
+                        //    InviteToHandler.InvitePlayer();
+                        //    break;
+                        #endregion
                         default:
                             LogWriter.UnknownDataRecieved(message);
                             break;
@@ -111,7 +104,7 @@ namespace PresenceConnectionManager.Handler
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
         }
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Buddy.InviteTo
+namespace PresenceConnectionManager.Handler.Buddy
 {
     /// <summary>
     /// This function sets which games the local profile can be invited to.
