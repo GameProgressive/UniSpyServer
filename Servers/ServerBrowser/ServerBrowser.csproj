@@ -37,7 +37,6 @@
         <Folder Include="Handler\SystemHandler\KeyType\" />
         <Folder Include="Handler\SystemHandler\Filter\" />
         <Folder Include="Handler\SystemHandler\Error\" />
-        <Folder Include="Handler\CommandHandler\ServerList\UpdateOptionHandler\" />
         <Folder Include="Handler\CommandHandler\AdHoc\" />
         <Folder Include="Handler\CommandHandler\NatNeg\" />
         <Folder Include="Entity\BaseClass\" />

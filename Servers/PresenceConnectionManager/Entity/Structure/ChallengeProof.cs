@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.Structure
             // Auth token does not have partnerid append.
             if (data.PartnerID != (uint)PartnerID.Gamespy && data.LoginType != LoginType.AuthToken)
             {
-                tempUserData = string.Format("{0}@{1}", data.PartnerID, data.UserData);
+                tempUserData = $@"{data.PartnerID}@{data.UserData}";
             }
 
             // Generate our response string
@@ -34,7 +34,7 @@ namespace PresenceConnectionManager.Structure
 
             string hashString = responseString.ToString().GetMD5Hash();
 
-            return hashString;            
+            return hashString;
         }
     }
 }

@@ -78,9 +78,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
             }
 
 
-            ParseOtherData();
-
-            return GPErrorCode.NoError;
+            return ParseOtherData();
         }
 
         public uint GamePort { get; protected set; }
