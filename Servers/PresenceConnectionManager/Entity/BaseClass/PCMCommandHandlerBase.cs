@@ -5,7 +5,7 @@ using PresenceConnectionManager.Handler.Error;
 using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     /// <summary>
     /// Because all errors are sent by SendGPError()

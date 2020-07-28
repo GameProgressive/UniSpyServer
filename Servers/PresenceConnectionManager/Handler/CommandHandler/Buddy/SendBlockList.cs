@@ -3,10 +3,11 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
 {
     public class SendBlockList : PCMCommandHandlerBase
     {
+        List<Blocked> _blockedList;
         public SendBlockList(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
         }
@@ -22,26 +23,30 @@ namespace PresenceConnectionManager.Handler.Buddy
 
             using (var db = new retrospyContext())
             {
-                var buddies = db.Blocked.Where(
+                var result = db.Blocked.Where(
                     f => f.Profileid == _session.UserData.ProfileID
                 && f.Namespaceid == _session.UserData.NamespaceID);
-                //if (buddies.Count() == 0)
-                //{
-                //    _sendingBuffer = @"\blk\0\list\\final\";
-                //    return;
-                //}
-                _sendingBuffer = @"\blk\" + buddies.Count() + @"\list\";
-                foreach (var b in buddies)
-                {
-                    _sendingBuffer += b.Profileid;
 
-                    if (b != buddies.Last())
-                    {
-                        _sendingBuffer += @",";
-                    }
-                }
-                _sendingBuffer += @"\final\";
+                _blockedList = result.ToList();
+
             }
+        }
+
+
+        protected override void BuildNormalResponse()
+        {
+            _sendingBuffer = $@"\blk\{_blockedList.Count()}\list\";
+            foreach (var user in _blockedList)
+            {
+                _sendingBuffer += user.Profileid;
+
+                if (user != _blockedList.Last())
+                {
+                    _sendingBuffer += @",";
+                }
+            }
+            _sendingBuffer += @"\final\";
         }
     }
 }
+

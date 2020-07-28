@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler.Profile
 {
     public class AddBlockHandler : PCMCommandHandlerBase
     {

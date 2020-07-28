@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler.Profile
 {
     /// <summary>
     /// Update user information (email)

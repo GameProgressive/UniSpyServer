@@ -5,9 +5,9 @@ using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
+using PresenceConnectionManager.Handler.CommandHandler.Buddy;
 using PresenceConnectionManager.Handler.CommandHandler.General;
-using PresenceConnectionManager.Handler.General;
-using PresenceConnectionManager.Handler.Profile;
+using PresenceConnectionManager.Handler.CommandHandler.Profile;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using Serilog.Events;
 
@@ -74,6 +74,13 @@ namespace PresenceConnectionManager.Handler
                         case "newprofile"://create an new profile
                             new NewProfileHandler(session, recv).Handle();
                             break;
+                        case "addblock"://add an user to our block list
+                            new AddBlockHandler(session, recv).Handle();
+                            break;
+                        case "removeblock":
+                            new RemoveBlockHandler(session, recv).Handle();
+                            break;
+
                         #endregion
 
                         #region Buddy handler
@@ -85,11 +92,6 @@ namespace PresenceConnectionManager.Handler
                             break;
                         case "status"://update current logged in user's status info
                             new StatusHandler(session, recv).Handle();
-                            break;
-                        case "addblock"://add an user to our block list
-                            new AddBlockHandler(session, recv).Handle();
-                            break;
-                        case "removeblock":
                             break;
 
                         //case "inviteto":

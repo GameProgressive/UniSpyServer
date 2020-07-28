@@ -4,7 +4,7 @@ using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
-namespace PresenceConnectionManager.Handler.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
 {
     /// <summary>
     /// handles dell buddy request,remove friends from friends list

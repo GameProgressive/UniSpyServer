@@ -3,7 +3,7 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
 {
     /// <summary>
     /// Send friendlist, friends message, friends add request to player when logged in.
@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.Buddy
     public class SendBuddyList : PCMCommandHandlerBase
     {
 
-
+        private List<Friends> _friendList;
         public SendBuddyList(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
 
@@ -45,26 +45,28 @@ namespace PresenceConnectionManager.Handler.Buddy
 
             using (var db = new retrospyContext())
             {
-                var buddies = db.Friends.Where(
+                var result = db.Friends.Where(
                     f => f.Profileid == _session.UserData.ProfileID
                 && f.Namespaceid == _session.UserData.NamespaceID);
-                //if (buddies.Count() == 0)
-                //{
-                //    _sendingBuffer = @"\bdy\0\list\\final\";
-                //    return;
-                //}
-                _sendingBuffer = @"\bdy\" + buddies.Count() + @"\list\";
-                foreach (var b in buddies)
-                {
-                    _sendingBuffer += b.Profileid;
 
-                    if (b != buddies.Last())
-                    {
-                        _sendingBuffer += @",";
-                    }
-                }
-                _sendingBuffer += @"\final\";
+                _friendList = result.ToList();
             }
+        }
+
+
+        protected override void BuildNormalResponse()
+        {
+            _sendingBuffer = @$"\bdy\{_friendList.Count()}\list\";
+            foreach (var user in _friendList)
+            {
+                _sendingBuffer += user.Profileid;
+
+                if (user != _friendList.Last())
+                {
+                    _sendingBuffer += @",";
+                }
+            }
+            _sendingBuffer += @"\final\";
         }
     }
 }

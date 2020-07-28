@@ -4,7 +4,7 @@ using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler.Profile
 {
     public class UpdateProHandler : PCMCommandHandlerBase
     {

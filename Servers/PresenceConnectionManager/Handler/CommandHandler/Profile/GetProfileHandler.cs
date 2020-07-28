@@ -6,7 +6,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler.Profile
 {
     public class GetProfileDBResult
     {
@@ -145,4 +145,4 @@ namespace PresenceConnectionManager.Handler.Profile
         }
     }
 }
-}
+
