@@ -41,6 +41,7 @@
         <Folder Include="Entity\Structure\Request\Buddy\" />
         <Folder Include="Entity\Structure\Request\General\" />
         <Folder Include="Entity\Structure\Request\Profile\" />
+        <Folder Include="Handler\SystemHandler\Buddy\" />
     </ItemGroup>
     <ItemGroup>
         <Compile Remove="Handler\CommandHandler\General\Login\Misc\ChallangeVerify.cs" />
@@ -55,8 +56,6 @@
         <Compile Include="Handler\CommandHandler\Buddy\BuddyStatusInfo.cs" />
         <Compile Include="Handler\CommandHandler\Buddy\DelBuddyHandler.cs" />
         <Compile Include="Handler\CommandHandler\Buddy\InviteToHandler.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\SendBlockList.cs" />
-        <Compile Include="Handler\CommandHandler\Buddy\SendBuddyList.cs" />
         <Compile Include="Handler\CommandHandler\Buddy\StatusHandler.cs" />
         <Compile Include="Handler\CommandHandler\Profile\AddBlockHandler.cs" />
         <Compile Include="Handler\CommandHandler\Profile\RemoveBlockHandler.cs" />

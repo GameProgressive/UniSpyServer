@@ -67,12 +67,13 @@ namespace PresenceConnectionManager.Handler
                         case "updateui"://update a user's email
                             new UpdateUIHandler(session, recv).Handle();
                             break;
-
                         case "updatepro"://update a user's profile
                             new UpdateProHandler(session, recv).Handle();
                             break;
                         case "newprofile"://create an new profile
                             new NewProfileHandler(session, recv).Handle();
+                            break;
+                        case "delprofile"://delete profile
                             break;
                         case "addblock"://add an user to our block list
                             new AddBlockHandler(session, recv).Handle();

@@ -234,7 +234,7 @@ namespace PresenceConnectionManager.Handler.Error
         public static string BuildGPErrorMsg(GPErrorCode errorCode)
         {
             string errorMsg = GetErrorMsg(errorCode);
-            return $@"\error\\err\{ errorCode}\fatal\\errmsg\{errorMsg}";
+            return $@"\error\\err\{errorCode}\fatal\\errmsg\{errorMsg}\final\";
         }
     }
 }

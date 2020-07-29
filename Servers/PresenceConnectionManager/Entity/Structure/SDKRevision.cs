@@ -2,6 +2,7 @@
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Entity.Enumerator;
 using PresenceConnectionManager.Entity.Structure;
+using PresenceConnectionManager.Handler.SystemHandler;
 
 namespace PresenceConnectionManager.Entity.Structure
 {
@@ -37,6 +38,8 @@ namespace PresenceConnectionManager.Entity.Structure
             if ((_session.UserData.SDKRevision ^ SDKRevisionType.GPINewListRetrevalOnLogin) != 0)
             {
                 //send buddy list and block list
+                new BuddyListHandler(_session, null).Handle();
+                new BlockListHandler(_session, null).Handle();
             }
 
             if ((_session.UserData.SDKRevision ^ SDKRevisionType.GPIRemoteAuthIDSNotification) != 0)
