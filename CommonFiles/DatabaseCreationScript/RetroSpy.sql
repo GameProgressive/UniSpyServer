@@ -4693,7 +4693,7 @@ CREATE TABLE IF NOT EXISTS `statusinfo` (
   `gametype` varchar(33) DEFAULT '',
   `gamevariant` varchar(33) DEFAULT '',
   `gamemapname` varchar(33) DEFAULT '',
-  `quietmodefalgs` enum('NONE','MESSAGE','UTMS','LIST','ALL') NOT NULL DEFAULT 'NONE',
+  `quietmodeflags` enum('NONE','MESSAGE','UTMS','LIST','ALL') NOT NULL DEFAULT 'NONE',
   PRIMARY KEY (`statusinfoid`),
   UNIQUE KEY `id` (`statusinfoid`),
   KEY `profileid` (`profileid`),

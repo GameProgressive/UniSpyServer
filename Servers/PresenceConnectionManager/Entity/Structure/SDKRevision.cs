@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Entity.Enumerator;
-using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler.SystemHandler;
 
 namespace PresenceConnectionManager.Entity.Structure

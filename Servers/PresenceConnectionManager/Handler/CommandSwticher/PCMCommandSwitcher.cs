@@ -94,6 +94,9 @@ namespace PresenceConnectionManager.Handler
                         case "status"://update current logged in user's status info
                             new StatusHandler(session, recv).Handle();
                             break;
+                        case "statusinfo":
+                            throw new NotImplementedException();
+                            break;
 
                         //case "inviteto":
                         //    InviteToHandler.InvitePlayer();
