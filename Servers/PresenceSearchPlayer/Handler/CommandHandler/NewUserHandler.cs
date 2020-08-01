@@ -68,7 +68,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             _users = db.Users.Where(u => u.Email == _request.Email && u.Password == _request.PassEnc).FirstOrDefault();
                             if (_users == null)
                             {
-                                _errorCode = GPErrorCode.NewUserBadPasswords;
+                                _errorCode = GPError.NewUserBadPasswords;
                                 break;
                             }
                             else
@@ -124,17 +124,17 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             break;
 
                         case _newUserStatus.SubProfileExist:
-                            _errorCode = GPErrorCode.NewUserUniquenickInUse;
+                            _errorCode = GPError.NewUserUniquenickInUse;
                             break;
                     }
                 }
                 catch (Exception)
                 {
-                    _errorCode = GPErrorCode.DatabaseError;
+                    _errorCode = GPError.DatabaseError;
                 }
 
                 //update other information
-                if (_errorCode != GPErrorCode.DatabaseError)
+                if (_errorCode != GPError.DatabaseError)
                 {
                     UpdateOtherInfo();
                 }
@@ -143,7 +143,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
         protected override void BuildErrorResponse()
         {
-            if (_errorCode >= GPErrorCode.NewUser && _errorCode <= GPErrorCode.NewUserUniquenickInvalid)
+            if (_errorCode >= GPError.NewUser && _errorCode <= GPError.NewUserUniquenickInvalid)
             {
                 _sendingBuffer = $@"\nur\{_errorCode}\final\";
             }

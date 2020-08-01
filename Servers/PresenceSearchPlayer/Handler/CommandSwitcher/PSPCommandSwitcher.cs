@@ -29,7 +29,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
             {
                 if (message[0] != '\\')
                 {
-                    GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "An invalid request was sended.");
+                    GameSpyUtils.SendGPError(session, GPError.Parse, "An invalid request was sended.");
                     return;
                 }
 

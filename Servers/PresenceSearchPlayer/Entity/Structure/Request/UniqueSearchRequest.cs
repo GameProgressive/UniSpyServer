@@ -14,28 +14,28 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
         public string GameName { get; private set; }
 
-        public override GPErrorCode Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("preferrednick"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             PreferredNick = _recv["preferrednick"];
 
             if (!_recv.ContainsKey("gamename"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
             GameName = _recv["gamename"];
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

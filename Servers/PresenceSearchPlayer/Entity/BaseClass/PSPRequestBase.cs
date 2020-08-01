@@ -15,14 +15,14 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
             _recv = recv;
         }
 
-        public virtual GPErrorCode Parse()
+        public virtual GPError Parse()
         {
             if (_recv.ContainsKey("id"))
             {
                 ushort operationID;
                 if (!ushort.TryParse(_recv["id"], out operationID))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 OperationID = operationID;
             }
@@ -32,13 +32,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
                 uint namespaceID;
                 if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
 
                 NamespaceID = namespaceID;
             }
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

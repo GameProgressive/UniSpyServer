@@ -16,21 +16,21 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Email { get; private set; }
         public string GameName { get; protected set; }
 
-        public override GPErrorCode Parse()
+        public override GPError  Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("email")&& !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
-              return GPErrorCode.Parse;
+              return GPError.Parse;
             }
 
             Email = _recv["email"];
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

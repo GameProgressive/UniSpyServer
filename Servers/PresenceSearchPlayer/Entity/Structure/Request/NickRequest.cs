@@ -16,17 +16,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string PassEnc { get; private set; }
         public string Email { get; private set; }
 
-        public override GPErrorCode Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("email"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             //First, we try to receive an encoded password
@@ -37,13 +37,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 if (!_recv.ContainsKey("pass"))
                 {
                     //No password is specified, we cannot continue                   
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
             }
             PassEnc = _recv["passenc"];
             Email = _recv["email"];
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
 
         }
     }

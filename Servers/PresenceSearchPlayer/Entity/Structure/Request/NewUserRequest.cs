@@ -28,27 +28,27 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public override GPErrorCode Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("nick"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             if (!_recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             if (!_recv.ContainsKey("passenc"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
             Nick = _recv["nick"];
             Email = _recv["email"];
@@ -62,7 +62,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             return ParseOtherInfo();
         }
 
-        private GPErrorCode ParseOtherInfo()
+        private GPError ParseOtherInfo()
         {
 
             //parse other info
@@ -71,7 +71,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint partnerid;
                 if (!uint.TryParse(_recv["partnerid"], out partnerid))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 PartnerID = partnerid;
             }
@@ -83,7 +83,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint productid;
                 if (uint.TryParse(_recv["productid"], out productid))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 ProductID = productid;
             }
@@ -99,7 +99,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint port;
                 if (!uint.TryParse(_recv["port"], out port))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 GamePort = port;
             }
@@ -109,7 +109,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 CDKeyEnc = _recv["cdkeyenc"];
             }
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

@@ -2,8 +2,6 @@
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
-using PresenceSearchPlayer.Enumerator;
-using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -20,7 +18,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     /// </summary>
     public class NickHandler : PSPCommandHandlerBase
     {
-        List<NickHandlerDataModel> nickDBResults;
+        List<NickHandlerDataModel> _result;
         protected NickRequest _request;
         public NickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
@@ -46,25 +44,20 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                                  && n.Namespaceid == _request.NamespaceID
                                  select new NickHandlerDataModel { Nick = p.Nick, Uniquenick = n.Uniquenick };
 
-                    if (result.Count() == 0)
-                    {
-                        _errorCode = GPErrorCode.CheckBadPassword;
-                    }
-
                     //we store data in strong type so we can use in next step
-                    nickDBResults = result.ToList();
+                    _result = result.ToList();
                 }
             }
             catch
             {
-                _errorCode = GPErrorCode.DatabaseError;
+                _errorCode = GPError.DatabaseError;
             }
         }
 
         protected override void BuildNormalResponse()
         {
             _sendingBuffer = @"\nr\";
-            foreach (var info in nickDBResults)
+            foreach (var info in _result)
             {
                 _sendingBuffer += @"\nick\";
                 _sendingBuffer += info.Nick;

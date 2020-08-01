@@ -13,22 +13,22 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public override GPErrorCode Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("opids") || !_recv.ContainsKey("namespaceid"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             ProfileIDs = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
 
         }
     }

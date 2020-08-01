@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -29,17 +27,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public override GPErrorCode Parse()
+        public override GPError  Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("profileid") && !_recv.ContainsKey("namespaceid") && !_recv.ContainsKey("gamename"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             GameName = _recv["gamename"];
@@ -47,7 +45,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             uint profileID;
             if (!uint.TryParse(_recv["profileid"], out profileID))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
             ProfileID = profileID;
 
@@ -56,7 +54,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint partnerID;
                 if (!uint.TryParse(_recv["partnerid"], out partnerID))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 PartnerID = partnerID;
             }
@@ -66,7 +64,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 int skip;
                 if (!int.TryParse(_recv["skip"], out skip))
                 {
-                   return GPErrorCode.Parse;
+                   return GPError.Parse;
                 }
                 SkipNumber = skip;
             }
@@ -89,10 +87,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             else
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

@@ -18,28 +18,28 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string PassEnc { get; private set; }
         public string Email { get; private set; }
 
-        public override GPErrorCode Parse()
+        public override GPError  Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
                 return flag;
 
             if (!_recv.ContainsKey("nick") || !_recv.ContainsKey("email") || !_recv.ContainsKey("passenc"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
 
             if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
-                return GPErrorCode.CheckBadMail;
+                return GPError.CheckBadMail;
             }
 
             Nick = _recv["nick"];
             PassEnc = _recv["passenc"];
             Email = _recv["email"];
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }
