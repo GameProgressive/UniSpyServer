@@ -26,7 +26,7 @@ namespace NatNegotiation.Application
             }
 
 
-            Console.WriteLine("Press < Q > to exit... ");
+            Console.WriteLine("Press < Q > to exit. ");
             while (Console.ReadKey().Key != ConsoleKey.Q) { }
         }
     }
