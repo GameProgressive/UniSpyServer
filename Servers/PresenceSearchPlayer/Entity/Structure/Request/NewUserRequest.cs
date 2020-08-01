@@ -58,7 +58,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             {
                 Uniquenick = _recv["uniquenick"];
             }
-
             return ParseOtherInfo();
         }
 
@@ -73,6 +72,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 {
                     return GPError.Parse;
                 }
+                HasPartnerIDFlag = true;
                 PartnerID = partnerid;
             }
 
@@ -85,11 +85,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 {
                     return GPError.Parse;
                 }
+                HasProductIDFlag = true;
                 ProductID = productid;
             }
 
             if (_recv.ContainsKey("gamename"))
             {
+                HasGameNameFlag = true; 
                 GameName = _recv["gamename"];
             }
 
@@ -101,11 +103,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 {
                     return GPError.Parse;
                 }
+                HasGamePortFlag = true;
                 GamePort = port;
             }
 
             if (_recv.ContainsKey("cdkeyenc"))
             {
+                HasCDKeyEncFlag = true;
                 CDKeyEnc = _recv["cdkeyenc"];
             }
 

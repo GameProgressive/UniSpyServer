@@ -7,7 +7,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
     {
         protected Dictionary<string, string> _recv;
 
-        public uint NamespaceID { get; protected set; }
         public ushort OperationID { get; protected set; }
 
         public PSPRequestBase(Dictionary<string, string> recv)
@@ -25,17 +24,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
                     return GPError.Parse;
                 }
                 OperationID = operationID;
-            }
-
-            if (_recv.ContainsKey("namespaceid"))
-            {
-                uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
-                {
-                    return GPError.Parse;
-                }
-
-                NamespaceID = namespaceID;
             }
 
             return GPError.NoError;

@@ -60,7 +60,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         case _newUserStatus.AccountNotExist:
                             _users = new Users { Email = _request.Email, Password = _request.PassEnc };
                             db.Users.Add(_users);
-                            db.SaveChanges();
                             goto case _newUserStatus.CheckProfile;
 
                         case _newUserStatus.AccountExist:
@@ -90,7 +89,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         case _newUserStatus.ProfileNotExist:
                             _profiles = new Profiles { Userid = _users.Userid, Nick = _request.Nick };
                             db.Profiles.Add(_profiles);
-                            db.SaveChanges();
                             goto case _newUserStatus.CheckSubProfile;
 
                         case _newUserStatus.ProfileExist:
@@ -120,13 +118,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             };
 
                             db.Subprofiles.Add(_subProfiles);
-                            db.SaveChanges();
                             break;
 
                         case _newUserStatus.SubProfileExist:
                             _errorCode = GPError.NewUserUniquenickInUse;
                             break;
                     }
+
+                    db.SaveChanges();
                 }
                 catch (Exception)
                 {
@@ -160,13 +159,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
              == RetroSpyServerName.PresenceSearchPlayer)
             {
                 //PSP NewUser
-                _sendingBuffer = $@"\nur\0\pid\{_subProfiles.Profileid}\final\";
+                _sendingBuffer = $@"\nur\\pid\{_subProfiles.Profileid}\final\";
             }
             else if (ServerManagerBase.ServerName
                 == RetroSpyServerName.PresenceConnectionManager)
             {
                 //PCM NewUser
-                _sendingBuffer = $@"\nur\0\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\final\";
+                _sendingBuffer =
+                    $@"\nur\\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\id\{_request.OperationID}\final\";
             }
         }
 
