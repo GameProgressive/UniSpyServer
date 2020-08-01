@@ -81,7 +81,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             if (_recv.ContainsKey("productid"))
             {
                 uint productid;
-                if (uint.TryParse(_recv["productid"], out productid))
+                if (!uint.TryParse(_recv["productid"], out productid))
                 {
                     return GPError.Parse;
                 }
