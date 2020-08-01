@@ -19,10 +19,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         public string OldNick { get; protected set; }
         public string NewNick { get; protected set; }
         public bool IsReplaceNickName { get; protected set; }
-        public override GPErrorCode Parse()
+        public override GPError  Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
@@ -31,7 +31,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             {
                 if (!_recv.ContainsKey("oldnick") && !_recv.ContainsKey("nick"))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
 
                 OldNick = _recv["oldnick"];
@@ -42,13 +42,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             {
                 if (!_recv.ContainsKey("nick"))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 NewNick = _recv["nick"];
                 IsReplaceNickName = false;
             }
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

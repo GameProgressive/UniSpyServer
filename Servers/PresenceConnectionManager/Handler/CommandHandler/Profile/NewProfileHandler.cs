@@ -33,7 +33,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Profile
 
                     if (result.Count() != 1)
                     {
-                        _errorCode = GPErrorCode.DatabaseError;
+                        _errorCode = GPError.DatabaseError;
                     }
                     else
                     {

@@ -14,14 +14,14 @@ namespace PresenceConnectionManager.Entity.BaseClass
             _recv = recv;
         }
 
-        public virtual GPErrorCode Parse()
+        public virtual GPError  Parse()
         {
             if (_recv.ContainsKey("id"))
             {
                 uint operationID;
                 if (!uint.TryParse(_recv["id"], out operationID))
                 {
-                   return GPErrorCode.Parse;
+                   return GPError.Parse;
                 }
                 OperationID = operationID;
             }
@@ -36,7 +36,7 @@ namespace PresenceConnectionManager.Entity.BaseClass
             //    NamespaceID = namespaceID;
             //}
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

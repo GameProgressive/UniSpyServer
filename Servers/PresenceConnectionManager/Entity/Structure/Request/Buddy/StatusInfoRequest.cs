@@ -24,10 +24,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         {
         }
 
-        public override GPErrorCode Parse()
+        public override GPError  Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
@@ -42,7 +42,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
                 || !_recv.ContainsKey("gameVariant")
                 || !_recv.ContainsKey("gameMapName"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             StatusState = _recv["state"];
@@ -52,20 +52,20 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
             uint qport;
             if (!uint.TryParse(_recv["qport"], out qport))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
             QueryReportPort = qport;
             uint hport;
             if (uint.TryParse(_recv["hport"], out hport))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
             HostPort = hport;
 
             uint sessflags;
             if (!uint.TryParse(_recv["sessflags"], out sessflags))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
             SessionFlags = sessflags;
 
@@ -74,7 +74,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
             GameVariant = _recv["gameVariant"];
             GameMapName = _recv["gameMapName"];
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

@@ -13,29 +13,29 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         {
         }
 
-        public override GPErrorCode Parse()
+        public override GPError  Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("sesskey") || !_recv.ContainsKey("newprofileid") || !_recv.ContainsKey("reason"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             uint friendPID;
             if (!uint.TryParse(_recv["newprofileid"], out friendPID))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             FriendProfileID = friendPID;
             AddReason = _recv["reason"];
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

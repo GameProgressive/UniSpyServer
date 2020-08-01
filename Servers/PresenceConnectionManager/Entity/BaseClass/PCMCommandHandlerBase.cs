@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
-using PresenceConnectionManager.Handler.Error;
 using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler
@@ -13,12 +13,12 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     /// </summary>
     public abstract class PCMCommandHandlerBase : CommandHandlerBase
     {
-        protected GPErrorCode _errorCode;
+        protected GPError  _errorCode;
         protected string _sendingBuffer;
         new protected PCMSession _session;
         public PCMCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
         {
-            _errorCode = GPErrorCode.NoError;
+            _errorCode = GPError.NoError;
             _session = (PCMSession)session.GetInstance();
         }
 
@@ -28,7 +28,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 
             CheckRequest();
 
-            if (_errorCode != GPErrorCode.NoError)
+            if (_errorCode != GPError.NoError)
             {
                 ConstructResponse();
                 Response();
@@ -37,7 +37,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 
             DataOperation();
 
-            if (_errorCode != GPErrorCode.NoError)
+            if (_errorCode != GPError.NoError)
             {
                 ConstructResponse();
                 Response();
@@ -58,7 +58,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
         /// </summary>
         protected virtual void ConstructResponse()
         {
-            if (_errorCode != GPErrorCode.NoError)
+            if (_errorCode != GPError.NoError)
             {
                 BuildErrorResponse();
             }

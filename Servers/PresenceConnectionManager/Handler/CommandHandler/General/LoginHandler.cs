@@ -81,20 +81,20 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
             }
 
             //check if errorcode equals database error we stop.
-            if (_errorCode == GPErrorCode.DatabaseError)
+            if (_errorCode == GPError.DatabaseError)
             {
                 return;
             }
 
             if (!IsChallengeCorrect())
             {
-                _errorCode = GPErrorCode.LoginBadPassword;
+                _errorCode = GPError.LoginBadPassword;
                 return;
             }
 
             if (!_result.EmailVerifiedFlag)
             {
-                _errorCode = GPErrorCode.LoginBadEmail;
+                _errorCode = GPError.LoginBadEmail;
                 return;
             }
 
@@ -102,7 +102,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
             // If the single profile is banned, the account or the player status.
             if (_result.BannedFlag)
             {
-                _errorCode = GPErrorCode.LoginProfileDeleted;
+                _errorCode = GPError.LoginProfileDeleted;
                 return;
             }
         }
@@ -167,7 +167,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
 
                 if (email.Count() == 0)
                 {
-                    _errorCode = GPErrorCode.LoginBadEmail;
+                    _errorCode = GPError.LoginBadEmail;
                     return;
                 }
 
@@ -193,11 +193,15 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
 
                 if (info.Count() != 1)
                 {
-                    _errorCode = GPErrorCode.DatabaseError;
+                    _errorCode = GPError.DatabaseError;
                     return;
 
                 }
-
+                if (info.Count() != 1)
+                {
+                    _errorCode = GPError.LoginBadProfile;
+                    return;
+                }
                 _result = info.First();
             }
         }
@@ -227,7 +231,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
 
                 if (info.Count() != 1)
                 {
-                    _errorCode = GPErrorCode.LoginBadUniquenick;
+                    _errorCode = GPError.LoginBadUniquenick;
                     return;
                 }
                 _result = info.First();
@@ -259,7 +263,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
 
                 if (info.Count() != 1)
                 {
-                    _errorCode = GPErrorCode.DatabaseError;
+                    _errorCode = GPError.LoginBadPreAuth;
                     return;
                 }
                 _result = info.First();

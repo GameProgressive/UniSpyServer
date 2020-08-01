@@ -82,7 +82,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
                 }
                 else
                 {
-                    _errorCode = GPErrorCode.DatabaseError;
+                    _errorCode = GPError.DatabaseError;
                 }
 
             }

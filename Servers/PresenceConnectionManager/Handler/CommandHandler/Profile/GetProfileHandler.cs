@@ -99,7 +99,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Profile
 
                 if (result.Count() == 0)
                 {
-                    _errorCode = GPErrorCode.DatabaseError;
+                    _errorCode = GPError.DatabaseError;
                     return;
                 }
 

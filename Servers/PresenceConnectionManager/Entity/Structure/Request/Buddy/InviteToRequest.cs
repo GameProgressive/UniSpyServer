@@ -13,27 +13,27 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         {
         }
 
-        public override GPErrorCode Parse()
+        public override GPError  Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
             if (!_recv.ContainsKey("productid") || !_recv.ContainsKey("sesskey"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             if (!_recv.ContainsKey("sesskey"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             uint productID;
             if (!uint.TryParse(_recv["productid"], out productID))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
            ProductID= productID;
@@ -41,11 +41,11 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
             uint profileID;
             if (!uint.TryParse(_recv["profileid"], out profileID))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
             ProfileID = profileID;
 
-            return GPErrorCode.NoError;        
+            return GPError.NoError;        
         }
     }
 }

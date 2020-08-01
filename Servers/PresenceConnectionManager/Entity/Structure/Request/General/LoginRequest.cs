@@ -24,17 +24,17 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
         {
         }
 
-        public override GPErrorCode Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("challenge") || !_recv.ContainsKey("response"))
             {
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
             UserChallenge = _recv["challenge"];
@@ -45,7 +45,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 uint namespaceID;
                 if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 LoginType = LoginType.UniquenickNamespaceID;
                 Uniquenick = _recv["uniquenick"];
@@ -66,7 +66,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 int Pos = UserData.IndexOf('@');
                 if (Pos == -1 || Pos < 1 || (Pos + 1) >= UserData.Length)
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 Nick = UserData.Substring(0, Pos);
                 Email = UserData.Substring(Pos + 1);
@@ -74,7 +74,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
             else
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Unknown login method detected!");
-                return GPErrorCode.Parse;
+                return GPError.Parse;
             }
 
 
@@ -86,14 +86,14 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
         public string GameName { get; private set; }
         public QuietModeType QuietMode { get; private set; }
 
-        private GPErrorCode ParseOtherData()
+        private GPError ParseOtherData()
         {
             if (_recv.ContainsKey("partnerid"))
             {
                 uint partnerID;
                 if (!uint.TryParse(_recv["partnerid"], out partnerID))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 PartnerID = partnerID;
             }
@@ -104,7 +104,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 uint sdkRevisionType;
                 if (!uint.TryParse(_recv["sdkrevision"], out sdkRevisionType))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
 
                 SDKType = (SDKRevisionType)sdkRevisionType;
@@ -120,7 +120,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 uint gamePort;
                 if (!uint.TryParse(_recv["port"], out gamePort))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
                 GamePort = gamePort;
             }
@@ -130,13 +130,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 uint quiet;
                 if (!uint.TryParse(_recv["quiet"], out quiet))
                 {
-                    return GPErrorCode.Parse;
+                    return GPError.Parse;
                 }
 
                 QuietMode = (QuietModeType)quiet;
             }
 
-            return GPErrorCode.NoError;
+            return GPError.NoError;
         }
     }
 }

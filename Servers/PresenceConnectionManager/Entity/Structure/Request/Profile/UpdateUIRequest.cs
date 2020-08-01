@@ -11,10 +11,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         {
         }
 
-        public override GPErrorCode Parse()
+        public override GPError  Parse()
         {
             var flag = base.Parse();
-            if (flag != GPErrorCode.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
@@ -32,7 +32,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             //connectionspeed
             //hasnetwork
             //pic
-            return GPErrorCode.NoError;
+            return GPError.NoError;
 
         }
     }

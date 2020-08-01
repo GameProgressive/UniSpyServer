@@ -96,8 +96,6 @@ namespace PresenceConnectionManager.Handler
                             break;
                         case "statusinfo":
                             throw new NotImplementedException();
-                            break;
-
                         //case "inviteto":
                         //    InviteToHandler.InvitePlayer();
                         //    break;
