@@ -13,6 +13,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
+        public uint NamespaceID { get; protected set; }
         public string Email { get; private set; }
         public string GameName { get; protected set; }
 
@@ -30,6 +31,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
 
             Email = _recv["email"];
+
+            if (_recv.ContainsKey("namespaceid"))
+            {
+                uint namespaceID;
+                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                {
+                    return GPError.Parse;
+                }
+
+                NamespaceID = namespaceID;
+            }
             return GPError.NoError;
         }
     }

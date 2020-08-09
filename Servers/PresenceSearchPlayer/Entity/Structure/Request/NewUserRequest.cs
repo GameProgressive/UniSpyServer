@@ -23,7 +23,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Uniquenick { get; private set; }
         public uint PartnerID { get; private set; }
         public string GameName { get; private set; }
-
+        public uint NamespaceID { get; protected set; }
         public NewUserRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
@@ -54,8 +54,18 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             Email = _recv["email"];
             PassEnc = _recv["passenc"];
 
-            if (_recv.ContainsKey("uniquenick"))
+            if (_recv.ContainsKey("uniquenick")&&_recv.ContainsKey("namespaceid"))
             {
+                if (_recv.ContainsKey("namespaceid"))
+                {
+                    uint namespaceID;
+                    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                    {
+                        return GPError.Parse;
+                    }
+
+                    NamespaceID = namespaceID;
+                }
                 Uniquenick = _recv["uniquenick"];
             }
             return ParseOtherInfo();

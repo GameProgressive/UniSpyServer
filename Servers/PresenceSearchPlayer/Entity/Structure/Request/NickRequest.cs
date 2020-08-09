@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Password { get; private set; }
         public string PassEnc { get; private set; }
         public string Email { get; private set; }
-
+        public uint NamespaceID { get; protected set; }
         public override GPError Parse()
         {
             var flag = base.Parse();
@@ -43,7 +43,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             PassEnc = _recv["passenc"];
             Email = _recv["email"];
 
-            return GPError.NoError;
+            if (_recv.ContainsKey("namespaceid"))
+            {
+                uint namespaceID;
+                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                {
+                    return GPError.Parse;
+                }
+                NamespaceID = namespaceID;
+            }
+
+                return GPError.NoError;
 
         }
     }

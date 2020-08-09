@@ -33,7 +33,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                     return;
                 }
 
-                string[] commands = message.Split("\\final\\", System.StringSplitOptions.RemoveEmptyEntries);
+                string[] commands = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string command in commands)
                 {

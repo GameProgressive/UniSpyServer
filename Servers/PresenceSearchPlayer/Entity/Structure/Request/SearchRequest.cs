@@ -22,12 +22,12 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Email { get; private set; }
         public string Nick { get; private set; }
         public string Uniquenick { get; private set; }
-
+        public uint NamespaceID { get; protected set; }
         public SearchRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
             if (flag != GPError.NoError)
@@ -64,33 +64,43 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 int skip;
                 if (!int.TryParse(_recv["skip"], out skip))
                 {
-                   return GPError.Parse;
+                    return GPError.Parse;
                 }
                 SkipNumber = skip;
             }
 
             if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
             {
-                RequestType = SearchRequestType.UniquenickNamespaceIDSearch;
-                Uniquenick = _recv["uniquenick"];
-            }
-            else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
-            {
-                RequestType = SearchRequestType.NickEmailSearch;
-                Nick = _recv["nick"];
-                Email = _recv["email"];
-            }
-            else if (_recv.ContainsKey("nick"))
-            {
-                RequestType = SearchRequestType.NickSearch;
-                Nick = _recv["nick"];
-            }
-            else
-            {
-                return GPError.Parse;
-            }
+                if (_recv.ContainsKey("namespaceid"))
+                {
+                    uint namespaceID;
+                    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                    {
+                        return GPError.Parse;
+                    }
+                    NamespaceID = namespaceID;
+                }
+                    RequestType = SearchRequestType.UniquenickNamespaceIDSearch;
 
-            return GPError.NoError;
+                    Uniquenick = _recv["uniquenick"];
+                }
+                else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
+                {
+                    RequestType = SearchRequestType.NickEmailSearch;
+                    Nick = _recv["nick"];
+                    Email = _recv["email"];
+                }
+                else if (_recv.ContainsKey("nick"))
+                {
+                    RequestType = SearchRequestType.NickSearch;
+                    Nick = _recv["nick"];
+                }
+                else
+                {
+                    return GPError.Parse;
+                }
+
+                return GPError.NoError;
+            }
         }
     }
-}

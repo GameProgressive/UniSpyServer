@@ -12,7 +12,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
         public uint ProfileID { get; private set; }
         public string GameName { get; private set; }
-
+        public uint NamespaceID { get; protected set; }
         public override GPError  Parse()
         {
             var flag = base.Parse();
@@ -36,6 +36,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             {
                 return GPError.Parse;
 
+            }
+
+            if (_recv.ContainsKey("namespaceid"))
+            {
+                uint namespaceID;
+                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                {
+                    return GPError.Parse;
+                }
+
+                NamespaceID = namespaceID;
             }
 
             ProfileID = profileID;

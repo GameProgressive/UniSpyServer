@@ -8,7 +8,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     public class OthersListRequest : PSPRequestBase
     {
         public List<uint> ProfileIDs { get; protected set; }
-
+        public uint NamespaceID { get; protected set; }
         public OthersListRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
@@ -28,7 +28,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             ProfileIDs = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
 
-            return GPError.NoError;
+            if (_recv.ContainsKey("namespaceid"))
+            {
+                uint namespaceID;
+                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                {
+                    return GPError.Parse;
+                }
+
+                NamespaceID = namespaceID;
+            }
+                return GPError.NoError;
 
         }
     }
