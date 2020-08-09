@@ -1,27 +1,79 @@
 {
-   // Use IntelliSense to find out which attributes exist for C# debugging
-   // Use hover for the description of the existing attributes
-   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-   "version": "0.2.0",
-   "configurations": [
+    // Use IntelliSense to find out which attributes exist for C# debugging
+    // Use hover for the description of the existing attributes
+    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+    "version": "0.2.0",
+    "configurations": [
+        
         {
-            "name": ".NET Core Launch (console)",
+            "name": "PresenceConnectionManager",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceRoot}/Debug/",
+            "program": "${workspaceRoot}/Debug/PresenceConnectionManager.dll",
             "args": [],
             "cwd": "${workspaceRoot}/Debug/",
-            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
-            "stopAtEntry": false
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
-        }
-    ]
-}
+            "stopAtEntry": false,
+            "console": "internalConsole"
+         },
+         {
+             "name": "PresenceSearchPlayer",
+             "type": "coreclr",
+             "request": "launch",
+             "preLaunchTask": "build",
+             // If you have changed target frameworks, make sure to update the program path.
+             "program": "${workspaceRoot}/Debug/PresenceSearchPlayer.dll",
+             "args": [],
+             "cwd": "${workspaceRoot}/Debug/",
+             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+             "console": "internalConsole",
+             "stopAtEntry": false
+         },
+         {
+             "name": "NatNeg",
+             "type": "coreclr",
+             "request": "launch",
+             "preLaunchTask": "build",
+             // If you have changed target frameworks, make sure to update the program path.
+             "program": "${workspaceRoot}/Debug/NatNegotiation.dll",
+             "args": [],
+             "cwd": "${workspaceRoot}/Debug/",
+             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+             "console": "internalConsole",
+             "stopAtEntry": false
+         },
+         {
+             "name": "CDKey",
+             "type": "coreclr",
+             "request": "launch",
+             "preLaunchTask": "build",
+             // If you have changed target frameworks, make sure to update the program path.
+             "program": "${workspaceRoot}/Debug/CDKey.dll",
+             "args": [],
+             "cwd": "${workspaceRoot}/Debug/",
+             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+             "console": "internalConsole",
+             "stopAtEntry": false
+         }        
+     ],
+     "compounds": [
+         {
+             "name": "GPServer",
+             "configurations": 
+             [
+                 "PresenceConnectionManager",
+                 "PresenceSearchPlayer"
+             ]
+         },
+         {
+             "name": "All Server",
+             "configurations": 
+             [
+                 "PresenceConnectionManager",
+                 "PresenceSearchPlayer",
+                 "NatNeg",
+                 "CDKey"
+             ]
+         }
+     ]    
+ }
