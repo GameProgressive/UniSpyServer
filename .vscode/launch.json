@@ -14,7 +14,7 @@
             "args": [],
             "cwd": "${workspaceRoot}/Debug/",
             "stopAtEntry": false,
-            "console": "internalConsole"
+            "console": "integratedTerminal"
          },
          {
              "name": "PresenceSearchPlayer",
@@ -26,7 +26,7 @@
              "args": [],
              "cwd": "${workspaceRoot}/Debug/",
              // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-             "console": "internalConsole",
+             "console": "integratedTerminal",
              "stopAtEntry": false
          },
          {
@@ -39,7 +39,7 @@
              "args": [],
              "cwd": "${workspaceRoot}/Debug/",
              // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-             "console": "internalConsole",
+             "console": "integratedTerminal",
              "stopAtEntry": false
          },
          {
@@ -52,7 +52,7 @@
              "args": [],
              "cwd": "${workspaceRoot}/Debug/",
              // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-             "console": "internalConsole",
+             "console": "integratedTerminal",
              "stopAtEntry": false
          }        
      ],
