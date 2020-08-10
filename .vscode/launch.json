@@ -4,7 +4,6 @@
     // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
     "version": "0.2.0",
     "configurations": [
-        
         {
             "name": "PresenceConnectionManager",
             "type": "coreclr",
@@ -15,65 +14,130 @@
             "cwd": "${workspaceRoot}/Debug/",
             "stopAtEntry": false,
             "console": "integratedTerminal"
-         },
-         {
-             "name": "PresenceSearchPlayer",
-             "type": "coreclr",
-             "request": "launch",
-             "preLaunchTask": "build",
-             // If you have changed target frameworks, make sure to update the program path.
-             "program": "${workspaceRoot}/Debug/PresenceSearchPlayer.dll",
-             "args": [],
-             "cwd": "${workspaceRoot}/Debug/",
-             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-             "console": "integratedTerminal",
-             "stopAtEntry": false
-         },
-         {
-             "name": "NatNeg",
-             "type": "coreclr",
-             "request": "launch",
-             "preLaunchTask": "build",
-             // If you have changed target frameworks, make sure to update the program path.
-             "program": "${workspaceRoot}/Debug/NatNegotiation.dll",
-             "args": [],
-             "cwd": "${workspaceRoot}/Debug/",
-             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-             "console": "integratedTerminal",
-             "stopAtEntry": false
-         },
-         {
-             "name": "CDKey",
-             "type": "coreclr",
-             "request": "launch",
-             "preLaunchTask": "build",
-             // If you have changed target frameworks, make sure to update the program path.
-             "program": "${workspaceRoot}/Debug/CDKey.dll",
-             "args": [],
-             "cwd": "${workspaceRoot}/Debug/",
-             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-             "console": "integratedTerminal",
-             "stopAtEntry": false
-         }        
-     ],
-     "compounds": [
-         {
-             "name": "GPServer",
-             "configurations": 
-             [
-                 "PresenceConnectionManager",
-                 "PresenceSearchPlayer"
-             ]
-         },
-         {
-             "name": "All Server",
-             "configurations": 
-             [
-                 "PresenceConnectionManager",
-                 "PresenceSearchPlayer",
-                 "NatNeg",
-                 "CDKey"
-             ]
-         }
-     ]    
- }
+        },
+        {
+            "name": "PresenceSearchPlayer",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Debug/PresenceSearchPlayer.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/Debug/",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "NatNeg",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Debug/NatNegotiation.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/Debug/",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "CDKey",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Debug/CDKey.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/Debug/",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Chat",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Debug/Chat.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/Debug/",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "QueryReport",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Debug/QueryReport.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/Debug/",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "ServerBrowser",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Debug/ServerBrowser.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/Debug/",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "Stats",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Debug/StatsAndTracking.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/Debug/",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
+            "name": "WebServices",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceRoot}/Debug/WebServices.dll",
+            "args": [],
+            "cwd": "${workspaceRoot}/Debug/",
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        }
+    ],
+    "compounds": [
+        {
+            "name": "GP Servers",
+            "configurations": [
+                "PresenceConnectionManager",
+                "PresenceSearchPlayer"
+            ]
+        },
+        {
+            "name": "All Server",
+            "configurations": [
+                "PresenceConnectionManager",
+                "PresenceSearchPlayer",
+                "NatNeg",
+                "CDKey",
+                "Chat",
+                "QueryReport",
+                "ServerBrowser",
+                "WebServices"
+            ]
+        },
+        {
+            "name": "QR and SB",
+            "configurations": [
+                "QueryReport",
+                "ServerBrowser"
+            ]
+        },
+        {
+            "name": "Sake server",
+            "configurations": [
+                "WebServices",
+                "PresenceConnectionManager"
+            ]
+        }
+    ]
+}
