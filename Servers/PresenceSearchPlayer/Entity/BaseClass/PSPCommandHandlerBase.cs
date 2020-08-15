@@ -81,6 +81,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         {
             _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
         }
+
         protected virtual void BuildNormalResponse()
         { }
     }
