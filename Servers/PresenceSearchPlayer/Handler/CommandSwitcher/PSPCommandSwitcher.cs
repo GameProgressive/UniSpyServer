@@ -33,18 +33,18 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                     return;
                 }
 
-                string[] commands = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
+                string[] requests = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
 
-                foreach (string command in commands)
+                foreach (string request in requests)
                 {
-                    if (command.Length < 1)
+                    if (request.Length < 1)
                     {
                         continue;
                     }
 
                     // Read client message, and parse it into key value pairs
-                    string[] recieved = command.TrimStart('\\').Split('\\');
-                    Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
+                    Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(request);
+
                     switch (recv.Keys.First())
                     {
                         case "search":

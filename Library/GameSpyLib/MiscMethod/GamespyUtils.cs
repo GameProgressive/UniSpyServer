@@ -100,6 +100,11 @@ namespace GameSpyLib.MiscMethod
             return a;
         }
 
+        public static Dictionary<string, string> ConvertRequestToKeyValue(string request)
+        {
+            string[] commandParts = request.TrimStart('\\').Split('\\');
+            return ConvertRequestToKeyValue(commandParts);
+        }
 
         /// </summary>
         /// Converts a trimmed presence message from the client string to a keyValue pair dictionary

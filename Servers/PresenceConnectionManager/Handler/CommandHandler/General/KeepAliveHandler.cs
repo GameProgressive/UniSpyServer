@@ -9,6 +9,13 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
         {
         }
 
+        protected override void DataOperation()
+        {
+            base.DataOperation();
+            //we need to keep player cache online
+            //so their friends can find him
+        }
+
         protected override void ConstructResponse()
         {
             _sendingBuffer = @"\ka\\final\";
