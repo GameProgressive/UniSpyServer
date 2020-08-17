@@ -81,7 +81,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
             }
 
             //check if errorcode equals database error we stop.
-            if (_errorCode == GPError.DatabaseError)
+            if (_errorCode != GPError.NoError)
             {
                 return;
             }
@@ -110,18 +110,22 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
         protected override void Response()
         {
             base.Response();
-            _session.UserData.UserStatus = GPStatus.Online;
-            _session.UserData.UserID = _result.UserID;
-            _session.UserData.ProfileID = _result.ProfileID;
-            _session.UserData.SubProfileID = _result.SubProfileID;
-            //_session.UserData.ProductID =
-            _session.UserData.GameName = _request.GameName;
-            _session.UserData.GamePort = _request.GamePort;
-            _session.UserData.LoginStatus = LoginStatus.Completed;
-            _session.UserData.SDKRevision = _request.SDKType;
 
-            PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
-            SDKRevision.ExtendedFunction(_session);
+            if (_result != null)
+            {
+                _session.UserData.UserStatus = GPStatus.Online;
+                _session.UserData.UserID = _result.UserID;
+                _session.UserData.ProfileID = _result.ProfileID;
+                _session.UserData.SubProfileID = _result.SubProfileID;
+                //_session.UserData.ProductID =
+                _session.UserData.GameName = _request.GameName;
+                _session.UserData.GamePort = _request.GamePort;
+                _session.UserData.LoginStatus = LoginStatus.Completed;
+                _session.UserData.SDKRevision = _request.SDKType;
+
+                PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
+                SDKRevision.ExtendedFunction(_session);
+            }
         }
 
         protected override void BuildNormalResponse()
