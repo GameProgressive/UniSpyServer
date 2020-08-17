@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 {
     public class NewUserHandler : PSPCommandHandlerBase
     {
-        private Users _users;
+        private Users _user;
         private Profiles _profiles;
         private Subprofiles _subProfiles;
         protected NewUserRequest _request;
@@ -47,8 +47,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                     switch (_newUserStatus.CheckAccount)
                     {
                         case _newUserStatus.CheckAccount:
-                            int count = db.Users.Where(u => u.Email == _request.Email).Select(u => u).Count();
-                            if (count == 0)
+                            _user = db.Users.Where(u => u.Email == _request.Email).Select(u => u).FirstOrDefault();
+                            if (_user == null)
                             {
                                 goto case _newUserStatus.AccountNotExist;
                             }
@@ -58,14 +58,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.AccountNotExist:
-                            _users = new Users { Email = _request.Email, Password = _request.PassEnc };
-                            db.Users.Add(_users);
+                            _user = new Users { Email = _request.Email, Password = _request.PassEnc };
+                            db.Users.Add(_user);
                             goto case _newUserStatus.CheckProfile;
 
                         case _newUserStatus.AccountExist:
-                            //we have to check password correctness
-                            _users = db.Users.Where(u => u.Email == _request.Email && u.Password == _request.PassEnc).FirstOrDefault();
-                            if (_users == null)
+
+                            if (_user.Password != _request.PassEnc)
                             {
                                 _errorCode = GPError.NewUserBadPasswords;
                                 break;
@@ -76,7 +75,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.CheckProfile:
-                            _profiles = db.Profiles.Where(p => p.Userid == _users.Userid && p.Nick == _request.Nick).FirstOrDefault();
+                            _profiles = db.Profiles.Where(p => p.Userid == _user.Userid && p.Nick == _request.Nick).FirstOrDefault();
                             if (_profiles == null)
                             {
                                 goto case _newUserStatus.ProfileNotExist;
@@ -87,7 +86,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                             }
 
                         case _newUserStatus.ProfileNotExist:
-                            _profiles = new Profiles { Userid = _users.Userid, Nick = _request.Nick };
+                            _profiles = new Profiles { Userid = _user.Userid, Nick = _request.Nick };
                             db.Profiles.Add(_profiles);
                             goto case _newUserStatus.CheckSubProfile;
 
@@ -166,7 +165,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             {
                 //PCM NewUser
                 _sendingBuffer =
-                    $@"\nur\\userid\{_users.Userid}\profileid\{_subProfiles.Profileid}\id\{_request.OperationID}\final\";
+                    $@"\nur\\userid\{_user.Userid}\profileid\{_subProfiles.Profileid}\id\{_request.OperationID}\final\";
             }
         }
 

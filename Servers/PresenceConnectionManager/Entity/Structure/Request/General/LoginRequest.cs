@@ -40,7 +40,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
             UserChallenge = _recv["challenge"];
             Response = _recv["response"];
 
-            if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespace"))
+            if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
                 if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
