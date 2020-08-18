@@ -20,6 +20,7 @@ namespace PresenceConnectionManager.Handler
         {
             try
             {
+                //message = @"\login\\challenge\VPUKQ5CiXSqtt0EdOKMwwRvf3CHqxrah\user\borger@mike@vale.ski\partnerid\0\response\4ec2535ddba4773168337c7b5f9588e7\firewall\1\port\0\productid\10936\gamename\greconawf2\namespaceid\0\sdkrevision\3\id\1\final\";
                 message = PCMRequestBase.RequstFormatConversion(message);
                 if (message[0] != '\\')
                 {

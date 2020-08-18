@@ -202,7 +202,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                     case _newUserStatus.CheckSubProfile:
                         var subProfiles = db.Subprofiles
                             .Where(s => s.Profileid == _profile.Profileid
-                            && s.Uniquenick == _request.Uniquenick
                             && s.Namespaceid == _request.NamespaceID);
                         if (subProfiles.Count() == 0)
                         {
