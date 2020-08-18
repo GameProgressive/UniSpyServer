@@ -32,7 +32,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                     GameSpyUtils.SendGPError(session, GPError.Parse, "An invalid request was sended.");
                     return;
                 }
-
+                message = @"\newuser\\email\mike@vale.ski\nick\borger\passwordenc\d5CXwxno\productid\10936\gamename\greconawf2\namespaceid\0\uniquenick\\partnerid\0\id\1\final\";
                 string[] requests = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string request in requests)

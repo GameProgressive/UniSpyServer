@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using GameSpyLib.Logging;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System;
@@ -12,8 +13,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
     public class NewUserHandler : PSPCommandHandlerBase
     {
         private Users _user;
-        private Profiles _profiles;
-        private Subprofiles _subProfiles;
+        private Profiles _profile;
+        private Subprofiles _subProfile;
         protected NewUserRequest _request;
         public NewUserHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
@@ -44,90 +45,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             {
                 try
                 {
-                    switch (_newUserStatus.CheckAccount)
-                    {
-                        case _newUserStatus.CheckAccount:
-                            _user = db.Users.Where(u => u.Email == _request.Email).Select(u => u).FirstOrDefault();
-                            if (_user == null)
-                            {
-                                goto case _newUserStatus.AccountNotExist;
-                            }
-                            else
-                            {
-                                goto case _newUserStatus.AccountExist;
-                            }
-
-                        case _newUserStatus.AccountNotExist:
-                            _user = new Users { Email = _request.Email, Password = _request.PassEnc };
-                            db.Users.Add(_user);
-                            goto case _newUserStatus.CheckProfile;
-
-                        case _newUserStatus.AccountExist:
-
-                            if (_user.Password != _request.PassEnc)
-                            {
-                                _errorCode = GPError.NewUserBadPasswords;
-                                break;
-                            }
-                            else
-                            {
-                                goto case _newUserStatus.CheckProfile;
-                            }
-
-                        case _newUserStatus.CheckProfile:
-                            _profiles = db.Profiles.Where(p => p.Userid == _user.Userid && p.Nick == _request.Nick).FirstOrDefault();
-                            if (_profiles == null)
-                            {
-                                goto case _newUserStatus.ProfileNotExist;
-                            }
-                            else
-                            {
-                                goto case _newUserStatus.ProfileExist;
-                            }
-
-                        case _newUserStatus.ProfileNotExist:
-                            _profiles = new Profiles { Userid = _user.Userid, Nick = _request.Nick };
-                            db.Profiles.Add(_profiles);
-                            goto case _newUserStatus.CheckSubProfile;
-
-                        case _newUserStatus.ProfileExist:
-                        //we do nothing here
-
-                        case _newUserStatus.CheckSubProfile:
-                            _subProfiles = db.Subprofiles
-                                .Where(s => s.Profileid == _profiles.Profileid
-                                && s.Uniquenick == _request.Uniquenick
-                                && s.Namespaceid == _request.NamespaceID).FirstOrDefault();
-                            if (_subProfiles == null)
-                            {
-                                goto case _newUserStatus.SubProfileNotExist;
-                            }
-                            else
-                            {
-                                goto case _newUserStatus.SubProfileExist;
-                            }
-
-                        case _newUserStatus.SubProfileNotExist:
-                            //we create subprofile and return
-                            _subProfiles = new Subprofiles
-                            {
-                                Profileid = _profiles.Profileid,
-                                Uniquenick = _request.Uniquenick,
-                                Namespaceid = _request.NamespaceID
-                            };
-
-                            db.Subprofiles.Add(_subProfiles);
-                            break;
-
-                        case _newUserStatus.SubProfileExist:
-                            _errorCode = GPError.NewUserUniquenickInUse;
-                            break;
-                    }
-
-                    db.SaveChanges();
+                    DatabaseOperationByType();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
                     _errorCode = GPError.DatabaseError;
                 }
 
@@ -158,14 +80,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
              == RetroSpyServerName.PresenceSearchPlayer)
             {
                 //PSP NewUser
-                _sendingBuffer = $@"\nur\\pid\{_subProfiles.Profileid}\final\";
+                _sendingBuffer = $@"\nur\\pid\{_subProfile.Profileid}\final\";
             }
             else if (ServerManagerBase.ServerName
                 == RetroSpyServerName.PresenceConnectionManager)
             {
                 //PCM NewUser
                 _sendingBuffer =
-                    $@"\nur\\userid\{_user.Userid}\profileid\{_subProfiles.Profileid}\id\{_request.OperationID}\final\";
+                    $@"\nur\\userid\{_user.Userid}\profileid\{_subProfile.Profileid}\id\{_request.OperationID}\final\";
             }
         }
 
@@ -176,31 +98,145 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 
                 if (_request.HasPartnerIDFlag)
                 {
-                    _subProfiles.Partnerid = _request.PartnerID;
+                    _subProfile.Partnerid = _request.PartnerID;
                 }
 
                 if (_request.HasProductIDFlag)
                 {
-                    _subProfiles.Productid = _request.ProductID;
+                    _subProfile.Productid = _request.ProductID;
                 }
 
                 if (_request.HasGameNameFlag)
                 {
-                    _subProfiles.Gamename = _request.GameName;
+                    _subProfile.Gamename = _request.GameName;
                 }
 
                 if (_request.HasGamePortFlag)
                 {
-                    _subProfiles.Port = _request.GamePort;
+                    _subProfile.Port = _request.GamePort;
                 }
 
                 if (_request.HasCDKeyEncFlag)
                 {
-                    _subProfiles.Cdkeyenc = _request.CDKeyEnc;
+                    _subProfile.Cdkeyenc = _request.CDKeyEnc;
                 }
 
-                db.Subprofiles.Update(_subProfiles);
+                db.Subprofiles.Update(_subProfile);
                 db.SaveChanges();
+            }
+        }
+
+        private void DatabaseOperationByType()
+        {
+            using (var db = new retrospyContext())
+            {
+                switch (_newUserStatus.CheckAccount)
+                {
+                    case _newUserStatus.CheckAccount:
+                        var users = db.Users.Where(u => u.Email == _request.Email)
+                                                     .Select(u => u);
+                        if (users.Count() == 0)
+                        {
+                            goto case _newUserStatus.AccountNotExist;
+                        }
+                        else if (users.Count() == 1)
+                        {
+                            _user = users.First();
+                            goto case _newUserStatus.AccountExist;
+                        }
+                        else
+                        {
+                            // double user in database
+                            _errorCode = GPError.DatabaseError;
+                            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "There are two same records in User table!");
+                            break;
+                        }
+
+                    case _newUserStatus.AccountNotExist:
+                        _user = new Users { Email = _request.Email, Password = _request.PassEnc };
+                        db.Users.Add(_user);
+                        db.SaveChanges();
+                        goto case _newUserStatus.CheckProfile;
+
+                    case _newUserStatus.AccountExist:
+
+                        if (_user.Password != _request.PassEnc)
+                        {
+                            _errorCode = GPError.NewUserBadPasswords;
+                            break;
+                        }
+                        else
+                        {
+                            goto case _newUserStatus.CheckProfile;
+                        }
+
+                    case _newUserStatus.CheckProfile:
+                        var profiles = db.Profiles.Where(p => p.Userid == _user.Userid && p.Nick == _request.Nick);
+                        if (profiles.Count() == 0)
+                        {
+                            goto case _newUserStatus.ProfileNotExist;
+                        }
+                        else if (profiles.Count() == 1)
+                        {
+                            //same nick name can not register two profiles
+                            _profile = profiles.First();
+                            goto case _newUserStatus.ProfileExist;
+                        }
+                        else
+                        {
+                            //there are two profiles we stop
+                            _errorCode = GPError.DatabaseError;
+                            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "There are two same records in Profile table!");
+                            break;
+                        }
+
+                    case _newUserStatus.ProfileNotExist:
+                        _profile = new Profiles { Userid = _user.Userid, Nick = _request.Nick };
+                        db.Profiles.Add(_profile);
+                        db.SaveChanges();
+                        goto case _newUserStatus.CheckSubProfile;
+
+                    case _newUserStatus.ProfileExist:
+                    //we do nothing here
+
+                    case _newUserStatus.CheckSubProfile:
+                        var subProfiles = db.Subprofiles
+                            .Where(s => s.Profileid == _profile.Profileid
+                            && s.Uniquenick == _request.Uniquenick
+                            && s.Namespaceid == _request.NamespaceID);
+                        if (subProfiles.Count() == 0)
+                        {
+                            goto case _newUserStatus.SubProfileNotExist;
+                        }
+                        else if (subProfiles.Count() == 1)
+                        {
+                            _subProfile = subProfiles.First();
+                            goto case _newUserStatus.SubProfileExist;
+                        }
+                        else
+                        {
+                            _errorCode = GPError.DatabaseError;
+                            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "There are two same records in SubProfile table!");
+                            break;
+                        }
+
+                    case _newUserStatus.SubProfileNotExist:
+                        //we create subprofile and return
+                        _subProfile = new Subprofiles
+                        {
+                            Profileid = _profile.Profileid,
+                            Uniquenick = _request.Uniquenick,
+                            Namespaceid = _request.NamespaceID
+                        };
+
+                        db.Subprofiles.Add(_subProfile);
+                        db.SaveChanges();
+                        break;
+
+                    case _newUserStatus.SubProfileExist:
+                        _errorCode = GPError.NewUserUniquenickInUse;
+                        break;
+                }
             }
         }
     }

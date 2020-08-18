@@ -65,23 +65,33 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
 
         protected override void DataOperation()
         {
-            switch (_request.LoginType)
+            try
             {
-                case LoginType.NickEmail:
-                    NickEmailLogin();
-                    break;
+                switch (_request.LoginType)
+                {
+                    case LoginType.NickEmail:
+                        NickEmailLogin();
+                        break;
 
-                case LoginType.UniquenickNamespaceID:
-                    UniquenickLogin();
-                    break;
+                    case LoginType.UniquenickNamespaceID:
+                        UniquenickLogin();
+                        break;
 
-                case LoginType.AuthToken:
-                    AuthtokenLogin();
-                    break;
+                    case LoginType.AuthToken:
+                        AuthtokenLogin();
+                        break;
+                }
+            }
+            catch
+            {
+                _errorCode = GPError.DatabaseError;
             }
 
-            //check if errorcode equals database error we stop.
-            if (_errorCode != GPError.NoError)
+            //check if errorcode equals database error.
+            //because there are other GPErrors,
+            //here we only need to care about databaseError
+
+            if (_errorCode != GPError.DatabaseError)
             {
                 return;
             }
@@ -111,21 +121,22 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
         {
             base.Response();
 
-            if (_result != null)
-            {
-                _session.UserData.UserStatus = GPStatus.Online;
-                _session.UserData.UserID = _result.UserID;
-                _session.UserData.ProfileID = _result.ProfileID;
-                _session.UserData.SubProfileID = _result.SubProfileID;
-                //_session.UserData.ProductID =
-                _session.UserData.GameName = _request.GameName;
-                _session.UserData.GamePort = _request.GamePort;
-                _session.UserData.LoginStatus = LoginStatus.Completed;
-                _session.UserData.SDKRevision = _request.SDKType;
+            //we do not need to check _result
+            //because in each database operation we already checked it
+            //if _result == null program will not go to Response()
+            _session.UserData.UserStatus = GPStatus.Online;
+            _session.UserData.UserID = _result.UserID;
+            _session.UserData.ProfileID = _result.ProfileID;
+            _session.UserData.SubProfileID = _result.SubProfileID;
+            //_session.UserData.ProductID =
+            _session.UserData.GameName = _request.GameName;
+            _session.UserData.GamePort = _request.GamePort;
+            _session.UserData.LoginStatus = LoginStatus.Completed;
+            _session.UserData.SDKRevision = _request.SDKType;
 
-                PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
-                SDKRevision.ExtendedFunction(_session);
-            }
+            PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
+            SDKRevision.ExtendedFunction(_session);
+
         }
 
         protected override void BuildNormalResponse()

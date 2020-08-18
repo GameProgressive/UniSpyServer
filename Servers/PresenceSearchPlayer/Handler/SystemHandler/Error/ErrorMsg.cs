@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
                     return "This request cannot be processed because the session key is invalid.";
 
                 case GPError.DatabaseError:
-                    return "Can not find information in database";
+                    return "There is an error in database operation.";
 
                 case GPError.Network:
                     return "here was an error connecting a network socket.";
