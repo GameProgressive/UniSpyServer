@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.BaseClass
@@ -26,17 +27,27 @@ namespace PresenceConnectionManager.Entity.BaseClass
                 OperationID = operationID;
             }
 
-            //if (_recv.ContainsKey("namespaceid"))
-            //{
-            //    uint namespaceID;
-            //    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
-            //    {
-            //        return GPErrorCode.Parse;
-            //    }
-            //    NamespaceID = namespaceID;
-            //}
-
             return GPError.NoError;
+        }
+
+        public static string RequstFormatConversion(string message)
+        {
+            if (message.Contains("login"))
+            {
+                message = message.Replace(@"\-", @"\");
+
+                int pos = message.IndexesOf("\\")[1];
+
+                if (message.Substring(pos, 2) != "\\\\")
+                {
+                    message = message.Insert(pos, "\\");
+                }
+                return message;
+            }
+            else
+            {
+                return message;
+            }
         }
     }
 }

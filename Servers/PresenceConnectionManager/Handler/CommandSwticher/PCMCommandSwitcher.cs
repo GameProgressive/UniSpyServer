@@ -5,6 +5,7 @@ using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
+using PresenceConnectionManager.Entity.BaseClass;
 using PresenceConnectionManager.Handler.CommandHandler.Buddy;
 using PresenceConnectionManager.Handler.CommandHandler.General;
 using PresenceConnectionManager.Handler.CommandHandler.Profile;
@@ -19,7 +20,7 @@ namespace PresenceConnectionManager.Handler
         {
             try
             {
-                message = ((PCMSession)session.GetInstance()).RequstFormatConversion(message);
+                message = PCMRequestBase.RequstFormatConversion(message);
                 if (message[0] != '\\')
                 {
                     LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");

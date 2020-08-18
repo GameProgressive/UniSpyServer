@@ -70,6 +70,17 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 }
                 Nick = UserData.Substring(0, Pos);
                 Email = UserData.Substring(Pos + 1);
+
+                // we need to get namespaceid for email login
+                if (_recv.ContainsKey("namespaceid"))
+                {
+                    uint namespaceID;
+                    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                    {
+                        return GPError.Parse;
+                    }
+                    NamespaceID = namespaceID;
+                }
             }
             else
             {

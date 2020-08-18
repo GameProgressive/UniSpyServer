@@ -48,6 +48,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
                 case LoginType.NickEmail:
                     _session.UserData.Nick = _request.Nick;
                     _session.UserData.Email = _request.Email;
+                    _session.UserData.NamespaceID = _request.NamespaceID;
                     break;
                 case LoginType.UniquenickNamespaceID:
                     _session.UserData.UniqueNick = _request.Uniquenick;
@@ -87,11 +88,8 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
                 _errorCode = GPError.DatabaseError;
             }
 
-            //check if errorcode equals database error.
-            //because there are other GPErrors,
-            //here we only need to care about databaseError
-
-            if (_errorCode != GPError.DatabaseError)
+            //Arves is correct
+            if (_errorCode != GPError.NoError)
             {
                 return;
             }
@@ -104,7 +102,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
 
             if (!_result.EmailVerifiedFlag)
             {
-                _errorCode = GPError.LoginBadEmail;
+                _errorCode = GPError.LoginBadProfile;
                 return;
             }
 
@@ -120,10 +118,11 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
         protected override void Response()
         {
             base.Response();
-
-            //we do not need to check _result
-            //because in each database operation we already checked it
-            //if _result == null program will not go to Response()
+            //Arves is correct we need to check this
+            if (_result == null)
+            {
+                return;
+            }
             _session.UserData.UserStatus = GPStatus.Online;
             _session.UserData.UserID = _result.UserID;
             _session.UserData.ProfileID = _result.ProfileID;
@@ -136,7 +135,6 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
 
             PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
             SDKRevision.ExtendedFunction(_session);
-
         }
 
         protected override void BuildNormalResponse()
@@ -187,11 +185,13 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
                 }
 
                 //Grab information from database
+                // default namespace id = 0
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
                            where u.Email == _session.UserData.Email
                            && p.Nick == _session.UserData.Nick
+                           && n.Namespaceid == _request.NamespaceID
                            select new LoginDBResult
                            {
                                Email = u.Email,
@@ -206,12 +206,6 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
                                BannedFlag = u.Banned
                            };
 
-                if (info.Count() != 1)
-                {
-                    _errorCode = GPError.DatabaseError;
-                    return;
-
-                }
                 if (info.Count() != 1)
                 {
                     _errorCode = GPError.LoginBadProfile;

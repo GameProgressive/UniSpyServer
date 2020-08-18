@@ -71,25 +71,5 @@ namespace PresenceConnectionManager
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Information, statusString);
         }
-
-        public virtual string RequstFormatConversion(string message)
-        {
-            if (message.Contains("login"))
-            {
-                message = message.Replace(@"\-", @"\");
-
-                int pos = message.IndexesOf("\\")[1];
-
-                if (message.Substring(pos, 2) != "\\\\")
-                {
-                    message = message.Insert(pos, "\\");
-                }
-                return message;
-            }
-            else
-            {
-                return message;
-            }
-        }
     }
 }
