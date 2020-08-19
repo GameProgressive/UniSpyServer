@@ -25,7 +25,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("email")&& !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            if (!_recv.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
               return GPError.Parse;
             }

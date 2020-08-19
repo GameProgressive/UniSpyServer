@@ -61,8 +61,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
             {
                 _sendingBuffer += @"\nick\";
                 _sendingBuffer += info.Nick;
-                _sendingBuffer += @"\uniquenick\";
-                _sendingBuffer += info.Uniquenick;
+
+                if (_request.RequireUniqueNicks)
+                {
+                    _sendingBuffer += @"\uniquenick\";
+                    _sendingBuffer += info.Uniquenick;
+                }
             }
             _sendingBuffer += @"\ndone\final\";
 
