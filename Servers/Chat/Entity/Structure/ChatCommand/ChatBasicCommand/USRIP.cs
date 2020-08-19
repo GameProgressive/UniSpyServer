@@ -7,5 +7,10 @@ namespace Chat.Entity.Structure.ChatCommand
         public USRIP()
         {
         }
+
+        public override bool Parse(string recv)
+        {
+            return true; // USRIP content is empty!
+        }
     }
 }
