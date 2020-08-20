@@ -32,20 +32,5 @@ namespace Chat.Handler.CommandHandler
             base.DataOperation();
             _session.UserInfo.SetNickName(_cmd.NickName);
         }
-
-        public override void ConstructResponse()
-        {
-            base.ConstructResponse();
-
-            _sendingBuffer =
-                ChatReply.BuildWelcomeReply(_session.UserInfo);
-
-            _session.UserInfo.SetLoginFlag(true);
-
-
-            //check this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //_sendingBuffer += ChatCommandBase.BuildMessageRPL(
-            //_nickCmd.NickName, $"MODE {_nickCmd.NickName}", "+iwx");
-        }
     }
 }
