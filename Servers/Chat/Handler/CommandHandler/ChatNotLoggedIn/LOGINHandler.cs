@@ -24,9 +24,13 @@ namespace Chat.Handler.CommandHandler
         public override void CheckRequest()
         {
             base.CheckRequest();
+
+            /// TODO: Verify which games does send a GS encoded password and not md5
             //we decoded gamespy encoded password then get md5 of it 
-            _password = GameSpyUtils.DecodePassword(_cmd.PasswordHash);
-            _password = StringExtensions.GetMD5Hash(_password);
+            //_password = GameSpyUtils.DecodePassword(_cmd.PasswordHash);
+            //_password = StringExtensions.GetMD5Hash(_password);
+
+            _password = _cmd.PasswordHash;
         }
 
         public override void DataOperation()

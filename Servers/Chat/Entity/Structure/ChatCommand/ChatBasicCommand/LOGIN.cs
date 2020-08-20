@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
@@ -33,19 +36,19 @@ namespace Chat.Entity.Structure.ChatCommand
 
             NameSpaceID = namespaceid;
 
-            if (_cmdParams.Contains("*"))
+            if (_cmdParams[1] == "*")
             {
                 RequestType = LoginType.NickAndEmailLogin;
-                PasswordHash = _cmdParams[1];
+                PasswordHash = _cmdParams[2];
 
-                if (_longParam.Where(c => c.Equals("@")).Count() != 2)
+                if (_longParam.Count(c => c == '@') != 2)
                 {
                     return false;
                 }
                 int profilenickIndex = _longParam.IndexOf("@");
 
-                NickName = _longParam.Substring(1, profilenickIndex - 1);
-                Email = _longParam.Substring(profilenickIndex);
+                NickName = _longParam.Substring(0, profilenickIndex);
+                Email = _longParam.Substring(profilenickIndex + 1);
             }
             else
             {
