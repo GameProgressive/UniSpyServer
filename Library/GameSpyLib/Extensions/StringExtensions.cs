@@ -99,7 +99,14 @@ namespace GameSpyLib.Extensions
 
             for (int i = 0; i < keyValueList.Count; i = i + 2)
             {
-                dic.TryAdd(keyValueList[i], keyValueList[i + 1]);
+                if (keyValueList.Count < i + 2) // Count starts from 1, i from 0
+                {
+                    dic.TryAdd(keyValueList[i], "");
+                }
+                else
+                {
+                    dic.TryAdd(keyValueList[i], keyValueList[i + 1]);
+                }
             }
 
             return dic;
