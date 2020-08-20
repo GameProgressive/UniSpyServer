@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatUser;
+using Chat.Server;
 
 namespace Chat.Entity.Structure.ChatResponse
 {
@@ -54,7 +55,7 @@ namespace Chat.Entity.Structure.ChatResponse
         public static string BuildWelcomeReply(ChatUserInfo userInfo)
         {
             return userInfo.BuildReply(
-                  Welcome, userInfo.NickName, "Welcome to RetrosSpy!");
+                  Welcome, ChatServer.ServerDomain, "Welcome to RetrosSpy!");
         }
 
         public static string BuildCryptReply(string clientKey, string serverKey)
