@@ -12,10 +12,11 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public string Password { get; private set; }
         public string PassEnc { get; private set; }
         public string Email { get; private set; }
         public uint NamespaceID { get; protected set; }
+        public bool RequireUniqueNicks { get; protected set; }
+
         public override GPError Parse()
         {
             var flag = base.Parse();
@@ -29,17 +30,14 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return GPError.Parse;
             }
 
-            //First, we try to receive an encoded password
-            if (!_recv.ContainsKey("passenc"))
+            RequireUniqueNicks = true;
+
+            if (_recv.ContainsKey("pass"))
             {
-                Password = _recv["pass"];
-                //If the encoded password is not sended, we try receiving the password in plain text
-                if (!_recv.ContainsKey("pass"))
-                {
-                    //No password is specified, we cannot continue                   
-                    return GPError.Parse;
-                }
+                // Old games might send an error is unique nicknames are sent (like GSA 1.0)
+                RequireUniqueNicks = false;
             }
+
             PassEnc = _recv["passenc"];
             Email = _recv["email"];
 
