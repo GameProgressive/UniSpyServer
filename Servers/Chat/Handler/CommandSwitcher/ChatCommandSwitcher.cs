@@ -17,15 +17,7 @@ namespace Chat.Handler.CommandSwitcher
         {
             List<ChatCommandBase> cmds = new List<ChatCommandBase>();
 
-            string[] requests = buffer.Split("\n", StringSplitOptions.RemoveEmptyEntries);
-
-            foreach(var r in requests)
-            {
-                if (r.Contains("\r"))
-                {
-                    r.Replace('\r', '');
-                }
-            }
+            string[] requests = buffer.Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             // first we convert request into our ChatCommand class
             // next we handle each command
