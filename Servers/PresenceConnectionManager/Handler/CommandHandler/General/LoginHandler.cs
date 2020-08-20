@@ -119,10 +119,16 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
         {
             base.Response();
             //Arves is correct we need to check this
+            if (_errorCode != GPError.NoError)
+            {
+                return;
+            }
+
             if (_result == null)
             {
                 return;
             }
+
             _session.UserData.UserStatus = GPStatus.Online;
             _session.UserData.UserID = _result.UserID;
             _session.UserData.ProfileID = _result.ProfileID;
