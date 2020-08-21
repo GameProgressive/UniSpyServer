@@ -108,8 +108,24 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
                                          Lastname = p.Lastname,
                                          NamespaceID = n.Namespaceid
                                      };
-
                         _result.AddRange(result3.ToList().Skip(_request.SkipNumber));
+                        break;
+                    case SearchRequestType.EmailSearch:
+                        var result4 = from p in db.Profiles
+                                      join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                      join u in db.Users on p.Userid equals u.Userid
+                                      where u.Email == _request.Email
+                                      select new SearchDBResult
+                                      {
+                                          Profileid = n.Profileid,
+                                          Nick = p.Nick,
+                                          Uniquenick = n.Uniquenick,
+                                          Email = u.Email,
+                                          Firstname = p.Firstname,
+                                          Lastname = p.Lastname,
+                                          NamespaceID = n.Namespaceid
+                                      };
+                        _result.AddRange(result4.ToList().Skip(_request.SkipNumber));
                         break;
                 }
             }

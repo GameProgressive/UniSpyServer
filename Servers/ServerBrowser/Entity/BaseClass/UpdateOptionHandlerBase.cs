@@ -23,7 +23,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
         protected ServerListRequest _request;
         protected List<byte> _dataList;
         protected List<GameServer> _gameServers;
-        public UpdateOptionHandlerBase(ServerListRequest request, ISession client, byte[] recv) : base(client, recv)
+        public UpdateOptionHandlerBase(ServerListRequest request, ISession session, byte[] recv) : base(session, recv)
         {
             _request = request;
             _dataList = new List<byte>();
@@ -39,7 +39,8 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
                 return;
             }
             //we first check and get secrete key from database
-            if (!DataOperationExtensions.GetSecretKey(_request.GameName, out _secretKey))
+            if (!DataOperationExtensions
+                .GetSecretKey(_request.GameName, out _secretKey))
             {
                 _errorCode = SBErrorCode.UnSupportedGame;
                 return;

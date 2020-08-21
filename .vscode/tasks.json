@@ -8,7 +8,7 @@
             "args": [
                 "build",
                 "-o",
-                "${workspaceFolder}/Debug",
+                "${workspaceFolder}/Debug/<target-framework>",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

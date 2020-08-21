@@ -8,7 +8,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         NickSearch,
         NickEmailSearch,
-        UniquenickNamespaceIDSearch
+        UniquenickNamespaceIDSearch,
+        EmailSearch
     }
 
 
@@ -80,27 +81,33 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     }
                     NamespaceID = namespaceID;
                 }
-                    RequestType = SearchRequestType.UniquenickNamespaceIDSearch;
+                RequestType = SearchRequestType.UniquenickNamespaceIDSearch;
 
-                    Uniquenick = _recv["uniquenick"];
-                }
-                else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
-                {
-                    RequestType = SearchRequestType.NickEmailSearch;
-                    Nick = _recv["nick"];
-                    Email = _recv["email"];
-                }
-                else if (_recv.ContainsKey("nick"))
-                {
-                    RequestType = SearchRequestType.NickSearch;
-                    Nick = _recv["nick"];
-                }
-                else
-                {
-                    return GPError.Parse;
-                }
-
-                return GPError.NoError;
+                Uniquenick = _recv["uniquenick"];
             }
+            else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
+            {
+                RequestType = SearchRequestType.NickEmailSearch;
+                Nick = _recv["nick"];
+                Email = _recv["email"];
+            }
+            else if (_recv.ContainsKey("nick"))
+            {
+                RequestType = SearchRequestType.NickSearch;
+                Nick = _recv["nick"];
+            }
+            else if (_recv.ContainsKey("email"))
+            {
+                //\search\\sesskey\0\profileid\0\namespaceid\1\email\spyguy@gamespy.cn\gamename\conflictsopc\final\
+                Email = _recv["email"];
+                RequestType = SearchRequestType.EmailSearch;
+            }
+            else
+            {
+                return GPError.Parse;
+            }
+
+            return GPError.NoError;
         }
     }
+}
