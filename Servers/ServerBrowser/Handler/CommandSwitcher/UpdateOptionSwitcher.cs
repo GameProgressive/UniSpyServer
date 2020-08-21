@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.GeneralRequest;
@@ -11,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
 {
     public class UpdateOptionSwitcher
     {
-        public static void Switch(SBSession session, byte[] recv)
+        public static void Switch(ISession session, byte[] recv)
         {
             ServerListRequest request = new ServerListRequest();
             if (!request.Parse(recv))
