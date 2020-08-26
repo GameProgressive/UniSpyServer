@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
+using Serilog.Events;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.GeneralRequest;
@@ -17,7 +18,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
             ServerListRequest request = new ServerListRequest();
             if (!request.Parse(recv))
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, ErrorMessage.GetErrorMsg(SBErrorCode.Parse));
+                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMsg(SBErrorCode.Parse));
                 return;
             }
             switch (request.UpdateOption)
