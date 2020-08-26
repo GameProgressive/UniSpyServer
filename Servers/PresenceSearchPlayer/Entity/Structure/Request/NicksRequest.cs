@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class NickRequest : PSPRequestBase
+    public class NicksRequest : PSPRequestBase
     {
-        public NickRequest(Dictionary<string, string> recv) : base(recv)
+        public NicksRequest(Dictionary<string, string> recv) : base(recv)
         {
         }
 
@@ -20,10 +21,14 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public override GPError Parse()
         {
             var flag = base.Parse();
+
+
             if (flag != GPError.NoError)
             {
                 return flag;
             }
+
+            PasswordEncoder.ProcessPassword(_recv);
 
             if (!_recv.ContainsKey("email"))
             {

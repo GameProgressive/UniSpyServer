@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         }
 
         public string Nick { get; private set; }
-        public string PassEnc { get; private set; }
+        public string Password { get; private set; }
         public string Email { get; private set; }
 
         public override GPError  Parse()
@@ -23,7 +23,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             var flag = base.Parse();
             if (flag != GPError.NoError)
                 return flag;
-
+            PasswordEncoder.ProcessPassword(_recv);
             if (!_recv.ContainsKey("nick") || !_recv.ContainsKey("email") || !_recv.ContainsKey("passenc"))
             {
                 return GPError.Parse;
@@ -36,7 +36,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
 
             Nick = _recv["nick"];
-            PassEnc = _recv["passenc"];
+            Password = _recv["passenc"];
             Email = _recv["email"];
 
             return GPError.NoError;

@@ -19,7 +19,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
         public string Nick { get; private set; }
         public string Email { get; private set; }
-        public string PassEnc { get; private set; }
+        public string Password { get; private set; }
         public string Uniquenick { get; private set; }
         public uint PartnerID { get; private set; }
         public string GameName { get; private set; }
@@ -35,6 +35,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             {
                 return flag;
             }
+
+            PasswordEncoder.ProcessPassword(_recv);
 
             if (!_recv.ContainsKey("nick"))
             {
@@ -52,7 +54,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             Nick = _recv["nick"];
             Email = _recv["email"];
-            PassEnc = _recv["passenc"];
+            Password = _recv["passenc"];
 
             if (_recv.ContainsKey("uniquenick")&&_recv.ContainsKey("namespaceid"))
             {

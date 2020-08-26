@@ -34,7 +34,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
                     return;
                 }
 
-                if (db.Users.Where(u => u.Email == _request.Email && u.Password == _request.PassEnc).Count() < 1)
+                if (db.Users.Where(u => u.Email == _request.Email && u.Password == _request.Password).Count() < 1)
                 {
                     _errorCode = GPError.CheckBadPassword;
                     return;
@@ -43,7 +43,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Check
                 var result = from p in db.Profiles
                              join u in db.Users on p.Userid equals u.Userid
                              where u.Email.Equals(_request.Email)
-                             && u.Password.Equals(_request.PassEnc)
+                             && u.Password.Equals(_request.Password)
                              && p.Nick.Equals(_request.Nick)
                              select p.Profileid;
 

@@ -55,7 +55,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                             break;
 
                         case "nicks":// search an user with nick name
-                            new NickHandler(session, recv).Handle();
+                            new NicksHandler(session, recv).Handle();
                             break;
 
                         //case "pmatch":

@@ -16,13 +16,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    public class NickHandler : PSPCommandHandlerBase
+    public class NicksHandler : PSPCommandHandlerBase
     {
         List<NickHandlerDataModel> _result;
-        protected NickRequest _request;
-        public NickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected NicksRequest _request;
+        public NicksHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
         {
-            _request = new NickRequest(recv);
+            _request = new NicksRequest(recv);
         }
 
         protected override void RequestCheck()

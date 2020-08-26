@@ -153,14 +153,14 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         }
 
                     case _newUserStatus.AccountNotExist:
-                        _user = new Users { Email = _request.Email, Password = _request.PassEnc };
+                        _user = new Users { Email = _request.Email, Password = _request.Password };
                         db.Users.Add(_user);
                         db.SaveChanges();
                         goto case _newUserStatus.CheckProfile;
 
                     case _newUserStatus.AccountExist:
 
-                        if (_user.Password != _request.PassEnc)
+                        if (_user.Password != _request.Password)
                         {
                             _errorCode = GPError.NewUserBadPasswords;
                             break;
