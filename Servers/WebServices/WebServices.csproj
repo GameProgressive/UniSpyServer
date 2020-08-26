@@ -22,41 +22,44 @@
         <PackageReference Include="System.ServiceModel.Http" Version="4.7.0" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="RetroSpyServices\" />
-        <Folder Include="RetroSpyServices\Sake\" />
+        <Folder Include="Application\" />
         <Folder Include="RetroSpyServices\Authentication\" />
-        <Folder Include="RetroSpyServices\Competitive\" />
-        <Folder Include="RetroSpyServices\Direct2Game\" />
-        <Folder Include="RetroSpyServices\Motd\" />
-        <Folder Include="RetroSpyServices\Sake\Service\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\Interface\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\Structure\" />
-        <Folder Include="RetroSpyServices\Motd\Entity\" />
-        <Folder Include="RetroSpyServices\Motd\Entity\Interface\" />
-        <Folder Include="RetroSpyServices\Motd\Entity\Structure\" />
-        <Folder Include="RetroSpyServices\Motd\Service\" />
-        <Folder Include="RetroSpyServices\Motd\Entity\Structure\Model\" />
         <Folder Include="RetroSpyServices\Authentication\Entity\" />
         <Folder Include="RetroSpyServices\Authentication\Entity\Interface\" />
         <Folder Include="RetroSpyServices\Authentication\Entity\Structure\" />
         <Folder Include="RetroSpyServices\Authentication\Entity\Structure\Model\" />
         <Folder Include="RetroSpyServices\Authentication\Service\" />
-        <Folder Include="RetroSpyServices\Direct2Game\Entity\" />
-        <Folder Include="RetroSpyServices\Direct2Game\Entity\Interface\" />
-        <Folder Include="RetroSpyServices\Direct2Game\Entity\Structure\" />
-        <Folder Include="RetroSpyServices\Direct2Game\Entity\Structure\Model\" />
-        <Folder Include="RetroSpyServices\Direct2Game\Service\" />
+        <Folder Include="RetroSpyServices\Competitive\" />
         <Folder Include="RetroSpyServices\Competitive\Entity\" />
         <Folder Include="RetroSpyServices\Competitive\Entity\Interface\" />
         <Folder Include="RetroSpyServices\Competitive\Entity\Structure\" />
         <Folder Include="RetroSpyServices\Competitive\Entity\Structure\Model\" />
         <Folder Include="RetroSpyServices\Competitive\Service\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Request\" />
-        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Response\" />
-        <Folder Include="Application\" />
+        <Folder Include="RetroSpyServices\Direct2Game\" />
+        <Folder Include="RetroSpyServices\Direct2Game\Entity\" />
+        <Folder Include="RetroSpyServices\Direct2Game\Entity\Interface\" />
+        <Folder Include="RetroSpyServices\Direct2Game\Entity\Structure\" />
+        <Folder Include="RetroSpyServices\Direct2Game\Entity\Structure\Model\" />
+        <Folder Include="RetroSpyServices\Direct2Game\Service\" />
+        <Folder Include="RetroSpyServices\Motd\" />
+        <Folder Include="RetroSpyServices\Motd\Entity\" />
+        <Folder Include="RetroSpyServices\Motd\Entity\Interface\" />
+        <Folder Include="RetroSpyServices\Motd\Entity\Structure\" />
+        <Folder Include="RetroSpyServices\Motd\Entity\Structure\Model\" />
+        <Folder Include="RetroSpyServices\Motd\Service\" />
+        <Folder Include="RetroSpyServices\PatchingAndTracking\Entity\" />
+        <Folder Include="RetroSpyServices\PatchingAndTracking\Entity\Interface\" />
+        <Folder Include="RetroSpyServices\PatchingAndTracking\Entity\Structure\" />
+        <Folder Include="RetroSpyServices\PatchingAndTracking\Entity\Structure\Model\" />
+        <Folder Include="RetroSpyServices\PatchingAndTracking\Handler\Service\" />
+        <Folder Include="RetroSpyServices\Sake\" />
         <Folder Include="RetroSpyServices\Sake\CommandHandler\" />
         <Folder Include="RetroSpyServices\Sake\CommandHandler\CreateRecord\" />
+        <Folder Include="RetroSpyServices\Sake\Entity\" />
+        <Folder Include="RetroSpyServices\Sake\Entity\Interface\" />
+        <Folder Include="RetroSpyServices\Sake\Entity\Structure\" />
+        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Request\" />
+        <Folder Include="RetroSpyServices\Sake\Entity\Structure\Response\" />
         <Folder Include="RetroSpyServices\Sake\Handler\" />
     </ItemGroup>
     <ItemGroup>
