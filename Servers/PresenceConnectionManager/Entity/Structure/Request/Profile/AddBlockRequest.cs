@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class AddBlockRequest : PCMRequestBase
+    public class AddBlockRequest : PCMRequest
     {
         public uint ProfileID;
         public AddBlockRequest(Dictionary<string, string> recv) : base(recv)

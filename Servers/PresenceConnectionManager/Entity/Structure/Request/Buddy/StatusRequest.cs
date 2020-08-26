@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class StatusRequest : PCMRequestBase
+    public class StatusRequest : PCMRequest
     {
         public StatusRequest(Dictionary<string, string> recv) : base(recv)
         {

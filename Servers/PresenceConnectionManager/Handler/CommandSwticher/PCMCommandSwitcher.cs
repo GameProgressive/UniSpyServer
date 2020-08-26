@@ -6,10 +6,7 @@ using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using PresenceConnectionManager.Entity.BaseClass;
-using PresenceConnectionManager.Handler.CommandHandler.Buddy;
-using PresenceConnectionManager.Handler.CommandHandler.General;
-using PresenceConnectionManager.Handler.CommandHandler.Profile;
-using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
+using PresenceConnectionManager.Handler.CommandSwticher;
 using Serilog.Events;
 
 namespace PresenceConnectionManager.Handler
@@ -21,7 +18,7 @@ namespace PresenceConnectionManager.Handler
             try
             {
                 //message = @"\login\\challenge\VPUKQ5CiXSqtt0EdOKMwwRvf3CHqxrah\user\borger@mike@vale.ski\partnerid\0\response\4ec2535ddba4773168337c7b5f9588e7\firewall\1\port\0\productid\10936\gamename\greconawf2\namespaceid\0\sdkrevision\3\id\1\final\";
-                message = PCMRequestBase.RequstFormatConversion(message);
+                message = PCMRequest.NormalizeRequest(message);
                 if (message[0] != '\\')
                 {
                     LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
@@ -43,65 +40,32 @@ namespace PresenceConnectionManager.Handler
 
                     switch (recv.Keys.First())
                     {
-                        #region General handler
                         case "login"://login to retrospy
-                            new LoginHandler(session, recv).Handle();
-                            break;
-
                         case "logout"://logout from retrospy
-                            new LogoutHandler(session, recv).Handle();
-                            break;
                         case "ka":
-                            new KeepAliveHandler(session, recv).Handle();
+                            new GeneralCommandSwitcher().Switch(session, recv);
                             break;
-                        #endregion
 
-                        #region Profile handler
                         case "getprofile"://get profile of a player
-                            new GetProfileHandler(session, recv).Handle();
-                            break;
                         case "registernick"://update user's uniquenick
-                            new RegisterNickHandler(session, recv).Handle();
-                            break;
                         case "newuser"://create an new user
-                            new NewUserHandler(session, recv).Handle();
-                            break;
                         case "updateui"://update a user's email
-                            new UpdateUIHandler(session, recv).Handle();
-                            break;
                         case "updatepro"://update a user's profile
-                            new UpdateProHandler(session, recv).Handle();
-                            break;
                         case "newprofile"://create an new profile
-                            new NewProfileHandler(session, recv).Handle();
-                            break;
                         case "delprofile"://delete profile
-                            break;
                         case "addblock"://add an user to our block list
-                            new AddBlockHandler(session, recv).Handle();
-                            break;
                         case "removeblock":
-                            new RemoveBlockHandler(session, recv).Handle();
+                            new ProfileCommandSwitcher().Switch(session, recv);
                             break;
 
-                        #endregion
-
-                        #region Buddy handler
                         case "addbuddy"://Send a request which adds an user to our friend list
-                            new AddBuddyHandler(session, recv).Handle();
-                            break;
                         case "delbuddy"://delete a user from our friend list
-                            new DelBuddyHandler(session, recv).Handle();
-                            break;
                         case "status"://update current logged in user's status info
-                            new StatusHandler(session, recv).Handle();
-                            break;
                         case "statusinfo":
-                            throw new NotImplementedException();
-                        //case "inviteto":
-                        //    InviteToHandler.InvitePlayer();
-                        //    break;
-                        #endregion
+                        case "inviteto":
+                            new BuddyCommandSwitcher().Switch(session, recv);
+                            break;
+
                         default:
                             LogWriter.UnknownDataRecieved(message);
                             break;

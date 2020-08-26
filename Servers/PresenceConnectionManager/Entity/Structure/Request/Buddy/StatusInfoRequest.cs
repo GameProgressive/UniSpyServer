@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class StatusInfoRequest : PCMRequestBase
+    public class StatusInfoRequest : PCMRequest
     {
         public string StatusState { get; protected set; }
         public string BuddyIP { get; protected set; }

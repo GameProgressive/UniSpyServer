@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class AddBuddyRequest : PCMRequestBase
+    public class AddBuddyRequest : PCMRequest
     {
         public uint FriendProfileID { get; protected set; }
         public string AddReason { get; protected set; }

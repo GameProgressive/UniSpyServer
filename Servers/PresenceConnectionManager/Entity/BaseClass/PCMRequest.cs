@@ -1,28 +1,32 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using GameSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.BaseClass
 {
-    public abstract class PCMRequestBase
+    public abstract class PCMRequest
     {
-        protected Dictionary<string, string> _recv;
+        public string CmdName { get; protected set; }
         //public uint NamespaceID { get; protected set; }
         public uint OperationID { get; protected set; }
 
-        public PCMRequestBase(Dictionary<string,string> recv)
+        protected Dictionary<string, string> _recv;
+
+        public PCMRequest(Dictionary<string, string> recv)
         {
             _recv = recv;
+            CmdName = _recv.Keys.First();
         }
 
-        public virtual GPError  Parse()
+        public virtual GPError Parse()
         {
             if (_recv.ContainsKey("id"))
             {
                 uint operationID;
                 if (!uint.TryParse(_recv["id"], out operationID))
                 {
-                   return GPError.Parse;
+                    return GPError.Parse;
                 }
                 OperationID = operationID;
             }
@@ -30,7 +34,7 @@ namespace PresenceConnectionManager.Entity.BaseClass
             return GPError.NoError;
         }
 
-        public static string RequstFormatConversion(string message)
+        public static string NormalizeRequest(string message)
         {
             if (message.Contains("login"))
             {

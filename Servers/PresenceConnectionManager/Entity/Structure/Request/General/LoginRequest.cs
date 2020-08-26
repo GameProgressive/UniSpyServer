@@ -7,7 +7,7 @@ using Serilog.Events;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.General
 {
-    public class LoginRequest : PCMRequestBase
+    public class LoginRequest : PCMRequest
     {
         public string UserChallenge { get; protected set; }
         public string Response { get; protected set; }

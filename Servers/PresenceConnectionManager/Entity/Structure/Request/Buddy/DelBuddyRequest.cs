@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class DelBuddyRequest : PCMRequestBase
+    public class DelBuddyRequest : PCMRequest
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\
         public uint DeleteProfileID { get; protected set; }

@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class RegisterNickRequest : PCMRequestBase
+    public class RegisterNickRequest : PCMRequest
     {
         public string UniqueNick { get; protected set; }
         public RegisterNickRequest(Dictionary<string, string> recv) : base(recv)

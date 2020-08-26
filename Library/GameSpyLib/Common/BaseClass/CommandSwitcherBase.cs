@@ -1,10 +1,10 @@
 ﻿namespace GameSpyLib.Common.BaseClass
 {
-    public class CommandSwitcherBase
+    public abstract class CommandSwitcherBase
     {
         public CommandSwitcherBase()
         {
             Logging.LogWriter.LogCurrentClass(this);
-        }
+        }        
     }
 }

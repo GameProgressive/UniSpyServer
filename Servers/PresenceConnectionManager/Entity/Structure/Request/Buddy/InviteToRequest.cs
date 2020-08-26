@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class InviteToRequest : PCMRequestBase
+    public class InviteToRequest : PCMRequest
     {
         public uint ProductID { get; protected set; }
         public uint ProfileID { get; protected set; }

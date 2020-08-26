@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class NewProfileRequest : PCMRequestBase
+    public class NewProfileRequest : PCMRequest
     {
         //create a new profile with new nick 
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"

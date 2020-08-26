@@ -12,94 +12,6 @@ namespace GameSpyLib.MiscMethod
 {
     public static class GameSpyUtils
     {
-        /// <summary>
-        /// Encodes a password to Gamespy format
-        /// </summary>
-        /// <param name="Password"></param>
-        /// <returns></returns>
-        public static string EncodePassword(string Password)
-        {
-            // Get password string as UTF8 String, Convert to Base64
-            byte[] PasswordBytes = Encoding.UTF8.GetBytes(Password);
-            string Pass = Convert.ToBase64String(GsPassEncode(PasswordBytes));
-
-            // Convert Standard Base64 to Gamespy Base 64
-            StringBuilder builder = new StringBuilder(Pass);
-            builder.Replace('=', '_');
-            builder.Replace('+', '[');
-            builder.Replace('/', ']');
-            return builder.ToString();
-        }
-
-        /// <summary>
-        /// Decodes a Gamespy encoded password
-        /// </summary>
-        /// <param name="Password"></param>
-        /// <returns></returns>
-        public static string DecodePassword(string password)
-        {
-            // Convert Gamespy Base64 to Standard Base 64
-            StringBuilder builder = new StringBuilder(password);
-            builder.Replace('_', '=');
-            builder.Replace('[', '+');
-            builder.Replace(']', '/');
-
-            // Decode passsword
-            byte[] passwordBytes = Convert.FromBase64String(builder.ToString());
-            return Encoding.UTF8.GetString(GsPassEncode(passwordBytes));
-        }
-
-        /// <summary>
-        /// Gamespy's XOR method to encrypt and decrypt a password
-        /// </summary>
-        /// <param name="pass"></param>
-        /// <returns></returns>
-        public static byte[] GsPassEncode(byte[] pass)
-        {
-            int a = 0;
-            int num = 0x79707367; // gamespy
-            for (int i = 0; i < pass.Length; ++i)
-            {
-                num = Gslame(num);
-                a = num % 0xFF;
-                pass[i] ^= (byte)a;
-            }
-
-            return pass;
-        }
-
-        /// <summary>
-        /// Not exactly sure what this does, but i know its used to 
-        /// reverse the encryption and decryption of a string
-        /// </summary>
-        /// <param name="num"></param>
-        /// <returns></returns>
-        private static int Gslame(int num)
-        {
-            int c = (num >> 16) & 0xffff;
-            int a = num & 0xffff;
-
-            c *= 0x41a7;
-            a *= 0x41a7;
-            a += ((c & 0x7fff) << 16);
-
-            if (a < 0)
-            {
-                a &= 0x7fffffff;
-                a++;
-            }
-
-            a += (c >> 15);
-
-            if (a < 0)
-            {
-                a &= 0x7fffffff;
-                a++;
-            }
-
-            return a;
-        }
-
         public static Dictionary<string, string> ConvertRequestToKeyValue(string request)
         {
             string[] commandParts = request.TrimStart('\\').Split('\\');
@@ -113,49 +25,23 @@ namespace GameSpyLib.MiscMethod
         /// <returns>A converted dictionary</returns>
         public static Dictionary<string, string> ConvertRequestToKeyValue(string[] parts)
         {
-            Dictionary<string, string> data = new Dictionary<string, string>();
+            Dictionary<string, string> dict = new Dictionary<string, string>();
             try
             {
                 for (int i = 0; i < parts.Length; i += 2)
                 {
-                    if (!data.ContainsKey(parts[i]))
-                        data.Add(parts[i].ToLower(), parts[i + 1]);//Some game send uppercase key to us, so we have to deal with it
+                    if (!dict.ContainsKey(parts[i]))
+                        dict.Add(parts[i].ToLower(), parts[i + 1]);//Some game send uppercase key to us, so we have to deal with it
                 }
             }
-            catch (IndexOutOfRangeException) { }
-            ProcessPasswordInRetroSpyWay(data);
-            return data;
+            catch (IndexOutOfRangeException e)
+            {
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+            }
+
+            return dict;
         }
-        /// <summary>
-        /// Encode password in our way, so we do not need to care about the encoding method of password
-        /// </summary>
-        /// <param name="dict"></param>
-        public static void ProcessPasswordInRetroSpyWay(Dictionary<string, string> dict)
-        {
-            string password;
-            if (dict.ContainsKey("passwordenc"))
-            {
-                //we decoded gamespy encoded password then get md5 of it         
-                password = DecodePassword(dict["passwordenc"]);
-                dict.Add("passenc", StringExtensions.GetMD5Hash(password));
-            }
-            if (dict.ContainsKey("passenc"))
-            {
-                //we decoded gamespy encoded password then get md5 of it  
-                password = DecodePassword(dict["passenc"]);
-                dict["passenc"] = StringExtensions.GetMD5Hash(password);
-            }
-            if (dict.ContainsKey("pass"))
-            {
-                password = StringExtensions.GetMD5Hash(dict["pass"]);
-                dict.Add("passenc", password);
-            }
-            if (dict.ContainsKey("password"))
-            {
-                password = StringExtensions.GetMD5Hash(dict["password"]);
-                dict.Add("passenc", password);
-            }
-        }
+    
 
         public static void PrintReceivedGPDictToLogger(Dictionary<string, string> recv)
         {

@@ -7,7 +7,7 @@ using PresenceSearchPlayer.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class UpdateProRequest : PCMRequestBase
+    public class UpdateProRequest : PCMRequest
     {
         public UpdateProRequest(Dictionary<string, string> recv) : base(recv)
         {
