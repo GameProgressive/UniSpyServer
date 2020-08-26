@@ -57,7 +57,7 @@ namespace GameSpyLib.MiscMethod
         public static byte[] GsPassEncode(byte[] pass)
         {
             int a = 0;
-            int num = 0x79707367; // gspy
+            int num = 0x79707367; // gamespy
             for (int i = 0; i < pass.Length; ++i)
             {
                 num = Gslame(num);
