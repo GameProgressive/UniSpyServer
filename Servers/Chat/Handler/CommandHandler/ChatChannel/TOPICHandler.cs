@@ -7,18 +7,18 @@ namespace Chat.Handler.CommandHandler
 {
     public class TOPICHandler : ChatCommandHandlerBase
     {
-        new TOPIC _cmd;
+        new TOPIC _request;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public TOPICHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public TOPICHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (TOPIC)cmd;
+            _request = (TOPIC)request;
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_session.UserInfo.GetJoinedChannelByName(_cmd.ChannelName, out _channel))
+            if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
             {
                 _errorCode = Entity.Structure.ChatError.Parse;
                 return;
@@ -30,14 +30,14 @@ namespace Chat.Handler.CommandHandler
             }
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
             if (!_user.IsChannelOperator)
             {
                 return;
             }
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case TOPICCmdType.GetChannelTopic:
                     GetChannelTopic();
@@ -49,7 +49,7 @@ namespace Chat.Handler.CommandHandler
 
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
             if (_errorCode > Entity.Structure.ChatError.NoError)
@@ -76,21 +76,21 @@ namespace Chat.Handler.CommandHandler
         
         private void SetChannelTopic()
         {
-            _channel.Property.SetChannelTopic(_cmd.ChannelTopic);
+            _channel.Property.SetChannelTopic(_request.ChannelTopic);
             _sendingBuffer =
                 ChatReply.BuildTopicReply(
                     _channel.Property.ChannelName,
                     _channel.Property.ChannelTopic);
         }
 
-        public override void Response()
+        protected override void Response()
         {
             base.Response();
             if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {
                 return;
             }
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case TOPICCmdType.GetChannelTopic:
                     _session.SendAsync(_sendingBuffer);

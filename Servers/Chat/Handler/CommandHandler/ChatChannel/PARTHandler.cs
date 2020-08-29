@@ -5,17 +5,17 @@ namespace Chat.Handler.CommandHandler
 {
     public class PARTHandler : ChatChannelHandlerBase
     {
-        new PART _cmd;
-        public PARTHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        new PART _request;
+        public PARTHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (PART)cmd;
+            _request = (PART)request;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
 
-            _channel.LeaveChannel(_user, _cmd.Reason);
+            _channel.LeaveChannel(_user, _request.Reason);
         }
     }
 }

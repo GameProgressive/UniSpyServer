@@ -6,24 +6,24 @@ namespace Chat.Handler.CommandHandler
 {
     public class NOTICEHandler : ChatMessageHandlerBase
     {
-        new NOTICE _cmd;
-        public NOTICEHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        new NoticeRequest _request;
+        public NOTICEHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (NOTICE)cmd;
+            _request = (NoticeRequest)cmd;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
                     _sendingBuffer = ChatReply.BuildNoticeReply(
-                            _user.UserInfo, _cmd.ChannelName, _cmd.Message);
+                            _user.UserInfo, _request.ChannelName, _request.Message);
                     break;
                 case ChatMessageType.UserMessage:
                     _sendingBuffer = ChatReply.BuildNoticeReply(
-                        _session.UserInfo, _cmd.NickName, _cmd.Message);
+                        _session.UserInfo, _request.NickName, _request.Message);
                     break;
             }
         }

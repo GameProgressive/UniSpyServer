@@ -14,12 +14,12 @@ namespace Chat.Handler.CommandHandler
     /// </summary>
     public class JOINHandler : ChatLogedInHandlerBase
     {
-        new JOIN _cmd;
+        new JOINRequest _request;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public JOINHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public JOINHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (JOIN)cmd;
+            _request = new JOINRequest(request.RawRequest);
         }
 
         //1.筛选出所要加入的频道，如果不存在则创建
@@ -31,7 +31,7 @@ namespace Chat.Handler.CommandHandler
         //发送频道模式给此用户
         //发送频道用户列表给此用户
         //_errorCode>1024
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
             if (_errorCode != ChatError.NoError)
@@ -43,18 +43,18 @@ namespace Chat.Handler.CommandHandler
             if (_session.UserInfo.JoinedChannels.Count > 2)
             {
                 _sendingBuffer =
-                    ChatIRCError.BuildToManyChannelError(_cmd.ChannelName);
+                    ChatIRCError.BuildToManyChannelError(_request.ChannelName);
                 return;
             }
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
 
             _user = new ChatChannelUser(_session);
 
-            if (ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
+            if (ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
                 //join
                 JoinChannel();
@@ -70,14 +70,14 @@ namespace Chat.Handler.CommandHandler
         {
             _channel = new ChatChannelBase();
 
-            if (IsPeerServer(_cmd.ChannelName))
+            if (IsPeerServer(_request.ChannelName))
             {
                 _channel.Property.SetPeerServerFlag(true);
             }
 
             _user.SetDefaultProperties(true);
 
-            _channel.Property.SetDefaultProperties(_user, _cmd);
+            _channel.Property.SetDefaultProperties(_user, _request);
 
             //simple check for avoiding program crash
             if (!_channel.IsUserExisted(_user))
@@ -94,7 +94,7 @@ namespace Chat.Handler.CommandHandler
             //send channel mode to joiner
             _channel.SendChannelModesToJoiner(_user);
 
-            ChatChannelManager.AddChannel(_cmd.ChannelName, _channel);
+            ChatChannelManager.AddChannel(_request.ChannelName, _channel);
         }
 
         public void JoinChannel()

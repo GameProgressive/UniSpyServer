@@ -11,26 +11,26 @@ namespace Chat.Handler.CommandHandler
     // Set a value to NULL or "" to clear that key.
     public class GETCHANKEYHandler : ChatChannelHandlerBase
     {
-        new GETCHANKEY _cmd;
+        new GETCHANKEY _request;
         string _values;
-        public GETCHANKEYHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        public GETCHANKEYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (GETCHANKEY)cmd;
+            _request = (GETCHANKEY)cmd;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
-            _values = _channel.Property.GetChannelValueString(_cmd.Keys);
+            _values = _channel.Property.GetChannelValueString(_request.Keys);
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
             _sendingBuffer =
                 ChatReply.BuildGetChanKeyReply(
                     _user, _channel.Property.ChannelName,
-                    _cmd.Cookie, _values);
+                    _request.Cookie, _values);
         }
     }
 }

@@ -6,16 +6,16 @@ namespace Chat.Handler.CommandHandler
 {
     public class PRIVMSGHandler : ChatMessageHandlerBase
     {
-        new PRIVMSG _cmd;
-        public PRIVMSGHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        new PRIVMSG _request;
+        public PRIVMSGHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (PRIVMSG)cmd;
+            _request = (PRIVMSG)request;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
                     BuildChannelMessage();
@@ -28,7 +28,7 @@ namespace Chat.Handler.CommandHandler
         private void BuildUserMessage()
         {
             _sendingBuffer =
-                ChatReply.BuildPrivMsgReply(_session.UserInfo, _cmd.NickName, _cmd.Message);
+                ChatReply.BuildPrivMsgReply(_session.UserInfo, _request.NickName, _request.Message);
         }
 
         private void BuildChannelMessage()
@@ -54,7 +54,7 @@ namespace Chat.Handler.CommandHandler
 
             _sendingBuffer =
                ChatReply.BuildPrivMsgReply(_user.UserInfo,
-               _cmd.ChannelName, _cmd.Message);
+               _request.ChannelName, _request.Message);
         }
     }
 }

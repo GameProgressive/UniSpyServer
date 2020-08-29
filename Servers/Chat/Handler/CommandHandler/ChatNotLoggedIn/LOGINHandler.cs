@@ -13,30 +13,30 @@ namespace Chat.Handler.CommandHandler
     {
 
         string _password;
-        new LOGIN _cmd;
+        new LOGIN _request;
         uint _profileid;
         uint _userid;
-        public LOGINHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        public LOGINHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (LOGIN)cmd;
+            _request = (LOGIN)cmd;
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
 
             /// TODO: Verify which games does send a GS encoded password and not md5
             //we decoded gamespy encoded password then get md5 of it 
-            //_password = GameSpyUtils.DecodePassword(_cmd.PasswordHash);
+            //_password = GameSpyUtils.DecodePassword(_request.PasswordHash);
             //_password = StringExtensions.GetMD5Hash(_password);
 
-            _password = _cmd.PasswordHash;
+            _password = _request.PasswordHash;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case LoginType.NickAndEmailLogin:
                     NickAndEmailLogin();
@@ -48,7 +48,7 @@ namespace Chat.Handler.CommandHandler
 
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
             _sendingBuffer = ChatReply.BuildLoginReply(_userid, _profileid);
@@ -61,8 +61,8 @@ namespace Chat.Handler.CommandHandler
             {
                 var result = from u in db.Users
                              join p in db.Profiles on u.Userid equals p.Userid
-                             where u.Email == _cmd.Email
-                             && p.Nick == _cmd.NickName
+                             where u.Email == _request.Email
+                             && p.Nick == _request.NickName
                              && u.Password == _password
                              select new
                              {
@@ -88,8 +88,8 @@ namespace Chat.Handler.CommandHandler
                 var result = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
                            join u in db.Users on p.Userid equals u.Userid
-                           where n.Uniquenick == _cmd.UniqueNick
-                           && n.Namespaceid == _cmd.NameSpaceID
+                           where n.Uniquenick == _request.UniqueNick
+                           && n.Namespaceid == _request.NameSpaceID
                            select new
                            {
                                userid = u.Userid,

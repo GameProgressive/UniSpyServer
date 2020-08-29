@@ -146,7 +146,7 @@ namespace Chat.Entity.Structure.ChatUser
 
         public string BuildReply(string command, string cmdParams, string tailing)
         {
-            return ChatCommandBase.BuildReply(this, command, cmdParams, tailing);
+            return ChatRequestBase.BuildReply(this, command, cmdParams, tailing);
         }
     }
 }

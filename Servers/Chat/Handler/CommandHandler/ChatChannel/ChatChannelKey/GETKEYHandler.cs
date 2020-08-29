@@ -11,13 +11,13 @@ namespace Chat.Handler.CommandHandler
     /// </summary>
     public class GETKEYHandler : ChatLogedInHandlerBase
     {
-        new GETKEY _cmd;
-        public GETKEYHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        new GETKEY _request;
+        public GETKEYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (GETKEY)cmd;
+            _request = (GETKEY)cmd;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
             _sendingBuffer = "";
@@ -26,11 +26,11 @@ namespace Chat.Handler.CommandHandler
                 ChatChannelUser user;
                 if (channel.GetChannelUserBySession(_session, out user))
                 {
-                    string valueStr = user.GetUserValuesString(_cmd.Keys);
-                    _sendingBuffer += ChatReply.BuildGetKeyReply(_session.UserInfo, _cmd.Cookie, valueStr);
+                    string valueStr = user.GetUserValuesString(_request.Keys);
+                    _sendingBuffer += ChatReply.BuildGetKeyReply(_session.UserInfo, _request.Cookie, valueStr);
                 }
             }
-            _sendingBuffer += ChatReply.BuildEndOfGetKeyReply(_session.UserInfo, _cmd.Cookie);
+            _sendingBuffer += ChatReply.BuildEndOfGetKeyReply(_session.UserInfo, _request.Cookie);
         }
     }
 }

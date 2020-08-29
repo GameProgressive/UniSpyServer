@@ -7,27 +7,27 @@ namespace Chat.Handler.CommandHandler
 
     public class UTMHandler : ChatMessageHandlerBase
     {
-        new UTM _cmd;
+        new UTM _request;
 
-        public UTMHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public UTMHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (UTM)cmd;
+            _request = (UTM)request;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
 
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
                     _sendingBuffer =
-                        ChatReply.BuildUTMReply(_user.UserInfo, _cmd.ChannelName, _cmd.Message);
+                        ChatReply.BuildUTMReply(_user.UserInfo, _request.ChannelName, _request.Message);
                     break;
                 case ChatMessageType.UserMessage:
                     _sendingBuffer =
                         ChatReply.BuildUTMReply(
-                        _session.UserInfo, _cmd.NickName, _cmd.Message);
+                        _session.UserInfo, _request.NickName, _request.Message);
                     break;
             }
         }

@@ -34,7 +34,7 @@ namespace Chat.Entity.Structure.ChatChannel
             ChannelKeyValue = new Dictionary<string, string>();
         }
 
-        public void SetDefaultProperties(ChatChannelUser creator, JOIN cmd)
+        public void SetDefaultProperties(ChatChannelUser creator, JOINRequest cmd)
         {
             MaxNumberUser = 200;
             ChannelName = cmd.ChannelName;

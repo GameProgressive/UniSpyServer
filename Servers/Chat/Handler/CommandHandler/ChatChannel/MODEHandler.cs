@@ -8,15 +8,15 @@ namespace Chat.Handler.CommandHandler
 {
     public class MODEHandler : ChatLogedInHandlerBase
     {
-       new MODE _cmd;
+       new MODE _request;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public MODEHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public MODEHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (MODE)cmd;
+            _request = (MODE)request;
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
             if (_errorCode != ChatError.NoError)
@@ -24,7 +24,7 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
 
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case ModeRequestType.EnableUserQuietFlag:
                 case ModeRequestType.DisableUserQuietFlag:
@@ -41,14 +41,14 @@ namespace Chat.Handler.CommandHandler
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
                 _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
                 return;
             }
 
-            if (!_session.UserInfo.GetJoinedChannelByName(_cmd.ChannelName, out _channel))
+            if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
             {
                 _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
                 return;
             }
 
@@ -60,11 +60,11 @@ namespace Chat.Handler.CommandHandler
             }
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
 
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case ModeRequestType.GetChannelModes:
                     GetChannelModes();
@@ -99,7 +99,7 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = ChatError.DataOperation;
                 return;
             }
-            _channel.Property.SetProperties(_user, _cmd);
+            _channel.Property.SetProperties(_user, _request);
         }
     }
 }

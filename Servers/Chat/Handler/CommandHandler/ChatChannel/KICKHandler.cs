@@ -8,14 +8,14 @@ namespace Chat.Handler.CommandHandler
 {
     public class KICKHandler : ChatChannelHandlerBase
     {
-        new KICK _cmd;
+        new KICKRequest _request;
         ChatChannelUser _kickee;
-        public KICKHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        public KICKHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (KICK)cmd;
+            _request = (KICKRequest)cmd;
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
             if (_errorCode != ChatError.NoError)
@@ -28,7 +28,7 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = ChatError.NotChannelOperator;
                 return;
             }
-            if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _kickee))
+            if (!_channel.GetChannelUserByNickName(_request.NickName, out _kickee))
             {
                 _errorCode = ChatError.Parse;
                 return;
@@ -36,16 +36,16 @@ namespace Chat.Handler.CommandHandler
         }
 
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
             _sendingBuffer =
                 ChatReply.BuildKickReply(
                     _channel.Property.ChannelName,
-                    _user, _kickee, _cmd.Reason);
+                    _user, _kickee, _request.Reason);
         }
 
-        public override void Response()
+        protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {

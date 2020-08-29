@@ -9,18 +9,18 @@ namespace Chat.Handler.CommandHandler
 
     public class GETCKEYHandler : ChatChannelHandlerBase
     {
-        new GETCKEY _cmd;
+        new GETCKEY _request;
 
-        public GETCKEYHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public GETCKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (GETCKEY)cmd;
+            _request = (GETCKEY)request;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
 
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case GetKeyType.GetChannelAllUserKeyValue:
                     GetChannelAllUserKeyValue();
@@ -44,7 +44,7 @@ namespace Chat.Handler.CommandHandler
         private void GetChannelSpecificUserKeyValue()
         {
             ChatChannelUser user;
-            if (!_channel.GetChannelUserByNickName(_cmd.NickName, out user))
+            if (!_channel.GetChannelUserByNickName(_request.NickName, out user))
             {
                 _errorCode = ChatError.IRCError;
                 return;
@@ -58,7 +58,7 @@ namespace Chat.Handler.CommandHandler
 
             _sendingBuffer += ChatReply.BuildGetCKeyReply(
                     user.UserInfo.NickName, _channel.Property.ChannelName,
-                    _cmd.Cookie, flags);
+                    _request.Cookie, flags);
         }
 
         private void GetUserKeyValue(ChatChannelUser user)
@@ -70,7 +70,7 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
 
-            if (_cmd.Keys.Count == 1 && _cmd.Keys.Contains("b_flags"))
+            if (_request.Keys.Count == 1 && _request.Keys.Contains("b_flags"))
             {
                 GetUserBFlagsOnly(user);
             }
@@ -82,14 +82,14 @@ namespace Chat.Handler.CommandHandler
 
         private void GetAllKeyValues(ChatChannelUser user)
         {
-            string flags = user.GetUserValuesString(_cmd.Keys);
+            string flags = user.GetUserValuesString(_request.Keys);
 
             //todo check the paramemter 
             _sendingBuffer +=
                 ChatReply.BuildGetCKeyReply(
                     user.UserInfo.NickName,
                     _channel.Property.ChannelName,
-                    _cmd.Cookie, flags);
+                    _request.Cookie, flags);
         }
 
 
@@ -98,7 +98,7 @@ namespace Chat.Handler.CommandHandler
             _sendingBuffer +=
                 ChatReply.BuildEndOfGetCKeyReply(
                   _channel.Property.ChannelName,
-                    _cmd.Cookie);
+                    _request.Cookie);
         }
     }
 }

@@ -8,18 +8,18 @@ namespace Chat.Handler.CommandHandler
 {
     public class NICKHandler : ChatCommandHandlerBase
     {
-        new NICK _cmd;
-        public NICKHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        new NICK _request;
+        public NICKHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (NICK)cmd;
+            _request = new NICK(request.RawRequest);
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
 
             base.CheckRequest();
 
-            if (ChatSessionManager.IsNickNameExisted(_cmd.NickName))
+            if (ChatSessionManager.IsNickNameExisted(_request.NickName))
             {
                 _errorCode = ChatError.IRCError;
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
@@ -27,10 +27,10 @@ namespace Chat.Handler.CommandHandler
 
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
-            _session.UserInfo.SetNickName(_cmd.NickName);
+            _session.UserInfo.SetNickName(_request.NickName);
         }
     }
 }

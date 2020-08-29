@@ -13,16 +13,16 @@ namespace Chat.Handler.CommandHandler
     // Set a value to NULL or "" to clear that key.
     public class SETCKEYHandler : ChatChannelHandlerBase
     {
-        new SETCKEY _cmd;
+        new SETCKEY _request;
         bool IsSetOthersKeyValue;
         ChatChannelUser _otherUser;
-        public SETCKEYHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public SETCKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (SETCKEY)cmd;
+            _request = (SETCKEY)request;
             IsSetOthersKeyValue = false;
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
             if (_errorCode != ChatError.NoError)
@@ -30,7 +30,7 @@ namespace Chat.Handler.CommandHandler
                 return;
             }
 
-            if (_cmd.NickName != _session.UserInfo.NickName)
+            if (_request.NickName != _session.UserInfo.NickName)
             {
                 if (!_user.IsChannelOperator)
                 {
@@ -38,7 +38,7 @@ namespace Chat.Handler.CommandHandler
                     return;
                 }
                 IsSetOthersKeyValue = true;
-                if (!_channel.GetChannelUserByNickName(_cmd.NickName, out _otherUser))
+                if (!_channel.GetChannelUserByNickName(_request.NickName, out _otherUser))
                 {
                     _errorCode = ChatError.IRCError;
                     _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
@@ -48,28 +48,28 @@ namespace Chat.Handler.CommandHandler
 
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
  
             if (IsSetOthersKeyValue)
             {
-                _otherUser.UpdateUserKeyValue(_cmd.KeyValues);
+                _otherUser.UpdateUserKeyValue(_request.KeyValues);
             }
             else
             {
-                _user.UpdateUserKeyValue(_cmd.KeyValues);
+                _user.UpdateUserKeyValue(_request.KeyValues);
             }
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
 
             BuildBCASTReply();
         }
 
-        public override void Response()
+        protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {
@@ -82,9 +82,9 @@ namespace Chat.Handler.CommandHandler
         {
             //we only broadcast the b_flags
             string flags = "";
-            if (_cmd.KeyValues.ContainsKey("b_flags"))
+            if (_request.KeyValues.ContainsKey("b_flags"))
             {
-                flags += @"\" + "b_flags" + @"\" + _cmd.KeyValues["b_flags"];
+                flags += @"\" + "b_flags" + @"\" + _request.KeyValues["b_flags"];
             }
 
             //todo check the paramemter

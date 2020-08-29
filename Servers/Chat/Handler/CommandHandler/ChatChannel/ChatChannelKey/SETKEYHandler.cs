@@ -9,13 +9,13 @@ namespace Chat.Handler.CommandHandler.ChatChannel.ChatChannelKey
     /// </summary>
     public class SETKEYHandler : ChatLogedInHandlerBase
     {
-        new SETKEY _cmd;
-        public SETKEYHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        new SETKEY _request;
+        public SETKEYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (SETKEY)cmd;
+            _request = (SETKEY)cmd;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
             //string buffer = ChatReply.BuildGetKeyReply()
@@ -24,7 +24,7 @@ namespace Chat.Handler.CommandHandler.ChatChannel.ChatChannelKey
                 ChatChannelUser user;
                 if (channel.GetChannelUserBySession(_session, out user))
                 {
-                    user.UpdateUserKeyValue(_cmd.KeyValues);
+                    user.UpdateUserKeyValue(_request.KeyValues);
                 }
             }
         }

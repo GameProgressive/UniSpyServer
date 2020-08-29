@@ -15,17 +15,17 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
     /// </summary>
     public class WHOHandler : ChatLogedInHandlerBase
     {
-        new WHO _cmd;
+        new WHO _request;
 
-        public WHOHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        public WHOHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (WHO)cmd;
+            _request = (WHO)cmd;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case WHOType.GetChannelUsersInfo:
                     GetChannelUsersInfo();
@@ -39,10 +39,10 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
         private void GetChannelUsersInfo()
         {
             ChatChannelBase channel;
-            if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out channel))
+            if (!ChatChannelManager.GetChannel(_request.ChannelName, out channel))
             {
                 _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
                 return;
             }
             _sendingBuffer = "";
@@ -65,7 +65,7 @@ namespace Chat.Handler.CommandHandler.ChatBasicCommandHandler
         {
             ChatSession session;
 
-            if (!ChatSessionManager.GetSessionByUserName(_cmd.NickName, out session))
+            if (!ChatSessionManager.GetSessionByUserName(_request.NickName, out session))
             {
                 _errorCode = ChatError.IRCError;
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();

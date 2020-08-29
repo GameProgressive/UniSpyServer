@@ -11,22 +11,22 @@ namespace Chat.Handler.CommandHandler
 {
     public class CRYPTHandler : ChatCommandHandlerBase
     {
-        new CRYPT _cmd;
+        new CRYPT _request;
 
-        public CRYPTHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public CRYPTHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (CRYPT)cmd;
+            _request = new CRYPT(request.RawRequest);
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
 
             // CRYPT des 1 gamename
-            _session.UserInfo.SetGameName(_cmd.GameName);
+            _session.UserInfo.SetGameName(_request.GameName);
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
             string secretKey;
@@ -39,7 +39,7 @@ namespace Chat.Handler.CommandHandler
             _session.UserInfo.SetGameSecretKey(secretKey);
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
 
@@ -53,7 +53,7 @@ namespace Chat.Handler.CommandHandler
                BuildCryptReply(ChatServer.ClientKey, ChatServer.ServerKey);
         }
 
-        public override void Response()
+        protected override void Response()
         {
             //set use encryption flag to true
             _session.SendAsync(_sendingBuffer);

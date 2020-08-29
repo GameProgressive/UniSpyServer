@@ -7,11 +7,11 @@ namespace Chat.Handler.CommandHandler
 {
     public class USRIPHandler : ChatCommandHandlerBase
     {
-        public USRIPHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public USRIPHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
 

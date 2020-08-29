@@ -12,15 +12,15 @@ namespace Chat.Handler.CommandHandler
     // Set a value to NULL or "" to clear that key.
     public class SETCHANKEYHandler : ChatChannelHandlerBase
     {
-        new SETCHANKEY _cmd;
+        new SETCHANKEY _request;
 
-        public SETCHANKEYHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public SETCHANKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (SETCHANKEY)cmd;
+            _request = (SETCHANKEY)request;
         }
 
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
             if (!_user.IsChannelOperator)
@@ -28,14 +28,14 @@ namespace Chat.Handler.CommandHandler
                 _errorCode = ChatError.NotChannelOperator;
                 return;
             }
-            _channel.Property.SetChannelKeyValue(_cmd.KeyValue);
+            _channel.Property.SetChannelKeyValue(_request.KeyValue);
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
             string flags = "";
-            foreach (var kv in _cmd.KeyValue)
+            foreach (var kv in _request.KeyValue)
             {
                 flags += $@"\{kv.Key}\{kv.Value}";
             }

@@ -1,8 +1,12 @@
-﻿using Chat.Entity.Structure.ChatCommand;
-using Chat.Server;
+﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatCommand;
+using Chat.Handler.CommandHandler;
+using Chat.Handler.CommandHandler.ChatBasicCommandHandler;
+using Chat.Handler.CommandHandler.ChatChannel.ChatChannelKey;
 using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 
@@ -13,49 +17,137 @@ namespace Chat.Handler.CommandSwitcher
     /// </summary>
     public class ChatCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(ISession client, string buffer)
+        public void Switch(ISession session, string recv)
         {
-            List<ChatCommandBase> cmds = new List<ChatCommandBase>();
 
-            string[] requests = buffer.Replace("\r", "").Split("\n", StringSplitOptions.RemoveEmptyEntries);
+            List<ChatRequestBase> requestList = new List<ChatRequestBase>();
 
+            string[] rawRequests = recv.Replace("\r", "")
+                .Split("\n", StringSplitOptions.RemoveEmptyEntries);
             // first we convert request into our ChatCommand class
             // next we handle each command
-            foreach (var request in requests)
+            foreach (var rawRequest in rawRequests)
             {
-                ChatCommandBase basicCmd = new ChatCommandBase();
+                ChatRequestBase request = new ChatRequestBase(rawRequest);
 
-                if (!basicCmd.Parse(request))
+                if (!request.Parse())
                 {
-                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,"Invalid request!");
+                    LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
                     continue;
                 }
 
-                //TODO create command according to its name
-                Type cmdType =
-                    Type.GetType(basicCmd.GetType().Namespace + "." + basicCmd.CommandName);
-
-                if (cmdType == null)
-                {
-                    LogWriter.ToLog($"{basicCmd.CommandName} Not implemented yet");
-                    continue;
-                }
-
-                ChatCommandBase cmd = (ChatCommandBase)Activator.CreateInstance(cmdType);
-
-                if (!cmd.Parse(request))
-                {
-                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, $"{cmd.CommandName} Parsing failed!");
-                    continue;
-                }
-                cmds.Add(cmd);
+                requestList.Add(request);
             }
 
-            if (cmds.Count == 0)
+            foreach (var request in requestList)
             {
-                return;
+                switch (request.CmdName)
+                {
+                    case ChatCmdName.CKEY:
+                        break;
+                    case ChatCmdName.CRYPT:
+                        new CRYPTHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.USER:
+                        new USERHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.NICK:
+                        new NICKHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.INVITE:
+                        goto default;
+
+                    case ChatCmdName.LIST:
+                        new LISTHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.LISTLIMIT:
+                        goto default;
+
+                    case ChatCmdName.LOGIN:
+                        new LOGINHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.LOGINPREAUTH:
+                        goto default;
+
+                    case ChatCmdName.MODE:
+                        new MODEHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.NAMES:
+                        new NAMESHandler(session, request).Handle();
+                        break;
+
+                    case ChatCmdName.PING:
+                        new PINGHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.PONG:
+                        goto default;
+                    case ChatCmdName.QUIT:
+                        new QUITHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.REGISTERNICK:
+                        goto default;
+                    case ChatCmdName.USERIP:
+                        goto default;
+
+                    case ChatCmdName.WHO:
+                        new WHOHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.WHOIS:
+                        new WHOISHandler(session, request).Handle();
+                        break;
+
+                    case ChatCmdName.GETCHANKEY:
+                        new GETCHANKEYHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.GETCKEY:
+                        new GETCKEYHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.GETKEY:
+                        new GETKEYHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.SETCHANKEY:
+                        new SETCHANKEYHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.SETCKEY:
+                        new SETCKEYHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.SETKEY:
+                        new SETKEYHandler(session, request).Handle();
+                        break;
+
+                    case ChatCmdName.GETUDPRELAY: goto default;
+                    case ChatCmdName.SETGROUP: goto default;
+                    case ChatCmdName.JOIN:
+                        new JOINHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.KICK:
+                        new KICKHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.PART:
+                        new PARTHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.TOPIC:
+                        new TOPICHandler(session, request).Handle();
+                        break;
+
+                    case ChatCmdName.ATM:
+                        new ATMHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.UTM:
+                        new UTMHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.NOTICE:
+                        new NOTICEHandler(session, request).Handle();
+                        break;
+                    case ChatCmdName.PRIVMSG:
+                        new PRIVMSGHandler(session, request).Handle();
+                        break;
+
+                    default:
+                        LogWriter.ToLog(LogEventLevel.Error, $"{request.CmdName}Handler Not implemented yet");
+                        break;
+                }
             }
-            ChatServer.CommandManager.HandleCommands(client, cmds);
         }
     }
 }

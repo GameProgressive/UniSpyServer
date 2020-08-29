@@ -60,7 +60,7 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildCryptReply(string clientKey, string serverKey)
         {
-            return ChatCommandBase.BuildReply(
+            return ChatRequestBase.BuildReply(
                     SecureKey,
                     $"* {clientKey} {serverKey}");
         }
@@ -71,12 +71,12 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildUserIPReply(string ip)
         {
-            return ChatCommandBase.BuildReply(UserIP, "", $"@{ip}");
+            return ChatRequestBase.BuildReply(UserIP, "", $"@{ip}");
         }
 
         public static string BuildWhoReply(string channelName, ChatUserInfo userInfo, string modes)
         {
-            return ChatCommandBase.BuildReply(
+            return ChatRequestBase.BuildReply(
                     WhoReply,
                     $"param1 {channelName} " +
                     $"{userInfo.UserName} {userInfo.PublicIPAddress} param5 {userInfo.NickName} {modes} param8");
@@ -84,19 +84,19 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildEndOfWhoReply(string name)
         {
-            return ChatCommandBase.BuildReply(EndOfWho, $"param1 {name} param3","End of WHO.");
+            return ChatRequestBase.BuildReply(EndOfWho, $"param1 {name} param3","End of WHO.");
         }
 
         public static string BuildWhoIsUserReply(ChatUserInfo userInfo)
         {
-            return ChatCommandBase.BuildReply(
+            return ChatRequestBase.BuildReply(
                 WhoIsUser,
                  $"{userInfo.NickName} {userInfo.Name} {userInfo.UserName} {userInfo.PublicIPAddress} *",
                  userInfo.UserName);
         }
         public static string BuildWhoIsChannelReply(ChatUserInfo userInfo, string channelName)
         {
-            return ChatCommandBase.BuildReply(
+            return ChatRequestBase.BuildReply(
                     WhoIsChannels,
                     $"{userInfo.NickName} {userInfo.Name}",
                     channelName
@@ -105,7 +105,7 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildEndOfWhoIsReply(ChatUserInfo userInfo)
         {
-            return ChatCommandBase.BuildReply(
+            return ChatRequestBase.BuildReply(
                     EndOfWhoIs,
                     $"{userInfo.NickName} {userInfo.Name}",
                     "End of /WHOIS list."
@@ -114,13 +114,13 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)
         {
-            return ChatCommandBase.BuildReply(GetCKey,
+            return ChatRequestBase.BuildReply(GetCKey,
                 $"* {channelName} {nickname} {cookie} {flags}");
         }
 
         public static string BuildEndOfGetCKeyReply(string channelName, string cookie)
         {
-            return ChatCommandBase.BuildReply(EndGetCKey,
+            return ChatRequestBase.BuildReply(EndGetCKey,
                   $"* {channelName} {cookie}",
                   "End Of /GETCKEY.");
         }
@@ -134,7 +134,7 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildModeReply(string channelName, string modes)
         {
-            return ChatCommandBase.BuildReply(MODE, $"{channelName} {modes}");
+            return ChatRequestBase.BuildReply(MODE, $"{channelName} {modes}");
         }
 
         public static string BuildListStartReply(ChatUserInfo userInfo, ChatChannelProperty property)
@@ -174,20 +174,20 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildNameReply(string nickName, string channelName, string nicks)
         {
-            return ChatCommandBase.BuildReply(
+            return ChatRequestBase.BuildReply(
                     NameReply,
                     $"{nickName} = {channelName}", nicks);
         }
 
         public static string BuildEndOfNameReply(string nickName, string channelName)
         {
-            return ChatCommandBase.BuildReply(EndOfNames,
+            return ChatRequestBase.BuildReply(EndOfNames,
                     $"{nickName} {channelName}", @"End of /NAMES list.");
         }
 
         public static string BuildChannelModesReply(ChatChannelUser user, string channelName, string modes)
         {
-            return ChatCommandBase.BuildReply(ChannelModels,
+            return ChatRequestBase.BuildReply(ChannelModels,
                 $"{user.UserInfo.NickName} {channelName} {modes}");
         }
 
@@ -199,17 +199,17 @@ namespace Chat.Entity.Structure.ChatResponse
         public static string BuildNoTopicReply(string channelName)
         {
             return
-                ChatCommandBase.BuildReply(NoTopic, channelName);
+                ChatRequestBase.BuildReply(NoTopic, channelName);
         }
         public static string BuildTopicReply(string channelName, string channelTopic)
         {
             return
-                   ChatCommandBase.BuildReply(TOPIC, channelName, channelTopic);
+                   ChatRequestBase.BuildReply(TOPIC, channelName, channelTopic);
         }
 
         public static string BuildLoginReply(uint userid, uint profileid)
         {
-            return ChatCommandBase.BuildReply(Login, $"param1 {userid} {profileid}");
+            return ChatRequestBase.BuildReply(Login, $"param1 {userid} {profileid}");
         }
 
         public static string BuildGetChanKeyReply(ChatChannelUser user, string channelName, string cookie, string flags)

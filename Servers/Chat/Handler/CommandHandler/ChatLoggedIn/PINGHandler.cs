@@ -7,11 +7,11 @@ namespace Chat.Handler.CommandHandler
 {
     public class PINGHandler : ChatCommandHandlerBase
     {
-        public PINGHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public PINGHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
             _sendingBuffer = ChatReply.BuildPingReply(_session.UserInfo);

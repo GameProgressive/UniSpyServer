@@ -7,21 +7,30 @@ namespace Chat.Handler.CommandHandler
 {
     public class USERHandler : ChatCommandHandlerBase
     {
-        USER _user;
+        new USERRequest _request;
 
-        public USERHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public USERHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _user = (USER)cmd;
+            _request = new USERRequest(request.RawRequest);
         }
 
-        public override void DataOperation()
+        protected override void CheckRequest()
+        {
+            base.CheckRequest();
+            if(!_request.Parse())
+            {
+                _errorCode = ChatError.Parse;
+            }
+        }
+
+        protected override void DataOperation()
         {
             base.DataOperation();
-            _session.UserInfo.SetUserName(_user.UserName);
-            _session.UserInfo.SetName(_user.Name);
+            _session.UserInfo.SetUserName(_request.UserName);
+            _session.UserInfo.SetName(_request.Name);
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
 

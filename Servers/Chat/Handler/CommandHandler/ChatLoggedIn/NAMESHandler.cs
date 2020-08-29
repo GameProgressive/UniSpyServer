@@ -9,15 +9,15 @@ namespace Chat.Handler.CommandHandler
 {
     public class NAMESHandler : ChatCommandHandlerBase
     {
-        new NAMES _cmd;
+        new NAMES _request;
         ChatChannelBase _channel;
         ChatChannelUser _user;
-        public NAMESHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public NAMESHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (NAMES)cmd;
+            _request = (NAMES)request;
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
             //can not find any user
@@ -27,14 +27,14 @@ namespace Chat.Handler.CommandHandler
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                 return;
             }
-            if (!ChatChannelManager.GetChannel(_cmd.ChannelName, out _channel))
+            if (!ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
                 _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_cmd.ChannelName);
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
             }
         }
 
-        public override void Response()
+        protected override void Response()
         {
             _channel.SendChannelUsersToJoiner(_user);
         }

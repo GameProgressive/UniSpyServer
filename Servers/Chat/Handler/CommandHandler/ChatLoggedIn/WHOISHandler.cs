@@ -9,14 +9,14 @@ namespace Chat.Handler.CommandHandler
 {
     public class WHOISHandler : ChatCommandHandlerBase
     {
-        new WHOIS _cmd;
+        new WHOIS _request;
         ChatUserInfo _userInfo;
-        public WHOISHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public WHOISHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (WHOIS)cmd;
+            _request = new WHOIS(request.RawRequest);
         }
 
-        public override void CheckRequest()
+        protected override void CheckRequest()
         {
             base.CheckRequest();
             if (_errorCode != Entity.Structure.ChatError.NoError)
@@ -25,7 +25,7 @@ namespace Chat.Handler.CommandHandler
             }
 
             var result = from s in ChatSessionManager.Sessions.Values
-                         where s.UserInfo.NickName == _cmd.NickName
+                         where s.UserInfo.NickName == _request.NickName
                          select s.UserInfo;
 
             if (result.Count() != 1)
@@ -37,7 +37,7 @@ namespace Chat.Handler.CommandHandler
             _userInfo = result.FirstOrDefault();
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
 

@@ -9,14 +9,14 @@ namespace Chat.Handler.CommandHandler
     //todo unfinished
     public class LISTHandler : ChatLogedInHandlerBase
     {
-        new LIST _cmd;
+        new LIST _request;
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
-        public LISTHandler(ISession client, ChatCommandBase cmd) : base(client, cmd)
+        public LISTHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _cmd = (LIST)cmd;
+            _request = new LIST(request.CmdName);
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
             //add list response header

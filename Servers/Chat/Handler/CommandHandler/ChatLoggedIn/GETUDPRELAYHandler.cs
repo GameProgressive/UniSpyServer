@@ -10,19 +10,19 @@ namespace Chat.Handler.CommandHandler
     /// </summary>
     public class GETUDPRELAYHandler : ChatCommandHandlerBase
     {
-        new GETUDPRELAY _cmd;
+        new GETUDPRELAY _request;
 
-        public GETUDPRELAYHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        public GETUDPRELAYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (GETUDPRELAY)cmd;
+            _request = (GETUDPRELAY)cmd;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
         }
 
-        public override void ConstructResponse()
+        protected override void ConstructResponse()
         {
             base.ConstructResponse();
         }

@@ -8,27 +8,27 @@ namespace Chat.Handler.CommandHandler
 {
     public class ATMHandler : ChatMessageHandlerBase
     {
-        new ATM _cmd;
+        new ATM _request;
 
-        public ATMHandler(ISession session, ChatCommandBase cmd) : base(session, cmd)
+        public ATMHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
-            _cmd = (ATM)cmd;
+            _request = (ATM)cmd;
         }
 
-        public override void DataOperation()
+        protected override void DataOperation()
         {
             base.DataOperation();
-            switch (_cmd.RequestType)
+            switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
                     _sendingBuffer =
                         ChatReply.BuildATMReply(
-                        _user.UserInfo, _cmd.ChannelName, _cmd.Message);
+                        _user.UserInfo, _request.ChannelName, _request.Message);
                     break;
                 case ChatMessageType.UserMessage:
                     _sendingBuffer =
                         ChatReply.BuildATMReply(
-                        _session.UserInfo, _cmd.NickName, _cmd.Message);
+                        _session.UserInfo, _request.NickName, _request.Message);
                     break;
             }
         }
