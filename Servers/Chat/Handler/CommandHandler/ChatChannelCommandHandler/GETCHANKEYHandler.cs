@@ -14,9 +14,9 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     {
         new GETCHANKEYRequest _request;
         string _values;
-        public GETCHANKEYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public GETCHANKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (GETCHANKEYRequest)cmd;
+            _request = new GETCHANKEYRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

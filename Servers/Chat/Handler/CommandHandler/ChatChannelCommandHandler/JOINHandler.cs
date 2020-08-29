@@ -102,47 +102,58 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 
         public void JoinChannel()
         {
-            //channel.JoinChannel(_session);
-            if (_channel.Property.ChannelMode.IsInviteOnly)
+            if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
             {
-                //invited only
-                _errorCode = ChatError.IRCError;
-                return;
-            }
+                //then we send user list which already in this channel ???????????
+                _channel.SendChannelUsersToJoiner(_user);
 
-            if (_channel.IsUserBanned(_user))
+                //send channel mode to joiner
+                _channel.SendChannelModesToJoiner(_user);
+            }
+            else
             {
-                _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildBannedFromChannelError(_channel.Property.ChannelName);
-                return;
+                //channel.JoinChannel(_session);
+                if (_channel.Property.ChannelMode.IsInviteOnly)
+                {
+                    //invited only
+                    _errorCode = ChatError.IRCError;
+                    return;
+                }
+
+                if (_channel.IsUserBanned(_user))
+                {
+                    _errorCode = ChatError.IRCError;
+                    _sendingBuffer = ChatIRCError.BuildBannedFromChannelError(_channel.Property.ChannelName);
+                    return;
+                }
+                if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
+                {
+                    _errorCode = ChatError.IRCError;
+                    _sendingBuffer = ChatIRCError.BuildChannelIsFullError(_channel.Property.ChannelName);
+                    return;
+                }
+                //if all pass, it mean  we excute join channel
+                _user.SetDefaultProperties();
+
+
+                //simple check for avoiding program crash
+                if (_channel.IsUserExisted(_user))
+                {
+                    _errorCode = ChatError.UserAlreadyInChannel;
+                    return;
+                }
+
+                _channel.AddBindOnUserAndChannel(_user);
+
+                //first we send join information to all user in this channel
+                _channel.MultiCastJoin(_user);
+
+                //then we send user list which already in this channel ???????????
+                _channel.SendChannelUsersToJoiner(_user);
+
+                //send channel mode to joiner
+                _channel.SendChannelModesToJoiner(_user);
             }
-            if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
-            {
-                _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildChannelIsFullError(_channel.Property.ChannelName);
-                return;
-            }
-            //if all pass, it mean  we excute join channel
-            _user.SetDefaultProperties();
-
-
-            //simple check for avoiding program crash
-            if (_channel.IsUserExisted(_user))
-            {
-                _errorCode = ChatError.UserAlreadyInChannel;
-                return;
-            }
-
-            _channel.AddBindOnUserAndChannel(_user);
-
-            //first we send join information to all user in this channel
-            _channel.MultiCastJoin(_user);
-
-            //then we send user list which already in this channel ???????????
-            _channel.SendChannelUsersToJoiner(_user);
-
-            //send channel mode to joiner
-            _channel.SendChannelModesToJoiner(_user);
         }
 
         private bool IsPeerServer(string name)

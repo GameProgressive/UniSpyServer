@@ -8,8 +8,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
     public class USRIPHandler : ChatCommandHandlerBase
     {
+        new USRIPRequest _request;
         public USRIPHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
+            _request = new USRIPRequest(request.RawRequest);
         }
         protected override void CheckRequest()
         {

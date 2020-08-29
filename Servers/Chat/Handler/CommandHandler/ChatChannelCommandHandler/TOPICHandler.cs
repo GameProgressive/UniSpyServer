@@ -13,7 +13,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         ChatChannelUser _user;
         public TOPICHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (TOPICRequest)request;
+            _request = new TOPICRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

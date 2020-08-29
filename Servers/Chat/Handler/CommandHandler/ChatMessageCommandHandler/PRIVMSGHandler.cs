@@ -10,7 +10,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
         new PRIVMSGRequest _request;
         public PRIVMSGHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (PRIVMSGRequest)request;
+            _request = new PRIVMSGRequest(request.RawRequest);
         }
         protected override void CheckRequest()
         {

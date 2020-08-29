@@ -57,11 +57,11 @@ namespace Chat.Handler.SystemHandler.ChatCommandManage
             //AddCommand(new NICK(), typeof(NICKHandler));
         }
 
-        public ChatCommandManager AddCommand(ChatRequestBase cmd, Type cmdHandlerType)
-        {
-            AvailableCommands.TryAdd(cmd.CmdName, cmdHandlerType);
-            return this;
-        }
+        //public ChatCommandManager AddCommand(ChatRequestBase request, Type cmdHandlerType)
+        //{
+        //    AvailableCommands.TryAdd(cmd.CmdName, cmdHandlerType);
+        //    return this;
+        //}
 
         public bool HandleCommands(ISession session, List<ChatRequestBase> requests)
         {

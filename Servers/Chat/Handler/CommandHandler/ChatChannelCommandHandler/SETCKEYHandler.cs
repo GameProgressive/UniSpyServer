@@ -18,7 +18,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         ChatChannelUser _otherUser;
         public SETCKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (SETCKEYRequest)request;
+            _request = new SETCKEYRequest(request.RawRequest);
             IsSetOthersKeyValue = false;
         }
 

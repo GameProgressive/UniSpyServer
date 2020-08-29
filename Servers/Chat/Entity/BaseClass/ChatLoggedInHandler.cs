@@ -6,7 +6,7 @@ namespace Chat.Handler.CommandHandler
 {
     public class ChatLogedInHandlerBase : ChatCommandHandlerBase
     {
-        public ChatLogedInHandlerBase(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public ChatLogedInHandlerBase(ISession session, ChatRequestBase request) : base(session, request)
         {
         }
 

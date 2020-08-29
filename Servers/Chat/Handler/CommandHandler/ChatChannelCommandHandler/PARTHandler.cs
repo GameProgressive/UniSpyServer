@@ -9,7 +9,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         new PARTRequest _request;
         public PARTHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (PARTRequest)request;
+            _request = new PARTRequest(request.RawRequest);
         }
         protected override void CheckRequest()
         {

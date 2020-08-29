@@ -16,7 +16,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 
         public SETCHANKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (SETCHANKEYRequest)request;
+            _request = new SETCHANKEYRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

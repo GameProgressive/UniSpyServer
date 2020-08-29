@@ -13,7 +13,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 
         public GETCKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (GETCKEYRequest)request;
+            _request = new GETCKEYRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

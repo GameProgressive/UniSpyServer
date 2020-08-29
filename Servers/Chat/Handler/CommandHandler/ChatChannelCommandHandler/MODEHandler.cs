@@ -13,7 +13,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         ChatChannelUser _user;
         public MODEHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (MODERequest)request;
+            _request = new MODERequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

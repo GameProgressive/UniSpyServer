@@ -13,9 +13,9 @@ namespace Chat.Handler.CommandHandler
         protected ChatChannelUser _user;
         new ChatChannelRequestBase _request;
 
-        public ChatChannelHandlerBase(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public ChatChannelHandlerBase(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (ChatChannelRequestBase)cmd;
+            _request = new ChatChannelRequestBase(request.RawRequest);
         }
 
         protected override void CheckRequest()

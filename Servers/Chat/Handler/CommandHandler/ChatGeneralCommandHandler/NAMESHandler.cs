@@ -14,7 +14,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         ChatChannelUser _user;
         public NAMESHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (NAMESRequest)request;
+            _request = new NAMESRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()
@@ -25,6 +25,13 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
                 _errorCode = ChatError.Parse;
                 return;
             }
+
+            if (!ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
+            {
+                _errorCode = ChatError.IRCError;
+                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
+            }
+
             //can not find any user
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
@@ -32,11 +39,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                 return;
             }
-            if (!ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
-            {
-                _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
-            }
+
         }
 
         protected override void Response()

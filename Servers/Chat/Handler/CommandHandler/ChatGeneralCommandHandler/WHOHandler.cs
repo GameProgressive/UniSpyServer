@@ -17,9 +17,9 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     {
         new WHORequest _request;
 
-        public WHOHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public WHOHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (WHORequest)cmd;
+            _request = new WHORequest(request.RawRequest);
         }
         protected override void CheckRequest()
         {

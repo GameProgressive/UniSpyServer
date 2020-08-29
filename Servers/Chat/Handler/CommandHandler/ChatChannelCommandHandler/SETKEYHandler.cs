@@ -11,9 +11,9 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     public class SETKEYHandler : ChatLogedInHandlerBase
     {
         new SETKEYRequest _request;
-        public SETKEYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public SETKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (SETKEYRequest)cmd;
+            _request = new SETKEYRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

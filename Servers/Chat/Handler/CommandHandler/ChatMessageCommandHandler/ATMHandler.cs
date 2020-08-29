@@ -11,9 +11,9 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
     {
         new ATMRequest _request;
 
-        public ATMHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public ATMHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (ATMRequest)cmd;
+            _request = new ATMRequest(request.RawRequest);
         }
         protected override void CheckRequest()
         {

@@ -74,7 +74,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public static string BuildReply(string command, string cmdParams, string tailing)
         {
-            return BuildReply(ChatServer.ServerDomain, command, cmdParams, tailing);
+            return BuildReply(ChatServer.ServerDomain,command, cmdParams, tailing);
         }
 
         public static string BuildReply(ChatUserInfo userInfo, string command)

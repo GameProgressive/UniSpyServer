@@ -35,5 +35,12 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             base.DataOperation();
             _session.UserInfo.SetNickName(_request.NickName);
         }
+
+        protected override void ConstructResponse()
+        {
+            base.ConstructResponse();
+            _sendingBuffer =
+               ChatReply.BuildWelcomeReply(_session.UserInfo);
+        }
     }
 }

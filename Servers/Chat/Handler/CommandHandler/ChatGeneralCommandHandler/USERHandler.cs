@@ -35,8 +35,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         {
             base.ConstructResponse();
 
-            _sendingBuffer =
-                ChatReply.BuildWelcomeReply(_session.UserInfo);
+            //TODO check if this is correct
+            //we postpone welcome message until when recieved NICK request
+            //_sendingBuffer =
+            //    ChatReply.BuildWelcomeReply(_session.UserInfo);
 
             _session.UserInfo.SetLoginFlag(true);
 

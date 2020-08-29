@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
 
         public UTMHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (UTMRequest)request;
+            _request = new UTMRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

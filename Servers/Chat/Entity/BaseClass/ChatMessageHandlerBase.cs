@@ -12,9 +12,9 @@ namespace Chat.Handler.CommandHandler
         new ChatMessagRequestBase _request;
         protected ChatSession _otherSession;
 
-        public ChatMessageHandlerBase(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public ChatMessageHandlerBase(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (ChatMessagRequestBase)cmd;
+            _request = new ChatMessagRequestBase(request.RawRequest);
         }
 
         protected override void CheckRequest()

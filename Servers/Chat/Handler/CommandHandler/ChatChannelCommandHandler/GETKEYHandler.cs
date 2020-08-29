@@ -13,9 +13,9 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     public class GETKEYHandler : ChatLogedInHandlerBase
     {
         new GETKEYRequest _request;
-        public GETKEYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public GETKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (GETKEYRequest)cmd;
+            _request = new GETKEYRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

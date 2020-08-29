@@ -10,9 +10,9 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     {
         new KICKRequest _request;
         ChatChannelUser _kickee;
-        public KICKHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public KICKHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (KICKRequest)cmd;
+            _request = new KICKRequest(request.RawRequest);
         }
 
         protected override void CheckRequest()

@@ -55,7 +55,7 @@ namespace Chat.Entity.Structure.ChatResponse
         public static string BuildWelcomeReply(ChatUserInfo userInfo)
         {
             return userInfo.BuildReply(
-                  Welcome, ChatServer.ServerDomain, "Welcome to RetrosSpy!");
+                  Welcome, userInfo.NickName, "Welcome to RetrosSpy!");
         }
 
         public static string BuildCryptReply(string clientKey, string serverKey)

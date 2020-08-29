@@ -13,9 +13,9 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     {
         new GETUDPRELAYRequest _request;
 
-        public GETUDPRELAYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
+        public GETUDPRELAYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = (GETUDPRELAYRequest)cmd;
+            _request = new GETUDPRELAYRequest(request.RawRequest);
         }
         protected override void CheckRequest()
         {
