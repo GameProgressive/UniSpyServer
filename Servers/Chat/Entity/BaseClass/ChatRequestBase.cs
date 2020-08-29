@@ -25,8 +25,6 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public virtual bool Parse()
         {
-            LogWriter.LogCurrentClass(this);
-
             // at most 2 colon character
             // we do not sure about all command
             // so i block this code here

@@ -16,6 +16,16 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             _request = (GETCKEYRequest)request;
         }
 
+        protected override void CheckRequest()
+        {
+            base.CheckRequest();
+            if (!_request.Parse())
+            {
+                _errorCode = ChatError.Parse;
+                return;
+            }
+        }
+
         protected override void DataOperation()
         {
             base.DataOperation();

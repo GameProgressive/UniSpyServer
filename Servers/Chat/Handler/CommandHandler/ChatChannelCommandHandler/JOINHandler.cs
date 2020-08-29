@@ -34,13 +34,16 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (_errorCode != ChatError.NoError)
+
+            if(!_request.Parse())
             {
+                _errorCode = ChatError.Parse;
                 return;
             }
 
-            //game spy only allow one player join one chat room
-            if (_session.UserInfo.JoinedChannels.Count > 2)
+            //some GameSpy game only allow one player join one chat room
+            //but GameSpy Arcade can join more than one channel
+            if (_session.UserInfo.JoinedChannels.Count > 3)
             {
                 _sendingBuffer =
                     ChatIRCError.BuildToManyChannelError(_request.ChannelName);

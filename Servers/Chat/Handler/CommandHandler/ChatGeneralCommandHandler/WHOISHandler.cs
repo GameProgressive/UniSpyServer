@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatUser;
@@ -19,8 +20,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (_errorCode != Entity.Structure.ChatError.NoError)
+
+            if (!_request.Parse())
             {
+                _errorCode = ChatError.Parse;
                 return;
             }
 

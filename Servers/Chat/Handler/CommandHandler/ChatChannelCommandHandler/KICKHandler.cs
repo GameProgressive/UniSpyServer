@@ -18,11 +18,12 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (_errorCode != ChatError.NoError)
+
+            if (!_request.Parse())
             {
+                _errorCode = ChatError.Parse;
                 return;
             }
-
             if (!_user.IsChannelOperator)
             {
                 _errorCode = ChatError.NotChannelOperator;

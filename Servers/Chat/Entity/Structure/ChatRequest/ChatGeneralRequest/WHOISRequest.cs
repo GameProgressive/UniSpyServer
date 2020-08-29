@@ -10,7 +10,7 @@
 
         public override bool Parse()
         {
-            if (!Parse())
+            if (!base.Parse())
             { return false; }
             if (_cmdParams.Count != 1)
             {

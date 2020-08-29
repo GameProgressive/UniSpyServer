@@ -12,7 +12,7 @@
 
         public override bool Parse()
         {
-            if (!Parse())
+            if (!base.Parse())
             {
                 return false;
             }

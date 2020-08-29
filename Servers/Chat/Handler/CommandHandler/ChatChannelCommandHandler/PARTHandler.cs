@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
@@ -10,7 +11,15 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         {
             _request = (PARTRequest)request;
         }
-
+        protected override void CheckRequest()
+        {
+            base.CheckRequest();
+            if (!_request.Parse())
+            {
+                _errorCode = ChatError.Parse;
+                return;
+            }
+        }
         protected override void DataOperation()
         {
             base.DataOperation();

@@ -20,6 +20,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             if(!_request.Parse())
             {
                 _errorCode = ChatError.Parse;
+                return;
             }
         }
 

@@ -20,6 +20,11 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
+            if (!_request.Parse())
+            {
+                _errorCode = ChatError.Parse;
+                return;
+            }
             //can not find any user
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {

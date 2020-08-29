@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using GameSpyLib.Common.Entity.Interface;
@@ -18,6 +19,12 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
+            if (!_request.Parse())
+            {
+                _errorCode = ChatError.Parse;
+                return;
+            }
+
             if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
             {
                 _errorCode = Entity.Structure.ChatError.Parse;

@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
@@ -21,7 +22,11 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-
+            if (!_request.Parse())
+            {
+                _errorCode = ChatError.Parse;
+                return;
+            }
             // CRYPT des 1 gamename
             _session.UserInfo.SetGameName(_request.GameName);
         }

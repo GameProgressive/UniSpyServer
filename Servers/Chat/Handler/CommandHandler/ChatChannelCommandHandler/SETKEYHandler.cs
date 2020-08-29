@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -13,6 +14,16 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         public SETKEYHandler(ISession session, ChatRequestBase cmd) : base(session, cmd)
         {
             _request = (SETKEYRequest)cmd;
+        }
+
+        protected override void CheckRequest()
+        {
+            base.CheckRequest();
+            if (!_request.Parse())
+            {
+                _errorCode = ChatError.Parse;
+                return;
+            }
         }
 
         protected override void DataOperation()

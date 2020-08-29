@@ -21,7 +21,15 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         {
             _request = (WHORequest)cmd;
         }
-
+        protected override void CheckRequest()
+        {
+            base.CheckRequest();
+            if (!_request.Parse())
+            {
+                _errorCode = ChatError.Parse;
+                return;
+            }
+        }
         protected override void DataOperation()
         {
             base.DataOperation();
