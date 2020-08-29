@@ -48,7 +48,7 @@ namespace Chat.Entity.Structure.ChatChannel
         /// </summary>
         /// <param name="changer"></param>
         /// <param name="cmd"></param>
-        public void SetProperties(ChatChannelUser changer, MODE cmd)
+        public void SetProperties(ChatChannelUser changer, MODERequest cmd)
         {
             switch (cmd.RequestType)
             {
@@ -90,15 +90,15 @@ namespace Chat.Entity.Structure.ChatChannel
                     break;
             }
         }
-        private void AddChannelUserLimits(MODE cmd)
+        private void AddChannelUserLimits(MODERequest cmd)
         {
             MaxNumberUser = cmd.LimitNumber;
         }
-        private void RemoveChannelUserLimits(MODE cmd)
+        private void RemoveChannelUserLimits(MODERequest cmd)
         {
             MaxNumberUser = 200;
         }
-        private void AddBanOnUser(MODE cmd)
+        private void AddBanOnUser(MODERequest cmd)
         {
             var result = ChannelUsers.Where(u => u.UserInfo.NickName == cmd.NickName);
             if (result.Count() != 1)
@@ -114,7 +114,7 @@ namespace Chat.Entity.Structure.ChatChannel
 
             BanList.Add(user);
         }
-        private void RemoveBanOnUser(MODE cmd)
+        private void RemoveBanOnUser(MODERequest cmd)
         {
             var result = BanList.Where(u => u.UserInfo.NickName == cmd.NickName);
             if (result.Count() == 1)
@@ -129,21 +129,21 @@ namespace Chat.Entity.Structure.ChatChannel
                     $"Multiple user with same nick name in channel {ChannelName}");
             }
         }
-        private void AddChannelPassword(MODE cmd)
+        private void AddChannelPassword(MODERequest cmd)
         {
             if (Password == null)
             {
                 Password = cmd.Password;
             }
         }
-        private void RemoveChannelPassword(MODE cmd)
+        private void RemoveChannelPassword(MODERequest cmd)
         {
             if (Password == cmd.Password)
             {
                 Password = null;
             }
         }
-        private void AddChannelOperator(MODE cmd)
+        private void AddChannelOperator(MODERequest cmd)
         {
             // check whether this user is in this channel
             var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
@@ -160,7 +160,7 @@ namespace Chat.Entity.Structure.ChatChannel
             }
             user.SetChannelOperator(true);
         }
-        private void RemoveChannelOperator(MODE cmd)
+        private void RemoveChannelOperator(MODERequest cmd)
         {
             var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
             if (result.Count() != 1)
@@ -174,7 +174,7 @@ namespace Chat.Entity.Structure.ChatChannel
                 user.SetChannelCreator(false);
             }
         }
-        private void EnableUserVoicePermission(MODE cmd)
+        private void EnableUserVoicePermission(MODERequest cmd)
         {
             var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
             if (result.Count() != 1)
@@ -190,7 +190,7 @@ namespace Chat.Entity.Structure.ChatChannel
             }
 
         }
-        private void DisableUserVoicePermission(MODE cmd)
+        private void DisableUserVoicePermission(MODERequest cmd)
         {
             var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
             if (result.Count() != 1)

@@ -1,8 +1,8 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Handler.CommandHandler;
-using Chat.Handler.CommandHandler.ChatBasicCommandHandler;
-using Chat.Handler.CommandHandler.ChatChannel.ChatChannelKey;
+using Chat.Handler.CommandHandler.ChatChannelCommandHandler;
+using Chat.Handler.CommandHandler.ChatGeneralCommandHandler;
+using Chat.Handler.CommandHandler.ChatMessageCommandHandler;
 using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
