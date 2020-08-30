@@ -14,17 +14,14 @@ namespace Chat.Server
         public static readonly string ClientKey = "0000000000000000";
         public static readonly string ServerKey = "0000000000000000";
 
-        public static ChatCommandManager CommandManager;
+        //public static ChatCommandManager CommandManager;
         public static ChatSessionManager SessionManager;
         public static ChatChannelManager ChannelManager;
 
         public ChatServer(IPAddress address, int port) : base(address, port)
         {
             SessionManager = new ChatSessionManager();
-            CommandManager = new ChatCommandManager();
             ChannelManager = new ChatChannelManager();
-            //use this to add command into chatserver
-            CommandManager.Start();
             ChannelManager.Start();
             SessionManager.Start();
         }

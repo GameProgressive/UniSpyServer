@@ -1,11 +1,12 @@
-FROM mcr.microsoft.com/dotnet/core/runtime:3.1.2-alpine3.11 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.7-alpine3.12 AS base
 WORKDIR /app
 EXPOSE 6667
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.102-alpine3.11 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.401-alpine3.12 AS build
 WORKDIR /src
 COPY ["/Servers/Chat/Chat.csproj", "/Servers/Chat/"]
-COPY ["/GameSpyLib/GameSpyLib.csproj", "/GameSpyLib/"]
+COPY ["/Servers/QueryReport/QueryReport.csproj", "/Servers/QueryReport/"]
+COPY ["/Library/GameSpyLib/GameSpyLib.csproj", "/Library/GameSpyLib/"]
 RUN dotnet restore "/Servers/Chat/Chat.csproj"
 COPY . .
 WORKDIR "/src/Servers/Chat"

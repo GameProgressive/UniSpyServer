@@ -1,4 +1,4 @@
-﻿namespace PresenceConnectionManager.Enumerator
+﻿namespace PresenceConnectionManager.Entity.Enumerator
 {
     /// <summary>
     /// The status of the player

@@ -26,62 +26,63 @@ namespace Chat.Entity.Structure.ChatResponse
 
 
         #region channel error RPL
-        protected static string BuildChannelError(string ircError, string channelName)
+        protected static string BuildChannelError(string ircError, string channelName, string message)
         {
-            return ChatCommandBase.BuildReply(ircError, $"* {channelName} 0");
+            return ChatRequestBase.BuildReply(ircError, $"* {channelName} param2", message);
         }
+
         public static string BuildBadChanMaskError(string channelName)
         {
-            return BuildChannelError(BadChanMask, channelName);
+            return BuildChannelError(BadChanMask, channelName,"Bad channel mask.");
         }
 
         public static string BuildBadChannelKeyError(string channelName)
         {
-            return BuildChannelError(BannedFromChan, channelName);
+            return BuildChannelError(BannedFromChan, channelName,"Wrong channel password.");
         }
 
         public static string BuildBannedFromChannelError(string channelName)
         {
-            return BuildChannelError(BadChannelKey, channelName);
+            return BuildChannelError(BadChannelKey, channelName,"Banned from channel.");
         }
 
         public static string BuildChannelIsFullError(string channelName)
         {
-            return BuildChannelError(ChannelIsFull, channelName);
+            return BuildChannelError(ChannelIsFull, channelName,"Channel is full.");
         }
 
         public static string BuildInvitedOnlyChannelError(string channelName)
         {
-            return BuildChannelError(InviteOnlyChan, channelName);
+            return BuildChannelError(InviteOnlyChan, channelName,"Invited only channel.");
         }
         public static string BuildNoSuchChannelError(string channelName)
         {
-            return BuildChannelError(NoSuchChannel, channelName);
+            return BuildChannelError(NoSuchChannel, channelName,"There is no such channel.");
         }
         public static string BuildToManyChannelError(string channelName)
         {
-            return BuildChannelError(TooManyChannels, channelName);
+            return BuildChannelError(TooManyChannels, channelName,"You have joined to many channels.");
         }
         #endregion
 
         public static string BuildNickNameInUseError(string oldNick, string newNick)
         {
-            return ChatCommandBase.BuildReply(NickNameInUse, $"{oldNick} {newNick} 0");
+            return ChatRequestBase.BuildReply(NickNameInUse, $"{oldNick} {newNick} 0");
         }
 
         public static string BuildLoginFailedError()
         {
-            return ChatCommandBase.BuildReply(LoginFailed);
+            return ChatRequestBase.BuildReply(LoginFailed);
         }
 
         public static string BuildNoUniqueNickError()
         {
-            return ChatCommandBase.BuildReply(NoUniqueNick);
+            return ChatRequestBase.BuildReply(NoUniqueNick);
         }
 
         public static string BuildUniquenickExpireError()
         {
-            return ChatCommandBase.BuildReply(UniqueNIickExpired);
+            return ChatRequestBase.BuildReply(UniqueNIickExpired);
         }
 
         public static string BuildRegisterNickFailedError(List<string> nickNames)
@@ -92,7 +93,7 @@ namespace Chat.Entity.Structure.ChatResponse
             {
                 suggestNicks += @"\" + nick;
             }
-            return ChatCommandBase.BuildReply(RegisterNickFailed, $"* numberOfSuggestNick {suggestNicks} 0");
+            return ChatRequestBase.BuildReply(RegisterNickFailed, $"* numberOfSuggestNick {suggestNicks} 0");
         }
 
         public static string BuildErrOneUSNickNameError(ChatUserInfo info)
@@ -102,7 +103,7 @@ namespace Chat.Entity.Structure.ChatResponse
 
         public static string BuildNoSuchNickError()
         {
-            return ChatCommandBase.BuildReply(NoSuchNick);
+            return ChatRequestBase.BuildReply(NoSuchNick);
         }
 
 

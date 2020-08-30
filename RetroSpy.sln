@@ -3,49 +3,34 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameSpyLib", "GameSpyLib\GameSpyLib.csproj", "{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenceConnectionManager", "Servers\PresenceConnectionManager\PresenceConnectionManager.csproj", "{2756723C-4071-4EEA-851D-A23C0019E43A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat", "Servers\Chat\Chat.csproj", "{3672E2D6-0543-4512-9E1A-31B5FD96DC4B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NatNegotiation", "Servers\NatNegotiation\NatNegotiation.csproj", "{F730E447-5CA9-49FA-84D8-4C9C6FEF3D56}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenceSearchPlayer", "Servers\PresenceSearchPlayer\PresenceSearchPlayer.csproj", "{9361E0B4-684F-4AEF-8293-7DF6E3EB73A4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryReport", "Servers\QueryReport\QueryReport.csproj", "{C911D26F-4E16-44AA-9D84-3A27C3A08965}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerBrowser", "Servers\ServerBrowser\ServerBrowser.csproj", "{F196BF99-E01A-4EAF-A418-A0077101D8B9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C911D26F-4E16-44AA-9D84-3A27C3A08965} = {C911D26F-4E16-44AA-9D84-3A27C3A08965}
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servers", "Servers", "{9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatsAndTracking", "Servers\StatsAndTracking\StatsAndTracking.csproj", "{1E16BA28-F6EA-4D85-98FC-73475764D8EA}"
-	ProjectSection(ProjectDependencies) = postProject
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236} = {0B6E6DDD-6120-44E1-B2E0-CF71918B6236}
-	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDKey", "Servers\CDKey\CDKey.csproj", "{C679E140-ED80-4D1E-BD94-C54C4158BDD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServices", "Servers\WebServices\WebServices.csproj", "{CDB3EC25-B4DB-4914-8553-42D002AFF275}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices", "Servers\WebServices\WebServices.csproj", "{CDB3EC25-B4DB-4914-8553-42D002AFF275}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{3DC251C8-F841-4D22-81DB-A7D4D4C25F37}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOAPMiddleware", "Library\SOAPMiddleware\SOAPMiddleware.csproj", "{9CF53102-C6A5-4286-9C4D-CCA52538B12D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSpyLib", "Library\GameSpyLib\GameSpyLib.csproj", "{B61ACD49-57F5-49AA-A418-221293F1F274}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +38,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0B6E6DDD-6120-44E1-B2E0-CF71918B6236}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2756723C-4071-4EEA-851D-A23C0019E43A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2756723C-4071-4EEA-851D-A23C0019E43A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2756723C-4071-4EEA-851D-A23C0019E43A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,6 +74,14 @@ Global
 		{CDB3EC25-B4DB-4914-8553-42D002AFF275}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDB3EC25-B4DB-4914-8553-42D002AFF275}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDB3EC25-B4DB-4914-8553-42D002AFF275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF53102-C6A5-4286-9C4D-CCA52538B12D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF53102-C6A5-4286-9C4D-CCA52538B12D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF53102-C6A5-4286-9C4D-CCA52538B12D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF53102-C6A5-4286-9C4D-CCA52538B12D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B61ACD49-57F5-49AA-A418-221293F1F274}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B61ACD49-57F5-49AA-A418-221293F1F274}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B61ACD49-57F5-49AA-A418-221293F1F274}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B61ACD49-57F5-49AA-A418-221293F1F274}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +96,8 @@ Global
 		{1E16BA28-F6EA-4D85-98FC-73475764D8EA} = {9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}
 		{C679E140-ED80-4D1E-BD94-C54C4158BDD5} = {9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}
 		{CDB3EC25-B4DB-4914-8553-42D002AFF275} = {9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}
+		{9CF53102-C6A5-4286-9C4D-CCA52538B12D} = {3DC251C8-F841-4D22-81DB-A7D4D4C25F37}
+		{B61ACD49-57F5-49AA-A418-221293F1F274} = {3DC251C8-F841-4D22-81DB-A7D4D4C25F37}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F286A822-2C93-4C46-B8BA-FF1C4847B719}

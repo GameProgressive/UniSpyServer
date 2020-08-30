@@ -14,7 +14,7 @@ namespace ServerBrowser.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.SB);
+                Manager = new ServerManager(RetroSpyServerName.ServerBrowser);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
@@ -23,7 +23,7 @@ namespace ServerBrowser.Application
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
 
-            Console.WriteLine("Press < Q > to exit... ");
+            Console.WriteLine("Press < Q > to exit. ");
             while (Console.ReadKey().Key != ConsoleKey.Q) { }
         }
     }

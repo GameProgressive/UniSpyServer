@@ -1,5 +1,7 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using StatsAndTracking.Entity.Enumerator;
+using StatsAndTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,119 +12,98 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
     /// because we are not gamespy
     /// so we do not check response string
     /// </summary>
-    public class AuthPHandler : CommandHandlerBase
+    public class AuthPHandler : GStatsCommandHandlerBase
     {
-        private uint _profileid;
-        private AuthMethod _authMethod;
-        public AuthPHandler() : base()
+        protected new AuthPRequest _request;
+        private uint _profileID;
+        public AuthPHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
         {
-            _authMethod = AuthMethod.Unknown;
+            _request = new AuthPRequest(recv);
         }
 
-        protected override void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
-
-            if (recv.ContainsKey("pid") && recv.ContainsKey("resp"))
-            {
-                //we parse profileid here
-                if (!uint.TryParse(recv["pid"], out _profileid))
-                {
-                    _errorCode = GstatsErrorCode.Parse;
-                }
-                _authMethod = AuthMethod.ProfileIDAuth;
-            }
-            else if (recv.ContainsKey("authtoken") && recv.ContainsKey("response"))
-            {
-                _authMethod = AuthMethod.PartnerIDAuth;
-            }
-            else if (recv.ContainsKey("keyhash") && recv.ContainsKey("nick"))
-            {
-                _authMethod = AuthMethod.CDkeyAuth;
-            }
-            else
-            {
-                _errorCode = GstatsErrorCode.Parse;
-            }
-
-
+            _errorCode = _request.Parse();
         }
 
-        protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
             //search database for user's password
             //We do not store user's plaintext password, so we can not check this response
-            switch (_authMethod)
+            using (var db = new retrospyContext())
             {
-                case AuthMethod.PartnerIDAuth:
-                    FindProfileByAuthtoken(recv);
-                    break;
-                case AuthMethod.ProfileIDAuth:
-                    //even if we do not check response challenge
-                    //we have to check the pid is in our databse
-                    FindProfileByProfileid(recv);
-                    break;
-                case AuthMethod.CDkeyAuth:
-                    FrindProfileByCDKeyHash(recv);
-                    break;
-                default:
-                    _errorCode = GstatsErrorCode.Database;
-                    break;
+                switch (_request.RequestType)
+                {
+                    case AuthMethod.PartnerIDAuth:
+                        FindProfileByAuthtoken();
+                        break;
+                    case AuthMethod.ProfileIDAuth:
+                        //even if we do not check response challenge
+                        //we have to check the pid is in our databse
+                        FindProfileByProfileid();
+                        break;
+                    case AuthMethod.CDkeyAuth:
+                        FrindProfileByCDKeyHash();
+                        break;
+                    default:
+                        _errorCode = GStatsErrorCode.Database;
+                        break;
+                }
             }
 
-
         }
 
-        protected override void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
             //we did not store the plaintext of user password so we do not need to check this
-            _sendingBuffer = $@"\pauthr\{_profileid}\lid\{_localId}\";
+            _sendingBuffer = $@"\pauthr\{_profileID}";
+            base.ConstructResponse();
         }
 
-        private void FindProfileByAuthtoken(Dictionary<string, string> recv)
+        private void FindProfileByAuthtoken()
         {
             using (var db = new retrospyContext())
             {
                 var result = from s in db.Subprofiles
-                             where s.Authtoken == recv["authtoken"]
+                             where s.Authtoken == _request.AuthToken
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     return;
                 }
-                _profileid = result.First();
+                _profileID = result.First();
             }
         }
-        private void FindProfileByProfileid(Dictionary<string, string> recv)
+        private void FindProfileByProfileid()
         {
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
-                             where p.Profileid == _profileid
+                             where p.Profileid == _request.ProfileID
                              select p.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     return;
                 }
-                _profileid = result.First();
+                _profileID = result.First();
             }
         }
-        private void FrindProfileByCDKeyHash(Dictionary<string, string> recv)
+        private void FrindProfileByCDKeyHash()
         {
             using (var db = new retrospyContext())
             {
                 var result = from s in db.Subprofiles
                              join p in db.Profiles on s.Profileid equals p.Profileid
-                             where s.Cdkeyenc == recv["cdkeyhash"] && p.Nick == recv["nick"]
+                             where s.Cdkeyenc ==_request.KeyHash && p.Nick == _request.Nick
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     return;
                 }
-                _profileid = result.First();
+                _profileID = result.First();
             }
         }
 

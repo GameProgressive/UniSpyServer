@@ -1,34 +1,27 @@
-﻿using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
-using PresenceConnectionManager.Enumerator;
-using PresenceConnectionManager.Handler.Buddy.AddBlock;
-using PresenceConnectionManager.Handler.Buddy.AddBuddy;
-using PresenceConnectionManager.Handler.Buddy.DelBuddy;
-using PresenceConnectionManager.Handler.CommandHandler.Buddy.Status;
-using PresenceConnectionManager.Handler.General.Login.LoginMethod;
-using PresenceConnectionManager.Handler.Profile.GetProfile;
-using PresenceConnectionManager.Handler.Profile.NewProfile;
-using PresenceConnectionManager.Handler.Profile.RegisterNick;
-using PresenceConnectionManager.Handler.Profile.UpdatePro;
-using PresenceConnectionManager.Handler.Profile.UpdateUI;
-using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameSpyLib.Common.BaseClass;
+using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Logging;
+using GameSpyLib.MiscMethod;
+using PresenceConnectionManager.Entity.BaseClass;
+using PresenceConnectionManager.Handler.CommandSwticher;
+using Serilog.Events;
 
 namespace PresenceConnectionManager.Handler
 {
     public class PCMCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(GPCMSession session, string message)
+        public void Switch(ISession session, string message)
         {
             try
             {
-                message = session.RequstFormatConversion(message);
+                //message = @"\login\\challenge\VPUKQ5CiXSqtt0EdOKMwwRvf3CHqxrah\user\borger@mike@vale.ski\partnerid\0\response\4ec2535ddba4773168337c7b5f9588e7\firewall\1\port\0\productid\10936\gamename\greconawf2\namespaceid\0\sdkrevision\3\id\1\final\";
+                message = PCMRequest.NormalizeRequest(message);
                 if (message[0] != '\\')
                 {
-                    GameSpyUtils.SendGPError(session, GPErrorCode.General, "An invalid request was sended.");
+                    LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
                     return;
                 }
                 string[] commands = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
@@ -47,61 +40,30 @@ namespace PresenceConnectionManager.Handler
 
                     switch (recv.Keys.First())
                     {
-                        //case "inviteto":
-                        //    InviteToHandler.InvitePlayer();
-                        //    break;
-
                         case "login"://login to retrospy
-                            new LoginHandler(session, recv).Handle();
+                        case "logout"://logout from retrospy
+                        case "ka":
+                            new GeneralCommandSwitcher().Switch(session, recv);
                             break;
 
                         case "getprofile"://get profile of a player
-                            new GetProfileHandler(session, recv).Handle();
+                        case "registernick"://update user's uniquenick
+                        case "newuser"://create an new user
+                        case "updateui"://update a user's email
+                        case "updatepro"://update a user's profile
+                        case "newprofile"://create an new profile
+                        case "delprofile"://delete profile
+                        case "addblock"://add an user to our block list
+                        case "removeblock":
+                            new ProfileCommandSwitcher().Switch(session, recv);
                             break;
 
                         case "addbuddy"://Send a request which adds an user to our friend list
-                            new AddBuddyHandler(session, recv).Handle();
-                            break;
-
                         case "delbuddy"://delete a user from our friend list
-                            new DelBuddyHandler(session, recv).Handle();
-                            break;
-
-                        case "updateui"://update a user's email
-                            new UpdateUIHandler(session, recv).Handle();
-                            break;
-
-                        case "updatepro"://update a user's profile
-                            new UpdateProHandler(session, recv).Handle();
-                            break;
-
-                        case "registernick"://update user's uniquenick
-                            new RegisterNickHandler(session, recv).Handle();
-                            break;
-
-                        case "logout"://logout from retrospy
-                            session.Disconnect();
-                            GPCMServer.LoggedInSession.TryRemove(session.Id, out _);
-                            break;
-
                         case "status"://update current logged in user's status info
-                            new StatusHandler(session, recv).Handle();
-                            break;
-
-                        case "newuser"://create an new user
-                            new NewUserHandler(session, recv).Handle();
-                            break;
-
-                        case "addblock"://add an user to our block list
-                            new AddBlockHandler(session, recv).Handle();
-                            break;
-
-                        case "ka":
-                            //KAHandler.SendKeepAlive(_session);
-                            break;
-
-                        case "newprofile"://create an new profile
-                            new NewProfileHandler(session, recv).Handle();
+                        case "statusinfo":
+                        case "inviteto":
+                            new BuddyCommandSwitcher().Switch(session, recv);
                             break;
 
                         default:
@@ -112,7 +74,7 @@ namespace PresenceConnectionManager.Handler
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
         }
     }

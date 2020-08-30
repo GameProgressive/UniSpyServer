@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Chat.Entity.Structure.ChatChannel;
@@ -146,7 +145,7 @@ namespace Chat.Entity.Structure.ChatUser
 
         public string BuildReply(string command, string cmdParams, string tailing)
         {
-            return ChatCommandBase.BuildReply(this, command, cmdParams, tailing);
+            return ChatRequestBase.BuildReply(this, command, cmdParams, tailing);
         }
     }
 }

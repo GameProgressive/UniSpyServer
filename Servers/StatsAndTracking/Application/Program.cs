@@ -13,7 +13,7 @@ namespace StatsAndTracking.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.GSTATS);
+                Manager = new ServerManager(RetroSpyServerName.GameStatus);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
@@ -22,7 +22,7 @@ namespace StatsAndTracking.Application
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
 
-            Console.WriteLine("Press < Q > to exit... ");
+            Console.WriteLine("Press < Q > to exit. ");
             while (Console.ReadKey().Key != ConsoleKey.Q) { }
         }
     }

@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
 using QueryReport.Server;
 using System;
@@ -15,8 +14,8 @@ namespace QueryReport.Application
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="serverName">Server name in XML config file</param>
-        public ServerManager(RetroSpyServerName serverName) : base(serverName)
+        /// <param name="serverName">Server name in config file</param>
+        public ServerManager(string serverName) : base(serverName)
         {
         }
 

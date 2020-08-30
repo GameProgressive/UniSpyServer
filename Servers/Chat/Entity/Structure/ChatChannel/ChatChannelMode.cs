@@ -35,7 +35,7 @@ namespace Chat.Entity.Structure.ChatChannel
             IsTopicOnlySetByChannelOperator = true;
         }
 
-        public void ChangeModes(MODE cmd)
+        public void ChangeModes(MODERequest cmd)
         {
             switch (cmd.RequestType)
             {
@@ -48,7 +48,7 @@ namespace Chat.Entity.Structure.ChatChannel
             }
         }
 
-        private void SetChannelModes(MODE cmd)
+        private void SetChannelModes(MODERequest cmd)
         {
             List<string> flags = new List<string>();
 

@@ -7,6 +7,7 @@
         DataOperation,
         ConstructResponse,
         NotChannelOperator,
+        UserAlreadyInChannel,
         NoError,
         IRCError,
     }

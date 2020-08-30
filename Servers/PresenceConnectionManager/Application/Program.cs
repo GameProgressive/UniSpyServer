@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(GameSpyLib.Common.RetroSpyServerName.GPCM);
+                Manager = new ServerManager(RetroSpyServerName.PresenceConnectionManager);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
@@ -25,7 +25,7 @@ namespace PresenceConnectionManager.Application
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
 
-            Console.WriteLine("Press < Q > to exit... ");
+            Console.WriteLine("Press < Q > to exit. ");
             while (Console.ReadKey().Key != ConsoleKey.Q) { }
         }
     }

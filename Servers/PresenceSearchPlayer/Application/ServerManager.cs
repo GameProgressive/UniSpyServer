@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
 using System;
 using System.Net;
 
@@ -14,8 +13,8 @@ namespace PresenceSearchPlayer
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="serverName">Server name in XML config file</param>
-        public ServerManager(RetroSpyServerName serverName) : base(serverName)
+        /// <param name="serverName">Server name in config file</param>
+        public ServerManager(string serverName) : base(serverName)
         {
         }
 
@@ -27,7 +26,7 @@ namespace PresenceSearchPlayer
         {
             if (cfg.Name == ServerName)
             {
-                Server = new GPSPServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new PSPServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
                 Console.WriteLine(
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }

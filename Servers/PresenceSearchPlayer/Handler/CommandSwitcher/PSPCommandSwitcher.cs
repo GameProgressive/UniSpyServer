@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
+using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Structure.Model;
 using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
@@ -20,29 +22,27 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {
     public class PSPCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(GPSPSession session, string message)
+        public void Switch(PSPSession session, string message)
         {
 
             try
             {
                 if (message[0] != '\\')
                 {
-                    GameSpyUtils.SendGPError(session, GPErrorCode.Parse, "An invalid request was sended.");
+                    GameSpyUtils.SendGPError(session, GPError.Parse, "An invalid request was sended.");
                     return;
                 }
+                string[] requests = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
 
-                string[] commands = message.Split("\\final\\", System.StringSplitOptions.RemoveEmptyEntries);
-
-                foreach (string command in commands)
+                foreach (string request in requests)
                 {
-                    if (command.Length < 1)
+                    if (request.Length < 1)
                     {
                         continue;
                     }
 
                     // Read client message, and parse it into key value pairs
-                    string[] recieved = command.TrimStart('\\').Split('\\');
-                    Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
+                    Dictionary<string, string> recv = GameSpyUtils.ConvertRequestToKeyValue(request);
 
                     switch (recv.Keys.First())
                     {
@@ -55,7 +55,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                             break;
 
                         case "nicks":// search an user with nick name
-                            new NickHandler(session, recv).Handle();
+                            new NicksHandler(session, recv).Handle();
                             break;
 
                         //case "pmatch":

@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
 using System;
 using System.Net;
@@ -15,8 +14,8 @@ namespace PresenceConnectionManager.Application
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="serverName">Server name in XML config file</param>
-        public ServerManager(RetroSpyServerName serverName) : base(serverName)
+        /// <param name="serverName">Server name in config file</param>
+        public ServerManager(string serverName) : base(serverName)
         {
         }
 
@@ -28,7 +27,7 @@ namespace PresenceConnectionManager.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new GPCMServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new PCMServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
                 Console.WriteLine(
                       StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }

@@ -1,6 +1,6 @@
 ﻿namespace StatsAndTracking.Entity.Enumerator
 {
-    internal enum PersistStorage : uint
+    public enum PersistStorageType : uint
     {
         /// <summary>
         /// Readable only by the authenticated client it belongs to, can only by set on the server
