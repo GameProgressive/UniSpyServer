@@ -50,16 +50,13 @@ namespace ServerBrowser.Handler.CommandHandler
         }
 
         protected virtual void CheckRequest()
-        {
-        }
+        { }
 
         protected virtual void DataOperation()
-        {
-        }
+        { }
 
         protected virtual void ConstructResponse()
-        {
-        }
+        { }
 
         protected virtual void Response()
         {

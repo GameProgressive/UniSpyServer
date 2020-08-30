@@ -260,7 +260,8 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                           where n.Authtoken == _session.UserData.AuthToken && n.Partnerid == _session.UserData.PartnerID
+                           where n.Authtoken == _session.UserData.AuthToken
+                           && n.Partnerid == _session.UserData.PartnerID
                            && n.Namespaceid == _session.UserData.NamespaceID
                            select new LoginDBResult
                            {

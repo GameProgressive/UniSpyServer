@@ -30,8 +30,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 
         protected override void CheckRequest()
         {
-            //we do not call base method because we have our own check method
-            //base.CheckRequest();
+            //we do not call base.CheckRequest() method because we have our own check method
 
             if (!_request.Parse(_recv))
             {
