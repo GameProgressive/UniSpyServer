@@ -1,6 +1,10 @@
 # RetroSpy Server
 
-![](https://github.com/GameProgressive/RetroSpyServer/workflows/CI/badge.svg)
+![Lisence](https://img.shields.io/github/license/gameprogressive/retrospyserver)
+![platforms](https://img.shields.io/badge/platform-win32%20%7C%20win64%20%7C%20linux%20%7C%20osx-brightgreen.svg)
+![CIPass](https://github.com/GameProgressive/RetroSpyServer/workflows/CI/badge.svg)
+
+
 
 RetroSpy is a GameSpy Project that aims to create GameSpy 2011/2012 services.
 

@@ -23,6 +23,7 @@ namespace StatsAndTracking
             SendAsync(GenerateServerChallenge());
             base.OnConnected();
         }
+
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
             if (size < 2 && size > 2048)
@@ -37,7 +38,7 @@ namespace StatsAndTracking
         }
         protected override void OnReceived(string message)
         {
-            new StatsCommandSwitcher().Switch(this, message);
+            new GStatsCommandSwitcher().Switch(this, message);
         }
 
 
@@ -61,7 +62,6 @@ namespace StatsAndTracking
         {
             //response total length bigger than 38bytes
             // challenge length should be bigger than 20bytes
-            PlayerData.Challenge = "00000000000000000000";
             return $@"\challenge\{PlayerData.Challenge}";
         }
 

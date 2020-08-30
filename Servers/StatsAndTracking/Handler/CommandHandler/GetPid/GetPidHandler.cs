@@ -1,50 +1,48 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Database.DatabaseModel.MySql;
 using StatsAndTracking.Entity.Enumerator;
+using StatsAndTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StatsAndTracking.Handler.CommandHandler.GetPid
+namespace StatsAndTracking.Handler.CommandHandler.GetPID
 {
-    public class GetPidHandler : CommandHandlerBase
+    public class GetPIDHandler : GStatsCommandHandlerBase
     {
-        //\getpid\\nick\%s\keyhash\%s\lid\%d
-        //\getpidr
+        //request \getpid\\nick\%s\keyhash\%s\lid\%d
+        //response \getpidr
         private uint _protileid;
-        public GetPidHandler() : base()
+        protected new GetPIDRequest _request;
+        public GetPIDHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
         {
+            _request = new GetPIDRequest(recv);
         }
 
-        protected override void CheckRequest(GStatsSession session, Dictionary<string, string> recv)
+        protected override void CheckRequest()
         {
-            base.CheckRequest(session, recv);
-            if (!recv.ContainsKey("nick") || !recv.ContainsKey("keyhash"))
-            {
-                _errorCode = GstatsErrorCode.Parse;
-                return;
-            }
+            _errorCode = _request.Parse();
         }
 
-        protected override void DataOperation(GStatsSession session, Dictionary<string, string> recv)
+        protected override void DataOperation()
         {
-            base.DataOperation(session, recv);
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
                              join s in db.Subprofiles on p.Profileid equals s.Profileid
-                             where s.Cdkeyenc == recv["cdkeyhash"] && p.Nick == recv["nick"]
+                             where s.Cdkeyenc == _request.KeyHash && p.Nick == _request.Nick
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GstatsErrorCode.Database;
+                    _errorCode = GStatsErrorCode.Database;
                     return;
                 }
                 _protileid = result.First();
             }
         }
 
-        protected override void ConstructResponse(GStatsSession session, Dictionary<string, string> recv)
+        protected override void ConstructResponse()
         {
-            _sendingBuffer = $@"\getpidr\{_protileid}\lid\{_localId}";
+            _sendingBuffer = $@"\getpidr\{_protileid}";
         }
     }
 }

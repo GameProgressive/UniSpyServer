@@ -1,6 +1,6 @@
-﻿namespace PresenceSearchPlayer.Enumerator
+﻿namespace PresenceSearchPlayer.Entity.Enumerator
 {
-    public enum GPErrorCode : uint
+    public enum GPError  : uint
     {
         // General.
         ///////////
@@ -138,6 +138,5 @@
         // RetroSpy self defined NoError code
         ///////////////
         NoError = 0xffff,
-        ConstructResponseError,
     }
 }

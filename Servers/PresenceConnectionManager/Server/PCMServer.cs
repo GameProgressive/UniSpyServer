@@ -19,14 +19,13 @@ namespace PresenceConnectionManager
         public static ConcurrentDictionary<Guid, PCMSession> LoggedInSession = new ConcurrentDictionary<Guid, PCMSession>();
 
 
-        public static readonly string ServerChallenge = "0000000000";
-        /// <summary>
-        /// Creates a new instance of <see cref="GPCMClient"/>
-        /// </summary>
         public PCMServer(IPAddress address, int port) : base(address, port)
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="GPCMClient"/>
+        /// </summary>
         protected override TcpSession CreateSession()
         {
             return new PCMSession(this);

@@ -1,9 +1,10 @@
 ﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using PresenceConnectionManager.Enumerator;
+using PresenceConnectionManager.Entity.Enumerator;
+using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler;
-using PresenceConnectionManager.Structure;
+using PresenceConnectionManager.Structure.Data;
 using System;
 using System.Net;
 
@@ -20,17 +21,20 @@ namespace PresenceConnectionManager
         /// <summary>
         /// Indicates whether this player successfully completed the login process
         /// </summary>
-        public bool CompletedLoginProcess { get; set; } = false;
+        public bool CompletedLoginProcess;
 
         /// <summary>
         /// Indicates the date and time this connection was created
         /// </summary>
-        public readonly DateTime Created = DateTime.Now;
+        public readonly DateTime CreateTime;
 
-        public UserInfo UserInfo = new UserInfo();
+        public UserData UserData;
 
         public PCMSession(TemplateTcpServer server) : base(server)
         {
+            UserData = new UserData();
+            CreateTime = new DateTime();
+            CompletedLoginProcess = false;
         }
 
         protected override void OnConnected()
@@ -45,12 +49,10 @@ namespace PresenceConnectionManager
 
         }
 
-
-
         public void SendServerChallenge()
         {
             // Only send the login challenge once
-            if (UserInfo.LoginProcess != LoginStatus.Connected)
+            if (UserData.LoginStatus != LoginStatus.Connected)
             {
                 Disconnect();
                 // Throw the error                
@@ -59,9 +61,8 @@ namespace PresenceConnectionManager
                     "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
-            UserInfo.ServerChallenge = PCMServer.ServerChallenge;
-            UserInfo.LoginProcess = LoginStatus.Processing;
-            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", PCMServer.ServerChallenge, 1);
+            UserData.LoginStatus = LoginStatus.Processing;
+            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", ChallengeProofData.ServerChallenge, 1);
             SendAsync(sendingBuffer);
         }
 
@@ -69,27 +70,6 @@ namespace PresenceConnectionManager
         {
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
             LogWriter.ToLog(Serilog.Events.LogEventLevel.Information, statusString);
-        }
-
-        public virtual string RequstFormatConversion(string message)
-        {
-            if (message.Contains("login"))
-            {
-                message = message.Replace(@"\-", @"\");
-                //message = message.Replace('-', '\\');
-
-                int pos = message.IndexesOf("\\")[1];
-
-                if (message.Substring(pos, 2) != "\\\\")
-                {
-                    message = message.Insert(pos, "\\");
-                }
-                return message;
-            }
-            else
-            {
-                return message;
-            }
         }
     }
 }

@@ -19,11 +19,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-    </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entity\BaseClass\" />
+    <Folder Include="Entity\Structure\Request\" />
+  </ItemGroup>
 </Project>

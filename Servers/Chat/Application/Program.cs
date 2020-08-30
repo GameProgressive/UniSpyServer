@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
+using Serilog.Events;
 using System;
 
 namespace Chat.Application
@@ -22,10 +23,10 @@ namespace Chat.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
 
-            Console.WriteLine("Press < Q > to exit... ");
+            Console.WriteLine("Press < Q > to exit. ");
             while (Console.ReadKey().Key != ConsoleKey.Q) { }
         }
     }

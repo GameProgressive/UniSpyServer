@@ -29,6 +29,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             byte[] port = ByteTools.SubBytes(recv, 7, 2);
             Array.Reverse(port);
 
+            //TODO fix for gbrome!!!!!!!!!!!!!!!!!!!
             IPEndPoint iPEnd = ByteTools.GetIPEndPoint(ip, port);
 
             TargetServerIP = iPEnd.Address.ToString();

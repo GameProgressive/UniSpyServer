@@ -1,38 +1,38 @@
 ﻿using System.ServiceModel;
-using System.Xml;
-using System.Xml.Linq;
-using WebServices.RetroSpyServices.Sake.Entity.Structure.Model;
+using WebServices.RetroSpyServices.Sake.Entity.Structure;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Request;
+using WebServices.RetroSpyServices.Sake.Entity.Structure.Response;
 
 namespace RetroSpyServices.Sake.Entity.Interface
 {
-    [ServiceContract(Namespace = "http://gamespy.com/sake")]
+    [ServiceContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public interface ISakeStorageService
     {
         [OperationContract]
-        public void DeleteRecord(XElement request);
+        public SakeDeleteRecordResponse DeleteRecord(SakeDeleteRecordRequest request);
 
         [OperationContract]
-        public void GetRecordLimit(XElement request);
+        public SakeGetRecordLimitReponse GetRecordLimit(SakeGetRecordLimitRequest request);
 
         [OperationContract]
-        public void GetRandomRecords(XElement request);
+        public SakeGetRandomRecordResponse GetRandomRecords(SakeGetRamdomRecordRequest request);
 
         [OperationContract]
-        public void GetMyRecords(XElement request);
+        public SakeGetMyRecordsResponse GetMyRecords(SakeGetMyRecordsRequest request);
 
         [OperationContract]
-        public void SearchForRecords(XElement request);
+        public SakeSearchForRecordResponse SearchForRecords(SakeSearchForRecordRequest request);
 
         [OperationContract]
-        public void GetSpecificRecords(XElement request);
+        public SakeGetSpecificRecordsResponse GetSpecificRecords(SakeGetSpecificRecordsRequest request);
 
         [OperationContract]
-        public void CreateRecord(XElement request);
+        public SakeCreateRecordResponse CreateRecord(SakeCreateRecordRequest request);
 
         [OperationContract]
-        public void RateRecord(XElement request);
+        public SakeRateRecordResponse RateRecord(SakeRateRecordRequest request);
 
         [OperationContract]
-        public void UpdateRecord(XElement request);
+        public SakeUpdateRecordResponse UpdateRecord(SakeUpdateRecordRequest request);
     }
 }

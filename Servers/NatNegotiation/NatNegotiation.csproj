@@ -1,43 +1,33 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
-    <Win32Resource />
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\GameSpyLib\GameSpyLib.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Handler\SystemHandler\" />
-    <Folder Include="Handler\CommandHandler\AddressCheck\" />
-    <Folder Include="Handler\CommandHandler\ConnectACK\" />
-    <Folder Include="Handler\CommandHandler\ErtAck\" />
-    <Folder Include="Handler\CommandHandler\Init\" />
-    <Folder Include="Handler\CommandHandler\Natify\" />
-    <Folder Include="Handler\CommandHandler\Report\" />
-    <Folder Include="Handler\SystemHandler\Timer\" />
-    <Folder Include="Handler\CommandSwitcher\" />
-    <Folder Include="Handler\SystemHandler\NatNegotiatorManage\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Handler\SystemHandler\Timer\ClientListChecker.cs" />
-  </ItemGroup>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
+        <Win32Resource />
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>$(SolutionDir)$(Configuration)</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <Folder Include="Handler\SystemHandler\" />
+        <Folder Include="Handler\SystemHandler\Timer\" />
+        <Folder Include="Handler\CommandSwitcher\" />
+        <Folder Include="Handler\SystemHandler\NatNegotiatorManage\" />
+        <Folder Include="Entity\BaseClass\" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Handler\SystemHandler\Timer\ClientListChecker.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Library\GameSpyLib\GameSpyLib.csproj" />
+    </ItemGroup>
 </Project>

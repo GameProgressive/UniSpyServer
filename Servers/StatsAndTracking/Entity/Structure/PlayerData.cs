@@ -3,6 +3,7 @@
     public class PlayerData
     {
         public uint SessionKey;
-        public string Challenge;
+        public const string Challenge = "00000000000000000000";
+        public string GameName;
     }
 }
