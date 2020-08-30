@@ -8,20 +8,5 @@ namespace QueryReport.Handler.CommandHandler.ClientMessage
         public ClientMessageACKHandler(ISession session, byte[] recv) : base(session, recv)
         {
         }
-
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-        }
-
-        protected override void ConstructeResponse()
-        {
-            base.ConstructeResponse();
-        }
-
-        protected override void DataOperation()
-        {
-            base.DataOperation();
-        }
     }
 }

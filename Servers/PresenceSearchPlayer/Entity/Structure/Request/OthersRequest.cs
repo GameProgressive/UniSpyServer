@@ -21,27 +21,27 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("gamename"))
+            if (!_rawRequest.ContainsKey("gamename"))
             {
                 return GPError.Parse;
             }
 
-            if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
+            if (!_rawRequest.ContainsKey("profileid") || !_rawRequest.ContainsKey("namespaceid"))
             {
                 return GPError.Parse;
             }
 
             uint profileID = 0;
-            if (!_recv.ContainsKey("profileid") && !uint.TryParse(_recv["profileid"], out profileID))
+            if (!_rawRequest.ContainsKey("profileid") && !uint.TryParse(_rawRequest["profileid"], out profileID))
             {
                 return GPError.Parse;
 
             }
 
-            if (_recv.ContainsKey("namespaceid"))
+            if (_rawRequest.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                 {
                     return GPError.Parse;
                 }
@@ -50,7 +50,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
 
             ProfileID = profileID;
-            GameName = _recv["gamename"];
+            GameName = _rawRequest["gamename"];
             return GPError.NoError;
         }
     }

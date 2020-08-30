@@ -24,13 +24,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("uniquenick") || !_recv.ContainsKey("namespaces"))
+            if (!_rawRequest.ContainsKey("uniquenick") || !_rawRequest.ContainsKey("namespaces"))
             {
                 return GPError.Parse;
             }
 
-            Uniquenick = _recv["uniquenick"];
-            Namespaces = _recv["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
+            Uniquenick = _rawRequest["uniquenick"];
+            Namespaces = _rawRequest["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
 
             return GPError.NoError;
         }

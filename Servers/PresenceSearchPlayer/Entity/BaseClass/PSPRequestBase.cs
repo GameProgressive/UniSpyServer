@@ -5,21 +5,21 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
 {
     public class PSPRequestBase
     {
-        protected Dictionary<string, string> _recv;
+        protected Dictionary<string, string> _rawRequest;
 
         public ushort OperationID { get; protected set; }
 
         public PSPRequestBase(Dictionary<string, string> recv)
         {
-            _recv = recv;
+            _rawRequest = recv;
         }
 
         public virtual GPError Parse()
         {
-            if (_recv.ContainsKey("id"))
+            if (_rawRequest.ContainsKey("id"))
             {
                 ushort operationID;
-                if (!ushort.TryParse(_recv["id"], out operationID))
+                if (!ushort.TryParse(_rawRequest["id"], out operationID))
                 {
                     return GPError.Parse;
                 }

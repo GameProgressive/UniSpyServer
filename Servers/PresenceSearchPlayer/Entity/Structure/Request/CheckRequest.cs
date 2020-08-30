@@ -23,21 +23,27 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             var flag = base.Parse();
             if (flag != GPError.NoError)
                 return flag;
-            PasswordEncoder.ProcessPassword(_recv);
-            if (!_recv.ContainsKey("nick") || !_recv.ContainsKey("email") || !_recv.ContainsKey("passenc"))
+
+            string md5Password;
+            if (!PasswordEncoder.ProcessPassword(_rawRequest, out md5Password))
+            {
+                return GPError.NewUserBadPasswords;
+            }
+            Password = md5Password;
+
+            if (!_rawRequest.ContainsKey("nick") || !_rawRequest.ContainsKey("email") || !_rawRequest.ContainsKey("passenc"))
             {
                 return GPError.Parse;
             }
 
 
-            if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            if (!GameSpyUtils.IsEmailFormatCorrect(_rawRequest["email"]))
             {
                 return GPError.CheckBadMail;
             }
 
-            Nick = _recv["nick"];
-            Password = _recv["passenc"];
-            Email = _recv["email"];
+            Nick = _rawRequest["nick"];
+            Email = _rawRequest["email"];
 
             return GPError.NoError;
         }

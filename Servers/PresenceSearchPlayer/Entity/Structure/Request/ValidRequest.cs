@@ -25,17 +25,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            if (!_rawRequest.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(_rawRequest["email"]))
             {
               return GPError.Parse;
             }
 
-            Email = _recv["email"];
+            Email = _rawRequest["email"];
 
-            if (_recv.ContainsKey("namespaceid"))
+            if (_rawRequest.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                 {
                     return GPError.Parse;
                 }

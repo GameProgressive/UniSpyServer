@@ -11,30 +11,40 @@ namespace GameSpyLib.MiscMethod
         /// process password to string which stores in our database
         /// </summary>
         /// <param name="dict"></param>
-        public static void ProcessPassword(Dictionary<string, string> dict)
+        public static bool ProcessPassword(Dictionary<string, string> dict,out string md5Password)
         {
             string password;
             if (dict.ContainsKey("passwordenc"))
             {
                 //we decoded gamespy encoded password then get md5 of it         
                 password = Decode(dict["passwordenc"]);
-                dict.Add("passenc", StringExtensions.GetMD5Hash(password));
+                md5Password = StringExtensions.GetMD5Hash(password);
+                return true;
             }
-            if (dict.ContainsKey("passenc"))
+            else if (dict.ContainsKey("passenc"))
             {
                 //we decoded gamespy encoded password then get md5 of it  
                 password = Decode(dict["passenc"]);
-                dict["passenc"] = StringExtensions.GetMD5Hash(password);
+                md5Password = StringExtensions.GetMD5Hash(password);
+                return true;
             }
-            if (dict.ContainsKey("pass"))
+            else if (dict.ContainsKey("pass"))
             {
                 password = StringExtensions.GetMD5Hash(dict["pass"]);
-                dict.Add("passenc", password);
+                md5Password = StringExtensions.GetMD5Hash(password);
+                return true;
             }
-            if (dict.ContainsKey("password"))
+            else if (dict.ContainsKey("password"))
             {
                 password = StringExtensions.GetMD5Hash(dict["password"]);
-                dict.Add("passenc", password);
+                md5Password = StringExtensions.GetMD5Hash(password);
+                return true;
+
+            }
+            else
+            {
+                md5Password = null;
+                return false;
             }
         }
         /// <summary>

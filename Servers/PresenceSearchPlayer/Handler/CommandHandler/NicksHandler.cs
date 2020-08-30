@@ -40,7 +40,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
                                  join p in db.Profiles on u.Userid equals p.Userid
                                  join n in db.Subprofiles on p.Profileid equals n.Profileid
                                  where u.Email == _request.Email
-                                 && u.Password == _request.PassEnc
+                                 && u.Password == _request.Password
                                  && n.Namespaceid == _request.NamespaceID
                                  select new NickHandlerDataModel { Nick = p.Nick, Uniquenick = n.Uniquenick };
 

@@ -54,7 +54,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 }
 
                 //update other information
-                if (_errorCode != GPError.DatabaseError)
+                if (_errorCode == GPError.NoError)
                 {
                     UpdateOtherInfo();
                 }

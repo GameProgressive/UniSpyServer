@@ -21,17 +21,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("opids") || !_recv.ContainsKey("namespaceid"))
+            if (!_rawRequest.ContainsKey("opids") || !_rawRequest.ContainsKey("namespaceid"))
             {
                 return GPError.Parse;
             }
 
-            ProfileIDs = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
+            ProfileIDs = _rawRequest["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
 
-            if (_recv.ContainsKey("namespaceid"))
+            if (_rawRequest.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                 {
                     return GPError.Parse;
                 }

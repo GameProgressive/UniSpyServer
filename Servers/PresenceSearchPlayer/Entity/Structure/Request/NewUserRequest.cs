@@ -35,40 +35,40 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             {
                 return flag;
             }
+            string md5Password;
+            if (!PasswordEncoder.ProcessPassword(_rawRequest, out md5Password))
+            {
+                return GPError.NewUserBadPasswords;
+            }
+            Password = md5Password;
 
-            PasswordEncoder.ProcessPassword(_recv);
-
-            if (!_recv.ContainsKey("nick"))
+            if (!_rawRequest.ContainsKey("nick"))
             {
                 return GPError.Parse;
             }
 
-            if (!_recv.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            if (!_rawRequest.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_rawRequest["email"]))
             {
                 return GPError.Parse;
             }
 
-            if (!_recv.ContainsKey("passenc"))
-            {
-                return GPError.Parse;
-            }
-            Nick = _recv["nick"];
-            Email = _recv["email"];
-            Password = _recv["passenc"];
 
-            if (_recv.ContainsKey("uniquenick")&&_recv.ContainsKey("namespaceid"))
+            Nick = _rawRequest["nick"];
+            Email = _rawRequest["email"];
+
+            if (_rawRequest.ContainsKey("uniquenick")&&_rawRequest.ContainsKey("namespaceid"))
             {
-                if (_recv.ContainsKey("namespaceid"))
+                if (_rawRequest.ContainsKey("namespaceid"))
                 {
                     uint namespaceID;
-                    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                    if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                     {
                         return GPError.Parse;
                     }
 
                     NamespaceID = namespaceID;
                 }
-                Uniquenick = _recv["uniquenick"];
+                Uniquenick = _rawRequest["uniquenick"];
             }
             return ParseOtherInfo();
         }
@@ -77,10 +77,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
 
             //parse other info
-            if (_recv.ContainsKey("partnerid"))
+            if (_rawRequest.ContainsKey("partnerid"))
             {
                 uint partnerid;
-                if (!uint.TryParse(_recv["partnerid"], out partnerid))
+                if (!uint.TryParse(_rawRequest["partnerid"], out partnerid))
                 {
                     return GPError.Parse;
                 }
@@ -90,10 +90,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
 
 
-            if (_recv.ContainsKey("productid"))
+            if (_rawRequest.ContainsKey("productid"))
             {
                 uint productid;
-                if (!uint.TryParse(_recv["productid"], out productid))
+                if (!uint.TryParse(_rawRequest["productid"], out productid))
                 {
                     return GPError.Parse;
                 }
@@ -101,17 +101,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 ProductID = productid;
             }
 
-            if (_recv.ContainsKey("gamename"))
+            if (_rawRequest.ContainsKey("gamename"))
             {
                 HasGameNameFlag = true; 
-                GameName = _recv["gamename"];
+                GameName = _rawRequest["gamename"];
             }
 
 
-            if (_recv.ContainsKey("port"))
+            if (_rawRequest.ContainsKey("port"))
             {
                 uint port;
-                if (!uint.TryParse(_recv["port"], out port))
+                if (!uint.TryParse(_rawRequest["port"], out port))
                 {
                     return GPError.Parse;
                 }
@@ -119,10 +119,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 GamePort = port;
             }
 
-            if (_recv.ContainsKey("cdkeyenc"))
+            if (_rawRequest.ContainsKey("cdkeyenc"))
             {
                 HasCDKeyEncFlag = true;
-                CDKeyEnc = _recv["cdkeyenc"];
+                CDKeyEnc = _rawRequest["cdkeyenc"];
             }
 
             return GPError.NoError;

@@ -23,23 +23,23 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("preferrednick"))
+            if (!_rawRequest.ContainsKey("preferrednick"))
             {
                 return GPError.Parse;
             }
 
-            PreferredNick = _recv["preferrednick"];
+            PreferredNick = _rawRequest["preferrednick"];
 
-            if (!_recv.ContainsKey("gamename"))
+            if (!_rawRequest.ContainsKey("gamename"))
             {
                 return GPError.Parse;
             }
-            GameName = _recv["gamename"];
+            GameName = _rawRequest["gamename"];
 
-            if (_recv.ContainsKey("namespaceid"))
+            if (_rawRequest.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                 {
                     return GPError.Parse;
                 }
