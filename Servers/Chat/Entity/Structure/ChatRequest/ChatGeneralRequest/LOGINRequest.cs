@@ -46,6 +46,7 @@ namespace Chat.Entity.Structure.ChatCommand
                 {
                     return false;
                 }
+
                 int profilenickIndex = _longParam.IndexOf("@");
 
                 NickName = _longParam.Substring(0, profilenickIndex);

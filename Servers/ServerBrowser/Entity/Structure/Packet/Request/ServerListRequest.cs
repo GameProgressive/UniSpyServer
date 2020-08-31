@@ -11,6 +11,8 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
     /// </summary>
     public class ServerListRequest
     {
+        public const ushort QueryReportDefaultPort = 6500;
+
         public bool IsParsingFinished;
         public byte RequestVersion { get; protected set; }
         public byte ProtocolVersion { get; protected set; }
