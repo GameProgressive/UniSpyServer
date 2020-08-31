@@ -86,8 +86,9 @@ namespace Chat.Handler.CommandSwitcher
                         break;
                     case ChatCmdName.REGISTERNICK:
                         goto default;
-                    case ChatCmdName.USERIP:
-                        goto default;
+                    case ChatCmdName.USRIP:
+                        new USRIPHandler(session, request).Handle();
+                        break;
 
                     case ChatCmdName.WHO:
                         new WHOHandler(session, request).Handle();

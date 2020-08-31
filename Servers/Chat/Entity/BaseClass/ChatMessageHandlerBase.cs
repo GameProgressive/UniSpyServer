@@ -25,6 +25,11 @@ namespace Chat.Handler.CommandHandler
                     base.CheckRequest();
                     break;
                 case ChatMessageType.UserMessage:
+                    if (!_request.Parse())
+                    {
+                        _errorCode = ChatError.Parse;
+                        return;
+                    }
                     if (_request.RequestType == ChatMessageType.UserMessage)
                     {
                         if (!ChatSessionManager.GetSessionByNickName(_request.NickName, out _otherSession))
