@@ -36,22 +36,24 @@ namespace Chat.Entity.Structure.ChatCommand
             }
 
             int indexOfColon = RawRequest.IndexOf(':');
+
+            string rawRequest = RawRequest;
             if (indexOfColon == 0 && indexOfColon != -1)
             {
-                int prefixIndex = RawRequest.IndexOf(' ');
-                Prefix = RawRequest.Substring(indexOfColon, prefixIndex);
-                RawRequest = RawRequest.Substring(prefixIndex);
+                int prefixIndex = rawRequest.IndexOf(' ');
+                Prefix = rawRequest.Substring(indexOfColon, prefixIndex);
+                rawRequest = rawRequest.Substring(prefixIndex);
             }
 
-            indexOfColon = RawRequest.IndexOf(':');
+            indexOfColon = rawRequest.IndexOf(':');
             if (indexOfColon != 0 && indexOfColon != -1)
             {
-                _longParam = RawRequest.Substring(indexOfColon + 1);
+                _longParam = rawRequest.Substring(indexOfColon + 1);
                 //reset the request string
-                RawRequest = RawRequest.Remove(indexOfColon);
+                rawRequest = rawRequest.Remove(indexOfColon);
             }
 
-            dataFrag = RawRequest.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+            dataFrag = rawRequest.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
 
             CmdName = dataFrag[0];
 
@@ -74,7 +76,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public static string BuildReply(string command, string cmdParams, string tailing)
         {
-            return BuildReply(ChatServer.ServerDomain,command, cmdParams, tailing);
+            return BuildReply(ChatServer.ServerDomain, command, cmdParams, tailing);
         }
 
         public static string BuildReply(ChatUserInfo userInfo, string command)

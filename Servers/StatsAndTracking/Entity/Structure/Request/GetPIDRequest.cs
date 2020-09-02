@@ -9,7 +9,7 @@ namespace StatsAndTracking.Entity.Structure.Request
         public string Nick { get; protected set; }
         public string KeyHash { get; protected set; }
 
-        public GetPIDRequest(Dictionary<string, string> recv) : base(recv)
+        public GetPIDRequest(Dictionary<string, string> request) : base(request)
         {
         }
 
@@ -21,18 +21,18 @@ namespace StatsAndTracking.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("nick") || !_recv.ContainsKey("keyhash"))
+            if (!_request.ContainsKey("nick") || !_request.ContainsKey("keyhash"))
             {
                 return GStatsErrorCode.Parse;
             }
 
-            if (_recv.ContainsKey("nick"))
+            if (_request.ContainsKey("nick"))
             {
-                Nick = _recv["nick"];
+                Nick = _request["nick"];
             }
-            else if (_recv.ContainsKey("keyhash"))
+            else if (_request.ContainsKey("keyhash"))
             {
-                KeyHash = _recv["keyhash"];
+                KeyHash = _request["keyhash"];
             }
             else
             {

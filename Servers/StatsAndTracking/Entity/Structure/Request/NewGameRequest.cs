@@ -6,7 +6,7 @@ namespace StatsAndTracking.Entity.Structure.Request
 {
     public class NewGameRequest : GStatsRequestBase
     {
-        public NewGameRequest(Dictionary<string, string> recv) : base(recv)
+        public NewGameRequest(Dictionary<string, string> request) : base(request)
         {
         }
 

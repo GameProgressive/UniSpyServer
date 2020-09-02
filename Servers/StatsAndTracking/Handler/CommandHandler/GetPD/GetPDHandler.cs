@@ -8,11 +8,11 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
     public class GetPDHandler : GStatsCommandHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
-        protected new GetPDRequest _request;
+        protected GetPDRequest _request;
 
-        public GetPDHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public GetPDHandler(ISession session, Dictionary<string, string> request) : base(session, request)
         {
-            _request = new GetPDRequest(recv);
+            _request = new GetPDRequest(request);
         }
 
         protected override void CheckRequest()

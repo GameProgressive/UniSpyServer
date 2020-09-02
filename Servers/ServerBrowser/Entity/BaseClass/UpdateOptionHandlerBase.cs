@@ -50,8 +50,9 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
             _clientRemoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
 
             //TODO   //default port should be hton format
-            ushort defaultPort = 6500;
-            byte[] defaultPortBytes = BitConverter.GetBytes(defaultPort);
+            byte[] defaultPortBytes = BitConverter.GetBytes(
+                ServerListRequest.QueryReportDefaultPort);
+
             Array.Reverse(defaultPortBytes);
             ushort htonDefaultPort = BitConverter.ToUInt16(defaultPortBytes);
             _gameServerDefaultHostPort = BitConverter.GetBytes(htonDefaultPort);
@@ -137,6 +138,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler
 
             foreach (var key in _request.Keys)
             {
+                //do not skip empty value
                 if (!server.ServerData.KeyValue.ContainsKey(key))
                 {
                     return true;
