@@ -6,25 +6,25 @@ namespace StatsAndTracking.Entity.Structure.Request
 {
     public class GStatsRequestBase
     {
-        protected Dictionary<string, string> _recv;
+        protected Dictionary<string, string> _request;
         public uint OperationID { get; protected set; }
-        public GStatsRequestBase(Dictionary<string, string> recv)
+        public GStatsRequestBase(Dictionary<string, string> request)
         {
-            _recv = recv;
+            _request = request;
         }
 
         public virtual GStatsErrorCode Parse()
         {
 
-            if (!_recv.ContainsKey("lid") && !_recv.ContainsKey("id"))
+            if (!_request.ContainsKey("lid") && !_request.ContainsKey("id"))
             {
                 return GStatsErrorCode.Parse;
             }
 
-            if (_recv.ContainsKey("lid"))
+            if (_request.ContainsKey("lid"))
             {
                 uint operationID;
-                if (!uint.TryParse(_recv["lid"], out operationID))
+                if (!uint.TryParse(_request["lid"], out operationID))
                 {
                     return GStatsErrorCode.Parse;
                 }
@@ -32,10 +32,10 @@ namespace StatsAndTracking.Entity.Structure.Request
             }
 
             //worms 3d use id not lid so we added an condition here
-            if (_recv.ContainsKey("id"))
+            if (_request.ContainsKey("id"))
             {
                 uint operationID;
-                if (!uint.TryParse(_recv["id"], out operationID))
+                if (!uint.TryParse(_request["id"], out operationID))
                 {
                     return GStatsErrorCode.Parse;
                 }

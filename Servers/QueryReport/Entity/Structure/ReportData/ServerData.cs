@@ -30,6 +30,7 @@ namespace QueryReport.Entity.Structure.ReportData
 
                 string tempKey = keyValueArray[i];
                 string tempValue = keyValueArray[i + 1];
+
                 if (tempKey == "")
                 {
                     LogWriter.ToLog(LogEventLevel.Verbose, "Skiping empty key value");
@@ -57,8 +58,12 @@ namespace QueryReport.Entity.Structure.ReportData
             }
 
             ////todo add the location
-            //KeyValue.Add("region", "1");
-            //KeyValue.Add("country", "US");
+            if (!KeyValue.ContainsKey("region") && !KeyValue.ContainsKey("country"))
+            {
+                KeyValue.Add("region", "1");
+                KeyValue.Add("country", "US");
+            }
+
         }
 
         public void UpdateDictionary(string key, string value)

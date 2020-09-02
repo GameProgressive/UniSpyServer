@@ -15,7 +15,7 @@ namespace StatsAndTracking.Entity.Structure.Request
         public string KeyHash { get; protected set; }
         public string Nick { get; protected set; }
 
-        public AuthPRequest(Dictionary<string, string> recv) : base(recv)
+        public AuthPRequest(Dictionary<string, string> request) : base(request)
         {
         }
 
@@ -26,28 +26,28 @@ namespace StatsAndTracking.Entity.Structure.Request
             {
                 return flag;
             }
-            if (_recv.ContainsKey("pid") && _recv.ContainsKey("resp"))
+            if (_request.ContainsKey("pid") && _request.ContainsKey("resp"))
             {
                 //we parse profileid here
                 uint profileID;
-                if (!uint.TryParse(_recv["pid"], out profileID))
+                if (!uint.TryParse(_request["pid"], out profileID))
                 {
                     return GStatsErrorCode.Parse;
                 }
                 ProfileID = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
             }
-            else if (_recv.ContainsKey("authtoken") && _recv.ContainsKey("response"))
+            else if (_request.ContainsKey("authtoken") && _request.ContainsKey("response"))
             {
-                AuthToken = _recv["authtoken"];
-                Response = _recv["response"];
+                AuthToken = _request["authtoken"];
+                Response = _request["response"];
                 RequestType = AuthMethod.PartnerIDAuth;
             }
-            else if (_recv.ContainsKey("keyhash") && _recv.ContainsKey("nick"))
+            else if (_request.ContainsKey("keyhash") && _request.ContainsKey("nick"))
             {
                 RequestType = AuthMethod.CDkeyAuth;
-                KeyHash = _recv["keyhash"];
-                Nick = _recv["nick"];
+                KeyHash = _request["keyhash"];
+                Nick = _request["nick"];
             }
             else
             {

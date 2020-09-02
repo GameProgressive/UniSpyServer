@@ -18,9 +18,8 @@ namespace StatsAndTracking.Handler.CommandHandler
     {
         protected string _sendingBuffer;
         protected GStatsErrorCode _errorCode;
-        protected GStatsRequestBase _request;
         protected new GStatsSession _session;
-        protected GStatsCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
+        protected GStatsCommandHandlerBase(ISession session, Dictionary<string, string> request) : base(session)
         {
             _errorCode = GStatsErrorCode.NoError;
             _session = (GStatsSession)session.GetInstance();
@@ -28,8 +27,7 @@ namespace StatsAndTracking.Handler.CommandHandler
 
         public override void Handle()
         {
-            LogWriter.LogCurrentClass(this);
-
+            base.Handle();
             CheckRequest();
             if (_errorCode != GStatsErrorCode.NoError)
             {
@@ -56,19 +54,11 @@ namespace StatsAndTracking.Handler.CommandHandler
             Response();
         }
 
-        protected abstract void CheckRequest();
+        protected virtual void CheckRequest() { }
 
-        protected abstract void DataOperation();
+        protected virtual void DataOperation() { }
 
-        protected virtual void ConstructResponse()
-        {
-            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
-            {
-                return;
-            }
-
-            _sendingBuffer += @$"\lid\{_request.OperationID}";
-        }
+        protected virtual void ConstructResponse() { }
 
         protected virtual void Response()
         {

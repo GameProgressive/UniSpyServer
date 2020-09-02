@@ -12,10 +12,10 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPID
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
         private uint _protileid;
-        protected new GetPIDRequest _request;
-        public GetPIDHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        protected GetPIDRequest _request;
+        public GetPIDHandler(ISession session, Dictionary<string, string> request) : base(session, request)
         {
-            _request = new GetPIDRequest(recv);
+            _request = new GetPIDRequest(request);
         }
 
         protected override void CheckRequest()
@@ -42,7 +42,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPID
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = $@"\getpidr\{_protileid}";
+            _sendingBuffer = $@"\getpidr\{_protileid}\lid\{ _request.OperationID}";
         }
     }
 }
