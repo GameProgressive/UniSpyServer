@@ -62,7 +62,7 @@
         /// <summary>
         /// Get user's ip address
         /// </summary>
-        public const string USERIP = "USERIP";
+        public const string USRIP = "USRIP";
         /// <summary>
         /// Search channel user or online user information
         /// </summary>

@@ -22,8 +22,9 @@ namespace Chat.Handler.CommandHandler
         {
             base.CheckRequest();
 
-            if (_errorCode != ChatError.NoError)
+            if (!_request.Parse())
             {
+                _errorCode = ChatError.Parse;
                 return;
             }
 
