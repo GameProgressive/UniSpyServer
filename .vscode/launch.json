@@ -82,7 +82,7 @@
             "stopAtEntry": false
         },
         {
-            "name": "Stats",
+            "name": "StatsAndTracking",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -113,7 +113,28 @@
             ]
         },
         {
-            "name": "All Server",
+            "name": "Legacy servers",
+            "configurations": [
+                "PresenceConnectionManager",
+                "PresenceSearchPlayer",
+                "NatNeg",
+                "CDKey",
+                "Chat",
+                "QueryReport",
+                "ServerBrowser",
+                "StatsAndTracking"
+            ]
+        },
+        {
+            "name": "Stats test servers",
+            "configurations": [
+                "PresenceConnectionManager",
+                "PresenceSearchPlayer",
+                "StatsAndTracking"
+            ]
+        },
+        {
+            "name": "New servers",
             "configurations": [
                 "PresenceConnectionManager",
                 "PresenceSearchPlayer",
@@ -133,7 +154,7 @@
             ]
         },
         {
-            "name": "Sake server",
+            "name": "Sake servers",
             "configurations": [
                 "WebServices",
                 "PresenceConnectionManager"

@@ -4,6 +4,7 @@ using System.Linq;
 using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
+using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandHandler.Auth;
 using StatsAndTracking.Handler.CommandHandler.AuthP;
 using StatsAndTracking.Handler.CommandHandler.GetPD;
@@ -16,42 +17,42 @@ namespace StatsAndTracking.Handler.CommandSwitcher
 {
     public class GStatsCommandSwitcher : CommandSwitcherBase
     {
-        public void Switch(GStatsSession session, string message)
+        public void Switch(GStatsSession session, string rawRequest)
         {
             try
             {
-                if (message[0] != '\\')
+                if (rawRequest[0] != '\\')
                 {
                     return;
                 }
-                string[] recieved = message.TrimStart('\\').Split('\\');
-                var recv = GameSpyUtils.ConvertRequestToKeyValue(recieved);
+                string[] requestFraction = rawRequest.TrimStart('\\').Split('\\');
+                var request = GameSpyUtils.ConvertRequestToKeyValue(requestFraction);
 
-                switch (recv.Keys.First())
+                switch (request.Keys.First())
                 {
-                    case "auth"://authentication
-                        new AuthHandler(session, recv).Handle();
+                    case GStatsRequestName.Auth:
+                        new AuthHandler(session, request).Handle();
                         break;
-                    case "authp"://authenticate player
-                        new AuthPHandler(session, recv).Handle();
+                    case GStatsRequestName.AuthP:
+                        new AuthPHandler(session, request).Handle();
                         break;
-                    case "getpid"://get player from profileid
-                        new GetPIDHandler(session, recv).Handle();
+                    case GStatsRequestName.GetPid:
+                        new GetPIDHandler(session, request).Handle();
                         break;
-                    case "getpd"://get player data
-                        new GetPDHandler(session, recv).Handle();
+                    case GStatsRequestName.GetPD:
+                        new GetPDHandler(session, request).Handle();
                         break;
-                    case "setpd"://send player data
-                        new SetPDHandler(session, recv).Handle();
+                    case GStatsRequestName.SetPD:
+                        new SetPDHandler(session, request).Handle();
                         break;
-                    case "updgame"://update a profile data for a game
-                        new UpdGameHandler(session, recv).Handle();
+                    case GStatsRequestName.UpdGame:
+                        new UpdGameHandler(session, request).Handle();
                         break;
-                    case "newgame"://create new player data for a game
-                        new NewGameHandler(session, recv).Handle();
+                    case GStatsRequestName.NewGame:
+                        new NewGameHandler(session, request).Handle();
                         break;
                     default:
-                        LogWriter.UnknownDataRecieved(message);
+                        LogWriter.UnknownDataRecieved(rawRequest);
                         break;
                 }
             }

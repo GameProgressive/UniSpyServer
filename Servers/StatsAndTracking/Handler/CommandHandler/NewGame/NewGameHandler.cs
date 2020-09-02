@@ -7,7 +7,7 @@ namespace StatsAndTracking.Handler.CommandHandler.NewGame
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"
-        public NewGameHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public NewGameHandler(ISession session, Dictionary<string, string> request) : base(session, request)
         {
         }
 

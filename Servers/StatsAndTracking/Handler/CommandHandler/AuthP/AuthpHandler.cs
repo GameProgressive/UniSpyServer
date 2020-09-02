@@ -14,11 +14,11 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
     /// </summary>
     public class AuthPHandler : GStatsCommandHandlerBase
     {
-        protected new AuthPRequest _request;
+        protected AuthPRequest _request;
         private uint _profileID;
-        public AuthPHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public AuthPHandler(ISession session, Dictionary<string, string> request) : base(session, request)
         {
-            _request = new AuthPRequest(recv);
+            _request = new AuthPRequest(request);
         }
 
         protected override void CheckRequest()
@@ -56,7 +56,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
         protected override void ConstructResponse()
         {
             //we did not store the plaintext of user password so we do not need to check this
-            _sendingBuffer = $@"\pauthr\{_profileID}";
+            _sendingBuffer = $@"\pauthr\{_profileID}\lid\{ _request.OperationID}";
             base.ConstructResponse();
         }
 

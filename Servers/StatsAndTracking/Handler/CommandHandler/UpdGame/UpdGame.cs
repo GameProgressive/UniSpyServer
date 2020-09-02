@@ -10,7 +10,7 @@ namespace StatsAndTracking.Handler.CommandHandler.UpdGame
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
-        public UpdGameHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public UpdGameHandler(ISession session, Dictionary<string, string> request) : base(session, request)
         {
         }
 

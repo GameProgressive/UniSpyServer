@@ -9,7 +9,7 @@ namespace StatsAndTracking.Entity.Structure.Request
         public uint ProfileID { get; protected set; }
         public PersistStorageType StorageType { get; protected set; }
         public uint DataIndex { get; protected set; }
-        public GetPDRequest(Dictionary<string, string> recv) : base(recv)
+        public GetPDRequest(Dictionary<string, string> request) : base(request)
         {
         }
 
@@ -21,37 +21,32 @@ namespace StatsAndTracking.Entity.Structure.Request
                 return flag;
             }
 
-            if (_recv.ContainsKey("pid"))
+            if (_request.ContainsKey("pid"))
             {
                 uint profileID;
-                if (!uint.TryParse(_recv["pid"], out profileID))
+                if (!uint.TryParse(_request["pid"], out profileID))
                 {
                     return GStatsErrorCode.Parse;
                 }
                 ProfileID = profileID;
             }
 
-            if (_recv.ContainsKey("ptype"))
+            if (_request.ContainsKey("ptype"))
             {
-                uint storageType;
-                if (!Enum.TryParse(_recv["ptype"], out storageType))
+                PersistStorageType storageType;
+                if (!Enum.TryParse(_request["ptype"], out storageType))
                 {
                     return GStatsErrorCode.Parse;
                 }
 
-                if (!Enum.IsDefined(typeof(PersistStorageType), storageType))
-                {
-                    return GStatsErrorCode.Parse;
-                }
-
-                StorageType = (PersistStorageType)storageType;
+                StorageType = storageType;
             }
 
 
-            if (_recv.ContainsKey("dindex"))
+            if (_request.ContainsKey("dindex"))
             {
                 uint dataIndex;
-                if (!uint.TryParse(_recv["dindex"], out dataIndex))
+                if (!uint.TryParse(_request["dindex"], out dataIndex))
                 {
                     return GStatsErrorCode.Parse;
                 }

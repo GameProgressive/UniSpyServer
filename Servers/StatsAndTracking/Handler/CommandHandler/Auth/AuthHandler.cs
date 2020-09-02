@@ -7,9 +7,10 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
     public class AuthHandler : GStatsCommandHandlerBase
     {
         //GameSpyLib.Encryption.Crc16 _crc16 = new GameSpyLib.Encryption.Crc16(GameSpyLib.Encryption.Crc16Mode.Standard);
-        protected new AuthRequest _request;
-        public AuthHandler(ISession session, Dictionary<string,string> recv) : base(session,recv)
+        protected  AuthRequest _request;
+        public AuthHandler(ISession session, Dictionary<string,string> request) : base(session,request)
         {
+            _request = new AuthRequest(request);
         }
 
         protected override void CheckRequest()
@@ -34,7 +35,7 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = @$"\sesskey\{_session.PlayerData.SessionKey}";
+            _sendingBuffer = @$"\sesskey\{_session.PlayerData.SessionKey}\lid\{ _request.OperationID}";
             base.ConstructResponse();
         }
 
