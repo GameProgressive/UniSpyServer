@@ -1,8 +1,10 @@
 ﻿using GameSpyLib.Network;
+using QueryReport.Entity.Structure;
 using QueryReport.Handler.CommandSwitcher;
 using QueryReport.Handler.SystemHandler.NatNegCookieManage;
 using QueryReport.Handler.SystemHandler.PeerSystem;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
+using QueryReport.Handler.SystemHandler.ServerList;
 using System.Collections.Concurrent;
 using System.Net;
 
@@ -32,6 +34,7 @@ namespace QueryReport.Server
             //is busy and cant refresh the server's TTL right away
             new QRSessionManager().Start();
             new NatNegCookieManager().Start();
+            new ServerListManager().Start();
             return base.Start();
         }
 

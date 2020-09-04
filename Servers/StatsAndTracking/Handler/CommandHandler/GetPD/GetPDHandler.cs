@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
-using StatsAndTracking.Entity.Enumerator;
 using StatsAndTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 
@@ -19,7 +18,6 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
         {
             _errorCode = _request.Parse();
         }
-
 
         protected override void DataOperation()
         {

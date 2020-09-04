@@ -78,12 +78,19 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                     break;
             }
 
-            GameServer.UpdateServer(
-               _session.RemoteEndPoint,
-               _gameServer.ServerData.KeyValue["gamename"],
-               _gameServer
-           );
-
+            if (_gameServer.ServerData.KeyValue["statechanged"] == "2")
+            {
+                GameServer.DeleteSpecificServer(_session.RemoteEndPoint,
+                           _gameServer.ServerData.KeyValue["gamename"]);
+            }
+            else
+            {
+                GameServer.UpdateServer(
+                           _session.RemoteEndPoint,
+                           _gameServer.ServerData.KeyValue["gamename"],
+                           _gameServer
+                            );
+            }
         }
 
         protected override void ConstructeResponse()
