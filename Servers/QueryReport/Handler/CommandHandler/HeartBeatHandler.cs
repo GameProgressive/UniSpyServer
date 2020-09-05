@@ -78,7 +78,12 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                     break;
             }
 
-            if (_gameServer.ServerData.KeyValue["statechanged"] == "2")
+            UpdateGameServerByState();
+        }
+
+        protected void UpdateGameServerByState()
+        {
+            if (_gameServer.ServerData.ServerStatus == GameServerServerStatus.Shutdown)
             {
                 GameServer.DeleteSpecificServer(_session.RemoteEndPoint,
                            _gameServer.ServerData.KeyValue["gamename"]);
@@ -115,6 +120,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             _gameServer.TeamData.Update(_teamData);
             _gameServer.LastPacket = DateTime.Now;
         }
+
         private void ParseServerPlayerData()
         {
             _playerLenth = _dataPartition.Length - _playerPos;
