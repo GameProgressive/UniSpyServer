@@ -45,23 +45,24 @@ namespace QueryReport.Entity.Structure.ReportData
                 {
                     string tempKey = keys[keyIndex] + playerIndex.ToString();
                     string tempValue = values[playerIndex * keys.Count + keyIndex];
-                    //if (keyValue.ContainsKey(tempKey))
-                    //{
-                    //    if (keyValue[tempKey] == tempValue)
-                    //    {
-                    //        LogWriter.ToLog($"Ignoring same player key value {tempKey} : {tempValue}");
-                    //    }
-                    //    else
-                    //    {
-                    //        keyValue[tempKey] = tempValue;
-                    //        LogWriter.ToLog($"Updated player key value {tempKey} : {tempValue}");
-                    //    }
-                    //}
-                    //else
-                    //{
+                    // update existed key value
+                    if (keyValue.ContainsKey(tempKey))
+                    {   
+                        if (keyValue[tempKey] == tempValue)
+                        {
+                            LogWriter.ToLog($"Ignoring same player key value {tempKey} : {tempValue}");
+                        }
+                        else
+                        {
+                            keyValue[tempKey] = tempValue;
+                            LogWriter.ToLog($"Updated player key value {tempKey} : {tempValue}");
+                        }
+                    }
+                    else
+                    {
                         keyValue.Add(tempKey, tempValue);
                         LogWriter.ToLog(LogEventLevel.Verbose, $"Updated new player key value {tempKey}:{tempValue}");
-                    //}
+                    }
                 }
                 KeyValueList.Add(keyValue);
             }

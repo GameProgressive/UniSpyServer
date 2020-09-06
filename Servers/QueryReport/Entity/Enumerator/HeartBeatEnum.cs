@@ -7,11 +7,12 @@ namespace QueryReport.Entity.Enumerator
         ServerPlayerData,
         ServerData,
     }
-    public enum HeartBeartServerState
+
+    public enum GameServerServerStatus
     {
-        Start=0,
-        Running=1,
-        Playing=2,
-        Shutdown=3
+        Normal=0,
+        Update=1,
+        Shutdown=2,
+        Playing = 3,
     }
 }

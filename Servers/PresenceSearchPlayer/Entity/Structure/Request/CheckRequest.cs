@@ -18,7 +18,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Password { get; private set; }
         public string Email { get; private set; }
 
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
             if (flag != GPError.NoError)
@@ -31,7 +31,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             Password = md5Password;
 
-            if (!_rawRequest.ContainsKey("nick") || !_rawRequest.ContainsKey("email") || !_rawRequest.ContainsKey("passenc"))
+            if (!_rawRequest.ContainsKey("nick") || !_rawRequest.ContainsKey("email") || Password == null)
             {
                 return GPError.Parse;
             }

@@ -78,12 +78,24 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                     break;
             }
 
-            GameServer.UpdateServer(
-               _session.RemoteEndPoint,
-               _gameServer.ServerData.KeyValue["gamename"],
-               _gameServer
-           );
+            UpdateGameServerByState();
+        }
 
+        protected void UpdateGameServerByState()
+        {
+            if (_gameServer.ServerData.ServerStatus == GameServerServerStatus.Shutdown)
+            {
+                GameServer.DeleteSpecificServer(_session.RemoteEndPoint,
+                           _gameServer.ServerData.KeyValue["gamename"]);
+            }
+            else
+            {
+                GameServer.UpdateServer(
+                           _session.RemoteEndPoint,
+                           _gameServer.ServerData.KeyValue["gamename"],
+                           _gameServer
+                            );
+            }
         }
 
         protected override void ConstructeResponse()
@@ -108,6 +120,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
             _gameServer.TeamData.Update(_teamData);
             _gameServer.LastPacket = DateTime.Now;
         }
+
         private void ParseServerPlayerData()
         {
             _playerLenth = _dataPartition.Length - _playerPos;
