@@ -5,7 +5,7 @@ namespace GameSpyLib.Common.BaseClass
 {
     public abstract class ExpireManagerBase
     {
-        protected static Timer _checkTimer;
+        protected static Timer _timer;
         /// <summary>
         /// Because every resource we manage is global
         /// so we do not parse any object to this class
@@ -13,24 +13,25 @@ namespace GameSpyLib.Common.BaseClass
         public ExpireManagerBase()
         {
             //default settings
-            _checkTimer = new Timer
+            _timer = new Timer
             {
                 Enabled = true,
-                Interval = 10000,
+                Interval = 60000,
                 AutoReset = true
             };//10000
         }
 
         public virtual void Start()
         {
-            _checkTimer.Start();
-            _checkTimer.Elapsed += (s, e) => CheckExpire();
+            _timer.Start();
+            _timer.Elapsed += (s, e) => CheckExpire();
         }
 
         protected virtual void CheckExpire()
         {
             //log which expire manager excuted
             LogWriter.LogCurrentClass(this);
+
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
+using QueryReport.Entity.Enumerator;
 using Serilog.Events;
+using System;
 using System.Collections.Generic;
 
 namespace QueryReport.Entity.Structure.ReportData
@@ -8,10 +10,11 @@ namespace QueryReport.Entity.Structure.ReportData
     public class ServerData
     {
         public Dictionary<string, string> KeyValue { get; protected set; }
-
+        public GameServerServerStatus ServerStatus;
         public ServerData()
         {
             KeyValue = new Dictionary<string, string>();
+            ServerStatus = GameServerServerStatus.Normal;
         }
 
         public void Update(string serverData)
@@ -56,7 +59,10 @@ namespace QueryReport.Entity.Structure.ReportData
                     KeyValue.Add(tempKey, tempValue);
                 }
             }
-
+            UpdateOtherInfo();
+        }
+        private void UpdateOtherInfo()
+        {
             ////todo add the location
             if (!KeyValue.ContainsKey("region") && !KeyValue.ContainsKey("country"))
             {
@@ -64,8 +70,23 @@ namespace QueryReport.Entity.Structure.ReportData
                 KeyValue.Add("country", "US");
             }
 
+            if (KeyValue.ContainsKey("statechanged"))
+            {
+                GameServerServerStatus status;
+                if (Enum.TryParse(KeyValue["statechanged"], out status))
+                {
+                    ServerStatus = status;
+                }
+                else
+                {
+                    ServerStatus = GameServerServerStatus.Shutdown;
+                }
+            }
+            else
+            {
+                ServerStatus = GameServerServerStatus.Shutdown;
+            }
         }
-
         public void UpdateDictionary(string key, string value)
         {
             KeyValue.Add(key, value);

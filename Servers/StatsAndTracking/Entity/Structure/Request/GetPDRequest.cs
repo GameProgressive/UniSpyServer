@@ -4,13 +4,17 @@ using StatsAndTracking.Entity.Enumerator;
 
 namespace StatsAndTracking.Entity.Structure.Request
 {
+
     public class GetPDRequest : GStatsRequestBase
     {
         public uint ProfileID { get; protected set; }
         public PersistStorageType StorageType { get; protected set; }
         public uint DataIndex { get; protected set; }
+        public List<string> Keys { get; protected set; }
+        public bool GetAllDataFlag { get; protected set; }
         public GetPDRequest(Dictionary<string, string> request) : base(request)
         {
+            Keys = new List<string>();
         }
 
         public override GStatsErrorCode Parse()
@@ -51,6 +55,26 @@ namespace StatsAndTracking.Entity.Structure.Request
                     return GStatsErrorCode.Parse;
                 }
                 DataIndex = dataIndex;
+            }
+
+            if (!_request.ContainsKey("keys"))
+            {
+                return GStatsErrorCode.Parse;
+            }
+
+            string keys = _request["keys"];
+            if (keys == "")
+            {
+                GetAllDataFlag = true;
+            }
+            else
+            {
+                string[] keyArray = keys.Split('\x1');
+                foreach (var key in keyArray)
+                {
+                    Keys.Add(key);
+                }
+                GetAllDataFlag = false;
             }
 
             return GStatsErrorCode.NoError;
