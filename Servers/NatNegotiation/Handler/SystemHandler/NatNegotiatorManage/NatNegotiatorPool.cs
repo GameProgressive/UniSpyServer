@@ -21,7 +21,7 @@ namespace NatNegotiation.Handler.SystemHandler.NatNegotiatorManage
         public void Start()
         { }
 
-        public static void FindNatNegotiatorsAndSendConnectPacket(NatPortType portType, byte version, uint cookie)
+        public static void Negotiate(NatPortType portType, byte version, uint cookie)
         {
             //find Sessions according to the partern
             Dictionary<string, NatNegSession> result = Sessions

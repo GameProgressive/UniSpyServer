@@ -42,5 +42,11 @@
     <Folder Include="Handler\CommandHandler\ChatChannelCommandHandler\" />
     <Folder Include="Entity\BaseClass\" />
     <Folder Include="Handler\CommandHandler\ChatMessageCommandHandler\" />
+    <Folder Include="Entity\BaseClass\Request\" />
+    <Folder Include="Entity\BaseClass\Handler\" />
+    <Folder Include="Entity\BaseClass\Reply\" />
+    <Folder Include="Entity\Structure\ChatResponse\ChatGeneralResponse\" />
+    <Folder Include="Entity\Structure\ChatResponse\ChatMessageResponse\" />
+    <Folder Include="Entity\Structure\ChatResponse\ChatChannelResponse\" />
   </ItemGroup>
 </Project>

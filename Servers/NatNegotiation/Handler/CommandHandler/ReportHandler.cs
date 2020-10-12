@@ -27,10 +27,10 @@ namespace NatNegotiation.Handler.CommandHandler
 
             if (_reportPacket.NatResult != NatNegotiationResult.Success)
             {
-                NatNegotiatorPool.FindNatNegotiatorsAndSendConnectPacket(NatPortType.GP, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiatorPool.FindNatNegotiatorsAndSendConnectPacket(NatPortType.NN1, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiatorPool.FindNatNegotiatorsAndSendConnectPacket(NatPortType.NN2, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiatorPool.FindNatNegotiatorsAndSendConnectPacket(NatPortType.NN3, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiatorPool.Negotiate(NatPortType.GP, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiatorPool.Negotiate(NatPortType.NN1, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiatorPool.Negotiate(NatPortType.NN2, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiatorPool.Negotiate(NatPortType.NN3, _reportPacket.Version, _reportPacket.Cookie);
             }
         }
 

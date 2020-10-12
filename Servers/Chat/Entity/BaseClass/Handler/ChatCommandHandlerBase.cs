@@ -1,8 +1,11 @@
-﻿using Chat.Entity.Structure;
+﻿using System;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Server;
 using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Logging;
+using Serilog.Events;
 
 namespace Chat.Handler.CommandHandler
 {
@@ -47,7 +50,7 @@ namespace Chat.Handler.CommandHandler
             {
                 if (_errorCode == ChatError.IRCError)
                 {
-                    SendErrorMessage();
+                    ConstructResponse();
                 }
                 return;
             }
@@ -57,21 +60,12 @@ namespace Chat.Handler.CommandHandler
             {
                 if (_errorCode == ChatError.IRCError)
                 {
-                    SendErrorMessage();
+                    ConstructResponse();
                 }
                 return;
             }
 
             ConstructResponse();
-
-            if (_errorCode != ChatError.NoError)
-            {
-                if (_errorCode == ChatError.IRCError)
-                {
-                    SendErrorMessage();
-                }
-                return;
-            }
 
             Response();
         }
@@ -80,17 +74,30 @@ namespace Chat.Handler.CommandHandler
         protected virtual void DataOperation()
         { }
         protected virtual void ConstructResponse()
-        { }
-        protected virtual void Response()
         {
-            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            if (_errorCode != ChatError.NoError)
             {
-                return;
+                BuildErrorResponse();
             }
-            base._session.SendAsync(_sendingBuffer);
+            else
+            {
+                BuildNormalResponse();
+            }
         }
 
-        private void SendErrorMessage()
+        protected virtual void BuildErrorResponse()
+        {
+            if(_errorCode!= ChatError.NoError)
+            {
+                LogWriter.ToLog(LogEventLevel.Error, $"{_errorCode} occured!");
+            }
+        }
+
+        protected virtual void BuildNormalResponse()
+        { }
+
+
+        protected virtual void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {

@@ -2,6 +2,7 @@
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Server;
@@ -16,7 +17,8 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     public class WHOHandler : ChatLogedInHandlerBase
     {
         new WHORequest _request;
-
+        ChatChannelBase _resultChannel;
+        ChatSession _resultSession;
         public WHOHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
             _request = new WHORequest(request.RawRequest);
@@ -49,55 +51,85 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             ChatChannelBase channel;
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out channel))
             {
-                _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
+                _errorCode = ChatError.NoSuchChannel;
                 return;
             }
-            _sendingBuffer = "";
+            _resultChannel = channel;
 
-            foreach (var user in channel.Property.ChannelUsers)
-            {
-                _sendingBuffer +=
-                    ChatReply.BuildWhoReply(
-                        channel.Property.ChannelName,
-                        user.UserInfo, user.GetUserModes());
-            }
-            _sendingBuffer +=
-                ChatReply.BuildEndOfWhoReply(channel.Property.ChannelName);
         }
-
         /// <summary>
         /// Send all channel user information
         /// </summary>
         private void GetUserInfo()
         {
             ChatSession session;
-
             if (!ChatSessionManager.GetSessionByUserName(_request.NickName, out session))
             {
-                _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                _errorCode = ChatError.NoSuchNick;
                 return;
             }
-
-            BuildWhoReplyForUser(session);
+            _resultSession = session;
         }
 
-        private void BuildWhoReplyForUser(ChatSession session)
+        protected override void BuildNormalResponse()
         {
+            base.BuildNormalResponse();
             _sendingBuffer = "";
-            foreach (var channel in session.UserInfo.JoinedChannels)
+            switch (_request.RequestType)
+            {
+                case WHOType.GetChannelUsersInfo:
+                    BuildWhoReplyForChannelUser();
+                    break;
+
+                case WHOType.GetUserInfo:
+                    BuildWhoReplyForUser();
+                    break;
+            }
+        }
+
+
+        protected override void BuildErrorResponse()
+        {
+            base.BuildErrorResponse();
+            switch (_errorCode)
+            {
+                case ChatError.NoSuchChannel:
+                    _sendingBuffer =
+                        ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
+                    break;
+                case ChatError.NoSuchNick:
+                    _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                    break;
+            }
+
+        }
+
+        private void BuildWhoReplyForChannelUser()
+        {
+            foreach (var user in _resultChannel.Property.ChannelUsers)
+            {
+                _sendingBuffer +=
+                    WHOReply.BuildWhoReply(
+                        _resultChannel.Property.ChannelName,
+                        user.UserInfo, user.GetUserModes());
+            }
+            _sendingBuffer +=
+                WHOReply.BuildEndOfWhoReply(_resultChannel.Property.ChannelName);
+        }
+        private void BuildWhoReplyForUser()
+        {
+            foreach (var channel in _resultSession.UserInfo.JoinedChannels)
             {
                 ChatChannelUser user;
-                channel.GetChannelUserBySession(session, out user);
+                channel.GetChannelUserBySession(_resultSession, out user);
                 _sendingBuffer +=
-                    ChatReply.BuildWhoReply(
+                    WHOReply.BuildWhoReply(
                         channel.Property.ChannelName,
-                        session.UserInfo,
+                        _resultSession.UserInfo,
                         user.GetUserModes());
             }
             _sendingBuffer +=
-                ChatReply.BuildEndOfWhoReply(session.UserInfo.NickName);
+                WHOReply.BuildEndOfWhoReply(_resultSession.UserInfo.NickName);
         }
     }
 }

@@ -11,12 +11,9 @@ namespace Chat.Entity.Structure.ChatCommand
         {
         }
 
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            {
-                return false;
-            }
+           
             if (_longParam == null)
                 return false;
 

@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.ChatCommand
         {
         }
 
-        public override bool Parse()
+        protected override bool DetailParse()
         {
             return true; // USRIP content is empty!
         }

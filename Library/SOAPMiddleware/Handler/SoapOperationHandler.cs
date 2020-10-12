@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.ServiceModel;
@@ -61,10 +62,10 @@ namespace SOAPMiddleware.Handler
             }
 
             // Get service type
-            var serviceInstance = _serviceProvider.GetService(_service.ServiceType);
+            object serviceInstance = _serviceProvider.GetService(_service.ServiceType);
 
             // Get operation arguments from message
-            var arguments =
+            List<object> arguments =
                 new SOAPObjectReader(requestMessage, _operationDescription)
                         .GetRequestArguments();
 
@@ -76,25 +77,25 @@ namespace SOAPMiddleware.Handler
         private void HandleSOAPResponse()
         {
             // Create response message
-            var resultName = _operationDescription.DispatchMethod.ReturnParameter
+            string resultName = _operationDescription.DispatchMethod.ReturnParameter
                 .GetCustomAttribute<MessageParameterAttribute>()?.Name ?? $"{_operationDescription.Name}Result";
 
-            var bodyWriter = new ServiceBodyWriter(
+            ServiceBodyWriter bodyWriter = new ServiceBodyWriter(
                 _operationDescription.Contract.Namespace,
                 $"{_operationDescription.Name}Response",
                 resultName,
                 _responseObject);
 
-            Message responseMessage =
+            Message responseMsg =
                 Message.CreateMessage(
                     _msgEncoder.MessageVersion,
                     _operationDescription.ReplyAction,
                     bodyWriter);
 
-            _httpContext.Response.ContentType = _httpContext.Request.ContentType; // _messageEncoder.ContentType;
-            _httpContext.Response.Headers["SOAPAction"] = responseMessage.Headers.Action;
+            _httpContext.Response.ContentType = _httpContext.Request.ContentType;
+            _httpContext.Response.Headers["SOAPAction"] = responseMsg.Headers.Action;
 
-            _msgEncoder.WriteMessage(responseMessage, _httpContext.Response.Body);
+            _msgEncoder.WriteMessage(responseMsg, _httpContext.Response.Body);
         }
     }
 }

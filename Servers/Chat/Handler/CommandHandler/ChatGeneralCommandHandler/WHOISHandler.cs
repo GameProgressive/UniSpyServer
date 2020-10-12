@@ -2,6 +2,7 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Entity.Structure.ChatUser;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using GameSpyLib.Common.Entity.Interface;
@@ -33,41 +34,22 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 
             if (result.Count() != 1)
             {
-                _errorCode = Entity.Structure.ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                _errorCode = ChatError.NoSuchNick;
                 return;
             }
             _userInfo = result.FirstOrDefault();
         }
 
-        protected override void DataOperation()
+        protected override void BuildErrorResponse()
         {
-            base.DataOperation();
-
-            _sendingBuffer =
-                ChatReply.BuildWhoIsUserReply(_userInfo);
-
-            BuildJoinedChannelReply();
-
-            _sendingBuffer +=
-                ChatReply.BuildEndOfWhoIsReply(_userInfo);
+            base.BuildErrorResponse();
+            _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
         }
 
-        private void BuildJoinedChannelReply()
+        protected override void BuildNormalResponse()
         {
-            if (_userInfo.JoinedChannels.Count() != 0)
-            {
-                string channelNames = "";
-                //todo remove last space
-                foreach (var channel in _userInfo.JoinedChannels)
-                {
-                    channelNames += $"@{channel.Property.ChannelName} ";
-                }
-
-                _sendingBuffer +=
-                    ChatReply.BuildWhoIsChannelReply(_userInfo, channelNames);
-
-            }
+            base.BuildNormalResponse();
+            _sendingBuffer = WHOISReply.BuildWhoIsUserReply(_userInfo);
         }
     }
 }

@@ -15,12 +15,9 @@
         public string ChannelTopic { get; protected set; }
         public TOPICCmdType RequestType { get; protected set; }
 
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            {
-                return false;
-            }
+           
 
             if (_longParam == null)
             {

@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -17,7 +18,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if(!_request.Parse())
+            if (!_request.Parse())
             {
                 _errorCode = ChatError.Parse;
                 return;
@@ -26,7 +27,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             if (ChatSessionManager.IsNickNameExisted(_request.NickName))
             {
                 _errorCode = ChatError.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                return;
             }
         }
 
@@ -36,11 +37,16 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             _session.UserInfo.SetNickName(_request.NickName);
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildErrorResponse()
         {
-            base.ConstructResponse();
-            _sendingBuffer =
-               ChatReply.BuildWelcomeReply(_session.UserInfo);
+            base.BuildErrorResponse();
+            _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+        }
+
+        protected override void BuildNormalResponse()
+        {
+            base.BuildNormalResponse();
+            _sendingBuffer = NICKReply.BuildWelcomeReply(_session.UserInfo);
         }
     }
 }

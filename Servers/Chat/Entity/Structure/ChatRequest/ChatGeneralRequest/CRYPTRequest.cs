@@ -13,12 +13,9 @@ namespace Chat.Entity.Structure.ChatCommand
         public string GameName { get; protected set; }
         //CRYPT des %d %s
 
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            {
-                return false;
-            }
+           
 
             VersionID = _cmdParams[1];
             GameName = _cmdParams[2];

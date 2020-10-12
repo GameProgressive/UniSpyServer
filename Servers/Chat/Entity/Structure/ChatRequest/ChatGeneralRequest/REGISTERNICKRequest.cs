@@ -9,12 +9,9 @@
         public string NamespaceID { get; protected set; }
         public string UniqueNick { get; protected set; }
         public string CDKey { get; protected set; }
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            {
-                return false;
-            }
+           
             NamespaceID = _cmdParams[0];
             UniqueNick = _cmdParams[1];
             CDKey = _cmdParams[2];

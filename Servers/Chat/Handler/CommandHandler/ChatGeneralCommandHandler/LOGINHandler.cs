@@ -2,6 +2,7 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Extensions;
@@ -52,10 +53,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            base.ConstructResponse();
-            _sendingBuffer = ChatReply.BuildLoginReply(_userid, _profileid);
+            base.BuildNormalResponse();
+            _sendingBuffer = LOGINReply.BuildLoginReply(_userid, _profileid);
         }
 
 
@@ -90,18 +91,18 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             using (var db = new retrospyContext())
             {
                 var result = from n in db.Subprofiles
-                           join p in db.Profiles on n.Profileid equals p.Profileid
-                           join u in db.Users on p.Userid equals u.Userid
-                           where n.Uniquenick == _request.UniqueNick
-                           && n.Namespaceid == _request.NameSpaceID
-                           select new
-                           {
-                               userid = u.Userid,
-                               profileid = p.Profileid,
-                               uniquenick = n.Uniquenick,
-                               emailVerified = u.Emailverified,
-                               banned = u.Banned
-                           };
+                             join p in db.Profiles on n.Profileid equals p.Profileid
+                             join u in db.Users on p.Userid equals u.Userid
+                             where n.Uniquenick == _request.UniqueNick
+                             && n.Namespaceid == _request.NameSpaceID
+                             select new
+                             {
+                                 userid = u.Userid,
+                                 profileid = p.Profileid,
+                                 uniquenick = n.Uniquenick,
+                                 emailVerified = u.Emailverified,
+                                 banned = u.Banned
+                             };
                 if (result.Count() != 1)
                 {
                     _errorCode = ChatError.DataOperation;

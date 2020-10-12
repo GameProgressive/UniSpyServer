@@ -31,9 +31,9 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             _session.UserInfo.SetName(_request.Name);
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            base.ConstructResponse();
+            base.BuildNormalResponse();
 
             //TODO check if this is correct
             //we postpone welcome message until when recieved NICK request

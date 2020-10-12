@@ -30,11 +30,5 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         {
             base.DataOperation();
         }
-
-        protected override void ConstructResponse()
-        {
-            base.ConstructResponse();
-        }
-
     }
 }

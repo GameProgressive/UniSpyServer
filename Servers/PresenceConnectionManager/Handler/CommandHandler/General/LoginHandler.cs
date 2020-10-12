@@ -169,7 +169,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.General
             {
                 _sendingBuffer += @"\uniquenick\" + _result.UniqueNick;
             }
-            _sendingBuffer += @$"\lt\{UserData.LoginTicket}";
+            _sendingBuffer += $@"\lt\{UserData.LoginTicket}";
             _sendingBuffer += $@"\id\{_request.OperationID}\final\";
 
             _session.UserData.LoginStatus = LoginStatus.Completed;

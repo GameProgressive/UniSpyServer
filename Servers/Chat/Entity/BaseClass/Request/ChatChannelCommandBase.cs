@@ -8,12 +8,8 @@
 
         public string ChannelName { get; protected set; }
 
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            {
-                return false;
-            }
             if (_cmdParams.Count < 1)
             {
                 return false;

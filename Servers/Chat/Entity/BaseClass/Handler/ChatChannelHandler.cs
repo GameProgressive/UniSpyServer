@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler
     {
         protected ChatChannelBase _channel;
         protected ChatChannelUser _user;
-        new ChatChannelRequestBase _request;
+        protected new ChatChannelRequestBase _request;
 
         public ChatChannelHandlerBase(ISession session, ChatRequestBase request) : base(session, request)
         {

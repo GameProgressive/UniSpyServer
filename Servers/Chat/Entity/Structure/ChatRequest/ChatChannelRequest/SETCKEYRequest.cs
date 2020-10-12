@@ -15,10 +15,9 @@ namespace Chat.Entity.Structure.ChatCommand
             KeyValues = new Dictionary<string, string>();
         }
 
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            { return false; }
+
             if (_longParam == null)
             { return false; }
 

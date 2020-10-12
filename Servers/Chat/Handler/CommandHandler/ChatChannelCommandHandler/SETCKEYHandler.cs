@@ -2,6 +2,7 @@
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
@@ -92,7 +93,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             if (IsSetOthersKeyValue)
             {
                 _sendingBuffer =
-                    ChatReply.BuildGetCKeyReply(
+                    GETCKEYReply.BuildGetCKeyReply(
                         _otherUser.UserInfo.NickName,
                         _channel.Property.ChannelName,
                         "BCAST", flags);
@@ -100,7 +101,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             else
             {
                 _sendingBuffer =
-                    ChatReply.BuildGetCKeyReply(
+                    GETCKEYReply.BuildGetCKeyReply(
                         _user.UserInfo.NickName,
                         _channel.Property.ChannelName,
                         "BCAST", flags);

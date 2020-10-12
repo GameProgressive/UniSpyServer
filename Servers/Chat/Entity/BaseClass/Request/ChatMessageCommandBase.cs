@@ -16,13 +16,8 @@
         public string NickName { get; protected set; }
         public string Message { get; protected set; }
 
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            {
-                return false;
-            }
-
             if (_cmdParams[0].Contains("#"))
             {
                 RequestType = ChatMessageType.ChannelMessage;

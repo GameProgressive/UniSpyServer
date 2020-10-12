@@ -8,12 +8,9 @@
 
         public string CDKey { get; protected set; }
         
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            {
-                return false;
-            }
+           
             CDKey = _cmdParams[0];
             return true;
         }

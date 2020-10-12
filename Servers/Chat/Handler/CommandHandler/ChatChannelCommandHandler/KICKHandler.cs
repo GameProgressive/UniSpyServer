@@ -2,6 +2,7 @@
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
@@ -41,7 +42,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         {
             base.DataOperation();
             _sendingBuffer =
-                ChatReply.BuildKickReply(
+                KICKReply.BuildKickReply(
                     _channel.Property.ChannelName,
                     _user, _kickee, _request.Reason);
         }

@@ -47,7 +47,7 @@ namespace NatNegotiation.Handler.CommandHandler
         {
             base.Response();
             NatNegotiatorPool
-                .FindNatNegotiatorsAndSendConnectPacket(
+                .Negotiate(
                 _initPacket.PortType,
                 _initPacket.Version,
                 _initPacket.Cookie);

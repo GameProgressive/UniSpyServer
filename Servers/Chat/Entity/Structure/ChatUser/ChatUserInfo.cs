@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Net;
 using Chat.Entity.Structure.ChatChannel;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.ChatResponse;
 
 namespace Chat.Entity.Structure.ChatUser
 {
@@ -145,7 +145,7 @@ namespace Chat.Entity.Structure.ChatUser
 
         public string BuildReply(string command, string cmdParams, string tailing)
         {
-            return ChatRequestBase.BuildReply(this, command, cmdParams, tailing);
+            return ChatReplyBase.BuildReply(this, command, cmdParams, tailing);
         }
     }
 }

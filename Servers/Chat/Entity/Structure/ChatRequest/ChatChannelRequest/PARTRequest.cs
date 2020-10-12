@@ -11,12 +11,9 @@ namespace Chat.Entity.Structure.ChatCommand
         public string Reason { get; protected set; }
 
 
-        public override bool Parse()
+        protected override bool DetailParse()
         {
-            if (!base.Parse())
-            {
-                return false;
-            }
+           
 
             Reason = _longParam;
             return true;

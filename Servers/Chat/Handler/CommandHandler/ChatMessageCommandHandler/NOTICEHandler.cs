@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatMessageResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
@@ -27,11 +28,11 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
             switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
-                    _sendingBuffer = ChatReply.BuildNoticeReply(
+                    _sendingBuffer = NOTICEReply.BuildNoticeReply(
                             _user.UserInfo, _request.ChannelName, _request.Message);
                     break;
                 case ChatMessageType.UserMessage:
-                    _sendingBuffer = ChatReply.BuildNoticeReply(
+                    _sendingBuffer = NOTICEReply.BuildNoticeReply(
                         _session.UserInfo, _request.NickName, _request.Message);
                     break;
             }

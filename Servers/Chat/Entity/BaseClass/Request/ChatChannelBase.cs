@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;
 using QueryReport.Entity.Structure;
@@ -18,14 +19,14 @@ namespace Chat.Entity.Structure.ChatChannel
         public void MultiCastJoin(ChatChannelUser joiner)
         {
             string joinMessage =
-                ChatReply.BuildJoinReply(
+                JOINReply.BuildJoinReply(
                     joiner, Property.ChannelName);
             
             string modes =
                 Property.ChannelMode.GetChannelMode();
 
             joinMessage +=
-                ChatReply.BuildModeReply(
+                MODEReply.BuildModeReply(
                    Property.ChannelName, modes);
 
             MultiCast(joinMessage);
@@ -34,7 +35,7 @@ namespace Chat.Entity.Structure.ChatChannel
         public void MultiCastLeave(ChatChannelUser leaver, string message)
         {
             string leaveMessage =
-                ChatReply.BuildPartReply(
+                PARTReply.BuildPartReply(
                     leaver, Property.ChannelName, message);
 
             MultiCast(leaveMessage);
@@ -73,7 +74,7 @@ namespace Chat.Entity.Structure.ChatChannel
             string modes = Property.ChannelMode.GetChannelMode();
 
             string buffer =
-                ChatReply.BuildModeReply(
+                MODEReply.BuildModeReply(
                Property.ChannelName, modes);
 
             string nicks = "";
@@ -99,10 +100,10 @@ namespace Chat.Entity.Structure.ChatChannel
             nicks = nicks.Substring(0, nicks.Length - 1);
 
             //check the message :@<nickname> whether broadcast char @ ?
-            buffer += ChatReply.BuildNameReply(
+            buffer += NAMEReply.BuildNameReply(
                 joiner.UserInfo.NickName, Property.ChannelName, nicks);
 
-            buffer += ChatReply.BuildEndOfNameReply(
+            buffer += NAMEReply.BuildEndOfNameReply(
                 joiner.UserInfo.NickName, Property.ChannelName);
 
             joiner.Session.SendAsync(buffer);
@@ -113,7 +114,7 @@ namespace Chat.Entity.Structure.ChatChannel
             string modes = Property.ChannelMode.GetChannelMode();
 
             string modesMessage =
-                ChatReply.BuildChannelModesReply(
+                MODEReply.BuildChannelModesReply(
                     joiner, Property.ChannelName, modes);
 
             joiner.Session.SendAsync(modesMessage);
@@ -259,7 +260,7 @@ namespace Chat.Entity.Structure.ChatChannel
             {
                 //kick all user out
                 string kickMsg =
-                    ChatReply.BuildKickReply(
+                    KICKReply.BuildKickReply(
                     Property.ChannelName, kicker, user, "Server Hoster leaves channel");
 
                 user.Session.SendAsync(kickMsg);

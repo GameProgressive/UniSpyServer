@@ -2,6 +2,7 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
@@ -22,10 +23,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
                 return;
             }
         }
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            base.ConstructResponse();
-            _sendingBuffer = ChatReply.BuildPingReply(_session.UserInfo);
+            base.BuildNormalResponse();
+            _sendingBuffer = PINGReply.BuildPingReply(_session.UserInfo);
         }
     }
 }

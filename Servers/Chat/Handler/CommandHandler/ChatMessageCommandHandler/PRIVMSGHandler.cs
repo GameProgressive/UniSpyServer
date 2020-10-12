@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatMessageResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
@@ -37,7 +38,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
         private void BuildUserMessage()
         {
             _sendingBuffer =
-                ChatReply.BuildPrivMsgReply(_session.UserInfo, _request.NickName, _request.Message);
+                PRIVMSGReply.BuildPrivMsgReply(_session.UserInfo, _request.NickName, _request.Message);
         }
 
         private void BuildChannelMessage()
@@ -62,7 +63,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
             }
 
             _sendingBuffer =
-               ChatReply.BuildPrivMsgReply(_user.UserInfo,
+               PRIVMSGReply.BuildPrivMsgReply(_user.UserInfo,
                _request.ChannelName, _request.Message);
         }
     }

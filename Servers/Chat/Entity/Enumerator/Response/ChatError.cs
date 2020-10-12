@@ -10,5 +10,7 @@
         UserAlreadyInChannel,
         NoError,
         IRCError,
+        NoSuchNick,
+        NoSuchChannel
     }
 }

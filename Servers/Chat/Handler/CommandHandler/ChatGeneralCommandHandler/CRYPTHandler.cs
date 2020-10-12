@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
 using GameSpyLib.Common.Entity.Interface;
@@ -39,23 +40,21 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
                 || secretKey == null)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "secret key not found!");
+                _errorCode = ChatError.DataOperation;
                 return;
             }
             _session.UserInfo.SetGameSecretKey(secretKey);
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            base.ConstructResponse();
-
+            base.BuildNormalResponse();
             // 2. Prepare two keys
             ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatServer.ClientKey, _session.UserInfo.GameSecretKey);
             ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatServer.ServerKey, _session.UserInfo.GameSecretKey);
 
             // 3. Response the crypt command
-            _sendingBuffer =
-               ChatReply.
-               BuildCryptReply(ChatServer.ClientKey, ChatServer.ServerKey);
+            _sendingBuffer = CRYPTReply.BuildCryptReply(ChatServer.ClientKey, ChatServer.ServerKey);
         }
 
         protected override void Response()

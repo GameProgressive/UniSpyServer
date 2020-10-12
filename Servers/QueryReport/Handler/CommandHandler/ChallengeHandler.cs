@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
+using QueryReport.Entity.Enumerator;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Server;
@@ -22,7 +23,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 
             if (result.Count() != 1)
             {
-                _errorCode = Entity.Enumerator.QRErrorCode.Database;
+                _errorCode = QRErrorCode.Database;
                 return;
             }
             _gameServer = result.First();
@@ -40,10 +41,8 @@ namespace QueryReport.Handler.CommandHandler.Challenge
             // We send the echo packet to check the ping
             _sendingBuffer = packet.BuildResponse();
 
-            QRSession client = (QRSession)_session.GetInstance();
-
             GameServer.UpdateServer(
-                client.RemoteEndPoint,
+                _session.RemoteEndPoint,
                 _gameServer.ServerData.KeyValue["gamename"],
                 _gameServer
                 );

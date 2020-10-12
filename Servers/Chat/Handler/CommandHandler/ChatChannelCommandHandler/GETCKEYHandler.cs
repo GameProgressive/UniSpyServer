@@ -2,6 +2,7 @@
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
@@ -66,7 +67,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         {
             string flags = user.GetBFlagsString();
 
-            _sendingBuffer += ChatReply.BuildGetCKeyReply(
+            _sendingBuffer += GETCKEYReply.BuildGetCKeyReply(
                     user.UserInfo.NickName, _channel.Property.ChannelName,
                     _request.Cookie, flags);
         }
@@ -96,7 +97,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 
             //todo check the paramemter 
             _sendingBuffer +=
-                ChatReply.BuildGetCKeyReply(
+                GETCKEYReply.BuildGetCKeyReply(
                     user.UserInfo.NickName,
                     _channel.Property.ChannelName,
                     _request.Cookie, flags);
@@ -106,7 +107,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         private void BuildGetCKeyEndMessage()
         {
             _sendingBuffer +=
-                ChatReply.BuildEndOfGetCKeyReply(
+                GETCKEYReply.BuildEndOfGetCKeyReply(
                   _channel.Property.ChannelName,
                     _request.Cookie);
         }

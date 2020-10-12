@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using GameSpyLib.Common.Entity.Interface;
 using System.Net;
 
@@ -22,13 +23,13 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
                 return;
             }
         }
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            base.ConstructResponse();
+            base.BuildNormalResponse();
 
             string ip = ((IPEndPoint)_session.Socket.RemoteEndPoint).Address.ToString();
 
-            _sendingBuffer = ChatReply.BuildUserIPReply(ip);
+            _sendingBuffer = USRIPReply.BuildUserIPReply(ip);
         }
     }
 }

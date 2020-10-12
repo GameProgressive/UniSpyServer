@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
@@ -48,7 +49,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
                 flags += $@"\{kv.Key}\{kv.Value}";
             }
             _sendingBuffer =
-                ChatReply.BuildGetChanKeyReply(
+                GETCHANKEYReply.BuildGetChanKeyReply(
                     _user, _channel.Property.ChannelName, "BCAST", flags);
         }
 

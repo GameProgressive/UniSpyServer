@@ -2,6 +2,7 @@
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
+using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
 using GameSpyLib.Common.Entity.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
@@ -69,13 +70,13 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             if (_channel.Property.ChannelTopic == "" || _channel.Property.ChannelTopic == null)
             {
                 _sendingBuffer =
-                    ChatReply.BuildNoTopicReply(
+                    TOPICReply.BuildNoTopicReply(
                     _channel.Property.ChannelName);
             }
             else
             {
                 _sendingBuffer =
-                    ChatReply.BuildTopicReply(
+                    TOPICReply.BuildTopicReply(
                     _channel.Property.ChannelName,
                     _channel.Property.ChannelTopic);
             }
@@ -85,7 +86,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         {
             _channel.Property.SetChannelTopic(_request.ChannelTopic);
             _sendingBuffer =
-                ChatReply.BuildTopicReply(
+                TOPICReply.BuildTopicReply(
                     _channel.Property.ChannelName,
                     _channel.Property.ChannelTopic);
         }
