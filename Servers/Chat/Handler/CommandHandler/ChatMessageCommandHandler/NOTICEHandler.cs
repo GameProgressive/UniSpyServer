@@ -22,9 +22,9 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
                 return;
             }
         }
-        protected override void DataOperation()
+        protected override void BuildNormalResponse()
         {
-            base.DataOperation();
+            base.BuildNormalResponse();
             switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:

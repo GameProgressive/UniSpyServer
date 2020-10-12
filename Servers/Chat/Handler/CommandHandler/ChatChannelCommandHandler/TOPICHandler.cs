@@ -43,8 +43,14 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             base.DataOperation();
             if (!_user.IsChannelOperator)
             {
+                _errorCode = ChatError.NotChannelOperator;
                 return;
             }
+        }
+
+        protected override void BuildNormalResponse()
+        {
+            base.BuildNormalResponse();
             switch (_request.RequestType)
             {
                 case TOPICCmdType.GetChannelTopic:
@@ -54,17 +60,8 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
                     SetChannelTopic();
                     break;
             }
-
         }
 
-        protected override void ConstructResponse()
-        {
-            base.ConstructResponse();
-            if (_errorCode > Entity.Structure.ChatError.NoError)
-            {
-                //we handle error code response here
-            }
-        }
         private void GetChannelTopic()
         {
             if (_channel.Property.ChannelTopic == "" || _channel.Property.ChannelTopic == null)

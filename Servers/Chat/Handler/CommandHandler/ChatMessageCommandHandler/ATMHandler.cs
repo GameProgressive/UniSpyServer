@@ -1,8 +1,5 @@
-﻿using System;
-using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatMessageResponse;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -25,9 +22,9 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
                 return;
             }
         }
-        protected override void DataOperation()
+        protected override void BuildNormalResponse()
         {
-            base.DataOperation();
+            base.BuildNormalResponse();
             switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
