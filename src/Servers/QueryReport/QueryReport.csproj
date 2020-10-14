@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="Resource\GeoLite2-Country.mmdb">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Entity\Structure\QRGeneralData.cs" />
+        <Compile Remove="Handler\CommandHandler\HeartBeat\QRDBQuery.cs" />
+        <Compile Remove="Entity\Structure\GameServer.cs" />
+        <Compile Remove="Entity\Structure\Server\DedicatedServer.cs" />
+        <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Entity\Structure\Packet\" />
+        <Folder Include="Handler\SystemHandler\QRSessionManage\" />
+        <Folder Include="Handler\SystemHandler\GeoIPManage\" />
+        <Folder Include="Handler\SystemHandler\ErrorMessage\" />
+        <Folder Include="Entity\Structure\ServerData\" />
+        <Folder Include="Entity\Structure\GroupData\" />
+        <Folder Include="Handler\SystemHandler\PeerSystem\" />
+        <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
+        <Folder Include="Entity\Structure\NatNeg\" />
+        <Folder Include="Entity\BaseClass\" />
+        <Folder Include="Handler\SystemHandler\ServerList\" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
+    </ItemGroup>
+</Project>
