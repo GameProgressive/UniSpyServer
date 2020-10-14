@@ -1,7 +1,5 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
-using GameSpyLib.Logging;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Chat.Entity.Structure.ChatChannel
 {

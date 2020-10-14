@@ -1,7 +1,7 @@
-﻿using System;
-using System.Xml.Linq;
-using RetroSpyServices.Authentication.Entity.Interface;
+﻿using RetroSpyServices.Authentication.Entity.Interface;
 using RetroSpyServices.Authentication.Entity.Structure.Model;
+using System;
+using System.Xml.Linq;
 
 namespace RetroSpyServices.Authentication.Service
 {

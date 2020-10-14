@@ -1,5 +1,4 @@
-﻿using System;
-namespace QueryReport.Entity.Enumerator
+﻿namespace QueryReport.Entity.Enumerator
 {
     public enum HeartBeatReportType
     {
@@ -10,9 +9,9 @@ namespace QueryReport.Entity.Enumerator
 
     public enum GameServerServerStatus
     {
-        Normal=0,
-        Update=1,
-        Shutdown=2,
+        Normal = 0,
+        Update = 1,
+        Shutdown = 2,
         Playing = 3,
     }
 }

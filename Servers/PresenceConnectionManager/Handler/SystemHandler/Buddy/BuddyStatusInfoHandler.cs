@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using PresenceConnectionManager.Handler.CommandHandler;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.SystemHandler.Buddy
 {

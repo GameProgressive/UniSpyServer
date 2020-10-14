@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     /// </summary>
     public abstract class PCMCommandHandlerBase : CommandHandlerBase
     {
-        protected GPError  _errorCode;
+        protected GPError _errorCode;
         protected string _sendingBuffer;
         new protected PCMSession _session;
         public PCMCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)

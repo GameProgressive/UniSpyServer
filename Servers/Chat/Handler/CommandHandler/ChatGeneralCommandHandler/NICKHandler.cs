@@ -12,21 +12,16 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         new NICKRequest _request;
         public NICKHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new NICKRequest(request.RawRequest);
+            _request = (NICKRequest)request;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
 
             if (ChatSessionManager.IsNickNameExisted(_request.NickName))
             {
-                _errorCode = ChatError.IRCError;
+                _errorCode = ChatError.NickNameExisted;
                 return;
             }
         }

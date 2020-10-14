@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using PresenceConnectionManager.Entity.BaseClass;
+﻿using PresenceConnectionManager.Entity.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
@@ -19,7 +18,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         public string OldNick { get; protected set; }
         public string NewNick { get; protected set; }
         public bool IsReplaceNickName { get; protected set; }
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
             if (flag != GPError.NoError)

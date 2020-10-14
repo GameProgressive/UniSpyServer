@@ -2,8 +2,8 @@
 {
     public interface ICommandHandler
     {
-         object GetInstance();
-         string GetHandlerType();
-         void Handle();
+        object GetInstance();
+        string GetHandlerType();
+        void Handle();
     }
 }

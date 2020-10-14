@@ -1,7 +1,4 @@
-﻿using Chat.Entity.Structure.ChatResponse;
-using Chat.Entity.Structure.ChatUser;
-
-namespace Chat.Entity.Structure.ChatCommand
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class NICKRequest : ChatRequestBase
     {
@@ -13,7 +10,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-           
+
 
             if (_cmdParams.Count == 0)
             {

@@ -1,7 +1,7 @@
-﻿using System;
-using System.Xml.Linq;
-using RetroSpyServices.PatchingAndTracking.Entity.Interface;
+﻿using RetroSpyServices.PatchingAndTracking.Entity.Interface;
 using RetroSpyServices.PatchingAndTracking.Entity.Structure.Model;
+using System;
+using System.Xml.Linq;
 
 namespace RetroSpyServices.PatchingAndTracking.Service
 {

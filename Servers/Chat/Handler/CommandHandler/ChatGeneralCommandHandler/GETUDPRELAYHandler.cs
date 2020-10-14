@@ -1,5 +1,4 @@
-﻿using System;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -15,20 +14,8 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 
         public GETUDPRELAYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new GETUDPRELAYRequest(request.RawRequest);
+            _request = (GETUDPRELAYRequest)request;
         }
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-        }
-        protected override void DataOperation()
-        {
-            base.DataOperation();
-        }
+     
     }
 }

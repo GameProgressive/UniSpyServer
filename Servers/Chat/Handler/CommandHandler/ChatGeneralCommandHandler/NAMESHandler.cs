@@ -14,28 +14,23 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         ChatChannelUser _user;
         public NAMESHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new NAMESRequest(request.RawRequest);
+            _request = (NAMESRequest)request;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
 
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
-                _errorCode = ChatError.IRCError;
+                _errorCode = ChatError.NoSuchChannel;
                 _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
             }
 
             //can not find any user
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatError.IRCError;
+                _errorCode = ChatError.NoSuchNick;
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                 return;
             }

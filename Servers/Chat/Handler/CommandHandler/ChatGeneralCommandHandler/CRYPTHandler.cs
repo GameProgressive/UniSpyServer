@@ -1,6 +1,5 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
@@ -14,44 +13,35 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     public class CRYPTHandler : ChatCommandHandlerBase
     {
         new CRYPTRequest _request;
-
+        // CRYPT des 1 gamename
         public CRYPTHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new CRYPTRequest(request.RawRequest);
-        }
-
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-            // CRYPT des 1 gamename
-            _session.UserInfo.SetGameName(_request.GameName);
+            _request = (CRYPTRequest)request;
         }
 
         protected override void DataOperation()
         {
             base.DataOperation();
+
             string secretKey;
             if (!DataOperationExtensions.GetSecretKey(_session.UserInfo.GameName, out secretKey)
                 || secretKey == null)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "secret key not found!");
-                _errorCode = ChatError.DataOperation;
+                _errorCode = ChatError.UnSupportedGame;
                 return;
             }
             _session.UserInfo.SetGameSecretKey(secretKey);
+            _session.UserInfo.SetGameName(_request.GameName);
+            // 2. Prepare two keys
+            ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatServer.ClientKey, _session.UserInfo.GameSecretKey);
+            ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatServer.ServerKey, _session.UserInfo.GameSecretKey);
+
         }
 
         protected override void BuildNormalResponse()
         {
             base.BuildNormalResponse();
-            // 2. Prepare two keys
-            ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatServer.ClientKey, _session.UserInfo.GameSecretKey);
-            ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatServer.ServerKey, _session.UserInfo.GameSecretKey);
 
             // 3. Response the crypt command
             _sendingBuffer = CRYPTReply.BuildCryptReply(ChatServer.ClientKey, ChatServer.ServerKey);
@@ -59,8 +49,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 
         protected override void Response()
         {
-            //set use encryption flag to true
-            _session.SendAsync(_sendingBuffer);
+            base.Response();
             _session.UserInfo.SetUseEncryptionFlag(true);
         }
     }

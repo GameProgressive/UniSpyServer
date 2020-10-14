@@ -1,6 +1,5 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatMessageResponse;
 using GameSpyLib.Common.Entity.Interface;
 

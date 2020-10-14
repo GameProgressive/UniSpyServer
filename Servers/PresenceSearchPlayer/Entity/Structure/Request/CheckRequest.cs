@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.MiscMethod;
+﻿using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {

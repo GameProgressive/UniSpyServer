@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Chat.Entity.Structure.ChatCommand
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     //request:
     //"MODE <nick> +/-q"
@@ -62,7 +59,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-           
+
 
             if (_cmdParams.Count == 1)
             {
@@ -146,7 +143,7 @@ namespace Chat.Entity.Structure.ChatCommand
                         ModeFlag = _cmdParams[1];
                         LimitNumber = uint.Parse(_cmdParams[2]);
                         RequestType = ModeRequestType.SetChannelModesWithUserLimit;
-                      
+
                         return true;
                     }
                     // "MODE <channel name> <mode flags>"

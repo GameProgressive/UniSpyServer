@@ -1,7 +1,6 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using GameSpyLib.Common.Entity.Interface;
@@ -15,16 +14,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
         public LISTHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new LISTRequest(request.CmdName);
-        }
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
+            _request = (LISTRequest)request;
         }
         protected override void DataOperation()
         {

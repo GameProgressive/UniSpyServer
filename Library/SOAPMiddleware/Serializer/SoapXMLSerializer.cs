@@ -1,5 +1,5 @@
-﻿using System;
-using SOAPMiddleware.Entity.Interface;
+﻿using SOAPMiddleware.Entity.Interface;
+using System;
 
 namespace SOAPMiddleware.Serializer
 {

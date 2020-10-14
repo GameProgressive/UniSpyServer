@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.MiscMethod;
+﻿using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -17,7 +15,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Email { get; private set; }
         public string GameName { get; protected set; }
 
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
             if (flag != GPError.NoError)
@@ -27,7 +25,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             if (!_rawRequest.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(_rawRequest["email"]))
             {
-              return GPError.Parse;
+                return GPError.Parse;
             }
 
             Email = _rawRequest["email"];

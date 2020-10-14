@@ -1,5 +1,4 @@
-﻿using System;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Server;
 using GameSpyLib.Common.BaseClass;
@@ -87,7 +86,7 @@ namespace Chat.Handler.CommandHandler
 
         protected virtual void BuildErrorResponse()
         {
-            if(_errorCode!= ChatError.NoError)
+            if (_errorCode != ChatError.NoError)
             {
                 LogWriter.ToLog(LogEventLevel.Error, $"{_errorCode} occured!");
             }

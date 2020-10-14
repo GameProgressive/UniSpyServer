@@ -17,7 +17,7 @@
 
         protected override bool DetailParse()
         {
-           
+
 
             if (_longParam == null)
             {

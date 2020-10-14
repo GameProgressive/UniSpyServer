@@ -1,12 +1,10 @@
-﻿using System;
-using System.IO;
-using GameSpyLib.Common;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
+using System;
 
 namespace WebServices.Application
 {

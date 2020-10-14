@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     public abstract class PSPCommandHandlerBase : CommandHandlerBase
     {
-        protected GPError  _errorCode;
+        protected GPError _errorCode;
         /// <summary>
         /// Be careful the return of query function should be List type,
         /// the decision formula should use _result.Count==0

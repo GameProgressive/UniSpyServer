@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GameSpyLib.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Text;
-using GameSpyLib.Extensions;
 
 namespace GameSpyLib.MiscMethod
 {
@@ -11,7 +11,7 @@ namespace GameSpyLib.MiscMethod
         /// process password to string which stores in our database
         /// </summary>
         /// <param name="dict"></param>
-        public static bool ProcessPassword(Dictionary<string, string> dict,out string md5Password)
+        public static bool ProcessPassword(Dictionary<string, string> dict, out string md5Password)
         {
             if (dict.ContainsKey("passwordenc"))
             {

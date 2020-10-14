@@ -1,7 +1,7 @@
-﻿using System;
-using System.Xml.Linq;
-using RetroSpyServices.Motd.Entity.Interface;
+﻿using RetroSpyServices.Motd.Entity.Interface;
 using RetroSpyServices.Motd.Entity.Structure.Model;
+using System;
+using System.Xml.Linq;
 
 namespace RetroSpyServices.Motd.Service
 {

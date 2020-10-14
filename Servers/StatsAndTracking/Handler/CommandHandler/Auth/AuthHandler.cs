@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using StatsAndTracking.Entity.Structure.Request;
+using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler.Auth
 {
     public class AuthHandler : GStatsCommandHandlerBase
     {
         //GameSpyLib.Encryption.Crc16 _crc16 = new GameSpyLib.Encryption.Crc16(GameSpyLib.Encryption.Crc16Mode.Standard);
-        protected  AuthRequest _request;
-        public AuthHandler(ISession session, Dictionary<string,string> request) : base(session,request)
+        protected AuthRequest _request;
+        public AuthHandler(ISession session, Dictionary<string, string> request) : base(session, request)
         {
             _request = new AuthRequest(request);
         }
@@ -39,6 +39,6 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
             base.ConstructResponse();
         }
 
- 
+
     }
 }

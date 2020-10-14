@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatResponse.ChatChannelResponse
+﻿namespace Chat.Entity.Structure.ChatResponse.ChatChannelResponse
 {
     public class TOPICReply
     {

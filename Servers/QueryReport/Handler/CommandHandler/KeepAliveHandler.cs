@@ -32,7 +32,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
                 _errorCode = Entity.Enumerator.QRErrorCode.Database;
                 return;
             }
-            
+
             GameServer gameServer = result.First();
 
             gameServer.LastPacket = DateTime.Now;

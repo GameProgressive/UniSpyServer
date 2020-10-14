@@ -1,5 +1,4 @@
-﻿using System;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using QueryReport.Entity.Enumerator;
@@ -10,6 +9,7 @@ using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
 using Serilog.Events;
+using System;
 
 namespace QueryReport.Handler.CommandSwitcher
 {

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace GameSpyLib.Database.DatabaseModel.MySql
+﻿namespace GameSpyLib.Database.DatabaseModel.MySql
 {
     public partial class Partner
     {

@@ -9,22 +9,17 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {
     public class MODEHandler : ChatLogedInHandlerBase
     {
-       new MODERequest _request;
+        new MODERequest _request;
         ChatChannelBase _channel;
         ChatChannelUser _user;
         public MODEHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new MODERequest(request.RawRequest);
+            _request = (MODERequest)request;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
 
             switch (_request.RequestType)
             {
@@ -36,7 +31,6 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
                     GetChannelAndUser();
                     break;
             }
-           
         }
         private void GetChannelAndUser()
         {
@@ -68,9 +62,6 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 
             switch (_request.RequestType)
             {
-                case ModeRequestType.GetChannelModes:
-                    GetChannelModes();
-                    break;
                 case ModeRequestType.EnableUserQuietFlag:
                     _session.UserInfo.SetQuietModeFlag(true);
                     break;
@@ -83,14 +74,15 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             }
         }
 
-        public void GetChannelModes()
+        protected override void BuildNormalResponse()
         {
-            string modes =
-             _channel.Property.ChannelMode.GetChannelMode();
-
-            _sendingBuffer =
-                MODEReply.BuildModeReply(
-                 _channel.Property.ChannelName, modes);
+            base.BuildNormalResponse();
+            if (_request.RequestType == ModeRequestType.GetChannelModes)
+            {
+                string modes = _channel.Property.ChannelMode.GetChannelMode();
+                _sendingBuffer = MODEReply.BuildModeReply(
+                     _channel.Property.ChannelName, modes);
+            }
         }
 
         private void ProcessOtherModeRequest()

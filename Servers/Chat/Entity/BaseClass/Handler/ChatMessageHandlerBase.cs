@@ -14,7 +14,7 @@ namespace Chat.Handler.CommandHandler
 
         public ChatMessageHandlerBase(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new ChatMessagRequestBase(request.RawRequest);
+            _request = (ChatMessagRequestBase)request;
         }
 
         protected override void CheckRequest()
@@ -25,16 +25,12 @@ namespace Chat.Handler.CommandHandler
                     base.CheckRequest();
                     break;
                 case ChatMessageType.UserMessage:
-                    if (!_request.Parse())
-                    {
-                        _errorCode = ChatError.Parse;
-                        return;
-                    }
+                    
                     if (_request.RequestType == ChatMessageType.UserMessage)
                     {
                         if (!ChatSessionManager.GetSessionByNickName(_request.NickName, out _otherSession))
                         {
-                            _errorCode = ChatError.IRCError;
+                            _errorCode = ChatError.NoSuchNick;
                             _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                         }
                     }
@@ -55,7 +51,7 @@ namespace Chat.Handler.CommandHandler
             switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
-                    _channel.MultiCastExceptSender(_user,_sendingBuffer);
+                    _channel.MultiCastExceptSender(_user, _sendingBuffer);
                     break;
                 case ChatMessageType.UserMessage:
                     _otherSession.SendAsync(_sendingBuffer);

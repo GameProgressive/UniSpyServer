@@ -1,6 +1,4 @@
-﻿using Chat.Server;
-
-namespace Chat.Entity.Structure.ChatCommand
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class JOINRequest : ChatChannelRequestBase
     {

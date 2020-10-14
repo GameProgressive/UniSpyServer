@@ -11,7 +11,7 @@
         public string CDKey { get; protected set; }
         protected override bool DetailParse()
         {
-           
+
             NamespaceID = _cmdParams[0];
             UniqueNick = _cmdParams[1];
             CDKey = _cmdParams[2];

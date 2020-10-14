@@ -18,7 +18,7 @@
         public WHOType RequestType { get; protected set; }
         protected override bool DetailParse()
         {
-           
+
             if (_cmdParams.Count != 1)
             {
                 return false;

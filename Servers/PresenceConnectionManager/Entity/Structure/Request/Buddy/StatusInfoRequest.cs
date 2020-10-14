@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using PresenceConnectionManager.Entity.BaseClass;
+﻿using PresenceConnectionManager.Entity.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
@@ -24,7 +23,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         {
         }
 
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
             if (flag != GPError.NoError)

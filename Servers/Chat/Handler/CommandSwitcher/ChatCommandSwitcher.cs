@@ -17,7 +17,7 @@ namespace Chat.Handler.CommandSwitcher
     {
         public void Switch(ISession session, string recv)
         {
-
+            #region Process request to our defined class
             List<ChatRequestBase> requestList = new List<ChatRequestBase>();
 
             string[] rawRequests = recv.Replace("\r", "")
@@ -26,17 +26,35 @@ namespace Chat.Handler.CommandSwitcher
             // next we handle each command
             foreach (var rawRequest in rawRequests)
             {
-                ChatRequestBase request = new ChatRequestBase(rawRequest);
+                ChatRequestBase generalRequest = new ChatRequestBase(rawRequest);
 
-                if (!request.Parse())
+                if (!generalRequest.Parse())
                 {
                     LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
                     continue;
                 }
-
-                requestList.Add(request);
+                Type requestType = AppDomain.CurrentDomain
+                        .GetAssemblies()
+                        .SelectMany(x => x.GetTypes())
+                        .FirstOrDefault(t => t.Name == generalRequest.CmdName + "Request");
+                if (requestType != null)
+                {
+                    var specificRequest  = Activator.CreateInstance(requestType,generalRequest.RawRequest);
+                    if (specificRequest == null)
+                    {
+                        LogWriter.ToLog(LogEventLevel.Error, $"Unknown request {generalRequest.CmdName}!");
+                        return;
+                    }
+                    requestList.Add(generalRequest);
+                }
+                else
+                {
+                    LogWriter.ToLog(LogEventLevel.Error, $"Request: {generalRequest.CmdName} not implemented!");
+                }
             }
+            #endregion
 
+            #region Handle specific request
             foreach (var request in requestList)
             {
                 Type handlerType = AppDomain.CurrentDomain
@@ -62,6 +80,7 @@ namespace Chat.Handler.CommandSwitcher
                     LogWriter.ToLog(LogEventLevel.Error, $"{request.CmdName}Handler not implemented!");
                 }
             }
+            #endregion
         }
     }
 }

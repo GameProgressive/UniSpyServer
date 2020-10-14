@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using StatsAndTracking.Entity.Structure;
@@ -12,6 +9,8 @@ using StatsAndTracking.Handler.CommandHandler.GetPID;
 using StatsAndTracking.Handler.CommandHandler.NewGame;
 using StatsAndTracking.Handler.CommandHandler.SetPD;
 using StatsAndTracking.Handler.CommandHandler.UpdGame;
+using System;
+using System.Linq;
 
 namespace StatsAndTracking.Handler.CommandSwitcher
 {
@@ -58,7 +57,7 @@ namespace StatsAndTracking.Handler.CommandSwitcher
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,e.ToString());
+                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
             }
         }
     }

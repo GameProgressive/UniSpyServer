@@ -25,7 +25,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
             using (var db = new retrospyContext())
             {
                 var result = from u in db.Users
-                             //According to FSW partnerid is not nessesary
+                                 //According to FSW partnerid is not nessesary
                              where u.Email == _request.Email
                              select u.Userid;
 

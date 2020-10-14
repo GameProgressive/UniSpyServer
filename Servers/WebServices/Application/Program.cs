@@ -1,13 +1,9 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System.IO;
-using System;
-using Serilog;
-using WebServices.Application;
 using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using Serilog.Events;
+using System;
+using System.IO;
+using WebServices.Application;
 
 namespace WebServices
 {

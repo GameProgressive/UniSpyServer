@@ -2,7 +2,6 @@
 using GameSpyLib.Extensions;
 using GameSpyLib.RetroSpyConfig;
 using Serilog;
-using Serilog.Core;
 using Serilog.Events;
 using System;
 

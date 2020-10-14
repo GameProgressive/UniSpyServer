@@ -1,6 +1,4 @@
-﻿using Chat.Server;
-
-namespace Chat.Entity.Structure.ChatCommand
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class PARTRequest : ChatChannelRequestBase
     {
@@ -13,8 +11,6 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-           
-
             Reason = _longParam;
             return true;
         }

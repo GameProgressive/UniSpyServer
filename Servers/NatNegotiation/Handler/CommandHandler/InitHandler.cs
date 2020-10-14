@@ -1,12 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Common.Entity.Interface;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Handler.SystemHandler.NatNegotiatorManage;
-using NatNegotiation.Server;
-using Serilog.Events;
 
 namespace NatNegotiation.Handler.CommandHandler
 {

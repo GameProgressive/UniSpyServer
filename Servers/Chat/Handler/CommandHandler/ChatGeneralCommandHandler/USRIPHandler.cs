@@ -1,6 +1,5 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using GameSpyLib.Common.Entity.Interface;
 using System.Net;
@@ -12,7 +11,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         new USRIPRequest _request;
         public USRIPHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new USRIPRequest(request.RawRequest);
+            _request = (USRIPRequest)request;
         }
         protected override void CheckRequest()
         {

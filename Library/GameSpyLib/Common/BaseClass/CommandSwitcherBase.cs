@@ -5,6 +5,6 @@
         public CommandSwitcherBase()
         {
             Logging.LogWriter.LogCurrentClass(this);
-        }        
+        }
     }
 }

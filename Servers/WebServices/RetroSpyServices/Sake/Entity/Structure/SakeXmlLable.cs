@@ -1,5 +1,4 @@
-﻿using System;
-namespace WebServices.RetroSpyServices.Sake.Entity.Structure
+﻿namespace WebServices.RetroSpyServices.Sake.Entity.Structure
 {
     public class SakeXmlLable
     {

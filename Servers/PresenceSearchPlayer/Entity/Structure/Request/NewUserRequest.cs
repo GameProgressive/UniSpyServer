@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.MiscMethod;
+﻿using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
+using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -56,7 +56,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             Nick = _rawRequest["nick"];
             Email = _rawRequest["email"];
 
-            if (_rawRequest.ContainsKey("uniquenick")&&_rawRequest.ContainsKey("namespaceid"))
+            if (_rawRequest.ContainsKey("uniquenick") && _rawRequest.ContainsKey("namespaceid"))
             {
                 if (_rawRequest.ContainsKey("namespaceid"))
                 {
@@ -103,7 +103,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             if (_rawRequest.ContainsKey("gamename"))
             {
-                HasGameNameFlag = true; 
+                HasGameNameFlag = true;
                 GameName = _rawRequest["gamename"];
             }
 

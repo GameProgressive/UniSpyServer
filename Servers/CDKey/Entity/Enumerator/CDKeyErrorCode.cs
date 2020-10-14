@@ -1,5 +1,4 @@
-﻿using System;
-namespace CDKey.Entity.Enumerator
+﻿namespace CDKey.Entity.Enumerator
 {
     public class CDKeyErrorCode
     {

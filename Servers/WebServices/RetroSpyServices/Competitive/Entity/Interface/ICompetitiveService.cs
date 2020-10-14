@@ -1,6 +1,6 @@
-﻿using System.ServiceModel;
+﻿using RetroSpyServices.Competitive.Entity.Structure.Model;
+using System.ServiceModel;
 using System.Xml.Linq;
-using RetroSpyServices.Competitive.Entity.Structure.Model;
 
 namespace RetroSpyServices.Competitive.Entity.Interface
 {

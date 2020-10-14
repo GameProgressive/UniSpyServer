@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
@@ -7,6 +6,7 @@ using ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
 using ServerBrowser.Handler.CommandHandler.NatNeg;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher;
+using System.Linq;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
@@ -16,7 +16,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
         {
             if (recv.Take(6).SequenceEqual(NatNegotiation.Entity.Structure.Packet.BasePacket.MagicData))
             {
-                new NatNegCookieHandler(session,recv).Handle();
+                new NatNegCookieHandler(session, recv).Handle();
                 return;
             }
 

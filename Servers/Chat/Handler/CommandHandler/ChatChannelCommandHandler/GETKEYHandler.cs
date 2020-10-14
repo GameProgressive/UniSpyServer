@@ -1,5 +1,4 @@
-﻿using System;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
@@ -15,21 +14,12 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         new GETKEYRequest _request;
         public GETKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new GETKEYRequest(request.RawRequest);
+            _request = (GETKEYRequest)request;
         }
 
-        protected override void CheckRequest()
+        protected override void BuildNormalResponse()
         {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-        }
-        protected override void DataOperation()
-        {
-            base.DataOperation();
+            base.BuildNormalResponse();
             _sendingBuffer = "";
             foreach (var channel in _session.UserInfo.JoinedChannels)
             {

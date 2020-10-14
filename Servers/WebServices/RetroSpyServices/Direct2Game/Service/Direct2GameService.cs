@@ -1,7 +1,7 @@
-﻿using System;
-using System.Xml.Linq;
-using RetroSpyServices.Direct2Game.Entity.Interface;
+﻿using RetroSpyServices.Direct2Game.Entity.Interface;
 using RetroSpyServices.Direct2Game.Entity.Structure.Model;
+using System;
+using System.Xml.Linq;
 
 namespace RetroSpyServices.Direct2Game.Service
 {

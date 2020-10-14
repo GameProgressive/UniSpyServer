@@ -1,5 +1,4 @@
-﻿using System;
-namespace QueryReport.Entity.Structure.NatNeg
+﻿namespace QueryReport.Entity.Structure.NatNeg
 {
     public class NatNegCookie
     {

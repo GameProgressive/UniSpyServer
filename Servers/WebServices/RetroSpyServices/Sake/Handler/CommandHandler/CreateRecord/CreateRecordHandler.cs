@@ -1,6 +1,4 @@
-﻿using System;
-using GameSpyLib.Common.Entity.Interface;
-using WebServices.RetroSpyServices.Sake.Entity.Structure.Request;
+﻿using WebServices.RetroSpyServices.Sake.Entity.Structure.Request;
 using WebServices.RetroSpyServices.Sake.Entity.Structure.Response;
 
 namespace WebServices.RetroSpyServices.Sake.Handler.CommandHandler

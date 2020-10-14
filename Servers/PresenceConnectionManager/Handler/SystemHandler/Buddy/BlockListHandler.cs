@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Handler.CommandHandler;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Handler.SystemHandler
 {

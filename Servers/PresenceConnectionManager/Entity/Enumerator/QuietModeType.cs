@@ -1,5 +1,4 @@
-﻿using System;
-namespace PresenceConnectionManager.Entity.Enumerator
+﻿namespace PresenceConnectionManager.Entity.Enumerator
 {
     public enum QuietModeType : uint
     {

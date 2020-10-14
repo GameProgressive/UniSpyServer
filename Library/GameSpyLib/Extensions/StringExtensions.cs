@@ -126,9 +126,9 @@ namespace GameSpyLib.Extensions
 
         public static List<string> ConvertKeyStrToList(string keyStr)
         {
-            List<string> data = keyStr.Split(@"\",StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> data = keyStr.Split(@"\", StringSplitOptions.RemoveEmptyEntries).ToList();
 
-           return data;
+            return data;
         }
 
         /// <summary>

@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Logging;
 using PresenceConnectionManager.Entity.BaseClass;
 using PresenceConnectionManager.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Enumerator;
 using Serilog.Events;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.General
 {

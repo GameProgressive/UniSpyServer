@@ -11,7 +11,7 @@
 
         protected override bool DetailParse()
         {
-           
+
 
             if (_cmdParams.Count != 2)
             {

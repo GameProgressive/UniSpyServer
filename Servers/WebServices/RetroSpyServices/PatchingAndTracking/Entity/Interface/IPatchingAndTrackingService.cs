@@ -1,5 +1,5 @@
-﻿using System.ServiceModel;
-using RetroSpyServices.PatchingAndTracking.Entity.Structure.Model;
+﻿using RetroSpyServices.PatchingAndTracking.Entity.Structure.Model;
+using System.ServiceModel;
 
 namespace RetroSpyServices.PatchingAndTracking.Entity.Interface
 {

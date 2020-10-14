@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
 {
@@ -60,14 +59,14 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
     [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class Value
     {
-        [DataMember(Name =SakeXmlLable.AsciiStringValue)]
+        [DataMember(Name = SakeXmlLable.AsciiStringValue)]
         public AsciiStringValue AsciiStringValue { get; set; }
     }
 
     [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
     public class AsciiStringValue
     {
-        [DataMember(Name =SakeXmlLable.Value)]
+        [DataMember(Name = SakeXmlLable.Value)]
         public string Value { get; set; }
     }
 }

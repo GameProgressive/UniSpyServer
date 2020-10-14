@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
+using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
@@ -23,7 +23,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-           
+
 
             if (_cmdParams.Count != 4)
             {

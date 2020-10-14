@@ -1,7 +1,4 @@
-﻿using Chat.Entity.Structure.ChatUser;
-using Chat.Server;
-using GameSpyLib.Logging;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 

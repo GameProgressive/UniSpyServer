@@ -1,11 +1,9 @@
-﻿using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Logging;
 using NetCoreServer;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace GameSpyLib.MiscMethod
@@ -41,7 +39,7 @@ namespace GameSpyLib.MiscMethod
 
             return dict;
         }
-    
+
 
         public static void PrintReceivedGPDictToLogger(Dictionary<string, string> recv)
         {

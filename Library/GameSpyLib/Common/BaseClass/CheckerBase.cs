@@ -1,13 +1,12 @@
-﻿using System;
-namespace GameSpyLib.Common.BaseClass
+﻿namespace GameSpyLib.Common.BaseClass
 {
-    public class CheckerBase <T1, T2>
+    public class CheckerBase<T1, T2>
     {
         private System.Timers.Timer _timer;
 
-        public CheckerBase(double interval )
+        public CheckerBase(double interval)
         {
-            _timer  = new System.Timers.Timer { Enabled = true, Interval = interval, AutoReset = true };//10000
+            _timer = new System.Timers.Timer { Enabled = true, Interval = interval, AutoReset = true };//10000
         }
         public CheckerBase()
         {
@@ -21,7 +20,7 @@ namespace GameSpyLib.Common.BaseClass
 
         protected virtual void CheckClientTimeOut(T1 source)
         {
-            
+
         }
     }
 }

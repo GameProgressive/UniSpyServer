@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Chat.Entity.Structure.ChatCommand
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class PRIVMSGRequest : ChatMessagRequestBase
     {

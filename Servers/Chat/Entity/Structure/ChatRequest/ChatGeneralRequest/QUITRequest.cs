@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class QUITRequest : ChatRequestBase
     {
@@ -11,7 +10,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-            if(!base.Parse())
+            if (!base.Parse())
             {
                 return false;
             }

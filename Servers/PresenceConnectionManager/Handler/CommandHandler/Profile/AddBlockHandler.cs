@@ -1,7 +1,6 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
-using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 

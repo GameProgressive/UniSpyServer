@@ -1,7 +1,6 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -13,18 +12,13 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         ChatChannelUser _kickee;
         public KICKHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new KICKRequest(request.RawRequest);
+            _request = (KICKRequest)request;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
 
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
             if (!_user.IsChannelOperator)
             {
                 _errorCode = ChatError.NotChannelOperator;
@@ -37,14 +31,12 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             }
         }
 
-
-        protected override void DataOperation()
+        protected override void BuildNormalResponse()
         {
-            base.DataOperation();
-            _sendingBuffer =
-                KICKReply.BuildKickReply(
-                    _channel.Property.ChannelName,
-                    _user, _kickee, _request.Reason);
+            base.BuildNormalResponse();
+            _sendingBuffer = KICKReply.BuildKickReply(
+            _channel.Property.ChannelName,
+            _user, _kickee, _request.Reason);
         }
 
         protected override void Response()
@@ -53,7 +45,6 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             {
                 return;
             }
-
             _channel.MultiCast(_sendingBuffer);
             _channel.RemoveBindOnUserAndChannel(_kickee);
         }

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using PresenceConnectionManager.Entity.BaseClass;
+﻿using PresenceConnectionManager.Entity.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
@@ -13,7 +12,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         {
         }
 
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
             if (flag != GPError.NoError)
@@ -36,7 +35,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
                 return GPError.Parse;
             }
 
-           ProductID= productID;
+            ProductID = productID;
 
             uint profileID;
             if (!uint.TryParse(_recv["profileid"], out profileID))
@@ -45,7 +44,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
             }
             ProfileID = profileID;
 
-            return GPError.NoError;        
+            return GPError.NoError;
         }
     }
 }

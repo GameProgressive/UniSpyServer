@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using PresenceConnectionManager.Handler.CommandHandler.Buddy;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Handler.CommandSwticher
 {

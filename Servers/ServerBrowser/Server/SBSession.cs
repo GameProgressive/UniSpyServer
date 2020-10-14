@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Encryption;
+﻿using GameSpyLib.Encryption;
 using GameSpyLib.Network;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandSwitcher;
+using System.Collections.Generic;
 
 namespace ServerBrowser
 {

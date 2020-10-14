@@ -1,7 +1,5 @@
-﻿using System;
+﻿using GameSpyLib.Extensions;
 using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Extensions;
 
 namespace Chat.Entity.Structure.ChatCommand
 {

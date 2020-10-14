@@ -96,7 +96,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
             {
                 var result = from s in db.Subprofiles
                              join p in db.Profiles on s.Profileid equals p.Profileid
-                             where s.Cdkeyenc ==_request.KeyHash && p.Nick == _request.Nick
+                             where s.Cdkeyenc == _request.KeyHash && p.Nick == _request.Nick
                              select s.Profileid;
                 if (result.Count() != 1)
                 {

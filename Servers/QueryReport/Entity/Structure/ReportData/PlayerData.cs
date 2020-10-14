@@ -1,5 +1,4 @@
-﻿using System.Collections.Specialized;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using Serilog.Events;
 using System;
@@ -47,7 +46,7 @@ namespace QueryReport.Entity.Structure.ReportData
                     string tempValue = values[playerIndex * keys.Count + keyIndex];
                     // update existed key value
                     if (keyValue.ContainsKey(tempKey))
-                    {   
+                    {
                         if (keyValue[tempKey] == tempValue)
                         {
                             LogWriter.ToLog($"Ignoring same player key value {tempKey} : {tempValue}");

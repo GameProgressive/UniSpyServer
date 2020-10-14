@@ -1,9 +1,9 @@
-﻿using System.Linq;
-using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
+﻿using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;
 using QueryReport.Entity.Structure;
+using System.Linq;
 
 namespace Chat.Entity.Structure.ChatChannel
 {
@@ -21,7 +21,7 @@ namespace Chat.Entity.Structure.ChatChannel
             string joinMessage =
                 JOINReply.BuildJoinReply(
                     joiner, Property.ChannelName);
-            
+
             string modes =
                 Property.ChannelMode.GetChannelMode();
 

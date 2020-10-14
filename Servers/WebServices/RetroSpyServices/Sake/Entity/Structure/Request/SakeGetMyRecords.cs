@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
@@ -67,6 +65,6 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
     public class SakeGetMyRecordsRequest : SakeRequestBase
     {
         [DataMember(Name = SakeXmlLable.Fields)]
-        public List<Dictionary<string,string>> Fields;
+        public List<Dictionary<string, string>> Fields;
     }
 }

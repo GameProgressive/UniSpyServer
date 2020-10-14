@@ -1,9 +1,7 @@
-﻿using System;
+﻿using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Structure.Model;
 using System.Collections.Generic;
 using System.Linq;
-using PresenceSearchPlayer.Entity.Enumerator;
-using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -13,7 +11,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public List<uint> Namespaces { get; protected set; }
         public SearchUniqueRequest(Dictionary<string, string> recv) : base(recv)
         {
-           
+
         }
 
         public override GPError Parse()

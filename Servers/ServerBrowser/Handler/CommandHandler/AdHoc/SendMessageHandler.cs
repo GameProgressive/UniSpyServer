@@ -1,11 +1,10 @@
-﻿using System;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage
 {
-    public class SendMessageHandler:SBCommandHandlerBase
+    public class SendMessageHandler : SBCommandHandlerBase
     {
         private AdHocRequest _request;
         public SendMessageHandler(ISession client, byte[] recv) : base(client, recv)

@@ -58,8 +58,8 @@ namespace QueryReport.Entity.Structure.ReportData
                     //}
                     //else
                     //{
-                        keyValue.Add(tempKey, tempValue);
-                        LogWriter.ToLog(LogEventLevel.Verbose, $"Updated new team key value {tempKey}:{tempValue}");
+                    keyValue.Add(tempKey, tempValue);
+                    LogWriter.ToLog(LogEventLevel.Verbose, $"Updated new team key value {tempKey}:{tempValue}");
                     //}
 
 

@@ -1,5 +1,4 @@
-﻿using System;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
@@ -15,18 +14,12 @@ namespace Chat.Handler.CommandHandler
 
         public ChatChannelHandlerBase(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new ChatChannelRequestBase(request.RawRequest);
+            _request = (ChatChannelRequestBase)request;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
-
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
 
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {

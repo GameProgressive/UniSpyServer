@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Handler.CommandHandler;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Handler.SystemHandler
 {
@@ -38,7 +37,7 @@ namespace PresenceConnectionManager.Handler.SystemHandler
                 _profileIDList = db.Friends
                     .Where(f => f.Profileid == _session.UserData.ProfileID
                     && f.Namespaceid == _session.UserData.NamespaceID)
-                    .Select(f=>f.Targetid).ToList();
+                    .Select(f => f.Targetid).ToList();
             }
         }
 

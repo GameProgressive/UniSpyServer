@@ -1,5 +1,4 @@
-﻿using System;
-namespace StatsAndTracking.Entity.Structure
+﻿namespace StatsAndTracking.Entity.Structure
 {
     public class GStatsRequestName
     {

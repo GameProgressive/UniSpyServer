@@ -19,18 +19,13 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         ChatChannelUser _otherUser;
         public SETCKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new SETCKEYRequest(request.RawRequest);
+            _request = (SETCKEYRequest)request;
             IsSetOthersKeyValue = false;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
 
             if (_request.NickName != _session.UserInfo.NickName)
             {
@@ -53,7 +48,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         protected override void DataOperation()
         {
             base.DataOperation();
- 
+
             if (IsSetOthersKeyValue)
             {
                 _otherUser.UpdateUserKeyValue(_request.KeyValues);
@@ -64,24 +59,9 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            base.ConstructResponse();
-
-            BuildBCASTReply();
-        }
-
-        protected override void Response()
-        {
-            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
-            {
-                return;
-            }
-            _channel.MultiCast(_sendingBuffer);
-        }
-
-        private void BuildBCASTReply()
-        {
+            base.BuildNormalResponse();
             //we only broadcast the b_flags
             string flags = "";
             if (_request.KeyValues.ContainsKey("b_flags"))
@@ -106,6 +86,15 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
                         _channel.Property.ChannelName,
                         "BCAST", flags);
             }
+        }
+
+        protected override void Response()
+        {
+            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            {
+                return;
+            }
+            _channel.MultiCast(_sendingBuffer);
         }
     }
 }

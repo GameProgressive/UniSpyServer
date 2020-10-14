@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Chat.Entity.Structure.ChatUser;
 using System.Linq;
-using Chat.Entity.Structure.ChatUser;
 
 namespace Chat.Entity.Structure.ChatResponse.ChatGeneralResponse
 {
@@ -36,7 +35,7 @@ namespace Chat.Entity.Structure.ChatResponse.ChatGeneralResponse
             return buffer;
         }
 
-        private static string BuildWhoIsChannelReply(ChatUserInfo userInfo,string channelName)
+        private static string BuildWhoIsChannelReply(ChatUserInfo userInfo, string channelName)
         {
             return ChatReplyBase.BuildReply(
                     ChatReplyCode.WhoIsChannels,

@@ -2,8 +2,6 @@
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Enumerator;
-using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
 using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using PresenceSearchPlayer.Handler.CommandHandler.Nick;

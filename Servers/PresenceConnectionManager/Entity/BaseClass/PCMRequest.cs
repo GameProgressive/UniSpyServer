@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using GameSpyLib.Extensions;
+﻿using GameSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerator;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceConnectionManager.Entity.BaseClass
 {

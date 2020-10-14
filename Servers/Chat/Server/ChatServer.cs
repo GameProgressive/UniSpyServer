@@ -1,5 +1,4 @@
 ﻿using Chat.Handler.SystemHandler.ChannelManage;
-using Chat.Handler.SystemHandler.ChatCommandManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using GameSpyLib.Network;
 using NetCoreServer;

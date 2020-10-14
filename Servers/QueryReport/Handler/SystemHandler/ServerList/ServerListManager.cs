@@ -1,7 +1,7 @@
-﻿using System;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Logging;
 using QueryReport.Entity.Structure;
+using System;
 
 namespace QueryReport.Handler.SystemHandler.ServerList
 {

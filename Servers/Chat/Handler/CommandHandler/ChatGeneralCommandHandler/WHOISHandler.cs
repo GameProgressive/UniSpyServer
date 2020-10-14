@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Entity.Structure.ChatUser;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using GameSpyLib.Common.Entity.Interface;
+using System.Linq;
 
 namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
@@ -15,18 +15,12 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         ChatUserInfo _userInfo;
         public WHOISHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new WHOISRequest(request.RawRequest);
+            _request = (WHOISRequest)request;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
-
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
 
             var result = from s in ChatSessionManager.Sessions.Values
                          where s.UserInfo.NickName == _request.NickName

@@ -1,5 +1,5 @@
-﻿using System.ServiceModel;
-using RetroSpyServices.Direct2Game.Entity.Structure.Model;
+﻿using RetroSpyServices.Direct2Game.Entity.Structure.Model;
+using System.ServiceModel;
 
 namespace RetroSpyServices.Direct2Game.Entity.Interface
 {

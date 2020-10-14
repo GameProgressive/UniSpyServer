@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using GameSpyLib.Common;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Common.Entity.Interface;
 using Newtonsoft.Json;
 using QueryReport.Entity.Structure;
@@ -7,6 +6,7 @@ using QueryReport.Entity.Structure.NatNeg;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using StackExchange.Redis;
+using System.Linq;
 
 namespace ServerBrowser.Handler.CommandHandler.NatNeg
 {

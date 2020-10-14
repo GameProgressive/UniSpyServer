@@ -1,5 +1,4 @@
-﻿using System;
-namespace PresenceSearchPlayer.Entity.Structure
+﻿namespace PresenceSearchPlayer.Entity.Structure
 {
     public class PSPRequestName
     {

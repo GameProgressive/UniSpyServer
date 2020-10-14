@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceSearchPlayer.Entity.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Model
 {

@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatCommand
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class PONGRequest : ChatRequestBase
     {
@@ -11,7 +10,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-           
+
             EchoMessage = _longParam;
             return true;
         }

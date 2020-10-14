@@ -23,7 +23,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-           
+
 
             uint namespaceid;
 

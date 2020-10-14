@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Concurrent;
-using Chat.Entity.Structure.ChatCommand;
-using System.Linq;
+﻿using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Logging;
+using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Chat.Entity.Structure.ChatChannel
 {

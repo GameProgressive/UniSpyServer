@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.MiscMethod;
+﻿using GameSpyLib.MiscMethod;
 using PresenceConnectionManager.Entity.BaseClass;
 using PresenceConnectionManager.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Enumerator;
+using System;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
@@ -42,7 +42,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         public bool HasCountryCode { get; protected set; }
         public string CountryCode { get; protected set; }
 
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
             if (flag != GPError.NoError)

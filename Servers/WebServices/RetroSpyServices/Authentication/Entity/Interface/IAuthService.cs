@@ -1,6 +1,6 @@
-﻿using System.ServiceModel;
+﻿using RetroSpyServices.Authentication.Entity.Structure.Model;
+using System.ServiceModel;
 using System.Xml.Linq;
-using RetroSpyServices.Authentication.Entity.Structure.Model;
 
 namespace RetroSpyServices.Authentication.Entity.Interface
 {

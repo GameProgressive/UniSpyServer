@@ -13,17 +13,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         new SETKEYRequest _request;
         public SETKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new SETKEYRequest(request.RawRequest);
-        }
-
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
+            _request = (SETKEYRequest)request;
         }
 
         protected override void DataOperation()

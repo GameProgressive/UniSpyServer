@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Network;
 using NetCoreServer;
-using System.Collections.Concurrent;
 using System.Net;
 
 namespace ServerBrowser

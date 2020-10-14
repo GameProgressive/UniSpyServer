@@ -14,7 +14,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-           
+
             if (_longParam == null)
                 return false;
             KeyValues = StringExtensions.ConvertKVStrToDic(_longParam);

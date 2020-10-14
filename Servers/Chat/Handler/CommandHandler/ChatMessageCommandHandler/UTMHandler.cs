@@ -1,6 +1,5 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatMessageResponse;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -12,17 +11,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
 
         public UTMHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new UTMRequest(request.RawRequest);
-        }
-
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
+            _request = (UTMRequest)request;
         }
 
         protected override void BuildNormalResponse()

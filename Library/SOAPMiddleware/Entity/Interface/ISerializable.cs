@@ -1,5 +1,4 @@
-﻿using System;
-namespace SOAPMiddleware.Entity.Interface
+﻿namespace SOAPMiddleware.Entity.Interface
 {
     public interface ISoapSerializable
     {

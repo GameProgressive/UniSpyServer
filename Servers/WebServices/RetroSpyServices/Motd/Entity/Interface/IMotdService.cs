@@ -1,5 +1,5 @@
-﻿using System.ServiceModel;
-using RetroSpyServices.Motd.Entity.Structure.Model;
+﻿using RetroSpyServices.Motd.Entity.Structure.Model;
+using System.ServiceModel;
 
 namespace RetroSpyServices.Motd.Entity.Interface
 {

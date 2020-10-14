@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Extensions;
+using System.Collections.Generic;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {
@@ -19,7 +19,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         ChatChannelUser _user;
         public JOINHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new JOINRequest(request.RawRequest);
+            _request = (JOINRequest)request;
         }
 
         //1.筛选出所要加入的频道，如果不存在则创建
@@ -34,13 +34,6 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-
-            if(!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-
             //some GameSpy game only allow one player join one chat room
             //but GameSpy Arcade can join more than one channel
             if (_session.UserInfo.JoinedChannels.Count > 3)

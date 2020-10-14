@@ -1,7 +1,7 @@
-﻿using System;
-using System.Xml.Linq;
-using RetroSpyServices.Competitive.Entity.Interface;
+﻿using RetroSpyServices.Competitive.Entity.Interface;
 using RetroSpyServices.Competitive.Entity.Structure.Model;
+using System;
+using System.Xml.Linq;
 
 namespace RetroSpyServices.Competitive.Service
 {

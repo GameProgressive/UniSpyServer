@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
+using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public uint ProfileID { get; private set; }
         public string GameName { get; private set; }
         public uint NamespaceID { get; protected set; }
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
             if (flag != GPError.NoError)

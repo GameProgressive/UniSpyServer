@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -38,7 +38,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
                 NamespaceID = namespaceID;
             }
-                return GPError.NoError;
+            return GPError.NoError;
 
         }
     }

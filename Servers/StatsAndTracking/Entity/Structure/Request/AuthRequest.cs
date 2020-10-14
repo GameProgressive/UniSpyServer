@@ -1,6 +1,5 @@
-﻿using System;
+﻿using StatsAndTracking.Entity.Enumerator;
 using System.Collections.Generic;
-using StatsAndTracking.Entity.Enumerator;
 
 namespace StatsAndTracking.Entity.Structure.Request
 {
@@ -21,12 +20,12 @@ namespace StatsAndTracking.Entity.Structure.Request
             {
                 return flag;
             }
-            
+
             if (!_request.ContainsKey("gamename") && !_request.ContainsKey("response"))
             {
                 return GStatsErrorCode.Parse;
             }
-            
+
             if (_request.ContainsKey("port"))
             {
                 uint port;

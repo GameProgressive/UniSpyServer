@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
 {
@@ -30,7 +29,7 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
     //    </ns1:fields>
     //</ns1:GetRandomRecords>
     [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
-    public class SakeGetRamdomRecordRequest:SakeRequestBase
+    public class SakeGetRamdomRecordRequest : SakeRequestBase
     {
         [DataMember(Name = SakeXmlLable.Max)]
         public uint Max;

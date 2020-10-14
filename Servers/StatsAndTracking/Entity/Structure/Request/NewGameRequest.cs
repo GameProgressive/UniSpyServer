@@ -1,6 +1,5 @@
-﻿using System;
+﻿using StatsAndTracking.Entity.Enumerator;
 using System.Collections.Generic;
-using StatsAndTracking.Entity.Enumerator;
 
 namespace StatsAndTracking.Entity.Structure.Request
 {

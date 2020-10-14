@@ -1,9 +1,4 @@
-﻿using Chat.Entity.Structure.ChatChannel;
-using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatUser;
-using Chat.Server;
-
-namespace Chat.Entity.Structure.ChatResponse
+﻿namespace Chat.Entity.Structure.ChatResponse
 {
     public class ChatReplyCode
     {

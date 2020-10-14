@@ -1,5 +1,4 @@
-﻿using System.Net;
-using GameSpyLib.Common;
+﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using Newtonsoft.Json;
 using QueryReport.Entity.Structure.NatNeg;
@@ -7,6 +6,7 @@ using QueryReport.Entity.Structure.Packet;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
 using QueryReport.Server;
 using StackExchange.Redis;
+using System.Net;
 
 namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
 {
@@ -50,7 +50,7 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
                 LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "Can not find game server in QR");
                 return;
             }
-            
+
             byte[] clientMessage = new ClientMessagePacket()
                          .SetMessage(cookie.NatNegMessage)
                          .SetMessageKey(MessageKey++)

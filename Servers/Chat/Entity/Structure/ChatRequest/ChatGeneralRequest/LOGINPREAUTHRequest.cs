@@ -11,7 +11,7 @@
 
         protected override bool DetailParse()
         {
-           
+
             AuthToken = _cmdParams[0];
             PartnerChallenge = _cmdParams[1];
             return true;

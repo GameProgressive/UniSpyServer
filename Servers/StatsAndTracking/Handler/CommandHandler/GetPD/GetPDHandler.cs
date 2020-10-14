@@ -58,7 +58,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
                 {
                     if (keyValues.ContainsKey(key))
                     {
-                        _result.Add(key,keyValues[key]);
+                        _result.Add(key, keyValues[key]);
                     }
                     else
                     {

@@ -1,12 +1,9 @@
-﻿using System.Linq;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Extensions;
-using GameSpyLib.MiscMethod;
+using System.Linq;
 
 namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
@@ -19,17 +16,12 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         uint _userid;
         public LOGINHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new LOGINRequest(request.RawRequest);
+            _request = (LOGINRequest)request;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
             /// TODO: Verify which games does send a GS encoded password and not md5
             //we decoded gamespy encoded password then get md5 of it 
             //_password = GameSpyUtils.DecodePassword(_request.PasswordHash);

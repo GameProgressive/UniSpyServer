@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using GameSpyLib.MiscMethod;
+﻿using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Model;
-using PresenceSearchPlayer.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -61,7 +59,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 NamespaceID = namespaceID;
             }
 
-                return GPError.NoError;
+            return GPError.NoError;
 
         }
     }

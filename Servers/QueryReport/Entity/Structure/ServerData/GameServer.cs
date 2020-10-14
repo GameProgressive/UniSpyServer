@@ -122,10 +122,10 @@ namespace QueryReport.Entity.Structure
         public static Dictionary<string, GameServer> GetAllServers()
         {
             var allServerKeys = RedisExtensions.GetAllKeys(RedisDBNumber.GameServer);
-            Dictionary<string,GameServer> gameServer = new Dictionary<string, GameServer>();
+            Dictionary<string, GameServer> gameServer = new Dictionary<string, GameServer>();
             foreach (var key in allServerKeys)
             {
-                gameServer.Add(key,RedisExtensions.SerilizeGet<GameServer>(key, RedisDBNumber.GameServer));
+                gameServer.Add(key, RedisExtensions.SerilizeGet<GameServer>(key, RedisDBNumber.GameServer));
             }
             return gameServer;
         }

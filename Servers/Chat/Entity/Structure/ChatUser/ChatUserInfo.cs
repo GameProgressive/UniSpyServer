@@ -1,8 +1,8 @@
-﻿using System.Collections.Concurrent;
+﻿using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChatResponse;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.Net;
-using Chat.Entity.Structure.ChatChannel;
-using Chat.Entity.Structure.ChatResponse;
 
 namespace Chat.Entity.Structure.ChatUser
 {

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Response
 {
-    [DataContract(Name ="CreateRecord")]
+    [DataContract(Name = "CreateRecord")]
     public class SakeCreateRecordResponse
     {
         [DataMember(Name = SakeXmlLable.RecordID)]

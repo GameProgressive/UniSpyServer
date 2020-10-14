@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.ChatResponse.ChatGeneralResponse
+﻿namespace Chat.Entity.Structure.ChatResponse.ChatGeneralResponse
 {
     public class NAMEReply
     {

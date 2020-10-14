@@ -11,6 +11,8 @@
         NoError,
         IRCError,
         NoSuchNick,
-        NoSuchChannel
+        NickNameExisted,
+        NoSuchChannel,
+        UnSupportedGame
     }
 }

@@ -4,7 +4,6 @@ using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using Serilog.Events;
 using StatsAndTracking.Entity.Enumerator;
-using StatsAndTracking.Entity.Structure.Request;
 using StatsAndTracking.Handler.SystemHandler;
 using System.Collections.Generic;
 //we store base class here but the namespace is not changed

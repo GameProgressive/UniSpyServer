@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
-using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
@@ -8,9 +7,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     public class AddBuddyHandler : PCMCommandHandlerBase
     {
-
         protected AddBuddyRequest _request;
-
         public AddBuddyHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
         {
             _request = new AddBuddyRequest(recv);

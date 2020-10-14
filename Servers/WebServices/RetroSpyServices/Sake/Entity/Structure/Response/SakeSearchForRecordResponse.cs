@@ -1,5 +1,4 @@
-﻿using System;
-namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Response
+﻿namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Response
 {
     public class SakeSearchForRecordResponse
     {

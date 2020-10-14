@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using PresenceConnectionManager.Entity.Enumerator;
+﻿using PresenceConnectionManager.Entity.Enumerator;
 
 namespace PresenceConnectionManager.Structure.Data
 {

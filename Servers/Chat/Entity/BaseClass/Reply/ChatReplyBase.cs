@@ -1,5 +1,4 @@
-﻿using System;
-using Chat.Entity.Structure.ChatUser;
+﻿using Chat.Entity.Structure.ChatUser;
 using Chat.Server;
 
 namespace Chat.Entity.Structure.ChatResponse

@@ -21,17 +21,9 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         ChatSession _resultSession;
         public WHOHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new WHORequest(request.RawRequest);
+            _request = (WHORequest)request;
         }
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-        }
+
         protected override void DataOperation()
         {
             base.DataOperation();

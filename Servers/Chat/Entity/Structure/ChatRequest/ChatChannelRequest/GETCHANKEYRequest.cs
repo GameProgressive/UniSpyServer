@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using GameSpyLib.Extensions;
+using System.Collections.Generic;
 using System.Linq;
-using GameSpyLib.Extensions;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
@@ -28,7 +28,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
             Cookie = _cmdParams[1];
 
-            _longParam = _longParam.Substring(0,_longParam.Length-2);
+            _longParam = _longParam.Substring(0, _longParam.Length - 2);
 
             Keys = StringExtensions.ConvertKeyStrToList(_longParam);
 

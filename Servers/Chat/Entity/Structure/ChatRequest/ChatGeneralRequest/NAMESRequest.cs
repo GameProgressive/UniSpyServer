@@ -10,7 +10,7 @@
 
         protected override bool DetailParse()
         {
-           
+
             if (_cmdParams.Count != 1)
                 return false;
             ChannelName = _cmdParams[0];

@@ -1,7 +1,7 @@
-﻿using System.Collections.Concurrent;
-using System.Net;
-using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Common.BaseClass;
 using QueryReport.Server;
+using System.Collections.Concurrent;
+using System.Net;
 
 namespace QueryReport.Handler.SystemHandler.QRSessionManage
 {
@@ -37,7 +37,7 @@ namespace QueryReport.Handler.SystemHandler.QRSessionManage
 
         public static bool AddSession(QRSession session)
         {
-            if(IsSessionExist(session.RemoteEndPoint))
+            if (IsSessionExist(session.RemoteEndPoint))
             {
                 return false;
             }
@@ -50,7 +50,7 @@ namespace QueryReport.Handler.SystemHandler.QRSessionManage
         {
             base.CheckExpire();
 
-           // todo check expired sessions
+            // todo check expired sessions
         }
     }
 }

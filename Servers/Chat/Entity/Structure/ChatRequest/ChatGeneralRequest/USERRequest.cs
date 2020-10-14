@@ -1,6 +1,4 @@
-﻿using Chat.Entity.Structure.ChatResponse;
-
-namespace Chat.Entity.Structure.ChatCommand
+﻿namespace Chat.Entity.Structure.ChatCommand
 {
     public class USERRequest : ChatRequestBase
     {
@@ -16,7 +14,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
         protected override bool DetailParse()
         {
-           
+
 
             UserName = _cmdParams[0];
             Hostname = _cmdParams[1];

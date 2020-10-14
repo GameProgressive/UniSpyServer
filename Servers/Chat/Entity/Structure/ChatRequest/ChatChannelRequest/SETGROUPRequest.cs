@@ -9,7 +9,7 @@
         public string GroupName { get; protected set; }
         protected override bool DetailParse()
         {
-           
+
 
             if (_cmdParams.Count != 1)
             {

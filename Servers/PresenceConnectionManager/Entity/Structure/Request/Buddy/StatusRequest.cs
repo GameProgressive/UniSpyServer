@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using PresenceConnectionManager.Entity.BaseClass;
+﻿using PresenceConnectionManager.Entity.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerator;
+using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
@@ -15,15 +14,15 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         public string StatusString { get; protected set; }
         public string LocationString { get; protected set; }
 
-        public override GPError  Parse()
+        public override GPError Parse()
         {
             var flag = base.Parse();
-            if(flag != GPError.NoError)
+            if (flag != GPError.NoError)
             {
                 return flag;
             }
 
-            if (!_recv.ContainsKey("status")||!_recv.ContainsKey("statstring") || !_recv.ContainsKey("locstring"))
+            if (!_recv.ContainsKey("status") || !_recv.ContainsKey("statstring") || !_recv.ContainsKey("locstring"))
             {
                 return GPError.Parse;
             }

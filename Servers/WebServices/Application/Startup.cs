@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using System.ServiceModel;
-using SOAPMiddleware.MiddlewareComponent;
 using RetroSpyServices.Sake.Handler.Service;
+using SOAPMiddleware.MiddlewareComponent;
+using System.ServiceModel;
 
 namespace WebServices
 {
@@ -49,7 +49,7 @@ namespace WebServices
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseRouting();
-            
+
             /*app.UseEndpoints(endpoints =>
             {
                 // PublicServices

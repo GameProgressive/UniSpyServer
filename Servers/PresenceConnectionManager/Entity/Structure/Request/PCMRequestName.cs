@@ -1,5 +1,4 @@
-﻿using System;
-namespace PresenceConnectionManager.Entity.Structure.Request
+﻿namespace PresenceConnectionManager.Entity.Structure.Request
 {
     public class PCMRequestName
     {

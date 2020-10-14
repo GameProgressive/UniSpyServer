@@ -1,6 +1,5 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using StatsAndTracking.Entity.Enumerator;
 using StatsAndTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace StatsAndTracking.Handler.CommandHandler.SetPD
         }
 
         protected override void CheckRequest()
-        { 
+        {
             _errorCode = _request.Parse();
         }
 

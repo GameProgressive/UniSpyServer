@@ -1,6 +1,5 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
 using GameSpyLib.Common.Entity.Interface;
 
@@ -17,31 +16,20 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         string _values;
         public GETCHANKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
-            _request = new GETCHANKEYRequest(request.RawRequest);
+            _request = (GETCHANKEYRequest)request;
         }
 
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-        }
         protected override void DataOperation()
         {
             base.DataOperation();
             _values = _channel.Property.GetChannelValueString(_request.Keys);
         }
 
-        protected override void ConstructResponse()
+        protected override void BuildNormalResponse()
         {
-            base.ConstructResponse();
-            _sendingBuffer =
-                GETCHANKEYReply.BuildGetChanKeyReply(
-                    _user, _channel.Property.ChannelName,
-                    _request.Cookie, _values);
+            base.BuildNormalResponse();
+            _sendingBuffer = GETCHANKEYReply.BuildGetChanKeyReply(
+            _user, _channel.Property.ChannelName, _request.Cookie, _values);
         }
     }
 }
