@@ -21,8 +21,12 @@ namespace Chat.Entity.Structure.ChatCommand
         public string UniqueNick { get; protected set; }
         public string PasswordHash { get; protected set; }
 
-        protected override bool DetailParse()
+        public override bool Parse()
         {
+            if (!base.Parse())
+            {
+                return false;
+            }
 
 
             uint namespaceid;

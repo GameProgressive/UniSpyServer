@@ -6,8 +6,13 @@
         {
         }
 
-        protected override bool DetailParse()
+        public override bool Parse()
         {
+            if (!base.Parse())
+            {
+                return false;
+            }
+
             return true; // USRIP content is empty!
         }
     }

@@ -18,7 +18,7 @@ namespace Chat.Handler.CommandSwitcher
         public void Switch(ISession session, string recv)
         {
             #region Process request to our defined class
-            List<ChatRequestBase> requestList = new List<ChatRequestBase>();
+            List<object> requestList = new List<object>();
 
             string[] rawRequests = recv.Replace("\r", "")
                 .Split("\n", StringSplitOptions.RemoveEmptyEntries);
@@ -27,12 +27,12 @@ namespace Chat.Handler.CommandSwitcher
             foreach (var rawRequest in rawRequests)
             {
                 ChatRequestBase generalRequest = new ChatRequestBase(rawRequest);
-
                 if (!generalRequest.Parse())
                 {
                     LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
                     continue;
                 }
+
                 Type requestType = AppDomain.CurrentDomain
                         .GetAssemblies()
                         .SelectMany(x => x.GetTypes())
@@ -43,9 +43,14 @@ namespace Chat.Handler.CommandSwitcher
                     if (specificRequest == null)
                     {
                         LogWriter.ToLog(LogEventLevel.Error, $"Unknown request {generalRequest.CmdName}!");
-                        return;
+                        continue;
                     }
-                    requestList.Add(generalRequest);
+                    if (!((ChatRequestBase)specificRequest).Parse())
+                    {
+                        LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
+                        continue;
+                    }
+                    requestList.Add(specificRequest);
                 }
                 else
                 {
@@ -57,10 +62,11 @@ namespace Chat.Handler.CommandSwitcher
             #region Handle specific request
             foreach (var request in requestList)
             {
+                string cmdName = ((ChatRequestBase)request).CmdName;
                 Type handlerType = AppDomain.CurrentDomain
                         .GetAssemblies()
                         .SelectMany(x => x.GetTypes())
-                        .FirstOrDefault(t => t.Name == request.CmdName + "Handler");
+                        .FirstOrDefault(t => t.Name == cmdName + "Handler");
 
                 if (handlerType != null)
                 {
@@ -72,12 +78,12 @@ namespace Chat.Handler.CommandSwitcher
                     }
                     else
                     {
-                        LogWriter.ToLog(LogEventLevel.Error, $"Unknown command {request.CmdName}!");
+                        LogWriter.ToLog(LogEventLevel.Error, $"Unknown command {cmdName}!");
                     }
                 }
                 else
                 {
-                    LogWriter.ToLog(LogEventLevel.Error, $"{request.CmdName}Handler not implemented!");
+                    LogWriter.ToLog(LogEventLevel.Error, $"{cmdName}Handler not implemented!");
                 }
             }
             #endregion

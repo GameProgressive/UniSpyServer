@@ -14,8 +14,13 @@ namespace Chat.Entity.Structure.ChatCommand
         public List<string> Keys { get; protected set; }
 
 
-        protected override bool DetailParse()
+        public override bool Parse()
         {
+            if (!base.Parse())
+            {
+                return false;
+            }
+
             if (_cmdParams.Count != 3)
             {
                 return false;

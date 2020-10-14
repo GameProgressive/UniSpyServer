@@ -12,10 +12,12 @@
         public string NickName { get; protected set; }
         public string Name { get; protected set; }
 
-        protected override bool DetailParse()
+        public override bool Parse()
         {
-
-
+            if (!base.Parse())
+            {
+                return false;
+            }
             UserName = _cmdParams[0];
             Hostname = _cmdParams[1];
             ServerName = _cmdParams[2];

@@ -47,9 +47,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         protected override void DataOperation()
         {
             base.DataOperation();
-
             _user = new ChatChannelUser(_session);
-
             if (ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
                 //join

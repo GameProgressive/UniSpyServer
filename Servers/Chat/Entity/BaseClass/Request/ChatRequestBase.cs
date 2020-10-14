@@ -63,11 +63,6 @@ namespace Chat.Entity.Structure.ChatCommand
             {
                 _cmdParams = dataFrag.Skip(1).ToList();
             }
-            return DetailParse();
-        }
-
-        protected virtual bool DetailParse()
-        {
             return true;
         }
     }

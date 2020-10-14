@@ -9,8 +9,13 @@
         public string Reason { get; protected set; }
 
 
-        protected override bool DetailParse()
+        public override bool Parse()
         {
+            if (!base.Parse())
+            {
+                return false;
+            }
+
             Reason = _longParam;
             return true;
         }

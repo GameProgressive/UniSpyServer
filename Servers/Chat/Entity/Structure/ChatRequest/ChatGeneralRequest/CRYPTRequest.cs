@@ -10,8 +10,12 @@
         public string GameName { get; protected set; }
         //CRYPT des %d %s
 
-        protected override bool DetailParse()
+        public override bool Parse()
         {
+            if (!base.Parse())
+            {
+                return false;
+            }
 
 
             VersionID = _cmdParams[1];

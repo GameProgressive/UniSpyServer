@@ -8,8 +8,12 @@
 
         public string EchoMessage { get; protected set; }
 
-        protected override bool DetailParse()
+        public override bool Parse()
         {
+            if (!base.Parse())
+            {
+                return false;
+            }
 
             EchoMessage = _longParam;
             return true;

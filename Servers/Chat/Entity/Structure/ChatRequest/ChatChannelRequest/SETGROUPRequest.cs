@@ -7,9 +7,12 @@
         }
 
         public string GroupName { get; protected set; }
-        protected override bool DetailParse()
+        public override bool Parse()
         {
-
+            if (!base.Parse())
+            {
+                return false;
+            }
 
             if (_cmdParams.Count != 1)
             {

@@ -9,8 +9,12 @@
         public string AuthToken { get; protected set; }
         public string PartnerChallenge { get; protected set; }
 
-        protected override bool DetailParse()
+        public override bool Parse()
         {
+            if (!base.Parse())
+            {
+                return false;
+            }
 
             AuthToken = _cmdParams[0];
             PartnerChallenge = _cmdParams[1];
