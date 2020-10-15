@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <SignAssembly>false</SignAssembly>    <ApplicationIcon>Resource\RetroSpy_Logo.ico</ApplicationIcon>
+    <SignAssembly>false</SignAssembly>    <ApplicationIcon>..\..\..\common\Icon\RetroSpy_Logo.ico</ApplicationIcon>
     <Win32Resource />
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..\..</DockerfileContext>

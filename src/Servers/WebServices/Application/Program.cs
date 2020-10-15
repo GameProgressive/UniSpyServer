@@ -3,6 +3,7 @@ using GameSpyLib.Logging;
 using Serilog.Events;
 using System;
 using System.IO;
+using System.Reflection;
 using WebServices.Application;
 
 namespace WebServices
@@ -12,14 +13,12 @@ namespace WebServices
         private static ServerManager Manager;
         public static void Main(string[] args)
         {
+            
             //the working directory is different than binary execute file directory
-            //you have to put RetroSpyConfig.json to project folder
-            //currently i can not fix this problem
-            Console.WriteLine(Directory.GetCurrentDirectory());
-            var location = System.Reflection.Assembly.GetEntryAssembly().Location;
-            var directory = Path.GetDirectoryName(location);
+            //we set the working directory as same as binary execute directory so we can read RetroSpyConfig.json
+            var executeDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+            Directory.SetCurrentDirectory(executeDirectory);
 
-            Console.WriteLine(directory);
             try
             {
                 Manager = new ServerManager(RetroSpyServerName.WebServices);

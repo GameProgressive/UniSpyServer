@@ -16,6 +16,7 @@
     </PropertyGroup>
     <PropertyGroup>
         <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+        <ApplicationIcon>..\..\..\common\Icon\RetroSpy_Logo.ico</ApplicationIcon>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
       <ExternalConsole>true</ExternalConsole>
