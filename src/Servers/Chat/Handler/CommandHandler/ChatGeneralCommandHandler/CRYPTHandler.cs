@@ -24,7 +24,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             base.DataOperation();
 
             string secretKey;
-            if (!DataOperationExtensions.GetSecretKey(_session.UserInfo.GameName, out secretKey)
+            if (!DataOperationExtensions.GetSecretKey(_request.GameName, out secretKey)
                 || secretKey == null)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "secret key not found!");
