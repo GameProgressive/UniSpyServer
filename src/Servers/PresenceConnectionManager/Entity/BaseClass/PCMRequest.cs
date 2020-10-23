@@ -30,7 +30,6 @@ namespace PresenceConnectionManager.Entity.BaseClass
                 }
                 OperationID = operationID;
             }
-
             return GPError.NoError;
         }
 

@@ -88,7 +88,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 return GPError.Parse;
             }
 
-
             return ParseOtherData();
         }
 
