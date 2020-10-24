@@ -24,7 +24,7 @@ namespace Chat.Server
         {
             base.OnReceived(message);
 
-            new ChatCommandSwitcher().Switch(this, message);
+            ChatCommandSwitcher.Switch(this, message);
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)

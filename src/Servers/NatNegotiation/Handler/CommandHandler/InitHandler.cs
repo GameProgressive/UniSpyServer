@@ -10,11 +10,11 @@ namespace NatNegotiation.Handler.CommandHandler
         protected InitPacket _initPacket;
         public InitHandler(ISession session, byte[] recv) : base(session, recv)
         {
+            _initPacket = new InitPacket();
         }
 
         protected override void CheckRequest()
         {
-            _initPacket = new InitPacket();
             _initPacket.Parse(_recv);
 
             string key = _session.RemoteEndPoint.ToString() + "-" + _initPacket.PortType.ToString();

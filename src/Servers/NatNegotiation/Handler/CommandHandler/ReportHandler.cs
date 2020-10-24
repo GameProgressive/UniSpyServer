@@ -13,11 +13,11 @@ namespace NatNegotiation.Handler.CommandHandler
         protected ReportPacket _reportPacket;
         public ReportHandler(ISession session, byte[] recv) : base(session, recv)
         {
+            _reportPacket = new ReportPacket();
         }
 
         protected override void CheckRequest()
         {
-            _reportPacket = new ReportPacket();
             _reportPacket.Parse(_recv);
         }
 
