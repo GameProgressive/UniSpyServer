@@ -2,6 +2,7 @@
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Structure;
 using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using PresenceSearchPlayer.Handler.CommandHandler.Nick;
@@ -44,47 +45,37 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
 
                     switch (recv.Keys.First())
                     {
-                        case "search":
+                        case PSPRequestName.SearchAccount:
                             new SearchHandler(session, recv).Handle();
                             break;
-
-                        case "valid"://is email format valid
+                        case PSPRequestName.EmailValidCheck:
                             new ValidHandler(session, recv).Handle();
                             break;
-
-                        case "nicks":// search an user with nick name
+                        case PSPRequestName.SearchByNickName:
                             new NicksHandler(session, recv).Handle();
                             break;
-
-                        //case "pmatch":
-                        //    PmatchHandler pmatch = new PmatchHandler(recv);
-                        //    pmatch.Handle(session);
-                        //    break;
-
-                        case "check":
+                        case PSPRequestName.PlayerSearch:
+                            //    PmatchHandler pmatch = new PmatchHandler(recv);
+                            //    pmatch.Handle(session);
+                            break;
+                        case PSPRequestName.CheckAccountValidation:
                             new CheckHandler(session, recv).Handle();
                             break;
-
-                        case "newuser"://create an new user
+                        case PSPRequestName.CreateNewUser:
                             new NewUserHandler(session, recv).Handle();
                             break;
-
-                        case "searchunique"://search an user with uniquenick
+                        case PSPRequestName.SearchUserByUniqueNickName:
                             new SearchUniqueHandler(session, recv).Handle();
                             break;
-
-                        case "others"://search 
+                        case PSPRequestName.SearchUsersInformation:
                             new OthersHandler(session, recv).Handle();
                             break;
-
-                        case "otherslist"://search other players friend list to see who is in his list?
+                        case PSPRequestName.SearchFriendList:
                             new OthersListHandler(session, recv).Handle();
                             break;
-
-                        case "uniquesearch"://search a user with uniquenick and namespaceid
+                        case PSPRequestName.UniqueSearch:
                             new UniqueSearchHandler(session, recv).Handle();
                             break;
-
                         default:
                             LogWriter.UnknownDataRecieved(message);
                             break;
