@@ -51,18 +51,6 @@ namespace GameSpyLib.MiscMethod
         }
 
         /// <summary>
-        /// Send a presence error
-        /// </summary>
-        /// <param name="stream">The stream that will receive the error</param>
-        /// <param name="code">The error code</param>
-        /// <param name="error">A string containing the error</param>
-        public static void SendGPError(TcpSession session, object errorCode, string error)
-        {
-            string sendingBuffer = string.Format(@"\error\\err\{0}\fatal\\errmsg\{1}\id\1\final\", (uint)errorCode, error);
-            session.SendAsync(sendingBuffer);
-        }
-
-        /// <summary>
         /// Check the correctness of the email account format.
         /// </summary>
         /// <param name="email">email account</param>

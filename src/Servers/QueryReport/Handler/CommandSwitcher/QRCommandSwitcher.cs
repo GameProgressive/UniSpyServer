@@ -28,7 +28,7 @@ namespace QueryReport.Handler.CommandSwitcher
                     case QRPacketType.Challenge:
                         new ChallengeHandler(session, recv).Handle();
                         break;
-                    case QRPacketType.HeartBeat: // HEARTBEAT
+                    case QRPacketType.HeartBeat:
                         new HeartBeatHandler(session, recv).Handle();
                         break;
                     case QRPacketType.KeepAlive:
