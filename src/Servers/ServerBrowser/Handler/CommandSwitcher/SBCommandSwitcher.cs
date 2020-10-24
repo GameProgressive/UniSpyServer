@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using ServerBrowser.Entity.Enumerator;
 using ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage;
@@ -10,9 +9,9 @@ using System.Linq;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCommandSwitcher : CommandSwitcherBase
+    public class SBCommandSwitcher
     {
-        public void Switch(ISession session, byte[] recv)
+        public static void Switch(ISession session, byte[] recv)
         {
             if (recv.Take(6).SequenceEqual(NatNegotiation.Entity.Structure.Packet.BasePacket.MagicData))
             {

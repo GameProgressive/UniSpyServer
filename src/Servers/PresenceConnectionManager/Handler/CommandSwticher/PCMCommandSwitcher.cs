@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using PresenceConnectionManager.Entity.BaseClass;
@@ -15,9 +14,9 @@ using System.Linq;
 
 namespace PresenceConnectionManager.Handler
 {
-    public class PCMCommandSwitcher : CommandSwitcherBase
+    public class PCMCommandSwitcher
     {
-        public void Switch(ISession session, string message)
+        public static void Switch(ISession session, string message)
         {
             try
             {

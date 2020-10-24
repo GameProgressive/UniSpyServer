@@ -7,7 +7,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
 {
     public class NatNegCommandSwitcher
     {
-        public void Switch(NatNegSession session, byte[] recv)
+        public static void Switch(NatNegSession session, byte[] recv)
         {
             try
             {

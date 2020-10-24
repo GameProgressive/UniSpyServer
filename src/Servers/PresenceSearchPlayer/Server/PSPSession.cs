@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer
 
         protected override void OnReceived(string message)
         {
-            new PSPCommandSwitcher().Switch(this, message);
+            PSPCommandSwitcher.Switch(this, message);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure;
@@ -19,9 +18,9 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {
-    public class PSPCommandSwitcher : CommandSwitcherBase
+    public class PSPCommandSwitcher
     {
-        public void Switch(PSPSession session, string message)
+        public static void Switch(PSPSession session, string message)
         {
 
             try

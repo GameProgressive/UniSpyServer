@@ -49,7 +49,7 @@ namespace QueryReport.Server
                 session = (QRSession)CreateSession(endPoint);
                 QRSessionManager.Sessions.TryAdd(endPoint, session);
             }
-            new QRCommandSwitcher().Switch(session, message);
+            QRCommandSwitcher.Switch(session, message);
         }
     }
 }

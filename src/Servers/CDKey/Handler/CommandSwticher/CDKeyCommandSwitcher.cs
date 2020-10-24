@@ -9,9 +9,9 @@ using System.Linq;
 
 namespace CDKey.Handler.CommandSwitcher
 {
-    public class CDKeyCommandSwitcher : CommandSwitcherBase
+    public class CDKeyCommandSwitcher
     {
-        public void Switch(ISession client, string message)
+        public static void Switch(ISession client, string message)
         {
             message.Replace(@"\r\n", "").Replace("\0", "");
             string[] keyValueArray = message.TrimStart('\\').Split('\\');

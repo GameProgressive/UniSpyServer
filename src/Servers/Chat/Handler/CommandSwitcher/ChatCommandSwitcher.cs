@@ -1,6 +1,5 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.CommandHandler;
-using GameSpyLib.Common.BaseClass;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
 using Serilog.Events;
@@ -12,7 +11,7 @@ namespace Chat.Handler.CommandSwitcher
     /// <summary>
     /// Process request to Commands
     /// </summary>
-    public class ChatCommandSwitcher : CommandSwitcherBase
+    public class ChatCommandSwitcher
     {
         public static void Switch(ISession session, string recv)
         {

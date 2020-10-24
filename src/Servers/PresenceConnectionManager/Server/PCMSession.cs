@@ -44,7 +44,7 @@ namespace PresenceConnectionManager
 
         protected override void OnReceived(string message)
         {
-            new PCMCommandSwitcher().Switch(this, message);
+            PCMCommandSwitcher.Switch(this, message);
 
         }
 

@@ -1,5 +1,4 @@
-﻿using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Logging;
+﻿using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandHandler.Auth;
@@ -14,9 +13,9 @@ using System.Linq;
 
 namespace StatsAndTracking.Handler.CommandSwitcher
 {
-    public class GStatsCommandSwitcher : CommandSwitcherBase
+    public class GStatsCommandSwitcher
     {
-        public void Switch(GStatsSession session, string rawRequest)
+        public static void Switch(GStatsSession session, string rawRequest)
         {
             try
             {
