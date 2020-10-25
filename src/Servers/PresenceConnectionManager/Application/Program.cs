@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
+using Serilog.Events;
 using System;
 
 namespace PresenceConnectionManager.Application
@@ -22,7 +23,7 @@ namespace PresenceConnectionManager.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
 
             Console.WriteLine("Press < Q > to exit. ");

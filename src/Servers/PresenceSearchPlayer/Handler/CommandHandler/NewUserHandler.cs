@@ -4,6 +4,7 @@ using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Logging;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +50,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                 }
                 catch (Exception e)
                 {
-                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                    LogWriter.ToLog(LogEventLevel.Error, e.ToString());
                     _errorCode = GPError.DatabaseError;
                 }
 
@@ -148,7 +149,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         {
                             // double user in database
                             _errorCode = GPError.DatabaseError;
-                            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "There are two same records in User table!");
+                            LogWriter.ToLog(LogEventLevel.Error, "There are two same records in User table!");
                             break;
                         }
 
@@ -186,7 +187,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         {
                             //there are two profiles we stop
                             _errorCode = GPError.DatabaseError;
-                            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "There are two same records in Profile table!");
+                            LogWriter.ToLog(LogEventLevel.Error, "There are two same records in Profile table!");
                             break;
                         }
 
@@ -215,7 +216,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
                         else
                         {
                             _errorCode = GPError.DatabaseError;
-                            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "There are two same records in SubProfile table!");
+                            LogWriter.ToLog(LogEventLevel.Error, "There are two same records in SubProfile table!");
                             break;
                         }
 

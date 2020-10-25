@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Logging;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Server;
+using Serilog.Events;
 using System;
 
 namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
@@ -39,7 +40,7 @@ namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
         }
     }

@@ -4,6 +4,7 @@ using PresenceConnectionManager.Entity.Enumerator;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler;
 using PresenceConnectionManager.Structure.Data;
+using Serilog.Events;
 using System;
 using System.Net;
 
@@ -56,7 +57,7 @@ namespace PresenceConnectionManager
                 Disconnect();
                 // Throw the error                
                 LogWriter.ToLog(
-                    Serilog.Events.LogEventLevel.Warning,
+                    LogEventLevel.Warning,
                     "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
@@ -68,7 +69,7 @@ namespace PresenceConnectionManager
         public void StatusToLog(string status, string nick, uint pid, IPEndPoint remote, string reason)
         {
             string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Information, statusString);
+            LogWriter.ToLog(LogEventLevel.Information, statusString);
         }
     }
 }

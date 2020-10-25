@@ -1,6 +1,7 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Common.Entity.Interface;
 using GameSpyLib.Logging;
+using Serilog.Events;
 
 namespace Chat.Handler.CommandHandler
 {
@@ -14,7 +15,7 @@ namespace Chat.Handler.CommandHandler
         {
             if (!_session.UserInfo.IsLoggedIn)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "Please login first!");
+                LogWriter.ToLog(LogEventLevel.Error, "Please login first!");
                 return;
             }
 

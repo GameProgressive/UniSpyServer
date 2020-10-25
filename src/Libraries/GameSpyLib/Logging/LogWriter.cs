@@ -17,7 +17,6 @@ namespace GameSpyLib.Logging
     {
 
         //private static Logger Log;
-
         static LogWriter()
         {
             LoggerConfiguration logConfig = new LoggerConfiguration();

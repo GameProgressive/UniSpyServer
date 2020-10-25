@@ -5,6 +5,7 @@ using QueryReport.Entity.Structure.NatNeg;
 using QueryReport.Entity.Structure.Packet;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
 using QueryReport.Server;
+using Serilog.Events;
 using StackExchange.Redis;
 using System.Net;
 
@@ -47,7 +48,7 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
 
             if (!QRSessionManager.Sessions.TryGetValue(endPoint, out session))
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "Can not find game server in QR");
+                LogWriter.ToLog(LogEventLevel.Error, "Can not find game server in QR");
                 return;
             }
 

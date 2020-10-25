@@ -2,6 +2,7 @@
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Entity.Enumerator;
 using PresenceConnectionManager.Handler.SystemHandler;
+using Serilog.Events;
 
 namespace PresenceConnectionManager.Entity.Structure
 {
@@ -15,7 +16,7 @@ namespace PresenceConnectionManager.Entity.Structure
             PCMSession _session = (PCMSession)client.GetInstance();
             if (_session.UserData.SDKRevision == 0)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, "[SDKRev] No sdkrevision!");
+                LogWriter.ToLog(LogEventLevel.Error, "[SDKRev] No sdkrevision!");
                 return;
             }
 

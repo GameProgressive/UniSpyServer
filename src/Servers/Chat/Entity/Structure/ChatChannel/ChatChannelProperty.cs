@@ -1,5 +1,6 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Logging;
+using Serilog.Events;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -125,7 +126,7 @@ namespace Chat.Entity.Structure.ChatChannel
             }
             if (result.Count() > 1)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error,
+                LogWriter.ToLog(LogEventLevel.Error,
                     $"Multiple user with same nick name in channel {ChannelName}");
             }
         }

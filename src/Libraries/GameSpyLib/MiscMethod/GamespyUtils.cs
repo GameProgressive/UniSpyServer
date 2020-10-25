@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Logging;
 using NetCoreServer;
+using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -34,7 +35,7 @@ namespace GameSpyLib.MiscMethod
             }
             catch (IndexOutOfRangeException e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
 
             return dict;
