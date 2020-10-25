@@ -3,7 +3,7 @@ name: CD - WS
 on:
   push:
     paths:
-      - 'Servers/WebServices/**'
+      - 'src/Servers/WebServices/**'
     branches:
       - master
       - candidate
@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./Servers/WebServices/Dockerfile
+          dockerfile: ./src/Servers/WebServices/Dockerfile
       - name: Deploy WS to production
         if: github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@2.12
@@ -51,4 +51,4 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./Servers/WebServices/Dockerfile
+          dockerfile: ./src/Servers/WebServices/Dockerfile

@@ -3,7 +3,7 @@ name: CD - QR
 on:
   push:
     paths:
-      - 'Servers/QueryReport/**'
+      - 'src/Servers/QueryReport/**'
     branches:
       - master
       - candidate
@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./Servers/QueryReport/Dockerfile
+          dockerfile: ./src/Servers/QueryReport/Dockerfile
       - name: Deploy QR to production
         if: github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@2.12
@@ -51,4 +51,4 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./Servers/QueryReport/Dockerfile
+          dockerfile: ./src/Servers/QueryReport/Dockerfile

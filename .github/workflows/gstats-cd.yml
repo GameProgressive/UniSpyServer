@@ -3,7 +3,7 @@ name: CD - GSTATS
 on:
   push:
     paths:
-      - 'Servers/StatsAndTracking/**'
+      - 'src/Servers/StatsAndTracking/**'
     branches:
       - master
       - candidate
@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./Servers/StatsAndTracking/Dockerfile
+          dockerfile: ./src/Servers/StatsAndTracking/Dockerfile
       - name: Deploy GSTATS to production
         if: github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@2.12
@@ -51,4 +51,4 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./Servers/StatsAndTracking/Dockerfile
+          dockerfile: ./src/Servers/StatsAndTracking/Dockerfile
