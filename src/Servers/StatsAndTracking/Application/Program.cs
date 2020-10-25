@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Common;
 using GameSpyLib.Logging;
+using Serilog.Events;
 using System;
 
 namespace StatsAndTracking.Application
@@ -19,7 +20,7 @@ namespace StatsAndTracking.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
 
             Console.WriteLine("Press < Q > to exit. ");

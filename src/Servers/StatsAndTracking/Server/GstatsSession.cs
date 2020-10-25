@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Encryption;
 using GameSpyLib.Logging;
 using GameSpyLib.Network;
+using Serilog.Events;
 using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandSwitcher;
 using System;
@@ -18,9 +19,12 @@ namespace StatsAndTracking
             PlayerData = new PlayerData();
         }
 
+        /// <summary>
+        /// When client connect, we send our challenge first
+        /// </summary>
         protected override void OnConnected()
         {
-            SendAsync(GenerateServerChallenge());
+            SendAsync($@"\challenge\{PlayerData.Challenge}");
             base.OnConnected();
         }
 
@@ -28,14 +32,16 @@ namespace StatsAndTracking
         {
             if (size < 2 && size > 2048)
             {
+                LogWriter.ToLog(LogEventLevel.Error, "[Spam] client spam we ignored!");
                 return;
             }
 
-            string plainText = Decrypt(buffer, offset, size);
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $"[Recv] {plainText}");
+            string plainText = Decrypt(buffer, size);
+            LogWriter.ToLog(LogEventLevel.Debug, $"[Recv] {plainText}");
 
             OnReceived(plainText);
         }
+
         protected override void OnReceived(string message)
         {
             GStatsCommandSwitcher.Switch(this, message);
@@ -49,35 +55,25 @@ namespace StatsAndTracking
         /// <returns></returns>
         public override bool SendAsync(string plainText)
         {
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Debug, $@"[Send] {plainText}\final\");
+            LogWriter.ToLog(LogEventLevel.Debug, $@"[Send] {plainText}\final\");
 
             return BaseSendAsync(Encrypt(plainText));
         }
 
-        /// <summary>
-        /// Generate server challenge for a new connected player
-        /// </summary>
-        /// <returns></returns>
-        public string GenerateServerChallenge()
-        {
-            //response total length bigger than 38bytes
-            // challenge length should be bigger than 20bytes
-            return $@"\challenge\{PlayerData.Challenge}";
-        }
 
 
-        protected string Decrypt(byte[] buffer, long offset, long size)
+        private static string Decrypt(byte[] buffer, long size)
         {
             byte[] temp = new byte[(int)size];
             Array.Copy(buffer, 0, temp, 0, (int)size);
-            //remove final
+            //remove \final\, later we add final back
             string cipherText = Encoding.ASCII.GetString(temp);
             cipherText = cipherText.Substring(0, cipherText.Length - 7);
 
             return XorEncoding.Encrypt(cipherText, XorEncoding.XorType.Type1) + @"\final\";
         }
 
-        protected string Encrypt(string plainText)
+        private static string Encrypt(string plainText)
         {
             return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type1) + @"\final\";
         }

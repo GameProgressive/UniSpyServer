@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
+using Serilog.Events;
 using StatsAndTracking.Entity.Structure;
 using StatsAndTracking.Handler.CommandHandler.Auth;
 using StatsAndTracking.Handler.CommandHandler.AuthP;
@@ -28,25 +29,25 @@ namespace StatsAndTracking.Handler.CommandSwitcher
 
                 switch (request.Keys.First())
                 {
-                    case GStatsRequestName.Auth:
+                    case GStatsRequestName.AuthenticateUser:
                         new AuthHandler(session, request).Handle();
                         break;
-                    case GStatsRequestName.AuthP:
+                    case GStatsRequestName.AuthenticatePlayer:
                         new AuthPHandler(session, request).Handle();
                         break;
-                    case GStatsRequestName.GetPid:
+                    case GStatsRequestName.GetProfileID:
                         new GetPIDHandler(session, request).Handle();
                         break;
-                    case GStatsRequestName.GetPD:
+                    case GStatsRequestName.GetPlayerData:
                         new GetPDHandler(session, request).Handle();
                         break;
-                    case GStatsRequestName.SetPD:
+                    case GStatsRequestName.SetPlayerData:
                         new SetPDHandler(session, request).Handle();
                         break;
-                    case GStatsRequestName.UpdGame:
+                    case GStatsRequestName.UpdateGameData:
                         new UpdGameHandler(session, request).Handle();
                         break;
-                    case GStatsRequestName.NewGame:
+                    case GStatsRequestName.CreateNewGamePlayerData:
                         new NewGameHandler(session, request).Handle();
                         break;
                     default:
@@ -56,7 +57,7 @@ namespace StatsAndTracking.Handler.CommandSwitcher
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
         }
     }

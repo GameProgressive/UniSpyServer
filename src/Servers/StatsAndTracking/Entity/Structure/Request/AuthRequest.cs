@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 namespace StatsAndTracking.Entity.Structure.Request
 {
+    /// <summary>
+    /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */
+    /// </summary>
     public class AuthRequest : GStatsRequestBase
-
     {
-        //auth\\gamename\%s\response\%s\port\%d\id\1 */
         public string GameName { get; protected set; }
         public uint Port { get; protected set; }
         public AuthRequest(Dictionary<string, string> request) : base(request)

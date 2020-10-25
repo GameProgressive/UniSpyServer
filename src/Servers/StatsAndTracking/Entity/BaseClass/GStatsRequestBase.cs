@@ -1,5 +1,6 @@
 ﻿using StatsAndTracking.Entity.Enumerator;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StatsAndTracking.Entity.Structure.Request
 {
@@ -7,9 +8,11 @@ namespace StatsAndTracking.Entity.Structure.Request
     {
         protected Dictionary<string, string> _request;
         public uint OperationID { get; protected set; }
+        public string CommandName { get; protected set; }
         public GStatsRequestBase(Dictionary<string, string> request)
         {
             _request = request;
+            CommandName = request.Keys.First();
         }
 
         public virtual GStatsErrorCode Parse()

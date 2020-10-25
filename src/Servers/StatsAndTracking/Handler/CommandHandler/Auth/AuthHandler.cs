@@ -39,6 +39,5 @@ namespace StatsAndTracking.Handler.CommandHandler.Auth
             base.ConstructResponse();
         }
 
-
     }
 }

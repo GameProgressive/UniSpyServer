@@ -3,38 +3,38 @@
     public class GStatsRequestName
     {
         /// <summary>
-        /// Authentication user
+        /// Authenticate user
         /// </summary>
-        public const string Auth = "auth";
+        public const string AuthenticateUser = "auth";
 
         /// <summary>
         /// Authenticate player
         /// </summary>
-        public const string AuthP = "authp";
+        public const string AuthenticatePlayer = "authp";
 
         /// <summary>
         /// get player infomation from profileid
         /// </summary>
-        public const string GetPid = "getpid";
+        public const string GetProfileID = "getpid";
 
         /// <summary>
         /// Get player data
         /// </summary>
-        public const string GetPD = "getpd";
+        public const string GetPlayerData = "getpd";
 
         /// <summary>
         /// Store player data
         /// </summary>
-        public const string SetPD = "setpd";
+        public const string SetPlayerData = "setpd";
 
         /// <summary>
         /// Update a profile data for a game
         /// </summary>
-        public const string UpdGame = "updgame";
+        public const string UpdateGameData = "updgame";
 
         /// <summary>
         /// create new player data for a game
         /// </summary>
-        public const string NewGame = "newgame";
+        public const string CreateNewGamePlayerData = "newgame";
     }
 }
