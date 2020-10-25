@@ -74,7 +74,7 @@ namespace GameSpyLib.Common
             }
             catch (Exception e)
             {
-                throw new Exception($"Can not connected to {ConfigManager.Config.Database.Type}!", e);
+                throw new Exception($"Can not connect to {ConfigManager.Config.Database.Type}!", e);
             }
 
             Console.WriteLine($"Successfully connected to {ConfigManager.Config.Database.Type}!");
