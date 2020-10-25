@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
-using NatNegotiation.Handler.SystemHandler.NatNegotiatorManage;
+using NatNegotiation.Handler.SystemHandler.NatNegotiationManage;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -27,10 +27,10 @@ namespace NatNegotiation.Handler.CommandHandler
 
             if (_reportPacket.NatResult != NatNegotiationResult.Success)
             {
-                NatNegotiatorPool.Negotiate(NatPortType.GP, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiatorPool.Negotiate(NatPortType.NN1, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiatorPool.Negotiate(NatPortType.NN2, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiatorPool.Negotiate(NatPortType.NN3, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiationManager.Negotiate(NatPortType.GP, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiationManager.Negotiate(NatPortType.NN1, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiationManager.Negotiate(NatPortType.NN2, _reportPacket.Version, _reportPacket.Cookie);
+                NatNegotiationManager.Negotiate(NatPortType.NN3, _reportPacket.Version, _reportPacket.Cookie);
             }
         }
 

@@ -50,18 +50,21 @@ namespace GameSpyLib.Common
 
         protected void LoadDatabaseConfig()
         {
-            DatabaseConfig dbConfig = ConfigManager.Config.Database;
             //Determine which database is used and establish the database connection.
 
-            switch (dbConfig.Type)
+            switch (ConfigManager.Config.Database.Type)
             {
                 case DatabaseType.MySql:
-                    string mySqlConnStr =
-                        string.Format(
-                            "Server={0};Database={1};Uid={2};Pwd={3};Port={4};SslMode={5};SslCert={6};SslKey={7};SslCa={8}",
-                            dbConfig.RemoteAddress, dbConfig.DatabaseName, dbConfig.UserName, dbConfig.Password,
-                            dbConfig.RemotePort, dbConfig.SslMode, dbConfig.SslCert, dbConfig.SslKey, dbConfig.SslCa);
-                    retrospyContext.RetroSpyMySqlConnStr = mySqlConnStr;
+                    retrospyContext.RetroSpyMySqlConnStr =
+                    $"Server={ConfigManager.Config.Database.RemoteAddress};"
+                    + $"Database={ConfigManager.Config.Database.DatabaseName};"
+                    + $"Uid={ConfigManager.Config.Database.UserName};"
+                    + $"Pwd={ConfigManager.Config.Database.Password};"
+                    + $"Port={ConfigManager.Config.Database.RemotePort};"
+                    + $"SslMode={ConfigManager.Config.Database.SslMode};"
+                    + $"SslCert={ConfigManager.Config.Database.SslCert};"
+                    + $"SslKey={ConfigManager.Config.Database.SslKey};"
+                    + $"SslCa={ConfigManager.Config.Database.SslCa}";
                     break;
             }
 
@@ -71,14 +74,15 @@ namespace GameSpyLib.Common
             }
             catch (Exception e)
             {
-                throw new Exception($"Can not connect to {ConfigManager.Config.Database.Type}!", e);
+                throw new Exception($"Can not connected to {ConfigManager.Config.Database.Type}!", e);
             }
-            Console.WriteLine($"Successfully connected to {dbConfig.Type}!");
+
+            Console.WriteLine($"Successfully connected to {ConfigManager.Config.Database.Type}!");
 
             try
             {
-                RedisConfig redisConfig = ConfigManager.Config.Redis;
-                Redis = ConnectionMultiplexer.Connect(redisConfig.RemoteAddress + ":" + redisConfig.RemotePort.ToString());
+                Redis = ConnectionMultiplexer.Connect(
+                    $"{ConfigManager.Config.Redis.RemoteAddress}:{ConfigManager.Config.Redis.RemotePort}");
             }
             catch (Exception e)
             {

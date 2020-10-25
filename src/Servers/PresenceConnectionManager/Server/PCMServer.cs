@@ -16,11 +16,12 @@ namespace PresenceConnectionManager
         /// <summary>
         /// List of sucessfully logged in clients (Pid => Client Obj)
         /// </summary>
-        public static ConcurrentDictionary<Guid, PCMSession> LoggedInSession = new ConcurrentDictionary<Guid, PCMSession>();
+        public static ConcurrentDictionary<Guid, PCMSession> LoggedInSession;
 
 
         public PCMServer(IPAddress address, int port) : base(address, port)
         {
+            LoggedInSession = new ConcurrentDictionary<Guid, PCMSession>();
         }
 
         /// <summary>

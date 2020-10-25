@@ -62,13 +62,13 @@ namespace PresenceConnectionManager
             }
 
             UserData.LoginStatus = LoginStatus.Processing;
-            string sendingBuffer = string.Format(@"\lc\1\challenge\{0}\id\{1}\final\", ChallengeProofData.ServerChallenge, 1);
+            string sendingBuffer = $@"\lc\1\challenge\{ChallengeProofData.ServerChallenge}\id\{1}\final\";
             SendAsync(sendingBuffer);
         }
 
         public void StatusToLog(string status, string nick, uint pid, IPEndPoint remote, string reason)
         {
-            string statusString = string.Format(@" [{0}] Nick:{1}-PID:{2}-IP:{3}-Reason:{4}", status, nick, pid, remote, reason);
+            string statusString = $@" [{status}] Nick:{nick}-PID:{pid}-IP:{remote}-Reason:{reason}";
             LogWriter.ToLog(LogEventLevel.Information, statusString);
         }
     }

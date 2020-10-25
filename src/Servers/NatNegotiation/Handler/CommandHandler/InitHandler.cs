@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Common.Entity.Interface;
 using NatNegotiation.Entity.Enumerator;
 using NatNegotiation.Entity.Structure.Packet;
-using NatNegotiation.Handler.SystemHandler.NatNegotiatorManage;
+using NatNegotiation.Handler.SystemHandler.NatNegotiationManage;
 
 namespace NatNegotiation.Handler.CommandHandler
 {
@@ -19,9 +19,9 @@ namespace NatNegotiation.Handler.CommandHandler
 
             string key = _session.RemoteEndPoint.ToString() + "-" + _initPacket.PortType.ToString();
 
-            if (!NatNegotiatorPool.Sessions.TryGetValue(key, out _))
+            if (!NatNegotiationManager.SessionPool.TryGetValue(key, out _))
             {
-                NatNegotiatorPool.Sessions.TryAdd(key, _session);
+                NatNegotiationManager.SessionPool.TryAdd(key, _session);
             }
         }
 
@@ -41,7 +41,7 @@ namespace NatNegotiation.Handler.CommandHandler
         protected override void Response()
         {
             base.Response();
-            NatNegotiatorPool
+            NatNegotiationManager
                 .Negotiate(
                 _initPacket.PortType,
                 _initPacket.Version,

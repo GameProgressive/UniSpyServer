@@ -18,7 +18,7 @@
         <Folder Include="Handler\SystemHandler\" />
         <Folder Include="Handler\SystemHandler\Timer\" />
         <Folder Include="Handler\CommandSwitcher\" />
-        <Folder Include="Handler\SystemHandler\NatNegotiatorManage\" />
+        <Folder Include="Handler\SystemHandler\NatNegotiationManage\" />
         <Folder Include="Entity\BaseClass\" />
     </ItemGroup>
     <ItemGroup>

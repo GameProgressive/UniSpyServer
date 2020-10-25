@@ -45,10 +45,7 @@ namespace GameSpyLib.MiscMethod
         public static void PrintReceivedGPDictToLogger(Dictionary<string, string> recv)
         {
             LogWriter.ToLog(
-                String.Format(
-                    "Received request {0} with content: {1}",
-                    recv.Keys.First(),
-                    string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray())));
+                $"Received request {recv.Keys.First()} with content: {string.Join(";", recv.Select(x => x.Key + "=" + x.Value).ToArray())}");
         }
 
         /// <summary>

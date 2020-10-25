@@ -67,7 +67,7 @@ namespace GameSpyLib.Extensions
             {
                 if (buffer[i] < 0x1F || buffer[i] > 0x7E)
                 {
-                    temp.Append(string.Format("[{0:X2}]", buffer[i]));
+                    temp.Append($"[{buffer[i]:X2}]");
                 }
                 else
                 {
@@ -83,11 +83,11 @@ namespace GameSpyLib.Extensions
 
         public static string FormatServerTableContext(string part1, string part2, string part3)
         {
-            return string.Format("|{0,-11}|{1,-14}|{2,-6}|", part1, part2, part3);
+            return $"|{part1,-11}|{part2,-14}|{part3,-6}|";
         }
         public static string FormatServerTableHeader(string part1, string part2, string part3)
         {
-            return string.Format("+{0,-11}+{1,-14}+{2,-6}+", part1, part2, part3);
+            return $"+{part1,-11}+{part2,-14}+{part3,-6}+";
         }
 
 
