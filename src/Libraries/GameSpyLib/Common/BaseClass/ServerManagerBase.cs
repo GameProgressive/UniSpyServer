@@ -38,7 +38,7 @@ namespace GameSpyLib.Common
                 StartServer(cfg);
             }
             Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            Console.WriteLine("Server is successfully started! ");
+            Console.WriteLine("Server successfully started! ");
         }
 
         /// <summary>
