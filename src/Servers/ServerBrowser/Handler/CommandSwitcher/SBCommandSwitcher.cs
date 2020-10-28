@@ -23,7 +23,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             switch ((SBClientRequestType)recv[2])
             {
                 case SBClientRequestType.ServerListRequest:
-                    UpdateOptionSwitcher.Switch(session, recv);
+                    SBUpdateOptionSwitcher.Switch(session, recv);
                     break;
                 case SBClientRequestType.ServerInfoRequest:
                     new ServerInfoHandler(session, recv).Handle();

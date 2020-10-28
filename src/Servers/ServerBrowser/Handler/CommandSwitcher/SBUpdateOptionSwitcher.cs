@@ -11,7 +11,7 @@ using ServerBrowser.Handler.SystemHandler.Error;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
 {
-    public class UpdateOptionSwitcher
+    public class SBUpdateOptionSwitcher
     {
         public static void Switch(ISession session, byte[] recv)
         {
