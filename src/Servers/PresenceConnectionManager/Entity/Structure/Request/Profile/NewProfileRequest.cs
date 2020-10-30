@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class NewProfileRequest : PCMRequest
+    public class NewProfileRequest : PCMRequestBase
     {
         //create a new profile with new nick 
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"

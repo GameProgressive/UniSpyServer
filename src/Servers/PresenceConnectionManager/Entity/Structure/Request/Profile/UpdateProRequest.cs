@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class UpdateProRequest : PCMRequest
+    public class UpdateProRequest : PCMRequestBase
     {
         public UpdateProRequest(Dictionary<string, string> recv) : base(recv)
         {

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.General
 {
-    public class LoginRequest : PCMRequest
+    public class LoginRequest : PCMRequestBase
     {
         public string UserChallenge { get; protected set; }
         public string Response { get; protected set; }

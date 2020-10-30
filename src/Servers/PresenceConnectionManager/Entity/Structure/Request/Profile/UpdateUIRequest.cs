@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class UpdateUIRequest : PCMRequest
+    public class UpdateUIRequest : PCMRequestBase
     {
         public UpdateUIRequest(Dictionary<string, string> recv) : base(recv)
         {

@@ -1,9 +1,10 @@
-﻿using PresenceSearchPlayer.Entity.Enumerator;
+﻿using GameSpyLib.Abstraction.Interface;
+using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Model
 {
-    public class PSPRequestBase
+    public class PSPRequestBase : IRequest
     {
         protected Dictionary<string, string> _rawRequest;
 
@@ -27,6 +28,16 @@ namespace PresenceSearchPlayer.Entity.Structure.Model
             }
 
             return GPError.NoError;
+        }
+
+        object IRequest.Parse()
+        {
+            return Parse();
+        }
+
+        public object GetInstance()
+        {
+            return this;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class DelBuddyRequest : PCMRequest
+    public class DelBuddyRequest : PCMRequestBase
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\
         public uint DeleteProfileID { get; protected set; }

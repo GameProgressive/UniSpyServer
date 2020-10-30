@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class StatusRequest : PCMRequest
+    public class StatusRequest : PCMRequestBase
     {
         public StatusRequest(Dictionary<string, string> recv) : base(recv)
         {

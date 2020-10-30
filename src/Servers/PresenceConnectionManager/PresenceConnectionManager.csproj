@@ -35,12 +35,8 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Entity\Interface\" />
-        <Folder Include="Entity\Structure\Request\" />
-        <Folder Include="Entity\BaseClass\" />
         <Folder Include="Entity\Structure\Data\" />
         <Folder Include="Entity\Structure\Request\Buddy\" />
-        <Folder Include="Entity\Structure\Request\General\" />
-        <Folder Include="Entity\Structure\Request\Profile\" />
         <Folder Include="Handler\SystemHandler\Buddy\" />
     </ItemGroup>
     <ItemGroup>

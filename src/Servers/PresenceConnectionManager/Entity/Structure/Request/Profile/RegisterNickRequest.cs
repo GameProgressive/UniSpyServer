@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class RegisterNickRequest : PCMRequest
+    public class RegisterNickRequest : PCMRequestBase
     {
         public string UniqueNick { get; protected set; }
         public RegisterNickRequest(Dictionary<string, string> recv) : base(recv)

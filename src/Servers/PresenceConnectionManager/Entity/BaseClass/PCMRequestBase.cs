@@ -1,11 +1,12 @@
-﻿using GameSpyLib.Extensions;
+﻿using GameSpyLib.Abstraction.Interface;
+using GameSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerator;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceConnectionManager.Entity.BaseClass
 {
-    public abstract class PCMRequest
+    public abstract class PCMRequestBase : IRequest
     {
         public string CmdName { get; protected set; }
         //public uint NamespaceID { get; protected set; }
@@ -13,7 +14,7 @@ namespace PresenceConnectionManager.Entity.BaseClass
 
         protected Dictionary<string, string> _recv;
 
-        public PCMRequest(Dictionary<string, string> recv)
+        public PCMRequestBase(Dictionary<string, string> recv)
         {
             _recv = recv;
             CmdName = _recv.Keys.First();
@@ -51,6 +52,16 @@ namespace PresenceConnectionManager.Entity.BaseClass
             {
                 return message;
             }
+        }
+
+        object IRequest.Parse()
+        {
+            return Parse();
+        }
+
+        public object GetInstance()
+        {
+            return this;
         }
     }
 }

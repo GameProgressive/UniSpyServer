@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
     /// <summary>
     /// \registercdkey\sesskey\<sesskey>\cdkeyenc\<cdkeyenc>\id\<id>\final\
     /// </summary>
-    public class RegisterCDKeyRequest : PCMRequest
+    public class RegisterCDKeyRequest : PCMRequestBase
     {
         public string CDKeyEnc { get; protected set; }
         public RegisterCDKeyRequest(Dictionary<string, string> recv) : base(recv)

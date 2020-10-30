@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class GetProfileRequest : PCMRequest
+    public class GetProfileRequest : PCMRequestBase
     {
         public uint ProfileID { get; protected set; }
         public GetProfileRequest(Dictionary<string, string> recv) : base(recv)

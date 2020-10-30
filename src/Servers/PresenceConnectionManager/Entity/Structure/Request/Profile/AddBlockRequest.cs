@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class AddBlockRequest : PCMRequest
+    public class AddBlockRequest : PCMRequestBase
     {
         public uint ProfileID;
         public AddBlockRequest(Dictionary<string, string> recv) : base(recv)
