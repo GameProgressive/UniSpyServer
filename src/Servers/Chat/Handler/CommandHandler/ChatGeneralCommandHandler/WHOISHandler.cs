@@ -4,7 +4,7 @@ using Chat.Entity.Structure.ChatResponse;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Entity.Structure.ChatUser;
 using Chat.Handler.SystemHandler.ChatSessionManage;
-using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Abstraction.Interface;
 using System.Linq;
 
 namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler

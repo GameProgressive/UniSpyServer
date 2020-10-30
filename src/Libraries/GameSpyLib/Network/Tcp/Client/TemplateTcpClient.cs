@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Common;
+﻿using GameSpyLib.Abstraction.BaseClass;
+using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using GameSpyLib.RetroSpyConfig;

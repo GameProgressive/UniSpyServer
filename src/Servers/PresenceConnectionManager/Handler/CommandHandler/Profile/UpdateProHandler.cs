@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using System.Collections.Generic;

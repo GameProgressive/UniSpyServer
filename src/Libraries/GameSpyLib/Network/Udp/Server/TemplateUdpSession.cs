@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.Interface;
 using System;
 using System.Net;
 using System.Text;

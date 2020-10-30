@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using PresenceConnectionManager.Entity.Enumerator;
 using PresenceConnectionManager.Handler.SystemHandler;

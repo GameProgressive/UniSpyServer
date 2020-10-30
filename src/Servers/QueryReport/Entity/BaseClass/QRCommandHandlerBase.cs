@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.BaseClass;
+using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using QueryReport.Entity.Enumerator;
 using QueryReport.Handler.SystemHandler.ErrorMessage;

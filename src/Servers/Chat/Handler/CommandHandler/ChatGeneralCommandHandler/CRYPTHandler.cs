@@ -3,7 +3,7 @@ using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
-using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
 using Serilog.Events;

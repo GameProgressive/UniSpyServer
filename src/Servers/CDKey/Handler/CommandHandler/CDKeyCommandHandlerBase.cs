@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.BaseClass;
+using GameSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 
 namespace CDKey.Handler.CommandHandler

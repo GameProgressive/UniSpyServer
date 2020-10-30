@@ -1,7 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChatSessionManage;
-using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {

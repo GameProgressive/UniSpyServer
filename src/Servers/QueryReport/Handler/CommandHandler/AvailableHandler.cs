@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.Interface;
 using QueryReport.Entity.Enumerator;
 
 namespace QueryReport.Handler.CommandHandler.Available

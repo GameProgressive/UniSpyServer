@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.Interface;
 
 namespace NatNegotiation.Handler.CommandHandler.ConnectACK
 {

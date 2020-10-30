@@ -1,6 +1,6 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
-using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {

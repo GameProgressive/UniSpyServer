@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.BaseClass;
+﻿using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Logging;
 using NatNegotiation.Server;
 using System;

@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Handler.CommandHandler.Buddy

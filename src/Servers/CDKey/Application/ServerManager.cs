@@ -1,4 +1,5 @@
 ﻿using CDKey.Server;
+using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Common;
 using GameSpyLib.Extensions;
 using GameSpyLib.RetroSpyConfig;

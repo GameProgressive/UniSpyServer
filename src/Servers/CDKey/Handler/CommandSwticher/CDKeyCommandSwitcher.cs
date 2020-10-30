@@ -1,6 +1,6 @@
 ﻿using CDKey.Handler.CommandHandler.SKey;
-using GameSpyLib.Common.BaseClass;
-using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Abstraction.BaseClass;
+using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using System;

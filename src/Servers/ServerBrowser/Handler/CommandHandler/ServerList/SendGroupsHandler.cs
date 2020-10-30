@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Extensions;
 using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Entity.Enumerator;

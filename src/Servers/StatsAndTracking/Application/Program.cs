@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Common;
+﻿using GameSpyLib.Abstraction.BaseClass;
+using GameSpyLib.Common;
 using GameSpyLib.Logging;
 using Serilog.Events;
 using System;

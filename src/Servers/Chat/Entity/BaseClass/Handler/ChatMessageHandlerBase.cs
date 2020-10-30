@@ -3,7 +3,7 @@ using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Server;
-using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CommandHandler
 {

@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Common;
-using GameSpyLib.Common.Entity.Interface;
+using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Logging;
 using PresenceSearchPlayer.Entity.Enumerator;
@@ -8,6 +8,7 @@ using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GameSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 {
