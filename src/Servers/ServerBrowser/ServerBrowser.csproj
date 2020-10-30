@@ -27,19 +27,18 @@
         <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Entity\Enumerator\" />
         <Folder Include="Handler\CommandHandler\ServerList\" />
         <Folder Include="Handler\SystemHandler\" />
         <Folder Include="Entity\Structure\Packet\" />
         <Folder Include="Entity\Structure\Packet\Request\" />
         <Folder Include="Entity\Structure\Packet\Response\" />
-        <Folder Include="Entity\Interface\" />
+        <Folder Include="Abstraction\Interface\" />
         <Folder Include="Handler\SystemHandler\KeyType\" />
         <Folder Include="Handler\SystemHandler\Filter\" />
         <Folder Include="Handler\SystemHandler\Error\" />
         <Folder Include="Handler\CommandHandler\AdHoc\" />
         <Folder Include="Handler\CommandHandler\NatNeg\" />
-        <Folder Include="Entity\BaseClass\" />
+        <Folder Include="Abstraction\BaseClass\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

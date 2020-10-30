@@ -27,7 +27,7 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Entity\Structure\" />
-      <Folder Include="Entity\BaseClass\" />
+      <Folder Include="Abstraction\BaseClass\" />
       <Folder Include="Entity\Structure\Request\" />
     </ItemGroup>
 </Project>

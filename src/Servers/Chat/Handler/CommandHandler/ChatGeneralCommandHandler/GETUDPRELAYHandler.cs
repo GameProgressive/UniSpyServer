@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Abstraction.Interface;
 
@@ -16,6 +16,6 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         {
             _request = (GETUDPRELAYRequest)request;
         }
-     
+
     }
 }

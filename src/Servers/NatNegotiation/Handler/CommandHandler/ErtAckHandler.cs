@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Enumerate;
 using NatNegotiation.Entity.Structure.Packet;
 
-namespace NatNegotiation.Handler.CommandHandler
+namespace NatNegotiation.Abstraction.BaseClass
 {
     public class ErtACKHandler : NatNegCommandHandlerBase
     {

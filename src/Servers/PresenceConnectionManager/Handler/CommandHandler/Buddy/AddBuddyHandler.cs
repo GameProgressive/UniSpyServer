@@ -2,7 +2,7 @@
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
+namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     public class AddBuddyHandler : PCMCommandHandlerBase

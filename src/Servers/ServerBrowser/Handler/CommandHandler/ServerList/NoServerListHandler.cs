@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Abstraction.Interface;
+using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList

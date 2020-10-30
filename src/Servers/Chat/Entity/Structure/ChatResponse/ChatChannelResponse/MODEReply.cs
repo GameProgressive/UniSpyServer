@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.ChatChannel;
 
 namespace Chat.Entity.Structure.ChatResponse.ChatGeneralResponse
 {

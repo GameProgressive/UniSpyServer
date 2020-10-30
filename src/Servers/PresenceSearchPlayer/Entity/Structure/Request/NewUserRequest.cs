@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.MiscMethod;
-using PresenceSearchPlayer.Entity.Enumerator;
-using PresenceSearchPlayer.Entity.Structure.Model;
+using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
@@ -10,7 +10,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public uint ProductID { get; protected set; }
         public uint GamePort { get; protected set; }
         public string CDKeyEnc { get; protected set; }
-
         public bool HasGameNameFlag { get; protected set; }
         public bool HasProductIDFlag { get; protected set; }
         public bool HasCDKeyEncFlag { get; protected set; }
@@ -51,7 +50,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             {
                 return GPError.Parse;
             }
-
 
             Nick = _rawRequest["nick"];
             Email = _rawRequest["email"];

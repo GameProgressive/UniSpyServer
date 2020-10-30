@@ -4,7 +4,7 @@ using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QueryReport.Entity.Structure.ReportData
+namespace QueryReport.Entity.Abstraction.ReportData
 {
     public class TeamData
     {

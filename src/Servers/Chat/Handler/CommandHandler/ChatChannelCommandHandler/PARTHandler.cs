@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.ChatCommand;
 using GameSpyLib.Abstraction.Interface;
 
@@ -6,7 +6,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {
     public class PARTHandler : ChatChannelHandlerBase
     {
-        new PARTRequest _request;
+        new readonly PARTRequest _request;
         public PARTHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
             _request = (PARTRequest)request;

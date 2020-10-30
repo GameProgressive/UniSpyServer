@@ -1,10 +1,10 @@
 ﻿using GameSpyLib.Logging;
-using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Enumerate;
 using NatNegotiation.Server;
 using Serilog.Events;
 using System;
 
-namespace NatNegotiation.Handler.CommandHandler.CommandSwitcher
+namespace NatNegotiation.Abstraction.BaseClass.CommandSwitcher
 {
     public class NatNegCommandSwitcher
     {

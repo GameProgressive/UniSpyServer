@@ -1,4 +1,4 @@
-using GameSpyLib.Entity.Enumerator;
+using GameSpyLib.Entity.Enumerate;
 using GameSpyLib.Logging;
 using Serilog.Events;
 using System;
@@ -13,7 +13,7 @@ namespace WebServices
         private static ServerManager Manager;
         public static void Main(string[] args)
         {
-            
+
             //the working directory is different than binary execute file directory
             //we set the working directory as same as binary execute directory so we can read RetroSpyConfig.json
             var executeDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);

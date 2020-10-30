@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 
-namespace NatNegotiation.Handler.CommandHandler.ConnectACK
+namespace NatNegotiation.Abstraction.BaseClass.ConnectACK
 {
     public class ConnectACKHandler : NatNegCommandHandlerBase
     {

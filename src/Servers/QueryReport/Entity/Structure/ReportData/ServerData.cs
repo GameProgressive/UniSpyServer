@@ -1,11 +1,11 @@
 ﻿using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using QueryReport.Entity.Enumerator;
+using QueryReport.Entity.Enumerate;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
 
-namespace QueryReport.Entity.Structure.ReportData
+namespace QueryReport.Entity.Abstraction.ReportData
 {
     public class ServerData
     {

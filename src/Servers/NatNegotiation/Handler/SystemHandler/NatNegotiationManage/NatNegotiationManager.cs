@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Logging;
-using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Enumerate;
 using NatNegotiation.Entity.Structure.Packet;
 using NatNegotiation.Server;
 using Serilog.Events;
@@ -7,7 +7,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NatNegotiation.Handler.SystemHandler.NatNegotiationManage
+namespace NatNegotiation.Abstraction.SystemHandler.NatNegotiationManage
 {
     public class NatNegotiationManager
     {

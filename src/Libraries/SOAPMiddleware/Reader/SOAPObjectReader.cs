@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using SOAPMiddleware.Description;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Xml;
-
 namespace SOAPMiddleware.Reader
 {
     public class SOAPObjectReader

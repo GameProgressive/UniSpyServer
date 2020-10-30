@@ -1,4 +1,5 @@
-﻿using GameSpyLib.Extensions;
+﻿using Chat.Abstraction.BaseClass;
+using GameSpyLib.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Abstraction.BaseClass;
 using GameSpyLib.Logging;
 using Serilog.Events;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Chat.Handler.CommandSwitcher
 {
@@ -52,6 +52,6 @@ namespace Chat.Handler.CommandSwitcher
             }
             return requestList;
         }
-     
+
     }
 }

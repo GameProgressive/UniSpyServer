@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using QueryReport.Entity.Enumerator;
+using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Enumerate;
 
 namespace QueryReport.Handler.CommandHandler.Available
 {

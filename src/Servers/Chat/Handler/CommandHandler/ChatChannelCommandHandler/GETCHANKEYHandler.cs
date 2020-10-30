@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
 using GameSpyLib.Abstraction.Interface;

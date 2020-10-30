@@ -30,7 +30,7 @@
     <ItemGroup>
         <Folder Include="Handler\CommandHandler\GetPid\" />
         <Folder Include="Entity\Structure\Request\" />
-        <Folder Include="Entity\BaseClass\" />
+        <Folder Include="Abstraction\BaseClass\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />

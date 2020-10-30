@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Extensions;
-using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Net;
 

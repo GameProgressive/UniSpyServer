@@ -1,7 +1,5 @@
-﻿using PresenceConnectionManager.Entity.BaseClass;
-using System;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.General
 {

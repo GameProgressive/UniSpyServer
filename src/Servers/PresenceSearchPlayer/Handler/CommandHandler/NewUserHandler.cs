@@ -1,14 +1,15 @@
-﻿using GameSpyLib.Entity.Enumerator;
+﻿using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
+using GameSpyLib.Entity.Enumerate;
 using GameSpyLib.Logging;
-using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GameSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
 {

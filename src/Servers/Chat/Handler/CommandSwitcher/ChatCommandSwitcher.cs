@@ -1,5 +1,4 @@
-﻿using Chat.Entity.Structure.ChatCommand;
-using Chat.Handler.CommandHandler;
+﻿using Chat.Abstraction.BaseClass;
 using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using Serilog.Events;

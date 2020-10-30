@@ -1,4 +1,4 @@
-﻿namespace NatNegotiation.Entity.Enumerator
+﻿namespace NatNegotiation.Entity.Enumerate
 {
     public enum ConnectPacketFinishStatus : byte
     {

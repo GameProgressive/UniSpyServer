@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Abstraction.Interface;
+using StatsAndTracking.Abstraction.BaseClass;
 using System.Collections.Generic;
 
 namespace StatsAndTracking.Handler.CommandHandler.NewGame

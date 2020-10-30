@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Logging;
-using NetCoreServer;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;

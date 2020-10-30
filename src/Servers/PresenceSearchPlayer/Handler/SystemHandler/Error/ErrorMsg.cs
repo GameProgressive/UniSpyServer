@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler.Error
 {

@@ -1,4 +1,6 @@
-﻿namespace Chat.Entity.Structure.ChatResponse.ChatGeneralResponse
+﻿using Chat.Abstraction.BaseClass;
+
+namespace Chat.Entity.Structure.ChatResponse.ChatGeneralResponse
 {
     public class USRIPReply
     {

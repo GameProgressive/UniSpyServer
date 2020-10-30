@@ -1,11 +1,12 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using QueryReport.Entity.Enumerator;
-using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Packet;
+using QueryReport.Entity.Enumerate;
+using QueryReport.Entity.Abstraction;
+using QueryReport.Entity.Abstraction.BaseClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using QueryReport.Abstraction.BaseClass;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
 {

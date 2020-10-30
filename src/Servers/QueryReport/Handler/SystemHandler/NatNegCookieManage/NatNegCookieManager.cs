@@ -1,9 +1,8 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Entity.Enumerator;
 using GameSpyLib.Logging;
 using Newtonsoft.Json;
-using QueryReport.Entity.Structure.NatNeg;
-using QueryReport.Entity.Structure.Packet;
+using QueryReport.Entity.Abstraction.NatNeg;
+using QueryReport.Entity.Abstraction.BaseClass;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
 using QueryReport.Server;
 using Serilog.Events;

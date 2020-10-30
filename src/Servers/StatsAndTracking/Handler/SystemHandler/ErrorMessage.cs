@@ -1,4 +1,4 @@
-﻿using StatsAndTracking.Entity.Enumerator;
+﻿using StatsAndTracking.Entity.Enumerate;
 
 namespace StatsAndTracking.Handler.SystemHandler
 {

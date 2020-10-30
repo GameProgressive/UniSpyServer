@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using StatsAndTracking.Entity.Enumerator;
+using StatsAndTracking.Abstraction.BaseClass;
+using StatsAndTracking.Entity.Enumerate;
 using StatsAndTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;

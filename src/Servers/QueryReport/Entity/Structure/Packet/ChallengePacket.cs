@@ -1,9 +1,9 @@
 ﻿using GameSpyLib.Extensions;
-using QueryReport.Entity.Enumerator;
+using QueryReport.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Net;
 
-namespace QueryReport.Entity.Structure.Packet
+namespace QueryReport.Entity.Abstraction.BaseClass
 {
     public class ChallengePacket : BasePacket
     {

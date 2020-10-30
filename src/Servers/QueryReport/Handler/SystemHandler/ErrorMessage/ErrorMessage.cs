@@ -1,4 +1,4 @@
-﻿using QueryReport.Entity.Enumerator;
+﻿using QueryReport.Entity.Enumerate;
 
 namespace QueryReport.Handler.SystemHandler.ErrorMessage
 {

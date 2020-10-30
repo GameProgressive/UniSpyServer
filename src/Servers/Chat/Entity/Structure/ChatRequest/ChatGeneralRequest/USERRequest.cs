@@ -1,4 +1,6 @@
-﻿namespace Chat.Entity.Structure.ChatCommand
+﻿using Chat.Abstraction.BaseClass;
+
+namespace Chat.Entity.Structure.ChatCommand
 {
     public class USERRequest : ChatRequestBase
     {

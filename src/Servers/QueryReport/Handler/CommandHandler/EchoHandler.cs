@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
-using QueryReport.Entity.Structure;
+using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Abstraction;
 using QueryReport.Server;
 using Serilog.Events;
 using System;

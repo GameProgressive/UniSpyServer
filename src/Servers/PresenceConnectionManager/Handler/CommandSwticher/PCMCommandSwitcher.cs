@@ -1,18 +1,18 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
-using PresenceConnectionManager.Entity.BaseClass;
+using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Abstraction.BaseClass.Buddy;
+using PresenceConnectionManager.Abstraction.BaseClass.General;
+using PresenceConnectionManager.Abstraction.BaseClass.Profile;
 using PresenceConnectionManager.Entity.Structure;
-using PresenceConnectionManager.Handler.CommandHandler.Buddy;
-using PresenceConnectionManager.Handler.CommandHandler.General;
-using PresenceConnectionManager.Handler.CommandHandler.Profile;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler
+namespace PresenceConnectionManager.Abstraction
 {
     public class PCMCommandSwitcher
     {

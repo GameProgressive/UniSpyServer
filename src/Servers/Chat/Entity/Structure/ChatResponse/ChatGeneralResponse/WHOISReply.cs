@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure.ChatUser;
+﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.ChatUser;
 using System.Linq;
 
 namespace Chat.Entity.Structure.ChatResponse.ChatGeneralResponse

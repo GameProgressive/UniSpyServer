@@ -1,20 +1,20 @@
-﻿using GameSpyLib.Logging;
+﻿using GameSpyLib.Abstraction.Interface;
+using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
-using PresenceConnectionManager.Entity.BaseClass;
+using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure;
+using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using PresenceConnectionManager.Entity.Structure.Request.General;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
-using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;
+using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PresenceConnectionManager.Entity.Structure.Request.Buddy;
-using PresenceSearchPlayer.Handler.CommandHandler.Error;
-using GameSpyLib.Abstraction.Interface;
 
-namespace PresenceConnectionManager.Handler.CommandSwticher
+namespace PresenceConnectionManager.Abstraction.CommandSwticher
 {
     public class PCMRequestSerializer
     {

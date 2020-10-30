@@ -3,7 +3,7 @@ using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
+namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
 {
     /// <summary>
     /// This function sets which games the local profile can be invited to.

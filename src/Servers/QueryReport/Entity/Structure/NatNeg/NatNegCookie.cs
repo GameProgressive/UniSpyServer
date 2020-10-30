@@ -1,4 +1,4 @@
-﻿namespace QueryReport.Entity.Structure.NatNeg
+﻿namespace QueryReport.Entity.Abstraction.NatNeg
 {
     public class NatNegCookie
     {

@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using ServerBrowser.Entity.Enumerator;
+using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage

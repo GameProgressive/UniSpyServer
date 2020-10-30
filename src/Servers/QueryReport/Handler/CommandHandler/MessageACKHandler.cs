@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Abstraction.Interface;
+using QueryReport.Abstraction.BaseClass;
 using System;
 
 namespace QueryReport.Handler.CommandHandler.ClientMessageACK

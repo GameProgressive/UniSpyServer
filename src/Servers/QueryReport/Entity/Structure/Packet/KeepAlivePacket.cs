@@ -1,4 +1,4 @@
-﻿namespace QueryReport.Entity.Structure.Packet
+﻿namespace QueryReport.Entity.Abstraction.BaseClass
 {
     public class KeepAlivePacket : BasePacket
     {

@@ -1,9 +1,9 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using NatNegotiation.Entity.Enumerator;
+using NatNegotiation.Abstraction.SystemHandler.NatNegotiationManage;
+using NatNegotiation.Entity.Enumerate;
 using NatNegotiation.Entity.Structure.Packet;
-using NatNegotiation.Handler.SystemHandler.NatNegotiationManage;
 
-namespace NatNegotiation.Handler.CommandHandler
+namespace NatNegotiation.Abstraction.BaseClass
 {
     /// <summary>
     /// Get nat neg result report success or fail

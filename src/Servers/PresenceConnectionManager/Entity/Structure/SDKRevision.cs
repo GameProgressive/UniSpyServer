@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
-using PresenceConnectionManager.Entity.Enumerator;
-using PresenceConnectionManager.Handler.SystemHandler;
+using PresenceConnectionManager.Abstraction.SystemHandler;
+using PresenceConnectionManager.Entity.Enumerate;
 using Serilog.Events;
 
 namespace PresenceConnectionManager.Entity.Structure

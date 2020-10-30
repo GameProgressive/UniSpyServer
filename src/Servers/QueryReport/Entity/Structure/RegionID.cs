@@ -1,4 +1,4 @@
-﻿namespace QueryReport.Entity.Structure
+﻿namespace QueryReport.Entity.Abstraction
 {
     public static class RegionID
     {

@@ -1,4 +1,5 @@
-﻿using StatsAndTracking.Entity.Enumerator;
+﻿using StatsAndTracking.Abstraction.BaseClass;
+using StatsAndTracking.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace StatsAndTracking.Entity.Structure.Request

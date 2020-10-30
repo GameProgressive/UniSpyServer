@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.General
+namespace PresenceConnectionManager.Abstraction.BaseClass.General
 {
     public class KeepAliveHandler : PCMCommandHandlerBase
     {

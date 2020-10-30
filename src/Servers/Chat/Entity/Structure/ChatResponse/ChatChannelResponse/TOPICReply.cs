@@ -1,4 +1,6 @@
-﻿namespace Chat.Entity.Structure.ChatResponse.ChatChannelResponse
+﻿using Chat.Abstraction.BaseClass;
+
+namespace Chat.Entity.Structure.ChatResponse.ChatChannelResponse
 {
     public class TOPICReply
     {

@@ -33,7 +33,7 @@
         <Folder Include="Handler\SystemHandler\PeerSystem\" />
         <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
         <Folder Include="Entity\Structure\NatNeg\" />
-        <Folder Include="Entity\BaseClass\" />
+        <Folder Include="Abstraction\BaseClass\" />
         <Folder Include="Handler\SystemHandler\ServerList\" />
     </ItemGroup>
     <ItemGroup>

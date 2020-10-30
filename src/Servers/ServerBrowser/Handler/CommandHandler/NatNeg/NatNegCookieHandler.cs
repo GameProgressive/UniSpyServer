@@ -1,13 +1,13 @@
-﻿using GameSpyLib.Entity.Enumerator;
+﻿using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Abstraction.Interface;
 using Newtonsoft.Json;
-using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.NatNeg;
-using ServerBrowser.Entity.Enumerator;
+using QueryReport.Entity.Abstraction;
+using QueryReport.Entity.Abstraction.NatNeg;
+using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using StackExchange.Redis;
 using System.Linq;
-using GameSpyLib.Abstraction.BaseClass;
 
 namespace ServerBrowser.Handler.CommandHandler.NatNeg
 {

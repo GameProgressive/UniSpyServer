@@ -1,10 +1,10 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
-using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
-namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
+namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
 {
     /// <summary>
     /// handles dell buddy request,remove friends from friends list

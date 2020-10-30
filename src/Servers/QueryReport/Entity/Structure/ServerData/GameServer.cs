@@ -1,12 +1,11 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Entity.Enumerator;
 using GameSpyLib.Extensions;
-using QueryReport.Entity.Structure.ReportData;
+using QueryReport.Entity.Abstraction.ReportData;
 using System;
 using System.Collections.Generic;
 using System.Net;
 
-namespace QueryReport.Entity.Structure
+namespace QueryReport.Entity.Abstraction
 {
     /// <summary>
     /// This is the server 

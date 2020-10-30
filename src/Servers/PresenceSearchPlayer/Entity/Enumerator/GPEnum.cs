@@ -1,4 +1,4 @@
-﻿namespace PresenceSearchPlayer.Enumerator
+﻿namespace PresenceSearchPlayer.Enumerate
 {
     public enum GPEnum : uint
     {

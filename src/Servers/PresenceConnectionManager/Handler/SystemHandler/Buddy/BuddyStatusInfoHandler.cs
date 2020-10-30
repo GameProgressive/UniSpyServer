@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using PresenceConnectionManager.Handler.CommandHandler;
+using PresenceConnectionManager.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.SystemHandler.Buddy
+namespace PresenceConnectionManager.Abstraction.SystemHandler.Buddy
 {
     public class BuddyStatusInfoHandler : PCMCommandHandlerBase
     {

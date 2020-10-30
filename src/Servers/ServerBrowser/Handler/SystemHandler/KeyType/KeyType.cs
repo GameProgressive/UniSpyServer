@@ -1,4 +1,4 @@
-﻿using ServerBrowser.Entity.Enumerator;
+﻿using ServerBrowser.Entity.Enumerate;
 
 namespace ServerBrowser.Handler.SystemHandler.KeyType
 {

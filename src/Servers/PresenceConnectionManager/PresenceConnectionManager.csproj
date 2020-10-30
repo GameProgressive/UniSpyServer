@@ -34,7 +34,7 @@
         <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Entity\Interface\" />
+        <Folder Include="Abstraction\Interface\" />
         <Folder Include="Entity\Structure\Data\" />
         <Folder Include="Entity\Structure\Request\Buddy\" />
         <Folder Include="Handler\SystemHandler\Buddy\" />

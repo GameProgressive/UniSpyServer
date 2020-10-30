@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
-using QueryReport.Entity.Enumerator;
+using QueryReport.Entity.Enumerate;
 using QueryReport.Handler.CommandHandler.Available;
 using QueryReport.Handler.CommandHandler.Challenge;
 using QueryReport.Handler.CommandHandler.ClientMessage;

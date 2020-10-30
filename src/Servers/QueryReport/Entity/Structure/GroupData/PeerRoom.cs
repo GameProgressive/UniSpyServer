@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QueryReport.Entity.Structure.Group
+namespace QueryReport.Entity.Abstraction.Group
 {
     public class PeerRoom
     {

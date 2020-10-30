@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.Profile
+namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
 {
     /// <summary>
     /// Update user information (email)

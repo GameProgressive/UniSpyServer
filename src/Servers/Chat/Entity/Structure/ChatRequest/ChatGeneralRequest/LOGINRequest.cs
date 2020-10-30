@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Chat.Abstraction.BaseClass;
+using System.Linq;
 
 namespace Chat.Entity.Structure.ChatCommand
 {

@@ -1,11 +1,11 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
-using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.Profile
+namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
 {
     public class RegisterNickHandler : PCMCommandHandlerBase
     {

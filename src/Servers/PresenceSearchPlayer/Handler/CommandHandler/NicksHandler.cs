@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;

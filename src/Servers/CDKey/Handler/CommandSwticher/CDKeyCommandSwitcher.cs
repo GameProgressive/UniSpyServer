@@ -1,5 +1,4 @@
 ﻿using CDKey.Handler.CommandHandler.SKey;
-using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;

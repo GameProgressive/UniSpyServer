@@ -1,4 +1,5 @@
 ﻿using GameSpyLib.Abstraction.Interface;
+using StatsAndTracking.Abstraction.BaseClass;
 using StatsAndTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 

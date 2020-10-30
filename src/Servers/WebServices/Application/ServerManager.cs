@@ -1,5 +1,4 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Entity.Enumerator;
 using GameSpyLib.Extensions;
 using GameSpyLib.RetroSpyConfig;
 using Microsoft.AspNetCore.Hosting;

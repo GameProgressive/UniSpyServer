@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.Network;
-using PresenceConnectionManager.Entity.Enumerator;
+using PresenceConnectionManager.Abstraction;
+using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;
-using PresenceConnectionManager.Handler;
 using PresenceConnectionManager.Structure.Data;
 using Serilog.Events;
 using System;

@@ -1,10 +1,10 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using PresenceConnectionManager.Handler.CommandHandler;
+using PresenceConnectionManager.Abstraction.BaseClass;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.SystemHandler
+namespace PresenceConnectionManager.Abstraction.SystemHandler
 {
     public class BlockListHandler : PCMCommandHandlerBase
     {

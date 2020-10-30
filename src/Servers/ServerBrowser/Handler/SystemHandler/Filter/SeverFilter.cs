@@ -1,4 +1,4 @@
-﻿using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Abstraction;
 using System.Collections.Generic;
 using System.Net;
 

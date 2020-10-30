@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
-using ServerBrowser.Entity.Enumerator;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
 using ServerBrowser.Handler.CommandHandler.NatNeg;

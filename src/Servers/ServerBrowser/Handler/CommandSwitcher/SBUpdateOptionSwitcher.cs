@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using Serilog.Events;
-using ServerBrowser.Entity.Enumerator;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.GeneralRequest;
 using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList;

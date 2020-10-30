@@ -2,12 +2,12 @@
 using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using QueryReport.Entity.Structure;
+using QueryReport.Entity.Abstraction;
 using Serilog.Events;
-using ServerBrowser.Entity.Enumerator;
+using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
-using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

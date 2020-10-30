@@ -1,8 +1,8 @@
-﻿using QueryReport.Entity.Enumerator;
+﻿using QueryReport.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 
-namespace QueryReport.Entity.Structure.Packet
+namespace QueryReport.Entity.Abstraction.BaseClass
 {
     public class AddErrorPacket : BasePacket
     {

@@ -1,4 +1,4 @@
-﻿using NatNegotiation.Entity.Enumerator;
+﻿using NatNegotiation.Entity.Enumerate;
 using NatNegotiation.Entity.Structure.Packet;
 using System;
 

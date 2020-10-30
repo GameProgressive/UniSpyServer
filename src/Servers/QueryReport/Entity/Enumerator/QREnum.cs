@@ -1,4 +1,4 @@
-﻿namespace QueryReport.Entity.Enumerator
+﻿namespace QueryReport.Entity.Enumerate
 {
     public enum QRPacketType : byte
     {

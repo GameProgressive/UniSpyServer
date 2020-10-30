@@ -1,6 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Packet;
+using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Abstraction;
+using QueryReport.Entity.Abstraction.BaseClass;
 using QueryReport.Server;
 using System;
 using System.Linq;
@@ -29,7 +30,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
             var result = GameServer.GetServers(client.RemoteEndPoint);
             if (result.Count != 1)
             {
-                _errorCode = Entity.Enumerator.QRErrorCode.Database;
+                _errorCode = Entity.Enumerate.QRErrorCode.Database;
                 return;
             }
 

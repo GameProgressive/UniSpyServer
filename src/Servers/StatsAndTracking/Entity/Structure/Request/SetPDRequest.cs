@@ -1,4 +1,5 @@
-﻿using StatsAndTracking.Entity.Enumerator;
+﻿using StatsAndTracking.Abstraction.BaseClass;
+using StatsAndTracking.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
