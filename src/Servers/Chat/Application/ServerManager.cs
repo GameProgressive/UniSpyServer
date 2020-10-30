@@ -1,6 +1,6 @@
 ﻿using Chat.Server;
 using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Common;
+using GameSpyLib.Entity.Enumerator;
 using GameSpyLib.Extensions;
 using GameSpyLib.RetroSpyConfig;
 using System;

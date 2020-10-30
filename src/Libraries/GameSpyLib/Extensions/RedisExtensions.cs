@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Common;
+using GameSpyLib.Entity.Enumerator;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 

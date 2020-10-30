@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Common;
+using GameSpyLib.Entity.Enumerator;
 using GameSpyLib.Logging;
 using Newtonsoft.Json;
 using QueryReport.Entity.Structure.NatNeg;

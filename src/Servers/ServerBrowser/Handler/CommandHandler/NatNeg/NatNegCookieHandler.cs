@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common;
+﻿using GameSpyLib.Entity.Enumerator;
 using GameSpyLib.Abstraction.Interface;
 using Newtonsoft.Json;
 using QueryReport.Entity.Structure;

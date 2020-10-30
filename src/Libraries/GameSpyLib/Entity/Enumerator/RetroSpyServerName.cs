@@ -1,4 +1,4 @@
-﻿namespace GameSpyLib.Common
+﻿namespace GameSpyLib.Entity.Enumerator
 {
     public class RetroSpyServerName
     {

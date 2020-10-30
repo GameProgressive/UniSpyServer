@@ -22,8 +22,7 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="RetroSpyConfig\" />
-        <Folder Include="Common\Entity\" />
-        <Folder Include="Common\Entity\Enumerator\" />
+        <Folder Include="Entity\" />
         <Folder Include="Abstraction\Interface\" />
         <Folder Include="Network\Tcp\" />
         <Folder Include="Network\Udp\" />

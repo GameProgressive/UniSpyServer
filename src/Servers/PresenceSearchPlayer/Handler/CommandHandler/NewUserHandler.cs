@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common;
+﻿using GameSpyLib.Entity.Enumerator;
 using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using GameSpyLib.Logging;
