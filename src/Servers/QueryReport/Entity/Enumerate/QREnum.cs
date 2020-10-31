@@ -18,6 +18,7 @@
         KeepAlive = 0x08,
         AvaliableCheck = 0x09
     }
+
     public enum QRStateChange : byte
     {
         NormalHeartBeat = 0,

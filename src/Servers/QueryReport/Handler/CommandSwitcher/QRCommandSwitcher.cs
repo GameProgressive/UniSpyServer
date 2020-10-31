@@ -16,29 +16,32 @@ namespace QueryReport.Handler.CommandSwitcher
     {
         public static void Switch(ISession session, byte[] rawRequest)
         {
+           
             try
             {
+                IRequest request = QRRequestSerializer.Serilize(rawRequest);
+
                 switch ((QRPacketType)rawRequest[0])
                 {
                     case QRPacketType.AvaliableCheck:
-                        new AvailableHandler(session, rawRequest).Handle();
+                        new AvailableHandler(session, request).Handle();
                         break;
                     //verify challenge to check game server is real or fake;
                     //after verify we can add game server to server list
                     case QRPacketType.Challenge:
-                        new ChallengeHandler(session, rawRequest).Handle();
+                        new ChallengeHandler(session, request).Handle();
                         break;
                     case QRPacketType.HeartBeat:
-                        new HeartBeatHandler(session, rawRequest).Handle();
+                        new HeartBeatHandler(session, request).Handle();
                         break;
                     case QRPacketType.KeepAlive:
-                        new KeepAliveHandler(session, rawRequest).Handle();
+                        new KeepAliveHandler(session, request).Handle();
                         break;
                     case QRPacketType.EchoResponse:
-                        new EchoHandler(session, rawRequest).Handle();
+                        new EchoHandler(session, request).Handle();
                         break;
                     case QRPacketType.ClientMessageACK:
-                        new ClientMessageACKHandler(session, rawRequest).Handle();
+                        new ClientMessageACKHandler(session, request).Handle();
                         break;
                     default:
                         LogWriter.UnknownDataRecieved(rawRequest);

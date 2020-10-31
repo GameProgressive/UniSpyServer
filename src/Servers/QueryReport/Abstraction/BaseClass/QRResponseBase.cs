@@ -21,6 +21,10 @@ namespace QueryReport.Abstraction.BaseClass
             InstantKey = instantKey;
         }
 
+        public QRResponseBase()
+        {
+        }
+
         public virtual byte[] BuildResponse()
         {
             List<byte> data = new List<byte>();

@@ -6,16 +6,16 @@ using QueryReport.Entity.Enumerate;
 
 namespace QueryReport.Entity.Structure.Response
 {
-    public class EchoResponse : QRResponseBase
+    public class ChallengeResponse : QRResponseBase
     {
         protected const string Message = "RetroSpy echo!";
 
-        public EchoResponse(QRRequestBase request) : base(request)
+        public ChallengeResponse(QRRequestBase request) : base(request)
         {
             PacketType = QRPacketType.Echo;
         }
 
-        public EchoResponse(int instantKey) : base(QRPacketType.Echo, instantKey)
+        public ChallengeResponse(int instantKey) : base(QRPacketType.Echo, instantKey)
         {
         }
 

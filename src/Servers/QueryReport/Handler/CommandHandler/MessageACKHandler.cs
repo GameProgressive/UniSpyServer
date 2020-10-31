@@ -1,13 +1,16 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Structure.Request;
 using System;
 
 namespace QueryReport.Handler.CommandHandler.ClientMessageACK
 {
     public class MessageACKHandler : QRCommandHandlerBase
     {
-        protected MessageACKHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
+        protected new ClientMessageRequest _request;
+        protected MessageACKHandler(ISession session, IRequest request) : base(session, request)
         {
+            _request = (ClientMessageRequest)request.GetInstance();
             throw new NotImplementedException();
         }
     }

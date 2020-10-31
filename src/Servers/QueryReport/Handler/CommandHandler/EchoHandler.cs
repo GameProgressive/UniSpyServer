@@ -10,17 +10,16 @@ namespace QueryReport.Handler.CommandHandler.Echo
 {
     public class EchoHandler : QRCommandHandlerBase
     {
-        GameServer _gameServer;
-        public EchoHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
+        protected GameServer _gameServer;
+
+        public EchoHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 
         protected override void DataOperation()
         {
             //TODO
-            QRSession client = (QRSession)_session.GetInstance();
-            var result =
-                 GameServer.GetServers(client.RemoteEndPoint);
+            var result = GameServer.GetServers(_session.RemoteEndPoint);
             //add recive echo packet on gameserverList
             //DedicatedGameServer game;
             //QRServer.GameServerList.TryGetValue(endPoint, out game);
@@ -36,7 +35,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
             _gameServer.LastPacket = DateTime.Now;
 
             GameServer.UpdateServer(
-               client.RemoteEndPoint,
+               _session.RemoteEndPoint,
                _gameServer.ServerData.KeyValue["gamename"],
                _gameServer
            );

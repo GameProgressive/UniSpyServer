@@ -13,31 +13,24 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
     public class HeartBeatHandler : QRCommandHandlerBase
     {
-        private GameServer _gameServer;
-        private HeartBeatReportType _reportType;
-        private string _dataPartition, _serverData, _playerData, _teamData;
-        private int _playerPos, _teamPos;
-        private int _playerLenth, _teamLength;
-        private ChallengeRequest _request;
+        protected GameServer _gameServer;
+        protected HeartBeatReportType _reportType;
+        protected string _dataPartition, _serverData, _playerData, _teamData;
+        protected int _playerPos, _teamPos;
+        protected int _playerLenth, _teamLength;
+        protected new HeartBeatRequest _request;
 
-        public HeartBeatHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
+        public HeartBeatHandler(ISession session, IRequest request) : base(session, request)
         {
+            _request = (HeartBeatRequest)request.GetInstance();
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
 
-            _request = new ChallengeRequest(_session.RemoteEndPoint, _recv);
-
-            if (!_request.Parse())
-            {
-                _errorCode = QRErrorCode.Parse;
-                return;
-            }
-
             //Save server information.
-            _dataPartition = Encoding.ASCII.GetString(_recv.Skip(5).ToArray());
+            _dataPartition = Encoding.ASCII.GetString(_request.RawRequest.Skip(5).ToArray());
 
             _playerPos = _dataPartition.IndexOf("player_\0", StringComparison.Ordinal);
             _teamPos = _dataPartition.IndexOf("team_t\0", StringComparison.Ordinal);
@@ -103,7 +96,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void ConstructeResponse()
         {
-            ChallengeResponse response = new ChallengeResponse(_request);
+            HeartBeatResponse response = new HeartBeatResponse(_session,_request);
             _sendingBuffer = response.BuildResponse();
         }
 

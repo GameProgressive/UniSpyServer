@@ -11,31 +11,20 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 {
     public class KeepAliveHandler : QRCommandHandlerBase
     {
-        private KeepAliveRequest _request;
-        public KeepAliveHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
+        protected new KeepAliveRequest _request;
+        public KeepAliveHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new KeepAliveRequest(rawRequest);
-        }
-
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = QRErrorCode.Parse;
-                return;
-            }
+            _request = (KeepAliveRequest)request.GetInstance();
         }
 
         protected override void ConstructeResponse()
         {
-            QRResponseBase response = new QRResponseBase(_request);
             if (_session.InstantKey != _request.InstantKey)
             {
                 _session.SetInstantKey(_request.InstantKey);
             }
 
-            _sendingBuffer = response.BuildResponse();
+            _sendingBuffer = new QRResponseBase(_request).BuildResponse();
 
             QRSession client = (QRSession)_session.GetInstance();
             var result = GameServer.GetServers(client.RemoteEndPoint);

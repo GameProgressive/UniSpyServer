@@ -12,11 +12,11 @@ namespace QueryReport.Abstraction.BaseClass
     {
         protected QRErrorCode _errorCode = QRErrorCode.NoError;
         protected byte[] _sendingBuffer;
-        protected byte[] _recv;
         protected new QRSession _session;
-        protected QRCommandHandlerBase(ISession session, byte[] rawRequest) : base(session)
+        protected IRequest _request;
+        protected QRCommandHandlerBase(ISession session, IRequest request) : base(session)
         {
-            _recv = rawRequest;
+            _request = request;
             _session = (QRSession)session;
         }
 

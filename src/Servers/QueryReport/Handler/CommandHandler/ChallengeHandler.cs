@@ -11,29 +11,18 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 {
     public class ChallengeHandler : QRCommandHandlerBase
     {
-        GameServer _gameServer;
-        EchoRequest _request;
+        protected GameServer _gameServer;
+        protected new ChallengeRequest _request;
         //we do not need to implement this to check the correctness of the challenge response
-        public ChallengeHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
+        public ChallengeHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new EchoRequest(rawRequest);
-        }
-
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!_request.Parse())
-            {
-                _errorCode = QRErrorCode.Parse;
-                return;
-            }
+            _request = (ChallengeRequest)request.GetInstance();
         }
 
         protected override void DataOperation()
         {
-            QRSession session = (QRSession)_session.GetInstance();
             var result =
-                  GameServer.GetServers(session.RemoteEndPoint);
+                  GameServer.GetServers(_session.RemoteEndPoint);
 
             if (result.Count() != 1)
             {
@@ -45,15 +34,13 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 
         protected override void ConstructeResponse()
         {
-            EchoResponse response = new EchoResponse(_request);
-
             if (_session.InstantKey != _request.InstantKey)
             {
                 _session.SetInstantKey(_request.InstantKey);
             }
 
             // We send the echo packet to check the ping
-            _sendingBuffer = response.BuildResponse();
+            _sendingBuffer = new ChallengeResponse(_request).BuildResponse();
 
             GameServer.UpdateServer(
                 _session.RemoteEndPoint,

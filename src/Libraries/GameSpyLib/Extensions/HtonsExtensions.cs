@@ -28,11 +28,11 @@ namespace GameSpyLib.Extensions
             return BitConverter.GetBytes(port);
         }
 
-        public static string EndPointToIPString(EndPoint endPoint)
+        public static string EndPointToIP(EndPoint endPoint)
         {
             return ((IPEndPoint)endPoint).Address.ToString();
         }
-        public static string EndPointToPortString(EndPoint endPoint)
+        public static string EndPointToPort(EndPoint endPoint)
         {
             return ((IPEndPoint)endPoint).Port.ToString();
         }
