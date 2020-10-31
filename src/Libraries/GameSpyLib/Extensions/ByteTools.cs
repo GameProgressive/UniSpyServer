@@ -45,7 +45,7 @@ namespace GameSpyLib.Extensions
 
         public static IPEndPoint GetIPEndPoint(byte[] ip, byte[] port)
         {
-            return new IPEndPoint(BitConverter.ToInt32(ip), BitConverter.ToUInt16(port));
+            return new IPEndPoint(BitConverter.ToUInt32(ip), BitConverter.ToUInt16(port));
         }
 
         public static IPEndPoint GetIPEndPoint(int ip, ushort port)
