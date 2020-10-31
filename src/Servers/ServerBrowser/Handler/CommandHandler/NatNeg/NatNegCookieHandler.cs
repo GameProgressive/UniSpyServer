@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Abstraction.Interface;
 using Newtonsoft.Json;
-using QueryReport.Entity.Abstraction;
-using QueryReport.Entity.Abstraction.NatNeg;
+using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.NatNeg;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;

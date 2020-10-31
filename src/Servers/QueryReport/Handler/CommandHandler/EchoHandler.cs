@@ -1,7 +1,7 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Abstraction;
+using QueryReport.Entity.Structure;
 using QueryReport.Server;
 using Serilog.Events;
 using System;
@@ -11,7 +11,7 @@ namespace QueryReport.Handler.CommandHandler.Echo
     public class EchoHandler : QRCommandHandlerBase
     {
         GameServer _gameServer;
-        public EchoHandler(ISession session, byte[] recv) : base(session, recv)
+        public EchoHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
         {
         }
 

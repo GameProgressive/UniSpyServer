@@ -1,6 +1,6 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Logging;
-using QueryReport.Entity.Abstraction;
+using QueryReport.Entity.Structure;
 using System;
 
 namespace QueryReport.Handler.SystemHandler.ServerList

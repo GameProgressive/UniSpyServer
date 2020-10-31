@@ -14,34 +14,34 @@ namespace QueryReport.Handler.CommandSwitcher
 {
     public class QRCommandSwitcher
     {
-        public static void Switch(ISession session, byte[] recv)
+        public static void Switch(ISession session, byte[] rawRequest)
         {
             try
             {
-                switch ((QRPacketType)recv[0])
+                switch ((QRPacketType)rawRequest[0])
                 {
                     case QRPacketType.AvaliableCheck:
-                        new AvailableHandler(session, recv).Handle();
+                        new AvailableHandler(session, rawRequest).Handle();
                         break;
                     //verify challenge to check game server is real or fake;
                     //after verify we can add game server to server list
                     case QRPacketType.Challenge:
-                        new ChallengeHandler(session, recv).Handle();
+                        new ChallengeHandler(session, rawRequest).Handle();
                         break;
                     case QRPacketType.HeartBeat:
-                        new HeartBeatHandler(session, recv).Handle();
+                        new HeartBeatHandler(session, rawRequest).Handle();
                         break;
                     case QRPacketType.KeepAlive:
-                        new KeepAliveHandler(session, recv).Handle();
+                        new KeepAliveHandler(session, rawRequest).Handle();
                         break;
                     case QRPacketType.EchoResponse:
-                        new EchoHandler(session, recv).Handle();
+                        new EchoHandler(session, rawRequest).Handle();
                         break;
                     case QRPacketType.ClientMessageACK:
-                        new ClientMessageACKHandler(session, recv).Handle();
+                        new ClientMessageACKHandler(session, rawRequest).Handle();
                         break;
                     default:
-                        LogWriter.UnknownDataRecieved(recv);
+                        LogWriter.UnknownDataRecieved(rawRequest);
                         break;
                 }
             }

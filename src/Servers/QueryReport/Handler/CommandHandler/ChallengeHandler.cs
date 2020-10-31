@@ -1,26 +1,39 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Abstraction;
-using QueryReport.Entity.Abstraction.BaseClass;
+using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Request;
 using QueryReport.Server;
 using System.Linq;
 using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Structure.Response;
 
 namespace QueryReport.Handler.CommandHandler.Challenge
 {
     public class ChallengeHandler : QRCommandHandlerBase
     {
         GameServer _gameServer;
+        EchoRequest _request;
         //we do not need to implement this to check the correctness of the challenge response
-        public ChallengeHandler(ISession session, byte[] recv) : base(session, recv)
+        public ChallengeHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
         {
+            _request = new EchoRequest(rawRequest);
+        }
+
+        protected override void CheckRequest()
+        {
+            base.CheckRequest();
+            if (!_request.Parse())
+            {
+                _errorCode = QRErrorCode.Parse;
+                return;
+            }
         }
 
         protected override void DataOperation()
         {
-            QRSession client = (QRSession)_session.GetInstance();
+            QRSession session = (QRSession)_session.GetInstance();
             var result =
-                  GameServer.GetServers(client.RemoteEndPoint);
+                  GameServer.GetServers(session.RemoteEndPoint);
 
             if (result.Count() != 1)
             {
@@ -32,15 +45,15 @@ namespace QueryReport.Handler.CommandHandler.Challenge
 
         protected override void ConstructeResponse()
         {
-            EchoPacket packet = new EchoPacket();
-            packet.Parse(_recv);
-            if (_session.InstantKey != packet.InstantKey)
+            EchoResponse response = new EchoResponse(_request);
+
+            if (_session.InstantKey != _request.InstantKey)
             {
-                _session.SetInstantKey(packet.InstantKey);
+                _session.SetInstantKey(_request.InstantKey);
             }
 
             // We send the echo packet to check the ping
-            _sendingBuffer = packet.BuildResponse();
+            _sendingBuffer = response.BuildResponse();
 
             GameServer.UpdateServer(
                 _session.RemoteEndPoint,
@@ -48,5 +61,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
                 _gameServer
                 );
         }
+
+
     }
 }

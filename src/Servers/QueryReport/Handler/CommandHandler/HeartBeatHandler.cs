@@ -1,12 +1,13 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Abstraction;
-using QueryReport.Entity.Abstraction.BaseClass;
+using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Structure.Response;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
@@ -17,8 +18,9 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         private string _dataPartition, _serverData, _playerData, _teamData;
         private int _playerPos, _teamPos;
         private int _playerLenth, _teamLength;
+        private ChallengeRequest _request;
 
-        public HeartBeatHandler(ISession session, byte[] recv) : base(session, recv)
+        public HeartBeatHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
         {
         }
 
@@ -26,9 +28,9 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
         {
             base.CheckRequest();
 
-            BasePacket basePacket = new BasePacket();
+            _request = new ChallengeRequest(_session.RemoteEndPoint, _recv);
 
-            if (!basePacket.Parse(_recv))
+            if (!_request.Parse())
             {
                 _errorCode = QRErrorCode.Parse;
                 return;
@@ -59,7 +61,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 return;
             }
 
-            _session.SetInstantKey(basePacket.InstantKey);
+            _session.SetInstantKey(_request.InstantKey);
         }
 
         protected override void DataOperation()
@@ -101,9 +103,8 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void ConstructeResponse()
         {
-            ChallengePacket packet = new ChallengePacket();
-            packet.Parse(_session.RemoteEndPoint, _recv);
-            _sendingBuffer = packet.BuildResponse();
+            ChallengeResponse response = new ChallengeResponse(_request);
+            _sendingBuffer = response.BuildResponse();
         }
 
         private void ParseServerTeamPlayerData()

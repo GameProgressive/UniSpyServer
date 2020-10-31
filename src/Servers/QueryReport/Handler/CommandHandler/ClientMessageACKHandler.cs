@@ -5,7 +5,7 @@ namespace QueryReport.Handler.CommandHandler.ClientMessage
 {
     public class ClientMessageACKHandler : QRCommandHandlerBase
     {
-        public ClientMessageACKHandler(ISession session, byte[] recv) : base(session, recv)
+        public ClientMessageACKHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
         {
         }
     }

@@ -14,9 +14,9 @@ namespace QueryReport.Abstraction.BaseClass
         protected byte[] _sendingBuffer;
         protected byte[] _recv;
         protected new QRSession _session;
-        protected QRCommandHandlerBase(ISession session, byte[] recv) : base(session)
+        protected QRCommandHandlerBase(ISession session, byte[] rawRequest) : base(session)
         {
-            _recv = recv;
+            _recv = rawRequest;
             _session = (QRSession)session;
         }
 

@@ -3,7 +3,7 @@ using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;
-using QueryReport.Entity.Abstraction;
+using QueryReport.Entity.Structure;
 using System.Linq;
 
 namespace Chat.Abstraction.BaseClass

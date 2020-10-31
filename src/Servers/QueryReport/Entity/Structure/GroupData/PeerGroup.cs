@@ -2,7 +2,7 @@
 using GameSpyLib.Extensions;
 using System.Collections.Generic;
 
-namespace QueryReport.Entity.Abstraction.Group
+namespace QueryReport.Entity.Structure.Group
 {
 
     public class PeerGroup

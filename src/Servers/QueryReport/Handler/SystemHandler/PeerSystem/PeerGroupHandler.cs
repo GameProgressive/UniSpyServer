@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using QueryReport.Entity.Abstraction.Group;
+using QueryReport.Entity.Structure.Group;
 using System.Collections.Generic;
 using System.Linq;
 

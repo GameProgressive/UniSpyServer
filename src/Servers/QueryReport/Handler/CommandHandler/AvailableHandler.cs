@@ -12,8 +12,7 @@ namespace QueryReport.Handler.CommandHandler.Available
         private static readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
         private static readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
         private static readonly byte AvailableCheckRequestPostfix = 0x00;
-
-        public AvailableHandler(ISession session, byte[] recv) : base(session, recv)
+        public AvailableHandler(ISession session, byte[] rawRequest) : base(session, rawRequest)
         {
         }
 

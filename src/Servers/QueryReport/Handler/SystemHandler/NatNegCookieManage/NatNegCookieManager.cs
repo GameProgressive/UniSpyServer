@@ -1,8 +1,8 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Logging;
 using Newtonsoft.Json;
-using QueryReport.Entity.Abstraction.NatNeg;
-using QueryReport.Entity.Abstraction.BaseClass;
+using QueryReport.Entity.Structure.NatNeg;
+using QueryReport.Entity.Structure.Request;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
 using QueryReport.Server;
 using Serilog.Events;
@@ -36,6 +36,7 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
                     SendNatNegCookieToGameServer(message);
                 });
         }
+
         public void SendNatNegCookieToGameServer(string data)
         {
             LogWriter.LogCurrentClass(this);
@@ -52,11 +53,8 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
                 return;
             }
 
-            byte[] clientMessage = new ClientMessagePacket()
-                         .SetMessage(cookie.NatNegMessage)
-                         .SetMessageKey(MessageKey++)
-                         .SetInstanceKey(session.InstantKey)
-                         .BuildResponse();
+            byte[] clientMessage = new ClientMessageResponse(
+                cookie.NatNegMessage, MessageKey++, session.InstantKey).BuildResponse();
 
             session.SendAsync(clientMessage);
         }

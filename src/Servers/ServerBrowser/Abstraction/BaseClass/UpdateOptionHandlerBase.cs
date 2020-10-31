@@ -2,7 +2,7 @@
 using GameSpyLib.Encryption;
 using GameSpyLib.Extensions;
 using GameSpyLib.Logging;
-using QueryReport.Entity.Abstraction;
+using QueryReport.Entity.Structure;
 using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;

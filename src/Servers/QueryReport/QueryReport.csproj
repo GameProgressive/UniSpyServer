@@ -24,7 +24,7 @@
         <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Entity\Structure\Packet\" />
+        <Folder Include="Entity\Structure\Request\" />
         <Folder Include="Handler\SystemHandler\QRSessionManage\" />
         <Folder Include="Handler\SystemHandler\GeoIPManage\" />
         <Folder Include="Handler\SystemHandler\ErrorMessage\" />
@@ -35,6 +35,7 @@
         <Folder Include="Entity\Structure\NatNeg\" />
         <Folder Include="Abstraction\BaseClass\" />
         <Folder Include="Handler\SystemHandler\ServerList\" />
+        <Folder Include="Entity\Structure\Response\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />

@@ -5,7 +5,7 @@ using Serilog.Events;
 using System;
 using System.Collections.Generic;
 
-namespace QueryReport.Entity.Abstraction.ReportData
+namespace QueryReport.Entity.Structure.ReportData
 {
     public class ServerData
     {
