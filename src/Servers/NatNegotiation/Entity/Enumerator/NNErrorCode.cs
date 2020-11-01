@@ -1,4 +1,4 @@
-﻿namespace NatNegotiation.Entity.Enumerate
+﻿namespace NATNegotiation.Entity.Enumerate
 {
     public enum NNErrorCode
     {

@@ -1,14 +1,14 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using StatsAndTracking.Abstraction.BaseClass;
-using StatsAndTracking.Entity.Enumerate;
-using StatsAndTracking.Entity.Structure.Request;
+using StatsTracking.Abstraction.BaseClass;
+using StatsTracking.Entity.Enumerate;
+using StatsTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StatsAndTracking.Handler.CommandHandler.GetPID
+namespace StatsTracking.Handler.CommandHandler.GetPID
 {
-    public class GetPIDHandler : GStatsCommandHandlerBase
+    public class GetPIDHandler : STCommandHandlerBase
     {
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
@@ -34,7 +34,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPID
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GStatsErrorCode.Database;
+                    _errorCode = STError.Database;
                     return;
                 }
                 _protileid = result.First();

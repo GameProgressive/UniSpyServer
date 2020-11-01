@@ -1,11 +1,11 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
 using GameSpyLib.Extensions;
 using GameSpyLib.RetroSpyConfig;
-using NatNegotiation.Server;
+using NATNegotiation.Server;
 using System;
 using System.Net;
 
-namespace NatNegotiation.Application
+namespace NATNegotiation.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

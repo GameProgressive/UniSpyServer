@@ -3,34 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.202
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenceConnectionManager", "src\Servers\PresenceConnectionManager\PresenceConnectionManager.csproj", "{2756723C-4071-4EEA-851D-A23C0019E43A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresenceConnectionManager", "src\Servers\PresenceConnectionManager\PresenceConnectionManager.csproj", "{2756723C-4071-4EEA-851D-A23C0019E43A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chat", "src\Servers\Chat\Chat.csproj", "{3672E2D6-0543-4512-9E1A-31B5FD96DC4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chat", "src\Servers\Chat\Chat.csproj", "{3672E2D6-0543-4512-9E1A-31B5FD96DC4B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenceSearchPlayer", "src\Servers\PresenceSearchPlayer\PresenceSearchPlayer.csproj", "{9361E0B4-684F-4AEF-8293-7DF6E3EB73A4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PresenceSearchPlayer", "src\Servers\PresenceSearchPlayer\PresenceSearchPlayer.csproj", "{9361E0B4-684F-4AEF-8293-7DF6E3EB73A4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QueryReport", "src\Servers\QueryReport\QueryReport.csproj", "{C911D26F-4E16-44AA-9D84-3A27C3A08965}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryReport", "src\Servers\QueryReport\QueryReport.csproj", "{C911D26F-4E16-44AA-9D84-3A27C3A08965}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerBrowser", "src\Servers\ServerBrowser\ServerBrowser.csproj", "{F196BF99-E01A-4EAF-A418-A0077101D8B9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C911D26F-4E16-44AA-9D84-3A27C3A08965} = {C911D26F-4E16-44AA-9D84-3A27C3A08965}
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerBrowser", "src\Servers\ServerBrowser\ServerBrowser.csproj", "{F196BF99-E01A-4EAF-A418-A0077101D8B9}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servers", "src\Servers", "{9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servers", "Servers", "{9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StatsAndTracking", "src\Servers\StatsAndTracking\StatsAndTracking.csproj", "{1E16BA28-F6EA-4D85-98FC-73475764D8EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStatus", "src\Servers\StatsAndTracking\GameStatus.csproj", "{1E16BA28-F6EA-4D85-98FC-73475764D8EA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDKey", "src\Servers\CDKey\CDKey.csproj", "{C679E140-ED80-4D1E-BD94-C54C4158BDD5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDKey", "src\Servers\CDKey\CDKey.csproj", "{C679E140-ED80-4D1E-BD94-C54C4158BDD5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServices", "src\Servers\WebServices\WebServices.csproj", "{CDB3EC25-B4DB-4914-8553-42D002AFF275}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "src\Libraries", "{3DC251C8-F841-4D22-81DB-A7D4D4C25F37}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{3DC251C8-F841-4D22-81DB-A7D4D4C25F37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SOAPMiddleware", "src\Libraries\SOAPMiddleware\SOAPMiddleware.csproj", "{9CF53102-C6A5-4286-9C4D-CCA52538B12D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameSpyLib", "src\Libraries\GameSpyLib\GameSpyLib.csproj", "{B61ACD49-57F5-49AA-A418-221293F1F274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NatNegotiation", "src\Servers\NatNegotiation\NatNegotiation.csproj", "{45E0BDD3-B845-4EEB-953A-0C9D2E4BA740}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NATNegotiation", "src\Servers\NATNegotiation\NATNegotiation.csproj", "{45E0BDD3-B845-4EEB-953A-0C9D2E4BA740}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

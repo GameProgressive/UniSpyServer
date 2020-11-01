@@ -1,22 +1,22 @@
 ﻿using GameSpyLib.Logging;
 using GameSpyLib.MiscMethod;
 using Serilog.Events;
-using StatsAndTracking.Entity.Structure;
-using StatsAndTracking.Handler.CommandHandler.Auth;
-using StatsAndTracking.Handler.CommandHandler.AuthP;
-using StatsAndTracking.Handler.CommandHandler.GetPD;
-using StatsAndTracking.Handler.CommandHandler.GetPID;
-using StatsAndTracking.Handler.CommandHandler.NewGame;
-using StatsAndTracking.Handler.CommandHandler.SetPD;
-using StatsAndTracking.Handler.CommandHandler.UpdGame;
+using StatsTracking.Entity.Structure;
+using StatsTracking.Handler.CommandHandler.Auth;
+using StatsTracking.Handler.CommandHandler.AuthP;
+using StatsTracking.Handler.CommandHandler.GetPD;
+using StatsTracking.Handler.CommandHandler.GetPID;
+using StatsTracking.Handler.CommandHandler.NewGame;
+using StatsTracking.Handler.CommandHandler.SetPD;
+using StatsTracking.Handler.CommandHandler.UpdGame;
 using System;
 using System.Linq;
 
-namespace StatsAndTracking.Handler.CommandSwitcher
+namespace StatsTracking.Handler.CommandSwitcher
 {
     public class GStatsCommandSwitcher
     {
-        public static void Switch(GStatsSession session, string rawRequest)
+        public static void Switch(STSession session, string rawRequest)
         {
             try
             {

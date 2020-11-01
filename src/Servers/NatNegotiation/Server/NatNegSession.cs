@@ -1,14 +1,14 @@
 ﻿using GameSpyLib.Network;
-using NatNegotiation.Entity.Structure;
+using NATNegotiation.Entity.Structure;
 using System.Net;
-namespace NatNegotiation.Server
+namespace NATNegotiation.Server
 {
     public class NatNegSession : TemplateUdpSession
     {
-        public NatNegUserInfo UserInfo { get; protected set; }
+        public NNUserInfo UserInfo { get; protected set; }
         public NatNegSession(TemplateUdpServer server, EndPoint endPoint) : base(server, endPoint)
         {
-            UserInfo = new NatNegUserInfo();
+            UserInfo = new NNUserInfo();
         }
     }
 }

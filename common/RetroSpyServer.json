@@ -52,14 +52,14 @@
       "RemotePort": "27900"
     },
     {
-      "Name": "NATNEG",
+      "Name": "NN",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "27901",
       "RemoteAddress": "",
       "RemotePort": "27901"
     },
     {
-      "Name": "GSTATS",
+      "Name": "GS",
       "ListeningAddress": "0.0.0.0",
       "ListeningPort": "29920",
       "RemoteAddress": "",

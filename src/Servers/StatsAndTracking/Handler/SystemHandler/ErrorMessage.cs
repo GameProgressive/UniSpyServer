@@ -1,20 +1,20 @@
-﻿using StatsAndTracking.Entity.Enumerate;
+﻿using StatsTracking.Entity.Enumerate;
 
-namespace StatsAndTracking.Handler.SystemHandler
+namespace StatsTracking.Handler.SystemHandler
 {
     public class ErrorMessage
     {
-        public static string ToMsg(GStatsErrorCode error)
+        public static string ToMsg(STError error)
         {
             switch (error)
             {
-                case GStatsErrorCode.Parse:
+                case STError.Parse:
                     return "Request parse error!";
 
-                case GStatsErrorCode.General:
+                case STError.General:
                     return "General error!";
 
-                case GStatsErrorCode.Database:
+                case STError.Database:
                     return "Database error!";
 
                 default:

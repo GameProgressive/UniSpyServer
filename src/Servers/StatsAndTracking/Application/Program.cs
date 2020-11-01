@@ -1,21 +1,21 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Entity.Enumerate;
+using GameSpyLib.Entity.Structure;
 using GameSpyLib.Logging;
 using Serilog.Events;
 using System;
 
-namespace StatsAndTracking.Application
+namespace StatsTracking.Application
 {
     internal class Program
     {
-        private static ServerManager Manager;
+        private static STServerManager Manager;
 
         private static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.GameStatus);
+                Manager = new STServerManager(RetroSpyServerName.GameStatus);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

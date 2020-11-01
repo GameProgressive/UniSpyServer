@@ -1,4 +1,4 @@
-﻿namespace NatNegotiation.Entity.Enumerate
+﻿namespace NATNegotiation.Entity.Enumerate
 {
     public enum ConnectPacketFinishStatus : byte
     {
@@ -60,7 +60,7 @@
         PreInitAck,
     }
 
-    internal enum NatifyPacket : byte
+    internal enum NatifyPacketType : byte
     {
         PacketMap1a,
         PacketMap2,
@@ -69,7 +69,7 @@
         NumPackets
     }
 
-    public enum NatNegotiationMappingScheme : byte
+    public enum NATNegotiationMappingScheme : byte
     {
         Unrecognized,
         PrivateAsPublic,
@@ -79,7 +79,7 @@
         NumMappingSchemes
     }
 
-    public enum NatNegotiationType
+    public enum NATNegotiationType
     {
         NoNat,
         FirewallOnly,
@@ -101,7 +101,7 @@
         NumPromiscuityTypes
     }
 
-    public enum NatNegotiationResult
+    public enum NATNegotiationResult
     {
         Success,
         DeadBeatPartner,

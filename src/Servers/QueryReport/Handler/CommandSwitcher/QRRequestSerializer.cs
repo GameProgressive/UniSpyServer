@@ -1,5 +1,4 @@
-﻿using System;
-using GameSpyLib.Abstraction.Interface;
+﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
@@ -14,6 +13,10 @@ namespace QueryReport.Handler.CommandSwitcher
         public static IRequest Serilize(byte[] rawRequest)
         {
             IRequest request;
+            if (rawRequest.Length < 1)
+            {
+                return null;
+            }
 
             switch ((QRPacketType)rawRequest[0])
             {

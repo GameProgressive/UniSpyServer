@@ -1,10 +1,10 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using StatsAndTracking.Abstraction.BaseClass;
+using StatsTracking.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace StatsAndTracking.Handler.CommandHandler.NewGame
+namespace StatsTracking.Handler.CommandHandler.NewGame
 {
-    public class NewGameHandler : GStatsCommandHandlerBase
+    public class NewGameHandler : STCommandHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"

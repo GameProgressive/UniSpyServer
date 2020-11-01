@@ -1,5 +1,5 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Entity.Enumerate;
+using GameSpyLib.Entity.Structure;
 using GameSpyLib.Logging;
 using Serilog.Events;
 using System;

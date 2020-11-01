@@ -1,19 +1,19 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
-using StatsAndTracking.Abstraction.BaseClass;
-using StatsAndTracking.Entity.Enumerate;
-using StatsAndTracking.Entity.Structure.Request;
+using StatsTracking.Abstraction.BaseClass;
+using StatsTracking.Entity.Enumerate;
+using StatsTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StatsAndTracking.Handler.CommandHandler.AuthP
+namespace StatsTracking.Handler.CommandHandler.AuthP
 {
     /// <summary>
     /// Authenticate with partnerid or profileid
     /// because we are not gamespy
     /// so we do not check response string
     /// </summary>
-    public class AuthPHandler : GStatsCommandHandlerBase
+    public class AuthPHandler : STCommandHandlerBase
     {
         protected AuthPRequest _request;
         private uint _profileID;
@@ -47,7 +47,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                         FrindProfileByCDKeyHash();
                         break;
                     default:
-                        _errorCode = GStatsErrorCode.Database;
+                        _errorCode = STError.Database;
                         break;
                 }
             }
@@ -70,7 +70,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GStatsErrorCode.Database;
+                    _errorCode = STError.Database;
                     return;
                 }
                 _profileID = result.First();
@@ -85,7 +85,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                              select p.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GStatsErrorCode.Database;
+                    _errorCode = STError.Database;
                     return;
                 }
                 _profileID = result.First();
@@ -101,7 +101,7 @@ namespace StatsAndTracking.Handler.CommandHandler.AuthP
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GStatsErrorCode.Database;
+                    _errorCode = STError.Database;
                     return;
                 }
                 _profileID = result.First();

@@ -29,5 +29,7 @@
         <Folder Include="Network\Tcp\Server\" />
         <Folder Include="Network\Udp\Server\" />
         <Folder Include="Network\Udp\Client\" />
+        <Folder Include="Entity\Structure\" />
+        <Folder Include="Entity\Enumerate\" />
     </ItemGroup>
 </Project>

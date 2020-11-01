@@ -1,42 +1,39 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using NatNegotiation.Abstraction.SystemHandler.NatNegotiationManage;
-using NatNegotiation.Entity.Enumerate;
-using NatNegotiation.Entity.Structure.Packet;
+using NATNegotiation.Abstraction.BaseClass;
+using NATNegotiation.Entity.Enumerate;
+using NATNegotiation.Entity.Structure.Request;
+using NATNegotiation.Entity.Structure.Response;
+using NATNegotiation.Handler.SystemHandler.Manager;
 
-namespace NatNegotiation.Abstraction.BaseClass
+namespace NATNegotiation.Handler.CommandHandler
 {
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-    public class ReportHandler : NatNegCommandHandlerBase
+    public class ReportHandler : NNCommandHandlerBase
     {
-        protected ReportPacket _reportPacket;
-        public ReportHandler(ISession session, byte[] recv) : base(session, recv)
+        protected new ReportRequest _request;
+        public ReportHandler(ISession session, IRequest request) : base(session, request)
         {
-            _reportPacket = new ReportPacket();
-        }
-
-        protected override void CheckRequest()
-        {
-            _reportPacket.Parse(_recv);
+            _request = (ReportRequest)request;
         }
 
         protected override void DataOperation()
         {
             _session.UserInfo.SetIsGotReportPacketFlag();
 
-            if (_reportPacket.NatResult != NatNegotiationResult.Success)
+            if (_request.NatResult != NATNegotiationResult.Success)
             {
-                NatNegotiationManager.Negotiate(NatPortType.GP, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiationManager.Negotiate(NatPortType.NN1, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiationManager.Negotiate(NatPortType.NN2, _reportPacket.Version, _reportPacket.Cookie);
-                NatNegotiationManager.Negotiate(NatPortType.NN3, _reportPacket.Version, _reportPacket.Cookie);
+                NNManager.Negotiate(NatPortType.GP, _request.Version, _request.Cookie);
+                NNManager.Negotiate(NatPortType.NN1, _request.Version, _request.Cookie);
+                NNManager.Negotiate(NatPortType.NN2, _request.Version, _request.Cookie);
+                NNManager.Negotiate(NatPortType.NN3, _request.Version, _request.Cookie);
             }
         }
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _reportPacket.BuildResponse();
+            _sendingBuffer = new ReportResponse(_request).BuildResponse();
         }
     }
 }

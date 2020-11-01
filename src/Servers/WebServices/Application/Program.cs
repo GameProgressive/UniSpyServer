@@ -1,4 +1,4 @@
-using GameSpyLib.Entity.Enumerate;
+using GameSpyLib.Entity.Structure;
 using GameSpyLib.Logging;
 using Serilog.Events;
 using System;

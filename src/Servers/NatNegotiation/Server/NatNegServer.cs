@@ -1,9 +1,9 @@
 ﻿using GameSpyLib.Network;
-using NatNegotiation.Abstraction.BaseClass.CommandSwitcher;
+using NATNegotiation.Handler.CommandSwitcher;
 using System.Collections.Concurrent;
 using System.Net;
 
-namespace NatNegotiation.Server
+namespace NATNegotiation.Server
 {
     public class NatNegServer : TemplateUdpServer
     {
@@ -16,7 +16,7 @@ namespace NatNegotiation.Server
 
         public override bool Start()
         {
-            //new NatNegotiationPool();
+            //new NATNegotiationPool();
             return base.Start();
         }
 
@@ -35,7 +35,7 @@ namespace NatNegotiation.Server
                 Sessions.TryAdd(endPoint, session);
             }
 
-            NatNegCommandSwitcher.Switch(session, message);
+            NNCommandSwitcher.Switch(session, message);
         }
     }
 }

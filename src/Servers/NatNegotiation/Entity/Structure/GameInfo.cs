@@ -1,4 +1,4 @@
-﻿namespace NatNegotiation.Entity.Structure
+﻿namespace NATNegotiation.Entity.Structure
 {
     public class GameInfo
     {

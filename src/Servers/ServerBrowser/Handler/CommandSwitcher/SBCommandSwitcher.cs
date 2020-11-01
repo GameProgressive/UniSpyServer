@@ -13,7 +13,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
     {
         public static void Switch(ISession session, byte[] recv)
         {
-            if (recv.Take(6).SequenceEqual(NatNegotiation.Entity.Structure.Packet.BasePacket.MagicData))
+            if (recv.Take(6).SequenceEqual(NATNegotiation.Entity.Structure.Request.NNRequestBase.MagicData))
             {
                 new NatNegCookieHandler(session, recv).Handle();
                 return;

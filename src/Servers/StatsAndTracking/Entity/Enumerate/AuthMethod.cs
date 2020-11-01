@@ -1,4 +1,4 @@
-﻿namespace StatsAndTracking.Entity.Enumerate
+﻿namespace StatsTracking.Entity.Enumerate
 {
     public enum AuthMethod
     {

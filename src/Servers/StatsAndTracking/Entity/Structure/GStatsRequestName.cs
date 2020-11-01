@@ -1,4 +1,4 @@
-﻿namespace StatsAndTracking.Entity.Structure
+﻿namespace StatsTracking.Entity.Structure
 {
     public class GStatsRequestName
     {

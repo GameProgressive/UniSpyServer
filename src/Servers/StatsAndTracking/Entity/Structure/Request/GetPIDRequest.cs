@@ -1,10 +1,10 @@
-﻿using StatsAndTracking.Abstraction.BaseClass;
-using StatsAndTracking.Entity.Enumerate;
+﻿using StatsTracking.Abstraction.BaseClass;
+using StatsTracking.Entity.Enumerate;
 using System.Collections.Generic;
 
-namespace StatsAndTracking.Entity.Structure.Request
+namespace StatsTracking.Entity.Structure.Request
 {
-    public class GetPIDRequest : GStatsRequestBase
+    public class GetPIDRequest : STRequestBase
     {
         public string Nick { get; protected set; }
         public string KeyHash { get; protected set; }
@@ -13,17 +13,17 @@ namespace StatsAndTracking.Entity.Structure.Request
         {
         }
 
-        public override GStatsErrorCode Parse()
+        public override STError Parse()
         {
             var flag = base.Parse();
-            if (flag != GStatsErrorCode.NoError)
+            if (flag != STError.NoError)
             {
                 return flag;
             }
 
             if (!_request.ContainsKey("nick") || !_request.ContainsKey("keyhash"))
             {
-                return GStatsErrorCode.Parse;
+                return STError.Parse;
             }
 
             if (_request.ContainsKey("nick"))
@@ -36,10 +36,10 @@ namespace StatsAndTracking.Entity.Structure.Request
             }
             else
             {
-                return GStatsErrorCode.Parse;
+                return STError.Parse;
             }
 
-            return GStatsErrorCode.NoError;
+            return STError.NoError;
         }
     }
 }

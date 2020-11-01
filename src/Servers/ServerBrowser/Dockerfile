@@ -7,7 +7,7 @@ WORKDIR /src
 COPY ["src/Servers/ServerBrowser/ServerBrowser.csproj", "src/Servers/ServerBrowser/"]
 COPY ["src/Servers/QueryReport/QueryReport.csproj", "src/Servers/QueryReport/"]
 COPY ["src/Libraries/GameSpyLib/GameSpyLib.csproj", "src/Libraries/GameSpyLib/"]
-COPY ["src/Servers/NatNegotiation/NatNegotiation.csproj", "src/Servers/NatNegotiation/"]
+COPY ["src/Servers/NATNegotiation/NATNegotiation.csproj", "src/Servers/NATNegotiation/"]
 RUN dotnet restore "src/Servers/ServerBrowser/ServerBrowser.csproj"
 COPY . .
 WORKDIR "/src/src/Servers/ServerBrowser"

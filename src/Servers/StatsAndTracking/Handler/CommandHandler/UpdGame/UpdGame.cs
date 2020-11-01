@@ -1,13 +1,13 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using StatsAndTracking.Abstraction.BaseClass;
+using StatsTracking.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace StatsAndTracking.Handler.CommandHandler.UpdGame
+namespace StatsTracking.Handler.CommandHandler.UpdGame
 {
     /// <summary>
     /// Handles game snapshot and update game data
     /// </summary>
-    public class UpdGameHandler : GStatsCommandHandlerBase
+    public class UpdGameHandler : STCommandHandlerBase
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"

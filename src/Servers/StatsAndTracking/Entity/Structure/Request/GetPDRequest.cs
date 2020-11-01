@@ -1,12 +1,12 @@
-﻿using StatsAndTracking.Abstraction.BaseClass;
-using StatsAndTracking.Entity.Enumerate;
+﻿using StatsTracking.Abstraction.BaseClass;
+using StatsTracking.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 
-namespace StatsAndTracking.Entity.Structure.Request
+namespace StatsTracking.Entity.Structure.Request
 {
 
-    public class GetPDRequest : GStatsRequestBase
+    public class GetPDRequest : STRequestBase
     {
         public uint ProfileID { get; protected set; }
         public PersistStorageType StorageType { get; protected set; }
@@ -18,10 +18,10 @@ namespace StatsAndTracking.Entity.Structure.Request
             Keys = new List<string>();
         }
 
-        public override GStatsErrorCode Parse()
+        public override STError Parse()
         {
             var flag = base.Parse();
-            if (flag != GStatsErrorCode.NoError)
+            if (flag != STError.NoError)
             {
                 return flag;
             }
@@ -31,7 +31,7 @@ namespace StatsAndTracking.Entity.Structure.Request
                 uint profileID;
                 if (!uint.TryParse(_request["pid"], out profileID))
                 {
-                    return GStatsErrorCode.Parse;
+                    return STError.Parse;
                 }
                 ProfileID = profileID;
             }
@@ -41,7 +41,7 @@ namespace StatsAndTracking.Entity.Structure.Request
                 PersistStorageType storageType;
                 if (!Enum.TryParse(_request["ptype"], out storageType))
                 {
-                    return GStatsErrorCode.Parse;
+                    return STError.Parse;
                 }
 
                 StorageType = storageType;
@@ -53,14 +53,14 @@ namespace StatsAndTracking.Entity.Structure.Request
                 uint dataIndex;
                 if (!uint.TryParse(_request["dindex"], out dataIndex))
                 {
-                    return GStatsErrorCode.Parse;
+                    return STError.Parse;
                 }
                 DataIndex = dataIndex;
             }
 
             if (!_request.ContainsKey("keys"))
             {
-                return GStatsErrorCode.Parse;
+                return STError.Parse;
             }
 
             string keys = _request["keys"];
@@ -78,7 +78,7 @@ namespace StatsAndTracking.Entity.Structure.Request
                 GetAllDataFlag = false;
             }
 
-            return GStatsErrorCode.NoError;
+            return STError.NoError;
         }
     }
 }

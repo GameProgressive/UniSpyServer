@@ -1,30 +1,23 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using NatNegotiation.Entity.Enumerate;
-using NatNegotiation.Entity.Structure.Packet;
+using NATNegotiation.Abstraction.BaseClass;
+using NATNegotiation.Entity.Enumerate;
+using NATNegotiation.Entity.Structure.Request;
+using NATNegotiation.Entity.Structure.Response;
 
-namespace NatNegotiation.Abstraction.BaseClass
+namespace NATNegotiation.Handler.CommandHandler
 {
-    public class AddressCheckHandler : NatNegCommandHandlerBase
+    public class AddressCheckHandler : NNCommandHandlerBase
     {
-        protected InitPacket _initPacket;
-        public AddressCheckHandler(ISession session, byte[] recv) : base(session, recv)
+        protected new AddressRequest _request;
+        public AddressCheckHandler(ISession session, IRequest request) : base(session, request)
         {
-            _initPacket = new InitPacket();
-        }
-
-        protected override void CheckRequest()
-        {
-
-            _initPacket.Parse(_recv);
+            _request = (AddressRequest)request;
         }
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer =
-                _initPacket
-                .SetIPAndPortForResponse(_session.RemoteEndPoint)
-                .SetPacketType(NatPacketType.AddressReply)
-                .BuildResponse();
+            _sendingBuffer = new AddressResponse(_request, _session.RemoteEndPoint).BuildResponse();
+
 
             _session.UserInfo.SetIsGotAddressCheckPacketFlag().
                 UpdateLastPacketReceiveTime();

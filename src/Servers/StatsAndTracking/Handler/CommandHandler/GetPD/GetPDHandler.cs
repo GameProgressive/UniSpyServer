@@ -1,15 +1,15 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Database.DatabaseModel.MySql;
 using Newtonsoft.Json;
-using StatsAndTracking.Abstraction.BaseClass;
-using StatsAndTracking.Entity.Enumerate;
-using StatsAndTracking.Entity.Structure.Request;
+using StatsTracking.Abstraction.BaseClass;
+using StatsTracking.Entity.Enumerate;
+using StatsTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StatsAndTracking.Handler.CommandHandler.GetPD
+namespace StatsTracking.Handler.CommandHandler.GetPD
 {
-    public class GetPDHandler : GStatsCommandHandlerBase
+    public class GetPDHandler : STCommandHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
         protected GetPDRequest _request;
@@ -39,7 +39,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
 
                 if (result.Count() != 1)
                 {
-                    _errorCode = GStatsErrorCode.Database;
+                    _errorCode = STError.Database;
                     return;
                 }
                 else
@@ -63,7 +63,7 @@ namespace StatsAndTracking.Handler.CommandHandler.GetPD
                     }
                     else
                     {
-                        _errorCode = GStatsErrorCode.Database;
+                        _errorCode = STError.Database;
                         break;
                     }
                 }

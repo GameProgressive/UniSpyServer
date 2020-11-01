@@ -1,21 +1,12 @@
 ﻿using GameSpyLib.Abstraction.Interface;
+using NATNegotiation.Abstraction.BaseClass;
 
-namespace NatNegotiation.Abstraction.BaseClass.ConnectACK
+namespace NATNegotiation.Handler.CommandHandler
 {
-    public class ConnectACKHandler : NatNegCommandHandlerBase
+    public class ConnectACKHandler : NNCommandHandlerBase
     {
-        public ConnectACKHandler(ISession session, byte[] recv) : base(session, recv)
+        public ConnectACKHandler(ISession session, IRequest request) : base(session, request)
         {
-        }
-
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-        }
-
-        protected override void ConstructResponse()
-        {
-            base.ConstructResponse();
         }
 
         protected override void DataOperation()

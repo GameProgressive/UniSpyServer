@@ -1,9 +1,9 @@
 ﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Entity.Enumerate;
+using GameSpyLib.Entity.Structure;
 using GameSpyLib.Logging;
 using Serilog.Events;
 using System;
-namespace NatNegotiation.Application
+namespace NATNegotiation.Application
 {
     /// <summary>
     /// This class represents a RetroSpy Server program
@@ -18,7 +18,7 @@ namespace NatNegotiation.Application
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.NatNegotiation);
+                Manager = new ServerManager(RetroSpyServerName.NATNegotiation);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

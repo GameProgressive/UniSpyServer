@@ -1,38 +1,42 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using NatNegotiation.Abstraction.SystemHandler.NatNegotiationManage;
-using NatNegotiation.Entity.Enumerate;
-using NatNegotiation.Entity.Structure.Packet;
+using NATNegotiation.Abstraction.BaseClass;
+using NATNegotiation.Entity.Enumerate;
+using NATNegotiation.Entity.Structure.Request;
+using NATNegotiation.Entity.Structure.Response;
+using NATNegotiation.Handler.SystemHandler.Manager;
 
-namespace NatNegotiation.Abstraction.BaseClass
+namespace NATNegotiation.Handler.CommandHandler
 {
-    public class InitHandler : NatNegCommandHandlerBase
+    public class InitHandler : NNCommandHandlerBase
     {
-        protected InitPacket _initPacket;
-        public InitHandler(ISession session, byte[] recv) : base(session, recv)
+        protected new InitRequest _request;
+        public InitHandler(ISession session, IRequest request) : base(session, request)
         {
-            _initPacket = new InitPacket();
+            _request = (InitRequest)request;
         }
 
         protected override void CheckRequest()
         {
-            _initPacket.Parse(_recv);
+            _request.Parse();
 
-            string key = _session.RemoteEndPoint.ToString() + "-" + _initPacket.PortType.ToString();
+            string key = _session.RemoteEndPoint.ToString() + "-" + _request.PortType.ToString();
 
-            if (!NatNegotiationManager.SessionPool.TryGetValue(key, out _))
+            if (!NNManager.SessionPool.TryGetValue(key, out _))
             {
-                NatNegotiationManager.SessionPool.TryAdd(key, _session);
+                NNManager.SessionPool.TryAdd(key, _session);
             }
         }
 
         protected override void DataOperation()
         {
-            _session.UserInfo.Parse(_initPacket);
+            _session.UserInfo.Parse(_request);
         }
 
         protected override void ConstructResponse()
         {
-            _sendingBuffer = _initPacket
+            _sendingBuffer = new InitResponse(_request, _session.RemoteEndPoint).BuildResponse();
+
+                _request
                 .SetPacketType(NatPacketType.InitAck)
                 .BuildResponse();
         }
@@ -41,11 +45,11 @@ namespace NatNegotiation.Abstraction.BaseClass
         protected override void Response()
         {
             base.Response();
-            NatNegotiationManager
+            NNManager
                 .Negotiate(
-                _initPacket.PortType,
-                _initPacket.Version,
-                _initPacket.Cookie);
+                _request.PortType,
+                _request.Version,
+                _request.Cookie);
         }
     }
 }

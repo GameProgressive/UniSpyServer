@@ -1,11 +1,11 @@
 ﻿using GameSpyLib.Abstraction.Interface;
-using StatsAndTracking.Abstraction.BaseClass;
-using StatsAndTracking.Entity.Structure.Request;
+using StatsTracking.Abstraction.BaseClass;
+using StatsTracking.Entity.Structure.Request;
 using System.Collections.Generic;
 
-namespace StatsAndTracking.Handler.CommandHandler.Auth
+namespace StatsTracking.Handler.CommandHandler.Auth
 {
-    public class AuthHandler : GStatsCommandHandlerBase
+    public class AuthHandler : STCommandHandlerBase
     {
         //GameSpyLib.Encryption.Crc16 _crc16 = new GameSpyLib.Encryption.Crc16(GameSpyLib.Encryption.Crc16Mode.Standard);
         protected AuthRequest _request;

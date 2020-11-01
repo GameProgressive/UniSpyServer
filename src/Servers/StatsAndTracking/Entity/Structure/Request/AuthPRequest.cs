@@ -1,11 +1,11 @@
-﻿using StatsAndTracking.Abstraction.BaseClass;
-using StatsAndTracking.Entity.Enumerate;
+﻿using StatsTracking.Abstraction.BaseClass;
+using StatsTracking.Entity.Enumerate;
 using System.Collections.Generic;
 
-namespace StatsAndTracking.Entity.Structure.Request
+namespace StatsTracking.Entity.Structure.Request
 {
 
-    public class AuthPRequest : GStatsRequestBase
+    public class AuthPRequest : STRequestBase
 
     {
         public AuthMethod RequestType { get; protected set; }
@@ -19,10 +19,10 @@ namespace StatsAndTracking.Entity.Structure.Request
         {
         }
 
-        public override GStatsErrorCode Parse()
+        public override STError Parse()
         {
             var flag = base.Parse();
-            if (flag != GStatsErrorCode.NoError)
+            if (flag != STError.NoError)
             {
                 return flag;
             }
@@ -32,7 +32,7 @@ namespace StatsAndTracking.Entity.Structure.Request
                 uint profileID;
                 if (!uint.TryParse(_request["pid"], out profileID))
                 {
-                    return GStatsErrorCode.Parse;
+                    return STError.Parse;
                 }
                 ProfileID = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
@@ -51,10 +51,10 @@ namespace StatsAndTracking.Entity.Structure.Request
             }
             else
             {
-                return GStatsErrorCode.Parse;
+                return STError.Parse;
             }
 
-            return GStatsErrorCode.NoError;
+            return STError.NoError;
         }
     }
 }
