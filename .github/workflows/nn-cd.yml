@@ -1,9 +1,9 @@
-name: CD - GSTATS
+name: CD - NN
 
 on:
   push:
     paths:
-      - 'src/Servers/StatsAndTracking/**'
+      - 'src/Servers/NATNegotiation/**'
     branches:
       - master
       - candidate
@@ -34,21 +34,21 @@ jobs:
       DOCKER_HUB_KEY: ${{ secrets.DOCKER_HUB_KEY }}
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy GSTATS to staging
+      - name: Deploy NN to staging
         if: github.ref == 'refs/heads/candidate'
         uses: elgohr/Publish-Docker-Github-Action@2.12
         with:
-          name: gameprogressive/gstats
+          name: gameprogressive/nn
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/StatsAndTracking/Dockerfile
-      - name: Deploy GSTATS to production
+          dockerfile: ./src/Servers/NATNegotiation/Dockerfile
+      - name: Deploy NN to production
         if: github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@2.12
         with:
-          name: gameprogressive/gstats
+          name: gameprogressive/nn
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/StatsAndTracking/Dockerfile
+          dockerfile: ./src/Servers/NATNegotiation/Dockerfile

@@ -1,9 +1,9 @@
-name: CD - NatNeg
+name: CD - GS
 
 on:
   push:
     paths:
-      - 'src/Servers/NatNegotiation/**'
+      - 'src/Servers/GameStatus/**'
     branches:
       - master
       - candidate
@@ -34,21 +34,21 @@ jobs:
       DOCKER_HUB_KEY: ${{ secrets.DOCKER_HUB_KEY }}
     steps:
       - uses: actions/checkout@v2
-      - name: Deploy NatNeg to staging
+      - name: Deploy GS to staging
         if: github.ref == 'refs/heads/candidate'
         uses: elgohr/Publish-Docker-Github-Action@2.12
         with:
-          name: gameprogressive/natneg
+          name: gameprogressive/gstats
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/NatNegotiation/Dockerfile
-      - name: Deploy NatNeg to production
+          dockerfile: ./src/Servers/GameStatus/Dockerfile
+      - name: Deploy GS to production
         if: github.ref == 'refs/heads/master'
         uses: elgohr/Publish-Docker-Github-Action@2.12
         with:
-          name: gameprogressive/natneg
+          name: gameprogressive/gstats
           username: ${{ secrets.DOCKER_HUB_USER }}
           password: ${{ secrets.DOCKER_HUB_KEY }}
           tagging: true
-          dockerfile: ./src/Servers/NatNegotiation/Dockerfile
+          dockerfile: ./src/Servers/GameStatus/Dockerfile

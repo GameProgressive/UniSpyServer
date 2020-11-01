@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerBrowser", "src\Server
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servers", "Servers", "{9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStatus", "src\Servers\StatsAndTracking\GameStatus.csproj", "{1E16BA28-F6EA-4D85-98FC-73475764D8EA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameStatus", "src\Servers\GameStatus\GameStatus.csproj", "{1E16BA28-F6EA-4D85-98FC-73475764D8EA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CDKey", "src\Servers\CDKey\CDKey.csproj", "{C679E140-ED80-4D1E-BD94-C54C4158BDD5}"
 EndProject
