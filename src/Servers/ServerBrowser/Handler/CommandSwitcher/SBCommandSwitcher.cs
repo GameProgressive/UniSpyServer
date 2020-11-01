@@ -1,5 +1,6 @@
 ﻿using GameSpyLib.Abstraction.Interface;
 using GameSpyLib.Logging;
+using NATNegotiation.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
@@ -13,7 +14,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
     {
         public static void Switch(ISession session, byte[] recv)
         {
-            if (recv.Take(6).SequenceEqual(NATNegotiation.Entity.Structure.Request.NNRequestBase.MagicData))
+            if (recv.Take(6).SequenceEqual(NNRequestBase.MagicData))
             {
                 new NatNegCookieHandler(session, recv).Handle();
                 return;

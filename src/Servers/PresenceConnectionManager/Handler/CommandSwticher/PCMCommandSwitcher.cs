@@ -16,18 +16,18 @@ namespace PresenceConnectionManager.Abstraction
 {
     public class PCMCommandSwitcher
     {
-        public static void Switch(ISession session, string message)
+        public static void Switch(ISession session, string rawRequest)
         {
             try
             {
                 //message = @"\login\\challenge\VPUKQ5CiXSqtt0EdOKMwwRvf3CHqxrah\user\borger@mike@vale.ski\partnerid\0\response\4ec2535ddba4773168337c7b5f9588e7\firewall\1\port\0\productid\10936\gamename\greconawf2\namespaceid\0\sdkrevision\3\id\1\final\";
-                message = PCMRequestBase.NormalizeRequest(message);
-                if (message[0] != '\\')
+                rawRequest = PCMRequestBase.NormalizeRequest(rawRequest);
+                if (rawRequest[0] != '\\')
                 {
                     LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
                     return;
                 }
-                string[] commands = message.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
+                string[] commands = rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (string command in commands)
                 {
@@ -94,7 +94,7 @@ namespace PresenceConnectionManager.Abstraction
                         case PCMRequestName.InviteTo:
                             throw new NotImplementedException();
                         default:
-                            LogWriter.UnknownDataRecieved(message);
+                            LogWriter.UnknownDataRecieved(rawRequest);
                             break;
                     }
                 }

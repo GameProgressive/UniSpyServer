@@ -18,9 +18,9 @@ namespace PresenceConnectionManager.Abstraction.CommandSwticher
 {
     public class PCMRequestSerializer
     {
-        public static List<object> Serialize(ISession session, string rawRequest)
+        public static List<IRequest> Serialize(ISession session, string rawRequest)
         {
-            List<object> requestList = new List<object>();
+            List<IRequest> requestList = new List<IRequest>();
             rawRequest = PCMRequestBase.NormalizeRequest(rawRequest);
             if (rawRequest[0] != '\\')
             {
@@ -31,13 +31,17 @@ namespace PresenceConnectionManager.Abstraction.CommandSwticher
             foreach (var command in commands)
             {
                 IRequest request = GenerateRequest(command);
+                if (request == null)
+                {
+                    continue;
+                }
                 var flag = (GPError)request.Parse();
                 if (flag != GPError.NoError)
                 {
                     session.SendAsync(ErrorMsg.BuildGPErrorMsg(flag));
                     continue;
                 }
-                requestList.Add(request.GetInstance());
+                requestList.Add(request);
             }
             return requestList;
         }
