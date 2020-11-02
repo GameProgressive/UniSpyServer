@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+        <PackageReference Include="System.Private.ServiceModel" Version="4.7.0" />
+        <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="Description\" />
+        <Folder Include="Abstraction\Interface\" />
+        <Folder Include="Serializer\" />
+        <Folder Include="MiddlewareComponet\" />
+        <Folder Include="Reader\" />
+        <Folder Include="Handler\" />
+    </ItemGroup>
+</Project>

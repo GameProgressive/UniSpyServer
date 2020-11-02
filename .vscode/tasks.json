@@ -8,7 +8,7 @@
             "args": [
                 "build",
                 "-o",
-                "${workspaceFolder}/Debug/bin/",
+                "${workspaceFolder}/build/Debug/bin/",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <ApplicationIcon>..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
+    <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Entity\Enumerate\" />
+    <Folder Include="Abstraction\Interface\" />
+    <Folder Include="Entity\Structure\User\" />
+    <Folder Include="Handler\CommandHandler\General\" />
+    <Folder Include="Handler\CommandHandler\Channel\" />
+    <Folder Include="Handler\CommandHandler\Message\" />
+  </ItemGroup>
+</Project>
