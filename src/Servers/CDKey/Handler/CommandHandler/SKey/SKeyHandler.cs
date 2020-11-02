@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 
 namespace CDKey.Handler.CommandHandler.SKey

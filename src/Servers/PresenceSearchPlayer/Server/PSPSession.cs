@@ -1,9 +1,9 @@
-﻿using GameSpyLib.Network;
+﻿using UniSpyLib.Network;
 using PresenceSearchPlayer.Handler.CommandSwitcher;
 
 namespace PresenceSearchPlayer
 {
-    public class PSPSession : TemplateTcpSession
+    public class PSPSession : TCPSessionBase
     {
         public PSPSession(PSPServer server) : base(server)
         {

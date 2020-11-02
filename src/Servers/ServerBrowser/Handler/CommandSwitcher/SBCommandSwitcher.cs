@@ -1,6 +1,7 @@
-﻿using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Logging;
-using ServerBrowser.Entity.Enumerator;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
+using NATNegotiation.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage;
 using ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo;
 using ServerBrowser.Handler.CommandHandler.NatNeg;
@@ -13,7 +14,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
     {
         public static void Switch(ISession session, byte[] recv)
         {
-            if (recv.Take(6).SequenceEqual(NatNegotiation.Entity.Structure.Packet.BasePacket.MagicData))
+            if (recv.Take(6).SequenceEqual(NNRequestBase.MagicData))
             {
                 new NatNegCookieHandler(session, recv).Handle();
                 return;
@@ -23,7 +24,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             switch ((SBClientRequestType)recv[2])
             {
                 case SBClientRequestType.ServerListRequest:
-                    UpdateOptionSwitcher.Switch(session, recv);
+                    SBUpdateOptionSwitcher.Switch(session, recv);
                     break;
                 case SBClientRequestType.ServerInfoRequest:
                     new ServerInfoHandler(session, recv).Handle();

@@ -4,7 +4,7 @@
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <NoWin32Manifest>true</NoWin32Manifest>
-        <ApplicationIcon>..\..\..\common\Icon\RetroSpy_Logo.ico</ApplicationIcon>
+        <ApplicationIcon>..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
@@ -23,11 +23,11 @@
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
+        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Entity\Structure\" />
-      <Folder Include="Entity\BaseClass\" />
+      <Folder Include="Abstraction\BaseClass\" />
       <Folder Include="Entity\Structure\Request\" />
     </ItemGroup>
 </Project>

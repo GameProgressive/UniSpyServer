@@ -1,18 +1,18 @@
-﻿using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Encryption;
-using GameSpyLib.Logging;
-using PresenceConnectionManager.Entity.Enumerator;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyLib.Encryption;
+using UniSpyLib.Logging;
+using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Entity.Structure.Request.General;
 using PresenceConnectionManager.Structure;
 using PresenceConnectionManager.Structure.Data;
-using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.General
+namespace PresenceConnectionManager.Abstraction.BaseClass.General
 {
     internal class LoginDBResult
     {

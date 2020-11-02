@@ -16,7 +16,7 @@
     </PropertyGroup>
     <PropertyGroup>
         <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
-        <ApplicationIcon>..\..\..\common\Icon\RetroSpy_Logo.ico</ApplicationIcon>
+        <ApplicationIcon>..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
       <ExternalConsole>true</ExternalConsole>
@@ -71,7 +71,7 @@
             <GlobalPropertiesToRemove>
             </GlobalPropertiesToRemove>
         </ProjectReference>
-        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj">
+        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj">
             <GlobalPropertiesToRemove>
             </GlobalPropertiesToRemove>
         </ProjectReference>

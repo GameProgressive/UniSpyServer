@@ -1,13 +1,13 @@
-﻿using GameSpyLib.MiscMethod;
-using PresenceConnectionManager.Entity.BaseClass;
-using PresenceConnectionManager.Entity.Enumerator;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using UniSpyLib.MiscMethod;
+using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class UpdateProRequest : PCMRequest
+    public class UpdateProRequest : PCMRequestBase
     {
         public UpdateProRequest(Dictionary<string, string> recv) : base(recv)
         {

@@ -1,8 +1,8 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using System;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.Profile
+namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
 {
     public class RemoveBlockHandler : PCMCommandHandlerBase
     {

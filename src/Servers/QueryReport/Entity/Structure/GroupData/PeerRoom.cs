@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using UniSpyLib.Database.DatabaseModel.MySql;
 using System;
 using System.Collections.Generic;
 

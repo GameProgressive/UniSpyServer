@@ -1,0 +1,54 @@
+name: CD - GS
+
+on:
+  push:
+    paths:
+      - 'src/Servers/GameStatus/**'
+    branches:
+      - master
+      - candidate
+
+jobs:
+  build:
+    name: Test on dotnet core v${{ matrix.dotnetcore_version }} (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        dotnetcore_version: ['3.1.102']
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core ${{ matrix.dotnetcore_version }}
+        uses: actions/setup-dotnet@v1.4.0
+        with:
+          dotnet-version: ${{ matrix.dotnetcore_version }}
+      - name: Building project
+        run: dotnet build
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_HUB_USER: ${{ secrets.DOCKER_HUB_USER }}
+      DOCKER_HUB_KEY: ${{ secrets.DOCKER_HUB_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy GS to staging
+        if: github.ref == 'refs/heads/candidate'
+        uses: elgohr/Publish-Docker-Github-Action@2.12
+        with:
+          name: gameprogressive/gstats
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_KEY }}
+          tagging: true
+          dockerfile: ./src/Servers/GameStatus/Dockerfile
+      - name: Deploy GS to production
+        if: github.ref == 'refs/heads/master'
+        uses: elgohr/Publish-Docker-Github-Action@2.12
+        with:
+          name: gameprogressive/gstats
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_KEY }}
+          tagging: true
+          dockerfile: ./src/Servers/GameStatus/Dockerfile

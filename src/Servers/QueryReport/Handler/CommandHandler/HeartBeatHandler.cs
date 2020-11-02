@@ -1,40 +1,36 @@
-﻿using GameSpyLib.Common.Entity.Interface;
-using QueryReport.Entity.Enumerator;
+﻿using UniSpyLib.Abstraction.Interface;
+using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Packet;
+using QueryReport.Entity.Structure.Request;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Structure.Response;
 
 namespace QueryReport.Handler.CommandHandler.HeartBeat
 {
     public class HeartBeatHandler : QRCommandHandlerBase
     {
-        private GameServer _gameServer;
-        private HeartBeatReportType _reportType;
-        private string _dataPartition, _serverData, _playerData, _teamData;
-        private int _playerPos, _teamPos;
-        private int _playerLenth, _teamLength;
+        protected GameServer _gameServer;
+        protected HeartBeatReportType _reportType;
+        protected string _dataPartition, _serverData, _playerData, _teamData;
+        protected int _playerPos, _teamPos;
+        protected int _playerLenth, _teamLength;
+        protected new HeartBeatRequest _request;
 
-        public HeartBeatHandler(ISession session, byte[] recv) : base(session, recv)
+        public HeartBeatHandler(ISession session, IRequest request) : base(session, request)
         {
+            _request = (HeartBeatRequest)request;
         }
 
         protected override void CheckRequest()
         {
             base.CheckRequest();
 
-            BasePacket basePacket = new BasePacket();
-
-            if (!basePacket.Parse(_recv))
-            {
-                _errorCode = QRErrorCode.Parse;
-                return;
-            }
-
             //Save server information.
-            _dataPartition = Encoding.ASCII.GetString(_recv.Skip(5).ToArray());
+            _dataPartition = Encoding.ASCII.GetString(_request.RawRequest.Skip(5).ToArray());
 
             _playerPos = _dataPartition.IndexOf("player_\0", StringComparison.Ordinal);
             _teamPos = _dataPartition.IndexOf("team_t\0", StringComparison.Ordinal);
@@ -58,7 +54,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
                 return;
             }
 
-            _session.SetInstantKey(basePacket.InstantKey);
+            _session.SetInstantKey(_request.InstantKey);
         }
 
         protected override void DataOperation()
@@ -100,9 +96,8 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         protected override void ConstructeResponse()
         {
-            ChallengePacket packet = new ChallengePacket();
-            packet.Parse(_session.RemoteEndPoint, _recv);
-            _sendingBuffer = packet.BuildResponse();
+            HeartBeatResponse response = new HeartBeatResponse(_session,_request);
+            _sendingBuffer = response.BuildResponse();
         }
 
         private void ParseServerTeamPlayerData()

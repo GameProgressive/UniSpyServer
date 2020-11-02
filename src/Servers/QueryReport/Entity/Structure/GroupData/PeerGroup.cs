@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Extensions;
+﻿using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyLib.Extensions;
 using System.Collections.Generic;
 
 namespace QueryReport.Entity.Structure.Group

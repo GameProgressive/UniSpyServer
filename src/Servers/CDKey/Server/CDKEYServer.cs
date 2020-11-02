@@ -1,7 +1,7 @@
 ﻿using CDKey.Handler.CommandSwitcher;
-using GameSpyLib.Encryption;
-using GameSpyLib.Logging;
-using GameSpyLib.Network;
+using UniSpyLib.Encryption;
+using UniSpyLib.Logging;
+using UniSpyLib.Network;
 using Serilog.Events;
 using System;
 using System.Collections.Concurrent;
@@ -9,7 +9,7 @@ using System.Net;
 
 namespace CDKey.Server
 {
-    public class CDKeyServer : TemplateUdpServer
+    public class CDKeyServer : UDPServerBase
     {
         protected readonly ConcurrentDictionary<EndPoint, CDKeySession> Sessions
      = new ConcurrentDictionary<EndPoint, CDKeySession>();

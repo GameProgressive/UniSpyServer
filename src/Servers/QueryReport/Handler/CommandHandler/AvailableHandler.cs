@@ -1,5 +1,9 @@
-﻿using GameSpyLib.Common.Entity.Interface;
-using QueryReport.Entity.Enumerator;
+﻿using System.Linq;
+using UniSpyLib.Abstraction.Interface;
+using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Enumerate;
+using QueryReport.Entity.Structure.Request;
+using QueryReport.Entity.Structure.Response;
 
 namespace QueryReport.Handler.CommandHandler.Available
 {
@@ -8,20 +12,18 @@ namespace QueryReport.Handler.CommandHandler.Available
     /// </summary>
     public class AvailableHandler : QRCommandHandlerBase
     {
-        private static readonly byte[] AvailableReply = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
-        private static readonly byte[] AvailableCheckRequestPrefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
-        private static readonly byte AvailableCheckRequestPostfix = 0x00;
-
-        public AvailableHandler(ISession session, byte[] recv) : base(session, recv)
+        protected new AvaliableRequest _request;
+        public AvailableHandler(ISession session, IRequest request) : base(session, request)
         {
+            _request = (AvaliableRequest)request;
         }
 
         protected override void CheckRequest()
         {
             //prefix check
-            for (int i = 0; i < AvailableCheckRequestPrefix.Length; i++)
+            for (int i = 0; i < AvaliableRequest.Prefix.Length; i++)
             {
-                if (_recv[i] != AvailableCheckRequestPrefix[i])
+                if (_request.RawRequest[i] != AvaliableRequest.Prefix[i])
                 {
                     _errorCode = QRErrorCode.Parse;
                     return;
@@ -29,7 +31,7 @@ namespace QueryReport.Handler.CommandHandler.Available
             }
 
             //postfix check
-            if (_recv[_recv.Length - 1] != AvailableCheckRequestPostfix)
+            if (_request.RawRequest[_request.RawRequest.Length - 1] != AvaliableRequest.Postfix)
             {
                 _errorCode = QRErrorCode.Parse;
                 return;
@@ -38,11 +40,7 @@ namespace QueryReport.Handler.CommandHandler.Available
 
         protected override void ConstructeResponse()
         {
-            _sendingBuffer = new byte[7];
-            AvailableReply.CopyTo(_sendingBuffer, 0);
-
-            // NOTE: Change this if you want to make the server not avaliable.
-            _sendingBuffer[6] = (byte)ServerAvailability.Available;
+            _sendingBuffer = new AvaliableResponse().BuildResponse();
         }
     }
 }

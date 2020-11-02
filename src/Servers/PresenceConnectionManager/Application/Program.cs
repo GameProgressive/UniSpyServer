@@ -1,5 +1,6 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Entity.Structure;
+using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
 
@@ -10,15 +11,12 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     internal class Program
     {
-        private static ServerManager Manager;
-
         private static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.PresenceConnectionManager);
-                Manager.Start();
+                new ServerManager(UniSpyServerName.PCM).Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)

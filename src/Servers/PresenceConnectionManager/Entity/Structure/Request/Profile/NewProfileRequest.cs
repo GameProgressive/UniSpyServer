@@ -1,10 +1,10 @@
-﻿using PresenceConnectionManager.Entity.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class NewProfileRequest : PCMRequest
+    public class NewProfileRequest : PCMRequestBase
     {
         //create a new profile with new nick 
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"

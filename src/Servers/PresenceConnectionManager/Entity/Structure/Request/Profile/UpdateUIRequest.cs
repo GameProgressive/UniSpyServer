@@ -1,10 +1,10 @@
-﻿using PresenceConnectionManager.Entity.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class UpdateUIRequest : PCMRequest
+    public class UpdateUIRequest : PCMRequestBase
     {
         public UpdateUIRequest(Dictionary<string, string> recv) : base(recv)
         {

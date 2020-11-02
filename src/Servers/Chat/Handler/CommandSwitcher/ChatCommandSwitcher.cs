@@ -1,7 +1,6 @@
-﻿using Chat.Entity.Structure.ChatCommand;
-using Chat.Handler.CommandHandler;
-using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Logging;
+﻿using Chat.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
 using System.Linq;

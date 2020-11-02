@@ -1,10 +1,10 @@
-﻿using PresenceConnectionManager.Entity.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class AddBlockRequest : PCMRequest
+    public class AddBlockRequest : PCMRequestBase
     {
         public uint ProfileID;
         public AddBlockRequest(Dictionary<string, string> recv) : base(recv)

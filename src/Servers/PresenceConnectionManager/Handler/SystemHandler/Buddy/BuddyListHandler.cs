@@ -1,10 +1,10 @@
-﻿using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Database.DatabaseModel.MySql;
-using PresenceConnectionManager.Handler.CommandHandler;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
+using PresenceConnectionManager.Abstraction.BaseClass;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Handler.SystemHandler
+namespace PresenceConnectionManager.Abstraction.SystemHandler
 {
     public class BuddyListHandler : PCMCommandHandlerBase
     {

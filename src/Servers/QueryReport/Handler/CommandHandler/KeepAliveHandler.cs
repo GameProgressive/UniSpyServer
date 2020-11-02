@@ -1,6 +1,8 @@
-﻿using GameSpyLib.Common.Entity.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
+using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Packet;
+using QueryReport.Entity.Structure.Request;
+using QueryReport.Entity.Enumerate;
 using QueryReport.Server;
 using System;
 using System.Linq;
@@ -9,27 +11,26 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 {
     public class KeepAliveHandler : QRCommandHandlerBase
     {
-        public KeepAliveHandler(ISession session, byte[] recv) : base(session, recv)
+        protected new KeepAliveRequest _request;
+        public KeepAliveHandler(ISession session, IRequest request) : base(session, request)
         {
+            _request = (KeepAliveRequest)request;
         }
 
         protected override void ConstructeResponse()
         {
-
-            KeepAlivePacket packet = new KeepAlivePacket();
-            packet.Parse(_recv);
-
-            if (_session.InstantKey != packet.InstantKey)
+            if (_session.InstantKey != _request.InstantKey)
             {
-                _session.SetInstantKey(packet.InstantKey);
+                _session.SetInstantKey(_request.InstantKey);
             }
 
-            _sendingBuffer = packet.BuildResponse();
+            _sendingBuffer = new QRResponseBase(_request).BuildResponse();
+
             QRSession client = (QRSession)_session.GetInstance();
             var result = GameServer.GetServers(client.RemoteEndPoint);
             if (result.Count != 1)
             {
-                _errorCode = Entity.Enumerator.QRErrorCode.Database;
+                _errorCode = QRErrorCode.Database;
                 return;
             }
 

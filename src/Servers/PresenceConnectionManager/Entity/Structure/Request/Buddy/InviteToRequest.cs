@@ -1,10 +1,10 @@
-﻿using PresenceConnectionManager.Entity.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class InviteToRequest : PCMRequest
+    public class InviteToRequest : PCMRequestBase
     {
         public uint ProductID { get; protected set; }
         public uint ProfileID { get; protected set; }

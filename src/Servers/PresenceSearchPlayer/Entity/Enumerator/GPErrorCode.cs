@@ -1,4 +1,4 @@
-﻿namespace PresenceSearchPlayer.Entity.Enumerator
+﻿namespace PresenceSearchPlayer.Entity.Enumerate
 {
     public enum GPError : uint
     {

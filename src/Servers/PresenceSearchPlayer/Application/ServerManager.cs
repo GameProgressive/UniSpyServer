@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Extensions;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
 using System;
 using System.Net;
 
@@ -22,7 +22,7 @@ namespace PresenceSearchPlayer
         /// Starts a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
-        protected override void StartServer(GameSpyLib.RetroSpyConfig.ServerConfig cfg)
+        protected override void StartServer(UniSpyLib.UniSpyConfig.ServerConfig cfg)
         {
             if (cfg.Name == ServerName)
             {

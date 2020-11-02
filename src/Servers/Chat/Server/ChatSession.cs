@@ -1,18 +1,18 @@
-﻿using Chat.Entity.Structure.ChatUser;
+﻿using Chat.Entity.Structure.User;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Handler.SystemHandler.Encryption;
-using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
-using GameSpyLib.Network;
+using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
+using UniSpyLib.Network;
 using Serilog.Events;
 using System;
 using System.Text;
 
 namespace Chat.Server
 {
-    public class ChatSession : TemplateTcpSession
+    public class ChatSession : TCPSessionBase
     {
         public ChatUserInfo UserInfo { get; protected set; }
 

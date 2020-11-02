@@ -1,10 +1,10 @@
-﻿using PresenceConnectionManager.Entity.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class GetProfileRequest : PCMRequest
+    public class GetProfileRequest : PCMRequestBase
     {
         public uint ProfileID { get; protected set; }
         public GetProfileRequest(Dictionary<string, string> recv) : base(recv)

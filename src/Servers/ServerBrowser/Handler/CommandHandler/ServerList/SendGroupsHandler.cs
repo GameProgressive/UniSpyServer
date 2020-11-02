@@ -1,7 +1,8 @@
-﻿using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Extensions;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
 using QueryReport.Entity.Structure.Group;
-using ServerBrowser.Entity.Enumerator;
+using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Text;

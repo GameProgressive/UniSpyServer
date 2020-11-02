@@ -1,4 +1,4 @@
-# RetroSpy Server
+# UniSpy Server
 
 ![Lisence](https://img.shields.io/github/license/gameprogressive/retrospyserver)
 ![platforms](https://img.shields.io/badge/platform-win32%20%7C%20win64%20%7C%20linux%20%7C%20osx-brightgreen.svg)
@@ -6,9 +6,9 @@
 
 
 
-RetroSpy is a GameSpy Project that aims to create GameSpy 2011/2012 services.
+UniSpy is a GameSpy Project that aims to create GameSpy 2011/2012 services.
 
-The server is written in C#, it's inspired by OpenSpy and it's a forked project of BattleSpy (The content inside GameSpyLib/).
+The server is written in C#, it's inspired by OpenSpy and it's a project that references BattleSpy.
 
 See the [wiki](https://github.com/GameProgressive/RetroSpyServer/wiki) for more information about compiling and creating a RetroSpy Server.
 
@@ -22,4 +22,4 @@ If you have any issue, suggestion or would like to contribute you can connect wi
 * [NetCoreServer](https://github.com/chronoxor/NetCoreServer) for their Tcp and Udp server.
 
 ### GameSpy SDK document
-If you are interested in GameSpy sdk, please take a look at our document [GameSpyDoc](https://github.com/GameProgressive/GameSpyDocs/blob/master/GameSpy%20Research/Research%20On%20GameSpy%20Protocol.pdf) and we would love to hear your advice.
+If you are interested in GameSpy sdk, please take a look at our document [GameSpyDoc](https://github.com/GameProgressive/GameSpyDocs/blob/master/GameSpy%20Research/Research%20On%20GameSpy%20Protocol.pdf) and we would love to hear your advices.

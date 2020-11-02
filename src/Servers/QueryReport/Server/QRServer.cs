@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Network;
+﻿using UniSpyLib.Network;
 using QueryReport.Handler.CommandSwitcher;
 using QueryReport.Handler.SystemHandler.NatNegCookieManage;
 using QueryReport.Handler.SystemHandler.PeerSystem;
@@ -8,7 +8,7 @@ using System.Net;
 
 namespace QueryReport.Server
 {
-    public class QRServer : TemplateUdpServer
+    public class QRServer : UDPServerBase
     {
 
 

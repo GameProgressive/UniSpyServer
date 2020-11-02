@@ -1,6 +1,6 @@
-﻿using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
-using QueryReport.Entity.Enumerator;
+﻿using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
+using QueryReport.Entity.Enumerate;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;

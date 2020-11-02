@@ -1,5 +1,5 @@
-﻿//using GameSpyLib.Common;
-//using PresenceSearchPlayer.Enumerator;
+﻿//using UniSpyLib.Common;
+//using PresenceSearchPlayer.Enumerate;
 //using System;
 //using System.Collections.Generic;
 

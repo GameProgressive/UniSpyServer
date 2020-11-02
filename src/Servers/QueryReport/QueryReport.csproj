@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <ApplicationIcon>..\..\..\common\Icon\RetroSpy_Logo.ico</ApplicationIcon>
+        <ApplicationIcon>..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
@@ -24,7 +24,7 @@
         <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Entity\Structure\Packet\" />
+        <Folder Include="Entity\Structure\Request\" />
         <Folder Include="Handler\SystemHandler\QRSessionManage\" />
         <Folder Include="Handler\SystemHandler\GeoIPManage\" />
         <Folder Include="Handler\SystemHandler\ErrorMessage\" />
@@ -33,10 +33,11 @@
         <Folder Include="Handler\SystemHandler\PeerSystem\" />
         <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
         <Folder Include="Entity\Structure\NatNeg\" />
-        <Folder Include="Entity\BaseClass\" />
+        <Folder Include="Abstraction\BaseClass\" />
         <Folder Include="Handler\SystemHandler\ServerList\" />
+        <Folder Include="Entity\Structure\Response\" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
+        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
 </Project>

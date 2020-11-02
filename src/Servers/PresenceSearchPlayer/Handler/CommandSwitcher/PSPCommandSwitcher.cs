@@ -1,6 +1,5 @@
-﻿using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using UniSpyLib.Logging;
+using UniSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Structure;
 using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;
@@ -45,32 +44,32 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
 
                     switch (recv.Keys.First())
                     {
-                        case PSPRequestName.SearchAccount:
+                        case PSPRequestName.Search:
                             new SearchHandler(session, recv).Handle();
                             break;
-                        case PSPRequestName.EmailValidCheck:
+                        case PSPRequestName.Valid:
                             new ValidHandler(session, recv).Handle();
                             break;
-                        case PSPRequestName.SearchByNickName:
+                        case PSPRequestName.Nicks:
                             new NicksHandler(session, recv).Handle();
                             break;
-                        case PSPRequestName.PlayerSearch:
+                        case PSPRequestName.PMatch:
                             //    PmatchHandler pmatch = new PmatchHandler(recv);
                             //    pmatch.Handle(session);
                             break;
-                        case PSPRequestName.CheckAccountValidation:
+                        case PSPRequestName.Check:
                             new CheckHandler(session, recv).Handle();
                             break;
-                        case PSPRequestName.CreateNewUser:
+                        case PSPRequestName.NewUser:
                             new NewUserHandler(session, recv).Handle();
                             break;
-                        case PSPRequestName.SearchUserByUniqueNickName:
+                        case PSPRequestName.SearchUnique:
                             new SearchUniqueHandler(session, recv).Handle();
                             break;
-                        case PSPRequestName.SearchUsersInformation:
+                        case PSPRequestName.Others:
                             new OthersHandler(session, recv).Handle();
                             break;
-                        case PSPRequestName.SearchFriendList:
+                        case PSPRequestName.OtherList:
                             new OthersListHandler(session, recv).Handle();
                             break;
                         case PSPRequestName.UniqueSearch:

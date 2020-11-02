@@ -1,11 +1,11 @@
-﻿using GameSpyLib.Network;
+﻿using UniSpyLib.Network;
 using System.Net;
 
 namespace CDKey.Server
 {
-    public class CDKeySession : TemplateUdpSession
+    public class CDKeySession : UDPSessionBase
     {
-        public CDKeySession(TemplateUdpServer server, EndPoint endPoint) : base(server, endPoint)
+        public CDKeySession(UDPServerBase server, EndPoint endPoint) : base(server, endPoint)
         {
         }
     }

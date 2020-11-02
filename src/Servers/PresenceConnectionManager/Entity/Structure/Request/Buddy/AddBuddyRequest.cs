@@ -1,10 +1,10 @@
-﻿using PresenceConnectionManager.Entity.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
-    public class AddBuddyRequest : PCMRequest
+    public class AddBuddyRequest : PCMRequestBase
     {
         public uint FriendProfileID { get; protected set; }
         public string AddReason { get; protected set; }

@@ -5,7 +5,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <StartupObject>
         </StartupObject>
-        <ApplicationIcon>..\..\..\common\Icon\RetroSpy_Logo.ico</ApplicationIcon>
+        <ApplicationIcon>..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
         <NoWin32Manifest>true</NoWin32Manifest>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..\..</DockerfileContext>
@@ -31,16 +31,12 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
-        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
+        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Entity\Interface\" />
-        <Folder Include="Entity\Structure\Request\" />
-        <Folder Include="Entity\BaseClass\" />
+        <Folder Include="Abstraction\Interface\" />
         <Folder Include="Entity\Structure\Data\" />
         <Folder Include="Entity\Structure\Request\Buddy\" />
-        <Folder Include="Entity\Structure\Request\General\" />
-        <Folder Include="Entity\Structure\Request\Profile\" />
         <Folder Include="Handler\SystemHandler\Buddy\" />
     </ItemGroup>
     <ItemGroup>

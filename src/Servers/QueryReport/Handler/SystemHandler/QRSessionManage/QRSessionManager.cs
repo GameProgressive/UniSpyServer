@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Common.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
 using QueryReport.Server;
 using System.Collections.Concurrent;
 using System.Net;

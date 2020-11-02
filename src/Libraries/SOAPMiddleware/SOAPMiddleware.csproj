@@ -16,9 +16,8 @@
         <PackageReference Include="System.ServiceModel.Primitives" Version="4.7.0" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Entity\" />
-        <Folder Include="Entity\Description\" />
-        <Folder Include="Entity\Interface\" />
+        <Folder Include="Description\" />
+        <Folder Include="Abstraction\Interface\" />
         <Folder Include="Serializer\" />
         <Folder Include="MiddlewareComponet\" />
         <Folder Include="Reader\" />

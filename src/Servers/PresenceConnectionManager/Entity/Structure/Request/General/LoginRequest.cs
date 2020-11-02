@@ -1,13 +1,13 @@
-﻿using GameSpyLib.Logging;
-using PresenceConnectionManager.Entity.BaseClass;
-using PresenceConnectionManager.Entity.Enumerator;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using UniSpyLib.Logging;
+using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.General
 {
-    public class LoginRequest : PCMRequest
+    public class LoginRequest : PCMRequestBase
     {
         public string UserChallenge { get; protected set; }
         public string Response { get; protected set; }

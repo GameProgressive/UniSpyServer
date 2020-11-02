@@ -1,12 +1,12 @@
 ﻿using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
-using GameSpyLib.Network;
+using UniSpyLib.Network;
 using NetCoreServer;
 using System.Net;
 
 namespace Chat.Server
 {
-    public class ChatServer : TemplateTcpServer
+    public class ChatServer : TCPServerBase
     {
         public const string ServerDomain = "rspy.cc";
         //we hard coded random key here for simplisity

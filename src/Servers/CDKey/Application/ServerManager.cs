@@ -1,7 +1,7 @@
 ﻿using CDKey.Server;
-using GameSpyLib.Common;
-using GameSpyLib.Extensions;
-using GameSpyLib.RetroSpyConfig;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
+using UniSpyLib.UniSpyConfig;
 using System;
 using System.Net;
 namespace CDKey.Application

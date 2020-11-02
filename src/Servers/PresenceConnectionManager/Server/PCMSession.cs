@@ -1,8 +1,8 @@
-﻿using GameSpyLib.Logging;
-using GameSpyLib.Network;
-using PresenceConnectionManager.Entity.Enumerator;
+﻿using UniSpyLib.Logging;
+using UniSpyLib.Network;
+using PresenceConnectionManager.Abstraction;
+using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;
-using PresenceConnectionManager.Handler;
 using PresenceConnectionManager.Structure.Data;
 using Serilog.Events;
 using System;
@@ -16,7 +16,7 @@ namespace PresenceConnectionManager
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    public class PCMSession : TemplateTcpSession
+    public class PCMSession : TCPSessionBase
     {
         /// <summary>
         /// Indicates whether this player successfully completed the login process
@@ -30,7 +30,7 @@ namespace PresenceConnectionManager
 
         public UserData UserData;
 
-        public PCMSession(TemplateTcpServer server) : base(server)
+        public PCMSession(TCPServerBase server) : base(server)
         {
             UserData = new UserData();
             CreateTime = new DateTime();

@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using UniSpyLib.Database.DatabaseModel.MySql;
 using QueryReport.Entity.Structure.Group;
 using System.Collections.Generic;
 using System.Linq;

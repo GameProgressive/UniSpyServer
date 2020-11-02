@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Extensions;
-using ServerBrowser.Entity.Enumerator;
+﻿using UniSpyLib.Extensions;
+using ServerBrowser.Entity.Enumerate;
 using System;
 using System.Linq;
 using System.Text;

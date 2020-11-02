@@ -1,9 +1,10 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Common.Entity.Interface;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 using Newtonsoft.Json;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.NatNeg;
-using ServerBrowser.Entity.Enumerator;
+using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using StackExchange.Redis;
 using System.Linq;

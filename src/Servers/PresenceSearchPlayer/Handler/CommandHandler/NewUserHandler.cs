@@ -1,8 +1,10 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Common.Entity.Interface;
-using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Logging;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyLib.Entity.Structure;
+using UniSpyLib.Logging;
+using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using Serilog.Events;
 using System;
@@ -78,13 +80,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         {
             base.BuildNormalResponse();
             if (ServerManagerBase.ServerName
-             == RetroSpyServerName.PresenceSearchPlayer)
+             == UniSpyServerName.PSP)
             {
                 //PSP NewUser
                 _sendingBuffer = $@"\nur\\pid\{_subProfile.Profileid}\final\";
             }
             else if (ServerManagerBase.ServerName
-                == RetroSpyServerName.PresenceConnectionManager)
+                == UniSpyServerName.PCM)
             {
                 //PCM NewUser
                 _sendingBuffer =

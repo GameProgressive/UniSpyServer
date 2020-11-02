@@ -1,4 +1,4 @@
-﻿using SOAPMiddleware.Entity.Interface;
+﻿using SOAPMiddleware.Abstraction.Interface;
 using System;
 
 namespace SOAPMiddleware.Serializer

@@ -1,9 +1,9 @@
-﻿using GameSpyLib.Common.Entity.Interface;
-using PresenceConnectionManager.Entity.Enumerator;
+﻿using UniSpyLib.Abstraction.Interface;
+using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Handler.CommandHandler.Buddy
+namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
 {
     public class StatusHandler : PCMCommandHandlerBase
     {

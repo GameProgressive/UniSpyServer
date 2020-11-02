@@ -1,10 +1,10 @@
-﻿using PresenceConnectionManager.Entity.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerator;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class RegisterNickRequest : PCMRequest
+    public class RegisterNickRequest : PCMRequestBase
     {
         public string UniqueNick { get; protected set; }
         public RegisterNickRequest(Dictionary<string, string> recv) : base(recv)

@@ -1,5 +1,6 @@
-﻿using GameSpyLib.Common;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Entity.Structure;
+using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
 
@@ -8,18 +9,15 @@ namespace CDKey.Application
     /// <summary>
     /// This class represents a RetroSpy Server program
     /// </summary>
-    internal class Program
+    internal static class Program
     {
-        private static ServerManager Manager;
-
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
 
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.CDKey);
-                Manager.Start();
+                new ServerManager(UniSpyServerName.CDKey).Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)
