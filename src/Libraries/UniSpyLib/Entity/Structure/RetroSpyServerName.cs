@@ -1,15 +1,42 @@
 ﻿namespace UniSpyLib.Entity.Structure
 {
-    public class RetroSpyServerName
+    public class UniSpyServerName
     {
-        public const string QueryReport = "QR";
-        public const string ServerBrowser = "SB";
-        public const string PresenceConnectionManager = "PCM";
-        public const string PresenceSearchPlayer = "PSP";
-        public const string NATNegotiation = "NN";
+        /// <summary>
+        /// Query Report server
+        /// </summary>
+        public const string QR = "QR";
+        /// <summary>
+        /// Server Browser server
+        /// </summary>
+        public const string SB = "SB";
+        /// <summary>
+        /// Presence Connection Manager server
+        /// </summary>
+        public const string PCM = "PCM";
+        /// <summary>
+        /// Presence Search Player server
+        /// </summary>
+        public const string PSP = "PSP";
+        /// <summary>
+        /// NAT Negotiation server
+        /// </summary>
+        public const string NN = "NN";
+        /// <summary>
+        /// IRC Chat server
+        /// </summary>
         public const string Chat = "CHAT";
-        public const string GameStatus = "GS";
+        /// <summary>
+        /// Game Status server
+        /// </summary>
+        public const string GS = "GS";
+        /// <summary>
+        /// CDKey server
+        /// </summary>
         public const string CDKey = "CDKEY";
-        public const string WebServices = "WEB";
+        /// <summary>
+        /// Web server
+        /// </summary>
+        public const string Web = "WEB";
     }
 }

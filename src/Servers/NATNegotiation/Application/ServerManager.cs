@@ -10,13 +10,13 @@ namespace NATNegotiation.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ServerManager : ServerManagerBase
+    public class NNServerManager : ServerManagerBase
     {
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ServerManager(string serverName) : base(serverName)
+        public NNServerManager(string serverName) : base(serverName)
         {
         }
 
@@ -27,7 +27,7 @@ namespace NATNegotiation.Application
             LoadServerConfig();
         }
         /// <summary>
-        /// Starts a specific server
+        /// Starts a specific server, you can also start all server in once if you do not check the server name.
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(ServerConfig cfg)

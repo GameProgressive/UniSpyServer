@@ -80,13 +80,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
         {
             base.BuildNormalResponse();
             if (ServerManagerBase.ServerName
-             == RetroSpyServerName.PresenceSearchPlayer)
+             == UniSpyServerName.PSP)
             {
                 //PSP NewUser
                 _sendingBuffer = $@"\nur\\pid\{_subProfile.Profileid}\final\";
             }
             else if (ServerManagerBase.ServerName
-                == RetroSpyServerName.PresenceConnectionManager)
+                == UniSpyServerName.PCM)
             {
                 //PCM NewUser
                 _sendingBuffer =

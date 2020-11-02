@@ -9,17 +9,14 @@ namespace Chat.Application
     /// <summary>
     /// This class represents a RetroSpy Server program
     /// </summary>
-    internal class Program
+    internal static class Program
     {
-        private static ChatServerManager Manager;
-
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ChatServerManager(RetroSpyServerName.Chat);
-                Manager.Start();
+                new ChatServerManager(UniSpyServerName.Chat).Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)

@@ -10,23 +10,19 @@ namespace NATNegotiation.Application
     /// </summary>
     internal class Program
     {
-        private static ServerManager Manager;
-
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
 
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.NATNegotiation);
-                Manager.Start();
+                new NNServerManager(UniSpyServerName.NN).Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)
             {
                 LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
-
 
             Console.WriteLine("Press < Q > to exit. ");
             while (Console.ReadKey().Key != ConsoleKey.Q) { }

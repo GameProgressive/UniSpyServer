@@ -8,15 +8,12 @@ namespace QueryReport.Application
 {
     internal class Program
     {
-        private static ServerManager Manager;
-
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.QueryReport);
-                Manager.Start();
+                new ServerManager(UniSpyServerName.QR).Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)

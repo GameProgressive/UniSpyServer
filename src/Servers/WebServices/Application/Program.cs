@@ -21,7 +21,7 @@ namespace WebServices
 
             try
             {
-                Manager = new ServerManager(RetroSpyServerName.WebServices);
+                Manager = new ServerManager(UniSpyServerName.Web);
                 Manager.Start();
             }
             catch (Exception e)

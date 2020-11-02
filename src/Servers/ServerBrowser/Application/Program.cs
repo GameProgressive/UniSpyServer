@@ -8,16 +8,12 @@ namespace ServerBrowser.Application
 {
     internal class Program
     {
-        private static ServerManager Manager;
-
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
 
             try
             {
-                //create a instance of ServerManager class
-                Manager = new ServerManager(RetroSpyServerName.ServerBrowser);
-                Manager.Start();
+               new ServerManager(UniSpyServerName.SB).Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)

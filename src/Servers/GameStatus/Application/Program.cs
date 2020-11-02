@@ -6,22 +6,19 @@ using System;
 
 namespace GameStatus.Application
 {
-    internal class Program
+    internal static class Program
     {
-        private static GSServerManager Manager;
-
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                Manager = new GSServerManager(RetroSpyServerName.GameStatus);
-                Manager.Start();
+                new GSServerManager(UniSpyServerName.GS).Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error,e.ToString());
             }
 
             Console.WriteLine("Press < Q > to exit. ");
