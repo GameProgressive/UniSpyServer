@@ -1,4 +1,4 @@
-﻿namespace StatsTracking.Handler.CommandHandler.SystemHandler.Misc
+﻿namespace GameStatus.Handler.CommandHandler.SystemHandler.Misc
 {
     public class ResponseChallengeVerifier
     {

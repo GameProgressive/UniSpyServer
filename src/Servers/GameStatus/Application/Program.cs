@@ -4,18 +4,18 @@ using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
 
-namespace StatsTracking.Application
+namespace GameStatus.Application
 {
     internal class Program
     {
-        private static STServerManager Manager;
+        private static GSServerManager Manager;
 
         private static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                Manager = new STServerManager(RetroSpyServerName.GameStatus);
+                Manager = new GSServerManager(RetroSpyServerName.GameStatus);
                 Manager.Start();
                 Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
             }

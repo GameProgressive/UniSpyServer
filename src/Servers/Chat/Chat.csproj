@@ -27,22 +27,11 @@
 
   <ItemGroup>
     <Folder Include="Entity\Enumerate\" />
-    <Folder Include="Handler\SystemHandler\ChatChannelManage\" />
     <Folder Include="Abstraction\Interface\" />
-    <Folder Include="Handler\SystemHandler\ChatSessionManage\" />
-    <Folder Include="Entity\Structure\ChatRequest\" />
-    <Folder Include="Entity\Structure\ChatRequest\ChatMessageRequest\" />
-    <Folder Include="Entity\Structure\ChatRequest\ChatGeneralRequest\" />
-    <Folder Include="Entity\Structure\ChatRequest\ChatChannelRequest\" />
-    <Folder Include="Entity\Structure\ChatChannel\" />
-    <Folder Include="Entity\Structure\ChatUser\" />
-    <Folder Include="Handler\SystemHandler\ChatCommandManage\" />
-    <Folder Include="Handler\CommandHandler\ChatGeneralCommandHandler\" />
-    <Folder Include="Entity\Structure\ChatResponse\" />
-    <Folder Include="Handler\CommandHandler\ChatChannelCommandHandler\" />
-    <Folder Include="Handler\CommandHandler\ChatMessageCommandHandler\" />
-    <Folder Include="Entity\Structure\ChatResponse\ChatGeneralResponse\" />
-    <Folder Include="Entity\Structure\ChatResponse\ChatMessageResponse\" />
-    <Folder Include="Entity\Structure\ChatResponse\ChatChannelResponse\" />
+    <Folder Include="Entity\Structure\Channel\" />
+    <Folder Include="Entity\Structure\User\" />
+    <Folder Include="Handler\CommandHandler\General\" />
+    <Folder Include="Handler\CommandHandler\Channel\" />
+    <Folder Include="Handler\CommandHandler\Message\" />
   </ItemGroup>
 </Project>

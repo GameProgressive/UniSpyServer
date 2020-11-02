@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public class ChatRequestBase
+    public class ChatRequestBase : RequestBase
     {
         public string RawRequest { get; protected set; }
         public string CmdName { get; protected set; }

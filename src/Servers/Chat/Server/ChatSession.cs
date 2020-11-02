@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure.ChatUser;
+﻿using Chat.Entity.Structure.User;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;

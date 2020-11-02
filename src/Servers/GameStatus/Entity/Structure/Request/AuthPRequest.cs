@@ -1,11 +1,11 @@
-﻿using StatsTracking.Abstraction.BaseClass;
-using StatsTracking.Entity.Enumerate;
+﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Enumerate;
 using System.Collections.Generic;
 
-namespace StatsTracking.Entity.Structure.Request
+namespace GameStatus.Entity.Structure.Request
 {
 
-    public class AuthPRequest : STRequestBase
+    public class AuthPRequest : GSRequestBase
 
     {
         public AuthMethod RequestType { get; protected set; }
@@ -19,10 +19,10 @@ namespace StatsTracking.Entity.Structure.Request
         {
         }
 
-        public override STError Parse()
+        public override GSError Parse()
         {
             var flag = base.Parse();
-            if (flag != STError.NoError)
+            if (flag != GSError.NoError)
             {
                 return flag;
             }
@@ -32,7 +32,7 @@ namespace StatsTracking.Entity.Structure.Request
                 uint profileID;
                 if (!uint.TryParse(_request["pid"], out profileID))
                 {
-                    return STError.Parse;
+                    return GSError.Parse;
                 }
                 ProfileID = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
@@ -51,10 +51,10 @@ namespace StatsTracking.Entity.Structure.Request
             }
             else
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
 
-            return STError.NoError;
+            return GSError.NoError;
         }
     }
 }

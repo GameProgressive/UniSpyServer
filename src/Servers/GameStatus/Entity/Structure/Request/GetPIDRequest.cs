@@ -1,10 +1,10 @@
-﻿using StatsTracking.Abstraction.BaseClass;
-using StatsTracking.Entity.Enumerate;
+﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Enumerate;
 using System.Collections.Generic;
 
-namespace StatsTracking.Entity.Structure.Request
+namespace GameStatus.Entity.Structure.Request
 {
-    public class GetPIDRequest : STRequestBase
+    public class GetPIDRequest : GSRequestBase
     {
         public string Nick { get; protected set; }
         public string KeyHash { get; protected set; }
@@ -13,17 +13,17 @@ namespace StatsTracking.Entity.Structure.Request
         {
         }
 
-        public override STError Parse()
+        public override GSError Parse()
         {
             var flag = base.Parse();
-            if (flag != STError.NoError)
+            if (flag != GSError.NoError)
             {
                 return flag;
             }
 
             if (!_request.ContainsKey("nick") || !_request.ContainsKey("keyhash"))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
 
             if (_request.ContainsKey("nick"))
@@ -36,10 +36,10 @@ namespace StatsTracking.Entity.Structure.Request
             }
             else
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
 
-            return STError.NoError;
+            return GSError.NoError;
         }
     }
 }

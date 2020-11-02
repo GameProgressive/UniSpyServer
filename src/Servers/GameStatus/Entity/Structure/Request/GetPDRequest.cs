@@ -1,12 +1,12 @@
-﻿using StatsTracking.Abstraction.BaseClass;
-using StatsTracking.Entity.Enumerate;
+﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 
-namespace StatsTracking.Entity.Structure.Request
+namespace GameStatus.Entity.Structure.Request
 {
 
-    public class GetPDRequest : STRequestBase
+    public class GetPDRequest : GSRequestBase
     {
         public uint ProfileID { get; protected set; }
         public PersistStorageType StorageType { get; protected set; }
@@ -18,10 +18,10 @@ namespace StatsTracking.Entity.Structure.Request
             Keys = new List<string>();
         }
 
-        public override STError Parse()
+        public override GSError Parse()
         {
             var flag = base.Parse();
-            if (flag != STError.NoError)
+            if (flag != GSError.NoError)
             {
                 return flag;
             }
@@ -31,7 +31,7 @@ namespace StatsTracking.Entity.Structure.Request
                 uint profileID;
                 if (!uint.TryParse(_request["pid"], out profileID))
                 {
-                    return STError.Parse;
+                    return GSError.Parse;
                 }
                 ProfileID = profileID;
             }
@@ -41,7 +41,7 @@ namespace StatsTracking.Entity.Structure.Request
                 PersistStorageType storageType;
                 if (!Enum.TryParse(_request["ptype"], out storageType))
                 {
-                    return STError.Parse;
+                    return GSError.Parse;
                 }
 
                 StorageType = storageType;
@@ -53,14 +53,14 @@ namespace StatsTracking.Entity.Structure.Request
                 uint dataIndex;
                 if (!uint.TryParse(_request["dindex"], out dataIndex))
                 {
-                    return STError.Parse;
+                    return GSError.Parse;
                 }
                 DataIndex = dataIndex;
             }
 
             if (!_request.ContainsKey("keys"))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
 
             string keys = _request["keys"];
@@ -78,7 +78,7 @@ namespace StatsTracking.Entity.Structure.Request
                 GetAllDataFlag = false;
             }
 
-            return STError.NoError;
+            return GSError.NoError;
         }
     }
 }

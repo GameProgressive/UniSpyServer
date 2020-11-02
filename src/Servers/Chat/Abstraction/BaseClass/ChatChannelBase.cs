@@ -1,6 +1,6 @@
 ﻿using Chat.Entity.Structure.ChatChannel;
-using Chat.Entity.Structure.ChatResponse.ChatChannelResponse;
-using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
+using Chat.Entity.Structure.Response.Channel;
+using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Server;
 using QueryReport.Entity.Structure;

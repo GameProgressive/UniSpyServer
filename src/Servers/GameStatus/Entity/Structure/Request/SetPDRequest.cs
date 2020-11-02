@@ -1,12 +1,12 @@
-﻿using StatsTracking.Abstraction.BaseClass;
-using StatsTracking.Entity.Enumerate;
+﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StatsTracking.Entity.Structure.Request
+namespace GameStatus.Entity.Structure.Request
 {
-    public class SetPDRequest : STRequestBase
+    public class SetPDRequest : GSRequestBase
     {
         public SetPDRequest(Dictionary<string, string> request) : base(request)
         {
@@ -17,35 +17,35 @@ namespace StatsTracking.Entity.Structure.Request
         public uint Length { get; protected set; }
         public string KeyValueString { get; protected set; }
 
-        public override STError Parse()
+        public override GSError Parse()
         {
             var flag = base.Parse();
-            if (flag != STError.NoError)
+            if (flag != GSError.NoError)
             {
                 return flag;
             }
 
             if (!_request.ContainsKey("pid") || !_request.ContainsKey("ptype") || !_request.ContainsKey("dindex") || !_request.ContainsKey("length"))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
 
             uint profileID;
             if (!uint.TryParse(_request["pid"], out profileID))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
             ProfileID = profileID;
 
             uint storageType;
             if (!uint.TryParse(_request["ptype"], out storageType))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
 
             if (!Enum.IsDefined(typeof(PersistStorageType), storageType))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
 
             StorageType = (PersistStorageType)storageType;
@@ -53,14 +53,14 @@ namespace StatsTracking.Entity.Structure.Request
             uint dindex;
             if (!uint.TryParse(_request["dindex"], out dindex))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
             DataIndex = dindex;
 
             uint length;
             if (!uint.TryParse(_request["length"], out length))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
             Length = length;
 
@@ -72,7 +72,7 @@ namespace StatsTracking.Entity.Structure.Request
                 KeyValueString += @"\" + d.Key + @"\" + d.Value;
             }
 
-            return STError.NoError;
+            return GSError.NoError;
         }
     }
 }

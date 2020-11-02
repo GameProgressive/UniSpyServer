@@ -1,13 +1,13 @@
-﻿using StatsTracking.Abstraction.BaseClass;
-using StatsTracking.Entity.Enumerate;
+﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Enumerate;
 using System.Collections.Generic;
 
-namespace StatsTracking.Entity.Structure.Request
+namespace GameStatus.Entity.Structure.Request
 {
     /// <summary>
     /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */
     /// </summary>
-    public class AuthRequest : STRequestBase
+    public class AuthRequest : GSRequestBase
     {
         public string GameName { get; protected set; }
         public uint Port { get; protected set; }
@@ -15,17 +15,17 @@ namespace StatsTracking.Entity.Structure.Request
         {
         }
 
-        public override STError Parse()
+        public override GSError Parse()
         {
             var flag = base.Parse();
-            if (flag != STError.NoError)
+            if (flag != GSError.NoError)
             {
                 return flag;
             }
 
             if (!_request.ContainsKey("gamename") && !_request.ContainsKey("response"))
             {
-                return STError.Parse;
+                return GSError.Parse;
             }
 
             if (_request.ContainsKey("port"))
@@ -33,14 +33,14 @@ namespace StatsTracking.Entity.Structure.Request
                 uint port;
                 if (!uint.TryParse(_request["port"], out port))
                 {
-                    return STError.Parse;
+                    return GSError.Parse;
                 }
                 Port = port;
             }
 
             GameName = _request["gamename"];
 
-            return STError.NoError;
+            return GSError.NoError;
         }
     }
 }

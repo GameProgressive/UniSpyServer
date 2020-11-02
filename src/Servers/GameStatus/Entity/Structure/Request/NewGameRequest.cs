@@ -1,24 +1,24 @@
-﻿using StatsTracking.Abstraction.BaseClass;
-using StatsTracking.Entity.Enumerate;
+﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Enumerate;
 using System.Collections.Generic;
 
-namespace StatsTracking.Entity.Structure.Request
+namespace GameStatus.Entity.Structure.Request
 {
-    public class NewGameRequest : STRequestBase
+    public class NewGameRequest : GSRequestBase
     {
         public NewGameRequest(Dictionary<string, string> request) : base(request)
         {
         }
 
-        public override STError Parse()
+        public override GSError Parse()
         {
             var flag = base.Parse();
-            if (flag != STError.NoError)
+            if (flag != GSError.NoError)
             {
                 return flag;
             }
 
-            return STError.NoError;
+            return GSError.NoError;
         }
     }
 }

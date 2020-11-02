@@ -1,4 +1,4 @@
-﻿namespace StatsTracking.Entity.Enumerate
+﻿namespace GameStatus.Entity.Enumerate
 {
     public enum AuthMethod
     {
