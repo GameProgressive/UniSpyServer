@@ -2,7 +2,6 @@
 using UniSpyLib.Extensions;
 using QueryReport.Entity.Enumerate;
 using System;
-using System.Collections.Generic;
 
 namespace QueryReport.Abstraction.BaseClass
 {
@@ -12,6 +11,8 @@ namespace QueryReport.Abstraction.BaseClass
         public QRPacketType PacketType { get; protected set; }
         public int InstantKey { get; protected set; }
         public byte[] RawRequest { get; protected set; }
+
+        object IRequest.CommandName => PacketType;
 
         public QRRequestBase(byte[] rawRequest)
         {

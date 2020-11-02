@@ -4,6 +4,7 @@ using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CommandSwitcher
 {

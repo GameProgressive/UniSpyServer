@@ -14,7 +14,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
         protected new KeepAliveRequest _request;
         public KeepAliveHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = (KeepAliveRequest)request.GetInstance();
+            _request = (KeepAliveRequest)request;
         }
 
         protected override void ConstructeResponse()

@@ -6,13 +6,13 @@ using Chat.Server;
 using QueryReport.Entity.Structure;
 using System.Linq;
 
-namespace Chat.Abstraction.BaseClass
+namespace Chat.Entity.Structure.Channel
 {
-    public class ChatChannelBase
+    public class ChatChannel
     {
         public ChatChannelProperty Property { get; protected set; }
 
-        public ChatChannelBase()
+        public ChatChannel()
         {
             Property = new ChatChannelProperty();
         }
@@ -139,7 +139,7 @@ namespace Chat.Abstraction.BaseClass
 
             if (leaver.UserInfo.JoinedChannels.Contains(this))
             {
-                ChatChannelBase channel = this;
+                ChatChannel channel = this;
                 leaver.UserInfo.JoinedChannels.TryTake(out channel);
             }
 

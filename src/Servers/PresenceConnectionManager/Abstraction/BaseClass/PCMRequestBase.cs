@@ -12,6 +12,8 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         //public uint NamespaceID { get; protected set; }
         public uint OperationID { get; protected set; }
 
+        object IRequest.CommandName => CmdName;
+
         protected Dictionary<string, string> _recv;
 
         public PCMRequestBase(Dictionary<string, string> recv)

@@ -15,8 +15,6 @@ namespace UniSpyLib.Logging
     /// </summary>
     public class LogWriter
     {
-
-        //private static Logger Log;
         static LogWriter()
         {
             LoggerConfiguration logConfig = new LoggerConfiguration();
@@ -83,12 +81,10 @@ namespace UniSpyLib.Logging
         {
             ToLog(LogEventLevel.Error, e.ToString());
         }
-
         public static void ToLog(string message)
         {
             ToLog(LogEventLevel.Information, message);
         }
-
         public static void UnknownDataRecieved(string data)
         {
             ToLog(LogEventLevel.Error, $"[Unknown] {data}");
@@ -97,10 +93,13 @@ namespace UniSpyLib.Logging
         {
             ToLog(LogEventLevel.Error, $"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
         }
-
         public static void LogCurrentClass(object param)
         {
             ToLog(LogEventLevel.Verbose, $"[ => ] [{param.GetType().Name}]");
+        }
+        public static void LogNetworkTraffic(string type, string status, string data)
+        {
+            ToLog(LogEventLevel.Debug, $"[{type}] [{status}] {data}");
         }
     }
 

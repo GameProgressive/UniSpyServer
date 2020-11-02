@@ -1,4 +1,5 @@
 ﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.Channel;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.Response;
 using UniSpyLib.Abstraction.Interface;
@@ -7,7 +8,7 @@ namespace Chat.Abstraction.BaseClass
 {
     public class ChatChannelHandlerBase : ChatLogedInHandlerBase
     {
-        protected ChatChannelBase _channel;
+        protected ChatChannel _channel;
         protected ChatChannelUser _user;
         protected new ChatChannelRequestBase _request;
 

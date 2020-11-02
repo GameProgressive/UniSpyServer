@@ -16,7 +16,7 @@ namespace QueryReport.Handler.CommandHandler.Challenge
         //we do not need to implement this to check the correctness of the challenge response
         public ChallengeHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = (ChallengeRequest)request.GetInstance();
+            _request = (ChallengeRequest)request;
         }
 
         protected override void DataOperation()

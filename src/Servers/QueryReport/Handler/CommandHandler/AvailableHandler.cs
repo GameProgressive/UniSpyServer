@@ -15,7 +15,7 @@ namespace QueryReport.Handler.CommandHandler.Available
         protected new AvaliableRequest _request;
         public AvailableHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = (AvaliableRequest)request.GetInstance();
+            _request = (AvaliableRequest)request;
         }
 
         protected override void CheckRequest()

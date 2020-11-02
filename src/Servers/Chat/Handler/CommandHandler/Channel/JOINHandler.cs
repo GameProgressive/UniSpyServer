@@ -7,6 +7,7 @@ using Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using System.Collections.Generic;
+using Chat.Entity.Structure.Channel;
 
 namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {
@@ -16,7 +17,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     public class JOINHandler : ChatLogedInHandlerBase
     {
         new JOINRequest _request;
-        ChatChannelBase _channel;
+        ChatChannel _channel;
         ChatChannelUser _user;
         public JOINHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
@@ -63,7 +64,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 
         public void CreateChannel()
         {
-            _channel = new ChatChannelBase();
+            _channel = new ChatChannel();
 
             if (IsPeerServer(_request.ChannelName))
             {

@@ -1,5 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
+using Chat.Entity.Structure.Channel;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response;
@@ -18,7 +19,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     public class WHOHandler : ChatLogedInHandlerBase
     {
         new WHORequest _request;
-        ChatChannelBase _resultChannel;
+        ChatChannel _resultChannel;
         ChatSession _resultSession;
         public WHOHandler(ISession session, ChatRequestBase request) : base(session, request)
         {
@@ -41,7 +42,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 
         private void GetChannelUsersInfo()
         {
-            ChatChannelBase channel;
+            ChatChannel channel;
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out channel))
             {
                 _errorCode = ChatError.NoSuchChannel;

@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.Channel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
@@ -33,7 +34,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             BuildEndOfListRPL();
         }
 
-        public void BuildListRPL(ChatChannelBase channel)
+        public void BuildListRPL(ChatChannel channel)
         {
             _sendingBuffer = LISTReply.BuildListStartReply(_session.UserInfo, channel.Property);
         }

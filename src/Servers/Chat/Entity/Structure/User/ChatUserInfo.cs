@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.User
     public class ChatUserInfo
     {
         //indicates which channel this user is in
-        public ConcurrentBag<ChatChannelBase> JoinedChannels { get; protected set; }
+        public ConcurrentBag<Channel.ChatChannel> JoinedChannels { get; protected set; }
         public bool IsQuietMode { get; protected set; }
         public string PublicIPAddress { get; protected set; }
 
@@ -17,7 +17,7 @@ namespace Chat.Entity.Structure.User
         {
             ClientCTX = new GSPeerChatCTX();
             ServerCTX = new GSPeerChatCTX();
-            JoinedChannels = new ConcurrentBag<ChatChannelBase>();
+            JoinedChannels = new ConcurrentBag<Channel.ChatChannel>();
         }
 
         public ChatUserInfo SetQuietModeFlag(bool flag)
@@ -118,7 +118,7 @@ namespace Chat.Entity.Structure.User
         {
             return GetJoinedChannelByName(channelName, out _);
         }
-        public bool GetJoinedChannelByName(string channelName, out ChatChannelBase channel)
+        public bool GetJoinedChannelByName(string channelName, out Channel.ChatChannel channel)
         {
             var result = JoinedChannels.Where(c => c.Property.ChannelName == channelName);
             if (result.Count() == 1)

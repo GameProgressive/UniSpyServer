@@ -51,7 +51,7 @@ namespace UniSpyLib.Extensions
             }
         }
         /// <summary>
-        /// Replace unreadable charactors to ? for logging
+        /// Replace unreadable charactors to Hex for logging
         /// </summary>
         /// <param name="buffer"></param>
         /// <param name="size"></param>

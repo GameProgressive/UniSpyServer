@@ -1,5 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
+using Chat.Entity.Structure.Channel;
 using Chat.Entity.Structure.ChatChannel;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response;
@@ -11,7 +12,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     public class NAMESHandler : ChatCommandHandlerBase
     {
         new NAMESRequest _request;
-        ChatChannelBase _channel;
+        ChatChannel _channel;
         ChatChannelUser _user;
         public NAMESHandler(ISession session, ChatRequestBase request) : base(session, request)
         {

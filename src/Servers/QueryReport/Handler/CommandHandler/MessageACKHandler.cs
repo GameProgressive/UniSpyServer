@@ -10,7 +10,7 @@ namespace QueryReport.Handler.CommandHandler.ClientMessageACK
         protected new ClientMessageRequest _request;
         protected MessageACKHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = (ClientMessageRequest)request.GetInstance();
+            _request = (ClientMessageRequest)request;
             throw new NotImplementedException();
         }
     }

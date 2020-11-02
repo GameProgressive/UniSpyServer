@@ -9,6 +9,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using TcpClient = NetCoreServer.TcpClient;
+using System.Collections.Generic;
 
 namespace UniSpyLib.Network
 {
@@ -58,8 +59,7 @@ namespace UniSpyLib.Network
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Proxy] [Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.LogNetworkTraffic("Proxy", "Send", StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size));
             return base.SendAsync(buffer, offset, size);
         }
 

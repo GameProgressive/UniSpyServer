@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public class ChatRequestBase : RequestBase
+    public class ChatRequestBase : RequestBase, IRequest
     {
         public string RawRequest { get; protected set; }
         public string CmdName { get; protected set; }
+        object IRequest.CommandName => CmdName;
+
         protected string Prefix;
         protected List<string> _cmdParams;
         protected string _longParam;
@@ -65,6 +68,11 @@ namespace Chat.Abstraction.BaseClass
                 _cmdParams = dataFrag.Skip(1).ToList();
             }
             return true;
+        }
+
+        object IRequest.Parse()
+        {
+            return Parse();
         }
     }
 }

@@ -14,6 +14,9 @@ namespace NATNegotiation.Abstraction.BaseClass
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public byte Version;
         public NatPacketType PacketType { get; set; }
+
+        object IRequest.CommandName => PacketType;
+
         public uint Cookie;
         public byte[] RawRequest;
         public static readonly int Size = 12;
@@ -57,11 +60,6 @@ namespace NATNegotiation.Abstraction.BaseClass
         object IRequest.Parse()
         {
             return Parse();
-        }
-
-        object IRequest.GetInstance()
-        {
-            return this;
         }
     }
 }

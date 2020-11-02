@@ -28,7 +28,6 @@
   <ItemGroup>
     <Folder Include="Entity\Enumerate\" />
     <Folder Include="Abstraction\Interface\" />
-    <Folder Include="Entity\Structure\Channel\" />
     <Folder Include="Entity\Structure\User\" />
     <Folder Include="Handler\CommandHandler\General\" />
     <Folder Include="Handler\CommandHandler\Channel\" />

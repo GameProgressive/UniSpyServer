@@ -22,7 +22,7 @@ namespace QueryReport.Handler.CommandHandler.HeartBeat
 
         public HeartBeatHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = (HeartBeatRequest)request.GetInstance();
+            _request = (HeartBeatRequest)request;
         }
 
         protected override void CheckRequest()
