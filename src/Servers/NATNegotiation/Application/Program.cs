@@ -1,6 +1,6 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Entity.Structure;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Entity.Structure;
+using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
 namespace NATNegotiation.Application

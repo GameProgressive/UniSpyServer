@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Handler.CommandHandler.Available;
 using QueryReport.Handler.CommandHandler.Challenge;

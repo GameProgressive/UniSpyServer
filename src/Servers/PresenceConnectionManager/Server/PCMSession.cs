@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Logging;
-using GameSpyLib.Network;
+﻿using UniSpyLib.Logging;
+using UniSpyLib.Network;
 using PresenceConnectionManager.Abstraction;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;

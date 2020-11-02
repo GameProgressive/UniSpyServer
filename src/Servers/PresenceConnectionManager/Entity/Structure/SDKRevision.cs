@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 using PresenceConnectionManager.Abstraction.SystemHandler;
 using PresenceConnectionManager.Entity.Enumerate;
 using Serilog.Events;

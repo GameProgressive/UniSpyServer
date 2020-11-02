@@ -24,7 +24,7 @@
     <ItemGroup>
         <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
         <ProjectReference Include="..\NatNegotiation\NatNegotiation.csproj" />
-        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
+        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Handler\CommandHandler\ServerList\" />

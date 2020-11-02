@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
+﻿using UniSpyLib.Logging;
+using UniSpyLib.MiscMethod;
 using Serilog.Events;
 using StatsTracking.Entity.Structure;
 using StatsTracking.Handler.CommandHandler.Auth;

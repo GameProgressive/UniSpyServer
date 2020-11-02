@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 
 namespace CDKey.Abstraction.BaseClass

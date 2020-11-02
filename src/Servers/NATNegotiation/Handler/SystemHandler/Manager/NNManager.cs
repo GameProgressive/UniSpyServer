@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Logging;
+﻿using UniSpyLib.Logging;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;

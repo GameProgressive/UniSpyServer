@@ -1,8 +1,8 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Entity.Structure;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyLib.Entity.Structure;
+using UniSpyLib.Logging;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;

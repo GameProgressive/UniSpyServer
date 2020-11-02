@@ -1,6 +1,6 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Handler.SystemHandler.ErrorMessage;
 using QueryReport.Server;

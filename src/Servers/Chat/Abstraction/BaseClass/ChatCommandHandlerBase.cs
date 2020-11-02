@@ -1,8 +1,8 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Server;
-using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Logging;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 using Serilog.Events;
 
 namespace Chat.Abstraction.BaseClass

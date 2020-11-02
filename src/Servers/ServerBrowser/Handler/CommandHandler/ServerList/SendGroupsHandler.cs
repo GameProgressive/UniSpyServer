@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Extensions;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
 using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;

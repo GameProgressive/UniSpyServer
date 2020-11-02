@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using GameSpyLib.Abstraction.Interface;
+using UniSpyLib.Abstraction.Interface;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;

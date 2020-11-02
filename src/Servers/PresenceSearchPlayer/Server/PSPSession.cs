@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Network;
+﻿using UniSpyLib.Network;
 using PresenceSearchPlayer.Handler.CommandSwitcher;
 
 namespace PresenceSearchPlayer

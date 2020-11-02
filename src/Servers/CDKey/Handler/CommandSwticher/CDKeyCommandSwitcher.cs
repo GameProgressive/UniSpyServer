@@ -1,7 +1,7 @@
 ﻿using CDKey.Handler.CommandHandler.SKey;
-using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
+using UniSpyLib.MiscMethod;
 using System;
 using System.Collections.Generic;
 using System.Linq;

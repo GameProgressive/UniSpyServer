@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Network;
+﻿using UniSpyLib.Network;
 using QueryReport.Handler.CommandSwitcher;
 using QueryReport.Handler.SystemHandler.NatNegCookieManage;
 using QueryReport.Handler.SystemHandler.PeerSystem;

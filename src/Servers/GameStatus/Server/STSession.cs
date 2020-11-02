@@ -1,6 +1,6 @@
-﻿using GameSpyLib.Encryption;
-using GameSpyLib.Logging;
-using GameSpyLib.Network;
+﻿using UniSpyLib.Encryption;
+using UniSpyLib.Logging;
+using UniSpyLib.Network;
 using Serilog.Events;
 using StatsTracking.Entity.Structure;
 using StatsTracking.Handler.CommandSwitcher;

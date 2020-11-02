@@ -1,6 +1,6 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.MiscMethod;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyLib.MiscMethod;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;

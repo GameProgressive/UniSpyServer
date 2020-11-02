@@ -71,7 +71,7 @@
             <GlobalPropertiesToRemove>
             </GlobalPropertiesToRemove>
         </ProjectReference>
-        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj">
+        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj">
             <GlobalPropertiesToRemove>
             </GlobalPropertiesToRemove>
         </ProjectReference>

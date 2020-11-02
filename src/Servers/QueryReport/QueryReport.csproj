@@ -38,6 +38,6 @@
         <Folder Include="Entity\Structure\Response\" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
+        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
 </Project>

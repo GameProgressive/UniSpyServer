@@ -1,6 +1,6 @@
 ﻿using System;
-using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Logging;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
 

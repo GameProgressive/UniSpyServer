@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Handler.CommandHandler;

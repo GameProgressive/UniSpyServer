@@ -1,5 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
-using GameSpyLib.Logging;
+using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;

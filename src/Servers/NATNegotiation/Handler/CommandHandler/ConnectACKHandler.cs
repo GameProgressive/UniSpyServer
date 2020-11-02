@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using NATNegotiation.Abstraction.BaseClass;
 
 namespace NATNegotiation.Handler.CommandHandler

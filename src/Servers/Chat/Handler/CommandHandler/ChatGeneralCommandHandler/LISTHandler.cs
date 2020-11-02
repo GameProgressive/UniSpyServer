@@ -2,7 +2,7 @@
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.ChannelManage;
-using GameSpyLib.Abstraction.Interface;
+using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {

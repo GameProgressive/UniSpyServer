@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;

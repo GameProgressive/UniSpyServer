@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Collections.Generic;
 

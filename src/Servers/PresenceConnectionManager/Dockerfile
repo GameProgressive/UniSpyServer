@@ -5,7 +5,7 @@ EXPOSE 29900
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1.401-alpine3.12 AS build
 WORKDIR /src
 COPY ["src/Servers/PresenceConnectionManager/PresenceConnectionManager.csproj", "src/Servers/PresenceConnectionManager/"]
-COPY ["src/Libraries/GameSpyLib/GameSpyLib.csproj", "src/Libraries/GameSpyLib/"]
+COPY ["src/Libraries/UniSpyLib/UniSpyLib.csproj", "src/Libraries/UniSpyLib/"]
 COPY ["src/Servers/PresenceSearchPlayer/PresenceSearchPlayer.csproj", "src/Servers/PresenceSearchPlayer/"]
 RUN dotnet restore "src/Servers/PresenceConnectionManager/PresenceConnectionManager.csproj"
 COPY . .

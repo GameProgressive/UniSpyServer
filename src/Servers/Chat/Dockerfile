@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1.401-alpine3.12 AS build
 WORKDIR /src
 COPY ["src/Servers/Chat/Chat.csproj", "src/Servers/Chat/"]
 COPY ["src/Servers/QueryReport/QueryReport.csproj", "src/Servers/QueryReport/"]
-COPY ["src/Libraries/GameSpyLib/GameSpyLib.csproj", "src/Libraries/GameSpyLib/"]
+COPY ["src/Libraries/UniSpyLib/UniSpyLib.csproj", "src/Libraries/UniSpyLib/"]
 RUN dotnet restore "src/Servers/Chat/Chat.csproj"
 COPY . .
 WORKDIR "/src/src/Servers/Chat"

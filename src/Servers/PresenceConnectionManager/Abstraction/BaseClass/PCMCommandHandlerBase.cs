@@ -1,6 +1,6 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Extensions;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using System.Collections.Generic;

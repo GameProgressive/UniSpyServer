@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 using QueryReport.Entity.Enumerate;
 using Serilog.Events;
 using System;

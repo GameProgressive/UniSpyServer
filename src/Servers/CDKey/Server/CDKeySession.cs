@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Network;
+﻿using UniSpyLib.Network;
 using System.Net;
 
 namespace CDKey.Server

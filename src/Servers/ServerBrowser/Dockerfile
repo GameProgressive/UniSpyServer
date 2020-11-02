@@ -6,7 +6,7 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1.401-alpine3.12 AS build
 WORKDIR /src
 COPY ["src/Servers/ServerBrowser/ServerBrowser.csproj", "src/Servers/ServerBrowser/"]
 COPY ["src/Servers/QueryReport/QueryReport.csproj", "src/Servers/QueryReport/"]
-COPY ["src/Libraries/GameSpyLib/GameSpyLib.csproj", "src/Libraries/GameSpyLib/"]
+COPY ["src/Libraries/UniSpyLib/UniSpyLib.csproj", "src/Libraries/UniSpyLib/"]
 COPY ["src/Servers/NATNegotiation/NATNegotiation.csproj", "src/Servers/NATNegotiation/"]
 RUN dotnet restore "src/Servers/ServerBrowser/ServerBrowser.csproj"
 COPY . .

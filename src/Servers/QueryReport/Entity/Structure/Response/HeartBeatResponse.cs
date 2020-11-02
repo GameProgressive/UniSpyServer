@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameSpyLib.Extensions;
+using UniSpyLib.Extensions;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;

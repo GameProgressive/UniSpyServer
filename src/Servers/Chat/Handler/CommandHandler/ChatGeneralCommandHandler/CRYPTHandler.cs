@@ -4,9 +4,9 @@ using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatResponse.ChatGeneralResponse;
 using Chat.Handler.SystemHandler.Encryption;
 using Chat.Server;
-using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 using Serilog.Events;
 
 namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler

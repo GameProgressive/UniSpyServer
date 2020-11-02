@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using StatsTracking.Abstraction.BaseClass;
 using StatsTracking.Entity.Structure.Request;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ namespace StatsTracking.Handler.CommandHandler.Auth
 {
     public class AuthHandler : STCommandHandlerBase
     {
-        //GameSpyLib.Encryption.Crc16 _crc16 = new GameSpyLib.Encryption.Crc16(GameSpyLib.Encryption.Crc16Mode.Standard);
+        //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
         protected AuthRequest _request;
         public AuthHandler(ISession session, Dictionary<string, string> request) : base(session, request)
         {

@@ -18,7 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
-    <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
+    <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

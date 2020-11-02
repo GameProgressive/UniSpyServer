@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Network;
+﻿using UniSpyLib.Network;
 using NetCoreServer;
 using System;
 using System.Collections.Concurrent;

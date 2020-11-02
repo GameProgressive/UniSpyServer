@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Extensions;
+﻿using UniSpyLib.Extensions;
 using System;
 using System.Text;
 

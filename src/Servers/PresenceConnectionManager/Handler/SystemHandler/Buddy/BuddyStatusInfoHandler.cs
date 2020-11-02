@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using PresenceConnectionManager.Abstraction.BaseClass;
 using System.Collections.Generic;
 

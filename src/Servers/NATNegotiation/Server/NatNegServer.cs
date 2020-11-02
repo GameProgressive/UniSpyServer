@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Network;
+﻿using UniSpyLib.Network;
 using NATNegotiation.Handler.CommandSwitcher;
 using System.Collections.Concurrent;
 using System.Net;

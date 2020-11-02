@@ -1,7 +1,7 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Database.DatabaseModel.MySql;
-using GameSpyLib.Encryption;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyLib.Encryption;
+using UniSpyLib.Logging;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Entity.Structure.Request.General;

@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Request;

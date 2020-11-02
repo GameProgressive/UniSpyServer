@@ -1,7 +1,7 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 using Serilog.Events;
 using StatsTracking.Entity.Enumerate;
 using StatsTracking.Handler.SystemHandler;

@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Logging;
+﻿using UniSpyLib.Logging;
 using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Enumerate;

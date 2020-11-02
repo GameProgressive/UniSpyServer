@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Extensions;
+﻿using UniSpyLib.Extensions;
 using ServerBrowser.Entity.Enumerate;
 using System;
 using System.Linq;

@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Logging;
 using QueryReport.Entity.Structure;
 using System;
 

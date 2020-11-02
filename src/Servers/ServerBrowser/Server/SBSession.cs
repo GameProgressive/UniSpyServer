@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Encryption;
-using GameSpyLib.Network;
+﻿using UniSpyLib.Encryption;
+using UniSpyLib.Network;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandSwitcher;
 using System.Collections.Generic;

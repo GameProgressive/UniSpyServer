@@ -1,4 +1,4 @@
-﻿using GameSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 

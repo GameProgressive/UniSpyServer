@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using GameSpyLib.Extensions;
+using UniSpyLib.Extensions;
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;

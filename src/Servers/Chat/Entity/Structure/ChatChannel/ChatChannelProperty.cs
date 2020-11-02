@@ -1,5 +1,5 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
-using GameSpyLib.Logging;
+using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
 using System.Collections.Concurrent;

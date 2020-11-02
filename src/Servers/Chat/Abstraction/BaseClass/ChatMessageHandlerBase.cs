@@ -2,7 +2,7 @@
 using Chat.Entity.Structure.ChatResponse;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Server;
-using GameSpyLib.Abstraction.Interface;
+using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {

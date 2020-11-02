@@ -29,6 +29,6 @@
         <Compile Remove="Handler\SystemHandler\Timer\ClientListChecker.cs" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\Libraries\GameSpyLib\GameSpyLib.csproj" />
+        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
 </Project>

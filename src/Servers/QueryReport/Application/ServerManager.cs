@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.RetroSpyConfig;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.RetroSpyConfig;
 using QueryReport.Server;
 using System;
 using System.Net;
@@ -31,7 +31,7 @@ namespace QueryReport.Application
                 // case "GPCM":
                 Server = new QRServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
                 Console.WriteLine(
-                    GameSpyLib.Extensions.StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    UniSpyLib.Extensions.StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
 

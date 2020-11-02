@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Extensions;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
 using NATNegotiation.Entity.Enumerate;
 using System;
 using System.Collections.Generic;

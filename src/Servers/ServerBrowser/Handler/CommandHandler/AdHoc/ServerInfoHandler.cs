@@ -1,7 +1,7 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Encryption;
-using GameSpyLib.Extensions;
-using GameSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
+using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 using QueryReport.Entity.Structure;
 using Serilog.Events;
 using ServerBrowser.Abstraction.BaseClass;

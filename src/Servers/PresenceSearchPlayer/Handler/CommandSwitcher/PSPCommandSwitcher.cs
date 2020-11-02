@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
+﻿using UniSpyLib.Logging;
+using UniSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Structure;
 using PresenceSearchPlayer.Handler.CommandHandler.Check;
 using PresenceSearchPlayer.Handler.CommandHandler.NewUser;

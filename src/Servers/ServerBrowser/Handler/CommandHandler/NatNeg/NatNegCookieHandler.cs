@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 using Newtonsoft.Json;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.NatNeg;

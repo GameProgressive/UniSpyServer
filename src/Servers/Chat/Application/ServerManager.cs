@@ -1,7 +1,7 @@
 ﻿using Chat.Server;
-using GameSpyLib.Abstraction.BaseClass;
-using GameSpyLib.Extensions;
-using GameSpyLib.RetroSpyConfig;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
+using UniSpyLib.RetroSpyConfig;
 using System;
 using System.Net;
 

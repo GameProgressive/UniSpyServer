@@ -1,5 +1,5 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Database.DatabaseModel.MySql;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Abstraction.BaseClass;
 using System.Collections.Generic;
 using System.Linq;

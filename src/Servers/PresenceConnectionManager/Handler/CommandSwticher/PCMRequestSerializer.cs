@@ -1,6 +1,6 @@
-﻿using GameSpyLib.Abstraction.Interface;
-using GameSpyLib.Logging;
-using GameSpyLib.MiscMethod;
+﻿using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
+using UniSpyLib.MiscMethod;
 using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
