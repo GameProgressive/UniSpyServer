@@ -23,7 +23,7 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
-        <ProjectReference Include="..\NatNegotiation\NatNegotiation.csproj" />
+        <ProjectReference Include="..\NATNegotiation\NATNegotiation.csproj" />
         <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
