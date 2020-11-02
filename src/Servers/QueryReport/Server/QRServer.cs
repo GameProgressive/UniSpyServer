@@ -8,7 +8,7 @@ using System.Net;
 
 namespace QueryReport.Server
 {
-    public class QRServer : TemplateUdpServer
+    public class QRServer : UDPServerBase
     {
 
 

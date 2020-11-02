@@ -6,10 +6,10 @@ using UdpClient = NetCoreServer.UdpClient;
 
 namespace UniSpyLib.Network.Udp
 {
-    public class TemplateUdpClient : UdpClient
+    public class UDPClientBase : UdpClient
     {
 
-        public TemplateUdpClient(IPAddress address, int port) : base(address, port)
+        public UDPClientBase(IPAddress address, int port) : base(address, port)
         {
         }
         protected override void OnConnected()

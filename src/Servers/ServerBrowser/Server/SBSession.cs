@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace ServerBrowser
 {
-    public class SBSession : TemplateTcpSession
+    public class SBSession : TCPSessionBase
     {
         public GOACryptState EncState;
         public List<AdHocRequest> ServerMessageList;
-        public SBSession(TemplateTcpServer server) : base(server)
+        public SBSession(TCPServerBase server) : base(server)
         {
             ServerMessageList = new List<AdHocRequest>();
         }

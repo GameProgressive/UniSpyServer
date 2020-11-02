@@ -4,7 +4,7 @@ using System.Net;
 
 namespace PresenceSearchPlayer
 {
-    public class PSPServer : TemplateTcpServer
+    public class PSPServer : TCPServerBase
     {
         public PSPServer(IPAddress address, int port) : base(address, port)
         {

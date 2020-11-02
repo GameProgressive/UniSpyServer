@@ -1,6 +1,6 @@
 ﻿using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
-using UniSpyLib.RetroSpyConfig;
+using UniSpyLib.UniSpyConfig;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;

@@ -1,6 +1,6 @@
 ﻿using UniSpyLib.Database;
 
-namespace UniSpyLib.RetroSpyConfig
+namespace UniSpyLib.UniSpyConfig
 {
     public class DatabaseConfig
     {

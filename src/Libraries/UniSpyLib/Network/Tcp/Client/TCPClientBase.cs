@@ -1,7 +1,7 @@
 ﻿using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
-using UniSpyLib.RetroSpyConfig;
+using UniSpyLib.UniSpyConfig;
 using Serilog.Events;
 using System;
 using System.Linq;
@@ -13,13 +13,13 @@ using TcpClient = NetCoreServer.TcpClient;
 namespace UniSpyLib.Network
 {
 
-    public abstract class TemplateTcpClient : TcpClient
+    public abstract class TCPClientBase : TcpClient
     {
         private EndPoint _endPoint;
         /// <summary>
         /// We automatic connect to remote server address
         /// </summary>
-        public TemplateTcpClient() : base
+        public TCPClientBase() : base
             (
                 ConfigManager.Config.Servers.Where(s => s.Name == ServerManagerBase.ServerName).First().RemoteAddress
                , ConfigManager.Config.Servers.Where(s => s.Name == ServerManagerBase.ServerName).First().RemotePort

@@ -5,15 +5,15 @@ using System.Text;
 
 namespace UniSpyLib.Network
 {
-    public abstract class TemplateUdpSession : ISession
+    public abstract class UDPSessionBase : ISession
     {
-        public TemplateUdpServer Server { get; }
+        public UDPServerBase Server { get; }
 
         public Guid Id { get; }
 
         public EndPoint RemoteEndPoint { get; }
 
-        public TemplateUdpSession(TemplateUdpServer server, EndPoint endPoint)
+        public UDPSessionBase(UDPServerBase server, EndPoint endPoint)
         {
             Id = Guid.NewGuid();
             Server = server;

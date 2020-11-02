@@ -12,7 +12,7 @@ namespace UniSpyLib.Network
     /// <summary>
     /// This is a template class that helps creating a UDP Server with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class TemplateUdpServer : UdpServer
+    public abstract class UDPServerBase : UdpServer
     {
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace UniSpyLib.Network
         /// <param name="serverName">The name of the server that will be started</param>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public TemplateUdpServer(IPEndPoint endpoint) : base(endpoint)
+        public UDPServerBase(IPEndPoint endpoint) : base(endpoint)
         {
         }
         protected abstract object CreateSession(EndPoint endPoint);
@@ -38,7 +38,7 @@ namespace UniSpyLib.Network
         /// <param name="serverName">The name of the server that will be started</param>
         /// <param name="address">IP address</param>
         /// <param name="port">Port number</param>
-        public TemplateUdpServer(IPAddress address, int port) : base(address, port)
+        public UDPServerBase(IPAddress address, int port) : base(address, port)
         {
         }
 

@@ -5,7 +5,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <StartupObject>
         </StartupObject>
-        <ApplicationIcon>..\..\..\common\Icon\RetroSpy_Logo.ico</ApplicationIcon>
+        <ApplicationIcon>..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
         <NoWin32Manifest>true</NoWin32Manifest>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <DockerfileContext>..\..\..</DockerfileContext>

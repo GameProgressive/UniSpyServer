@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
 
-namespace UniSpyLib.RetroSpyConfig
+namespace UniSpyLib.UniSpyConfig
 {
     public class ConfigManager
     {

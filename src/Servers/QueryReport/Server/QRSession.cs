@@ -3,10 +3,10 @@ using System.Net;
 
 namespace QueryReport.Server
 {
-    public class QRSession : TemplateUdpSession
+    public class QRSession : UDPSessionBase
     {
         public int InstantKey { get; protected set; }
-        public QRSession(TemplateUdpServer server, EndPoint endPoint) : base(server, endPoint)
+        public QRSession(UDPServerBase server, EndPoint endPoint) : base(server, endPoint)
         {
         }
 

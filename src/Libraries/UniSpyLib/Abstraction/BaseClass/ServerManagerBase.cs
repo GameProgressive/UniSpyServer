@@ -1,7 +1,7 @@
 ﻿using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
 using UniSpyLib.Extensions;
-using UniSpyLib.RetroSpyConfig;
+using UniSpyLib.UniSpyConfig;
 using StackExchange.Redis;
 using System;
 

@@ -14,11 +14,11 @@ namespace UniSpyLib.Network
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class TemplateTcpSession : TcpSession, ISession
+    public abstract class TCPSessionBase : TcpSession, ISession
     {
         public EndPoint RemoteEndPoint { get; protected set; }
 
-        public TemplateTcpSession(TemplateTcpServer server) : base(server)
+        public TCPSessionBase(TCPServerBase server) : base(server)
         {
         }
 

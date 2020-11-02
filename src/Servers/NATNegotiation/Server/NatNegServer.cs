@@ -5,7 +5,7 @@ using System.Net;
 
 namespace NATNegotiation.Server
 {
-    public class NatNegServer : TemplateUdpServer
+    public class NatNegServer : UDPServerBase
     {
         public static ConcurrentDictionary<EndPoint, NatNegSession> Sessions;
 

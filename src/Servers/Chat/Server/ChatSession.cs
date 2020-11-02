@@ -12,7 +12,7 @@ using System.Text;
 
 namespace Chat.Server
 {
-    public class ChatSession : TemplateTcpSession
+    public class ChatSession : TCPSessionBase
     {
         public ChatUserInfo UserInfo { get; protected set; }
 

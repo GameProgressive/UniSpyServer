@@ -9,7 +9,7 @@ using System.Net;
 
 namespace CDKey.Server
 {
-    public class CDKeyServer : TemplateUdpServer
+    public class CDKeyServer : UDPServerBase
     {
         protected readonly ConcurrentDictionary<EndPoint, CDKeySession> Sessions
      = new ConcurrentDictionary<EndPoint, CDKeySession>();

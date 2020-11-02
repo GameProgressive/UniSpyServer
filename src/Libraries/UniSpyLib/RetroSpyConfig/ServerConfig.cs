@@ -1,4 +1,4 @@
-﻿namespace UniSpyLib.RetroSpyConfig
+﻿namespace UniSpyLib.UniSpyConfig
 {
     public class ServerConfig
     {

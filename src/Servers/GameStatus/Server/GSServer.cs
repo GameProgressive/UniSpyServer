@@ -4,7 +4,7 @@ using System.Net;
 
 namespace GameStatus
 {
-    public class GSServer : TemplateTcpServer
+    public class GSServer : TCPServerBase
     {
         /// <summary>
         /// Default constructor

@@ -1,7 +1,7 @@
 ﻿using Serilog.Events;
 using System.Collections.Generic;
 
-namespace UniSpyLib.RetroSpyConfig
+namespace UniSpyLib.UniSpyConfig
 {
     public class UniSpyConfig
     {

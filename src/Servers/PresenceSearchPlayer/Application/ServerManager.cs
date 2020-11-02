@@ -22,7 +22,7 @@ namespace PresenceSearchPlayer
         /// Starts a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
-        protected override void StartServer(UniSpyLib.RetroSpyConfig.ServerConfig cfg)
+        protected override void StartServer(UniSpyLib.UniSpyConfig.ServerConfig cfg)
         {
             if (cfg.Name == ServerName)
             {

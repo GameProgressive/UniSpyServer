@@ -9,12 +9,12 @@ using System.Text;
 
 namespace GameStatus
 {
-    public class GSSession : TemplateTcpSession
+    public class GSSession : TCPSessionBase
     {
 
         public PlayerData PlayerData { get; set; }
 
-        public GSSession(TemplateTcpServer server) : base(server)
+        public GSSession(TCPServerBase server) : base(server)
         {
             PlayerData = new PlayerData();
         }
