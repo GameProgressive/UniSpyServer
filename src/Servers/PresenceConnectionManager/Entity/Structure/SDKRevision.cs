@@ -3,6 +3,7 @@ using UniSpyLib.Logging;
 using PresenceConnectionManager.Abstraction.SystemHandler;
 using PresenceConnectionManager.Entity.Enumerate;
 using Serilog.Events;
+using PresenceConnectionManager.Network;
 
 namespace PresenceConnectionManager.Entity.Structure
 {

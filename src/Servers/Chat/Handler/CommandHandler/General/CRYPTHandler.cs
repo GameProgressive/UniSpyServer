@@ -3,7 +3,7 @@ using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.Encryption;
-using Chat.Server;
+using Chat.Network;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;

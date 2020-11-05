@@ -4,7 +4,7 @@ using UniSpyLib.Extensions;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;
-using QueryReport.Server;
+using QueryReport.Network;
 
 namespace QueryReport.Entity.Structure.Response
 {

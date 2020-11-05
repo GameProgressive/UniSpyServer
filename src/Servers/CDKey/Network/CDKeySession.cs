@@ -1,7 +1,7 @@
 ﻿using UniSpyLib.Network;
 using System.Net;
 
-namespace CDKey.Server
+namespace CDKey.Network
 {
     public class CDKeySession : UDPSessionBase
     {

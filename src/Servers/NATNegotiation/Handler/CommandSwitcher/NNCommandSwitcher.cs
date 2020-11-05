@@ -3,7 +3,7 @@ using UniSpyLib.Logging;
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Handler.CommandHandler;
-using NATNegotiation.Server;
+using NATNegotiation.Network;
 using Serilog.Events;
 using System;
 
@@ -11,7 +11,7 @@ namespace NATNegotiation.Handler.CommandSwitcher
 {
     public class NNCommandSwitcher
     {
-        public static void Switch(NatNegSession session, byte[] rawRequest)
+        public static void Switch(NNSession session, byte[] rawRequest)
         {
 
             IRequest request = NNRequestSerializer.Serialize(rawRequest);

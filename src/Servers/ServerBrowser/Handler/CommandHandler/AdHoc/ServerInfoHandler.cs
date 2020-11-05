@@ -11,6 +11,7 @@ using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ServerBrowser.Network;
 
 namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 {

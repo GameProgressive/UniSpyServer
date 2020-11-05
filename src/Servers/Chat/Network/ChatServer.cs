@@ -4,7 +4,7 @@ using UniSpyLib.Network;
 using NetCoreServer;
 using System.Net;
 
-namespace Chat.Server
+namespace Chat.Network
 {
     public class ChatServer : TCPServerBase
     {

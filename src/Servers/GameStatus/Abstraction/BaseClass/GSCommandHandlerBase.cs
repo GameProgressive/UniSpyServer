@@ -6,6 +6,7 @@ using Serilog.Events;
 using GameStatus.Entity.Enumerate;
 using GameStatus.Handler.SystemHandler;
 using System.Collections.Generic;
+using GameStatus.Network;
 //we store base class here but the namespace is not changed
 namespace GameStatus.Abstraction.BaseClass
 {

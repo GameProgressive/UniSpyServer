@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Handler.SystemHandler.ErrorMessage;
-using QueryReport.Server;
+using QueryReport.Network;
 using Serilog.Events;
 
 namespace QueryReport.Abstraction.BaseClass

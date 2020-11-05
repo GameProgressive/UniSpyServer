@@ -1,7 +1,7 @@
 ﻿using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
-using NATNegotiation.Server;
+using NATNegotiation.Network;
 using System;
 using System.Net;
 
@@ -34,7 +34,7 @@ namespace NATNegotiation.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new NatNegServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new NNServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
                 Console.WriteLine(
                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }

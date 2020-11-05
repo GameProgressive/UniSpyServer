@@ -8,6 +8,7 @@ using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using StackExchange.Redis;
 using System.Linq;
+using ServerBrowser.Network;
 
 namespace ServerBrowser.Handler.CommandHandler.NatNeg
 {

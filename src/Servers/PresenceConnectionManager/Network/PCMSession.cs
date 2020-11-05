@@ -8,7 +8,7 @@ using Serilog.Events;
 using System;
 using System.Net;
 
-namespace PresenceConnectionManager
+namespace PresenceConnectionManager.Network
 {
     /// <summary>
     /// Gamespy Client Manager

@@ -1,7 +1,7 @@
 ﻿using UniSpyLib.Network;
 using System.Net;
 
-namespace QueryReport.Server
+namespace QueryReport.Network
 {
     public class QRSession : UDPSessionBase
     {

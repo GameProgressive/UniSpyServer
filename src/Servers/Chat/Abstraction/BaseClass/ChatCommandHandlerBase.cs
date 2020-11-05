@@ -1,5 +1,5 @@
 ﻿using Chat.Entity.Structure;
-using Chat.Server;
+using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;

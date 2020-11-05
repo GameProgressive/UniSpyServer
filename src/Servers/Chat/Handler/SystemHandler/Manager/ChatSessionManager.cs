@@ -1,4 +1,4 @@
-﻿using Chat.Server;
+﻿using Chat.Network;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;

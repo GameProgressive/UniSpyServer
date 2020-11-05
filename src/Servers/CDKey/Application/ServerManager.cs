@@ -1,4 +1,4 @@
-﻿using CDKey.Server;
+﻿using CDKey.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;

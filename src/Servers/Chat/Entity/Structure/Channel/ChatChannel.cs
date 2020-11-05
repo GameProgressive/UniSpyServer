@@ -2,7 +2,7 @@
 using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
-using Chat.Server;
+using Chat.Network;
 using QueryReport.Entity.Structure;
 using System.Linq;
 

@@ -1,5 +1,5 @@
 ﻿using UniSpyLib.Abstraction.BaseClass;
-using QueryReport.Server;
+using QueryReport.Network;
 using System.Collections.Concurrent;
 using System.Net;
 

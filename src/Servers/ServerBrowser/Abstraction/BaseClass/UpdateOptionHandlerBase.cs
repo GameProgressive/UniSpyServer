@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using ServerBrowser.Network;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {

@@ -7,7 +7,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Net;
 
-namespace CDKey.Server
+namespace CDKey.Network
 {
     public class CDKeyServer : UDPServerBase
     {

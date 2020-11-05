@@ -1,6 +1,6 @@
 ﻿using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.UniSpyConfig;
-using QueryReport.Server;
+using QueryReport.Network;
 using System;
 using System.Net;
 

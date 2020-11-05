@@ -3,7 +3,7 @@ using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Enumerate;
-using QueryReport.Server;
+using QueryReport.Network;
 using System;
 using System.Linq;
 

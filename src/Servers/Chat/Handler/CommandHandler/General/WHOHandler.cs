@@ -7,7 +7,7 @@ using Chat.Entity.Structure.Response;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
-using Chat.Server;
+using Chat.Network;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler

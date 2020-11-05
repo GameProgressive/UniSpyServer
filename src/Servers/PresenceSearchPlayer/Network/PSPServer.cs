@@ -2,7 +2,7 @@
 using NetCoreServer;
 using System.Net;
 
-namespace PresenceSearchPlayer
+namespace PresenceSearchPlayer.Network
 {
     public class PSPServer : TCPServerBase
     {

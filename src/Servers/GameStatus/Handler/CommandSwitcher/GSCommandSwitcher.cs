@@ -11,12 +11,13 @@ using GameStatus.Handler.CommandHandler.SetPD;
 using GameStatus.Handler.CommandHandler.UpdGame;
 using System;
 using System.Linq;
+using UniSpyLib.Abstraction.Interface;
 
 namespace GameStatus.Handler.CommandSwitcher
 {
     public class GSCommandSwitcher
     {
-        public static void Switch(GSSession session, string rawRequest)
+        public static void Switch(ISession session, string rawRequest)
         {
             try
             {

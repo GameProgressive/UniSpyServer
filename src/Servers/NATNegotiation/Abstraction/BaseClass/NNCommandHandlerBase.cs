@@ -2,7 +2,7 @@
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using NATNegotiation.Entity.Enumerate;
-using NATNegotiation.Server;
+using NATNegotiation.Network;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
@@ -14,13 +14,13 @@ namespace NATNegotiation.Abstraction.BaseClass
     {
         protected NNErrorCode _errorCode;
         protected byte[] _sendingBuffer;
-        protected new NatNegSession _session;
+        protected new NNSession _session;
         protected NNRequestBase _request;
 
         public NNCommandHandlerBase(ISession session, IRequest request) : base(session)
         {
             _request = (NNRequestBase)request;
-            _session = (NatNegSession)session.GetInstance();
+            _session = (NNSession)session.GetInstance();
             _errorCode = NNErrorCode.NoError;
         }
 

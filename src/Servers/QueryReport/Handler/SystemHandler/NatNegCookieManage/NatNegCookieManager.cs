@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using QueryReport.Entity.Structure.NatNeg;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
-using QueryReport.Server;
+using QueryReport.Network;
 using Serilog.Events;
 using StackExchange.Redis;
 using System.Net;

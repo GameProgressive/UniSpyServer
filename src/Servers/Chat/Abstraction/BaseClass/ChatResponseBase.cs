@@ -1,5 +1,5 @@
 ﻿using Chat.Entity.Structure.User;
-using Chat.Server;
+using Chat.Network;
 
 namespace Chat.Abstraction.BaseClass
 {

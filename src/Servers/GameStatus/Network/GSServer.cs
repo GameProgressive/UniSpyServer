@@ -2,7 +2,7 @@
 using NetCoreServer;
 using System.Net;
 
-namespace GameStatus
+namespace GameStatus.Network
 {
     public class GSServer : TCPServerBase
     {

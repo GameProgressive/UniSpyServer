@@ -10,7 +10,7 @@ using Serilog.Events;
 using System;
 using System.Text;
 
-namespace Chat.Server
+namespace Chat.Network
 {
     public class ChatSession : TCPSessionBase
     {

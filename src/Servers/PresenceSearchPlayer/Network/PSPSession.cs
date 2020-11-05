@@ -1,7 +1,7 @@
 ﻿using UniSpyLib.Network;
 using PresenceSearchPlayer.Handler.CommandSwitcher;
 
-namespace PresenceSearchPlayer
+namespace PresenceSearchPlayer.Network
 {
     public class PSPSession : TCPSessionBase
     {

@@ -2,7 +2,7 @@
 using NetCoreServer;
 using System.Net;
 
-namespace ServerBrowser
+namespace ServerBrowser.Network
 {
     /// <summary>
     /// This class emulates the master.gamespy.com TCP server on port 28910.

@@ -15,6 +15,7 @@ using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Network;
 
 namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {

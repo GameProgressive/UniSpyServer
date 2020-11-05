@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 using System.Net;
 
 //GPCM represents GameSpy Connection Manager
-namespace PresenceConnectionManager
+namespace PresenceConnectionManager.Network
 {
     /// <summary>
     /// This server emulates the Gamespy Client Manager Server on port 29900.

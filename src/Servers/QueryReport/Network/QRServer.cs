@@ -6,7 +6,7 @@ using QueryReport.Handler.SystemHandler.QRSessionManage;
 using QueryReport.Handler.SystemHandler.ServerList;
 using System.Net;
 
-namespace QueryReport.Server
+namespace QueryReport.Network
 {
     public class QRServer : UDPServerBase
     {

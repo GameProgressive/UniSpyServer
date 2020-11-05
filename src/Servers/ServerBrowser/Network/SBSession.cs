@@ -4,7 +4,7 @@ using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandSwitcher;
 using System.Collections.Generic;
 
-namespace ServerBrowser
+namespace ServerBrowser.Network
 {
     public class SBSession : TCPSessionBase
     {

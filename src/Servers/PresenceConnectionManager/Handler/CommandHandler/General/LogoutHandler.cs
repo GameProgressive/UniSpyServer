@@ -1,5 +1,6 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
+using PresenceConnectionManager.Network;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass.General
 {

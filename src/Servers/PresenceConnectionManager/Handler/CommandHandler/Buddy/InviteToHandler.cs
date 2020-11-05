@@ -2,6 +2,7 @@
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceConnectionManager.Network;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
 {

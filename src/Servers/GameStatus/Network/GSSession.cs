@@ -7,7 +7,7 @@ using GameStatus.Handler.CommandSwitcher;
 using System;
 using System.Text;
 
-namespace GameStatus
+namespace GameStatus.Network
 {
     public class GSSession : TCPSessionBase
     {

@@ -2,7 +2,7 @@
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
-using NATNegotiation.Server;
+using NATNegotiation.Network;
 using Serilog.Events;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -12,17 +12,17 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
 {
     public class NNManager
     {
-        public static ConcurrentDictionary<string, NatNegSession> SessionPool;
+        public static ConcurrentDictionary<string, NNSession> SessionPool;
 
         static NNManager()
         {
-            SessionPool = new ConcurrentDictionary<string, NatNegSession>();
+            SessionPool = new ConcurrentDictionary<string, NNSession>();
         }
 
         public static void Negotiate(NatPortType portType, byte version, uint cookie)
         {
             //find Sessions according to the partern
-            Dictionary<string, NatNegSession> result = SessionPool
+            Dictionary<string, NNSession> result = SessionPool
                  .Where(s => s.Key.Contains(portType.ToString()))
                   .ToDictionary(s => s.Key, s => s.Value);
 

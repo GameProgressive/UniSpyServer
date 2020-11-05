@@ -3,15 +3,15 @@ using NATNegotiation.Handler.CommandSwitcher;
 using System.Collections.Concurrent;
 using System.Net;
 
-namespace NATNegotiation.Server
+namespace NATNegotiation.Network
 {
-    public class NatNegServer : UDPServerBase
+    public class NNServer : UDPServerBase
     {
-        public static ConcurrentDictionary<EndPoint, NatNegSession> Sessions;
+        public static ConcurrentDictionary<EndPoint, NNSession> Sessions;
 
-        public NatNegServer(IPAddress address, int port) : base(address, port)
+        public NNServer(IPAddress address, int port) : base(address, port)
         {
-            Sessions = new ConcurrentDictionary<EndPoint, NatNegSession>();
+            Sessions = new ConcurrentDictionary<EndPoint, NNSession>();
         }
 
         public override bool Start()
@@ -23,15 +23,15 @@ namespace NATNegotiation.Server
 
         protected override object CreateSession(EndPoint endPoint)
         {
-            return new NatNegSession(this, endPoint);
+            return new NNSession(this, endPoint);
         }
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
-            NatNegSession session;
+            NNSession session;
             if (!Sessions.TryGetValue(endPoint, out session))
             {
-                session = (NatNegSession)CreateSession(endPoint);
+                session = (NNSession)CreateSession(endPoint);
                 Sessions.TryAdd(endPoint, session);
             }
 

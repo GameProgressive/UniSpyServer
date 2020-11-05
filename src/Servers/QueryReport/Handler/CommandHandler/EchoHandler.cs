@@ -2,7 +2,7 @@
 using UniSpyLib.Logging;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure;
-using QueryReport.Server;
+using QueryReport.Network;
 using Serilog.Events;
 using System;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using Chat.Server;
+﻿using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;

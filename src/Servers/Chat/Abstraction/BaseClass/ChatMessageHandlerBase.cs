@@ -1,7 +1,7 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.Response;
 using Chat.Handler.SystemHandler.ChatSessionManage;
-using Chat.Server;
+using Chat.Network;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass

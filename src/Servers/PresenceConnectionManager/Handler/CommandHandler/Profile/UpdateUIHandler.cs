@@ -13,10 +13,5 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
             //todo find what data is belong to user info
             throw new System.NotImplementedException();
         }
-
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-        }
     }
 }
