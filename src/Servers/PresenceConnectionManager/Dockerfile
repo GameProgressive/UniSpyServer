@@ -18,5 +18,5 @@ RUN dotnet publish "PresenceConnectionManager.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./common/UniSpyServer.json .
+COPY ./common/UniSpyServer.cfg .
 ENTRYPOINT ["dotnet", "PresenceConnectionManager.dll"]

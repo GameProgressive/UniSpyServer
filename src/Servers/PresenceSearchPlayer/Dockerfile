@@ -17,5 +17,5 @@ RUN dotnet publish "PresenceSearchPlayer.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./common/RetroSpyServer.json .
+COPY ./common/UniSpyServer.cfg .
 ENTRYPOINT ["dotnet", "PresenceSearchPlayer.dll"]
