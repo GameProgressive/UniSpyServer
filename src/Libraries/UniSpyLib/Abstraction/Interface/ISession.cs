@@ -1,9 +1,10 @@
-﻿namespace UniSpyLib.Abstraction.Interface
+﻿using System.Net;
+
+namespace UniSpyLib.Abstraction.Interface
 {
     public interface ISession
     {
-        public object GetInstance();
-
+        EndPoint RemoteEndPoint { get; }
         public long Send(byte[] buffer, long offset, long size);
         public long Send(string text);
         public long Send(byte[] buffer);

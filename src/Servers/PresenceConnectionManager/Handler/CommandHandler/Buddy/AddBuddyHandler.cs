@@ -7,10 +7,10 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     public class AddBuddyHandler : PCMCommandHandlerBase
     {
-        protected AddBuddyRequest _request;
-        public AddBuddyHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        protected new AddBuddyRequest _request;
+        public AddBuddyHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new AddBuddyRequest(recv);
+            _request = (AddBuddyRequest)request;
         }
 
         protected override void CheckRequest()

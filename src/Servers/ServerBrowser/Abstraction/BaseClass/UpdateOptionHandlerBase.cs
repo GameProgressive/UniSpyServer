@@ -30,6 +30,11 @@ namespace ServerBrowser.Abstraction.BaseClass
             _dataList = new List<byte>();
         }
 
+        public UpdateOptionHandlerBase(ISession session, byte[] recv) : base(session, recv)
+        {
+            _dataList = new List<byte>();
+        }
+
         protected override void CheckRequest()
         {
             base.CheckRequest();
@@ -47,8 +52,8 @@ namespace ServerBrowser.Abstraction.BaseClass
                 return;
             }
             //this is client public ip and default query port
-            SBSession session = (SBSession)_session.GetInstance();
-            _clientRemoteIP = ((IPEndPoint)session.Socket.RemoteEndPoint).Address.GetAddressBytes();
+
+            _clientRemoteIP = ((IPEndPoint)_session.Socket.RemoteEndPoint).Address.GetAddressBytes();
 
             //TODO   //default port should be hton format
             byte[] defaultPortBytes = BitConverter.GetBytes(
@@ -78,8 +83,7 @@ namespace ServerBrowser.Abstraction.BaseClass
                      SBServer.ServerChallenge
                 );
             //refresh encryption state
-            SBSession session = (SBSession)_session.GetInstance();
-            session.EncState = enc.State;
+            _session.EncState = enc.State;
 
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)
             {
@@ -88,7 +92,7 @@ namespace ServerBrowser.Abstraction.BaseClass
 
             LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(_dataList.ToArray(), 0, _dataList.Count)}");
-            session.BaseSendAsync(_sendingBuffer);
+            _session.BaseSendAsync(_sendingBuffer);
         }
 
         protected virtual void GenerateServerKeys()

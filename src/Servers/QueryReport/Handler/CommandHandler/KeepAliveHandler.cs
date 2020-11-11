@@ -26,8 +26,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 
             _sendingBuffer = new QRResponseBase(_request).BuildResponse();
 
-            QRSession client = (QRSession)_session.GetInstance();
-            var result = GameServer.GetServers(client.RemoteEndPoint);
+            var result = GameServer.GetServers(_session.RemoteEndPoint);
             if (result.Count != 1)
             {
                 _errorCode = QRErrorCode.Database;
@@ -40,7 +39,7 @@ namespace QueryReport.Handler.CommandHandler.KeepAlive
 
             GameServer.UpdateServer
                 (
-                client.RemoteEndPoint,
+                _session.RemoteEndPoint,
                 gameServer.ServerData.KeyValue["gamename"],
                 gameServer);
         }

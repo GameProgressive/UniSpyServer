@@ -10,7 +10,7 @@ namespace CDKey.Handler.CommandSwitcher
 {
     public class CDKeyCommandSwitcher
     {
-        public static void Switch(ISession client, string message)
+        public static void Switch(ISession session, string message)
         {
             message.Replace(@"\r\n", "").Replace("\0", "");
             string[] keyValueArray = message.TrimStart('\\').Split('\\');
@@ -29,7 +29,7 @@ namespace CDKey.Handler.CommandSwitcher
                     case "resp":
                         break;
                     case "skey":
-                        SKeyHandler.IsCDKeyValid(client, recv);
+                        SKeyHandler.IsCDKeyValid(session, recv);
                         break;
                     case "disc"://disconnect from server
                         break;

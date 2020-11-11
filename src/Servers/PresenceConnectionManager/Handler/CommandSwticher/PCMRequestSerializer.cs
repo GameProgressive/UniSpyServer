@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceConnectionManager.Abstraction.CommandSwticher
+namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
     public class PCMRequestSerializer
     {

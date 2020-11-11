@@ -9,10 +9,10 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
 {
     public class RegisterNickHandler : PCMCommandHandlerBase
     {
-        protected RegisterNickRequest _request;
-        public RegisterNickHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new RegisterNickRequest _request;
+        public RegisterNickHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new RegisterNickRequest(recv);
+            _request = (RegisterNickRequest)request;
         }
 
         protected override void CheckRequest()

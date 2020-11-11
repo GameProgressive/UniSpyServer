@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Abstraction.SystemHandler
     public class BlockListHandler : PCMCommandHandlerBase
     {
         protected List<uint> _profileIDList;
-        public BlockListHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public BlockListHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 

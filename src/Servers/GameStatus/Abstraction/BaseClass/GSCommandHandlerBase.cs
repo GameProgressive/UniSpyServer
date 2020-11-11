@@ -22,7 +22,7 @@ namespace GameStatus.Abstraction.BaseClass
         protected GSCommandHandlerBase(ISession session, Dictionary<string, string> request) : base(session)
         {
             _errorCode = GSError.NoError;
-            _session = (GSSession)session.GetInstance();
+            _session = (GSSession)session;
         }
 
         public override void Handle()

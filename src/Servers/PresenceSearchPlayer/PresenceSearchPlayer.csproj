@@ -29,5 +29,6 @@
       <Folder Include="Entity\Structure\" />
       <Folder Include="Abstraction\BaseClass\" />
       <Folder Include="Entity\Structure\Request\" />
+      <Folder Include="Entity\Structure\DatabaseResult\" />
     </ItemGroup>
 </Project>

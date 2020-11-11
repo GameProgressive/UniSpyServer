@@ -100,11 +100,6 @@ namespace UniSpyLib.Network
             base.OnDisconnected();
         }
 
-        public object GetInstance()
-        {
-            return this;
-        }
-
         bool ISession.BaseSendAsync(byte[] buffer)
         {
             return BaseSendAsync(buffer);

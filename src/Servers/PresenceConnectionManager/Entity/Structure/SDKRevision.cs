@@ -12,9 +12,9 @@ namespace PresenceConnectionManager.Entity.Structure
         /// <summary>
         /// Tell server send back extra information according to the number of  sdkrevision
         /// </summary>
-        public static void ExtendedFunction(ISession client)
+        public static void ExtendedFunction(ISession session)
         {
-            PCMSession _session = (PCMSession)client.GetInstance();
+            PCMSession _session = (PCMSession)session;
             if (_session.UserData.SDKRevision == 0)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "[SDKRev] No sdkrevision!");

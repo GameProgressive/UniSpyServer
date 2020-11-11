@@ -9,7 +9,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage
     public class SendMessageHandler : SBCommandHandlerBase
     {
         private AdHocRequest _request;
-        public SendMessageHandler(ISession client, byte[] recv) : base(client, recv)
+        public SendMessageHandler(ISession session, byte[] recv) : base(session, recv)
         {
             _request = new AdHocRequest();
         }
@@ -29,8 +29,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage
         protected override void DataOperation()
         {
             base.DataOperation();
-            var session = (SBSession)_session.GetInstance();
-            session.ServerMessageList.Add(_request);
+            _session.ServerMessageList.Add(_request);
         }
     }
 }

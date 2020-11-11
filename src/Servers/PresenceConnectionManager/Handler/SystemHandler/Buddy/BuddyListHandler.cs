@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Abstraction.SystemHandler
     public class BuddyListHandler : PCMCommandHandlerBase
     {
         protected List<uint> _profileIDList;
-        public BuddyListHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public BuddyListHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 

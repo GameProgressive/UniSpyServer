@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
 {
     public class RemoveBlockHandler : PCMCommandHandlerBase
     {
-        public RemoveBlockHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public RemoveBlockHandler(ISession session,IRequest request) : base(session, request)
         {
             throw new NotImplementedException();
         }

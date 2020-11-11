@@ -9,15 +9,10 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
 {
     public class NewProfileHandler : PCMCommandHandlerBase
     {
-        protected NewProfileRequest _request;
-        public NewProfileHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new NewProfileRequest _request;
+        public NewProfileHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new NewProfileRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (NewProfileRequest)request;
         }
 
         protected override void DataOperation()

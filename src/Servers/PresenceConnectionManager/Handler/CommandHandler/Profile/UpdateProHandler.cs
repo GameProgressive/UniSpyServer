@@ -8,10 +8,10 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
 {
     public class UpdateProHandler : PCMCommandHandlerBase
     {
-        protected UpdateProRequest _request;
-        public UpdateProHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new UpdateProRequest _request;
+        public UpdateProHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new UpdateProRequest(recv);
+            _request = (UpdateProRequest)request;
         }
 
         protected override void CheckRequest()

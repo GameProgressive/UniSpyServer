@@ -2,22 +2,16 @@
 using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
 {
     public class StatusInfoHandler : PCMCommandHandlerBase
     {
-        protected StatusInfoRequest _request;
-        public StatusInfoHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        protected new StatusInfoRequest _request;
+        public StatusInfoHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new StatusInfoRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (StatusInfoRequest)request;
         }
 
         protected override void DataOperation()
@@ -29,8 +23,6 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
                     .Where(s => s.Profileid == _session.UserData.ProfileID
                     && s.Namespaceid == _session.UserData.NamespaceID)
                     .Select(s => s);
-
-
 
                 if (result.Count() == 0)
                 {

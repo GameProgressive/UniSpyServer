@@ -8,15 +8,15 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
     public class PSPRequestBase : IRequest
     {
         protected Dictionary<string, string> _rawRequest;
-        public string CmdName;
+        public string CommandName;
         public ushort OperationID { get; protected set; }
 
-        object IRequest.CommandName => CmdName;
+        object IRequest.CommandName => CommandName;
 
         public PSPRequestBase(Dictionary<string, string> recv)
         {
             _rawRequest = recv;
-            CmdName = recv.Keys.First();
+            CommandName = recv.Keys.First();
         }
 
         public virtual GPError Parse()
@@ -37,11 +37,6 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         object IRequest.Parse()
         {
             return Parse();
-        }
-
-        public object GetInstance()
-        {
-            return this;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
         private new AdHocRequest _request;
         private GameServer _gameServer;
 
-        public ServerInfoHandler(ISession client, byte[] recv) : base(null, client, recv)
+        public ServerInfoHandler(ISession session, byte[] recv) : base(session, recv)
         {
             _request = new AdHocRequest();
         }
@@ -71,11 +71,9 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 
             _dataList.InsertRange(0, msgLength);
 
-            SBSession session = (SBSession)_session.GetInstance();
-
-            GOAEncryption enc = new GOAEncryption(session.EncState);
+            GOAEncryption enc = new GOAEncryption(_session.EncState);
             _sendingBuffer = enc.Encrypt(_dataList.ToArray());
-            session.EncState = enc.State;
+            _session.EncState = enc.State;
         }
 
         protected virtual List<byte> GenerateServerInfo()

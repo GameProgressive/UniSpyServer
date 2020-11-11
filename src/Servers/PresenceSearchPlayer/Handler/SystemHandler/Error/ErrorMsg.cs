@@ -180,11 +180,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Error
         /// <param name="session">The stream that will receive the error</param>
         /// <param name="errorCode">The error code</param>
         /// <param name="operationID">The operation id</param>
-        public static void SendGPSPError(ISession client, GPError errorCode, uint operationID)
+        public static void SendGPSPError(ISession session, GPError errorCode, uint operationID)
         {
             string errorMsg = GetErrorMsg(errorCode);
             string sendingBuffer = $@"\error\\err\{errorCode}\fatal\\errmsg\{errorMsg}\id\{operationID}\final\";
-            client.SendAsync(sendingBuffer);
+            session.SendAsync(sendingBuffer);
         }
 
         public static string BuildGPErrorMsg(GPError errorCode)

@@ -11,17 +11,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
+namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     public class NewUserHandler : PSPCommandHandlerBase
     {
         private Users _user;
         private Profiles _profile;
         private Subprofiles _subProfile;
-        protected NewUserRequest _request;
-        public NewUserHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new NewUserRequest _request;
+        public NewUserHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new NewUserRequest(recv);
+            _request = (NewUserRequest)request;
         }
 
         protected enum _newUserStatus
@@ -35,11 +35,6 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.NewUser
             CheckSubProfile,
             SubProfileNotExist,
             SubProfileExist
-        }
-
-        protected override void RequestCheck()
-        {
-            _errorCode = _request.Parse();
         }
 
         protected override void DataOperation()

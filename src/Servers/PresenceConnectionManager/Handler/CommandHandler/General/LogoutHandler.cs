@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.General
 {
     public class LogoutHandler : PCMCommandHandlerBase
     {
-        public LogoutHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public LogoutHandler(ISession session,IRequest request) : base(session, request)
         {
         }
 

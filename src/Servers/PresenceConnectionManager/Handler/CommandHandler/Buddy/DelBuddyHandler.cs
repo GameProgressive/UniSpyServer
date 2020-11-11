@@ -13,16 +13,11 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
     {
         //PCMSession _session;
         //Dictionary<string, string> _recv;
-        protected DelBuddyRequest _request;
+        protected new DelBuddyRequest _request;
         //delete friend in database then send bm_revoke message to friend
-        public DelBuddyHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        public DelBuddyHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new DelBuddyRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (DelBuddyRequest)request;
         }
 
         protected override void DataOperation()

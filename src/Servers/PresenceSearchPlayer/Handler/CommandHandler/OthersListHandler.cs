@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
+namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     internal class OthersListDBResult
     {
@@ -14,22 +14,17 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.OthersList
     }
     public class OthersListHandler : PSPCommandHandlerBase
     {
-        protected OthersListRequest _request;
+        protected new OthersListRequest _request;
         private List<OthersListDBResult> _result;
 
-        public OthersListHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        public OthersListHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new OthersListRequest(recv);
+            _request = (OthersListRequest)request;
             _result = new List<OthersListDBResult>();
         }
 
         //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
         //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
-
-        protected override void RequestCheck()
-        {
-            _errorCode = _request.Parse();
-        }
 
         protected override void DataOperation()
         {

@@ -4,6 +4,8 @@ using UniSpyLib.Logging;
 using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Handler.SystemHandler.Error;
+using ServerBrowser.Network;
+
 namespace ServerBrowser.Abstraction.BaseClass
 {
     public abstract class SBCommandHandlerBase : CommandHandlerBase
@@ -11,11 +13,12 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected SBErrorCode _errorCode;
         protected byte[] _sendingBuffer;
         protected byte[] _recv;
-
-        public SBCommandHandlerBase(ISession client, byte[] recv) : base(client)
+        protected new SBSession _session;
+        public SBCommandHandlerBase(ISession session, byte[] recv) : base(session)
         {
             _errorCode = SBErrorCode.NoError;
             _recv = recv;
+            _session = (SBSession)session;
         }
 
         public override void Handle()

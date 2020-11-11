@@ -16,16 +16,18 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         /// the decision formula should use _result.Count==0
         /// </summary>
         protected string _sendingBuffer;
-        public PSPCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
+        protected PSPRequestBase _request;
+        public PSPCommandHandlerBase(ISession session, IRequest request) : base(session)
         {
             _errorCode = GPError.NoError;
+            _request = (PSPRequestBase)request;
         }
 
         public override void Handle()
         {
             base.Handle();
 
-            RequestCheck();
+            CheckRequest();
 
             if (_errorCode < GPError.NoError)
             {
@@ -47,7 +49,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             Response();
         }
 
-        protected virtual void RequestCheck() { }
+        protected virtual void CheckRequest() { }
         protected virtual void DataOperation() { }
 
         /// <summary>
