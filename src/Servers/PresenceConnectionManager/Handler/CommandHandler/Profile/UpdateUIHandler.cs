@@ -1,7 +1,8 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     /// <summary>
     /// Update user information (email)

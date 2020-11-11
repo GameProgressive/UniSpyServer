@@ -2,8 +2,9 @@
 using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class AddBlockHandler : PCMCommandHandlerBase
     {

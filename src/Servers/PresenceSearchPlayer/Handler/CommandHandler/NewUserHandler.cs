@@ -1,23 +1,20 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
-using UniSpyLib.Entity.Structure;
 using UniSpyLib.Logging;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using Serilog.Events;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     public class NewUserHandler : PSPCommandHandlerBase
     {
-        private Users _user;
-        private Profiles _profile;
-        private Subprofiles _subProfile;
+        protected Users _user;
+        protected Profiles _profile;
+        protected Subprofiles _subProfile;
         protected new NewUserRequest _request;
         public NewUserHandler(ISession session, IRequest request) : base(session, request)
         {
@@ -74,19 +71,8 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected override void BuildNormalResponse()
         {
             base.BuildNormalResponse();
-            if (ServerManagerBase.ServerName
-             == UniSpyServerName.PSP)
-            {
                 //PSP NewUser
                 _sendingBuffer = $@"\nur\\pid\{_subProfile.Profileid}\final\";
-            }
-            else if (ServerManagerBase.ServerName
-                == UniSpyServerName.PCM)
-            {
-                //PCM NewUser
-                _sendingBuffer =
-                    $@"\nur\\userid\{_user.Userid}\profileid\{_subProfile.Profileid}\id\{_request.OperationID}\final\";
-            }
         }
 
         private void UpdateOtherInfo()

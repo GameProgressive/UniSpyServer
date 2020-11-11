@@ -3,8 +3,9 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class StatusInfoHandler : PCMCommandHandlerBase
     {

@@ -1,11 +1,9 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
-using PresenceConnectionManager.Abstraction.BaseClass.Buddy;
-using PresenceConnectionManager.Abstraction.BaseClass.General;
-using PresenceConnectionManager.Abstraction.BaseClass.Profile;
+
 using PresenceConnectionManager.Entity.Structure;
 using System;
-using PresenceSearchPlayer.Handler.CommandHandler;
+using PresenceConnectionManager.Handler.CommandHandler;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {

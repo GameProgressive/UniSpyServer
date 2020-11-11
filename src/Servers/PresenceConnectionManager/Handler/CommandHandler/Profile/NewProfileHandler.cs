@@ -4,8 +4,9 @@ using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class NewProfileHandler : PCMCommandHandlerBase
     {

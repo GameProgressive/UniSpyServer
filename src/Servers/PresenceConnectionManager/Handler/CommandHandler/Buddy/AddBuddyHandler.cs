@@ -1,8 +1,9 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Collections.Generic;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     public class AddBuddyHandler : PCMCommandHandlerBase

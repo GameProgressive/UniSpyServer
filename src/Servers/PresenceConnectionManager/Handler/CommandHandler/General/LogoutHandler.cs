@@ -1,8 +1,9 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 using PresenceConnectionManager.Network;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.General
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class LogoutHandler : PCMCommandHandlerBase
     {

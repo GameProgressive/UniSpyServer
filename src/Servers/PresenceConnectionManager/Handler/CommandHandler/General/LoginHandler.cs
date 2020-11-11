@@ -12,8 +12,9 @@ using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 using PresenceConnectionManager.Network;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.General
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     internal class LoginDBResult
     {
