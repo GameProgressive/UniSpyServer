@@ -16,7 +16,7 @@ namespace UniSpyLib.Network
     /// </summary>
     public abstract class TCPSessionBase : TcpSession, ISession
     {
-        public EndPoint RemoteEndPoint { get; protected set; }
+        public EndPoint RemoteEndPoint { get; private set; }
 
         public TCPSessionBase(TCPServerBase server) : base(server)
         {

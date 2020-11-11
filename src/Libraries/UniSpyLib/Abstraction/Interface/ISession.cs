@@ -4,7 +4,8 @@ namespace UniSpyLib.Abstraction.Interface
 {
     public interface ISession
     {
-        EndPoint RemoteEndPoint { get; }
+        public EndPoint RemoteEndPoint { get; }
+
         public long Send(byte[] buffer, long offset, long size);
         public long Send(string text);
         public long Send(byte[] buffer);
