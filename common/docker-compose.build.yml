@@ -23,11 +23,11 @@ services:
     stdin_open: true
     tty: true
 
-  natneg:
+  nn:
     build:
       context: ../
-      dockerfile: ./src/Servers/NatNegotiation/Dockerfile
-    image: gameprogressive/natneg
+      dockerfile: ./src/Servers/NATNegotiation/Dockerfile
+    image: gameprogressive/nn
     ports:
     - "27901:27901"
     - "27901:27901/udp"
@@ -75,11 +75,11 @@ services:
     stdin_open: true
     tty: true
 
-  gstats:
+  gs:
     build:
       context: ../
-      dockerfile: ./src/Servers/StatsAndTracking/Dockerfile
-    image: gameprogressive/gstats
+      dockerfile: ./src/Servers/GameStatus/Dockerfile
+    image: gameprogressive/gs
     ports:
     - "29920:29920"
     stdin_open: true

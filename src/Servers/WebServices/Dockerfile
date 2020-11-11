@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.7-alpine3.12 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine3.12 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.401-alpine3.12 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine3.12 AS build
 WORKDIR /src
 COPY ["src/Servers/WebServices/WebServices.csproj", "src/Servers/WebServices/"]
 COPY ["src/Libraries/UniSpyLib/UniSpyLib.csproj", "src/Libraries/UniSpyLib/"]
