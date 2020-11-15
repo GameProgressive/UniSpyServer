@@ -37,6 +37,9 @@
         /// this is used to check the connection to server browser
         /// </summary>
         NoServerList = 2,
+        /// <summary>
+        /// Push new local game status to QueryReport server
+        /// </summary>
         PushUpdates = 4,
         AlternateSourceIP = 8,
         SendGroups = 32,

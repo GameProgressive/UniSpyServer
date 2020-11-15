@@ -11,9 +11,8 @@ using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ServerBrowser.Network;
 
-namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
+namespace ServerBrowser.Handler.CommandHandler
 {
     /// <summary>
     /// Get full rules for a server (for example, to get

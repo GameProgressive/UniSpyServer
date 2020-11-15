@@ -2,7 +2,7 @@
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure.Packet.Request;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList
+namespace ServerBrowser.Handler.CommandHandler
 {
     /// <summary>
     /// No server list update option only get ip and host port for client

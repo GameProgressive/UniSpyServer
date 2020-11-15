@@ -7,7 +7,7 @@ using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Text;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.SendGroups
+namespace ServerBrowser.Handler.CommandHandler
 {
     public class SendGroupsHandler : UpdateOptionHandlerBase
     {

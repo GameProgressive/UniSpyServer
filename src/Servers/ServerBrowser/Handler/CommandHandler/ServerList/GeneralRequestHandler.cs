@@ -4,7 +4,7 @@ using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.GeneralRequest
+namespace ServerBrowser.Handler.CommandHandler
 {
     public class GeneralRequestHandler : UpdateOptionHandlerBase
     {

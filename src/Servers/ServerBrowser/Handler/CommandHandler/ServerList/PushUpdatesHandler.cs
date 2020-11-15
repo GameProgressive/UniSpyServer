@@ -6,7 +6,7 @@ using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Linq;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.PushUpdates
+namespace ServerBrowser.Handler.CommandHandler
 {
     /// <summary>
     /// Search peer to peer game servers to client

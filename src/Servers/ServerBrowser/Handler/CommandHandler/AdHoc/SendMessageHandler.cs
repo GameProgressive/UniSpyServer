@@ -4,7 +4,7 @@ using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Network;
 
-namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage
+namespace ServerBrowser.Handler.CommandHandler
 {
     public class SendMessageHandler : SBCommandHandlerBase
     {

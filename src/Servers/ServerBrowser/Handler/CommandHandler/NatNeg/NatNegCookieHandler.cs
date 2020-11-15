@@ -10,7 +10,7 @@ using StackExchange.Redis;
 using System.Linq;
 using ServerBrowser.Network;
 
-namespace ServerBrowser.Handler.CommandHandler.NatNeg
+namespace ServerBrowser.Handler.CommandHandler
 {
     /// <summary>
     /// we need forward this to game server
