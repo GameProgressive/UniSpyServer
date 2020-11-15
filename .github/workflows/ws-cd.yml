@@ -10,18 +10,18 @@ on:
 
 jobs:
   build:
-    name: Test on dotnet core v${{ matrix.dotnetcore_version }} (${{ matrix.os }})
+    name: Test on .NET v${{ matrix.dotnet_version }} (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        dotnetcore_version: ['3.1.102']
+        dotnet_version: ['5.0']
         os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
       - uses: actions/checkout@v2
-      - name: Setup .NET Core ${{ matrix.dotnetcore_version }}
+      - name: Setup .NET ${{ matrix.dotnet_version }}
         uses: actions/setup-dotnet@v1.4.0
         with:
-          dotnet-version: ${{ matrix.dotnetcore_version }}
+          dotnet-version: ${{ matrix.dotnet_version }}
       - name: Building project
         run: dotnet build
 

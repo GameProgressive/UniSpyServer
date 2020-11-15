@@ -12,10 +12,10 @@
         <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NetCoreServer" Version="3.0.21" />
+        <PackageReference Include="NetCoreServer" Version="5.0.0" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
-        <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
         <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+        <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
     </ItemGroup>
     <ItemGroup>
         <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />

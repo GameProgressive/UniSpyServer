@@ -1,8 +1,8 @@
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.7-alpine3.12 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine3.12 AS base
 WORKDIR /app
 EXPOSE 28910
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1.401-alpine3.12 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine3.12 AS build
 WORKDIR /src
 COPY ["src/Servers/ServerBrowser/ServerBrowser.csproj", "src/Servers/ServerBrowser/"]
 COPY ["src/Servers/QueryReport/QueryReport.csproj", "src/Servers/QueryReport/"]
