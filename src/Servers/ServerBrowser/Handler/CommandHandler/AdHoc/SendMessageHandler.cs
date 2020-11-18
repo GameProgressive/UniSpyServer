@@ -11,7 +11,7 @@ namespace ServerBrowser.Handler.CommandHandler
         private AdHocRequest _request;
         public SendMessageHandler(ISession session, byte[] recv) : base(session, recv)
         {
-            _request = new AdHocRequest();
+            _request = new AdHocRequest(recv);
         }
 
         protected override void CheckRequest()
@@ -19,7 +19,7 @@ namespace ServerBrowser.Handler.CommandHandler
             //we do not call base method because we have our own check method
             //base.CheckRequest();
 
-            if (!_request.Parse(_recv))
+            if (!_request.Parse())
             {
                 _errorCode = SBErrorCode.Parse;
                 return;

@@ -43,6 +43,7 @@ namespace QueryReport.Network
 
         protected override void OnReceived(EndPoint endPoint, byte[] message)
         {
+            base.OnReceived(endPoint, message);
             QRSession session;
             if (!QRSessionManager.Sessions.TryGetValue(endPoint, out session))
             {
@@ -50,6 +51,11 @@ namespace QueryReport.Network
                 QRSessionManager.Sessions.TryAdd(endPoint, session);
             }
             QRCommandSwitcher.Switch(session, message);
+        }
+
+        protected override void OnReceived(EndPoint endPoint, string message)
+        {
+            base.OnReceived(endPoint, message);
         }
     }
 }

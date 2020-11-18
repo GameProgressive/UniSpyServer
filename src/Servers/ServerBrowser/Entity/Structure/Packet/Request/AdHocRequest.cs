@@ -1,41 +1,48 @@
 ﻿using UniSpyLib.Extensions;
 using System;
 using System.Net;
+using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {
-    public class AdHocRequest
+    public class AdHocRequest : IRequest
     {
         /// <summary>
         /// The game server client search for
         /// </summary>
-        public string TargetServerIP { get; protected set; }
-        public string TargetServerHostPort { get; protected set; }
+        public string TargetServerIP { get { return TargetEndPoint.Address.ToString(); } }
+        public string TargetServerHostPort { get { return TargetEndPoint.Port.ToString(); } }
+        public IPEndPoint TargetEndPoint { get; protected set; }
+        public byte[] RawRequest { get; protected set; }
 
-        public AdHocRequest()
+        object IRequest.CommandName => throw new NotImplementedException();
+
+        public AdHocRequest(byte[] rawRequest)
         {
+            RawRequest = rawRequest;
         }
 
-        public bool Parse(byte[] recv)
+        public bool Parse()
         {
-            ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(recv, 0, 2), true);
+            ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(RawRequest, 0, 2), true);
 
             //if(recv.Length<length)
             //{
             //    return false;
             //}
 
-            byte[] ip = ByteTools.SubBytes(recv, 3, 4);
-            byte[] port = ByteTools.SubBytes(recv, 7, 2);
+            byte[] ip = ByteTools.SubBytes(RawRequest, 3, 4);
+            byte[] port = ByteTools.SubBytes(RawRequest, 7, 2);
             Array.Reverse(port);
 
             //TODO fix for gbrome!!!!!!!!!!!!!!!!!!!
-            IPEndPoint iPEnd = ByteTools.GetIPEndPoint(ip, port);
-
-            TargetServerIP = iPEnd.Address.ToString();
-            TargetServerHostPort = iPEnd.Port.ToString();
-
+            TargetEndPoint = ByteTools.GetIPEndPoint(ip, port);
             return true;
+        }
+
+        object IRequest.Parse()
+        {
+            return Parse();
         }
     }
 }

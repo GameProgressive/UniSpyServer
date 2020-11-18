@@ -25,14 +25,14 @@ namespace ServerBrowser.Handler.CommandHandler
 
         public ServerInfoHandler(ISession session, byte[] recv) : base(session, recv)
         {
-            _request = new AdHocRequest();
+            _request = new AdHocRequest(recv);
         }
 
         protected override void CheckRequest()
         {
             //we do not call base.CheckRequest() method because we have our own check method
 
-            if (!_request.Parse(_recv))
+            if (!_request.Parse())
             {
                 _errorCode = SBErrorCode.Parse;
                 return;
@@ -87,6 +87,7 @@ namespace ServerBrowser.Handler.CommandHandler
                 data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
                 data.Add(SBStringFlag.StringSpliter);
             }
+
             foreach (var player in _gameServer.PlayerData.KeyValueList)
             {
                 foreach (var kv in player)
@@ -97,6 +98,7 @@ namespace ServerBrowser.Handler.CommandHandler
                     data.Add(SBStringFlag.StringSpliter);
                 }
             }
+
             foreach (var team in _gameServer.TeamData.KeyValueList)
             {
                 foreach (var kv in team)
