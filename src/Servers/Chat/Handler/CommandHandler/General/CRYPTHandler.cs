@@ -30,6 +30,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
             {
                 LogWriter.ToLog(LogEventLevel.Error, "secret key not found!");
                 _errorCode = ChatError.UnSupportedGame;
+                _session.Disconnect();
                 return;
             }
             _session.UserInfo.SetGameSecretKey(secretKey);
