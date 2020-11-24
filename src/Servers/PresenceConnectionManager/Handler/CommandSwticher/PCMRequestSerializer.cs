@@ -59,8 +59,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
                 return null;
             }
             // Read client message, and parse it into key value pairs
-            string[] recieved = command.TrimStart('\\').Split('\\');
-            Dictionary<string, string> keyValue = GameSpyUtils.ConvertRequestToKeyValue(recieved);
+            var keyValue = GameSpyUtils.ConvertToKeyValue(command);
 
             switch (keyValue.Keys.First())
             {

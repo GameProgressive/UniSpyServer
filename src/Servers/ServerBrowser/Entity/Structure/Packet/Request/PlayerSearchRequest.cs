@@ -1,52 +1,49 @@
 ﻿using UniSpyLib.Extensions;
 using System;
 using System.Text;
+using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {
-    public class PlayerSearchRequest
+    public class PlayerSearchRequest : IRequest
     {
-        public byte[] SearchOption = new byte[4];
-        public byte[] MaxResults = new byte[4];
+        public int SearchOption { get; protected set; }
+        public uint MaxResults { get; protected set; }
 
-        public string SearchName
+        public string SearchName { get; protected set; }
+
+        public string Message { get; protected set; }
+
+        public byte[] RawRequest { get; protected set; }
+
+        object IRequest.CommandName => SearchOption;
+
+        public PlayerSearchRequest(byte[] rawRequest)
         {
-            get
-            {
-                return Encoding.ASCII.GetString(_searchName);
-            }
-
-            protected set { }
+            RawRequest = rawRequest;
         }
 
-        private byte[] _searchName;
-
-        public string Message
+        public bool Parse()
         {
-            get
-            {
-                return Encoding.ASCII.GetString(_message);
-            }
+            SearchOption = Convert.ToInt16(ByteTools.SubBytes(RawRequest, 3, 3 + 4));
+            MaxResults = Convert.ToUInt16(ByteTools.SubBytes(RawRequest, 7, 7 + 4));
 
-            protected set { }
+            int nameLength = BitConverter.ToInt32(
+                ByteTools.SubBytes(RawRequest, 11, 11 + 4));
+            SearchName = Encoding.ASCII.GetString(
+                ByteTools.SubBytes(RawRequest, 15, nameLength));
+
+            int messageLength = BitConverter.ToInt32(
+                ByteTools.SubBytes(RawRequest, 15 + nameLength, 4));
+            Message = Encoding.ASCII.GetString(
+                ByteTools.SubBytes(RawRequest, 15 + nameLength + 4, messageLength));
+
+            return true;
         }
 
-        private byte[] _message;
-
-        public PlayerSearchRequest(byte[] recv)
+        object IRequest.Parse()
         {
-            ByteTools.SubBytes(recv, 3, 3 + 4).CopyTo(SearchOption, 0);
-            ByteTools.SubBytes(recv, 7, 7 + 4).CopyTo(MaxResults, 0);
-
-            int nameLength = BitConverter.ToInt32(ByteTools.SubBytes(recv, 11, 11 + 4));
-
-            _searchName = new byte[nameLength];
-            ByteTools.SubBytes(recv, 15, nameLength).CopyTo(_searchName, 0);
-
-            int messageLength = BitConverter.ToInt32(ByteTools.SubBytes(recv, 15 + nameLength, 4));
-
-            _message = new byte[messageLength];
-            ByteTools.SubBytes(recv, 15 + nameLength + 4, messageLength).CopyTo(_message, 0);
+            return Parse();
         }
     }
 }

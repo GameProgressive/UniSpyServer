@@ -26,7 +26,7 @@ namespace GameStatus.Handler.CommandSwitcher
                     return;
                 }
                 string[] requestFraction = rawRequest.TrimStart('\\').Split('\\');
-                var request = GameSpyUtils.ConvertRequestToKeyValue(requestFraction);
+                var request = GameSpyUtils.ConvertToKeyValue(requestFraction);
 
                 switch (request.Keys.First())
                 {

@@ -3,10 +3,6 @@ using UniSpyLib.Logging;
 using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
-using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.GeneralRequest;
-using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList;
-using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.PushUpdates;
-using ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.SendGroups;
 using ServerBrowser.Handler.SystemHandler.Error;
 
 namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher

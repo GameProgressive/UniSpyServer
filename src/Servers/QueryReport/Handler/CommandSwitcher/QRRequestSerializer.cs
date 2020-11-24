@@ -5,59 +5,67 @@ using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Handler.SystemHandler.ErrorMessage;
 using Serilog.Events;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Handler.CommandSwitcher
 {
-    public class QRRequestSerializer
+    public class QRRequestSerializer:RequestSerializerBase
     {
-        public static IRequest Serilize(byte[] rawRequest)
+        protected new byte[] _rawRequest;
+        public QRRequestSerializer(ISession session, byte[] rawRequest) : base(session, rawRequest)
         {
-            IRequest request;
-            if (rawRequest.Length < 1)
+            _rawRequest = rawRequest;
+        }
+
+        public override void Serialize()
+        {
+            if (_rawRequest.Length < 1)
             {
-                return null;
+                return;
             }
 
-            switch ((QRPacketType)rawRequest[0])
-            {
-                case QRPacketType.AvaliableCheck:
-                    request = new AvaliableRequest(rawRequest);
-                    break;
-                //verify challenge to check game server is real or fake;
-                //after verify we can add game server to server list
-                case QRPacketType.Challenge:
-                    request = new ChallengeRequest(rawRequest);
-                    break;
-                case QRPacketType.HeartBeat:
-                    request = new HeartBeatRequest(rawRequest);
-                    break;
-                case QRPacketType.KeepAlive:
-                    request = new KeepAliveRequest(rawRequest);
-                    break;
-                case QRPacketType.EchoResponse:
-                    request = new QRRequestBase(rawRequest);
-                    break;
-                case QRPacketType.ClientMessageACK:
-                    request = new QRRequestBase(rawRequest);
-                    break;
-                default:
-                    LogWriter.UnknownDataRecieved(rawRequest);
-                    request = null;
-                    break;
-            }
+            var request = GenerateRequest(_rawRequest);
 
             if (request == null)
             {
-                return null;
+                return;
             }
 
             if (!(bool)request.Parse())
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(QRErrorCode.Parse));
-                return null;
+                return;
             }
 
-            return request;
+            Requests.Add(request);
+        }
+
+        protected override IRequest GenerateRequest(object singleRequest)
+        {
+            switch ((QRPacketType)_rawRequest[0])
+            {
+                case QRPacketType.AvaliableCheck:
+                    return new AvaliableRequest(_rawRequest);
+                //verify challenge to check game server is real or fake;
+                //after verify we can add game server to server list
+                case QRPacketType.Challenge:
+                    return new ChallengeRequest(_rawRequest);
+                case QRPacketType.HeartBeat:
+                    return new HeartBeatRequest(_rawRequest);
+
+                case QRPacketType.KeepAlive:
+                    return new KeepAliveRequest(_rawRequest);
+
+                case QRPacketType.EchoResponse:
+                    return new QRRequestBase(_rawRequest);
+
+                case QRPacketType.ClientMessageACK:
+                    return new QRRequestBase(_rawRequest);
+
+                default:
+                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    return null;
+            }
         }
     }
 }

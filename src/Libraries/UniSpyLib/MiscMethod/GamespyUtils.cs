@@ -10,10 +10,15 @@ namespace UniSpyLib.MiscMethod
 {
     public static class GameSpyUtils
     {
-        public static Dictionary<string, string> ConvertRequestToKeyValue(string request)
+        /// <summary>
+        /// Split command to key value array then convert it to dictionary
+        /// </summary>
+        /// <param name="request">a string like request</param>
+        /// <returns></returns>
+        public static Dictionary<string, string> ConvertToKeyValue(string request)
         {
             string[] commandParts = request.TrimStart('\\').Split('\\');
-            return ConvertRequestToKeyValue(commandParts);
+            return ConvertToKeyValue(commandParts);
         }
 
         /// </summary>
@@ -21,7 +26,7 @@ namespace UniSpyLib.MiscMethod
         /// </summary>
         /// <param name="parts">The array of data from the client</param>
         /// <returns>A converted dictionary</returns>
-        public static Dictionary<string, string> ConvertRequestToKeyValue(string[] parts)
+        public static Dictionary<string, string> ConvertToKeyValue(string[] parts)
         {
             Dictionary<string, string> dict = new Dictionary<string, string>();
             try

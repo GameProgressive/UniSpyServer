@@ -1,4 +1,4 @@
-﻿namespace CDKey.Handler.CommandHandler.Disc
+﻿namespace CDKey.Handler.CommandHandler
 {
     /// <summary>
     /// disconnect from cdkey server

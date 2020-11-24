@@ -7,8 +7,7 @@ using QueryReport.Handler.CommandHandler.ClientMessage;
 using QueryReport.Handler.CommandHandler.Echo;
 using QueryReport.Handler.CommandHandler.HeartBeat;
 using QueryReport.Handler.CommandHandler.KeepAlive;
-using Serilog.Events;
-using System;
+using QueryReport.Abstraction.BaseClass;
 
 namespace QueryReport.Handler.CommandSwitcher
 {
@@ -16,12 +15,12 @@ namespace QueryReport.Handler.CommandSwitcher
     {
         public static void Switch(ISession session, byte[] rawRequest)
         {
-           
-            try
-            {
-                IRequest request = QRRequestSerializer.Serilize(rawRequest);
+            var serializer = new QRRequestSerializer(session, rawRequest);
+            serializer.Serialize();
 
-                switch ((QRPacketType)rawRequest[0])
+            foreach (QRRequestBase request in serializer.Requests)
+            {
+                switch (request.PacketType)
                 {
                     case QRPacketType.AvaliableCheck:
                         new AvailableHandler(session, request).Handle();
@@ -47,10 +46,6 @@ namespace QueryReport.Handler.CommandSwitcher
                         LogWriter.UnknownDataRecieved(rawRequest);
                         break;
                 }
-            }
-            catch (Exception e)
-            {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
         }
     }
