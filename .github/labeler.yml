@@ -1,0 +1,24 @@
+CDKey:
+  - "src/Servers/CDKey/**"
+
+Chat:
+  - "src/Servers/Chat/**"
+
+Game Status:
+  - "src/Servers/GameStatus/**"
+
+Nat Negotation:
+  - "src/Servers/NATNegotiation/**"
+
+Presence System:
+  - "src/Servers/PresenceConnectionManager/**"
+  - "src/Servers/PresenceSearchPlayer/**"
+
+Query Report:
+  - "src/Servers/QueryReport/**"
+
+Server Browser:
+  - "src/Servers/ServerBrowser/**"
+
+Web Services:
+  - "src/Servers/WebServices/**"
