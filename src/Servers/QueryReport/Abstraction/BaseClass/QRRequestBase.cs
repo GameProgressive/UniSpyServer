@@ -34,10 +34,5 @@ namespace QueryReport.Abstraction.BaseClass
         {
             return Parse();
         }
-
-        public object GetInstance()
-        {
-            return this;
-        }
     }
 }

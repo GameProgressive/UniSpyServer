@@ -2,20 +2,16 @@
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Collections.Generic;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class StatusHandler : PCMCommandHandlerBase
     {
-        protected StatusRequest _request;
-        public StatusHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new StatusRequest _request;
+        public StatusHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new StatusRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (StatusRequest)request;
         }
 
         protected override void DataOperation()

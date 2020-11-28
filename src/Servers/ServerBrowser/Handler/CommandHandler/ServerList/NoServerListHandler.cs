@@ -2,7 +2,7 @@
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure.Packet.Request;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.NoServerList
+namespace ServerBrowser.Handler.CommandHandler
 {
     /// <summary>
     /// No server list update option only get ip and host port for client
@@ -10,7 +10,7 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.No
     /// </summary>
     public class NoServerListHandler : UpdateOptionHandlerBase
     {
-        public NoServerListHandler(ServerListRequest request, ISession client, byte[] recv) : base(request, client, recv)
+        public NoServerListHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
         {
         }
     }

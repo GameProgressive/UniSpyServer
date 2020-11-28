@@ -5,8 +5,9 @@ using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class GetProfileDBResult
     {
@@ -43,11 +44,11 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
     public class GetProfileHandler : PCMCommandHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
-        protected GetProfileRequest _request;
+        protected new GetProfileRequest _request;
         protected GetProfileDBResult _result;
-        public GetProfileHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        public GetProfileHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new GetProfileRequest(recv);
+            _request = (GetProfileRequest)request;
         }
 
         protected override void CheckRequest()

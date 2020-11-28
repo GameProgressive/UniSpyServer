@@ -1,4 +1,4 @@
-﻿namespace CDKey.Handler.CommandHandler.Auth
+﻿namespace CDKey.Handler.CommandHandler
 {
     internal class AuthHandler
     {

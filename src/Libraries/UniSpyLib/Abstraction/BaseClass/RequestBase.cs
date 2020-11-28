@@ -5,7 +5,7 @@ using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public class RequestBase
+    public abstract class RequestBase
     {
         public RequestBase()
         {

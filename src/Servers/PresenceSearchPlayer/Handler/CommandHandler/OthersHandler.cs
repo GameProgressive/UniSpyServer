@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.Others
+namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     internal class OthersHandlerDataModel
     {
@@ -22,17 +22,12 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Others
     /// </summary>
     public class OthersHandler : PSPCommandHandlerBase
     {
-        protected OthersRequest _request;
+        protected new OthersRequest _request;
         private List<OthersHandlerDataModel> _result;
-        public OthersHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        public OthersHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new OthersRequest(recv);
             _result = new List<OthersHandlerDataModel>();
-        }
-
-        protected override void RequestCheck()
-        {
-            _errorCode = _request.Parse();
+            _request = (OthersRequest)request;
         }
 
         protected override void DataOperation()

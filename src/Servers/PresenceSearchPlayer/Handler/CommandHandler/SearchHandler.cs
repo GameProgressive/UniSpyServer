@@ -14,7 +14,7 @@ using System.Linq;
 //\more\<number of items>\final\
 //\search\sesskey\0\profileid\0\namespaceid\0\nick\gbr359_jordips\gamename\gbrome\final\
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.Search
+namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     internal class SearchDBResult
     {
@@ -29,19 +29,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Search
 
     public class SearchHandler : PSPCommandHandlerBase
     {
-        protected SearchRequest _request;
+        protected new SearchRequest _request;
         private List<SearchDBResult> _result;
-        public SearchHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        public SearchHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new SearchRequest(recv);
+            _request = (SearchRequest)request;
             _result = new List<SearchDBResult>();
         }
-
-        protected override void RequestCheck()
-        {
-            _errorCode = _request.Parse();
-        }
-
 
         protected override void DataOperation()
         {

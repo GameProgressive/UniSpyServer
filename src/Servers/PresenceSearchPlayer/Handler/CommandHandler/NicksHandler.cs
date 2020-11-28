@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 /////////////////////////Finished?/////////////////////////////////
-namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
+namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     internal class NickHandlerDataModel
     {
@@ -20,15 +20,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler.Nick
     public class NicksHandler : PSPCommandHandlerBase
     {
         List<NickHandlerDataModel> _result;
-        protected NicksRequest _request;
-        public NicksHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new NicksRequest _request;
+        public NicksHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new NicksRequest(recv);
-        }
-
-        protected override void RequestCheck()
-        {
-            _errorCode = _request.Parse();
+            _request = (NicksRequest)request;
         }
 
         protected override void DataOperation()

@@ -7,6 +7,7 @@ using PresenceConnectionManager.Structure.Data;
 using Serilog.Events;
 using System;
 using System.Net;
+using PresenceConnectionManager.Handler.CommandSwitcher;
 
 namespace PresenceConnectionManager.Network
 {
@@ -46,7 +47,6 @@ namespace PresenceConnectionManager.Network
         protected override void OnReceived(string message)
         {
             PCMCommandSwitcher.Switch(this, message);
-
         }
 
         public void SendServerChallenge()

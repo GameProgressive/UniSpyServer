@@ -20,11 +20,6 @@ namespace UniSpyLib.Network
             RemoteEndPoint = endPoint;
         }
 
-        public object GetInstance()
-        {
-            return this;
-        }
-
         public long Send(byte[] buffer, long offset, long size)
         {
             return Server.Send(RemoteEndPoint, buffer, offset, size);

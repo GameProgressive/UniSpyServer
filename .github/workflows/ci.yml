@@ -2,27 +2,26 @@ name: CI
 
 on:
   push:
-    branches-ignore:
+    branches:
       - master
       - candidate
+      - develop
   pull_request:
-    branches:
-      - '**'
 
 jobs:
-  build:
-    name: Test on .NET v${{ matrix.dotnet_version }} (${{ matrix.os }})
+  unispy:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        dotnet_version: ['5.0.100']
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Setup .NET ${{ matrix.dotnet_version }}
-        uses: actions/setup-dotnet@v1.4.0
-        with:
-          dotnet-version: ${{ matrix.dotnet_version }}
-      - name: Building project
-        run: dotnet build
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1.7.2
+      with:
+        dotnet-version: 5.0.100
+    - name: Install dependencies
+      run: dotnet restore
+    - name: Build
+      run: dotnet build --no-restore

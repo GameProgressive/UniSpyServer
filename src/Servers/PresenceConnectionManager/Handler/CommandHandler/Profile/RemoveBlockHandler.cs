@@ -1,12 +1,13 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using System;
 using System.Collections.Generic;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class RemoveBlockHandler : PCMCommandHandlerBase
     {
-        public RemoveBlockHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public RemoveBlockHandler(ISession session,IRequest request) : base(session, request)
         {
             throw new NotImplementedException();
         }

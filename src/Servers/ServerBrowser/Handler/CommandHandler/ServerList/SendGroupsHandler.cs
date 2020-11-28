@@ -7,13 +7,13 @@ using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Text;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.SendGroups
+namespace ServerBrowser.Handler.CommandHandler
 {
     public class SendGroupsHandler : UpdateOptionHandlerBase
     {
         private PeerGroup _peerGroup;
 
-        public SendGroupsHandler(ServerListRequest request, ISession client, byte[] recv) : base(request, client, recv)
+        public SendGroupsHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
         {
         }
 

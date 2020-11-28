@@ -12,8 +12,9 @@ using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 using PresenceConnectionManager.Network;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.General
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     internal class LoginDBResult
     {
@@ -31,19 +32,15 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.General
 
     public class LoginHandler : PCMCommandHandlerBase
     {
-        private Crc16 _crc;
-        protected LoginRequest _request;
+        protected new LoginRequest _request;
         private LoginDBResult _result;
-        public LoginHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public LoginHandler(ISession session, IRequest request) : base(session, request)
         {
-            _crc = new Crc16(Crc16Mode.Standard);
-            _request = new LoginRequest(recv);
+            _request = (LoginRequest)request;
         }
 
         protected override void CheckRequest()
         {
-            _errorCode = _request.Parse();
-
             switch (_request.LoginType)
             {
                 case LoginType.NickEmail:

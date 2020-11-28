@@ -1,7 +1,7 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 
-namespace CDKey.Handler.CommandHandler.SKey
+namespace CDKey.Handler.CommandHandler
 {
     /// <summary>
     /// This class contians gamespy cdkey check functions  which help cdkeyserver to finish the cdkey check. 
@@ -14,7 +14,7 @@ namespace CDKey.Handler.CommandHandler.SKey
         /// </summary>
         /// <param name="str">MD5cdkey string</param>
         /// <returns></returns>
-        public static void IsCDKeyValid(ISession client, Dictionary<string, string> recv)
+        public static void IsCDKeyValid(ISession session, Dictionary<string, string> recv)
         {
             //if (DBQuery.IsCDKeyValidate(recv["skey"]))
             //{

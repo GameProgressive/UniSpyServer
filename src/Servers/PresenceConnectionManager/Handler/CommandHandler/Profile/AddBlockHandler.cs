@@ -1,23 +1,18 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
-using System.Collections.Generic;
 using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class AddBlockHandler : PCMCommandHandlerBase
     {
 
-        protected AddBlockRequest _request;
-        public AddBlockHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        protected new AddBlockRequest _request;
+        public AddBlockHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new AddBlockRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (AddBlockRequest)request;
         }
 
         protected override void DataOperation()

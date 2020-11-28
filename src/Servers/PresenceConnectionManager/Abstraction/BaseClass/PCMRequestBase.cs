@@ -8,18 +8,18 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 {
     public abstract class PCMRequestBase : IRequest
     {
-        public string CmdName { get; protected set; }
+        public string CommandName { get; protected set; }
         //public uint NamespaceID { get; protected set; }
         public uint OperationID { get; protected set; }
 
-        object IRequest.CommandName => CmdName;
+        object IRequest.CommandName => CommandName;
 
         protected Dictionary<string, string> _recv;
 
         public PCMRequestBase(Dictionary<string, string> recv)
         {
             _recv = recv;
-            CmdName = _recv.Keys.First();
+            CommandName = _recv.Keys.First();
         }
 
         public virtual GPError Parse()

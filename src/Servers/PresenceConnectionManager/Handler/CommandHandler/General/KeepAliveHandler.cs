@@ -1,11 +1,12 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.General
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class KeepAliveHandler : PCMCommandHandlerBase
     {
-        public KeepAliveHandler(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public KeepAliveHandler(ISession session, IRequest request) : base(session, request)
         {
         }
 

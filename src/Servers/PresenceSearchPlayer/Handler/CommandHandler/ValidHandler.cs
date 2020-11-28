@@ -5,20 +5,15 @@ using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.Valid
+namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     public class ValidHandler : PSPCommandHandlerBase
     {
-        protected ValidRequest _request;
+        protected new ValidRequest _request;
         private bool _isAccountValid;
-        public ValidHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        public ValidHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new ValidRequest(recv);
-        }
-
-        protected override void RequestCheck()
-        {
-            _errorCode = _request.Parse();
+            _request = (ValidRequest)request;
         }
 
         protected override void DataOperation()

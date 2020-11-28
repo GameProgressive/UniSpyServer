@@ -6,14 +6,14 @@ using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Linq;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.PushUpdates
+namespace ServerBrowser.Handler.CommandHandler
 {
     /// <summary>
     /// Search peer to peer game servers to client
     /// </summary>
     public class PushUpdatesHandler : UpdateOptionHandlerBase
     {
-        public PushUpdatesHandler(ServerListRequest request, ISession client, byte[] recv) : base(request, client, recv)
+        public PushUpdatesHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
         {
         }
 

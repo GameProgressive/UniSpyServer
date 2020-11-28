@@ -3,15 +3,16 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class UpdateProHandler : PCMCommandHandlerBase
     {
-        protected UpdateProRequest _request;
-        public UpdateProHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new UpdateProRequest _request;
+        public UpdateProHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new UpdateProRequest(recv);
+            _request = (UpdateProRequest)request;
         }
 
         protected override void CheckRequest()

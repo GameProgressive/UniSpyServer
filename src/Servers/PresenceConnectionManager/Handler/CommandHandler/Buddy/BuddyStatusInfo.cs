@@ -1,12 +1,13 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
-    public class BuddyStatusInfo : PCMCommandHandlerBase
+    public class BuddyStatusInfoHandler : PCMCommandHandlerBase
     {
 
-        public BuddyStatusInfo(ISession session, Dictionary<string, string> recv) : base(session, recv)
+        public BuddyStatusInfoHandler(ISession session, IRequest request) : base(session, request)
         {
         }
         //public static void SendBuddyStatusInfo(GPCMSession _session, uint[] profileids)

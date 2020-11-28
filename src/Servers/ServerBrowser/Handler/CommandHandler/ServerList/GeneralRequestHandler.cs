@@ -4,11 +4,11 @@ using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Request;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionHandler.GeneralRequest
+namespace ServerBrowser.Handler.CommandHandler
 {
     public class GeneralRequestHandler : UpdateOptionHandlerBase
     {
-        public GeneralRequestHandler(ServerListRequest request, ISession client, byte[] recv) : base(request, client, recv)
+        public GeneralRequestHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
         {
         }
 

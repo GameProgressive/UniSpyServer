@@ -16,7 +16,7 @@ namespace UniSpyLib.Network
     /// </summary>
     public abstract class TCPSessionBase : TcpSession, ISession
     {
-        public EndPoint RemoteEndPoint { get; protected set; }
+        public EndPoint RemoteEndPoint { get; private set; }
 
         public TCPSessionBase(TCPServerBase server) : base(server)
         {
@@ -98,11 +98,6 @@ namespace UniSpyLib.Network
             //the session socket will dispose immidiatly
             LogWriter.ToLog(LogEventLevel.Information, $"[Disc] IP:{RemoteEndPoint}");
             base.OnDisconnected();
-        }
-
-        public object GetInstance()
-        {
-            return this;
         }
 
         bool ISession.BaseSendAsync(byte[] buffer)

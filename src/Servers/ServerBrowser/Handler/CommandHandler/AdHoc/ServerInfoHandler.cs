@@ -11,9 +11,8 @@ using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ServerBrowser.Network;
 
-namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
+namespace ServerBrowser.Handler.CommandHandler
 {
     /// <summary>
     /// Get full rules for a server (for example, to get
@@ -24,16 +23,16 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
         private new AdHocRequest _request;
         private GameServer _gameServer;
 
-        public ServerInfoHandler(ISession client, byte[] recv) : base(null, client, recv)
+        public ServerInfoHandler(ISession session, byte[] recv) : base(session, recv)
         {
-            _request = new AdHocRequest();
+            _request = new AdHocRequest(recv);
         }
 
         protected override void CheckRequest()
         {
             //we do not call base.CheckRequest() method because we have our own check method
 
-            if (!_request.Parse(_recv))
+            if (!_request.Parse())
             {
                 _errorCode = SBErrorCode.Parse;
                 return;
@@ -71,11 +70,9 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
 
             _dataList.InsertRange(0, msgLength);
 
-            SBSession session = (SBSession)_session.GetInstance();
-
-            GOAEncryption enc = new GOAEncryption(session.EncState);
+            GOAEncryption enc = new GOAEncryption(_session.EncState);
             _sendingBuffer = enc.Encrypt(_dataList.ToArray());
-            session.EncState = enc.State;
+            _session.EncState = enc.State;
         }
 
         protected virtual List<byte> GenerateServerInfo()
@@ -90,6 +87,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
                 data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
                 data.Add(SBStringFlag.StringSpliter);
             }
+
             foreach (var player in _gameServer.PlayerData.KeyValueList)
             {
                 foreach (var kv in player)
@@ -100,6 +98,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.ServerInfo
                     data.Add(SBStringFlag.StringSpliter);
                 }
             }
+
             foreach (var team in _gameServer.TeamData.KeyValueList)
             {
                 foreach (var kv in team)

@@ -4,14 +4,14 @@ using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Network;
 
-namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage
+namespace ServerBrowser.Handler.CommandHandler
 {
     public class SendMessageHandler : SBCommandHandlerBase
     {
         private AdHocRequest _request;
-        public SendMessageHandler(ISession client, byte[] recv) : base(client, recv)
+        public SendMessageHandler(ISession session, byte[] recv) : base(session, recv)
         {
-            _request = new AdHocRequest();
+            _request = new AdHocRequest(recv);
         }
 
         protected override void CheckRequest()
@@ -19,7 +19,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage
             //we do not call base method because we have our own check method
             //base.CheckRequest();
 
-            if (!_request.Parse(_recv))
+            if (!_request.Parse())
             {
                 _errorCode = SBErrorCode.Parse;
                 return;
@@ -29,8 +29,7 @@ namespace ServerBrowser.Handler.CommandHandler.AdHoc.SendMessage
         protected override void DataOperation()
         {
             base.DataOperation();
-            var session = (SBSession)_session.GetInstance();
-            session.ServerMessageList.Add(_request);
+            _session.ServerMessageList.Add(_request);
         }
     }
 }

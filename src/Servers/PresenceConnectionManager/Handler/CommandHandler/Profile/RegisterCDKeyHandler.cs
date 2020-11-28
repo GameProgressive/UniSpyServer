@@ -4,20 +4,16 @@ using PresenceConnectionManager.Entity.Structure.Request.General;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Profile
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class RegisterCDKeyHandler : PCMCommandHandlerBase
     {
-        protected RegisterCDKeyRequest _request;
-        public RegisterCDKeyHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new RegisterCDKeyRequest _request;
+        public RegisterCDKeyHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new RegisterCDKeyRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (RegisterCDKeyRequest)request;
         }
 
         protected override void DataOperation()

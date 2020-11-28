@@ -3,8 +3,9 @@ using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using System.Collections.Generic;
 using System.Linq;
 using PresenceConnectionManager.Network;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
+namespace PresenceConnectionManager.Handler.CommandHandler
 {
     /// <summary>
     /// This function sets which games the local profile can be invited to.
@@ -12,15 +13,10 @@ namespace PresenceConnectionManager.Abstraction.BaseClass.Buddy
     public class InviteToHandler : PCMCommandHandlerBase
     {
         //_session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
-        protected InviteToRequest _request;
-        public InviteToHandler(ISession client, Dictionary<string, string> recv) : base(client, recv)
+        protected new  InviteToRequest _request;
+        public InviteToHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new InviteToRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (InviteToRequest)request;
         }
 
         protected override void DataOperation()

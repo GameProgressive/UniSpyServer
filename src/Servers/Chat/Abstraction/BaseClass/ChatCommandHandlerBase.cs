@@ -34,7 +34,7 @@ namespace Chat.Abstraction.BaseClass
         {
             _errorCode = ChatError.NoError;
             _request = request;
-            _session = (ChatSession)session.GetInstance();
+            _session = (ChatSession)session;
         }
 
         //if we use this structure the error response should also write to _sendingBuffer

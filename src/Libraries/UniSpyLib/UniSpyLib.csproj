@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <ApplicationIcon></ApplicationIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -12,10 +12,10 @@
         <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NetCoreServer" Version="3.0.20" />
-        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.3" />
-        <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
+        <PackageReference Include="NetCoreServer" Version="5.0.1" />
+        <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
         <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+        <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
     </ItemGroup>
     <ItemGroup>
         <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />

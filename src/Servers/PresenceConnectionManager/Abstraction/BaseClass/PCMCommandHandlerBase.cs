@@ -16,11 +16,13 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
     {
         protected GPError _errorCode;
         protected string _sendingBuffer;
-        new protected PCMSession _session;
-        public PCMCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
+        protected new PCMSession _session;
+        protected PCMRequestBase _request;
+        public PCMCommandHandlerBase(ISession session, IRequest request) : base(session)
         {
             _errorCode = GPError.NoError;
-            _session = (PCMSession)session.GetInstance();
+            _request = (PCMRequestBase)request;
+            _session = (PCMSession)session;
         }
 
         public override void Handle()

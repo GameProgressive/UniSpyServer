@@ -5,7 +5,7 @@ using System;
 
 namespace QueryReport.Handler.SystemHandler.ServerList
 {
-    public class ServerListManager : ExpireManagerBase
+    public class ServerListManager : TImerBase
     {
 
         protected override void CheckExpire()
