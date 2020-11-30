@@ -5,7 +5,7 @@ using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 
-namespace QueryReport.Handler.CommandHandler.Available
+namespace QueryReport.Handler.CommandHandler
 {
     /// <summary>
     /// AvailableCheckHandler

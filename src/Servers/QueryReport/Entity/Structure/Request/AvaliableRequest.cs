@@ -6,6 +6,8 @@ namespace QueryReport.Entity.Structure.Request
     {
         public static readonly byte[] Prefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
         public static readonly byte Postfix = 0x00;
+        public static readonly string strPostfix = "0x00";
+        public static readonly string strPrefix = "0x09, 0x00, 0x00, 0x00, 0x00";
 
         public AvaliableRequest(byte[] rawRequest) : base(rawRequest)
         {

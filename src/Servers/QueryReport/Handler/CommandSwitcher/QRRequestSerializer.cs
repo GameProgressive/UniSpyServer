@@ -42,28 +42,29 @@ namespace QueryReport.Handler.CommandSwitcher
 
         protected override IRequest GenerateRequest(object singleRequest)
         {
-            switch ((QRPacketType)_rawRequest[0])
+            byte[] request = (byte[])singleRequest;
+            switch ((QRPacketType)request[0])
             {
                 case QRPacketType.AvaliableCheck:
-                    return new AvaliableRequest(_rawRequest);
+                    return new AvaliableRequest(request);
                 //verify challenge to check game server is real or fake;
                 //after verify we can add game server to server list
                 case QRPacketType.Challenge:
-                    return new ChallengeRequest(_rawRequest);
+                    return new ChallengeRequest(request);
                 case QRPacketType.HeartBeat:
-                    return new HeartBeatRequest(_rawRequest);
+                    return new HeartBeatRequest(request);
 
                 case QRPacketType.KeepAlive:
-                    return new KeepAliveRequest(_rawRequest);
+                    return new KeepAliveRequest(request);
 
                 case QRPacketType.EchoResponse:
-                    return new QRRequestBase(_rawRequest);
+                    return new QRRequestBase(request);
 
                 case QRPacketType.ClientMessageACK:
-                    return new QRRequestBase(_rawRequest);
+                    return new QRRequestBase(request);
 
                 default:
-                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    LogWriter.UnknownDataRecieved(request);
                     return null;
             }
         }

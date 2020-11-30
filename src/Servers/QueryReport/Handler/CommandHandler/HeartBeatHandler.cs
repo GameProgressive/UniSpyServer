@@ -9,7 +9,7 @@ using System.Text;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure.Response;
 
-namespace QueryReport.Handler.CommandHandler.HeartBeat
+namespace QueryReport.Handler.CommandHandler
 {
     public class HeartBeatHandler : QRCommandHandlerBase
     {

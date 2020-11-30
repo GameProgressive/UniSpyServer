@@ -7,7 +7,7 @@ using System.Linq;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure.Response;
 
-namespace QueryReport.Handler.CommandHandler.Challenge
+namespace QueryReport.Handler.CommandHandler
 {
     public class ChallengeHandler : QRCommandHandlerBase
     {

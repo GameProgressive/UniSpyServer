@@ -1,58 +1,59 @@
 ﻿using UniSpyLib.Logging;
-using UniSpyLib.MiscMethod;
 using PresenceSearchPlayer.Entity.Structure;
-using Serilog.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using PresenceSearchPlayer.Network;
 using PresenceSearchPlayer.Handler.CommandHandler;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {
-    public class PSPCommandSwitcher
+    public class PSPCommandSwitcher : CommandSerializerBase
     {
-        public static void Switch(PSPSession session, string rawRequest)
+        protected new string _rawRequest;
+        public PSPCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
         {
-            var requests = PSPRequestSerializer.Serialize(session, rawRequest);
+        }
+
+        public override void Serialize()
+        {
+            var requests = PSPRequestSerializer.Serialize(_session, _rawRequest);
 
             foreach (var request in requests)
             {
                 switch (request.CommandName)
                 {
                     case PSPRequestName.Search:
-                        new SearchHandler(session, request).Handle();
+                        new SearchHandler(_session, request).Handle();
                         break;
                     case PSPRequestName.Valid:
-                        new ValidHandler(session, request).Handle();
+                        new ValidHandler(_session, request).Handle();
                         break;
                     case PSPRequestName.Nicks:
-                        new NicksHandler(session, request).Handle();
+                        new NicksHandler(_session, request).Handle();
                         break;
                     case PSPRequestName.PMatch:
                         //    PmatchHandler pmatch = new PmatchHandler(request);
                         //    pmatch.Handle(session);
                         break;
                     case PSPRequestName.Check:
-                        new CheckHandler(session, request).Handle();
+                        new CheckHandler(_session, request).Handle();
                         break;
                     case PSPRequestName.NewUser:
-                        new NewUserHandler(session, request).Handle();
+                        new NewUserHandler(_session, request).Handle();
                         break;
                     case PSPRequestName.SearchUnique:
-                        new SearchUniqueHandler(session, request).Handle();
+                        new SearchUniqueHandler(_session, request).Handle();
                         break;
                     case PSPRequestName.Others:
-                        new OthersHandler(session, request).Handle();
+                        new OthersHandler(_session, request).Handle();
                         break;
                     case PSPRequestName.OtherList:
-                        new OthersListHandler(session, request).Handle();
+                        new OthersListHandler(_session, request).Handle();
                         break;
                     case PSPRequestName.UniqueSearch:
-                        new UniqueSearchHandler(session, request).Handle();
+                        new UniqueSearchHandler(_session, request).Handle();
                         break;
                     default:
-                        LogWriter.UnknownDataRecieved(rawRequest);
+                        LogWriter.UnknownDataRecieved(_rawRequest);
                         break;
                 }
             }

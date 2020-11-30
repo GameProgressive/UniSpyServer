@@ -10,11 +10,7 @@ namespace QueryReport.Network
 {
     public class QRServer : UDPServerBase
     {
-
-
-
         public bool IsChallengeSent;
-
         public bool HasInstantKey;
 
         public QRServer(IPAddress address, int port) : base(address, port)
@@ -36,7 +32,7 @@ namespace QueryReport.Network
             return base.Start();
         }
 
-        protected override object CreateSession(EndPoint endPoint)
+        protected override UDPSessionBase CreateSession(EndPoint endPoint)
         {
             return new QRSession(this, endPoint);
         }
@@ -50,7 +46,7 @@ namespace QueryReport.Network
                 session = (QRSession)CreateSession(endPoint);
                 QRSessionManager.Sessions.TryAdd(endPoint, session);
             }
-            QRCommandSwitcher.Switch(session, message);
+            new QRCommandSerializer(session, message).Serialize();
         }
 
         protected override void OnReceived(EndPoint endPoint, string message)

@@ -11,7 +11,7 @@ namespace CDKey.Network
 {
     public class CDKeyServer : UDPServerBase
     {
-        protected readonly ConcurrentDictionary<EndPoint, CDKeySession> Sessions
+        protected new ConcurrentDictionary<EndPoint, CDKeySession> Sessions
      = new ConcurrentDictionary<EndPoint, CDKeySession>();
 
 
@@ -54,7 +54,7 @@ namespace CDKey.Network
             return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type0);
         }
 
-        protected override object CreateSession(EndPoint endPoint)
+        protected override UDPSessionBase CreateSession(EndPoint endPoint)
         {
             return new CDKeySession(this, endPoint);
         }

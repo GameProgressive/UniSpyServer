@@ -13,6 +13,7 @@ namespace QueryReport.Handler.SystemHandler.QRSessionManage
         {
             Sessions = new ConcurrentDictionary<EndPoint, QRSession>();
         }
+
         public override void Start()
         {
 

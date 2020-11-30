@@ -46,7 +46,7 @@ namespace PresenceConnectionManager.Network
 
         protected override void OnReceived(string message)
         {
-            PCMCommandSwitcher.Switch(this, message);
+            new PCMCommandSwitcher(this, message).Serialize();
         }
 
         public void SendServerChallenge()

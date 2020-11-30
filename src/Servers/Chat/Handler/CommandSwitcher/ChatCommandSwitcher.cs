@@ -4,17 +4,23 @@ using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
 using System.Linq;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Handler.CommandSwitcher
 {
     /// <summary>
     /// Process request to Commands
     /// </summary>
-    public class ChatCommandSwitcher
+    public class ChatCommandSwitcher : CommandSerializerBase
     {
-        public static void Switch(ISession session, string recv)
+        protected new string _rawRequest;
+        public ChatCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
         {
-            var requestList = ChatRequestSerializer.Serialize(recv);
+        }
+
+        public override void Serialize()
+        {
+            var requestList = ChatRequestSerializer.Serialize(_rawRequest);
 
             #region Handle specific request
             foreach (var request in requestList)
@@ -27,7 +33,7 @@ namespace Chat.Handler.CommandSwitcher
 
                 if (handlerType != null)
                 {
-                    object[] args = { session, request };
+                    object[] args = { _session, request };
                     var handler = Activator.CreateInstance(handlerType, args);
                     if (handler != null)
                     {

@@ -44,7 +44,7 @@ namespace GameStatus.Network
 
         protected override void OnReceived(string message)
         {
-            GSCommandSwitcher.Switch(this, message);
+            new GSCommandSerializer(this, message).Serialize();
         }
 
 

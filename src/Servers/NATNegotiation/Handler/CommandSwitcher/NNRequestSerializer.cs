@@ -3,41 +3,57 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Handler.CommandSwitcher
 {
-    public class NNRequestSerializer
+    public class NNRequestSerializer : RequestSerializerBase
     {
-        public static IRequest Serialize(byte[] rawRequest)
+        protected new byte[] _rawRequest;
+        public NNRequestSerializer(ISession session, object rawRequest) : base(session, rawRequest)
         {
-            if (rawRequest.Length < 1)
+            _rawRequest = (byte[])rawRequest;
+        }
+
+        public override void Serialize()
+        {
+            if (_rawRequest.Length < 1)
+                return;
+            IRequest request = GenerateRequest(_rawRequest);
+            Requests.Add(request);
+        }
+
+        protected override IRequest GenerateRequest(object singleRequest)
+        {
+            if (_rawRequest.Length < 1)
             {
                 return null;
             }
-            IRequest request ;
-            switch ((NatPacketType)rawRequest[7])
+
+            IRequest request;
+            switch ((NatPacketType)_rawRequest[7])
             {
                 case NatPacketType.Init:
-                    request = new InitRequest(rawRequest);
+                    request = new InitRequest(_rawRequest);
                     break;
                 case NatPacketType.AddressCheck:
-                    request = new AddressRequest(rawRequest);
+                    request = new AddressRequest(_rawRequest);
                     break;
                 case NatPacketType.NatifyRequest:
-                    request = new NatifyRequest(rawRequest);
+                    request = new NatifyRequest(_rawRequest);
                     break;
                 case NatPacketType.ConnectAck:
                     request = null;
-                        break;
+                    break;
                 case NatPacketType.Report:
-                    request = new ReportRequest(rawRequest);
+                    request = new ReportRequest(_rawRequest);
                     break;
                 case NatPacketType.ErtAck:
-                    request = new ErtAckRequest(rawRequest);
+                    request = new ErtAckRequest(_rawRequest);
                     break;
                 default:
                     request = null;
-                    LogWriter.UnknownDataRecieved(rawRequest);
+                    LogWriter.UnknownDataRecieved(_rawRequest);
                     break;
             }
 
@@ -50,7 +66,6 @@ namespace NATNegotiation.Handler.CommandSwitcher
             {
                 return null;
             }
-
             return request;
         }
     }

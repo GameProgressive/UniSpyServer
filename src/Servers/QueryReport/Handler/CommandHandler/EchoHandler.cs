@@ -6,12 +6,11 @@ using QueryReport.Network;
 using Serilog.Events;
 using System;
 using System.Linq;
-namespace QueryReport.Handler.CommandHandler.Echo
+namespace QueryReport.Handler.CommandHandler
 {
     public class EchoHandler : QRCommandHandlerBase
     {
         protected GameServer _gameServer;
-
         public EchoHandler(ISession session, IRequest request) : base(session, request)
         {
         }

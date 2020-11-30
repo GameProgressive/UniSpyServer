@@ -7,7 +7,7 @@ using QueryReport.Network;
 using System;
 using System.Linq;
 
-namespace QueryReport.Handler.CommandHandler.KeepAlive
+namespace QueryReport.Handler.CommandHandler
 {
     public class KeepAliveHandler : QRCommandHandlerBase
     {

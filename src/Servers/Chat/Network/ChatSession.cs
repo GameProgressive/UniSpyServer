@@ -25,7 +25,7 @@ namespace Chat.Network
         {
             base.OnReceived(message);
 
-            ChatCommandSwitcher.Switch(this, message);
+            new ChatCommandSwitcher(this, message).Serialize();
         }
 
         protected override void OnReceived(byte[] buffer, long offset, long size)

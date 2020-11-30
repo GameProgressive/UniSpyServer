@@ -17,8 +17,6 @@ namespace NATNegotiation.Handler.CommandHandler
 
         protected override void CheckRequest()
         {
-            _request.Parse();
-
             string key = _session.RemoteEndPoint.ToString() + "-" + _request.PortType.ToString();
 
             if (!NNManager.SessionPool.TryGetValue(key, out _))
@@ -36,9 +34,9 @@ namespace NATNegotiation.Handler.CommandHandler
         {
             _sendingBuffer = new InitResponse(_request, _session.RemoteEndPoint).BuildResponse();
 
-                _request
-                .SetPacketType(NatPacketType.InitAck)
-                .BuildResponse();
+            _request
+            .SetPacketType(NatPacketType.InitAck)
+            .BuildResponse();
         }
 
 

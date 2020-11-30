@@ -5,7 +5,7 @@ using System.Text;
 
 namespace UniSpyLib.Network
 {
-    public abstract class UDPSessionBase : ISession
+    public class UDPSessionBase : ISession
     {
         public UDPServerBase Server { get; }
 

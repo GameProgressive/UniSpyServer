@@ -12,47 +12,53 @@ using GameStatus.Handler.CommandHandler.UpdGame;
 using System;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Handler.CommandSwitcher
 {
-    public class GSCommandSwitcher
+    public class GSCommandSerializer : CommandSerializerBase
     {
-        public static void Switch(ISession session, string rawRequest)
+        protected new string _rawRequest;
+        public GSCommandSerializer(ISession session, object rawRequest) : base(session, rawRequest)
+        {
+        }
+
+        public override void Serialize()
         {
             try
             {
-                if (rawRequest[0] != '\\')
+                if (_rawRequest[0] != '\\')
                 {
                     return;
                 }
-                string[] requestFraction = rawRequest.TrimStart('\\').Split('\\');
+                string[] requestFraction = _rawRequest.TrimStart('\\').Split('\\');
                 var request = GameSpyUtils.ConvertToKeyValue(requestFraction);
 
                 switch (request.Keys.First())
                 {
                     case GStatsRequestName.AuthenticateUser:
-                        new AuthHandler(session, request).Handle();
+                        new AuthHandler(_session, request).Handle();
                         break;
                     case GStatsRequestName.AuthenticatePlayer:
-                        new AuthPHandler(session, request).Handle();
+                        new AuthPHandler(_session, request).Handle();
                         break;
                     case GStatsRequestName.GetProfileID:
-                        new GetPIDHandler(session, request).Handle();
+                        new GetPIDHandler(_session, request).Handle();
                         break;
                     case GStatsRequestName.GetPlayerData:
-                        new GetPDHandler(session, request).Handle();
+                        new GetPDHandler(_session, request).Handle();
                         break;
                     case GStatsRequestName.SetPlayerData:
-                        new SetPDHandler(session, request).Handle();
+                        new SetPDHandler(_session, request).Handle();
                         break;
                     case GStatsRequestName.UpdateGameData:
-                        new UpdGameHandler(session, request).Handle();
+                        new UpdGameHandler(_session, request).Handle();
                         break;
                     case GStatsRequestName.CreateNewGamePlayerData:
-                        new NewGameHandler(session, request).Handle();
+                        new NewGameHandler(_session, request).Handle();
                         break;
                     default:
-                        LogWriter.UnknownDataRecieved(rawRequest);
+                        LogWriter.UnknownDataRecieved(_rawRequest);
                         break;
                 }
             }
