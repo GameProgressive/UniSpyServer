@@ -1,0 +1,35 @@
+name: CD - QR
+
+on:
+  push:
+    branches:
+      - master
+      - candidate
+    paths:
+      - "src/Servers/QueryReport/**"
+      - "src/Libraries/UniSpyLib/**"
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Deploy to staging
+        if: github.event_name == 'push' && github.ref == 'refs/heads/candidate'
+        uses: elgohr/Publish-Docker-Github-Action@3.01
+        with:
+          name: gameprogressive/qr
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_KEY }}
+          tagging: true
+          dockerfile: ./src/Servers/QueryReport/Dockerfile
+      - name: Deploy to production
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: elgohr/Publish-Docker-Github-Action@3.01
+        with:
+          name: gameprogressive/qr
+          username: ${{ secrets.DOCKER_HUB_USER }}
+          password: ${{ secrets.DOCKER_HUB_KEY }}
+          tagging: true
+          dockerfile: ./src/Servers/QueryReport/Dockerfile
