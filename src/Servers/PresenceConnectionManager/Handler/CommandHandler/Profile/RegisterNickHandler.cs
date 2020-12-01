@@ -16,11 +16,6 @@ namespace PresenceConnectionManager.Handler.CommandHandler
             _request = (RegisterNickRequest)request;
         }
 
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
-        }
-
         protected override void DataOperation()
         {
             try

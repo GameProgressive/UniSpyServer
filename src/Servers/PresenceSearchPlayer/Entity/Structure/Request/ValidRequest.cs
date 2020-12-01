@@ -15,25 +15,25 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Email { get; private set; }
         public string GameName { get; protected set; }
 
-        public override GPErrorCode Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+            var flag = (GPErrorCode)base.Parse();
             if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
-            if (!_rawRequest.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(_rawRequest["email"]))
+            if (!_recv.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
             {
                 return GPErrorCode.Parse;
             }
 
-            Email = _rawRequest["email"];
+            Email = _recv["email"];
 
-            if (_rawRequest.ContainsKey("namespaceid"))
+            if (_recv.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
+                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                 {
                     return GPErrorCode.Parse;
                 }

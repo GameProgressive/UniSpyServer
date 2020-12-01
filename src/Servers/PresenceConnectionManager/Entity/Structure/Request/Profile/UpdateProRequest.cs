@@ -42,9 +42,9 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         public bool HasCountryCode { get; protected set; }
         public string CountryCode { get; protected set; }
 
-        public override GPErrorCode Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+            var flag = (GPErrorCode)base.Parse();
             if (flag != GPErrorCode.NoError)
             {
                 return flag;

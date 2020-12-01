@@ -51,11 +51,6 @@ namespace PresenceConnectionManager.Handler.CommandHandler
             _request = (GetProfileRequest)request;
         }
 
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
-        }
-
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())

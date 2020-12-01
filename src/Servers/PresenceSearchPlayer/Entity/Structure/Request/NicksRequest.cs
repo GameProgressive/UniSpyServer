@@ -16,9 +16,9 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public uint NamespaceID { get; protected set; }
         public bool RequireUniqueNicks { get; protected set; }
 
-        public override GPErrorCode Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+            var flag = (GPErrorCode)base.Parse();
 
 
             if (flag != GPErrorCode.NoError)
@@ -27,32 +27,32 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
 
             string md5Password;
-            if (!PasswordEncoder.ProcessPassword(_rawRequest, out md5Password))
+            if (!PasswordEncoder.ProcessPassword(_recv, out md5Password))
             {
                 return GPErrorCode.NewUserBadPasswords;
             }
             Password = md5Password;
 
 
-            if (!_rawRequest.ContainsKey("email"))
+            if (!_recv.ContainsKey("email"))
             {
                 return GPErrorCode.Parse;
             }
 
             RequireUniqueNicks = true;
 
-            if (_rawRequest.ContainsKey("pass"))
+            if (_recv.ContainsKey("pass"))
             {
                 // Old games might send an error is unique nicknames are sent (like GSA 1.0)
                 RequireUniqueNicks = false;
             }
 
-            Email = _rawRequest["email"];
+            Email = _recv["email"];
 
-            if (_rawRequest.ContainsKey("namespaceid"))
+            if (_recv.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
+                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                 {
                     return GPErrorCode.Parse;
                 }

@@ -6,52 +6,25 @@ using PresenceSearchPlayer.Entity.Structure;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
 using Serilog.Events;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {
-    public class PSPRequestSerializer
+    public class PSPRequestSerializer:RequestSerializerBase
     {
-        public static List<IRequest> Serialize(ISession session, string rawRequest)
+        protected new string _rawRequest;
+        public PSPRequestSerializer(object rawRequest) : base(rawRequest)
         {
-            List<IRequest> requestList = new List<IRequest>();
-            if (rawRequest[0] != '\\')
-            {
-                LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
-                return null;
-            }
-            string[] commands = rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
-            foreach (var command in commands)
-            {
-                IRequest request = GenerateRequest(command);
-                if (request == null)
-                {
-                    continue;
-                }
-                var flag = (GPErrorCode)request.Parse();
-                if (flag != GPErrorCode.NoError)
-                {
-                    session.SendAsync(ErrorMsg.BuildGPErrorMsg(flag));
-                    continue;
-                }
-                requestList.Add(request);
-            }
-
-            return requestList;
+            _rawRequest = (string)rawRequest;
         }
 
-        private static IRequest GenerateRequest(string rawCommand)
-        {
-            if (rawCommand.Length < 1)
-            {
-                return null;
-            }
-            // Read client message, and parse it into key value pairs
-            string[] recieved = rawCommand.TrimStart('\\').Split('\\');
+        public override IRequest Serialize()
+        {            // Read client message, and parse it into key value pairs
+            string[] recieved = _rawRequest.TrimStart('\\').Split('\\');
             Dictionary<string, string> keyValue = GameSpyUtils.ConvertToKeyValue(recieved);
-
             switch (keyValue.Keys.First())
             {
                 case PSPRequestName.Search:
@@ -74,7 +47,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                 case PSPRequestName.UniqueSearch:
                     return new SearchRequest(keyValue);
                 default:
-                    LogWriter.UnknownDataRecieved(rawCommand);
+                    LogWriter.UnknownDataRecieved(_rawRequest);
                     return null;
             }
         }

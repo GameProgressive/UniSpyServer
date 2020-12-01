@@ -1,18 +1,18 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
+﻿using UniSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    public abstract class PCMRequestBase : IRequest
+    public abstract class PCMRequestBase : RequestBase
     {
-        public string CommandName { get; protected set; }
+        public new string CommandName { get; protected set; }
         //public uint NamespaceID { get; protected set; }
         public uint OperationID { get; protected set; }
 
-        object IRequest.CommandName => CommandName;
+        public new string RawRequest { get; protected set; }
 
         protected Dictionary<string, string> _recv;
 
@@ -22,7 +22,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             CommandName = _recv.Keys.First();
         }
 
-        public virtual GPErrorCode Parse()
+        public override object Parse()
         {
             if (_recv.ContainsKey("id"))
             {
@@ -54,16 +54,6 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             {
                 return message;
             }
-        }
-
-        object IRequest.Parse()
-        {
-            return Parse();
-        }
-
-        public object GetInstance()
-        {
-            return this;
         }
     }
 }

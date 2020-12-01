@@ -28,54 +28,54 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public override GPErrorCode Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+            var flag = (GPErrorCode)base.Parse();
             if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
-            if (!_rawRequest.ContainsKey("profileid") && !_rawRequest.ContainsKey("namespaceid") && !_rawRequest.ContainsKey("gamename"))
+            if (!_recv.ContainsKey("profileid") && !_recv.ContainsKey("namespaceid") && !_recv.ContainsKey("gamename"))
             {
                 return GPErrorCode.Parse;
             }
 
-            GameName = _rawRequest["gamename"];
+            GameName = _recv["gamename"];
 
             uint profileID;
-            if (!uint.TryParse(_rawRequest["profileid"], out profileID))
+            if (!uint.TryParse(_recv["profileid"], out profileID))
             {
                 return GPErrorCode.Parse;
             }
             ProfileID = profileID;
 
-            if (_rawRequest.ContainsKey("partnerid"))
+            if (_recv.ContainsKey("partnerid"))
             {
                 uint partnerID;
-                if (!uint.TryParse(_rawRequest["partnerid"], out partnerID))
+                if (!uint.TryParse(_recv["partnerid"], out partnerID))
                 {
                     return GPErrorCode.Parse;
                 }
                 PartnerID = partnerID;
             }
 
-            if (_rawRequest.ContainsKey("skip"))
+            if (_recv.ContainsKey("skip"))
             {
                 int skip;
-                if (!int.TryParse(_rawRequest["skip"], out skip))
+                if (!int.TryParse(_recv["skip"], out skip))
                 {
                     return GPErrorCode.Parse;
                 }
                 SkipNumber = skip;
             }
 
-            if (_rawRequest.ContainsKey("uniquenick") && _rawRequest.ContainsKey("namespaceid"))
+            if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
             {
-                if (_rawRequest.ContainsKey("namespaceid"))
+                if (_recv.ContainsKey("namespaceid"))
                 {
                     uint namespaceID;
-                    if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
+                    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                     {
                         return GPErrorCode.Parse;
                     }
@@ -83,23 +83,23 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 }
                 RequestType = SearchRequestType.UniquenickNamespaceIDSearch;
 
-                Uniquenick = _rawRequest["uniquenick"];
+                Uniquenick = _recv["uniquenick"];
             }
-            else if (_rawRequest.ContainsKey("nick") && _rawRequest.ContainsKey("email"))
+            else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
             {
                 RequestType = SearchRequestType.NickEmailSearch;
-                Nick = _rawRequest["nick"];
-                Email = _rawRequest["email"];
+                Nick = _recv["nick"];
+                Email = _recv["email"];
             }
-            else if (_rawRequest.ContainsKey("nick"))
+            else if (_recv.ContainsKey("nick"))
             {
                 RequestType = SearchRequestType.NickSearch;
-                Nick = _rawRequest["nick"];
+                Nick = _recv["nick"];
             }
-            else if (_rawRequest.ContainsKey("email"))
+            else if (_recv.ContainsKey("email"))
             {
                 //\search\\sesskey\0\profileid\0\namespaceid\1\email\spyguy@gamespy.cn\gamename\conflictsopc\final\
-                Email = _rawRequest["email"];
+                Email = _recv["email"];
                 RequestType = SearchRequestType.EmailSearch;
             }
             else

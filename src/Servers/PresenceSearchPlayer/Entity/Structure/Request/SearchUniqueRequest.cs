@@ -14,21 +14,21 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
         }
 
-        public override GPErrorCode Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+            var flag = (GPErrorCode)base.Parse();
             if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
-            if (!_rawRequest.ContainsKey("uniquenick") || !_rawRequest.ContainsKey("namespaces"))
+            if (!_recv.ContainsKey("uniquenick") || !_recv.ContainsKey("namespaces"))
             {
                 return GPErrorCode.Parse;
             }
 
-            Uniquenick = _rawRequest["uniquenick"];
-            Namespaces = _rawRequest["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
+            Uniquenick = _recv["uniquenick"];
+            Namespaces = _recv["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
 
             return GPErrorCode.NoError;
         }

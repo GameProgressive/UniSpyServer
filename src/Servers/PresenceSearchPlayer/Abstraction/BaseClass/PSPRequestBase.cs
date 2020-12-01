@@ -2,29 +2,30 @@
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public class PSPRequestBase : IRequest
+    public class PSPRequestBase : RequestBase
     {
-        protected Dictionary<string, string> _rawRequest;
-        public string CommandName;
+        protected Dictionary<string, string> _recv;
+        public new string RawRequest { get; protected set; }
+        public new string CommandName { get; protected set; }
         public ushort OperationID { get; protected set; }
 
-        object IRequest.CommandName => CommandName;
 
         public PSPRequestBase(Dictionary<string, string> recv)
         {
-            _rawRequest = recv;
+            _recv = recv;
             CommandName = recv.Keys.First();
         }
 
-        public virtual GPErrorCode Parse()
+        public override object Parse()
         {
-            if (_rawRequest.ContainsKey("id"))
+            if (_recv.ContainsKey("id"))
             {
                 ushort operationID;
-                if (!ushort.TryParse(_rawRequest["id"], out operationID))
+                if (!ushort.TryParse(_recv["id"], out operationID))
                 {
                     return GPErrorCode.Parse;
                 }
@@ -32,11 +33,6 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             }
 
             return GPErrorCode.NoError;
-        }
-
-        object IRequest.Parse()
-        {
-            return Parse();
         }
     }
 }

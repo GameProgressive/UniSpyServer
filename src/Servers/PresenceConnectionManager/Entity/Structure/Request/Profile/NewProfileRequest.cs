@@ -18,9 +18,9 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         public string OldNick { get; protected set; }
         public string NewNick { get; protected set; }
         public bool IsReplaceNickName { get; protected set; }
-        public override GPErrorCode Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+            var flag = (GPErrorCode)base.Parse();
             if (flag != GPErrorCode.NoError)
             {
                 return flag;

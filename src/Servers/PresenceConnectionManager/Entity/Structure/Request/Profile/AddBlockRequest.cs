@@ -11,9 +11,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         {
         }
 
-        public override GPErrorCode Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+            var flag = (GPErrorCode)base.Parse();
+
             if (flag != GPErrorCode.NoError)
             {
                 return flag;

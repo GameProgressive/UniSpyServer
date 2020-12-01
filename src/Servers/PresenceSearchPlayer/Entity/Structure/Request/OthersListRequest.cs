@@ -13,25 +13,25 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public override GPErrorCode Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+            var flag = (GPErrorCode)base.Parse();
             if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
-            if (!_rawRequest.ContainsKey("opids") || !_rawRequest.ContainsKey("namespaceid"))
+            if (!_recv.ContainsKey("opids") || !_recv.ContainsKey("namespaceid"))
             {
                 return GPErrorCode.Parse;
             }
 
-            ProfileIDs = _rawRequest["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
+            ProfileIDs = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
 
-            if (_rawRequest.ContainsKey("namespaceid"))
+            if (_recv.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
+                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                 {
                     return GPErrorCode.Parse;
                 }
