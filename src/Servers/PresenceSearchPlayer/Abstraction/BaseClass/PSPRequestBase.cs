@@ -19,19 +19,19 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             CommandName = recv.Keys.First();
         }
 
-        public virtual GPError Parse()
+        public virtual GPErrorCode Parse()
         {
             if (_rawRequest.ContainsKey("id"))
             {
                 ushort operationID;
                 if (!ushort.TryParse(_rawRequest["id"], out operationID))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 OperationID = operationID;
             }
 
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
 
         object IRequest.Parse()

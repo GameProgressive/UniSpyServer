@@ -1,65 +1,30 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using UniSpyLib.MiscMethod;
-using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using PresenceConnectionManager.Entity.Structure.Request.General;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
-using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;
-using PresenceSearchPlayer.Handler.CommandHandler.Error;
-using Serilog.Events;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    public class PCMRequestSerializer
+    public class PCMRequestSerializer : RequestSerializerBase
     {
-        public static List<IRequest> Serialize(ISession session, string rawRequest)
+        protected new string _rawRequest;
+
+        public PCMRequestSerializer(object rawRequest) : base(rawRequest)
         {
-            List<IRequest> requestList = new List<IRequest>();
-            rawRequest = PCMRequestBase.NormalizeRequest(rawRequest);
-            if (rawRequest[0] != '\\')
-            {
-                LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
-                return null;
-            }
-            string[] commands = rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
-            foreach (var command in commands)
-            {
-                IRequest request = GenerateRequest(command);
-                if (request == null)
-                {
-                    continue;
-                }
-                var flag = (GPError)request.Parse();
-                if (flag != GPError.NoError)
-                {
-                    session.SendAsync(ErrorMsg.BuildGPErrorMsg(flag));
-                    continue;
-                }
-                requestList.Add(request);
-            }
-            return requestList;
+            _rawRequest = (string)rawRequest;
         }
 
-        /// <summary>
-        /// Returns PCM request class instance
-        /// </summary>
-        /// <param name="command">raw request</param>
-        /// <param name="specificRequest">The valid serialized request</param>
-        /// <returns>error code</returns>
-        private static IRequest GenerateRequest(string command)
+        public override IRequest Serialize()
         {
-            if (command.Length < 1)
-            {
-                return null;
-            }
             // Read client message, and parse it into key value pairs
-            var keyValue = GameSpyUtils.ConvertToKeyValue(command);
+            var keyValue = GameSpyUtils.ConvertToKeyValue(_rawRequest);
 
             switch (keyValue.Keys.First())
             {
@@ -98,7 +63,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
                 case PCMRequestName.InviteTo:
                     return new InviteToRequest(keyValue);
                 default:
-                    LogWriter.UnknownDataRecieved(command);
+                    LogWriter.UnknownDataRecieved(_rawRequest);
                     return null;
             }
         }

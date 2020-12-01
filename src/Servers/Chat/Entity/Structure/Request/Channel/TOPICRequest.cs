@@ -17,9 +17,9 @@ namespace Chat.Entity.Structure.ChatCommand
         public string ChannelTopic { get; protected set; }
         public TOPICCmdType RequestType { get; protected set; }
 
-        public override bool Parse()
+        public override object Parse()
         {
-            if (!base.Parse())
+            if(!(bool)base.Parse())
             {
                 return false;
             }

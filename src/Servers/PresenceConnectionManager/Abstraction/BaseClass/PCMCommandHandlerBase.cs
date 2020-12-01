@@ -14,13 +14,13 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
     /// </summary>
     public abstract class PCMCommandHandlerBase : CommandHandlerBase
     {
-        protected GPError _errorCode;
+        protected GPErrorCode _errorCode;
         protected string _sendingBuffer;
         protected new PCMSession _session;
         protected PCMRequestBase _request;
         public PCMCommandHandlerBase(ISession session, IRequest request) : base(session)
         {
-            _errorCode = GPError.NoError;
+            _errorCode = GPErrorCode.NoError;
             _request = (PCMRequestBase)request;
             _session = (PCMSession)session;
         }
@@ -31,7 +31,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 
             CheckRequest();
 
-            if (_errorCode != GPError.NoError)
+            if (_errorCode != GPErrorCode.NoError)
             {
                 ConstructResponse();
                 Response();
@@ -40,7 +40,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 
             DataOperation();
 
-            if (_errorCode != GPError.NoError)
+            if (_errorCode != GPErrorCode.NoError)
             {
                 ConstructResponse();
                 Response();
@@ -61,7 +61,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         /// </summary>
         protected virtual void ConstructResponse()
         {
-            if (_errorCode != GPError.NoError)
+            if (_errorCode != GPErrorCode.NoError)
             {
                 BuildErrorResponse();
             }

@@ -5,54 +5,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Handler.CommandSwitcher
 {
-    public class ChatRequestSerializer
+    public class ChatRequestSerializer : RequestSerializerBase
     {
-        public static List<object> Serialize(string recv)
+        protected new string _rawRequest;
+        public ChatRequestSerializer(object rawRequest) : base(rawRequest)
         {
-            List<object> requestList = new List<object>();
-
-            string[] rawRequests = recv.Replace("\r", "")
-                .Split("\n", StringSplitOptions.RemoveEmptyEntries);
-            // first we convert request into our ChatCommand class
-            // next we handle each command
-            foreach (var rawRequest in rawRequests)
-            {
-                ChatRequestBase generalRequest = new ChatRequestBase(rawRequest);
-                if (!generalRequest.Parse())
-                {
-                    LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
-                    continue;
-                }
-
-                Type requestType = AppDomain.CurrentDomain
-                        .GetAssemblies()
-                        .SelectMany(x => x.GetTypes())
-                        .FirstOrDefault(t => t.Name == generalRequest.CmdName + "Request");
-                if (requestType != null)
-                {
-                    var specificRequest = Activator.CreateInstance(requestType, generalRequest.RawRequest);
-                    if (specificRequest == null)
-                    {
-                        LogWriter.ToLog(LogEventLevel.Error, $"Unknown request {generalRequest.CmdName}!");
-                        continue;
-                    }
-                    if (!((ChatRequestBase)specificRequest).Parse())
-                    {
-                        LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
-                        continue;
-                    }
-                    requestList.Add(specificRequest);
-                }
-                else
-                {
-                    LogWriter.ToLog(LogEventLevel.Error, $"Request: {generalRequest.CmdName} not implemented!");
-                }
-            }
-            return requestList;
+            _rawRequest = (string)rawRequest;
         }
+
+
+        public override IRequest Serialize()
+        {
+            ChatRequestBase generalRequest = new ChatRequestBase(_rawRequest);
+            if (!generalRequest.Parse())
+            {
+                LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
+                return null;
+            }
+
+            Type requestType = AppDomain.CurrentDomain
+                    .GetAssemblies()
+                    .SelectMany(x => x.GetTypes())
+                    .FirstOrDefault(t => t.Name == generalRequest.CommandName + "Request");
+            if (requestType != null)
+            {
+                var request = Activator.CreateInstance(requestType, generalRequest.RawRequest);
+                if (request == null)
+                {
+                    LogWriter.ToLog(LogEventLevel.Error, $"Unknown request {generalRequest.CommandName}!");
+                    return null;
+                }
+                return (IRequest)request;
+            }
+            else
+            {
+                LogWriter.ToLog(LogEventLevel.Error, $"Request: {generalRequest.CommandName} not implemented!");
+                return null;
+            }
+        }
+
 
     }
 }

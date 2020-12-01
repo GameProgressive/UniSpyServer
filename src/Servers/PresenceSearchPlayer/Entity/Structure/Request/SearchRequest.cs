@@ -28,17 +28,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
             if (!_rawRequest.ContainsKey("profileid") && !_rawRequest.ContainsKey("namespaceid") && !_rawRequest.ContainsKey("gamename"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             GameName = _rawRequest["gamename"];
@@ -46,7 +46,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             uint profileID;
             if (!uint.TryParse(_rawRequest["profileid"], out profileID))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
             ProfileID = profileID;
 
@@ -55,7 +55,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint partnerID;
                 if (!uint.TryParse(_rawRequest["partnerid"], out partnerID))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 PartnerID = partnerID;
             }
@@ -65,7 +65,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 int skip;
                 if (!int.TryParse(_rawRequest["skip"], out skip))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 SkipNumber = skip;
             }
@@ -77,7 +77,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     uint namespaceID;
                     if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                     {
-                        return GPError.Parse;
+                        return GPErrorCode.Parse;
                     }
                     NamespaceID = namespaceID;
                 }
@@ -104,10 +104,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             else
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
     }
 }

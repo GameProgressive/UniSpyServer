@@ -6,11 +6,10 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public class ChatRequestBase : RequestBase, IRequest
+    public class ChatRequestBase : RequestBase
     {
-        public string RawRequest { get; protected set; }
-        public string CmdName { get; protected set; }
-        object IRequest.CommandName => CmdName;
+        public new string RawRequest { get; protected set; }
+        public new string CommandName { get; protected set; }
 
         protected string Prefix;
         protected List<string> _cmdParams;
@@ -29,7 +28,7 @@ namespace Chat.Abstraction.BaseClass
             RawRequest = request.RawRequest;
         }
 
-        public virtual bool Parse()
+        public override object Parse()
         {
             // at most 2 colon character
             // we do not sure about all command
@@ -61,18 +60,13 @@ namespace Chat.Abstraction.BaseClass
 
             dataFrag = rawRequest.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
 
-            CmdName = dataFrag[0];
+            CommandName = dataFrag[0];
 
             if (dataFrag.Count > 1)
             {
                 _cmdParams = dataFrag.Skip(1).ToList();
             }
             return true;
-        }
-
-        object IRequest.Parse()
-        {
-            return Parse();
         }
     }
 }

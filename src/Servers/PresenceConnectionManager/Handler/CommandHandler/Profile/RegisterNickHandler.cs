@@ -34,7 +34,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
             }
             catch
             {
-                _errorCode = GPError.DatabaseError;
+                _errorCode = GPErrorCode.DatabaseError;
             }
         }
 

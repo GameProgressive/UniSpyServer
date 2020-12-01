@@ -14,29 +14,29 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         public string StatusString { get; protected set; }
         public string LocationString { get; protected set; }
 
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("status") || !_recv.ContainsKey("statstring") || !_recv.ContainsKey("locstring"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
             uint statusCode;
             if (!uint.TryParse(_recv["status"], out statusCode))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             StatusCode = statusCode;
             LocationString = _recv["locstring"];
             StatusString = _recv["statstring"];
 
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
     }
 }

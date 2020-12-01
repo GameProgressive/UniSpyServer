@@ -16,12 +16,12 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public uint NamespaceID { get; protected set; }
         public bool RequireUniqueNicks { get; protected set; }
 
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
 
 
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
@@ -29,14 +29,14 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(_rawRequest, out md5Password))
             {
-                return GPError.NewUserBadPasswords;
+                return GPErrorCode.NewUserBadPasswords;
             }
             Password = md5Password;
 
 
             if (!_rawRequest.ContainsKey("email"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             RequireUniqueNicks = true;
@@ -54,12 +54,12 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 NamespaceID = namespaceID;
             }
 
-            return GPError.NoError;
+            return GPErrorCode.NoError;
 
         }
     }

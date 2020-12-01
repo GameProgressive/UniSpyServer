@@ -11,9 +11,9 @@ namespace Chat.Entity.Structure.ChatCommand
         public int MaxNumberOfChannels { get; protected set; }
         public string Filter { get; protected set; }
 
-        public override bool Parse()
+        public override object Parse()
         {
-            if (!base.Parse())
+            if(!(bool)base.Parse())
             {
                 return false;
             }

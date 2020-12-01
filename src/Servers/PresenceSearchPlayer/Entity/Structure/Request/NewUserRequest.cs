@@ -27,28 +27,28 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(_rawRequest, out md5Password))
             {
-                return GPError.NewUserBadPasswords;
+                return GPErrorCode.NewUserBadPasswords;
             }
             Password = md5Password;
 
             if (!_rawRequest.ContainsKey("nick"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             if (!_rawRequest.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(_rawRequest["email"]))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             Nick = _rawRequest["nick"];
@@ -61,7 +61,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     uint namespaceID;
                     if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                     {
-                        return GPError.Parse;
+                        return GPErrorCode.Parse;
                     }
 
                     NamespaceID = namespaceID;
@@ -71,7 +71,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             return ParseOtherInfo();
         }
 
-        private GPError ParseOtherInfo()
+        private GPErrorCode ParseOtherInfo()
         {
 
             //parse other info
@@ -80,7 +80,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint partnerid;
                 if (!uint.TryParse(_rawRequest["partnerid"], out partnerid))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 HasPartnerIDFlag = true;
                 PartnerID = partnerid;
@@ -93,7 +93,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint productid;
                 if (!uint.TryParse(_rawRequest["productid"], out productid))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 HasProductIDFlag = true;
                 ProductID = productid;
@@ -111,7 +111,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint port;
                 if (!uint.TryParse(_rawRequest["port"], out port))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 HasGamePortFlag = true;
                 GamePort = port;
@@ -123,7 +123,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 CDKeyEnc = _rawRequest["cdkeyenc"];
             }
 
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
     }
 }

@@ -24,17 +24,17 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
         {
         }
 
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("challenge") || !_recv.ContainsKey("response"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             UserChallenge = _recv["challenge"];
@@ -45,7 +45,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 uint namespaceID;
                 if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 LoginType = LoginType.UniquenickNamespaceID;
                 Uniquenick = _recv["uniquenick"];
@@ -66,7 +66,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 int Pos = UserData.IndexOf('@');
                 if (Pos == -1 || Pos < 1 || (Pos + 1) >= UserData.Length)
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 Nick = UserData.Substring(0, Pos);
                 Email = UserData.Substring(Pos + 1);
@@ -77,7 +77,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                     uint namespaceID;
                     if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
                     {
-                        return GPError.Parse;
+                        return GPErrorCode.Parse;
                     }
                     NamespaceID = namespaceID;
                 }
@@ -85,7 +85,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
             else
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Unknown login method detected!");
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             return ParseOtherData();
@@ -96,14 +96,14 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
         public string GameName { get; private set; }
         public QuietModeType QuietMode { get; private set; }
 
-        private GPError ParseOtherData()
+        private GPErrorCode ParseOtherData()
         {
             if (_recv.ContainsKey("partnerid"))
             {
                 uint partnerID;
                 if (!uint.TryParse(_recv["partnerid"], out partnerID))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 PartnerID = partnerID;
             }
@@ -114,7 +114,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 uint sdkRevisionType;
                 if (!uint.TryParse(_recv["sdkrevision"], out sdkRevisionType))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
 
                 SDKType = (SDKRevisionType)sdkRevisionType;
@@ -130,7 +130,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 uint gamePort;
                 if (!uint.TryParse(_recv["port"], out gamePort))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 GamePort = gamePort;
             }
@@ -140,13 +140,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 uint quiet;
                 if (!uint.TryParse(_recv["quiet"], out quiet))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
 
                 QuietMode = (QuietModeType)quiet;
             }
 
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
     }
 }

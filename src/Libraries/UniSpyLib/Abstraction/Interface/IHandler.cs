@@ -2,6 +2,6 @@
 {
     public interface IHandler
     {
-        public IHandler Handle();
+        public void Handle();
     }
 }

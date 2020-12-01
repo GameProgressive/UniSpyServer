@@ -26,7 +26,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 
                 if (result.Count() == 0 || result.Count() > 1)
                 {
-                    _errorCode = GPError.DatabaseError;
+                    _errorCode = GPErrorCode.DatabaseError;
                 }
 
                 db.Subprofiles.Where(s => s.Subprofileid == _session.UserData.SubProfileID)

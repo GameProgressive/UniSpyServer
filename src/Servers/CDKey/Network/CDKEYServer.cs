@@ -27,7 +27,7 @@ namespace CDKey.Network
                 session = (CDKeySession)CreateSession(endPoint);
                 Sessions.TryAdd(endPoint, session);
             }
-            CDKeyCommandSwitcher.Switch(session, message);
+            new CDKeyCommandSwitcher(session, message).Switch();
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)

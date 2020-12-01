@@ -12,9 +12,9 @@ namespace Chat.Entity.Structure.ChatCommand
         public string GameName { get; protected set; }
         //CRYPT des %d %s
 
-        public override bool Parse()
+        public override object Parse()
         {
-            if (!base.Parse())
+            if(!(bool)base.Parse())
             {
                 return false;
             }

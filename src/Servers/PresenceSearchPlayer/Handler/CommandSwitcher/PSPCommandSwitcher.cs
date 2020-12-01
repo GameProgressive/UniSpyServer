@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {
-    public class PSPCommandSwitcher : CommandSerializerBase
+    public class PSPCommandSwitcher : CommandHandlerSerializerBase
     {
         protected new string _rawRequest;
         public PSPCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)

@@ -26,20 +26,20 @@ namespace GameStatus.Entity.Structure.Request
                 return flag;
             }
 
-            if (_request.ContainsKey("pid"))
+            if (_rawRequest.ContainsKey("pid"))
             {
                 uint profileID;
-                if (!uint.TryParse(_request["pid"], out profileID))
+                if (!uint.TryParse(_rawRequest["pid"], out profileID))
                 {
                     return GSError.Parse;
                 }
                 ProfileID = profileID;
             }
 
-            if (_request.ContainsKey("ptype"))
+            if (_rawRequest.ContainsKey("ptype"))
             {
                 PersistStorageType storageType;
-                if (!Enum.TryParse(_request["ptype"], out storageType))
+                if (!Enum.TryParse(_rawRequest["ptype"], out storageType))
                 {
                     return GSError.Parse;
                 }
@@ -48,22 +48,22 @@ namespace GameStatus.Entity.Structure.Request
             }
 
 
-            if (_request.ContainsKey("dindex"))
+            if (_rawRequest.ContainsKey("dindex"))
             {
                 uint dataIndex;
-                if (!uint.TryParse(_request["dindex"], out dataIndex))
+                if (!uint.TryParse(_rawRequest["dindex"], out dataIndex))
                 {
                     return GSError.Parse;
                 }
                 DataIndex = dataIndex;
             }
 
-            if (!_request.ContainsKey("keys"))
+            if (!_rawRequest.ContainsKey("keys"))
             {
                 return GSError.Parse;
             }
 
-            string keys = _request["keys"];
+            string keys = _rawRequest["keys"];
             if (keys == "")
             {
                 GetAllDataFlag = true;

@@ -15,12 +15,30 @@ namespace NATNegotiation.Handler.CommandSwitcher
             _rawRequest = (byte[])rawRequest;
         }
 
-        public override void Serialize()
+        public override IRequest Serialize()
         {
             if (_rawRequest.Length < 1)
-                return;
-            IRequest request = GenerateRequest(_rawRequest);
-            Requests.Add(request);
+                return null;
+
+            switch ((NatPacketType)_rawRequest[7])
+            {
+                case NatPacketType.Init:
+                    return new InitRequest(_rawRequest);
+                case NatPacketType.AddressCheck:
+                    return new AddressRequest(_rawRequest);
+                case NatPacketType.NatifyRequest:
+                    return new NatifyRequest(_rawRequest);
+                case NatPacketType.ConnectAck:
+                    throw new NotImplementedException();
+                case NatPacketType.Report:
+                    return new ReportRequest(_rawRequest);
+                case NatPacketType.ErtAck:
+                    return new ErtAckRequest(_rawRequest);
+                default:
+                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    return null;
+
+            }
         }
 
         protected override IRequest GenerateRequest(object singleRequest)
@@ -34,30 +52,30 @@ namespace NATNegotiation.Handler.CommandSwitcher
             switch ((NatPacketType)_rawRequest[7])
             {
                 case NatPacketType.Init:
-                    request = new InitRequest(_rawRequest);
-                    break;
+                    return new InitRequest(_rawRequest);
+
                 case NatPacketType.AddressCheck:
-                    request = new AddressRequest(_rawRequest);
-                    break;
+                    return new AddressRequest(_rawRequest);
+
                 case NatPacketType.NatifyRequest:
-                    request = new NatifyRequest(_rawRequest);
-                    break;
+                    return new NatifyRequest(_rawRequest);
+
                 case NatPacketType.ConnectAck:
-                    request = null;
-                    break;
+                    return null;
+
                 case NatPacketType.Report:
-                    request = new ReportRequest(_rawRequest);
-                    break;
+                    return new ReportRequest(_rawRequest);
+
                 case NatPacketType.ErtAck:
-                    request = new ErtAckRequest(_rawRequest);
-                    break;
+                    return new ErtAckRequest(_rawRequest);
+
                 default:
-                    request = null;
+                    return null;
                     LogWriter.UnknownDataRecieved(_rawRequest);
-                    break;
+
             }
 
-            if (request == null)
+            if (return= null)
             {
                 return null;
             }

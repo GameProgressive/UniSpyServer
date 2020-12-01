@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
     public abstract class PSPCommandHandlerBase : CommandHandlerBase
     {
-        protected GPError _errorCode;
+        protected GPErrorCode _errorCode;
         /// <summary>
         /// Be careful the return of query function should be List type,
         /// the decision formula should use _result.Count==0
@@ -19,7 +19,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         protected PSPRequestBase _request;
         public PSPCommandHandlerBase(ISession session, IRequest request) : base(session)
         {
-            _errorCode = GPError.NoError;
+            _errorCode = GPErrorCode.NoError;
             _request = (PSPRequestBase)request;
         }
 
@@ -29,7 +29,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 
             CheckRequest();
 
-            if (_errorCode < GPError.NoError)
+            if (_errorCode < GPErrorCode.NoError)
             {
                 ConstructResponse();
                 Response();
@@ -38,7 +38,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 
             DataOperation();
 
-            if (_errorCode < GPError.NoError)
+            if (_errorCode < GPErrorCode.NoError)
             {
                 ConstructResponse();
                 Response();
@@ -57,7 +57,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         /// </summary>
         protected virtual void ConstructResponse()
         {
-            if (_errorCode != GPError.NoError)
+            if (_errorCode != GPErrorCode.NoError)
             {
                 BuildErrorResponse();
             }

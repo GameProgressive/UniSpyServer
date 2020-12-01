@@ -11,28 +11,28 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         {
         }
 
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("profileid"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             uint profileID;
             if (!uint.TryParse(_recv["profileid"], out profileID))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             ProfileID = profileID;
 
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
     }
 }

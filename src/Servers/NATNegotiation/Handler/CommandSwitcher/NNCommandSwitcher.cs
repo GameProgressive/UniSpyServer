@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Handler.CommandSwitcher
 {
-    public class NNCommandSerializer : CommandSerializerBase
+    public class NNCommandSerializer : CommandHandlerSerializerBase
     {
         protected new byte[] _rawRequest;
         public NNCommandSerializer(ISession session, object rawRequest) : base(session, rawRequest)
@@ -16,33 +16,52 @@ namespace NATNegotiation.Handler.CommandSwitcher
 
         public override void Serialize()
         {
-            var serializer =  new NNRequestSerializer(_session, _rawRequest);
-            serializer.Serialize();
-            foreach(var request in serializer.Requests)
+            
+        }
+
+        protected override void SerializeCommands()
+        {
+            base.SerializeCommands();
+            foreach (var request in _requests)
+            {
+                IHandler handler;
                 switch (request.CommandName)
                 {
                     case NatPacketType.Init:
-                        new InitHandler(_session, request).Handle();
+                        handler = new InitHandler(_session, request);
                         break;
                     case NatPacketType.AddressCheck:
-                        new AddressCheckHandler(_session, request).Handle();
+                        handler = new AddressCheckHandler(_session, request);
                         break;
                     case NatPacketType.NatifyRequest:
-                        new NatifyHandler(_session, request).Handle();
+                        handler = new NatifyHandler(_session, request);
                         break;
                     case NatPacketType.ConnectAck:
-                        new ConnectACKHandler(_session, request).Handle();
+                        handler = new ConnectACKHandler(_session, request);
                         break;
                     case NatPacketType.Report:
-                        new ReportHandler(_session, request).Handle();
+                        handler = new ReportHandler(_session, request);
                         break;
                     case NatPacketType.ErtAck:
-                        new ErtAckHandler(_session, request).Handle();
+                        handler = new ErtAckHandler(_session, request);
                         break;
                     default:
                         LogWriter.UnknownDataRecieved(_rawRequest);
                         break;
                 }
+            }
+        }
+
+        protected override void SerializeRequests()
+        {
+            base.SerializeRequests();
+            var request = new NNRequestSerializer(_session, _rawRequest).Serialize();
+            if (!(bool)request.Parse())
+            {
+                return;
+            }
+
+            _requests.Add(request);
         }
     }
 }

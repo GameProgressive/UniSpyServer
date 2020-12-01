@@ -2,30 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using CDKey.Entity.Structure;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using UniSpyLib.MiscMethod;
 
 namespace CDKey.Handler.CommandSwitcher
 {
-    public class CDKeyRequestSerializer
+    public class CDKeyRequestSerializer:RequestSerializerBase
     {
-        public static List<IRequest> Serialize(ISession session, string rawRequest)
+        protected new string _rawRequest;
+        public CDKeyRequestSerializer(object rawRequest) : base(rawRequest)
         {
-            List<IRequest> requests = new List<IRequest>();
-            var request = rawRequest;
-            //request.Replace(@"\r\n", "").Replace("\0", "");
-            string[] commands = rawRequest.Split(@"\r\n", StringSplitOptions.RemoveEmptyEntries);
-            foreach (var command in commands)
-            {
-                requests.Add(GenerateRequest(command));
-            }
-            return requests;
+            _rawRequest = (string)rawRequest;
         }
 
-        private static IRequest GenerateRequest(string command)
+        public override IRequest Serialize()
         {
-            var kv = GameSpyUtils.ConvertToKeyValue(command);
+            var kv = GameSpyUtils.ConvertToKeyValue(_rawRequest);
 
             switch (kv.Keys.First())
             {
@@ -43,10 +37,9 @@ namespace CDKey.Handler.CommandSwitcher
                 case RequestName.UON:
                     return null;
                 default:
-                    LogWriter.UnknownDataRecieved(command);
+                    LogWriter.UnknownDataRecieved(_rawRequest);
                     return null;
             }
         }
-
     }
 }

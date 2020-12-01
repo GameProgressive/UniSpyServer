@@ -1,36 +1,39 @@
-﻿using UniSpyLib.Abstraction.Interface;
+﻿using System;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
 
 namespace CDKey.Handler.CommandSwitcher
 {
-    public class CDKeyCommandSwitcher
+    public class CDKeyCommandSwitcher : CommandSwitcherBase
     {
-        public static void Switch(ISession session, string rawRequest)
+        protected new string _rawRequest;
+        public CDKeyCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
         {
-            var requests = CDKeyRequestSerializer.Serialize(session, rawRequest);
+            _rawRequest = (string)rawRequest;
+        }
 
-            foreach (var request in requests)
+        protected override void SerializeCommands()
+        {
+            foreach (var request in _requests)
             {
-                switch (request.CommandName)
+                _handlers.Add(new CDKeyCommandHandlerSerializer(_session, request).Serialize());
+            }
+        }
+
+        protected override void SerializeRequests()
+        {
+            string[] commands = _rawRequest.Split(@"\r\n", StringSplitOptions.RemoveEmptyEntries);
+            foreach (var command in commands)
+            {
+                var request = new CDKeyRequestSerializer(command).Serialize();
+                if (!(bool)request.Parse())
                 {
-                    //keep client alive request, we skip this
-                    case "ka":
-                        break;
-                    case "auth":
-                        break;
-                    case "resp":
-                        break;
-                    case "skey":
-                        break;
-                    case "disc"://disconnect from server
-                        break;
-                    case "uon":
-                        break;
-                    default:
-                        LogWriter.UnknownDataRecieved(rawRequest);
-                        break;
+                    return;
                 }
+
+                _requests.Add(request);
             }
         }
     }

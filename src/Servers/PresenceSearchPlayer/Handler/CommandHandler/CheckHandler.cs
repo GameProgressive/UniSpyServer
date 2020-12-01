@@ -26,13 +26,13 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
             {
                 if (db.Users.Where(e => e.Email == _request.Email).Count() < 1)
                 {
-                    _errorCode = GPError.CheckBadMail;
+                    _errorCode = GPErrorCode.CheckBadMail;
                     return;
                 }
 
                 if (db.Users.Where(u => u.Email == _request.Email && u.Password == _request.Password).Count() < 1)
                 {
-                    _errorCode = GPError.CheckBadPassword;
+                    _errorCode = GPErrorCode.CheckBadPassword;
                     return;
                 }
 
@@ -49,7 +49,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                 }
                 else
                 {
-                    _errorCode = GPError.CheckBadNick;
+                    _errorCode = GPErrorCode.CheckBadNick;
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
         protected override void BuildErrorResponse()
         {
-            if (_errorCode < GPError.Check || _errorCode > GPError.CheckBadPassword)
+            if (_errorCode < GPErrorCode.Check || _errorCode > GPErrorCode.CheckBadPassword)
             {
                 base.BuildErrorResponse();
             }

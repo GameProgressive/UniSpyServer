@@ -3,19 +3,17 @@ using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class CommandHandlerBase : IHandler
+    public abstract class CommandHandlerSerializerBase
     {
+        protected IRequest _request;
         protected ISession _session;
-        public CommandHandlerBase(ISession session)
+        public CommandHandlerSerializerBase(ISession session,IRequest request)
         {
+            _request = request;
             _session = session;
-        }
-
-        public virtual void Handle()
-        {
             LogWriter.LogCurrentClass(this);
         }
 
-        void IHandler.Handle() => Handle();
+        public abstract IHandler Serialize();
     }
 }

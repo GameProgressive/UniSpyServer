@@ -14,21 +14,21 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
         {
         }
 
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
             if (!_recv.ContainsKey("cdkeyenc"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             CDKeyEnc = _recv["cdkeyenc"];
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
     }
 }

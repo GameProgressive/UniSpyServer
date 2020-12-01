@@ -22,9 +22,9 @@ namespace Chat.Entity.Structure.ChatCommand
             Keys = new List<string>();
         }
 
-        public override bool Parse()
+        public override object Parse()
         {
-            if (!base.Parse())
+            if(!(bool)base.Parse())
             {
                 return false;
             }

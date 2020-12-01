@@ -2,10 +2,11 @@
 using System;
 using System.Net;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace ServerBrowser.Entity.Structure.Packet.Request
 {
-    public class AdHocRequest : IRequest
+    public class AdHocRequest : RequestBase
     {
         /// <summary>
         /// The game server client search for
@@ -13,16 +14,14 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public string TargetServerIP { get { return TargetEndPoint.Address.ToString(); } }
         public string TargetServerHostPort { get { return TargetEndPoint.Port.ToString(); } }
         public IPEndPoint TargetEndPoint { get; protected set; }
-        public byte[] RawRequest { get; protected set; }
-
-        object IRequest.CommandName => throw new NotImplementedException();
+        public new byte[] RawRequest { get; protected set; }
 
         public AdHocRequest(byte[] rawRequest)
         {
             RawRequest = rawRequest;
         }
 
-        public bool Parse()
+        public override object Parse()
         {
             ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(RawRequest, 0, 2), true);
 
@@ -38,11 +37,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             //TODO fix for gbrome!!!!!!!!!!!!!!!!!!!
             TargetEndPoint = ByteTools.GetIPEndPoint(ip, port);
             return true;
-        }
-
-        object IRequest.Parse()
-        {
-            return Parse();
         }
     }
 }

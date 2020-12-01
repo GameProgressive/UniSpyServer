@@ -7,27 +7,28 @@ namespace GameStatus.Abstraction.BaseClass
 {
     public class GSRequestBase : RequestBase
     {
-        protected Dictionary<string, string> _request;
+        protected Dictionary<string, string> _rawRequest;
         public uint OperationID { get; protected set; }
-        public string CommandName { get; protected set; }
+        public new string CommandName { get; protected set; }
+        public new Dictionary<string,string> RawRequest { get; protected set; }
         public GSRequestBase(Dictionary<string, string> request)
         {
-            _request = request;
+            _rawRequest = request;
             CommandName = request.Keys.First();
         }
 
         public virtual GSError Parse()
         {
 
-            if (!_request.ContainsKey("lid") && !_request.ContainsKey("id"))
+            if (!_rawRequest.ContainsKey("lid") && !_rawRequest.ContainsKey("id"))
             {
                 return GSError.Parse;
             }
 
-            if (_request.ContainsKey("lid"))
+            if (_rawRequest.ContainsKey("lid"))
             {
                 uint operationID;
-                if (!uint.TryParse(_request["lid"], out operationID))
+                if (!uint.TryParse(_rawRequest["lid"], out operationID))
                 {
                     return GSError.Parse;
                 }
@@ -35,10 +36,10 @@ namespace GameStatus.Abstraction.BaseClass
             }
 
             //worms 3d use id not lid so we added an condition here
-            if (_request.ContainsKey("id"))
+            if (_rawRequest.ContainsKey("id"))
             {
                 uint operationID;
-                if (!uint.TryParse(_request["id"], out operationID))
+                if (!uint.TryParse(_rawRequest["id"], out operationID))
                 {
                     return GSError.Parse;
                 }

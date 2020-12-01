@@ -31,7 +31,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
                              select f;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GPError.DatabaseError;
+                    _errorCode = GPErrorCode.DatabaseError;
                     return;
                 }
                 db.Friends.Remove(result.FirstOrDefault());

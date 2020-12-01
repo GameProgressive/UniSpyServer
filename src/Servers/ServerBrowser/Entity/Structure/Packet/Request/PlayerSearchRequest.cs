@@ -23,7 +23,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
             RawRequest = rawRequest;
         }
 
-        public bool Parse()
+        public override object Parse()
         {
             SearchOption = Convert.ToInt16(ByteTools.SubBytes(RawRequest, 3, 3 + 4));
             MaxResults = Convert.ToUInt16(ByteTools.SubBytes(RawRequest, 7, 7 + 4));

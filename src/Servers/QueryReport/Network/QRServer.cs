@@ -46,7 +46,7 @@ namespace QueryReport.Network
                 session = (QRSession)CreateSession(endPoint);
                 QRSessionManager.Sessions.TryAdd(endPoint, session);
             }
-            new QRCommandSerializer(session, message).Serialize();
+            new QRCommandSwitcher(session, message).Switch();
         }
 
         protected override void OnReceived(EndPoint endPoint, string message)

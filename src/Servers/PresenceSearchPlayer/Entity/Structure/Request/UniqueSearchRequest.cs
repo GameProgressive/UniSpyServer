@@ -15,24 +15,24 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
         public string GameName { get; private set; }
 
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
             if (!_rawRequest.ContainsKey("preferrednick"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             PreferredNick = _rawRequest["preferrednick"];
 
             if (!_rawRequest.ContainsKey("gamename"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
             GameName = _rawRequest["gamename"];
 
@@ -41,13 +41,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
 
                 NamespaceID = namespaceID;
             }
 
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
     }
 }

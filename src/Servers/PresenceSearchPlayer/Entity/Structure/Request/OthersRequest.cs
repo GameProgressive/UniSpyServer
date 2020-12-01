@@ -13,28 +13,28 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public uint ProfileID { get; private set; }
         public string GameName { get; private set; }
         public uint NamespaceID { get; protected set; }
-        public override GPError Parse()
+        public override GPErrorCode Parse()
         {
             var flag = base.Parse();
-            if (flag != GPError.NoError)
+            if (flag != GPErrorCode.NoError)
             {
                 return flag;
             }
 
             if (!_rawRequest.ContainsKey("gamename"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             if (!_rawRequest.ContainsKey("profileid") || !_rawRequest.ContainsKey("namespaceid"))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
             }
 
             uint profileID = 0;
             if (!_rawRequest.ContainsKey("profileid") && !uint.TryParse(_rawRequest["profileid"], out profileID))
             {
-                return GPError.Parse;
+                return GPErrorCode.Parse;
 
             }
 
@@ -43,7 +43,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(_rawRequest["namespaceid"], out namespaceID))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
 
                 NamespaceID = namespaceID;
@@ -51,7 +51,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             ProfileID = profileID;
             GameName = _rawRequest["gamename"];
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
     }
 }

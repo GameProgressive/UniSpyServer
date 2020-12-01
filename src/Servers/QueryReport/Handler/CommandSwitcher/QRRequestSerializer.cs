@@ -12,59 +12,40 @@ namespace QueryReport.Handler.CommandSwitcher
     public class QRRequestSerializer:RequestSerializerBase
     {
         protected new byte[] _rawRequest;
-        public QRRequestSerializer(ISession session, byte[] rawRequest) : base(session, rawRequest)
+        public QRRequestSerializer(byte[] rawRequest) : base(rawRequest)
         {
             _rawRequest = rawRequest;
         }
 
-        public override void Serialize()
+        public override IRequest Serialize()
         {
             if (_rawRequest.Length < 1)
             {
-                return;
+                return null;
             }
 
-            var request = GenerateRequest(_rawRequest);
-
-            if (request == null)
-            {
-                return;
-            }
-
-            if (!(bool)request.Parse())
-            {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(QRErrorCode.Parse));
-                return;
-            }
-
-            Requests.Add(request);
-        }
-
-        protected override IRequest GenerateRequest(object singleRequest)
-        {
-            byte[] request = (byte[])singleRequest;
-            switch ((QRPacketType)request[0])
+            switch ((QRPacketType)_rawRequest[0])
             {
                 case QRPacketType.AvaliableCheck:
-                    return new AvaliableRequest(request);
+                    return new AvaliableRequest(_rawRequest);
                 //verify challenge to check game server is real or fake;
                 //after verify we can add game server to server list
                 case QRPacketType.Challenge:
-                    return new ChallengeRequest(request);
+                    return new ChallengeRequest(_rawRequest);
                 case QRPacketType.HeartBeat:
-                    return new HeartBeatRequest(request);
+                    return new HeartBeatRequest(_rawRequest);
 
                 case QRPacketType.KeepAlive:
-                    return new KeepAliveRequest(request);
+                    return new KeepAliveRequest(_rawRequest);
 
                 case QRPacketType.EchoResponse:
-                    return new QRRequestBase(request);
+                    return new QRRequestBase(_rawRequest);
 
                 case QRPacketType.ClientMessageACK:
-                    return new QRRequestBase(request);
+                    return new QRRequestBase(_rawRequest);
 
                 default:
-                    LogWriter.UnknownDataRecieved(request);
+                    LogWriter.UnknownDataRecieved(_rawRequest);
                     return null;
             }
         }

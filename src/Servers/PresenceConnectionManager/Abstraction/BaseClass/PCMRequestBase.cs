@@ -22,18 +22,18 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             CommandName = _recv.Keys.First();
         }
 
-        public virtual GPError Parse()
+        public virtual GPErrorCode Parse()
         {
             if (_recv.ContainsKey("id"))
             {
                 uint operationID;
                 if (!uint.TryParse(_recv["id"], out operationID))
                 {
-                    return GPError.Parse;
+                    return GPErrorCode.Parse;
                 }
                 OperationID = operationID;
             }
-            return GPError.NoError;
+            return GPErrorCode.NoError;
         }
 
         public static string NormalizeRequest(string message)

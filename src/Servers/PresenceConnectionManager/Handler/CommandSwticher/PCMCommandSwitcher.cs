@@ -1,82 +1,48 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
-
-using PresenceConnectionManager.Entity.Structure;
 using System;
-using PresenceConnectionManager.Handler.CommandHandler;
 using UniSpyLib.Abstraction.BaseClass;
+using PresenceConnectionManager.Handler.CommandSwticher;
+using Serilog.Events;
+using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Handler.CommandHandler.Error;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    public class PCMCommandSwitcher : CommandSerializerBase
+    public class PCMCommandSwitcher : CommandSwitcherBase
     {
         protected new string _rawRequest;
         public PCMCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
         {
         }
 
-        public override void Serialize()
+        protected override void SerializeCommands()
         {
-            var requests = PCMRequestSerializer.Serialize(_session, _rawRequest);
-
-            foreach (var requst in requests)
+            foreach (var request in _requests)
             {
-                switch (requst.CommandName)
+                _handlers.Add(new PCMCommandHandlerSerializer(_session, request).Serialize());
+            }
+        }
+
+        protected override void SerializeRequests()
+        {
+            if (_rawRequest[0] != '\\')
+            {
+                LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
+                return;
+            }
+            string[] rawRequests = _rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var rawRequest in rawRequests)
+            {
+                var request = new PCMRequestSerializer(rawRequest).Serialize();
+                var errorCode = (GPErrorCode)request.Parse();
+                if (errorCode != GPErrorCode.NoError)
                 {
-                    case PCMRequestName.Login://login to retrospy
-                        new LoginHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.Logout://logout from retrospy
-                        new LogoutHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.KeepAlive:
-                        new KeepAliveHandler(_session, requst).Handle();
-                        break;
-
-                    case PCMRequestName.GetProfile://get profile of a player
-                        new GetProfileHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.RegisterNick://update user's uniquenick
-                        new RegisterNickHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.NewUser://create an new user
-                        new NewUserHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.UpdateUI://update a user's email
-                        new UpdateUIHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.UpdatePro://update a user's profile
-                        new UpdateProHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.NewProfile://create an new profile
-                        new NewProfileHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.DelProfile://delete profile
-                        break;
-                    case PCMRequestName.AddBlock://add an user to our block list
-                        new AddBlockHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.RemoveBlock:
-                        new RemoveBlockHandler(_session, requst).Handle();
-                        break;
-
-                    case PCMRequestName.AddBuddy://Send a request which adds an user to our friend list
-                        new AddBuddyHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.DelBuddy://delete a user from our friend list
-                        new DelBuddyHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.Status://update current logged in user's status info
-                        new StatusHandler(_session, requst).Handle();
-                        break;
-                    case PCMRequestName.StatusInfo:
-                        throw new NotImplementedException();
-                    case PCMRequestName.InviteTo:
-                        throw new NotImplementedException();
-                    default:
-                        LogWriter.UnknownDataRecieved(_rawRequest);
-                        break;
+                    _session.SendAsync(ErrorMsg.BuildGPErrorMsg(errorCode));
+                    continue;
                 }
+                _requests.Add(request);
             }
         }
     }

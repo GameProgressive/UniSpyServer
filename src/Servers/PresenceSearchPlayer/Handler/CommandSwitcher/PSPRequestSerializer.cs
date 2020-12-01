@@ -30,8 +30,8 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                 {
                     continue;
                 }
-                var flag = (GPError)request.Parse();
-                if (flag != GPError.NoError)
+                var flag = (GPErrorCode)request.Parse();
+                if (flag != GPErrorCode.NoError)
                 {
                     session.SendAsync(ErrorMsg.BuildGPErrorMsg(flag));
                     continue;

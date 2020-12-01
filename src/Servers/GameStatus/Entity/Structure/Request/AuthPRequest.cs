@@ -26,28 +26,28 @@ namespace GameStatus.Entity.Structure.Request
             {
                 return flag;
             }
-            if (_request.ContainsKey("pid") && _request.ContainsKey("resp"))
+            if (_rawRequest.ContainsKey("pid") && _rawRequest.ContainsKey("resp"))
             {
                 //we parse profileid here
                 uint profileID;
-                if (!uint.TryParse(_request["pid"], out profileID))
+                if (!uint.TryParse(_rawRequest["pid"], out profileID))
                 {
                     return GSError.Parse;
                 }
                 ProfileID = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
             }
-            else if (_request.ContainsKey("authtoken") && _request.ContainsKey("response"))
+            else if (_rawRequest.ContainsKey("authtoken") && _rawRequest.ContainsKey("response"))
             {
-                AuthToken = _request["authtoken"];
-                Response = _request["response"];
+                AuthToken = _rawRequest["authtoken"];
+                Response = _rawRequest["response"];
                 RequestType = AuthMethod.PartnerIDAuth;
             }
-            else if (_request.ContainsKey("keyhash") && _request.ContainsKey("nick"))
+            else if (_rawRequest.ContainsKey("keyhash") && _rawRequest.ContainsKey("nick"))
             {
                 RequestType = AuthMethod.CDkeyAuth;
-                KeyHash = _request["keyhash"];
-                Nick = _request["nick"];
+                KeyHash = _rawRequest["keyhash"];
+                Nick = _rawRequest["nick"];
             }
             else
             {

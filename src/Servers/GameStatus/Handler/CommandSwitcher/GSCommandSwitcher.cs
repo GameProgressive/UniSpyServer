@@ -16,10 +16,9 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Handler.CommandSwitcher
 {
-    public class GSCommandSerializer : CommandSerializerBase
+    public class GSCommandSerializer : CommandHandlerSerializerBase
     {
-        protected new string _rawRequest;
-        public GSCommandSerializer(ISession session, object rawRequest) : base(session, rawRequest)
+        public GSCommandSerializer(ISession session, IRequest request) : base(session, request)
         {
         }
 

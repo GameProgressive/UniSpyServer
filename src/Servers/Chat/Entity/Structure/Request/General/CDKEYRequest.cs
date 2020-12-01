@@ -10,9 +10,9 @@ namespace Chat.Entity.Structure.ChatCommand.General
 
         public string CDKey { get; protected set; }
 
-        public override bool Parse()
+        public override object Parse()
         {
-            if (!base.Parse())
+            if(!(bool)base.Parse())
             {
                 return false;
             }

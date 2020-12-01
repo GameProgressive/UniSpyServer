@@ -45,11 +45,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                 catch (Exception e)
                 {
                     LogWriter.ToLog(LogEventLevel.Error, e.ToString());
-                    _errorCode = GPError.DatabaseError;
+                    _errorCode = GPErrorCode.DatabaseError;
                 }
 
                 //update other information
-                if (_errorCode == GPError.NoError)
+                if (_errorCode == GPErrorCode.NoError)
                 {
                     UpdateOtherInfo();
                 }
@@ -58,7 +58,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
         protected override void BuildErrorResponse()
         {
-            if (_errorCode >= GPError.NewUser && _errorCode <= GPError.NewUserUniquenickInvalid)
+            if (_errorCode >= GPErrorCode.NewUser && _errorCode <= GPErrorCode.NewUserUniquenickInvalid)
             {
                 _sendingBuffer = $@"\nur\{_errorCode}\final\";
             }
@@ -131,7 +131,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                         else
                         {
                             // double user in database
-                            _errorCode = GPError.DatabaseError;
+                            _errorCode = GPErrorCode.DatabaseError;
                             LogWriter.ToLog(LogEventLevel.Error, "There are two same records in User table!");
                             break;
                         }
@@ -146,7 +146,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
                         if (_user.Password != _request.Password)
                         {
-                            _errorCode = GPError.NewUserBadPasswords;
+                            _errorCode = GPErrorCode.NewUserBadPasswords;
                             break;
                         }
                         else
@@ -169,7 +169,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                         else
                         {
                             //there are two profiles we stop
-                            _errorCode = GPError.DatabaseError;
+                            _errorCode = GPErrorCode.DatabaseError;
                             LogWriter.ToLog(LogEventLevel.Error, "There are two same records in Profile table!");
                             break;
                         }
@@ -198,7 +198,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                         }
                         else
                         {
-                            _errorCode = GPError.DatabaseError;
+                            _errorCode = GPErrorCode.DatabaseError;
                             LogWriter.ToLog(LogEventLevel.Error, "There are two same records in SubProfile table!");
                             break;
                         }
@@ -217,7 +217,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                         break;
 
                     case _newUserStatus.SubProfileExist:
-                        _errorCode = GPError.NewUserUniquenickInUse;
+                        _errorCode = GPErrorCode.NewUserUniquenickInUse;
                         break;
                 }
             }
