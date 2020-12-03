@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\
         public uint DeleteProfileID { get; protected set; }
-        public DelBuddyRequest(Dictionary<string, string> recv) : base(recv)
+        public DelBuddyRequest(string rawRequest) : base(rawRequest)
         {
         }
 

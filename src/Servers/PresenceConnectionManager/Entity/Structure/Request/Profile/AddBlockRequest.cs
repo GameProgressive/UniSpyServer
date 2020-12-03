@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
     public class AddBlockRequest : PCMRequestBase
     {
         public uint ProfileID;
-        public AddBlockRequest(Dictionary<string, string> recv) : base(recv)
+        public AddBlockRequest(string rawRequest) : base(rawRequest)
         {
         }
 

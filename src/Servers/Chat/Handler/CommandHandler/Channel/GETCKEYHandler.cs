@@ -20,7 +20,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_request.Parse())
+            if (!(bool)_request.Parse())
             {
                 _errorCode = ChatError.Parse;
                 return;

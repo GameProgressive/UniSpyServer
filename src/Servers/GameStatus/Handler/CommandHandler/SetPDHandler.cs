@@ -2,27 +2,19 @@
 using UniSpyLib.Database.DatabaseModel.MySql;
 using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Structure.Request;
-using System.Collections.Generic;
 using System.Linq;
 
-namespace GameStatus.Handler.CommandHandler.SetPD
+namespace GameStatus.Handler.CommandHandler
 {
     /// <summary>
     /// Set persist storage data
     /// </summary>
     internal class SetPDHandler : GSCommandHandlerBase
     {
-        //@"\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"
         protected SetPDRequest _request;
-
-        public SetPDHandler(ISession session, Dictionary<string, string> request) : base(session, request)
+        public SetPDHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new SetPDRequest(request);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (SetPDRequest)request;
         }
 
         protected override void DataOperation()

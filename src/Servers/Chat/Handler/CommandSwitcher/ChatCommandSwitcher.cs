@@ -14,7 +14,7 @@ namespace Chat.Handler.CommandSwitcher
         {
         }
 
-        protected override void SerializeCommands()
+        protected override void SerializeCommandHandlers()
         {
             foreach (var request in _requests)
             {

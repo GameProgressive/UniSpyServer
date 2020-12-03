@@ -15,7 +15,6 @@ namespace PresenceConnectionManager.Handler.CommandHandler
             _request = (UpdateProRequest)request;
         }
 
-
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())

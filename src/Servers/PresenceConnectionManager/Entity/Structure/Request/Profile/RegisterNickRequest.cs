@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
     public class RegisterNickRequest : PCMRequestBase
     {
         public string UniqueNick { get; protected set; }
-        public RegisterNickRequest(Dictionary<string, string> recv) : base(recv)
+        public RegisterNickRequest(string rawRequest) : base(rawRequest)
         {
         }
 

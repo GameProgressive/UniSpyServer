@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         //replace a existed nick with new nick
         //@"  \newprofile\sesskey\<>\nick\<>\replace\1\oldnick\<>\id\1\final\"
 
-        public NewProfileRequest(Dictionary<string, string> recv) : base(recv)
+        public NewProfileRequest(string rawRequest) : base(rawRequest)
         {
         }
 

@@ -11,19 +11,16 @@ namespace ServerBrowser.Handler.CommandHandler
         public GeneralRequestHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
         {
         }
-
+        /// <summary>
+        /// we need to send empty server list response to game,
+        /// even if there are no severs online
+        /// </summary>
         protected override void DataOperation()
         {
             base.DataOperation();
             _gameServers =
                         GameServer.GetServers(_request.GameName);
 
-            //we need to send empty server list response to game
-            //if (_gameServers == null || _gameServers.Count == 0)
-            //{
-            //    _errorCode = SBErrorCode.NoServersFound;
-            //    return;
-            //}
         }
 
         protected override void ConstructResponse()

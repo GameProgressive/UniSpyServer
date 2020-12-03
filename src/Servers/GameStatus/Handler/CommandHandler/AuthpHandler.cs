@@ -6,7 +6,7 @@ using GameStatus.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameStatus.Handler.CommandHandler.AuthP
+namespace GameStatus.Handler.CommandHandler
 {
     /// <summary>
     /// Authenticate with partnerid or profileid
@@ -17,14 +17,9 @@ namespace GameStatus.Handler.CommandHandler.AuthP
     {
         protected AuthPRequest _request;
         private uint _profileID;
-        public AuthPHandler(ISession session, Dictionary<string, string> request) : base(session, request)
+        public AuthPHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new AuthPRequest(request);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (AuthPRequest)request;
         }
 
         protected override void DataOperation()

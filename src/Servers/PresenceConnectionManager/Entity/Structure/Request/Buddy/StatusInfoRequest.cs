@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
         public string GameMapName { get; protected set; }
         public string QuietModeFlags { get; protected set; }
 
-        public StatusInfoRequest(Dictionary<string, string> recv) : base(recv)
+        public StatusInfoRequest(string rawRequest) : base(rawRequest)
         {
         }
 

@@ -11,34 +11,34 @@ namespace GameStatus.Entity.Structure.Request
     {
         public string GameName { get; protected set; }
         public uint Port { get; protected set; }
-        public AuthRequest(Dictionary<string, string> request) : base(request)
+        public AuthRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public override GSError Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+           var flag = (GSError)base.Parse();
             if (flag != GSError.NoError)
             {
                 return flag;
             }
 
-            if (!_rawRequest.ContainsKey("gamename") && !_rawRequest.ContainsKey("response"))
+            if (!KeyValues.ContainsKey("gamename") && !KeyValues.ContainsKey("response"))
             {
                 return GSError.Parse;
             }
 
-            if (_rawRequest.ContainsKey("port"))
+            if (KeyValues.ContainsKey("port"))
             {
                 uint port;
-                if (!uint.TryParse(_rawRequest["port"], out port))
+                if (!uint.TryParse(KeyValues["port"], out port))
                 {
                     return GSError.Parse;
                 }
                 Port = port;
             }
 
-            GameName = _rawRequest["gamename"];
+            GameName = KeyValues["gamename"];
 
             return GSError.NoError;
         }

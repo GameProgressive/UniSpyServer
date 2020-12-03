@@ -3,22 +3,16 @@ using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Structure.Request;
 using System.Collections.Generic;
 
-namespace GameStatus.Handler.CommandHandler.Auth
+namespace GameStatus.Handler.CommandHandler
 {
     public class AuthHandler : GSCommandHandlerBase
     {
         //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
         protected AuthRequest _request;
-        public AuthHandler(ISession session, Dictionary<string, string> request) : base(session, request)
+        public AuthHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new AuthRequest(request);
+            _request = (AuthRequest)request;
         }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
-        }
-
 
         protected override void DataOperation()
         {

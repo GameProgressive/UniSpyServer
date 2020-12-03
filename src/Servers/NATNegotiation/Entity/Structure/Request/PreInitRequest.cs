@@ -14,7 +14,7 @@ namespace NATNegotiation.Entity.Structure.Request
         {
         }
 
-        public override bool Parse()
+        public override object Parse()
         {
             return base.Parse();
         }

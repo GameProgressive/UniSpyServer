@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Nick { get; private set; }
         public string Uniquenick { get; private set; }
         public uint NamespaceID { get; protected set; }
-        public SearchRequest(Dictionary<string, string> recv) : base(recv)
+        public SearchRequest(string rawRequest) :base(rawRequest)
         {
         }
 
@@ -36,46 +36,46 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("profileid") && !_recv.ContainsKey("namespaceid") && !_recv.ContainsKey("gamename"))
+            if (!RequestKeyValues.ContainsKey("profileid") && !RequestKeyValues.ContainsKey("namespaceid") && !RequestKeyValues.ContainsKey("gamename"))
             {
                 return GPErrorCode.Parse;
             }
 
-            GameName = _recv["gamename"];
+            GameName = RequestKeyValues["gamename"];
 
             uint profileID;
-            if (!uint.TryParse(_recv["profileid"], out profileID))
+            if (!uint.TryParse(RequestKeyValues["profileid"], out profileID))
             {
                 return GPErrorCode.Parse;
             }
             ProfileID = profileID;
 
-            if (_recv.ContainsKey("partnerid"))
+            if (RequestKeyValues.ContainsKey("partnerid"))
             {
                 uint partnerID;
-                if (!uint.TryParse(_recv["partnerid"], out partnerID))
+                if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerID))
                 {
                     return GPErrorCode.Parse;
                 }
                 PartnerID = partnerID;
             }
 
-            if (_recv.ContainsKey("skip"))
+            if (RequestKeyValues.ContainsKey("skip"))
             {
                 int skip;
-                if (!int.TryParse(_recv["skip"], out skip))
+                if (!int.TryParse(RequestKeyValues["skip"], out skip))
                 {
                     return GPErrorCode.Parse;
                 }
                 SkipNumber = skip;
             }
 
-            if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
+            if (RequestKeyValues.ContainsKey("uniquenick") && RequestKeyValues.ContainsKey("namespaceid"))
             {
-                if (_recv.ContainsKey("namespaceid"))
+                if (RequestKeyValues.ContainsKey("namespaceid"))
                 {
                     uint namespaceID;
-                    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                    if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                     {
                         return GPErrorCode.Parse;
                     }
@@ -83,23 +83,23 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 }
                 RequestType = SearchRequestType.UniquenickNamespaceIDSearch;
 
-                Uniquenick = _recv["uniquenick"];
+                Uniquenick = RequestKeyValues["uniquenick"];
             }
-            else if (_recv.ContainsKey("nick") && _recv.ContainsKey("email"))
+            else if (RequestKeyValues.ContainsKey("nick") && RequestKeyValues.ContainsKey("email"))
             {
                 RequestType = SearchRequestType.NickEmailSearch;
-                Nick = _recv["nick"];
-                Email = _recv["email"];
+                Nick = RequestKeyValues["nick"];
+                Email = RequestKeyValues["email"];
             }
-            else if (_recv.ContainsKey("nick"))
+            else if (RequestKeyValues.ContainsKey("nick"))
             {
                 RequestType = SearchRequestType.NickSearch;
-                Nick = _recv["nick"];
+                Nick = RequestKeyValues["nick"];
             }
-            else if (_recv.ContainsKey("email"))
+            else if (RequestKeyValues.ContainsKey("email"))
             {
                 //\search\\sesskey\0\profileid\0\namespaceid\1\email\spyguy@gamespy.cn\gamename\conflictsopc\final\
-                Email = _recv["email"];
+                Email = RequestKeyValues["email"];
                 RequestType = SearchRequestType.EmailSearch;
             }
             else

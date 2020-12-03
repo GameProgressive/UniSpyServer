@@ -2,19 +2,14 @@
 using GameStatus.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace GameStatus.Handler.CommandHandler.NewGame
+namespace GameStatus.Handler.CommandHandler
 {
     public class NewGameHandler : GSCommandHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"
-        public NewGameHandler(ISession session, Dictionary<string, string> request) : base(session, request)
+        public NewGameHandler(ISession session, IRequest request) : base(session, request)
         {
-        }
-
-        protected override void CheckRequest()
-        {
-            throw new System.NotImplementedException();
         }
 
         protected override void ConstructResponse()

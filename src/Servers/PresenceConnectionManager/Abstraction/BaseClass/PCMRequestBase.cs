@@ -13,17 +13,19 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         public uint OperationID { get; protected set; }
 
         public new string RawRequest { get; protected set; }
-
+        public Dictionary<string,string> KeyValues{get; protected set;}
         protected Dictionary<string, string> _recv;
 
-        public PCMRequestBase(Dictionary<string, string> recv)
+        public PCMRequestBase(string rawRequest):base(rawRequest)
         {
-            _recv = recv;
-            CommandName = _recv.Keys.First();
+            RawRequest = rawRequest;
         }
 
         public override object Parse()
         {
+            KeyValues = UniSpyLib.MiscMethod.GameSpyUtils.ConvertToKeyValue(RawRequest);
+            CommandName = KeyValues.Keys.First();
+
             if (_recv.ContainsKey("id"))
             {
                 uint operationID;

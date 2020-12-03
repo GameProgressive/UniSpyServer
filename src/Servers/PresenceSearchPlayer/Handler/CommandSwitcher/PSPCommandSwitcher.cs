@@ -11,13 +11,22 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
     public class PSPCommandSwitcher : CommandSwitcherBase
     {
         protected new string _rawRequest;
-        public PSPCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public PSPCommandSwitcher(ISession session, string rawRequest) : base(session, rawRequest)
         {
+            _rawRequest = rawRequest;
         }
 
-        protected override void SerializeCommands()
+        protected override void SerializeCommandHandlers()
         {
-            throw new System.NotImplementedException();
+            foreach(var request in _requests)
+            {
+            var handler = new PSPCommandHandlerSerializer(_session,request).Serialize();
+            if(handler == null)
+            {
+                return;
+            }
+            _handlers.Add(handler);
+            }
         }
 
         protected override void SerializeRequests()
@@ -27,10 +36,11 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
                 LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
                 return;
             }
-            string[] rawRequests = _rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
+
+            string[] rawRequests =
+            _rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
             foreach (var rawRequest in rawRequests)
             {
-
                 var request = new PSPRequestSerializer(rawRequest).Serialize();
                 if (request == null)
                 {

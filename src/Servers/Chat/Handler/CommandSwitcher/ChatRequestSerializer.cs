@@ -21,7 +21,7 @@ namespace Chat.Handler.CommandSwitcher
         public override IRequest Serialize()
         {
             ChatRequestBase generalRequest = new ChatRequestBase(_rawRequest);
-            if (!generalRequest.Parse())
+            if (!(bool)generalRequest.Parse())
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
                 return null;

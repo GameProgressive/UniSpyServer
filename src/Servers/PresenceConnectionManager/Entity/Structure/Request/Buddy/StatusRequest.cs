@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
     public class StatusRequest : PCMRequestBase
     {
-        public StatusRequest(Dictionary<string, string> recv) : base(recv)
+        public StatusRequest(string rawRequest) : base(rawRequest)
         {
         }
 

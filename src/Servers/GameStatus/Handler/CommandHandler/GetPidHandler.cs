@@ -6,7 +6,7 @@ using GameStatus.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameStatus.Handler.CommandHandler.GetPID
+namespace GameStatus.Handler.CommandHandler
 {
     public class GetPIDHandler : GSCommandHandlerBase
     {
@@ -14,14 +14,9 @@ namespace GameStatus.Handler.CommandHandler.GetPID
         //response \getpidr
         private uint _protileid;
         protected GetPIDRequest _request;
-        public GetPIDHandler(ISession session, Dictionary<string, string> request) : base(session, request)
+        public GetPIDHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new GetPIDRequest(request);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request = (GetPIDRequest)request;
         }
 
         protected override void DataOperation()

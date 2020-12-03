@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
     public class GetProfileRequest : PCMRequestBase
     {
         public uint ProfileID { get; protected set; }
-        public GetProfileRequest(Dictionary<string, string> recv) : base(recv)
+        public GetProfileRequest(string rawRequest) : base(rawRequest)
         {
         }
 

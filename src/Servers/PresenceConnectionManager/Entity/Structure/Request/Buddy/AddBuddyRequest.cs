@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
     {
         public uint FriendProfileID { get; protected set; }
         public string AddReason { get; protected set; }
-        public AddBuddyRequest(Dictionary<string, string> recv) : base(recv)
+        public AddBuddyRequest(string rawRequest) : base(rawRequest)
         {
         }
 

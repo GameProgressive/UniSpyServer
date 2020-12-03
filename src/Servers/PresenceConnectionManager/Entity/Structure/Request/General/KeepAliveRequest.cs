@@ -5,7 +5,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
 {
     public class KeepAliveRequest : PCMRequestBase
     {
-        public KeepAliveRequest(Dictionary<string, string> recv) : base(recv)
+        public KeepAliveRequest(string rawRequest) : base(rawRequest)
         {
         }
     }

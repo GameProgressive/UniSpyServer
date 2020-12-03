@@ -7,21 +7,16 @@ using GameStatus.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GameStatus.Handler.CommandHandler.GetPD
+namespace GameStatus.Handler.CommandHandler
 {
     public class GetPDHandler : GSCommandHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
         protected GetPDRequest _request;
         protected Dictionary<string, string> _result;
-        public GetPDHandler(ISession session, Dictionary<string, string> request) : base(session, request)
+        public GetPDHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new GetPDRequest(request);
-        }
-
-        protected override void CheckRequest()
-        {
-            _errorCode = _request.Parse();
+            _request =(GetPDRequest)request;
         }
 
         protected override void DataOperation()

@@ -14,7 +14,7 @@ namespace QueryReport.Abstraction.BaseClass
         public new byte[] RawRequest { get; protected set; }
 
 
-        public QRRequestBase(byte[] rawRequest)
+        public QRRequestBase(byte[] rawRequest):base(rawRequest)
         {
             RawRequest = rawRequest;
         }

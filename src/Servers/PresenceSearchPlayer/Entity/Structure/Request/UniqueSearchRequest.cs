@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         public string PreferredNick { get; protected set; }
         public uint NamespaceID { get; protected set; }
-        public UniqueSearchRequest(Dictionary<string, string> recv) : base(recv)
+        public UniqueSearchRequest(string rawRequest) :base(rawRequest)
         {
         }
 
@@ -23,23 +23,23 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("preferrednick"))
+            if (!RequestKeyValues.ContainsKey("preferrednick"))
             {
                 return GPErrorCode.Parse;
             }
 
-            PreferredNick = _recv["preferrednick"];
+            PreferredNick = RequestKeyValues["preferrednick"];
 
-            if (!_recv.ContainsKey("gamename"))
+            if (!RequestKeyValues.ContainsKey("gamename"))
             {
                 return GPErrorCode.Parse;
             }
-            GameName = _recv["gamename"];
+            GameName = RequestKeyValues["gamename"];
 
-            if (_recv.ContainsKey("namespaceid"))
+            if (RequestKeyValues.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
                     return GPErrorCode.Parse;
                 }

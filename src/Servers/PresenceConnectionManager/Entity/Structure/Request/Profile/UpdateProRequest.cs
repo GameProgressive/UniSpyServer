@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     public class UpdateProRequest : PCMRequestBase
     {
-        public UpdateProRequest(Dictionary<string, string> recv) : base(recv)
+        public UpdateProRequest(string rawRequest) : base(rawRequest)
         {
         }
 

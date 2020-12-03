@@ -10,11 +10,11 @@ namespace ServerBrowser.Handler.CommandSwitcher
 {
     public class SBCommandSwitcher
     {
-        public static void Switch(ISession session, byte[] recv)
+        public static void Switch(ISession session, byte rawRequest)
         {
             if (recv.Take(6).SequenceEqual(NNRequestBase.MagicData))
             {
-                new NatNegCookieHandler(session, recv).Handle();
+                new NatNegCookieHandler(session, request).Handle();
                 return;
             }
 

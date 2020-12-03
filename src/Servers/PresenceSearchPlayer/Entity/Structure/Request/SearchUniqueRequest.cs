@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         public string Uniquenick { get; private set; }
         public List<uint> Namespaces { get; protected set; }
-        public SearchUniqueRequest(Dictionary<string, string> recv) : base(recv)
+        public SearchUniqueRequest(string rawRequest) :base(rawRequest)
         {
 
         }
@@ -22,13 +22,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("uniquenick") || !_recv.ContainsKey("namespaces"))
+            if (!RequestKeyValues.ContainsKey("uniquenick") || !RequestKeyValues.ContainsKey("namespaces"))
             {
                 return GPErrorCode.Parse;
             }
 
-            Uniquenick = _recv["uniquenick"];
-            Namespaces = _recv["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
+            Uniquenick = RequestKeyValues["uniquenick"];
+            Namespaces = RequestKeyValues["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
 
             return GPErrorCode.NoError;
         }

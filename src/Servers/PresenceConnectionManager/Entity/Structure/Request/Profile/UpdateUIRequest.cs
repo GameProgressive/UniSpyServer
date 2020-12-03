@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     public class UpdateUIRequest : PCMRequestBase
     {
-        public UpdateUIRequest(Dictionary<string, string> recv) : base(recv)
+        public UpdateUIRequest(string rawRequest) : base(rawRequest)
         {
         }
 

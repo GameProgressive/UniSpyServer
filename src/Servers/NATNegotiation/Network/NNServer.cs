@@ -17,22 +17,13 @@ namespace NATNegotiation.Network
             return new NNSession(this, endPoint);
         }
 
-        //protected override void OnReceived(EndPoint endPoint, byte[] message)
-        //{
-        //    NNSession session;
-        //    if (!Sessions.TryGetValue(endPoint, out session))
-        //    {
-        //        session = (NNSession)CreateSession(endPoint);
-        //        Sessions.TryAdd(endPoint, session);
-        //    }
 
-        //    NNCommandSwitcher.Switch(session, message);
-        //}
+        //TODO fix the natnegotiation for this architecture
 
         protected override void OnReceived(UDPSessionBase session, byte[] message)
         {
             base.OnReceived(session, message);
-            new NNCommandSerializer(session, message).Serialize();
+            new NNCommandSwitcher(session, message).Switch();
         }
     }
 }

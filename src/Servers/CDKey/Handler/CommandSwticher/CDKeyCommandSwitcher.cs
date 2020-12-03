@@ -14,7 +14,7 @@ namespace CDKey.Handler.CommandSwitcher
             _rawRequest = (string)rawRequest;
         }
 
-        protected override void SerializeCommands()
+        protected override void SerializeCommandHandlers()
         {
             foreach (var request in _requests)
             {

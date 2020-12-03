@@ -16,7 +16,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            if (!_request.Parse())
+            if (!(bool)_request.Parse())
             {
                 _errorCode = ChatError.Parse;
                 return;

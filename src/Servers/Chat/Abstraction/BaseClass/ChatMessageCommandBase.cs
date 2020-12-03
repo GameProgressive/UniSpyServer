@@ -18,7 +18,7 @@
 
         public override object Parse()
         {
-            if(!(bool)base.Parse())
+            if (!(bool)base.Parse())
             {
                 return false;
             }

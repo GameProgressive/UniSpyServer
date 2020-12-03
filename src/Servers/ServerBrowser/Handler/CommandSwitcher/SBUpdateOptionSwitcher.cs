@@ -9,10 +9,10 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
 {
     public class SBUpdateOptionSwitcher
     {
-        public static void Switch(ISession session, byte[] recv)
+        public static void Switch(ISession session, byte[] rawRequest)
         {
             ServerListRequest request = new ServerListRequest();
-            if (!request.Parse(recv))
+            if (!request.Parse(rawRequest))
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMsg(SBErrorCode.Parse));
                 return;
@@ -20,20 +20,20 @@ namespace ServerBrowser.Handler.CommandHandler.ServerList.UpdateOptionSwitcher
             switch (request.UpdateOption)
             {
                 case SBServerListUpdateOption.NoServerList:
-                    new NoServerListHandler(request, session, recv).Handle();
+                    new NoServerListHandler(request, session, rawRequest).Handle();
                     break;
                 case SBServerListUpdateOption.GeneralRequest:
-                    new GeneralRequestHandler(request, session, recv).Handle();
+                    new GeneralRequestHandler(request, session, rawRequest).Handle();
                     break;
                 case SBServerListUpdateOption.SendGroups:
-                    new SendGroupsHandler(request, session, recv).Handle();
+                    new SendGroupsHandler(request, session, rawRequest).Handle();
                     break;
                 case SBServerListUpdateOption.LimitResultCount:
                     break;
                 case SBServerListUpdateOption.PushUpdates:
                     // worms 3d send this after join group room
                     // we should send adhoc servers which are in this room to worms3d
-                    new PushUpdatesHandler(request, session, recv).Handle();
+                    new PushUpdatesHandler(request, session, rawRequest).Handle();
                     break;
             }
         }

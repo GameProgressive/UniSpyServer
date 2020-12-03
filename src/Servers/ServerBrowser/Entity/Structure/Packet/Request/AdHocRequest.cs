@@ -16,7 +16,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public IPEndPoint TargetEndPoint { get; protected set; }
         public new byte[] RawRequest { get; protected set; }
 
-        public AdHocRequest(byte[] rawRequest)
+        public AdHocRequest(byte[] rawRequest):base(rawRequest)
         {
             RawRequest = rawRequest;
         }

@@ -13,33 +13,33 @@ namespace GameStatus.Entity.Structure.Request
         public uint DataIndex { get; protected set; }
         public List<string> Keys { get; protected set; }
         public bool GetAllDataFlag { get; protected set; }
-        public GetPDRequest(Dictionary<string, string> request) : base(request)
+        public GetPDRequest(string rawRequest) : base(rawRequest)
         {
             Keys = new List<string>();
         }
 
-        public override GSError Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+           var flag = (GSError)base.Parse();
             if (flag != GSError.NoError)
             {
                 return flag;
             }
 
-            if (_rawRequest.ContainsKey("pid"))
+            if (KeyValues.ContainsKey("pid"))
             {
                 uint profileID;
-                if (!uint.TryParse(_rawRequest["pid"], out profileID))
+                if (!uint.TryParse(KeyValues["pid"], out profileID))
                 {
                     return GSError.Parse;
                 }
                 ProfileID = profileID;
             }
 
-            if (_rawRequest.ContainsKey("ptype"))
+            if (KeyValues.ContainsKey("ptype"))
             {
                 PersistStorageType storageType;
-                if (!Enum.TryParse(_rawRequest["ptype"], out storageType))
+                if (!Enum.TryParse(KeyValues["ptype"], out storageType))
                 {
                     return GSError.Parse;
                 }
@@ -48,22 +48,22 @@ namespace GameStatus.Entity.Structure.Request
             }
 
 
-            if (_rawRequest.ContainsKey("dindex"))
+            if (KeyValues.ContainsKey("dindex"))
             {
                 uint dataIndex;
-                if (!uint.TryParse(_rawRequest["dindex"], out dataIndex))
+                if (!uint.TryParse(KeyValues["dindex"], out dataIndex))
                 {
                     return GSError.Parse;
                 }
                 DataIndex = dataIndex;
             }
 
-            if (!_rawRequest.ContainsKey("keys"))
+            if (!KeyValues.ContainsKey("keys"))
             {
                 return GSError.Parse;
             }
 
-            string keys = _rawRequest["keys"];
+            string keys = KeyValues["keys"];
             if (keys == "")
             {
                 GetAllDataFlag = true;

@@ -18,10 +18,10 @@ namespace ServerBrowser.Handler.CommandHandler
     public class NatNegCookieHandler : SBCommandHandlerBase
     {
         new SBSession _session;
-        private AdHocRequest _request;
+        protected new AdHocRequest _request;
         private NatNegCookie _natNegCookie;
         private GameServer _gameServer;
-        public NatNegCookieHandler(ISession session, byte[] recv) : base(session, recv)
+        public NatNegCookieHandler(ISession session, IRequest request) : base(session, request)
         {
             _session = (SBSession)session;
             _natNegCookie = new NatNegCookie();

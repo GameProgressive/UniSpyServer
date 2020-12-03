@@ -7,7 +7,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     public class ValidRequest : PSPRequestBase
     {
-        public ValidRequest(Dictionary<string, string> recv) : base(recv)
+        public ValidRequest(string rawRequest) :base(rawRequest)
         {
         }
 
@@ -23,17 +23,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            if (!RequestKeyValues.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
             {
                 return GPErrorCode.Parse;
             }
 
-            Email = _recv["email"];
+            Email = RequestKeyValues["email"];
 
-            if (_recv.ContainsKey("namespaceid"))
+            if (RequestKeyValues.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
                     return GPErrorCode.Parse;
                 }

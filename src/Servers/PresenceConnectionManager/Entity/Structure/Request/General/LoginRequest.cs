@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
         public string Email { get; protected set; }
         public SDKRevisionType SDKType { get; protected set; }
 
-        public LoginRequest(Dictionary<string, string> recv) : base(recv)
+        public LoginRequest(string rawRequest) : base(rawRequest)
         {
         }
 

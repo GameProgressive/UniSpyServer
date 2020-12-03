@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
     public class RegisterCDKeyRequest : PCMRequestBase
     {
         public string CDKeyEnc { get; protected set; }
-        public RegisterCDKeyRequest(Dictionary<string, string> recv) : base(recv)
+        public RegisterCDKeyRequest(string rawRequest) : base(rawRequest)
         {
         }
 

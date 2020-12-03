@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
     {
         public uint ProductID { get; protected set; }
         public uint ProfileID { get; protected set; }
-        public InviteToRequest(Dictionary<string, string> recv) : base(recv)
+        public InviteToRequest(string rawRequest) : base(rawRequest)
         {
         }
 

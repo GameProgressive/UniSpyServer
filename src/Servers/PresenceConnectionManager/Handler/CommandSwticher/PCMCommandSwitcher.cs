@@ -16,11 +16,16 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
         {
         }
 
-        protected override void SerializeCommands()
+        protected override void SerializeCommandHandlers()
         {
             foreach (var request in _requests)
             {
-                _handlers.Add(new PCMCommandHandlerSerializer(_session, request).Serialize());
+                var handler = new PCMCommandHandlerSerializer(_session, request).Serialize();
+                if(handler == null)
+                {
+                    return;
+                }
+                _handlers.Add(handler);
             }
         }
 

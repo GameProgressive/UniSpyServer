@@ -19,7 +19,7 @@ namespace GameStatus.Abstraction.BaseClass
         protected string _sendingBuffer;
         protected GSError _errorCode;
         protected new GSSession _session;
-        protected GSCommandHandlerBase(ISession session, Dictionary<string, string> request) : base(session)
+        protected GSCommandHandlerBase(ISession session, IRequest request) : base(session)
         {
             _errorCode = GSError.NoError;
             _session = (GSSession)session;

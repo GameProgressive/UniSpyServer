@@ -3,30 +3,31 @@ using UniSpyLib.Extensions;
 using NATNegotiation.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
     /// <summary>
     /// NatNeg request base
     /// </summary>
-    public class NNRequestBase : IRequest
+    public class NNRequestBase : RequestBase
     {
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
-        public byte Version;
-        public NatPacketType PacketType { get; set; }
-
-        object IRequest.CommandName => PacketType;
-
-        public uint Cookie;
-        public byte[] RawRequest;
         public static readonly int Size = 12;
 
-        public NNRequestBase(byte[] rawRequest)
+        public NatPacketType PacketType { get; set; }
+        public new NatPacketType CommandName { get { return PacketType; } }
+        public byte Version;
+        public uint Cookie;
+        public new byte[] RawRequest;
+
+
+        public NNRequestBase(byte[] rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
         }
 
-        public virtual bool Parse()
+        public override object Parse()
         {
             if (RawRequest.Length < Size)
             {
@@ -55,11 +56,6 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             PacketType = type;
             return this;
-        }
-
-        object IRequest.Parse()
-        {
-            return Parse();
         }
     }
 }

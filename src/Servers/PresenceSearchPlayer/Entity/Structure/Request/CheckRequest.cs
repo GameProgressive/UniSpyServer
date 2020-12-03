@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
 
-        public CheckRequest(Dictionary<string, string> recv) : base(recv)
+        public CheckRequest(string rawRequest) :base(rawRequest)
         {
         }
 
@@ -24,25 +24,25 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
 
             string md5Password;
-            if (!PasswordEncoder.ProcessPassword(_recv, out md5Password))
+            if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
                 return GPErrorCode.NewUserBadPasswords;
             }
             Password = md5Password;
 
-            if (!_recv.ContainsKey("nick") || !_recv.ContainsKey("email") || Password == null)
+            if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("email") || Password == null)
             {
                 return GPErrorCode.Parse;
             }
 
 
-            if (!GameSpyUtils.IsEmailFormatCorrect(_recv["email"]))
+            if (!GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
             {
                 return GPErrorCode.CheckBadMail;
             }
 
-            Nick = _recv["nick"];
-            Email = _recv["email"];
+            Nick = RequestKeyValues["nick"];
+            Email = RequestKeyValues["email"];
 
             return GPErrorCode.NoError;
         }

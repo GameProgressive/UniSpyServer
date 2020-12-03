@@ -11,7 +11,7 @@
 //    public class PmatchHandler:GPSPHandlerBase
 //    {
 
-//        public PmatchHandler(Dictionary<string, string> recv) : base(recv)
+//        public PmatchHandler(string rawRequest) :base(rawRequest)
 //        {
 //        }
 
@@ -20,7 +20,7 @@
 //        protected override void CheckRequest(GPSPSession session)
 //        {
 //            base.CheckRequest(session);
-//            if (!_recv.ContainsKey("sesskey") || !_recv.ContainsKey("profileid") || !_recv.ContainsKey("productid"))
+//            if (!KeyValues.ContainsKey("sesskey") || !KeyValues.ContainsKey("profileid") || !KeyValues.ContainsKey("productid"))
 //            {
 //                _errorCode = GPErrorCode.Parse;
 //            }
@@ -28,7 +28,7 @@
 
 //        protected override void DataBaseOperation(GPSPSession session)
 //        {
-//            _result = PmatchQuery.PlayerMatch(Convert.ToUInt16(_recv["productid"]));
+//            _result = PmatchQuery.PlayerMatch(Convert.ToUInt16(KeyValues["productid"]));
 //        }
 
 //        protected override void ConstructResponse(GPSPSession session)

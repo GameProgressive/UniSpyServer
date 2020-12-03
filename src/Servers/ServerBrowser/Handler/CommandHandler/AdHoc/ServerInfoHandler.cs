@@ -23,7 +23,7 @@ namespace ServerBrowser.Handler.CommandHandler
         private new AdHocRequest _request;
         private GameServer _gameServer;
 
-        public ServerInfoHandler(ISession session, byte[] recv) : base(session, recv)
+        public ServerInfoHandler(ISession session, IRequest request) : base(session, request)
         {
             _request = new AdHocRequest(recv);
         }
@@ -32,7 +32,7 @@ namespace ServerBrowser.Handler.CommandHandler
         {
             //we do not call base.CheckRequest() method because we have our own check method
 
-            if (!_request.Parse())
+           if (!(bool)base.Parse())
             {
                 _errorCode = SBErrorCode.Parse;
                 return;

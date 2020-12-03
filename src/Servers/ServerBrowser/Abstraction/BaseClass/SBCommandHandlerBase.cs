@@ -12,12 +12,13 @@ namespace ServerBrowser.Abstraction.BaseClass
     {
         protected SBErrorCode _errorCode;
         protected byte[] _sendingBuffer;
-        protected byte[] _recv;
         protected new SBSession _session;
-        public SBCommandHandlerBase(ISession session, byte[] recv) : base(session)
+        protected IRequest _request;
+
+        public SBCommandHandlerBase(ISession session, IRequest request):base(session)
         {
             _errorCode = SBErrorCode.NoError;
-            _recv = recv;
+            _request = request;
             _session = (SBSession)session;
         }
 

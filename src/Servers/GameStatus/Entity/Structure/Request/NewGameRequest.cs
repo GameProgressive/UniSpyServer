@@ -6,13 +6,13 @@ namespace GameStatus.Entity.Structure.Request
 {
     public class NewGameRequest : GSRequestBase
     {
-        public NewGameRequest(Dictionary<string, string> request) : base(request)
+        public NewGameRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public override GSError Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+           var flag = (GSError)base.Parse();
             if (flag != GSError.NoError)
             {
                 return flag;

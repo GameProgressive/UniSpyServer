@@ -3,12 +3,16 @@ using GameStatus.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.Interface;
 
 namespace GameStatus.Entity.Structure.Request
 {
+    /// <summary>
+    /// "\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"
+    /// </summary>
     public class SetPDRequest : GSRequestBase
     {
-        public SetPDRequest(Dictionary<string, string> request) : base(request)
+        public SetPDRequest(string request) : base(request)
         {
         }
         public uint ProfileID { get; protected set; }
@@ -17,28 +21,29 @@ namespace GameStatus.Entity.Structure.Request
         public uint Length { get; protected set; }
         public string KeyValueString { get; protected set; }
 
-        public override GSError Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+           var flag = (GSError)base.Parse();
             if (flag != GSError.NoError)
             {
                 return flag;
             }
 
-            if (!_rawRequest.ContainsKey("pid") || !_rawRequest.ContainsKey("ptype") || !_rawRequest.ContainsKey("dindex") || !_rawRequest.ContainsKey("length"))
+            if (!KeyValues.ContainsKey("pid") || !KeyValues.ContainsKey("ptype")
+                || !KeyValues.ContainsKey("dindex") || !KeyValues.ContainsKey("length"))
             {
                 return GSError.Parse;
             }
 
             uint profileID;
-            if (!uint.TryParse(_rawRequest["pid"], out profileID))
+            if (!uint.TryParse(KeyValues["pid"], out profileID))
             {
                 return GSError.Parse;
             }
             ProfileID = profileID;
 
             uint storageType;
-            if (!uint.TryParse(_rawRequest["ptype"], out storageType))
+            if (!uint.TryParse(KeyValues["ptype"], out storageType))
             {
                 return GSError.Parse;
             }
@@ -51,21 +56,21 @@ namespace GameStatus.Entity.Structure.Request
             StorageType = (PersistStorageType)storageType;
 
             uint dindex;
-            if (!uint.TryParse(_rawRequest["dindex"], out dindex))
+            if (!uint.TryParse(KeyValues["dindex"], out dindex))
             {
                 return GSError.Parse;
             }
             DataIndex = dindex;
 
             uint length;
-            if (!uint.TryParse(_rawRequest["length"], out length))
+            if (!uint.TryParse(KeyValues["length"], out length))
             {
                 return GSError.Parse;
             }
             Length = length;
 
             //we extract the key value data
-            foreach (var d in _rawRequest.Skip(5))
+            foreach (var d in KeyValues.Skip(5))
             {
                 if (d.Key == "lid")
                     break;

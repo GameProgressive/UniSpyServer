@@ -1,29 +1,15 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Request;
-using ServerBrowser.Network;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
     public class SendMessageHandler : SBCommandHandlerBase
     {
-        private AdHocRequest _request;
-        public SendMessageHandler(ISession session, byte[] recv) : base(session, recv)
+        protected new AdHocRequest _request;
+        public SendMessageHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new AdHocRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            //we do not call base method because we have our own check method
-            //base.CheckRequest();
-
-            if (!_request.Parse())
-            {
-                _errorCode = SBErrorCode.Parse;
-                return;
-            }
+            _request = (AdHocRequest)request;
         }
 
         protected override void DataOperation()

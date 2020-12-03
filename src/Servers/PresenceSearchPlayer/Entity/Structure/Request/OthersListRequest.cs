@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         public List<uint> ProfileIDs { get; protected set; }
         public uint NamespaceID { get; protected set; }
-        public OthersListRequest(Dictionary<string, string> recv) : base(recv)
+        public OthersListRequest(string rawRequest) :base(rawRequest)
         {
         }
 
@@ -21,17 +21,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("opids") || !_recv.ContainsKey("namespaceid"))
+            if (!RequestKeyValues.ContainsKey("opids") || !RequestKeyValues.ContainsKey("namespaceid"))
             {
                 return GPErrorCode.Parse;
             }
 
-            ProfileIDs = _recv["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
+            ProfileIDs = RequestKeyValues["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
 
-            if (_recv.ContainsKey("namespaceid"))
+            if (RequestKeyValues.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
                     return GPErrorCode.Parse;
                 }

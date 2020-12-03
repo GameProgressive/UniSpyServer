@@ -9,30 +9,30 @@ namespace GameStatus.Entity.Structure.Request
         public string Nick { get; protected set; }
         public string KeyHash { get; protected set; }
 
-        public GetPIDRequest(Dictionary<string, string> request) : base(request)
+        public GetPIDRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public override GSError Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+           var flag = (GSError)base.Parse();
             if (flag != GSError.NoError)
             {
                 return flag;
             }
 
-            if (!_rawRequest.ContainsKey("nick") || !_rawRequest.ContainsKey("keyhash"))
+            if (!KeyValues.ContainsKey("nick") || !KeyValues.ContainsKey("keyhash"))
             {
                 return GSError.Parse;
             }
 
-            if (_rawRequest.ContainsKey("nick"))
+            if (KeyValues.ContainsKey("nick"))
             {
-                Nick = _rawRequest["nick"];
+                Nick = KeyValues["nick"];
             }
-            else if (_rawRequest.ContainsKey("keyhash"))
+            else if (KeyValues.ContainsKey("keyhash"))
             {
-                KeyHash = _rawRequest["keyhash"];
+                KeyHash = KeyValues["keyhash"];
             }
             else
             {

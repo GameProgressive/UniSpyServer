@@ -21,20 +21,17 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected byte[] _clientRemoteIP;
         protected byte[] _gameServerDefaultHostPort;
         protected string _secretKey;
-        protected ServerListRequest _request;
+        protected new ServerListRequest _request;
         protected List<byte> _dataList;
         protected List<GameServer> _gameServers;
-        public UpdateOptionHandlerBase(ServerListRequest request, ISession session, byte[] recv) : base(session, recv)
+
+        public UpdateOptionHandlerBase(ISession session, IRequest request) : base(session, request)
         {
-            _request = request;
+            _request = (ServerListRequest)request;
             _dataList = new List<byte>();
         }
 
-        public UpdateOptionHandlerBase(ISession session, byte[] recv) : base(session, recv)
-        {
-            _dataList = new List<byte>();
-        }
-
+       
         protected override void CheckRequest()
         {
             base.CheckRequest();
@@ -110,7 +107,8 @@ namespace ServerBrowser.Abstraction.BaseClass
 
         protected virtual void GenerateUniqueValue()
         {
-            //because we are using NTS string so we do not have any value here
+            //TODO some game use this, so we have to complete two methods
+            //TODO
             _dataList.Add(0);
         }
 

@@ -24,44 +24,44 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
         public override IRequest Serialize()
         {
             // Read client message, and parse it into key value pairs
-            var keyValue = GameSpyUtils.ConvertToKeyValue(_rawRequest);
+            var keyValues = GameSpyUtils.ConvertToKeyValue(_rawRequest);
 
-            switch (keyValue.Keys.First())
+            switch (keyValues.Keys.First())
             {
                 case PCMRequestName.Login:
-                    return new LoginRequest(keyValue);
+                    return new LoginRequest(_rawRequest);
                 case PCMRequestName.Logout:
-                    return new LogoutRequest(keyValue);
+                    return new LogoutRequest(_rawRequest);
                 case PCMRequestName.KeepAlive:
-                    return new KeepAliveRequest(keyValue);
+                    return new KeepAliveRequest(_rawRequest);
                 case PCMRequestName.GetProfile:
-                    return new GetProfileRequest(keyValue);
+                    return new GetProfileRequest(_rawRequest);
                 case PCMRequestName.RegisterNick:
-                    return new RegisterNickRequest(keyValue);
+                    return new RegisterNickRequest(_rawRequest);
                 case PCMRequestName.NewUser:
-                    return new NewUserRequest(keyValue);
+                    return new NewUserRequest(_rawRequest);
                 case PCMRequestName.UpdateUI:
-                    return new UpdateUIRequest(keyValue);
+                    return new UpdateUIRequest(_rawRequest);
                 case PCMRequestName.UpdatePro:
-                    return new UpdateProRequest(keyValue);
+                    return new UpdateProRequest(_rawRequest);
                 case PCMRequestName.NewProfile:
-                    return new NewUserRequest(keyValue);
+                    return new NewUserRequest(_rawRequest);
                 case PCMRequestName.DelProfile:
                     throw new NotImplementedException();
                 case PCMRequestName.AddBlock:
-                    return new AddBlockRequest(keyValue);
+                    return new AddBlockRequest(_rawRequest);
                 case PCMRequestName.RemoveBlock:
                     throw new NotImplementedException();
                 case PCMRequestName.AddBuddy:
-                    return new AddBuddyRequest(keyValue);
+                    return new AddBuddyRequest(_rawRequest);
                 case PCMRequestName.DelBuddy:
-                    return new DelBuddyRequest(keyValue);
+                    return new DelBuddyRequest(_rawRequest);
                 case PCMRequestName.Status:
-                    return new StatusRequest(keyValue);
+                    return new StatusRequest(_rawRequest);
                 case PCMRequestName.StatusInfo:
-                    return new StatusInfoRequest(keyValue);
+                    return new StatusInfoRequest(_rawRequest);
                 case PCMRequestName.InviteTo:
-                    return new InviteToRequest(keyValue);
+                    return new InviteToRequest(_rawRequest);
                 default:
                     LogWriter.UnknownDataRecieved(_rawRequest);
                     return null;

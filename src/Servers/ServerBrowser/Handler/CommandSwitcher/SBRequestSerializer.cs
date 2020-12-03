@@ -1,22 +1,20 @@
 ﻿using System.Collections.Generic;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBRequestSerializer
+    public class SBRequestSerializer : RequestSerializerBase
     {
-        public static List<IRequest> Serialize(ISession session, byte[] rawRequest)
+        protected new byte[] _rawRequest;
+        public SBRequestSerializer(object rawRequest) : base(rawRequest)
         {
-            List<IRequest> requests = new List<IRequest>();
-
-            return requests;
+            _rawRequest = (byte[])rawRequest;
         }
 
-        public static IRequest GenerateRequest(byte[] rawRequest)
+        public override IRequest Serialize()
         {
-
-
-            return null;
+            throw new System.NotImplementedException();
         }
     }
 }

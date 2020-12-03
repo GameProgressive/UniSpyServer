@@ -18,14 +18,9 @@ namespace Chat.Abstraction.BaseClass
         /// create instance for Handler
         /// </summary>
         /// <param name="request"></param>
-        public ChatRequestBase(string rawRequest)
+        public ChatRequestBase(string rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
-        }
-
-        public ChatRequestBase(ChatRequestBase request)
-        {
-            RawRequest = request.RawRequest;
         }
 
         public override object Parse()

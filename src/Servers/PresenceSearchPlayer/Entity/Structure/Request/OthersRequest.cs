@@ -6,7 +6,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     public class OthersRequest : PSPRequestBase
     {
-        public OthersRequest(Dictionary<string, string> recv) : base(recv)
+        public OthersRequest(string rawRequest) :base(rawRequest)
         {
         }
 
@@ -21,27 +21,27 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return flag;
             }
 
-            if (!_recv.ContainsKey("gamename"))
+            if (!RequestKeyValues.ContainsKey("gamename"))
             {
                 return GPErrorCode.Parse;
             }
 
-            if (!_recv.ContainsKey("profileid") || !_recv.ContainsKey("namespaceid"))
+            if (!RequestKeyValues.ContainsKey("profileid") || !RequestKeyValues.ContainsKey("namespaceid"))
             {
                 return GPErrorCode.Parse;
             }
 
             uint profileID = 0;
-            if (!_recv.ContainsKey("profileid") && !uint.TryParse(_recv["profileid"], out profileID))
+            if (!RequestKeyValues.ContainsKey("profileid") && !uint.TryParse(RequestKeyValues["profileid"], out profileID))
             {
                 return GPErrorCode.Parse;
 
             }
 
-            if (_recv.ContainsKey("namespaceid"))
+            if (RequestKeyValues.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
                     return GPErrorCode.Parse;
                 }
@@ -50,7 +50,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
 
             ProfileID = profileID;
-            GameName = _recv["gamename"];
+            GameName = RequestKeyValues["gamename"];
             return GPErrorCode.NoError;
         }
     }

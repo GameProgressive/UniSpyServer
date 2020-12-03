@@ -26,7 +26,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 return;
             }
-            SerializeCommands();
+            SerializeCommandHandlers();
             if (_handlers.Count == 0)
             {
                 return;
@@ -39,6 +39,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         }
 
         protected abstract void SerializeRequests();
-        protected abstract void SerializeCommands();
+        protected abstract void SerializeCommandHandlers();
     }
 }

@@ -15,39 +15,39 @@ namespace GameStatus.Entity.Structure.Request
         public string KeyHash { get; protected set; }
         public string Nick { get; protected set; }
 
-        public AuthPRequest(Dictionary<string, string> request) : base(request)
+        public AuthPRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public override GSError Parse()
+        public override object Parse()
         {
-            var flag = base.Parse();
+           var flag = (GSError)base.Parse();
             if (flag != GSError.NoError)
             {
                 return flag;
             }
-            if (_rawRequest.ContainsKey("pid") && _rawRequest.ContainsKey("resp"))
+            if (KeyValues.ContainsKey("pid") && KeyValues.ContainsKey("resp"))
             {
                 //we parse profileid here
                 uint profileID;
-                if (!uint.TryParse(_rawRequest["pid"], out profileID))
+                if (!uint.TryParse(KeyValues["pid"], out profileID))
                 {
                     return GSError.Parse;
                 }
                 ProfileID = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
             }
-            else if (_rawRequest.ContainsKey("authtoken") && _rawRequest.ContainsKey("response"))
+            else if (KeyValues.ContainsKey("authtoken") && KeyValues.ContainsKey("response"))
             {
-                AuthToken = _rawRequest["authtoken"];
-                Response = _rawRequest["response"];
+                AuthToken = KeyValues["authtoken"];
+                Response = KeyValues["response"];
                 RequestType = AuthMethod.PartnerIDAuth;
             }
-            else if (_rawRequest.ContainsKey("keyhash") && _rawRequest.ContainsKey("nick"))
+            else if (KeyValues.ContainsKey("keyhash") && KeyValues.ContainsKey("nick"))
             {
                 RequestType = AuthMethod.CDkeyAuth;
-                KeyHash = _rawRequest["keyhash"];
-                Nick = _rawRequest["nick"];
+                KeyHash = KeyValues["keyhash"];
+                Nick = KeyValues["nick"];
             }
             else
             {
