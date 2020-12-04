@@ -1,24 +1,22 @@
 ﻿using UniSpyLib.Extensions;
 using System;
 using System.Text;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Abstraction.BaseClass;
 
-namespace ServerBrowser.Entity.Structure.Packet.Request
+namespace ServerBrowser.Entity.Structure.Request
 {
-    public class PlayerSearchRequest : IRequest
+    public class PlayerSearchRequest : UniSpyRequestBase
     {
         public int SearchOption { get; protected set; }
+        public new int CommandName { get { return SearchOption; } }
+        public new byte[] RawRequest { get; protected set; }
+
         public uint MaxResults { get; protected set; }
-
         public string SearchName { get; protected set; }
-
         public string Message { get; protected set; }
 
-        public byte[] RawRequest { get; protected set; }
 
-        object IRequest.CommandName => SearchOption;
-
-        public PlayerSearchRequest(byte[] rawRequest)
+        public PlayerSearchRequest(byte[] rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
         }
@@ -39,11 +37,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
                 ByteTools.SubBytes(RawRequest, 15 + nameLength + 4, messageLength));
 
             return true;
-        }
-
-        object IRequest.Parse()
-        {
-            return Parse();
         }
     }
 }

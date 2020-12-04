@@ -49,10 +49,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             {
                 return flag;
             }
-            if (_recv.ContainsKey("publicmask"))
+            if (KeyValues.ContainsKey("publicmask"))
             {
                 PublicMasks mask;
-                if (!Enum.TryParse(_recv["publicmask"], out mask))
+                if (!Enum.TryParse(KeyValues["publicmask"], out mask))
                 {
                     return GPErrorCode.Parse;
                 }
@@ -60,22 +60,22 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 PublicMask = mask;
             }
 
-            if (_recv.ContainsKey("firstname"))
+            if (KeyValues.ContainsKey("firstname"))
             {
-                FirstName = _recv["firstname"];
+                FirstName = KeyValues["firstname"];
                 HasFirstNameFlag = true;
             }
 
-            if (_recv.ContainsKey("lastname"))
+            if (KeyValues.ContainsKey("lastname"))
             {
-                LastName = _recv["lastname"];
+                LastName = KeyValues["lastname"];
                 HasLastNameFlag = true;
             }
 
-            if (_recv.ContainsKey("icquin"))
+            if (KeyValues.ContainsKey("icquin"))
             {
                 uint icq;
-                if (!uint.TryParse(_recv["icquin"], out icq))
+                if (!uint.TryParse(KeyValues["icquin"], out icq))
                 {
                     return GPErrorCode.Parse;
                 }
@@ -84,17 +84,17 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             }
 
 
-            if (_recv.ContainsKey("homepage"))
+            if (KeyValues.ContainsKey("homepage"))
             {
                 HasHomePageFlag = true;
-                HomePage = _recv["homepage"];
+                HomePage = KeyValues["homepage"];
             }
 
-            if (_recv.ContainsKey("birthday"))
+            if (KeyValues.ContainsKey("birthday"))
             {
                 int date;
 
-                if (int.TryParse(_recv["birthday"], out date))
+                if (int.TryParse(KeyValues["birthday"], out date))
                 {
                     int d = ((date >> 24) & 0xFF);
                     ushort m = (ushort)((date >> 16) & 0xFF);
@@ -108,11 +108,11 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                     }
                 }
             }
-            if (_recv.ContainsKey("sex"))
+            if (KeyValues.ContainsKey("sex"))
             {
                 byte sex;
 
-                if (!byte.TryParse(_recv["sex"], out sex))
+                if (!byte.TryParse(KeyValues["sex"], out sex))
                 {
                     return GPErrorCode.Parse;
                 }
@@ -120,16 +120,16 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 Sex = sex;
             }
 
-            if (_recv.ContainsKey("zipcode"))
+            if (KeyValues.ContainsKey("zipcode"))
             {
                 HasZipCode = true;
-                ZipCode = _recv["zipcode"];
+                ZipCode = KeyValues["zipcode"];
             }
 
-            if (_recv.ContainsKey("countrycode"))
+            if (KeyValues.ContainsKey("countrycode"))
             {
                 HasCountryCode = true;
-                CountryCode = _recv["countrycode"];
+                CountryCode = KeyValues["countrycode"];
             }
 
 

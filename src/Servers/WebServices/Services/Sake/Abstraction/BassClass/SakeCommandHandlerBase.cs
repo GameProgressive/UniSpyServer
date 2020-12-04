@@ -2,12 +2,12 @@
 
 namespace WebServices.RetroSpyServices.Sake.Handler.CommandHandler
 {
-    public abstract class CommandHandlerBase
+    public abstract class SakeCommandHandlerBase
     {
         protected SakeRequestBase _request;
         protected object _response;
 
-        public CommandHandlerBase(SakeRequestBase request)
+        public SakeCommandHandlerBase(SakeRequestBase request)
         {
             _request = request;
         }

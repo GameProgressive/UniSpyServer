@@ -20,19 +20,19 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
                 return flag;
             }
 
-            if (!_recv.ContainsKey("sesskey") || !_recv.ContainsKey("newprofileid") || !_recv.ContainsKey("reason"))
+            if (!KeyValues.ContainsKey("sesskey") || !KeyValues.ContainsKey("newprofileid") || !KeyValues.ContainsKey("reason"))
             {
                 return GPErrorCode.Parse;
             }
 
             uint friendPID;
-            if (!uint.TryParse(_recv["newprofileid"], out friendPID))
+            if (!uint.TryParse(KeyValues["newprofileid"], out friendPID))
             {
                 return GPErrorCode.Parse;
             }
 
             FriendProfileID = friendPID;
-            AddReason = _recv["reason"];
+            AddReason = KeyValues["reason"];
 
             return GPErrorCode.NoError;
         }

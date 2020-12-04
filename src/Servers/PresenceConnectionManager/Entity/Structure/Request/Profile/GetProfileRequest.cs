@@ -19,19 +19,19 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 return flag;
             }
 
-            if (!_recv.ContainsKey("profileid"))
+            if (!KeyValues.ContainsKey("profileid"))
             {
                 return GPErrorCode.Parse;
             }
 
             uint profileID;
-            if (!uint.TryParse(_recv["profileid"], out profileID))
+            if (!uint.TryParse(KeyValues["profileid"], out profileID))
             {
                 return GPErrorCode.Parse;
             }
             ProfileID = profileID;
 
-            if (!_recv.ContainsKey("sesskey"))
+            if (!KeyValues.ContainsKey("sesskey"))
             {
                 return GPErrorCode.Parse;
             }

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    public abstract class PCMRequestBase : RequestBase
+    public abstract class PCMRequestBase : UniSpyRequestBase
     {
         public new string CommandName { get; protected set; }
         //public uint NamespaceID { get; protected set; }
@@ -14,7 +14,6 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 
         public new string RawRequest { get; protected set; }
         public Dictionary<string,string> KeyValues{get; protected set;}
-        protected Dictionary<string, string> _recv;
 
         public PCMRequestBase(string rawRequest):base(rawRequest)
         {
@@ -26,10 +25,10 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             KeyValues = UniSpyLib.MiscMethod.GameSpyUtils.ConvertToKeyValue(RawRequest);
             CommandName = KeyValues.Keys.First();
 
-            if (_recv.ContainsKey("id"))
+            if (KeyValues.ContainsKey("id"))
             {
                 uint operationID;
-                if (!uint.TryParse(_recv["id"], out operationID))
+                if (!uint.TryParse(KeyValues["id"], out operationID))
                 {
                     return GPErrorCode.Parse;
                 }

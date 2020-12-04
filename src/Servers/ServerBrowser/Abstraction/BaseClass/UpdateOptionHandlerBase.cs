@@ -6,13 +6,13 @@ using QueryReport.Entity.Structure;
 using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
-using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using ServerBrowser.Network;
+using ServerBrowser.Entity.Structure.Request;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {

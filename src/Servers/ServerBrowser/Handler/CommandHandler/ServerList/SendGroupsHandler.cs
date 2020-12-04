@@ -4,7 +4,6 @@ using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
-using ServerBrowser.Entity.Structure.Packet.Request;
 using System.Text;
 
 namespace ServerBrowser.Handler.CommandHandler
@@ -13,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler
     {
         private PeerGroup _peerGroup;
 
-        public SendGroupsHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
+        public SendGroupsHandler(ISession session,IRequest request) : base(session, request)
         {
         }
 

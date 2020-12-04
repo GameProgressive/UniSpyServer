@@ -20,13 +20,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
                 return flag;
             }
 
-            if (!_recv.ContainsKey("profileid"))
+            if (!KeyValues.ContainsKey("profileid"))
             {
                 return GPErrorCode.Parse;
             }
 
             uint profileID;
-            if (!uint.TryParse(_recv["profileid"], out profileID))
+            if (!uint.TryParse(KeyValues["profileid"], out profileID))
             {
                 return GPErrorCode.Parse;
             }

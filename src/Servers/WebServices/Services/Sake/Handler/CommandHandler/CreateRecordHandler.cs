@@ -3,7 +3,7 @@ using WebServices.RetroSpyServices.Sake.Entity.Structure.Response;
 
 namespace WebServices.RetroSpyServices.Sake.Handler.CommandHandler
 {
-    public class CreateRecordHandler : CommandHandlerBase
+    public class CreateRecordHandler : SakeCommandHandlerBase
     {
         protected new SakeCreateRecordRequest _request;
         protected new SakeCreateRecordResponse _response;

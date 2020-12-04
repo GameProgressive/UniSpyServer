@@ -1,6 +1,6 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Structure.Packet.Request;
+using ServerBrowser.Entity.Structure.Request;
 
 namespace ServerBrowser.Handler.CommandHandler
 {

@@ -65,6 +65,8 @@
         <Folder Include="Services\Sake\Entity\Structure\Request\" />
         <Folder Include="Services\Sake\Entity\Structure\Response\" />
         <Folder Include="Services\Sake\Handler\" />
+        <Folder Include="Services\Sake\Abstraction\" />
+        <Folder Include="Services\Sake\Abstraction\BassClass\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\SOAPMiddleware\SOAPMiddleware.csproj">

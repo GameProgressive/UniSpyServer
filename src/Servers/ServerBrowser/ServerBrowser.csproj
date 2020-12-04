@@ -29,9 +29,6 @@
     <ItemGroup>
         <Folder Include="Handler\CommandHandler\ServerList\" />
         <Folder Include="Handler\SystemHandler\" />
-        <Folder Include="Entity\Structure\Packet\" />
-        <Folder Include="Entity\Structure\Packet\Request\" />
-        <Folder Include="Entity\Structure\Packet\Response\" />
         <Folder Include="Abstraction\Interface\" />
         <Folder Include="Handler\SystemHandler\KeyType\" />
         <Folder Include="Handler\SystemHandler\Filter\" />
@@ -39,6 +36,8 @@
         <Folder Include="Handler\CommandHandler\AdHoc\" />
         <Folder Include="Handler\CommandHandler\NatNeg\" />
         <Folder Include="Abstraction\BaseClass\" />
+        <Folder Include="Entity\Structure\Request\" />
+        <Folder Include="Entity\Structure\Response\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

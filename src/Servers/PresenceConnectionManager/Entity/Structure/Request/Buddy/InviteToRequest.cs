@@ -19,18 +19,18 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
             {
                 return flag;
             }
-            if (!_recv.ContainsKey("productid") || !_recv.ContainsKey("sesskey"))
+            if (!KeyValues.ContainsKey("productid") || !KeyValues.ContainsKey("sesskey"))
             {
                 return GPErrorCode.Parse;
             }
 
-            if (!_recv.ContainsKey("sesskey"))
+            if (!KeyValues.ContainsKey("sesskey"))
             {
                 return GPErrorCode.Parse;
             }
 
             uint productID;
-            if (!uint.TryParse(_recv["productid"], out productID))
+            if (!uint.TryParse(KeyValues["productid"], out productID))
             {
                 return GPErrorCode.Parse;
             }
@@ -38,7 +38,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
             ProductID = productID;
 
             uint profileID;
-            if (!uint.TryParse(_recv["profileid"], out profileID))
+            if (!uint.TryParse(KeyValues["profileid"], out profileID))
             {
                 return GPErrorCode.Parse;
             }

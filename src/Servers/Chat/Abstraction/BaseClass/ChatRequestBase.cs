@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public class ChatRequestBase : RequestBase
+    public class ChatRequestBase : UniSpyRequestBase
     {
         public new string RawRequest { get; protected set; }
         public new string CommandName { get; protected set; }

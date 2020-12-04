@@ -1,6 +1,5 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
@@ -10,7 +9,7 @@ namespace ServerBrowser.Handler.CommandHandler
     /// </summary>
     public class NoServerListHandler : UpdateOptionHandlerBase
     {
-        public NoServerListHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
+        public NoServerListHandler(ISession session, IRequest request) : base(session,request)
         {
         }
     }

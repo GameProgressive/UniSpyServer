@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    public class SBRequestBase : RequestBase
+    public class SBRequestBase : UniSpyRequestBase
     {
         public SBRequestBase(object rawRequest) : base(rawRequest)
         {

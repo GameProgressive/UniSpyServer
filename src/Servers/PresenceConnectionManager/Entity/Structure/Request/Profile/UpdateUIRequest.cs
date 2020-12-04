@@ -18,7 +18,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 return flag;
             }
 
-            if (_recv.ContainsKey(""))
+            if (KeyValues.ContainsKey(""))
             {
 
             }

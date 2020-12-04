@@ -1,16 +1,16 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using QueryReport.Entity.Structure;
 using Serilog.Events;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
-using ServerBrowser.Entity.Structure.Packet.Request;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using ServerBrowser.Entity.Structure.Request;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
+using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
@@ -25,18 +25,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
         public ServerInfoHandler(ISession session, IRequest request) : base(session, request)
         {
-            _request = new AdHocRequest(recv);
-        }
-
-        protected override void CheckRequest()
-        {
-            //we do not call base.CheckRequest() method because we have our own check method
-
-           if (!(bool)base.Parse())
-            {
-                _errorCode = SBErrorCode.Parse;
-                return;
-            }
+            _request = (AdHocRequest)request;
         }
 
         protected override void DataOperation()

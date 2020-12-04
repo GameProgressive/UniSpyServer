@@ -10,7 +10,7 @@ namespace NATNegotiation.Abstraction.BaseClass
     /// <summary>
     /// NatNeg request base
     /// </summary>
-    public class NNRequestBase : RequestBase
+    public class NNRequestBase : UniSpyRequestBase
     {
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public static readonly int Size = 12;

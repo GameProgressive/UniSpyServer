@@ -19,17 +19,17 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 return flag;
             }
 
-            if (!_recv.ContainsKey("sesskey"))
+            if (!KeyValues.ContainsKey("sesskey"))
             {
                 return GPErrorCode.Parse;
             }
 
-            if (!_recv.ContainsKey("uniquenick"))
+            if (!KeyValues.ContainsKey("uniquenick"))
             {
                 return GPErrorCode.Parse;
             }
 
-            UniqueNick = _recv["uniquenick"];
+            UniqueNick = KeyValues["uniquenick"];
 
             return GPErrorCode.NoError;
         }

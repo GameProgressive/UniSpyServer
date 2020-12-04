@@ -26,24 +26,24 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 return flag;
             }
 
-            if (_recv.ContainsKey("replace"))
+            if (KeyValues.ContainsKey("replace"))
             {
-                if (!_recv.ContainsKey("oldnick") && !_recv.ContainsKey("nick"))
+                if (!KeyValues.ContainsKey("oldnick") && !KeyValues.ContainsKey("nick"))
                 {
                     return GPErrorCode.Parse;
                 }
 
-                OldNick = _recv["oldnick"];
-                NewNick = _recv["nick"];
+                OldNick = KeyValues["oldnick"];
+                NewNick = KeyValues["nick"];
                 IsReplaceNickName = true;
             }
             else
             {
-                if (!_recv.ContainsKey("nick"))
+                if (!KeyValues.ContainsKey("nick"))
                 {
                     return GPErrorCode.Parse;
                 }
-                NewNick = _recv["nick"];
+                NewNick = KeyValues["nick"];
                 IsReplaceNickName = false;
             }
 

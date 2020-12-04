@@ -32,36 +32,36 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 return flag;
             }
 
-            if (!_recv.ContainsKey("challenge") || !_recv.ContainsKey("response"))
+            if (!KeyValues.ContainsKey("challenge") || !KeyValues.ContainsKey("response"))
             {
                 return GPErrorCode.Parse;
             }
 
-            UserChallenge = _recv["challenge"];
-            Response = _recv["response"];
+            UserChallenge = KeyValues["challenge"];
+            Response = KeyValues["response"];
 
-            if (_recv.ContainsKey("uniquenick") && _recv.ContainsKey("namespaceid"))
+            if (KeyValues.ContainsKey("uniquenick") && KeyValues.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
-                if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                if (!uint.TryParse(KeyValues["namespaceid"], out namespaceID))
                 {
                     return GPErrorCode.Parse;
                 }
                 LoginType = LoginType.UniquenickNamespaceID;
-                Uniquenick = _recv["uniquenick"];
+                Uniquenick = KeyValues["uniquenick"];
                 UserData = Uniquenick;
                 NamespaceID = namespaceID;
             }
-            else if (_recv.ContainsKey("authtoken"))
+            else if (KeyValues.ContainsKey("authtoken"))
             {
                 LoginType = LoginType.AuthToken;
-                AuthToken = _recv["authtoken"];
+                AuthToken = KeyValues["authtoken"];
                 UserData = AuthToken;
             }
-            else if (_recv.ContainsKey("user"))
+            else if (KeyValues.ContainsKey("user"))
             {
                 LoginType = LoginType.NickEmail;
-                UserData = _recv["user"];
+                UserData = KeyValues["user"];
 
                 int Pos = UserData.IndexOf('@');
                 if (Pos == -1 || Pos < 1 || (Pos + 1) >= UserData.Length)
@@ -72,10 +72,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 Email = UserData.Substring(Pos + 1);
 
                 // we need to get namespaceid for email login
-                if (_recv.ContainsKey("namespaceid"))
+                if (KeyValues.ContainsKey("namespaceid"))
                 {
                     uint namespaceID;
-                    if (!uint.TryParse(_recv["namespaceid"], out namespaceID))
+                    if (!uint.TryParse(KeyValues["namespaceid"], out namespaceID))
                     {
                         return GPErrorCode.Parse;
                     }
@@ -98,10 +98,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
 
         private GPErrorCode ParseOtherData()
         {
-            if (_recv.ContainsKey("partnerid"))
+            if (KeyValues.ContainsKey("partnerid"))
             {
                 uint partnerID;
-                if (!uint.TryParse(_recv["partnerid"], out partnerID))
+                if (!uint.TryParse(KeyValues["partnerid"], out partnerID))
                 {
                     return GPErrorCode.Parse;
                 }
@@ -109,10 +109,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
             }
 
             //store sdkrevision
-            if (_recv.ContainsKey("sdkrevision"))
+            if (KeyValues.ContainsKey("sdkrevision"))
             {
                 uint sdkRevisionType;
-                if (!uint.TryParse(_recv["sdkrevision"], out sdkRevisionType))
+                if (!uint.TryParse(KeyValues["sdkrevision"], out sdkRevisionType))
                 {
                     return GPErrorCode.Parse;
                 }
@@ -120,25 +120,25 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 SDKType = (SDKRevisionType)sdkRevisionType;
             }
 
-            if (_recv.ContainsKey("gamename"))
+            if (KeyValues.ContainsKey("gamename"))
             {
-                GameName = _recv["gamename"];
+                GameName = KeyValues["gamename"];
             }
 
-            if (_recv.ContainsKey("port"))
+            if (KeyValues.ContainsKey("port"))
             {
                 uint gamePort;
-                if (!uint.TryParse(_recv["port"], out gamePort))
+                if (!uint.TryParse(KeyValues["port"], out gamePort))
                 {
                     return GPErrorCode.Parse;
                 }
                 GamePort = gamePort;
             }
 
-            if (_recv.ContainsKey("quiet"))
+            if (KeyValues.ContainsKey("quiet"))
             {
                 uint quiet;
-                if (!uint.TryParse(_recv["quiet"], out quiet))
+                if (!uint.TryParse(KeyValues["quiet"], out quiet))
                 {
                     return GPErrorCode.Parse;
                 }

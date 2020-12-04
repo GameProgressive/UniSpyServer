@@ -22,19 +22,19 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
                 return flag;
             }
 
-            if (!_recv.ContainsKey("status") || !_recv.ContainsKey("statstring") || !_recv.ContainsKey("locstring"))
+            if (!KeyValues.ContainsKey("status") || !KeyValues.ContainsKey("statstring") || !KeyValues.ContainsKey("locstring"))
             {
                 return GPErrorCode.Parse;
             }
             uint statusCode;
-            if (!uint.TryParse(_recv["status"], out statusCode))
+            if (!uint.TryParse(KeyValues["status"], out statusCode))
             {
                 return GPErrorCode.Parse;
             }
 
             StatusCode = statusCode;
-            LocationString = _recv["locstring"];
-            StatusString = _recv["statstring"];
+            LocationString = KeyValues["locstring"];
+            StatusString = KeyValues["statstring"];
 
             return GPErrorCode.NoError;
         }

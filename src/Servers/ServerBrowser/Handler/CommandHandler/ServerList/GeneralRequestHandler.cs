@@ -2,13 +2,12 @@
 using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure;
-using ServerBrowser.Entity.Structure.Packet.Request;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
     public class GeneralRequestHandler : UpdateOptionHandlerBase
     {
-        public GeneralRequestHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
+        public GeneralRequestHandler(ISession session, IRequest request) : base(session, request)
         {
         }
         /// <summary>

@@ -3,8 +3,7 @@ using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
-using ServerBrowser.Entity.Structure.Packet.Request;
-using System.Linq;
+using ServerBrowser.Entity.Structure.Request;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
@@ -13,8 +12,10 @@ namespace ServerBrowser.Handler.CommandHandler
     /// </summary>
     public class PushUpdatesHandler : UpdateOptionHandlerBase
     {
-        public PushUpdatesHandler(ServerListRequest request, ISession session, byte[] recv) : base(request, session, recv)
+        protected new ServerListRequest _request;
+        public PushUpdatesHandler(ISession session, IRequest request) : base(session,request)
         {
+            _request = (ServerListRequest)request;
         }
 
         protected override void CheckRequest()
@@ -26,11 +27,10 @@ namespace ServerBrowser.Handler.CommandHandler
                 _errorCode = SBErrorCode.DataOperation;
                 return;
             }
+            // we need to reply to client even if there are no server
 
-            if (_gameServers.Count() == 0)
-            {
-                return;
-            }
+
+            //TODO do filter
             //**************Currently we do not handle filter**********************
         }
 

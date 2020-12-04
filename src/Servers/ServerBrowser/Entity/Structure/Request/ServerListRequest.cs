@@ -3,17 +3,16 @@ using ServerBrowser.Entity.Enumerate;
 using System;
 using System.Linq;
 using System.Text;
+using UniSpyLib.Abstraction.BaseClass;
 
-namespace ServerBrowser.Entity.Structure.Packet.Request
+namespace ServerBrowser.Entity.Structure.Request
 {
     /// <summary>
     /// ServerList also called ServerRule
     /// </summary>
-    public class ServerListRequest
+    public class ServerListRequest : UniSpyRequestBase
     {
         public const ushort QueryReportDefaultPort = 6500;
-
-        public bool IsParsingFinished;
         public byte RequestVersion { get; protected set; }
         public byte ProtocolVersion { get; protected set; }
         public byte EncodingVersion { get; protected set; }
@@ -30,32 +29,33 @@ namespace ServerBrowser.Entity.Structure.Packet.Request
         public byte[] SourceIP { get; protected set; }
         public int MaxServers { get; protected set; }
 
-        public ServerListRequest()
+        public new byte[] RawRequest { get; protected set; }
+        public ServerListRequest(byte[] rawRequest) : base(rawRequest)
         {
             SourceIP = new byte[4];
-            IsParsingFinished = true;
+            RawRequest = rawRequest;
         }
 
         /// <summary>
         /// Parse all value to this class
         /// </summary>
         /// <param name="recv"></param>
-        public bool Parse(byte[] recv)
+        public override object Parse()
         {
-            ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(recv, 0, 2), true);
+            ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(RawRequest, 0, 2), true);
 
-            if (length != recv.Length)
+            if (length != RawRequest.Length)
             {
                 return false;
             }
 
-            RequestVersion = recv[2];
-            ProtocolVersion = recv[3];
-            EncodingVersion = recv[4];
-            GameVersion = BitConverter.ToInt32(ByteTools.SubBytes(recv, 5, 4));
+            RequestVersion = RawRequest[2];
+            ProtocolVersion = RawRequest[3];
+            EncodingVersion = RawRequest[4];
+            GameVersion = BitConverter.ToInt32(ByteTools.SubBytes(RawRequest, 5, 4));
 
             //because there are empty string we can not use StringSplitOptions.RemoveEmptyEntries
-            string remainData = Encoding.ASCII.GetString(recv.Skip(9).ToArray());
+            string remainData = Encoding.ASCII.GetString(RawRequest.Skip(9).ToArray());
             remainData.IndexOf('\0');
             DevGameName = remainData.Substring(0, remainData.IndexOf('\0'));
             remainData = remainData.Substring(remainData.IndexOf('\0') + 1);

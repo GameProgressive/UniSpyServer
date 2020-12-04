@@ -14,7 +14,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class DelBuddyHandler : PCMCommandHandlerBase
     {
         //PCMSession _session;
-        //Dictionary<string, string> _recv;
+        //Dictionary<string, string> KeyValues;
         protected new DelBuddyRequest _request;
         //delete friend in database then send bm_revoke message to friend
         public DelBuddyHandler(ISession session, IRequest request) : base(session, request)

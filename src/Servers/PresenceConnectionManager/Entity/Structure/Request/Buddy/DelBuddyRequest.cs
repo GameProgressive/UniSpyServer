@@ -19,14 +19,14 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
             {
                 return flag;
             }
-            if (!_recv.ContainsKey("delprofileid"))
+            if (!KeyValues.ContainsKey("delprofileid"))
             {
 
                 return GPErrorCode.Parse;
             }
 
             uint deleteProfileID;
-            if (!uint.TryParse(_recv["delprofileid"], out deleteProfileID))
+            if (!uint.TryParse(KeyValues["delprofileid"], out deleteProfileID))
             {
                 return GPErrorCode.Parse;
             }

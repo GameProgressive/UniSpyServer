@@ -1,14 +1,14 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+﻿using System.Linq;
 using Newtonsoft.Json;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.NatNeg;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure.Packet.Request;
-using StackExchange.Redis;
-using System.Linq;
+using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Network;
+using StackExchange.Redis;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
@@ -17,13 +17,13 @@ namespace ServerBrowser.Handler.CommandHandler
     /// </summary>
     public class NatNegCookieHandler : SBCommandHandlerBase
     {
-        new SBSession _session;
         protected new AdHocRequest _request;
         private NatNegCookie _natNegCookie;
         private GameServer _gameServer;
         public NatNegCookieHandler(ISession session, IRequest request) : base(session, request)
         {
             _session = (SBSession)session;
+            _request = (AdHocRequest)request;
             _natNegCookie = new NatNegCookie();
         }
 
@@ -55,7 +55,7 @@ namespace ServerBrowser.Handler.CommandHandler
             base.DataOperation();
             _natNegCookie.GameServerRemoteIP = _request.TargetServerIP;
             _natNegCookie.GameServerRemotePort = _gameServer.RemoteQueryReportPort;
-            _natNegCookie.NatNegMessage = _recv;
+            _natNegCookie.NatNegMessage = _request.RawRequest;
         }
 
         protected override void ConstructResponse()

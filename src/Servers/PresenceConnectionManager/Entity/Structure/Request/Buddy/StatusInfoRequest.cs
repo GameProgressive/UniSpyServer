@@ -30,48 +30,48 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
             {
                 return flag;
             }
-            if (!_recv.ContainsKey("state")
-                || !_recv.ContainsKey("hostIp")
-                || !_recv.ContainsKey("hprivIp")
-                || !_recv.ContainsKey("qport")
-                || !_recv.ContainsKey("hport")
-                || !_recv.ContainsKey("sessflags")
-                || !_recv.ContainsKey("rechStatus")
-                || !_recv.ContainsKey("gameType")
-                || !_recv.ContainsKey("gameVariant")
-                || !_recv.ContainsKey("gameMapName"))
+            if (!KeyValues.ContainsKey("state")
+                || !KeyValues.ContainsKey("hostIp")
+                || !KeyValues.ContainsKey("hprivIp")
+                || !KeyValues.ContainsKey("qport")
+                || !KeyValues.ContainsKey("hport")
+                || !KeyValues.ContainsKey("sessflags")
+                || !KeyValues.ContainsKey("rechStatus")
+                || !KeyValues.ContainsKey("gameType")
+                || !KeyValues.ContainsKey("gameVariant")
+                || !KeyValues.ContainsKey("gameMapName"))
             {
                 return GPErrorCode.Parse;
             }
 
-            StatusState = _recv["state"];
-            HostIP = _recv["hostIp"];
-            HostPrivateIP = _recv["hprivIp"];
+            StatusState = KeyValues["state"];
+            HostIP = KeyValues["hostIp"];
+            HostPrivateIP = KeyValues["hprivIp"];
 
             uint qport;
-            if (!uint.TryParse(_recv["qport"], out qport))
+            if (!uint.TryParse(KeyValues["qport"], out qport))
             {
                 return GPErrorCode.Parse;
             }
             QueryReportPort = qport;
             uint hport;
-            if (uint.TryParse(_recv["hport"], out hport))
+            if (uint.TryParse(KeyValues["hport"], out hport))
             {
                 return GPErrorCode.Parse;
             }
             HostPort = hport;
 
             uint sessflags;
-            if (!uint.TryParse(_recv["sessflags"], out sessflags))
+            if (!uint.TryParse(KeyValues["sessflags"], out sessflags))
             {
                 return GPErrorCode.Parse;
             }
             SessionFlags = sessflags;
 
-            RichStatus = _recv["rechStatus"];
-            GameType = _recv["gameType"];
-            GameVariant = _recv["gameVariant"];
-            GameMapName = _recv["gameMapName"];
+            RichStatus = KeyValues["rechStatus"];
+            GameType = KeyValues["gameType"];
+            GameVariant = KeyValues["gameVariant"];
+            GameMapName = KeyValues["gameMapName"];
 
             return GPErrorCode.NoError;
         }

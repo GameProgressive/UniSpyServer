@@ -22,12 +22,12 @@ namespace PresenceConnectionManager.Entity.Structure.Request.General
                 return flag;
             }
 
-            if (!_recv.ContainsKey("cdkeyenc"))
+            if (!KeyValues.ContainsKey("cdkeyenc"))
             {
                 return GPErrorCode.Parse;
             }
 
-            CDKeyEnc = _recv["cdkeyenc"];
+            CDKeyEnc = KeyValues["cdkeyenc"];
             return GPErrorCode.NoError;
         }
     }

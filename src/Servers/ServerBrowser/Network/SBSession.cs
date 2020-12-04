@@ -1,8 +1,8 @@
 ﻿using UniSpyLib.Encryption;
 using UniSpyLib.Network;
-using ServerBrowser.Entity.Structure.Packet.Request;
 using ServerBrowser.Handler.CommandSwitcher;
 using System.Collections.Generic;
+using ServerBrowser.Entity.Structure.Request;
 
 namespace ServerBrowser.Network
 {
@@ -17,7 +17,7 @@ namespace ServerBrowser.Network
 
         protected override void OnReceived(byte[] message)
         {
-            SBCommandSwitcher.Switch(this, message);
+            new SBCommandSwitcher(this, message).Switch();
         }
     }
 }
