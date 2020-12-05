@@ -62,6 +62,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
                                      };
                         _result.AddRange(result.ToList().Skip(_request.SkipNumber));
                         break;
+
                     case SearchRequestType.NickEmailSearch:
                         var result2 = from p in db.Profiles
                                       join n in db.Subprofiles on p.Profileid equals n.Profileid
