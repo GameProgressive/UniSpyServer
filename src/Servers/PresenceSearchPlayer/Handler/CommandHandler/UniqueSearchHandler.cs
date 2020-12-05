@@ -12,7 +12,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected new UniqueSearchRequest _request;
         private bool _isUniquenickExist;
 
-        public UniqueSearchHandler(ISession session, IRequest request) : base(session, request)
+        public UniqueSearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (UniqueSearchRequest)request;
         }

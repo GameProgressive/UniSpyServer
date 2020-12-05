@@ -13,7 +13,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         new TOPICRequest _request;
         ChatChannel _channel;
         ChatChannelUser _user;
-        public TOPICHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public TOPICHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (TOPICRequest)request;
         }

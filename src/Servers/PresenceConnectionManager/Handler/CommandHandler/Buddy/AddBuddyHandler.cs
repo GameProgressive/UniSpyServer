@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class AddBuddyHandler : PCMCommandHandlerBase
     {
         protected new AddBuddyRequest _request;
-        public AddBuddyHandler(ISession session, IRequest request) : base(session, request)
+        public AddBuddyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (AddBuddyRequest)request;
         }

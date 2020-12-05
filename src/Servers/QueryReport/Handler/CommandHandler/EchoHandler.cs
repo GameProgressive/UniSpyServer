@@ -11,7 +11,7 @@ namespace QueryReport.Handler.CommandHandler
     public class EchoHandler : QRCommandHandlerBase
     {
         protected GameServer _gameServer;
-        public EchoHandler(ISession session, IRequest request) : base(session, request)
+        public EchoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

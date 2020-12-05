@@ -14,7 +14,7 @@ namespace GameStatus.Handler.CommandHandler
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
         protected GetPDRequest _request;
         protected Dictionary<string, string> _result;
-        public GetPDHandler(ISession session, IRequest request) : base(session, request)
+        public GetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request =(GetPDRequest)request;
         }

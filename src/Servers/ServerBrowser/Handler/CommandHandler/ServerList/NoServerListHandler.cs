@@ -9,7 +9,7 @@ namespace ServerBrowser.Handler.CommandHandler
     /// </summary>
     public class NoServerListHandler : UpdateOptionHandlerBase
     {
-        public NoServerListHandler(ISession session, IRequest request) : base(session,request)
+        public NoServerListHandler(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
         }
     }

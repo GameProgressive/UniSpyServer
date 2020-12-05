@@ -13,7 +13,7 @@ namespace QueryReport.Handler.CommandHandler
     public class AvailableHandler : QRCommandHandlerBase
     {
         protected new AvaliableRequest _request;
-        public AvailableHandler(ISession session, IRequest request) : base(session, request)
+        public AvailableHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (AvaliableRequest)request;
         }

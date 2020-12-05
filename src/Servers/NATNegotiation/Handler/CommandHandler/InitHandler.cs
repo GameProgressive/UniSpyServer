@@ -10,7 +10,7 @@ namespace NATNegotiation.Handler.CommandHandler
     public class InitHandler : NNCommandHandlerBase
     {
         protected new InitRequest _request;
-        public InitHandler(ISession session, IRequest request) : base(session, request)
+        public InitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (InitRequest)request;
         }

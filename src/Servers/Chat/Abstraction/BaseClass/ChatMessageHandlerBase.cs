@@ -11,7 +11,7 @@ namespace Chat.Abstraction.BaseClass
         new ChatMessagRequestBase _request;
         protected ChatSession _otherSession;
 
-        public ChatMessageHandlerBase(ISession session, ChatRequestBase request) : base(session, request)
+        public ChatMessageHandlerBase(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (ChatMessagRequestBase)request;
         }

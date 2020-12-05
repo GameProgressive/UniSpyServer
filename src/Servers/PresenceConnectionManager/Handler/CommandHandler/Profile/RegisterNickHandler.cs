@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class RegisterNickHandler : PCMCommandHandlerBase
     {
         protected new RegisterNickRequest _request;
-        public RegisterNickHandler(ISession session, IRequest request) : base(session, request)
+        public RegisterNickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (RegisterNickRequest)request;
         }

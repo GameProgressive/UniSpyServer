@@ -8,7 +8,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     public class PINGHandler : ChatCommandHandlerBase
     {
         new PINGRequest _request;
-        public PINGHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public PINGHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (PINGRequest)request;
         }

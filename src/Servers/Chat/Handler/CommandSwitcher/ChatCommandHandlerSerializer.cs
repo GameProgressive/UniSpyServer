@@ -10,11 +10,11 @@ namespace Chat.Handler.CommandSwitcher
 {
     public class ChatCommandHandlerSerializer:CommandHandlerSerializerBase
     {
-        public ChatCommandHandlerSerializer(ISession session, IRequest request) : base(session, request)
+        public ChatCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
-        public override IHandler Serialize()
+        public override IUniSpyHandler Serialize()
         {
             string cmdName = ((ChatRequestBase)_request).CommandName;
             Type handlerType = AppDomain.CurrentDomain
@@ -28,7 +28,7 @@ namespace Chat.Handler.CommandSwitcher
                 var handler = Activator.CreateInstance(handlerType, args);
                 if (handler != null)
                 {
-                    return (IHandler)handler;
+                    return (IUniSpyHandler)handler;
                 }
                 else
                 {

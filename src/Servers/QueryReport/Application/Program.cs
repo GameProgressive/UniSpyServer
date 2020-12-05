@@ -14,7 +14,7 @@ namespace QueryReport.Application
             {
                 //create a instance of ServerManager class
                 new ServerManager(UniSpyServerName.QR).Start();
-                Console.Title = "RetroSpy Server " + ServerManagerBase.RetroSpyVersion;
+                Console.Title = "RetroSpy Server " + UniSpyServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)
             {

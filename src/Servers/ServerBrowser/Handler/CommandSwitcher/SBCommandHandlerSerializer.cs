@@ -9,11 +9,11 @@ namespace ServerBrowser.Handler.CommandSwitcher
 {
     public class SBCommandHandlerSerializer : CommandHandlerSerializerBase
     {
-        public SBCommandHandlerSerializer(ISession session, IRequest request) : base(session, request)
+        public SBCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
-        public override IHandler Serialize()
+        public override IUniSpyHandler Serialize()
         {
             //we do not need to handle GOA query because it is handled by game server
             switch (_request.CommandName)
@@ -38,7 +38,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             }
         }
 
-        protected IHandler UpdateOptionSerialize()
+        protected IUniSpyHandler UpdateOptionSerialize()
         {
 
             switch (((ServerListRequest)_request).UpdateOption)

@@ -20,7 +20,7 @@ namespace ServerBrowser.Handler.CommandHandler
         protected new AdHocRequest _request;
         private NatNegCookie _natNegCookie;
         private GameServer _gameServer;
-        public NatNegCookieHandler(ISession session, IRequest request) : base(session, request)
+        public NatNegCookieHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _session = (SBSession)session;
             _request = (AdHocRequest)request;
@@ -65,7 +65,7 @@ namespace ServerBrowser.Handler.CommandHandler
 
         protected override void Response()
         {
-            ISubscriber sub = ServerManagerBase.Redis.GetSubscriber();
+            ISubscriber sub = UniSpyServerManagerBase.Redis.GetSubscriber();
 
             string jsonStr = JsonConvert.SerializeObject(_natNegCookie);
 

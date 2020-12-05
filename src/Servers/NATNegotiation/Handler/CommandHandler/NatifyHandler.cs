@@ -9,7 +9,7 @@ namespace NATNegotiation.Handler.CommandHandler
     public class NatifyHandler : NNCommandHandlerBase
     {
         protected new NatifyRequest _request;
-        public NatifyHandler(ISession session, IRequest request) : base(session, request)
+        public NatifyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (NatifyRequest)request;
         }

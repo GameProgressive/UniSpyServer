@@ -5,7 +5,7 @@ using System;
 
 namespace QueryReport.Handler.SystemHandler.ServerList
 {
-    public class ServerListManager : TImerBase
+    public class ServerListManager : UniSpyTimerBase
     {
 
         protected override void CheckExpire()

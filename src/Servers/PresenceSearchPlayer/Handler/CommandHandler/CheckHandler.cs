@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         //check is request recieved correct and convert password into our MD5 type
         protected new CheckRequest _request;
         uint _profileid;
-        public CheckHandler(ISession session, IRequest request) : base(session, request)
+        public CheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (CheckRequest)request;
         }

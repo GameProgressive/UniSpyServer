@@ -52,7 +52,7 @@ namespace QueryReport.Entity.Structure
             string address = ((IPEndPoint)endPoint).Address.ToString();
             string subKey = address + "*" + gameName;
             List<string> keys = GetSimilarKeys(subKey);
-            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
+            var redis = UniSpyServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
             foreach (var key in keys)
             {
                 DeleteSpecificServer(key);
@@ -63,14 +63,14 @@ namespace QueryReport.Entity.Structure
 
         public static bool DeleteSpecificServer(string key)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
+            var redis = UniSpyServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
             return redis.KeyDelete(key);
         }
 
         public static bool DeleteSpecificServer(EndPoint endPoint, string gameName)
         {
             string key = GenerateKey(endPoint, gameName);
-            var redis = ServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
+            var redis = UniSpyServerManagerBase.Redis.GetDatabase((int)RedisDBNumber.GameServer);
             return redis.KeyDelete(key);
         }
 

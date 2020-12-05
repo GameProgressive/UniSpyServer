@@ -12,12 +12,12 @@ namespace GameStatus.Handler.CommandSwitcher
     public class GSCommandHandlerSerializer : CommandHandlerSerializerBase
     {
         protected new GSRequestBase _request;
-        public GSCommandHandlerSerializer(ISession session, IRequest request) : base(session, request)
+        public GSCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (GSRequestBase)request;
         }
 
-        public override IHandler Serialize()
+        public override IUniSpyHandler Serialize()
         {
             switch (_request.CommandName)
             {

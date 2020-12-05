@@ -12,7 +12,7 @@ namespace GameStatus.Handler.CommandHandler
     internal class SetPDHandler : GSCommandHandlerBase
     {
         protected SetPDRequest _request;
-        public SetPDHandler(ISession session, IRequest request) : base(session, request)
+        public SetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (SetPDRequest)request;
         }

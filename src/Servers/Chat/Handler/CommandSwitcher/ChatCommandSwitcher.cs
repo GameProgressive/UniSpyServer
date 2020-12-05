@@ -10,7 +10,7 @@ namespace Chat.Handler.CommandSwitcher
     public class ChatCommandSwitcher : CommandSwitcherBase
     {
         protected new string _rawRequest;
-        public ChatCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public ChatCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 

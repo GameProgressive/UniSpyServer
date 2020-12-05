@@ -12,7 +12,7 @@ namespace Chat.Abstraction.BaseClass
         protected ChatChannelUser _user;
         protected new ChatChannelRequestBase _request;
 
-        public ChatChannelHandlerBase(ISession session, ChatRequestBase request) : base(session, request)
+        public ChatChannelHandlerBase(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (ChatChannelRequestBase)request;
         }

@@ -13,9 +13,9 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected SBErrorCode _errorCode;
         protected byte[] _sendingBuffer;
         protected new SBSession _session;
-        protected IRequest _request;
+        protected IUniSpyRequest _request;
 
-        public SBCommandHandlerBase(ISession session, IRequest request):base(session)
+        public SBCommandHandlerBase(IUniSpySession session, IUniSpyRequest request):base(session)
         {
             _errorCode = SBErrorCode.NoError;
             _request = request;

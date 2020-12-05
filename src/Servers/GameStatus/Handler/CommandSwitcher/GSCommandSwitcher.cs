@@ -6,7 +6,7 @@ namespace GameStatus.Handler.CommandSwitcher
 {
     public class GSCommandSwitcher : CommandSwitcherBase
     {
-        public GSCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public GSCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 

@@ -21,7 +21,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         new WHORequest _request;
         ChatChannel _resultChannel;
         ChatSession _resultSession;
-        public WHOHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public WHOHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (WHORequest)request;
         }

@@ -15,7 +15,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     {
         new CRYPTRequest _request;
         // CRYPT des 1 gamename
-        public CRYPTHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public CRYPTHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (CRYPTRequest)request;
         }

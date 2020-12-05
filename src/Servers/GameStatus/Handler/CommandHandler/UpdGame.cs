@@ -11,7 +11,7 @@ namespace GameStatus.Handler.CommandHandler
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
-        public UpdGameHandler(ISession session, IRequest request) : base(session, request)
+        public UpdGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

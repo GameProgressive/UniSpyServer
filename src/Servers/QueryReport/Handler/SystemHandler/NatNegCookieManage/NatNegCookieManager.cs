@@ -27,7 +27,7 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
 
         public void SubScribe()
         {
-            ISubscriber subscriber = ServerManagerBase.Redis.GetSubscriber();
+            ISubscriber subscriber = UniSpyServerManagerBase.Redis.GetSubscriber();
 
             subscriber.Subscribe(
                 "NatNegCookieChannel", (channel, message)

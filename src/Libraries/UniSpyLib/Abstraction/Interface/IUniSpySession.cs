@@ -2,7 +2,7 @@
 
 namespace UniSpyLib.Abstraction.Interface
 {
-    public interface ISession
+    public interface IUniSpySession
     {
         public EndPoint RemoteEndPoint { get; }
 

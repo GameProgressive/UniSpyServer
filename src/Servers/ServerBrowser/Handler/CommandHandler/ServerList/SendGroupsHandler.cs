@@ -12,7 +12,7 @@ namespace ServerBrowser.Handler.CommandHandler
     {
         private PeerGroup _peerGroup;
 
-        public SendGroupsHandler(ISession session,IRequest request) : base(session, request)
+        public SendGroupsHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
         {
         }
 

@@ -11,12 +11,12 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
     public class PSPCommandHandlerSerializer : CommandHandlerSerializerBase
     {
         protected new PSPRequestBase _request;
-        public PSPCommandHandlerSerializer(ISession session, IRequest request) : base(session, request)
+        public PSPCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (PSPRequestBase)request;
         }
 
-        public override IHandler Serialize()
+        public override IUniSpyHandler Serialize()
         {
             switch (_request.CommandName)
             {

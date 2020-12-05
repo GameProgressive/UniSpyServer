@@ -10,7 +10,7 @@ namespace Chat.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ChatServerManager : ServerManagerBase
+    public class ChatServerManager : UniSpyServerManagerBase
     {
         /// <summary>
         /// Constructor

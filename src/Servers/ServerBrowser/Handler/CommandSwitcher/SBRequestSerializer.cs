@@ -8,7 +8,7 @@ using UniSpyLib.Logging;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBRequestSerializer : RequestSerializerBase
+    public class SBRequestSerializer : UniSpyRequestSerializerBase
     {
         protected new byte[] _rawRequest;
         public SBRequestSerializer(byte[] rawRequest) : base(rawRequest)
@@ -16,7 +16,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             _rawRequest = rawRequest;
         }
 
-        public override IRequest Serialize()
+        public override IUniSpyRequest Serialize()
         {
             if (_rawRequest.Take(6).SequenceEqual(NNRequestBase.MagicData))
             {

@@ -14,7 +14,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         new MODERequest _request;
         ChatChannel _channel;
         ChatChannelUser _user;
-        public MODEHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public MODEHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (MODERequest)request;
         }

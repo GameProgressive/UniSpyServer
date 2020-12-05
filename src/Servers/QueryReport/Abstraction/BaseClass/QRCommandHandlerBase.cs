@@ -13,8 +13,8 @@ namespace QueryReport.Abstraction.BaseClass
         protected QRErrorCode _errorCode = QRErrorCode.NoError;
         protected byte[] _sendingBuffer;
         protected new QRSession _session;
-        protected IRequest _request;
-        protected QRCommandHandlerBase(ISession session, IRequest request) : base(session)
+        protected IUniSpyRequest _request;
+        protected QRCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session)
         {
             _request = request;
             _session = (QRSession)session;

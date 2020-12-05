@@ -9,7 +9,7 @@ namespace GameStatus.Handler.CommandHandler
     {
         //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
         protected AuthRequest _request;
-        public AuthHandler(ISession session, IRequest request) : base(session, request)
+        public AuthHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (AuthRequest)request;
         }

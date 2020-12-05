@@ -11,7 +11,7 @@ namespace QueryReport.Handler.CommandSwitcher
     public class QRCommandSwitcher:CommandSwitcherBase
     {
         protected new byte[] _rawRequest;
-        public QRCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public QRCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 

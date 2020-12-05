@@ -14,7 +14,7 @@ namespace UniSpyLib.Network
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)
     /// with logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public class TCPSessionBase : TcpSession, ISession
+    public class TCPSessionBase : TcpSession, IUniSpySession
     {
         public EndPoint RemoteEndPoint { get; private set; }
 
@@ -100,11 +100,11 @@ namespace UniSpyLib.Network
             base.OnDisconnected();
         }
 
-        bool ISession.BaseSendAsync(byte[] buffer)
+        bool IUniSpySession.BaseSendAsync(byte[] buffer)
         {
             return BaseSendAsync(buffer);
         }
-        bool ISession.BaseSendAsync(string buffer)
+        bool IUniSpySession.BaseSendAsync(string buffer)
         {
             return BaseSendAsync(buffer);
         }

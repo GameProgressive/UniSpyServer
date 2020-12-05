@@ -10,12 +10,12 @@ namespace QueryReport.Handler.CommandSwitcher
     public class QRCommandHandlerSerializer : CommandHandlerSerializerBase
     {
         protected new QRRequestBase _request;
-        public QRCommandHandlerSerializer(ISession session, IRequest request) : base(session, request)
+        public QRCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (QRRequestBase)request;
         }
 
-        public override IHandler Serialize()
+        public override IUniSpyHandler Serialize()
         {
             switch (_request.PacketType)
             {

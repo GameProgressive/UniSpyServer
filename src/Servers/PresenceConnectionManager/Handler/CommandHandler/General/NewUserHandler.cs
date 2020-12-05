@@ -5,7 +5,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class NewUserHandler : PresenceSearchPlayer.Handler.CommandHandler.NewUserHandler
     {
-        public NewUserHandler(ISession session, IRequest request) : base(session, request)
+        public NewUserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

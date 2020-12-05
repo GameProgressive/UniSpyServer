@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     {
 
         protected new AddBlockRequest _request;
-        public AddBlockHandler(ISession session, IRequest request) : base(session, request)
+        public AddBlockHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (AddBlockRequest)request;
         }

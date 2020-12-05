@@ -15,7 +15,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     {
         new GETCHANKEYRequest _request;
         string _values;
-        public GETCHANKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public GETCHANKEYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (GETCHANKEYRequest)request;
         }

@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Interface
 {
-    public interface IChatClient : ISession
+    public interface IChatClient : IUniSpySession
     {
 
     }

@@ -18,7 +18,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         protected string _sendingBuffer;
         protected new PCMSession _session;
         protected PCMRequestBase _request;
-        public PCMCommandHandlerBase(ISession session, IRequest request) : base(session)
+        public PCMCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session)
         {
             _errorCode = GPErrorCode.NoError;
             _request = (PCMRequestBase)request;

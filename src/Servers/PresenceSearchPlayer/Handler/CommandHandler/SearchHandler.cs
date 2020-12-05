@@ -31,7 +31,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
     {
         protected new SearchRequest _request;
         private List<SearchDBResult> _result;
-        public SearchHandler(ISession session, IRequest request) : base(session, request)
+        public SearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (SearchRequest)request;
             _result = new List<SearchDBResult>();

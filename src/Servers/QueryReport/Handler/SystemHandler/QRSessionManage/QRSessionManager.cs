@@ -5,7 +5,7 @@ using System.Net;
 
 namespace QueryReport.Handler.SystemHandler.QRSessionManage
 {
-    public class QRSessionManager : TImerBase
+    public class QRSessionManager : UniSpyTimerBase
     {
         public static ConcurrentDictionary<EndPoint, QRSession> Sessions;
 

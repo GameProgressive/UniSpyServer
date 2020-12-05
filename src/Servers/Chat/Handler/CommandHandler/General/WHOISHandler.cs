@@ -14,7 +14,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     {
         new WHOISRequest _request;
         ChatUserInfo _userInfo;
-        public WHOISHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public WHOISHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (WHOISRequest)request;
         }

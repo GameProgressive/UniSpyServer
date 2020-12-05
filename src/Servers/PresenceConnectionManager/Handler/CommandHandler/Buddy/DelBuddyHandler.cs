@@ -17,7 +17,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
         //Dictionary<string, string> KeyValues;
         protected new DelBuddyRequest _request;
         //delete friend in database then send bm_revoke message to friend
-        public DelBuddyHandler(ISession session, IRequest request) : base(session, request)
+        public DelBuddyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (DelBuddyRequest)request;
         }

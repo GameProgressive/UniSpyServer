@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
     public class PCMCommandSwitcher : CommandSwitcherBase
     {
         protected new string _rawRequest;
-        public PCMCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public PCMCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 

@@ -14,7 +14,7 @@ namespace GameStatus.Handler.CommandHandler
         //response \getpidr
         private uint _protileid;
         protected GetPIDRequest _request;
-        public GetPIDHandler(ISession session, IRequest request) : base(session, request)
+        public GetPIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (GetPIDRequest)request;
         }

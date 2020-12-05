@@ -8,7 +8,7 @@ namespace CDKey.Abstraction.BaseClass
     {
         protected string _sendingBuffer;
 
-        public CDKeyCommandHandlerBase(ISession session, Dictionary<string, string> recv) : base(session)
+        public CDKeyCommandHandlerBase(IUniSpySession session, Dictionary<string, string> recv) : base(session)
         {
         }
 

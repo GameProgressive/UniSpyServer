@@ -19,7 +19,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         new JOINRequest _request;
         ChatChannel _channel;
         ChatChannelUser _user;
-        public JOINHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public JOINHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (JOINRequest)request;
         }

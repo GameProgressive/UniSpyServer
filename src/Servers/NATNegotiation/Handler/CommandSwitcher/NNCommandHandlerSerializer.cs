@@ -7,11 +7,11 @@ namespace NATNegotiation.Handler.CommandSwitcher
 {
     public class NNCommandHandlerSerializer : CommandHandlerSerializerBase
     {
-        public NNCommandHandlerSerializer(ISession session, IRequest request) : base(session, request)
+        public NNCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
-        public override IHandler Serialize()
+        public override IUniSpyHandler Serialize()
         {
             switch (_request.CommandName)
             {

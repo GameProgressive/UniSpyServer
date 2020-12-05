@@ -5,15 +5,15 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class CommandHandlerSerializerBase
     {
-        protected IRequest _request;
-        protected ISession _session;
-        public CommandHandlerSerializerBase(ISession session,IRequest request)
+        protected IUniSpyRequest _request;
+        protected IUniSpySession _session;
+        public CommandHandlerSerializerBase(IUniSpySession session,IUniSpyRequest request)
         {
             _request = request;
             _session = session;
             LogWriter.LogCurrentClass(this);
         }
 
-        public abstract IHandler Serialize();
+        public abstract IUniSpyHandler Serialize();
     }
 }

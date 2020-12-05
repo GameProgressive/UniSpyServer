@@ -9,7 +9,7 @@ namespace NATNegotiation.Handler.CommandHandler
     public class AddressCheckHandler : NNCommandHandlerBase
     {
         protected new AddressRequest _request;
-        public AddressCheckHandler(ISession session, IRequest request) : base(session, request)
+        public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (AddressRequest)request;
         }

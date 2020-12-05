@@ -11,12 +11,12 @@ namespace PresenceConnectionManager.Handler.CommandSwticher
     public class PCMCommandHandlerSerializer : CommandHandlerSerializerBase
     {
         protected new PCMRequestBase _request;
-        public PCMCommandHandlerSerializer(ISession session, IRequest request) : base(session, request)
+        public PCMCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (PCMRequestBase)request;
         }
 
-        public override IHandler Serialize()
+        public override IUniSpyHandler Serialize()
         {
             switch (_request.CommandName)
             {

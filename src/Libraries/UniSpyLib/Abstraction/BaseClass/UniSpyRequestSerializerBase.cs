@@ -3,15 +3,15 @@ using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class RequestSerializerBase
+    public abstract class UniSpyRequestSerializerBase
     {
         protected object _rawRequest;
-        public RequestSerializerBase(object rawRequest)
+        public UniSpyRequestSerializerBase(object rawRequest)
         {
             _rawRequest = rawRequest;
             LogWriter.LogCurrentClass(this);
         }
 
-        public abstract IRequest Serialize();
+        public abstract IUniSpyRequest Serialize();
     }
 }

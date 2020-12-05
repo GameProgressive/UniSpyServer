@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
     {
         protected new ValidRequest _request;
         private bool _isAccountValid;
-        public ValidHandler(ISession session, IRequest request) : base(session, request)
+        public ValidHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (ValidRequest)request;
         }

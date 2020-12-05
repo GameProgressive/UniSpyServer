@@ -23,7 +23,7 @@ namespace ServerBrowser.Handler.CommandHandler
         private new AdHocRequest _request;
         private GameServer _gameServer;
 
-        public ServerInfoHandler(ISession session, IRequest request) : base(session, request)
+        public ServerInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (AdHocRequest)request;
         }

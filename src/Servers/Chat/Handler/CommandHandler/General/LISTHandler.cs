@@ -12,7 +12,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     {
         new LISTRequest _request;
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
-        public LISTHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public LISTHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (LISTRequest)request;
         }

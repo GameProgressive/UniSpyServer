@@ -9,7 +9,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Handler.CommandSwitcher
 {
-    public class QRRequestSerializer:RequestSerializerBase
+    public class QRRequestSerializer:UniSpyRequestSerializerBase
     {
         protected new byte[] _rawRequest;
         public QRRequestSerializer(byte[] rawRequest) : base(rawRequest)
@@ -17,7 +17,7 @@ namespace QueryReport.Handler.CommandSwitcher
             _rawRequest = rawRequest;
         }
 
-        public override IRequest Serialize()
+        public override IUniSpyRequest Serialize()
         {
             if (_rawRequest.Length < 1)
             {

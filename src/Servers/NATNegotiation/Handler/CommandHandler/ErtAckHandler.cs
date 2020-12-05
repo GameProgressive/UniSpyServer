@@ -9,7 +9,7 @@ namespace NATNegotiation.Handler.CommandHandler
     public class ErtAckHandler : NNCommandHandlerBase
     {
         protected new ErtAckRequest _request;
-        public ErtAckHandler(ISession session, IRequest request) : base(session, request)
+        public ErtAckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (ErtAckRequest)request;
         }

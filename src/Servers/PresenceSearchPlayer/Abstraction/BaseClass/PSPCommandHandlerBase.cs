@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         /// </summary>
         protected string _sendingBuffer;
         protected PSPRequestBase _request;
-        public PSPCommandHandlerBase(ISession session, IRequest request) : base(session)
+        public PSPCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session)
         {
             _errorCode = GPErrorCode.NoError;
             _request = (PSPRequestBase)request;

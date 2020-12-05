@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         protected Profiles _profile;
         protected Subprofiles _subProfile;
         protected new NewUserRequest _request;
-        public NewUserHandler(ISession session, IRequest request) : base(session, request)
+        public NewUserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (NewUserRequest)request;
         }

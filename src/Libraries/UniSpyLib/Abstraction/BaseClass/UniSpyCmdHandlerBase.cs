@@ -3,10 +3,10 @@ using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class CommandHandlerBase : IHandler
+    public abstract class CommandHandlerBase : IUniSpyHandler
     {
-        protected ISession _session;
-        public CommandHandlerBase(ISession session)
+        protected IUniSpySession _session;
+        public CommandHandlerBase(IUniSpySession session)
         {
             _session = session;
         }
@@ -16,6 +16,6 @@ namespace UniSpyLib.Abstraction.BaseClass
             LogWriter.LogCurrentClass(this);
         }
 
-        void IHandler.Handle() => Handle();
+        void IUniSpyHandler.Handle() => Handle();
     }
 }

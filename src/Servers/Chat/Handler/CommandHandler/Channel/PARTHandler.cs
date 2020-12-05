@@ -7,7 +7,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     public class PARTHandler : ChatChannelHandlerBase
     {
         new readonly PARTRequest _request;
-        public PARTHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public PARTHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (PARTRequest)request;
         }

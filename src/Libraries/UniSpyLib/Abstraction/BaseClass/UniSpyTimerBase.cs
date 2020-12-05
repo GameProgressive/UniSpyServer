@@ -3,14 +3,14 @@ using System.Timers;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class TImerBase
+    public abstract class UniSpyTimerBase
     {
         protected static Timer _timer;
         /// <summary>
         /// Because every resource we manage is global
         /// so we do not parse any object to this class
         /// </summary>
-        public TImerBase()
+        public UniSpyTimerBase()
         {
             //default settings
             _timer = new Timer
@@ -31,7 +31,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         {
             //log which expire manager excuted
             LogWriter.LogCurrentClass(this);
-
         }
     }
 }

@@ -9,7 +9,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Handler.CommandSwitcher
 {
-    public class ChatRequestSerializer : RequestSerializerBase
+    public class ChatRequestSerializer : UniSpyRequestSerializerBase
     {
         protected new string _rawRequest;
         public ChatRequestSerializer(object rawRequest) : base(rawRequest)
@@ -18,7 +18,7 @@ namespace Chat.Handler.CommandSwitcher
         }
 
 
-        public override IRequest Serialize()
+        public override IUniSpyRequest Serialize()
         {
             ChatRequestBase generalRequest = new ChatRequestBase(_rawRequest);
             if (!(bool)generalRequest.Parse())
@@ -39,7 +39,7 @@ namespace Chat.Handler.CommandSwitcher
                     LogWriter.ToLog(LogEventLevel.Error, $"Unknown request {generalRequest.CommandName}!");
                     return null;
                 }
-                return (IRequest)request;
+                return (IUniSpyRequest)request;
             }
             else
             {

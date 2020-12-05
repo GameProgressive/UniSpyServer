@@ -9,7 +9,7 @@ namespace CDKey.Handler.CommandSwitcher
     public class CDKeyCommandSwitcher : CommandSwitcherBase
     {
         protected new string _rawRequest;
-        public CDKeyCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public CDKeyCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
             _rawRequest = (string)rawRequest;
         }

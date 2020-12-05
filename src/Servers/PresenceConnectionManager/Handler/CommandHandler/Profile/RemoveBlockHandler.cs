@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class RemoveBlockHandler : PCMCommandHandlerBase
     {
-        public RemoveBlockHandler(ISession session,IRequest request) : base(session, request)
+        public RemoveBlockHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
         {
             throw new NotImplementedException();
         }

@@ -8,7 +8,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Handler.CommandSwitcher
 {
-    public class PSPRequestSerializer : RequestSerializerBase
+    public class PSPRequestSerializer : UniSpyRequestSerializerBase
     {
         protected new string _rawRequest;
         public PSPRequestSerializer(string rawRequest) : base(rawRequest)
@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
             _rawRequest = rawRequest;
         }
 
-        public override IRequest Serialize()
+        public override IUniSpyRequest Serialize()
         {
             // Read client message, and parse it into key value pairs
             var keyValues = GameSpyUtils.ConvertToKeyValue(_rawRequest);

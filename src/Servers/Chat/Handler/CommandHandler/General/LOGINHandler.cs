@@ -15,7 +15,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         new LOGINRequest _request;
         uint _profileid;
         uint _userid;
-        public LOGINHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public LOGINHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (LOGINRequest)request;
         }

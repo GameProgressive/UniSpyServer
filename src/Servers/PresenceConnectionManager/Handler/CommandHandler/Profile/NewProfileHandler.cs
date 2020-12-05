@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class NewProfileHandler : PCMCommandHandlerBase
     {
         protected new NewProfileRequest _request;
-        public NewProfileHandler(ISession session, IRequest request) : base(session, request)
+        public NewProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (NewProfileRequest)request;
         }

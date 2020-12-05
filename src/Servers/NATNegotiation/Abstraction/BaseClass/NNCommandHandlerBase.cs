@@ -17,7 +17,7 @@ namespace NATNegotiation.Abstraction.BaseClass
         protected new NNSession _session;
         protected NNRequestBase _request;
 
-        public NNCommandHandlerBase(ISession session, IRequest request) : base(session)
+        public NNCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session)
         {
             _request = (NNRequestBase)request;
             _session = (NNSession)session;

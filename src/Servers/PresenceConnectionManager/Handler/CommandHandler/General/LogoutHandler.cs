@@ -7,7 +7,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class LogoutHandler : PCMCommandHandlerBase
     {
-        public LogoutHandler(ISession session,IRequest request) : base(session, request)
+        public LogoutHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
         {
         }
 

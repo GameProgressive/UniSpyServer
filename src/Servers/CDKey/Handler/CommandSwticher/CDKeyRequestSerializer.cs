@@ -9,7 +9,7 @@ using UniSpyLib.MiscMethod;
 
 namespace CDKey.Handler.CommandSwitcher
 {
-    public class CDKeyRequestSerializer:RequestSerializerBase
+    public class CDKeyRequestSerializer:UniSpyRequestSerializerBase
     {
         protected new string _rawRequest;
         public CDKeyRequestSerializer(object rawRequest) : base(rawRequest)
@@ -17,7 +17,7 @@ namespace CDKey.Handler.CommandSwitcher
             _rawRequest = (string)rawRequest;
         }
 
-        public override IRequest Serialize()
+        public override IUniSpyRequest Serialize()
         {
             var kv = GameSpyUtils.ConvertToKeyValue(_rawRequest);
 

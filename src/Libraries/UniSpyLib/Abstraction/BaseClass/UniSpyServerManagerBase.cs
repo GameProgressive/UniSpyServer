@@ -8,14 +8,14 @@ using System;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class ServerManagerBase
+    public abstract class UniSpyServerManagerBase
     {
         public static readonly string RetroSpyVersion = "0.5.2";
         public static string ServerName { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
         protected object Server;
 
-        public ServerManagerBase(string serverName)
+        public UniSpyServerManagerBase(string serverName)
         {
             ServerName = serverName;
         }

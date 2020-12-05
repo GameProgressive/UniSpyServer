@@ -20,7 +20,7 @@ namespace QueryReport.Handler.CommandHandler
         protected int _playerLenth, _teamLength;
         protected new HeartBeatRequest _request;
 
-        public HeartBeatHandler(ISession session, IRequest request) : base(session, request)
+        public HeartBeatHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (HeartBeatRequest)request;
         }

@@ -34,7 +34,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     {
         protected new LoginRequest _request;
         private LoginDBResult _result;
-        public LoginHandler(ISession session, IRequest request) : base(session, request)
+        public LoginHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (LoginRequest)request;
         }

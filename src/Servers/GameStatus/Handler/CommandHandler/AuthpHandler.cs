@@ -17,7 +17,7 @@ namespace GameStatus.Handler.CommandHandler
     {
         protected AuthPRequest _request;
         private uint _profileID;
-        public AuthPHandler(ISession session, IRequest request) : base(session, request)
+        public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (AuthPRequest)request;
         }

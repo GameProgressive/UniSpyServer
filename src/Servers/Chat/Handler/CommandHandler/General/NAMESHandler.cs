@@ -14,7 +14,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
         new NAMESRequest _request;
         ChatChannel _channel;
         ChatChannelUser _user;
-        public NAMESHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public NAMESHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (NAMESRequest)request;
         }

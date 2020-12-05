@@ -9,7 +9,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
     public class ATMHandler : ChatMessageHandlerBase
     {
         new ATMRequest _request;
-        public ATMHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public ATMHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (ATMRequest)request;
         }

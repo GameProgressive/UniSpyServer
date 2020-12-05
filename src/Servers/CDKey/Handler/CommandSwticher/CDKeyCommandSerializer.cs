@@ -8,11 +8,11 @@ namespace CDKey.Handler.CommandSwitcher
 {
     public class CDKeyCommandHandlerSerializer : CommandHandlerSerializerBase
     {
-        public CDKeyCommandHandlerSerializer(ISession session,IRequest request) : base(session,request)
+        public CDKeyCommandHandlerSerializer(IUniSpySession session,IUniSpyRequest request) : base(session,request)
         {
         }
 
-        public override IHandler Serialize()
+        public override IUniSpyHandler Serialize()
         {
             switch (_request.CommandName)
             {

@@ -46,7 +46,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         protected new GetProfileRequest _request;
         protected GetProfileDBResult _result;
-        public GetProfileHandler(ISession session, IRequest request) : base(session, request)
+        public GetProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (GetProfileRequest)request;
         }

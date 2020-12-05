@@ -6,16 +6,16 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class CommandSwitcherBase
     {
-        protected ISession _session;
+        protected IUniSpySession _session;
         protected object _rawRequest;
-        protected List<IRequest> _requests;
-        protected List<IHandler> _handlers;
-        public CommandSwitcherBase(ISession session, object rawRequest)
+        protected List<IUniSpyRequest> _requests;
+        protected List<IUniSpyHandler> _handlers;
+        public CommandSwitcherBase(IUniSpySession session, object rawRequest)
         {
             _session = session;
             _rawRequest = rawRequest;
-            _requests = new List<IRequest>();
-            _handlers = new List<IHandler>();
+            _requests = new List<IUniSpyRequest>();
+            _handlers = new List<IUniSpyHandler>();
             LogWriter.LogCurrentClass(this);
         }
 

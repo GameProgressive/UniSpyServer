@@ -30,7 +30,7 @@ namespace Chat.Abstraction.BaseClass
 
         new protected ChatSession _session;
 
-        public ChatCommandHandlerBase(ISession session, ChatRequestBase request) : base(session)
+        public ChatCommandHandlerBase(IUniSpySession session, ChatRequestBase request) : base(session)
         {
             _errorCode = ChatError.NoError;
             _request = request;

@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     {
         new KICKRequest _request;
         ChatChannelUser _kickee;
-        public KICKHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public KICKHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (KICKRequest)request;
         }

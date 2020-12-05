@@ -9,7 +9,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
     {
         new UTMRequest _request;
 
-        public UTMHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public UTMHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (UTMRequest)request;
         }

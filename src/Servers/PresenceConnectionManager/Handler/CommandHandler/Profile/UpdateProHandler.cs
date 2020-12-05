@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class UpdateProHandler : PCMCommandHandlerBase
     {
         protected new UpdateProRequest _request;
-        public UpdateProHandler(ISession session, IRequest request) : base(session, request)
+        public UpdateProHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (UpdateProRequest)request;
         }

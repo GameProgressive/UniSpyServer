@@ -21,7 +21,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
     {
         List<NickHandlerDataModel> _result;
         protected new NicksRequest _request;
-        public NicksHandler(ISession session, IRequest request) : base(session, request)
+        public NicksHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (NicksRequest)request;
         }

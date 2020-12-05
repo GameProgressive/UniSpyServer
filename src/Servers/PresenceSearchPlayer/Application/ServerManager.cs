@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ServerManager : ServerManagerBase
+    public class ServerManager : UniSpyServerManagerBase
     {
         /// <summary>
         /// Constructor

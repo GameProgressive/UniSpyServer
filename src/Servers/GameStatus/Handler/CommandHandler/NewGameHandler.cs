@@ -8,7 +8,7 @@ namespace GameStatus.Handler.CommandHandler
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"
-        public NewGameHandler(ISession session, IRequest request) : base(session, request)
+        public NewGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

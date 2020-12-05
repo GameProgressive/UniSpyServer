@@ -12,7 +12,7 @@ namespace QueryReport.Handler.CommandHandler
     public class KeepAliveHandler : QRCommandHandlerBase
     {
         protected new KeepAliveRequest _request;
-        public KeepAliveHandler(ISession session, IRequest request) : base(session, request)
+        public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (KeepAliveRequest)request;
         }

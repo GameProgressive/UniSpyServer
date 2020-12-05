@@ -7,7 +7,7 @@ namespace ServerBrowser.Handler.CommandHandler
 {
     public class GeneralRequestHandler : UpdateOptionHandlerBase
     {
-        public GeneralRequestHandler(ISession session, IRequest request) : base(session, request)
+        public GeneralRequestHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
         /// <summary>

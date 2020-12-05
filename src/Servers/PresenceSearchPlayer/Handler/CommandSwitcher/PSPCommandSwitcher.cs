@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer.Handler.CommandSwitcher
     public class PSPCommandSwitcher : CommandSwitcherBase
     {
         protected new string _rawRequest;
-        public PSPCommandSwitcher(ISession session, string rawRequest) : base(session, rawRequest)
+        public PSPCommandSwitcher(IUniSpySession session, string rawRequest) : base(session, rawRequest)
         {
             _rawRequest = rawRequest;
         }

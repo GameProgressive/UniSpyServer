@@ -8,7 +8,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     public class QUITHandler : ChatLogedInHandlerBase
     {
         new QUITRequest _request;
-        public QUITHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public QUITHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (QUITRequest)request;
         }

@@ -7,7 +7,7 @@ namespace ServerBrowser.Handler.CommandHandler
     public class SendMessageHandler : SBCommandHandlerBase
     {
         protected new AdHocRequest _request;
-        public SendMessageHandler(ISession session, IRequest request) : base(session, request)
+        public SendMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (AdHocRequest)request;
         }

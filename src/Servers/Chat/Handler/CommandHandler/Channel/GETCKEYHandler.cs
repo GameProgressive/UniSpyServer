@@ -12,7 +12,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     {
         new GETCKEYRequest _request;
 
-        public GETCKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public GETCKEYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (GETCKEYRequest)request;
         }

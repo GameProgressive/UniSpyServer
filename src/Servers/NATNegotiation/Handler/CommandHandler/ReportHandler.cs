@@ -13,7 +13,7 @@ namespace NATNegotiation.Handler.CommandHandler
     public class ReportHandler : NNCommandHandlerBase
     {
         protected new ReportRequest _request;
-        public ReportHandler(ISession session, IRequest request) : base(session, request)
+        public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (ReportRequest)request;
         }

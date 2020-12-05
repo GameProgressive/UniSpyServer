@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     public class SETKEYHandler : ChatLogedInHandlerBase
     {
         new SETKEYRequest _request;
-        public SETKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public SETKEYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (SETKEYRequest)request;
         }

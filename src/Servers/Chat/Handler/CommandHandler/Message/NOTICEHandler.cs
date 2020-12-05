@@ -9,7 +9,7 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
     public class NOTICEHandler : ChatMessageHandlerBase
     {
         new NOTICERequest _request;
-        public NOTICEHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public NOTICEHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = new NOTICERequest(request.RawRequest);
         }

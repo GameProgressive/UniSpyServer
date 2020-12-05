@@ -15,14 +15,14 @@ namespace UniSpyLib.Extensions
     {
         public static bool SerializeSet<T>(string key, T value, RedisDBNumber dbNumber)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase((int)dbNumber);
+            var redis = UniSpyServerManagerBase.Redis.GetDatabase((int)dbNumber);
             string jsonStr = JsonConvert.SerializeObject(value);
             return redis.StringSet(key, jsonStr);
         }
 
         public static T SerilizeGet<T>(string key, RedisDBNumber dbNumber)
         {
-            var redis = ServerManagerBase.Redis.GetDatabase((int)dbNumber);
+            var redis = UniSpyServerManagerBase.Redis.GetDatabase((int)dbNumber);
             T t = JsonConvert.DeserializeObject<T>(redis.StringGet(key));
             return t;
         }
@@ -31,9 +31,9 @@ namespace UniSpyLib.Extensions
         {
             List<string> matchKeys = new List<string>();
 
-            foreach (var end in ServerManagerBase.Redis.GetEndPoints())
+            foreach (var end in UniSpyServerManagerBase.Redis.GetEndPoints())
             {
-                var server = ServerManagerBase.Redis.GetServer(end);
+                var server = UniSpyServerManagerBase.Redis.GetServer(end);
                 foreach (var key in server.Keys((int)dbNumber))
                 {
                     matchKeys.Add(key);
@@ -51,9 +51,9 @@ namespace UniSpyLib.Extensions
         {
             List<string> matchKeys = new List<string>();
 
-            foreach (var end in ServerManagerBase.Redis.GetEndPoints())
+            foreach (var end in UniSpyServerManagerBase.Redis.GetEndPoints())
             {
-                var server = ServerManagerBase.Redis.GetServer(end);
+                var server = UniSpyServerManagerBase.Redis.GetServer(end);
                 foreach (var key in server.Keys((int)dbNumber, pattern: $"*{subStringOfKey}*"))
                 {
                     matchKeys.Add(key);

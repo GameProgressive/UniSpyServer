@@ -8,7 +8,7 @@ using System;
 
 namespace WebServices.Application
 {
-    public class ServerManager : ServerManagerBase
+    public class ServerManager : UniSpyServerManagerBase
     {
         private IHostBuilder _hostBuilder;
         public ServerManager(string serverName) : base(serverName)

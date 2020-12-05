@@ -14,7 +14,7 @@ namespace QueryReport.Handler.CommandHandler
         protected GameServer _gameServer;
         protected new ChallengeRequest _request;
         //we do not need to implement this to check the correctness of the challenge response
-        public ChallengeHandler(ISession session, IRequest request) : base(session, request)
+        public ChallengeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (ChallengeRequest)request;
         }

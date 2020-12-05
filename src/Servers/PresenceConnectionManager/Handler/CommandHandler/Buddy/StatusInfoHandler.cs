@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class StatusInfoHandler : PCMCommandHandlerBase
     {
         protected new StatusInfoRequest _request;
-        public StatusInfoHandler(ISession session, IRequest request) : base(session, request)
+        public StatusInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (StatusInfoRequest)request;
         }

@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Handler.CommandSwitcher
 {
-    public class NNRequestSerializer : RequestSerializerBase
+    public class NNRequestSerializer : UniSpyRequestSerializerBase
     {
         protected new byte[] _rawRequest;
         public NNRequestSerializer(object rawRequest) : base(rawRequest)
@@ -15,7 +15,7 @@ namespace NATNegotiation.Handler.CommandSwitcher
             _rawRequest = (byte[])rawRequest;
         }
 
-        public override IRequest Serialize()
+        public override IUniSpyRequest Serialize()
         {
             switch ((NatPacketType)_rawRequest[7])
             {

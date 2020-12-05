@@ -42,7 +42,7 @@ namespace UniSpyLib.Logging
             }
             Log.Logger = logConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{ServerManagerBase.ServerName}]-.log",
+                .WriteTo.File($"Logs/[{UniSpyServerManagerBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
@@ -57,22 +57,22 @@ namespace UniSpyLib.Logging
             switch (level)
             {
                 case LogEventLevel.Verbose:
-                    Log.Verbose($"[{ServerManagerBase.ServerName}] " + message);
+                    Log.Verbose($"[{UniSpyServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Information:
-                    Log.Information($"[{ServerManagerBase.ServerName}] " + message);
+                    Log.Information($"[{UniSpyServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Debug:
-                    Log.Debug($"[{ServerManagerBase.ServerName}] " + message);
+                    Log.Debug($"[{UniSpyServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Error:
-                    Log.Error($"[{ServerManagerBase.ServerName}] " + message);
+                    Log.Error($"[{UniSpyServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Fatal:
-                    Log.Fatal($"[{ServerManagerBase.ServerName}] " + message);
+                    Log.Fatal($"[{UniSpyServerManagerBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Warning:
-                    Log.Warning($"[{ServerManagerBase.ServerName}] " + message);
+                    Log.Warning($"[{UniSpyServerManagerBase.ServerName}] " + message);
                     break;
             }
         }

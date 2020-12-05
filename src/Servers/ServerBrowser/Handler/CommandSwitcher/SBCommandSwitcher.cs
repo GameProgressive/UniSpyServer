@@ -6,7 +6,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
     public class SBCommandSwitcher : CommandSwitcherBase
     {
         protected new byte[] _rawRequest;
-        public SBCommandSwitcher(ISession session, byte[] rawRequest) : base(session, rawRequest)
+        public SBCommandSwitcher(IUniSpySession session, byte[] rawRequest) : base(session, rawRequest)
         {
             _rawRequest = rawRequest;
         }

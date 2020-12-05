@@ -25,7 +25,7 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected List<byte> _dataList;
         protected List<GameServer> _gameServers;
 
-        public UpdateOptionHandlerBase(ISession session, IRequest request) : base(session, request)
+        public UpdateOptionHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (ServerListRequest)request;
             _dataList = new List<byte>();

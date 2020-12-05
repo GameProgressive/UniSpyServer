@@ -8,7 +8,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     {
         new USERRequest _request;
 
-        public USERHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public USERHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (USERRequest)request;
         }

@@ -10,7 +10,7 @@ namespace NATNegotiation.Handler.CommandSwitcher
     public class NNCommandSwitcher : CommandSwitcherBase
     {
         protected new byte[] _rawRequest;
-        public NNCommandSwitcher(ISession session, object rawRequest) : base(session, rawRequest)
+        public NNCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 

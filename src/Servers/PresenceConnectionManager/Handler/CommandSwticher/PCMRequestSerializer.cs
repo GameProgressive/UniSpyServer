@@ -12,7 +12,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    public class PCMRequestSerializer : RequestSerializerBase
+    public class PCMRequestSerializer : UniSpyRequestSerializerBase
     {
         protected new string _rawRequest;
 
@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
             _rawRequest = (string)rawRequest;
         }
 
-        public override IRequest Serialize()
+        public override IUniSpyRequest Serialize()
         {
             // Read client message, and parse it into key value pairs
             var keyValues = GameSpyUtils.ConvertToKeyValue(_rawRequest);

@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class RegisterCDKeyHandler : PCMCommandHandlerBase
     {
         protected new RegisterCDKeyRequest _request;
-        public RegisterCDKeyHandler(ISession session, IRequest request) : base(session, request)
+        public RegisterCDKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (RegisterCDKeyRequest)request;
         }

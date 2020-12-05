@@ -18,7 +18,7 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
         new SETCKEYRequest _request;
         bool IsSetOthersKeyValue;
         ChatChannelUser _otherUser;
-        public SETCKEYHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public SETCKEYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (SETCKEYRequest)request;
             IsSetOthersKeyValue = false;

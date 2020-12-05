@@ -12,7 +12,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     {
         new GETUDPRELAYRequest _request;
 
-        public GETUDPRELAYHandler(ISession session, ChatRequestBase request) : base(session, request)
+        public GETUDPRELAYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
         {
             _request = (GETUDPRELAYRequest)request;
         }

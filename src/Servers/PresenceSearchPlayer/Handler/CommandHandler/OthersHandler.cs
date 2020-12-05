@@ -24,7 +24,7 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
     {
         protected new OthersRequest _request;
         private List<OthersHandlerDataModel> _result;
-        public OthersHandler(ISession session, IRequest request) : base(session, request)
+        public OthersHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new List<OthersHandlerDataModel>();
             _request = (OthersRequest)request;
