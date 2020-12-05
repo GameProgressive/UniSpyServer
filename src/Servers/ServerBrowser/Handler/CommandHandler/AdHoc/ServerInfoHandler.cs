@@ -18,14 +18,19 @@ namespace ServerBrowser.Handler.CommandHandler
     /// Get full rules for a server (for example, to get
     /// player information from a server that only has basic information so far)
     /// </summary>
-    public class ServerInfoHandler : UpdateOptionHandlerBase
+    public class ServerInfoHandler : SBCommandHandlerBase
     {
-        private new AdHocRequest _request;
-        private GameServer _gameServer;
+        protected new AdHocRequest _request
+        {
+            get { return (AdHocRequest)base._request; }
+            set { base._request = value; }
+        }
+        protected GameServer _gameServer;
+        protected List<byte> _dataList;
 
         public ServerInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (AdHocRequest)request;
+            _dataList = new List<byte>();
         }
 
         protected override void DataOperation()
@@ -67,7 +72,9 @@ namespace ServerBrowser.Handler.CommandHandler
         protected virtual List<byte> GenerateServerInfo()
         {
             List<byte> data = new List<byte>();
-            data.AddRange(GenerateServerInfoHeader(_gameServer));
+            data.AddRange(
+                UpdateOptionHandlerBase.GenerateServerInfoHeader(
+                    GameServerFlags.HasFullRulesFlag,_gameServer));
 
             foreach (var kv in _gameServer.ServerData.KeyValue)
             {
@@ -102,32 +109,7 @@ namespace ServerBrowser.Handler.CommandHandler
             return data;
         }
 
-        protected virtual List<byte> GenerateServerInfoHeader(GameServer server)
-        {
-            // you will only have HasKeysFlag or HasFullRule you can not have both
-            List<byte> header = new List<byte>();
-
-            //add has key flag
-            header.Add((byte)GameServerFlags.HasFullRulesFlag);
-
-            //we add server public ip here
-            header.AddRange(ByteTools.GetIPBytes(server.RemoteQueryReportIP));
-
-            //we check host port is standard port or not
-            CheckNonStandardPort(header, server);
-
-            // now we check if there are private ip
-            CheckPrivateIP(header, server);
-
-            // we check private port here
-            CheckPrivatePort(header, server);
-
-            //TODO we have to check icmp_ip_flag
-            CheckICMPSupport(header, server);
-
-            return header;
-        }
-
+       
         protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)
