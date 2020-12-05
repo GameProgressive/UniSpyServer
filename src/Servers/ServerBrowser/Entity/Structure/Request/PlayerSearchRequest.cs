@@ -9,8 +9,11 @@ namespace ServerBrowser.Entity.Structure.Request
     {
         public int SearchOption { get; protected set; }
         public new int CommandName { get { return SearchOption; } }
-        public new byte[] RawRequest { get; protected set; }
-
+        public new byte[] RawRequest
+        {
+            get { return (byte[])base.RawRequest; }
+            protected set { base.RawRequest = value; }
+        }
         public uint MaxResults { get; protected set; }
         public string SearchName { get; protected set; }
         public string Message { get; protected set; }

@@ -30,8 +30,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             _request = (ServerListRequest)request;
             _dataList = new List<byte>();
         }
-
-       
+        
         protected override void CheckRequest()
         {
             base.CheckRequest();

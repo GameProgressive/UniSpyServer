@@ -10,17 +10,21 @@ namespace ServerBrowser.Handler.CommandSwitcher
 {
     public class SBRequestSerializer : UniSpyRequestSerializerBase
     {
-        protected new byte[] _rawRequest;
+        protected new byte[] _rawRequest
+        {
+            get { return (byte[])base._rawRequest; }
+            set { base._rawRequest = value; }
+        }
+
         public SBRequestSerializer(byte[] rawRequest) : base(rawRequest)
         {
-            _rawRequest = rawRequest;
         }
 
         public override IUniSpyRequest Serialize()
         {
             if (_rawRequest.Take(6).SequenceEqual(NNRequestBase.MagicData))
             {
-                return new AdHocRequest(_rawRequest, SBClientRequestType.NatNegRequest);
+                return new AdHocRequest(_rawRequest);
             }
 
             switch ((SBClientRequestType)_rawRequest[2])

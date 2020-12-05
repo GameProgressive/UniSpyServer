@@ -8,7 +8,7 @@ using UniSpyLib.Logging;
 
 namespace Chat.Handler.CommandSwitcher
 {
-    public class ChatCommandHandlerSerializer:CommandHandlerSerializerBase
+    public class ChatCommandHandlerSerializer:UniSpyCmdHandlerSerializerBase
     {
         public ChatCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

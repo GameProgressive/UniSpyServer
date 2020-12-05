@@ -8,7 +8,7 @@ using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Handler.CommandSwticher
 {
-    public class PCMCommandHandlerSerializer : CommandHandlerSerializerBase
+    public class PCMCommandHandlerSerializer : UniSpyCmdHandlerSerializerBase
     {
         protected new PCMRequestBase _request;
         public PCMCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)

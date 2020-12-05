@@ -9,7 +9,7 @@ using GameStatus.Handler.CommandHandler;
 
 namespace GameStatus.Handler.CommandSwitcher
 {
-    public class GSCommandHandlerSerializer : CommandHandlerSerializerBase
+    public class GSCommandHandlerSerializer : UniSpyCmdHandlerSerializerBase
     {
         protected new GSRequestBase _request;
         public GSCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)

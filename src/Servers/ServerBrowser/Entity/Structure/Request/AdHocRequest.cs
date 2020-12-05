@@ -17,18 +17,20 @@ namespace ServerBrowser.Entity.Structure.Request
         public string TargetServerIP { get { return TargetEndPoint.Address.ToString(); } }
         public string TargetServerHostPort { get { return TargetEndPoint.Port.ToString(); } }
         public IPEndPoint TargetEndPoint { get; protected set; }
-        public new byte[] RawRequest { get; protected set; }
-        public new SBClientRequestType CommandName { get; protected set; }
+        public new byte[] RawRequest
+        {
+            get { return (byte[])base.RawRequest; }
+            protected set { base.RawRequest = value; }
+        }
+        public new SBClientRequestType CommandName
+        {
+            get { return (SBClientRequestType)base.CommandName; }
+            protected set { base.CommandName = value; }
+        }
 
         public AdHocRequest(byte[] rawRequest):base(rawRequest)
         {
-            RawRequest = rawRequest;
             CommandName = (SBClientRequestType)RawRequest[2];
-        }
-        public AdHocRequest(byte[] rawRequest, SBClientRequestType commandName) : base(rawRequest)
-        {
-            RawRequest = rawRequest;
-            CommandName = commandName;
         }
 
         public override object Parse()

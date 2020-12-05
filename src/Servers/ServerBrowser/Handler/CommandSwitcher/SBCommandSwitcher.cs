@@ -5,10 +5,13 @@ namespace ServerBrowser.Handler.CommandSwitcher
 {
     public class SBCommandSwitcher : CommandSwitcherBase
     {
-        protected new byte[] _rawRequest;
+        protected new byte[] _rawRequest
+        {
+            get { return (byte[])base._rawRequest; }
+            set { base._rawRequest = value; }
+        }
         public SBCommandSwitcher(IUniSpySession session, byte[] rawRequest) : base(session, rawRequest)
         {
-            _rawRequest = rawRequest;
         }
 
         protected override void SerializeCommandHandlers()

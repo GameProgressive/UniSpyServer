@@ -6,7 +6,7 @@ using UniSpyLib.Logging;
 
 namespace CDKey.Handler.CommandSwitcher
 {
-    public class CDKeyCommandHandlerSerializer : CommandHandlerSerializerBase
+    public class CDKeyCommandHandlerSerializer : UniSpyCmdHandlerSerializerBase
     {
         public CDKeyCommandHandlerSerializer(IUniSpySession session,IUniSpyRequest request) : base(session,request)
         {

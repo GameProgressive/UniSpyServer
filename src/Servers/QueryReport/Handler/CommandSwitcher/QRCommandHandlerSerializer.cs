@@ -7,7 +7,7 @@ using UniSpyLib.Logging;
 
 namespace QueryReport.Handler.CommandSwitcher
 {
-    public class QRCommandHandlerSerializer : CommandHandlerSerializerBase
+    public class QRCommandHandlerSerializer : UniSpyCmdHandlerSerializerBase
     {
         protected new QRRequestBase _request;
         public QRCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)

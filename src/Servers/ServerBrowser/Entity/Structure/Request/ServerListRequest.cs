@@ -29,11 +29,22 @@ namespace ServerBrowser.Entity.Structure.Request
         public byte[] SourceIP { get; protected set; }
         public int MaxServers { get; protected set; }
 
-        public new byte[] RawRequest { get; protected set; }
+        public new byte[] RawRequest
+        {
+            get { return (byte[])base.RawRequest; }
+            protected set { base.RawRequest = value; }
+        }
+
+        public new SBClientRequestType CommandName
+        {
+            get { return (SBClientRequestType)base.CommandName; }
+            protected set { base.CommandName = value; }
+        }
+
         public ServerListRequest(byte[] rawRequest) : base(rawRequest)
         {
             SourceIP = new byte[4];
-            RawRequest = rawRequest;
+            CommandName = SBClientRequestType.ServerListRequest;
         }
 
         /// <summary>
