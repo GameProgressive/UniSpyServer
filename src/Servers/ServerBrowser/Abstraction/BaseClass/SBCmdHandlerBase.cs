@@ -8,21 +8,19 @@ using ServerBrowser.Network;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    public abstract class SBCommandHandlerBase : UniSpyCmdHandlerBase
+    public abstract class SBCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected SBErrorCode _errorCode;
         protected byte[] _sendingBuffer;
         protected new SBSession _session { get { return (SBSession)base._session; } }
 
-        public SBCommandHandlerBase(IUniSpySession session, IUniSpyRequest request):base(session,request)
+        public SBCmdHandlerBase(IUniSpySession session, IUniSpyRequest request):base(session,request)
         {
             _errorCode = SBErrorCode.NoError;
         }
 
         public override void Handle()
         {
-            base.Handle();
-
             CheckRequest();
 
             if (_errorCode != SBErrorCode.NoError)
@@ -50,16 +48,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             Response();
         }
 
-        protected virtual void CheckRequest()
-        { }
-
-        protected virtual void DataOperation()
-        { }
-
-        protected virtual void ConstructResponse()
-        { }
-
-        protected virtual void Response()
+        protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)
             {

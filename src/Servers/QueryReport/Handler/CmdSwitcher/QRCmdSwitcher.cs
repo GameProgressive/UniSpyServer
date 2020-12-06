@@ -1,17 +1,19 @@
-﻿using System;
-using QueryReport.Entity.Enumerate;
+﻿using QueryReport.Entity.Enumerate;
 using QueryReport.Handler.SystemHandler.ErrorMessage;
 using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
-namespace QueryReport.Handler.CommandSwitcher
+namespace QueryReport.Handler.CmdSwitcher
 {
-    public class QRCommandSwitcher:CommandSwitcherBase
+    public class QRCmdSwitcher : CommandSwitcherBase
     {
-        protected new byte[] _rawRequest;
-        public QRCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
+        protected new byte[] _rawRequest
+        {
+            get { return (byte[])base._rawRequest; }
+        }
+        public QRCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 
@@ -19,7 +21,7 @@ namespace QueryReport.Handler.CommandSwitcher
         {
             foreach (var request in _requests)
             {
-                _handlers.Add(new QRCommandHandlerSerializer(_session, request).Serialize());
+                _handlers.Add(new QRCmdHandlerSerializer(_session, request).Serialize());
             }
         }
 

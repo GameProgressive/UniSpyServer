@@ -29,7 +29,6 @@ namespace GameStatus.Abstraction.BaseClass
 
         public override void Handle()
         {
-            base.Handle();
             CheckRequest();
             if (_errorCode != GSError.NoError)
             {
@@ -56,13 +55,7 @@ namespace GameStatus.Abstraction.BaseClass
             Response();
         }
 
-        protected virtual void CheckRequest() { }
-
-        protected virtual void DataOperation() { }
-
-        protected virtual void ConstructResponse() { }
-
-        protected virtual void Response()
+        protected override void Response()
         {
             if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
             {

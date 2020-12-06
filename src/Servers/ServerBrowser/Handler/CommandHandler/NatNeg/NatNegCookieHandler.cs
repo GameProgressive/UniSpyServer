@@ -14,7 +14,7 @@ namespace ServerBrowser.Handler.CommandHandler
     /// <summary>
     /// we need forward this to game server
     /// </summary>
-    public class NatNegCookieHandler : SBCommandHandlerBase
+    public class NatNegCookieHandler : SBCmdHandlerBase
     {
         protected new AdHocRequest _request
         {

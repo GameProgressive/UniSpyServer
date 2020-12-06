@@ -30,8 +30,6 @@ namespace NATNegotiation.Abstraction.BaseClass
 
         public override void Handle()
         {
-            base.Handle();
-
             CheckRequest();
             if (_errorCode != NNErrorCode.NoError)
             {
@@ -51,20 +49,12 @@ namespace NATNegotiation.Abstraction.BaseClass
             Response();
         }
 
-        protected virtual void CheckRequest()
+        protected override void CheckRequest()
         {
             _session.UserInfo.UpdateLastPacketReceiveTime();
         }
 
-        protected virtual void DataOperation()
-        {
-        }
-
-        protected virtual void ConstructResponse()
-        {
-        }
-
-        protected virtual void Response()
+        protected override void Response()
         {
             if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
             {

@@ -1,16 +1,16 @@
 ﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
-using QueryReport.Handler.CommandHandler;
+using QueryReport.Handler.CmdHandler;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
-namespace QueryReport.Handler.CommandSwitcher
+namespace QueryReport.Handler.CmdSwitcher
 {
-    public class QRCommandHandlerSerializer : UniSpyCmdHandlerSerializerBase
+    public class QRCmdHandlerSerializer : UniSpyCmdHandlerSerializerBase
     {
         protected new QRRequestBase _request;
-        public QRCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public QRCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (QRRequestBase)request;
         }

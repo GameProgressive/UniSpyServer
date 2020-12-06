@@ -16,7 +16,7 @@ using ServerBrowser.Entity.Structure.Request;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    public abstract class UpdateOptionHandlerBase : SBCommandHandlerBase
+    public abstract class UpdateOptionHandlerBase : SBCmdHandlerBase
     {
         protected byte[] _clientRemoteIP;
         protected byte[] _gameServerDefaultHostPort;

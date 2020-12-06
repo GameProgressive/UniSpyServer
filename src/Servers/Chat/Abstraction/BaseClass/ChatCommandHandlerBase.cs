@@ -44,8 +44,6 @@ namespace Chat.Abstraction.BaseClass
         //if we use this structure the error response should also write to _sendingBuffer
         public override void Handle()
         {
-            base.Handle();
-
             CheckRequest();
 
             if (_errorCode != ChatError.NoError)
@@ -71,11 +69,8 @@ namespace Chat.Abstraction.BaseClass
 
             Response();
         }
-        protected virtual void CheckRequest()
-        { }
-        protected virtual void DataOperation()
-        { }
-        protected virtual void ConstructResponse()
+
+        protected override void ConstructResponse()
         {
             if (_errorCode != ChatError.NoError)
             {
@@ -87,7 +82,7 @@ namespace Chat.Abstraction.BaseClass
             }
         }
 
-        protected virtual void BuildErrorResponse()
+        protected override void BuildErrorResponse()
         {
             if (_errorCode != ChatError.NoError)
             {
@@ -95,11 +90,8 @@ namespace Chat.Abstraction.BaseClass
             }
         }
 
-        protected virtual void BuildNormalResponse()
-        { }
 
-
-        protected virtual void Response()
+        protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {

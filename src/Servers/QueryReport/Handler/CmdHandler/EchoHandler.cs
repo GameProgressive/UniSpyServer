@@ -6,9 +6,9 @@ using QueryReport.Network;
 using Serilog.Events;
 using System;
 using System.Linq;
-namespace QueryReport.Handler.CommandHandler
+namespace QueryReport.Handler.CmdHandler
 {
-    public class EchoHandler : QRCommandHandlerBase
+    public class EchoHandler : QRCmdHandlerBase
     {
         protected GameServer _gameServer;
         public EchoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

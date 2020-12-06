@@ -1,5 +1,5 @@
 ﻿using UniSpyLib.Network;
-using QueryReport.Handler.CommandSwitcher;
+using QueryReport.Handler.CmdSwitcher;
 using QueryReport.Handler.SystemHandler.NatNegCookieManage;
 using QueryReport.Handler.SystemHandler.PeerSystem;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
@@ -46,7 +46,7 @@ namespace QueryReport.Network
                 session = (QRSession)CreateSession(endPoint);
                 QRSessionManager.Sessions.TryAdd(endPoint, session);
             }
-            new QRCommandSwitcher(session, message).Switch();
+            new QRCmdSwitcher(session, message).Switch();
         }
 
         protected override void OnReceived(EndPoint endPoint, string message)

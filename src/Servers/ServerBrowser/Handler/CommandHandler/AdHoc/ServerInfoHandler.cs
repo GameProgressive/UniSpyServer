@@ -18,12 +18,12 @@ namespace ServerBrowser.Handler.CommandHandler
     /// Get full rules for a server (for example, to get
     /// player information from a server that only has basic information so far)
     /// </summary>
-    public class ServerInfoHandler : SBCommandHandlerBase
+    public class ServerInfoHandler : SBCmdHandlerBase
     {
         protected new AdHocRequest _request
         {
             get { return (AdHocRequest)base._request; }
-            set { base._request = value; }
+            // set { base._request = value; }
         }
         protected GameServer _gameServer;
         protected List<byte> _dataList;

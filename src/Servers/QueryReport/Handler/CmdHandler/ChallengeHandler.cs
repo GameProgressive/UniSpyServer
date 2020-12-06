@@ -2,14 +2,13 @@
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Request;
-using QueryReport.Network;
 using System.Linq;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure.Response;
 
-namespace QueryReport.Handler.CommandHandler
+namespace QueryReport.Handler.CmdHandler
 {
-    public class ChallengeHandler : QRCommandHandlerBase
+    public class ChallengeHandler : QRCmdHandlerBase
     {
         protected GameServer _gameServer;
         protected new ChallengeRequest _request { get { return (ChallengeRequest)base._request; } }
@@ -31,7 +30,7 @@ namespace QueryReport.Handler.CommandHandler
             _gameServer = result.First();
         }
 
-        protected override void ConstructeResponse()
+        protected override void ConstructResponse()
         {
             if (_session.InstantKey != _request.InstantKey)
             {

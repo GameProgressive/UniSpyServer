@@ -28,19 +28,8 @@ namespace CDKey.Abstraction.BaseClass
             Response();
         }
 
-        public virtual void CheckRequest()
-        {
-        }
-
-        public virtual void DataOperation()
-        {
-        }
-
-        public virtual void ConstructResponse()
-        {
-        }
-
-        public virtual void Response()
+      
+        protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
             {

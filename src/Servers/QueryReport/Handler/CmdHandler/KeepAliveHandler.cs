@@ -7,16 +7,16 @@ using QueryReport.Network;
 using System;
 using System.Linq;
 
-namespace QueryReport.Handler.CommandHandler
+namespace QueryReport.Handler.CmdHandler
 {
-    public class KeepAliveHandler : QRCommandHandlerBase
+    public class KeepAliveHandler : QRCmdHandlerBase
     {
         protected new KeepAliveRequest _request { get { return (KeepAliveRequest)base._request; } }
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
-        protected override void ConstructeResponse()
+        protected override void ConstructResponse()
         {
             if (_session.InstantKey != _request.InstantKey)
             {

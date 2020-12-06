@@ -5,12 +5,12 @@ using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 
-namespace QueryReport.Handler.CommandHandler
+namespace QueryReport.Handler.CmdHandler
 {
     /// <summary>
     /// AvailableCheckHandler
     /// </summary>
-    public class AvailableHandler : QRCommandHandlerBase
+    public class AvailableHandler : QRCmdHandlerBase
     {
         protected new AvaliableRequest _request { get { return (AvaliableRequest)base._request; } }
         public AvailableHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -37,7 +37,7 @@ namespace QueryReport.Handler.CommandHandler
             }
         }
 
-        protected override void ConstructeResponse()
+        protected override void ConstructResponse()
         {
             _sendingBuffer = new AvaliableResponse().BuildResponse();
         }

@@ -8,7 +8,7 @@ using Serilog.Events;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    public class QRCommandHandlerBase : UniSpyCmdHandlerBase
+    public class QRCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected QRErrorCode _errorCode;
         protected byte[] _sendingBuffer;
@@ -16,7 +16,7 @@ namespace QueryReport.Abstraction.BaseClass
         {
             get { return (QRSession)base._session; }
         }
-        protected QRCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
+        protected QRCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
             _request = request;
             _errorCode = QRErrorCode.NoError;
@@ -24,8 +24,6 @@ namespace QueryReport.Abstraction.BaseClass
 
         public override void Handle()
         {
-            base.Handle();
-
             CheckRequest();
 
             if (_errorCode != QRErrorCode.NoError)
@@ -42,7 +40,7 @@ namespace QueryReport.Abstraction.BaseClass
                 return;
             }
 
-            ConstructeResponse();
+            ConstructResponse();
 
             if (_errorCode != QRErrorCode.NoError)
             {
@@ -53,13 +51,8 @@ namespace QueryReport.Abstraction.BaseClass
             Response();
         }
 
-        protected virtual void CheckRequest() { }
 
-        protected virtual void DataOperation() { }
-
-        protected virtual void ConstructeResponse() { }
-
-        protected virtual void Response()
+        protected override void Response()
         {
             if (_sendingBuffer == null)
             {

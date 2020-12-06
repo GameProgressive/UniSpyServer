@@ -31,8 +31,6 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 
         public override void Handle()
         {
-            base.Handle();
-
             CheckRequest();
 
             if (_errorCode != GPErrorCode.NoError)
@@ -56,14 +54,11 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             Response();
         }
 
-        protected virtual void CheckRequest() { }
-
-        protected virtual void DataOperation() { }
 
         /// <summary>
         /// Usually we do not need to override this method
         /// </summary>
-        protected virtual void ConstructResponse()
+        protected override void ConstructResponse()
         {
             if (_errorCode != GPErrorCode.NoError)
             {
@@ -75,7 +70,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             }
         }
 
-        protected virtual void Response()
+        protected override void Response()
         {
             if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
             {
@@ -84,11 +79,10 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             base._session.SendAsync(_sendingBuffer);
         }
 
-        protected virtual void BuildErrorResponse()
+        protected override void BuildErrorResponse()
         {
             _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
         }
 
-        protected virtual void BuildNormalResponse() { }
     }
 }

@@ -7,7 +7,7 @@ using QueryReport.Handler.SystemHandler.ErrorMessage;
 using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
 
-namespace QueryReport.Handler.CommandSwitcher
+namespace QueryReport.Handler.CmdSwitcher
 {
     public class QRRequestSerializer:UniSpyRequestSerializerBase
     {

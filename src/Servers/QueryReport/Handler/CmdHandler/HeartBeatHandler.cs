@@ -9,9 +9,9 @@ using System.Text;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure.Response;
 
-namespace QueryReport.Handler.CommandHandler
+namespace QueryReport.Handler.CmdHandler
 {
-    public class HeartBeatHandler : QRCommandHandlerBase
+    public class HeartBeatHandler : QRCmdHandlerBase
     {
         protected GameServer _gameServer;
         protected HeartBeatReportType _reportType;
@@ -93,7 +93,7 @@ namespace QueryReport.Handler.CommandHandler
             }
         }
 
-        protected override void ConstructeResponse()
+        protected override void ConstructResponse()
         {
             HeartBeatResponse response = new HeartBeatResponse(_session,_request);
             _sendingBuffer = response.BuildResponse();

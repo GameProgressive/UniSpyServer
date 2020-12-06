@@ -3,14 +3,14 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCommandSwitcher : CommandSwitcherBase
+    public class SBCmdSwitcher : CommandSwitcherBase
     {
         protected new byte[] _rawRequest
         {
             get { return (byte[])base._rawRequest; }
             set { base._rawRequest = value; }
         }
-        public SBCommandSwitcher(IUniSpySession session, byte[] rawRequest) : base(session, rawRequest)
+        public SBCmdSwitcher(IUniSpySession session, byte[] rawRequest) : base(session, rawRequest)
         {
         }
 
@@ -18,7 +18,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
         {
             foreach (var request in _requests)
             {
-                var handler = new SBCommandHandlerSerializer(_session, request).Serialize();
+                var handler = new SBCmdHandlerSerializer(_session, request).Serialize();
                 if (handler == null)
                 {
                     continue;

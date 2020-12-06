@@ -4,7 +4,7 @@ using ServerBrowser.Entity.Structure.Request;
 
 namespace ServerBrowser.Handler.CommandHandler
 {
-    public class SendMessageHandler : SBCommandHandlerBase
+    public class SendMessageHandler : SBCmdHandlerBase
     {
         protected new AdHocRequest _request { get { return (AdHocRequest)base._request; } }
         public SendMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
