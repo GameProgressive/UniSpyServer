@@ -10,11 +10,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     /// </summary>
     public class GETUDPRELAYHandler : ChatCommandHandlerBase
     {
-        new GETUDPRELAYRequest _request;
+        new GETUDPRELAYRequest _request { get { return (GETUDPRELAYRequest)base._request; } }
 
-        public GETUDPRELAYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public GETUDPRELAYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (GETUDPRELAYRequest)request;
         }
 
     }

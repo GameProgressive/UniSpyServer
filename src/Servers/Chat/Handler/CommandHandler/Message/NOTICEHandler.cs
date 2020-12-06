@@ -8,10 +8,9 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
 {
     public class NOTICEHandler : ChatMessageHandlerBase
     {
-        new NOTICERequest _request;
-        public NOTICEHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        new NOTICERequest _request { get { return (NOTICERequest)base._request; } }
+        public NOTICEHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = new NOTICERequest(request.RawRequest);
         }
         protected override void CheckRequest()
         {

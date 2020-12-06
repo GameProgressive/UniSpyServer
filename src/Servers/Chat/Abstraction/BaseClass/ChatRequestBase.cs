@@ -8,10 +8,18 @@ namespace Chat.Abstraction.BaseClass
 {
     public class ChatRequestBase : UniSpyRequestBase
     {
-        public new string RawRequest { get; protected set; }
-        public new string CommandName { get; protected set; }
+        public new string RawRequest
+        {
+            get { return (string)base.RawRequest; }
+        }
 
-        protected string Prefix;
+        public new string CommandName
+        {
+            get { return (string)base.CommandName;  }
+            set { base.CommandName = value; }
+        }
+
+        protected string _prefix;
         protected List<string> _cmdParams;
         protected string _longParam;
         /// <summary>
@@ -20,7 +28,6 @@ namespace Chat.Abstraction.BaseClass
         /// <param name="request"></param>
         public ChatRequestBase(string rawRequest) : base(rawRequest)
         {
-            RawRequest = rawRequest;
         }
 
         public override object Parse()
@@ -41,7 +48,7 @@ namespace Chat.Abstraction.BaseClass
             if (indexOfColon == 0 && indexOfColon != -1)
             {
                 int prefixIndex = rawRequest.IndexOf(' ');
-                Prefix = rawRequest.Substring(indexOfColon, prefixIndex);
+                _prefix = rawRequest.Substring(indexOfColon, prefixIndex);
                 rawRequest = rawRequest.Substring(prefixIndex);
             }
 

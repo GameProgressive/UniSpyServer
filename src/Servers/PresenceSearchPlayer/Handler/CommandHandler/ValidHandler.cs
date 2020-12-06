@@ -9,11 +9,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     public class ValidHandler : PSPCommandHandlerBase
     {
-        protected new ValidRequest _request;
+        protected new ValidRequest _request { get { return (ValidRequest)base._request; } }
         private bool _isAccountValid;
         public ValidHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (ValidRequest)request;
         }
 
         protected override void DataOperation()

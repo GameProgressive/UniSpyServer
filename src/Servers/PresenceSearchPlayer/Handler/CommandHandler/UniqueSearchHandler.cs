@@ -9,12 +9,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 {
     public class UniqueSearchHandler : PSPCommandHandlerBase
     {
-        protected new UniqueSearchRequest _request;
+        protected new UniqueSearchRequest _request { get { return (UniqueSearchRequest)base._request; } }
         private bool _isUniquenickExist;
 
         public UniqueSearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (UniqueSearchRequest)request;
         }
 
         protected override void DataOperation()

@@ -17,10 +17,13 @@ namespace Chat.Abstraction.BaseClass
     /// if error code bigger than noerror we need to process it in ConstructResponse()
     ///we also need to check the error code != noerror in ConstructResponse()
     /// </summary>
-    public abstract class ChatCommandHandlerBase : CommandHandlerBase
+    public abstract class ChatCommandHandlerBase : UniSpyCmdHandlerBase
     {
         protected ChatError _errorCode;
-        protected ChatRequestBase _request;
+        protected new ChatRequestBase _request
+        {
+            get { return (ChatRequestBase)base._request; }
+        }
         /// <summary>
         /// Generic response buffer
         /// if some handler have multiple response
@@ -28,13 +31,14 @@ namespace Chat.Abstraction.BaseClass
         /// </summary>
         protected string _sendingBuffer;
 
-        new protected ChatSession _session;
+        protected new ChatSession _session
+        {
+            get { return (ChatSession)base._session; }
+        }
 
-        public ChatCommandHandlerBase(IUniSpySession session, ChatRequestBase request) : base(session)
+        public ChatCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
             _errorCode = ChatError.NoError;
-            _request = request;
-            _session = (ChatSession)session;
         }
 
         //if we use this structure the error response should also write to _sendingBuffer

@@ -13,11 +13,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        protected new CheckRequest _request;
+        protected new CheckRequest _request { get { return (CheckRequest)base._request; } }
         uint _profileid;
         public CheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (CheckRequest)request;
         }
 
         protected override void DataOperation()

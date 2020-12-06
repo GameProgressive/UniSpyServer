@@ -10,11 +10,13 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 
     public class GETCKEYHandler : ChatChannelHandlerBase
     {
-        new GETCKEYRequest _request;
-
-        public GETCKEYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        protected new GETCKEYRequest _request
         {
-            _request = (GETCKEYRequest)request;
+            get { return (GETCKEYRequest)base._request; }
+        }
+
+        public GETCKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        {
         }
 
         protected override void CheckRequest()

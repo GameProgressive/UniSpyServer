@@ -10,10 +10,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class RegisterNickHandler : PCMCommandHandlerBase
     {
-        protected new RegisterNickRequest _request;
+        protected new RegisterNickRequest _request { get { return (RegisterNickRequest)base._request; } }
         public RegisterNickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (RegisterNickRequest)request;
         }
 
         protected override void DataOperation()

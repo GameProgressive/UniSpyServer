@@ -11,10 +11,9 @@ namespace QueryReport.Handler.CommandHandler
 {
     public class KeepAliveHandler : QRCommandHandlerBase
     {
-        protected new KeepAliveRequest _request;
+        protected new KeepAliveRequest _request { get { return (KeepAliveRequest)base._request; } }
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (KeepAliveRequest)request;
         }
 
         protected override void ConstructeResponse()

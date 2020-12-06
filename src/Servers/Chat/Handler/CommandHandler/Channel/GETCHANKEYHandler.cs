@@ -1,5 +1,4 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.ChatCommand.Channel;
 using Chat.Entity.Structure.Response.Channel;
 using UniSpyLib.Abstraction.Interface;
@@ -13,11 +12,13 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     // Set a value to NULL or "" to clear that key.
     public class GETCHANKEYHandler : ChatChannelHandlerBase
     {
-        new GETCHANKEYRequest _request;
-        string _values;
-        public GETCHANKEYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        protected new GETCHANKEYRequest _request
         {
-            _request = (GETCHANKEYRequest)request;
+            get { return (GETCHANKEYRequest)base._request; }
+        }
+        string _values;
+        public GETCHANKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        {
         }
 
         protected override void DataOperation()

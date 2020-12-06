@@ -21,18 +21,18 @@ namespace GameStatus.Entity.Structure.Request
                 return flag;
             }
 
-            if (!KeyValues.ContainsKey("nick") || !KeyValues.ContainsKey("keyhash"))
+            if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("keyhash"))
             {
                 return GSError.Parse;
             }
 
-            if (KeyValues.ContainsKey("nick"))
+            if (RequestKeyValues.ContainsKey("nick"))
             {
-                Nick = KeyValues["nick"];
+                Nick = RequestKeyValues["nick"];
             }
-            else if (KeyValues.ContainsKey("keyhash"))
+            else if (RequestKeyValues.ContainsKey("keyhash"))
             {
-                KeyHash = KeyValues["keyhash"];
+                KeyHash = RequestKeyValues["keyhash"];
             }
             else
             {

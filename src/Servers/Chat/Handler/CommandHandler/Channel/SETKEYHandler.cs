@@ -10,10 +10,9 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     /// </summary>
     public class SETKEYHandler : ChatLogedInHandlerBase
     {
-        new SETKEYRequest _request;
-        public SETKEYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        new SETKEYRequest _request { get { return (SETKEYRequest)base._request; } }
+        public SETKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (SETKEYRequest)request;
         }
 
         protected override void DataOperation()

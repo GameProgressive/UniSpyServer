@@ -8,10 +8,9 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
 {
     public class ATMHandler : ChatMessageHandlerBase
     {
-        new ATMRequest _request;
-        public ATMHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        new ATMRequest _request { get { return (ATMRequest)base._request; } }
+        public ATMHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (ATMRequest)request;
         }
         protected override void BuildNormalResponse()
         {

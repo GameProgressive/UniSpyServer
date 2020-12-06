@@ -10,10 +10,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class RegisterCDKeyHandler : PCMCommandHandlerBase
     {
-        protected new RegisterCDKeyRequest _request;
+        protected new RegisterCDKeyRequest _request { get { return (RegisterCDKeyRequest)base._request; } }
         public RegisterCDKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (RegisterCDKeyRequest)request;
         }
 
         protected override void DataOperation()

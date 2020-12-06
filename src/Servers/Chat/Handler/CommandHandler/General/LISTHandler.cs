@@ -10,11 +10,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     //todo unfinished
     public class LISTHandler : ChatLogedInHandlerBase
     {
-        new LISTRequest _request;
+        new LISTRequest _request { get { return (LISTRequest)base._request; } }
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
-        public LISTHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public LISTHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (LISTRequest)request;
         }
         protected override void DataOperation()
         {

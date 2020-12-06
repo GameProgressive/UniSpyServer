@@ -9,10 +9,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class AddBlockHandler : PCMCommandHandlerBase
     {
 
-        protected new AddBlockRequest _request;
+        protected new AddBlockRequest _request { get { return (AddBlockRequest)base._request; } }
         public AddBlockHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (AddBlockRequest)request;
         }
 
         protected override void DataOperation()

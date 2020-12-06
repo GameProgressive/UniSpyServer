@@ -18,11 +18,10 @@ namespace QueryReport.Handler.CommandHandler
         protected string _dataPartition, _serverData, _playerData, _teamData;
         protected int _playerPos, _teamPos;
         protected int _playerLenth, _teamLength;
-        protected new HeartBeatRequest _request;
+        protected new HeartBeatRequest _request { get { return (HeartBeatRequest)base._request; } }
 
         public HeartBeatHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (HeartBeatRequest)request;
         }
 
         protected override void CheckRequest()

@@ -9,11 +9,10 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {
     public class KICKHandler : ChatChannelHandlerBase
     {
-        new KICKRequest _request;
+        new KICKRequest _request { get { return (KICKRequest)base._request; } }
         ChatChannelUser _kickee;
-        public KICKHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public KICKHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (KICKRequest)request;
         }
 
         protected override void CheckRequest()

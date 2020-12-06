@@ -8,10 +8,9 @@ namespace GameStatus.Handler.CommandHandler
     public class AuthHandler : GSCommandHandlerBase
     {
         //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
-        protected AuthRequest _request;
+        protected new AuthRequest _request { get { return (AuthRequest)base._request; } }
         public AuthHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (AuthRequest)request;
         }
 
         protected override void DataOperation()

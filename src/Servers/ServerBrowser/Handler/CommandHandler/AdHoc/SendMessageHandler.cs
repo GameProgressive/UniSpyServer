@@ -6,10 +6,9 @@ namespace ServerBrowser.Handler.CommandHandler
 {
     public class SendMessageHandler : SBCommandHandlerBase
     {
-        protected new AdHocRequest _request;
+        protected new AdHocRequest _request { get { return (AdHocRequest)base._request; } }
         public SendMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (AdHocRequest)request;
         }
 
         protected override void DataOperation()

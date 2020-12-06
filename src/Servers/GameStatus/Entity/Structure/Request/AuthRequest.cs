@@ -23,22 +23,22 @@ namespace GameStatus.Entity.Structure.Request
                 return flag;
             }
 
-            if (!KeyValues.ContainsKey("gamename") && !KeyValues.ContainsKey("response"))
+            if (!RequestKeyValues.ContainsKey("gamename") && !RequestKeyValues.ContainsKey("response"))
             {
                 return GSError.Parse;
             }
 
-            if (KeyValues.ContainsKey("port"))
+            if (RequestKeyValues.ContainsKey("port"))
             {
                 uint port;
-                if (!uint.TryParse(KeyValues["port"], out port))
+                if (!uint.TryParse(RequestKeyValues["port"], out port))
                 {
                     return GSError.Parse;
                 }
                 Port = port;
             }
 
-            GameName = KeyValues["gamename"];
+            GameName = RequestKeyValues["gamename"];
 
             return GSError.NoError;
         }

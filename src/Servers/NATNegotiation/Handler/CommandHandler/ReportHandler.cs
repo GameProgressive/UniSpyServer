@@ -12,10 +12,9 @@ namespace NATNegotiation.Handler.CommandHandler
     /// </summary>
     public class ReportHandler : NNCommandHandlerBase
     {
-        protected new ReportRequest _request;
+        protected new ReportRequest _request { get { return (ReportRequest)base._request; } }
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (ReportRequest)request;
         }
 
         protected override void DataOperation()

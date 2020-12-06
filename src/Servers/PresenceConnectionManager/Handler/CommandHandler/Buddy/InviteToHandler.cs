@@ -13,10 +13,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class InviteToHandler : PCMCommandHandlerBase
     {
         //_session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
-        protected new  InviteToRequest _request;
+        protected new InviteToRequest _request { get { return (InviteToRequest)base._request; } }
         public InviteToHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (InviteToRequest)request;
         }
 
         protected override void DataOperation()

@@ -10,28 +10,36 @@ namespace GameStatus.Abstraction.BaseClass
     public class GSRequestBase : UniSpyRequestBase
     {
         public uint OperationID { get; protected set; }
-        public new string CommandName { get; protected set; }
-        public new string RawRequest { get; protected set; }
-        public Dictionary<string, string> KeyValues { get; protected set; }
+        public new string CommandName
+        {
+            get { return (string)base.CommandName; }
+            set { base.CommandName = value; }
+        }
+        public new string RawRequest
+        {
+            get { return (string)base.RawRequest; }
+            set { base.RawRequest = value; }
+        }
+        public Dictionary<string, string> RequestKeyValues { get; protected set; }
 
         public GSRequestBase(string rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
-            KeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
-            CommandName = KeyValues.Keys.First();
+            RequestKeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
+            CommandName = RequestKeyValues.Keys.First();
         }
 
         public override object Parse()
         {
-            if (!KeyValues.ContainsKey("lid") && !KeyValues.ContainsKey("id"))
+            if (!RequestKeyValues.ContainsKey("lid") && !RequestKeyValues.ContainsKey("id"))
             {
                 return GSError.Parse;
             }
 
-            if (KeyValues.ContainsKey("lid"))
+            if (RequestKeyValues.ContainsKey("lid"))
             {
                 uint operationID;
-                if (!uint.TryParse(KeyValues["lid"], out operationID))
+                if (!uint.TryParse(RequestKeyValues["lid"], out operationID))
                 {
                     return GSError.Parse;
                 }
@@ -39,10 +47,10 @@ namespace GameStatus.Abstraction.BaseClass
             }
 
             //worms 3d use id not lid so we added an condition here
-            if (KeyValues.ContainsKey("id"))
+            if (RequestKeyValues.ContainsKey("id"))
             {
                 uint operationID;
-                if (!uint.TryParse(KeyValues["id"], out operationID))
+                if (!uint.TryParse(RequestKeyValues["id"], out operationID))
                 {
                     return GSError.Parse;
                 }

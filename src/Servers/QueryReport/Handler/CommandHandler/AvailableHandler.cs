@@ -12,10 +12,9 @@ namespace QueryReport.Handler.CommandHandler
     /// </summary>
     public class AvailableHandler : QRCommandHandlerBase
     {
-        protected new AvaliableRequest _request;
+        protected new AvaliableRequest _request { get { return (AvaliableRequest)base._request; } }
         public AvailableHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (AvaliableRequest)request;
         }
 
         protected override void CheckRequest()

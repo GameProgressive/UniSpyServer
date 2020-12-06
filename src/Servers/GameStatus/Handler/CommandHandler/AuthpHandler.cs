@@ -15,11 +15,13 @@ namespace GameStatus.Handler.CommandHandler
     /// </summary>
     public class AuthPHandler : GSCommandHandlerBase
     {
-        protected AuthPRequest _request;
+        protected new AuthPRequest _request
+        {
+            get { return (AuthPRequest)base._request; }
+        }
         private uint _profileID;
         public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (AuthPRequest)request;
         }
 
         protected override void DataOperation()

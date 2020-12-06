@@ -7,10 +7,9 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
 {
     public class PRIVMSGHandler : ChatMessageHandlerBase
     {
-        new PRIVMSGRequest _request;
-        public PRIVMSGHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        new PRIVMSGRequest _request { get { return (PRIVMSGRequest)base._request; } }
+        public PRIVMSGHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (PRIVMSGRequest)request;
         }
 
         protected override void BuildNormalResponse()

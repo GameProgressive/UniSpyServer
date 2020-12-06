@@ -9,10 +9,9 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
     public class USRIPHandler : ChatCommandHandlerBase
     {
-        new USRIPRequest _request;
-        public USRIPHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        new USRIPRequest _request { get { return (USRIPRequest)base._request; } }
+        public USRIPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (USRIPRequest)request;
         }
         protected override void CheckRequest()
         {

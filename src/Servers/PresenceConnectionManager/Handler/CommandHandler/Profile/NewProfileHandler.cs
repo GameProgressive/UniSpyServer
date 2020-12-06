@@ -10,10 +10,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class NewProfileHandler : PCMCommandHandlerBase
     {
-        protected new NewProfileRequest _request;
+        protected new NewProfileRequest _request { get { return (NewProfileRequest)base._request;} }
         public NewProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (NewProfileRequest)request;
         }
 
         protected override void DataOperation()

@@ -8,10 +8,9 @@ namespace NATNegotiation.Handler.CommandHandler
 {
     public class NatifyHandler : NNCommandHandlerBase
     {
-        protected new NatifyRequest _request;
+        protected new NatifyRequest _request { get { return (NatifyRequest)base._request; } }
         public NatifyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (NatifyRequest)request;
         }
 
         protected override void ConstructResponse()

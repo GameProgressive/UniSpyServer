@@ -10,12 +10,11 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {
     public class TOPICHandler : ChatCommandHandlerBase
     {
-        new TOPICRequest _request;
+        protected new TOPICRequest _request { get { return (TOPICRequest)base._request; } }
         ChatChannel _channel;
         ChatChannelUser _user;
-        public TOPICHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public TOPICHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (TOPICRequest)request;
         }
 
         protected override void CheckRequest()

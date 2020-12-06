@@ -7,10 +7,9 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
     public class PINGHandler : ChatCommandHandlerBase
     {
-        new PINGRequest _request;
-        public PINGHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        new PINGRequest _request { get { return (PINGRequest)base._request; } }
+        public PINGHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (PINGRequest)request;
         }
 
         protected override void BuildNormalResponse()

@@ -8,10 +8,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     public class AddBuddyHandler : PCMCommandHandlerBase
     {
-        protected new AddBuddyRequest _request;
+        protected new AddBuddyRequest _request { get { return (AddBuddyRequest)base._request; } }
         public AddBuddyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (AddBuddyRequest)request;
         }
 
         protected override void DataOperation()

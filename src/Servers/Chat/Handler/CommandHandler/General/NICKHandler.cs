@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     public class NICKHandler : ChatCommandHandlerBase
     {
         new NICKRequest _request;
-        public NICKHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public NICKHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _request = (NICKRequest)request;
         }

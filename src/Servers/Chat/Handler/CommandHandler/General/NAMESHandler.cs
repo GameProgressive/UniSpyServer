@@ -11,12 +11,11 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
     public class NAMESHandler : ChatCommandHandlerBase
     {
-        new NAMESRequest _request;
-        ChatChannel _channel;
-        ChatChannelUser _user;
-        public NAMESHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        protected new NAMESRequest _request { get { return (NAMESRequest)base._request; } }
+        private ChatChannel _channel;
+        private ChatChannelUser _user;
+        public NAMESHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (NAMESRequest)request;
         }
 
         protected override void CheckRequest()

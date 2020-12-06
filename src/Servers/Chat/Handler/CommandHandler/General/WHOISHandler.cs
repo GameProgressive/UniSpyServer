@@ -12,11 +12,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
     public class WHOISHandler : ChatCommandHandlerBase
     {
-        new WHOISRequest _request;
-        ChatUserInfo _userInfo;
-        public WHOISHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        protected new WHOISRequest _request { get { return (WHOISRequest)base._request; } }
+        private ChatUserInfo _userInfo;
+        public WHOISHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (WHOISRequest)request;
         }
 
         protected override void CheckRequest()

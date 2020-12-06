@@ -12,12 +12,11 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     {
 
         string _password;
-        new LOGINRequest _request;
+        protected new LOGINRequest _request { get { return (LOGINRequest)base._request; } }
         uint _profileid;
         uint _userid;
-        public LOGINHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public LOGINHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (LOGINRequest)request;
         }
 
         protected override void CheckRequest()

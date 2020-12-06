@@ -22,12 +22,11 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
     /// </summary>
     public class OthersHandler : PSPCommandHandlerBase
     {
-        protected new OthersRequest _request;
+        protected new OthersRequest _request { get { return (OthersRequest)base._request; } }
         private List<OthersHandlerDataModel> _result;
         public OthersHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new List<OthersHandlerDataModel>();
-            _request = (OthersRequest)request;
         }
 
         protected override void DataOperation()

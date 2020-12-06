@@ -15,11 +15,10 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     {
         //PCMSession _session;
         //Dictionary<string, string> KeyValues;
-        protected new DelBuddyRequest _request;
+        protected new DelBuddyRequest _request { get { return (DelBuddyRequest)base._request; } }
         //delete friend in database then send bm_revoke message to friend
         public DelBuddyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (DelBuddyRequest)request;
         }
 
         protected override void DataOperation()

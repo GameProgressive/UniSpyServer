@@ -3,12 +3,14 @@ using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class CommandHandlerBase : IUniSpyHandler
+    public abstract class UniSpyCmdHandlerBase : IUniSpyHandler
     {
         protected IUniSpySession _session;
-        public CommandHandlerBase(IUniSpySession session)
+        protected IUniSpyRequest _request;
+        public UniSpyCmdHandlerBase(IUniSpySession session,IUniSpyRequest request)
         {
             _session = session;
+            _request = request;
         }
 
         public virtual void Handle()

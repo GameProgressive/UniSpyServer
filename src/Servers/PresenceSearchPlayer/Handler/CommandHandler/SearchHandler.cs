@@ -29,11 +29,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
 
     public class SearchHandler : PSPCommandHandlerBase
     {
-        protected new SearchRequest _request;
+        protected new SearchRequest _request { get { return (SearchRequest)base._request; } }
         private List<SearchDBResult> _result;
         public SearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (SearchRequest)request;
             _result = new List<SearchDBResult>();
         }
 

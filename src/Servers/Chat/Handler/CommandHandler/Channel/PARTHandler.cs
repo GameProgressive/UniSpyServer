@@ -6,10 +6,9 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {
     public class PARTHandler : ChatChannelHandlerBase
     {
-        new readonly PARTRequest _request;
-        public PARTHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        protected new  PARTRequest _request { get { return (PARTRequest)base._request; } }
+        public PARTHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (PARTRequest)request;
         }
 
         protected override void DataOperation()

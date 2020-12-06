@@ -13,10 +13,9 @@ namespace GameStatus.Handler.CommandHandler
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
         private uint _protileid;
-        protected GetPIDRequest _request;
+        protected new GetPIDRequest _request { get { return (GetPIDRequest)base._request; } }
         public GetPIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (GetPIDRequest)request;
         }
 
         protected override void DataOperation()

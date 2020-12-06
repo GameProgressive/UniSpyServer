@@ -12,11 +12,10 @@ namespace GameStatus.Handler.CommandHandler
     public class GetPDHandler : GSCommandHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
-        protected GetPDRequest _request;
+        protected new GetPDRequest _request { get { return (GetPDRequest)base._request; } }
         protected Dictionary<string, string> _result;
         public GetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request =(GetPDRequest)request;
         }
 
         protected override void DataOperation()

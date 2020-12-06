@@ -8,10 +8,9 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 {
     public class StatusHandler : PCMCommandHandlerBase
     {
-        protected new StatusRequest _request;
+        protected new StatusRequest _request { get { return (StatusRequest)base._request; } }
         public StatusHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (StatusRequest)request;
         }
 
         protected override void DataOperation()

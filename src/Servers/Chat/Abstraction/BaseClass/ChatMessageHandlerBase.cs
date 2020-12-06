@@ -8,12 +8,14 @@ namespace Chat.Abstraction.BaseClass
 {
     public class ChatMessageHandlerBase : ChatChannelHandlerBase
     {
-        new ChatMessagRequestBase _request;
+        new ChatMessagRequestBase _request
+        {
+            get { return (ChatMessagRequestBase)base._request; }
+        }
         protected ChatSession _otherSession;
 
-        public ChatMessageHandlerBase(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public ChatMessageHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (ChatMessagRequestBase)request;
         }
 
         protected override void CheckRequest()

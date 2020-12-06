@@ -29,21 +29,21 @@ namespace GameStatus.Entity.Structure.Request
                 return flag;
             }
 
-            if (!KeyValues.ContainsKey("pid") || !KeyValues.ContainsKey("ptype")
-                || !KeyValues.ContainsKey("dindex") || !KeyValues.ContainsKey("length"))
+            if (!RequestKeyValues.ContainsKey("pid") || !RequestKeyValues.ContainsKey("ptype")
+                || !RequestKeyValues.ContainsKey("dindex") || !RequestKeyValues.ContainsKey("length"))
             {
                 return GSError.Parse;
             }
 
             uint profileID;
-            if (!uint.TryParse(KeyValues["pid"], out profileID))
+            if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
             {
                 return GSError.Parse;
             }
             ProfileID = profileID;
 
             uint storageType;
-            if (!uint.TryParse(KeyValues["ptype"], out storageType))
+            if (!uint.TryParse(RequestKeyValues["ptype"], out storageType))
             {
                 return GSError.Parse;
             }
@@ -56,21 +56,21 @@ namespace GameStatus.Entity.Structure.Request
             StorageType = (PersistStorageType)storageType;
 
             uint dindex;
-            if (!uint.TryParse(KeyValues["dindex"], out dindex))
+            if (!uint.TryParse(RequestKeyValues["dindex"], out dindex))
             {
                 return GSError.Parse;
             }
             DataIndex = dindex;
 
             uint length;
-            if (!uint.TryParse(KeyValues["length"], out length))
+            if (!uint.TryParse(RequestKeyValues["length"], out length))
             {
                 return GSError.Parse;
             }
             Length = length;
 
             //we extract the key value data
-            foreach (var d in KeyValues.Skip(5))
+            foreach (var d in RequestKeyValues.Skip(5))
             {
                 if (d.Key == "lid")
                     break;

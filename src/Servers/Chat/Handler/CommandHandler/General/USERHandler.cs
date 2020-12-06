@@ -6,11 +6,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
     public class USERHandler : ChatCommandHandlerBase
     {
-        new USERRequest _request;
+        protected new USERRequest _request { get { return (USERRequest)base._request; } }
 
-        public USERHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public USERHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (USERRequest)request;
         }
 
         protected override void DataOperation()

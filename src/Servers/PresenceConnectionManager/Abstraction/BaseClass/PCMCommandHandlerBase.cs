@@ -12,17 +12,21 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
     /// Because all errors are sent by SendGPError()
     /// so we if the error code != noerror we send it
     /// </summary>
-    public abstract class PCMCommandHandlerBase : CommandHandlerBase
+    public abstract class PCMCommandHandlerBase : UniSpyCmdHandlerBase
     {
         protected GPErrorCode _errorCode;
         protected string _sendingBuffer;
-        protected new PCMSession _session;
-        protected PCMRequestBase _request;
-        public PCMCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session)
+        protected new PCMSession _session
+        {
+            get { return (PCMSession)base._session; }
+        }
+        protected new PCMRequestBase _request
+        {
+            get { return (PCMRequestBase)base._request; }
+        }
+        public PCMCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
             _errorCode = GPErrorCode.NoError;
-            _request = (PCMRequestBase)request;
-            _session = (PCMSession)session;
         }
 
         public override void Handle()

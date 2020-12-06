@@ -13,11 +13,10 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
 {
     public class CRYPTHandler : ChatCommandHandlerBase
     {
-        new CRYPTRequest _request;
+        protected new CRYPTRequest _request { get { return (CRYPTRequest)base._request; } }
         // CRYPT des 1 gamename
-        public CRYPTHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public CRYPTHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (CRYPTRequest)request;
         }
 
         protected override void DataOperation()

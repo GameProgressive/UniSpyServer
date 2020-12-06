@@ -32,11 +32,10 @@ namespace PresenceConnectionManager.Handler.CommandHandler
 
     public class LoginHandler : PCMCommandHandlerBase
     {
-        protected new LoginRequest _request;
+        protected new LoginRequest _request { get { return (LoginRequest)base._request; } }
         private LoginDBResult _result;
         public LoginHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (LoginRequest)request;
         }
 
         protected override void CheckRequest()

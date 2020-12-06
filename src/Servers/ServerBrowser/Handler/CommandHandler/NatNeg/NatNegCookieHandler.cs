@@ -5,7 +5,6 @@ using QueryReport.Entity.Structure.NatNeg;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Request;
-using ServerBrowser.Network;
 using StackExchange.Redis;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
@@ -17,13 +16,15 @@ namespace ServerBrowser.Handler.CommandHandler
     /// </summary>
     public class NatNegCookieHandler : SBCommandHandlerBase
     {
-        protected new AdHocRequest _request;
+        protected new AdHocRequest _request
+        {
+            get { return (AdHocRequest)base._request; }
+            set { base._request = value; }
+        }
         private NatNegCookie _natNegCookie;
         private GameServer _gameServer;
         public NatNegCookieHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _session = (SBSession)session;
-            _request = (AdHocRequest)request;
             _natNegCookie = new NatNegCookie();
         }
 

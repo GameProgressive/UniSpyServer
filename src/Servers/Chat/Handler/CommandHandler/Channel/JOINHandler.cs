@@ -16,12 +16,11 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     /// </summary>
     public class JOINHandler : ChatLogedInHandlerBase
     {
-        new JOINRequest _request;
+        protected new JOINRequest _request { get { return (JOINRequest)base._request; } }
         ChatChannel _channel;
         ChatChannelUser _user;
-        public JOINHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public JOINHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (JOINRequest)request;
         }
 
         //1.筛选出所要加入的频道，如果不存在则创建

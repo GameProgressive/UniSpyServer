@@ -12,11 +12,10 @@ namespace QueryReport.Handler.CommandHandler
     public class ChallengeHandler : QRCommandHandlerBase
     {
         protected GameServer _gameServer;
-        protected new ChallengeRequest _request;
+        protected new ChallengeRequest _request { get { return (ChallengeRequest)base._request; } }
         //we do not need to implement this to check the correctness of the challenge response
         public ChallengeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (ChallengeRequest)request;
         }
 
         protected override void DataOperation()

@@ -18,12 +18,11 @@ namespace Chat.Handler.CommandHandler.ChatGeneralCommandHandler
     /// </summary>
     public class WHOHandler : ChatLogedInHandlerBase
     {
-        new WHORequest _request;
+        new WHORequest _request { get { return (WHORequest)base._request; } }
         ChatChannel _resultChannel;
         ChatSession _resultSession;
-        public WHOHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public WHOHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (WHORequest)request;
         }
 
         protected override void DataOperation()

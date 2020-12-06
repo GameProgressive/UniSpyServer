@@ -8,16 +8,18 @@ using Serilog.Events;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    public class QRCommandHandlerBase : CommandHandlerBase
+    public class QRCommandHandlerBase : UniSpyCmdHandlerBase
     {
-        protected QRErrorCode _errorCode = QRErrorCode.NoError;
+        protected QRErrorCode _errorCode;
         protected byte[] _sendingBuffer;
-        protected new QRSession _session;
-        protected IUniSpyRequest _request;
-        protected QRCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session)
+        protected new QRSession _session
+        {
+            get { return (QRSession)base._session; }
+        }
+        protected QRCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
             _request = request;
-            _session = (QRSession)session;
+            _errorCode = QRErrorCode.NoError;
         }
 
         public override void Handle()

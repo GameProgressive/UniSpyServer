@@ -44,11 +44,10 @@ namespace PresenceConnectionManager.Handler.CommandHandler
     public class GetProfileHandler : PCMCommandHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
-        protected new GetProfileRequest _request;
+        protected new GetProfileRequest _request { get { return (GetProfileRequest)base._request; } }
         protected GetProfileDBResult _result;
         public GetProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (GetProfileRequest)request;
         }
 
         protected override void DataOperation()

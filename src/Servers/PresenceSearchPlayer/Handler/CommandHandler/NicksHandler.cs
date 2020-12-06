@@ -20,10 +20,9 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
     public class NicksHandler : PSPCommandHandlerBase
     {
         List<NickHandlerDataModel> _result;
-        protected new NicksRequest _request;
+        protected new NicksRequest _request { get { return (NicksRequest)base._request; } }
         public NicksHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (NicksRequest)request;
         }
 
         protected override void DataOperation()

@@ -1,5 +1,4 @@
-﻿using System;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CommandHandler
 {

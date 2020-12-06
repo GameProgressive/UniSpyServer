@@ -1,5 +1,4 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
+﻿using UniSpyLib.Extensions;
 using NATNegotiation.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
@@ -15,16 +14,23 @@ namespace NATNegotiation.Abstraction.BaseClass
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public static readonly int Size = 12;
 
-        public NatPacketType PacketType { get; set; }
-        public new NatPacketType CommandName { get { return PacketType; } }
+        //public NatPacketType PacketType { get; set; }
+        public new NatPacketType CommandName
+        {
+            get { return (NatPacketType)base.CommandName; }
+            set { base.CommandName = value; }
+        }
+        public new byte[] RawRequest
+        {
+            get { return (byte[])base.RawRequest; }
+        }
         public byte Version;
         public uint Cookie;
-        public new byte[] RawRequest;
+
 
 
         public NNRequestBase(byte[] rawRequest) : base(rawRequest)
         {
-            RawRequest = rawRequest;
         }
 
         public override object Parse()
@@ -35,7 +41,7 @@ namespace NATNegotiation.Abstraction.BaseClass
             }
 
             Version = RawRequest[MagicData.Length];
-            PacketType = (NatPacketType)RawRequest[MagicData.Length + 1];
+            CommandName = (NatPacketType)RawRequest[MagicData.Length + 1];
             Cookie = BitConverter.ToUInt32(ByteTools.SubBytes(RawRequest, MagicData.Length + 2, 4));
 
             return true;
@@ -46,16 +52,10 @@ namespace NATNegotiation.Abstraction.BaseClass
             List<byte> data = new List<byte>();
             data.AddRange(MagicData);
             data.Add(Version);
-            data.Add((byte)PacketType);
+            data.Add((byte)CommandName);
             data.AddRange(BitConverter.GetBytes(Cookie));
 
             return data.ToArray();
-        }
-
-        public NNRequestBase SetPacketType(NatPacketType type)
-        {
-            PacketType = type;
-            return this;
         }
     }
 }

@@ -7,11 +7,10 @@ namespace Chat.Handler.CommandHandler.ChatMessageCommandHandler
 {
     public class UTMHandler : ChatMessageHandlerBase
     {
-        new UTMRequest _request;
+        new UTMRequest _request { get { return (UTMRequest)base._request; } }
 
-        public UTMHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public UTMHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (UTMRequest)request;
         }
 
         protected override void BuildNormalResponse()

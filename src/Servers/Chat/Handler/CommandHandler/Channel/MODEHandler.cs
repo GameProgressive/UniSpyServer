@@ -11,12 +11,11 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
 {
     public class MODEHandler : ChatLogedInHandlerBase
     {
-        new MODERequest _request;
+        new MODERequest _request { get { return (MODERequest)base._request; } }
         ChatChannel _channel;
         ChatChannelUser _user;
-        public MODEHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public MODEHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (MODERequest)request;
         }
 
         protected override void CheckRequest()

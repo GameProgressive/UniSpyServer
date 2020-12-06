@@ -14,15 +14,17 @@ namespace GameStatus.Abstraction.BaseClass
     /// we only use selfdefine error code here
     /// so we do not need to send it to client
     /// </summary>
-    public abstract class GSCommandHandlerBase : CommandHandlerBase
+    public abstract class GSCommandHandlerBase : UniSpyCmdHandlerBase
     {
         protected string _sendingBuffer;
         protected GSError _errorCode;
-        protected new GSSession _session;
-        protected GSCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session)
+        protected new GSSession _session
+        {
+            get { return (GSSession)base._session; }
+        }
+        protected GSCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
             _errorCode = GSError.NoError;
-            _session = (GSSession)session;
         }
 
         public override void Handle()

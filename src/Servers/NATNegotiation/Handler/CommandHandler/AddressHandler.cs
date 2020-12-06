@@ -1,6 +1,5 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 
@@ -8,10 +7,9 @@ namespace NATNegotiation.Handler.CommandHandler
 {
     public class AddressCheckHandler : NNCommandHandlerBase
     {
-        protected new AddressRequest _request;
+        protected new AddressRequest _request { get { return (AddressRequest)base._request; } }
         public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (AddressRequest)request;
         }
 
         protected override void ConstructResponse()

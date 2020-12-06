@@ -12,10 +12,8 @@ namespace ServerBrowser.Handler.CommandHandler
     /// </summary>
     public class PushUpdatesHandler : UpdateOptionHandlerBase
     {
-        protected new ServerListRequest _request;
         public PushUpdatesHandler(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
-            _request = (ServerListRequest)request;
         }
 
         protected override void CheckRequest()

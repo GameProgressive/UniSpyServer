@@ -7,10 +7,9 @@ namespace QueryReport.Handler.CommandHandler
 {
     public class ClientMessageHandler : QRCommandHandlerBase
     {
-        protected new ClientMessageRequest _request;
+        protected new ClientMessageRequest _request { get { return (ClientMessageRequest)base._request; } }
         protected ClientMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (ClientMessageRequest)request;
             throw new NotImplementedException();
         }
     }

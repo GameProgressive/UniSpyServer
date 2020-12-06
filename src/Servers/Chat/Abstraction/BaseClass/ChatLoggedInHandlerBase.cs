@@ -6,7 +6,7 @@ namespace Chat.Abstraction.BaseClass
 {
     public class ChatLogedInHandlerBase : ChatCommandHandlerBase
     {
-        public ChatLogedInHandlerBase(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public ChatLogedInHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

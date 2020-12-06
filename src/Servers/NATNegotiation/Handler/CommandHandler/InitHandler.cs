@@ -9,10 +9,9 @@ namespace NATNegotiation.Handler.CommandHandler
 {
     public class InitHandler : NNCommandHandlerBase
     {
-        protected new InitRequest _request;
+        protected new InitRequest _request { get { return (InitRequest)base._request; } }
         public InitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (InitRequest)request;
         }
 
         protected override void CheckRequest()
@@ -34,9 +33,11 @@ namespace NATNegotiation.Handler.CommandHandler
         {
             _sendingBuffer = new InitResponse(_request, _session.RemoteEndPoint).BuildResponse();
 
-            _request
-            .SetPacketType(NatPacketType.InitAck)
-            .BuildResponse();
+            _request.CommandName = NatPacketType.InitAck;
+            _request.BuildResponse();
+            //_request
+            //.SetPacketType(NatPacketType.InitAck)
+            //.BuildResponse();
         }
 
 

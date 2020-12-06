@@ -23,11 +23,10 @@ namespace PresenceSearchPlayer.Handler.CommandHandler
     /// </summary>
     public class SearchUniqueHandler : PSPCommandHandlerBase
     {
-        protected new SearchUniqueRequest _request;
+        protected new SearchUniqueRequest _request { get { return (SearchUniqueRequest)base._request; } }
         private List<SearchUniqueDBResult> _result;
         public SearchUniqueHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (SearchUniqueRequest)request;
         }
 
         protected override void DataOperation()

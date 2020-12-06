@@ -3,11 +3,11 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Handler.CommandHandler.Error;
-
+using PresenceSearchPlayer.Network;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class PSPCommandHandlerBase : CommandHandlerBase
+    public abstract class PSPCommandHandlerBase : UniSpyCmdHandlerBase
     {
         protected GPErrorCode _errorCode;
         /// <summary>
@@ -15,11 +15,17 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         /// the decision formula should use _result.Count==0
         /// </summary>
         protected string _sendingBuffer;
-        protected PSPRequestBase _request;
-        public PSPCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session)
+        protected new PSPRequestBase _request
+        {
+            get { return (PSPRequestBase)base._request; }
+        }
+        protected new PSPSession _session
+        {
+            get { return (PSPSession)base._session; }
+        }
+        public PSPCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _errorCode = GPErrorCode.NoError;
-            _request = (PSPRequestBase)request;
         }
 
         public override void Handle()

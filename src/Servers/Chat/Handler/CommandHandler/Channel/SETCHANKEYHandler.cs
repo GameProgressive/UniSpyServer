@@ -13,11 +13,10 @@ namespace Chat.Handler.CommandHandler.ChatChannelCommandHandler
     // Set a value to NULL or "" to clear that key.
     public class SETCHANKEYHandler : ChatChannelHandlerBase
     {
-        new SETCHANKEYRequest _request;
+        protected new SETCHANKEYRequest _request { get { return (SETCHANKEYRequest)base._request; } }
 
-        public SETCHANKEYHandler(IUniSpySession session, ChatRequestBase request) : base(session, request)
+        public SETCHANKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (SETCHANKEYRequest)request;
         }
 
         protected override void DataOperation()

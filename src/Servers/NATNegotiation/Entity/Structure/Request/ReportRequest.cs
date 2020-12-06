@@ -44,7 +44,7 @@ namespace NATNegotiation.Entity.Structure.Request
         public override byte[] BuildResponse()
         {
             List<byte> data = new List<byte>();
-            PacketType = NatPacketType.ReportAck;
+            CommandName = NatPacketType.ReportAck;
             data.AddRange(base.BuildResponse());
 
             data.Add(PortType);
