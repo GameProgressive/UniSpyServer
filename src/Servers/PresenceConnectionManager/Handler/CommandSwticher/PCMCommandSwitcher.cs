@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
     public class PCMCommandSwitcher : CommandSwitcherBase
     {
-        protected new string _rawRequest;
+
         public PCMCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
@@ -31,6 +31,8 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
 
         protected override void SerializeRequests()
         {
+            string _rawRequest = (string)this._rawRequest;
+
             if (_rawRequest[0] != '\\')
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
