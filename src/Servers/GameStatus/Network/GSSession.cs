@@ -3,7 +3,7 @@ using UniSpyLib.Logging;
 using UniSpyLib.Network;
 using Serilog.Events;
 using GameStatus.Entity.Structure;
-using GameStatus.Handler.CommandSwitcher;
+using GameStatus.Handler.CmdSwitcher;
 using System;
 using System.Text;
 
@@ -44,7 +44,7 @@ namespace GameStatus.Network
 
         protected override void OnReceived(string message)
         {
-            new GSCommandSwitcher(this, message).Switch();
+            new GSCmdSwitcher(this, message).Switch();
         }
 
 

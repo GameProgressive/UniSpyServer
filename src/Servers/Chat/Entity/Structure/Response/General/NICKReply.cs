@@ -7,7 +7,7 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildWelcomeReply(ChatUserInfo userInfo)
         {
-            return ChatResponseBase.BuildResponse(
+            return ChatResponseBase.BuildRPL(
                 ChatReplyCode.Welcome, userInfo.NickName, "Welcome to RetrosSpy!");
         }
     }

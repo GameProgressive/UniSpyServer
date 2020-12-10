@@ -2,7 +2,7 @@
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Entity.Structure.Request.Buddy
+namespace PresenceConnectionManager.Entity.Structure.Request
 {
     public class InviteToRequest : PCMRequestBase
     {

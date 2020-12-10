@@ -144,7 +144,7 @@ namespace Chat.Entity.Structure.User
 
         public string BuildReply(string command, string cmdParams, string tailing)
         {
-            return ChatResponseBase.BuildResponse(this, command, cmdParams, tailing);
+            return ChatResponseBase.BuildRPL(this, command, cmdParams, tailing);
         }
     }
 }

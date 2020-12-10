@@ -1,5 +1,5 @@
 ﻿using UniSpyLib.Network;
-using NATNegotiation.Handler.CommandSwitcher;
+using NATNegotiation.Handler.CmdSwitcher;
 using System.Net;
 
 namespace NATNegotiation.Network
@@ -23,7 +23,7 @@ namespace NATNegotiation.Network
         protected override void OnReceived(UDPSessionBase session, byte[] message)
         {
             base.OnReceived(session, message);
-            new NNCommandSwitcher(session, message).Switch();
+            new NNCmdSwitcher(session, message).Switch();
         }
     }
 }

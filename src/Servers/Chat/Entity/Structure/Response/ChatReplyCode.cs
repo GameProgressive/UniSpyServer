@@ -29,21 +29,59 @@
         public const string Login = "707";
         public const string GetUDPRelay = "712";
 
+        /// <summary>
+        /// Send private message
+        /// </summary>
         public const string PRIVMSG = "PRIVMSG";
+        /// <summary>
+        /// Send notice message
+        /// </summary>
         public const string NOTICE = "NOTICE";
+        /// <summary>
+        /// Send under the table message
+        /// </summary>
         public const string UTM = "UTM";
+        /// <summary>
+        /// Send above the table message
+        /// </summary>
         public const string ATM = "ATM";
         public const string PING = "PING";
         public const string PONG = "PONG";
+        /// <summary>
+        /// Search with nickname
+        /// </summary>
         public const string NICK = "NICK";
+        /// <summary>
+        /// Join a channel
+        /// </summary>
         public const string JOIN = "JOIN";
+        /// <summary>
+        /// Leave a channel
+        /// </summary>
         public const string PART = "PART";
+        /// <summary>
+        /// Kick a user from a channel
+        /// </summary>
         public const string KICK = "KICK";
+        /// <summary>
+        /// Quit irc chat server
+        /// </summary>
         public const string QUIT = "QUIT";
+
         public const string KILL = "KILL";
+        /// <summary>
+        /// Change channel topic
+        /// </summary>
         public const string TOPIC = "TOPIC";
+        /// <summary>
+        /// Change channel mode
+        /// </summary>
         public const string MODE = "MODE";
+
         public const string ERROR = "ERROR";
+        /// <summary>
+        /// Invite a user to a channel
+        /// </summary>
         public const string INVITE = "INVITE";
     }
 }

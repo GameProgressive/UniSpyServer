@@ -6,13 +6,13 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)
         {
-            return ChatResponseBase.BuildResponse(ChatReplyCode.GetCKey,
+            return ChatResponseBase.BuildRPL(ChatReplyCode.GetCKey,
                 $"* {channelName} {nickname} {cookie} {flags}");
         }
 
         public static string BuildEndOfGetCKeyReply(string channelName, string cookie)
         {
-            return ChatResponseBase.BuildResponse(ChatReplyCode.EndGetCKey,
+            return ChatResponseBase.BuildRPL(ChatReplyCode.EndGetCKey,
                   $"* {channelName} {cookie}",
                   "End Of /GETCKEY.");
         }

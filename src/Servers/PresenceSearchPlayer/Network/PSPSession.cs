@@ -1,5 +1,5 @@
 ﻿using UniSpyLib.Network;
-using PresenceSearchPlayer.Handler.CommandSwitcher;
+using PresenceSearchPlayer.Handler.CmdSwitcher;
 
 namespace PresenceSearchPlayer.Network
 {
@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer.Network
 
         protected override void OnReceived(string message)
         {
-            new PSPCommandSwitcher(this, message).Switch();
+            new PSPCmdSwitcher(this, message).Switch();
         }
     }
 }

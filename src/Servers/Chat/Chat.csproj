@@ -29,8 +29,8 @@
     <Folder Include="Entity\Enumerate\" />
     <Folder Include="Abstraction\Interface\" />
     <Folder Include="Entity\Structure\User\" />
-    <Folder Include="Handler\CommandHandler\General\" />
-    <Folder Include="Handler\CommandHandler\Channel\" />
-    <Folder Include="Handler\CommandHandler\Message\" />
+    <Folder Include="Handler\CmdHandler\General\" />
+    <Folder Include="Handler\CmdHandler\Channel\" />
+    <Folder Include="Handler\CmdHandler\Message\" />
   </ItemGroup>
 </Project>

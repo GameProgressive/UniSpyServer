@@ -1,4 +1,4 @@
-﻿using CDKey.Handler.CommandSwitcher;
+﻿using CDKey.Handler.CmdSwitcher;
 using UniSpyLib.Encryption;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
@@ -27,7 +27,7 @@ namespace CDKey.Network
                 session = (CDKeySession)CreateSession(endPoint);
                 Sessions.TryAdd(endPoint, session);
             }
-            new CDKeyCommandSwitcher(session, message).Switch();
+            new CDKeyCmdSwitcher(session, message).Switch();
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)

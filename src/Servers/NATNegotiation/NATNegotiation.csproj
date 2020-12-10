@@ -17,7 +17,7 @@
     <ItemGroup>
         <Folder Include="Handler\SystemHandler\" />
         <Folder Include="Handler\SystemHandler\Timer\" />
-        <Folder Include="Handler\CommandSwitcher\" />
+        <Folder Include="Handler\CmdSwitcher\" />
         <Folder Include="Handler\SystemHandler\Manager\" />
         <Folder Include="Abstraction\BaseClass\" />
         <Folder Include="Entity\Structure\Response\" />

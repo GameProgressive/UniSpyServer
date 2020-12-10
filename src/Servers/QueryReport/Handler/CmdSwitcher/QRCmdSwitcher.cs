@@ -7,7 +7,7 @@ using UniSpyLib.Logging;
 
 namespace QueryReport.Handler.CmdSwitcher
 {
-    public class QRCmdSwitcher : CommandSwitcherBase
+    public class QRCmdSwitcher : UniSpyCmdSwitcherBase
     {
         protected new byte[] _rawRequest
         {

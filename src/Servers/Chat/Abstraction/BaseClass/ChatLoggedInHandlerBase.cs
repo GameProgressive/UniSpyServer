@@ -4,7 +4,7 @@ using Serilog.Events;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public class ChatLogedInHandlerBase : ChatCommandHandlerBase
+    public class ChatLogedInHandlerBase : ChatCmdHandlerBase
     {
         public ChatLogedInHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

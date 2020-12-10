@@ -6,13 +6,13 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildNameReply(string nickName, string channelName, string nicks)
         {
-            return ChatResponseBase.BuildResponse(
+            return ChatResponseBase.BuildRPL(
                     ChatReplyCode.NameReply,
                     $"{nickName} = {channelName}", nicks);
         }
         public static string BuildEndOfNameReply(string nickName, string channelName)
         {
-            return ChatResponseBase.BuildResponse(ChatReplyCode.EndOfNames,
+            return ChatResponseBase.BuildRPL(ChatReplyCode.EndOfNames,
                     $"{nickName} {channelName}", @"End of /NAMES list.");
         }
 

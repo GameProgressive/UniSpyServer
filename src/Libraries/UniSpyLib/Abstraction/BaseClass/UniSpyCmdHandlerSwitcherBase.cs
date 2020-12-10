@@ -4,13 +4,13 @@ using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class CommandSwitcherBase
+    public abstract class UniSpyCmdSwitcherBase
     {
         protected IUniSpySession _session;
         protected object _rawRequest;
         protected List<IUniSpyRequest> _requests;
         protected List<IUniSpyHandler> _handlers;
-        public CommandSwitcherBase(IUniSpySession session, object rawRequest)
+        public UniSpyCmdSwitcherBase(IUniSpySession session, object rawRequest)
         {
             _session = session;
             _rawRequest = rawRequest;

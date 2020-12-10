@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace ServerBrowser.Handler.CommandHandler.ServerList.GetServers.Filter
+namespace ServerBrowser.Handler.CmdHandler.ServerList.GetServers.Filter
 {
     public class ServerFilter
     {

@@ -34,5 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entity\Structure\Request\" />
+    <Folder Include="Entity\Structure\Response\" />
   </ItemGroup>
 </Project>

@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.ChatCommand
 {
-    public class UTMRequest : ChatMessagRequestBase
+    public class UTMRequest : ChatMsgRequestBase
     {
         public UTMRequest(string rawRequest) : base(rawRequest)
         {

@@ -1,33 +1,38 @@
 ﻿using Chat.Entity.Structure.User;
 using Chat.Network;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public class ChatResponseBase
+    public class ChatResponseBase:UniSpyResponseBase
     {
-        public static string BuildResponse(string command)
+        public ChatResponseBase(object result) : base(result)
         {
-            return BuildResponse(command, "");
         }
 
-        public static string BuildResponse(string command, string cmdParams)
+        public static string BuildRPL(string command)
         {
-            return BuildResponse(command, cmdParams, "");
+            return BuildRPL(command, "");
         }
 
-        public static string BuildResponse(string command, string cmdParams, string tailing)
+        public static string BuildRPL(string command, string cmdParams)
         {
-            return BuildResponse(ChatServer.ServerDomain, command, cmdParams, tailing);
+            return BuildRPL(command, cmdParams, "");
         }
 
-        public static string BuildResponse(ChatUserInfo userInfo, string command)
+        public static string BuildRPL(string command, string cmdParams, string tailing)
         {
-            return BuildResponse(userInfo, command, "");
+            return BuildRPL(ChatServer.ServerDomain, command, cmdParams, tailing);
         }
 
-        public static string BuildResponse(ChatUserInfo userInfo, string command, string cmdParams)
+        public static string BuildRPL(ChatUserInfo userInfo, string command)
         {
-            return BuildResponse(userInfo, command, cmdParams, "");
+            return BuildRPL(userInfo, command, "");
+        }
+
+        public static string BuildRPL(ChatUserInfo userInfo, string command, string cmdParams)
+        {
+            return BuildRPL(userInfo, command, cmdParams, "");
         }
 
         /// <summary>
@@ -38,14 +43,14 @@ namespace Chat.Abstraction.BaseClass
         /// <param name="cmdParams"></param>
         /// <param name="tailing"></param>
         /// <returns></returns>
-        public static string BuildResponse(ChatUserInfo userInfo, string command, string cmdParams, string tailing)
+        public static string BuildRPL(ChatUserInfo userInfo, string command, string cmdParams, string tailing)
         {
             string prefix = $"{userInfo.NickName}!{userInfo.UserName}@{ChatServer.ServerDomain}";
 
-            return BuildResponse(prefix, command, cmdParams, tailing);
+            return BuildRPL(prefix, command, cmdParams, tailing);
         }
 
-        protected static string BuildResponse(string prefix, string command, string cmdParams, string tailing)
+        protected static string BuildRPL(string prefix, string command, string cmdParams, string tailing)
         {
             string buffer = "";
 
@@ -66,6 +71,11 @@ namespace Chat.Abstraction.BaseClass
             }
 
             return buffer;
+        }
+
+        public override object Build()
+        {
+            return true;
         }
     }
 }

@@ -2,7 +2,7 @@
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceSearchPlayer.Handler.CommandHandler.Error;
+using PresenceSearchPlayer.Handler.CmdHandler.Error;
 using System.Collections.Generic;
 using PresenceConnectionManager.Network;
 

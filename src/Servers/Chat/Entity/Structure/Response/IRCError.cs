@@ -27,7 +27,7 @@ namespace Chat.Entity.Structure.Response
         #region channel error RPL
         protected static string BuildChannelError(string ircError, string channelName, string message)
         {
-            return ChatResponseBase.BuildResponse(ircError, $"* {channelName} param2", message);
+            return ChatResponseBase.BuildRPL(ircError, $"* {channelName} param2", message);
         }
 
         public static string BuildBadChanMaskError(string channelName)
@@ -66,22 +66,22 @@ namespace Chat.Entity.Structure.Response
 
         public static string BuildNickNameInUseError(string oldNick, string newNick)
         {
-            return ChatResponseBase.BuildResponse(NickNameInUse, $"{oldNick} {newNick} 0");
+            return ChatResponseBase.BuildRPL(NickNameInUse, $"{oldNick} {newNick} 0");
         }
 
         public static string BuildLoginFailedError()
         {
-            return ChatResponseBase.BuildResponse(LoginFailed);
+            return ChatResponseBase.BuildRPL(LoginFailed);
         }
 
         public static string BuildNoUniqueNickError()
         {
-            return ChatResponseBase.BuildResponse(NoUniqueNick);
+            return ChatResponseBase.BuildRPL(NoUniqueNick);
         }
 
         public static string BuildUniquenickExpireError()
         {
-            return ChatResponseBase.BuildResponse(UniqueNIickExpired);
+            return ChatResponseBase.BuildRPL(UniqueNIickExpired);
         }
 
         public static string BuildRegisterNickFailedError(List<string> nickNames)
@@ -92,7 +92,7 @@ namespace Chat.Entity.Structure.Response
             {
                 suggestNicks += @"\" + nick;
             }
-            return ChatResponseBase.BuildResponse(RegisterNickFailed, $"* numberOfSuggestNick {suggestNicks} 0");
+            return ChatResponseBase.BuildRPL(RegisterNickFailed, $"* numberOfSuggestNick {suggestNicks} 0");
         }
 
         public static string BuildErrOneUSNickNameError(ChatUserInfo info)
@@ -102,7 +102,7 @@ namespace Chat.Entity.Structure.Response
 
         public static string BuildNoSuchNickError()
         {
-            return ChatResponseBase.BuildResponse(NoSuchNick);
+            return ChatResponseBase.BuildRPL(NoSuchNick);
         }
 
 

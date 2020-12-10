@@ -1,7 +1,7 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using PresenceSearchPlayer.Entity.Enumerate;
 
-namespace PresenceSearchPlayer.Handler.CommandHandler.Error
+namespace PresenceSearchPlayer.Handler.CmdHandler.Error
 {
     public class ErrorMsg
     {

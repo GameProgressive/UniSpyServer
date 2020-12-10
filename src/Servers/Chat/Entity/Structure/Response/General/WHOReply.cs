@@ -7,7 +7,7 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildWhoReply(string channelName, ChatUserInfo userInfo, string modes)
         {
-            return ChatResponseBase.BuildResponse(
+            return ChatResponseBase.BuildRPL(
                     ChatReplyCode.WhoReply,
                     $"param1 {channelName} " +
                     $"{userInfo.UserName} {userInfo.PublicIPAddress} param5 {userInfo.NickName} {modes} param8");
@@ -15,7 +15,7 @@ namespace Chat.Entity.Structure.Response.General
 
         public static string BuildEndOfWhoReply(string name)
         {
-            return ChatResponseBase.BuildResponse(ChatReplyCode.EndOfWho, $"param1 {name} param3", "End of WHO.");
+            return ChatResponseBase.BuildRPL(ChatReplyCode.EndOfWho, $"param1 {name} param3", "End of WHO.");
         }
     }
 }

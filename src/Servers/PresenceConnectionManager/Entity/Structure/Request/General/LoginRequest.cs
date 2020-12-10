@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Entity.Structure.Request.General
+namespace  PresenceConnectionManager.Entity.Structure.Request
 {
     public class LoginRequest : PCMRequestBase
     {

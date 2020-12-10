@@ -1,0 +1,23 @@
+﻿using UniSpyLib.Abstraction.Interface;
+using GameStatus.Abstraction.BaseClass;
+using System.Collections.Generic;
+
+namespace GameStatus.Handler.CmdHandler
+{
+    /// <summary>
+    /// Handles game snapshot and update game data
+    /// </summary>
+    public class UpdGameHandler : GSCmdHandlerBase
+    {
+        //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
+        //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
+        public UpdGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        {
+        }
+
+        protected override void DataOperation()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+}

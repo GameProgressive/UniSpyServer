@@ -7,12 +7,12 @@ namespace Chat.Entity.Structure.Response.Channel
         public static string BuildNoTopicReply(string channelName)
         {
             return
-                ChatResponseBase.BuildResponse(ChatReplyCode.NoTopic, channelName);
+                ChatResponseBase.BuildRPL(ChatReplyCode.NoTopic, channelName);
         }
         public static string BuildTopicReply(string channelName, string channelTopic)
         {
             return
-                   ChatResponseBase.BuildResponse(ChatReplyCode.TOPIC, channelName, channelTopic);
+                   ChatResponseBase.BuildRPL(ChatReplyCode.TOPIC, channelName, channelTopic);
         }
     }
 }

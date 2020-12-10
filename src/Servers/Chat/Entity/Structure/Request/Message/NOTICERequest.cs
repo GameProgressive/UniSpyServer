@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.ChatCommand
 {
-    public class NOTICERequest : ChatMessagRequestBase
+    public class NOTICERequest : ChatMsgRequestBase
     {
         public NOTICERequest(string rawRequest) : base(rawRequest)
         {
