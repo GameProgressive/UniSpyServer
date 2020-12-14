@@ -22,11 +22,12 @@ namespace NATNegotiation.Entity.Structure.Request
 
 
 
-        public override object Parse()
+        public override void Parse()
         {
-            if (!(bool)base.Parse())
+            base.Parse();
+            if (!ErrorCode)
             {
-                return false;
+                return;
             }
             PortType = (NatPortType)RawRequest[NNRequestBase.Size];//
             ClientIndex = RawRequest[NNRequestBase.Size + 1];//00
@@ -40,7 +41,7 @@ namespace NATNegotiation.Entity.Structure.Request
                 BytesToUshortPort(
                 ByteTools.SubBytes(RawRequest, NNRequestBase.Size + 7, 2));
 
-            return true;
+            ErrorCode = true;
         }
 
         public override byte[] BuildResponse()

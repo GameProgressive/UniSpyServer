@@ -12,7 +12,7 @@
         <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="NetCoreServer" Version="5.0.2" />
+        <PackageReference Include="NetCoreServer" Version="5.0.3" />
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
         <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
         <PackageReference Include="StackExchange.Redis" Version="2.2.4" />

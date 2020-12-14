@@ -13,29 +13,31 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public uint ProfileID { get; private set; }
         public string GameName { get; private set; }
         public uint NamespaceID { get; protected set; }
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if (ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             if (!RequestKeyValues.ContainsKey("gamename"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
             if (!RequestKeyValues.ContainsKey("profileid") || !RequestKeyValues.ContainsKey("namespaceid"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
             uint profileID = 0;
             if (!RequestKeyValues.ContainsKey("profileid") && !uint.TryParse(RequestKeyValues["profileid"], out profileID))
             {
-                return GPErrorCode.Parse;
-
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
             if (RequestKeyValues.ContainsKey("namespaceid"))
@@ -43,7 +45,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
 
                 NamespaceID = namespaceID;
@@ -51,7 +54,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             ProfileID = profileID;
             GameName = RequestKeyValues["gamename"];
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

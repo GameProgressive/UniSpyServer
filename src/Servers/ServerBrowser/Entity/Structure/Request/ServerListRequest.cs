@@ -51,13 +51,14 @@ namespace ServerBrowser.Entity.Structure.Request
         /// Parse all value to this class
         /// </summary>
         /// <param name="recv"></param>
-        public override object Parse()
+        public override void Parse()
         {
             ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(RawRequest, 0, 2), true);
 
             if (length != RawRequest.Length)
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
             RequestVersion = RawRequest[2];
@@ -100,7 +101,7 @@ namespace ServerBrowser.Entity.Structure.Request
                 MaxServers = ByteTools.ToInt32(remainData.Substring(0, 4), true);
             }
 
-            return true;
+            ErrorCode = true;
         }
     }
 }

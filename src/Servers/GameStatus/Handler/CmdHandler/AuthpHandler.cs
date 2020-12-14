@@ -44,7 +44,7 @@ namespace GameStatus.Handler.CmdHandler
                         FrindProfileByCDKeyHash();
                         break;
                     default:
-                        _errorCode = GSError.Database;
+                        _errorCode = GSErrorCode.Database;
                         break;
                 }
             }
@@ -67,7 +67,7 @@ namespace GameStatus.Handler.CmdHandler
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSError.Database;
+                    _errorCode = GSErrorCode.Database;
                     return;
                 }
                 _profileID = result.First();
@@ -82,7 +82,7 @@ namespace GameStatus.Handler.CmdHandler
                              select p.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSError.Database;
+                    _errorCode = GSErrorCode.Database;
                     return;
                 }
                 _profileID = result.First();
@@ -98,7 +98,7 @@ namespace GameStatus.Handler.CmdHandler
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSError.Database;
+                    _errorCode = GSErrorCode.Database;
                     return;
                 }
                 _profileID = result.First();

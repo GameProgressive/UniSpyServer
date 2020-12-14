@@ -27,7 +27,8 @@ namespace NATNegotiation.Handler.CmdSwitcher
         protected override void SerializeRequests()
         {
             var request = new NNRequestSerializer(_rawRequest).Serialize();
-            if (!(bool)request.Parse())
+            request.Parse();
+            if (!(bool)request.ErrorCode)
             {
                 return;
             }

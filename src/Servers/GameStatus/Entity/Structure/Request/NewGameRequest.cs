@@ -10,15 +10,15 @@ namespace GameStatus.Entity.Structure.Request
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-           var flag = (GSError)base.Parse();
-            if (flag != GSError.NoError)
+           base.Parse();
+            if (ErrorCode != GSErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
-            return GSError.NoError;
+            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

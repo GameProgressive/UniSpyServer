@@ -9,25 +9,37 @@ namespace QueryReport.Abstraction.BaseClass
     public class QRRequestBase : UniSpyRequestBase
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
-        public QRPacketType PacketType { get; protected set; }
         public int InstantKey { get; protected set; }
-        public new byte[] RawRequest { get; protected set; }
+        public new QRPacketType CommandName
+        {
+            get { return (QRPacketType)base.CommandName; }
+            protected set { base.CommandName = value; }
+        }
+        public new byte[] RawRequest
+        {
+            get { return (byte[])base.RawRequest; }
+            protected set { base.RawRequest = value; }
+        }
+        public new bool ErrorCode
+        {
+            get { return (bool)base.ErrorCode; }
+            protected set { base.ErrorCode = value; }
+        }
 
-
-        public QRRequestBase(byte[] rawRequest):base(rawRequest)
+        public QRRequestBase(byte[] rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
         }
 
-        public override object Parse()
+        public override void Parse()
         {
             if (RawRequest.Length < 3)
             {
-                return false;
+                ErrorCode = false;
             }
-            PacketType = (QRPacketType)RawRequest[0];
+            CommandName = (QRPacketType)RawRequest[0];
             InstantKey = BitConverter.ToInt32(ByteTools.SubBytes(RawRequest, 1, 4));
-            return true;
+            ErrorCode = true;
         }
     }
 }

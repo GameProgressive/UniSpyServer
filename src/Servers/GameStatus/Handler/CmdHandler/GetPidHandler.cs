@@ -28,7 +28,7 @@ namespace GameStatus.Handler.CmdHandler
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSError.Database;
+                    _errorCode = GSErrorCode.Database;
                     return;
                 }
                 _protileid = result.First();

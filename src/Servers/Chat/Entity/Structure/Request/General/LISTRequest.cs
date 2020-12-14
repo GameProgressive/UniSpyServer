@@ -12,21 +12,23 @@ namespace Chat.Entity.Structure.ChatCommand
         public bool IsSearchingUser { get; protected set; }
         public string Filter { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             if (_cmdParams.Count == 0)
             {
                 IsSearchingChannel = true;
-                return true;
+                ErrorCode = true;
             }
 
             Filter = _cmdParams[0];
-            return true;
+            ErrorCode = true;
         }
 
     }

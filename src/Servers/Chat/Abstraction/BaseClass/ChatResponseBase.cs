@@ -73,9 +73,9 @@ namespace Chat.Abstraction.BaseClass
             return buffer;
         }
 
-        public override object Build()
+        public override void Build()
         {
-            return true;
+            ErrorCode = true;
         }
     }
 }

@@ -90,7 +90,7 @@ namespace Chat.Handler.SystemHandler.Encryption
 
         public static bool EncodeIP()
         {
-            return false;
+           return false;
         }
     }
 }

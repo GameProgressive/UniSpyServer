@@ -8,14 +8,16 @@ namespace Chat.Entity.Structure.ChatCommand
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
-            return true; // USRIP content is empty!
+            ErrorCode = true; // USRIP content is empty!
         }
     }
 }

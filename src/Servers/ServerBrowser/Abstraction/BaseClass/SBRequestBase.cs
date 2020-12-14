@@ -5,13 +5,18 @@ namespace ServerBrowser.Abstraction.BaseClass
 {
     public class SBRequestBase : UniSpyRequestBase
     {
+        public new bool ErrorCode
+        {
+            get { return (bool)base.ErrorCode; }
+            protected set { base.ErrorCode = value; }
+        }
         public SBRequestBase(object rawRequest) : base(rawRequest)
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            return true;
+            ErrorCode = true;
         }
     }
 }

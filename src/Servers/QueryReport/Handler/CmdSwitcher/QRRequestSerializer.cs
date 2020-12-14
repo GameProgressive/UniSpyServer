@@ -3,15 +3,18 @@ using UniSpyLib.Logging;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;
-using QueryReport.Handler.SystemHandler.ErrorMessage;
-using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Handler.CmdSwitcher
 {
     public class QRRequestSerializer:UniSpyRequestSerializerBase
     {
-        protected new byte[] _rawRequest;
+        protected new byte[] _rawRequest
+        {
+            get { return (byte[])base._rawRequest; }
+            set { base._rawRequest = value; }
+        }
+
         public QRRequestSerializer(byte[] rawRequest) : base(rawRequest)
         {
             _rawRequest = rawRequest;

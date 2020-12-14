@@ -1,7 +1,6 @@
 ﻿using UniSpyLib.MiscMethod;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -23,32 +22,35 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public uint PartnerID { get; private set; }
         public string GameName { get; private set; }
         public uint NamespaceID { get; protected set; }
-        public NewUserRequest(string rawRequest) :base(rawRequest)
+        public NewUserRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if (ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
-                return GPErrorCode.NewUserBadPasswords;
+                ErrorCode = GPErrorCode.NewUserBadPasswords;
+                return;
             }
             Password = md5Password;
 
             if (!RequestKeyValues.ContainsKey("nick"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
             if (!RequestKeyValues.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
             Nick = RequestKeyValues["nick"];
@@ -61,17 +63,18 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     uint namespaceID;
                     if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                     {
-                        return GPErrorCode.Parse;
+                        ErrorCode = GPErrorCode.Parse;
+                        return;
                     }
 
                     NamespaceID = namespaceID;
                 }
                 Uniquenick = RequestKeyValues["uniquenick"];
             }
-            return ParseOtherInfo();
+            ParseOtherInfo();
         }
 
-        private GPErrorCode ParseOtherInfo()
+        private void ParseOtherInfo()
         {
 
             //parse other info
@@ -80,7 +83,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint partnerid;
                 if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerid))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 HasPartnerIDFlag = true;
                 PartnerID = partnerid;
@@ -93,7 +97,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint productid;
                 if (!uint.TryParse(RequestKeyValues["productid"], out productid))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 HasProductIDFlag = true;
                 ProductID = productid;
@@ -111,7 +116,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint port;
                 if (!uint.TryParse(RequestKeyValues["port"], out port))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 HasGamePortFlag = true;
                 GamePort = port;
@@ -123,7 +129,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 CDKeyEnc = RequestKeyValues["cdkeyenc"];
             }
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

@@ -12,15 +12,7 @@ namespace Chat.Handler.CmdHandler.ChatMessageCommandHandler
         public NOTICEHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!(bool)_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-        }
+
         protected override void BuildNormalResponse()
         {
             base.BuildNormalResponse();

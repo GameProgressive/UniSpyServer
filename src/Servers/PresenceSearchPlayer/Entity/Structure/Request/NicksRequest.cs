@@ -1,13 +1,12 @@
 ﻿using UniSpyLib.MiscMethod;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     public class NicksRequest : PSPRequestBase
     {
-        public NicksRequest(string rawRequest) :base(rawRequest)
+        public NicksRequest(string rawRequest) : base(rawRequest)
         {
         }
 
@@ -16,27 +15,29 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public uint NamespaceID { get; protected set; }
         public bool RequireUniqueNicks { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
+            base.Parse();
 
 
-            if (flag != GPErrorCode.NoError)
+            if (ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
-                return GPErrorCode.NewUserBadPasswords;
+                ErrorCode = GPErrorCode.NewUserBadPasswords;
+                return;
             }
             Password = md5Password;
 
 
             if (!RequestKeyValues.ContainsKey("email"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
             RequireUniqueNicks = true;
@@ -54,12 +55,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 NamespaceID = namespaceID;
             }
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
 
         }
     }

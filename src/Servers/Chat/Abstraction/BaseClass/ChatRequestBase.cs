@@ -8,6 +8,15 @@ namespace Chat.Abstraction.BaseClass
 {
     public class ChatRequestBase : UniSpyRequestBase
     {
+        /// <summary>
+        /// True means there are no errors
+        /// False means there are errors
+        /// </summary>
+        public new bool ErrorCode
+        {
+            get { return (bool)base.ErrorCode; }
+            protected set { base.ErrorCode = value; }
+        }
         public new string RawRequest
         {
             get { return (string)base.RawRequest; }
@@ -15,7 +24,7 @@ namespace Chat.Abstraction.BaseClass
 
         public new string CommandName
         {
-            get { return (string)base.CommandName;  }
+            get { return (string)base.CommandName; }
             set { base.CommandName = value; }
         }
 
@@ -30,7 +39,7 @@ namespace Chat.Abstraction.BaseClass
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
             // at most 2 colon character
             // we do not sure about all command
@@ -39,7 +48,7 @@ namespace Chat.Abstraction.BaseClass
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)
             {
-                return false;
+               ErrorCode = false;
             }
 
             int indexOfColon = RawRequest.IndexOf(':');
@@ -68,7 +77,7 @@ namespace Chat.Abstraction.BaseClass
             {
                 _cmdParams = dataFrag.Skip(1).ToList();
             }
-            return true;
+            ErrorCode = true;
         }
     }
 }

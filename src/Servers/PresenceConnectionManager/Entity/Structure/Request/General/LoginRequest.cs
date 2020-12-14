@@ -24,17 +24,17 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if( ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             if (!KeyValues.ContainsKey("challenge") || !KeyValues.ContainsKey("response"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
 
             UserChallenge = KeyValues["challenge"];
@@ -45,7 +45,7 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(KeyValues["namespaceid"], out namespaceID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
                 LoginType = LoginType.UniquenickNamespaceID;
                 Uniquenick = KeyValues["uniquenick"];
@@ -66,7 +66,7 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
                 int Pos = UserData.IndexOf('@');
                 if (Pos == -1 || Pos < 1 || (Pos + 1) >= UserData.Length)
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
                 Nick = UserData.Substring(0, Pos);
                 Email = UserData.Substring(Pos + 1);
@@ -77,7 +77,7 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
                     uint namespaceID;
                     if (!uint.TryParse(KeyValues["namespaceid"], out namespaceID))
                     {
-                        return GPErrorCode.Parse;
+                        ErrorCode = GPErrorCode.Parse; return;
                     }
                     NamespaceID = namespaceID;
                 }
@@ -85,10 +85,10 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
             else
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Unknown login method detected!");
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
 
-            return ParseOtherData();
+            ParseOtherData();
         }
 
         public uint GamePort { get; protected set; }
@@ -96,14 +96,14 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
         public string GameName { get; private set; }
         public QuietModeType QuietMode { get; private set; }
 
-        private GPErrorCode ParseOtherData()
+        private void ParseOtherData()
         {
             if (KeyValues.ContainsKey("partnerid"))
             {
                 uint partnerID;
                 if (!uint.TryParse(KeyValues["partnerid"], out partnerID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
                 PartnerID = partnerID;
             }
@@ -114,7 +114,7 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
                 uint sdkRevisionType;
                 if (!uint.TryParse(KeyValues["sdkrevision"], out sdkRevisionType))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
 
                 SDKType = (SDKRevisionType)sdkRevisionType;
@@ -130,7 +130,7 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
                 uint gamePort;
                 if (!uint.TryParse(KeyValues["port"], out gamePort))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
                 GamePort = gamePort;
             }
@@ -140,13 +140,13 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
                 uint quiet;
                 if (!uint.TryParse(KeyValues["quiet"], out quiet))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
 
                 QuietMode = (QuietModeType)quiet;
             }
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

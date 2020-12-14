@@ -20,6 +20,11 @@ namespace GameStatus.Abstraction.BaseClass
             get { return (string)base.RawRequest; }
             set { base.RawRequest = value; }
         }
+        public new GSErrorCode ErrorCode
+        {
+            get { return (GSErrorCode)base.ErrorCode; }
+            protected set { base.ErrorCode = value; }
+        }
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
 
         public GSRequestBase(string rawRequest) : base(rawRequest)
@@ -29,11 +34,12 @@ namespace GameStatus.Abstraction.BaseClass
             CommandName = RequestKeyValues.Keys.First();
         }
 
-        public override object Parse()
+        public override void Parse()
         {
             if (!RequestKeyValues.ContainsKey("lid") && !RequestKeyValues.ContainsKey("id"))
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
 
             if (RequestKeyValues.ContainsKey("lid"))
@@ -41,7 +47,8 @@ namespace GameStatus.Abstraction.BaseClass
                 uint operationID;
                 if (!uint.TryParse(RequestKeyValues["lid"], out operationID))
                 {
-                    return GSError.Parse;
+                    ErrorCode = GSErrorCode.Parse;
+                    return;
                 }
                 OperationID = operationID;
             }
@@ -52,12 +59,13 @@ namespace GameStatus.Abstraction.BaseClass
                 uint operationID;
                 if (!uint.TryParse(RequestKeyValues["id"], out operationID))
                 {
-                    return GSError.Parse;
+                    ErrorCode = GSErrorCode.Parse;
+                    return;
                 }
                 OperationID = operationID;
             }
 
-            return GSError.NoError;
+            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

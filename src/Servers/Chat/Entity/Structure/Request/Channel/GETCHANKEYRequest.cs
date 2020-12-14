@@ -15,21 +15,25 @@ namespace Chat.Entity.Structure.ChatCommand.Channel
         public List<string> Keys { get; protected set; }
 
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if (!ErrorCode)
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
             if (_cmdParams.Count != 3)
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
             if (_longParam == null || _longParam.Last() != '\0')
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
             Cookie = _cmdParams[1];
@@ -38,7 +42,7 @@ namespace Chat.Entity.Structure.ChatCommand.Channel
 
             Keys = StringExtensions.ConvertKeyStrToList(_longParam);
 
-            return true;
+            ErrorCode = true;
         }
     }
 }

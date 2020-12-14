@@ -28,7 +28,9 @@ namespace CDKey.Handler.CmdSwitcher
             foreach (var command in commands)
             {
                 var request = new CDKeyRequestSerializer(command).Serialize();
-                if (!(bool)request.Parse())
+                request.Parse();
+
+                if (!(bool)request.ErrorCode)
                 {
                     return;
                 }

@@ -3,6 +3,7 @@ namespace UniSpyLib.Abstraction.Interface
 {
     public interface IUniSpyResponse
     {
-        public object Build();
+        object SendingBuffer { get; }
+        public void Build();
     }
 }

@@ -17,34 +17,36 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Password { get; private set; }
         public string Email { get; private set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
-                return flag;
+            base.Parse();
+            if (ErrorCode != GPErrorCode.NoError)
+                return;
 
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
-                return GPErrorCode.NewUserBadPasswords;
+                ErrorCode = GPErrorCode.NewUserBadPasswords;
             }
             Password = md5Password;
 
             if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("email") || Password == null)
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
 
             if (!GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
             {
-                return GPErrorCode.CheckBadMail;
+                ErrorCode = GPErrorCode.CheckBadMail;
+                return;
             }
 
             Nick = RequestKeyValues["nick"];
             Email = RequestKeyValues["email"];
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

@@ -7,13 +7,15 @@ namespace CDKey.Abstraction.BaseClass
 {
     public class CDKeyRequestBase : UniSpyRequestBase
     {
+        public new bool ErrorCode { get { return (bool)base.ErrorCode; } set { base.ErrorCode = value; } }
         public CDKeyRequestBase(string rawRequest) : base(rawRequest)
         {
+            ErrorCode = false;
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            return true;
+            ErrorCode = true;
         }
     }
 }

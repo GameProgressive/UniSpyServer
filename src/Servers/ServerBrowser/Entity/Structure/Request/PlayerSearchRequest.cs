@@ -24,7 +24,7 @@ namespace ServerBrowser.Entity.Structure.Request
             RawRequest = rawRequest;
         }
 
-        public override object Parse()
+        public override void Parse()
         {
             SearchOption = Convert.ToInt16(ByteTools.SubBytes(RawRequest, 3, 3 + 4));
             MaxResults = Convert.ToUInt16(ByteTools.SubBytes(RawRequest, 7, 7 + 4));
@@ -39,7 +39,7 @@ namespace ServerBrowser.Entity.Structure.Request
             Message = Encoding.ASCII.GetString(
                 ByteTools.SubBytes(RawRequest, 15 + nameLength + 4, messageLength));
 
-            return true;
+            ErrorCode = true;
         }
     }
 }

@@ -7,6 +7,8 @@ namespace UniSpyLib.Abstraction.BaseClass
     {
         protected IUniSpySession _session;
         protected IUniSpyRequest _request;
+        protected IUniSpyResponse _response;
+        //protected object _sendingBuffer;
         public UniSpyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request)
         {
             _session = session;
@@ -25,6 +27,5 @@ namespace UniSpyLib.Abstraction.BaseClass
         protected virtual void BuildErrorResponse() { }
         protected virtual void BuildNormalResponse() { }
 
-        void IUniSpyHandler.Handle() => Handle();
     }
 }

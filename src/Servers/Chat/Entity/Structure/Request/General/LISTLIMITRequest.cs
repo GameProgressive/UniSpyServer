@@ -11,28 +11,31 @@ namespace Chat.Entity.Structure.ChatCommand
         public int MaxNumberOfChannels { get; protected set; }
         public string Filter { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
-
 
             if (_cmdParams.Count != 2)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
             int max;
             if (!int.TryParse(_cmdParams[0], out max))
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
             MaxNumberOfChannels = max;
 
             Filter = _cmdParams[1];
 
-            return true;
+            ErrorCode = true;
         }
     }
 }

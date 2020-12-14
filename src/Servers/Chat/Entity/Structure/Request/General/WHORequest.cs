@@ -18,16 +18,19 @@ namespace Chat.Entity.Structure.ChatCommand
         public string NickName { get; protected set; }
 
         public WHOType RequestType { get; protected set; }
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             if (_cmdParams.Count != 1)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             if (_cmdParams[0].Contains("#"))
@@ -40,7 +43,7 @@ namespace Chat.Entity.Structure.ChatCommand
                 RequestType = WHOType.GetUserInfo;
                 NickName = _cmdParams[0];
             }
-            return true;
+            ErrorCode = true;
         }
     }
 }

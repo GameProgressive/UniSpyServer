@@ -14,7 +14,7 @@ namespace NATNegotiation.Entity.Structure.Response
         public byte GotYourData { get; set; }
         public byte Finished { get; set; }
 
-        public ConnectResponse(byte version, uint cookie,EndPoint endPoint) : base(version, cookie)
+        public ConnectResponse(byte version, uint cookie, EndPoint endPoint) : base(version, cookie)
         {
             Finished = 0;
             GotYourData = 1;

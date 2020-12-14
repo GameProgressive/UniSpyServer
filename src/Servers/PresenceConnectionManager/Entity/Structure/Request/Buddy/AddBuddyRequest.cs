@@ -12,29 +12,29 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if( ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             if (!KeyValues.ContainsKey("sesskey") || !KeyValues.ContainsKey("newprofileid") || !KeyValues.ContainsKey("reason"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
 
             uint friendPID;
             if (!uint.TryParse(KeyValues["newprofileid"], out friendPID))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
 
             FriendProfileID = friendPID;
             AddReason = KeyValues["reason"];
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

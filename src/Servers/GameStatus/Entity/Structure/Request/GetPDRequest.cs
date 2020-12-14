@@ -18,12 +18,12 @@ namespace GameStatus.Entity.Structure.Request
             Keys = new List<string>();
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-           var flag = (GSError)base.Parse();
-            if (flag != GSError.NoError)
+           base.Parse();
+            if (ErrorCode != GSErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             if (RequestKeyValues.ContainsKey("pid"))
@@ -31,7 +31,8 @@ namespace GameStatus.Entity.Structure.Request
                 uint profileID;
                 if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
                 {
-                    return GSError.Parse;
+                    ErrorCode = GSErrorCode.Parse;
+                    return;
                 }
                 ProfileID = profileID;
             }
@@ -41,7 +42,8 @@ namespace GameStatus.Entity.Structure.Request
                 PersistStorageType storageType;
                 if (!Enum.TryParse(RequestKeyValues["ptype"], out storageType))
                 {
-                    return GSError.Parse;
+                    ErrorCode = GSErrorCode.Parse;
+                    return;
                 }
 
                 StorageType = storageType;
@@ -53,14 +55,16 @@ namespace GameStatus.Entity.Structure.Request
                 uint dataIndex;
                 if (!uint.TryParse(RequestKeyValues["dindex"], out dataIndex))
                 {
-                    return GSError.Parse;
+                    ErrorCode = GSErrorCode.Parse;
+                    return;
                 }
                 DataIndex = dataIndex;
             }
 
             if (!RequestKeyValues.ContainsKey("keys"))
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
 
             string keys = RequestKeyValues["keys"];
@@ -78,7 +82,7 @@ namespace GameStatus.Entity.Structure.Request
                 GetAllDataFlag = false;
             }
 
-            return GSError.NoError;
+            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

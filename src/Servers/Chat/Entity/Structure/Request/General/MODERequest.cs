@@ -59,11 +59,13 @@ namespace Chat.Entity.Structure.ChatCommand
         public string Password { get; protected set; }
 
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if (!ErrorCode)
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
 
@@ -71,7 +73,7 @@ namespace Chat.Entity.Structure.ChatCommand
             {
                 ChannelName = _cmdParams[0];
                 RequestType = ModeRequestType.GetChannelModes;
-                return true;
+                ErrorCode = true;
             }
 
             if (_cmdParams.Count >= 2)
@@ -85,35 +87,42 @@ namespace Chat.Entity.Structure.ChatCommand
                         case "+q":
                             NickName = _cmdParams[0];
                             RequestType = ModeRequestType.EnableUserQuietFlag;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "-q":
                             NickName = _cmdParams[0];
                             RequestType = ModeRequestType.DisableUserQuietFlag;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "+k":
                             ChannelName = _cmdParams[0];
                             Password = _cmdParams[2];
                             RequestType = ModeRequestType.AddChannelPassword;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "-k":
                             ChannelName = _cmdParams[0];
                             Password = _cmdParams[2];
                             RequestType = ModeRequestType.RemoveChannelPassword;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "+l":
                             ChannelName = _cmdParams[0];
                             LimitNumber = uint.Parse(_cmdParams[2]);
                             RequestType = ModeRequestType.AddChannelUserLimits;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "-l":
                             ChannelName = _cmdParams[0];
                             RequestType = ModeRequestType.RemoveChannelUserLimits;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "+b":
                             ChannelName = _cmdParams[0];
                             NickName = _cmdParams[2];
                             RequestType = ModeRequestType.AddBanOnUser;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "-b":
                             ChannelName = _cmdParams[0];
                             RequestType = ModeRequestType.RemoveBanOnUser;
@@ -122,22 +131,26 @@ namespace Chat.Entity.Structure.ChatCommand
                             ChannelName = _cmdParams[0];
                             UserName = _cmdParams[2];
                             RequestType = ModeRequestType.AddChannelOperator;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "-co":
                             ChannelName = _cmdParams[0];
                             UserName = _cmdParams[2];
                             RequestType = ModeRequestType.RemoveChannelOperator;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "+cv":
                             ChannelName = _cmdParams[0];
                             NickName = _cmdParams[2];
                             RequestType = ModeRequestType.EnableUserVoicePermission;
-                            return true;
+                            ErrorCode = true;
+                            break;
                         case "-cv":
                             ChannelName = _cmdParams[0];
                             NickName = _cmdParams[2];
                             RequestType = ModeRequestType.DisableUserVoicePermission;
-                            return true;
+                            ErrorCode = true;
+                            break;
                     }
                 }
                 else
@@ -150,7 +163,7 @@ namespace Chat.Entity.Structure.ChatCommand
                         LimitNumber = uint.Parse(_cmdParams[2]);
                         RequestType = ModeRequestType.SetChannelModesWithUserLimit;
 
-                        return true;
+                        ErrorCode = true;
                     }
                     // "MODE <channel name> <mode flags>"
                     else
@@ -158,12 +171,13 @@ namespace Chat.Entity.Structure.ChatCommand
                         ChannelName = _cmdParams[0];
                         ModeFlag = _cmdParams[1];
                         RequestType = ModeRequestType.SetChannelModes;
-                        return true;
+                        ErrorCode = true;
                     }
                 }
-                return false;
+                ErrorCode = false;
+                return;
             }
-            return false;
+            ErrorCode = false;
         }
     }
 }

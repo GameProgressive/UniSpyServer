@@ -1,7 +1,6 @@
 ﻿using UniSpyLib.Extensions;
 using System;
 using System.Net;
-using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using System.Linq;
@@ -28,12 +27,12 @@ namespace ServerBrowser.Entity.Structure.Request
             protected set { base.CommandName = value; }
         }
 
-        public AdHocRequest(byte[] rawRequest):base(rawRequest)
+        public AdHocRequest(byte[] rawRequest) : base(rawRequest)
         {
             CommandName = (SBClientRequestType)RawRequest[2];
         }
 
-        public override object Parse()
+        public override void Parse()
         {
             ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(RawRequest, 0, 2), true);
 
@@ -55,7 +54,7 @@ namespace ServerBrowser.Entity.Structure.Request
 
             //TODO fix for gbrome!!!!!!!!!!!!!!!!!!!
             TargetEndPoint = ByteTools.GetIPEndPoint(ip, port);
-            return true;
+            ErrorCode = true;
         }
     }
 }

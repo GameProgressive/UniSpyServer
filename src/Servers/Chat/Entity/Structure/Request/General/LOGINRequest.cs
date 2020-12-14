@@ -22,11 +22,13 @@ namespace Chat.Entity.Structure.ChatCommand
         public string UniqueNick { get; protected set; }
         public string PasswordHash { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
 
@@ -34,7 +36,8 @@ namespace Chat.Entity.Structure.ChatCommand
 
             if (!uint.TryParse(_cmdParams[0], out namespaceid))
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             NameSpaceID = namespaceid;
@@ -46,7 +49,8 @@ namespace Chat.Entity.Structure.ChatCommand
 
                 if (_longParam.Count(c => c == '@') != 2)
                 {
-                    return false;
+                   ErrorCode = false;
+                    return;
                 }
 
                 int profilenickIndex = _longParam.IndexOf("@");
@@ -61,7 +65,7 @@ namespace Chat.Entity.Structure.ChatCommand
                 PasswordHash = _cmdParams[2];
             }
 
-            return true;
+            ErrorCode = true;
         }
     }
 }

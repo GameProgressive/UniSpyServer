@@ -17,7 +17,7 @@ namespace QueryReport.Handler.CmdSwitcher
 
         public override IUniSpyHandler Serialize()
         {
-            switch (_request.PacketType)
+            switch (_request.CommandName)
             {
                 case QRPacketType.AvaliableCheck:
                     return new AvailableHandler(_session, _request);

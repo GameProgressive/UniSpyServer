@@ -13,17 +13,21 @@ namespace Chat.Entity.Structure.ChatCommand
             KeyValues = new Dictionary<string, string>();
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             if (_longParam == null)
-                return false;
+            {
+                ErrorCode = false;
+            }
             KeyValues = StringExtensions.ConvertKVStrToDic(_longParam);
-            return true;
+            ErrorCode = true;
         }
     }
 }

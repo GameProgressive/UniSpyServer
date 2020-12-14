@@ -12,21 +12,25 @@ namespace Chat.Entity.Structure.ChatCommand
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             if (_longParam == null)
-                return false;
-
+            {
+                ErrorCode = false;
+                return;
+            }
             _longParam = _longParam.Substring(1);
 
             KeyValue = StringExtensions.ConvertKVStrToDic(_longParam);
 
-            return true;
+            ErrorCode = true;
         }
     }
 }

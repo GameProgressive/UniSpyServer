@@ -5,6 +5,7 @@ namespace UniSpyLib.Abstraction.Interface
     {
         public object CommandName { get; }
         public object RawRequest { get; }
-        public object Parse();
+        public object ErrorCode { get; }
+        public void Parse();
     }
 }

@@ -17,11 +17,13 @@ namespace Chat.Entity.Structure.ChatCommand
         public string ChannelTopic { get; protected set; }
         public TOPICCmdType RequestType { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             if (_longParam == null)
@@ -33,7 +35,7 @@ namespace Chat.Entity.Structure.ChatCommand
                 RequestType = TOPICCmdType.SetChannelTopic;
                 ChannelTopic = _longParam;
             }
-            return true;
+            ErrorCode = true;
         }
     }
 }

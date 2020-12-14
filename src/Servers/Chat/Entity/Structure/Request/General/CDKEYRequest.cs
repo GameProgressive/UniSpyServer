@@ -10,15 +10,16 @@ namespace Chat.Entity.Structure.ChatCommand.General
 
         public string CDKey { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if (!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
             }
 
             CDKey = _cmdParams[0];
-            return true;
+            ErrorCode = true;
         }
     }
 }

@@ -153,7 +153,7 @@ namespace Chat.Entity.Structure.ChatChannel
             }
             else
             {
-                return false;
+               return false;
             }
         }
     }

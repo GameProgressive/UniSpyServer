@@ -8,19 +8,20 @@
 
         public string ChannelName { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if (!(bool)base.Parse())
+            base.Parse();
+            if (!ErrorCode)
             {
-                return false;
+                ErrorCode = false;
             }
 
             if (_cmdParams.Count < 1)
             {
-                return false;
+                ErrorCode = false;
             }
             ChannelName = _cmdParams[0];
-            return true;
+            ErrorCode = true;
         }
     }
 }

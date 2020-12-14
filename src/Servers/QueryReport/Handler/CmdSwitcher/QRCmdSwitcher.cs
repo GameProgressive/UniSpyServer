@@ -28,7 +28,8 @@ namespace QueryReport.Handler.CmdSwitcher
         protected override void SerializeRequests()
         {
             var request = new QRRequestSerializer(_rawRequest).Serialize();
-            if (!(bool)request.Parse())
+            request.Parse();
+            if (!(bool)request.ErrorCode)
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(QRErrorCode.Parse));
                 return;

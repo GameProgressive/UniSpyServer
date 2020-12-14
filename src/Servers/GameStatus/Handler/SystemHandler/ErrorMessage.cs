@@ -4,17 +4,17 @@ namespace GameStatus.Handler.SystemHandler
 {
     public class ErrorMessage
     {
-        public static string ToMsg(GSError error)
+        public static string ToMsg(GSErrorCode error)
         {
             switch (error)
             {
-                case GSError.Parse:
+                case GSErrorCode.Parse:
                     return "Request parse error!";
 
-                case GSError.General:
+                case GSErrorCode.General:
                     return "General error!";
 
-                case GSError.Database:
+                case GSErrorCode.Database:
                     return "Database error!";
 
                 default:

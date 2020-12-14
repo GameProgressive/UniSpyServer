@@ -23,12 +23,12 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if( ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
             if (!KeyValues.ContainsKey("state")
                 || !KeyValues.ContainsKey("hostIp")
@@ -41,7 +41,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 || !KeyValues.ContainsKey("gameVariant")
                 || !KeyValues.ContainsKey("gameMapName"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
 
             StatusState = KeyValues["state"];
@@ -51,20 +51,20 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             uint qport;
             if (!uint.TryParse(KeyValues["qport"], out qport))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
             QueryReportPort = qport;
             uint hport;
             if (uint.TryParse(KeyValues["hport"], out hport))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
             HostPort = hport;
 
             uint sessflags;
             if (!uint.TryParse(KeyValues["sessflags"], out sessflags))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
             SessionFlags = sessflags;
 
@@ -73,7 +73,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             GameVariant = KeyValues["gameVariant"];
             GameMapName = KeyValues["gameMapName"];
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

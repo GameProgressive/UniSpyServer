@@ -9,20 +9,23 @@ namespace Chat.Entity.Structure.ChatCommand
         }
 
         public string GroupName { get; protected set; }
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             if (_cmdParams.Count != 1)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             GroupName = _cmdParams[0];
-            return true;
+            ErrorCode = true;
         }
     }
 }

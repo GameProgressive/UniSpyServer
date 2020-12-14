@@ -24,6 +24,11 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             get { return (byte[])base.RawRequest; }
         }
+        public new bool ErrorCode
+        {
+            get { return (bool)base.ErrorCode; }
+            protected set { base.ErrorCode = value; }
+        }
         public byte Version;
         public uint Cookie;
 
@@ -33,18 +38,19 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
             if (RawRequest.Length < Size)
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
             Version = RawRequest[MagicData.Length];
             CommandName = (NatPacketType)RawRequest[MagicData.Length + 1];
             Cookie = BitConverter.ToUInt32(ByteTools.SubBytes(RawRequest, MagicData.Length + 2, 4));
 
-            return true;
+            ErrorCode = true;
         }
 
         public virtual byte[] BuildResponse()

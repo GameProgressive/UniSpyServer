@@ -9,30 +9,32 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         public string PreferredNick { get; protected set; }
         public uint NamespaceID { get; protected set; }
-        public UniqueSearchRequest(string rawRequest) :base(rawRequest)
+        public UniqueSearchRequest(string rawRequest) : base(rawRequest)
         {
         }
 
         public string GameName { get; private set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if (ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             if (!RequestKeyValues.ContainsKey("preferrednick"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
             PreferredNick = RequestKeyValues["preferrednick"];
 
             if (!RequestKeyValues.ContainsKey("gamename"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
             GameName = RequestKeyValues["gamename"];
 
@@ -41,13 +43,14 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
 
                 NamespaceID = namespaceID;
             }
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

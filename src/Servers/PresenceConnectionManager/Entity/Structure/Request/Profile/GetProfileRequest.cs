@@ -11,34 +11,34 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if( ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             if (!KeyValues.ContainsKey("profileid"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
 
             uint profileID;
             if (!uint.TryParse(KeyValues["profileid"], out profileID))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
             ProfileID = profileID;
 
             if (!KeyValues.ContainsKey("sesskey"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse; return;
             }
 
 
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

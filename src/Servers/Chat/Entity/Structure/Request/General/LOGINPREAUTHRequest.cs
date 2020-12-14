@@ -11,16 +11,18 @@ namespace Chat.Entity.Structure.ChatCommand
         public string AuthToken { get; protected set; }
         public string PartnerChallenge { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             AuthToken = _cmdParams[0];
             PartnerChallenge = _cmdParams[1];
-            return true;
+            ErrorCode = true;
         }
     }
 }

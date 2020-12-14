@@ -14,17 +14,19 @@ namespace Chat.Entity.Structure.ChatCommand
         public string NickName { get; protected set; }
         public string Name { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
             UserName = _cmdParams[0];
             Hostname = _cmdParams[1];
             ServerName = _cmdParams[2];
             Name = _longParam;
-            return true;
+            ErrorCode = true;
         }
     }
 }

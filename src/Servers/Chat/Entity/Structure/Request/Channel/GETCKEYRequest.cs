@@ -22,21 +22,25 @@ namespace Chat.Entity.Structure.ChatCommand
             Keys = new List<string>();
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if (!ErrorCode)
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
             if (_cmdParams.Count != 4)
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
             if (_longParam == null)
             {
-                return false;
+                ErrorCode = false;
+                return;
             }
 
             NickName = _cmdParams[1];
@@ -54,7 +58,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
             Keys = StringExtensions.ConvertKeyStrToList(_longParam);
 
-            return true;
+            ErrorCode = true;
         }
     }
 }

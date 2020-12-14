@@ -42,19 +42,19 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         public bool HasCountryCode { get; protected set; }
         public string CountryCode { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if( ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
             if (KeyValues.ContainsKey("publicmask"))
             {
                 PublicMasks mask;
                 if (!Enum.TryParse(KeyValues["publicmask"], out mask))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
                 HasPublicMaskFlag = true;
                 PublicMask = mask;
@@ -77,7 +77,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 uint icq;
                 if (!uint.TryParse(KeyValues["icquin"], out icq))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
                 HasICQFlag = true;
                 ICQUIN = icq;
@@ -114,7 +114,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 
                 if (!byte.TryParse(KeyValues["sex"], out sex))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse; return;
                 }
                 HasSexFlag = true;
                 Sex = sex;
@@ -133,7 +133,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             }
 
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

@@ -14,13 +14,17 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 
         public new string RawRequest { get; protected set; }
         public Dictionary<string,string> KeyValues{get; protected set;}
-
+        public new GPErrorCode ErrorCode
+        {
+            get { return (GPErrorCode)base.ErrorCode; }
+            protected set { base.ErrorCode = value; }
+        }
         public PCMRequestBase(string rawRequest):base(rawRequest)
         {
             RawRequest = rawRequest;
         }
 
-        public override object Parse()
+        public override void Parse()
         {
             KeyValues = UniSpyLib.MiscMethod.GameSpyUtils.ConvertToKeyValue(RawRequest);
             CommandName = KeyValues.Keys.First();
@@ -30,11 +34,12 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
                 uint operationID;
                 if (!uint.TryParse(KeyValues["id"], out operationID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 OperationID = operationID;
             }
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
 
         public static string NormalizeRequest(string message)

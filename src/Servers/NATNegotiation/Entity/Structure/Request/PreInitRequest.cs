@@ -13,10 +13,5 @@ namespace NATNegotiation.Entity.Structure.Request
         public PreInitRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
-
-        public override object Parse()
-        {
-            return base.Parse();
-        }
     }
 }

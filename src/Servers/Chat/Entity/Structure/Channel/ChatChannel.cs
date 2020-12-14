@@ -67,7 +67,7 @@ namespace Chat.Entity.Structure.Channel
                 o.Session.SendAsync(message);
             }
 
-            return true;
+           return true;
         }
 
         public void SendChannelUsersToJoiner(ChatChannelUser joiner)
@@ -156,7 +156,7 @@ namespace Chat.Entity.Structure.Channel
             else
             {
                 user = null;
-                return false;
+               return false;
             }
         }
 
@@ -168,7 +168,7 @@ namespace Chat.Entity.Structure.Channel
             }
             else
             {
-                return false;
+               return false;
             }
         }
 
@@ -180,7 +180,7 @@ namespace Chat.Entity.Structure.Channel
             }
             else
             {
-                return false;
+               return false;
             }
         }
 
@@ -205,7 +205,7 @@ namespace Chat.Entity.Structure.Channel
             else
             {
                 user = null;
-                return false;
+               return false;
             }
         }
 
@@ -220,7 +220,7 @@ namespace Chat.Entity.Structure.Channel
             else
             {
                 user = null;
-                return false;
+               return false;
             }
         }
 

@@ -11,17 +11,19 @@ namespace Chat.Entity.Structure.ChatCommand
         public string NamespaceID { get; protected set; }
         public string UniqueNick { get; protected set; }
         public string CDKey { get; protected set; }
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             NamespaceID = _cmdParams[0];
             UniqueNick = _cmdParams[1];
             CDKey = _cmdParams[2];
-            return true;
+            ErrorCode = true;
         }
     }
 }

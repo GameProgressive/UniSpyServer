@@ -33,7 +33,7 @@ namespace GameStatus.Handler.CmdHandler
 
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSError.Database;
+                    _errorCode = GSErrorCode.Database;
                     return;
                 }
                 else
@@ -57,7 +57,7 @@ namespace GameStatus.Handler.CmdHandler
                     }
                     else
                     {
-                        _errorCode = GSError.Database;
+                        _errorCode = GSErrorCode.Database;
                         break;
                     }
                 }

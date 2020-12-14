@@ -18,14 +18,14 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
 
         protected override void SerializeCommandHandlers()
         {
-            foreach(var request in _requests)
+            foreach (var request in _requests)
             {
-            var handler = new PSPCmdHandlerSerializer(_session,request).Serialize();
-            if(handler == null)
-            {
-                return;
-            }
-            _handlers.Add(handler);
+                var handler = new PSPCmdHandlerSerializer(_session, request).Serialize();
+                if (handler == null)
+                {
+                    return;
+                }
+                _handlers.Add(handler);
             }
         }
 
@@ -46,10 +46,12 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
                 {
                     continue;
                 }
-                var flag = (GPErrorCode)request.Parse();
-                if (flag != GPErrorCode.NoError)
+                request.Parse();
+                if ((GPErrorCode)request.ErrorCode != GPErrorCode.NoError)
                 {
-                    _session.SendAsync(ErrorMsg.BuildGPErrorMsg(flag));
+                    _session.SendAsync(
+                        ErrorMsg.BuildGPErrorMsg(
+                            (GPErrorCode)request.ErrorCode));
                     continue;
                 }
                 _requests.Add(request);

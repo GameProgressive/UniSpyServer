@@ -154,7 +154,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
 
             if (buffer.Length != 3)
             {
-                return false;
+               return false;
             }
 
             List<string> peerGameKeys = RedisExtensions.GetAllKeys(RedisDBNumber.PeerGroup);
@@ -163,7 +163,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
                 return true;
             }
 
-            return false;
+           return false;
         }
     }
 }

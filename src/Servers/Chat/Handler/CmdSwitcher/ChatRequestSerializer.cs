@@ -21,7 +21,8 @@ namespace Chat.Handler.CommandSwitcher
         public override IUniSpyRequest Serialize()
         {
             ChatRequestBase generalRequest = new ChatRequestBase(_rawRequest);
-            if (!(bool)generalRequest.Parse())
+            generalRequest.Parse();
+            if (!generalRequest.ErrorCode)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
                 return null;

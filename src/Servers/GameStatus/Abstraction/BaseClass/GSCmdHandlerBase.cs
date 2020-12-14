@@ -17,20 +17,20 @@ namespace GameStatus.Abstraction.BaseClass
     public abstract class GSCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected string _sendingBuffer;
-        protected GSError _errorCode;
+        protected GSErrorCode _errorCode;
         protected new GSSession _session
         {
             get { return (GSSession)base._session; }
         }
         protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
-            _errorCode = GSError.NoError;
+            _errorCode = GSErrorCode.NoError;
         }
 
         public override void Handle()
         {
             CheckRequest();
-            if (_errorCode != GSError.NoError)
+            if (_errorCode != GSErrorCode.NoError)
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
@@ -38,7 +38,7 @@ namespace GameStatus.Abstraction.BaseClass
 
             DataOperation();
 
-            if (_errorCode == GSError.Database)
+            if (_errorCode == GSErrorCode.Database)
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;
@@ -46,7 +46,7 @@ namespace GameStatus.Abstraction.BaseClass
 
             ConstructResponse();
 
-            if (_errorCode != GSError.NoError)
+            if (_errorCode != GSErrorCode.NoError)
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
                 return;

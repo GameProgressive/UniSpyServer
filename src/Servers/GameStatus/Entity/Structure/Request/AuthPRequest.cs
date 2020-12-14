@@ -19,12 +19,12 @@ namespace GameStatus.Entity.Structure.Request
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-           var flag = (GSError)base.Parse();
-            if (flag != GSError.NoError)
+           base.Parse();
+            if (ErrorCode != GSErrorCode.NoError)
             {
-                return flag;
+                return;
             }
             if (RequestKeyValues.ContainsKey("pid") && RequestKeyValues.ContainsKey("resp"))
             {
@@ -32,7 +32,8 @@ namespace GameStatus.Entity.Structure.Request
                 uint profileID;
                 if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
                 {
-                    return GSError.Parse;
+                    ErrorCode = GSErrorCode.Parse;
+                    return;
                 }
                 ProfileID = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
@@ -51,10 +52,11 @@ namespace GameStatus.Entity.Structure.Request
             }
             else
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
 
-            return GSError.NoError;
+            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

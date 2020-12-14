@@ -19,15 +19,6 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
         {
         }
 
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            if (!(bool)_request.Parse())
-            {
-                _errorCode = ChatError.Parse;
-                return;
-            }
-        }
 
         protected override void DataOperation()
         {

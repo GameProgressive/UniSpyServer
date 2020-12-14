@@ -16,11 +16,12 @@
         public string NickName { get; protected set; }
         public string Message { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if (!(bool)base.Parse())
+            base.Parse();
+            if (!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
             }
 
             if (_cmdParams[0].Contains("#"))
@@ -35,7 +36,7 @@
             }
 
             Message = _longParam;
-            return true;
+            ErrorCode = true;
         }
     }
 }

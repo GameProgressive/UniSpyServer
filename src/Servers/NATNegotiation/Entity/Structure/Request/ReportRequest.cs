@@ -20,11 +20,12 @@ namespace NATNegotiation.Entity.Structure.Request
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if (!(bool)base.Parse())
+            base.Parse();
+            if (!ErrorCode)
             {
-                return false;
+                return;
             }
             PortType = RawRequest[13];
             ClientIndex = RawRequest[14];
@@ -38,7 +39,7 @@ namespace NATNegotiation.Entity.Structure.Request
             GameName = Encoding.ASCII.GetString(
                 ByteTools.SubBytes(RawRequest, 23, RawRequest.Length - 23));
 
-            return true;
+            ErrorCode = true;
         }
 
         public override byte[] BuildResponse()

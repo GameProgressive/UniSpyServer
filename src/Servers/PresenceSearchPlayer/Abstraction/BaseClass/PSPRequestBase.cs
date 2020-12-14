@@ -1,5 +1,4 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using PresenceSearchPlayer.Entity.Enumerate;
+﻿using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
@@ -13,14 +12,18 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         public new string RawRequest { get; protected set; }
         public new string CommandName { get; protected set; }
         public ushort OperationID { get; protected set; }
-
+        public new GPErrorCode ErrorCode
+        {
+            get { return (GPErrorCode)base.ErrorCode; }
+            protected set { base.ErrorCode = value; }
+        }
 
         public PSPRequestBase(string rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
         }
 
-        public override object Parse()
+        public override void Parse()
         {
             RequestKeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
             CommandName = RequestKeyValues.Keys.First();
@@ -30,12 +33,13 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
                 ushort operationID;
                 if (!ushort.TryParse(RequestKeyValues["id"], out operationID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 OperationID = operationID;
             }
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

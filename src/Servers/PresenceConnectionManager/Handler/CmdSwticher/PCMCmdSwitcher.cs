@@ -43,10 +43,10 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
             foreach (var rawRequest in rawRequests)
             {
                 var request = new PCMRequestSerializer(rawRequest).Serialize();
-                var errorCode = (GPErrorCode)request.Parse();
-                if (errorCode != GPErrorCode.NoError)
+                request.Parse();
+                if ((GPErrorCode)request.ErrorCode != GPErrorCode.NoError)
                 {
-                    _session.SendAsync(ErrorMsg.BuildGPErrorMsg(errorCode));
+                    _session.SendAsync(ErrorMsg.BuildGPErrorMsg((GPErrorCode)request.ErrorCode));
                     continue;
                 }
                 _requests.Add(request);

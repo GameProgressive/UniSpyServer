@@ -21,36 +21,40 @@ namespace GameStatus.Entity.Structure.Request
         public uint Length { get; protected set; }
         public string KeyValueString { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-           var flag = (GSError)base.Parse();
-            if (flag != GSError.NoError)
+           base.Parse();
+            if (ErrorCode != GSErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             if (!RequestKeyValues.ContainsKey("pid") || !RequestKeyValues.ContainsKey("ptype")
                 || !RequestKeyValues.ContainsKey("dindex") || !RequestKeyValues.ContainsKey("length"))
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
 
             uint profileID;
             if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
             ProfileID = profileID;
 
             uint storageType;
             if (!uint.TryParse(RequestKeyValues["ptype"], out storageType))
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
 
             if (!Enum.IsDefined(typeof(PersistStorageType), storageType))
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
 
             StorageType = (PersistStorageType)storageType;
@@ -58,14 +62,16 @@ namespace GameStatus.Entity.Structure.Request
             uint dindex;
             if (!uint.TryParse(RequestKeyValues["dindex"], out dindex))
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
             DataIndex = dindex;
 
             uint length;
             if (!uint.TryParse(RequestKeyValues["length"], out length))
             {
-                return GSError.Parse;
+                ErrorCode = GSErrorCode.Parse;
+                return;
             }
             Length = length;
 
@@ -77,7 +83,7 @@ namespace GameStatus.Entity.Structure.Request
                 KeyValueString += @"\" + d.Key + @"\" + d.Value;
             }
 
-            return GSError.NoError;
+            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

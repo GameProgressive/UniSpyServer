@@ -11,7 +11,7 @@ namespace QueryReport.Abstraction.BaseClass
 
         public QRResponseBase(QRRequestBase request)
         {
-            PacketType = request.PacketType;
+            PacketType = request.CommandName;
             InstantKey = request.InstantKey;
         }
 

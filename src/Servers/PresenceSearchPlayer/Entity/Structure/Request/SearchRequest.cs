@@ -28,12 +28,12 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         {
         }
 
-        public override object Parse()
+        public override void Parse()
         {
-            var flag = (GPErrorCode)base.Parse();
-            if (flag != GPErrorCode.NoError)
+            base.Parse();
+            if (ErrorCode != GPErrorCode.NoError)
             {
-                return flag;
+                return;
             }
 
             if (!RequestKeyValues.ContainsKey("profileid")
@@ -42,7 +42,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 && !RequestKeyValues.ContainsKey("namespaceid") 
                 && !RequestKeyValues.ContainsKey("gamename"))
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
             if (RequestKeyValues.ContainsKey("gamename"))
@@ -55,7 +56,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint profileID;
                 if (!uint.TryParse(RequestKeyValues["profileid"], out profileID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 ProfileID = profileID;
             }
@@ -65,7 +67,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint partnerID;
                 if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerID))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 PartnerID = partnerID;
             }
@@ -75,7 +78,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 int skip;
                 if (!int.TryParse(RequestKeyValues["skip"], out skip))
                 {
-                    return GPErrorCode.Parse;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 SkipNumber = skip;
             }
@@ -87,7 +91,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     uint namespaceID;
                     if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                     {
-                        return GPErrorCode.Parse;
+                        ErrorCode = GPErrorCode.Parse;
+                        return;
                     }
                     NamespaceID = namespaceID;
                 }
@@ -114,10 +119,11 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             else
             {
-                return GPErrorCode.Parse;
+                ErrorCode = GPErrorCode.Parse;
+                return;
             }
 
-            return GPErrorCode.NoError;
+            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

@@ -10,15 +10,17 @@ namespace Chat.Entity.Structure.ChatCommand
 
         public string EchoMessage { get; protected set; }
 
-        public override object Parse()
+        public override void Parse()
         {
-            if(!(bool)base.Parse())
+            base.Parse();
+            if(!ErrorCode)
             {
-                return false;
+               ErrorCode = false;
+                return;
             }
 
             EchoMessage = _longParam;
-            return true;
+            ErrorCode = true;
         }
     }
 }

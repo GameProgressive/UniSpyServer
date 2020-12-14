@@ -31,7 +31,8 @@ namespace ServerBrowser.Handler.CommandSwitcher
         protected override void SerializeRequests()
         {
             var request = new SBRequestSerializer(_rawRequest).Serialize();
-            if (!(bool)request.Parse())
+            request.Parse();
+            if (!(bool)request.ErrorCode)
             {
                 return;
             }
