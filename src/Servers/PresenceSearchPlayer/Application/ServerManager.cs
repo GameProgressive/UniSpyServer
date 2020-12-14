@@ -9,13 +9,14 @@ namespace PresenceSearchPlayer
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ServerManager : UniSpyServerManagerBase
+    public class PSPServerManager : UniSpyServerManagerBase
     {
+        public new static PSPServer Server { get; protected set; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ServerManager(string serverName) : base(serverName)
+        public PSPServerManager(string serverName) : base(serverName)
         {
         }
 
@@ -27,9 +28,10 @@ namespace PresenceSearchPlayer
         {
             if (cfg.Name == ServerName)
             {
-                Server = new PSPServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new PSPServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server.Start();
                 Console.WriteLine(
-                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

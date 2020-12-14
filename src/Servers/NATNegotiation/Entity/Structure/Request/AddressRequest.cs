@@ -6,5 +6,6 @@ namespace NATNegotiation.Entity.Structure.Request
         public AddressRequest(byte[] rawRequest) : base(rawRequest)
         {
         }
+
     }
 }

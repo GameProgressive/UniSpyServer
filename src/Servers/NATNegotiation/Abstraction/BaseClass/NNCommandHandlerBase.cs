@@ -3,6 +3,8 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Network;
+using NATNegotiation.Entity.Structure;
+using NATNegotiation.Handler.SystemHandler.Manager;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
@@ -22,7 +24,7 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             get { return (NNRequestBase)base._request; }
         }
-
+        protected NatUserInfo _userInfo;
         public NNCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _errorCode = NNErrorCode.NoError;
@@ -48,10 +50,20 @@ namespace NATNegotiation.Abstraction.BaseClass
             }
             Response();
         }
-
         protected override void CheckRequest()
         {
-            _session.UserInfo.UpdateLastPacketReceiveTime();
+            base.CheckRequest();
+            //TODO we get user infomation from redis
+            var keys = NegotiatorManager.GetMatchedKeys(_session.RemoteEndPoint);
+            if (keys.Count == 0)
+            {
+                _userInfo = new NatUserInfo();
+                _userInfo.UpdateRemoteEndPoint(_session.RemoteEndPoint);
+            }
+            else
+            {
+                _userInfo = NegotiatorManager.GetNatUserInfo(_session.RemoteEndPoint, _request.Cookie);
+            }
         }
 
         protected override void Response()

@@ -269,7 +269,7 @@ namespace Chat.Entity.Structure.Channel
 
             ChatChannelManager.RemoveChannel(this);
 
-            GameServer.DeleteSimilarServer(
+            GameServer.DeleteMatchedServers(
                 kicker.Session.RemoteEndPoint,
                 kicker.Session.UserInfo.GameName);
         }

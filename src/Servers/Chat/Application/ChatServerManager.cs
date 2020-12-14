@@ -12,6 +12,7 @@ namespace Chat.Application
     /// </summary>
     public class ChatServerManager : UniSpyServerManagerBase
     {
+        public new static ChatServer Server { get; protected set; }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -28,9 +29,10 @@ namespace Chat.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new ChatServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new ChatServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server.Start();
                 Console.WriteLine(
-                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

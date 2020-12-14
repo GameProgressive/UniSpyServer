@@ -7,15 +7,15 @@ namespace UniSpyLib.Network
 {
     public class UDPSessionBase : IUniSpySession
     {
-        public UDPServerBase Server { get; }
+        public UDPServerBase Server { get; private set; }
 
-        public Guid Id { get; }
+        //public Guid Id { get; }
 
-        public EndPoint RemoteEndPoint { get; }
+        public EndPoint RemoteEndPoint { get; private set; }
 
         public UDPSessionBase(UDPServerBase server, EndPoint endPoint)
         {
-            Id = Guid.NewGuid();
+            //Id = Guid.NewGuid();
             Server = server;
             RemoteEndPoint = endPoint;
         }

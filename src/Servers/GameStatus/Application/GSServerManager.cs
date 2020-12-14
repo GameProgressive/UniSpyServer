@@ -12,6 +12,7 @@ namespace GameStatus.Application
     /// </summary>
     public class GSServerManager : UniSpyServerManagerBase
     {
+        public new static GSServer Server { get; protected set; }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -28,10 +29,10 @@ namespace GameStatus.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new GSServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
-
+                Server = new GSServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server.Start();
                 Console.WriteLine(
-                     StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                     StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
 
             }
         }

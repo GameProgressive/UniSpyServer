@@ -1,5 +1,4 @@
-﻿using System;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
@@ -8,17 +7,16 @@ namespace UniSpyLib.Abstraction.BaseClass
     {
         public object ErrorCode { get; protected set; }
         public object SendingBuffer { get; protected set; }
-        protected object _result;
-        public UniSpyResponseBase(object result)
+        protected object _dataResult;
+        public UniSpyResponseBase(object dataResult)
         {
-            _result = result;
+            _dataResult = dataResult;
             LogWriter.LogCurrentClass(this);
         }
 
         /// <summary>
         /// Build response message
         /// </summary>
-        /// <returns>respnse message</returns>
         public abstract void Build();
     }
 }

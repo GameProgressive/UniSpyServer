@@ -5,7 +5,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
 {
     public class NNCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        protected new byte[] _rawRequest;
+        protected new byte[] _rawRequest { get { return (byte[])base._rawRequest; } }
         public NNCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }

@@ -10,13 +10,14 @@ namespace PresenceConnectionManager.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ServerManager : UniSpyServerManagerBase
+    public class PCMServerManager : UniSpyServerManagerBase
     {
+        public new static PCMServer Server { get; protected set; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ServerManager(string serverName) : base(serverName)
+        public PCMServerManager(string serverName) : base(serverName)
         {
         }
 
@@ -28,9 +29,10 @@ namespace PresenceConnectionManager.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new PCMServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new PCMServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server.Start();
                 Console.WriteLine(
-                      StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                      StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
 

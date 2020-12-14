@@ -2,6 +2,7 @@
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
+using System;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
@@ -17,8 +18,8 @@ namespace NATNegotiation.Handler.CmdHandler
             _sendingBuffer = new AddressResponse(_request, _session.RemoteEndPoint).BuildResponse();
 
 
-            _session.UserInfo.SetIsGotAddressCheckPacketFlag().
-                UpdateLastPacketReceiveTime();
+            _session.UserInfo.IsGotAddressCheckPacket = true;
+            _session.UserInfo.LastPacketRecieveTime = DateTime.Now;
         }
     }
 }

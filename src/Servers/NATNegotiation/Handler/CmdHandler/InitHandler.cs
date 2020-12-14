@@ -4,6 +4,7 @@ using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Handler.SystemHandler.Manager;
+using System;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
@@ -14,19 +15,11 @@ namespace NATNegotiation.Handler.CmdHandler
         {
         }
 
-        protected override void CheckRequest()
-        {
-            string key = _session.RemoteEndPoint.ToString() + "-" + _request.PortType.ToString();
-
-            if (!NNManager.SessionPool.TryGetValue(key, out _))
-            {
-                NNManager.SessionPool.TryAdd(key, _session);
-            }
-        }
-
         protected override void DataOperation()
         {
-            _session.UserInfo.Parse(_request);
+            _userInfo.UpdateInitRequestInfo(_request);
+            _userInfo.LastPacketRecieveTime = DateTime.Now;
+            NegotiatorManager.SetNatUserInfo(_session.RemoteEndPoint, _userInfo.Cookie, _userInfo);
         }
 
         protected override void ConstructResponse()
@@ -44,7 +37,7 @@ namespace NATNegotiation.Handler.CmdHandler
         protected override void Response()
         {
             base.Response();
-            NNManager
+            NegotiatorManager
                 .Negotiate(
                 _request.PortType,
                 _request.Version,

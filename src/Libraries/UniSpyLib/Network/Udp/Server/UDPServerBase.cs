@@ -16,11 +16,8 @@ namespace UniSpyLib.Network
     /// </summary>
     public abstract class UDPServerBase : UdpServer
     {
-        public static ConcurrentDictionary<EndPoint, UDPSessionBase> Sessions;
-
         public UDPServerBase(IPEndPoint endpoint) : base(endpoint)
         {
-            Sessions = new ConcurrentDictionary<EndPoint, UDPSessionBase>();
         }
 
         protected virtual UDPSessionBase CreateSession(EndPoint endPoint)
@@ -115,16 +112,9 @@ namespace UniSpyLib.Network
 
             LogWriter.ToLog(LogEventLevel.Debug,
                 $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
-
-            UDPSessionBase session;
-            if (!Sessions.TryGetValue(endPoint, out session))
-            {
-                session = CreateSession(endPoint);
-                Sessions.TryAdd(endPoint, session);
-            }
             //even if we did not response we keep receive message
             ReceiveAsync();
-
+            var session = CreateSession(endPoint);
             OnReceived(session, message);
             OnReceived(endPoint, message);
         }

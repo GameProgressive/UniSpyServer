@@ -81,7 +81,7 @@ namespace UniSpyLib.Extensions
             return ReplaceUnreadableCharToHex(Encoding.ASCII.GetBytes(buffer));
         }
 
-        public static string FormatServerTableContext(string part1, string part2, string part3)
+        public static string FormatTableContext(string part1, string part2, string part3)
         {
             return $"|{part1,-11}|{part2,-14}|{part3,-6}|";
         }

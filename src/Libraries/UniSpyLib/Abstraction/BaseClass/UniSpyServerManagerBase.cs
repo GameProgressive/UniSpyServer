@@ -13,7 +13,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         public static readonly string RetroSpyVersion = "0.5.2";
         public static string ServerName { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
-        protected object Server;
+        public static object Server { get; protected set; }
 
         public UniSpyServerManagerBase(string serverName)
         {
@@ -30,7 +30,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         protected void LoadServerConfig()
         {
             Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            Console.WriteLine(StringExtensions.FormatServerTableContext("Server Name", "Host Name", "Port"));
+            Console.WriteLine(StringExtensions.FormatTableContext("Server Name", "Host Name", "Port"));
             Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
             //Add all servers
             foreach (ServerConfig cfg in ConfigManager.Config.Servers)

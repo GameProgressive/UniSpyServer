@@ -56,7 +56,7 @@ namespace WebServices.Application
                 _hostBuilder = CreateHostBuilder(cfg);
 
                 Console.WriteLine(StringExtensions
-                  .FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                  .FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

@@ -12,7 +12,7 @@ namespace NATNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             base.DataOperation();
-            _session.UserInfo.SetIsGotConnectAckPacketFlag();
+            _session.UserInfo.IsGotConnectAckPacket = true;
         }
     }
 }

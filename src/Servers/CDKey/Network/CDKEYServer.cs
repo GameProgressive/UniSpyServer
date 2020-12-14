@@ -11,23 +11,13 @@ namespace CDKey.Network
 {
     public class CDKeyServer : UDPServerBase
     {
-        protected new ConcurrentDictionary<EndPoint, CDKeySession> Sessions
-     = new ConcurrentDictionary<EndPoint, CDKeySession>();
-
-
         public CDKeyServer(IPAddress address, int port) : base(address, port)
         {
         }
 
-        protected override void OnReceived(EndPoint endPoint, string message)
+        protected override void OnReceived(UDPSessionBase session, string message)
         {
-            CDKeySession session;
-            if (!Sessions.TryGetValue(endPoint, out session))
-            {
-                session = (CDKeySession)CreateSession(endPoint);
-                Sessions.TryAdd(endPoint, session);
-            }
-            new CDKeyCmdSwitcher(session, message).Switch();
+           new CDKeyCmdSwitcher(session, message).Switch();
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)

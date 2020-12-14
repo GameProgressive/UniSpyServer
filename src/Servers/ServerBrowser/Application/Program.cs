@@ -13,7 +13,7 @@ namespace ServerBrowser.Application
 
             try
             {
-               new ServerManager(UniSpyServerName.SB).Start();
+               new SBServerManager(UniSpyServerName.SB).Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)

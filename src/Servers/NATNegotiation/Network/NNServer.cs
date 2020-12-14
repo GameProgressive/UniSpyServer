@@ -6,8 +6,6 @@ namespace NATNegotiation.Network
 {
     public class NNServer : UDPServerBase
     {
-
-
         public NNServer(IPAddress address, int port) : base(address, port)
         {
         }
@@ -16,7 +14,6 @@ namespace NATNegotiation.Network
         {
             return new NNSession(this, endPoint);
         }
-
 
         //TODO fix the natnegotiation for this architecture
 

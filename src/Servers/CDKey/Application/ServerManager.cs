@@ -9,13 +9,14 @@ namespace CDKey.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ServerManager : UniSpyServerManagerBase
+    public class CDKeyServerManager : UniSpyServerManagerBase
     {
+        public static new CDKeyServer Server { get; protected set; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ServerManager(string serverName) : base(serverName)
+        public CDKeyServerManager(string serverName) : base(serverName)
         {
         }
 
@@ -27,9 +28,10 @@ namespace CDKey.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new CDKeyServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new CDKeyServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server.Start();
                 Console.WriteLine(
-                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

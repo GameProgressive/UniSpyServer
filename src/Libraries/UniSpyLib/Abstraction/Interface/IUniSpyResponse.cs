@@ -1,9 +1,9 @@
-﻿using System;
-namespace UniSpyLib.Abstraction.Interface
+﻿namespace UniSpyLib.Abstraction.Interface
 {
     public interface IUniSpyResponse
     {
         object SendingBuffer { get; }
+        object ErrorCode { get; }
         public void Build();
     }
 }

@@ -5,10 +5,10 @@ namespace NATNegotiation.Network
 {
     public class NNSession : UDPSessionBase
     {
-        public NNUserInfo UserInfo { get; protected set; }
+        public NatUserInfo UserInfo { get; protected set; }
         public NNSession(UDPServerBase server, EndPoint endPoint) : base(server, endPoint)
         {
-            UserInfo = new NNUserInfo();
+            UserInfo = new NatUserInfo();
         }
     }
 }

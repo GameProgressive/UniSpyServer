@@ -10,13 +10,14 @@ namespace ServerBrowser.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ServerManager : UniSpyServerManagerBase
+    public class SBServerManager : UniSpyServerManagerBase
     {
+        public new static SBServer Server { get; protected set; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ServerManager(string serverName) : base(serverName)
+        public SBServerManager(string serverName) : base(serverName)
         {
         }
 
@@ -34,16 +35,11 @@ namespace ServerBrowser.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new SBServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new SBServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server.Start();
                 Console.WriteLine(
-                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
-
-        /// <summary>
-        /// Stop a specific server
-        /// </summary>
-        /// <param name="cfg">The configuration of the specific server to stop</param>
-
     }
 }

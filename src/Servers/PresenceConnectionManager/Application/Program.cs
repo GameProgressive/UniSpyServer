@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Application
             try
             {
                 //create a instance of ServerManager class
-                new ServerManager(UniSpyServerName.PCM).Start();
+                new PCMServerManager(UniSpyServerName.PCM).Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)

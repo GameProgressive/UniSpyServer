@@ -12,19 +12,9 @@ namespace NATNegotiation.Application
     /// </summary>
     public class NNServerManager : UniSpyServerManagerBase
     {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="serverName">Server name in config file</param>
+        public new static NNServer Server { get; protected set; }
         public NNServerManager(string serverName) : base(serverName)
         {
-        }
-
-        public override void Start()
-        {
-            ShowRetroSpyLogo();
-            //LoadDatabaseConfig();
-            LoadServerConfig();
         }
         /// <summary>
         /// Starts a specific server, you can also start all server in once if you do not check the server name.
@@ -34,9 +24,10 @@ namespace NATNegotiation.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new NNServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new NNServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server.Start();
                 Console.WriteLine(
-                    StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

@@ -9,10 +9,9 @@ namespace NATNegotiation.Handler.CmdSwitcher
 {
     public class NNRequestSerializer : UniSpyRequestSerializerBase
     {
-        protected new byte[] _rawRequest;
+        protected new byte[] _rawRequest { get { return (byte[])base._rawRequest; } }
         public NNRequestSerializer(object rawRequest) : base(rawRequest)
         {
-            _rawRequest = (byte[])rawRequest;
         }
 
         public override IUniSpyRequest Serialize()
@@ -34,7 +33,6 @@ namespace NATNegotiation.Handler.CmdSwitcher
                 default:
                     LogWriter.UnknownDataRecieved(_rawRequest);
                     return null;
-
             }
         }
     }
