@@ -19,7 +19,6 @@
     <ItemGroup>
         <Compile Remove="Entity\Structure\QRGeneralData.cs" />
         <Compile Remove="Handler\CommandHandler\HeartBeat\QRDBQuery.cs" />
-        <Compile Remove="Entity\Structure\GameServer.cs" />
         <Compile Remove="Entity\Structure\Server\DedicatedServer.cs" />
         <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
     </ItemGroup>
@@ -28,7 +27,6 @@
         <Folder Include="Handler\SystemHandler\QRSessionManage\" />
         <Folder Include="Handler\SystemHandler\GeoIPManage\" />
         <Folder Include="Handler\SystemHandler\ErrorMessage\" />
-        <Folder Include="Entity\Structure\ServerData\" />
         <Folder Include="Entity\Structure\GroupData\" />
         <Folder Include="Handler\SystemHandler\PeerSystem\" />
         <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />

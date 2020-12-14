@@ -5,14 +5,9 @@ namespace QueryReport.Network
 {
     public class QRSession : UDPSessionBase
     {
-        public int InstantKey { get; protected set; }
+        public int InstantKey { get; set; }
         public QRSession(UDPServerBase server, EndPoint endPoint) : base(server, endPoint)
         {
-        }
-
-        public void SetInstantKey(int instantKey)
-        {
-            InstantKey = instantKey;
         }
     }
 }

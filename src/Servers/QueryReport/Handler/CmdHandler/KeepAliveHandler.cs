@@ -20,7 +20,7 @@ namespace QueryReport.Handler.CmdHandler
         {
             if (_session.InstantKey != _request.InstantKey)
             {
-                _session.SetInstantKey(_request.InstantKey);
+                _session.InstantKey = _request.InstantKey;
             }
 
             _sendingBuffer = new QRResponseBase(_request).BuildResponse();

@@ -6,16 +6,18 @@ using System.Net;
 
 namespace QueryReport.Application
 {
+
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ServerManager : UniSpyServerManagerBase
+    public class QRServerManager : UniSpyServerManagerBase
     {
+        public new static QRServer Server { get; protected set; }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ServerManager(string serverName) : base(serverName)
+        public QRServerManager(string serverName) : base(serverName)
         {
         }
 
@@ -25,20 +27,13 @@ namespace QueryReport.Application
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(ServerConfig cfg)
         {
-
             if (cfg.Name == ServerName)
             {
-                // case "GPCM":
-                Server = new QRServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort).Start();
+                Server = new QRServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server.Start();
                 Console.WriteLine(
-                    UniSpyLib.Extensions.StringExtensions.FormatServerTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    UniSpyLib.Extensions.StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
-
-        /// <summary>
-        /// Stop a specific server
-        /// </summary>
-        /// <param name="cfg">The configuration of the specific server to stop</param>
-
     }
 }

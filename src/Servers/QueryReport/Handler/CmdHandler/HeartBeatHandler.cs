@@ -53,7 +53,7 @@ namespace QueryReport.Handler.CmdHandler
                 return;
             }
 
-            _session.SetInstantKey(_request.InstantKey);
+            _session.InstantKey = _request.InstantKey;
         }
 
         protected override void DataOperation()
@@ -142,16 +142,16 @@ namespace QueryReport.Handler.CmdHandler
             string gameServerRedisKey = GameServer.GenerateKey(_session.RemoteEndPoint, gameName);
 
             //make sure one ip address create one server on each game
-            List<string> redisSimilarKeys =
-                GameServer.GetSimilarKeys(_session.RemoteEndPoint, gameName);
+            List<string> matchedKeys =
+                GameServer.GetMatchedKeys(_session.RemoteEndPoint, gameName);
 
             //we check if the database have multiple game server if it contains
-            if (redisSimilarKeys.Contains(gameServerRedisKey))
+            if (matchedKeys.Contains(gameServerRedisKey))
             {
                 //save remote server data to local
                 _gameServer = GameServer.GetServers(gameServerRedisKey).First();
                 //delete all servers except this server
-                foreach (var key in redisSimilarKeys)
+                foreach (var key in matchedKeys)
                 {
                     if (key == gameServerRedisKey)
                     {
@@ -162,8 +162,7 @@ namespace QueryReport.Handler.CmdHandler
             }
             else //redis do not have this server we create then update
             {
-                _gameServer = new GameServer();
-                _gameServer.Parse(_session.RemoteEndPoint);
+                _gameServer = new GameServer(_session.RemoteEndPoint);
             }
         }
     }

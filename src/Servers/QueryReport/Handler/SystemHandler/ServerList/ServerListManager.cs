@@ -11,7 +11,7 @@ namespace QueryReport.Handler.SystemHandler.ServerList
         protected override void CheckExpire()
         {
             base.CheckExpire();
-            var servers = GameServer.GetAllServers();
+            var servers = GameServer.GetAllServersWithKeys();
             foreach (var server in servers)
             {
                 // we calculate the interval between last packe and current time

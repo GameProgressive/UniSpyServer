@@ -34,7 +34,7 @@ namespace QueryReport.Handler.CmdHandler
         {
             if (_session.InstantKey != _request.InstantKey)
             {
-                _session.SetInstantKey(_request.InstantKey);
+                _session.InstantKey = _request.InstantKey;
             }
 
             // We send the echo packet to check the ping
