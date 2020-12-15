@@ -54,7 +54,7 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             base.CheckRequest();
             //TODO we get user infomation from redis
-            var keys = NegotiatorManager.GetMatchedKeys(_session.RemoteEndPoint);
+            var keys = NatUserInfo.GetMatchedKeys(_session.RemoteEndPoint);
             if (keys.Count == 0)
             {
                 _userInfo = new NatUserInfo();
@@ -62,7 +62,7 @@ namespace NATNegotiation.Abstraction.BaseClass
             }
             else
             {
-                _userInfo = NegotiatorManager.GetNatUserInfo(_session.RemoteEndPoint, _request.Cookie);
+                _userInfo = NatUserInfo.GetNatUserInfo(_session.RemoteEndPoint, _request.Cookie);
             }
         }
 

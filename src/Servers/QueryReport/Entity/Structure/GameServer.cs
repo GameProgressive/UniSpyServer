@@ -71,7 +71,7 @@ namespace QueryReport.Entity.Structure
 
         public static bool DeleteSpecificServer(string key)
         {
-            return RedisExtensions.DeleteData(key, RedisDBNumber.GameServer);
+            return RedisExtensions.DeleteKeyValue(key, RedisDBNumber.GameServer);
         }
 
 
@@ -90,7 +90,7 @@ namespace QueryReport.Entity.Structure
         public static bool UpdateServer(EndPoint end, string gameName, GameServer gameServer)
         {
             string key = GenerateKey(end, gameName);
-            return RedisExtensions.SetData(key, gameServer, RedisDBNumber.GameServer);
+            return RedisExtensions.SetKeyValue(key, gameServer, RedisDBNumber.GameServer);
         }
 
         /// <summary>
@@ -115,15 +115,14 @@ namespace QueryReport.Entity.Structure
             List<GameServer> gameServer = new List<GameServer>();
             foreach (var key in matchedKeys)
             {
-                gameServer.Add(RedisExtensions.GetData<GameServer>(key, RedisDBNumber.GameServer));
+                gameServer.Add(RedisExtensions.GetValue<GameServer>(key, RedisDBNumber.GameServer));
             }
             return gameServer;
         }
 
         public static Dictionary<string, GameServer> GetAllServersWithKeys()
         {
-            var dict = RedisExtensions.GetAllKeyDataPairs(RedisDBNumber.GameServer);
-            return dict.ToDictionary(k => k.Key, k => (GameServer)k.Value);
+            return RedisExtensions.GetAllKeyValues<GameServer>(RedisDBNumber.GameServer);
         }
     }
 }

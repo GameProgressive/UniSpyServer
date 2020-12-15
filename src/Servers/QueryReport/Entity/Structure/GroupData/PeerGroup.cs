@@ -29,12 +29,12 @@ namespace QueryReport.Entity.Structure.Group
 
         public static PeerGroup GetGroupsList(string gameName)
         {
-            return RedisExtensions.GetData<PeerGroup>(gameName, (int)RedisDBNumber.PeerGroup);
+            return RedisExtensions.GetValue<PeerGroup>(gameName, (int)RedisDBNumber.PeerGroup);
         }
 
         public static bool SetGroupList(string gameName, PeerGroup group)
         {
-            return RedisExtensions.SetData(gameName, group, (int)RedisDBNumber.PeerGroup);
+            return RedisExtensions.SetKeyValue(gameName, group, (int)RedisDBNumber.PeerGroup);
         }
     }
 }

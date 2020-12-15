@@ -1,11 +1,9 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using System;
 using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler.SystemHandler.Manager;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
@@ -19,17 +17,12 @@ namespace NATNegotiation.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            NatUserInfo userInfo = NegotiatorManager.GetNatUserInfo(_session.RemoteEndPoint, _request.Cookie);
-            //TODO we get user infomation from redis
-            if (userInfo == null)
-            {
-                NatUserInfo info = new NatUserInfo();
-                info.UpdateRemoteEndPoint(_session.RemoteEndPoint);
-                info.UpdateInitRequestInfo(_request);
-                info.LastPacketRecieveTime = DateTime.Now;
-                NegotiatorManager.SetNatUserInfo(_session.RemoteEndPoint, info.Cookie, info);
-            }
+            _userInfo.UpdateRemoteEndPoint(_session.RemoteEndPoint);
+            _userInfo.UpdateInitRequestInfo(_request);
+            _userInfo.LastPacketRecieveTime = DateTime.Now;
+            NatUserInfo.SetNatUserInfo(_session.RemoteEndPoint, _request.Cookie, _userInfo);
         }
+
 
         protected override void ConstructResponse()
         {

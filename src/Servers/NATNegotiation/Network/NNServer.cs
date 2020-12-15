@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Network;
+﻿using System.Net;
 using NATNegotiation.Handler.CmdSwitcher;
-using System.Net;
+using UniSpyLib.Network;
 
 namespace NATNegotiation.Network
 {
