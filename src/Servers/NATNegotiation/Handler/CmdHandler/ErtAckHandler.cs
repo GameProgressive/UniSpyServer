@@ -15,15 +15,6 @@ namespace NATNegotiation.Handler.CmdHandler
 
         }
 
-        protected override void DataOperation()
-        {
-            _userInfo.UpdateRemoteEndPoint(_session.RemoteEndPoint);
-            _userInfo.UpdateInitRequestInfo(_request);
-            _userInfo.LastPacketRecieveTime = DateTime.Now;
-            NatUserInfo.SetNatUserInfo(_session.RemoteEndPoint, _request.Cookie, _userInfo);
-        }
-
-
         protected override void ConstructResponse()
         {
             _sendingBuffer =

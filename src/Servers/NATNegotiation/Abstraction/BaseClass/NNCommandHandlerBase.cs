@@ -24,7 +24,6 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             get { return (NNRequestBase)base._request; }
         }
-        protected NatUserInfo _userInfo;
         public NNCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _errorCode = NNErrorCode.NoError;
@@ -49,21 +48,6 @@ namespace NATNegotiation.Abstraction.BaseClass
                 return;
             }
             Response();
-        }
-        protected override void CheckRequest()
-        {
-            base.CheckRequest();
-            //TODO we get user infomation from redis
-            var keys = NatUserInfo.GetMatchedKeys(_session.RemoteEndPoint);
-            if (keys.Count == 0)
-            {
-                _userInfo = new NatUserInfo();
-                _userInfo.UpdateRemoteEndPoint(_session.RemoteEndPoint);
-            }
-            else
-            {
-                _userInfo = NatUserInfo.GetNatUserInfo(_session.RemoteEndPoint, _request.Cookie);
-            }
         }
 
         protected override void Response()

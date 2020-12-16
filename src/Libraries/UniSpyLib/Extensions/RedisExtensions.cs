@@ -24,7 +24,8 @@ namespace UniSpyLib.Extensions
         public static T GetValue<T>(string key, RedisDBNumber dbNumber)
         {
             var redis = UniSpyServerManagerBase.Redis.GetDatabase((int)dbNumber);
-            T t = JsonConvert.DeserializeObject<T>(redis.StringGet(key));
+            var value = redis.StringGet(key);
+            T t = JsonConvert.DeserializeObject<T>(value);
             return t;
         }
 

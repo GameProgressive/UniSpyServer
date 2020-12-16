@@ -27,7 +27,7 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
 
         public void SubScribe()
         {
-            ISubscriber subscriber = UniSpyServerManagerBase.Redis.GetSubscriber();
+            var subscriber = UniSpyServerManagerBase.Redis.GetSubscriber();
 
             subscriber.Subscribe(
                 "NatNegCookieChannel", (channel, message)
@@ -37,10 +37,10 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
                 });
         }
 
-        public void SendNatNegCookieToGameServer(string data)
+        public void SendNatNegCookieToGameServer(string message)
         {
             LogWriter.LogCurrentClass(this);
-            NatNegCookie cookie = JsonConvert.DeserializeObject<NatNegCookie>(data);
+            NatNegCookie cookie = JsonConvert.DeserializeObject<NatNegCookie>(message);
             IPAddress address = IPAddress.Parse(cookie.GameServerRemoteIP);
             int port = int.Parse(cookie.GameServerRemotePort);
             IPEndPoint ipEnd = new IPEndPoint(address, port);
@@ -53,10 +53,10 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
                 return;
             }
 
-            byte[] clientMessage = new ClientMessageResponse(
+            byte[] clientMsg = new ClientMessageResponse(
                 cookie.NatNegMessage, MessageKey++, session.InstantKey).BuildResponse();
 
-            session.SendAsync(clientMessage);
+            session.SendAsync(clientMsg);
         }
     }
 }

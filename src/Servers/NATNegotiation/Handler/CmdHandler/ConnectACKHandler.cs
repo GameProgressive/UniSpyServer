@@ -1,6 +1,7 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Structure;
+using UniSpyLib.Logging;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
@@ -9,12 +10,10 @@ namespace NATNegotiation.Handler.CmdHandler
         public ConnectACKHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
-        protected override void DataOperation()
+        protected override void CheckRequest()
         {
-            base.DataOperation();
-            _userInfo.IsGotConnectAckPacket = true;
-            NatUserInfo.SetNatUserInfo(_session.RemoteEndPoint, _request.Cookie, _userInfo);
+            base.CheckRequest();
+            LogWriter.ToLog("client and server successfully connected!");
         }
     }
 }

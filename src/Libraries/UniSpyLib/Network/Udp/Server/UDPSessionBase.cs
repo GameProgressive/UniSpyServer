@@ -8,14 +8,11 @@ namespace UniSpyLib.Network
     public class UDPSessionBase : IUniSpySession
     {
         public UDPServerBase Server { get; private set; }
-
-        //public Guid Id { get; }
-
         public EndPoint RemoteEndPoint { get; private set; }
+        public IPEndPoint RemoteIPEndPoint { get { return (IPEndPoint)RemoteEndPoint; } }
 
         public UDPSessionBase(UDPServerBase server, EndPoint endPoint)
         {
-            //Id = Guid.NewGuid();
             Server = server;
             RemoteEndPoint = endPoint;
         }

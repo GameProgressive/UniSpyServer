@@ -18,32 +18,44 @@ namespace NATNegotiation.Handler.CmdHandler
         {
             get { return (ReportRequest)base._request; }
         }
+        protected NatUserInfo _userInfo;
+
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void CheckRequest()
+        {
+            base.CheckRequest();
+            var keys = NatUserInfo.GetMatchedKeys(_session.RemoteEndPoint, _request.Cookie);
+            if (keys.Count == 0)
+            {
+                _errorCode = NNErrorCode.ReportPacketError;
+                return;
+            }
+            else
+            {
+                _userInfo = NatUserInfo.GetNatUserInfo(_session.RemoteEndPoint, _request.PortType, _request.Cookie);
+            }
+        }
         protected override void DataOperation()
         {
-            _userInfo.IsGotReportPacket = true;
+            //_userInfo.IsGotReportPacket = true;
 
             if (_request.NatResult != NATNegotiationResult.Success)
             {
                 foreach (NatPortType portType in Enum.GetValues(typeof(NatPortType)))
                 {
-                    NegotiatorManager.Negotiate(portType, _request.Version, _request.Cookie);
+                    NatNegotiateManager.Negotiate(portType, _request.Version, _request.Cookie);
                 }
 
-                //NegotiatorManager.Negotiate(NatPortType.GP, _request.Version, _request.Cookie);
-                //NegotiatorManager.Negotiate(NatPortType.NN1, _request.Version, _request.Cookie);
-                //NegotiatorManager.Negotiate(NatPortType.NN2, _request.Version, _request.Cookie);
-                //NegotiatorManager.Negotiate(NatPortType.NN3, _request.Version, _request.Cookie);
-                NatUserInfo.SetNatUserInfo(_session.RemoteEndPoint, _request.Cookie, _userInfo);
+                _userInfo.RetryNATNegotiationTime++;
+                NatUserInfo.SetNatUserInfo(_session.RemoteEndPoint, _request.PortType, _request.Cookie, _userInfo);
             }
-            else
-            {
-                // natnegotiation successed we delete the negotiator
-                NatUserInfo.DeleteNatUserInfo(_session.RemoteEndPoint, _request.Cookie);
-            }
+            //else
+            //{
+            //    // natnegotiation successed we delete the negotiator
+            //    NatUserInfo.DeleteNatUserInfo(_session.RemoteEndPoint, _request.Cookie);
+            //}
         }
 
         protected override void ConstructResponse()

@@ -9,11 +9,11 @@ namespace NATNegotiation.Entity.Structure.Request
 {
     public class ReportRequest : NNRequestBase
     {
-        public byte PortType;
+        public NatPortType PortType;
         public byte ClientIndex;
         public NATNegotiationResult NatResult;
-        public NATNegotiationType NatType; //int
-        public NATNegotiationMappingScheme MappingScheme; //int
+        public NATNegotiationType NatType;
+        public NATNegotiationMappingScheme MappingScheme;
         public string GameName;
 
         public ReportRequest(byte[] rawRequest) : base(rawRequest)
@@ -27,7 +27,7 @@ namespace NATNegotiation.Entity.Structure.Request
             {
                 return;
             }
-            PortType = RawRequest[13];
+            PortType = (NatPortType)RawRequest[13];
             ClientIndex = RawRequest[14];
 
             NatResult = (NATNegotiationResult)RawRequest[15];
@@ -48,7 +48,7 @@ namespace NATNegotiation.Entity.Structure.Request
             CommandName = NatPacketType.ReportAck;
             data.AddRange(base.BuildResponse());
 
-            data.Add(PortType);
+            data.Add((byte)PortType);
             data.Add(ClientIndex);
             data.Add((byte)NatResult);
             data.AddRange(BitConverter.GetBytes((int)NatType));

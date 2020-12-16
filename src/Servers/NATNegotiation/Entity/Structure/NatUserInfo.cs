@@ -4,7 +4,6 @@ using System.Net;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
 using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
 
 namespace NATNegotiation.Entity.Structure
 {
@@ -15,23 +14,11 @@ namespace NATNegotiation.Entity.Structure
         public uint Cookie;
         public byte ClientIndex;
         public NatPortType PortType;
-        public List<NatPortType> PortTypes;
-        public bool IsGotErtAckPacket;
-        public bool IsGotAddressCheckPacket;
-        public bool IsGotInitPacket;
-        public bool IsSendConnectPacket;
-        public bool IsGotConnectAckPacket;
-        public bool IsGotReportPacket;
-        public GameInfo Game;
-        public string GameName;
-        public DateTime InitPacketRecieveTime;
-        public DateTime ConnectPacketSendTime;
         public DateTime LastPacketRecieveTime;
         public int RetryNATNegotiationTime;
 
         public NatUserInfo()
         {
-            PortTypes = new List<NatPortType>();
         }
 
         public void UpdateRemoteEndPoint(EndPoint endPoint)
@@ -44,27 +31,17 @@ namespace NATNegotiation.Entity.Structure
             Version = init.Version;
             Cookie = init.Cookie;
             PortType = init.PortType;
-            UpdatePortType(init.PortType);
             ClientIndex = init.ClientIndex;
         }
 
-        public void UpdatePortType(NatPortType portType)
+        public static NatUserInfo GetNatUserInfo(string key)
         {
-            if (!PortTypes.Contains(portType))
-            {
-                PortTypes.Add(portType);
-            }
-            else
-            {
-                LogWriter.ToLog($"Ignore same port type{portType}");
-            }
-            LastPacketRecieveTime = DateTime.Now;
+            return RedisExtensions.GetValue<NatUserInfo>(key, RedisDBNumber.NatNeg);
         }
 
-
-        public static NatUserInfo GetNatUserInfo(EndPoint endPoint, uint cookie)
+        public static NatUserInfo GetNatUserInfo(EndPoint endPoint, NatPortType portType, uint cookie)
         {
-            string key = GenerateKey(endPoint, cookie);
+            string key = GenerateKey(endPoint, portType, cookie);
             return RedisExtensions.GetValue<NatUserInfo>(key, RedisDBNumber.NatNeg);
         }
 
@@ -82,29 +59,40 @@ namespace NATNegotiation.Entity.Structure
 
         public static List<NatUserInfo> GetNatUserInfos(string subKey)
         {
-            List<string> matchedKeys = RedisExtensions.GetMatchedKeys(subKey, RedisDBNumber.GameServer);
+            List<string> matchedKeys = RedisExtensions.GetMatchedKeys(subKey, RedisDBNumber.NatNeg);
             List<NatUserInfo> natUserInfos = new List<NatUserInfo>();
             foreach (var key in matchedKeys)
             {
-                natUserInfos.Add(RedisExtensions.GetValue<NatUserInfo>(key, RedisDBNumber.GameServer));
+                natUserInfos.Add(RedisExtensions.GetValue<NatUserInfo>(key, RedisDBNumber.NatNeg));
             }
             return natUserInfos;
         }
 
-        public static bool SetNatUserInfo(EndPoint endPoint, uint cookie, NatUserInfo userInfo)
+        public static bool SetNatUserInfo(EndPoint endPoint,NatPortType portType, uint cookie, NatUserInfo userInfo)
         {
-            string key = GenerateKey(endPoint, cookie);
-            return SetNatUserInfo(key, userInfo);
+            return SetNatUserInfo(GenerateKey(endPoint, portType, cookie), userInfo);
         }
-
         public static bool SetNatUserInfo(string key, NatUserInfo userInfo)
         {
             return RedisExtensions.SetKeyValue(key, userInfo, RedisDBNumber.NatNeg);
         }
 
-        public static string GenerateKey(EndPoint endPoint, uint cookie)
+        public static List<string> GetMatchedKeys(EndPoint end, NatPortType portType, uint cookie)
         {
-            return $"{((IPEndPoint)endPoint)} {cookie}";
+            string key = GenerateKey(end, portType, cookie);
+            return RedisExtensions.GetMatchedKeys(key, RedisDBNumber.NatNeg);
+        }
+
+        public static List<string> GetMatchedKeys(EndPoint end, uint cookie)
+        {
+            string key = $"{(IPEndPoint)end}*{cookie}";
+            return RedisExtensions.GetMatchedKeys(key, RedisDBNumber.NatNeg);
+        }
+
+        public static List<string> GetMatchedKeys(uint cookie)
+        {
+            string key = cookie.ToString();
+            return RedisExtensions.GetMatchedKeys(key, RedisDBNumber.NatNeg);
         }
 
         public static List<string> GetMatchedKeys(EndPoint endPoint)
@@ -112,21 +100,25 @@ namespace NATNegotiation.Entity.Structure
             string address = ((IPEndPoint)endPoint).ToString();
             return RedisExtensions.GetMatchedKeys(address, RedisDBNumber.NatNeg);
         }
-
         public static List<string> GetMatchedKeys(string subKey)
         {
             return RedisExtensions.GetMatchedKeys(subKey, RedisDBNumber.NatNeg);
         }
 
-        public static bool DeleteNatUserInfo(EndPoint endPoint, uint cookie)
+        public static bool DeleteNatUserInfo(EndPoint endPoint, NatPortType portType, uint cookie)
         {
-            string key = GenerateKey(endPoint, cookie);
+            string key = GenerateKey(endPoint, portType, cookie);
             return DeleteNatUserInfo(key);
         }
 
         public static bool DeleteNatUserInfo(string key)
         {
             return RedisExtensions.DeleteKeyValue(key, RedisDBNumber.NatNeg);
+        }
+
+        public static string GenerateKey(EndPoint endPoint, NatPortType portType, uint cookie)
+        {
+            return $"{(IPEndPoint)endPoint} {portType} {cookie}";
         }
     }
 }

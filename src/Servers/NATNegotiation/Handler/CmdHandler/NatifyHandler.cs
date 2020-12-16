@@ -1,6 +1,5 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 

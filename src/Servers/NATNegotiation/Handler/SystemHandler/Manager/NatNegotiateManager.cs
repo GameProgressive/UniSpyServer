@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure;
+using Serilog.Events;
 using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 
 namespace NATNegotiation.Handler.SystemHandler.Manager
 {
-    public class NegotiatorManager
+    public class NatNegotiateManager
     {
-        //public static ConcurrentDictionary<string, NNSession> SessionPool = new ConcurrentDictionary<string, NNSession>();
-
         public static void Negotiate(NatPortType portType, byte version, uint cookie)
         {
             ////find Sessions according to the partern
@@ -17,6 +18,30 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
             //     .Where(s => s.Key.Contains(portType.ToString()))
             //      .ToDictionary(s => s.Key, s => s.Value);
 
+            List<string> matchedKeys = NatUserInfo.GetMatchedKeys(cookie);
+
+            if (matchedKeys.Count < 2)
+            {
+                LogWriter.ToLog("No match found we continue waitting.");
+                return;
+            }
+
+            Dictionary<string, NatUserInfo> negotiatorPairs = new Dictionary<string, NatUserInfo>();
+
+            foreach (var key in matchedKeys)
+            {
+                negotiatorPairs.Add(key, NatUserInfo.GetNatUserInfo(key));
+            }
+
+            ////find negitiators and negotiatees by a same cookie
+            var negotiators = negotiatorPairs.Where(s => s.Value.ClientIndex == 0);
+            var negotiatees = negotiatorPairs.Where(s => s.Value.ClientIndex == 1);
+
+            if (negotiatees.Count() != negotiators.Count() || negotiators.Count() < 1 || negotiatees.Count() < 1)
+            {
+                LogWriter.ToLog("Negotiators not matching!");
+                return;
+            }
             ////there are at least a pair of session
             //if (result.Count < 2)
             //{
@@ -63,7 +88,5 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
             //SessionPool.TryRemove(negotiatee.Key, out _);
             //SessionPool.TryRemove(negotiator.Key, out _);
         }
-
-
     }
 }
