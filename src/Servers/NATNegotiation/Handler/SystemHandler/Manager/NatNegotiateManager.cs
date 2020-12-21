@@ -1,26 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using NATNegotiation.Application;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Entity.Structure.Response;
 using Serilog.Events;
-using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 
 namespace NATNegotiation.Handler.SystemHandler.Manager
 {
     public class NatNegotiateManager
     {
+        //private Dictionary<string, NatUserInfo> _negotiatorPairs;
+        //private List<NatUserInfo> _negotiators;
+        //private List<NatUserInfo> _negotiatees;
+
         public static void Negotiate(NatPortType portType, byte version, uint cookie)
         {
-            ////find Sessions according to the partern
-            //Dictionary<string, NNSession> result = SessionPool
-            //     .Where(s => s.Key.Contains(portType.ToString()))
-            //      .ToDictionary(s => s.Key, s => s.Value);
+            var searchKey = NatUserInfo.RedisOperator.BuildSearchKey(portType, cookie);
 
-            List<string> matchedKeys = NatUserInfo.GetMatchedKeys(cookie);
-
-            if (matchedKeys.Count < 2)
+            List<string> matchedKeys = NatUserInfo.RedisOperator.GetMatchedKeys(searchKey);
+            // because cookie is unique for each client we will only get 2 of keys
+            if (matchedKeys.Count != 2)
             {
                 LogWriter.ToLog("No match found we continue waitting.");
                 return;
@@ -30,37 +32,39 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
 
             foreach (var key in matchedKeys)
             {
-                negotiatorPairs.Add(key, NatUserInfo.GetNatUserInfo(key));
+                negotiatorPairs.Add(key, NatUserInfo.RedisOperator.GetSpecificValue(key));
             }
 
             ////find negitiators and negotiatees by a same cookie
             var negotiators = negotiatorPairs.Where(s => s.Value.ClientIndex == 0);
             var negotiatees = negotiatorPairs.Where(s => s.Value.ClientIndex == 1);
 
-            if (negotiatees.Count() != negotiators.Count() || negotiators.Count() < 1 || negotiatees.Count() < 1)
+            if (negotiators.Count() != 1 || negotiatees.Count() != 1)
             {
-                LogWriter.ToLog("Negotiators not matching!");
+                LogWriter.ToLog("No match found we continue waitting!");
                 return;
             }
-            ////there are at least a pair of session
-            //if (result.Count < 2)
-            //{
-            //    LogWriter.ToLog(LogEventLevel.Debug, "No match found we continue waitting.");
-            //    return;
-            //}
 
-            ////find the negotiator pairs
-            //var negotiatorPairs = result.Where(s => s.Value.UserInfo.Cookie == cookie);
+            // we only can find one pair of the users
+            var negotiator = negotiators.First();
+            var negotiatee = negotiatees.First();
 
-            ////find negitiators and negotiatees by a same cookie
-            //var negotiators = negotiatorPairs.Where(s => s.Value.UserInfo.ClientIndex == 0);
-            //var negotiatees = negotiatorPairs.Where(s => s.Value.UserInfo.ClientIndex == 1);
+            LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiator {negotiator.Value.RemoteEndPoint}");
+            LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiatee {negotiatee.Value.RemoteEndPoint}");
+            // exchange data for each other
+            EndPoint endOfNegotiator = IPEndPoint.Parse(negotiator.Value.RemoteEndPoint);
+            EndPoint endOfNegotiatee = IPEndPoint.Parse(negotiatee.Value.RemoteEndPoint);
 
-            ////negotiator are not ready, we keep waitting
-            //if (negotiators.Count() < 1 || negotiatees.Count() < 1)
-            //{
-            //    return;
-            //}
+            byte[] dataToNegotiator =
+                new ConnectResponse(version, cookie, endOfNegotiatee).BuildResponse();
+            byte[] dataToNegotiatee =
+                new ConnectResponse(version, cookie, endOfNegotiator).BuildResponse();
+
+            NNServerManager.Server.SendAsync(endOfNegotiator, dataToNegotiator);
+            NNServerManager.Server.SendAsync(endOfNegotiatee, dataToNegotiatee);
+
+
+
 
             ////we find both negotiators
             //var negotiator = negotiators.First();

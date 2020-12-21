@@ -268,10 +268,9 @@ namespace Chat.Entity.Structure.Channel
             }
 
             ChatChannelManager.RemoveChannel(this);
+            var fullKey = GameServerInfo.RedisOperator.BuildFullKey(kicker.Session.RemoteIPEndPoint, kicker.Session.UserInfo.GameName);
 
-            GameServer.DeleteMatchedServers(
-                kicker.Session.RemoteEndPoint,
-                kicker.Session.UserInfo.GameName);
+            GameServerInfo.RedisOperator.DeleteKeyValue(fullKey);
         }
     }
 }

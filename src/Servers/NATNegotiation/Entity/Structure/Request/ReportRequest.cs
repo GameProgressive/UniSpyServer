@@ -2,7 +2,6 @@
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
 using System;
-using System.Collections.Generic;
 using System.Text;
 
 namespace NATNegotiation.Entity.Structure.Request
@@ -27,6 +26,7 @@ namespace NATNegotiation.Entity.Structure.Request
             {
                 return;
             }
+
             PortType = (NatPortType)RawRequest[13];
             ClientIndex = RawRequest[14];
 
@@ -40,22 +40,6 @@ namespace NATNegotiation.Entity.Structure.Request
                 ByteTools.SubBytes(RawRequest, 23, RawRequest.Length - 23));
 
             ErrorCode = true;
-        }
-
-        public override byte[] BuildResponse()
-        {
-            List<byte> data = new List<byte>();
-            CommandName = NatPacketType.ReportAck;
-            data.AddRange(base.BuildResponse());
-
-            data.Add((byte)PortType);
-            data.Add(ClientIndex);
-            data.Add((byte)NatResult);
-            data.AddRange(BitConverter.GetBytes((int)NatType));
-            data.AddRange(BitConverter.GetBytes((int)MappingScheme));
-            data.AddRange(Encoding.ASCII.GetBytes(GameName));
-
-            return data.ToArray();
         }
     }
 }

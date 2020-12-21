@@ -10,21 +10,24 @@ namespace ServerBrowser.Handler.CmdHandler
 {
     public class SendGroupsHandler : UpdateOptionHandlerBase
     {
-        private PeerGroup _peerGroup;
+        private PeerGroupInfo _peerGroup;
 
-        public SendGroupsHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
+        public SendGroupsHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
         protected override void DataOperation()
         {
             base.DataOperation();
-            _peerGroup = PeerGroup.GetGroupsList(_request.GameName);
-            if (_peerGroup == null || _peerGroup.PeerRooms.Count == 0)
+            var matchedKey = PeerGroupInfo.RedisOperator.GetMatchedKeys(_request.GameName);
+            // Game name is unique in redis database
+            if (matchedKey.Count != 1)
             {
                 _errorCode = SBErrorCode.NoGroupRoomFound;
                 return;
             }
+
+            _peerGroup = PeerGroupInfo.RedisOperator.GetSpecificValue(matchedKey[0]);
         }
 
         protected override void ConstructResponse()

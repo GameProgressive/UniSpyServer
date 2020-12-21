@@ -25,7 +25,7 @@ namespace ServerBrowser.Handler.CmdHandler
             get { return (AdHocRequest)base._request; }
             // set { base._request = value; }
         }
-        protected GameServer _gameServer;
+        protected GameServerInfo _gameServer;
         protected List<byte> _dataList;
 
         public ServerInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -36,8 +36,8 @@ namespace ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {
             base.DataOperation();
-            var result = GameServer.GetServers(_request.TargetServerIP)
-                .Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
+            var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(_request.TargetServerIP)
+                .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);
 
             if (result.Count() != 1)
@@ -74,7 +74,7 @@ namespace ServerBrowser.Handler.CmdHandler
             List<byte> data = new List<byte>();
             data.AddRange(
                 UpdateOptionHandlerBase.GenerateServerInfoHeader(
-                    GameServerFlags.HasFullRulesFlag,_gameServer));
+                    GameServerFlags.HasFullRulesFlag, _gameServer));
 
             foreach (var kv in _gameServer.ServerData.KeyValue)
             {
@@ -109,7 +109,7 @@ namespace ServerBrowser.Handler.CmdHandler
             return data;
         }
 
-       
+
         protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer.Length < 4)

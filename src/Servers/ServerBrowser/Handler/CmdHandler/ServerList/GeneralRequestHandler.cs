@@ -2,6 +2,9 @@
 using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure;
+using UniSpyLib.Logging;
+using Serilog.Events;
+using System.Linq;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
@@ -17,9 +20,8 @@ namespace ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {
             base.DataOperation();
-            _gameServers =
-                        GameServer.GetServers(_request.GameName);
-
+            var searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_request.GameName);
+            _gameServers = GameServerInfo.RedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
         }
 
         protected override void ConstructResponse()

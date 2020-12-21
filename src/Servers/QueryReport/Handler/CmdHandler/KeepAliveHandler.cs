@@ -24,23 +24,19 @@ namespace QueryReport.Handler.CmdHandler
             }
 
             _sendingBuffer = new QRResponseBase(_request).BuildResponse();
-
-            var result = GameServer.GetServers(_session.RemoteEndPoint);
+            var searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
+            var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(searchKey);
             if (result.Count != 1)
             {
                 _errorCode = QRErrorCode.Database;
                 return;
             }
 
-            GameServer gameServer = result.First();
+            var gameServer = result.First();
 
-            gameServer.LastPacket = DateTime.Now;
-
-            GameServer.UpdateServer
-                (
-                _session.RemoteEndPoint,
-                gameServer.ServerData.KeyValue["gamename"],
-                gameServer);
+            gameServer.Value.LastPacket = DateTime.Now;
+            
+            GameServerInfo.RedisOperator.SetKeyValue(gameServer.Key,gameServer.Value);
         }
     }
 }

@@ -12,20 +12,6 @@ namespace NATNegotiation.Handler.CmdHandler
         public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
-        protected override void CheckRequest()
-        {
-
-        }
-
-        //protected override void DataOperation()
-        //{
-        //    base.DataOperation();
-        //    _userInfo.IsGotAddressCheckPacket = true;
-        //    _userInfo.LastPacketRecieveTime = DateTime.Now;
-        //    NatUserInfo.SetNatUserInfo(_session.RemoteEndPoint, _request.Cookie, _userInfo);
-        //}
-
         protected override void ConstructResponse()
         {
             _sendingBuffer = new AddressResponse(_request, _session.RemoteEndPoint).BuildResponse();

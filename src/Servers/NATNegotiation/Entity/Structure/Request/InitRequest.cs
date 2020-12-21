@@ -44,23 +44,6 @@ namespace NATNegotiation.Entity.Structure.Request
             ErrorCode = true;
         }
 
-        public override byte[] BuildResponse()
-        {
-
-            List<byte> data = new List<byte>();
-
-            data.AddRange(base.BuildResponse());
-
-            data.Add((byte)PortType);
-            data.Add(ClientIndex);
-            data.Add(UseGamePort);
-
-            data.AddRange(HtonsExtensions.IPStringToBytes(LocalIP));
-            data.AddRange(HtonsExtensions.UshortPortToBytes(LocalPort));
-
-            return data.ToArray();
-        }
-
         public InitRequest SetIPAndPortForResponse(EndPoint end)
         {
             LocalIP = ((IPEndPoint)end).Address.ToString();

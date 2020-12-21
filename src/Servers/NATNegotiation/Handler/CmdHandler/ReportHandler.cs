@@ -19,23 +19,23 @@ namespace NATNegotiation.Handler.CmdHandler
             get { return (ReportRequest)base._request; }
         }
         protected NatUserInfo _userInfo;
-
+        protected string _fullKey;
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            var keys = NatUserInfo.GetMatchedKeys(_session.RemoteEndPoint, _request.Cookie);
-            if (keys.Count == 0)
+            var _fullKey = NatUserInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
+            try
+            {
+                _userInfo = NatUserInfo.RedisOperator.GetSpecificValue(_fullKey);
+            }
+            catch
             {
                 _errorCode = NNErrorCode.ReportPacketError;
-                return;
             }
-            else
-            {
-                _userInfo = NatUserInfo.GetNatUserInfo(_session.RemoteEndPoint, _request.PortType, _request.Cookie);
-            }
+           
         }
         protected override void DataOperation()
         {
@@ -49,13 +49,13 @@ namespace NATNegotiation.Handler.CmdHandler
                 }
 
                 _userInfo.RetryNATNegotiationTime++;
-                NatUserInfo.SetNatUserInfo(_session.RemoteEndPoint, _request.PortType, _request.Cookie, _userInfo);
+                NatUserInfo.RedisOperator.SetKeyValue(_fullKey, _userInfo);
             }
-            //else
-            //{
-            //    // natnegotiation successed we delete the negotiator
-            //    NatUserInfo.DeleteNatUserInfo(_session.RemoteEndPoint, _request.Cookie);
-            //}
+            else
+            {
+                // natnegotiation successed we delete the negotiator
+                NatUserInfo.RedisOperator.DeleteKeyValue(_fullKey);
+            }
         }
 
         protected override void ConstructResponse()

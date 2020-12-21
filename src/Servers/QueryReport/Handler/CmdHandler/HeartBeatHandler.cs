@@ -13,7 +13,7 @@ namespace QueryReport.Handler.CmdHandler
 {
     public class HeartBeatHandler : QRCmdHandlerBase
     {
-        protected GameServer _gameServer;
+        protected GameServerInfo _gameServer;
         protected HeartBeatReportType _reportType;
         protected string _dataPartition, _serverData, _playerData, _teamData;
         protected int _playerPos, _teamPos;
@@ -78,24 +78,20 @@ namespace QueryReport.Handler.CmdHandler
 
         protected void UpdateGameServerByState()
         {
+            var fullKey = GameServerInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _gameServer.ServerData.KeyValue["gamename"]);
             if (_gameServer.ServerData.ServerStatus == GameServerServerStatus.Shutdown)
             {
-                GameServer.DeleteSpecificServer(_session.RemoteEndPoint,
-                           _gameServer.ServerData.KeyValue["gamename"]);
+                GameServerInfo.RedisOperator.DeleteKeyValue(fullKey);
             }
             else
             {
-                GameServer.UpdateServer(
-                           _session.RemoteEndPoint,
-                           _gameServer.ServerData.KeyValue["gamename"],
-                           _gameServer
-                            );
+                GameServerInfo.RedisOperator.SetKeyValue(fullKey, _gameServer);
             }
         }
 
         protected override void ConstructResponse()
         {
-            HeartBeatResponse response = new HeartBeatResponse(_session,_request);
+            HeartBeatResponse response = new HeartBeatResponse(_session, _request);
             _sendingBuffer = response.BuildResponse();
         }
 
@@ -139,30 +135,31 @@ namespace QueryReport.Handler.CmdHandler
             int indexOfGameName = tempKeyVal.IndexOf("gamename");
             string gameName = tempKeyVal[indexOfGameName + 1];
 
-            string gameServerRedisKey = GameServer.GenerateKey(_session.RemoteEndPoint, gameName);
+            string fullKey = GameServerInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, gameName);
 
             //make sure one ip address create one server on each game
+            string searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_session.RemoteIPEndPoint, gameName);
             List<string> matchedKeys =
-                GameServer.GetMatchedKeys(_session.RemoteEndPoint, gameName);
+                GameServerInfo.RedisOperator.GetMatchedKeys(searchKey);
 
             //we check if the database have multiple game server if it contains
-            if (matchedKeys.Contains(gameServerRedisKey))
+            if (matchedKeys.Contains(fullKey))
             {
                 //save remote server data to local
-                _gameServer = GameServer.GetServers(gameServerRedisKey).First();
+                _gameServer = GameServerInfo.RedisOperator.GetSpecificValue(fullKey);
                 //delete all servers except this server
                 foreach (var key in matchedKeys)
                 {
-                    if (key == gameServerRedisKey)
+                    if (key == fullKey)
                     {
                         continue;
                     }
-                    GameServer.DeleteSpecificServer(key);
+                    GameServerInfo.RedisOperator.DeleteKeyValue(key);
                 }
             }
             else //redis do not have this server we create then update
             {
-                _gameServer = new GameServer(_session.RemoteEndPoint);
+                _gameServer = new GameServerInfo(_session.RemoteEndPoint);
             }
         }
     }

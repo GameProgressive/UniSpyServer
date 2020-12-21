@@ -10,8 +10,9 @@ namespace QueryReport.Handler.CmdHandler
 {
     public class ChallengeHandler : QRCmdHandlerBase
     {
-        protected GameServer _gameServer;
+        protected GameServerInfo _gameServer;
         protected new ChallengeRequest _request { get { return (ChallengeRequest)base._request; } }
+        protected string _fullKey;
         //we do not need to implement this to check the correctness of the challenge response
         public ChallengeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -19,15 +20,13 @@ namespace QueryReport.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var result =
-                  GameServer.GetServers(_session.RemoteEndPoint);
-
-            if (result.Count() != 1)
+            var searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
+            if (searchKey.Count() != 1)
             {
                 _errorCode = QRErrorCode.Database;
                 return;
             }
-            _gameServer = result.First();
+            _gameServer = GameServerInfo.RedisOperator.GetSpecificValue(searchKey);
         }
 
         protected override void ConstructResponse()
@@ -39,12 +38,7 @@ namespace QueryReport.Handler.CmdHandler
 
             // We send the echo packet to check the ping
             _sendingBuffer = new ChallengeResponse(_request).BuildResponse();
-
-            GameServer.UpdateServer(
-                _session.RemoteEndPoint,
-                _gameServer.ServerData.KeyValue["gamename"],
-                _gameServer
-                );
+            GameServerInfo.RedisOperator.SetKeyValue(_fullKey, _gameServer);
         }
 
 

@@ -6,7 +6,7 @@ namespace ServerBrowser.Handler.CmdHandler.ServerList.GetServers.Filter
 {
     public class ServerFilter
     {
-        public static IEnumerable<KeyValuePair<EndPoint, GameServer>> GetFilteredServer(IEnumerable<KeyValuePair<EndPoint, GameServer>> rawServer, string filter)
+        public static IEnumerable<KeyValuePair<EndPoint, GameServerInfo>> GetFilteredServer(IEnumerable<KeyValuePair<EndPoint, GameServerInfo>> rawServer, string filter)
         {
             //TODO
             //We filter server for next step

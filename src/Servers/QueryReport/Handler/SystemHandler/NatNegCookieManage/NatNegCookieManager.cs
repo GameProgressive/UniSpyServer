@@ -6,7 +6,6 @@ using QueryReport.Entity.Structure.Request;
 using QueryReport.Handler.SystemHandler.QRSessionManage;
 using QueryReport.Network;
 using Serilog.Events;
-using StackExchange.Redis;
 using System.Net;
 
 namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
@@ -22,11 +21,6 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
 
         public void Start()
         {
-            SubScribe();
-        }
-
-        public void SubScribe()
-        {
             var subscriber = UniSpyServerManagerBase.Redis.GetSubscriber();
 
             subscriber.Subscribe(
@@ -39,12 +33,10 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
 
         public void SendNatNegCookieToGameServer(string message)
         {
-            LogWriter.LogCurrentClass(this);
             NatNegCookie cookie = JsonConvert.DeserializeObject<NatNegCookie>(message);
             IPAddress address = IPAddress.Parse(cookie.GameServerRemoteIP);
             int port = int.Parse(cookie.GameServerRemotePort);
-            IPEndPoint ipEnd = new IPEndPoint(address, port);
-            EndPoint endPoint = ipEnd;
+            EndPoint endPoint = new IPEndPoint(address, port);
             QRSession session;
 
             if (!QRSessionManager.Sessions.TryGetValue(endPoint, out session))

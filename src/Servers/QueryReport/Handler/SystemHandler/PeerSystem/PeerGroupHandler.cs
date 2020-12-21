@@ -7,10 +7,10 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
 {
     public class PeerGroupHandler
     {
-        private List<PeerGroup> _peerGroup;
+        private List<PeerGroupInfo> _peerGroup;
         public PeerGroupHandler()
         {
-            _peerGroup = new List<PeerGroup>();
+            _peerGroup = new List<PeerGroupInfo>();
         }
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
         /// </summary>
         /// <param name="gameName"></param>
         /// <returns></returns>
-        public PeerGroup LoadGameRooms(string gameName)
+        public PeerGroupInfo LoadGameRooms(string gameName)
         {
             using (var db = new retrospyContext())
             {
@@ -26,11 +26,11 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
                              join gl in db.Grouplist on g.Gameid equals gl.Gameid
                              where g.Gamename == gameName
                              select gl;
-                PeerGroup group = new PeerGroup(result.First(), gameName);
+                PeerGroupInfo group = new PeerGroupInfo(result.First(), gameName);
 
                 foreach (var r in result)
                 {
-                    PeerRoom room = new PeerRoom(r);
+                    PeerRoomInfo room = new PeerRoomInfo(r);
                     group.PeerRooms.Add(room);
                 }
                 return group;
@@ -41,21 +41,22 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
         {
             using (var db = new retrospyContext())
             {
-                var names = from gl in db.Grouplist
+                var gameNames = from gl in db.Grouplist
                             join g in db.Games on gl.Gameid equals g.Gameid
                             select g.Gamename;
-                names = names.Distinct();
+                gameNames = gameNames.Distinct();
 
-                foreach (var gameName in names)
+                foreach (var gameName in gameNames)
                 {
-                    var result = PeerGroup.SearchPeerGroupKeys(gameName);
-
-                    if (result.Count() != 0)
+                    var searchKey = PeerGroupInfo.RedisOperator.BuildSearchKey(gameName);
+                    var matchedKeys = PeerGroupInfo.RedisOperator.GetMatchedKeys(searchKey);
+                    if (matchedKeys.Count() != 0)
                     {
                         continue;
                     }
                     _peerGroup.Add(LoadGameRooms(gameName));
-                    PeerGroup.SetGroupList(gameName, LoadGameRooms(gameName));
+                    var gameRoom = LoadGameRooms(gameName);
+                    PeerGroupInfo.RedisOperator.SetKeyValue(gameName, gameRoom);
                 }
             }
         }

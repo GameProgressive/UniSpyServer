@@ -5,6 +5,7 @@ using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Network;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Handler.SystemHandler.Manager;
+using NATNegotiation.Handler.SystemHandler;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
@@ -24,6 +25,7 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             get { return (NNRequestBase)base._request; }
         }
+
         public NNCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _errorCode = NNErrorCode.NoError;

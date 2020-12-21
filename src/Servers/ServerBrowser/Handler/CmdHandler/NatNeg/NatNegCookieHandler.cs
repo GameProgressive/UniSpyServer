@@ -22,7 +22,7 @@ namespace ServerBrowser.Handler.CmdHandler
             set { base._request = value; }
         }
         private NatNegCookie _natNegCookie;
-        private GameServer _gameServer;
+        private GameServerInfo _gameServer;
         public NatNegCookieHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _natNegCookie = new NatNegCookie();
@@ -39,8 +39,8 @@ namespace ServerBrowser.Handler.CmdHandler
             _request = _session.ServerMessageList[0];
             _session.ServerMessageList.Remove(_request);
 
-            var result = GameServer.GetServers(_request.TargetServerIP)
-                .Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
+            var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(_request.TargetServerIP)
+                .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);
 
             if (result.Count() != 1)

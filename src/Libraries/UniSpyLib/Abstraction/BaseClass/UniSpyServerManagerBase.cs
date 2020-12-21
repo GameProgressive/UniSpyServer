@@ -14,7 +14,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         public static string ServerName { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
         public static object Server { get; protected set; }
-
         public UniSpyServerManagerBase(string serverName)
         {
             ServerName = serverName;

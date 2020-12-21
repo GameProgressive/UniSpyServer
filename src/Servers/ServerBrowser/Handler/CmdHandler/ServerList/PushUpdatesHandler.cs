@@ -1,9 +1,8 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
-using ServerBrowser.Entity.Structure.Request;
+using System.Linq;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
@@ -19,12 +18,9 @@ namespace ServerBrowser.Handler.CmdHandler
         protected override void CheckRequest()
         {
             base.CheckRequest();
-            _gameServers = GameServer.GetServers(_request.GameName);
-            if (_gameServers == null)
-            {
-                _errorCode = SBErrorCode.DataOperation;
-                return;
-            }
+            _gameServers = GameServerInfo.RedisOperator.GetMatchedKeyValues(_request.GameName).Values
+                .ToList();
+
             // we need to reply to client even if there are no server
 
 

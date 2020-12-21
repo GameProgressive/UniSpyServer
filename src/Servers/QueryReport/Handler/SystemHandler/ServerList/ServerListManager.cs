@@ -11,14 +11,14 @@ namespace QueryReport.Handler.SystemHandler.ServerList
         protected override void CheckExpire()
         {
             base.CheckExpire();
-            var servers = GameServer.GetAllServersWithKeys();
+            var servers = GameServerInfo.RedisOperator.GetAllKeyValues();
             foreach (var server in servers)
             {
                 // we calculate the interval between last packe and current time
                 var duration = DateTime.Now.Subtract(server.Value.LastPacket).TotalSeconds;
                 if (duration > 120)
                 {
-                    GameServer.DeleteSpecificServer(server.Key);
+                    GameServerInfo.RedisOperator.DeleteKeyValue(server.Key);
                     LogWriter.ToLog($"Delete expired game server :{server.Key}");
                 }
             }

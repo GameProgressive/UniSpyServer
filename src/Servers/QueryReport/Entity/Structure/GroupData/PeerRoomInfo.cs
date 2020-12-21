@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace QueryReport.Entity.Structure.Group
 {
-    public class PeerRoom
+    public class PeerRoomInfo
     {
         public static readonly List<string> GameSpyStandardKey =
             new List<string>
@@ -17,7 +17,7 @@ namespace QueryReport.Entity.Structure.Group
 
         public DateTime UpdateTime;
 
-        public PeerRoom(Grouplist grouplist)
+        public PeerRoomInfo(Grouplist grouplist)
         {
             KeyValue = new Dictionary<string, string>();
 
@@ -35,7 +35,7 @@ namespace QueryReport.Entity.Structure.Group
             UpdateTime = DateTime.Now;
 
         }
-        public PeerRoom()
+        public PeerRoomInfo()
         {
             KeyValue = new Dictionary<string, string>();
         }

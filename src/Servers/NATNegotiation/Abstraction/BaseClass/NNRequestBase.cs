@@ -52,16 +52,5 @@ namespace NATNegotiation.Abstraction.BaseClass
 
             ErrorCode = true;
         }
-
-        public virtual byte[] BuildResponse()
-        {
-            List<byte> data = new List<byte>();
-            data.AddRange(MagicData);
-            data.Add(Version);
-            data.Add((byte)CommandName);
-            data.AddRange(BitConverter.GetBytes(Cookie));
-
-            return data.ToArray();
-        }
     }
 }
