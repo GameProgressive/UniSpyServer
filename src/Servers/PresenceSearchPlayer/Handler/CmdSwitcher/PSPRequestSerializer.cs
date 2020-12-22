@@ -30,7 +30,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
                     return new SearchRequest(_rawRequest);
                 case PSPRequestName.PMatch:
                 case PSPRequestName.Check:
-                    return new SearchRequest(_rawRequest);
+                    return new CheckRequest(_rawRequest);
                 case PSPRequestName.NewUser:
                     return new SearchRequest(_rawRequest);
                 case PSPRequestName.SearchUnique:
