@@ -1,9 +1,9 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     /// <summary>
     /// set every channel key value on this user

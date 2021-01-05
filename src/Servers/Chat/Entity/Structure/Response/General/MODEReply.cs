@@ -1,5 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
 
 namespace Chat.Entity.Structure.Response.General
 {

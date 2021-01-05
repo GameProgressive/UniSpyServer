@@ -1,12 +1,12 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response;
 using Chat.Entity.Structure.Response.General;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     // Sets channel key/values.
     // If user is NULL or "", the keys will be set on the channel.
@@ -31,13 +31,13 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             {
                 if (!_user.IsChannelOperator)
                 {
-                    _errorCode = ChatError.NotChannelOperator;
+                    _errorCode = ChatErrorCode.NotChannelOperator;
                     return;
                 }
                 IsSetOthersKeyValue = true;
                 if (!_channel.GetChannelUserByNickName(_request.NickName, out _otherUser))
                 {
-                    _errorCode = ChatError.IRCError;
+                    _errorCode = ChatErrorCode.IRCError;
                     _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                     return;
                 }
@@ -73,7 +73,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             if (IsSetOthersKeyValue)
             {
                 _sendingBuffer =
-                    GETCKEYReply.BuildGetCKeyReply(
+                    GETCKEYResponse.BuildGetCKeyReply(
                         _otherUser.UserInfo.NickName,
                         _channel.Property.ChannelName,
                         "BCAST", flags);
@@ -81,7 +81,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             else
             {
                 _sendingBuffer =
-                    GETCKEYReply.BuildGetCKeyReply(
+                    GETCKEYResponse.BuildGetCKeyReply(
                         _user.UserInfo.NickName,
                         _channel.Property.ChannelName,
                         "BCAST", flags);

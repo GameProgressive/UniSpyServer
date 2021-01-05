@@ -4,33 +4,28 @@ using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Entity.Structure.Result;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal class SearchUniqueDBResult
-    {
-        public uint Profileid;
-        public string Nick;
-        public string Uniquenick;
-        public string Email;
-        public string Firstname;
-        public string Lastname;
-        public uint NamespaceID;
-    }
-
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    public class SearchUniqueHandler : PSPCommandHandlerBase
+    public class SearchUniqueHandler : PSPCmdHandlerBase
     {
-        protected new SearchUniqueRequest _request { get { return (SearchUniqueRequest)base._request; } }
-        private List<SearchUniqueDBResult> _result;
+        protected new SearchUniqueRequest _request => (SearchUniqueRequest)base._request;
+        protected new SearchUniqueResult _result
+        {
+            get { return (SearchUniqueResult)base._result; }
+            set { base._result = value; }
+        }
         public SearchUniqueHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
         protected override void DataOperation()
         {
+            _result = new SearchUniqueResult();
             using (var db = new retrospyContext())
             {
                 foreach (var id in _request.Namespaces)
@@ -40,7 +35,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                                  join u in db.Users on p.Userid equals u.Userid
                                  where n.Uniquenick == _request.Uniquenick
                                  && n.Namespaceid == id
-                                 select new SearchUniqueDBResult
+                                 select new SearchUniqueDatabaseModel
                                  {
                                      Profileid = n.Profileid,
                                      Nick = p.Nick,
@@ -50,26 +45,9 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                                      Lastname = p.Lastname,
                                      NamespaceID = n.Namespaceid
                                  };
-                    _result = result.ToList();
+                    _result.DatabaseResults.AddRange(result.ToList());
                 }
             }
-        }
-
-        protected override void BuildNormalResponse()
-        {
-            _sendingBuffer = @"\bsr";
-            foreach (var info in _result)
-            {
-                _sendingBuffer += info.Profileid;
-                _sendingBuffer += @"\nick\" + info.Nick;
-                _sendingBuffer += @"\uniquenick\" + info.Uniquenick;
-                _sendingBuffer += @"\namespaceid\" + info.NamespaceID;
-                _sendingBuffer += @"\firstname\" + info.Firstname;
-                _sendingBuffer += @"\lastname\" + info.Lastname;
-                _sendingBuffer += @"\email\" + info.Email;
-            }
-            _sendingBuffer += @"\bsrdone\\more\0";
-
         }
     }
 }

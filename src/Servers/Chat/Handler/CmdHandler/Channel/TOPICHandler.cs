@@ -1,12 +1,12 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.Channel;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.Channel;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     public class TOPICHandler : ChatCmdHandlerBase
     {
@@ -23,12 +23,12 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
 
             if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
             {
-                _errorCode = ChatError.Parse;
+                _errorCode = ChatErrorCode.Parse;
                 return;
             }
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatError.Parse;
+                _errorCode = ChatErrorCode.Parse;
                 return;
             }
         }
@@ -38,7 +38,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             base.DataOperation();
             if (!_user.IsChannelOperator)
             {
-                _errorCode = ChatError.NotChannelOperator;
+                _errorCode = ChatErrorCode.NotChannelOperator;
                 return;
             }
         }
@@ -76,7 +76,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
 
         private void SetChannelTopic()
         {
-            _channel.Property.SetChannelTopic(_request.ChannelTopic);
+            _channel.Property.ChannelTopic = _request.ChannelTopic;
             _sendingBuffer =
                 TOPICReply.BuildTopicReply(
                     _channel.Property.ChannelName,

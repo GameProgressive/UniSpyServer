@@ -1,11 +1,11 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.Channel;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     //todo unfinished
     public class LISTHandler : ChatLogedInHandlerBase

@@ -1,6 +1,6 @@
 ﻿namespace Chat.Entity.Structure
 {
-    public enum ChatError
+    public enum ChatErrorCode
     {
         //our customized error
         Parse,
@@ -13,6 +13,9 @@
         NoSuchNick,
         NickNameExisted,
         NoSuchChannel,
-        UnSupportedGame
+        UnSupportedGame,
+        JoinedTooManyChannel,
+        BannedByChannel,
+        ChannelFull,
     }
 }

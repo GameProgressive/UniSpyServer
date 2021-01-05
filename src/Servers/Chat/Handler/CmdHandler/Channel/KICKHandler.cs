@@ -1,11 +1,11 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.Channel;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     public class KICKHandler : ChatChannelHandlerBase
     {
@@ -21,12 +21,12 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
 
             if (!_user.IsChannelOperator)
             {
-                _errorCode = ChatError.NotChannelOperator;
+                _errorCode = ChatErrorCode.NotChannelOperator;
                 return;
             }
             if (!_channel.GetChannelUserByNickName(_request.NickName, out _kickee))
             {
-                _errorCode = ChatError.Parse;
+                _errorCode = ChatErrorCode.Parse;
                 return;
             }
         }

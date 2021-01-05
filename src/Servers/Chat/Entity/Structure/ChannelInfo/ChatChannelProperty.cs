@@ -6,7 +6,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Chat.Entity.Structure.ChatChannel
+namespace Chat.Entity.Structure.ChannelInfo
 {
     public class ChatChannelProperty
     {
@@ -18,13 +18,8 @@ namespace Chat.Entity.Structure.ChatChannel
         public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
         public string Password { get; set; }
         public Dictionary<string, string> ChannelKeyValue { get; protected set; }
-        public string ChannelTopic { get; protected set; }
-        public bool IsPeerServer { get; protected set; }
-        public ChatChannelProperty SetPeerServerFlag(bool flag)
-        {
-            IsPeerServer = flag;
-            return this;
-        }
+        public string ChannelTopic { get; set; }
+        public bool IsPeerServer { get; set; }
 
         public ChatChannelProperty()
         {
@@ -91,10 +86,12 @@ namespace Chat.Entity.Structure.ChatChannel
                     break;
             }
         }
+
         private void AddChannelUserLimits(MODERequest cmd)
         {
             MaxNumberUser = cmd.LimitNumber;
         }
+
         private void RemoveChannelUserLimits(MODERequest cmd)
         {
             MaxNumberUser = 200;
@@ -159,8 +156,9 @@ namespace Chat.Entity.Structure.ChatChannel
             {
                 return;
             }
-            user.SetChannelOperator(true);
+            user.IsChannelOperator = true;
         }
+
         private void RemoveChannelOperator(MODERequest cmd)
         {
             var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
@@ -172,9 +170,10 @@ namespace Chat.Entity.Structure.ChatChannel
 
             if (user.IsChannelCreator)
             {
-                user.SetChannelCreator(false);
+                user.IsChannelCreator  = false;
             }
         }
+
         private void EnableUserVoicePermission(MODERequest cmd)
         {
             var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
@@ -187,7 +186,7 @@ namespace Chat.Entity.Structure.ChatChannel
 
             if (user.IsVoiceable)
             {
-                user.SetVoicePermission(true);
+                user.IsVoiceable = true;
             }
 
         }
@@ -199,17 +198,13 @@ namespace Chat.Entity.Structure.ChatChannel
                 return;
             }
 
-            ChatChannelUser user = result.First();
+            var user = result.First();
             if (user.IsVoiceable)
             {
-                user.SetVoicePermission(false);
+                user.IsVoiceable = false;
             }
         }
 
-        public void SetChannelTopic(string topic)
-        {
-            ChannelTopic = topic;
-        }
         public void SetChannelKeyValue(Dictionary<string, string> keyValue)
         {
             foreach (var kv in keyValue)

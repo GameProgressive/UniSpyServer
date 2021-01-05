@@ -1,37 +1,38 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response;
 using Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using System.Collections.Generic;
-using Chat.Entity.Structure.Channel;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     /// <summary>
     /// Game will only join one channel at one time
     /// </summary>
     public class JOINHandler : ChatLogedInHandlerBase
     {
-        protected new JOINRequest _request { get { return (JOINRequest)base._request; } }
+        protected new JOINRequest _request
+        {
+            get { return (JOINRequest)base._request; }
+        }
         ChatChannel _channel;
         ChatChannelUser _user;
         public JOINHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
-        //1.筛选出所要加入的频道，如果不存在则创建
-
-        //2.检查用户名nickname是否已经在频道中存在
+        //1.筛选出所要加入的频道，如果不存在则创建(select the channel that user want to join, if channel does not exist creating it)
+        //2.检查用户名nickname是否已经在频道中存在(check if user's nickname existed in channel)
         //若存在则提醒用户名字冲突
         //不存在则加入频道
         //广播加入信息
         //发送频道模式给此用户
         //发送频道用户列表给此用户
-        //_errorCode>1024
+    
         protected override void CheckRequest()
         {
             base.CheckRequest();
@@ -39,8 +40,9 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             //but GameSpy Arcade can join more than one channel
             if (_session.UserInfo.JoinedChannels.Count > 3)
             {
-                _sendingBuffer =
-                    ChatIRCError.BuildToManyChannelError(_request.ChannelName);
+                _errorCode = ChatErrorCode.JoinedTooManyChannel;
+                //_sendingBuffer =
+                //    ChatIRCError.BuildToManyChannelError(_request.ChannelName);
                 return;
             }
         }
@@ -67,7 +69,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
 
             if (IsPeerServer(_request.ChannelName))
             {
-                _channel.Property.SetPeerServerFlag(true);
+                _channel.Property.IsPeerServer = true;
             }
 
             _user.SetDefaultProperties(true);
@@ -108,19 +110,19 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
                 if (_channel.Property.ChannelMode.IsInviteOnly)
                 {
                     //invited only
-                    _errorCode = ChatError.IRCError;
+                    _errorCode = ChatErrorCode.IRCError;
                     return;
                 }
 
                 if (_channel.IsUserBanned(_user))
                 {
-                    _errorCode = ChatError.IRCError;
+                    _errorCode = ChatErrorCode.IRCError;
                     _sendingBuffer = ChatIRCError.BuildBannedFromChannelError(_channel.Property.ChannelName);
                     return;
                 }
                 if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
                 {
-                    _errorCode = ChatError.IRCError;
+                    _errorCode = ChatErrorCode.IRCError;
                     _sendingBuffer = ChatIRCError.BuildChannelIsFullError(_channel.Property.ChannelName);
                     return;
                 }
@@ -131,7 +133,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
                 //simple check for avoiding program crash
                 if (_channel.IsUserExisted(_user))
                 {
-                    _errorCode = ChatError.UserAlreadyInChannel;
+                    _errorCode = ChatErrorCode.UserAlreadyInChannel;
                     return;
                 }
 

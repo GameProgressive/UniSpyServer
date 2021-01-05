@@ -5,7 +5,7 @@ using Chat.Entity.Structure.Response.General;
 using UniSpyLib.Abstraction.Interface;
 using System.Net;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class USRIPHandler : ChatCmdHandlerBase
     {

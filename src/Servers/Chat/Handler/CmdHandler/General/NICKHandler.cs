@@ -6,7 +6,7 @@ using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class NICKHandler : ChatCmdHandlerBase
     {
@@ -22,7 +22,7 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
 
             if (ChatSessionManager.IsNickNameExisted(_request.NickName))
             {
-                _errorCode = ChatError.NickNameExisted;
+                _errorCode = ChatErrorCode.NickNameExisted;
                 return;
             }
         }

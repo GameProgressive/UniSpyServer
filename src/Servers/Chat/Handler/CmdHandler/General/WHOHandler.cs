@@ -1,7 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.Channel;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response;
 using Chat.Entity.Structure.Response.General;
@@ -10,7 +10,7 @@ using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Network;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     /// <summary>
     /// Get a channel user's basic information
@@ -44,7 +44,7 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
             ChatChannel channel;
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out channel))
             {
-                _errorCode = ChatError.NoSuchChannel;
+                _errorCode = ChatErrorCode.NoSuchChannel;
                 return;
             }
             _resultChannel = channel;
@@ -58,7 +58,7 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
             ChatSession session;
             if (!ChatSessionManager.GetSessionByUserName(_request.NickName, out session))
             {
-                _errorCode = ChatError.NoSuchNick;
+                _errorCode = ChatErrorCode.NoSuchNick;
                 return;
             }
             _resultSession = session;
@@ -86,11 +86,11 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
             base.BuildErrorResponse();
             switch (_errorCode)
             {
-                case ChatError.NoSuchChannel:
+                case ChatErrorCode.NoSuchChannel:
                     _sendingBuffer =
                         ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
                     break;
-                case ChatError.NoSuchNick:
+                case ChatErrorCode.NoSuchNick:
                     _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                     break;
             }

@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Password { get; private set; }
         public string Email { get; private set; }
         public uint NamespaceID { get; protected set; }
-        public bool RequireUniqueNicks { get; protected set; }
+        public bool IsRequireUniqueNicks { get; protected set; }
 
         public override void Parse()
         {
@@ -40,12 +40,12 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 return;
             }
 
-            RequireUniqueNicks = true;
+            IsRequireUniqueNicks = true;
 
             if (RequestKeyValues.ContainsKey("pass"))
             {
                 // Old games might send an error is unique nicknames are sent (like GSA 1.0)
-                RequireUniqueNicks = false;
+                IsRequireUniqueNicks = false;
             }
 
             Email = RequestKeyValues["email"];

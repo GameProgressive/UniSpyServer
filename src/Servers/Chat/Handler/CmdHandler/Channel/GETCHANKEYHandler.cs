@@ -1,9 +1,10 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.ChatCommand.Channel;
 using Chat.Entity.Structure.Response.Channel;
+using Chat.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     // Sets channel key/values.
     // If user is NULL or "", the keys will be set on the channel.
@@ -16,7 +17,12 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
         {
             get { return (GETCHANKEYRequest)base._request; }
         }
-        string _values;
+        protected new GETCHANKEYResult _result
+        {
+            get { return (GETCHANKEYResult)base._result; }
+            set { base._result = value; }
+        }
+
         public GETCHANKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -24,14 +30,14 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
         protected override void DataOperation()
         {
             base.DataOperation();
-            _values = _channel.Property.GetChannelValueString(_request.Keys);
+            var values = _channel.Property.GetChannelValueString(_request.Keys);
+            _result = new GETCHANKEYResult(_user, _channel.Property.ChannelName, _request.Cookie, values);
         }
 
         protected override void BuildNormalResponse()
         {
             base.BuildNormalResponse();
-            _sendingBuffer = GETCHANKEYReply.BuildGetChanKeyReply(
-            _user, _channel.Property.ChannelName, _request.Cookie, _values);
+            _response = new GETCHANKEYResponse(_result);
         }
     }
 }

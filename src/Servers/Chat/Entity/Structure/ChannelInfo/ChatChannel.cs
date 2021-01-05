@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
@@ -6,7 +6,7 @@ using Chat.Network;
 using QueryReport.Entity.Structure;
 using System.Linq;
 
-namespace Chat.Entity.Structure.Channel
+namespace Chat.Entity.Structure.ChannelInfo
 {
     public class ChatChannel
     {
@@ -20,7 +20,7 @@ namespace Chat.Entity.Structure.Channel
         public void MultiCastJoin(ChatChannelUser joiner)
         {
             string joinMessage =
-                JOINReply.BuildJoinReply(
+                JOINResponse.BuildJoinReply(
                     joiner, Property.ChannelName);
 
             string modes =

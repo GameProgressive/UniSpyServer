@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
     public class SearchRequest : PSPRequestBase
     {
-        public int SkipNumber { get; protected set; }
+        public int SkipNum { get; protected set; }
         public SearchRequestType RequestType { get; protected set; }
         public string GameName { get; private set; }
         public uint ProfileID { get; private set; }
@@ -81,7 +81,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     ErrorCode = GPErrorCode.Parse;
                     return;
                 }
-                SkipNumber = skip;
+                SkipNum = skip;
             }
 
             if (RequestKeyValues.ContainsKey("uniquenick") && RequestKeyValues.ContainsKey("namespaceid"))

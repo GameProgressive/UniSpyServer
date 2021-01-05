@@ -8,12 +8,21 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 using Serilog.Events;
+using Chat.Entity.Structure.Result;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class CRYPTHandler : ChatCmdHandlerBase
     {
-        protected new CRYPTRequest _request { get { return (CRYPTRequest)base._request; } }
+        protected new CRYPTRequest _request
+        {
+            get { return (CRYPTRequest)base._request; }
+        }
+        protected new CRYPTResult _result
+        {
+            get { return (CRYPTResult)base._result; }
+            set { base._result = value; }
+        }
         // CRYPT des 1 gamename
         public CRYPTHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -28,16 +37,17 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
                 || secretKey == null)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "secret key not found!");
-                _errorCode = ChatError.UnSupportedGame;
+                _errorCode = ChatErrorCode.UnSupportedGame;
                 _session.Disconnect();
                 return;
             }
-            _session.UserInfo.SetGameSecretKey(secretKey);
-            _session.UserInfo.SetGameName(_request.GameName);
+            _session.UserInfo.GameSecretKey = secretKey;
+            _session.UserInfo.GameName = _request.GameName;
             // 2. Prepare two keys
             ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatServer.ClientKey, _session.UserInfo.GameSecretKey);
             ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatServer.ServerKey, _session.UserInfo.GameSecretKey);
-
+            _result = new CRYPTResult(ChatServer.ClientKey, ChatServer.ServerKey);
+            _response = new CRYPTResponse(_result);
         }
 
         protected override void BuildNormalResponse()
@@ -45,7 +55,7 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
             base.BuildNormalResponse();
 
             // 3. Response the crypt command
-            _sendingBuffer = CRYPTReply.BuildCryptReply(ChatServer.ClientKey, ChatServer.ServerKey);
+            _sendingBuffer = CRYPTResponse.BuildCryptReply(ChatServer.ClientKey, ChatServer.ServerKey);
         }
 
         protected override void Response()

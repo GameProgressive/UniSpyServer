@@ -8,7 +8,7 @@ using Chat.Handler.SystemHandler.ChatSessionManage;
 using UniSpyLib.Abstraction.Interface;
 using System.Linq;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class WHOISHandler : ChatCmdHandlerBase
     {
@@ -28,7 +28,7 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
 
             if (result.Count() != 1)
             {
-                _errorCode = ChatError.NoSuchNick;
+                _errorCode = ChatErrorCode.NoSuchNick;
                 return;
             }
             _userInfo = result.FirstOrDefault();

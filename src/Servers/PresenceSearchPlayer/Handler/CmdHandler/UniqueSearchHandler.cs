@@ -4,20 +4,28 @@ using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Entity.Structure.Result;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    public class UniqueSearchHandler : PSPCommandHandlerBase
+    public class UniqueSearchHandler : PSPCmdHandlerBase
     {
-        protected new UniqueSearchRequest _request { get { return (UniqueSearchRequest)base._request; } }
-        private bool _isUniquenickExist;
-
+        protected new UniqueSearchRequest _request
+        {
+            get { return (UniqueSearchRequest)base._request; }
+        }
+        protected new UniqueSearchResult _result
+        {
+            get { return (UniqueSearchResult)base._result; }
+            set { base._result = value; }
+        }
         public UniqueSearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
         protected override void DataOperation()
         {
+            _result = new UniqueSearchResult();
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
@@ -29,20 +37,8 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
                 if (result.Count() == 0)
                 {
-                    _isUniquenickExist = false;
+                    _result.IsUniquenickExist = false;
                 }
-            }
-        }
-
-        protected override void BuildNormalResponse()
-        {
-            if (!_isUniquenickExist)
-            {
-                _sendingBuffer = @"us\0\usdone\final";
-            }
-            else
-            {
-                _sendingBuffer = @"\us\1\nick\Choose another name\usdone\final\";
             }
         }
     }

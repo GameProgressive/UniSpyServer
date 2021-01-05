@@ -1,7 +1,7 @@
 ﻿using Chat.Entity.Structure.ChatCommand;
 using System.Collections.Generic;
 
-namespace Chat.Entity.Structure.ChatChannel
+namespace Chat.Entity.Structure.ChannelInfo
 {
     public class ChatChannelMode
     {

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
 using System.Linq;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class LOGINHandler : ChatCmdHandlerBase
     {
@@ -71,7 +71,7 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
 
                 if (result.Count() != 1)
                 {
-                    _errorCode = ChatError.DataOperation;
+                    _errorCode = ChatErrorCode.DataOperation;
                     return;
                 }
                 _profileid = result.First().profileid;
@@ -97,7 +97,7 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
                              };
                 if (result.Count() != 1)
                 {
-                    _errorCode = ChatError.DataOperation;
+                    _errorCode = ChatErrorCode.DataOperation;
                     return;
                 }
                 _profileid = result.First().profileid;

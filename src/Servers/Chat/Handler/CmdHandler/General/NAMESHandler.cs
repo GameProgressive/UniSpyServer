@@ -1,13 +1,13 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.Channel;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response;
 using Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class NAMESHandler : ChatCmdHandlerBase
     {
@@ -24,14 +24,14 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
 
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
-                _errorCode = ChatError.NoSuchChannel;
+                _errorCode = ChatErrorCode.NoSuchChannel;
                 _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
             }
 
             //can not find any user
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatError.NoSuchNick;
+                _errorCode = ChatErrorCode.NoSuchNick;
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                 return;
             }

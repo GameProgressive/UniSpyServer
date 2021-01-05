@@ -2,7 +2,7 @@
 using Chat.Entity.Structure.ChatCommand;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class USERHandler : ChatCmdHandlerBase
     {
@@ -28,7 +28,7 @@ namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
             //_sendingBuffer =
             //    ChatReply.BuildWelcomeReply(_session.UserInfo);
 
-            _session.UserInfo.SetLoginFlag(true);
+            _session.UserInfo.IsLoggedIn = true;
 
 
             //check this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

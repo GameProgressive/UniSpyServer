@@ -28,9 +28,18 @@
   <ItemGroup>
     <Folder Include="Entity\Enumerate\" />
     <Folder Include="Abstraction\Interface\" />
-    <Folder Include="Entity\Structure\User\" />
     <Folder Include="Handler\CmdHandler\General\" />
     <Folder Include="Handler\CmdHandler\Channel\" />
     <Folder Include="Handler\CmdHandler\Message\" />
+    <Folder Include="Entity\Structure\Result\" />
+    <Folder Include="Entity\Structure\Request\Channel\" />
+    <Folder Include="Entity\Structure\Request\General\" />
+    <Folder Include="Entity\Structure\Request\Message\" />
+    <Folder Include="Entity\Structure\Response\Message\" />
+    <Folder Include="Entity\Structure\Response\Channel\" />
+    <Folder Include="Entity\Structure\Response\General\" />
+    <Folder Include="Entity\Structure\Result\Channel\" />
+    <Folder Include="Entity\Structure\Result\Message\" />
+    <Folder Include="Entity\Structure\Result\General\" />
   </ItemGroup>
 </Project>

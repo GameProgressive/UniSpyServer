@@ -3,7 +3,7 @@ using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.General;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class PINGHandler : ChatCmdHandlerBase
     {
