@@ -2,24 +2,26 @@
 using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Request;
-using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Entity.Structure.Result;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal class OthersListDBResult
+
+    public class OthersListHandler : PSPCmdHandlerBase
     {
-        public uint ProfileID;
-        public string Uniquenick;
-    }
-    public class OthersListHandler : PSPCommandHandlerBase
-    {
-        protected new OthersListRequest _request { get { return (OthersListRequest)base._request; } }
-        private List<OthersListDBResult> _result;
+        protected new OthersListRequest _request
+        {
+            get { return (OthersListRequest)base._request; }
+        }
+        protected new OthersListResult _result
+        {
+            get { return (OthersListResult)base._result; }
+            set { base._result = value; }
+        }
 
         public OthersListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new List<OthersListDBResult>();
         }
 
         //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
@@ -27,33 +29,24 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
+            _result = new OthersListResult();
             using (var db = new retrospyContext())
             {
-                _sendingBuffer = @"\otherslist\";
-
                 foreach (var pid in _request.ProfileIDs)
                 {
                     var result = from n in db.Subprofiles
-                                 where n.Profileid == pid && n.Namespaceid == _request.NamespaceID
+                                 where n.Profileid == pid
+                                 && n.Namespaceid == _request.NamespaceID
                                  //select new { uniquenick = n.Uniquenick };
-                                 select new OthersListDBResult { ProfileID = n.Profileid, Uniquenick = n.Uniquenick };
+                                 select new OthersListDatabaseModel
+                                 {
+                                     ProfileID = n.Profileid,
+                                     Uniquenick = n.Uniquenick
+                                 };
 
-                    _result.AddRange(result.ToList());
+                    _result.DatabaseResults.AddRange(result.ToList());
                 }
             }
-        }
-
-        protected override void BuildNormalResponse()
-        {
-            _sendingBuffer = @"\otherslist\";
-            foreach (var info in _result)
-            {
-                _sendingBuffer += $@"\o\{info.ProfileID}";
-                _sendingBuffer += $@"\uniquenick\{info.Uniquenick}";
-            }
-
-            _sendingBuffer += @"oldone";
-
         }
     }
 }

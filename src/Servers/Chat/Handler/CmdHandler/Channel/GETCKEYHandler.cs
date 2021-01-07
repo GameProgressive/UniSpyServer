@@ -1,11 +1,12 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.General;
+using Chat.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
 
     public class GETCKEYHandler : ChatChannelHandlerBase
@@ -13,6 +14,11 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
         protected new GETCKEYRequest _request
         {
             get { return (GETCKEYRequest)base._request; }
+        }
+        protected new GETCKEYResult _result
+        {
+            get { return (GETCKEYResult)base._result; }
+            set { base._result = value; }
         }
 
         public GETCKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -23,7 +29,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
         protected override void DataOperation()
         {
             base.DataOperation();
-
+            _result = new GETCKEYResult(_channel.Property.ChannelName, _request.Cookie);
             switch (_request.RequestType)
             {
                 case GetKeyType.GetChannelAllUserKeyValue:
@@ -33,36 +39,25 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
                     GetChannelSpecificUserKeyValue();
                     break;
             }
-
-            BuildGetCKeyEndMessage();
         }
 
         private void GetChannelAllUserKeyValue()
         {
-            _sendingBuffer = "";
             foreach (var user in _channel.Property.ChannelUsers)
             {
                 GetUserKeyValue(user);
             }
         }
+
         private void GetChannelSpecificUserKeyValue()
         {
             ChatChannelUser user;
             if (!_channel.GetChannelUserByNickName(_request.NickName, out user))
             {
-                _errorCode = ChatError.IRCError;
+                _errorCode = ChatErrorCode.IRCError;
                 return;
             }
             GetUserKeyValue(user);
-        }
-
-        private void GetUserBFlagsOnly(ChatChannelUser user)
-        {
-            string flags = user.GetBFlagsString();
-
-            _sendingBuffer += GETCKEYReply.BuildGetCKeyReply(
-                    user.UserInfo.NickName, _channel.Property.ChannelName,
-                    _request.Cookie, flags);
         }
 
         private void GetUserKeyValue(ChatChannelUser user)
@@ -70,39 +65,27 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             //we do not have key value so we do not construct getckey response
             if (user.UserKeyValue.Count == 0)
             {
-                _errorCode = ChatError.DataOperation;
+                _errorCode = ChatErrorCode.DataOperation;
                 return;
             }
 
             if (_request.Keys.Count == 1 && _request.Keys.Contains("b_flags"))
             {
-                GetUserBFlagsOnly(user);
+                // we get user's BFlag
+                _result.NickNamesAndBFlags.Add(user.UserInfo.NickName, user.BFlags);
             }
             else
             {
-                GetAllKeyValues(user);
+                // we get user's values
+                string userValues = user.GetUserValues(_request.Keys);
+                _result.NickNamesAndBFlags.Add(user.UserInfo.NickName, userValues);
             }
         }
 
-        private void GetAllKeyValues(ChatChannelUser user)
+        protected override void BuildNormalResponse()
         {
-            string flags = user.GetUserValuesString(_request.Keys);
-
-            //todo check the paramemter 
-            _sendingBuffer +=
-                GETCKEYReply.BuildGetCKeyReply(
-                    user.UserInfo.NickName,
-                    _channel.Property.ChannelName,
-                    _request.Cookie, flags);
-        }
-
-
-        private void BuildGetCKeyEndMessage()
-        {
-            _sendingBuffer +=
-                GETCKEYReply.BuildEndOfGetCKeyReply(
-                  _channel.Property.ChannelName,
-                    _request.Cookie);
+            base.BuildNormalResponse();
+            _response = new GETCKEYResponse(_result);
         }
     }
 }

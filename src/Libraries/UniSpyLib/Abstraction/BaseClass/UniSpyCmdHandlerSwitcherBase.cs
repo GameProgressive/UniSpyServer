@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Serilog.Events;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
@@ -21,21 +23,29 @@ namespace UniSpyLib.Abstraction.BaseClass
 
         public virtual void Switch()
         {
-            SerializeRequests();
-            if (_requests.Count == 0)
+            try
             {
-                return;
-            }
-            SerializeCommandHandlers();
-            if (_handlers.Count == 0)
-            {
-                return;
-            }
+                SerializeRequests();
+                if (_requests.Count == 0)
+                {
+                    return;
+                }
+                SerializeCommandHandlers();
+                if (_handlers.Count == 0)
+                {
+                    return;
+                }
 
-            foreach (var handler in _handlers)
-            {
-                handler.Handle();
+                foreach (var handler in _handlers)
+                {
+                    handler.Handle();
+                }
             }
+            catch (Exception e)
+            {
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+            }
+           
         }
 
         protected abstract void SerializeRequests();

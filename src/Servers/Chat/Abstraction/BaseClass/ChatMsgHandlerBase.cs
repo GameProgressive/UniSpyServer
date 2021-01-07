@@ -31,13 +31,13 @@ namespace Chat.Abstraction.BaseClass
                     {
                         if (!ChatSessionManager.GetSessionByNickName(_request.NickName, out _otherSession))
                         {
-                            _errorCode = ChatError.NoSuchNick;
+                            _errorCode = ChatErrorCode.NoSuchNick;
                             _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                         }
                     }
                     break;
                 default:
-                    _errorCode = ChatError.Parse;
+                    _errorCode = ChatErrorCode.Parse;
                     break;
             }
         }

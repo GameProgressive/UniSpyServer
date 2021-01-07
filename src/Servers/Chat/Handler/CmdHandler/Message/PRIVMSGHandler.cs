@@ -3,7 +3,7 @@ using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.Message;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatMessageCommandHandler
+namespace Chat.Handler.CmdHandler.Message
 {
     public class PRIVMSGHandler : ChatMsgHandlerBase
     {

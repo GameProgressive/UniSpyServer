@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.User;
 
 namespace Chat.Entity.Structure.Response.General

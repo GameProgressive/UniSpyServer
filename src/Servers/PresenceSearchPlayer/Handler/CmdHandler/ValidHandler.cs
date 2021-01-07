@@ -4,13 +4,21 @@ using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Entity.Structure.Result;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    public class ValidHandler : PSPCommandHandlerBase
+    public class ValidHandler : PSPCmdHandlerBase
     {
-        protected new ValidRequest _request { get { return (ValidRequest)base._request; } }
-        private bool _isAccountValid;
+        protected new ValidRequest _request
+        {
+            get { return (ValidRequest)base._request; }
+        }
+        protected new ValidResult _result
+        {
+            get { return (ValidResult)base._result; }
+            set { base._result = value; }
+        }
         public ValidHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -26,26 +34,15 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
                 if (result.Count() == 0)
                 {
-                    _isAccountValid = false;
+                    _result.IsAccountValid = false;
                 }
                 else if (result.Count() == 1)
                 {
-                    _isAccountValid = true;
+                    _result.IsAccountValid = true;
                 }
 
             }
 
-        }
-        protected override void BuildNormalResponse()
-        {
-            if (_isAccountValid)
-            {
-                _sendingBuffer = @"\vr\1\final\";
-            }
-            else
-            {
-                _sendingBuffer = @"\vr\0\final\";
-            }
         }
     }
 }

@@ -3,7 +3,7 @@ using Chat.Entity.Structure.ChatCommand;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     public class QUITHandler : ChatLogedInHandlerBase
     {

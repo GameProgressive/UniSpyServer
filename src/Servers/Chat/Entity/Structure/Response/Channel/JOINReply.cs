@@ -1,12 +1,23 @@
-﻿using Chat.Entity.Structure.ChatChannel;
+﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.Result.Channel;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    public class JOINReply
+    public class JOINResponse : ChatResponseBase
     {
-        public static string BuildJoinReply(ChatChannelUser joiner, string channelName)
+        public JOINResponse(ChatResultBase result) : base(result)
         {
-            return joiner.BuildReply(ChatReplyCode.JOIN, channelName);
+        }
+
+        protected new JOINResult _result
+        {
+            get { return (JOINResult)base._result; }
+        }
+
+        public override void Build()
+        {
+            SendingBuffer =
+                _result.Joiner.BuildReply(ChatReplyCode.JOIN, _result.ChannelName);
         }
     }
 }

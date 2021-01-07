@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {
@@ -48,7 +47,7 @@ namespace Chat.Abstraction.BaseClass
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)
             {
-               ErrorCode = false;
+                ErrorCode = false;
             }
 
             int indexOfColon = RawRequest.IndexOf(':');
@@ -78,6 +77,41 @@ namespace Chat.Abstraction.BaseClass
                 _cmdParams = dataFrag.Skip(1).ToList();
             }
             ErrorCode = true;
+        }
+
+        public static string GetCommandName(string request)
+        {
+            // at most 2 colon character
+            // we do not sure about all command
+            // so i block this code here
+            List<string> dataFrag = new List<string>();
+
+            if (request.Where(r => r.Equals(':')).Count() > 2)
+            {
+                return null;
+            }
+
+            int indexOfColon = request.IndexOf(':');
+
+            string rawRequest = request;
+            if (indexOfColon == 0 && indexOfColon != -1)
+            {
+                int prefixIndex = rawRequest.IndexOf(' ');
+                var prefix = rawRequest.Substring(indexOfColon, prefixIndex);
+                rawRequest = rawRequest.Substring(prefixIndex);
+            }
+
+            indexOfColon = rawRequest.IndexOf(':');
+            if (indexOfColon != 0 && indexOfColon != -1)
+            {
+                var longParam = rawRequest.Substring(indexOfColon + 1);
+                //reset the request string
+                rawRequest = rawRequest.Remove(indexOfColon);
+            }
+
+            dataFrag = rawRequest.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            return dataFrag[0];
         }
     }
 }

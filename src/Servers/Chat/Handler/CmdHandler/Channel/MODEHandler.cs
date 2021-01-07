@@ -1,13 +1,13 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.Channel;
-using Chat.Entity.Structure.ChatChannel;
+using Chat.Entity.Structure.ChannelInfo;
+using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response;
 using Chat.Entity.Structure.Response.General;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     public class MODEHandler : ChatLogedInHandlerBase
     {
@@ -37,21 +37,21 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
         {
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
-                _errorCode = ChatError.IRCError;
+                _errorCode = ChatErrorCode.IRCError;
                 _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
                 return;
             }
 
             if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
             {
-                _errorCode = ChatError.IRCError;
+                _errorCode = ChatErrorCode.IRCError;
                 _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatError.Parse;
+                _errorCode = ChatErrorCode.Parse;
                 _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
                 return;
             }
@@ -64,10 +64,10 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             switch (_request.RequestType)
             {
                 case ModeRequestType.EnableUserQuietFlag:
-                    _session.UserInfo.SetQuietModeFlag(true);
+                    _session.UserInfo.IsQuietMode = true;
                     break;
                 case ModeRequestType.DisableUserQuietFlag:
-                    _session.UserInfo.SetQuietModeFlag(false);
+                    _session.UserInfo.IsQuietMode = false;
                     break;
                 default:
                     ProcessOtherModeRequest();
@@ -91,7 +91,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             //we check if the user is operator in channel
             if (!_user.IsChannelOperator)
             {
-                _errorCode = ChatError.DataOperation;
+                _errorCode = ChatErrorCode.DataOperation;
                 return;
             }
             _channel.Property.SetProperties(_user, _request);

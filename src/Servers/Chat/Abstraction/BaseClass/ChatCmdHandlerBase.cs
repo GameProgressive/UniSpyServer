@@ -19,7 +19,7 @@ namespace Chat.Abstraction.BaseClass
     /// </summary>
     public abstract class ChatCmdHandlerBase : UniSpyCmdHandlerBase
     {
-        protected ChatError _errorCode;
+        protected ChatErrorCode _errorCode;
         protected new ChatRequestBase _request
         {
             get { return (ChatRequestBase)base._request; }
@@ -36,9 +36,15 @@ namespace Chat.Abstraction.BaseClass
             get { return (ChatSession)base._session; }
         }
 
+        protected new ChatResultBase _result
+        {
+            get { return (ChatResultBase)base._result; }
+            set { base._result = value; }
+        }
+
         public ChatCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
-            _errorCode = ChatError.NoError;
+            _errorCode = ChatErrorCode.NoError;
         }
 
         //if we use this structure the error response should also write to _sendingBuffer
@@ -46,9 +52,9 @@ namespace Chat.Abstraction.BaseClass
         {
             CheckRequest();
 
-            if (_errorCode != ChatError.NoError)
+            if (_errorCode != ChatErrorCode.NoError)
             {
-                if (_errorCode == ChatError.IRCError)
+                if (_errorCode == ChatErrorCode.IRCError)
                 {
                     ConstructResponse();
                 }
@@ -56,9 +62,9 @@ namespace Chat.Abstraction.BaseClass
             }
 
             DataOperation();
-            if (_errorCode != ChatError.NoError)
+            if (_errorCode != ChatErrorCode.NoError)
             {
-                if (_errorCode == ChatError.IRCError)
+                if (_errorCode == ChatErrorCode.IRCError)
                 {
                     ConstructResponse();
                 }
@@ -72,7 +78,7 @@ namespace Chat.Abstraction.BaseClass
 
         protected override void ConstructResponse()
         {
-            if (_errorCode != ChatError.NoError)
+            if (_errorCode != ChatErrorCode.NoError)
             {
                 BuildErrorResponse();
             }
@@ -84,7 +90,7 @@ namespace Chat.Abstraction.BaseClass
 
         protected override void BuildErrorResponse()
         {
-            if (_errorCode != ChatError.NoError)
+            if (_errorCode != ChatErrorCode.NoError)
             {
                 LogWriter.ToLog(LogEventLevel.Error, $"{_errorCode} occured!");
             }

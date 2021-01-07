@@ -2,7 +2,7 @@
 using Chat.Entity.Structure.ChatCommand;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     public class PARTHandler : ChatChannelHandlerBase
     {

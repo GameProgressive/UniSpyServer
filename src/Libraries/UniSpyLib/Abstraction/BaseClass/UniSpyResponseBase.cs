@@ -5,12 +5,11 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyResponseBase : IUniSpyResponse
     {
-        public object ErrorCode { get; protected set; }
         public object SendingBuffer { get; protected set; }
-        protected object _dataResult;
-        public UniSpyResponseBase(object dataResult)
+        protected UniSpyResultBase _result;
+        public UniSpyResponseBase(UniSpyResultBase result)
         {
-            _dataResult = dataResult;
+            _result = result;
             LogWriter.LogCurrentClass(this);
         }
 
@@ -18,5 +17,8 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// Build response message
         /// </summary>
         public abstract void Build();
+
+        protected abstract void BuildErrorResponse();
+        protected abstract void BuildNormalResponse();
     }
 }

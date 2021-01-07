@@ -5,10 +5,11 @@ using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Entity.Structure.Result;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    public class CheckHandler : PSPCommandHandlerBase
+    public class CheckHandler : PSPCmdHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
@@ -17,24 +18,30 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         {
             get { return (CheckRequest)base._request; }
         }
-        uint _profileid;
+        protected new CheckResult _result
+        {
+            get { return (CheckResult)base._result; }
+            set { base._result = value; }
+        }
         public CheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
         protected override void DataOperation()
         {
+            _result = new CheckResult();
+
             using (var db = new retrospyContext())
             {
                 if (db.Users.Where(e => e.Email == _request.Email).Count() < 1)
                 {
-                    _errorCode = GPErrorCode.CheckBadMail;
+                    _result.ErrorCode = GPErrorCode.CheckBadMail;
                     return;
                 }
 
                 if (db.Users.Where(u => u.Email == _request.Email && u.Password == _request.Password).Count() < 1)
                 {
-                    _errorCode = GPErrorCode.CheckBadPassword;
+                    _result.ErrorCode = GPErrorCode.CheckBadPassword;
                     return;
                 }
 
@@ -47,29 +54,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
                 if (result.Count() == 1)
                 {
-                    _profileid = result.First();
+                    _result.ProfileID = result.First();
                 }
                 else
                 {
-                    _errorCode = GPErrorCode.CheckBadNick;
+                    _result.ErrorCode = GPErrorCode.CheckBadNick;
                 }
-            }
-        }
-
-        protected override void BuildNormalResponse()
-        {
-            _sendingBuffer = @$"\cur\0\pid\{_profileid}\final\";
-        }
-
-        protected override void BuildErrorResponse()
-        {
-            if (_errorCode < GPErrorCode.Check || _errorCode > GPErrorCode.CheckBadPassword)
-            {
-                base.BuildErrorResponse();
-            }
-            else
-            {
-                _sendingBuffer = @$"\cur\{ _errorCode}\final\";
             }
         }
     }

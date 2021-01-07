@@ -4,33 +4,32 @@ using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
+using PresenceSearchPlayer.Entity.Structure.Result;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal class OthersHandlerDataModel
-    {
-        public uint Profileid;
-        public string Nick;
-        public string Uniquenick;
-        public string Lastname;
-        public string Firstname;
-        public uint Userid;
-        public string Email;
-    }
+
     /// <summary>
     /// Get buddy's information
     /// </summary>
-    public class OthersHandler : PSPCommandHandlerBase
+    public class OthersHandler : PSPCmdHandlerBase
     {
-        protected new OthersRequest _request { get { return (OthersRequest)base._request; } }
-        private List<OthersHandlerDataModel> _result;
+        protected new OthersRequest _request
+        {
+            get { return (OthersRequest)base._request; }
+        }
+        protected new OthersResult _result
+        {
+            get { return (OthersResult)base._result; }
+            set { base._result = value; }
+        }
         public OthersHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new List<OthersHandlerDataModel>();
         }
 
         protected override void DataOperation()
         {
+            _result = new OthersResult();
             using (var db = new retrospyContext())
             {
                 var result = from b in db.Friends
@@ -44,7 +43,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                             join u in db.Users on p.Userid equals u.Userid
                             where n.Namespaceid == _request.NamespaceID
                             && n.Profileid == info && n.Gamename == _request.GameName
-                            select new OthersHandlerDataModel
+                            select new OthersDatabaseModel
                             {
                                 Profileid = p.Profileid,
                                 Nick = p.Nick,
@@ -55,27 +54,9 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                                 Email = u.Email
                             };
 
-                    _result.Add(b.First());
+                    _result.DatabaseResults.Add(b.First());
                 }
             }
         }
-
-
-        protected override void BuildNormalResponse()
-        {
-            _sendingBuffer = @"\others\";
-
-            foreach (var info in _result)
-            {
-                _sendingBuffer += @"\o\" + info.Profileid;
-                _sendingBuffer += @"\nick\" + info.Nick;
-                _sendingBuffer += @"\uniquenick\" + info.Uniquenick;
-                _sendingBuffer += @"\first\" + info.Firstname;
-                _sendingBuffer += @"\last\" + info.Lastname;
-                _sendingBuffer += @"\email\" + info.Email;
-            }
-            _sendingBuffer += @"\odone\final\";
-        }
-
     }
 }

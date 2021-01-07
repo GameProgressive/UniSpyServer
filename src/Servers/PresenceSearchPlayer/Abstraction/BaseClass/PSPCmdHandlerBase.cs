@@ -2,19 +2,16 @@
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceSearchPlayer.Handler.CmdHandler.Error;
 using PresenceSearchPlayer.Network;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class PSPCommandHandlerBase : UniSpyCmdHandlerBase
+    public abstract class PSPCmdHandlerBase : UniSpyCmdHandlerBase
     {
-        protected GPErrorCode _errorCode;
         /// <summary>
         /// Be careful the return of query function should be List type,
         /// the decision formula should use _result.Count==0
         /// </summary>
-        protected string _sendingBuffer;
         protected new PSPRequestBase _request
         {
             get { return (PSPRequestBase)base._request; }
@@ -23,16 +20,21 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         {
             get { return (PSPSession)base._session; }
         }
-        public PSPCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        protected new PSPResultBase _result
         {
-            _errorCode = GPErrorCode.NoError;
+            get { return (PSPResultBase)base._result; }
+            set { base._result = value; }
+        }
+        public PSPCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        {
+            _result.ErrorCode = GPErrorCode.NoError;
         }
 
         public override void Handle()
         {
             CheckRequest();
 
-            if (_errorCode < GPErrorCode.NoError)
+            if (_result.ErrorCode < GPErrorCode.NoError)
             {
                 ConstructResponse();
                 Response();
@@ -41,7 +43,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 
             DataOperation();
 
-            if (_errorCode < GPErrorCode.NoError)
+            if (_result.ErrorCode < GPErrorCode.NoError)
             {
                 ConstructResponse();
                 Response();
@@ -57,31 +59,19 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         /// </summary>
         protected override void ConstructResponse()
         {
-            if (_errorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-            }
-            else
-            {
-                BuildNormalResponse();
-            }
+            _response.Build();
         }
 
         protected override void Response()
         {
-            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
+            // if _response is null the exception will be throw
+            if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
             {
                 return;
             }
-            _session.SendAsync(_sendingBuffer);
+            _session.SendAsync((string)_response.SendingBuffer);
         }
 
-        /// <summary>
-        /// Customize the error response string
-        /// </summary>
-        protected override void BuildErrorResponse()
-        {
-            _sendingBuffer = ErrorMsg.BuildGPErrorMsg(_errorCode);
-        }
+        protected override void CheckRequest() { }
     }
 }

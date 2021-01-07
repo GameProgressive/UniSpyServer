@@ -9,23 +9,29 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
     public class PSPRequestBase : UniSpyRequestBase
     {
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
-        public new string RawRequest { get; protected set; }
-        public new string CommandName { get; protected set; }
+        public new string RawRequest
+        {
+            get { return (string)base.RawRequest; }
+        }
+        public new string CommandName
+        {
+            get { return (string)base.RawRequest; }
+            protected set { base.CommandName = value; }
+        }
         public ushort OperationID { get; protected set; }
         public new GPErrorCode ErrorCode
         {
             get { return (GPErrorCode)base.ErrorCode; }
-            protected set { base.ErrorCode = value; }
+            set { base.ErrorCode = value; }
         }
-
         public PSPRequestBase(string rawRequest) : base(rawRequest)
         {
-            RawRequest = rawRequest;
+            RequestKeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
+            ErrorCode = GPErrorCode.NoError;
         }
 
         public override void Parse()
         {
-            RequestKeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
             CommandName = RequestKeyValues.Keys.First();
 
             if (RequestKeyValues.ContainsKey("id"))
@@ -38,8 +44,6 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
                 }
                 OperationID = operationID;
             }
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

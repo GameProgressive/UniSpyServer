@@ -2,7 +2,7 @@
 using Chat.Entity.Structure.ChatCommand;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatGeneralCommandHandler
+namespace Chat.Handler.CmdHandler.General
 {
     /// <summary>
     /// currently we do not know how this work

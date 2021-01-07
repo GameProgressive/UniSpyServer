@@ -4,7 +4,7 @@ using Chat.Entity.Structure.ChatCommand;
 using Chat.Entity.Structure.Response.Channel;
 using UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
+namespace Chat.Handler.CmdHandler.Channel
 {
     // Sets channel key/values.
     // If user is NULL or "", the keys will be set on the channel.
@@ -24,7 +24,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
             base.DataOperation();
             if (!_user.IsChannelOperator)
             {
-                _errorCode = ChatError.NotChannelOperator;
+                _errorCode = ChatErrorCode.NotChannelOperator;
                 return;
             }
             _channel.Property.SetChannelKeyValue(_request.KeyValue);
@@ -39,7 +39,7 @@ namespace Chat.Handler.CmdHandler.ChatChannelCmdHandler
                 flags += $@"\{kv.Key}\{kv.Value}";
             }
             _sendingBuffer =
-                GETCHANKEYReply.BuildGetChanKeyReply(
+                GETCHANKEYResponse.BuildGetChanKeyReply(
                     _user, _channel.Property.ChannelName, "BCAST", flags);
         }
 

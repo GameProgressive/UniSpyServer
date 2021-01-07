@@ -1,15 +1,14 @@
-﻿using Chat.Abstraction.BaseClass;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Linq;
 using System.Net;
-
+using Chat.Entity.Structure.ChannelInfo;
 namespace Chat.Entity.Structure.User
 {
     public class ChatUserInfo
     {
         //indicates which channel this user is in
-        public ConcurrentBag<Channel.ChatChannel> JoinedChannels { get; protected set; }
-        public bool IsQuietMode { get; protected set; }
+        public ConcurrentBag<ChatChannel> JoinedChannels { get; protected set; }
+        public bool IsQuietMode { get; set; }
         public string PublicIPAddress { get; protected set; }
 
 
@@ -17,16 +16,11 @@ namespace Chat.Entity.Structure.User
         {
             ClientCTX = new GSPeerChatCTX();
             ServerCTX = new GSPeerChatCTX();
-            JoinedChannels = new ConcurrentBag<Channel.ChatChannel>();
+            JoinedChannels = new ConcurrentBag<ChatChannel>();
         }
 
-        public ChatUserInfo SetQuietModeFlag(bool flag)
-        {
-            IsQuietMode = flag;
-            return this;
-        }
 
-        public string GameName { get; protected set; }
+        public string GameName { get; set; }
         public ChatUserInfo SetGameName(string gameName)
         {
             GameName = gameName;
@@ -50,50 +44,18 @@ namespace Chat.Entity.Structure.User
             Name = name;
             return this;
         }
-        public string ServerIP { get; protected set; }
-        public ChatUserInfo SetServerIP(string ip)
-        {
-            ServerIP = ip;
-            return this;
-        }
-        public int NameSpaceID { get; protected set; }
-        public ChatUserInfo SetNameSpaceID(int namespaceid)
-        {
-            NameSpaceID = namespaceid;
-            return this;
-        }
-        public string UniqueNickName { get; protected set; }
-        public ChatUserInfo SetUniqueNickName(string uniquenick)
-        {
-            UniqueNickName = uniquenick;
-            return this;
-        }
-        public string GameSecretKey { get; protected set; }
-        public ChatUserInfo SetGameSecretKey(string key)
-        {
-            GameSecretKey = key;
-            return this;
-        }
-        public bool IsLoggedIn { get; protected set; }
-        public ChatUserInfo SetLoginFlag(bool flag)
-        {
-            IsLoggedIn = flag;
-            return this;
-        }
+        public string ServerIP { get; set; }
+        public int NameSpaceID { get; set; }
+
+        public string UniqueNickName { get; set; }
+        public string GameSecretKey { get; set; }
+        public bool IsLoggedIn { get; set; }
 
         // secure connection
-        public GSPeerChatCTX ClientCTX { get; protected set; }
-        public ChatUserInfo SetClientCTX(GSPeerChatCTX ctx)
-        {
-            ClientCTX = ctx;
-            return this;
-        }
+        public GSPeerChatCTX ClientCTX { get; set; }
+
         public GSPeerChatCTX ServerCTX { get; protected set; }
-        public ChatUserInfo SetServerCTX(GSPeerChatCTX ctx)
-        {
-            ServerCTX = ctx;
-            return this;
-        }
+ 
 
         public bool UseEncryption { get; protected set; }
         public ChatUserInfo SetUseEncryptionFlag(bool flag)
@@ -118,7 +80,7 @@ namespace Chat.Entity.Structure.User
         {
             return GetJoinedChannelByName(channelName, out _);
         }
-        public bool GetJoinedChannelByName(string channelName, out Channel.ChatChannel channel)
+        public bool GetJoinedChannelByName(string channelName, out ChannelInfo.ChatChannel channel)
         {
             var result = JoinedChannels.Where(c => c.Property.ChannelName == channelName);
             if (result.Count() == 1)
@@ -144,7 +106,7 @@ namespace Chat.Entity.Structure.User
 
         public string BuildReply(string command, string cmdParams, string tailing)
         {
-            return ChatResponseBase.BuildRPL(this, command, cmdParams, tailing);
+            return ChatReplyBuilder.Build(this, command, cmdParams, tailing);
         }
     }
 }
