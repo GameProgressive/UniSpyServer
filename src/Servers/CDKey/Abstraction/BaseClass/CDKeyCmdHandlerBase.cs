@@ -4,7 +4,7 @@ using CDKey.Network;
 
 namespace CDKey.Abstraction.BaseClass
 {
-    public class CDKeyCmdHandlerBase : UniSpyCmdHandlerBase
+    public abstract class CDKeyCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected string _sendingBuffer;
         protected new CDKeySession _session

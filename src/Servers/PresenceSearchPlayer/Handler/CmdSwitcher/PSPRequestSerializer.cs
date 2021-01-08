@@ -25,22 +25,22 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
                 case PSPRequestName.Search:
                     return new SearchRequest(_rawRequest);
                 case PSPRequestName.Valid:
-                    return new SearchRequest(_rawRequest);
+                    return new ValidRequest(_rawRequest);
                 case PSPRequestName.Nicks:
-                    return new SearchRequest(_rawRequest);
+                    return new NicksRequest(_rawRequest);
                 case PSPRequestName.PMatch:
                 case PSPRequestName.Check:
                     return new CheckRequest(_rawRequest);
                 case PSPRequestName.NewUser:
-                    return new SearchRequest(_rawRequest);
+                    return new NewUserRequest(_rawRequest);
                 case PSPRequestName.SearchUnique:
-                    return new SearchRequest(_rawRequest);
+                    return new SearchUniqueRequest(_rawRequest);
                 case PSPRequestName.Others:
-                    return new SearchRequest(_rawRequest);
+                    return new OthersRequest(_rawRequest);
                 case PSPRequestName.OtherList:
-                    return new SearchRequest(_rawRequest);
+                    return new OthersListRequest(_rawRequest);
                 case PSPRequestName.UniqueSearch:
-                    return new SearchRequest(_rawRequest);
+                    return new UniqueSearchRequest(_rawRequest);
                 default:
                     LogWriter.UnknownDataRecieved(_rawRequest);
                     return null;

@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         }
         public new string CommandName
         {
-            get { return (string)base.RawRequest; }
+            get { return (string)base.CommandName; }
             protected set { base.CommandName = value; }
         }
         public ushort OperationID { get; protected set; }
