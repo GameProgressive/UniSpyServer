@@ -15,7 +15,7 @@ namespace NATNegotiation.Handler.CmdHandler
 
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             _sendingBuffer =
                 new ErtAckResponse(_request, _session.RemoteEndPoint).BuildResponse();

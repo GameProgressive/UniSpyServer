@@ -16,9 +16,9 @@ namespace NATNegotiation.Handler.CmdHandler
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
             //TODO we get user infomation from redis
             _fullKey = NatUserInfo.RedisOperator.BuildFullKey(
                 _session.RemoteIPEndPoint,
@@ -40,7 +40,7 @@ namespace NATNegotiation.Handler.CmdHandler
             NatUserInfo.RedisOperator.SetKeyValue(_fullKey, _userInfo);
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             _sendingBuffer = new InitResponse(_request, _session.RemoteEndPoint).BuildResponse();
         }

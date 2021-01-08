@@ -24,7 +24,7 @@ namespace QueryReport.Abstraction.BaseClass
 
         public override void Handle()
         {
-            CheckRequest();
+            RequestCheck();
 
             if (_errorCode != QRErrorCode.NoError)
             {
@@ -40,7 +40,7 @@ namespace QueryReport.Abstraction.BaseClass
                 return;
             }
 
-            ConstructResponse();
+            ResponseConstruct();
 
             if (_errorCode != QRErrorCode.NoError)
             {

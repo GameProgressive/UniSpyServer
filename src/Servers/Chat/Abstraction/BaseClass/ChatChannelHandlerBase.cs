@@ -19,9 +19,9 @@ namespace Chat.Abstraction.BaseClass
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
 
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {

@@ -11,7 +11,12 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             get { return (PSPResultBase)base._result; }
         }
 
-        public PSPResponseBase(PSPResultBase result) : base(result)
+        public new string SendingBuffer
+        {
+            get { return (string)base.SendingBuffer; }
+            protected set { base.SendingBuffer = value; }
+        }
+        protected PSPResponseBase(UniSpyResultBase result) : base(result)
         {
         }
 

@@ -48,7 +48,7 @@ namespace ServerBrowser.Handler.CmdHandler
             _gameServer = result.FirstOrDefault();
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             _dataList.Add((byte)SBServerResponseType.PushServerMessage);
 

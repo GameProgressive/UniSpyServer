@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Abstraction.SystemHandler.Buddy
 {
-    public class BuddyStatusInfoHandler : PCMCommandHandlerBase
+    public class BuddyStatusInfoHandler : PCMCmdHandlerBase
     {
         // This is what the message should look like.  Its broken up for easy viewing.
         //
@@ -15,14 +15,9 @@ namespace PresenceConnectionManager.Abstraction.SystemHandler.Buddy
         {
         }
 
-        protected override void BuildNormalResponse()
-        {
-            base.BuildNormalResponse();
-        }
-
         protected override void DataOperation()
         {
-            base.DataOperation();
+            throw new System.NotImplementedException();
         }
     }
 }

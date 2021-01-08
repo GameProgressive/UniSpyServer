@@ -27,10 +27,10 @@ namespace GameStatus.Handler.CmdHandler
             _session.PlayerData.GameName = _request.GameName;
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             _sendingBuffer = @$"\sesskey\{_session.PlayerData.SessionKey}\lid\{ _request.OperationID}";
-            base.ConstructResponse();
+            base.ResponseConstruct();
         }
 
     }

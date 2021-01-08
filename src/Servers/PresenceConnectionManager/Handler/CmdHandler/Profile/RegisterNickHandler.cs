@@ -8,7 +8,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class RegisterNickHandler : PCMCommandHandlerBase
+    public class RegisterNickHandler : PCMCmdHandlerBase
     {
         protected new RegisterNickRequest _request { get { return (RegisterNickRequest)base._request; } }
         public RegisterNickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -21,21 +21,17 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             {
                 using (var db = new retrospyContext())
                 {
-                    db.Subprofiles.Where(s => s.Subprofileid == _session.UserData.SubProfileID)
+                    db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.SubProfileID)
                         .FirstOrDefault().Uniquenick = _request.UniqueNick;
                     db.SaveChanges();
                 }
             }
             catch
             {
-                _errorCode = GPErrorCode.DatabaseError;
+                _result.ErrorCode = GPErrorCode.DatabaseError;
             }
         }
 
-        protected override void BuildNormalResponse()
-        {
-            base.BuildNormalResponse();
-            _sendingBuffer = $@"\rn\\id\{_request.OperationID}\final\";
-        }
+
     }
 }

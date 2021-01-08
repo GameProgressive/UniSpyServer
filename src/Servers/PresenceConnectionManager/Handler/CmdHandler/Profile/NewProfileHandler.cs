@@ -2,19 +2,31 @@
 using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 using System.Linq;
 using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Result;
+using PresenceConnectionManager.Entity.Structure.Response;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class NewProfileHandler : PCMCommandHandlerBase
+    public class NewProfileHandler : PCMCmdHandlerBase
     {
-        protected new NewProfileRequest _request { get { return (NewProfileRequest)base._request;} }
+        protected new NewProfileRequest _request
+        {
+            get { return (NewProfileRequest)base._request;}
+        }
+        protected new NewProfileResult _result
+        {
+            get { return (NewProfileResult)base._result; }
+            set { base._result = value; }
+        }
         public NewProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            _result = new NewProfileResult(_request);
+        }
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())
@@ -22,20 +34,20 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 if (_request.IsReplaceNickName)
                 {
                     var result = from p in db.Profiles
-                                 where p.Profileid == _session.UserData.ProfileID
+                                 where p.Profileid == _session.UserInfo.ProfileID
                                  && p.Nick == _request.OldNick
                                  select p;
 
                     if (result.Count() != 1)
                     {
-                        _errorCode = GPErrorCode.DatabaseError;
+                        _result.ErrorCode = GPErrorCode.DatabaseError;
                     }
                     else
                     {
                         result.First().Nick = _request.NewNick;
                     }
 
-                    db.Profiles.Where(p => p.Profileid == _session.UserData.ProfileID
+                    db.Profiles.Where(p => p.Profileid == _session.UserInfo.ProfileID
                     && p.Nick == _request.OldNick).First().Nick = _request.NewNick;
 
                     db.SaveChanges();
@@ -44,20 +56,20 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 {
                     Profiles profiles = new Profiles
                     {
-                        Profileid = _session.UserData.ProfileID,
+                        Profileid = _session.UserInfo.ProfileID,
                         Nick = _request.NewNick,
-                        Userid = _session.UserData.UserID
+                        Userid = _session.UserInfo.UserID
                     };
 
                     db.Add(profiles);
                 }
             }
+            _result.ProfileID = _session.UserInfo.ProfileID;
         }
 
-        protected override void BuildNormalResponse()
+        protected override void ResponseConstruct()
         {
-            base.BuildNormalResponse();
-            _sendingBuffer = $@"\npr\\profileid\{_session.UserData.ProfileID}\id\{_request.OperationID}\final\";
+            _response = new NewProfileResponse(_result);
         }
     }
 }

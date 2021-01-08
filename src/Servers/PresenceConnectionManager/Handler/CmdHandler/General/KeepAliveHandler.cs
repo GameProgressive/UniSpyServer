@@ -1,10 +1,11 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using System.Collections.Generic;
 using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Response;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class KeepAliveHandler : PCMCommandHandlerBase
+    public class KeepAliveHandler : PCMCmdHandlerBase
     {
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -12,14 +13,13 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             //we need to keep player cache online
             //so their friends can find him
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
-            _sendingBuffer = @"\ka\\final\";
+            _response = new KeepAliveResponse(_result);
         }
     }
 }

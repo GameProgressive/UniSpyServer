@@ -23,9 +23,9 @@ namespace Chat.Handler.CmdHandler.Channel
             IsSetOthersKeyValue = false;
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
 
             if (_request.NickName != _session.UserInfo.NickName)
             {

@@ -50,13 +50,13 @@ namespace Chat.Abstraction.BaseClass
         //if we use this structure the error response should also write to _sendingBuffer
         public override void Handle()
         {
-            CheckRequest();
+            RequestCheck();
 
             if (_errorCode != ChatErrorCode.NoError)
             {
                 if (_errorCode == ChatErrorCode.IRCError)
                 {
-                    ConstructResponse();
+                    ResponseConstruct();
                 }
                 return;
             }
@@ -66,17 +66,17 @@ namespace Chat.Abstraction.BaseClass
             {
                 if (_errorCode == ChatErrorCode.IRCError)
                 {
-                    ConstructResponse();
+                    ResponseConstruct();
                 }
                 return;
             }
 
-            ConstructResponse();
+            ResponseConstruct();
 
             Response();
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             if (_errorCode != ChatErrorCode.NoError)
             {

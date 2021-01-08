@@ -12,9 +12,9 @@ namespace GameStatus.Handler.CmdHandler
         {
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
-            base.ConstructResponse();
+            base.ResponseConstruct();
         }
 
         protected override void DataOperation()

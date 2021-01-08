@@ -18,12 +18,12 @@ namespace Chat.Abstraction.BaseClass
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
-                    base.CheckRequest();
+                    base.RequestCheck();
                     break;
                 case ChatMessageType.UserMessage:
 

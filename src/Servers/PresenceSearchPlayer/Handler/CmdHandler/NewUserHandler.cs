@@ -8,6 +8,8 @@ using Serilog.Events;
 using System;
 using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -28,22 +30,13 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         {
         }
 
-        protected enum _newUserStatus
+        protected override void RequestCheck()
         {
-            CheckAccount,
-            AccountNotExist,
-            AccountExist,
-            CheckProfile,
-            ProfileNotExist,
-            ProfileExist,
-            CheckSubProfile,
-            SubProfileNotExist,
-            SubProfileExist
+            _result = new NewUserResult(_request);
         }
 
         protected override void DataOperation()
         {
-            _result = new NewUserResult();
             using (var db = new retrospyContext())
             {
                 try
@@ -103,19 +96,19 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         {
             using (var db = new retrospyContext())
             {
-                switch (_newUserStatus.CheckAccount)
+                switch (NewUserStatus.CheckAccount)
                 {
-                    case _newUserStatus.CheckAccount:
+                    case NewUserStatus.CheckAccount:
                         var users = db.Users.Where(u => u.Email == _request.Email)
                                                      .Select(u => u);
                         if (users.Count() == 0)
                         {
-                            goto case _newUserStatus.AccountNotExist;
+                            goto case NewUserStatus.AccountNotExist;
                         }
                         else if (users.Count() == 1)
                         {
                             _result.User = users.First();
-                            goto case _newUserStatus.AccountExist;
+                            goto case NewUserStatus.AccountExist;
                         }
                         else
                         {
@@ -125,13 +118,13 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                             break;
                         }
 
-                    case _newUserStatus.AccountNotExist:
+                    case NewUserStatus.AccountNotExist:
                         _result.User = new Users { Email = _request.Email, Password = _request.Password };
                         db.Users.Add(_result.User);
                         db.SaveChanges();
-                        goto case _newUserStatus.CheckProfile;
+                        goto case NewUserStatus.CheckProfile;
 
-                    case _newUserStatus.AccountExist:
+                    case NewUserStatus.AccountExist:
 
                         if (_result.User.Password != _request.Password)
                         {
@@ -140,20 +133,20 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         }
                         else
                         {
-                            goto case _newUserStatus.CheckProfile;
+                            goto case NewUserStatus.CheckProfile;
                         }
 
-                    case _newUserStatus.CheckProfile:
+                    case NewUserStatus.CheckProfile:
                         var profiles = db.Profiles.Where(p => p.Userid == _result.User.Userid && p.Nick == _request.Nick);
                         if (profiles.Count() == 0)
                         {
-                            goto case _newUserStatus.ProfileNotExist;
+                            goto case NewUserStatus.ProfileNotExist;
                         }
                         else if (profiles.Count() == 1)
                         {
                             //same nick name can not register two profiles
                             _result.Profile = profiles.First();
-                            goto case _newUserStatus.ProfileExist;
+                            goto case NewUserStatus.ProfileExist;
                         }
                         else
                         {
@@ -163,27 +156,27 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                             break;
                         }
 
-                    case _newUserStatus.ProfileNotExist:
+                    case NewUserStatus.ProfileNotExist:
                         _result.Profile = new Profiles { Userid = _result.User.Userid, Nick = _request.Nick };
                         db.Profiles.Add(_result.Profile);
                         db.SaveChanges();
-                        goto case _newUserStatus.CheckSubProfile;
+                        goto case NewUserStatus.CheckSubProfile;
 
-                    case _newUserStatus.ProfileExist:
+                    case NewUserStatus.ProfileExist:
                     //we do nothing here
 
-                    case _newUserStatus.CheckSubProfile:
+                    case NewUserStatus.CheckSubProfile:
                         var subProfiles = db.Subprofiles
                             .Where(s => s.Profileid == _result.Profile.Profileid
                             && s.Namespaceid == _request.NamespaceID);
                         if (subProfiles.Count() == 0)
                         {
-                            goto case _newUserStatus.SubProfileNotExist;
+                            goto case NewUserStatus.SubProfileNotExist;
                         }
                         else if (subProfiles.Count() == 1)
                         {
                             _result.SubProfile = subProfiles.First();
-                            goto case _newUserStatus.SubProfileExist;
+                            goto case NewUserStatus.SubProfileExist;
                         }
                         else
                         {
@@ -192,7 +185,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                             break;
                         }
 
-                    case _newUserStatus.SubProfileNotExist:
+                    case NewUserStatus.SubProfileNotExist:
                         //we create subprofile and return
                         _result.SubProfile = new Subprofiles
                         {
@@ -205,11 +198,16 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         db.SaveChanges();
                         break;
 
-                    case _newUserStatus.SubProfileExist:
+                    case NewUserStatus.SubProfileExist:
                         _result.ErrorCode = GPErrorCode.NewUserUniquenickInUse;
                         break;
                 }
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new NewUserResponse(_result);
         }
     }
 }

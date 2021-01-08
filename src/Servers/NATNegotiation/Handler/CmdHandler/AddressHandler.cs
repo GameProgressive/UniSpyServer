@@ -12,7 +12,7 @@ namespace NATNegotiation.Handler.CmdHandler
         public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             _sendingBuffer = new AddressResponse(_request, _session.RemoteEndPoint).BuildResponse();
         }

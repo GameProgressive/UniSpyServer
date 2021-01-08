@@ -5,6 +5,7 @@ using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Entity.Structure.Response;
 
 /////////////////////////Finished?/////////////////////////////////
 namespace PresenceSearchPlayer.Handler.CmdHandler
@@ -24,9 +25,13 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         {
         }
 
+        protected override void RequestCheck()
+        {
+            _result = new NicksResult(_request);
+        }
+
         protected override void DataOperation()
         {
-
             using (var db = new retrospyContext())
             {
                 var result = from u in db.Users
@@ -45,6 +50,11 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                 _result.DataBaseResults.AddRange(result.ToList());
             }
 
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new NicksResponse(_result);
         }
     }
 }

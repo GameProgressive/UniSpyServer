@@ -7,30 +7,30 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class StatusInfoHandler : PCMCommandHandlerBase
+    public class StatusInfoHandler : PCMCmdHandlerBase
     {
-        protected new StatusInfoRequest _request { get { return (StatusInfoRequest)base._request; } }
+        protected new StatusInfoRequest _request => (StatusInfoRequest)base._request;
+
         public StatusInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             using (var db = new retrospyContext())
             {
                 var result = db.Statusinfo
-                    .Where(s => s.Profileid == _session.UserData.ProfileID
-                    && s.Namespaceid == _session.UserData.NamespaceID)
+                    .Where(s => s.Profileid == _session.UserInfo.ProfileID
+                    && s.Namespaceid == _session.UserInfo.NamespaceID)
                     .Select(s => s);
 
                 if (result.Count() == 0)
                 {
                     Statusinfo statusinfo = new Statusinfo
                     {
-                        Profileid = _session.UserData.ProfileID,
-                        Namespaceid = _session.UserData.NamespaceID,
-                        Productid = _session.UserData.ProductID,
+                        Profileid = _session.UserInfo.ProfileID,
+                        Namespaceid = _session.UserInfo.NamespaceID,
+                        Productid = _session.UserInfo.ProductID,
                         Statusstate = _request.StatusState,
                         //buddyip
                         //buddyport
@@ -53,9 +53,9 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 else if (result.Count() == 1)
                 {
 
-                    result.First().Profileid = _session.UserData.ProfileID;
-                    result.First().Namespaceid = _session.UserData.NamespaceID;
-                    result.First().Productid = _session.UserData.ProductID;
+                    result.First().Profileid = _session.UserInfo.ProfileID;
+                    result.First().Namespaceid = _session.UserInfo.NamespaceID;
+                    result.First().Productid = _session.UserInfo.ProductID;
                     result.First().Statusstate = _request.StatusState;
                     //buddyip
                     //buddyport
@@ -74,9 +74,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 }
                 else
                 {
-                    _errorCode = GPErrorCode.DatabaseError;
+                    _result.ErrorCode = GPErrorCode.DatabaseError;
                 }
-
             }
         }
     }

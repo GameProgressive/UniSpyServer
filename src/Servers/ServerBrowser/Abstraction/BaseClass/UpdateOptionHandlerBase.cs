@@ -34,9 +34,9 @@ namespace ServerBrowser.Abstraction.BaseClass
             _dataList = new List<byte>();
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
             //save client challenge in _request
             if (_request == null)
             {
@@ -63,9 +63,9 @@ namespace ServerBrowser.Abstraction.BaseClass
             _gameServerDefaultHostPort = BitConverter.GetBytes(htonDefaultPort);
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
-            base.ConstructResponse();
+            base.ResponseConstruct();
             _dataList.AddRange(_clientRemoteIP);
             _dataList.AddRange(_gameServerDefaultHostPort);
         }

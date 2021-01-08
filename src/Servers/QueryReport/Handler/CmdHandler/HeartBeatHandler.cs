@@ -24,9 +24,9 @@ namespace QueryReport.Handler.CmdHandler
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
 
             //Save server information.
             _dataPartition = Encoding.ASCII.GetString(_request.RawRequest.Skip(5).ToArray());
@@ -89,7 +89,7 @@ namespace QueryReport.Handler.CmdHandler
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             HeartBeatResponse response = new HeartBeatResponse(_session, _request);
             _sendingBuffer = response.BuildResponse();

@@ -29,11 +29,11 @@ namespace PresenceConnectionManager.Network
         /// </summary>
         public readonly DateTime CreateTime;
 
-        public UserData UserData;
+        public PCMUserInfo UserInfo;
 
         public PCMSession(TCPServerBase server) : base(server)
         {
-            UserData = new UserData();
+            UserInfo = new PCMUserInfo();
             CreateTime = new DateTime();
             CompletedLoginProcess = false;
         }
@@ -52,7 +52,7 @@ namespace PresenceConnectionManager.Network
         public void SendServerChallenge()
         {
             // Only send the login challenge once
-            if (UserData.LoginStatus != LoginStatus.Connected)
+            if (UserInfo.LoginStatus != LoginStatus.Connected)
             {
                 Disconnect();
                 // Throw the error                
@@ -61,7 +61,7 @@ namespace PresenceConnectionManager.Network
                     "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
-            UserData.LoginStatus = LoginStatus.Processing;
+            UserInfo.LoginStatus = LoginStatus.Processing;
             string sendingBuffer = $@"\lc\1\challenge\{ChallengeProofData.ServerChallenge}\id\{1}\final\";
             SendAsync(sendingBuffer);
         }

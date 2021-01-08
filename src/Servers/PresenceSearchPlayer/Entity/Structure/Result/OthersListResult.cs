@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
@@ -13,6 +14,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
     {
         public List<OthersListDatabaseModel> DatabaseResults;
         public OthersListResult()
+        {
+        }
+
+        public OthersListResult(UniSpyRequestBase request) : base(request)
         {
             DatabaseResults = new List<OthersListDatabaseModel>();
         }

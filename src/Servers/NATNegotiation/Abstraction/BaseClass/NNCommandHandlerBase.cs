@@ -33,7 +33,7 @@ namespace NATNegotiation.Abstraction.BaseClass
 
         public override void Handle()
         {
-            CheckRequest();
+            RequestCheck();
             if (_errorCode != NNErrorCode.NoError)
             {
                 return;
@@ -44,7 +44,7 @@ namespace NATNegotiation.Abstraction.BaseClass
             {
                 return;
             }
-            ConstructResponse();
+            ResponseConstruct();
             if (_errorCode != NNErrorCode.NoError)
             {
                 return;

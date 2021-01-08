@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
@@ -8,7 +9,9 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public Users User;
         public Profiles Profile;
         public Subprofiles SubProfile;
-        public NewUserResult()
+        public NewUserResult() { }
+
+        public NewUserResult(UniSpyRequestBase request) : base(request)
         {
         }
     }

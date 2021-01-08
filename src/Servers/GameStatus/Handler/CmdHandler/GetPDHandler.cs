@@ -64,7 +64,7 @@ namespace GameStatus.Handler.CmdHandler
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             _sendingBuffer = $@"\getpdr\1\pid\{_request.ProfileID}\lid\{_request.OperationID}\mod\1234\length\5\data\mydata";
         }

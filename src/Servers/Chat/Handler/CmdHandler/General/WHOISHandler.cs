@@ -18,9 +18,9 @@ namespace Chat.Handler.CmdHandler.General
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
 
             var result = from s in ChatSessionManager.Sessions.Values
                          where s.UserInfo.NickName == _request.NickName

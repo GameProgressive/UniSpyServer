@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Structure.Data
 {
-    public class UserData
+    public class PCMUserInfo
     {
         public uint UserID;
         public uint ProfileID;

@@ -29,7 +29,7 @@ namespace GameStatus.Abstraction.BaseClass
 
         public override void Handle()
         {
-            CheckRequest();
+            RequestCheck();
             if (_errorCode != GSErrorCode.NoError)
             {
                 LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
@@ -44,7 +44,7 @@ namespace GameStatus.Abstraction.BaseClass
                 return;
             }
 
-            ConstructResponse();
+            ResponseConstruct();
 
             if (_errorCode != GSErrorCode.NoError)
             {

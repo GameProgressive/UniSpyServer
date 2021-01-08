@@ -21,7 +21,7 @@ namespace ServerBrowser.Abstraction.BaseClass
 
         public override void Handle()
         {
-            CheckRequest();
+            RequestCheck();
 
             if (_errorCode != SBErrorCode.NoError)
             {
@@ -37,7 +37,7 @@ namespace ServerBrowser.Abstraction.BaseClass
                 return;
             }
 
-            ConstructResponse();
+            ResponseConstruct();
 
             if (_errorCode != SBErrorCode.NoError)
             {

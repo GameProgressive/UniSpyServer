@@ -35,6 +35,7 @@
         <Folder Include="Handler\SystemHandler\ServerList\" />
         <Folder Include="Entity\Structure\Response\" />
         <Folder Include="Handler\SystemHandler\Redis\" />
+        <Folder Include="Entity\Structure\Result\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />

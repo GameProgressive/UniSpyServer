@@ -10,10 +10,13 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// <summary>
     /// This function sets which games the local profile can be invited to.
     /// </summary>
-    public class InviteToHandler : PCMCommandHandlerBase
+    public class InviteToHandler : PCMCmdHandlerBase
     {
         //_session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
-        protected new InviteToRequest _request { get { return (InviteToRequest)base._request; } }
+        protected new InviteToRequest _request
+        {
+            get { return (InviteToRequest)base._request; }
+        }
         public InviteToHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -21,8 +24,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         protected override void DataOperation()
         {
             var user = PCMServer.LoggedInSession.Values.Where(
-                u => u.UserData.ProductID == _request.ProductID
-                && u.UserData.ProfileID == _request.ProfileID);
+                u => u.UserInfo.ProductID == _request.ProductID
+                && u.UserInfo.ProfileID == _request.ProfileID);
 
             if (user.Count() == 0)
             {
@@ -31,6 +34,5 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             //TODO
             //parse user to buddy message system
         }
-
     }
 }

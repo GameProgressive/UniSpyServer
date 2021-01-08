@@ -18,9 +18,9 @@ namespace Chat.Handler.CmdHandler.General
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
 
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {

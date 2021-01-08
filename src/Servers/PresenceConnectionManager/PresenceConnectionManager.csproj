@@ -25,4 +25,8 @@
       <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
       <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Entity\Structure\Result\" />
+      <Folder Include="Entity\Structure\Response\" />
+    </ItemGroup>
 </Project>

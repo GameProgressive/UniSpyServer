@@ -1,5 +1,6 @@
 ﻿using System;
 using PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
@@ -7,6 +8,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
     {
         public bool IsAccountValid;
         public ValidResult()
+        {
+        }
+
+        public ValidResult(UniSpyRequestBase request) : base(request)
         {
         }
     }

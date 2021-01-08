@@ -5,6 +5,7 @@ using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Entity.Structure.Response;
 //last one we search with email this may get few profile so we can not return GPErrorCode
 //SearchWithEmail(client,dict );
 //\search\\sesskey\0\profileid\0\namespaceid\1\partnerid\0\nick\mycrysis\uniquenick\xiaojiuwo\email\koujiangheng@live.cn\gamename\gmtest\final\
@@ -31,10 +32,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         public SearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            _result = new SearchResult(_request);
+        }
         protected override void DataOperation()
         {
-            _result = new SearchResult();
             //TODO verify the search condition whether needed namespaceid!!!!!
             using (var db = new retrospyContext())
             {
@@ -120,6 +123,11 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                 }
                 _result.DataBaseResults.AddRange(result.ToList());
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new SearchResponse(_result);
         }
     }
 }

@@ -30,9 +30,9 @@ namespace ServerBrowser.Handler.CmdHandler
             _peerGroup = PeerGroupInfo.RedisOperator.GetSpecificValue(matchedKey[0]);
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
-            base.ConstructResponse();
+            base.ResponseConstruct();
             GenerateServerKeys();
             GenerateUniqueValue();
             GenerateServersInfo();

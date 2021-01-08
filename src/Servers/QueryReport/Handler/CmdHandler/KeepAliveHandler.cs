@@ -16,7 +16,7 @@ namespace QueryReport.Handler.CmdHandler
         {
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             if (_session.InstantKey != _request.InstantKey)
             {

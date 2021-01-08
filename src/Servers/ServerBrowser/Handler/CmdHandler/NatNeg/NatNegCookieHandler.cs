@@ -28,9 +28,9 @@ namespace ServerBrowser.Handler.CmdHandler
             _natNegCookie = new NatNegCookie();
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
             if (_session.ServerMessageList.Count == 0)
             {
                 _errorCode = SBErrorCode.Parse;
@@ -59,9 +59,9 @@ namespace ServerBrowser.Handler.CmdHandler
             _natNegCookie.NatNegMessage = _request.RawRequest;
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
-            base.ConstructResponse();
+            base.ResponseConstruct();
         }
 
         protected override void Response()

@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
@@ -6,6 +7,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
     {
         public uint ProfileID { get; set; }
         public CheckResult()
+        {
+        }
+
+        public CheckResult(UniSpyRequestBase request) : base(request)
         {
         }
     }

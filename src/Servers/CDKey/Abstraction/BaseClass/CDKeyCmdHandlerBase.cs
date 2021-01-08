@@ -18,11 +18,11 @@ namespace CDKey.Abstraction.BaseClass
 
         public override void Handle()
         {
-            CheckRequest();
+            RequestCheck();
 
             DataOperation();
 
-            ConstructResponse();
+            ResponseConstruct();
 
             Response();
         }

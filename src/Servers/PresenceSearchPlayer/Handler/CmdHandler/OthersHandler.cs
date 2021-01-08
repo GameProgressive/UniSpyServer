@@ -5,6 +5,7 @@ using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -27,9 +28,13 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         {
         }
 
-        protected override void DataOperation()
+        protected override void RequestCheck()
         {
             _result = new OthersResult();
+        }
+
+        protected override void DataOperation()
+        {
             using (var db = new retrospyContext())
             {
                 var result = from b in db.Friends
@@ -57,6 +62,11 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                     _result.DatabaseResults.Add(b.First());
                 }
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new OthersResponse(_result);
         }
     }
 }

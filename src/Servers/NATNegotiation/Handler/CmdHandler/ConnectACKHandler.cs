@@ -10,9 +10,9 @@ namespace NATNegotiation.Handler.CmdHandler
         public ConnectACKHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
             LogWriter.ToLog("client and server successfully connected!");
         }
     }

@@ -4,6 +4,7 @@ using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -26,10 +27,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
         //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
-
+        protected override void RequestCheck()
+        {
+            _result = new OthersListResult(_request);
+        }
         protected override void DataOperation()
         {
-            _result = new OthersListResult();
             using (var db = new retrospyContext())
             {
                 foreach (var pid in _request.ProfileIDs)
@@ -47,6 +50,11 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                     _result.DatabaseResults.AddRange(result.ToList());
                 }
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new OthersListResponse(_result);
         }
     }
 }

@@ -16,9 +16,9 @@ namespace Chat.Handler.CmdHandler.General
             _request = (NICKRequest)request;
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
 
             if (ChatSessionManager.IsNickNameExisted(_request.NickName))
             {

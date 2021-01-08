@@ -5,6 +5,7 @@ using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -22,10 +23,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         public UniqueSearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            _result = new UniqueSearchResult(_request);
+        }
         protected override void DataOperation()
         {
-            _result = new UniqueSearchResult();
             using (var db = new retrospyContext())
             {
                 var result = from p in db.Profiles
@@ -40,6 +43,11 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                     _result.IsUniquenickExist = false;
                 }
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new UniqueSearchResponse(_result);
         }
     }
 }

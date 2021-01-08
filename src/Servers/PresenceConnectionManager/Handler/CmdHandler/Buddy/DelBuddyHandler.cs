@@ -2,20 +2,19 @@
 using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 using System.Linq;
 using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Result;
+using PresenceConnectionManager.Entity.Structure.Response;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     /// <summary>
     /// handles dell buddy request,remove friends from friends list
     /// </summary>
-    public class DelBuddyHandler : PCMCommandHandlerBase
+    public class DelBuddyHandler : PCMCmdHandlerBase
     {
-        //PCMSession _session;
-        //Dictionary<string, string> KeyValues;
-        protected new DelBuddyRequest _request { get { return (DelBuddyRequest)base._request; } }
+        protected new DelBuddyRequest _request => (DelBuddyRequest)base._request;
         //delete friend in database then send bm_revoke message to friend
         public DelBuddyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -25,12 +24,13 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         {
             using (var db = new retrospyContext())
             {
-                var result = from f in db.Friends
-                             where f.Profileid == _request.DeleteProfileID && f.Namespaceid == _session.UserData.NamespaceID
-                             select f;
+                var result = from friend in db.Friends
+                             where friend.Profileid == _request.DeleteProfileID
+                                   && friend.Namespaceid == _session.UserInfo.NamespaceID
+                             select friend;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GPErrorCode.DatabaseError;
+                    _result.ErrorCode = GPErrorCode.DatabaseError;
                     return;
                 }
                 db.Friends.Remove(result.FirstOrDefault());

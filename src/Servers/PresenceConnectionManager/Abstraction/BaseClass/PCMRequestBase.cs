@@ -13,13 +13,13 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         public uint OperationID { get; protected set; }
 
         public new string RawRequest { get; protected set; }
-        public Dictionary<string,string> KeyValues{get; protected set;}
+        public Dictionary<string, string> KeyValues { get; protected set; }
         public new GPErrorCode ErrorCode
         {
             get { return (GPErrorCode)base.ErrorCode; }
             protected set { base.ErrorCode = value; }
         }
-        public PCMRequestBase(string rawRequest):base(rawRequest)
+        public PCMRequestBase(string rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
         }

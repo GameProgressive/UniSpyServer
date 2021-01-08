@@ -6,7 +6,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class AddBlockHandler : PCMCommandHandlerBase
+    public class AddBlockHandler : PCMCmdHandlerBase
     {
 
         protected new AddBlockRequest _request { get { return (AddBlockRequest)base._request; } }
@@ -19,14 +19,14 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             using (var db = new retrospyContext())
             {
                 if (db.Blocked.Where(b => b.Targetid == _request.ProfileID
-                && b.Namespaceid == _session.UserData.NamespaceID
-                && b.Profileid == _session.UserData.ProfileID).Count() == 0)
+                && b.Namespaceid == _session.UserInfo.NamespaceID
+                && b.Profileid == _session.UserInfo.ProfileID).Count() == 0)
                 {
                     Blocked blocked = new Blocked
                     {
-                        Profileid = _session.UserData.ProfileID,
+                        Profileid = _session.UserInfo.ProfileID,
                         Targetid = _request.ProfileID,
-                        Namespaceid = _session.UserData.NamespaceID
+                        Namespaceid = _session.UserInfo.NamespaceID
                     };
 
                     db.Blocked.Update(blocked);

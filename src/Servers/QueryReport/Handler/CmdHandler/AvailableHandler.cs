@@ -17,7 +17,7 @@ namespace QueryReport.Handler.CmdHandler
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
             //prefix check
             for (int i = 0; i < AvaliableRequest.Prefix.Length; i++)
@@ -37,7 +37,7 @@ namespace QueryReport.Handler.CmdHandler
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             _sendingBuffer = new AvaliableResponse().BuildResponse();
         }

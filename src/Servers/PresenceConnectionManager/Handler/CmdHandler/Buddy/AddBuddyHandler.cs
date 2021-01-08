@@ -1,16 +1,22 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using PresenceConnectionManager.Entity.Structure.Request;
-using System.Collections.Generic;
 using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Result;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
-    public class AddBuddyHandler : PCMCommandHandlerBase
+    public class AddBuddyHandler : PCMCmdHandlerBase
     {
-        protected new AddBuddyRequest _request { get { return (AddBuddyRequest)base._request; } }
+        protected new AddBuddyRequest _request => (AddBuddyRequest)base._request;
+
         public AddBuddyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+        }
+        protected override void RequestCheck()
+        {
+            _result = new AddBuddyResult(_request);
+            throw new System.NotImplementedException();
         }
 
         protected override void DataOperation()
@@ -20,6 +26,11 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             //if(online)
             //else
             //store add request to database
+        }
+
+        protected override void ResponseConstruct()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

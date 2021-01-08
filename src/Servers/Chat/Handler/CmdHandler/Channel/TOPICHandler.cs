@@ -17,9 +17,9 @@ namespace Chat.Handler.CmdHandler.Channel
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
 
             if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
             {

@@ -18,9 +18,9 @@ namespace Chat.Handler.CmdHandler.Channel
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
 
             switch (_request.RequestType)
             {

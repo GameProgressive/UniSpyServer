@@ -7,7 +7,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class UpdateProHandler : PCMCommandHandlerBase
+    public class UpdateProHandler : PCMCmdHandlerBase
     {
         protected new UpdateProRequest _request { get { return (UpdateProRequest)base._request; } }
         public UpdateProHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -19,17 +19,17 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             using (var db = new retrospyContext())
             {
                 Profiles profile = db.Profiles.Where(
-                    p => p.Userid == _session.UserData.UserID
-                    && p.Profileid == _session.UserData.ProfileID
+                    p => p.Userid == _session.UserInfo.UserID
+                    && p.Profileid == _session.UserInfo.ProfileID
                     && p.Nick == p.Nick).First();
 
                 Users user = db.Users.Where(
-                    u => u.Userid == _session.UserData.UserID).First();
+                    u => u.Userid == _session.UserInfo.UserID).First();
 
                 Subprofiles subprofile = db.Subprofiles.Where(
-                    s => s.Profileid == _session.UserData.ProfileID
-                    && s.Namespaceid == _session.UserData.NamespaceID
-                    && s.Uniquenick == _session.UserData.UniqueNick).First();
+                    s => s.Profileid == _session.UserInfo.ProfileID
+                    && s.Namespaceid == _session.UserInfo.NamespaceID
+                    && s.Uniquenick == _session.UserInfo.UniqueNick).First();
 
                 if (_request.HasPublicMaskFlag)
                 {

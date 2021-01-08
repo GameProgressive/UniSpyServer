@@ -23,9 +23,9 @@ namespace NATNegotiation.Handler.CmdHandler
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
             var _fullKey = NatUserInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
             try
             {
@@ -58,7 +58,7 @@ namespace NATNegotiation.Handler.CmdHandler
             }
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             _sendingBuffer = new ReportResponse(_request).BuildResponse();
         }

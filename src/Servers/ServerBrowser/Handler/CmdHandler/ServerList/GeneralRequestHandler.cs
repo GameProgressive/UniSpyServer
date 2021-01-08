@@ -24,10 +24,10 @@ namespace ServerBrowser.Handler.CmdHandler
             _gameServers = GameServerInfo.RedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
 
-            base.ConstructResponse();
+            base.ResponseConstruct();
 
             GenerateServerKeys();
             //we use NTS string so total unique value list is 0

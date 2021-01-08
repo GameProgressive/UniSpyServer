@@ -3,8 +3,6 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;
-using System.Collections.Generic;
-
 namespace  PresenceConnectionManager.Entity.Structure.Request
 {
     public class LoginRequest : PCMRequestBase

@@ -1,14 +1,23 @@
 ﻿using UniSpyLib.Abstraction.Interface;
-using System.Collections.Generic;
 using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class BuddyStatusInfoHandler : PCMCommandHandlerBase
+    public class BuddyStatusInfoHandler : PCMCmdHandlerBase
     {
 
         public BuddyStatusInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+        }
+
+        protected override void ResponseConstruct()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void DataOperation()
+        {
+            throw new System.NotImplementedException();
         }
         //public static void SendBuddyStatusInfo(GPCMSession _session, uint[] profileids)
         //{

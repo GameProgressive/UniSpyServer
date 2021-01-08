@@ -29,7 +29,7 @@ namespace QueryReport.Handler.CmdHandler
             _gameServer = GameServerInfo.RedisOperator.GetSpecificValue(searchKey);
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             if (_session.InstantKey != _request.InstantKey)
             {

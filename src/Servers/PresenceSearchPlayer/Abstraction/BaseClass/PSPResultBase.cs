@@ -10,7 +10,15 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             get { return (GPErrorCode)base.ErrorCode; }
             set { base.ErrorCode = value; }
         }
-        public PSPResultBase()
+        public new PSPRequestBase Request
+        {
+            get { return (PSPRequestBase)base.Request; }
+            set { base.Request = value; }
+        }
+
+        public PSPResultBase() { }
+
+        public PSPResultBase(UniSpyRequestBase request) : base(request)
         {
             ErrorCode = GPErrorCode.NoError;
         }

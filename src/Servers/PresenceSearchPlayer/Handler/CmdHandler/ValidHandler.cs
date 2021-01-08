@@ -2,9 +2,9 @@
 using UniSpyLib.Database.DatabaseModel.MySql;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Request;
-using System.Collections.Generic;
 using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -23,6 +23,10 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         {
         }
 
+        protected override void RequestCheck()
+        {
+            _result = new ValidResult(_request);
+        }
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())
@@ -40,9 +44,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                 {
                     _result.IsAccountValid = true;
                 }
-
             }
+        }
 
+        protected override void ResponseConstruct()
+        {
+            _response = new ValidResponse(_result);
         }
     }
 }

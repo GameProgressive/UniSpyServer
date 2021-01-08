@@ -6,18 +6,22 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class StatusHandler : PCMCommandHandlerBase
+    public class StatusHandler : PCMCmdHandlerBase
     {
-        protected new StatusRequest _request { get { return (StatusRequest)base._request; } }
+        protected new StatusRequest _request
+        {
+            get { return (StatusRequest)base._request; }
+        }
+
         public StatusHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
         protected override void DataOperation()
         {
-            _session.UserData.UserStatus = (GPStatus)_request.StatusCode;
-            _session.UserData.StatusString = _request.StatusString;
-            _session.UserData.LocationString = _request.LocationString;
+            _session.UserInfo.UserStatus = (GPStatus)_request.StatusCode;
+            _session.UserInfo.StatusString = _request.StatusString;
+            _session.UserInfo.LocationString = _request.LocationString;
         }
     }
 }

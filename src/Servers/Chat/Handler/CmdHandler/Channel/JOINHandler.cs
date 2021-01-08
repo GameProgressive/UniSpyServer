@@ -33,9 +33,9 @@ namespace Chat.Handler.CmdHandler.Channel
         //发送频道模式给此用户
         //发送频道用户列表给此用户
     
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
             //some GameSpy game only allow one player join one chat room
             //but GameSpy Arcade can join more than one channel
             if (_session.UserInfo.JoinedChannels.Count > 3)

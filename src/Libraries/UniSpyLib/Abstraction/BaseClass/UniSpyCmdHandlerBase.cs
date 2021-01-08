@@ -20,9 +20,9 @@ namespace UniSpyLib.Abstraction.BaseClass
         public abstract void Handle();
 
 
-        protected abstract void CheckRequest();
+        protected abstract void RequestCheck();
         protected abstract void DataOperation();
-        protected abstract void ConstructResponse();
+        protected abstract void ResponseConstruct();
         protected abstract void Response();
     }
 }

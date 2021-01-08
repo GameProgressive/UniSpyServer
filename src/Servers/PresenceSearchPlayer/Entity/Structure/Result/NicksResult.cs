@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
@@ -14,6 +15,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public List<NicksDataBaseModel> DataBaseResults;
         public bool IsRequireUniqueNicks { get; set; }
         public NicksResult()
+        {
+        }
+
+        public NicksResult(UniSpyRequestBase request) : base(request)
         {
             DataBaseResults = new List<NicksDataBaseModel>();
         }

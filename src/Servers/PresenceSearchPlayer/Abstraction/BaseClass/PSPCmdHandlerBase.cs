@@ -3,6 +3,8 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Network;
+using PresenceSearchPlayer.Entity.Structure.Response;
+using PresenceSearchPlayer.Entity.Structure.Result;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
@@ -27,16 +29,15 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         }
         public PSPCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result.ErrorCode = GPErrorCode.NoError;
         }
 
         public override void Handle()
         {
-            CheckRequest();
+            RequestCheck();
 
             if (_result.ErrorCode < GPErrorCode.NoError)
             {
-                ConstructResponse();
+                ResponseConstruct();
                 Response();
                 return;
             }
@@ -45,25 +46,32 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 
             if (_result.ErrorCode < GPErrorCode.NoError)
             {
-                ConstructResponse();
+                ResponseConstruct();
                 Response();
                 return;
             }
 
-            ConstructResponse();
+            ResponseConstruct();
             Response();
         }
 
-        /// <summary>
-        /// Usually we do not need to override this function
-        /// </summary>
-        protected override void ConstructResponse()
+        protected override void RequestCheck()
         {
-            _response.Build();
+            _result = new PSPBasicResult();
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new PSPBasicResponse(_result);
         }
 
         protected override void Response()
         {
+            if (_response == null)
+            {
+                return;
+            }
+            _response.Build();
             // if _response is null the exception will be throw
             if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
             {
@@ -72,6 +80,5 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             _session.SendAsync((string)_response.SendingBuffer);
         }
 
-        protected override void CheckRequest() { }
     }
 }

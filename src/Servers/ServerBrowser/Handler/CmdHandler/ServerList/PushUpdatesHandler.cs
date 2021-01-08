@@ -15,9 +15,9 @@ namespace ServerBrowser.Handler.CmdHandler
         {
         }
 
-        protected override void CheckRequest()
+        protected override void RequestCheck()
         {
-            base.CheckRequest();
+            base.RequestCheck();
             _gameServers = GameServerInfo.RedisOperator.GetMatchedKeyValues(_request.GameName).Values
                 .ToList();
 
@@ -28,9 +28,9 @@ namespace ServerBrowser.Handler.CmdHandler
             //**************Currently we do not handle filter**********************
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
-            base.ConstructResponse();
+            base.ResponseConstruct();
             //add server key number
             GenerateServerKeys();
             //add unique values number

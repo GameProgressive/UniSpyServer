@@ -1,6 +1,6 @@
 ﻿namespace PresenceConnectionManager.Entity.Structure.Data
 {
-    public class ProfileData
+    public class PCMProfileInfo
     {
         public string Location;
         public string Fristname;

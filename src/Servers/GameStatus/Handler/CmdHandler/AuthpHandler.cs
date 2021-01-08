@@ -51,11 +51,11 @@ namespace GameStatus.Handler.CmdHandler
 
         }
 
-        protected override void ConstructResponse()
+        protected override void ResponseConstruct()
         {
             //we did not store the plaintext of user password so we do not need to check this
             _sendingBuffer = $@"\pauthr\{_profileID}\lid\{ _request.OperationID}";
-            base.ConstructResponse();
+            base.ResponseConstruct();
         }
 
         private void FindProfileByAuthtoken()

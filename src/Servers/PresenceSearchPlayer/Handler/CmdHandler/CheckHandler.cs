@@ -6,6 +6,7 @@ using PresenceSearchPlayer.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -27,10 +28,13 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         {
         }
 
+        protected override void RequestCheck()
+        {
+            _result = new CheckResult(_request);
+        }
+
         protected override void DataOperation()
         {
-            _result = new CheckResult();
-
             using (var db = new retrospyContext())
             {
                 if (db.Users.Where(e => e.Email == _request.Email).Count() < 1)
@@ -61,6 +65,11 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                     _result.ErrorCode = GPErrorCode.CheckBadNick;
                 }
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new CheckResponse(_result);
         }
     }
 }
