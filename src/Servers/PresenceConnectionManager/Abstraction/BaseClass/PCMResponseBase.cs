@@ -13,13 +13,18 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             set { base._result = value; }
         }
 
+        protected new PCMRequestBase _request
+        {
+            get { return (PCMRequestBase)base._request; }
+        }
+
         public new string SendingBuffer
         {
             get { return (string)base.SendingBuffer; }
             protected set { base.SendingBuffer = value; }
         }
      
-        public PCMResponseBase(UniSpyResultBase result) : base(result)
+        protected PCMResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

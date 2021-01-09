@@ -6,7 +6,8 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 {
     public class PCMBasicResponse : PCMResponseBase
     {
-        public PCMBasicResponse(UniSpyResultBase result) : base(result)
+
+        public PCMBasicResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

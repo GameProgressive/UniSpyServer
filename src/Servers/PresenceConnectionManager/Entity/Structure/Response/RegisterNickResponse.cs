@@ -6,13 +6,13 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 {
     public class RegisterNickResponse : PCMResponseBase
     {
-        public RegisterNickResponse(UniSpyResultBase result) : base(result)
+        public RegisterNickResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
         protected override void BuildNormalResponse()
         {
-            SendingBuffer = $@"\rn\\id\{_result.Request.OperationID}\final\";
+            SendingBuffer = $@"\rn\\id\{_request.OperationID}\final\";
         }
     }
 }

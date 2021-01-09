@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 {
     public class RegisterCDKeyResponse : PCMResponseBase
     {
-        public RegisterCDKeyResponse(UniSpyResultBase result) : base(result)
+        public RegisterCDKeyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

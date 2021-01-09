@@ -27,7 +27,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
-            _result = new NicksResult(_request);
+            _result = new NicksResult();
         }
 
         protected override void DataOperation()
@@ -54,7 +54,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new NicksResponse(_result);
+            _response = new NicksResponse(_request,_result);
         }
     }
 }

@@ -25,11 +25,6 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public LogInDataModel DatabaseResults { get; set; }
         public string ResponseProof { get; set; }
         public PCMUserInfo UserInfo { get; set; }
-        public new LoginRequest Request => (LoginRequest)base.Request;
-        public LogInResult(UniSpyRequestBase request) : base(request)
-        {
-        }
-
         public LogInResult()
         {
         }

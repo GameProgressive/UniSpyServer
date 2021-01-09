@@ -34,7 +34,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            _result = new SearchResult(_request);
+            _result = new SearchResult();
         }
         protected override void DataOperation()
         {
@@ -127,7 +127,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new SearchResponse(_result);
+            _response = new SearchResponse(_request,_result);
         }
     }
 }

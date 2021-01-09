@@ -2,6 +2,7 @@
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Response
 {
@@ -11,8 +12,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
         {
             get { return (CheckResult)base._result; }
         }
-
-        public CheckResponse(CheckResult result) : base(result)
+       
+        public CheckResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

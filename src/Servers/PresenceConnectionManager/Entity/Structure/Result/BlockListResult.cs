@@ -12,9 +12,5 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public BlockListResult()
         {
         }
-
-        public BlockListResult(UniSpyRequestBase request) : base(request)
-        {
-        }
     }
 }

@@ -8,9 +8,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
 {
     public class NewUserResponse : PSPResponseBase
     {
-        public NewUserResponse(PSPResultBase result) : base(result)
+        public NewUserResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
+
         protected new NewUserResult _result => (NewUserResult)base._result;
         protected override void BuildErrorResponse()
         {

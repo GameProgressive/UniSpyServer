@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Response
 {
@@ -7,7 +8,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
     {
         protected new OthersListResult _result => (OthersListResult)base._result;
 
-        public OthersListResponse(PSPResultBase result) : base(result)
+        public OthersListResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

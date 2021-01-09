@@ -9,9 +9,5 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public PCMBasicResult()
         {
         }
-
-        public PCMBasicResult(UniSpyRequestBase request) : base(request)
-        {
-        }
     }
 }

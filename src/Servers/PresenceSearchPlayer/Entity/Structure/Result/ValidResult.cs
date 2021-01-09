@@ -9,10 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public bool IsAccountValid;
         public ValidResult()
         {
-        }
-
-        public ValidResult(UniSpyRequestBase request) : base(request)
-        {
+            IsAccountValid = false;
         }
     }
 }

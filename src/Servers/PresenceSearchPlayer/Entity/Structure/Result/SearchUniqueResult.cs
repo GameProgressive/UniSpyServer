@@ -21,10 +21,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public List<SearchUniqueDatabaseModel> DatabaseResults;
         public SearchUniqueResult()
         {
-        }
-
-        public SearchUniqueResult(UniSpyRequestBase request) : base(request)
-        {
             DatabaseResults = new List<SearchUniqueDatabaseModel>();
         }
     }

@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new KeepAliveResponse(_result);
+            _response = new KeepAliveResponse(_request,_result);
         }
     }
 }

@@ -8,10 +8,11 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 {
     public class BuddyListResponse : PCMResponseBase
     {
-        protected new BuddyListResult _result => (BuddyListResult)base._result;
-        public BuddyListResponse(UniSpyResultBase result) : base(result)
+        public BuddyListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
+
+        protected new BuddyListResult _result => (BuddyListResult)base._result;
 
         protected override void BuildNormalResponse()
         {

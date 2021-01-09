@@ -8,8 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
     public class AddBuddyResponse : PCMResponseBase
     {
         protected new AddBuddyResult _result => (AddBuddyResult)base._result;
-
-        public AddBuddyResponse(UniSpyResultBase result) : base(result)
+        public AddBuddyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

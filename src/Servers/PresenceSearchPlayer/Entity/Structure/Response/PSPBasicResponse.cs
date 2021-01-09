@@ -6,7 +6,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
 {
     public class PSPBasicResponse : PSPResponseBase
     {
-        public PSPBasicResponse(UniSpyResultBase result) : base(result)
+        public PSPBasicResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

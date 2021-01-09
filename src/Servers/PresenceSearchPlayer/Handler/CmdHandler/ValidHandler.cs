@@ -25,7 +25,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
-            _result = new ValidResult(_request);
+            _result = new ValidResult();
         }
         protected override void DataOperation()
         {
@@ -49,7 +49,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new ValidResponse(_result);
+            _response = new ValidResponse(_request,_result);
         }
     }
 }

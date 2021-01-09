@@ -25,7 +25,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            _result = new NewProfileResult(_request);
+            _result = new NewProfileResult();
         }
         protected override void DataOperation()
         {
@@ -69,7 +69,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new NewProfileResponse(_result);
+            _response = new NewProfileResponse(_request,_result);
         }
     }
 }

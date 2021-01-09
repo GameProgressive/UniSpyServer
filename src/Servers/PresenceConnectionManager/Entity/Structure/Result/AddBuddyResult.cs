@@ -10,8 +10,5 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         {
         }
 
-        public AddBuddyResult(UniSpyRequestBase request) : base(request)
-        {
-        }
     }
 }

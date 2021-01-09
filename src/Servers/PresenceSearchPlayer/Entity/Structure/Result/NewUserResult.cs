@@ -10,9 +10,5 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public Profiles Profile;
         public Subprofiles SubProfile;
         public NewUserResult() { }
-
-        public NewUserResult(UniSpyRequestBase request) : base(request)
-        {
-        }
     }
 }

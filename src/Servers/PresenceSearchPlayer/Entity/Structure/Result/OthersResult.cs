@@ -20,10 +20,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public List<OthersDatabaseModel> DatabaseResults { get; set; }
         public OthersResult()
         {
-        }
-
-        public OthersResult(UniSpyRequestBase request) : base(request)
-        {
             DatabaseResults = new List<OthersDatabaseModel>();
         }
     }

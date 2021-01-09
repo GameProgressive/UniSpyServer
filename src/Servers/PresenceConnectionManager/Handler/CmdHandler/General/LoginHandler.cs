@@ -28,7 +28,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
-            _result = new LogInResult(_request);
+            _result = new LogInResult();
             
             switch (_request.LoginType)
             {

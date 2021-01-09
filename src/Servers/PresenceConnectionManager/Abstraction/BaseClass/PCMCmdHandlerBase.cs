@@ -58,14 +58,14 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
-            _result = new PCMBasicResult(_request);
+            _result = new PCMBasicResult();
         }
         /// <summary>
         /// Usually we do not need to override this method
         /// </summary>
         protected override void ResponseConstruct()
         {
-            _response = new PCMBasicResponse(_result);
+            _response = new PCMBasicResponse(_request,_result);
         }
 
         protected override void Response()

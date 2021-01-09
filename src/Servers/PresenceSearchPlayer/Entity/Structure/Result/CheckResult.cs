@@ -9,9 +9,5 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public CheckResult()
         {
         }
-
-        public CheckResult(UniSpyRequestBase request) : base(request)
-        {
-        }
     }
 }

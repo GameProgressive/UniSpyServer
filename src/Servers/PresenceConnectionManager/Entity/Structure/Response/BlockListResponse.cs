@@ -9,7 +9,8 @@ namespace PresenceConnectionManager.Entity.Structure.Response
     public class BlockListResponse : PCMResponseBase
     {
         protected new BlockListResult _result => (BlockListResult)base._result;
-        public BlockListResponse(UniSpyResultBase result) : base(result)
+
+        public BlockListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

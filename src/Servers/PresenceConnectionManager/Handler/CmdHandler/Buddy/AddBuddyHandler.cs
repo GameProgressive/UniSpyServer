@@ -15,7 +15,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            _result = new AddBuddyResult(_request);
+            _result = new AddBuddyResult();
             throw new System.NotImplementedException();
         }
 

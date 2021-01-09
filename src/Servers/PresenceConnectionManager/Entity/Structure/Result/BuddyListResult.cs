@@ -13,9 +13,5 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         {
             ProfileIdList = new List<uint>();
         }
-
-        public BuddyListResult(UniSpyRequestBase request) : base(request)
-        {
-        }
     }
 }

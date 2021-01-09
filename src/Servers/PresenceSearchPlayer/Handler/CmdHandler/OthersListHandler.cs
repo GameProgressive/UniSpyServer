@@ -29,7 +29,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
         protected override void RequestCheck()
         {
-            _result = new OthersListResult(_request);
+            _result = new OthersListResult();
         }
         protected override void DataOperation()
         {
@@ -54,7 +54,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new OthersListResponse(_result);
+            _response = new OthersListResponse(_request,_result);
         }
     }
 }

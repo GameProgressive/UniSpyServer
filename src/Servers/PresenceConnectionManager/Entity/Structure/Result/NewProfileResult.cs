@@ -12,8 +12,5 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         {
         }
 
-        public NewProfileResult(UniSpyRequestBase request) : base(request)
-        {
-        }
     }
 }

@@ -66,7 +66,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new OthersResponse(_result);
+            _response = new OthersResponse(_request,_result);
         }
     }
 }

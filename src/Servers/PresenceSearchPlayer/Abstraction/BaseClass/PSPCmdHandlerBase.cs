@@ -62,7 +62,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 
         protected override void ResponseConstruct()
         {
-            _response = new PSPBasicResponse(_result);
+            _response = new PSPBasicResponse(_request,_result);
         }
 
         protected override void Response()

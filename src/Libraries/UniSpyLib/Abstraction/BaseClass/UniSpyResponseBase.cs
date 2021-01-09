@@ -7,8 +7,10 @@ namespace UniSpyLib.Abstraction.BaseClass
     {
         public object SendingBuffer { get; protected set; }
         protected UniSpyResultBase _result;
-        public UniSpyResponseBase(UniSpyResultBase result)
+        protected UniSpyRequestBase _request;
+        public UniSpyResponseBase(UniSpyRequestBase request,UniSpyResultBase result)
         {
+            _request = request;
             _result = result;
             LogWriter.LogCurrentClass(this);
         }

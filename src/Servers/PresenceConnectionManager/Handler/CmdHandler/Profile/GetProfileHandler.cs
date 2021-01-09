@@ -29,7 +29,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
-            _result = new GetProfileResult(_request);
+            _result = new GetProfileResult();
         }
 
         protected override void DataOperation()

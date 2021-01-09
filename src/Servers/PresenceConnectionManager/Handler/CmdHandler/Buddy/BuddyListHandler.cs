@@ -18,7 +18,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            _result = new BuddyListResult(_request);
+            _result = new BuddyListResult();
         }
 
         protected override void DataOperation()

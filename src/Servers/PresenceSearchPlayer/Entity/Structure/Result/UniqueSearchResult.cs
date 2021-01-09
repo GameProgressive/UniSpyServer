@@ -10,9 +10,5 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public UniqueSearchResult()
         {
         }
-
-        public UniqueSearchResult(UniSpyRequestBase request) : base(request)
-        {
-        }
     }
 }

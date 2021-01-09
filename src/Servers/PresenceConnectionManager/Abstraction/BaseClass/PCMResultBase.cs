@@ -10,15 +10,8 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             get { return (GPErrorCode)base.ErrorCode; }
             set { base.ErrorCode = value; }
         }
-        public new PCMRequestBase Request
-        {
-            get { return (PCMRequestBase)base.Request; }
-        }
-        public PCMResultBase()
-        {
-        }
 
-        protected PCMResultBase(UniSpyRequestBase request) : base(request)
+        public PCMResultBase()
         {
             ErrorCode = GPErrorCode.NoError;
         }

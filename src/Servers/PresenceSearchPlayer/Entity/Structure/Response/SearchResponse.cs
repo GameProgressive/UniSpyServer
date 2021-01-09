@@ -1,15 +1,17 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Response
 {
     public class SearchResponse : PSPResponseBase
     {
-        public SearchResponse(PSPResultBase result) : base(result)
+        protected new SearchResult _result => (SearchResult)base._result;
+
+        public SearchResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
-        protected new SearchResult _result => (SearchResult)base._result;
 
         protected override void BuildNormalResponse()
         {
