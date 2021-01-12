@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    public class InviteToRequest : PCMRequestBase
+    internal class InviteToRequest : PCMRequestBase
     {
         public uint ProductID { get; protected set; }
         public uint ProfileID { get; protected set; }

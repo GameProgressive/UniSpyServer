@@ -9,7 +9,7 @@ using PresenceConnectionManager.Entity.Structure.Response;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class NewProfileHandler : PCMCmdHandlerBase
+    internal class NewProfileHandler : PCMCmdHandlerBase
     {
         protected new NewProfileRequest _request
         {

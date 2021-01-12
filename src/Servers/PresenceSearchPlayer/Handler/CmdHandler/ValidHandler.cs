@@ -8,7 +8,7 @@ using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    public class ValidHandler : PSPCmdHandlerBase
+    internal class ValidHandler : PSPCmdHandlerBase
     {
         protected new ValidRequest _request
         {

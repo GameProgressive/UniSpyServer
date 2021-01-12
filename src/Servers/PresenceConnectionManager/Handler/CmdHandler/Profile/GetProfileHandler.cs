@@ -10,7 +10,7 @@ using PresenceConnectionManager.Entity.Structure.Result;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class GetProfileHandler : PCMCmdHandlerBase
+    internal class GetProfileHandler : PCMCmdHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         protected new GetProfileRequest _request

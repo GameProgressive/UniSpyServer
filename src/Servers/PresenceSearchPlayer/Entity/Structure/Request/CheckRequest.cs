@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class CheckRequest : PSPRequestBase
+    internal class CheckRequest : PSPRequestBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
 

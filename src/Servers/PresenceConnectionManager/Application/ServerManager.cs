@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class PCMServerManager : UniSpyServerManagerBase
+    internal class PCMServerManager : UniSpyServerManagerBase
     {
         public new static PCMServer Server { get; protected set; }
         /// <summary>

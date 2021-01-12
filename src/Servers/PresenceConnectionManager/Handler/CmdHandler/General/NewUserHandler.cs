@@ -1,11 +1,17 @@
-﻿using UniSpyLib.Abstraction.Interface;
+﻿using PresenceConnectionManager.Entity.Structure.Response;
+using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class NewUserHandler : PresenceSearchPlayer.Handler.CmdHandler.NewUserHandler
+    internal sealed class NewUserHandler : PresenceSearchPlayer.Handler.CmdHandler.NewUserHandler
     {
         public NewUserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new NewUserResponse(_request, _result);
         }
     }
 }

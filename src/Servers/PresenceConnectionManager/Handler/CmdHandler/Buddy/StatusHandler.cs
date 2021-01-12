@@ -6,7 +6,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class StatusHandler : PCMCmdHandlerBase
+    internal class StatusHandler : PCMCmdHandlerBase
     {
         protected new StatusRequest _request
         {

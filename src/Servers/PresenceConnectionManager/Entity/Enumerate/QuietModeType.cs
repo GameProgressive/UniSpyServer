@@ -1,6 +1,6 @@
 ﻿namespace PresenceConnectionManager.Entity.Enumerate
 {
-    public enum QuietModeType : uint
+    internal enum QuietModeType : uint
     {
         // Quiet mode flags.
         ////////////////////

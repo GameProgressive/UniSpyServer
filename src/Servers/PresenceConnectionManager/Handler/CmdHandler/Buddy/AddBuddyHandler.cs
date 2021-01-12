@@ -6,7 +6,7 @@ using PresenceConnectionManager.Entity.Structure.Result;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
-    public class AddBuddyHandler : PCMCmdHandlerBase
+    internal class AddBuddyHandler : PCMCmdHandlerBase
     {
         protected new AddBuddyRequest _request => (AddBuddyRequest)base._request;
 

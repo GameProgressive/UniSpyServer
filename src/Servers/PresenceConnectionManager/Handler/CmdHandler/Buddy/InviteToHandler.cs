@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// <summary>
     /// This function sets which games the local profile can be invited to.
     /// </summary>
-    public class InviteToHandler : PCMCmdHandlerBase
+    internal class InviteToHandler : PCMCmdHandlerBase
     {
         //_session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
         protected new InviteToRequest _request

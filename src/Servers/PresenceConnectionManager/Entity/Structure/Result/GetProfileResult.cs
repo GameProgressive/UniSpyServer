@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    public class GetProfileDataModel
+    internal class GetProfileDataModel
     {
         public string Nick;
         public uint ProfileID;
@@ -36,7 +36,7 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public int? Connectiontype;
 
     }
-    public class GetProfileResult : PCMResultBase
+    internal class GetProfileResult : PCMResultBase
     {
         public GetProfileDataModel UserProfile;
         public GetProfileResult()

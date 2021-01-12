@@ -4,7 +4,7 @@ using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class NicksRequest : PSPRequestBase
+    internal class NicksRequest : PSPRequestBase
     {
         public NicksRequest(string rawRequest) : base(rawRequest)
         {

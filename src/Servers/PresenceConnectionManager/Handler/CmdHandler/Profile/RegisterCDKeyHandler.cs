@@ -8,7 +8,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class RegisterCDKeyHandler : PCMCmdHandlerBase
+    internal class RegisterCDKeyHandler : PCMCmdHandlerBase
     {
         protected new RegisterCDKeyRequest _request
         {

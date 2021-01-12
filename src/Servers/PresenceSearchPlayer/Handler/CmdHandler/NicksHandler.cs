@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    public class NicksHandler : PSPCmdHandlerBase
+    internal class NicksHandler : PSPCmdHandlerBase
     {
         protected new NicksResult _result
         {

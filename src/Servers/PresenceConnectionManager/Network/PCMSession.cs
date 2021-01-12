@@ -17,7 +17,7 @@ namespace PresenceConnectionManager.Network
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    public class PCMSession : TCPSessionBase
+    internal sealed class PCMSession : TCPSessionBase
     {
         /// <summary>
         /// Indicates whether this player successfully completed the login process

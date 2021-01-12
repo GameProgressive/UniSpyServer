@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    public class DelBuddyRequest : PCMRequestBase
+    internal sealed class DelBuddyRequest : PCMRequestBase
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\
-        public uint DeleteProfileID { get; protected set; }
+        public uint DeleteProfileID { get;private set; }
         public DelBuddyRequest(string rawRequest) : base(rawRequest)
         {
         }

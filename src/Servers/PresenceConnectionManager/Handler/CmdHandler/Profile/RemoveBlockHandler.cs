@@ -5,7 +5,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class RemoveBlockHandler : PCMCmdHandlerBase
+    internal class RemoveBlockHandler : PCMCmdHandlerBase
     {
         public RemoveBlockHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
         {

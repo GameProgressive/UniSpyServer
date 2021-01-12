@@ -5,10 +5,10 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyCmdHandlerBase : IUniSpyHandler
     {
-        protected IUniSpySession _session;
-        protected IUniSpyRequest _request;
-        protected IUniSpyResponse _response;
-        protected UniSpyResultBase _result;
+        protected IUniSpySession _session { get; }
+        protected IUniSpyRequest _request { get; }
+        protected IUniSpyResponse _response { get; set; }
+        protected UniSpyResultBase _result { get; set; }
         //protected object _sendingBuffer;
         public UniSpyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request)
         {

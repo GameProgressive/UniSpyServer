@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    public class AddBuddyRequest : PCMRequestBase
+    internal class AddBuddyRequest : PCMRequestBase
     {
         public uint FriendProfileID { get; protected set; }
         public string AddReason { get; protected set; }

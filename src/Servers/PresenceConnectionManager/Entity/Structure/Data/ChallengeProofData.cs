@@ -3,7 +3,7 @@ using System;
 
 namespace PresenceConnectionManager.Entity.Structure
 {
-    public class ChallengeProofData
+    internal class ChallengeProofData
     {
         public const string ServerChallenge = "0000000000";
         public string UserData { get; protected set; }

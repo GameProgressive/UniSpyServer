@@ -6,8 +6,8 @@ namespace UniSpyLib.Abstraction.BaseClass
     public abstract class UniSpyResponseBase : IUniSpyResponse
     {
         public object SendingBuffer { get; protected set; }
-        protected UniSpyResultBase _result;
-        protected UniSpyRequestBase _request;
+        protected UniSpyResultBase _result { get; }
+        protected UniSpyRequestBase _request { get; }
         public UniSpyResponseBase(UniSpyRequestBase request,UniSpyResultBase result)
         {
             _request = request;

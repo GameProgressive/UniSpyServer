@@ -8,7 +8,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class RegisterNickHandler : PCMCmdHandlerBase
+    internal class RegisterNickHandler : PCMCmdHandlerBase
     {
         protected new RegisterNickRequest _request { get { return (RegisterNickRequest)base._request; } }
         public RegisterNickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

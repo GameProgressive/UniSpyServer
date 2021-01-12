@@ -5,7 +5,7 @@ using PresenceConnectionManager.Entity.Structure.Response;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class KeepAliveHandler : PCMCmdHandlerBase
+    internal class KeepAliveHandler : PCMCmdHandlerBase
     {
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    public class BlockListResponse : PCMResponseBase
+    internal class BlockListResponse : PCMResponseBase
     {
         protected new BlockListResult _result => (BlockListResult)base._result;
 

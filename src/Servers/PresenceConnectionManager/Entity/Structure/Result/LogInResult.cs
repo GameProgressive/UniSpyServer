@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    public class LogInDataModel
+    internal class LogInDataModel
     {
         public uint UserID;
         public uint ProfileID;
@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public uint SubProfileID;
     }
 
-    public class LogInResult : PCMResultBase
+    internal class LogInResult : PCMResultBase
     {
         public LogInDataModel DatabaseResults { get; set; }
         public string ResponseProof { get; set; }

@@ -9,7 +9,7 @@ using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    public class UniqueSearchHandler : PSPCmdHandlerBase
+    internal class UniqueSearchHandler : PSPCmdHandlerBase
     {
         protected new UniqueSearchRequest _request
         {

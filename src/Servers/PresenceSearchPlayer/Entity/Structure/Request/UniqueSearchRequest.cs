@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
 
-    public class UniqueSearchRequest : PSPRequestBase
+    internal class UniqueSearchRequest : PSPRequestBase
     {
         public string PreferredNick { get; protected set; }
         public uint NamespaceID { get; protected set; }

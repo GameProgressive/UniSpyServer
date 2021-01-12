@@ -3,7 +3,7 @@
     /// <summary>
     /// This enumation defins the supported login method for the users.
     /// </summary>
-    public enum LoginType : uint
+    internal enum LoginType : uint
     {
         /// <summary>
         /// Login with user combo (nick@email)

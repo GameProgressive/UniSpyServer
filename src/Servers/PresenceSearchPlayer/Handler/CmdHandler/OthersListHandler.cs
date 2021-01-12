@@ -9,7 +9,7 @@ using PresenceSearchPlayer.Entity.Structure.Response;
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
 
-    public class OthersListHandler : PSPCmdHandlerBase
+    internal class OthersListHandler : PSPCmdHandlerBase
     {
         protected new OthersListRequest _request
         {

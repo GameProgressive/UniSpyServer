@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PresenceConnectionManager.Structure
 {
-    public class ChallengeProof
+    internal class ChallengeProof
     {
         /// <summary>
         /// Generates an MD5 hash, which is used to verify the sessions login information

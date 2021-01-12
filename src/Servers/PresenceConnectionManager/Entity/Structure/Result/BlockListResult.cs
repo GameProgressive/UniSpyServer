@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    public class BlockListResult : PCMResultBase
+    internal class BlockListResult : PCMResultBase
     {
         public List<uint> ProfileIdList;
 

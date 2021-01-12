@@ -6,7 +6,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class AddBlockHandler : PCMCmdHandlerBase
+    internal class AddBlockHandler : PCMCmdHandlerBase
     {
 
         protected new AddBlockRequest _request { get { return (AddBlockRequest)base._request; } }

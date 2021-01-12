@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Abstraction.SystemHandler.Buddy
 {
-    public class BuddyStatusInfoHandler : PCMCmdHandlerBase
+    internal class BuddyStatusInfoHandler : PCMCmdHandlerBase
     {
         // This is what the message should look like.  Its broken up for easy viewing.
         //

@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    public class KeepAliveResponse : PCMResponseBase
+    internal class KeepAliveResponse : PCMResponseBase
     {
         public KeepAliveResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

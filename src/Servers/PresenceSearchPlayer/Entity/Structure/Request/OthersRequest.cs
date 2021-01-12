@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class OthersRequest : PSPRequestBase
+    internal class OthersRequest : PSPRequestBase
     {
         public OthersRequest(string rawRequest) :base(rawRequest)
         {

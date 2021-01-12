@@ -8,7 +8,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    public class PSPRequestSerializer : UniSpyRequestSerializerBase
+    internal class PSPRequestSerializer : UniSpyRequestSerializerBase
     {
         protected new string _rawRequest;
         public PSPRequestSerializer(string rawRequest) : base(rawRequest)

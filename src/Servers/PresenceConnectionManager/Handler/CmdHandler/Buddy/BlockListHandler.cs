@@ -7,9 +7,8 @@ using PresenceConnectionManager.Entity.Structure.Result;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class BlockListHandler : PCMCmdHandlerBase
+    internal class BlockListHandler : PCMCmdHandlerBase
     {
-        protected List<uint> _profileIDList;
         protected new BlockListResult _result
         {
             get { return (BlockListResult)base._result; }

@@ -10,7 +10,7 @@ using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    public class CheckHandler : PSPCmdHandlerBase
+    internal class CheckHandler : PSPCmdHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final

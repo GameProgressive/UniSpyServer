@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    public class AddBuddyResult : PCMResultBase
+    internal class AddBuddyResult : PCMResultBase
     {
         public AddBuddyResult()
         {

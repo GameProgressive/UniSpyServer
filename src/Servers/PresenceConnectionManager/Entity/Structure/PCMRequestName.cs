@@ -1,6 +1,6 @@
 ﻿namespace PresenceConnectionManager.Entity.Structure
 {
-    class PCMRequestName
+    internal class PCMRequestName
     {
         /// <summary>
         /// Log in to PCM server

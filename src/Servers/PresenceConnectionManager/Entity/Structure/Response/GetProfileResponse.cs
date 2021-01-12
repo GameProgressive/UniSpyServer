@@ -6,7 +6,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    public class GetProfileResponse : PCMResponseBase
+    internal class GetProfileResponse : PCMResponseBase
     {
         public GetProfileResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

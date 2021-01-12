@@ -3,7 +3,7 @@
     /// <summary>
     /// The status of the player
     /// </summary>
-    public enum PlayerStatus : uint
+    internal enum PlayerStatus : uint
     {
         /// <summary>
         /// The player is offline

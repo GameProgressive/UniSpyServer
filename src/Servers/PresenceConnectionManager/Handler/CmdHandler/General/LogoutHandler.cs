@@ -5,7 +5,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class LogoutHandler : PCMCmdHandlerBase
+    internal class LogoutHandler : PCMCmdHandlerBase
     {
         public LogoutHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
         {

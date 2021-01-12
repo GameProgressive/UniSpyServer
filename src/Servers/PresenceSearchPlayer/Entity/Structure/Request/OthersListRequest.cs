@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class OthersListRequest : PSPRequestBase
+    internal class OthersListRequest : PSPRequestBase
     {
         public List<uint> ProfileIDs { get; protected set; }
         public uint NamespaceID { get; protected set; }

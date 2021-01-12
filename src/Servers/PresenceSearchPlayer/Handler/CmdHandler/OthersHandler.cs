@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Get buddy's information
     /// </summary>
-    public class OthersHandler : PSPCmdHandlerBase
+    internal class OthersHandler : PSPCmdHandlerBase
     {
         protected new OthersRequest _request
         {

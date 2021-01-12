@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    public class StatusRequest : PCMRequestBase
+    internal class StatusRequest : PCMRequestBase
     {
         public StatusRequest(string rawRequest) : base(rawRequest)
         {

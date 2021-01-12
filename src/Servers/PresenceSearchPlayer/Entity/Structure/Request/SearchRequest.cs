@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     }
 
 
-    public class SearchRequest : PSPRequestBase
+    internal class SearchRequest : PSPRequestBase
     {
         public int SkipNum { get; protected set; }
         public SearchRequestType RequestType { get; protected set; }

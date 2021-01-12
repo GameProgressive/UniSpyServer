@@ -9,7 +9,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler.General
 {
-    public class SDKRevisionHandler: PCMCmdHandlerBase
+    internal class SDKRevisionHandler: PCMCmdHandlerBase
     {
         public SDKRevisionHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

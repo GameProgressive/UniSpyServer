@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    public class StatusInfoRequest : PCMRequestBase
+    internal class StatusInfoRequest : PCMRequestBase
     {
         public string StatusState { get; protected set; }
         public string BuddyIP { get; protected set; }

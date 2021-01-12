@@ -7,7 +7,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class UpdateProHandler : PCMCmdHandlerBase
+    internal class UpdateProHandler : PCMCmdHandlerBase
     {
         protected new UpdateProRequest _request { get { return (UpdateProRequest)base._request; } }
         public UpdateProHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

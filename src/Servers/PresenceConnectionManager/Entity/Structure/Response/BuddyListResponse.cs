@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    public class BuddyListResponse : PCMResponseBase
+    internal class BuddyListResponse : PCMResponseBase
     {
         public BuddyListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

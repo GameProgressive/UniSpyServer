@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Response
 {
-    public class UniqueSearchResponse : PSPResponseBase
+    internal class UniqueSearchResponse : PSPResponseBase
     {
         public UniqueSearchResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {

@@ -8,7 +8,7 @@ using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    public class PSPCmdSwitcher : UniSpyCmdSwitcherBase
+    internal class PSPCmdSwitcher : UniSpyCmdSwitcherBase
     {
         protected new string _rawRequest;
         public PSPCmdSwitcher(IUniSpySession session, string rawRequest) : base(session, rawRequest)

@@ -3,7 +3,7 @@ using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class BuddyStatusInfoHandler : PCMCmdHandlerBase
+    internal class BuddyStatusInfoHandler : PCMCmdHandlerBase
     {
 
         public BuddyStatusInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

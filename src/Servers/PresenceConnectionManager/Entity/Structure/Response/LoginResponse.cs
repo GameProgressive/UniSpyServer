@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    public class LoginResponse : PCMResponseBase
+    internal class LoginResponse : PCMResponseBase
     {
         protected new LogInResult _result => (LogInResult)base._result;
         protected new LoginRequest _request => (LoginRequest)base._request;

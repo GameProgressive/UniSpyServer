@@ -8,7 +8,7 @@
     /// If the MASK_HOMEPAGE is ORed with MASK_ZIPCODE both the Homepage
     /// and the Zipcode will be showed to the user.
     /// </summary>
-    public enum PublicMasks : uint
+    internal enum PublicMasks : uint
     {
         /// <summary>
         /// Show the essential informations for getting the profile info

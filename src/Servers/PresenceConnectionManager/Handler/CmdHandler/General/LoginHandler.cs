@@ -18,7 +18,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 {
 
 
-    public class LoginHandler : PCMCmdHandlerBase
+    internal class LoginHandler : PCMCmdHandlerBase
     {
         protected new LoginRequest _request { get { return (LoginRequest)base._request; } }
         protected new LogInResult _result { get { return (LogInResult)base._result; } set { base._result = value; } }

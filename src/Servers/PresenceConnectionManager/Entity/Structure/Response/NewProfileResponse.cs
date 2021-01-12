@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    public class NewProfileResponse : PCMResponseBase
+    internal class NewProfileResponse : PCMResponseBase
     {
         public NewProfileResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

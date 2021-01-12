@@ -4,7 +4,7 @@ using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class ValidRequest : PSPRequestBase
+    internal class ValidRequest : PSPRequestBase
     {
         public ValidRequest(string rawRequest) :base(rawRequest)
         {

@@ -6,7 +6,7 @@ using PresenceConnectionManager.Entity.Structure.Result;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    public class BuddyListHandler : PCMCmdHandlerBase
+    internal class BuddyListHandler : PCMCmdHandlerBase
     {
         protected new BuddyListResult _result
         {

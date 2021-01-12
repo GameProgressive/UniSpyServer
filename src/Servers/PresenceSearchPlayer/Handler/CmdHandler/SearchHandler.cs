@@ -18,7 +18,7 @@ using PresenceSearchPlayer.Entity.Structure.Response;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    public class SearchHandler : PSPCmdHandlerBase
+    internal class SearchHandler : PSPCmdHandlerBase
     {
         protected new SearchRequest _request
         {

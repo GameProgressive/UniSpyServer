@@ -5,12 +5,11 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    public abstract class PCMResponseBase : UniSpyResponseBase
+    internal abstract class PCMResponseBase : UniSpyResponseBase
     {
         protected new PCMResultBase _result
         {
             get { return (PCMResultBase)base._result; }
-            set { base._result = value; }
         }
 
         protected new PCMRequestBase _request
