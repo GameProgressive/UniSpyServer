@@ -1,19 +1,17 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.ChannelInfo;
-using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.Response;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public class ChatChannelHandlerBase : ChatLogedInHandlerBase
+    public abstract class ChatChannelHandlerBase : ChatLogedInHandlerBase
     {
         protected ChatChannel _channel;
         protected ChatChannelUser _user;
         protected new ChatChannelRequestBase _request
-        {
-            get { return (ChatChannelRequestBase)base._request; }
-        }
+        => (ChatChannelRequestBase)base._request;
+
 
         public ChatChannelHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -21,8 +19,6 @@ namespace Chat.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
-
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
                 _errorCode = ChatErrorCode.IRCError;

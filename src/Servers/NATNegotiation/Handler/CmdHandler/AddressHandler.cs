@@ -2,19 +2,33 @@
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
-
+using NATNegotiation.Entity.Structure.Result;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
-    public class AddressCheckHandler : NNCommandHandlerBase
+    public class AddressCheckHandler : NNCmdHandlerBase
     {
-        protected new AddressRequest _request { get { return (AddressRequest)base._request; } }
+        protected new AddressRequest _request
+        {
+            get { return (AddressRequest)base._request; }
+        }
+        protected new AddressResult _result
+        {
+            get { return (AddressResult)base._result; }
+            set { base._result = value; }
+        }
         public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
+
+        protected override void RequestCheck()
+        {
+            _result = new AddressResult();
+        }
+
         protected override void ResponseConstruct()
         {
-            _sendingBuffer = new AddressResponse(_request, _session.RemoteEndPoint).BuildResponse();
+            _response = new AddressResponse(_request, _result);
         }
     }
 }

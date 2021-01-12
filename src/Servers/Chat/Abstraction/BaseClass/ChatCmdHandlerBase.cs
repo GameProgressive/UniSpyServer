@@ -4,6 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using Serilog.Events;
+using UniSpyLib.Extensions;
 
 namespace Chat.Abstraction.BaseClass
 {
@@ -24,12 +25,6 @@ namespace Chat.Abstraction.BaseClass
         {
             get { return (ChatRequestBase)base._request; }
         }
-        /// <summary>
-        /// Generic response buffer
-        /// if some handler have multiple response
-        /// only use this for sending error message
-        /// </summary>
-        protected string _sendingBuffer;
 
         protected new ChatSession _session
         {
@@ -42,9 +37,9 @@ namespace Chat.Abstraction.BaseClass
             set { base._result = value; }
         }
 
+
         public ChatCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
-            _errorCode = ChatErrorCode.NoError;
         }
 
         //if we use this structure the error response should also write to _sendingBuffer
@@ -99,11 +94,16 @@ namespace Chat.Abstraction.BaseClass
 
         protected override void Response()
         {
-            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            if (_response == null)
             {
                 return;
             }
-            base._session.SendAsync(_sendingBuffer);
+            _response.Build();
+            if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
+            {
+                return;
+            }
+            base._session.SendAsync((string)_response.SendingBuffer);
         }
     }
 }

@@ -4,10 +4,11 @@ using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using System;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Entity.Structure.Result;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
-    public class ErtAckHandler : NNCommandHandlerBase
+    public class ErtAckHandler : NNCmdHandlerBase
     {
         protected new ErtAckRequest _request { get { return (ErtAckRequest)base._request; } }
         public ErtAckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -15,10 +16,15 @@ namespace NATNegotiation.Handler.CmdHandler
 
         }
 
+        protected override void RequestCheck()
+        {
+            _result = new ErtAckResult();
+        }
+
         protected override void ResponseConstruct()
         {
-            _sendingBuffer =
-                new ErtAckResponse(_request, _session.RemoteEndPoint).BuildResponse();
+            _response = new ErtAckResponse(_request, _result);
         }
+
     }
 }

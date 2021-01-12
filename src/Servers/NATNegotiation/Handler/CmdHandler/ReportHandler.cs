@@ -6,18 +6,17 @@ using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Handler.SystemHandler.Manager;
 using NATNegotiation.Entity.Structure;
 using System;
+using NATNegotiation.Entity.Structure.Result;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-    public class ReportHandler : NNCommandHandlerBase
+    public class ReportHandler : NNCmdHandlerBase
     {
-        protected new ReportRequest _request
-        {
-            get { return (ReportRequest)base._request; }
-        }
+        protected new ReportRequest _request => (ReportRequest)base._request; 
+        
         protected NatUserInfo _userInfo;
         protected string _fullKey;
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -25,7 +24,7 @@ namespace NATNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            base.RequestCheck();
+            _result = new ReportResult();
             var _fullKey = NatUserInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
             try
             {
@@ -60,7 +59,7 @@ namespace NATNegotiation.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _sendingBuffer = new ReportResponse(_request).BuildResponse();
+            _response = new ReportResponse(_request, _result);
         }
     }
 }

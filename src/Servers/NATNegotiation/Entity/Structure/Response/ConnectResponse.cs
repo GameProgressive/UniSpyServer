@@ -1,43 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
+﻿using System.Collections.Generic;
 using UniSpyLib.Extensions;
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
-using NATNegotiation.Entity.Structure.Request;
+using UniSpyLib.Abstraction.BaseClass;
+using NATNegotiation.Entity.Structure.Result;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
     public class ConnectResponse : NNResponseBase
     {
-        public EndPoint RemoteEndPoint { get; protected set; }
-        public byte GotYourData { get; set; }
-        public byte Finished { get; set; }
-
-        public ConnectResponse(byte version, uint cookie, EndPoint endPoint) : base(version, cookie)
+        protected new ConnectResult _result
         {
-            Finished = 0;
-            GotYourData = 1;
-            RemoteEndPoint = endPoint;
-            PacketType = NatPacketType.Connect;
+            get { return (ConnectResult)base._result; }
+        }
+        public ConnectResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        {
         }
 
-        public override byte[] BuildResponse()
+        protected override void BuildNormalResponse()
         {
             List<byte> data = new List<byte>();
 
-            data.AddRange(base.BuildResponse());
+            data.AddRange(SendingBuffer);
 
             data.AddRange(HtonsExtensions.
-                EndPointToIPBytes(RemoteEndPoint));
+                EndPointToIPBytes(_result.RemoteEndPoint));
 
             data.AddRange(HtonsExtensions.
-                EndPointToHtonsPortBytes(RemoteEndPoint));
+                EndPointToHtonsPortBytes(_result.RemoteEndPoint));
 
-            data.Add(GotYourData);
-            data.Add(Finished);
+            data.Add((byte)_result.GotYourData);
+            data.Add((byte)_result.Finished);
 
-            return data.ToArray();
+            SendingBuffer = data.ToArray();
         }
     }
 }

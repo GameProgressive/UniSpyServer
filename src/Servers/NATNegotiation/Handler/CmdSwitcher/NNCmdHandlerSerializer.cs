@@ -21,14 +21,11 @@ namespace NATNegotiation.Handler.CmdSwitcher
                     return new AddressCheckHandler(_session, _request);
                 case NatPacketType.NatifyRequest:
                     return new NatifyHandler(_session, _request);
-                case NatPacketType.ConnectAck:
-                    return new ConnectACKHandler(_session, _request);
                 case NatPacketType.Report:
                     return new ReportHandler(_session, _request);
                 case NatPacketType.ErtAck:
                     return new ErtAckHandler(_session, _request);
                 default:
-                    //LogWriter.UnknownDataRecieved(_request.RawRequest);
                     return null;
             }
         }
