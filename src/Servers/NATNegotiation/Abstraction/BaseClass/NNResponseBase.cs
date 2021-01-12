@@ -1,36 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
 using NATNegotiation.Entity.Enumerate;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
-    public class NNResponseBase
+    public abstract class NNResponseBase : UniSpyResponseBase
     {
-        public byte Version { get; protected set; }
-        public NatPacketType PacketType { get; protected set; }
-        public uint Cookie { get; protected set; }
-
-        public NNResponseBase(NNRequestBase request)
+        protected new NNRequestBase _request
         {
-            Version = request.Version;
-            Cookie = request.Cookie;
+            get { return (NNRequestBase)base._request; }
+        }
+        protected new NNResultBase _result
+        {
+            get { return (NNResultBase)base._result; }
+        }
+        public new byte[] SendingBuffer
+        {
+            get { return (byte[])base.SendingBuffer; }
+            protected set { base.SendingBuffer = value; }
         }
 
-        public NNResponseBase(byte version, uint cookie)
+        public NNResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
-            Version = version;
-            Cookie = cookie;
         }
 
-        public virtual byte[] BuildResponse()
+        protected override void BuildNormalResponse()
         {
             List<byte> data = new List<byte>();
             data.AddRange(NNRequestBase.MagicData);
-            data.Add(Version);
-            data.Add((byte)PacketType);
-            data.AddRange(BitConverter.GetBytes(Cookie));
+            data.Add(_request.Version);
+            data.Add((byte)_result.PacketType);
+            data.AddRange(BitConverter.GetBytes(_request.Cookie));
+            SendingBuffer = data.ToArray();
+        }
 
-            return data.ToArray();
+        protected override void BuildErrorResponse()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Build()
+        {
+            if (_result.ErrorCode != NNErrorCode.NoError)
+            {
+                BuildErrorResponse();
+            }
+            else
+            {
+                BuildNormalResponse();
+            }
         }
     }
 }

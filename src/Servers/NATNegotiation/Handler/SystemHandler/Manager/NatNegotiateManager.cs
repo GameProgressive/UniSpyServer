@@ -5,17 +5,14 @@ using NATNegotiation.Application;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Entity.Structure.Response;
+using NATNegotiation.Entity.Structure.Result;
 using Serilog.Events;
 using UniSpyLib.Logging;
-
+using System;
 namespace NATNegotiation.Handler.SystemHandler.Manager
 {
     public class NatNegotiateManager
     {
-        //private Dictionary<string, NatUserInfo> _negotiatorPairs;
-        //private List<NatUserInfo> _negotiators;
-        //private List<NatUserInfo> _negotiatees;
-
         public static void Negotiate(NatPortType portType, byte version, uint cookie)
         {
             var searchKey = NatUserInfo.RedisOperator.BuildSearchKey(portType, cookie);
@@ -55,42 +52,21 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
             EndPoint endOfNegotiator = IPEndPoint.Parse(negotiator.Value.RemoteEndPoint);
             EndPoint endOfNegotiatee = IPEndPoint.Parse(negotiatee.Value.RemoteEndPoint);
 
-            byte[] dataToNegotiator =
-                new ConnectResponse(version, cookie, endOfNegotiatee).BuildResponse();
-            byte[] dataToNegotiatee =
-                new ConnectResponse(version, cookie, endOfNegotiator).BuildResponse();
+            var result1 = new ConnectResult();
+            result1.RemoteEndPoint = endOfNegotiatee;
+            result1.Cookie = cookie;
+            var result2 = new ConnectResult();
+            result2.RemoteEndPoint = endOfNegotiator;
 
-            NNServerManager.Server.SendAsync(endOfNegotiator, dataToNegotiator);
-            NNServerManager.Server.SendAsync(endOfNegotiatee, dataToNegotiatee);
-
-
-
-
-            ////we find both negotiators
-            //var negotiator = negotiators.First();
-            //var negotiatee = negotiatees.First();
-
-            //LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiator {negotiator.Value.RemoteEndPoint}");
-            //LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiatee {negotiatee.Value.RemoteEndPoint}");
-
+            //TODO
+            throw new NotImplementedException();
             //byte[] dataToNegotiator =
-            //    new ConnectResponse(version, cookie, negotiatee.Value.RemoteEndPoint).BuildResponse();
-
+            //    new ConnectResponse(version, cookie, endOfNegotiatee);
             //byte[] dataToNegotiatee =
-            //    new ConnectResponse(version, cookie, negotiator.Value.RemoteEndPoint).BuildResponse();
+            //    new ConnectResponse(version, cookie, endOfNegotiator);
 
-            //negotiator.Value.UserInfo.UpdateRetryNATNegotiationTime();
-            //negotiatee.Value.UserInfo.UpdateRetryNATNegotiationTime();
-
-            //negotiator.Value.SendAsync(dataToNegotiator);
-            //negotiatee.Value.SendAsync(dataToNegotiatee);
-
-
-            //NNServerManager.Server.SendAsync(EndPoint, dataToNegotiator);
-            //NNServerManager.Server.SendAsync(EndPoint, dataToNegotiatee);
-            ////finally we remove two sessions from our session pool
-            //SessionPool.TryRemove(negotiatee.Key, out _);
-            //SessionPool.TryRemove(negotiator.Key, out _);
+            //NNServerManager.Server.SendAsync(endOfNegotiator, dataToNegotiator);
+            //NNServerManager.Server.SendAsync(endOfNegotiatee, dataToNegotiatee);
         }
     }
 }

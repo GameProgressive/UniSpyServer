@@ -1,14 +1,11 @@
 ﻿using NATNegotiation.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
     internal sealed class ReportResponse : NNResponseBase
     {
-        public ReportResponse(NNRequestBase request) : base(request)
-        {
-        }
-
-        public ReportResponse(byte version, uint cookie) : base(version, cookie)
+        public ReportResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
     }

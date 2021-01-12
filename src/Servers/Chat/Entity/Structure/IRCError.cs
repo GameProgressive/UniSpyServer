@@ -24,6 +24,11 @@ namespace Chat.Entity.Structure.Response
         public const string RegisterNickFailed = "711";
 
 
+        public static string BuildErrorMsg(ChatErrorCode errorCode)
+        {
+            return null;
+        }
+
         #region channel error RPL
         protected static string BuildChannelError(string ircError, string channelName, string message)
         {
