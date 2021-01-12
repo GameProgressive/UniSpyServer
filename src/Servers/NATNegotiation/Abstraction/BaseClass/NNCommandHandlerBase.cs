@@ -3,9 +3,6 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Network;
-using NATNegotiation.Entity.Structure;
-using NATNegotiation.Handler.SystemHandler.Manager;
-using NATNegotiation.Handler.SystemHandler;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
@@ -13,7 +10,11 @@ namespace NATNegotiation.Abstraction.BaseClass
     /// because we are using self defined error code so we do not need
     /// to send it to client, when we detect errorCode != noerror we just log it
     /// </summary>
+<<<<<<< HEAD
     internal abstract class NNCommandHandlerBase : UniSpyCmdHandlerBase
+=======
+    public abstract class NNCmdHandlerBase : UniSpyCmdHandlerBase
+>>>>>>> c309f4b009e514a1d1f13db4317bdf0d8c2e4797
     {
         protected byte[] _sendingBuffer;
         protected new NNSession _session
@@ -24,8 +25,13 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             get { return (NNRequestBase)base._request; }
         }
+<<<<<<< HEAD
         protected new NNResultBase
         public NNCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+=======
+        
+        public NNCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+>>>>>>> c309f4b009e514a1d1f13db4317bdf0d8c2e4797
         {
             _errorCode = NNErrorCode.NoError;
         }
@@ -51,13 +57,23 @@ namespace NATNegotiation.Abstraction.BaseClass
             Response();
         }
 
+        protected override void DataOperation()
+        {
+            //currently we do nothing here
+        }
+
         protected override void Response()
         {
-            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
+            if (_response == null)
             {
                 return;
             }
-            _session.Send(_sendingBuffer);
+
+            if (!StringExtensions.CheckResponseValidation((byte[])_response.SendingBuffer))
+            {
+                return;
+            }
+            _session.Send((byte[])_response.SendingBuffer);
         }
     }
 }
