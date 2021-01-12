@@ -9,12 +9,9 @@ namespace GameStatus.Handler.CmdHandler
     /// <summary>
     /// Set persist storage data
     /// </summary>
-    internal class SetPDHandler : GSCmdHandlerBase
+    internal sealed class SetPDHandler : GSCmdHandlerBase
     {
-        protected new SetPDRequest _request
-        {
-            get { return (SetPDRequest)base._request; }
-        }
+        private new SetPDRequest _request => (SetPDRequest)base._request;
         public SetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -50,6 +47,11 @@ namespace GameStatus.Handler.CmdHandler
 
                 db.SaveChanges();
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

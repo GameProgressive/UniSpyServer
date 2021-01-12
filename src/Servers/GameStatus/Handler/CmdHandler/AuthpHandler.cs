@@ -13,12 +13,9 @@ namespace GameStatus.Handler.CmdHandler
     /// because we are not gamespy
     /// so we do not check response string
     /// </summary>
-    public class AuthPHandler : GSCmdHandlerBase
+    internal sealed class AuthPHandler : GSCmdHandlerBase
     {
-        protected new AuthPRequest _request
-        {
-            get { return (AuthPRequest)base._request; }
-        }
+        private new AuthPRequest _request => (AuthPRequest)base._request;
         private uint _profileID;
         public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -53,9 +50,9 @@ namespace GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
+            _response = new AuthpResponse(_request, _result);
             //we did not store the plaintext of user password so we do not need to check this
             _sendingBuffer = $@"\pauthr\{_profileID}\lid\{ _request.OperationID}";
-            base.ResponseConstruct();
         }
 
         private void FindProfileByAuthtoken()

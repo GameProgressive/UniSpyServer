@@ -7,7 +7,7 @@ namespace GameStatus.Handler.CmdHandler
     /// <summary>
     /// Handles game snapshot and update game data
     /// </summary>
-    public class UpdGameHandler : GSCmdHandlerBase
+    internal sealed class UpdGameHandler : GSCmdHandlerBase
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
@@ -16,6 +16,11 @@ namespace GameStatus.Handler.CmdHandler
         }
 
         protected override void DataOperation()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void ResponseConstruct()
         {
             throw new System.NotImplementedException();
         }

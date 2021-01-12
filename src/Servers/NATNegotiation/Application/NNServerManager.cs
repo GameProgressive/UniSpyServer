@@ -10,9 +10,9 @@ namespace NATNegotiation.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class NNServerManager : UniSpyServerManagerBase
+    internal sealed class NNServerManager : UniSpyServerManagerBase
     {
-        public new static NNServer Server { get; protected set; }
+        public new static NNServer Server { get; private set; }
         public NNServerManager(string serverName) : base(serverName)
         {
         }

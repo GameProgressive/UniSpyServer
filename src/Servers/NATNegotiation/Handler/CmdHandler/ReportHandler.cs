@@ -12,12 +12,10 @@ namespace NATNegotiation.Handler.CmdHandler
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-    public class ReportHandler : NNCommandHandlerBase
+    internal class ReportHandler : NNCommandHandlerBase
     {
-        protected new ReportRequest _request
-        {
-            get { return (ReportRequest)base._request; }
-        }
+        protected new ReportRequest _request => (ReportRequest)base._request; 
+        
         protected NatUserInfo _userInfo;
         protected string _fullKey;
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -25,7 +23,6 @@ namespace NATNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            base.RequestCheck();
             var _fullKey = NatUserInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
             try
             {

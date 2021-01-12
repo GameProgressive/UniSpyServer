@@ -8,12 +8,12 @@ using System.Linq;
 
 namespace GameStatus.Handler.CmdHandler
 {
-    public class GetPIDHandler : GSCmdHandlerBase
+    internal sealed class GetPIDHandler : GSCmdHandlerBase
     {
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
         private uint _protileid;
-        protected new GetPIDRequest _request { get { return (GetPIDRequest)base._request; } }
+        private new GetPIDRequest _request { get { return (GetPIDRequest)base._request; } }
         public GetPIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

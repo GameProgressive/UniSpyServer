@@ -5,7 +5,7 @@ using NATNegotiation.Entity.Structure.Request;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
-    public class AddressResponse : InitResponse
+    internal sealed class AddressResponse : InitResponse
     {
         public AddressResponse(AddressRequest request, EndPoint endPoint) : base(request, endPoint)
         {

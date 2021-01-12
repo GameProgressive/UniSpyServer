@@ -8,9 +8,9 @@ using UniSpyLib.Logging;
 
 namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    internal class PSPCmdHandlerSerializer : UniSpyCmdHandlerSerializerBase
+    internal sealed class PSPCmdHandlerSerializer : UniSpyCmdHandlerSerializerBase
     {
-        protected new PSPRequestBase _request => (PSPRequestBase)base._request;
+        private new PSPRequestBase _request => (PSPRequestBase)base._request;
         public PSPCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

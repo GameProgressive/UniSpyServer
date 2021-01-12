@@ -19,7 +19,6 @@
         <Folder Include="Handler\SystemHandler\Timer\" />
         <Folder Include="Handler\CmdSwitcher\" />
         <Folder Include="Handler\SystemHandler\Manager\" />
-        <Folder Include="Abstraction\BaseClass\" />
         <Folder Include="Entity\Structure\Response\" />
     </ItemGroup>
     <ItemGroup>

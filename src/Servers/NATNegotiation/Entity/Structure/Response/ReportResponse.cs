@@ -2,7 +2,7 @@
 
 namespace NATNegotiation.Entity.Structure.Response
 {
-    public class ReportResponse : NNResponseBase
+    internal sealed class ReportResponse : NNResponseBase
     {
         public ReportResponse(NNRequestBase request) : base(request)
         {

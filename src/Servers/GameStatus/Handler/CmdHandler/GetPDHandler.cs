@@ -9,11 +9,11 @@ using System.Linq;
 
 namespace GameStatus.Handler.CmdHandler
 {
-    public class GetPDHandler : GSCmdHandlerBase
+    internal sealed class GetPDHandler : GSCmdHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
-        protected new GetPDRequest _request { get { return (GetPDRequest)base._request; } }
-        protected Dictionary<string, string> _result;
+        private new GetPDRequest _request => (GetPDRequest)base._request;
+        private Dictionary<string, string> _result;
         public GetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

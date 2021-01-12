@@ -14,7 +14,7 @@ namespace GameStatus.Abstraction.BaseClass
     /// we only use selfdefine error code here
     /// so we do not need to send it to client
     /// </summary>
-    public abstract class GSCmdHandlerBase : UniSpyCmdHandlerBase
+    internal abstract class GSCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected string _sendingBuffer;
         protected GSErrorCode _errorCode;
@@ -54,7 +54,9 @@ namespace GameStatus.Abstraction.BaseClass
 
             Response();
         }
-
+        protected override void RequestCheck()
+        {
+        }
         protected override void Response()
         {
             if (!StringExtensions.CheckResponseValidation(_sendingBuffer))

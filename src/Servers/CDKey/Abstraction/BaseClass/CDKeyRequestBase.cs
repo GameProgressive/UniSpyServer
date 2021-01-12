@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
 
 namespace CDKey.Abstraction.BaseClass
 {
-    public class CDKeyRequestBase : UniSpyRequestBase
+    internal abstract class CDKeyRequestBase : UniSpyRequestBase
     {
-        public new bool ErrorCode { get { return (bool)base.ErrorCode; } set { base.ErrorCode = value; } }
+        public new bool ErrorCode 
+        { 
+            get { return (bool)base.ErrorCode; }
+            set { base.ErrorCode = value; } 
+        }
         public CDKeyRequestBase(string rawRequest) : base(rawRequest)
         {
             ErrorCode = false;

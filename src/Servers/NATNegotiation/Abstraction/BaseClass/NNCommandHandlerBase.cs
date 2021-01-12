@@ -13,9 +13,8 @@ namespace NATNegotiation.Abstraction.BaseClass
     /// because we are using self defined error code so we do not need
     /// to send it to client, when we detect errorCode != noerror we just log it
     /// </summary>
-    public class NNCommandHandlerBase : UniSpyCmdHandlerBase
+    internal abstract class NNCommandHandlerBase : UniSpyCmdHandlerBase
     {
-        protected NNErrorCode _errorCode;
         protected byte[] _sendingBuffer;
         protected new NNSession _session
         {
@@ -25,7 +24,7 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             get { return (NNRequestBase)base._request; }
         }
-
+        protected new NNResultBase
         public NNCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _errorCode = NNErrorCode.NoError;

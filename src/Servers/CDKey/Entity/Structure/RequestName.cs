@@ -1,7 +1,7 @@
 ﻿using System;
 namespace CDKey.Entity.Structure
 {
-    public class RequestName
+    internal class RequestName
     {
         /// <summary>
         /// Reauthenticate with server to determine whether a client is still online

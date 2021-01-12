@@ -5,15 +5,15 @@ using System.Collections.Generic;
 namespace GameStatus.Entity.Structure.Request
 {
 
-    public class AuthPRequest : GSRequestBase
+    internal sealed class AuthPRequest : GSRequestBase
 
     {
-        public AuthMethod RequestType { get; protected set; }
-        public uint ProfileID { get; protected set; }
-        public string AuthToken { get; protected set; }
-        public string Response { get; protected set; }
-        public string KeyHash { get; protected set; }
-        public string Nick { get; protected set; }
+        public AuthMethod RequestType { get; private set; }
+        public uint ProfileID { get; private set; }
+        public string AuthToken { get; private set; }
+        public string Response { get; private set; }
+        public string KeyHash { get; private set; }
+        public string Nick { get; private set; }
 
         public AuthPRequest(string rawRequest) : base(rawRequest)
         {

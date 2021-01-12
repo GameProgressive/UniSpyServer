@@ -6,10 +6,10 @@ namespace GameStatus.Entity.Structure.Request
     /// <summary>
     /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */
     /// </summary>
-    public class AuthRequest : GSRequestBase
+    internal sealed class AuthRequest : GSRequestBase
     {
-        public string GameName { get; protected set; }
-        public uint Port { get; protected set; }
+        public string GameName { get; private set; }
+        public uint Port { get; private set; }
         public AuthRequest(string rawRequest) : base(rawRequest)
         {
         }

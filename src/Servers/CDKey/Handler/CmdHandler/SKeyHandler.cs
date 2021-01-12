@@ -7,7 +7,7 @@ namespace CDKey.Handler.CmdHandler
     /// This class contians gamespy cdkey check functions  which help cdkeyserver to finish the cdkey check. 
     /// This class is used to simplify the functions in server class, separate the other utility function making  the main server logic clearer
     /// </summary>
-    public class SKeyHandler
+    internal class SKeyHandler
     {
         /// <summary>
         /// 

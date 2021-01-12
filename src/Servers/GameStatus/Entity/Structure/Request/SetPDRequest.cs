@@ -10,7 +10,7 @@ namespace GameStatus.Entity.Structure.Request
     /// <summary>
     /// "\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"
     /// </summary>
-    public class SetPDRequest : GSRequestBase
+    internal sealed class SetPDRequest : GSRequestBase
     {
         public SetPDRequest(string request) : base(request)
         {

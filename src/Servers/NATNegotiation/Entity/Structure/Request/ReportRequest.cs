@@ -6,7 +6,7 @@ using System.Text;
 
 namespace NATNegotiation.Entity.Structure.Request
 {
-    public class ReportRequest : NNRequestBase
+    internal class ReportRequest : NNRequestBase
     {
         public NatPortType PortType;
         public byte ClientIndex;

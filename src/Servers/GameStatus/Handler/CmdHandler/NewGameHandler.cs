@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GameStatus.Handler.CmdHandler
 {
-    public class NewGameHandler : GSCmdHandlerBase
+    internal sealed class NewGameHandler : GSCmdHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"
@@ -14,7 +14,7 @@ namespace GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            base.ResponseConstruct();
+            throw new System.NotImplementedException();
         }
 
         protected override void DataOperation()

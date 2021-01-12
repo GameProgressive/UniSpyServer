@@ -7,7 +7,7 @@ using NATNegotiation.Entity.Structure.Request;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
-    public class InitResponse : NNResponseBase
+    internal class InitResponse : NNResponseBase
     {
         public NatPortType PortType { get; protected set; }
         public byte ClientIndex { get; protected set; }

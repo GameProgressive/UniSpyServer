@@ -9,7 +9,7 @@ using UniSpyLib.MiscMethod;
 
 namespace CDKey.Handler.CmdSwitcher
 {
-    public class CDKeyRequestSerializer:UniSpyRequestSerializerBase
+    internal class CDKeyRequestSerializer : UniSpyRequestSerializerBase
     {
         protected new string _rawRequest;
         public CDKeyRequestSerializer(object rawRequest) : base(rawRequest)

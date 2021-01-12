@@ -9,7 +9,7 @@ using System.Text;
 
 namespace GameStatus.Network
 {
-    public class GSSession : TCPSessionBase
+    internal sealed class GSSession : TCPSessionBase
     {
 
         public PlayerData PlayerData { get; set; }

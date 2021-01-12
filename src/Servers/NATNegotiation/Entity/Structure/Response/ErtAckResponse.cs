@@ -5,7 +5,7 @@ using NATNegotiation.Entity.Structure.Request;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
-    public class ErtAckResponse : InitResponse
+    internal sealed class ErtAckResponse : InitResponse
     {
         public ErtAckResponse(ErtAckRequest request, EndPoint endPoint) : base(request, endPoint)
         {

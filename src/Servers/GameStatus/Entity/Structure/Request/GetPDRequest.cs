@@ -6,13 +6,13 @@ using System.Collections.Generic;
 namespace GameStatus.Entity.Structure.Request
 {
 
-    public class GetPDRequest : GSRequestBase
+    internal sealed class GetPDRequest : GSRequestBase
     {
-        public uint ProfileID { get; protected set; }
-        public PersistStorageType StorageType { get; protected set; }
-        public uint DataIndex { get; protected set; }
-        public List<string> Keys { get; protected set; }
-        public bool GetAllDataFlag { get; protected set; }
+        public uint ProfileID { get; private set; }
+        public PersistStorageType StorageType { get; private set; }
+        public uint DataIndex { get; private set; }
+        public List<string> Keys { get; private set; }
+        public bool GetAllDataFlag { get; private set; }
         public GetPDRequest(string rawRequest) : base(rawRequest)
         {
             Keys = new List<string>();

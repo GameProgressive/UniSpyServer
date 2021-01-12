@@ -4,13 +4,12 @@ using CDKey.Network;
 
 namespace CDKey.Abstraction.BaseClass
 {
-    public abstract class CDKeyCmdHandlerBase : UniSpyCmdHandlerBase
+    internal abstract class CDKeyCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected string _sendingBuffer;
         protected new CDKeySession _session
         {
             get { return (CDKeySession)base._session; }
-            set { base._session = value; }
         }
         public CDKeyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

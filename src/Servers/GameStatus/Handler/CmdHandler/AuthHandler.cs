@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace GameStatus.Handler.CmdHandler
 {
-    public class AuthHandler : GSCmdHandlerBase
+    internal sealed class AuthHandler : GSCmdHandlerBase
     {
         //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
-        protected new AuthRequest _request { get { return (AuthRequest)base._request; } }
+        private new AuthRequest _request => (AuthRequest)base._request; 
         public AuthHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -30,8 +30,6 @@ namespace GameStatus.Handler.CmdHandler
         protected override void ResponseConstruct()
         {
             _sendingBuffer = @$"\sesskey\{_session.PlayerData.SessionKey}\lid\{ _request.OperationID}";
-            base.ResponseConstruct();
         }
-
     }
 }

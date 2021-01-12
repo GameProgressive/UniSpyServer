@@ -5,7 +5,7 @@ using NATNegotiation.Entity.Structure.Request;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
-    public class NatifyResponse:InitResponse
+    internal sealed class NatifyResponse:InitResponse
     {
         public NatifyResponse(NatifyRequest request, EndPoint endPoint) : base(request, endPoint)
         {

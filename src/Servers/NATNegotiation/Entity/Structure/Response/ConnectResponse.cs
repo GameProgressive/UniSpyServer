@@ -8,7 +8,7 @@ using NATNegotiation.Entity.Structure.Request;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
-    public class ConnectResponse : NNResponseBase
+    public sealed class ConnectResponse : NNResponseBase
     {
         public EndPoint RemoteEndPoint { get; protected set; }
         public byte GotYourData { get; set; }

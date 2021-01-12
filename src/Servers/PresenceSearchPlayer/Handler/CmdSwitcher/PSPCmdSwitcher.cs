@@ -10,10 +10,9 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
     internal class PSPCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        protected new string _rawRequest;
+        private new string _rawRequest => (string)base._rawRequest;
         public PSPCmdSwitcher(IUniSpySession session, string rawRequest) : base(session, rawRequest)
         {
-            _rawRequest = rawRequest;
         }
 
         protected override void SerializeCommandHandlers()

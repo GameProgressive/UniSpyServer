@@ -6,7 +6,7 @@ using System.Net;
 
 namespace NATNegotiation.Entity.Structure.Request
 {
-    public class InitRequest : NNRequestBase
+    internal class InitRequest : NNRequestBase
     {
         public static new readonly int Size = NNRequestBase.Size + 9;
 

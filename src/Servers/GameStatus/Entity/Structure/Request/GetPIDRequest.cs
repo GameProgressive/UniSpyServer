@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace GameStatus.Entity.Structure.Request
 {
-    public class GetPIDRequest : GSRequestBase
+    internal sealed class GetPIDRequest : GSRequestBase
     {
-        public string Nick { get; protected set; }
-        public string KeyHash { get; protected set; }
+        public string Nick { get; private set; }
+        public string KeyHash { get; private set; }
 
         public GetPIDRequest(string rawRequest) : base(rawRequest)
         {

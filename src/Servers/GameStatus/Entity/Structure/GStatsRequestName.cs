@@ -1,6 +1,6 @@
 ﻿namespace GameStatus.Entity.Structure
 {
-    public class GStatsRequestName
+    internal class GStatsRequestName
     {
         /// <summary>
         /// Authenticate user

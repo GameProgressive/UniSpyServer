@@ -7,9 +7,9 @@ using NATNegotiation.Entity.Structure;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
-    public class ErtAckHandler : NNCommandHandlerBase
+    internal sealed class ErtAckHandler : NNCommandHandlerBase
     {
-        protected new ErtAckRequest _request { get { return (ErtAckRequest)base._request; } }
+        private new ErtAckRequest _request => (ErtAckRequest)base._request;
         public ErtAckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
 

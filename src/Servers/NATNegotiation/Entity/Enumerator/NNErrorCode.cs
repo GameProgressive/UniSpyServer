@@ -1,6 +1,6 @@
 ﻿namespace NATNegotiation.Entity.Enumerate
 {
-    public enum NNErrorCode
+    internal enum NNErrorCode
     {
         NoError,
         RequestError,

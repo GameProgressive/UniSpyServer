@@ -7,12 +7,11 @@ using GameStatus.Handler.CmdHandler;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
-    public class GSCmdHandlerSerializer : UniSpyCmdHandlerSerializerBase
+    internal sealed class GSCmdHandlerSerializer : UniSpyCmdHandlerSerializerBase
     {
-        protected new GSRequestBase _request;
+        private new GSRequestBase _request => (GSRequestBase)base._request;
         public GSCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (GSRequestBase)request;
         }
 
         public override IUniSpyHandler Serialize()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GameStatus.Entity.Structure.Request
 {
-    public class NewGameRequest : GSRequestBase
+    internal sealed class NewGameRequest : GSRequestBase
     {
         public NewGameRequest(string rawRequest) : base(rawRequest)
         {

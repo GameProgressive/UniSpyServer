@@ -7,9 +7,9 @@ using NATNegotiation.Entity.Structure;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
-    public class InitHandler : NNCommandHandlerBase
+    internal class InitHandler : NNCommandHandlerBase
     {
-        protected new InitRequest _request { get { return (InitRequest)base._request; } }
+        protected new InitRequest _request =>(InitRequest)base._request;
         protected NatUserInfo _userInfo;
         protected string _fullKey;
         public InitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -18,7 +18,6 @@ namespace NATNegotiation.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
             //TODO we get user infomation from redis
             _fullKey = NatUserInfo.RedisOperator.BuildFullKey(
                 _session.RemoteIPEndPoint,

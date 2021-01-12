@@ -1,6 +1,6 @@
 ﻿namespace CDKey.Entity.Enumerate
 {
-    public class CDKeyErrorCode
+    internal class CDKeyErrorCode
     {
         public CDKeyErrorCode()
         {

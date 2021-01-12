@@ -11,13 +11,12 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    public class PCMRequestSerializer : UniSpyRequestSerializerBase
+    internal class PCMRequestSerializer : UniSpyRequestSerializerBase
     {
-        protected new string _rawRequest;
+        private new string _rawRequest => (string)base._rawRequest;
 
         public PCMRequestSerializer(object rawRequest) : base(rawRequest)
         {
-            _rawRequest = (string)rawRequest;
         }
 
         public override IUniSpyRequest Serialize()
