@@ -2,6 +2,8 @@
 using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Structure.Request;
 using System.Collections.Generic;
+using GameStatus.Entity.Structure.Result;
+using GameStatus.Entity.Structure.Response;
 
 namespace GameStatus.Handler.CmdHandler
 {
@@ -9,10 +11,18 @@ namespace GameStatus.Handler.CmdHandler
     {
         //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
         private new AuthRequest _request => (AuthRequest)base._request; 
+        private new AuthResult _result
+        {
+            get { return (AuthResult)base._result; }
+            set { base._result = value; }
+        }
         public AuthHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            _result = new AuthResult();
+        }
         protected override void DataOperation()
         {
             //we have to verify the challenge response from the game, the response challenge is computed as
@@ -29,7 +39,9 @@ namespace GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _sendingBuffer = @$"\sesskey\{_session.PlayerData.SessionKey}\lid\{ _request.OperationID}";
+            _response = new AuthResponse(_request, _result);
         }
+
+
     }
 }

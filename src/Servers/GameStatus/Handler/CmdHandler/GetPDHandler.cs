@@ -6,6 +6,8 @@ using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
+using GameStatus.Entity.Structure.Result;
+using GameStatus.Entity.Structure.Response;
 
 namespace GameStatus.Handler.CmdHandler
 {
@@ -13,11 +15,18 @@ namespace GameStatus.Handler.CmdHandler
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
         private new GetPDRequest _request => (GetPDRequest)base._request;
-        private Dictionary<string, string> _result;
+        private new GetPDResult _result
+        {
+            get { return (GetPDResult)base._result; }
+            set { base._result = value; }
+        }
         public GetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            _result = new GetPDResult();
+        }
         protected override void DataOperation()
         {
             //search player data in database;
@@ -33,7 +42,7 @@ namespace GameStatus.Handler.CmdHandler
 
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSErrorCode.Database;
+                    _result.ErrorCode = GSErrorCode.Database;
                     return;
                 }
                 else
@@ -45,7 +54,7 @@ namespace GameStatus.Handler.CmdHandler
 
             if (_request.GetAllDataFlag)
             {
-                _result = keyValues;
+                _result.KeyValues = keyValues;
             }
             else
             {
@@ -53,11 +62,11 @@ namespace GameStatus.Handler.CmdHandler
                 {
                     if (keyValues.ContainsKey(key))
                     {
-                        _result.Add(key, keyValues[key]);
+                        _result.KeyValues.Add(key, keyValues[key]);
                     }
                     else
                     {
-                        _errorCode = GSErrorCode.Database;
+                        _result.ErrorCode = GSErrorCode.Database;
                         break;
                     }
                 }
@@ -66,7 +75,7 @@ namespace GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _sendingBuffer = $@"\getpdr\1\pid\{_request.ProfileID}\lid\{_request.OperationID}\mod\1234\length\5\data\mydata";
+            _response = new GetPDResponse(_request, _result);
         }
     }
 }

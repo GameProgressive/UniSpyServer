@@ -3,7 +3,7 @@ using System.Net;
 
 namespace CDKey.Network
 {
-    public class CDKeySession : UDPSessionBase
+    internal sealed class CDKeySession : UDPSessionBase
     {
         public CDKeySession(UDPServerBase server, EndPoint endPoint) : base(server, endPoint)
         {

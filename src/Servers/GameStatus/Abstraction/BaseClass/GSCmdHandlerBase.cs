@@ -5,9 +5,8 @@ using UniSpyLib.Logging;
 using Serilog.Events;
 using GameStatus.Entity.Enumerate;
 using GameStatus.Handler.SystemHandler;
-using System.Collections.Generic;
 using GameStatus.Network;
-//we store base class here but the namespace is not changed
+
 namespace GameStatus.Abstraction.BaseClass
 {
     /// <summary>
@@ -16,55 +15,53 @@ namespace GameStatus.Abstraction.BaseClass
     /// </summary>
     internal abstract class GSCmdHandlerBase : UniSpyCmdHandlerBase
     {
-        protected string _sendingBuffer;
-        protected GSErrorCode _errorCode;
-        protected new GSSession _session
+        protected new GSSession _session => (GSSession)base._session;
+        protected new GSRequestBase _request => (GSRequestBase)base._request;
+        protected new GSResultBase _result
         {
-            get { return (GSSession)base._session; }
+            get { return (GSResultBase)base._result; }
+            set { base._result = value; }
         }
         protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
-            _errorCode = GSErrorCode.NoError;
+            _result.ErrorCode = GSErrorCode.NoError;
         }
 
         public override void Handle()
         {
             RequestCheck();
-            if (_errorCode != GSErrorCode.NoError)
+            if (_result.ErrorCode != GSErrorCode.NoError)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_result.ErrorCode));
                 return;
             }
 
             DataOperation();
 
-            if (_errorCode == GSErrorCode.Database)
+            if (_result.ErrorCode == GSErrorCode.Database)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_result.ErrorCode));
                 return;
             }
 
             ResponseConstruct();
 
-            if (_errorCode != GSErrorCode.NoError)
+            if (_result.ErrorCode != GSErrorCode.NoError)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_errorCode));
+                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_result.ErrorCode));
                 return;
             }
 
             Response();
         }
-        protected override void RequestCheck()
-        {
-        }
         protected override void Response()
         {
-            if (!StringExtensions.CheckResponseValidation(_sendingBuffer))
+            if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
             {
                 return;
             }
 
-            _session.SendAsync(_sendingBuffer);
+            _session.SendAsync((string)_response.SendingBuffer);
         }
     }
 }

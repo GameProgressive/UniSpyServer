@@ -14,11 +14,16 @@ namespace GameStatus.Handler.CmdHandler
         public UpdGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
+        protected override void RequestCheck()
+        {
+            throw new System.NotImplementedException();
+        }
 
         protected override void DataOperation()
         {
             throw new System.NotImplementedException();
         }
+
 
         protected override void ResponseConstruct()
         {

@@ -9,7 +9,7 @@ using System.Net;
 
 namespace CDKey.Network
 {
-    public class CDKeyServer : UDPServerBase
+    internal sealed class CDKeyServer : UDPServerBase
     {
         public CDKeyServer(IPAddress address, int port) : base(address, port)
         {
@@ -32,14 +32,14 @@ namespace CDKey.Network
             return BaseSendAsync(endpoint, Encrypt(text));
         }
 
-        protected string Decrypt(byte[] buffer, long offset, long size)
+        private string Decrypt(byte[] buffer, long offset, long size)
         {
             byte[] cipherText = new byte[(int)size];
             Array.Copy(buffer, offset, cipherText, 0, (int)size);
             return XorEncoding.Encrypt(cipherText, XorEncoding.XorType.Type0);
         }
 
-        protected string Encrypt(string plainText)
+        private string Encrypt(string plainText)
         {
             return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type0);
         }

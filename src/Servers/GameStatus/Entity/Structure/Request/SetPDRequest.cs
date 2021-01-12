@@ -15,11 +15,11 @@ namespace GameStatus.Entity.Structure.Request
         public SetPDRequest(string request) : base(request)
         {
         }
-        public uint ProfileID { get; protected set; }
-        public PersistStorageType StorageType { get; protected set; }
-        public uint DataIndex { get; protected set; }
-        public uint Length { get; protected set; }
-        public string KeyValueString { get; protected set; }
+        public uint ProfileID { get; private set; }
+        public PersistStorageType StorageType { get; private set; }
+        public uint DataIndex { get; private set; }
+        public uint Length { get; private set; }
+        public string KeyValueString { get; private set; }
 
         public override void Parse()
         {

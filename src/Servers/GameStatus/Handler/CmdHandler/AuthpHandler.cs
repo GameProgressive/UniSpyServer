@@ -1,10 +1,12 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
-using GameStatus.Abstraction.BaseClass;
+﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Structure.Request;
+using GameStatus.Entity.Structure.Response;
+using GameStatus.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace GameStatus.Handler.CmdHandler
 {
@@ -16,11 +18,18 @@ namespace GameStatus.Handler.CmdHandler
     internal sealed class AuthPHandler : GSCmdHandlerBase
     {
         private new AuthPRequest _request => (AuthPRequest)base._request;
-        private uint _profileID;
+        private new AuthPResult _result
+        {
+            get { return (AuthPResult)base._result; }
+            set { base._result = value; }
+        }
         public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            _result = new AuthPResult();
+        }
         protected override void DataOperation()
         {
             //search database for user's password
@@ -50,9 +59,9 @@ namespace GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new AuthpResponse(_request, _result);
+            _response = new AuthPResponse(_request, _result);
             //we did not store the plaintext of user password so we do not need to check this
-            _sendingBuffer = $@"\pauthr\{_profileID}\lid\{ _request.OperationID}";
+            _sendingBuffer = $@"\pauthr\{_result.ProfileID}\lid\{ _request.OperationID}";
         }
 
         private void FindProfileByAuthtoken()
@@ -67,7 +76,7 @@ namespace GameStatus.Handler.CmdHandler
                     _errorCode = GSErrorCode.Database;
                     return;
                 }
-                _profileID = result.First();
+                _result.ProfileID = result.First();
             }
         }
         private void FindProfileByProfileid()
@@ -82,7 +91,7 @@ namespace GameStatus.Handler.CmdHandler
                     _errorCode = GSErrorCode.Database;
                     return;
                 }
-                _profileID = result.First();
+                _result.ProfileID = result.First();
             }
         }
         private void FrindProfileByCDKeyHash()
@@ -98,9 +107,11 @@ namespace GameStatus.Handler.CmdHandler
                     _errorCode = GSErrorCode.Database;
                     return;
                 }
-                _profileID = result.First();
+                _result.ProfileID = result.First();
             }
         }
+
+
 
         ////request \authp\\pid\27\resp\16ae1e1f47c8ab646de7a52d615e3b06\lid\0\final\
         //public static void AuthPlayer(GStatsSession session, Dictionary<string, string> dict)

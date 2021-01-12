@@ -1,6 +1,6 @@
 ﻿namespace GameStatus.Entity.Enumerate
 {
-    public enum AuthMethod
+    internal enum AuthMethod
     {
         Unknown,
         ProfileIDAuth,

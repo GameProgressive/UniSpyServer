@@ -7,10 +7,7 @@ namespace CDKey.Abstraction.BaseClass
     internal abstract class CDKeyCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected string _sendingBuffer;
-        protected new CDKeySession _session
-        {
-            get { return (CDKeySession)base._session; }
-        }
+        protected new CDKeySession _session => (CDKeySession)base._session;
         public CDKeyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -26,7 +23,7 @@ namespace CDKey.Abstraction.BaseClass
             Response();
         }
 
-      
+
         protected override void Response()
         {
             if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)

@@ -5,6 +5,8 @@ using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Structure.Request;
 using System.Collections.Generic;
 using System.Linq;
+using GameStatus.Entity.Structure.Result;
+using GameStatus.Entity.Structure.Response;
 
 namespace GameStatus.Handler.CmdHandler
 {
@@ -13,11 +15,19 @@ namespace GameStatus.Handler.CmdHandler
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
         private uint _protileid;
-        private new GetPIDRequest _request { get { return (GetPIDRequest)base._request; } }
+        private new GetPIDRequest _request => (GetPIDRequest)base._request;
+        private new GetPIDResult _result
+        {
+            get { return (GetPIDResult)base._result; }
+            set { base._result = value; }
+        }
         public GetPIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            _result = new GetPIDResult();
+        }
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())
@@ -28,7 +38,7 @@ namespace GameStatus.Handler.CmdHandler
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSErrorCode.Database;
+                    _result.ErrorCode = GSErrorCode.Database;
                     return;
                 }
                 _protileid = result.First();
@@ -37,7 +47,7 @@ namespace GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _sendingBuffer = $@"\getpidr\{_protileid}\lid\{ _request.OperationID}";
+            _response = new GetPIDResponse(_request, _result);
         }
     }
 }

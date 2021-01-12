@@ -9,9 +9,9 @@ namespace CDKey.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class CDKeyServerManager : UniSpyServerManagerBase
+    internal sealed class CDKeyServerManager : UniSpyServerManagerBase
     {
-        public static new CDKeyServer Server { get; protected set; }
+        public static new CDKeyServer Server { get; private set; }
         /// <summary>
         /// Constructor
         /// </summary>

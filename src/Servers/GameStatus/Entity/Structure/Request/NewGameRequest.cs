@@ -9,16 +9,5 @@ namespace GameStatus.Entity.Structure.Request
         public NewGameRequest(string rawRequest) : base(rawRequest)
         {
         }
-
-        public override void Parse()
-        {
-           base.Parse();
-            if (ErrorCode != GSErrorCode.NoError)
-            {
-                return;
-            }
-
-            ErrorCode = GSErrorCode.NoError;
-        }
     }
 }

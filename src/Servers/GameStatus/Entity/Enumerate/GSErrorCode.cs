@@ -5,7 +5,7 @@
     /// from server to client, which mean we only need to make
     /// internal error system.
     /// </summary>
-    public enum GSErrorCode
+    internal enum GSErrorCode
     {
         General,
         Parse,

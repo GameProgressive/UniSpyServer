@@ -1,6 +1,7 @@
 ﻿using UniSpyLib.Abstraction.Interface;
 using GameStatus.Abstraction.BaseClass;
-using System.Collections.Generic;
+using GameStatus.Entity.Structure.Response;
+using GameStatus.Entity.Structure.Result;
 
 namespace GameStatus.Handler.CmdHandler
 {
@@ -8,18 +9,25 @@ namespace GameStatus.Handler.CmdHandler
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"
+        private new NewGameResult _result
+        {
+            get { return (NewGameResult)base._result; }
+            set { base._result = value; }
+        }
         public NewGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
-        protected override void ResponseConstruct()
+        protected override void RequestCheck()
         {
-            throw new System.NotImplementedException();
+            _result = new NewGameResult();
         }
-
         protected override void DataOperation()
         {
             throw new System.NotImplementedException();
+        }
+        protected override void ResponseConstruct()
+        {
+            _response = new NewGameResponse(_request, _result);
         }
     }
 }
