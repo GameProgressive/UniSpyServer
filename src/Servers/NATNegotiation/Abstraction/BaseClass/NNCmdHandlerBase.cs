@@ -10,11 +10,7 @@ namespace NATNegotiation.Abstraction.BaseClass
     /// because we are using self defined error code so we do not need
     /// to send it to client, when we detect errorCode != noerror we just log it
     /// </summary>
-<<<<<<< HEAD
-    internal abstract class NNCommandHandlerBase : UniSpyCmdHandlerBase
-=======
     public abstract class NNCmdHandlerBase : UniSpyCmdHandlerBase
->>>>>>> c309f4b009e514a1d1f13db4317bdf0d8c2e4797
     {
         protected byte[] _sendingBuffer;
         protected new NNSession _session
@@ -25,41 +21,41 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             get { return (NNRequestBase)base._request; }
         }
-<<<<<<< HEAD
-        protected new NNResultBase
-        public NNCommandHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
-=======
-        
+        protected new NNResultBase _result 
+        { 
+            get { return (NNResultBase)base._result; } 
+            set { base._result = value; } 
+        }
         public NNCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
->>>>>>> c309f4b009e514a1d1f13db4317bdf0d8c2e4797
         {
-            _errorCode = NNErrorCode.NoError;
         }
 
         public override void Handle()
         {
             RequestCheck();
-            if (_errorCode != NNErrorCode.NoError)
+            if (_result.ErrorCode != NNErrorCode.NoError)
             {
+                ResponseConstruct();
+                Response();
                 return;
             }
 
             DataOperation();
-            if (_errorCode != NNErrorCode.NoError)
+            if (_result.ErrorCode != NNErrorCode.NoError)
             {
+                ResponseConstruct();
+                Response();
                 return;
             }
+
             ResponseConstruct();
-            if (_errorCode != NNErrorCode.NoError)
+            if (_result.ErrorCode != NNErrorCode.NoError)
             {
+                ResponseConstruct();
+                Response();
                 return;
             }
             Response();
-        }
-
-        protected override void DataOperation()
-        {
-            //currently we do nothing here
         }
 
         protected override void Response()
@@ -68,7 +64,7 @@ namespace NATNegotiation.Abstraction.BaseClass
             {
                 return;
             }
-
+            _response.Build();
             if (!StringExtensions.CheckResponseValidation((byte[])_response.SendingBuffer))
             {
                 return;

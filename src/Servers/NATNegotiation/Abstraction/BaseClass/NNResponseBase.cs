@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NATNegotiation.Entity.Enumerate;
+using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Logging;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
@@ -37,7 +39,8 @@ namespace NATNegotiation.Abstraction.BaseClass
 
         protected override void BuildErrorResponse()
         {
-            throw new NotImplementedException();
+            // now we only log error.
+            LogWriter.ToLog(LogEventLevel.Error, _result.ErrorCode.ToString());
         }
 
         public override void Build()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    public class AddBlockRequest : PCMRequestBase
+    internal sealed class AddBlockRequest : PCMRequestBase
     {
         public uint ProfileID;
         public AddBlockRequest(string rawRequest) : base(rawRequest)
@@ -33,7 +33,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request
 
             ProfileID = profileID;
 
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

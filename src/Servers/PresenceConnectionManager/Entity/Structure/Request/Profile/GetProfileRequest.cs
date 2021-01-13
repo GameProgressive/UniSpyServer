@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class GetProfileRequest : PCMRequestBase
+    internal sealed class GetProfileRequest : PCMRequestBase
     {
-        public uint ProfileID { get; protected set; }
+        public uint ProfileID { get; private set; }
         public GetProfileRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -35,10 +35,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             {
                 ErrorCode = GPErrorCode.Parse; return;
             }
-
-
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using System;
+﻿using UniSpyLib.Abstraction.Interface;
+
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    public class PCMLoggedInCommandHandlerBase
+    internal abstract class PCMLoggedInCmdHandlerBase:PCMCmdHandlerBase
     {
-        public PCMLoggedInCommandHandlerBase()
+        public PCMLoggedInCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
     }

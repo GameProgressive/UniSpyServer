@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class NewProfileRequest : PCMRequestBase
+    internal sealed class NewProfileRequest : PCMRequestBase
     {
         //create a new profile with new nick 
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"
@@ -15,9 +15,9 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         {
         }
 
-        public string OldNick { get; protected set; }
-        public string NewNick { get; protected set; }
-        public bool IsReplaceNickName { get; protected set; }
+        public string OldNick { get; private set; }
+        public string NewNick { get; private set; }
+        public bool IsReplaceNickName { get; private set; }
         public override void Parse()
         {
             base.Parse();
@@ -46,8 +46,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 NewNick = KeyValues["nick"];
                 IsReplaceNickName = false;
             }
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

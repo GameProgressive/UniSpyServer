@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class RegisterNickRequest : PCMRequestBase
+    internal sealed class RegisterNickRequest : PCMRequestBase
     {
-        public string UniqueNick { get; protected set; }
+        public string UniqueNick { get; private set; }
         public RegisterNickRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -30,8 +30,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             }
 
             UniqueNick = KeyValues["uniquenick"];
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

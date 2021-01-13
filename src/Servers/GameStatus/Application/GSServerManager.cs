@@ -10,9 +10,9 @@ namespace GameStatus.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class GSServerManager : UniSpyServerManagerBase
+    internal sealed class GSServerManager : UniSpyServerManagerBase
     {
-        public new static GSServer Server { get; protected set; }
+        public new static GSServer Server { get; private set; }
         /// <summary>
         /// Constructor
         /// </summary>

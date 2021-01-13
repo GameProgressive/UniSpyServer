@@ -3,10 +3,11 @@ using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    public abstract class PCMRequestBase : UniSpyRequestBase
+    internal abstract class PCMRequestBase : UniSpyRequestBase
     {
         public new string CommandName { get; protected set; }
         //public uint NamespaceID { get; protected set; }
@@ -22,11 +23,12 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         public PCMRequestBase(string rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
+            ErrorCode = GPErrorCode.NoError;
         }
 
         public override void Parse()
         {
-            KeyValues = UniSpyLib.MiscMethod.GameSpyUtils.ConvertToKeyValue(RawRequest);
+            KeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
             CommandName = KeyValues.Keys.First();
 
             if (KeyValues.ContainsKey("id"))

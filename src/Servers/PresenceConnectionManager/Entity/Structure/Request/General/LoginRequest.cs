@@ -143,8 +143,6 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
 
                 QuietMode = (QuietModeType)quiet;
             }
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

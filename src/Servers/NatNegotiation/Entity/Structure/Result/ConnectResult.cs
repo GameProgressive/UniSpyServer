@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
+using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Entity.Structure.Result
 {
@@ -8,7 +9,12 @@ namespace NATNegotiation.Entity.Structure.Result
     {
         public byte? GotYourData { get; set; }
         public byte? Finished { get; set; }
-        public EndPoint RemoteEndPoint { get; set; }
+        public EndPoint RemoteEndPoint { private get; set; }
+        public byte[] RemoteIPAddress =>
+            HtonsExtensions.EndPointToIPBytes(RemoteEndPoint);
+        public byte[] RemotePort =>
+            HtonsExtensions.EndPointToHtonsPortBytes(RemoteEndPoint);
+
         public byte Version;
         public uint Cookie;
         public ConnectResult()

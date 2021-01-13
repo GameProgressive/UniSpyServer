@@ -1,26 +1,27 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using NATNegotiation.Abstraction.BaseClass;
+﻿using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
+using NATNegotiation.Entity.Structure;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
-using NATNegotiation.Handler.SystemHandler.Manager;
-using NATNegotiation.Entity.Structure;
-using System;
 using NATNegotiation.Entity.Structure.Result;
+using NATNegotiation.Handler.SystemHandler.Manager;
+using System;
+using UniSpyLib.Abstraction.Interface;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-<<<<<<< HEAD
-    internal class ReportHandler : NNCommandHandlerBase
-=======
-    public class ReportHandler : NNCmdHandlerBase
->>>>>>> c309f4b009e514a1d1f13db4317bdf0d8c2e4797
+
+    internal sealed class ReportHandler : NNCmdHandlerBase
     {
-        protected new ReportRequest _request => (ReportRequest)base._request; 
-        
+        private new ReportRequest _request => (ReportRequest)base._request; 
+        private new ReportResult _result
+        {
+            get { return (ReportResult)base._result; }
+            set { base._result = value; }
+        }
         protected NatUserInfo _userInfo;
         protected string _fullKey;
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -28,10 +29,12 @@ namespace NATNegotiation.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-<<<<<<< HEAD
-=======
             _result = new ReportResult();
->>>>>>> c309f4b009e514a1d1f13db4317bdf0d8c2e4797
+        }
+        protected override void DataOperation()
+        {
+            //_userInfo.IsGotReportPacket = true;
+
             var _fullKey = NatUserInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
             try
             {
@@ -39,13 +42,8 @@ namespace NATNegotiation.Handler.CmdHandler
             }
             catch
             {
-                _errorCode = NNErrorCode.ReportPacketError;
+                _result.ErrorCode = NNErrorCode.ReportPacketError;
             }
-           
-        }
-        protected override void DataOperation()
-        {
-            //_userInfo.IsGotReportPacket = true;
 
             if (_request.NatResult != NATNegotiationResult.Success)
             {

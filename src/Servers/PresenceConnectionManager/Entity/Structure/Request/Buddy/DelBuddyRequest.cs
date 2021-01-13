@@ -32,7 +32,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             }
 
             DeleteProfileID = deleteProfileID;
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

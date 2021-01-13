@@ -10,9 +10,9 @@ namespace QueryReport.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class QRServerManager : UniSpyServerManagerBase
+    internal sealed class QRServerManager : UniSpyServerManagerBase
     {
-        public new static QRServer Server { get; protected set; }
+        public new static QRServer Server { get; private set; }
         /// <summary>
         /// Constructor
         /// </summary>

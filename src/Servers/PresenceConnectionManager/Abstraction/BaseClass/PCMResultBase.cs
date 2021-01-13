@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    public abstract class PCMResultBase : UniSpyResultBase
+    internal abstract class PCMResultBase : UniSpyResultBase
     {
         public new GPErrorCode ErrorCode
         {

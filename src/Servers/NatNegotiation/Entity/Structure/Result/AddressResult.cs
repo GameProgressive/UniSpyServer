@@ -4,7 +4,7 @@ using NATNegotiation.Entity.Enumerate;
 
 namespace NATNegotiation.Entity.Structure.Result
 {
-    public class AddressResult : InitResult
+    internal sealed class AddressResult : InitResult
     {
         public AddressResult()
         {

@@ -5,46 +5,49 @@ using QueryReport.Entity.Enumerate;
 using QueryReport.Handler.SystemHandler.ErrorMessage;
 using QueryReport.Network;
 using Serilog.Events;
+using UniSpyLib.Extensions;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    public class QRCmdHandlerBase : UniSpyCmdHandlerBase
+    internal abstract class QRCmdHandlerBase : UniSpyCmdHandlerBase
     {
-        protected QRErrorCode _errorCode;
-        protected byte[] _sendingBuffer;
-        protected new QRSession _session
+        protected new QRRequestBase _request => (QRRequestBase)base._request;
+        protected new QRSession _session => (QRSession)base._session; 
+        protected new QRResultBase _result 
         {
-            get { return (QRSession)base._session; }
+            get { return (QRResultBase)base._result;  }
+            set { base._result = value; }
         }
         protected QRCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
         {
-            _request = request;
-            _errorCode = QRErrorCode.NoError;
         }
 
         public override void Handle()
         {
             RequestCheck();
 
-            if (_errorCode != QRErrorCode.NoError)
+            if (_result.ErrorCode != QRErrorCode.NoError)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
+                ResponseConstruct();
+                Response();
                 return;
             }
 
             DataOperation();
 
-            if (_errorCode == QRErrorCode.Database)
+            if (_result.ErrorCode == QRErrorCode.Database)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
+                ResponseConstruct();
+                Response();
                 return;
             }
 
             ResponseConstruct();
 
-            if (_errorCode != QRErrorCode.NoError)
+            if (_result.ErrorCode != QRErrorCode.NoError)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(_errorCode));
+                ResponseConstruct();
+                Response();
                 return;
             }
 
@@ -54,12 +57,16 @@ namespace QueryReport.Abstraction.BaseClass
 
         protected override void Response()
         {
-            if (_sendingBuffer == null)
+            if (_response == null)
             {
                 return;
             }
-
-            _session.SendAsync(_sendingBuffer);
+            _response.Build();
+            if (!StringExtensions.CheckResponseValidation((byte[])_response.SendingBuffer))
+            {
+                return;
+            }
+            _session.Send((byte[])_response.SendingBuffer);
         }
     }
 }

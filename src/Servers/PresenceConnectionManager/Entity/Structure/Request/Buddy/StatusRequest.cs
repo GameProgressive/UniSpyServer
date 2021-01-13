@@ -35,8 +35,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             StatusCode = statusCode;
             LocationString = KeyValues["locstring"];
             StatusString = KeyValues["statstring"];
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

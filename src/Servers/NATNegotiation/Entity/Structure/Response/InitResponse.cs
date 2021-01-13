@@ -7,10 +7,10 @@ using NATNegotiation.Entity.Structure.Result;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
-    internal class InitResponse : NNResponseBase
+    internal sealed class InitResponse : NNResponseBase
     {
-        protected new InitRequest _request => (InitRequest)base._request;
-        protected new InitResult _result => (InitResult)base._result;
+        private new InitRequest _request => (InitRequest)base._request;
+        private new InitResult _result => (InitResult)base._result;
         public InitResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
@@ -19,14 +19,11 @@ namespace NATNegotiation.Entity.Structure.Response
         {
             List<byte> data = new List<byte>();
             data.AddRange(SendingBuffer);
-
             data.Add((byte)_request.PortType);
             data.Add(_request.ClientIndex);
             data.Add(_request.UseGamePort);
-
             data.AddRange(HtonsExtensions.IPStringToBytes(_result.LocalIP));
             data.AddRange(HtonsExtensions.UshortPortToBytes(_result.LocalPort));
-
             SendingBuffer = data.ToArray();
         }
     }

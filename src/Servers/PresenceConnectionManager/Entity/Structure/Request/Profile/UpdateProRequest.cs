@@ -131,9 +131,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 HasCountryCode = true;
                 CountryCode = KeyValues["countrycode"];
             }
-
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

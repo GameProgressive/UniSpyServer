@@ -5,7 +5,7 @@ namespace NATNegotiation.Abstraction.BaseClass
 {
     public class NNResultBase : UniSpyResultBase
     {
-        public new NNErrorCode ErrorCode
+        internal new NNErrorCode ErrorCode
         {
             get { return (NNErrorCode)base.ErrorCode; }
             set { base.ErrorCode = value; }

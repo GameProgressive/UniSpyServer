@@ -43,8 +43,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 ErrorCode = GPErrorCode.Parse; return;
             }
             ProfileID = profileID;
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

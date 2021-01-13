@@ -20,26 +20,25 @@ namespace QueryReport.Abstraction.BaseClass
             get { return (byte[])base.RawRequest; }
             protected set { base.RawRequest = value; }
         }
-        public new bool ErrorCode
+        public new QRErrorCode ErrorCode
         {
-            get { return (bool)base.ErrorCode; }
+            get { return (QRErrorCode)base.ErrorCode; }
             protected set { base.ErrorCode = value; }
         }
 
-        public QRRequestBase(byte[] rawRequest) : base(rawRequest)
+        public QRRequestBase(object rawRequest) : base(rawRequest)
         {
-            RawRequest = rawRequest;
+            ErrorCode = QRErrorCode.NoError;
         }
 
         public override void Parse()
         {
             if (RawRequest.Length < 3)
             {
-                ErrorCode = false;
+                ErrorCode = QRErrorCode.Parse;
             }
             CommandName = (QRPacketType)RawRequest[0];
             InstantKey = BitConverter.ToInt32(ByteTools.SubBytes(RawRequest, 1, 4));
-            ErrorCode = true;
         }
     }
 }

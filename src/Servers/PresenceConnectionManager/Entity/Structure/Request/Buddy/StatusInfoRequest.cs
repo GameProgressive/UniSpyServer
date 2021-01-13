@@ -72,8 +72,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             GameType = KeyValues["gameType"];
             GameVariant = KeyValues["gameVariant"];
             GameMapName = KeyValues["gameMapName"];
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

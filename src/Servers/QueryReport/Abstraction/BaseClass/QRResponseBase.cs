@@ -1,38 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using QueryReport.Entity.Enumerate;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    public class QRResponseBase
+    internal abstract class QRResponseBase:UniSpyResponseBase
     {
-        public QRPacketType PacketType { get; protected set; }
-        public int InstantKey { get; protected set; }
-
-        public QRResponseBase(QRRequestBase request)
-        {
-            PacketType = request.CommandName;
-            InstantKey = request.InstantKey;
-        }
-
-        public QRResponseBase(QRPacketType packetType, int instantKey)
-        {
-            PacketType = packetType;
-            InstantKey = instantKey;
-        }
-
-        public QRResponseBase()
+        private new QRRequestBase _request => (QRRequestBase)base._request;
+        private new QRResultBase _result => (QRResultBase)base._result;
+        protected QRResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
-        public virtual byte[] BuildResponse()
+        protected override void BuildNormalResponse()
         {
             List<byte> data = new List<byte>();
             data.AddRange(QRRequestBase.MagicData);
-            data.Add((byte)PacketType);
-            data.AddRange(BitConverter.GetBytes(InstantKey));
+            data.Add((byte)_request.CommandName);
+            data.AddRange(BitConverter.GetBytes(_request.InstantKey));
 
-            return data.ToArray();
+            SendingBuffer = data.ToArray();
         }
     }
 }

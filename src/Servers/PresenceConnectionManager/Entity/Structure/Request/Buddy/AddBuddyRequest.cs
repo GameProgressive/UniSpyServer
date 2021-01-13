@@ -33,8 +33,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request
 
             FriendProfileID = friendPID;
             AddReason = KeyValues["reason"];
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

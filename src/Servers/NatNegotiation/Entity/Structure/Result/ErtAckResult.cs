@@ -2,7 +2,7 @@
 
 namespace NATNegotiation.Entity.Structure.Result
 {
-    public class ErtAckResult : InitResult
+    internal sealed class ErtAckResult : InitResult
     {
         public ErtAckResult()
         {

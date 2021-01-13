@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    public class UpdateUIRequest : PCMRequestBase
+    internal sealed class UpdateUIRequest : PCMRequestBase
     {
         public UpdateUIRequest(string rawRequest) : base(rawRequest)
         {
@@ -31,7 +31,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             //connectionspeed
             //hasnetwork
             //pic
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

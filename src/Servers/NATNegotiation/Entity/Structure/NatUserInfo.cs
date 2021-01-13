@@ -6,7 +6,7 @@ using NATNegotiation.Handler.SystemHandler;
 
 namespace NATNegotiation.Entity.Structure
 {
-    public class NatUserInfo
+    internal sealed class NatUserInfo
     {
         public static NNRedisOperator RedisOperator;
         public string RemoteEndPoint;

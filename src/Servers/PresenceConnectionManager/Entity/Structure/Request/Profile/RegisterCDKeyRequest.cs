@@ -7,9 +7,9 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
     /// <summary>
     /// \registercdkey\sesskey\<sesskey>\cdkeyenc\<cdkeyenc>\id\<id>\final\
     /// </summary>
-    public class RegisterCDKeyRequest : PCMRequestBase
+    internal sealed class RegisterCDKeyRequest : PCMRequestBase
     {
-        public string CDKeyEnc { get; protected set; }
+        public string CDKeyEnc { get; private set; }
         public RegisterCDKeyRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -29,7 +29,6 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
             }
 
             CDKeyEnc = KeyValues["cdkeyenc"];
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

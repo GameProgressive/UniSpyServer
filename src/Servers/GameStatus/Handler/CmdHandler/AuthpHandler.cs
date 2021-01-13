@@ -50,7 +50,7 @@ namespace GameStatus.Handler.CmdHandler
                         FrindProfileByCDKeyHash();
                         break;
                     default:
-                        _errorCode = GSErrorCode.Database;
+                        _result.ErrorCode = GSErrorCode.Database;
                         break;
                 }
             }
@@ -61,7 +61,6 @@ namespace GameStatus.Handler.CmdHandler
         {
             _response = new AuthPResponse(_request, _result);
             //we did not store the plaintext of user password so we do not need to check this
-            _sendingBuffer = $@"\pauthr\{_result.ProfileID}\lid\{ _request.OperationID}";
         }
 
         private void FindProfileByAuthtoken()
@@ -73,7 +72,7 @@ namespace GameStatus.Handler.CmdHandler
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSErrorCode.Database;
+                    _result.ErrorCode = GSErrorCode.Database;
                     return;
                 }
                 _result.ProfileID = result.First();
@@ -88,7 +87,7 @@ namespace GameStatus.Handler.CmdHandler
                              select p.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSErrorCode.Database;
+                    _result.ErrorCode = GSErrorCode.Database;
                     return;
                 }
                 _result.ProfileID = result.First();
@@ -104,7 +103,7 @@ namespace GameStatus.Handler.CmdHandler
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _errorCode = GSErrorCode.Database;
+                    _result.ErrorCode = GSErrorCode.Database;
                     return;
                 }
                 _result.ProfileID = result.First();

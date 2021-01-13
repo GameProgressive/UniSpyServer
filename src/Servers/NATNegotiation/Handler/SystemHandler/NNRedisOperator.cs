@@ -8,7 +8,7 @@ using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Handler.SystemHandler
 {
-    public class NNRedisOperator : UniSpyRedisOperatorBase<NatUserInfo>
+    internal sealed class NNRedisOperator : UniSpyRedisOperatorBase<NatUserInfo>
     {
         public NNRedisOperator() : base(RedisDBNumber.NatNeg)
         {
