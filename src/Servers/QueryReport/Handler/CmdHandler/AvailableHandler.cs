@@ -4,15 +4,16 @@ using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
-
+using QueryReport.Entity.Structure.Result;
 namespace QueryReport.Handler.CmdHandler
 {
     /// <summary>
     /// AvailableCheckHandler
     /// </summary>
-    public class AvailableHandler : QRCmdHandlerBase
+    internal sealed class AvailableHandler : QRCmdHandlerBase
     {
-        protected new AvaliableRequest _request { get { return (AvaliableRequest)base._request; } }
+        private new AvaliableRequest _request =>(AvaliableRequest)base._request;
+        private new AvaliableResult _result =>(AvaliableResult)base._result;
         public AvailableHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -24,7 +25,7 @@ namespace QueryReport.Handler.CmdHandler
             {
                 if (_request.RawRequest[i] != AvaliableRequest.Prefix[i])
                 {
-                    _errorCode = QRErrorCode.Parse;
+                    _result.ErrorCode = QRErrorCode.Parse;
                     return;
                 }
             }
@@ -32,14 +33,17 @@ namespace QueryReport.Handler.CmdHandler
             //postfix check
             if (_request.RawRequest[_request.RawRequest.Length - 1] != AvaliableRequest.Postfix)
             {
-                _errorCode = QRErrorCode.Parse;
+                _result.ErrorCode = QRErrorCode.Parse;
                 return;
             }
+        }
+        protected override void DataOperation()
+        {
         }
 
         protected override void ResponseConstruct()
         {
-            _sendingBuffer = new AvaliableResponse().BuildResponse();
+            _response = new AvaliableResponse(_request,_result);
         }
     }
 }
