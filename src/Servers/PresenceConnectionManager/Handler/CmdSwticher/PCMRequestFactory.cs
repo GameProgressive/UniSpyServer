@@ -11,11 +11,11 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    internal class PCMRequestSerializer : UniSpyRequestFactoryBase
+    internal class PCMRequestFactory : UniSpyRequestFactoryBase
     {
         private new string _rawRequest => (string)base._rawRequest;
 
-        public PCMRequestSerializer(object rawRequest) : base(rawRequest)
+        public PCMRequestFactory(object rawRequest) : base(rawRequest)
         {
         }
 

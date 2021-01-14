@@ -19,7 +19,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
         {
             foreach (var request in _requests)
             {
-                var handler = new PSPCmdHandlerSerializer(_session, request).Serialize();
+                var handler = new PSPCmdHandlerFactory(_session, request).Serialize();
                 if (handler == null)
                 {
                     return;
@@ -40,7 +40,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
             _rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
             foreach (var rawRequest in rawRequests)
             {
-                var request = new PSPRequestSerializer(rawRequest).Serialize();
+                var request = new PSPRequestFactory(rawRequest).Serialize();
                 if (request == null)
                 {
                     continue;

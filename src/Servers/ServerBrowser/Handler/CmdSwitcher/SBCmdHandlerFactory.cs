@@ -7,9 +7,9 @@ using UniSpyLib.Logging;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCmdHandlerSerializer : UniSpyCmdHandlerFactoryBase
+    public class SBCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
-        public SBCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public SBCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

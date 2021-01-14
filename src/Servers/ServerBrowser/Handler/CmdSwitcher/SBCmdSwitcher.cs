@@ -18,7 +18,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
         {
             foreach (var request in _requests)
             {
-                var handler = new SBCmdHandlerSerializer(_session, request).Serialize();
+                var handler = new SBCmdHandlerFactory(_session, request).Serialize();
                 if (handler == null)
                 {
                     continue;
@@ -30,7 +30,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
 
         protected override void SerializeRequests()
         {
-            var request = new SBRequestSerializer(_rawRequest).Serialize();
+            var request = new SBRequestFactory(_rawRequest).Serialize();
             request.Parse();
             if (!(bool)request.ErrorCode)
             {

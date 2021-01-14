@@ -14,7 +14,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
         {
             foreach (var request in _requests)
             {
-                var handler = new NNCmdHandlerSerializer(_session, request).Serialize();
+                var handler = new NNCmdHandlerFactory(_session, request).Serialize();
                 if (handler == null)
                 {
                     return;
@@ -26,7 +26,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
 
         protected override void SerializeRequests()
         {
-            var request = new NNRequestSerializer(_rawRequest).Serialize();
+            var request = new NNRequestFactory(_rawRequest).Serialize();
             request.Parse();
             if (!(bool)request.ErrorCode)
             {

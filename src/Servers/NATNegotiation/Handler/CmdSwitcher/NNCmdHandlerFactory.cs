@@ -5,9 +5,9 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace NATNegotiation.Handler.CmdSwitcher
 {
-    public class NNCmdHandlerSerializer : UniSpyCmdHandlerFactoryBase
+    public class NNCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
-        public NNCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public NNCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

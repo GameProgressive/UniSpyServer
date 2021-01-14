@@ -18,7 +18,7 @@ namespace Chat.Handler.CommandSwitcher
         {
             foreach (var request in _requests)
             {
-                _handlers.Add(new ChatCommandHandlerSerializer(_session, request).Serialize());
+                _handlers.Add(new ChatCmdHandlerFactory(_session, request).Serialize());
             }
         }
 
@@ -30,7 +30,7 @@ namespace Chat.Handler.CommandSwitcher
             // next we handle each command
             foreach (var rawRequest in rawRequests)
             {
-                _requests.Add(new ChatRequestSerializer(rawRequest).Serialize());
+                _requests.Add(new ChatRequestFacotry(rawRequest).Serialize());
             }
         }
     }

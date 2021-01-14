@@ -7,10 +7,10 @@ using UniSpyLib.Logging;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
-    internal sealed class GSCmdHandlerSerializer : UniSpyCmdHandlerFactoryBase
+    internal sealed class GSCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
         private new GSRequestBase _request => (GSRequestBase)base._request;
-        public GSCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public GSCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

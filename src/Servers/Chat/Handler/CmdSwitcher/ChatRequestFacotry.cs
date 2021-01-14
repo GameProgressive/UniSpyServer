@@ -8,10 +8,10 @@ using UniSpyLib.Logging;
 
 namespace Chat.Handler.CommandSwitcher
 {
-    public class ChatRequestSerializer : UniSpyRequestFactoryBase
+    public class ChatRequestFacotry : UniSpyRequestFactoryBase
     {
         protected new string _rawRequest;
-        public ChatRequestSerializer(object rawRequest) : base(rawRequest)
+        public ChatRequestFacotry(object rawRequest) : base(rawRequest)
         {
             _rawRequest = (string)rawRequest;
         }

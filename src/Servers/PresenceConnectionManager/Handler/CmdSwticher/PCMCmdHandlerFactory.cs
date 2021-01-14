@@ -8,10 +8,10 @@ using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Handler.CmdSwticher
 {
-    internal class PCMCmdHandlerSerializer : UniSpyCmdHandlerFactoryBase
+    internal class PCMCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
         private new PCMRequestBase _request => (PCMRequestBase)base._request;
-        public PCMCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public PCMCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

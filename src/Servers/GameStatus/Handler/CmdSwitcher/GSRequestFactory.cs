@@ -4,9 +4,9 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
-    internal class GSRequestSerializer : UniSpyRequestFactoryBase
+    internal class GSRequestFactory : UniSpyRequestFactoryBase
     {
-        public GSRequestSerializer(object rawRequest) : base(rawRequest)
+        public GSRequestFactory(object rawRequest) : base(rawRequest)
         {
         }
 

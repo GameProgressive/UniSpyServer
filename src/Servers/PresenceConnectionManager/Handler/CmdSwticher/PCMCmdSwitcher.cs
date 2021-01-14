@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
         {
             foreach (var request in _requests)
             {
-                var handler = new PCMCmdHandlerSerializer(_session, request).Serialize();
+                var handler = new PCMCmdHandlerFactory(_session, request).Serialize();
                 if (handler == null)
                 {
                     return;
@@ -42,7 +42,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
 
             foreach (var rawRequest in rawRequests)
             {
-                var request = new PCMRequestSerializer(rawRequest).Serialize();
+                var request = new PCMRequestFactory(rawRequest).Serialize();
                 request.Parse();
                 if ((GPErrorCode)request.ErrorCode != GPErrorCode.NoError)
                 {

@@ -7,10 +7,10 @@ using UniSpyLib.Logging;
 
 namespace NATNegotiation.Handler.CmdSwitcher
 {
-    public class NNRequestSerializer : UniSpyRequestFactoryBase
+    public class NNRequestFactory : UniSpyRequestFactoryBase
     {
         protected new byte[] _rawRequest { get { return (byte[])base._rawRequest; } }
-        public NNRequestSerializer(object rawRequest) : base(rawRequest)
+        public NNRequestFactory(object rawRequest) : base(rawRequest)
         {
         }
 

@@ -17,7 +17,7 @@ namespace CDKey.Handler.CmdSwitcher
         {
             foreach (var request in _requests)
             {
-                _handlers.Add(new CDKeyCommandHandlerSerializer(_session, request).Serialize());
+                _handlers.Add(new CDKeyCmdHandlerFactory(_session, request).Serialize());
             }
         }
 
@@ -26,7 +26,7 @@ namespace CDKey.Handler.CmdSwitcher
             string[] commands = _rawRequest.Split(@"\r\n", StringSplitOptions.RemoveEmptyEntries);
             foreach (var command in commands)
             {
-                var request = new CDKeyRequestSerializer(command).Serialize();
+                var request = new CDKeyRequestFactory(command).Serialize();
                 request.Parse();
 
                 if (!(bool)request.ErrorCode)
