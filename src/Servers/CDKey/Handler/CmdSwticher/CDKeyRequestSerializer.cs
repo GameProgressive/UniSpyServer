@@ -1,4 +1,4 @@
-﻿using CDKey.Entity.Structure;
+﻿using CDKey.Entity.Structure.Misc;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
