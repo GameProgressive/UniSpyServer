@@ -1,15 +1,15 @@
-﻿using UniSpyLib.Encryption;
-using UniSpyLib.Network;
+﻿using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Handler.CommandSwitcher;
 using System.Collections.Generic;
-using ServerBrowser.Entity.Structure.Request;
+using UniSpyLib.Encryption;
+using UniSpyLib.Network;
 
 namespace ServerBrowser.Network
 {
     public class SBSession : TCPSessionBase
     {
-        public GOACryptState EncState;
-        public List<AdHocRequest> ServerMessageList;
+        public GOACryptState EncState { get; set; }
+        public List<AdHocRequest> ServerMessageList { get; set; }
         public SBSession(TCPServerBase server) : base(server)
         {
             ServerMessageList = new List<AdHocRequest>();

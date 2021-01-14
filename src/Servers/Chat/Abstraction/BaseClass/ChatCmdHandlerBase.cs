@@ -1,10 +1,10 @@
 ﻿using Chat.Entity.Structure;
 using Chat.Network;
+using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
-using Serilog.Events;
 using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 
 namespace Chat.Abstraction.BaseClass
 {
@@ -38,7 +38,7 @@ namespace Chat.Abstraction.BaseClass
         }
 
 
-        public ChatCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
+        public ChatCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

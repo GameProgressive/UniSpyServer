@@ -1,9 +1,9 @@
-﻿using UniSpyLib.Logging;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;
-namespace  PresenceConnectionManager.Entity.Structure.Request
+using UniSpyLib.Logging;
+namespace PresenceConnectionManager.Entity.Structure.Request
 {
     internal class LoginRequest : PCMRequestBase
     {
@@ -25,7 +25,7 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if( ErrorCode != GPErrorCode.NoError)
+            if (ErrorCode != GPErrorCode.NoError)
             {
                 return;
             }

@@ -1,9 +1,8 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChannelInfo;
-using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.Response;
+using Chat.Entity.Structure.Misc;
+using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Response.General;
 using UniSpyLib.Abstraction.Interface;
 
@@ -38,21 +37,21 @@ namespace Chat.Handler.CmdHandler.Channel
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
                 _errorCode = ChatErrorCode.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
+                _sendingBuffer = ChatIRCErrorCode.BuildNoSuchChannelError(_request.ChannelName);
                 return;
             }
 
             if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
             {
                 _errorCode = ChatErrorCode.IRCError;
-                _sendingBuffer = ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
+                _sendingBuffer = ChatIRCErrorCode.BuildNoSuchChannelError(_request.ChannelName);
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
                 _errorCode = ChatErrorCode.Parse;
-                _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
                 return;
             }
         }

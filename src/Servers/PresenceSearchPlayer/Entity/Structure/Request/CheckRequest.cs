@@ -1,7 +1,6 @@
-﻿using UniSpyLib.MiscMethod;
-using PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
+using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -9,7 +8,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
 
-        public CheckRequest(string rawRequest) :base(rawRequest)
+        public CheckRequest(string rawRequest) : base(rawRequest)
         {
         }
 

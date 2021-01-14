@@ -1,6 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {

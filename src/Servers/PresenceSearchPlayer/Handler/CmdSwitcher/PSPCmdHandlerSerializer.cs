@@ -1,14 +1,14 @@
-﻿using System;
-using PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure;
 using PresenceSearchPlayer.Handler.CmdHandler;
+using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
 namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    internal sealed class PSPCmdHandlerSerializer : UniSpyCmdHandlerSerializerBase
+    internal sealed class PSPCmdHandlerSerializer : UniSpyCmdHandlerFactoryBase
     {
         private new PSPRequestBase _request => (PSPRequestBase)base._request;
         public PSPCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)

@@ -1,5 +1,5 @@
-﻿using UniSpyLib.Network;
-using System.Net;
+﻿using System.Net;
+using UniSpyLib.Network;
 
 namespace CDKey.Network
 {

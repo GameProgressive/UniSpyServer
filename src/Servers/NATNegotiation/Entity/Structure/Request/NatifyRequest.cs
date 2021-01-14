@@ -1,7 +1,4 @@
-﻿using System;
-using NATNegotiation.Abstraction.BaseClass;
-
-namespace NATNegotiation.Entity.Structure.Request
+﻿namespace NATNegotiation.Entity.Structure.Request
 {
     internal class NatifyRequest : InitRequest
     {

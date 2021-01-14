@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.Interface;
+﻿using Serilog.Events;
+using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
-using Serilog.Events;
 
 namespace Chat.Abstraction.BaseClass
 {

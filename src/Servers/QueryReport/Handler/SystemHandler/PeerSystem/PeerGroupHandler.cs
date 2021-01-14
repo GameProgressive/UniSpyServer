@@ -1,7 +1,7 @@
-﻿using UniSpyLib.Database.DatabaseModel.MySql;
-using QueryReport.Entity.Structure.Group;
+﻿using QueryReport.Entity.Structure.Group;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace QueryReport.Handler.SystemHandler.PeerSystem
 {
@@ -42,8 +42,8 @@ namespace QueryReport.Handler.SystemHandler.PeerSystem
             using (var db = new retrospyContext())
             {
                 var gameNames = from gl in db.Grouplist
-                            join g in db.Games on gl.Gameid equals g.Gameid
-                            select g.Gamename;
+                                join g in db.Games on gl.Gameid equals g.Gameid
+                                select g.Gamename;
                 gameNames = gameNames.Distinct();
 
                 foreach (var gameName in gameNames)

@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Network;
-using NetCoreServer;
+﻿using NetCoreServer;
 using System.Net;
+using UniSpyLib.Network;
 
 namespace GameStatus.Network
 {

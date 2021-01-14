@@ -1,8 +1,8 @@
-﻿using System;
-using PresenceConnectionManager.Handler.CmdSwticher;
+﻿using PresenceConnectionManager.Handler.CmdSwticher;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Handler.CmdHandler.Error;
 using Serilog.Events;
+using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
     internal class PCMCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new string _rawRequest =>(string)base._rawRequest; 
+        private new string _rawRequest => (string)base._rawRequest;
 
         public PCMCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
@@ -22,7 +22,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
             foreach (var request in _requests)
             {
                 var handler = new PCMCmdHandlerSerializer(_session, request).Serialize();
-                if(handler == null)
+                if (handler == null)
                 {
                     return;
                 }

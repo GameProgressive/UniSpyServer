@@ -1,19 +1,29 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
-using QueryReport.Abstraction.BaseClass;
+﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Response;
+using QueryReport.Entity.Structure.Result;
 using Serilog.Events;
 using System;
 using System.Linq;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
+
 namespace QueryReport.Handler.CmdHandler
 {
-    public class EchoHandler : QRCmdHandlerBase
+    internal sealed class EchoHandler : QRCmdHandlerBase
     {
-        protected GameServerInfo _gameServer;
+        private new EchoResult _result
+        {
+            get => (EchoResult)base._result;
+            set => base._result = value;
+        }
         public EchoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
+        protected override void RequestCheck()
+        {
+            _result = new EchoResult();
+        }
         protected override void DataOperation()
         {
             //TODO prevent one pc create multiple game servers
@@ -27,11 +37,18 @@ namespace QueryReport.Handler.CmdHandler
             //add recive echo packet on gameserverList
 
             //we get the first key in matchedKeys
-            _gameServer = GameServerInfo.RedisOperator.GetSpecificValue(matchedKeys[0]);
+            _result.GameServerInfo = GameServerInfo.RedisOperator.GetSpecificValue(matchedKeys[0]);
 
-            _gameServer.LastPacket = DateTime.Now;
+            _result.GameServerInfo.LastPacket = DateTime.Now;
 
-            GameServerInfo.RedisOperator.SetKeyValue(matchedKeys[0], _gameServer);
+            GameServerInfo.RedisOperator.SetKeyValue(matchedKeys[0], _result.GameServerInfo);
+        }
+
+
+
+        protected override void ResponseConstruct()
+        {
+            _response = new QRDefaultResponse(_request, _result);
         }
     }
 }

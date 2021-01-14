@@ -1,11 +1,10 @@
 ﻿using CDKey.Handler.CmdSwitcher;
+using Serilog.Events;
+using System;
+using System.Net;
 using UniSpyLib.Encryption;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
-using Serilog.Events;
-using System;
-using System.Collections.Concurrent;
-using System.Net;
 
 namespace CDKey.Network
 {
@@ -17,7 +16,7 @@ namespace CDKey.Network
 
         protected override void OnReceived(UDPSessionBase session, string message)
         {
-           new CDKeyCmdSwitcher(session, message).Switch();
+            new CDKeyCmdSwitcher(session, message).Switch();
         }
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)

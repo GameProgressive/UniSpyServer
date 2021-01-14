@@ -1,6 +1,4 @@
-﻿using System;
-using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
+﻿using NATNegotiation.Entity.Enumerate;
 
 namespace NATNegotiation.Entity.Structure.Result
 {

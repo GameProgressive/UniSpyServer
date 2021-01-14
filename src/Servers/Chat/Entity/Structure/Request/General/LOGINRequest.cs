@@ -25,9 +25,9 @@ namespace Chat.Entity.Structure.ChatCommand
         public override void Parse()
         {
             base.Parse();
-            if(!ErrorCode)
+            if (!ErrorCode)
             {
-               ErrorCode = false;
+                ErrorCode = false;
                 return;
             }
 
@@ -36,7 +36,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
             if (!uint.TryParse(_cmdParams[0], out namespaceid))
             {
-               ErrorCode = false;
+                ErrorCode = false;
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace Chat.Entity.Structure.ChatCommand
 
                 if (_longParam.Count(c => c == '@') != 2)
                 {
-                   ErrorCode = false;
+                    ErrorCode = false;
                     return;
                 }
 

@@ -7,7 +7,7 @@ using UniSpyLib.Logging;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCmdHandlerSerializer : UniSpyCmdHandlerSerializerBase
+    public class SBCmdHandlerSerializer : UniSpyCmdHandlerFactoryBase
     {
         public SBCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -19,7 +19,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             switch (_request.CommandName)
             {
                 case SBClientRequestType.ServerListRequest:
-                   return UpdateOptionSerialize();
+                    return UpdateOptionSerialize();
                 case SBClientRequestType.ServerInfoRequest:
                     return new ServerInfoHandler(_session, _request);
                 case SBClientRequestType.PlayerSearchRequest:
@@ -30,6 +30,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     //TODO
                     //Cryptorx's game use this command
                     return new SendMessageHandler(_session, _request);
+
                 case SBClientRequestType.NatNegRequest:
                     return new NatNegCookieHandler(_session, _request);
                 default:

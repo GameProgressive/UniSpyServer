@@ -1,7 +1,7 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using QueryReport.Network;
+﻿using QueryReport.Network;
 using System.Collections.Concurrent;
 using System.Net;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Handler.SystemHandler.QRSessionManage
 {

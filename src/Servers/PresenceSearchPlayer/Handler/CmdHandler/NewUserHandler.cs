@@ -1,15 +1,15 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
-using UniSpyLib.Logging;
-using PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Structure.Request;
+using PresenceSearchPlayer.Entity.Structure.Response;
+using PresenceSearchPlayer.Entity.Structure.Result;
 using Serilog.Events;
 using System;
 using System.Linq;
-using PresenceSearchPlayer.Entity.Structure.Result;
-using PresenceSearchPlayer.Entity.Enumerator;
-using PresenceSearchPlayer.Entity.Structure.Response;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyLib.Logging;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -207,7 +207,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new NewUserResponse(_request,_result);
+            _response = new NewUserResponse(_request, _result);
         }
     }
 }

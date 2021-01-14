@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         public List<uint> ProfileIDs { get; protected set; }
         public uint NamespaceID { get; protected set; }
-        public OthersListRequest(string rawRequest) :base(rawRequest)
+        public OthersListRequest(string rawRequest) : base(rawRequest)
         {
         }
 

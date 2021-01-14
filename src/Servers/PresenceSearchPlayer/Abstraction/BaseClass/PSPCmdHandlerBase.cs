@@ -1,10 +1,10 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
-using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceSearchPlayer.Network;
+﻿using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
+using PresenceSearchPlayer.Network;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
@@ -62,7 +62,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 
         protected override void ResponseConstruct()
         {
-            _response = new PSPBasicResponse(_request,_result);
+            _response = new PSPBasicResponse(_request, _result);
         }
 
         protected override void Response()

@@ -1,11 +1,11 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using GameStatus.Entity.Enumerate;
+using GameStatus.Handler.SystemHandler;
+using GameStatus.Network;
+using Serilog.Events;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
-using Serilog.Events;
-using GameStatus.Entity.Enumerate;
-using GameStatus.Handler.SystemHandler;
-using GameStatus.Network;
 
 namespace GameStatus.Abstraction.BaseClass
 {
@@ -22,7 +22,7 @@ namespace GameStatus.Abstraction.BaseClass
             get { return (GSResultBase)base._result; }
             set { base._result = value; }
         }
-        protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
+        protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result.ErrorCode = GSErrorCode.NoError;
         }

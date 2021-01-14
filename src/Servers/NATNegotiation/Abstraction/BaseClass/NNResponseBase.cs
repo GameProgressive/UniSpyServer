@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using NATNegotiation.Entity.Enumerate;
+﻿using NATNegotiation.Entity.Enumerate;
 using Serilog.Events;
+using System;
+using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
 

@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {

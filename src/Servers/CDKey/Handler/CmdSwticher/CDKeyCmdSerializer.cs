@@ -1,14 +1,13 @@
 ﻿using System;
-using CDKey.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
 namespace CDKey.Handler.CmdSwitcher
 {
-    internal class CDKeyCommandHandlerSerializer : UniSpyCmdHandlerSerializerBase
+    internal class CDKeyCommandHandlerSerializer : UniSpyCmdHandlerFactoryBase
     {
-        public CDKeyCommandHandlerSerializer(IUniSpySession session,IUniSpyRequest request) : base(session,request)
+        public CDKeyCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

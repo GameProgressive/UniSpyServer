@@ -1,7 +1,7 @@
-﻿using UniSpyLib.Extensions;
-using System;
+﻿using System;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {

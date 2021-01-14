@@ -1,22 +1,17 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Logging;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using QueryReport.Application;
 using QueryReport.Entity.Structure.NatNeg;
 using QueryReport.Entity.Structure.Request;
-using QueryReport.Handler.SystemHandler.QRSessionManage;
-using QueryReport.Network;
-using Serilog.Events;
+using QueryReport.Entity.Structure.Result;
 using System.Net;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
 {
     public class NatNegCookieManager
     {
-        private int MessageKey;
-
         public NatNegCookieManager()
         {
-            MessageKey = 0;
         }
 
         public void Start()
@@ -37,18 +32,19 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
             IPAddress address = IPAddress.Parse(cookie.GameServerRemoteIP);
             int port = int.Parse(cookie.GameServerRemotePort);
             EndPoint endPoint = new IPEndPoint(address, port);
-            QRSession session;
 
-            if (!QRSessionManager.Sessions.TryGetValue(endPoint, out session))
-            {
-                LogWriter.ToLog(LogEventLevel.Error, "Can not find game server in QR");
-                return;
-            }
+            var result = new ClientMessageResult();
+            result.NatNegMessage = cookie.NatNegMessage;
+            result.MessageKey = 0;
+            var response = new ClientMessageResponse(null, result);
+            response.Build();
+            //TODO
+            //byte[] clientMsg = new ClientMessageResponse(
+            //    cookie.NatNegMessage, MessageKey++, session.InstantKey).BuildResponse();
 
-            byte[] clientMsg = new ClientMessageResponse(
-                cookie.NatNegMessage, MessageKey++, session.InstantKey).BuildResponse();
+            //session.SendAsync(clientMsg);
+            QRServerManager.Server.SendAsync(endPoint, response.SendingBuffer);
 
-            session.SendAsync(clientMsg);
         }
     }
 }

@@ -1,16 +1,16 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using NATNegotiation.Abstraction.BaseClass;
+﻿using NATNegotiation.Abstraction.BaseClass;
+using NATNegotiation.Entity.Structure;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
-using System;
-using NATNegotiation.Entity.Structure;
 using NATNegotiation.Entity.Structure.Result;
+using System;
+using UniSpyLib.Abstraction.Interface;
 
 namespace NATNegotiation.Handler.CmdHandler
 {
     internal sealed class InitHandler : NNCmdHandlerBase
     {
-        private new InitRequest _request=>(InitRequest)base._request; 
+        private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result
         {
             get { return (InitResult)base._result; }

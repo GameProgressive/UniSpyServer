@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Extensions;
-using PresenceSearchPlayer.Entity.Enumerate;
+﻿using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass

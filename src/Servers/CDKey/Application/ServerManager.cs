@@ -1,9 +1,9 @@
 ﻿using CDKey.Network;
+using System;
+using System.Net;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
-using System;
-using System.Net;
 namespace CDKey.Application
 {
     /// <summary>

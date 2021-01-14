@@ -1,42 +1,30 @@
-﻿using System;
+﻿using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Structure.Result;
 using System.Collections.Generic;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
-using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Structure.Request;
-using QueryReport.Network;
 
 namespace QueryReport.Entity.Structure.Response
 {
-    public class HeartBeatResponse : QRResponseBase
+    internal sealed class HeartBeatResponse : QRResponseBase
     {
-        public string RemoteIP { get; protected set; }
-        public string RemotePort { get; protected set; }
-        public static readonly byte[] Challenge= { 0x54, 0x54, 0x54, 0x00, 0x00 };
-        public static readonly byte[] Spliter = { 0x00, 0x00, 0x00, 0x00 };
-
-        public HeartBeatResponse(QRSession session,HeartBeatRequest request) : base(request)
+        private new HeartBeatResult _result => (HeartBeatResult)base._result;
+        private static readonly byte[] Challenge = { 0x54, 0x54, 0x54, 0x00, 0x00 };
+        private static readonly byte[] Spliter = { 0x00, 0x00, 0x00, 0x00 };
+        public HeartBeatResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
-            RemoteIP = HtonsExtensions.EndPointToIP(session.RemoteEndPoint);
-            RemotePort = HtonsExtensions.EndPointToPort(session.RemoteEndPoint);
-            PacketType = QRPacketType.Challenge;
         }
 
-        public override byte[] BuildResponse()
+        protected override void BuildNormalResponse()
         {
-            //change packet type to challenge
+            base.BuildNormalResponse();
             List<byte> data = new List<byte>();
-
-            data.AddRange(base.BuildResponse());
-            //Challenge
+            data.AddRange(SendingBuffer);
             data.AddRange(Challenge);
-            //IP
-            data.AddRange(HtonsExtensions.IPStringToBytes(RemoteIP));
+            data.AddRange(HtonsExtensions.IPStringToBytes(_result.RemoteIP));
             data.AddRange(Spliter);
-            //port
-            data.AddRange(HtonsExtensions.PortToIntBytes(RemotePort));
-
-            return data.ToArray();
+            data.AddRange(HtonsExtensions.PortToIntBytes(_result.RemotePort));
+            SendingBuffer = data.ToArray();
         }
     }
 }

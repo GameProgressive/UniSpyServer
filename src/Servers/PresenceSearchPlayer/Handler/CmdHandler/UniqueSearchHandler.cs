@@ -1,11 +1,11 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
-using PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Structure.Request;
+using PresenceSearchPlayer.Entity.Structure.Response;
+using PresenceSearchPlayer.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
-using PresenceSearchPlayer.Entity.Structure.Result;
-using PresenceSearchPlayer.Entity.Structure.Response;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
@@ -47,7 +47,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new UniqueSearchResponse(_request,_result);
+            _response = new UniqueSearchResponse(_request, _result);
         }
     }
 }

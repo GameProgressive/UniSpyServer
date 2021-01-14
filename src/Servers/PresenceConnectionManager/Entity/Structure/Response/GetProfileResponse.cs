@@ -1,5 +1,4 @@
-﻿using System;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.MiscMethod;

@@ -1,14 +1,14 @@
-﻿using System;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler.CmdHandler;
+using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Handler.CmdSwticher
 {
-    internal class PCMCmdHandlerSerializer : UniSpyCmdHandlerSerializerBase
+    internal class PCMCmdHandlerSerializer : UniSpyCmdHandlerFactoryBase
     {
         private new PCMRequestBase _request => (PCMRequestBase)base._request;
         public PCMCmdHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)

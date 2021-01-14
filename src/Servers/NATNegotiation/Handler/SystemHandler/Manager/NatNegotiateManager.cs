@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using NATNegotiation.Application;
-using NATNegotiation.Entity.Enumerate;
+﻿using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure;
-using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
 using Serilog.Events;
-using UniSpyLib.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using UniSpyLib.Logging;
 namespace NATNegotiation.Handler.SystemHandler.Manager
 {
     public class NatNegotiateManager

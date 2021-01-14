@@ -1,9 +1,9 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
-using UniSpyLib.UniSpyConfig;
-using Serilog;
+﻿using Serilog;
 using Serilog.Events;
 using System;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
+using UniSpyLib.UniSpyConfig;
 
 namespace UniSpyLib.Logging
 {

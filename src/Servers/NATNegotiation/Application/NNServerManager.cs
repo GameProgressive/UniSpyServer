@@ -1,9 +1,9 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
-using UniSpyLib.UniSpyConfig;
-using NATNegotiation.Network;
+﻿using NATNegotiation.Network;
 using System;
 using System.Net;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
+using UniSpyLib.UniSpyConfig;
 
 namespace NATNegotiation.Application
 {

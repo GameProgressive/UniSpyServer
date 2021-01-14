@@ -1,7 +1,6 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using System.Collections.Generic;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Response;
+using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
@@ -19,7 +18,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new KeepAliveResponse(_request,_result);
+            _response = new KeepAliveResponse(_request, _result);
         }
     }
 }

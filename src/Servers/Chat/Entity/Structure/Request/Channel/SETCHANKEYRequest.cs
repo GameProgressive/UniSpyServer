@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
 using System.Collections.Generic;
+using UniSpyLib.Extensions;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
@@ -15,9 +15,9 @@ namespace Chat.Entity.Structure.ChatCommand
         public override void Parse()
         {
             base.Parse();
-            if(!ErrorCode)
+            if (!ErrorCode)
             {
-               ErrorCode = false;
+                ErrorCode = false;
                 return;
             }
 

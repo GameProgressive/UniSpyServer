@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using Serilog.Events;
+using System;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Entity.Structure;
 using UniSpyLib.Logging;
-using Serilog.Events;
-using System;
 
 namespace GameStatus.Application
 {
@@ -18,7 +18,7 @@ namespace GameStatus.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error,e.ToString());
+                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
 
             Console.WriteLine("Press < Q > to exit. ");

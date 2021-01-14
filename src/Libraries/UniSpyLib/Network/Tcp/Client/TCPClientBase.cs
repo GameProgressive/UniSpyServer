@@ -1,15 +1,14 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
-using UniSpyLib.UniSpyConfig;
-using Serilog.Events;
+﻿using Serilog.Events;
 using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
+using UniSpyLib.UniSpyConfig;
 using TcpClient = NetCoreServer.TcpClient;
-using System.Collections.Generic;
 
 namespace UniSpyLib.Network
 {

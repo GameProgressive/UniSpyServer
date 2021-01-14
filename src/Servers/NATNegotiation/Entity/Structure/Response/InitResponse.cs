@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using UniSpyLib.Extensions;
-using NATNegotiation.Abstraction.BaseClass;
+﻿using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Structure.Request;
-using UniSpyLib.Abstraction.BaseClass;
 using NATNegotiation.Entity.Structure.Result;
+using System.Collections.Generic;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Entity.Structure.Response
 {

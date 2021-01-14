@@ -2,7 +2,7 @@
 
 namespace QueryReport.Entity.Structure.Request
 {
-    public class ClientMessageRequest:QRRequestBase
+    internal sealed class ClientMessageRequest : QRRequestBase
     {
         public ClientMessageRequest(byte[] rawRequest) : base(rawRequest)
         {

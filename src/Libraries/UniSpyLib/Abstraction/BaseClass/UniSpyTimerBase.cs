@@ -1,5 +1,5 @@
-﻿using UniSpyLib.Logging;
-using System.Timers;
+﻿using System.Timers;
+using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {

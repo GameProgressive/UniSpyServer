@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using ServerBrowser.Abstraction.BaseClass;
+﻿using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure.Request;
+using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
@@ -13,8 +13,17 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             _session.ServerMessageList.Add(_request);
+        }
+
+        protected override void RequestCheck()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override void ResponseConstruct()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

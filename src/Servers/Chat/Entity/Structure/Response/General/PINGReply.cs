@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure.User;
+﻿using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Structure.Response.General
 {

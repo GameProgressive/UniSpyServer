@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Serilog.Events;
+using System;
 using System.Collections.Generic;
-using Serilog.Events;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
@@ -45,7 +45,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
-           
+
         }
 
         protected abstract void SerializeRequests();

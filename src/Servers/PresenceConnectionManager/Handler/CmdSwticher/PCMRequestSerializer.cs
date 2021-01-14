@@ -1,17 +1,17 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
-using UniSpyLib.MiscMethod;
-using PresenceConnectionManager.Entity.Structure;
+﻿using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using System;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
+using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    internal class PCMRequestSerializer : UniSpyRequestSerializerBase
+    internal class PCMRequestSerializer : UniSpyRequestFactoryBase
     {
         private new string _rawRequest => (string)base._rawRequest;
 

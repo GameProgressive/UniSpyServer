@@ -1,6 +1,6 @@
-﻿using System.Net;
-using NATNegotiation.Abstraction.BaseClass;
+﻿using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
+using System.Net;
 
 namespace NATNegotiation.Entity.Structure.Result
 {

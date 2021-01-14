@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     {
         public string Uniquenick { get; private set; }
         public List<uint> Namespaces { get; protected set; }
-        public SearchUniqueRequest(string rawRequest) :base(rawRequest)
+        public SearchUniqueRequest(string rawRequest) : base(rawRequest)
         {
 
         }

@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using NATNegotiation.Abstraction.BaseClass;
+﻿using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
+using UniSpyLib.Abstraction.Interface;
 
 namespace NATNegotiation.Handler.CmdHandler
 {

@@ -1,6 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -24,7 +23,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public string Nick { get; private set; }
         public string Uniquenick { get; private set; }
         public uint NamespaceID { get; protected set; }
-        public SearchRequest(string rawRequest) :base(rawRequest)
+        public SearchRequest(string rawRequest) : base(rawRequest)
         {
         }
 
@@ -39,7 +38,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             if (!RequestKeyValues.ContainsKey("profileid")
                 && !RequestKeyValues.ContainsKey("nick")
                 && !RequestKeyValues.ContainsKey("email")
-                && !RequestKeyValues.ContainsKey("namespaceid") 
+                && !RequestKeyValues.ContainsKey("namespaceid")
                 && !RequestKeyValues.ContainsKey("gamename"))
             {
                 ErrorCode = GPErrorCode.Parse;

@@ -1,13 +1,12 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     internal sealed class DelBuddyRequest : PCMRequestBase
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\
-        public uint DeleteProfileID { get;private set; }
+        public uint DeleteProfileID { get; private set; }
         public DelBuddyRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -15,7 +14,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if( ErrorCode != GPErrorCode.NoError)
+            if (ErrorCode != GPErrorCode.NoError)
             {
                 return;
             }

@@ -1,9 +1,9 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
-using UniSpyLib.UniSpyConfig;
+﻿using ServerBrowser.Network;
 using System;
 using System.Net;
-using ServerBrowser.Network;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
+using UniSpyLib.UniSpyConfig;
 
 namespace ServerBrowser.Application
 {

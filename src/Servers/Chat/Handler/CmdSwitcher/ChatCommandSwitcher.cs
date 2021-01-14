@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using System;
+﻿using System;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CommandSwitcher
 {

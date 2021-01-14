@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.MiscMethod;
 
 namespace GameStatus.Abstraction.BaseClass

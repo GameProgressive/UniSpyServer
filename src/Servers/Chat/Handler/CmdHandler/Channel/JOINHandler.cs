@@ -1,12 +1,12 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.Response;
+using Chat.Entity.Structure.Misc;
+using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Handler.SystemHandler.ChannelManage;
+using System.Collections.Generic;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
-using System.Collections.Generic;
 
 namespace Chat.Handler.CmdHandler.Channel
 {
@@ -32,7 +32,7 @@ namespace Chat.Handler.CmdHandler.Channel
         //广播加入信息
         //发送频道模式给此用户
         //发送频道用户列表给此用户
-    
+
         protected override void RequestCheck()
         {
             base.RequestCheck();
@@ -117,13 +117,13 @@ namespace Chat.Handler.CmdHandler.Channel
                 if (_channel.IsUserBanned(_user))
                 {
                     _errorCode = ChatErrorCode.IRCError;
-                    _sendingBuffer = ChatIRCError.BuildBannedFromChannelError(_channel.Property.ChannelName);
+                    _sendingBuffer = ChatIRCErrorCode.BuildBannedFromChannelError(_channel.Property.ChannelName);
                     return;
                 }
                 if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
                 {
                     _errorCode = ChatErrorCode.IRCError;
-                    _sendingBuffer = ChatIRCError.BuildChannelIsFullError(_channel.Property.ChannelName);
+                    _sendingBuffer = ChatIRCErrorCode.BuildChannelIsFullError(_channel.Property.ChannelName);
                     return;
                 }
                 //if all pass, it mean  we excute join channel
@@ -156,7 +156,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
             if (buffer.Length != 3)
             {
-               return false;
+                return false;
             }
 
             List<string> peerGameKeys = RedisExtensions.GetAllKeys(RedisDBNumber.PeerGroup);
@@ -165,7 +165,7 @@ namespace Chat.Handler.CmdHandler.Channel
                 return true;
             }
 
-           return false;
+            return false;
         }
     }
 }

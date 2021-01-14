@@ -1,10 +1,10 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
-using Serilog.Events;
+﻿using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Handler.SystemHandler.Error;
 using ServerBrowser.Network;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
@@ -14,7 +14,7 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected byte[] _sendingBuffer;
         protected new SBSession _session { get { return (SBSession)base._session; } }
 
-        public SBCmdHandlerBase(IUniSpySession session, IUniSpyRequest request):base(session,request)
+        public SBCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _errorCode = SBErrorCode.NoError;
         }

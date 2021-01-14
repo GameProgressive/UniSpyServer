@@ -1,12 +1,12 @@
-﻿using UniSpyLib.MiscMethod;
-using PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     internal class ValidRequest : PSPRequestBase
     {
-        public ValidRequest(string rawRequest) :base(rawRequest)
+        public ValidRequest(string rawRequest) : base(rawRequest)
         {
         }
 

@@ -1,15 +1,13 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
-using PresenceConnectionManager.Abstraction.SystemHandler;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
-using Serilog.Events;
 using PresenceConnectionManager.Network;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceConnectionManager.Abstraction.BaseClass;
+using Serilog.Events;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Handler.CmdHandler.General
 {
-    internal class SDKRevisionHandler: PCMCmdHandlerBase
+    internal class SDKRevisionHandler : PCMCmdHandlerBase
     {
         public SDKRevisionHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

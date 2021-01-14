@@ -1,50 +1,28 @@
 ﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
+using QueryReport.Entity.Structure.Result;
 using System;
 using System.Collections.Generic;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Entity.Structure.Request
 {
-    public class ClientMessageResponse:QRResponseBase
+    internal sealed class ClientMessageResponse : QRResponseBase
     {
+        private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
+        private new ClientMessageResult _result => (ClientMessageResult)base._result;
 
-        public byte[] Message { get; protected set; }
-        public int MessageKey { get; protected set; }
-
-        public ClientMessageResponse(byte[] message,int messageKey,QRRequestBase request) : base(request)
+        public ClientMessageResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
-            Message = message;
-            MessageKey = messageKey;
-            PacketType = QRPacketType.ClientMessage;
         }
 
-        public ClientMessageResponse(byte[] message, int messageKey, int instantKey) : base(QRPacketType.ClientMessage, instantKey)
+        protected override void BuildNormalResponse()
         {
-            Message = message;
-            MessageKey = messageKey;
-        }
-
-        public override byte[] BuildResponse()
-        {
+            base.BuildNormalResponse();
             List<byte> data = new List<byte>();
-            //we need to change packet type to client message then send
-            //PacketType = QRPacketType.ClientMessage;
-            data.AddRange(base.BuildResponse());
-            data.AddRange(BitConverter.GetBytes(MessageKey));
-            data.AddRange(Message);
-            return data.ToArray();
-        }
-
-        public ClientMessageResponse SetMessage(byte[] message)
-        {
-            Message = message;
-            return this;
-        }
-
-        public ClientMessageResponse SetMessageKey(int key)
-        {
-            MessageKey = key;
-            return this;
+            data.AddRange(SendingBuffer);
+            data.AddRange(BitConverter.GetBytes((int)_result.MessageKey));
+            data.AddRange(_result.NatNegMessage);
+            SendingBuffer = data.ToArray();
         }
     }
 }

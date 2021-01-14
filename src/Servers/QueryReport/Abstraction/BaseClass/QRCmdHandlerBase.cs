@@ -1,10 +1,7 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Handler.SystemHandler.ErrorMessage;
+﻿using QueryReport.Entity.Enumerate;
 using QueryReport.Network;
-using Serilog.Events;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 
 namespace QueryReport.Abstraction.BaseClass
@@ -12,13 +9,13 @@ namespace QueryReport.Abstraction.BaseClass
     internal abstract class QRCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected new QRRequestBase _request => (QRRequestBase)base._request;
-        protected new QRSession _session => (QRSession)base._session; 
-        protected new QRResultBase _result 
+        protected new QRSession _session => (QRSession)base._session;
+        protected new QRResultBase _result
         {
-            get { return (QRResultBase)base._result;  }
-            set { base._result = value; }
+            get => (QRResultBase)base._result;
+            set => base._result = value;
         }
-        protected QRCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session,request)
+        protected QRCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

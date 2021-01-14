@@ -1,5 +1,5 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {

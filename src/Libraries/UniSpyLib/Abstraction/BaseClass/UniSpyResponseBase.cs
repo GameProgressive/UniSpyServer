@@ -8,7 +8,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         public object SendingBuffer { get; protected set; }
         protected UniSpyResultBase _result { get; }
         protected UniSpyRequestBase _request { get; }
-        public UniSpyResponseBase(UniSpyRequestBase request,UniSpyResultBase result)
+        public UniSpyResponseBase(UniSpyRequestBase request, UniSpyResultBase result)
         {
             _request = request;
             _result = result;

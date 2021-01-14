@@ -1,5 +1,4 @@
-﻿using System;
-namespace NATNegotiation.Entity.Structure.Request
+﻿namespace NATNegotiation.Entity.Structure.Request
 {
     internal class ErtAckRequest : InitRequest
     {

@@ -1,7 +1,6 @@
-﻿using System;
+﻿using QueryReport.Entity.Structure;
 using System.Collections.Generic;
 using System.Net;
-using QueryReport.Entity.Structure;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 namespace QueryReport.Handler.SystemHandler.Redis

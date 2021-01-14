@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using PresenceSearchPlayer.Entity.Structure;
+﻿using PresenceSearchPlayer.Entity.Structure;
 using PresenceSearchPlayer.Entity.Structure.Request;
+using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
@@ -8,7 +8,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    internal class PSPRequestSerializer : UniSpyRequestSerializerBase
+    internal class PSPRequestSerializer : UniSpyRequestFactoryBase
     {
         private new string _rawRequest => (string)base._rawRequest;
         public PSPRequestSerializer(string rawRequest) : base(rawRequest)

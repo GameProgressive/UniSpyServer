@@ -21,7 +21,7 @@
             base.Parse();
             if (!ErrorCode)
             {
-               ErrorCode = false;
+                ErrorCode = false;
             }
 
             if (_cmdParams[0].Contains("#"))

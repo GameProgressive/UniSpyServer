@@ -1,22 +1,22 @@
-﻿using UniSpyLib.Encryption;
-using UniSpyLib.Logging;
-using UniSpyLib.Network;
-using Serilog.Events;
-using GameStatus.Entity.Structure;
+﻿using GameStatus.Entity.Structure.Misc;
 using GameStatus.Handler.CmdSwitcher;
+using Serilog.Events;
 using System;
 using System.Text;
+using UniSpyLib.Encryption;
+using UniSpyLib.Logging;
+using UniSpyLib.Network;
 
 namespace GameStatus.Network
 {
     internal sealed class GSSession : TCPSessionBase
     {
 
-        public PlayerData PlayerData { get; set; }
+        public GSPlayerInfo PlayerData { get; set; }
 
         public GSSession(TCPServerBase server) : base(server)
         {
-            PlayerData = new PlayerData();
+            PlayerData = new GSPlayerInfo();
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace GameStatus.Network
         /// </summary>
         protected override void OnConnected()
         {
-            SendAsync($@"\challenge\{PlayerData.Challenge}");
+            SendAsync($@"\challenge\{GSPlayerInfo.Challenge}");
             base.OnConnected();
         }
 

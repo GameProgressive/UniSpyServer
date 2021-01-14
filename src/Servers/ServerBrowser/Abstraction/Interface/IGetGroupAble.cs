@@ -1,5 +1,5 @@
-﻿using UniSpyLib.Database.DatabaseModel.MySql;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace ServerBrowser.Abstraction.Interface
 {

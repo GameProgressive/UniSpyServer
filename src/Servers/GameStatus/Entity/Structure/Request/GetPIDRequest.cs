@@ -1,6 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace GameStatus.Entity.Structure.Request
 {

@@ -1,8 +1,7 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 
-namespace  PresenceConnectionManager.Entity.Structure.Request
+namespace PresenceConnectionManager.Entity.Structure.Request
 {
     /// <summary>
     /// \registercdkey\sesskey\<sesskey>\cdkeyenc\<cdkeyenc>\id\<id>\final\
@@ -17,7 +16,7 @@ namespace  PresenceConnectionManager.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if( ErrorCode != GPErrorCode.NoError)
+            if (ErrorCode != GPErrorCode.NoError)
             {
                 return;
             }

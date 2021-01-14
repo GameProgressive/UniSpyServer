@@ -1,6 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.ChatCommand.Channel;
-using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 

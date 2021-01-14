@@ -1,7 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using System.Collections.Generic;
 
-namespace  PresenceConnectionManager.Entity.Structure.Request
+namespace PresenceConnectionManager.Entity.Structure.Request
 {
     internal class LogoutRequest : PCMRequestBase
     {

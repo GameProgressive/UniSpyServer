@@ -15,9 +15,9 @@ namespace Chat.Entity.Structure.ChatCommand
         public override void Parse()
         {
             base.Parse();
-            if(!ErrorCode)
+            if (!ErrorCode)
             {
-               ErrorCode = false;
+                ErrorCode = false;
                 return;
             }
 

@@ -1,11 +1,11 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
+using PresenceConnectionManager.Entity.Structure.Response;
+using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Linq;
-using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Structure.Result;
-using PresenceConnectionManager.Entity.Structure.Response;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     {
         protected new NewProfileRequest _request
         {
-            get { return (NewProfileRequest)base._request;}
+            get { return (NewProfileRequest)base._request; }
         }
         protected new NewProfileResult _result
         {
@@ -69,7 +69,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new NewProfileResponse(_request,_result);
+            _response = new NewProfileResponse(_request, _result);
         }
     }
 }

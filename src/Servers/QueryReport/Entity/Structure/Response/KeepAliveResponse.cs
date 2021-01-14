@@ -1,16 +1,11 @@
-﻿using System;
-using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
+﻿using QueryReport.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Entity.Structure.Response
 {
-    public class KeepAliveResponse : QRResponseBase
+    internal sealed class KeepAliveResponse : QRResponseBase
     {
-        public KeepAliveResponse(QRRequestBase request) : base(request)
-        {
-        }
-
-        public KeepAliveResponse(QRPacketType packetType, int instantKey) : base(packetType, instantKey)
+        public KeepAliveResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
     }

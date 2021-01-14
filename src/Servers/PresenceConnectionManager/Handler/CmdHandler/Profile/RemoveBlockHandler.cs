@@ -1,13 +1,12 @@
-﻿using UniSpyLib.Abstraction.Interface;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using System;
-using System.Collections.Generic;
-using PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     internal class RemoveBlockHandler : PCMCmdHandlerBase
     {
-        public RemoveBlockHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
+        public RemoveBlockHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             throw new NotImplementedException();
         }

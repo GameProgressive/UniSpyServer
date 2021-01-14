@@ -1,14 +1,28 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using QueryReport.Abstraction.BaseClass;
+﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Structure.Request;
 using System;
+using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
 {
-    public class ClientMessageHandler : QRCmdHandlerBase
+    internal sealed class ClientMessageHandler : QRCmdHandlerBase
     {
-        protected new ClientMessageRequest _request { get { return (ClientMessageRequest)base._request; } }
-        protected ClientMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        private new ClientMessageRequest _request { get { return (ClientMessageRequest)base._request; } }
+        public ClientMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        {
+        }
+
+        protected override void RequestCheck()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void DataOperation()
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void ResponseConstruct()
         {
             throw new NotImplementedException();
         }

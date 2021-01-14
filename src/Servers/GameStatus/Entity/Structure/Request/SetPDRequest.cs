@@ -1,9 +1,7 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
 
 namespace GameStatus.Entity.Structure.Request
 {
@@ -23,7 +21,7 @@ namespace GameStatus.Entity.Structure.Request
 
         public override void Parse()
         {
-           base.Parse();
+            base.Parse();
             if (ErrorCode != GSErrorCode.NoError)
             {
                 return;

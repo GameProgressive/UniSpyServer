@@ -1,8 +1,7 @@
-﻿using UniSpyLib.Abstraction.Interface;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Request;
-using System.Collections.Generic;
-using PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {

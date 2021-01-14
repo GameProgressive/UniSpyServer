@@ -1,5 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.User;
+using Chat.Entity.Structure.Misc;
 using System.Linq;
 
 namespace Chat.Entity.Structure.Response.General

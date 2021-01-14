@@ -1,5 +1,5 @@
-﻿using UniSpyLib.Database.DatabaseModel.MySql;
-using System.Linq;
+﻿using System.Linq;
+using UniSpyLib.Database.DatabaseModel.MySql;
 namespace UniSpyLib.Extensions
 {
     public class DataOperationExtensions

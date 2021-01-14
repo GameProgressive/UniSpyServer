@@ -7,12 +7,9 @@ using UniSpyLib.Logging;
 
 namespace QueryReport.Handler.CmdSwitcher
 {
-    public class QRCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class QRCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        protected new byte[] _rawRequest
-        {
-            get { return (byte[])base._rawRequest; }
-        }
+        private new byte[] _rawRequest => (byte[])base._rawRequest;
         public QRCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
@@ -21,13 +18,13 @@ namespace QueryReport.Handler.CmdSwitcher
         {
             foreach (var request in _requests)
             {
-                _handlers.Add(new QRCmdHandlerSerializer(_session, request).Serialize());
+                _handlers.Add(new QRCmdHandlerFactory(_session, request).Serialize());
             }
         }
 
         protected override void SerializeRequests()
         {
-            var request = new QRRequestSerializer(_rawRequest).Serialize();
+            var request = new QRRequestFactory(_rawRequest).Serialize();
             request.Parse();
             if (!(bool)request.ErrorCode)
             {

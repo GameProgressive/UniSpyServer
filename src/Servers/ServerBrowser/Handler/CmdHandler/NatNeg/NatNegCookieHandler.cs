@@ -1,11 +1,11 @@
-﻿using System.Linq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.NatNeg;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Request;
 using StackExchange.Redis;
+using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
@@ -14,13 +14,10 @@ namespace ServerBrowser.Handler.CmdHandler
     /// <summary>
     /// we need forward this to game server
     /// </summary>
-    public class NatNegCookieHandler : SBCmdHandlerBase
+    internal sealed class NatNegCookieHandler : SBCmdHandlerBase
     {
-        protected new AdHocRequest _request
-        {
-            get { return (AdHocRequest)base._request; }
-            set { base._request = value; }
-        }
+        private new AdHocRequest _request => (AdHocRequest)base._request;
+
         private NatNegCookie _natNegCookie;
         private GameServerInfo _gameServer;
         public NatNegCookieHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -30,7 +27,6 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
             if (_session.ServerMessageList.Count == 0)
             {
                 _errorCode = SBErrorCode.Parse;
@@ -53,7 +49,6 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             _natNegCookie.GameServerRemoteIP = _request.TargetServerIP;
             _natNegCookie.GameServerRemotePort = _gameServer.RemoteQueryReportPort;
             _natNegCookie.NatNegMessage = _request.RawRequest;
@@ -61,7 +56,6 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            base.ResponseConstruct();
         }
 
         protected override void Response()

@@ -1,5 +1,4 @@
-﻿using System;
-namespace CDKey.Entity.Structure
+﻿namespace CDKey.Entity.Structure
 {
     internal class RequestName
     {

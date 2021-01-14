@@ -1,7 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Extensions;
 
 namespace Chat.Entity.Structure.ChatCommand.Channel
 {

@@ -1,5 +1,5 @@
 ﻿using Chat.Entity.Structure;
-using Chat.Entity.Structure.Response;
+using Chat.Entity.Structure.Misc;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Network;
 using UniSpyLib.Abstraction.Interface;
@@ -32,7 +32,7 @@ namespace Chat.Abstraction.BaseClass
                         if (!ChatSessionManager.GetSessionByNickName(_request.NickName, out _otherSession))
                         {
                             _errorCode = ChatErrorCode.NoSuchNick;
-                            _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                            _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
                         }
                     }
                     break;

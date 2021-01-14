@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using Serilog.Events;
+using System;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Entity.Structure;
 using UniSpyLib.Logging;
-using Serilog.Events;
-using System;
 
 namespace CDKey.Application
 {

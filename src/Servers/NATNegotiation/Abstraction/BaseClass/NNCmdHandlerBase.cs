@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using NATNegotiation.Entity.Enumerate;
+using NATNegotiation.Network;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
-using NATNegotiation.Entity.Enumerate;
-using NATNegotiation.Network;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
@@ -21,10 +21,10 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
             get { return (NNRequestBase)base._request; }
         }
-        protected new NNResultBase _result 
-        { 
-            get { return (NNResultBase)base._result; } 
-            set { base._result = value; } 
+        protected new NNResultBase _result
+        {
+            get { return (NNResultBase)base._result; }
+            set { base._result = value; }
         }
         public NNCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

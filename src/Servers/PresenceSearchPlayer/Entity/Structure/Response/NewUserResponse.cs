@@ -1,5 +1,4 @@
-﻿using System;
-using PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Result;
 using UniSpyLib.Abstraction.BaseClass;

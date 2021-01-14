@@ -20,7 +20,7 @@ namespace GameStatus.Entity.Structure.Request
 
         public override void Parse()
         {
-           base.Parse();
+            base.Parse();
             if (ErrorCode != GSErrorCode.NoError)
             {
                 return;

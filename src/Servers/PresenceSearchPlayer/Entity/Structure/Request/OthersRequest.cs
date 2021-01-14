@@ -1,12 +1,11 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     internal class OthersRequest : PSPRequestBase
     {
-        public OthersRequest(string rawRequest) :base(rawRequest)
+        public OthersRequest(string rawRequest) : base(rawRequest)
         {
         }
 

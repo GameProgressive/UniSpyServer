@@ -1,10 +1,10 @@
-﻿using UniSpyLib.Extensions;
+﻿using NATNegotiation.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using System;
+using System.Linq;
 using System.Net;
 using UniSpyLib.Abstraction.BaseClass;
-using ServerBrowser.Entity.Enumerate;
-using System.Linq;
-using NATNegotiation.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {

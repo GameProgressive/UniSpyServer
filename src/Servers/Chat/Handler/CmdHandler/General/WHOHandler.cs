@@ -1,9 +1,8 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChannelInfo;
-using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.Response;
+using Chat.Entity.Structure.Misc;
+using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
@@ -88,10 +87,10 @@ namespace Chat.Handler.CmdHandler.General
             {
                 case ChatErrorCode.NoSuchChannel:
                     _sendingBuffer =
-                        ChatIRCError.BuildNoSuchChannelError(_request.ChannelName);
+                        ChatIRCErrorCode.BuildNoSuchChannelError(_request.ChannelName);
                     break;
                 case ChatErrorCode.NoSuchNick:
-                    _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                    _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
                     break;
             }
 

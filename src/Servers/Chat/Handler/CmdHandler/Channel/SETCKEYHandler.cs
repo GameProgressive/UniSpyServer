@@ -1,8 +1,8 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChannelInfo;
 using Chat.Entity.Structure.ChatCommand;
-using Chat.Entity.Structure.Response;
+using Chat.Entity.Structure.Misc;
+using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Response.General;
 using UniSpyLib.Abstraction.Interface;
 
@@ -38,7 +38,7 @@ namespace Chat.Handler.CmdHandler.Channel
                 if (!_channel.GetChannelUserByNickName(_request.NickName, out _otherUser))
                 {
                     _errorCode = ChatErrorCode.IRCError;
-                    _sendingBuffer = ChatIRCError.BuildNoSuchNickError();
+                    _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
                     return;
                 }
             }

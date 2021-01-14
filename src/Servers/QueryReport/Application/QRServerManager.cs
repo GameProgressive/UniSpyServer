@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.UniSpyConfig;
-using QueryReport.Network;
+﻿using QueryReport.Network;
 using System;
 using System.Net;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.UniSpyConfig;
 
 namespace QueryReport.Application
 {

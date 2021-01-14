@@ -1,14 +1,14 @@
-﻿using System.Linq;
-using NATNegotiation.Abstraction.BaseClass;
+﻿using NATNegotiation.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Request;
+using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBRequestSerializer : UniSpyRequestSerializerBase
+    public class SBRequestSerializer : UniSpyRequestFactoryBase
     {
         protected new byte[] _rawRequest
         {

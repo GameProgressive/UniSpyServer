@@ -1,6 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace GameStatus.Entity.Structure.Request
 {
@@ -21,7 +20,7 @@ namespace GameStatus.Entity.Structure.Request
 
         public override void Parse()
         {
-           base.Parse();
+            base.Parse();
             if (ErrorCode != GSErrorCode.NoError)
             {
                 return;

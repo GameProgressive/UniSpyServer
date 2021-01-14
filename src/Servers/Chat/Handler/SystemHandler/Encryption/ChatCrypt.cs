@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure.Misc;
 using System.Text;
 
 namespace Chat.Handler.SystemHandler.Encryption
@@ -90,7 +90,7 @@ namespace Chat.Handler.SystemHandler.Encryption
 
         public static bool EncodeIP()
         {
-           return false;
+            return false;
         }
     }
 }

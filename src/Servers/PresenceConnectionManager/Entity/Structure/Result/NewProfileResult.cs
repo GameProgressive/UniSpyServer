@@ -1,10 +1,8 @@
-﻿using System;
-using PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal class NewProfileResult:PCMResultBase
+    internal class NewProfileResult : PCMResultBase
     {
         public uint ProfileID;
 

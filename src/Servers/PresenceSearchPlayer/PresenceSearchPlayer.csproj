@@ -26,7 +26,6 @@
         <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Entity\Structure\" />
       <Folder Include="Abstraction\BaseClass\" />
       <Folder Include="Entity\Structure\Request\" />
       <Folder Include="Entity\Structure\Response\" />

@@ -1,5 +1,4 @@
-﻿using System;
-namespace PresenceSearchPlayer.Entity.Enumerator
+﻿namespace PresenceSearchPlayer.Entity.Enumerator
 {
     public enum NewUserStatus
     {

@@ -1,16 +1,20 @@
-﻿using System.Runtime.Serialization;
+﻿using QueryReport.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
 using UniSpyLib.Logging;
 
 namespace QueryReport.Abstraction.BaseClass
 {
     internal abstract class QRResponseBase : UniSpyResponseBase
     {
-        private new QRRequestBase _request => (QRRequestBase)base._request;
-        private new QRResultBase _result => (QRResultBase)base._result;
+        protected new QRRequestBase _request => (QRRequestBase)base._request;
+        protected new QRResultBase _result => (QRResultBase)base._result;
+        public new byte[] SendingBuffer
+        {
+            get => (byte[])base.SendingBuffer;
+            protected set => base.SendingBuffer = value;
+        }
         protected QRResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
@@ -27,7 +31,7 @@ namespace QueryReport.Abstraction.BaseClass
         }
         protected override void BuildErrorResponse()
         {
-            LogWriter.ToLog();
+            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, _result.ErrorCode.ToString());
         }
         protected override void BuildNormalResponse()
         {

@@ -1,8 +1,7 @@
-﻿using System;
+﻿using NATNegotiation.Entity.Enumerate;
+using NATNegotiation.Entity.Structure;
 using System.Collections.Generic;
 using System.Net;
-using NATNegotiation.Entity.Enumerate;
-using NATNegotiation.Entity.Structure;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 

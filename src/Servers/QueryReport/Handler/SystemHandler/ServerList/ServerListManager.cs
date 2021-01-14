@@ -1,7 +1,7 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Logging;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using System;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Logging;
 
 namespace QueryReport.Handler.SystemHandler.ServerList
 {

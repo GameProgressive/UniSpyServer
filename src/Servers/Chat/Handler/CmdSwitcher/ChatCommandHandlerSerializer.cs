@@ -1,14 +1,14 @@
-﻿using System;
-using System.Linq;
-using Chat.Abstraction.BaseClass;
+﻿using Chat.Abstraction.BaseClass;
 using Serilog.Events;
+using System;
+using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
 namespace Chat.Handler.CommandSwitcher
 {
-    public class ChatCommandHandlerSerializer:UniSpyCmdHandlerSerializerBase
+    public class ChatCommandHandlerSerializer : UniSpyCmdHandlerFactoryBase
     {
         public ChatCommandHandlerSerializer(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

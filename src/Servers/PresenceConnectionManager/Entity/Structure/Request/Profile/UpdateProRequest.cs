@@ -1,9 +1,8 @@
-﻿using UniSpyLib.MiscMethod;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System;
-using System.Collections.Generic;
+using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
@@ -45,7 +44,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         public override void Parse()
         {
             base.Parse();
-            if( ErrorCode != GPErrorCode.NoError)
+            if (ErrorCode != GPErrorCode.NoError)
             {
                 return;
             }

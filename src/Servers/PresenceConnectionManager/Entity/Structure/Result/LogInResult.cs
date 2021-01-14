@@ -1,8 +1,5 @@
-﻿using System;
-using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Structure.Request;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Structure.Data;
-using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {

@@ -1,15 +1,14 @@
 ﻿using Chat.Abstraction.BaseClass;
-using UniSpyLib.Logging;
 using Serilog.Events;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 
 namespace Chat.Handler.CommandSwitcher
 {
-    public class ChatRequestSerializer : UniSpyRequestSerializerBase
+    public class ChatRequestSerializer : UniSpyRequestFactoryBase
     {
         protected new string _rawRequest;
         public ChatRequestSerializer(object rawRequest) : base(rawRequest)

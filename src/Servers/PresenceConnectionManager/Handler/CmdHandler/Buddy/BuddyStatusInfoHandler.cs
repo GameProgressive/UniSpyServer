@@ -1,6 +1,5 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using PresenceConnectionManager.Abstraction.BaseClass;
-using System.Collections.Generic;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Abstraction.SystemHandler.Buddy
 {

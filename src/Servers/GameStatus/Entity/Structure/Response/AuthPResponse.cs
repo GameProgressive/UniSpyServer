@@ -1,7 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Structure.Request;
 using GameStatus.Entity.Structure.Result;
-using System;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Structure.Response

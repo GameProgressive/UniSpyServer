@@ -6,7 +6,7 @@ namespace Chat.Handler.CmdHandler.Channel
 {
     public class PARTHandler : ChatChannelHandlerBase
     {
-        protected new  PARTRequest _request { get { return (PARTRequest)base._request; } }
+        protected new PARTRequest _request { get { return (PARTRequest)base._request; } }
         public PARTHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

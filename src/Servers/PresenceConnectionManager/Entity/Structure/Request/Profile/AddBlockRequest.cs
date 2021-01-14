@@ -1,6 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -15,7 +14,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         {
             base.Parse();
 
-            if( ErrorCode != GPErrorCode.NoError)
+            if (ErrorCode != GPErrorCode.NoError)
             {
                 return;
             }

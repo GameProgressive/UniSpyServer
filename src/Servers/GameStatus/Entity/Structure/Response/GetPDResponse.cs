@@ -1,11 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Structure.Request;
 using GameStatus.Entity.Structure.Result;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Structure.Response

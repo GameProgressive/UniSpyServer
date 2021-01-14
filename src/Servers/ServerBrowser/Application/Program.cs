@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using Serilog.Events;
+using System;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Entity.Structure;
 using UniSpyLib.Logging;
-using Serilog.Events;
-using System;
 
 namespace ServerBrowser.Application
 {
@@ -13,7 +13,7 @@ namespace ServerBrowser.Application
 
             try
             {
-               new SBServerManager(UniSpyServerName.SB).Start();
+                new SBServerManager(UniSpyServerName.SB).Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerManagerBase.RetroSpyVersion;
             }
             catch (Exception e)

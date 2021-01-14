@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure;
 using System.Linq;
+using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
@@ -11,7 +11,7 @@ namespace ServerBrowser.Handler.CmdHandler
     /// </summary>
     public class PushUpdatesHandler : UpdateOptionHandlerBase
     {
-        public PushUpdatesHandler(IUniSpySession session, IUniSpyRequest request) : base(session,request)
+        public PushUpdatesHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

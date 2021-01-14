@@ -1,5 +1,4 @@
-﻿using System;
-using PresenceSearchPlayer.Entity.Enumerate;
+﻿using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Handler.CmdHandler.Error;
 using UniSpyLib.Abstraction.BaseClass;
 
@@ -22,7 +21,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             get { return (string)base.SendingBuffer; }
             protected set { base.SendingBuffer = value; }
         }
-     
+
         protected PCMResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }

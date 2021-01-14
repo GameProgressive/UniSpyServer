@@ -1,5 +1,5 @@
-﻿using UniSpyLib.Network;
-using PresenceSearchPlayer.Handler.CmdSwitcher;
+﻿using PresenceSearchPlayer.Handler.CmdSwitcher;
+using UniSpyLib.Network;
 
 namespace PresenceSearchPlayer.Network
 {

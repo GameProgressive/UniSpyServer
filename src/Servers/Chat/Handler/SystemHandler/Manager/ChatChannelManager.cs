@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure.ChannelInfo;
+﻿using Chat.Entity.Structure.Misc.ChannelInfo;
 using System.Collections.Concurrent;
 
 namespace Chat.Handler.SystemHandler.ChannelManage

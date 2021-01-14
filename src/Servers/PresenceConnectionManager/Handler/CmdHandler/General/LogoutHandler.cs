@@ -1,13 +1,13 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using System.Collections.Generic;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Network;
-using PresenceConnectionManager.Abstraction.BaseClass;
+using System.Collections.Generic;
+using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     internal class LogoutHandler : PCMCmdHandlerBase
     {
-        public LogoutHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
+        public LogoutHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

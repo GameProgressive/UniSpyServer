@@ -14,21 +14,21 @@ namespace Chat.Entity.Structure.ChatCommand
         public override void Parse()
         {
             base.Parse();
-            if(!ErrorCode)
+            if (!ErrorCode)
             {
-               ErrorCode = false;
+                ErrorCode = false;
                 return;
             }
 
             if (_cmdParams.Count != 2)
             {
-               ErrorCode = false;
+                ErrorCode = false;
                 return;
             }
             int max;
             if (!int.TryParse(_cmdParams[0], out max))
             {
-               ErrorCode = false;
+                ErrorCode = false;
                 return;
             }
             MaxNumberOfChannels = max;

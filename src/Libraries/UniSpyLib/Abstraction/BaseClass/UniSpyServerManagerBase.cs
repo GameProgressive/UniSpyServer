@@ -1,9 +1,9 @@
-﻿using UniSpyLib.Database;
+﻿using StackExchange.Redis;
+using System;
+using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
-using StackExchange.Redis;
-using System;
 
 
 namespace UniSpyLib.Abstraction.BaseClass

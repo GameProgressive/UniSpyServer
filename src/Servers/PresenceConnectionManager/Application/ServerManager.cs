@@ -1,9 +1,9 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
-using UniSpyLib.UniSpyConfig;
+﻿using PresenceConnectionManager.Network;
 using System;
 using System.Net;
-using PresenceConnectionManager.Network;
+using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
+using UniSpyLib.UniSpyConfig;
 
 namespace PresenceConnectionManager.Application
 {

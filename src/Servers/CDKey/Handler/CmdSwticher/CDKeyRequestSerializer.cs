@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CDKey.Entity.Structure;
 using System.Linq;
-using CDKey.Entity.Structure;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
@@ -9,7 +7,7 @@ using UniSpyLib.MiscMethod;
 
 namespace CDKey.Handler.CmdSwitcher
 {
-    internal class CDKeyRequestSerializer : UniSpyRequestSerializerBase
+    internal class CDKeyRequestSerializer : UniSpyRequestFactoryBase
     {
         protected new string _rawRequest;
         public CDKeyRequestSerializer(object rawRequest) : base(rawRequest)

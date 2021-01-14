@@ -1,8 +1,8 @@
-﻿using UniSpyLib.Logging;
-using NetCoreServer;
+﻿using NetCoreServer;
 using Serilog.Events;
 using System.Net;
 using System.Net.Sockets;
+using UniSpyLib.Logging;
 
 namespace UniSpyLib.Network
 {

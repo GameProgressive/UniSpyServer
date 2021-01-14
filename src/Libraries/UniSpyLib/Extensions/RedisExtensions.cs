@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyLib.Extensions
 {
@@ -32,7 +32,7 @@ namespace UniSpyLib.Extensions
         public static string GetSpecificValue(string fullKey, RedisDBNumber? dbNumber)
         {
             var redis = UniSpyServerManagerBase.Redis.GetDatabase((int)dbNumber);
-            var matchedKeys = GetMatchedKeys(fullKey,dbNumber);
+            var matchedKeys = GetMatchedKeys(fullKey, dbNumber);
             if (matchedKeys.Count == 0)
             {
                 return null;

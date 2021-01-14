@@ -16,7 +16,7 @@ namespace NATNegotiation.Handler.CmdHandler
 
     internal sealed class ReportHandler : NNCmdHandlerBase
     {
-        private new ReportRequest _request => (ReportRequest)base._request; 
+        private new ReportRequest _request => (ReportRequest)base._request;
         private new ReportResult _result
         {
             get { return (ReportResult)base._result; }

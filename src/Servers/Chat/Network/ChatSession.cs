@@ -1,14 +1,14 @@
-﻿using Chat.Entity.Structure.User;
+﻿using Chat.Entity.Structure.Misc;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Handler.SystemHandler.Encryption;
-using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
-using UniSpyLib.Network;
 using Serilog.Events;
 using System;
 using System.Text;
+using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
+using UniSpyLib.Network;
 
 namespace Chat.Network
 {

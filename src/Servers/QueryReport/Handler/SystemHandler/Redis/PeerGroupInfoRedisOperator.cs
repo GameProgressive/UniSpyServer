@@ -1,5 +1,4 @@
-﻿using System;
-using QueryReport.Entity.Structure.Group;
+﻿using QueryReport.Entity.Structure.Group;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 

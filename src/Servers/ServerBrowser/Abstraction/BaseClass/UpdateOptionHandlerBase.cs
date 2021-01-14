@@ -1,18 +1,18 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Response;
+using ServerBrowser.Entity.Structure.Request;
+using ServerBrowser.Network;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
-using ServerBrowser.Network;
-using ServerBrowser.Entity.Structure.Request;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
+using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {

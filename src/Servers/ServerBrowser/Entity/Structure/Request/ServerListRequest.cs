@@ -1,9 +1,9 @@
-﻿using UniSpyLib.Extensions;
-using ServerBrowser.Entity.Enumerate;
+﻿using ServerBrowser.Entity.Enumerate;
 using System;
 using System.Linq;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {

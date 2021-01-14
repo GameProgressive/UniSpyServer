@@ -23,18 +23,12 @@
         <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Entity\Structure\Request\" />
         <Folder Include="Handler\SystemHandler\QRSessionManage\" />
-        <Folder Include="Handler\SystemHandler\GeoIPManage\" />
         <Folder Include="Handler\SystemHandler\ErrorMessage\" />
-        <Folder Include="Entity\Structure\GroupData\" />
         <Folder Include="Handler\SystemHandler\PeerSystem\" />
         <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
-        <Folder Include="Entity\Structure\NatNeg\" />
         <Folder Include="Handler\SystemHandler\ServerList\" />
-        <Folder Include="Entity\Structure\Response\" />
         <Folder Include="Handler\SystemHandler\Redis\" />
-        <Folder Include="Entity\Structure\Result\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />

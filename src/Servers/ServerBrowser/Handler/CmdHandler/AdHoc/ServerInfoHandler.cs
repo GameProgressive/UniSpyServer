@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using Serilog.Events;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Request;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;

@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Result;
+using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response

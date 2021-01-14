@@ -1,15 +1,11 @@
 ﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
-using System;
-using System.Collections.Generic;
 
 namespace QueryReport.Entity.Structure.Request
 {
-    public class AddErrorRequest : QRRequestBase
+    internal sealed class AddErrorRequest : QRRequestBase
     {
-        public AddErrorRequest(byte[] rawRequest) : base(rawRequest)
+        public AddErrorRequest(object rawRequest) : base(rawRequest)
         {
-            throw new NotImplementedException();
         }
     }
 }

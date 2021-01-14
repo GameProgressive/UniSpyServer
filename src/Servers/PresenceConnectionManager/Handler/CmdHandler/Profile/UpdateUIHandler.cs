@@ -1,6 +1,5 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using System.Collections.Generic;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
@@ -9,7 +8,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// </summary>
     internal class UpdateUIHandler : PCMCmdHandlerBase
     {
-        public UpdateUIHandler(IUniSpySession session,IUniSpyRequest request) : base(session, request)
+        public UpdateUIHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             //todo find what data is belong to user info
             throw new System.NotImplementedException();

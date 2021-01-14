@@ -1,13 +1,12 @@
-﻿using UniSpyLib.Logging;
-using UniSpyLib.Network;
-using PresenceConnectionManager.Abstraction;
-using PresenceConnectionManager.Entity.Enumerate;
+﻿using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;
+using PresenceConnectionManager.Handler.CommandSwitcher;
 using PresenceConnectionManager.Structure.Data;
 using Serilog.Events;
 using System;
 using System.Net;
-using PresenceConnectionManager.Handler.CommandSwitcher;
+using UniSpyLib.Logging;
+using UniSpyLib.Network;
 
 namespace PresenceConnectionManager.Network
 {

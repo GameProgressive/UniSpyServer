@@ -15,7 +15,7 @@ namespace Chat.Entity.Structure.ChatCommand.General
             base.Parse();
             if (!ErrorCode)
             {
-               ErrorCode = false;
+                ErrorCode = false;
             }
 
             CDKey = _cmdParams[0];

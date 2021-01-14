@@ -1,10 +1,10 @@
-﻿using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
-using QueryReport.Entity.Structure.Group;
+﻿using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
 using System.Text;
+using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Handler.CmdHandler
 {

@@ -1,6 +1,4 @@
-﻿using System;
-using Chat.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using Chat.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Result
 {

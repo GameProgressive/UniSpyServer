@@ -1,10 +1,10 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Entity.Structure.Response;
+using PresenceConnectionManager.Entity.Structure.Result;
+using PresenceConnectionManager.Network;
+using PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
-using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceConnectionManager.Network;
-using PresenceConnectionManager.Entity.Structure.Response;
-using PresenceConnectionManager.Entity.Structure.Result;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
@@ -65,7 +65,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         /// </summary>
         protected override void ResponseConstruct()
         {
-            _response = new PCMBasicResponse(_request,_result);
+            _response = new PCMBasicResponse(_request, _result);
         }
 
         protected override void Response()

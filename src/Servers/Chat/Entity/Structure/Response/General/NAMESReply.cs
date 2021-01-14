@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Structure.Response.General
 {
