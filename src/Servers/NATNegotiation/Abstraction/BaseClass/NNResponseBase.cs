@@ -4,19 +4,16 @@ using System;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
+// ReSharper disable All
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
     public abstract class NNResponseBase : UniSpyResponseBase
     {
-        protected new NNRequestBase _request
-        {
-            get { return (NNRequestBase)base._request; }
-        }
-        protected new NNResultBase _result
-        {
-            get { return (NNResultBase)base._result; }
-        }
+        protected new NNRequestBase _request => (NNRequestBase)base._request;
+
+        protected new NNResultBase _result => (NNResultBase)base._result;
+
         public new byte[] SendingBuffer
         {
             get { return (byte[])base.SendingBuffer; }
