@@ -9,12 +9,12 @@ using UniSpyLib.Network;
 
 namespace GameStatus.Network
 {
-    internal sealed class GSSession : TCPSessionBase
+    internal sealed class GSSession : UniSpyTCPSessionBase
     {
 
         public GSPlayerInfo PlayerData { get; set; }
 
-        public GSSession(TCPServerBase server) : base(server)
+        public GSSession(UniSpyTCPServerBase server) : base(server)
         {
             PlayerData = new GSPlayerInfo();
         }

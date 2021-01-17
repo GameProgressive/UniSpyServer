@@ -22,8 +22,8 @@ namespace NATNegotiation.Handler.CmdHandler
             get { return (ReportResult)base._result; }
             set { base._result = value; }
         }
-        protected NatUserInfo _userInfo;
-        protected string _fullKey;
+        private NatUserInfo _userInfo;
+
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -34,8 +34,7 @@ namespace NATNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             //_userInfo.IsGotReportPacket = true;
-
-            var _fullKey = NatUserInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
+            string _fullKey = NatUserInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
             try
             {
                 _userInfo = NatUserInfo.RedisOperator.GetSpecificValue(_fullKey);

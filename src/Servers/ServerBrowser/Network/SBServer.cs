@@ -8,7 +8,7 @@ namespace ServerBrowser.Network
     /// This class emulates the master.gamespy.com TCP server on port 28910.
     /// This server is responisible for sending server lists to the online server browser in the game.
     /// </summary>
-    public class SBServer : TCPServerBase
+    public class SBServer : UniSpyTCPServerBase
     {
         /// <summary>
         /// we are not gamespy,

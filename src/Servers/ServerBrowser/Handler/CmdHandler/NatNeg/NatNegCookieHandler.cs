@@ -60,7 +60,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void Response()
         {
-            ISubscriber sub = UniSpyServerManagerBase.Redis.GetSubscriber();
+            ISubscriber sub = UniSpyServerFactoryBase.Redis.GetSubscriber();
 
             string jsonStr = JsonConvert.SerializeObject(_natNegCookie);
 

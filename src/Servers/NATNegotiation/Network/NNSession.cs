@@ -2,9 +2,9 @@
 using UniSpyLib.Network;
 namespace NATNegotiation.Network
 {
-    public class NNSession : UDPSessionBase
+    public class NNSession : UniSpyUDPSessionBase
     {
-        public NNSession(UDPServerBase server, EndPoint endPoint) : base(server, endPoint)
+        public NNSession(UniSpyUDPServerBase server, EndPoint endPoint) : base(server, endPoint)
         {
         }
     }

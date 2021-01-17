@@ -31,8 +31,8 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
             }
 
             ////find negitiators and negotiatees by a same cookie
-            var negotiators = negotiatorPairs.Where(s => s.Value.ClientIndex == 0);
-            var negotiatees = negotiatorPairs.Where(s => s.Value.ClientIndex == 1);
+            var negotiators = negotiatorPairs.Where(s => s.Value.InitRequestInfo.ClientIndex == 0);
+            var negotiatees = negotiatorPairs.Where(s => s.Value.InitRequestInfo.ClientIndex == 1);
 
             if (negotiators.Count() != 1 || negotiatees.Count() != 1)
             {
@@ -47,15 +47,19 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
             LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiator {negotiator.Value.RemoteEndPoint}");
             LogWriter.ToLog(LogEventLevel.Debug, $"Find negotiatee {negotiatee.Value.RemoteEndPoint}");
             // exchange data for each other
-            EndPoint endOfNegotiator = IPEndPoint.Parse(negotiator.Value.RemoteEndPoint);
-            EndPoint endOfNegotiatee = IPEndPoint.Parse(negotiatee.Value.RemoteEndPoint);
+            EndPoint endOfNegotiator = negotiator.Value.RemoteEndPoint;
+            EndPoint endOfNegotiatee = negotiatee.Value.RemoteEndPoint;
 
-            var result1 = new ConnectResult();
-            result1.RemoteEndPoint = endOfNegotiatee;
-            result1.Cookie = cookie;
-            var result2 = new ConnectResult();
-            result2.RemoteEndPoint = endOfNegotiator;
-
+            var result1 = new ConnectResult()
+            {
+                RemoteEndPoint = negotiatee.Value.RemoteEndPoint,
+                Cookie = cookie
+            };
+            var result2 = new ConnectResult()
+            {
+                RemoteEndPoint = negotiator.Value.RemoteEndPoint,
+                Cookie = cookie
+            };
             //TODO
             throw new NotImplementedException();
             //byte[] dataToNegotiator =

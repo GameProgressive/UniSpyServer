@@ -6,11 +6,11 @@ using UniSpyLib.Network;
 
 namespace ServerBrowser.Network
 {
-    public class SBSession : TCPSessionBase
+    public class SBSession : UniSpyTCPSessionBase
     {
         public GOACryptState EncState { get; set; }
         public List<AdHocRequest> ServerMessageList { get; set; }
-        public SBSession(TCPServerBase server) : base(server)
+        public SBSession(UniSpyTCPServerBase server) : base(server)
         {
             ServerMessageList = new List<AdHocRequest>();
         }

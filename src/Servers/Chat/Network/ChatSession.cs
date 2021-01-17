@@ -1,7 +1,6 @@
 ﻿using Chat.Entity.Structure.Misc;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
-using Chat.Handler.SystemHandler.ChatSessionManage;
 using Chat.Handler.SystemHandler.Encryption;
 using Serilog.Events;
 using System;
@@ -12,7 +11,7 @@ using UniSpyLib.Network;
 
 namespace Chat.Network
 {
-    public class ChatSession : TCPSessionBase
+    public class ChatSession : UniSpyTCPSessionBase
     {
         public ChatUserInfo UserInfo { get; protected set; }
 
@@ -40,9 +39,9 @@ namespace Chat.Network
             OnReceived(Encoding.ASCII.GetString(temp));
         }
 
+
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-
             LogWriter.ToLog(LogEventLevel.Debug,
                     $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
@@ -76,7 +75,7 @@ namespace Chat.Network
                 channel.LeaveChannel(this, "Disconnected");
             }
 
-            ChatSessionManager.RemoveSession(this);
+            ChatServer.
 
             base.OnDisconnected();
         }

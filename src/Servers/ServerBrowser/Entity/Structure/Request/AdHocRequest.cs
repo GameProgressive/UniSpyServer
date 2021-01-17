@@ -13,8 +13,8 @@ namespace ServerBrowser.Entity.Structure.Request
         /// <summary>
         /// The game server client search for
         /// </summary>
-        public string TargetServerIP { get { return TargetEndPoint.Address.ToString(); } }
-        public string TargetServerHostPort { get { return TargetEndPoint.Port.ToString(); } }
+        public string TargetServerIP => TargetEndPoint.Address.ToString();
+        public string TargetServerHostPort => TargetEndPoint.Port.ToString();
         public IPEndPoint TargetEndPoint { get; protected set; }
         public new byte[] RawRequest
         {
@@ -29,6 +29,7 @@ namespace ServerBrowser.Entity.Structure.Request
 
         public AdHocRequest(byte[] rawRequest) : base(rawRequest)
         {
+            //TODO check this
             CommandName = (SBClientRequestType)RawRequest[2];
         }
 

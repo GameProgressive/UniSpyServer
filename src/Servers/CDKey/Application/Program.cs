@@ -17,8 +17,8 @@ namespace CDKey.Application
             try
             {
                 //create a instance of ServerManager class
-                new CDKeyServerManager(UniSpyServerName.CDKey).Start();
-                Console.Title = "RetroSpy Server " + UniSpyServerManagerBase.RetroSpyVersion;
+                new CDKeyServerFactory(UniSpyServerName.CDKey).Start();
+                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.RetroSpyVersion;
             }
             catch (Exception e)
             {

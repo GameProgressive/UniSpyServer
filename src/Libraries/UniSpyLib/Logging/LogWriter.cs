@@ -42,7 +42,7 @@ namespace UniSpyLib.Logging
             }
             Log.Logger = logConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{UniSpyServerManagerBase.ServerName}]-.log",
+                .WriteTo.File($"Logs/[{UniSpyServerFactoryBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
@@ -57,22 +57,22 @@ namespace UniSpyLib.Logging
             switch (level)
             {
                 case LogEventLevel.Verbose:
-                    Log.Verbose($"[{UniSpyServerManagerBase.ServerName}] " + message);
+                    Log.Verbose($"[{UniSpyServerFactoryBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Information:
-                    Log.Information($"[{UniSpyServerManagerBase.ServerName}] " + message);
+                    Log.Information($"[{UniSpyServerFactoryBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Debug:
-                    Log.Debug($"[{UniSpyServerManagerBase.ServerName}] " + message);
+                    Log.Debug($"[{UniSpyServerFactoryBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Error:
-                    Log.Error($"[{UniSpyServerManagerBase.ServerName}] " + message);
+                    Log.Error($"[{UniSpyServerFactoryBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Fatal:
-                    Log.Fatal($"[{UniSpyServerManagerBase.ServerName}] " + message);
+                    Log.Fatal($"[{UniSpyServerFactoryBase.ServerName}] " + message);
                     break;
                 case LogEventLevel.Warning:
-                    Log.Warning($"[{UniSpyServerManagerBase.ServerName}] " + message);
+                    Log.Warning($"[{UniSpyServerFactoryBase.ServerName}] " + message);
                     break;
             }
         }

@@ -9,7 +9,7 @@ namespace NATNegotiation.Entity.Structure.Result
     {
         public byte? GotYourData { get; set; }
         public byte? Finished { get; set; }
-        public EndPoint RemoteEndPoint { private get; set; }
+        public IPEndPoint RemoteEndPoint { private get; set; }
         public byte[] RemoteIPAddress =>
             HtonsExtensions.EndPointToIPBytes(RemoteEndPoint);
         public byte[] RemotePort =>

@@ -19,7 +19,11 @@ namespace QueryReport.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            _result = new ChallengeResult();
+            _result = new ChallengeResult(); 
+            if (_session.InstantKey != _request.InstantKey)
+            {
+                _result.ErrorCode = QRErrorCode.Parse;
+            }
         }
         protected override void DataOperation()
         {
@@ -32,11 +36,6 @@ namespace QueryReport.Handler.CmdHandler
             }
             var fullKey = matchedKey[0];
             _gameServerInfo = GameServerInfo.RedisOperator.GetSpecificValue(fullKey);
-
-            if (_session.InstantKey != _request.InstantKey)
-            {
-                _session.InstantKey = _request.InstantKey;
-            }
 
             GameServerInfo.RedisOperator.SetKeyValue(fullKey, _gameServerInfo);
         }

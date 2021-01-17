@@ -26,7 +26,6 @@
         <PackageReference Include="System.ServiceModel.Http" Version="4.8.0" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Application\" />
         <Folder Include="Services\Authentication\" />
         <Folder Include="Services\Authentication\Entity\" />
         <Folder Include="Services\Authentication\Entity\Interface\" />

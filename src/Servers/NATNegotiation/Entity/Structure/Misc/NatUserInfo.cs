@@ -8,12 +8,9 @@ namespace NATNegotiation.Entity.Structure
 {
     internal sealed class NatUserInfo
     {
-        public static NNRedisOperator RedisOperator;
-        public string RemoteEndPoint;
-        public byte Version;
-        public uint Cookie;
-        public byte ClientIndex;
-        public NatPortType PortType;
+        public static NNRedisOperator RedisOperator { get; private set; }
+        public IPEndPoint RemoteEndPoint { get; set; }
+        public InitRequest InitRequestInfo { get; set; }
         public DateTime LastPacketRecieveTime;
         public int RetryNATNegotiationTime;
 
@@ -24,19 +21,6 @@ namespace NATNegotiation.Entity.Structure
 
         public NatUserInfo()
         {
-        }
-
-        public void UpdateRemoteEndPoint(IPEndPoint endPoint)
-        {
-            RemoteEndPoint = (endPoint).ToString();
-        }
-
-        public void UpdateInitRequestInfo(InitRequest init)
-        {
-            Version = init.Version;
-            Cookie = init.Cookie;
-            PortType = init.PortType;
-            ClientIndex = init.ClientIndex;
         }
     }
 }

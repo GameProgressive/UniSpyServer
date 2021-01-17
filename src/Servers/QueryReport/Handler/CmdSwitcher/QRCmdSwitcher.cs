@@ -28,7 +28,7 @@ namespace QueryReport.Handler.CmdSwitcher
             request.Parse();
             if (!(bool)request.ErrorCode)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.GetErrorMessage(QRErrorCode.Parse));
+                LogWriter.ToLog(LogEventLevel.Error, QRErrorMessage.GetErrorMessage(QRErrorCode.Parse));
                 return;
             }
             _requests.Add(request);

@@ -16,8 +16,8 @@ namespace NATNegotiation.Application
             try
             {
                 //create a instance of ServerManager class
-                new NNServerManager(UniSpyServerName.NN).Start();
-                Console.Title = "RetroSpy Server " + UniSpyServerManagerBase.RetroSpyVersion;
+                new NNServerFactory(UniSpyServerName.NN).Start();
+                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.RetroSpyVersion;
             }
             catch (Exception e)
             {

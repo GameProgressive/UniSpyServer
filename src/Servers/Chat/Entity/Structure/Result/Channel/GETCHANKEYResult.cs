@@ -3,19 +3,14 @@ using Chat.Entity.Structure.Misc.ChannelInfo;
 
 namespace Chat.Entity.Structure.Result
 {
-    public class GETCHANKEYResult : ChatResultBase
+    internal sealed class GETCHANKEYResult : ChatResultBase
     {
-        public ChatChannelUser ChannelUser { get; protected set; }
-        public string ChannelName { get; protected set; }
-        public string Cookie { get; protected set; }
-        public string Flags { get; protected set; }
-
-        public GETCHANKEYResult(ChatChannelUser channelUser, string channelName, string cookie, string flags)
+        public ChatChannelUser ChannelUser { get; set; }
+        public string ChannelName { get;  set; }
+        public string Cookie { get;  set; }
+        public string Flags { get;  set; }
+        public GETCHANKEYResult()
         {
-            ChannelUser = channelUser;
-            ChannelName = channelName;
-            Cookie = cookie;
-            Flags = flags;
         }
     }
 }

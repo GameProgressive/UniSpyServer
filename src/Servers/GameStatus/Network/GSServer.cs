@@ -4,7 +4,7 @@ using UniSpyLib.Network;
 
 namespace GameStatus.Network
 {
-    public class GSServer : TCPServerBase
+    public class GSServer : UniSpyTCPServerBase
     {
         /// <summary>
         /// Default constructor

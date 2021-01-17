@@ -4,18 +4,18 @@ using UniSpyLib.Extensions;
 
 namespace Chat.Entity.Structure.ChatCommand
 {
-    public enum GetKeyType
+    internal enum GetKeyType
     {
         GetChannelAllUserKeyValue,
         GetChannelSpecificUserKeyValue
     }
-    public class GETCKEYRequest : ChatChannelRequestBase
+    internal sealed class GETCKEYRequest : ChatChannelRequestBase
     {
-        public string NickName { get; protected set; }
-        public string Cookie { get; protected set; }
-        public List<string> Keys { get; protected set; }
+        public string NickName { get; private set; }
+        public string Cookie { get; private set; }
+        public List<string> Keys { get; private set; }
 
-        public GetKeyType RequestType { get; protected set; }
+        public GetKeyType RequestType { get; private set; }
 
         public GETCKEYRequest(string rawRequest) : base(rawRequest)
         {

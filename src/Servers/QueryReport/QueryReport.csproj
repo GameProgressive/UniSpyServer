@@ -23,11 +23,6 @@
         <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Handler\SystemHandler\QRSessionManage\" />
-        <Folder Include="Handler\SystemHandler\ErrorMessage\" />
-        <Folder Include="Handler\SystemHandler\PeerSystem\" />
-        <Folder Include="Handler\SystemHandler\NatNegCookieManage\" />
-        <Folder Include="Handler\SystemHandler\ServerList\" />
         <Folder Include="Handler\SystemHandler\Redis\" />
     </ItemGroup>
     <ItemGroup>

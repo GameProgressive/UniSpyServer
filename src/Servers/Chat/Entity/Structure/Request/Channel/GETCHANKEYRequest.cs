@@ -5,15 +5,13 @@ using UniSpyLib.Extensions;
 
 namespace Chat.Entity.Structure.ChatCommand.Channel
 {
-    public class GETCHANKEYRequest : ChatChannelRequestBase
+    internal sealed class GETCHANKEYRequest : ChatChannelRequestBase
     {
         public GETCHANKEYRequest(string rawRequest) : base(rawRequest)
         {
         }
-
-        public string Cookie { get; protected set; }
-        public List<string> Keys { get; protected set; }
-
+        public string Cookie { get; private set; }
+        public List<string> Keys { get; private set; }
 
         public override void Parse()
         {

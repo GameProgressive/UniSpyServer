@@ -3,7 +3,7 @@ using UniSpyLib.Network;
 
 namespace PresenceSearchPlayer.Network
 {
-    public class PSPSession : TCPSessionBase
+    public class PSPSession : UniSpyTCPSessionBase
     {
         public PSPSession(PSPServer server) : base(server)
         {

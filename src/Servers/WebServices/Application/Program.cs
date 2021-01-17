@@ -10,7 +10,7 @@ namespace WebServices
 {
     public class Program
     {
-        private static ServerManager Manager;
+        private static WebServerFactory Manager;
         public static void Main(string[] args)
         {
 
@@ -21,7 +21,7 @@ namespace WebServices
 
             try
             {
-                Manager = new ServerManager(UniSpyServerName.Web);
+                Manager = new WebServerFactory(UniSpyServerName.Web);
                 Manager.Start();
             }
             catch (Exception e)

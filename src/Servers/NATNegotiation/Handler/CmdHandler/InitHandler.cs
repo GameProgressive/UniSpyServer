@@ -38,10 +38,9 @@ namespace NATNegotiation.Handler.CmdHandler
             if (_userInfo == null)
             {
                 _userInfo = new NatUserInfo();
-                _userInfo.UpdateRemoteEndPoint(_session.RemoteIPEndPoint);
+                _userInfo.RemoteEndPoint = _session.RemoteIPEndPoint;
             }
-
-            _userInfo.UpdateInitRequestInfo(_request);
+            _userInfo.InitRequestInfo = _request;
             _userInfo.LastPacketRecieveTime = DateTime.Now;
             NatUserInfo.RedisOperator.SetKeyValue(_fullKey, _userInfo);
             _result.LocalEndPoint = _session.RemoteEndPoint;

@@ -11,7 +11,11 @@ namespace Chat.Abstraction.BaseClass
         protected ChatChannelUser _user;
         protected new ChatChannelRequestBase _request
         => (ChatChannelRequestBase)base._request;
-
+        protected new ChatResultBase _result
+        {
+            get => (ChatResultBase)base._result;
+            set => base._result = value;
+        }
 
         public ChatChannelHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -22,6 +26,7 @@ namespace Chat.Abstraction.BaseClass
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
                 _errorCode = ChatErrorCode.IRCError;
+                _result.ErrorCode = ChatIRCErrorCode.NoSuchChannel;
                 _sendingBuffer = ChatIRCErrorCode.BuildNoSuchChannelError(_request.ChannelName);
                 return;
             }

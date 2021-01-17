@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Network
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    internal sealed class PCMSession : TCPSessionBase
+    internal sealed class PCMSession : UniSpyTCPSessionBase
     {
         /// <summary>
         /// Indicates whether this player successfully completed the login process
@@ -30,7 +30,7 @@ namespace PresenceConnectionManager.Network
 
         public PCMUserInfo UserInfo;
 
-        public PCMSession(TCPServerBase server) : base(server)
+        public PCMSession(UniSpyTCPServerBase server) : base(server)
         {
             UserInfo = new PCMUserInfo();
             CreateTime = new DateTime();

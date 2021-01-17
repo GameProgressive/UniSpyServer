@@ -29,12 +29,16 @@ namespace Chat.Handler.CmdHandler.Channel
         protected override void DataOperation()
         {
             var values = _channel.Property.GetChannelValueString(_request.Keys);
-            _result = new GETCHANKEYResult(_user, _channel.Property.ChannelName, _request.Cookie, values);
         }
 
         protected override void ResponseConstruct()
         {
             base.ResponseConstruct();
+        }
+
+        protected override void RequestCheck()
+        {
+            base.RequestCheck();
         }
     }
 }

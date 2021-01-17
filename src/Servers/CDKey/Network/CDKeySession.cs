@@ -3,9 +3,9 @@ using UniSpyLib.Network;
 
 namespace CDKey.Network
 {
-    internal sealed class CDKeySession : UDPSessionBase
+    internal sealed class CDKeySession : UniSpyUDPSessionBase
     {
-        public CDKeySession(UDPServerBase server, EndPoint endPoint) : base(server, endPoint)
+        public CDKeySession(UniSpyUDPServerBase server, EndPoint endPoint) : base(server, endPoint)
         {
         }
     }

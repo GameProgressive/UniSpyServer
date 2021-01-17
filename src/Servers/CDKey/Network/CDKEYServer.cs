@@ -8,13 +8,13 @@ using UniSpyLib.Network;
 
 namespace CDKey.Network
 {
-    internal sealed class CDKeyServer : UDPServerBase
+    internal sealed class CDKeyServer : UniSpyUDPServerBase
     {
         public CDKeyServer(IPAddress address, int port) : base(address, port)
         {
         }
 
-        protected override void OnReceived(UDPSessionBase session, string message)
+        protected override void OnReceived(UniSpyUDPSessionBase session, string message)
         {
             new CDKeyCmdSwitcher(session, message).Switch();
         }
@@ -43,7 +43,7 @@ namespace CDKey.Network
             return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type0);
         }
 
-        protected override UDPSessionBase CreateSession(EndPoint endPoint)
+        protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint)
         {
             return new CDKeySession(this, endPoint);
         }

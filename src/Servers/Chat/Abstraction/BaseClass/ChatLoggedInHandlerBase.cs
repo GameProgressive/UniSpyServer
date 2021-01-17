@@ -4,8 +4,14 @@ using UniSpyLib.Logging;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public abstract class ChatLogedInHandlerBase : ChatCmdHandlerBase
+    internal abstract class ChatLogedInHandlerBase : ChatCmdHandlerBase
     {
+        protected new ChatChannelRequestBase _request => (ChatChannelRequestBase)base._request;
+        protected new ChatResultBase _result
+        {
+            get => (ChatResultBase)base._result;
+            set => base._result = value;
+        }
         public ChatLogedInHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
