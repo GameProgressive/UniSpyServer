@@ -7,10 +7,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 {
     internal class StatusHandler : PCMCmdHandlerBase
     {
-        protected new StatusRequest _request
-        {
-            get { return (StatusRequest)base._request; }
-        }
+        protected new StatusRequest _request => (StatusRequest)base._request;
 
         public StatusHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

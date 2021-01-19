@@ -29,6 +29,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         }
         public PCMCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new PCMDefaultResult();
         }
 
         public override void Handle()
@@ -52,20 +53,16 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             }
 
             ResponseConstruct();
-
             Response();
         }
 
         protected override void RequestCheck()
         {
-            _result = new PCMBasicResult();
         }
-        /// <summary>
-        /// Usually we do not need to override this method
-        /// </summary>
+        
         protected override void ResponseConstruct()
         {
-            _response = new PCMBasicResponse(_request, _result);
+            _response = new PCMDefaultResponse(_request, _result);
         }
 
         protected override void Response()
@@ -81,7 +78,5 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             }
             base._session.SendAsync((string)_response.SendingBuffer);
         }
-
-
     }
 }

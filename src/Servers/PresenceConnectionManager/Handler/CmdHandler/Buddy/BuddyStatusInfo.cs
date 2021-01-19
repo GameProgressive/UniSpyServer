@@ -8,6 +8,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         public BuddyStatusInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            throw new System.NotImplementedException();
         }
 
         protected override void ResponseConstruct()

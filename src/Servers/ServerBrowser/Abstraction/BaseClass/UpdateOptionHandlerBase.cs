@@ -16,18 +16,14 @@ using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    public abstract class UpdateOptionHandlerBase : SBCmdHandlerBase
+    internal abstract class UpdateOptionHandlerBase : SBCmdHandlerBase
     {
-        protected byte[] _clientRemoteIP;
-        protected byte[] _gameServerDefaultHostPort;
+        protected byte[] _clientRemoteIP { get; set; }
+        protected byte[] _gameServerDefaultHostPort { get; set; }
         protected string _secretKey;
-        protected new ServerListRequest _request
-        {
-            get { return (ServerListRequest)base._request; }
-            set { base._request = value; }
-        }
-        protected List<byte> _dataList;
-        protected List<GameServerInfo> _gameServers;
+        protected new ServerListRequest _request => (ServerListRequest)base._request;
+        protected List<byte> _dataList { get; set; }
+        protected List<GameServerInfo> _gameServers { get; set; }
 
         public UpdateOptionHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -36,7 +32,6 @@ namespace ServerBrowser.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
             //save client challenge in _request
             if (_request == null)
             {
@@ -65,7 +60,6 @@ namespace ServerBrowser.Abstraction.BaseClass
 
         protected override void ResponseConstruct()
         {
-            base.ResponseConstruct();
             _dataList.AddRange(_clientRemoteIP);
             _dataList.AddRange(_gameServerDefaultHostPort);
         }

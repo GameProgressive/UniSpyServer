@@ -21,10 +21,6 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         }
         public ValidHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-
-        protected override void RequestCheck()
-        {
             _result = new ValidResult();
         }
         protected override void DataOperation()

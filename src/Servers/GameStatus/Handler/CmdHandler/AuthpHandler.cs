@@ -25,9 +25,6 @@ namespace GameStatus.Handler.CmdHandler
         }
         public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new AuthPResult();
         }
         protected override void DataOperation()

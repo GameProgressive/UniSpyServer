@@ -15,8 +15,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         public BlockListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new BlockListResult();
         }
-
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())

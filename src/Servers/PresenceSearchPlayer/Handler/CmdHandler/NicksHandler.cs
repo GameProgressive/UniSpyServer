@@ -23,10 +23,6 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         protected new NicksRequest _request { get { return (NicksRequest)base._request; } }
         public NicksHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-
-        protected override void RequestCheck()
-        {
             _result = new NicksResult();
         }
 

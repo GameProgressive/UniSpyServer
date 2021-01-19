@@ -19,11 +19,6 @@ namespace QueryReport.Handler.CmdHandler
         public AvailableHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
-        protected override void RequestCheck()
-        {
-            _result = new QRDefaultResult();
-        }
         protected override void DataOperation()
         {
         }

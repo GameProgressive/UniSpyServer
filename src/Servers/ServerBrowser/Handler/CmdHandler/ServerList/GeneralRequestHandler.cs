@@ -17,7 +17,6 @@ namespace ServerBrowser.Handler.CmdHandler
         /// </summary>
         protected override void DataOperation()
         {
-            base.DataOperation();
             var searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_request.GameName);
             _gameServers = GameServerInfo.RedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
         }

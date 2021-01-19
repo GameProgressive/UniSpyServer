@@ -23,14 +23,9 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         public OthersListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-
-        //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
-        //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
-        protected override void RequestCheck()
-        {
             _result = new OthersListResult();
         }
+
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())

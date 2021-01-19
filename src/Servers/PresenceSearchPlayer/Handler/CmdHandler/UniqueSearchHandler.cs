@@ -22,9 +22,6 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         }
         public UniqueSearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new UniqueSearchResult();
         }
         protected override void DataOperation()

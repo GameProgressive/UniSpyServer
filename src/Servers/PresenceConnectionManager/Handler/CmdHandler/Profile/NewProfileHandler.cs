@@ -22,10 +22,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         public NewProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
-            _result = new NewProfileResult();
+            _result = new NewProfileResult();   
         }
         protected override void DataOperation()
         {

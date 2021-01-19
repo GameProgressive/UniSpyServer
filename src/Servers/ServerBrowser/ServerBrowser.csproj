@@ -27,6 +27,7 @@
         <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <Folder Include="Entity\Structure\Result\" />
         <Folder Include="Handler\CmdHandler\ServerList\" />
         <Folder Include="Handler\SystemHandler\" />
         <Folder Include="Abstraction\Interface\" />

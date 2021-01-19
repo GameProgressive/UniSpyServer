@@ -4,7 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
-{
+{    
+    
+    //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
+        //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
     internal class OthersListRequest : PSPRequestBase
     {
         public List<uint> ProfileIDs { get; protected set; }

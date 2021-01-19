@@ -11,14 +11,7 @@ namespace NATNegotiation.Handler.CmdHandler
         private new NatifyRequest _request => (NatifyRequest)base._request;
         public NatifyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-
-        protected override void RequestCheck()
-        {
             _result = new NatifyResult();
-        }
-        protected override void DataOperation()
-        {
         }
         protected override void ResponseConstruct()
         {

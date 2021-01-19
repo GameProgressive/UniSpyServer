@@ -12,6 +12,7 @@ namespace GameStatus.Abstraction.BaseClass
         }
         public GSResultBase()
         {
+            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

@@ -24,7 +24,6 @@ namespace GameStatus.Abstraction.BaseClass
         }
         protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result.ErrorCode = GSErrorCode.NoError;
         }
 
         public override void Handle()
@@ -54,6 +53,10 @@ namespace GameStatus.Abstraction.BaseClass
 
             Response();
         }
+        protected override void RequestCheck()
+        {
+        }
+
         protected override void Response()
         {
             if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))

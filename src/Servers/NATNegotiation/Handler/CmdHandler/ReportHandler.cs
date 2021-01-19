@@ -26,11 +26,9 @@ namespace NATNegotiation.Handler.CmdHandler
 
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new ReportResult();
         }
+
         protected override void DataOperation()
         {
             //_userInfo.IsGotReportPacket = true;

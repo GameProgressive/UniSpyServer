@@ -12,14 +12,7 @@ namespace NATNegotiation.Handler.CmdHandler
         private new ErtAckRequest _request => (ErtAckRequest)base._request;
         public ErtAckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-
-        protected override void RequestCheck()
-        {
             _result = new ErtAckResult();
-        }
-        protected override void DataOperation()
-        {
         }
         protected override void ResponseConstruct()
         {

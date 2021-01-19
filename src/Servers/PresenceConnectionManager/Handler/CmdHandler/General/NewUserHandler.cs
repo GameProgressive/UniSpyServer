@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Entity.Structure.Response;
+using PresenceSearchPlayer.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
@@ -7,8 +8,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     {
         public NewUserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new NewUserResult();
         }
-
         protected override void ResponseConstruct()
         {
             _response = new NewUserResponse(_request, _result);

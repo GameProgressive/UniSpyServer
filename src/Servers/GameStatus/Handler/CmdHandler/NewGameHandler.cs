@@ -16,11 +16,9 @@ namespace GameStatus.Handler.CmdHandler
         }
         public NewGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new NewGameResult();
         }
+
         protected override void DataOperation()
         {
             throw new System.NotImplementedException();

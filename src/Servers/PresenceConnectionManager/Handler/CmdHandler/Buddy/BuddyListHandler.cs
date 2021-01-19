@@ -15,9 +15,6 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         public BuddyListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new BuddyListResult();
         }
 

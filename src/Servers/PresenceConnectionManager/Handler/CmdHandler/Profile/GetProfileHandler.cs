@@ -1,5 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
+using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
@@ -24,13 +25,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         public GetProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-
-        protected override void RequestCheck()
-        {
             _result = new GetProfileResult();
         }
-
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())
@@ -83,7 +79,10 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             }
         }
 
-
+        protected override void ResponseConstruct()
+        {
+            _response = new GetProfileResponse(_request,_result);
+        }
     }
 }
 

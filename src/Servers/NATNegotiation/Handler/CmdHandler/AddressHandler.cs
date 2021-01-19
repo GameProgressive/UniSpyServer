@@ -12,15 +12,7 @@ namespace NATNegotiation.Handler.CmdHandler
 
         public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-
-        protected override void RequestCheck()
-        {
             _result = new AddressResult();
-        }
-        protected override void DataOperation()
-        {
-            //the response is constructed from a request
         }
         protected override void ResponseConstruct()
         {

@@ -20,16 +20,19 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
     internal class LoginHandler : PCMCmdHandlerBase
     {
-        protected new LoginRequest _request { get { return (LoginRequest)base._request; } }
-        protected new LogInResult _result { get { return (LogInResult)base._result; } set { base._result = value; } }
+        protected new LoginRequest _request => (LoginRequest)base._request; 
+        protected new LogInResult _result
+        { 
+            get { return (LogInResult)base._result; } 
+            set { base._result = value; } 
+        }
         public LoginHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new LogInResult();
         }
 
         protected override void RequestCheck()
         {
-            _result = new LogInResult();
-
             switch (_request.LoginType)
             {
                 case LoginType.NickEmail:

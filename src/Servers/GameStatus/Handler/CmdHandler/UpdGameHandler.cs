@@ -1,4 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 
 namespace GameStatus.Handler.CmdHandler
@@ -12,6 +13,7 @@ namespace GameStatus.Handler.CmdHandler
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
         public UpdGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new UdpGameResult();
         }
         protected override void RequestCheck()
         {
@@ -22,7 +24,6 @@ namespace GameStatus.Handler.CmdHandler
         {
             throw new System.NotImplementedException();
         }
-
 
         protected override void ResponseConstruct()
         {

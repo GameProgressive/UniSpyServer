@@ -13,7 +13,6 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         public RegisterNickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
         protected override void DataOperation()
         {
             try
@@ -30,7 +29,5 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 _result.ErrorCode = GPErrorCode.DatabaseError;
             }
         }
-
-
     }
 }

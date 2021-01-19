@@ -23,9 +23,6 @@ namespace GameStatus.Handler.CmdHandler
         }
         public GetPIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new GetPIDResult();
         }
         protected override void DataOperation()

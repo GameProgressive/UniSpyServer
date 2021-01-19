@@ -25,7 +25,7 @@ namespace PresenceConnectionManager.Application
         /// Starts a specific server
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
-        protected override void StartServer(ServerConfig cfg)
+        protected override void StartServer(UniSpyServerConfig cfg)
         {
             if (cfg.Name == ServerName)
             {

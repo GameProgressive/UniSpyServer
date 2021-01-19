@@ -21,11 +21,6 @@ namespace QueryReport.Handler.CmdHandler
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-        protected override void RequestCheck()
-        {
-            _result = new QRDefaultResult();
-        }
-
         protected override void DataOperation()
         {
             if (_session.InstantKey != _request.InstantKey)
@@ -46,10 +41,6 @@ namespace QueryReport.Handler.CmdHandler
             gameServer.Value.LastPacket = DateTime.Now;
 
             GameServerInfo.RedisOperator.SetKeyValue(gameServer.Key, gameServer.Value);
-        }
-        protected override void ResponseConstruct()
-        {
-            _response = new QRDefaultResponse(_request, _result);
         }
     }
 }

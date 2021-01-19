@@ -22,9 +22,6 @@ namespace GameStatus.Handler.CmdHandler
         }
         public GetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new GetPDResult();
         }
         protected override void DataOperation()

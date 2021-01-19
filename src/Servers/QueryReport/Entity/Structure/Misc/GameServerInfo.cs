@@ -20,7 +20,7 @@ namespace QueryReport.Entity.Structure
         /// Last valid heart beat packet time
         /// </summary>
         public DateTime LastPacket { get; set; }
-
+        public IPEndPoint RemoteQueryReportIPEndPoint { get; set; }
         public string RemoteQueryReportIP { get; set; }
         public string RemoteQueryReportPort { get; set; }
         public int InstantKey { get; set; }

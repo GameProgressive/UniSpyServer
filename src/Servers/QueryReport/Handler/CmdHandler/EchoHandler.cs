@@ -19,11 +19,9 @@ namespace QueryReport.Handler.CmdHandler
         }
         public EchoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new EchoResult();
         }
+
         protected override void DataOperation()
         {
             //TODO prevent one pc create multiple game servers
@@ -43,9 +41,6 @@ namespace QueryReport.Handler.CmdHandler
 
             GameServerInfo.RedisOperator.SetKeyValue(matchedKeys[0], _result.GameServerInfo);
         }
-
-
-
         protected override void ResponseConstruct()
         {
             _response = new QRDefaultResponse(_request, _result);

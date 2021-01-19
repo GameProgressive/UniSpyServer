@@ -20,13 +20,8 @@ namespace NATNegotiation.Handler.CmdHandler
         private string _fullKey;
         public InitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-
-        protected override void RequestCheck()
-        {
             _result = new InitResult();
         }
-
         protected override void DataOperation()
         {            //TODO we get user infomation from redis
             _fullKey = NatUserInfo.RedisOperator.BuildFullKey(

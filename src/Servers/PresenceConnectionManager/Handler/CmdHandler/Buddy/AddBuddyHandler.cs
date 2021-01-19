@@ -12,11 +12,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         public AddBuddyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new AddBuddyResult();
-            throw new System.NotImplementedException();
         }
 
         protected override void DataOperation()

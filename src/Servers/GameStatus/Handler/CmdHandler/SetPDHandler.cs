@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Structure.Request;
+using GameStatus.Entity.Structure.Result;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
@@ -14,6 +15,7 @@ namespace GameStatus.Handler.CmdHandler
         private new SetPDRequest _request => (SetPDRequest)base._request;
         public SetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new SetPDResult();
         }
 
         protected override void DataOperation()
@@ -50,11 +52,6 @@ namespace GameStatus.Handler.CmdHandler
         }
 
         protected override void ResponseConstruct()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void RequestCheck()
         {
             throw new System.NotImplementedException();
         }

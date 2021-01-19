@@ -57,7 +57,12 @@ namespace NATNegotiation.Abstraction.BaseClass
             }
             Response();
         }
-
+        protected override void RequestCheck()
+        {
+        }
+        protected override void DataOperation()
+        {
+        }
         protected override void Response()
         {
             if (_response == null)

@@ -12,6 +12,7 @@ namespace PresenceConnectionManager.Abstraction.SystemHandler.Buddy
         // "\gameVnt\\gameMn\\product\\qmodeflags\"
         public BuddyStatusInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            throw new System.NotImplementedException();
         }
 
         protected override void DataOperation()

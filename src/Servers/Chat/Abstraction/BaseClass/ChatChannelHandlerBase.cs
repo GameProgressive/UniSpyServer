@@ -25,7 +25,7 @@ namespace Chat.Abstraction.BaseClass
         {
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
-                _errorCode = ChatErrorCode.IRCError;
+                _errorCode = ChatErrorCode.NoSuchChannel;
                 _result.ErrorCode = ChatIRCErrorCode.NoSuchChannel;
                 _sendingBuffer = ChatIRCErrorCode.BuildNoSuchChannelError(_request.ChannelName);
                 return;

@@ -1,4 +1,6 @@
 ﻿using QueryReport.Entity.Enumerate;
+using QueryReport.Entity.Structure.Response;
+using QueryReport.Entity.Structure.Result;
 using QueryReport.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
@@ -17,6 +19,7 @@ namespace QueryReport.Abstraction.BaseClass
         }
         protected QRCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new QRDefaultResult();
         }
 
         public override void Handle()
@@ -51,7 +54,12 @@ namespace QueryReport.Abstraction.BaseClass
             Response();
         }
 
-
+        protected override void RequestCheck() { }
+        protected override void DataOperation() { }
+        protected override void ResponseConstruct()
+        {
+            _response = new QRDefaultResponse(_request, _result);
+        }
         protected override void Response()
         {
             if (_response == null)

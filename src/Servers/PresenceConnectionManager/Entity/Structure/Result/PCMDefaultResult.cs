@@ -2,9 +2,9 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal class PCMBasicResult : PCMResultBase
+    internal class PCMDefaultResult : PCMResultBase
     {
-        public PCMBasicResult()
+        public PCMDefaultResult()
         {
         }
     }

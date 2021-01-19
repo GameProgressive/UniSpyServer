@@ -17,11 +17,6 @@ namespace QueryReport.Handler.CmdHandler
             throw new System.NotImplementedException();
         }
 
-        protected override void RequestCheck()
-        {
-            throw new System.NotImplementedException();
-        }
-
         protected override void ResponseConstruct()
         {
             throw new System.NotImplementedException();

@@ -12,13 +12,15 @@
         #endregion
 
         #region IRC erros
+        NoSuchNick = 401,
+        NoSuchChannel = 403,
         TooManyChannels = 405,
         ErrOneUSNickName = 432,
         NickNameInUse = 433,
         MoreParameters = 461,
         ChannelIsFull = 471,
-        InviteOnlyChan = 473,
-        BannedFromChan = 474,
+        InviteOnlyChannel = 473,
+        BannedFromChannel = 474,
         BadChannelKey = 475,
         BadChanMask = 476,
         LoginFailed = 708,
