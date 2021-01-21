@@ -1,17 +1,12 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.Misc.ChannelInfo;
 
-namespace Chat.Entity.Structure.Result.Channel
+namespace Chat.Entity.Structure.Result
 {
-    public class JOINResult : ChatResultBase
+    internal sealed class JOINResult : ChatResultBase
     {
-        public ChatChannelUser Joiner;
-        public string ChannelName;
-
-        public JOINResult(ChatChannelUser joiner, string channelName)
+        public string JoinerPrefix { get; set; }
+        public JOINResult()
         {
-            Joiner = joiner;
-            ChannelName = channelName;
         }
     }
 }

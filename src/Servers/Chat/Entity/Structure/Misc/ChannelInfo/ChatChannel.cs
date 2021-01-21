@@ -1,15 +1,14 @@
-﻿using Chat.Entity.Structure.Response.Channel;
+﻿using System.Linq;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Network;
 using QueryReport.Entity.Structure;
-using System.Linq;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
     public class ChatChannel
     {
-        public ChatChannelProperty Property { get; protected set; }
+        public ChatChannelProperty Property { get; private set; }
 
         public ChatChannel()
         {
@@ -18,9 +17,11 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         public void MultiCastJoin(ChatChannelUser joiner)
         {
-            string joinMessage =
-                JOINResponse.BuildJoinReply(
-                    joiner, Property.ChannelName);
+            string joinMessage = ChatIRCReplyBuilder.Build(
+                joiner.UserInfo.IRCPrefix,
+                ChatReplyName.JOIN,
+                Property.ChannelName,
+                null);
 
             string modes =
                 Property.ChannelMode.GetChannelMode();
@@ -34,12 +35,15 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         public void MultiCastLeave(ChatChannelUser leaver, string message)
         {
-            string leaveMessage =
-                PARTReply.BuildPartReply(
-                    leaver, Property.ChannelName, message);
+            string leaveMessage = ChatIRCReplyBuilder.Build(
+                leaver.UserInfo.IRCPrefix,
+                ChatReplyName.PART,
+                Property.ChannelName,
+                message);
 
             MultiCast(leaveMessage);
         }
+
         /// <summary>
         /// Send message to all users in this channel
         /// except the sender
@@ -73,8 +77,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         {
             string modes = Property.ChannelMode.GetChannelMode();
 
-            string buffer =
-                MODEReply.BuildModeReply(
+            string buffer = MODEReply.BuildModeReply(
                Property.ChannelName, modes);
 
             string nicks = "";
@@ -259,10 +262,9 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             foreach (var user in Property.ChannelUsers)
             {
                 //kick all user out
-                string kickMsg =
-                    KICKReply.BuildKickReply(
-                    Property.ChannelName, kicker, user, "Server Hoster leaves channel");
-
+                string cmdParams = $"{Property.ChannelName} {kicker.UserInfo.NickName} {user.UserInfo.NickName}";
+                string message = "Server Hoster leaves channel";
+                string kickMsg = ChatIRCReplyBuilder.Build(ChatReplyName.KICK, cmdParams, message);
                 user.Session.SendAsync(kickMsg);
             }
 

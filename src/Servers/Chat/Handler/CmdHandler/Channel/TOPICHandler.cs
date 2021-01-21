@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Response.Channel;
 using UniSpyLib.Abstraction.Interface;
@@ -9,7 +9,7 @@ namespace Chat.Handler.CmdHandler.Channel
 {
     public class TOPICHandler : ChatCmdHandlerBase
     {
-        protected new TOPICRequest _request { get { return (TOPICRequest)base._request; } }
+        protected new TOPICRequest _request => (TOPICRequest)base._request;
         ChatChannel _channel;
         ChatChannelUser _user;
         public TOPICHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -44,7 +44,6 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void BuildNormalResponse()
         {
-            base.BuildNormalResponse();
             switch (_request.RequestType)
             {
                 case TOPICCmdType.GetChannelTopic:
@@ -61,13 +60,13 @@ namespace Chat.Handler.CmdHandler.Channel
             if (_channel.Property.ChannelTopic == "" || _channel.Property.ChannelTopic == null)
             {
                 _sendingBuffer =
-                    TOPICReply.BuildNoTopicReply(
+                    TOPICResponse.BuildNoTopicReply(
                     _channel.Property.ChannelName);
             }
             else
             {
                 _sendingBuffer =
-                    TOPICReply.BuildTopicReply(
+                    TOPICResponse.BuildTopicReply(
                     _channel.Property.ChannelName,
                     _channel.Property.ChannelTopic);
             }
@@ -77,7 +76,7 @@ namespace Chat.Handler.CmdHandler.Channel
         {
             _channel.Property.ChannelTopic = _request.ChannelTopic;
             _sendingBuffer =
-                TOPICReply.BuildTopicReply(
+                TOPICResponse.BuildTopicReply(
                     _channel.Property.ChannelName,
                     _channel.Property.ChannelTopic);
         }
@@ -99,6 +98,11 @@ namespace Chat.Handler.CmdHandler.Channel
                     break;
             }
 
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new TOPICResponse
         }
     }
 }

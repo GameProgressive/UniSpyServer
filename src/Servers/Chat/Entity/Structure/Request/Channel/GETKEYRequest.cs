@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UniSpyLib.Extensions;
 
-namespace Chat.Entity.Structure.ChatCommand
+namespace Chat.Entity.Structure.Request
 {
     /// <summary>
     /// Retrieves a list of global key/value for a single user, or all users.

@@ -7,8 +7,7 @@ namespace Chat.Entity.Structure.Result
     {
         public ChatChannelUser ChannelUser { get; set; }
         public string ChannelName { get;  set; }
-        public string Cookie { get;  set; }
-        public string Flags { get;  set; }
+        public string Values { get; set; }
         public GETCHANKEYResult()
         {
         }

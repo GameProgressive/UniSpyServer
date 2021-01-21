@@ -1,18 +1,31 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Response.Channel;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Extensions;
+using Chat.Entity.Structure.Result;
 
 namespace Chat.Handler.CmdHandler.Channel
 {
-    public class KICKHandler : ChatChannelHandlerBase
+    internal sealed class KICKHandler : ChatChannelHandlerBase
     {
-        new KICKRequest _request { get { return (KICKRequest)base._request; } }
+        private new KICKRequest _request=> (KICKRequest)base._request;
+        private new KICKResponse _response
+        {
+            get => (KICKResponse)base._response;
+            set => base._response = value;
+        }
+        private new KICKResult _result
+        {
+            get => (KICKResult)base._result;
+            set => base._result = value;
+        }
         ChatChannelUser _kickee;
         public KICKHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new KICKResult();
         }
 
         protected override void RequestCheck()
@@ -21,32 +34,36 @@ namespace Chat.Handler.CmdHandler.Channel
 
             if (!_user.IsChannelOperator)
             {
-                _errorCode = ChatErrorCode.NotChannelOperator;
+                _result.ErrorCode = ChatErrorCode.NotChannelOperator;
                 return;
             }
             if (!_channel.GetChannelUserByNickName(_request.NickName, out _kickee))
             {
-                _errorCode = ChatErrorCode.Parse;
+                _result.ErrorCode = ChatErrorCode.Parse;
                 return;
             }
         }
-
-        protected override void BuildNormalResponse()
+        protected override void DataOperation()
         {
-            base.BuildNormalResponse();
-            _sendingBuffer = KICKReply.BuildKickReply(
-            _channel.Property.ChannelName,
-            _user, _kickee, _request.Reason);
+            _channel.RemoveBindOnUserAndChannel(_kickee);
+            _result.KickeeNickName = _session.UserInfo.NickName;
+            _result.KickerIRCPrefix = _session.UserInfo.IRCPrefix;
+            _result.KickeeNickName = _kickee.UserInfo.NickName;
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new KICKResponse(_request, _result);
         }
 
         protected override void Response()
         {
-            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            _response.Build();
+            if (!StringExtensions.CheckResponseValidation(_response.SendingBuffer))
             {
                 return;
             }
-            _channel.MultiCast(_sendingBuffer);
-            _channel.RemoveBindOnUserAndChannel(_kickee);
+            _channel.MultiCast(_response.SendingBuffer);
         }
     }
 }

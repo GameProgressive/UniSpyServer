@@ -1,28 +1,33 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Handler.SystemHandler.ChannelManage;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
+using Chat.Entity.Structure.Response.General;
+using Chat.Entity.Structure.Result;
 
 namespace Chat.Handler.CmdHandler.Channel
 {
     /// <summary>
     /// Game will only join one channel at one time
     /// </summary>
-    public class JOINHandler : ChatLogedInHandlerBase
+    internal sealed class JOINHandler : ChatLogedInHandlerBase
     {
-        protected new JOINRequest _request
+        private new JOINRequest _request => (JOINRequest)base._request;
+        private new JOINResult _result
         {
-            get { return (JOINRequest)base._request; }
+            get => (JOINResult)base._result;
+            set => base._result = value;
         }
         ChatChannel _channel;
         ChatChannelUser _user;
         public JOINHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new JOINResult();
         }
 
         //1.筛选出所要加入的频道，如果不存在则创建(select the channel that user want to join, if channel does not exist creating it)
@@ -40,16 +45,14 @@ namespace Chat.Handler.CmdHandler.Channel
             //but GameSpy Arcade can join more than one channel
             if (_session.UserInfo.JoinedChannels.Count > 3)
             {
-                _errorCode = ChatErrorCode.JoinedTooManyChannel;
-                //_sendingBuffer =
-                //    ChatIRCError.BuildToManyChannelError(_request.ChannelName);
+                _result.ErrorCode = ChatErrorCode.IRCError;
+                _result.IRCErrorCode = ChatIRCErrorCode.TooManyChannels;
                 return;
             }
         }
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             _user = new ChatChannelUser(_session);
             if (ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
@@ -61,6 +64,7 @@ namespace Chat.Handler.CmdHandler.Channel
                 //create
                 CreateChannel();
             }
+            _result.JoinerPrefix = _session.UserInfo.IRCPrefix;
         }
 
         public void CreateChannel()
@@ -110,30 +114,29 @@ namespace Chat.Handler.CmdHandler.Channel
                 if (_channel.Property.ChannelMode.IsInviteOnly)
                 {
                     //invited only
-                    _errorCode = ChatErrorCode.IRCError;
+                    _result.ErrorCode = ChatErrorCode.IRCError;
                     return;
                 }
 
                 if (_channel.IsUserBanned(_user))
                 {
-                    _errorCode = ChatErrorCode.IRCError;
-                    _sendingBuffer = ChatIRCErrorCode.BuildBannedFromChannelError(_channel.Property.ChannelName);
+                    _result.ErrorCode = ChatErrorCode.IRCError;
+                    _result.IRCErrorCode = ChatIRCErrorCode.BannedFromChan;
                     return;
                 }
                 if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
                 {
-                    _errorCode = ChatErrorCode.IRCError;
-                    _sendingBuffer = ChatIRCErrorCode.BuildChannelIsFullError(_channel.Property.ChannelName);
+                    _result.ErrorCode = ChatErrorCode.IRCError;
+                    _result.IRCErrorCode = ChatIRCErrorCode.ChannelIsFull;
                     return;
                 }
                 //if all pass, it mean  we excute join channel
                 _user.SetDefaultProperties();
 
-
                 //simple check for avoiding program crash
                 if (_channel.IsUserExisted(_user))
                 {
-                    _errorCode = ChatErrorCode.UserAlreadyInChannel;
+                    _result.ErrorCode = ChatErrorCode.UserAlreadyInChannel;
                     return;
                 }
 
@@ -166,6 +169,11 @@ namespace Chat.Handler.CmdHandler.Channel
             }
 
             return false;
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new JOINResponse(_request, _result);
         }
     }
 }

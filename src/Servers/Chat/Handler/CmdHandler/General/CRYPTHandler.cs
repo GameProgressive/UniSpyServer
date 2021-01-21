@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.General;
 using Chat.Entity.Structure.Result;
 using Chat.Handler.SystemHandler.Encryption;
@@ -30,8 +30,6 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            base.DataOperation();
-
             string secretKey;
             if (!DataOperationExtensions.GetSecretKey(_request.GameName, out secretKey)
                 || secretKey == null)
@@ -61,7 +59,7 @@ namespace Chat.Handler.CmdHandler.General
         protected override void Response()
         {
             base.Response();
-            _session.UserInfo.SetUseEncryptionFlag(true);
+            _session.UserInfo.IsUsingEncryption = true;
         }
     }
 }

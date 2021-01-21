@@ -1,6 +1,6 @@
 ﻿namespace Chat.Entity.Structure.Misc
 {
-    public class ChatReplyCode
+    public class ChatReplyName
     {
         public const string Welcome = "001";
         public const string UserIP = "302";
@@ -30,19 +30,19 @@
         public const string GetUDPRelay = "712";
 
         /// <summary>
-        /// Send private message
+        /// Send a private message
         /// </summary>
         public const string PRIVMSG = "PRIVMSG";
         /// <summary>
-        /// Send notice message
+        /// Send a notice message
         /// </summary>
         public const string NOTICE = "NOTICE";
         /// <summary>
-        /// Send under the table message
+        /// Send an under the table message
         /// </summary>
         public const string UTM = "UTM";
         /// <summary>
-        /// Send above the table message
+        /// Send an above the table message
         /// </summary>
         public const string ATM = "ATM";
         public const string PING = "PING";

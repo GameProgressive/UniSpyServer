@@ -18,7 +18,7 @@ namespace Chat.Entity.Structure.Response.Message
         public override void Build()
         {
             SendingBuffer = _result.UserInfo.BuildReply(
-                ChatReplyCode.ATM,
+                ChatReplyName.ATM,
                 $"{_result.Name} {_result.Message}");
         }
     }

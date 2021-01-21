@@ -29,7 +29,7 @@ namespace Chat.Network
 
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            if (UserInfo.UseEncryption)
+            if (UserInfo.IsUsingEncryption)
             {
                 DecryptData(ref buffer, size);
             }
@@ -45,7 +45,7 @@ namespace Chat.Network
             LogWriter.ToLog(LogEventLevel.Debug,
                     $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
-            if (UserInfo.UseEncryption)
+            if (UserInfo.IsUsingEncryption)
             {
                 EncryptData(ref buffer, size);
             }
@@ -74,8 +74,6 @@ namespace Chat.Network
             {
                 channel.LeaveChannel(this, "Disconnected");
             }
-
-            ChatServer.
 
             base.OnDisconnected();
         }

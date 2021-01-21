@@ -6,7 +6,7 @@ namespace Chat.Entity.Structure.Response.Message
     {
         public static string BuildNoticeReply(ChatUserInfo senderInfo, string targetName, string message)
         {
-            return senderInfo.BuildReply(ChatReplyCode.NOTICE, $"{targetName}", message);
+            return senderInfo.BuildReply(ChatReplyName.NOTICE, $"{targetName}", message);
         }
 
     }

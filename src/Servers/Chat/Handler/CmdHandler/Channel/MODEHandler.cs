@@ -1,20 +1,28 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
-using Chat.Entity.Structure.Response.General;
 using UniSpyLib.Abstraction.Interface;
+using Chat.Entity.Structure.Result;
+using Chat.Entity.Structure.Response;
 
 namespace Chat.Handler.CmdHandler.Channel
 {
-    public class MODEHandler : ChatLogedInHandlerBase
+    internal sealed class MODEHandler : ChatLogedInHandlerBase
     {
-        new MODERequest _request { get { return (MODERequest)base._request; } }
+        private new MODERequest _request => (MODERequest)base._request;
+        private new MODEResult _result
+        {
+            get => (MODEResult)base._result;
+            set => base._result = value;
+        }
+
         ChatChannel _channel;
         ChatChannelUser _user;
         public MODEHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new MODEResult();
         }
 
         protected override void RequestCheck()
@@ -36,52 +44,45 @@ namespace Chat.Handler.CmdHandler.Channel
         {
             if (_session.UserInfo.JoinedChannels.Count == 0)
             {
-                _errorCode = ChatErrorCode.IRCError;
-                _sendingBuffer = ChatIRCErrorCode.BuildNoSuchChannelError(_request.ChannelName);
+                _result.ErrorCode = ChatErrorCode.IRCError;
+                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
                 return;
             }
 
             if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
             {
-                _errorCode = ChatErrorCode.IRCError;
-                _sendingBuffer = ChatIRCErrorCode.BuildNoSuchChannelError(_request.ChannelName);
+                _result.ErrorCode = ChatErrorCode.IRCError;
+                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
                 return;
             }
 
             if (!_channel.GetChannelUserBySession(_session, out _user))
             {
-                _errorCode = ChatErrorCode.Parse;
-                _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
+                _result.ErrorCode = ChatErrorCode.IRCError;
+                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
                 return;
             }
         }
 
         protected override void DataOperation()
         {
-            base.DataOperation();
-
             switch (_request.RequestType)
             {
                 case ModeRequestType.EnableUserQuietFlag:
                     _session.UserInfo.IsQuietMode = true;
+                    _result.NickName = _session.UserInfo.NickName;
                     break;
                 case ModeRequestType.DisableUserQuietFlag:
                     _session.UserInfo.IsQuietMode = false;
+                    _result.NickName = _session.UserInfo.NickName;
+                    break;
+                case ModeRequestType.GetChannelModes:
+                    _result.ChannelModes = _channel.Property.ChannelMode.GetChannelMode();
+                    _result.ChannelName = _channel.Property.ChannelName;
                     break;
                 default:
                     ProcessOtherModeRequest();
                     break;
-            }
-        }
-
-        protected override void BuildNormalResponse()
-        {
-            base.BuildNormalResponse();
-            if (_request.RequestType == ModeRequestType.GetChannelModes)
-            {
-                string modes = _channel.Property.ChannelMode.GetChannelMode();
-                _sendingBuffer = MODEReply.BuildModeReply(
-                     _channel.Property.ChannelName, modes);
             }
         }
 
@@ -90,10 +91,15 @@ namespace Chat.Handler.CmdHandler.Channel
             //we check if the user is operator in channel
             if (!_user.IsChannelOperator)
             {
-                _errorCode = ChatErrorCode.DataOperation;
+                _result.ErrorCode = ChatErrorCode.DataOperation;
                 return;
             }
             _channel.Property.SetProperties(_user, _request);
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new MODEResponse(_request, _result);
         }
     }
 }

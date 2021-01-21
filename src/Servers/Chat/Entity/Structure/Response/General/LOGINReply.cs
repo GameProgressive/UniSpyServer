@@ -7,7 +7,7 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildLoginReply(uint userid, uint profileid)
         {
-            return ChatResponseBase.BuildRPL(ChatReplyCode.Login, $"param1 {userid} {profileid}");
+            return ChatResponseBase.BuildRPL(ChatReplyName.Login, $"param1 {userid} {profileid}");
         }
     }
 }

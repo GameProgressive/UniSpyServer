@@ -4,16 +4,16 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result
 {
-    public class GETKEYResult : ChatResultBase
+    internal class GETKEYResult : ChatResultBase
     {
-        public string Cookie;
         public List<string> Flags;
-        public ChatUserInfo UserInfo { get; protected set; }
-        public GETKEYResult(ChatUserInfo userInfo, string cookie)
+        /// <summary>
+        /// The reciever's nick name
+        /// </summary>
+        public string NickName { get; set; }
+        public GETKEYResult()
         {
             Flags = new List<string>();
-            UserInfo = userInfo;
-            Cookie = cookie;
         }
     }
 }

@@ -7,12 +7,12 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildListStartReply(ChatUserInfo userInfo, ChatChannelProperty property)
         {
-            return userInfo.BuildReply(ChatReplyCode.ListStart,
+            return userInfo.BuildReply(ChatReplyName.ListStart,
                       $"param1 {property.ChannelName} {property.ChannelUsers.Count} {property.ChannelTopic}");
         }
         public static string BuildListEndReply(ChatUserInfo userInfo)
         {
-            return userInfo.BuildReply(ChatReplyCode.ListEnd);
+            return userInfo.BuildReply(ChatReplyName.ListEnd);
         }
     }
 }

@@ -8,14 +8,14 @@ namespace Chat.Entity.Structure.Response.General
         public static string BuildWhoReply(string channelName, ChatUserInfo userInfo, string modes)
         {
             return ChatResponseBase.BuildRPL(
-                    ChatReplyCode.WhoReply,
+                    ChatReplyName.WhoReply,
                     $"param1 {channelName} " +
                     $"{userInfo.UserName} {userInfo.PublicIPAddress} param5 {userInfo.NickName} {modes} param8");
         }
 
         public static string BuildEndOfWhoReply(string name)
         {
-            return ChatResponseBase.BuildRPL(ChatReplyCode.EndOfWho, $"param1 {name} param3", "End of WHO.");
+            return ChatResponseBase.BuildRPL(ChatReplyName.EndOfWho, $"param1 {name} param3", "End of WHO.");
         }
     }
 }

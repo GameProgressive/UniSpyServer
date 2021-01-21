@@ -1,7 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using System.Linq;
 
-namespace Chat.Entity.Structure.ChatCommand
+namespace Chat.Entity.Structure.Request
 {
     public enum LoginType
     {

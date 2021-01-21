@@ -49,12 +49,6 @@ namespace NATNegotiation.Abstraction.BaseClass
             }
 
             ResponseConstruct();
-            if (_result.ErrorCode != NNErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
             Response();
         }
         protected override void RequestCheck()

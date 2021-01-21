@@ -7,7 +7,7 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildUserIPReply(string ip)
         {
-            return ChatResponseBase.BuildRPL(ChatReplyCode.UserIP, "", $"@{ip}");
+            return ChatResponseBase.BuildRPL(ChatReplyName.UserIP, "", $"@{ip}");
         }
     }
 }

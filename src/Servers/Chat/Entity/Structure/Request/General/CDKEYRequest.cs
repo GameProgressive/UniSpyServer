@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 
-namespace Chat.Entity.Structure.ChatCommand.General
+namespace Chat.Entity.Structure.Request.General
 {
     public class CDKEYRequest : ChatRequestBase
     {

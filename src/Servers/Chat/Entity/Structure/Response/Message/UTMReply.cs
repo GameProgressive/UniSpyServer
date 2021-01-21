@@ -6,7 +6,7 @@ namespace Chat.Entity.Structure.Response.Message
     {
         public static string BuildUTMReply(ChatUserInfo info, string name, string message)
         {
-            return info.BuildReply(ChatReplyCode.UTM, name, message);
+            return info.BuildReply(ChatReplyName.UTM, name, message);
         }
 
     }

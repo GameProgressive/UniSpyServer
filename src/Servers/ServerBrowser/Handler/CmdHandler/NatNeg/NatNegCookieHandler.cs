@@ -16,13 +16,12 @@ namespace ServerBrowser.Handler.CmdHandler
     /// </summary>
     internal sealed class NatNegCookieHandler : SBCmdHandlerBase
     {
-        private new AdHocRequest _request => (AdHocRequest)base._request;
-
+        private new NatNegCookie _request => (NatNegCookie)base._request;
+        private AdHocRequest _adHocRequest;
         private NatNegCookie _natNegCookie;
         private GameServerInfo _gameServer;
         public NatNegCookieHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _natNegCookie = new NatNegCookie();
         }
 
         protected override void RequestCheck()
@@ -32,12 +31,12 @@ namespace ServerBrowser.Handler.CmdHandler
                 _errorCode = SBErrorCode.Parse;
                 return;
             }
-            _request = _session.ServerMessageList[0];
-            _session.ServerMessageList.Remove(_request);
+            _adHocRequest = _session.ServerMessageList.First();
+            _session.ServerMessageList.Remove(_adHocRequest);
 
-            var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(_request.TargetServerIP)
+            var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(_adHocRequest.TargetServerIP)
                 .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
-                .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);
+                .Where(s => s.ServerData.KeyValue["hostport"] == _adHocRequest.TargetServerHostPort);
 
             if (result.Count() != 1)
             {
@@ -49,21 +48,20 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            _natNegCookie.GameServerRemoteIP = _request.TargetServerIP;
+            _natNegCookie.GameServerRemoteIP = _adHocRequest.TargetServerIP;
             _natNegCookie.GameServerRemotePort = _gameServer.RemoteQueryReportPort;
-            _natNegCookie.NatNegMessage = _request.RawRequest;
+            _natNegCookie.NatNegMessage = _request.NatNegMessage;
         }
 
         protected override void ResponseConstruct()
         {
+            _response = null;
         }
 
         protected override void Response()
         {
             ISubscriber sub = UniSpyServerFactoryBase.Redis.GetSubscriber();
-
             string jsonStr = JsonConvert.SerializeObject(_natNegCookie);
-
             sub.Publish("NatNegCookieChannel", jsonStr);
         }
     }

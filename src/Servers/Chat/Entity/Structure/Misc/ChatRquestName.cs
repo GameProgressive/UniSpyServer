@@ -1,6 +1,6 @@
 ﻿namespace Chat.Entity.Structure.Misc
 {
-    public class ChatCmdName
+    public class ChatRequestName
     {
         public const string CKEY = "CDKEY";
         /// <summary>

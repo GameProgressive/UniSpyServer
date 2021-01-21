@@ -1,4 +1,4 @@
-﻿using Chat.Entity.Structure.ChatCommand;
+﻿using Chat.Entity.Structure.Request;
 using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo

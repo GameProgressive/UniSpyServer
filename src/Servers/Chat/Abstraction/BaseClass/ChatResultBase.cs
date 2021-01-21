@@ -7,9 +7,10 @@ namespace Chat.Abstraction.BaseClass
     {
         public new ChatErrorCode ErrorCode
         {
-            get { return (ChatErrorCode)base.ErrorCode; }
-            set { base.ErrorCode = value; }
+            get => (ChatErrorCode)base.ErrorCode;
+            set => base.ErrorCode = value;
         }
+        public string IRCErrorCode { get; set; }
 
         public ChatResultBase()
         {

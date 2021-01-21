@@ -1,63 +1,46 @@
-﻿using ServerBrowser.Entity.Enumerate;
+﻿using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using System;
 using System.Linq;
 using System.Text;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {
     /// <summary>
-    /// ServerList also called ServerRule
+    /// ServerList also called ServerRule in GameSpy SDK
     /// </summary>
-    public class ServerListRequest : UniSpyRequestBase
+    internal sealed class ServerListRequest : SBRequestBase
     {
-        public const ushort QueryReportDefaultPort = 6500;
-        public byte RequestVersion { get; protected set; }
-        public byte ProtocolVersion { get; protected set; }
-        public byte EncodingVersion { get; protected set; }
-        public int GameVersion { get; protected set; }
-        public int QueryOptions { get; protected set; }
+        public static ushort QueryReportDefaultPort = 6500;
+        public byte RequestVersion { get; private set; }
+        public byte ProtocolVersion { get; private set; }
+        public byte EncodingVersion { get; private set; }
+        public int GameVersion { get; private set; }
+        public int QueryOptions { get; private set; }
 
-        public string DevGameName { get; protected set; }
-        public string GameName { get; protected set; }
-        public string Challenge { get; protected set; }
-        public SBServerListUpdateOption UpdateOption { get; protected set; }
+        public string DevGameName { get; private set; }
+        public string GameName { get; private set; }
+        public string Challenge { get; private set; }
+        public SBServerListUpdateOption UpdateOption { get; private set; }
 
-        public string[] Keys { get; protected set; }
+        public string[] Keys { get; private set; }
         public string Filter;
-        public byte[] SourceIP { get; protected set; }
-        public int MaxServers { get; protected set; }
-
-        public new byte[] RawRequest
-        {
-            get { return (byte[])base.RawRequest; }
-            protected set { base.RawRequest = value; }
-        }
-
-        public new SBClientRequestType CommandName
-        {
-            get { return (SBClientRequestType)base.CommandName; }
-            protected set { base.CommandName = value; }
-        }
+        public byte[] SourceIP { get; private set; }
+        public int MaxServers { get; private set; }
 
         public ServerListRequest(byte[] rawRequest) : base(rawRequest)
         {
             SourceIP = new byte[4];
-            CommandName = SBClientRequestType.ServerListRequest;
         }
 
-        /// <summary>
-        /// Parse all value to this class
-        /// </summary>
-        /// <param name="recv"></param>
         public override void Parse()
         {
-            ushort length = ByteTools.ToUInt16(ByteTools.SubBytes(RawRequest, 0, 2), true);
-
-            if (length != RawRequest.Length)
+            base.Parse();
+            CommandName = SBClientRequestType.ServerListRequest;
+            if (RequestLength != RawRequest.Length)
             {
-                ErrorCode = false;
+                ErrorCode = SBErrorCode.Parse;
                 return;
             }
 
@@ -100,8 +83,6 @@ namespace ServerBrowser.Entity.Structure.Request
             {
                 MaxServers = ByteTools.ToInt32(remainData.Substring(0, 4), true);
             }
-
-            ErrorCode = true;
         }
     }
 }

@@ -1,25 +1,24 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.Request.Channel;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Result;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Channel
 {
-    public class GETCHANKEYResponse : ChatResponseBase
+    internal sealed class GETCHANKEYResponse : ChatChannelResponseBase
     {
-        public GETCHANKEYResponse(ChatResultBase result) : base(result)
+        private new GETCHANKEYResult _result => (GETCHANKEYResult)base._result;
+        private new GETCHANKEYRequest _request => (GETCHANKEYRequest)base._request;
+        public GETCHANKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
-        protected new GETCHANKEYResult _result
-        {
-            get { return (GETCHANKEYResult)base._result; }
-        }
-
-        public override void Build()
+        protected override void BuildNormalResponse()
         {
             SendingBuffer = _result.ChannelUser.BuildReply(
-                ChatReplyCode.GetChanKey,
-                $"param1 {_result.ChannelName} {_result.Cookie} {_result.Flags}");
+            ChatReplyName.GetChanKey,
+                $"param1 {_result.ChannelName} {_request.Cookie} {_result.Values}");
         }
     }
 }

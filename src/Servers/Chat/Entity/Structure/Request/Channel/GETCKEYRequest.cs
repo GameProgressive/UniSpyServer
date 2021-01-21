@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UniSpyLib.Extensions;
 
-namespace Chat.Entity.Structure.ChatCommand
+namespace Chat.Entity.Structure.Request
 {
     internal enum GetKeyType
     {

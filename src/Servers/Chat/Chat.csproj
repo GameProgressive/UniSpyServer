@@ -40,5 +40,8 @@
     <Folder Include="Entity\Structure\Result\Channel\" />
     <Folder Include="Entity\Structure\Result\Message\" />
     <Folder Include="Entity\Structure\Result\General\" />
+    <Folder Include="Abstraction\BaseClass\Channel\" />
+    <Folder Include="Abstraction\BaseClass\General\" />
+    <Folder Include="Abstraction\BaseClass\Message\" />
   </ItemGroup>
 </Project>

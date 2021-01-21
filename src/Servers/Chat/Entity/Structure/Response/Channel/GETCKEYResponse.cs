@@ -1,31 +1,31 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Result;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    public class GETCKEYResponse : ChatResponseBase
+    internal sealed class GETCKEYResponse : ChatResponseBase
     {
-        protected new GETCKEYResult _result
-        {
-            get { return (GETCKEYResult)base._result; }
-        }
+        private new GETCKEYResult _result => (GETCKEYResult)base._result;
+        private new GETCKEYRequest _request => (GETCKEYRequest)base._request;
 
-        public GETCKEYResponse(GETCKEYResult result) : base(result)
+        public GETCKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
-        public override void Build()
+        protected override void BuildNormalResponse()
         {
             SendingBuffer = "";
-            foreach (var kv in _result.NickNamesAndBFlags)
+            foreach (var data in _result.DataResults)
             {
-                SendingBuffer += ChatReplyBuilder.Build(ChatReplyCode.GetCKey,
-                $"* {kv.Key} {_result.ChannelName} {_result.Cookie} {kv.Value}");
+                SendingBuffer += ChatIRCReplyBuilder.Build(ChatReplyName.GetCKey,
+                $"* {data.NickName} {_result.ChannelName} {_request.Cookie} {data.UserValues}");
             }
 
-            SendingBuffer += ChatReplyBuilder.Build(ChatReplyCode.EndGetCKey,
-                 $"* {_result.ChannelName} {_result.Cookie}",
+            SendingBuffer += ChatIRCReplyBuilder.Build(ChatReplyName.EndGetCKey,
+                 $"* {_result.ChannelName} {_request.Cookie}",
                  "End Of /GETCKEY.");
         }
     }

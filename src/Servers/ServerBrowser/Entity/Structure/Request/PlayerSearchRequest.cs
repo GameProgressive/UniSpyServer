@@ -5,23 +5,18 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {
-    public class PlayerSearchRequest : UniSpyRequestBase
+    internal sealed class PlayerSearchRequest : UniSpyRequestBase
     {
-        public int SearchOption { get; protected set; }
-        public new int CommandName { get { return SearchOption; } }
-        public new byte[] RawRequest
-        {
-            get { return (byte[])base.RawRequest; }
-            protected set { base.RawRequest = value; }
-        }
-        public uint MaxResults { get; protected set; }
-        public string SearchName { get; protected set; }
-        public string Message { get; protected set; }
+        public int SearchOption { get; private set; }
+        public new int CommandName => SearchOption;
+        public new byte[] RawRequest => (byte[])base.RawRequest;
+        public uint MaxResults { get; private set; }
+        public string SearchName { get; private set; }
+        public string Message { get; private set; }
 
 
-        public PlayerSearchRequest(byte[] rawRequest) : base(rawRequest)
+        public PlayerSearchRequest(object rawRequest) : base(rawRequest)
         {
-            RawRequest = rawRequest;
         }
 
         public override void Parse()

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Extensions;
 
-namespace Chat.Entity.Structure.ChatCommand.Channel
+namespace Chat.Entity.Structure.Request.Channel
 {
     internal sealed class GETCHANKEYRequest : ChatChannelRequestBase
     {

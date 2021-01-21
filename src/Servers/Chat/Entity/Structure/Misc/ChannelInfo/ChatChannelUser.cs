@@ -60,16 +60,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             }
         }
 
-        public string BuildReply(string command, string cmdParams)
-        {
-            return Session.UserInfo.BuildReply(command, cmdParams);
-        }
-
-        public string BuildReply(string command, string cmdParams, string tailing)
-        {
-            return Session.UserInfo.BuildReply(command, cmdParams, tailing);
-        }
-
         public string GetUserValues(List<string> keys)
         {
             string values = "";

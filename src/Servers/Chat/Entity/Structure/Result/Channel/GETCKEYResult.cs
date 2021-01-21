@@ -3,16 +3,19 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result
 {
-    public class GETCKEYResult : ChatResultBase
+    internal class GETCKEYDataModel
     {
-        public Dictionary<string, string> NickNamesAndBFlags { get; protected set; }
-        public string ChannelName { get; protected set; }
-        public string Cookie { get; protected set; }
-        public GETCKEYResult(string channelName, string cookie)
+        public string NickName { get; set; }
+        public string UserValues { get; set; }
+    }
+
+    internal sealed class GETCKEYResult : ChatResultBase
+    {
+        public List<GETCKEYDataModel> DataResults { get; set; }
+        public string ChannelName { get; set; }
+        public GETCKEYResult()
         {
-            NickNamesAndBFlags = new Dictionary<string, string>();
-            ChannelName = channelName;
-            Cookie = cookie;
+            DataResults = new List<GETCKEYDataModel>();
         }
     }
 }

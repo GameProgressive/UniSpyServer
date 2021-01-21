@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 
-namespace Chat.Entity.Structure.ChatCommand
+namespace Chat.Entity.Structure.Request
 {
     public class USERRequest : ChatRequestBase
     {

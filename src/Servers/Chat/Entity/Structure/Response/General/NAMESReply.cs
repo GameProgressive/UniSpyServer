@@ -8,12 +8,12 @@ namespace Chat.Entity.Structure.Response.General
         public static string BuildNameReply(string nickName, string channelName, string nicks)
         {
             return ChatResponseBase.BuildRPL(
-                    ChatReplyCode.NameReply,
+                    ChatReplyName.NameReply,
                     $"{nickName} = {channelName}", nicks);
         }
         public static string BuildEndOfNameReply(string nickName, string channelName)
         {
-            return ChatResponseBase.BuildRPL(ChatReplyCode.EndOfNames,
+            return ChatResponseBase.BuildRPL(ChatReplyName.EndOfNames,
                     $"{nickName} {channelName}", @"End of /NAMES list.");
         }
 

@@ -1,16 +1,17 @@
 ﻿using Chat.Entity.Structure.Misc.ChannelInfo;
+using Chat.Network;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Net;
 namespace Chat.Entity.Structure.Misc
 {
-    public class ChatUserInfo
+    internal class ChatUserInfo
     {
         //indicates which channel this user is in
         public ConcurrentBag<ChatChannel> JoinedChannels { get; protected set; }
         public bool IsQuietMode { get; set; }
         public string PublicIPAddress { get; protected set; }
-
+        public string IRCPrefix => $"{NickName}!{UserName}@{ChatServer.ServerDomain}";
 
         public ChatUserInfo()
         {
@@ -57,21 +58,16 @@ namespace Chat.Entity.Structure.Misc
         public GSPeerChatCTX ServerCTX { get; protected set; }
 
 
-        public bool UseEncryption { get; protected set; }
-        public ChatUserInfo SetUseEncryptionFlag(bool flag)
-        {
-            UseEncryption = flag;
-            return this;
-        }
+        public bool IsUsingEncryption { get; set; }
 
 
-        public ChatUserInfo SetDefaultUserInfo(EndPoint endPoint)
+        public ChatUserInfo SetDefaultUserInfo(IPEndPoint endPoint)
         {
             NameSpaceID = 0;
-            UseEncryption = false;
+            IsUsingEncryption = false;
             IsQuietMode = false;
             IsLoggedIn = false;
-            PublicIPAddress = ((IPEndPoint)endPoint).Address.ToString();
+            PublicIPAddress = endPoint.Address.ToString();
             return this;
         }
 
@@ -93,20 +89,6 @@ namespace Chat.Entity.Structure.Misc
                 channel = null;
                 return false;
             }
-        }
-
-        public string BuildReply(string command)
-        {
-            return BuildReply(command, "");
-        }
-        public string BuildReply(string command, string cmdParams)
-        {
-            return BuildReply(command, cmdParams, "");
-        }
-
-        public string BuildReply(string command, string cmdParams, string tailing)
-        {
-            return ChatReplyBuilder.Build(this, command, cmdParams, tailing);
         }
     }
 }

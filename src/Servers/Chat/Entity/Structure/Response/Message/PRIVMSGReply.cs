@@ -6,7 +6,7 @@ namespace Chat.Entity.Structure.Response.Message
     {
         public static string BuildPrivMsgReply(ChatUserInfo senderInfo, string targetName, string message)
         {
-            return senderInfo.BuildReply(ChatReplyCode.PRIVMSG, $"{targetName}", message);
+            return senderInfo.BuildReply(ChatReplyName.PRIVMSG, $"{targetName}", message);
         }
     }
 }

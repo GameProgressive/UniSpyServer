@@ -9,7 +9,7 @@ namespace Chat.Entity.Structure.Response.General
         public static string BuildWhoIsUserReply(ChatUserInfo userInfo)
         {
             return ChatResponseBase.BuildRPL(
-                ChatReplyCode.WhoIsUser,
+                ChatReplyName.WhoIsUser,
                  $"{userInfo.NickName} {userInfo.Name} {userInfo.UserName} {userInfo.PublicIPAddress} *",
                  userInfo.UserName)
                 +
@@ -39,7 +39,7 @@ namespace Chat.Entity.Structure.Response.General
         private static string BuildWhoIsChannelReply(ChatUserInfo userInfo, string channelName)
         {
             return ChatResponseBase.BuildRPL(
-                    ChatReplyCode.WhoIsChannels,
+                    ChatReplyName.WhoIsChannels,
                     $"{userInfo.NickName} {userInfo.Name}",
                     channelName
                     );
@@ -48,7 +48,7 @@ namespace Chat.Entity.Structure.Response.General
         private static string BuildEndOfWhoIsReply(ChatUserInfo userInfo)
         {
             return ChatResponseBase.BuildRPL(
-                    ChatReplyCode.EndOfWhoIs,
+                    ChatReplyName.EndOfWhoIs,
                     $"{userInfo.NickName} {userInfo.Name}",
                     "End of /WHOIS list."
                     );

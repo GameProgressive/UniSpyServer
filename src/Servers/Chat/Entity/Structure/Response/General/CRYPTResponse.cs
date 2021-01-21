@@ -1,24 +1,23 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Result;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    public class CRYPTResponse : ChatResponseBase
+    internal sealed class CRYPTResponse : ChatResponseBase
     {
-        protected new CRYPTResult _result
-        {
-            get { return (CRYPTResult)base._result; }
-        }
-        public CRYPTResponse(ChatResultBase result) : base(result)
+        public CRYPTResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
-        public override void Build()
+        private new CRYPTResult _result => (CRYPTResult)base._result;
+
+        protected override void BuildNormalResponse()
         {
-            SendingBuffer = ChatReplyBuilder.Build(
-                ChatReplyCode.SecureKey,
-                $"* {_result.ClientKey} {_result.ServerKey}");
+            var cmdParams = $"* {_result.ClientKey} {_result.ServerKey}";
+            SendingBuffer = ChatIRCReplyBuilder.Build(
+                ChatReplyName.SecureKey, cmdParams);
         }
     }
 }

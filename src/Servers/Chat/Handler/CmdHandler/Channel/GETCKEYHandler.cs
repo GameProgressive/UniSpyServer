@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Response.General;
 using Chat.Entity.Structure.Result;
@@ -9,27 +9,23 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Channel
 {
 
-    public class GETCKEYHandler : ChatChannelHandlerBase
+    internal sealed class GETCKEYHandler : ChatChannelHandlerBase
     {
-        protected new GETCKEYRequest _request
+        private new GETCKEYRequest _request => (GETCKEYRequest)base._request;
+        private new GETCKEYResult _result
         {
-            get { return (GETCKEYRequest)base._request; }
-        }
-        protected new GETCKEYResult _result
-        {
-            get { return (GETCKEYResult)base._result; }
-            set { base._result = value; }
+            get => (GETCKEYResult)base._result;
+            set => base._result = value;
         }
 
         public GETCKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new GETCKEYResult();
         }
 
 
         protected override void DataOperation()
         {
-            base.DataOperation();
-            _result = new GETCKEYResult(_channel.Property.ChannelName, _request.Cookie);
             switch (_request.RequestType)
             {
                 case GetKeyType.GetChannelAllUserKeyValue:
@@ -71,21 +67,30 @@ namespace Chat.Handler.CmdHandler.Channel
 
             if (_request.Keys.Count == 1 && _request.Keys.Contains("b_flags"))
             {
+                GETCKEYDataModel model = new GETCKEYDataModel
+                {
+                    NickName = user.UserInfo.NickName,
+                    UserValues = user.BFlags
+                };
                 // we get user's BFlag
-                _result.NickNamesAndBFlags.Add(user.UserInfo.NickName, user.BFlags);
+                _result.DataResults.Add(model);
             }
             else
             {
                 // we get user's values
                 string userValues = user.GetUserValues(_request.Keys);
-                _result.NickNamesAndBFlags.Add(user.UserInfo.NickName, userValues);
+                GETCKEYDataModel model = new GETCKEYDataModel
+                {
+                    NickName = user.UserInfo.NickName,
+                    UserValues = userValues
+                };
+                _result.DataResults.Add(model);
             }
         }
 
-        protected override void BuildNormalResponse()
+        protected override void ResponseConstruct()
         {
-            base.BuildNormalResponse();
-            _response = new GETCKEYResponse(_result);
+            _response = new GETCKEYResponse(_request, _result);
         }
     }
 }

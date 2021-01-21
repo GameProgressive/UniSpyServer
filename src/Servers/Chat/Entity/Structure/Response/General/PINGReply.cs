@@ -6,7 +6,7 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildPingReply(ChatUserInfo userInfo)
         {
-            return userInfo.BuildReply(ChatReplyCode.PONG);
+            return userInfo.BuildReply(ChatReplyName.PONG);
         }
 
     }

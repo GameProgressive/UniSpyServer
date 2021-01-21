@@ -1,5 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;

@@ -1,5 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.ChatCommand;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Result;
@@ -10,40 +10,36 @@ namespace Chat.Handler.CmdHandler.Channel
     /// <summary>
     /// Get value of the channel user's key value of all channels
     /// </summary>
-    public class GETKEYHandler : ChatLogedInHandlerBase
+    internal sealed class GETKEYHandler : ChatLogedInHandlerBase
     {
-        protected new GETKEYRequest _request
+        private new GETKEYRequest _request=> (GETKEYRequest)base._request; 
+        private new GETKEYResult _result
         {
-            get { return (GETKEYRequest)base._request; }
-        }
-        protected new GETKEYResult _result
-        {
-            get { return (GETKEYResult)base._result; }
-            set { base._result = value; }
+            get => (GETKEYResult)base._result; 
+            set => base._result = value; 
         }
         public GETKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new GETKEYResult();
         }
 
         protected override void DataOperation()
         {
-            base.DataOperation();
+            _result.NickName = _session.UserInfo.NickName;
             foreach (var channel in _session.UserInfo.JoinedChannels)
             {
                 ChatChannelUser user;
                 if (channel.GetChannelUserBySession(_session, out user))
                 {
                     var values = user.GetUserValues(_request.Keys);
-                    _result = new GETKEYResult(_session.UserInfo, _request.Cookie);
                     _result.Flags.Add(values);
                 }
             }
         }
 
-        protected override void BuildNormalResponse()
+        protected override void ResponseConstruct()
         {
-            base.BuildNormalResponse();
-            _response = new GETKEYResponse(_result);
+            _response = new GETKEYResponse(_request,_result);
         }
     }
 }

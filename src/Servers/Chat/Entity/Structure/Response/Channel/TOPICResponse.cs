@@ -3,17 +3,17 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Structure.Response.Channel
 {
-    public class TOPICReply
+    public class TOPICResponse
     {
         public static string BuildNoTopicReply(string channelName)
         {
             return
-                ChatResponseBase.BuildRPL(ChatReplyCode.NoTopic, channelName);
+                ChatResponseBase.BuildRPL(ChatReplyName.NoTopic, channelName);
         }
         public static string BuildTopicReply(string channelName, string channelTopic)
         {
             return
-                   ChatResponseBase.BuildRPL(ChatReplyCode.TOPIC, channelName, channelTopic);
+                   ChatResponseBase.BuildRPL(ChatReplyName.TOPIC, channelName, channelTopic);
         }
     }
 }
