@@ -32,7 +32,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     return new SendMessageHandler(_session, _request);
 
                 case SBClientRequestType.NatNegRequest:
-                    return new NatNegCookieHandler(_session, _request);
+                    return new NatNegMsgHandler(_session, _request);
                 default:
                     LogWriter.UnknownDataRecieved((byte[])_request.RawRequest);
                     return null;

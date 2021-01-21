@@ -6,6 +6,8 @@ namespace ServerBrowser.Abstraction.BaseClass
 {
     internal abstract class SBRequestBase : UniSpyRequestBase
     {
+        public int RequestLength { get; private set; }
+        public new byte[] RawRequest => (byte[])base.RawRequest;
         public new SBErrorCode ErrorCode
         {
             get { return (SBErrorCode)base.ErrorCode; }
@@ -17,8 +19,6 @@ namespace ServerBrowser.Abstraction.BaseClass
             get { return (SBClientRequestType)base.CommandName; }
             protected set { base.CommandName = value; }
         }
-        public int RequestLength { get; private set; }
-        public new byte[] RawRequest => (byte[])base.RawRequest;
         public SBRequestBase(object rawRequest) : base(rawRequest)
         {
             ErrorCode = SBErrorCode.NoError;

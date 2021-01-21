@@ -11,17 +11,9 @@ namespace ServerBrowser.Handler.CmdHandler
         {
         }
 
-        protected override void RequestCheck()
-        {
-        }
-
         protected override void DataOperation()
         {
             _session.ServerMessageList.Add(_request);
-        }
-
-        protected override void ResponseConstruct()
-        {
         }
     }
 }

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
-    public class GeneralRequestHandler : UpdateOptionHandlerBase
+    internal class GeneralRequestHandler : UpdateOptionHandlerBase
     {
         public GeneralRequestHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

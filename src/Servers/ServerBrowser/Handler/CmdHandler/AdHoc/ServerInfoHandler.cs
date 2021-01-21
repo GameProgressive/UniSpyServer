@@ -4,6 +4,7 @@ using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Request;
+using ServerBrowser.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,14 +19,14 @@ namespace ServerBrowser.Handler.CmdHandler
     /// Get full rules for a server (for example, to get
     /// player information from a server that only has basic information so far)
     /// </summary>
-    public class ServerInfoHandler : SBCmdHandlerBase
+    internal class ServerInfoHandler : SBCmdHandlerBase
     {
-        protected new AdHocRequest _request
+        protected new AdHocRequest _request=> (AdHocRequest)base._request;
+        protected new ServerInfoResult _result
         {
-            get { return (AdHocRequest)base._request; }
-            // set { base._request = value; }
+            get => (ServerInfoResult)base._result;
+            set => base._result = value;
         }
-        protected GameServerInfo _gameServer;
         protected List<byte> _dataList;
 
         public ServerInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -35,17 +36,16 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(_request.TargetServerIP)
                 .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);
-
+            //TODO if there are no server found, we still send response back to client
             if (result.Count() != 1)
             {
-                _errorCode = SBErrorCode.NoServersFound;
+                _result.ErrorCode = SBErrorCode.NoServersFound;
                 return;
             }
-            _gameServer = result.FirstOrDefault();
+            _result.GameServerInfo = result.FirstOrDefault();
         }
 
         protected override void ResponseConstruct()
