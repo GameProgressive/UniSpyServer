@@ -1,6 +1,6 @@
 ﻿namespace NATNegotiation.Entity.Structure.Request
 {
-    internal class ErtAckRequest : InitRequest
+    internal sealed class ErtAckRequest : InitRequestBase
     {
         public ErtAckRequest(byte[] rawRequest) : base(rawRequest)
         {

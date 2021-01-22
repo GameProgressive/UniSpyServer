@@ -22,7 +22,7 @@ namespace NATNegotiation.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if (ErrorCode!= NNErrorCode.NoError)
             {
                 return;
             }
@@ -38,8 +38,6 @@ namespace NATNegotiation.Entity.Structure.Request
                 ByteTools.SubBytes(RawRequest, 19, sizeof(int)));
             GameName = Encoding.ASCII.GetString(
                 ByteTools.SubBytes(RawRequest, 23, RawRequest.Length - 23));
-
-            ErrorCode = true;
         }
     }
 }
