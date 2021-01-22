@@ -81,7 +81,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new GetProfileResponse(_request,_result);
+            _response = new GetProfileResponse(_request, _result);
         }
     }
 }

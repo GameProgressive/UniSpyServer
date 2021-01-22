@@ -30,14 +30,12 @@
         <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Handler\CmdHandler\ServerList\" />
         <Folder Include="Handler\SystemHandler\" />
         <Folder Include="Handler\SystemHandler\KeyType\" />
         <Folder Include="Handler\SystemHandler\Filter\" />
         <Folder Include="Handler\SystemHandler\Error\" />
         <Folder Include="Handler\CmdHandler\AdHoc\" />
         <Folder Include="Handler\CmdHandler\NatNeg\" />
-        <Folder Include="Entity\Structure\Request\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

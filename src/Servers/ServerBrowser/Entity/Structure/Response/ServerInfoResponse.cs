@@ -1,12 +1,12 @@
-using System.Collections.Generic;
-using System.Text;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Misc;
-using UniSpyLib.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure.Result;
-using UniSpyLib.Logging;
+using System.Collections.Generic;
+using System.Text;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 
 namespace ServerBrowser.Entity.Structure.Packet.Response
 {

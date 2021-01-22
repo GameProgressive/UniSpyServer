@@ -14,11 +14,11 @@ namespace Chat.Entity.Structure.Response.General
 
         protected override void BuildNormalResponse()
         {
-          SendingBuffer = ChatIRCReplyBuilder.Build(
-                _result.LeaverIRCPrefix,
-                ChatReplyName.PART,
-                _result.ChannelName,
-                _result.Message);
+            SendingBuffer = ChatIRCReplyBuilder.Build(
+                  _result.LeaverIRCPrefix,
+                  ChatReplyName.PART,
+                  _result.ChannelName,
+                  _result.Message);
         }
     }
 }

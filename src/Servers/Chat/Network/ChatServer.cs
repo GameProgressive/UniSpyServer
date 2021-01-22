@@ -1,6 +1,4 @@
-﻿using Chat.Entity.Structure.Misc.ChannelInfo;
-using Chat.Handler.SystemHandler.ChannelManage;
-using NetCoreServer;
+﻿using NetCoreServer;
 using System;
 using System.Collections.Concurrent;
 using System.Net;

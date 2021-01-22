@@ -19,7 +19,7 @@ namespace QueryReport.Handler.CmdHandler
         }
         protected override void RequestCheck()
         {
-            _result = new ChallengeResult(); 
+            _result = new ChallengeResult();
             if (_session.InstantKey != _request.InstantKey)
             {
                 _result.ErrorCode = QRErrorCode.Parse;

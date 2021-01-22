@@ -1,5 +1,4 @@
-﻿using System;
-using Chat.Abstraction.BaseClass;
+﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Result;
@@ -22,7 +21,7 @@ namespace Chat.Entity.Structure.Response
             {
                 //channel modes reply
                 string cmdParams = $"{_result.ChannelName} {_result.ChannelModes}";
-                SendingBuffer = ChatIRCReplyBuilder.Build(ChatReplyName.MODE,cmdParams);
+                SendingBuffer = ChatIRCReplyBuilder.Build(ChatReplyName.MODE, cmdParams);
             }
             else
             {

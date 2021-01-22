@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using Chat.Entity.Structure.Response.General;
+﻿using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Network;
 using QueryReport.Entity.Structure;
+using System.Linq;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {

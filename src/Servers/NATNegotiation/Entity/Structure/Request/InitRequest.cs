@@ -1,9 +1,4 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
-using System.Net;
-using UniSpyLib.Extensions;
-
-namespace NATNegotiation.Entity.Structure.Request
+﻿namespace NATNegotiation.Entity.Structure.Request
 {
     internal sealed class InitRequest : InitRequestBase
     {

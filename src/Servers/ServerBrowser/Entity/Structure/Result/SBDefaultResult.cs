@@ -1,5 +1,4 @@
-﻿using System;
-using ServerBrowser.Abstraction.BaseClass;
+﻿using ServerBrowser.Abstraction.BaseClass;
 
 namespace ServerBrowser.Entity.Structure.Result
 {

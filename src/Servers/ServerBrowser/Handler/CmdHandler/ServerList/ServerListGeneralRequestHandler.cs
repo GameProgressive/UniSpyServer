@@ -1,15 +1,18 @@
 ﻿using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure.Misc;
+using ServerBrowser.Entity.Structure.Packet.Response;
+using ServerBrowser.Entity.Structure.Result;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
-    internal class GeneralRequestHandler : UpdateOptionHandlerBase
+    internal sealed class ServerListGeneralRequestHandler : UpdateOptionHandlerBase
     {
-        public GeneralRequestHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerListGeneralRequestHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new ServerListResult();
         }
         /// <summary>
         /// we need to send empty server list response to game,
@@ -23,16 +26,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-
-            base.ResponseConstruct();
-
-            GenerateServerKeys();
-            //we use NTS string so total unique value list is 0
-            GenerateUniqueValue();
-            //add server infomation such as public ip etc.
-            GenerateServersInfo();
-            //after all server information is added we add the end flag
-            _dataList.AddRange(SBStringFlag.AllServerEndFlag);
+            _response = new ServerListResponse(_request, _result);
         }
     }
 }

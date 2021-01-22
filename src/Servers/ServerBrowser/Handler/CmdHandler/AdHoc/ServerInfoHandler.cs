@@ -2,7 +2,6 @@
 using Serilog.Events;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Entity.Structure.Result;
@@ -22,7 +21,7 @@ namespace ServerBrowser.Handler.CmdHandler
     /// </summary>
     internal class ServerInfoHandler : SBCmdHandlerBase
     {
-        protected new AdHocRequest _request=> (AdHocRequest)base._request;
+        protected new AdHocRequest _request => (AdHocRequest)base._request;
         protected new ServerInfoResult _result
         {
             get => (ServerInfoResult)base._result;

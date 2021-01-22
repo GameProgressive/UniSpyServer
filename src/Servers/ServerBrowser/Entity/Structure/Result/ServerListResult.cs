@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
 using System.Collections.Generic;
 namespace ServerBrowser.Entity.Structure.Result

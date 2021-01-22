@@ -1,11 +1,4 @@
-﻿using ServerBrowser.Entity.Enumerate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ServerBrowser.Abstraction.BaseClass
+﻿namespace ServerBrowser.Abstraction.BaseClass
 {
     internal abstract class UpdateOptionResultBase : SBResultBase
     {

@@ -19,7 +19,23 @@ namespace ServerBrowser.Handler.CommandSwitcher
             switch (_request.CommandName)
             {
                 case SBClientRequestType.ServerListRequest:
-                    return UpdateOptionSerialize();
+                    switch (((ServerListRequest)_request).UpdateOption)
+                    {
+                        case SBServerListUpdateOption.NoServerList:
+                            return new ServerListNoServerListHandler(_session, _request);
+                        case SBServerListUpdateOption.GeneralRequest:
+                            return new ServerListGeneralRequestHandler(_session, _request);
+                        case SBServerListUpdateOption.SendGroups:
+                            return new ServerListSendGroupsHandler(_session, _request);
+                        case SBServerListUpdateOption.LimitResultCount:
+                            return new ServerListPushUpdatesHandler(_session, _request);
+                        case SBServerListUpdateOption.PushUpdates:
+                            // worms 3d send this after join group room
+                            // we should send adhoc servers which are in this room to worms3d
+                            return new ServerListPushUpdatesHandler(_session, _request);
+                        default:
+                            return null;
+                    }
                 case SBClientRequestType.ServerInfoRequest:
                     return new ServerInfoHandler(_session, _request);
                 case SBClientRequestType.PlayerSearchRequest:
@@ -30,33 +46,10 @@ namespace ServerBrowser.Handler.CommandSwitcher
                     //TODO
                     //Cryptorx's game use this command
                     return new SendMessageHandler(_session, _request);
-
                 case SBClientRequestType.NatNegRequest:
                     return new NatNegMsgHandler(_session, _request);
                 default:
                     LogWriter.UnknownDataRecieved((byte[])_request.RawRequest);
-                    return null;
-            }
-        }
-
-        protected IUniSpyHandler UpdateOptionSerialize()
-        {
-
-            switch (((ServerListRequest)_request).UpdateOption)
-            {
-                case SBServerListUpdateOption.NoServerList:
-                    return new NoServerListHandler(_session, _request);
-                case SBServerListUpdateOption.GeneralRequest:
-                    return new GeneralRequestHandler(_session, _request);
-                case SBServerListUpdateOption.SendGroups:
-                    return new SendGroupsHandler(_session, _request);
-                case SBServerListUpdateOption.LimitResultCount:
-                    return new PushUpdatesHandler(_session, _request);
-                case SBServerListUpdateOption.PushUpdates:
-                    // worms 3d send this after join group room
-                    // we should send adhoc servers which are in this room to worms3d
-                    return new PushUpdatesHandler(_session, _request);
-                default:
                     return null;
             }
         }

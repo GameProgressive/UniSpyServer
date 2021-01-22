@@ -1,6 +1,5 @@
 ﻿using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Misc;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
@@ -10,9 +9,9 @@ namespace ServerBrowser.Handler.CmdHandler
     /// <summary>
     /// Search peer to peer game servers to client
     /// </summary>
-    internal sealed class PushUpdatesHandler : UpdateOptionHandlerBase
+    internal sealed class ServerListPushUpdatesHandler : UpdateOptionHandlerBase
     {
-        public PushUpdatesHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerListPushUpdatesHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

@@ -1,5 +1,4 @@
-﻿using NATNegotiation.Entity.Enumerate;
-using NATNegotiation.Entity.Structure.Request;
+﻿using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Handler.SystemHandler;
 using System;
 using System.Net;

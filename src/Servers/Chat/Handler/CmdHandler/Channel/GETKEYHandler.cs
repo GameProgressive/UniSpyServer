@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc.ChannelInfo;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
@@ -12,11 +12,11 @@ namespace Chat.Handler.CmdHandler.Channel
     /// </summary>
     internal sealed class GETKEYHandler : ChatLogedInHandlerBase
     {
-        private new GETKEYRequest _request=> (GETKEYRequest)base._request; 
+        private new GETKEYRequest _request => (GETKEYRequest)base._request;
         private new GETKEYResult _result
         {
-            get => (GETKEYResult)base._result; 
-            set => base._result = value; 
+            get => (GETKEYResult)base._result;
+            set => base._result = value;
         }
         public GETKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -39,7 +39,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new GETKEYResponse(_request,_result);
+            _response = new GETKEYResponse(_request, _result);
         }
     }
 }

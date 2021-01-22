@@ -1,5 +1,4 @@
-﻿using System;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
@@ -17,16 +16,16 @@ namespace ServerBrowser.Abstraction.BaseClass
         {
         }
 
+        /// <summary>
+        /// SB always need to response to client even there are no server or error occured
+        /// </summary>
         public override void Build()
         {
             if (_result.ErrorCode != Entity.Enumerate.SBErrorCode.NoError)
             {
                 BuildErrorResponse();
             }
-            else
-            {
-                BuildNormalResponse();
-            }
+            BuildNormalResponse();
         }
 
         protected override void BuildErrorResponse()

@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Text;
-using ServerBrowser.Network;
-using UniSpyLib.Abstraction.BaseClass;
-using ServerBrowser.Entity.Structure.Result;
-using ServerBrowser.Entity.Structure.Request;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerate;
+using ServerBrowser.Entity.Structure.Misc;
+using ServerBrowser.Entity.Structure.Request;
+using ServerBrowser.Network;
+using System.Collections.Generic;
+using System.Text;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
@@ -13,49 +13,52 @@ namespace ServerBrowser.Abstraction.BaseClass
     internal abstract class UpdateOptionResponseBase : SBResponseBase
     {
         public byte[] PlainTextSendingBuffer { get; protected set; }
-        private new ServerListRequest _request => (ServerListRequest)base._request;
-        private new ServerListResult _result => (ServerListResult)base._result;
+        private new UpdateOptionRequestBase _request => (UpdateOptionRequestBase)base._request;
+        private new UpdateOptionResultBase _result => (UpdateOptionResultBase)base._result;
         public UpdateOptionResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         protected override void BuildNormalResponse()
         {
             List<byte> serverListContext = new List<byte>();
-            #region Crypt header
             //Add crypt header
-            // we add the message length here
-            serverListContext.Add(2 ^ 0xEC);
-            serverListContext.AddRange(new byte[] { 0, 0 });
-            serverListContext.Add((byte)(SBServer.ServerChallenge.Length ^ 0xEA));
-            serverListContext.AddRange(SBServer.BytesServerChallenge);
-            #endregion
+            serverListContext.AddRange(BuildCryptHeader());
+            // Message length should be added here, between 2 line codes
             serverListContext.AddRange(_result.ClientRemoteIP);
-            serverListContext.AddRange(ServerListRequest.HtonQueryReportDefaultPort);
-            serverListContext.AddRange(SendingBuffer);
+            serverListContext.AddRange(UpdateOptionRequestBase.HtonQueryReportDefaultPort);
+            //serverListContext.AddRange(SendingBuffer);
             SendingBuffer = serverListContext.ToArray();
         }
-        protected static List<byte> GenerateServerInfoHeader(GameServerFlags flag, GameServerInfo server)
+        protected static List<byte> BuildCryptHeader()
+        {
+            var data = new List<byte>();
+            data.Add(2 ^ 0xEC);
+            data.AddRange(new byte[] { 0, 0 });
+            data.Add((byte)(SBServer.ServerChallenge.Length ^ 0xEA));
+            data.AddRange(SBServer.BytesServerChallenge);
+            return data;
+        }
+        protected static List<byte> BuildServerInfoHeader(GameServerFlags flag, GameServerInfo serverInfo)
         {
             List<byte> header = new List<byte>();
-            //add has key flag
+            //add key flag
             header.Add((byte)flag);
             //we add server public ip here
-            header.AddRange(ByteTools.GetIPBytes(server.RemoteQueryReportIP));
+            header.AddRange(ByteTools.GetIPBytes(serverInfo.RemoteQueryReportIP));
             //we check host port is standard port or not
-            CheckNonStandardPort(header, server);
+            header.AddRange(CheckNonStandardPort(serverInfo));
             // now we check if there are private ip
-            CheckPrivateIP(header, server);
+            header.AddRange(CheckPrivateIP(serverInfo));
             // we check private port here
-            CheckPrivatePort(header, server);
+            header.AddRange(CheckPrivatePort(serverInfo));
             //we check icmp support here
-            CheckICMPSupport(header, server);
-
+            header.AddRange(CheckICMPSupport(serverInfo));
             return header;
         }
-        protected static void CheckPrivateIP(List<byte> header, GameServerInfo server)
+        protected static List<byte> CheckPrivateIP(GameServerInfo server)
         {
+            var data = new List<byte>();
             string localIP = "";
-
             // now we check if there are private ip
             if (server.ServerData.KeyValue.ContainsKey("localip0"))
             {
@@ -65,71 +68,79 @@ namespace ServerBrowser.Abstraction.BaseClass
             {
                 localIP = server.ServerData.KeyValue["localip1"];
             }
-            if (localIP == "")
+
+            if (localIP != "")
             {
-                return;
+                data[0] ^= (byte)GameServerFlags.PrivateIPFlag;
+                byte[] bytesAddress = HtonsExtensions.IPStringToBytes(localIP);
+                data.AddRange(bytesAddress);
             }
-
-            header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-            byte[] address = HtonsExtensions.IPStringToBytes(localIP);
-            header.AddRange(address);
+            return data;
         }
-
-        protected static void CheckNonStandardPort(List<byte> header, GameServerInfo server)
+        protected static List<byte> CheckNonStandardPort(GameServerInfo server)
         {
             ///only dedicated server have different query report port and host port
             ///the query report port and host port are the same on peer server
             ///so we do not need to check this for peer server
             //we check host port is standard port or not
-            if (!server.ServerData.KeyValue.ContainsKey("hostport"))
+            var data = new List<byte>();
+            if (server.ServerData.KeyValue.ContainsKey("hostport"))
             {
-                return;
+                if (server.ServerData.KeyValue["hostport"] != ""
+                    && server.ServerData.KeyValue["hostport"] != "6500")
+                {
+                    data[0] ^= (byte)GameServerFlags.NonStandardPort;
+                    byte[] htonPort =
+                        HtonsExtensions.UshortPortToHtonBytes(
+                            server.ServerData.KeyValue["hostport"]);
+                    data.AddRange(htonPort);
+                }
             }
-            if (server.ServerData.KeyValue["hostport"] == "")
-            {
-                return;
-            }
-
-            if (server.ServerData.KeyValue["hostport"] != "6500")
-            {
-                header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                //we do not need htons here
-                byte[] port =
-                     HtonsExtensions.PortToIntBytes(
-                         server.ServerData.KeyValue["hostport"]);
-                byte[] htonPort =
-                    HtonsExtensions.UshortPortToHtonBytes(
-                        server.ServerData.KeyValue["hostport"]);
-                header.AddRange(htonPort);
-            }
+            return data;
         }
-
-        protected static void CheckPrivatePort(List<byte> header, GameServerInfo server)
+        protected static List<byte> CheckPrivatePort(GameServerInfo server)
         {
+            var data = new List<byte>();
             // we check private port here
-            if (!server.ServerData.KeyValue.ContainsKey("privateport"))
+            if (server.ServerData.KeyValue.ContainsKey("privateport"))
             {
-                return;
+                if (server.ServerData.KeyValue["privateport"] != "")
+                {
+                    data[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
+                    byte[] port = HtonsExtensions.PortToIntBytes(server.ServerData.KeyValue["privateport"]);
+                    data.AddRange(port);
+                }
             }
-            if (server.ServerData.KeyValue["privateport"] == "")
-            {
-                return;
-            }
-            header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-
-            byte[] port =
-                HtonsExtensions.PortToIntBytes(
-                    server.ServerData.KeyValue["privateport"]);
-
-            header.AddRange(port);
+            return data;
         }
-
-        protected static void CheckICMPSupport(List<byte> header, GameServerInfo server)
+        protected static List<byte> CheckICMPSupport(GameServerInfo server)
         {
-            header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
+            List<byte> data = new List<byte>();
+            data[0] ^= (byte)GameServerFlags.ICMPIPFlag;
             byte[] address = HtonsExtensions.IPStringToBytes(server.RemoteQueryReportIP);
-            header.AddRange(address);
+            data.AddRange(address);
+            return data;
         }
-
+        protected List<byte> BuildUniqueValue()
+        {
+            var data = new List<byte>();
+            data.Add(0);
+            //because we are using NTS string so we do not have any value here
+            return data;
+        }
+        protected List<byte> BuildServerKeys()
+        {
+            var data = new List<byte>();
+            //we add the total number of the requested keys
+            data.Add((byte)_request.Keys.Length);
+            //then we add the keys
+            foreach (var key in _request.Keys)
+            {
+                data.Add((byte)SBKeyType.String);
+                data.AddRange(Encoding.ASCII.GetBytes(key));
+                data.Add(SBStringFlag.StringSpliter);
+            }
+            return data;
+        }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using ServerBrowser.Abstraction.BaseClass;
+﻿using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
+using System.Linq;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request

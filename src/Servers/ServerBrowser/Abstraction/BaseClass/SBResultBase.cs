@@ -1,10 +1,9 @@
-﻿using System;
-using ServerBrowser.Entity.Enumerate;
+﻿using ServerBrowser.Entity.Enumerate;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    public class SBResultBase:UniSpyResultBase
+    public class SBResultBase : UniSpyResultBase
     {
         public new SBErrorCode ErrorCode
         {

@@ -1,17 +1,17 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
-using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Misc.ChannelInfo;
+using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Channel;
+using Chat.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
-using Chat.Entity.Structure.Result;
 
 namespace Chat.Handler.CmdHandler.Channel
 {
     internal sealed class KICKHandler : ChatChannelHandlerBase
     {
-        private new KICKRequest _request=> (KICKRequest)base._request;
+        private new KICKRequest _request => (KICKRequest)base._request;
         private new KICKResponse _response
         {
             get => (KICKResponse)base._response;

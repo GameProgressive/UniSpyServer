@@ -1,11 +1,6 @@
 ﻿using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServerBrowser.Entity.Structure.Result
 {

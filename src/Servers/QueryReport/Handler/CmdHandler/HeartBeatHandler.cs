@@ -7,7 +7,6 @@ using QueryReport.Entity.Structure.Result;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
@@ -57,7 +56,7 @@ namespace QueryReport.Handler.CmdHandler
         private void UpdateGameServerByState()
         {
             var fullKey = GameServerInfo.RedisOperator.BuildFullKey(
-                _session.RemoteIPEndPoint, 
+                _session.RemoteIPEndPoint,
                 _gameServerInfo.ServerData.KeyValue["gamename"]);
             if (_gameServerInfo.ServerData.ServerStatus == GameServerServerStatus.Shutdown)
             {

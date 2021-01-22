@@ -1,7 +1,6 @@
 ﻿using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Misc;
 using System.Text;
 using UniSpyLib.Abstraction.Interface;
@@ -9,11 +8,11 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
-    internal sealed class SendGroupsHandler : UpdateOptionHandlerBase
+    internal sealed class ServerListSendGroupsHandler : UpdateOptionHandlerBase
     {
         private PeerGroupInfo _peerGroup;
 
-        public SendGroupsHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerListSendGroupsHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 

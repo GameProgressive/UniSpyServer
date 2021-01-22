@@ -59,7 +59,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         protected override void RequestCheck()
         {
         }
-        
+
         protected override void ResponseConstruct()
         {
             _response = new PCMDefaultResponse(_request, _result);

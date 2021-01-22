@@ -1,7 +1,7 @@
-﻿using System;
-using System.Net;
-using ServerBrowser.Abstraction.BaseClass;
+﻿using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
+using System;
+using System.Net;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request

@@ -22,7 +22,7 @@ namespace NATNegotiation.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode!= NNErrorCode.NoError)
+            if (ErrorCode != NNErrorCode.NoError)
             {
                 return;
             }

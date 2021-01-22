@@ -1,15 +1,14 @@
-﻿using System;
+﻿using ServerBrowser.Abstraction.BaseClass;
+using System;
 using System.Text;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {
-    internal sealed class PlayerSearchRequest : UniSpyRequestBase
+    internal sealed class PlayerSearchRequest : SBRequestBase
     {
         public int SearchOption { get; private set; }
         public new int CommandName => SearchOption;
-        public new byte[] RawRequest => (byte[])base.RawRequest;
         public uint MaxResults { get; private set; }
         public string SearchName { get; private set; }
         public string Message { get; private set; }
@@ -21,6 +20,7 @@ namespace ServerBrowser.Entity.Structure.Request
 
         public override void Parse()
         {
+            base.Parse();
             SearchOption = Convert.ToInt16(ByteTools.SubBytes(RawRequest, 3, 3 + 4));
             MaxResults = Convert.ToUInt16(ByteTools.SubBytes(RawRequest, 7, 7 + 4));
 
@@ -33,8 +33,6 @@ namespace ServerBrowser.Entity.Structure.Request
                 ByteTools.SubBytes(RawRequest, 15 + nameLength, 4));
             Message = Encoding.ASCII.GetString(
                 ByteTools.SubBytes(RawRequest, 15 + nameLength + 4, messageLength));
-
-            ErrorCode = true;
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Chat.Network;
+using System;
 using System.Collections.Generic;
-using Chat.Network;
 
 namespace Chat.Entity.Structure.Misc
 {
