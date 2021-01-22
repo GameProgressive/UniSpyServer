@@ -10,6 +10,9 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Packet.Response
 {
+    /// <summary>
+    /// Get a server's information
+    /// </summary>
     internal sealed class ServerInfoResponse : UpdateOptionResponseBase
     {
         private new ServerInfoResult _result => (ServerInfoResult)base._result;

@@ -34,7 +34,25 @@ namespace ServerBrowser.Abstraction.BaseClass
             serverListContext.AddRange(SendingBuffer);
             SendingBuffer = serverListContext.ToArray();
         }
-        public static void CheckPrivateIP(List<byte> header, GameServerInfo server)
+        protected static List<byte> GenerateServerInfoHeader(GameServerFlags flag, GameServerInfo server)
+        {
+            List<byte> header = new List<byte>();
+            //add has key flag
+            header.Add((byte)flag);
+            //we add server public ip here
+            header.AddRange(ByteTools.GetIPBytes(server.RemoteQueryReportIP));
+            //we check host port is standard port or not
+            CheckNonStandardPort(header, server);
+            // now we check if there are private ip
+            CheckPrivateIP(header, server);
+            // we check private port here
+            CheckPrivatePort(header, server);
+            //we check icmp support here
+            CheckICMPSupport(header, server);
+
+            return header;
+        }
+        protected static void CheckPrivateIP(List<byte> header, GameServerInfo server)
         {
             string localIP = "";
 
@@ -57,7 +75,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             header.AddRange(address);
         }
 
-        public static void CheckNonStandardPort(List<byte> header, GameServerInfo server)
+        protected static void CheckNonStandardPort(List<byte> header, GameServerInfo server)
         {
             ///only dedicated server have different query report port and host port
             ///the query report port and host port are the same on peer server
@@ -86,7 +104,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             }
         }
 
-        public static void CheckPrivatePort(List<byte> header, GameServerInfo server)
+        protected static void CheckPrivatePort(List<byte> header, GameServerInfo server)
         {
             // we check private port here
             if (!server.ServerData.KeyValue.ContainsKey("privateport"))
@@ -106,7 +124,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             header.AddRange(port);
         }
 
-        public static void CheckICMPSupport(List<byte> header, GameServerInfo server)
+        protected static void CheckICMPSupport(List<byte> header, GameServerInfo server)
         {
             header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
             byte[] address = HtonsExtensions.IPStringToBytes(server.RemoteQueryReportIP);

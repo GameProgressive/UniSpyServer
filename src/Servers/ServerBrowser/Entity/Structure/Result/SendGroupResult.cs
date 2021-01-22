@@ -1,5 +1,6 @@
 ﻿using QueryReport.Entity.Structure.Group;
 using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace ServerBrowser.Entity.Structure.Result
         public PeerGroupInfo PeerGroupInfo { get; set; }
         public SendGroupResult()
         {
+            ResponseType = SBServerResponseType.
         }
     }
 }

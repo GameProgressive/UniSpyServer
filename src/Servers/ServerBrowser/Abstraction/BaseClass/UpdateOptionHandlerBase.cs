@@ -4,6 +4,7 @@ using System.Text;
 using QueryReport.Entity.Structure;
 using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
+using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Entity.Structure.Result;
