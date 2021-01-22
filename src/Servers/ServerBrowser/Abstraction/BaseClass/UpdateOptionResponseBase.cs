@@ -12,6 +12,7 @@ namespace ServerBrowser.Abstraction.BaseClass
 {
     internal abstract class UpdateOptionResponseBase : SBResponseBase
     {
+        public byte[] PlainTextSendingBuffer { get; protected set; }
         private new ServerListRequest _request => (ServerListRequest)base._request;
         private new ServerListResult _result => (ServerListResult)base._result;
         public UpdateOptionResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

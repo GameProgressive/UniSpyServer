@@ -3,6 +3,7 @@ using Serilog.Events;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure;
+using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Entity.Structure.Result;
 using System.Collections.Generic;
@@ -66,7 +67,8 @@ namespace ServerBrowser.Handler.CmdHandler
 
             GOAEncryption enc = new GOAEncryption(_session.EncState);
             _sendingBuffer = enc.Encrypt(_dataList.ToArray());
-            _session.EncState = enc.State;
+            // we need to check whether enc state will be given new value;
+            // _session.EncState = enc.State;
         }
 
         protected virtual List<byte> GenerateServerInfo()
@@ -74,9 +76,9 @@ namespace ServerBrowser.Handler.CmdHandler
             List<byte> data = new List<byte>();
             data.AddRange(
                 UpdateOptionHandlerBase.GenerateServerInfoHeader(
-                    GameServerFlags.HasFullRulesFlag, _gameServer));
+                    GameServerFlags.HasFullRulesFlag, _result.GameServerInfo));
 
-            foreach (var kv in _gameServer.ServerData.KeyValue)
+            foreach (var kv in _result.GameServerInfo.ServerData.KeyValue)
             {
                 data.AddRange(Encoding.ASCII.GetBytes(kv.Key));
                 data.Add(SBStringFlag.StringSpliter);
@@ -84,7 +86,7 @@ namespace ServerBrowser.Handler.CmdHandler
                 data.Add(SBStringFlag.StringSpliter);
             }
 
-            foreach (var player in _gameServer.PlayerData.KeyValueList)
+            foreach (var player in _result.GameServerInfo.PlayerData.KeyValueList)
             {
                 foreach (var kv in player)
                 {
@@ -95,7 +97,7 @@ namespace ServerBrowser.Handler.CmdHandler
                 }
             }
 
-            foreach (var team in _gameServer.TeamData.KeyValueList)
+            foreach (var team in _result.GameServerInfo.TeamData.KeyValueList)
             {
                 foreach (var kv in team)
                 {

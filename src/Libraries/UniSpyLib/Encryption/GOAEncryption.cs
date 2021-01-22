@@ -14,7 +14,7 @@ namespace UniSpyLib.Encryption
 
     public class GOAEncryption
     {
-        public GOACryptState State { get; protected set; }
+        private GOACryptState State { get; set; }
         byte[] _clientChallenge = new byte[8];
         byte[] _serverChallenge;
         /// <summary>
