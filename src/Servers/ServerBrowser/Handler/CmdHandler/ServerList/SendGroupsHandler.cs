@@ -8,7 +8,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
-    public class SendGroupsHandler : UpdateOptionHandlerBase
+    internal sealed class SendGroupsHandler : UpdateOptionHandlerBase
     {
         private PeerGroupInfo _peerGroup;
 

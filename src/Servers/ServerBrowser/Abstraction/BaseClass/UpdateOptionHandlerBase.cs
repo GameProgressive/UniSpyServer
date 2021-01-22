@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Text;
 using QueryReport.Entity.Structure;
 using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using ServerBrowser.Entity.Structure.Request;
+using ServerBrowser.Entity.Structure.Result;
 using ServerBrowser.Network;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Encryption;
@@ -22,40 +21,33 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected byte[] _gameServerDefaultHostPort { get; set; }
         protected string _secretKey;
         protected new ServerListRequest _request => (ServerListRequest)base._request;
+        protected new ServerListResult _result
+        {
+            get => (ServerListResult)base._result;
+            set => base._result = value;
+        }
         protected List<byte> _dataList { get; set; }
         protected List<GameServerInfo> _gameServers { get; set; }
-
         public UpdateOptionHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _dataList = new List<byte>();
+            _result = new ServerListResult();
         }
 
         protected override void RequestCheck()
         {
-            //save client challenge in _request
-            if (_request == null)
-            {
-                _errorCode = SBErrorCode.Parse;
-                return;
-            }
             //we first check and get secrete key from database
             if (!DataOperationExtensions
                 .GetSecretKey(_request.GameName, out _secretKey))
             {
-                _errorCode = SBErrorCode.UnSupportedGame;
+                _result.ErrorCode = SBErrorCode.UnSupportedGame;
                 return;
             }
             //this is client public ip and default query port
-
-            _clientRemoteIP = ((IPEndPoint)_session.Socket.RemoteEndPoint).Address.GetAddressBytes();
-
+            _clientRemoteIP = _session.RemoteIPEndPoint.Address.GetAddressBytes();
+            _result.ClientRemoteIP = _session.RemoteIPEndPoint.Address.GetAddressBytes();
             //TODO   //default port should be hton format
-            byte[] defaultPortBytes = BitConverter.GetBytes(
-                ServerListRequest.QueryReportDefaultPort);
-
-            Array.Reverse(defaultPortBytes);
-            ushort htonDefaultPort = BitConverter.ToUInt16(defaultPortBytes);
-            _gameServerDefaultHostPort = BitConverter.GetBytes(htonDefaultPort);
+            _gameServerDefaultHostPort = ServerListRequest.HtonQueryReportDefaultPort;
         }
 
         protected override void ResponseConstruct()
@@ -164,83 +156,6 @@ namespace ServerBrowser.Abstraction.BaseClass
             return header;
         }
 
-        public static void CheckPrivateIP(List<byte> header, GameServerInfo server)
-        {
-            string localIP = "";
 
-            // now we check if there are private ip
-            if (server.ServerData.KeyValue.ContainsKey("localip0"))
-            {
-                localIP = server.ServerData.KeyValue["localip0"];
-            }
-            else if (server.ServerData.KeyValue.ContainsKey("localip1"))
-            {
-                localIP = server.ServerData.KeyValue["localip1"];
-            }
-            if (localIP == "")
-            {
-                return;
-            }
-
-            header[0] ^= (byte)GameServerFlags.PrivateIPFlag;
-            byte[] address = HtonsExtensions.IPStringToBytes(localIP);
-            header.AddRange(address);
-        }
-
-        public static void CheckNonStandardPort(List<byte> header, GameServerInfo server)
-        {
-            ///only dedicated server have different query report port and host port
-            ///the query report port and host port are the same on peer server
-            ///so we do not need to check this for peer server
-            //we check host port is standard port or not
-            if (!server.ServerData.KeyValue.ContainsKey("hostport"))
-            {
-                return;
-            }
-            if (server.ServerData.KeyValue["hostport"] == "")
-            {
-                return;
-            }
-
-            if (server.ServerData.KeyValue["hostport"] != "6500")
-            {
-                header[0] ^= (byte)GameServerFlags.NonStandardPort;
-                //we do not need htons here
-                byte[] port =
-                     HtonsExtensions.PortToIntBytes(
-                         server.ServerData.KeyValue["hostport"]);
-                byte[] htonPort =
-                    HtonsExtensions.UshortPortToHtonBytes(
-                        server.ServerData.KeyValue["hostport"]);
-                header.AddRange(htonPort);
-            }
-        }
-
-        public static void CheckPrivatePort(List<byte> header, GameServerInfo server)
-        {
-            // we check private port here
-            if (!server.ServerData.KeyValue.ContainsKey("privateport"))
-            {
-                return;
-            }
-            if (server.ServerData.KeyValue["privateport"] == "")
-            {
-                return;
-            }
-            header[0] ^= (byte)GameServerFlags.NonStandardPrivatePortFlag;
-
-            byte[] port =
-                HtonsExtensions.PortToIntBytes(
-                    server.ServerData.KeyValue["privateport"]);
-
-            header.AddRange(port);
-        }
-
-        public static void CheckICMPSupport(List<byte> header, GameServerInfo server)
-        {
-            header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
-            byte[] address = HtonsExtensions.IPStringToBytes(server.RemoteQueryReportIP);
-            header.AddRange(address);
-        }
     }
 }

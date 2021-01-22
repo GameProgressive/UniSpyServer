@@ -1,14 +1,18 @@
-﻿using System.Net;
-using System;
-using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace ServerBrowser.Entity.Structure.Result
 {
-    internal sealed class ServerListResult : UpdateOptionResultBase
+    internal sealed class GeneralRequestResult : UpdateOptionResultBase
     {
         public List<GameServerInfo> GamerServerInfos { get; set; }
-        public ServerListResult()
+
+        public GeneralRequestResult()
         {
             GamerServerInfos = new List<GameServerInfo>();
         }

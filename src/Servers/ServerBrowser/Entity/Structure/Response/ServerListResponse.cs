@@ -1,30 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Network;
+using UniSpyLib.Abstraction.BaseClass;
+using ServerBrowser.Entity.Structure.Result;
+using ServerBrowser.Entity.Structure.Request;
+using QueryReport.Entity.Structure;
+using ServerBrowser.Entity.Enumerate;
+using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Packet.Response
 {
-    public class ServerListResponse
+    internal sealed class ServerListResponse : UpdateOptionResponseBase
     {
-        /// <summary>
-        /// Combine header and crypted server data to a hole byte array
-        /// </summary>
-        /// <param name="data">Crypted data</param>
-        /// <param name="serverChallenge"></param>
-        /// <returns></returns>
-        public byte[] CombineHeaderAndContext(byte[] data, string serverChallenge)
+        private new ServerListRequest _request => (ServerListRequest)base._request;
+        private new ServerListResult _result => (ServerListResult)base._result;
+        public ServerListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
-            List<byte> cryptHeader = new List<byte>();
-
-            // we add the message length here
-            cryptHeader.Add(2 ^ 0xEC);
-            cryptHeader.AddRange(new byte[] { 0, 0 });
-            cryptHeader.Add((byte)(serverChallenge.Length ^ 0xEA));
-            cryptHeader.AddRange(Encoding.ASCII.GetBytes(serverChallenge));
-
-
-            cryptHeader.AddRange(data);
-
-            return cryptHeader.ToArray();
         }
     }
 }

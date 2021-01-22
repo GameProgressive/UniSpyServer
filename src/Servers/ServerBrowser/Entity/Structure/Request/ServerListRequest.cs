@@ -12,6 +12,7 @@ namespace ServerBrowser.Entity.Structure.Request
     /// </summary>
     internal sealed class ServerListRequest : SBRequestBase
     {
+        public static byte[] HtonQueryReportDefaultPort => ByteTools.GetBytes(QueryReportDefaultPort, true);
         public static ushort QueryReportDefaultPort = 6500;
         public byte RequestVersion { get; private set; }
         public byte ProtocolVersion { get; private set; }

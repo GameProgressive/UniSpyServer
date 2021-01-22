@@ -1,5 +1,6 @@
 ﻿using NetCoreServer;
 using System.Net;
+using System.Text;
 using UniSpyLib.Network;
 
 namespace ServerBrowser.Network
@@ -15,6 +16,7 @@ namespace ServerBrowser.Network
         /// for simplicity we use hard coded challenge
         /// to reduce computation cost of our program
         /// </summary>
+        public static byte[] BytesServerChallenge => Encoding.ASCII.GetBytes(ServerChallenge);
         public static readonly string ServerChallenge = "0000000000";
 
         public SBServer(IPAddress address, int port) : base(address, port)

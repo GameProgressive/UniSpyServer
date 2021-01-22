@@ -1,4 +1,4 @@
-﻿namespace ServerBrowser.Entity.Structure
+﻿namespace ServerBrowser.Entity.Structure.Misc
 {
     public class SBStringFlag
     {
