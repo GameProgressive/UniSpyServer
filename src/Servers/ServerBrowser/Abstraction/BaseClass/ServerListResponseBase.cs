@@ -6,16 +6,17 @@ using ServerBrowser.Network;
 using System.Collections.Generic;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class UpdateOptionResponseBase : SBResponseBase
+    internal abstract class ServerListResponseBase : SBResponseBase
     {
         public byte[] PlainTextSendingBuffer { get; protected set; }
-        private new UpdateOptionRequestBase _request => (UpdateOptionRequestBase)base._request;
-        private new UpdateOptionResultBase _result => (UpdateOptionResultBase)base._result;
-        public UpdateOptionResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        private new ServerListRequestBase _request => (ServerListRequestBase)base._request;
+        private new ServerListResultBase _result => (ServerListResultBase)base._result;
+        public ServerListResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         protected override void BuildNormalResponse()
@@ -25,9 +26,14 @@ namespace ServerBrowser.Abstraction.BaseClass
             serverListContext.AddRange(BuildCryptHeader());
             // Message length should be added here, between 2 line codes
             serverListContext.AddRange(_result.ClientRemoteIP);
-            serverListContext.AddRange(UpdateOptionRequestBase.HtonQueryReportDefaultPort);
-            //serverListContext.AddRange(SendingBuffer);
-            SendingBuffer = serverListContext.ToArray();
+            serverListContext.AddRange(ServerListRequestBase.HtonQueryReportDefaultPort);
+            serverListContext.AddRange(SendingBuffer);
+            PlainTextSendingBuffer = serverListContext.ToArray();
+            GOAEncryption enc = new GOAEncryption(
+                _result.GameSecretKey,
+                _request.Challenge,
+                SBServer.ServerChallenge);
+            SendingBuffer = enc.Encrypt(PlainTextSendingBuffer);
         }
         protected static List<byte> BuildCryptHeader()
         {
@@ -38,6 +44,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             data.AddRange(SBServer.BytesServerChallenge);
             return data;
         }
+        protected abstract List<byte> BuildServersInfo();
         protected static List<byte> BuildServerInfoHeader(GameServerFlags flag, GameServerInfo serverInfo)
         {
             List<byte> header = new List<byte>();
@@ -142,5 +149,6 @@ namespace ServerBrowser.Abstraction.BaseClass
             }
             return data;
         }
+
     }
 }

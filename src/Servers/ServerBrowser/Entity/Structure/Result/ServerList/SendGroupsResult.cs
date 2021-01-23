@@ -4,12 +4,11 @@ using ServerBrowser.Entity.Enumerate;
 
 namespace ServerBrowser.Entity.Structure.Result
 {
-    internal sealed class SendGroupResult : UpdateOptionResultBase
+    internal sealed class SendGroupsResult : ServerListResultBase
     {
         public PeerGroupInfo PeerGroupInfo { get; set; }
-        public SendGroupResult()
+        public SendGroupsResult()
         {
-            ResponseType = SBServerResponseType.
         }
     }
 }

@@ -1,10 +1,12 @@
-﻿using ServerBrowser.Entity.Enumerate;
+﻿using Serilog.Events;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Response;
 using ServerBrowser.Entity.Structure.Result;
 using ServerBrowser.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
@@ -65,7 +67,10 @@ namespace ServerBrowser.Abstraction.BaseClass
             {
                 return;
             }
-            _session.SendAsync((byte[])_response.SendingBuffer);
+            string tempStr = StringExtensions.ReplaceUnreadableCharToHex(
+                ((ServerListResponseBase)_response).PlainTextSendingBuffer);
+            LogWriter.ToLog(LogEventLevel.Debug, $"[Send] {tempStr}");
+            _session.BaseSendAsync((byte[])_response.SendingBuffer);
         }
     }
 }

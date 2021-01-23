@@ -10,7 +10,7 @@ namespace ServerBrowser.Entity.Structure.Request
     /// <summary>
     /// ServerList also called ServerRule in GameSpy SDK
     /// </summary>
-    internal sealed class ServerListRequest : UpdateOptionRequestBase
+    internal sealed class ServerListRequest : ServerListRequestBase
     {
         public ServerListRequest(object rawRequest) : base(rawRequest)
         {

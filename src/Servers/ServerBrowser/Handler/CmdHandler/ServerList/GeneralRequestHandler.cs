@@ -1,6 +1,6 @@
 ﻿using QueryReport.Entity.Structure;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Structure.Misc;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Response;
 using ServerBrowser.Entity.Structure.Result;
 using System.Linq;
@@ -8,11 +8,16 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
-    internal sealed class ServerListGeneralRequestHandler : UpdateOptionHandlerBase
+    internal sealed class GeneralRequestHandler : ServerListHandlerBase
     {
-        public ServerListGeneralRequestHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        private new GeneralRequestResult _result
         {
-            _result = new ServerListResult();
+            get => (GeneralRequestResult)base._result;
+            set => base._result = value;
+        }
+        public GeneralRequestHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        {
+            _result = new GeneralRequestResult();
         }
         /// <summary>
         /// we need to send empty server list response to game,
@@ -21,12 +26,13 @@ namespace ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {
             var searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_request.GameName);
-            _gameServers = GameServerInfo.RedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
+            _result.GameServerInfos = GameServerInfo.RedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
+            _result.Flag = GameServerFlags.HasKeysFlag;
         }
 
         protected override void ResponseConstruct()
         {
-            _response = new ServerListResponse(_request, _result);
+            _response = new GeneralRequestResponse(_request, _result);
         }
     }
 }

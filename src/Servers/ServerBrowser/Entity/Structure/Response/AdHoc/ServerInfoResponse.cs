@@ -6,14 +6,13 @@ using System.Collections.Generic;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
 
-namespace ServerBrowser.Entity.Structure.Packet.Response
+namespace ServerBrowser.Entity.Structure.Response
 {
     /// <summary>
     /// Get a server's information
     /// </summary>
-    internal sealed class ServerInfoResponse : UpdateOptionResponseBase
+    internal sealed class ServerInfoResponse : ServerListResponseBase
     {
         private new ServerInfoResult _result => (ServerInfoResult)base._result;
         public ServerInfoResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
@@ -23,17 +22,19 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
         {
             List<byte> serverListContext = new List<byte>();
             serverListContext.Add((byte)SBServerResponseType.PushServerMessage);
-            GenerateServerInfo(serverListContext);
-            LogWriter.ToLog("[Plain] " +
-               StringExtensions.ReplaceUnreadableCharToHex(serverListContext.ToArray()));
+            serverListContext.AddRange(BuildServersInfo());
+            PlainTextSendingBuffer = serverListContext.ToArray();
             byte[] msgLength =
                 ByteTools.GetBytes((short)(serverListContext.Count + 2), true);
+            serverListContext.InsertRange(0, msgLength);
+            SendingBuffer = serverListContext.ToArray();
         }
-        private void GenerateServerInfo(List<byte> data)
+        protected override List<byte> BuildServersInfo()
         {
-            data.AddRange(
-                UpdateOptionHandlerBase.GenerateServerInfoHeader(
-                    GameServerFlags.HasFullRulesFlag, _result.GameServerInfo));
+            List<byte> data = new List<byte>();
+            data.AddRange(BuildServerInfoHeader(
+                    GameServerFlags.HasFullRulesFlag,
+                    _result.GameServerInfo));
 
             foreach (var kv in _result.GameServerInfo.ServerData.KeyValue)
             {
@@ -42,7 +43,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
                 data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
                 data.Add(SBStringFlag.StringSpliter);
             }
-
             foreach (var player in _result.GameServerInfo.PlayerData.KeyValueList)
             {
                 foreach (var kv in player)
@@ -53,7 +53,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
                     data.Add(SBStringFlag.StringSpliter);
                 }
             }
-
             foreach (var team in _result.GameServerInfo.TeamData.KeyValueList)
             {
                 foreach (var kv in team)
@@ -64,7 +63,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
                     data.Add(SBStringFlag.StringSpliter);
                 }
             }
+            return data;
         }
     }
-
 }

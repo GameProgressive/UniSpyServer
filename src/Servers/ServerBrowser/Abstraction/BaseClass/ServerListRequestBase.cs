@@ -3,7 +3,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class UpdateOptionRequestBase : SBRequestBase
+    internal abstract class ServerListRequestBase : SBRequestBase
     {
         public static byte[] HtonQueryReportDefaultPort => ByteTools.GetBytes(QueryReportDefaultPort, true);
         public static ushort QueryReportDefaultPort = 6500;
@@ -23,7 +23,7 @@ namespace ServerBrowser.Abstraction.BaseClass
         public byte[] SourceIP { get; protected set; }
         public int MaxServers { get; protected set; }
 
-        protected UpdateOptionRequestBase(object rawRequest) : base(rawRequest)
+        protected ServerListRequestBase(object rawRequest) : base(rawRequest)
         {
             SourceIP = new byte[4];
         }

@@ -6,7 +6,7 @@ using UniSpyLib.Network;
 
 namespace ServerBrowser.Network
 {
-    public class SBSession : UniSpyTCPSessionBase
+    internal sealed class SBSession : UniSpyTCPSessionBase
     {
         public GOACryptState EncState { get; set; }
         public List<AdHocRequest> ServerMessageList { get; set; }

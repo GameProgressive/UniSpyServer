@@ -47,12 +47,15 @@ namespace ServerBrowser.Handler.CmdHandler
         }
 
         protected override void DataOperation()
-        {
+        {            
             //TODO check the if the remote endpoint is correct
-            _natNegCookie.GameServerRemoteEndPoint = _gameServer.RemoteQueryReportIPEndPoint;
-            _natNegCookie.GameServerRemoteIP = _adHocRequest.TargetServerIP;
-            _natNegCookie.GameServerRemotePort = _gameServer.RemoteQueryReportPort;
-            _natNegCookie.NatNegMessage = _request.NatNegMessage;
+            _natNegCookie = new NatNegCookie
+            {
+                GameServerRemoteEndPoint = _gameServer.RemoteQueryReportIPEndPoint,
+                GameServerRemoteIP = _adHocRequest.TargetServerIP,
+                GameServerRemotePort = _gameServer.RemoteQueryReportPort,
+                NatNegMessage = _request.NatNegMessage
+            };
         }
 
         protected override void Response()

@@ -1,40 +1,38 @@
 ﻿using QueryReport.Entity.Structure;
+using Serilog.Events;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Result;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class UpdateOptionHandlerBase : SBCmdHandlerBase
+    internal abstract class ServerListHandlerBase : SBCmdHandlerBase
     {
-        protected byte[] _clientRemoteIP { get; set; }
-        protected byte[] _gameServerDefaultHostPort { get; set; }
-        protected string _secretKey;
-        protected new UpdateOptionRequestBase _request => (UpdateOptionRequestBase)base._request;
-        protected new ServerListResult _result
+        protected new ServerListRequestBase _request => (ServerListRequestBase)base._request;
+        protected new ServerListResultBase _result
         {
-            get => (ServerListResult)base._result;
+            get => (ServerListResultBase)base._result;
             set => base._result = value;
         }
-        protected List<byte> _dataList { get; set; }
-        protected List<GameServerInfo> _gameServers { get; set; }
-        public UpdateOptionHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerListHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
         protected override void RequestCheck()
         {
+            string secretKey;
             //we first check and get secrete key from database
             if (!DataOperationExtensions
-                .GetSecretKey(_request.GameName, out _secretKey))
+                .GetSecretKey(_request.GameName, out secretKey))
             {
                 _result.ErrorCode = SBErrorCode.UnSupportedGame;
                 return;
             }
+            _result.GameSecretKey = secretKey;
             //this is client public ip and default query port
             _result.ClientRemoteIP = _session.RemoteIPEndPoint.Address.GetAddressBytes();
         }
-
     }
 }

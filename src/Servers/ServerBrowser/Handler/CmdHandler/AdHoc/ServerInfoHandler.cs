@@ -2,14 +2,12 @@
 using Serilog.Events;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Request;
+using ServerBrowser.Entity.Structure.Response;
 using ServerBrowser.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 
@@ -27,15 +25,15 @@ namespace ServerBrowser.Handler.CmdHandler
             get => (ServerInfoResult)base._result;
             set => base._result = value;
         }
-        protected List<byte> _dataList;
 
         public ServerInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _dataList = new List<byte>();
+            _result = new ServerInfoResult();
         }
 
         protected override void DataOperation()
         {
+            //_result.Flags = hasFullrule
             var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(_request.TargetServerIP)
                 .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);
@@ -50,76 +48,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _dataList.Add((byte)SBServerResponseType.PushServerMessage);
-
-            byte[] info = GenerateServerInfo().ToArray();
-
-            // we add server info here
-            _dataList.AddRange(info);
-            LogWriter.ToLog("[Plain] " +
-                StringExtensions.ReplaceUnreadableCharToHex(info));
-
-            byte[] msgLength =
-                ByteTools.GetBytes((short)(info.Length + 2), true);
-
-            _dataList.InsertRange(0, msgLength);
-
-            GOAEncryption enc = new GOAEncryption(_session.EncState);
-            _sendingBuffer = enc.Encrypt(_dataList.ToArray());
-            // we need to check whether enc state will be given new value;
-            // _session.EncState = enc.State;
-        }
-
-        protected virtual List<byte> GenerateServerInfo()
-        {
-            List<byte> data = new List<byte>();
-            data.AddRange(
-                UpdateOptionHandlerBase.GenerateServerInfoHeader(
-                    GameServerFlags.HasFullRulesFlag, _result.GameServerInfo));
-
-            foreach (var kv in _result.GameServerInfo.ServerData.KeyValue)
-            {
-                data.AddRange(Encoding.ASCII.GetBytes(kv.Key));
-                data.Add(SBStringFlag.StringSpliter);
-                data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
-                data.Add(SBStringFlag.StringSpliter);
-            }
-
-            foreach (var player in _result.GameServerInfo.PlayerData.KeyValueList)
-            {
-                foreach (var kv in player)
-                {
-                    data.AddRange(Encoding.ASCII.GetBytes(kv.Key));
-                    data.Add(SBStringFlag.StringSpliter);
-                    data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
-                    data.Add(SBStringFlag.StringSpliter);
-                }
-            }
-
-            foreach (var team in _result.GameServerInfo.TeamData.KeyValueList)
-            {
-                foreach (var kv in team)
-                {
-                    data.AddRange(Encoding.ASCII.GetBytes(kv.Key));
-                    data.Add(SBStringFlag.StringSpliter);
-                    data.AddRange(Encoding.ASCII.GetBytes(kv.Value));
-                    data.Add(SBStringFlag.StringSpliter);
-                }
-            }
-
-            return data;
-        }
-
-
-        protected override void Response()
-        {
-            if (_sendingBuffer == null || _sendingBuffer.Length < 4)
-            {
-                return;
-            }
-            LogWriter.ToLog(LogEventLevel.Debug,
-              $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(_dataList.ToArray(), 0, _dataList.Count)}");
-            _session.BaseSendAsync(_sendingBuffer);
+            _response = new ServerInfoResponse(_request, _result);
         }
     }
 }

@@ -4,13 +4,12 @@ using System.Collections.Generic;
 
 namespace ServerBrowser.Entity.Structure.Result
 {
-    internal sealed class GeneralRequestResult : UpdateOptionResultBase
+    internal sealed class GeneralRequestResult : ServerListResultBase
     {
-        public List<GameServerInfo> GamerServerInfos { get; set; }
-
+        public List<GameServerInfo> GameServerInfos { get; set; }
         public GeneralRequestResult()
         {
-            GamerServerInfos = new List<GameServerInfo>();
+            GameServerInfos = new List<GameServerInfo>();
         }
     }
 }
