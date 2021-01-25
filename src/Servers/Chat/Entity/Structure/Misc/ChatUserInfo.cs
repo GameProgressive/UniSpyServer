@@ -9,12 +9,14 @@ namespace Chat.Entity.Structure.Misc
     {
         //indicates which channel this user is in
         public ConcurrentBag<ChatChannel> JoinedChannels { get; protected set; }
+        public ChatSession Session { get; private set; }
         public bool IsQuietMode { get; set; }
         public string PublicIPAddress { get; protected set; }
         public string IRCPrefix => $"{NickName}!{UserName}@{ChatServer.ServerDomain}";
 
-        public ChatUserInfo()
+        public ChatUserInfo(ChatSession session)
         {
+            Session = session;
             ClientCTX = new GSPeerChatCTX();
             ServerCTX = new GSPeerChatCTX();
             JoinedChannels = new ConcurrentBag<ChatChannel>();

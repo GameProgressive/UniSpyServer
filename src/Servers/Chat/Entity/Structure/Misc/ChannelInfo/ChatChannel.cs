@@ -2,35 +2,21 @@
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Network;
 using QueryReport.Entity.Structure;
+using System.Collections.Concurrent;
 using System.Linq;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    public class ChatChannel
+    internal sealed class ChatChannel
     {
         public ChatChannelProperty Property { get; private set; }
-
+        public ConcurrentBag<ChatChannelUser> BanList { get; set; }
+        public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
         public ChatChannel()
         {
             Property = new ChatChannelProperty();
-        }
-
-        public void MultiCastJoin(ChatChannelUser joiner)
-        {
-            string joinMessage = ChatIRCReplyBuilder.Build(
-                joiner.UserInfo.IRCPrefix,
-                ChatReplyName.JOIN,
-                Property.ChannelName,
-                null);
-
-            string modes =
-                Property.ChannelMode.GetChannelMode();
-
-            joinMessage +=
-                MODEReply.BuildModeReply(
-                   Property.ChannelName, modes);
-
-            MultiCast(joinMessage);
+            BanList = new ConcurrentBag<ChatChannelUser>();
+            ChannelUsers = new ConcurrentBag<ChatChannelUser>();
         }
 
         public void MultiCastLeave(ChatChannelUser leaver, string message)
@@ -49,39 +35,34 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         /// except the sender
         /// </summary>
         /// <returns></returns>
-        public virtual bool MultiCast(string message)
+        public bool MultiCast(string message)
         {
-            foreach (var user in Property.ChannelUsers)
+            foreach (var user in ChannelUsers)
             {
-                user.Session.SendAsync(message);
+                user.UserInfo.Session.SendAsync(message);
             }
 
             return true;
         }
 
-        public virtual bool MultiCastExceptSender(ChatChannelUser sender, string message)
+        public bool MultiCastExceptSender(ChatChannelUser sender, string message)
         {
-            foreach (var o in Property.ChannelUsers)
+            foreach (var user in ChannelUsers)
             {
-                if (o.Session.Id == sender.Session.Id)
+                if (user.UserInfo.Session.Id == sender.UserInfo.Session.Id)
                 {
                     continue;
                 }
-                o.Session.SendAsync(message);
+                user.UserInfo.Session.SendAsync(message);
             }
 
             return true;
         }
 
-        public void SendChannelUsersToJoiner(ChatChannelUser joiner)
+        public string GetAllUsersNickString()
         {
-            string modes = Property.ChannelMode.GetChannelMode();
-
-            string buffer = MODEReply.BuildModeReply(
-               Property.ChannelName, modes);
-
             string nicks = "";
-            foreach (var user in Property.ChannelUsers)
+            foreach (var user in ChannelUsers)
             {
                 if (user.IsChannelCreator)
                 {
@@ -92,42 +73,17 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                     nicks += user.UserInfo.NickName + " ";
                 }
             }
-
-            // crysis2's nickname is * length =1 
-            if (nicks.Length < 1)
-            {
-                return;
-            }
-
             //if user equals last user in channel we do not add space after it
             nicks = nicks.Substring(0, nicks.Length - 1);
-
-            //check the message :@<nickname> whether broadcast char @ ?
-            buffer += NAMEReply.BuildNameReply(
-                joiner.UserInfo.NickName, Property.ChannelName, nicks);
-
-            buffer += NAMEReply.BuildEndOfNameReply(
-                joiner.UserInfo.NickName, Property.ChannelName);
-
-            joiner.Session.SendAsync(buffer);
+            return nicks;
         }
-
-        public void SendChannelModesToJoiner(ChatChannelUser joiner)
-        {
-            string modes = Property.ChannelMode.GetChannelMode();
-
-            string modesMessage =
-                MODEReply.BuildChannelModesReply(
-                    joiner, Property.ChannelName, modes);
-
-            joiner.Session.SendAsync(modesMessage);
-        }
+        
 
 
         public void AddBindOnUserAndChannel(ChatChannelUser joiner)
         {
-            if (!Property.ChannelUsers.Contains(joiner))
-                Property.ChannelUsers.Add(joiner);
+            if (!ChannelUsers.Contains(joiner))
+                ChannelUsers.Add(joiner);
 
             if (!joiner.UserInfo.JoinedChannels.Contains(this))
                 joiner.UserInfo.JoinedChannels.Add(this);
@@ -136,8 +92,8 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         public void RemoveBindOnUserAndChannel(ChatChannelUser leaver)
         {
-            if (Property.ChannelUsers.Contains(leaver))
-                Property.ChannelUsers.TryTake(out leaver);
+            if (ChannelUsers.Contains(leaver))
+                ChannelUsers.TryTake(out leaver);
 
             if (leaver.UserInfo.JoinedChannels.Contains(this))
             {
@@ -147,24 +103,22 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         }
 
-        public bool GetChannelUserBySession(ChatSession session, out ChatChannelUser user)
+        public ChatChannelUser GetChannelUserBySession(ChatSession session)
         {
-            var result = Property.ChannelUsers.Where(u => u.Session.Equals(session));
+            var result = ChannelUsers.Where(u => u.UserInfo.Session.Equals(session));
             if (result.Count() == 1)
             {
-                user = result.First();
-                return true;
+                return result.First();
             }
             else
             {
-                user = null;
-                return false;
+                return null;
             }
         }
 
         public bool IsUserBanned(ChatChannelUser user)
         {
-            if (Property.BanList.Where(u => u.Session.Id == user.Session.Id).Count() == 1)
+            if (BanList.Contains(user))
             {
                 return true;
             }
@@ -176,7 +130,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         public bool IsUserBanned(ChatSession session)
         {
-            if (Property.BanList.Where(u => u.Session.Id == session.Id).Count() == 1)
+            if (BanList.Where(u => u.UserInfo.Session.Id == session.Id).Count() == 1)
             {
                 return true;
             }
@@ -188,41 +142,39 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         public bool IsUserExisted(ChatChannelUser user)
         {
-            return GetChannelUserBySession(user.Session, out _);
+            return ChannelUsers.Contains(user);
         }
 
         public bool IsUserExisted(ChatSession session)
         {
-            return GetChannelUserBySession(session, out _);
+            return ChannelUsers
+            .Where(u => u.UserInfo.Session.Id == session.Id)
+            .Count() == 1 ? true : false;
         }
 
-        public bool GetChannelUserByUserName(string username, out ChatChannelUser user)
+        public ChatChannelUser GetChannelUserByUserName(string username)
         {
-            var result = Property.ChannelUsers.Where(u => u.Session.UserInfo.UserName == username);
+            var result = ChannelUsers.Where(u => u.UserInfo.UserName == username);
             if (result.Count() == 1)
             {
-                user = result.First();
-                return true;
+                return result.First();
             }
             else
             {
-                user = null;
-                return false;
+                return null;
             }
         }
 
-        public bool GetChannelUserByNickName(string nickname, out ChatChannelUser user)
+        public ChatChannelUser GetChannelUserByNickName(string nickName)
         {
-            var result = Property.ChannelUsers.Where(u => u.Session.UserInfo.NickName == nickname);
+            var result = ChannelUsers.Where(u => u.UserInfo.NickName == nickName);
             if (result.Count() == 1)
             {
-                user = result.First();
-                return true;
+                return result.First();
             }
             else
             {
-                user = null;
-                return false;
+                return null;
             }
         }
 
@@ -234,9 +186,9 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         /// <param name="session"></param>
         public void LeaveChannel(ChatSession session, string reason)
         {
-            ChatChannelUser user;
+            ChatChannelUser user = GetChannelUserBySession(session);
 
-            if (!GetChannelUserBySession(session, out user))
+            if (user == null)
             {
                 return;
             }
@@ -259,17 +211,19 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         private void KickAllUserAndShutDownChannel(ChatChannelUser kicker)
         {
-            foreach (var user in Property.ChannelUsers)
+            foreach (var user in ChannelUsers)
             {
                 //kick all user out
                 string cmdParams = $"{Property.ChannelName} {kicker.UserInfo.NickName} {user.UserInfo.NickName}";
                 string message = "Server Hoster leaves channel";
                 string kickMsg = ChatIRCReplyBuilder.Build(ChatReplyName.KICK, cmdParams, message);
-                user.Session.SendAsync(kickMsg);
+                user.UserInfo.Session.SendAsync(kickMsg);
             }
 
             ChatChannelManager.RemoveChannel(this);
-            var fullKey = GameServerInfo.RedisOperator.BuildFullKey(kicker.Session.RemoteIPEndPoint, kicker.Session.UserInfo.GameName);
+            var fullKey = GameServerInfo.RedisOperator.BuildFullKey(
+                kicker.UserInfo.Session.RemoteIPEndPoint,
+                kicker.UserInfo.Session.UserInfo.GameName);
 
             GameServerInfo.RedisOperator.DeleteKeyValue(fullKey);
         }

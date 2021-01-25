@@ -8,16 +8,15 @@ using UniSpyLib.Logging;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    public class ChatChannelProperty
+    internal sealed class ChatChannelProperty
     {
-        public string ChannelName { get; protected set; }
-        public uint MaxNumberUser { get; protected set; }
+        public string ChannelName { get; private set; }
+        public uint MaxNumberUser { get; private set; }
         public ChatChannelMode ChannelMode { get; set; }
-        public DateTime ChannelCreatedTime { get; protected set; }
-        public ConcurrentBag<ChatChannelUser> BanList { get; set; }
-        public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
+        public DateTime ChannelCreatedTime { get; private set; }
+
         public string Password { get; set; }
-        public Dictionary<string, string> ChannelKeyValue { get; protected set; }
+        public Dictionary<string, string> ChannelKeyValue { get; private set; }
         public string ChannelTopic { get; set; }
         public bool IsPeerServer { get; set; }
 
@@ -25,8 +24,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         {
             ChannelCreatedTime = DateTime.Now;
             ChannelMode = new ChatChannelMode();
-            BanList = new ConcurrentBag<ChatChannelUser>();
-            ChannelUsers = new ConcurrentBag<ChatChannelUser>();
             ChannelKeyValue = new Dictionary<string, string>();
         }
 

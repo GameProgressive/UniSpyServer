@@ -3,26 +3,24 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    public class ChatChannelUser
+    internal sealed class ChatChannelUser
     {
         public bool IsVoiceable { get; set; }
         public bool IsChannelCreator { get; set; }
         public bool IsChannelOperator { get; set; }
-        public ChatSession Session { get; protected set; }
-        public ChatUserInfo UserInfo
-        {
-            get { return Session.UserInfo; }
-        }
+
+        public ChatUserInfo UserInfo { get; private set; }
+        public Dictionary<string, string> UserKeyValue { get; private set; }
+
         public string BFlags
         {
             get { return @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"]; }
         }
 
-        public Dictionary<string, string> UserKeyValue { get; protected set; }
 
-        public ChatChannelUser(ChatSession session)
+        public ChatChannelUser(ChatUserInfo userInfo)
         {
-            Session = session;
+            UserInfo = userInfo;
             UserKeyValue = new Dictionary<string, string>();
         }
 

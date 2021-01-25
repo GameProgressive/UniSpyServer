@@ -23,6 +23,11 @@ namespace Chat.Handler.CmdHandler.Channel
             get => (JOINResult)base._result;
             set => base._result = value;
         }
+        private new JOINResponse _response
+        {
+            get => (JOINResponse)base._response;
+            set => base._response = value;
+        }
         ChatChannel _channel;
         ChatChannelUser _user;
         public JOINHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -53,110 +58,70 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-            _user = new ChatChannelUser(_session);
+            _user = new ChatChannelUser(_session.UserInfo);
             if (ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
+                _result.IsCreateChannel = true;
                 //join
-                JoinChannel();
+                if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
+                {
+                    _result.IsAlreadyJoinedChannel = true;
+                }
+                else
+                {
+                    if (_channel.Property.ChannelMode.IsInviteOnly)
+                    {
+                        //invited only
+                        _result.ErrorCode = ChatErrorCode.IRCError;
+                        return;
+                    }
+                    if (_channel.IsUserBanned(_user))
+                    {
+                        _result.ErrorCode = ChatErrorCode.IRCError;
+                        _result.IRCErrorCode = ChatIRCErrorCode.BannedFromChan;
+                        return;
+                    }
+                    if (_channel.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
+                    {
+                        _result.ErrorCode = ChatErrorCode.IRCError;
+                        _result.IRCErrorCode = ChatIRCErrorCode.ChannelIsFull;
+                        return;
+                    }
+                    //if all pass, it mean  we excute join channel
+                    _user.SetDefaultProperties(false);
+                    //simple check for avoiding program crash
+                    if (_channel.IsUserExisted(_user))
+                    {
+                        _result.ErrorCode = ChatErrorCode.UserAlreadyInChannel;
+                        return;
+                    }
+                    _channel.AddBindOnUserAndChannel(_user);
+
+                }
             }
             else
             {
                 //create
-                CreateChannel();
+                _channel = new ChatChannel();
+                if (IsPeerServer(_request.ChannelName))
+                {
+                    _channel.Property.IsPeerServer = true;
+                }
+                _user.SetDefaultProperties(true);
+                _channel.Property.SetDefaultProperties(_user, _request);
+                _channel.AddBindOnUserAndChannel(_user);
+                ChatChannelManager.AddChannel(_request.ChannelName, _channel);
             }
+
+            _result.ChannelUserNicks = _channel.GetAllUsersNickString();
+            _result.JoinerNickName = _session.UserInfo.NickName;
+            _result.ChannelModes = _channel.Property.ChannelMode.GetChannelMode();
             _result.JoinerPrefix = _session.UserInfo.IRCPrefix;
-        }
-
-        public void CreateChannel()
-        {
-            _channel = new ChatChannel();
-
-            if (IsPeerServer(_request.ChannelName))
-            {
-                _channel.Property.IsPeerServer = true;
-            }
-
-            _user.SetDefaultProperties(true);
-
-            _channel.Property.SetDefaultProperties(_user, _request);
-
-            //simple check for avoiding program crash
-            if (!_channel.IsUserExisted(_user))
-            {
-                _channel.AddBindOnUserAndChannel(_user);
-            }
-
-            //first we send join information to all user in this channel
-            _channel.MultiCastJoin(_user);
-
-            //then we send user list which already in this channel ???????????
-            _channel.SendChannelUsersToJoiner(_user);
-
-            //send channel mode to joiner
-            _channel.SendChannelModesToJoiner(_user);
-
-            ChatChannelManager.AddChannel(_request.ChannelName, _channel);
-        }
-
-        public void JoinChannel()
-        {
-            if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
-            {
-                //then we send user list which already in this channel ???????????
-                _channel.SendChannelUsersToJoiner(_user);
-
-                //send channel mode to joiner
-                _channel.SendChannelModesToJoiner(_user);
-            }
-            else
-            {
-                //channel.JoinChannel(_session);
-                if (_channel.Property.ChannelMode.IsInviteOnly)
-                {
-                    //invited only
-                    _result.ErrorCode = ChatErrorCode.IRCError;
-                    return;
-                }
-
-                if (_channel.IsUserBanned(_user))
-                {
-                    _result.ErrorCode = ChatErrorCode.IRCError;
-                    _result.IRCErrorCode = ChatIRCErrorCode.BannedFromChan;
-                    return;
-                }
-                if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
-                {
-                    _result.ErrorCode = ChatErrorCode.IRCError;
-                    _result.IRCErrorCode = ChatIRCErrorCode.ChannelIsFull;
-                    return;
-                }
-                //if all pass, it mean  we excute join channel
-                _user.SetDefaultProperties();
-
-                //simple check for avoiding program crash
-                if (_channel.IsUserExisted(_user))
-                {
-                    _result.ErrorCode = ChatErrorCode.UserAlreadyInChannel;
-                    return;
-                }
-
-                _channel.AddBindOnUserAndChannel(_user);
-
-                //first we send join information to all user in this channel
-                _channel.MultiCastJoin(_user);
-
-                //then we send user list which already in this channel ???????????
-                _channel.SendChannelUsersToJoiner(_user);
-
-                //send channel mode to joiner
-                _channel.SendChannelModesToJoiner(_user);
-            }
         }
 
         private bool IsPeerServer(string name)
         {
             string[] buffer = name.Split('!', System.StringSplitOptions.RemoveEmptyEntries);
-
             if (buffer.Length != 3)
             {
                 return false;
@@ -167,13 +132,29 @@ namespace Chat.Handler.CmdHandler.Channel
             {
                 return true;
             }
-
             return false;
         }
 
         protected override void ResponseConstruct()
         {
             _response = new JOINResponse(_request, _result);
+        }
+
+        protected override void Response()
+        {
+            if (_response == null)
+            {
+                return;
+            }
+            _response.Build();
+            if(!_result.IsAlreadyJoinedChannel)
+            {
+            //first we send join information to all user in this channel
+            _channel.MultiCast(_response.SendingBufferOfChannelUsers);
+            }
+            //TODO checkout whether need send mode in another single response
+            _session.SendAsync(_response.SendingBuffer);
+            _session.SendAsync(_response.ModeReply);
         }
     }
 }

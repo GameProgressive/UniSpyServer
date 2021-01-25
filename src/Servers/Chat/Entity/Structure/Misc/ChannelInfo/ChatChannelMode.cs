@@ -3,21 +3,20 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    public class ChatChannelMode
+    internal sealed class ChatChannelMode
     {
-
         //i - toggle the invite-only channel flag;
-        public bool IsInviteOnly { get; protected set; }
+        public bool IsInviteOnly { get; private set; }
         //p - toggle the private channel flag;
-        public bool IsPrivateChannel { get; protected set; }
+        public bool IsPrivateChannel { get; private set; }
         //s - toggle the secret channel flag;
-        public bool IsSecretChannel { get; protected set; }
+        public bool IsSecretChannel { get; private set; }
         //m - toggle the moderated channel;
-        public bool IsModeratedChannel { get; protected set; }
+        public bool IsModeratedChannel { get; private set; }
         //n - toggle the no messages to channel from clients on the outside;
-        public bool IsAllowExternalMessage { get; protected set; }
+        public bool IsAllowExternalMessage { get; private set; }
         //t - toggle the topic settable by channel operator only flag;
-        public bool IsTopicOnlySetByChannelOperator { get; protected set; }
+        public bool IsTopicOnlySetByChannelOperator { get; private set; }
 
         /// <summary>
         /// default constructor

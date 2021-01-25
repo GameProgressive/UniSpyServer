@@ -7,14 +7,18 @@ namespace Chat.Entity.Structure.Response.General
     {
         public static string BuildNameReply(string nickName, string channelName, string nicks)
         {
-            return ChatResponseBase.BuildRPL(
+            return ChatIRCReplyBuilder.Build(
                     ChatReplyName.NameReply,
                     $"{nickName} = {channelName}", nicks);
         }
         public static string BuildEndOfNameReply(string nickName, string channelName)
         {
-            return ChatResponseBase.BuildRPL(ChatReplyName.EndOfNames,
-                    $"{nickName} {channelName}", @"End of /NAMES list.");
+            string cmdParams = $"{nickName} {channelName}";
+            string tailing = @"End of /NAMES list.";
+            return ChatIRCReplyBuilder.Build(
+                ChatReplyName.EndOfNames,
+                cmdParams,
+                tailing);
         }
 
     }
