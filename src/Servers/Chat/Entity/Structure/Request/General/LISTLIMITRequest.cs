@@ -14,28 +14,26 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             if (_cmdParams.Count != 2)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
             int max;
             if (!int.TryParse(_cmdParams[0], out max))
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
             MaxNumberOfChannels = max;
 
             Filter = _cmdParams[1];
-
-            ErrorCode = true;
         }
     }
 }

@@ -16,21 +16,21 @@ namespace Chat.Entity.Structure.Request.Channel
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             if (_cmdParams.Count != 3)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             if (_longParam == null || _longParam.Last() != '\0')
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
@@ -39,8 +39,6 @@ namespace Chat.Entity.Structure.Request.Channel
             _longParam = _longParam.Substring(0, _longParam.Length - 2);
 
             Keys = StringExtensions.ConvertKeyStrToList(_longParam);
-
-            ErrorCode = true;
         }
     }
 }

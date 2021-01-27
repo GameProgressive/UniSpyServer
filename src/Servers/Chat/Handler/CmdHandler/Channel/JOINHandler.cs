@@ -154,7 +154,7 @@ namespace Chat.Handler.CmdHandler.Channel
             }
             //TODO checkout whether need send mode in another single response
             _session.SendAsync(_response.SendingBuffer);
-            _session.SendAsync(_response.ModeReply);
+            // _session.SendAsync(_response.ModeReply);
         }
     }
 }

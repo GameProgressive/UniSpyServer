@@ -15,18 +15,14 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             VersionID = _cmdParams[1];
             GameName = _cmdParams[2];
-
-            ErrorCode = true;
         }
-
-
     }
 }

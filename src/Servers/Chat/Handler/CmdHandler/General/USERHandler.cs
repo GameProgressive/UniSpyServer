@@ -1,12 +1,13 @@
-﻿using Chat.Abstraction.BaseClass;
+﻿using System.Diagnostics;
+using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.General
 {
-    public class USERHandler : ChatCmdHandlerBase
+    internal sealed class USERHandler : ChatCmdHandlerBase
     {
-        protected new USERRequest _request { get { return (USERRequest)base._request; } }
+        private new USERRequest _request => (USERRequest)base._request;
 
         public USERHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -14,26 +15,14 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            base.DataOperation();
-            _session.UserInfo.SetUserName(_request.UserName);
-            _session.UserInfo.SetName(_request.Name);
+            _session.UserInfo.UserName = _request.UserName;
+            _session.UserInfo.Name = _request.Name;
+            _session.UserInfo.IsLoggedIn = true;
         }
 
-        protected override void BuildNormalResponse()
+        protected override void ResponseConstruct()
         {
-            base.BuildNormalResponse();
-
-            //TODO check if this is correct
-            //we postpone welcome message until when recieved NICK request
-            //_sendingBuffer =
-            //    ChatReply.BuildWelcomeReply(_session.UserInfo);
-
-            _session.UserInfo.IsLoggedIn = true;
-
-
-            //check this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            //_sendingBuffer += ChatCommandBase.BuildMessageRPL(
-            //_nickCmd.NickName, $"MODE {_nickCmd.NickName}", "+iwx");
+            _response = new USERResponse(_request, _result);
         }
     }
 }

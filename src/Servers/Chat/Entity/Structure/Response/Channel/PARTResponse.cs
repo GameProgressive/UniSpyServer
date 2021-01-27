@@ -3,7 +3,7 @@ using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Result;
 using UniSpyLib.Abstraction.BaseClass;
 
-namespace Chat.Entity.Structure.Response.General
+namespace Chat.Entity.Structure.Response.Channel
 {
     internal sealed class PARTResponse : ChatResponseBase
     {
@@ -19,10 +19,11 @@ namespace Chat.Entity.Structure.Response.General
                   ChatReplyName.PART,
                   _result.Message);
         }
-        public static string BuildPartReply(string leaverIRCPrefix,string channelName,string message)
+
+        public static string BuildPartReply(string userIRCPrefix, string channelName, string message)
         {
-            return  ChatIRCReplyBuilder.Build(
-                leaverIRCPrefix,
+            return ChatIRCReplyBuilder.Build(
+                userIRCPrefix,
                 ChatReplyName.PART,
                 channelName,
                 message);

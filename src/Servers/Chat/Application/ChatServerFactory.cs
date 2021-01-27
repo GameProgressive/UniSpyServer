@@ -10,9 +10,9 @@ namespace Chat.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class ChatServerFactory : UniSpyServerFactoryBase
+    internal sealed class ChatServerFactory : UniSpyServerFactoryBase
     {
-        public new static ChatServer Server { get; protected set; }
+        public new static ChatServer Server { get; private set; }
         /// <summary>
         /// Constructor
         /// </summary>

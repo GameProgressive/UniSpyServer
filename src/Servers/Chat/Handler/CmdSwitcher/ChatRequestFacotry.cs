@@ -19,31 +19,24 @@ namespace Chat.Handler.CommandSwitcher
 
         public override IUniSpyRequest Serialize()
         {
-            ChatRequestBase generalRequest = new ChatRequestBase(_rawRequest);
-            generalRequest.Parse();
-            if (!generalRequest.ErrorCode)
-            {
-                LogWriter.ToLog(LogEventLevel.Error, "Invalid request!");
-                return null;
-            }
-
+            string commandName = ChatRequestBase.GetCommandName(_rawRequest);
             Type requestType = AppDomain.CurrentDomain
                     .GetAssemblies()
                     .SelectMany(x => x.GetTypes())
-                    .FirstOrDefault(t => t.Name == generalRequest.CommandName + "Request");
+                    .FirstOrDefault(t => t.Name == commandName + "Request");
             if (requestType != null)
             {
-                var request = Activator.CreateInstance(requestType, generalRequest.RawRequest);
+                var request = Activator.CreateInstance(requestType, _rawRequest);
                 if (request == null)
                 {
-                    LogWriter.ToLog(LogEventLevel.Error, $"Unknown request {generalRequest.CommandName}!");
+                    LogWriter.ToLog(LogEventLevel.Error, $"Unknown request {commandName}!");
                     return null;
                 }
                 return (IUniSpyRequest)request;
             }
             else
             {
-                LogWriter.ToLog(LogEventLevel.Error, $"Request: {generalRequest.CommandName} not implemented!");
+                LogWriter.ToLog(LogEventLevel.Error, $"Request: {commandName} not implemented!");
                 return null;
             }
         }

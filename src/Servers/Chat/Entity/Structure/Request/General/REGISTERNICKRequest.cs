@@ -14,16 +14,15 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             NamespaceID = _cmdParams[0];
             UniqueNick = _cmdParams[1];
             CDKey = _cmdParams[2];
-            ErrorCode = true;
         }
     }
 }

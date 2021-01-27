@@ -1,18 +1,20 @@
-﻿using Chat.Entity.Structure;
+﻿using System.Runtime.CompilerServices;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using Chat.Application;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Network;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {
-    public class ChatMsgHandlerBase : ChatChannelHandlerBase
+    internal abstract class ChatMsgHandlerBase : ChatChannelHandlerBase
     {
-        new ChatMsgRequestBase _request
-        {
-            get { return (ChatMsgRequestBase)base._request; }
-        }
-        protected ChatSession _otherSession;
-
+        protected new ChatMsgRequestBase _request => (ChatMsgRequestBase)base._request;
+ 
         public ChatMsgHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -28,33 +30,34 @@ namespace Chat.Abstraction.BaseClass
 
                     if (_request.RequestType == ChatMessageType.UserMessage)
                     {
-                        if (!ChatSessionManager.GetSessionByNickName(_request.NickName, out _otherSession))
+                        var user = _channel.GetChannelUserByNickName(_request.NickName);
+                        if (user == null)
                         {
-                            _errorCode = ChatErrorCode.NoSuchNick;
-                            _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
+                            _result.ErrorCode = ChatErrorCode.IRCError;
+                            _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
                         }
                     }
                     break;
                 default:
-                    _errorCode = ChatErrorCode.Parse;
+                    _result.ErrorCode = ChatErrorCode.Parse;
                     break;
             }
         }
 
         protected override void Response()
         {
-            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
+            if (_response == null)
             {
                 return;
             }
-
+            _response.Build();
             switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:
-                    _channel.MultiCastExceptSender(_user, _sendingBuffer);
+                    _channel.MultiCastExceptSender(_user,(string)_response.SendingBuffer);
                     break;
                 case ChatMessageType.UserMessage:
-                    _otherSession.SendAsync(_sendingBuffer);
+                    _user.UserInfo.Session.SendAsync((string)_response.SendingBuffer);
                     break;
             }
 

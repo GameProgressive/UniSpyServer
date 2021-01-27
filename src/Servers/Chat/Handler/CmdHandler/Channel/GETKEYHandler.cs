@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Channel;
@@ -28,8 +29,13 @@ namespace Chat.Handler.CmdHandler.Channel
             _result.NickName = _session.UserInfo.NickName;
             foreach (var channel in _session.UserInfo.JoinedChannels)
             {
-                ChatChannelUser user;
-                if (channel.GetChannelUserBySession(_session, out user))
+                var user = channel.GetChannelUserByNickName(_request.NickName);
+                if (user == null)
+                {
+                    _result.ErrorCode = Entity.Structure.ChatErrorCode.IRCError;
+                    _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
+                }
+                else
                 {
                     var values = user.GetUserValues(_request.Keys);
                     _result.Flags.Add(values);

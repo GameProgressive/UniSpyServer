@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Result
 {
-    public class CRYPTResult : ChatResultBase
+    internal class CRYPTResult : ChatResultBase
     {
         public string ServerKey { get; protected set; }
         public string ClientKey { get; protected set; }

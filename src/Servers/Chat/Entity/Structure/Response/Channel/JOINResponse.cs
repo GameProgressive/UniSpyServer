@@ -11,13 +11,15 @@ namespace Chat.Entity.Structure.Response.General
         private new JOINResult _result => (JOINResult)base._result;
         private new JOINRequest _request => (JOINRequest)base._request;
         public string SendingBufferOfChannelUsers { get; private set; }
-        public string ModeReply { get; private set; }
         public JOINResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
         protected override void BuildNormalResponse()
         {
+             string modeReply = MODEReply.BuildModeReply(
+                       _request.ChannelName, _result.ChannelModes);
+                       
             if (!_result.IsAlreadyJoinedChannel)
             {
                 SendingBufferOfChannelUsers = ChatIRCReplyBuilder.Build(
@@ -25,13 +27,10 @@ namespace Chat.Entity.Structure.Response.General
                     ChatReplyName.JOIN,
                     _request.ChannelName,
                     null);
-                ModeReply = MODEReply.BuildModeReply(
-                       _request.ChannelName, _result.ChannelModes);
-
-                SendingBufferOfChannelUsers += ModeReply;
+                SendingBufferOfChannelUsers += modeReply;
             }
             
-            SendingBuffer = ModeReply;
+            SendingBuffer = modeReply;
             //check the message :@<nickname> whether broadcast char @ ?
             SendingBuffer += NAMEReply.BuildNameReply(
                 _result.JoinerNickName,

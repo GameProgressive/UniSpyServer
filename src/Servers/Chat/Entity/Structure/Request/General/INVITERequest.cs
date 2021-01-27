@@ -14,21 +14,20 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             if (_cmdParams.Count != 2)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             ChannelName = _cmdParams[0];
             UserName = _cmdParams[1];
-            ErrorCode = true;
         }
     }
 }

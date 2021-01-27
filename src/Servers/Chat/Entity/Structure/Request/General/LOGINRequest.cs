@@ -25,9 +25,9 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
@@ -36,7 +36,7 @@ namespace Chat.Entity.Structure.Request
 
             if (!uint.TryParse(_cmdParams[0], out namespaceid))
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace Chat.Entity.Structure.Request
 
                 if (_longParam.Count(c => c == '@') != 2)
                 {
-                    ErrorCode = false;
+                    ErrorCode = ChatErrorCode.Parse;
                     return;
                 }
 
@@ -64,8 +64,6 @@ namespace Chat.Entity.Structure.Request
                 UniqueNick = _cmdParams[1];
                 PasswordHash = _cmdParams[2];
             }
-
-            ErrorCode = true;
         }
     }
 }

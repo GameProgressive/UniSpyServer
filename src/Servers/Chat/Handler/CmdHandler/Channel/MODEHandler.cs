@@ -9,7 +9,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Channel
 {
-    internal sealed class MODEHandler : ChatLogedInHandlerBase
+    internal sealed class MODEHandler : ChatChannelHandlerBase
     {
         private new MODERequest _request => (MODERequest)base._request;
         private new MODEResult _result
@@ -17,9 +17,6 @@ namespace Chat.Handler.CmdHandler.Channel
             get => (MODEResult)base._result;
             set => base._result = value;
         }
-
-        ChatChannel _channel;
-        ChatChannelUser _user;
         public MODEHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new MODEResult();
@@ -27,8 +24,6 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
-
             switch (_request.RequestType)
             {
                 case ModeRequestType.EnableUserQuietFlag:
@@ -36,31 +31,8 @@ namespace Chat.Handler.CmdHandler.Channel
                     //we do not need to find user and its channel here
                     break;
                 default:
-                    GetChannelAndUser();
+                    base.RequestCheck();
                     break;
-            }
-        }
-        private void GetChannelAndUser()
-        {
-            if (_session.UserInfo.JoinedChannels.Count == 0)
-            {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
-                return;
-            }
-
-            if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
-            {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
-                return;
-            }
-
-            if (!_channel.GetChannelUserBySession(_session, out _user))
-            {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
-                return;
             }
         }
 

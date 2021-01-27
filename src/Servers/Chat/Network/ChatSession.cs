@@ -1,4 +1,6 @@
 ﻿using Chat.Entity.Structure.Misc;
+using Chat.Entity.Structure.Request;
+using Chat.Handler.CmdHandler.General;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Handler.SystemHandler.Encryption;
@@ -11,13 +13,13 @@ using UniSpyLib.Network;
 
 namespace Chat.Network
 {
-    public class ChatSession : UniSpyTCPSessionBase
+    internal sealed class ChatSession : UniSpyTCPSessionBase
     {
-        public ChatUserInfo UserInfo { get; protected set; }
+        public ChatUserInfo UserInfo { get; private set; }
 
         public ChatSession(ChatServer server) : base(server)
         {
-            UserInfo = new ChatUserInfo();
+            UserInfo = new ChatUserInfo(this);
         }
 
         protected override void OnReceived(string message)
@@ -70,18 +72,12 @@ namespace Chat.Network
 
         protected override void OnDisconnected()
         {
-            foreach (var channel in ChatChannelManager.Channels.Values)
+            var quitRequest = new QUITRequest()
             {
-                channel.LeaveChannel(this, "Disconnected");
-            }
-
+                Reason = "Server Host leaves channel"
+            };
+            new QUITHandler(this, quitRequest).Handle();
             base.OnDisconnected();
-        }
-
-        protected override void OnConnected()
-        {
-            base.OnConnected();
-            UserInfo.SetDefaultUserInfo(RemoteEndPoint);
         }
     }
 }

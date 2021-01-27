@@ -40,25 +40,20 @@ namespace Chat.Abstraction.BaseClass
 
             if (_result.ErrorCode != ChatErrorCode.NoError)
             {
-                if (_result.ErrorCode == ChatErrorCode.IRCError)
-                {
-                    ResponseConstruct();
-                }
+                ResponseConstruct();
+                Response();
                 return;
             }
 
             DataOperation();
             if (_result.ErrorCode != ChatErrorCode.NoError)
             {
-                if (_result.ErrorCode == ChatErrorCode.IRCError)
-                {
-                    ResponseConstruct();
-                }
+                ResponseConstruct();
+                Response();
                 return;
             }
 
             ResponseConstruct();
-
             Response();
         }
         protected override void RequestCheck()

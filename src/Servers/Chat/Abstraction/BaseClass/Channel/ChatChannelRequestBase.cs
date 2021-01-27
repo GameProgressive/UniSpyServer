@@ -1,27 +1,27 @@
-﻿namespace Chat.Abstraction.BaseClass
+﻿using Chat.Entity.Structure;
+
+namespace Chat.Abstraction.BaseClass
 {
     public class ChatChannelRequestBase : ChatRequestBase
     {
+        public string ChannelName { get; set; }
+        public ChatChannelRequestBase(){}
         public ChatChannelRequestBase(string rawRequest) : base(rawRequest)
         {
         }
-
-        public string ChannelName { get; protected set; }
-
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                return;
             }
 
             if (_cmdParams.Count < 1)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
             }
             ChannelName = _cmdParams[0];
-            ErrorCode = true;
         }
     }
 }

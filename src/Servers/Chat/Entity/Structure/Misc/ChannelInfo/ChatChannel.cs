@@ -19,17 +19,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             ChannelUsers = new ConcurrentBag<ChatChannelUser>();
         }
 
-        public void MultiCastLeave(ChatChannelUser leaver, string message)
-        {
-            string leaveMessage = ChatIRCReplyBuilder.Build(
-                leaver.UserInfo.IRCPrefix,
-                ChatReplyName.PART,
-                Property.ChannelName,
-                message);
-
-            MultiCast(leaveMessage);
-        }
-
         /// <summary>
         /// Send message to all users in this channel
         /// except the sender
@@ -44,7 +33,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
             return true;
         }
-
         public bool MultiCastExceptSender(ChatChannelUser sender, string message)
         {
             foreach (var user in ChannelUsers)
@@ -58,7 +46,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
             return true;
         }
-
         public string GetAllUsersNickString()
         {
             string nicks = "";
@@ -77,9 +64,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             nicks = nicks.Substring(0, nicks.Length - 1);
             return nicks;
         }
-        
-
-
         public void AddBindOnUserAndChannel(ChatChannelUser joiner)
         {
             if (!ChannelUsers.Contains(joiner))
@@ -89,7 +73,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 joiner.UserInfo.JoinedChannels.Add(this);
 
         }
-
         public void RemoveBindOnUserAndChannel(ChatChannelUser leaver)
         {
             if (ChannelUsers.Contains(leaver))
@@ -115,7 +98,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return null;
             }
         }
-
         public bool IsUserBanned(ChatChannelUser user)
         {
             if (BanList.Contains(user))
@@ -127,7 +109,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return false;
             }
         }
-
         public bool IsUserBanned(ChatSession session)
         {
             if (BanList.Where(u => u.UserInfo.Session.Id == session.Id).Count() == 1)
@@ -139,19 +120,10 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return false;
             }
         }
-
         public bool IsUserExisted(ChatChannelUser user)
         {
             return ChannelUsers.Contains(user);
         }
-
-        public bool IsUserExisted(ChatSession session)
-        {
-            return ChannelUsers
-            .Where(u => u.UserInfo.Session.Id == session.Id)
-            .Count() == 1 ? true : false;
-        }
-
         public ChatChannelUser GetChannelUserByUserName(string username)
         {
             var result = ChannelUsers.Where(u => u.UserInfo.UserName == username);
@@ -164,7 +136,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return null;
             }
         }
-
         public ChatChannelUser GetChannelUserByNickName(string nickName)
         {
             var result = ChannelUsers.Where(u => u.UserInfo.NickName == nickName);
@@ -208,7 +179,16 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
             RemoveBindOnUserAndChannel(user);
         }
+        public void MultiCastLeave(ChatChannelUser leaver, string message)
+        {
+            string leaveMessage = ChatIRCReplyBuilder.Build(
+                leaver.UserInfo.IRCPrefix,
+                ChatReplyName.PART,
+                Property.ChannelName,
+                message);
 
+            MultiCast(leaveMessage);
+        }
         private void KickAllUserAndShutDownChannel(ChatChannelUser kicker)
         {
             foreach (var user in ChannelUsers)

@@ -19,14 +19,14 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
             if (_longParam == null)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
@@ -35,8 +35,6 @@ namespace Chat.Entity.Structure.Request
             _longParam = _longParam.Substring(1);
 
             KeyValues = StringExtensions.ConvertKVStrToDic(_longParam);
-
-            ErrorCode = true;
         }
     }
 }

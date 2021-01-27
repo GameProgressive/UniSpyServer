@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Chat.Entity.Structure;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Abstraction.BaseClass
@@ -11,9 +12,9 @@ namespace Chat.Abstraction.BaseClass
         /// True means there are no errors
         /// False means there are errors
         /// </summary>
-        public new bool ErrorCode
+        public new ChatErrorCode ErrorCode
         {
-            get { return (bool)base.ErrorCode; }
+            get { return (ChatErrorCode)base.ErrorCode; }
             protected set { base.ErrorCode = value; }
         }
         public new string RawRequest
@@ -30,12 +31,14 @@ namespace Chat.Abstraction.BaseClass
         protected string _prefix;
         protected List<string> _cmdParams;
         protected string _longParam;
+        public ChatRequestBase() { }
         /// <summary>
         /// create instance for Handler
         /// </summary>
         /// <param name="request"></param>
         public ChatRequestBase(string rawRequest) : base(rawRequest)
         {
+            ErrorCode = ChatErrorCode.NoError;
         }
 
         public override void Parse()
@@ -47,7 +50,7 @@ namespace Chat.Abstraction.BaseClass
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
             }
 
             int indexOfColon = RawRequest.IndexOf(':');
@@ -76,7 +79,6 @@ namespace Chat.Abstraction.BaseClass
             {
                 _cmdParams = dataFrag.Skip(1).ToList();
             }
-            ErrorCode = true;
         }
 
         public static string GetCommandName(string request)

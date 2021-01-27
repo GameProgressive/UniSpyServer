@@ -4,31 +4,30 @@ namespace Chat.Entity.Structure.Request
 {
     public class QUITRequest : ChatRequestBase
     {
+        public QUITRequest() { }
         public QUITRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public string Reason { get; protected set; }
+        public string Reason { get; set; }
 
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if (ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.NoError;
                 return;
             }
 
 
             if (_longParam == null)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.NoError;
                 return;
             }
 
             Reason = _longParam;
-
-            ErrorCode = true;
         }
     }
 }

@@ -21,10 +21,9 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             if (!_user.IsChannelOperator)
             {
-                _errorCode = ChatErrorCode.NotChannelOperator;
+                _result.ErrorCode = ChatErrorCode.NotChannelOperator;
                 return;
             }
             _channel.Property.SetChannelKeyValue(_request.KeyValue);
@@ -32,7 +31,6 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void BuildNormalResponse()
         {
-            base.BuildNormalResponse();
             string flags = "";
             foreach (var kv in _request.KeyValue)
             {

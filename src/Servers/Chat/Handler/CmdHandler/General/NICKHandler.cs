@@ -28,13 +28,11 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            base.DataOperation();
-            _session.UserInfo.SetNickName(_request.NickName);
+            _session.UserInfo.NickName = _request.NickName;
         }
 
         protected override void BuildErrorResponse()
         {
-            base.BuildErrorResponse();
             _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
         }
 

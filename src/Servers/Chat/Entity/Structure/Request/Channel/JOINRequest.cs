@@ -13,15 +13,15 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             if (_cmdParams.Count > 2)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
@@ -29,8 +29,6 @@ namespace Chat.Entity.Structure.Request
             {
                 Password = _cmdParams[1];
             }
-
-            ErrorCode = true;
         }
     }
 }

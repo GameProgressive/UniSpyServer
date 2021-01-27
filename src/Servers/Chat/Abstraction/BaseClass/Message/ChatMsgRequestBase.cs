@@ -19,7 +19,7 @@
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
                 ErrorCode = false;
             }

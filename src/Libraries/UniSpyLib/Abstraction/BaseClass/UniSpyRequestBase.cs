@@ -8,6 +8,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         public object CommandName { get; protected set; }
         public object RawRequest { get; protected set; }
         public object ErrorCode { get; protected set; }
+        public UniSpyRequestBase(){}
         public UniSpyRequestBase(object rawRequest)
         {
             RawRequest = rawRequest;

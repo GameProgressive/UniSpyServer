@@ -13,13 +13,12 @@ namespace Chat.Entity.Structure.Request.General
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
             }
 
             CDKey = _cmdParams[0];
-            ErrorCode = true;
         }
     }
 }

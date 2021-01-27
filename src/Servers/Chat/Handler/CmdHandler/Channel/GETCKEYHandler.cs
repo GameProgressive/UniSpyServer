@@ -39,7 +39,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         private void GetChannelAllUserKeyValue()
         {
-            foreach (var user in _channel.Property.ChannelUsers)
+            foreach (var user in _channel.ChannelUsers)
             {
                 GetUserKeyValue(user);
             }
@@ -47,10 +47,10 @@ namespace Chat.Handler.CmdHandler.Channel
 
         private void GetChannelSpecificUserKeyValue()
         {
-            ChatChannelUser user;
-            if (!_channel.GetChannelUserByNickName(_request.NickName, out user))
+            ChatChannelUser user = _channel.GetChannelUserByNickName(_request.NickName);
+            if (user == null)
             {
-                _errorCode = ChatErrorCode.IRCError;
+                _result.ErrorCode = ChatErrorCode.IRCError;
                 return;
             }
             GetUserKeyValue(user);
@@ -61,7 +61,7 @@ namespace Chat.Handler.CmdHandler.Channel
             //we do not have key value so we do not construct getckey response
             if (user.UserKeyValue.Count == 0)
             {
-                _errorCode = ChatErrorCode.DataOperation;
+                _result.ErrorCode = ChatErrorCode.DataOperation;
                 return;
             }
 

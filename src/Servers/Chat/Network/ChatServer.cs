@@ -6,7 +6,7 @@ using UniSpyLib.Network;
 
 namespace Chat.Network
 {
-    public class ChatServer : UniSpyTCPServerBase
+    internal sealed class ChatServer : UniSpyTCPServerBase
     {
         public const string ServerDomain = "rspy.cc";
         //we hard coded random key here for simplisity

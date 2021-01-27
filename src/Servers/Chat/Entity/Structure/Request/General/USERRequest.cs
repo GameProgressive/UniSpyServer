@@ -17,16 +17,15 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
             UserName = _cmdParams[0];
             Hostname = _cmdParams[1];
             ServerName = _cmdParams[2];
             Name = _longParam;
-            ErrorCode = true;
         }
     }
 }

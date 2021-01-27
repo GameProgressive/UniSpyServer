@@ -22,7 +22,7 @@ namespace Chat.Handler.CmdHandler.Channel
             get => (KICKResult)base._result;
             set => base._result = value;
         }
-        ChatChannelUser _kickee;
+        private ChatChannelUser _kickee;
         public KICKHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new KICKResult();
@@ -37,7 +37,8 @@ namespace Chat.Handler.CmdHandler.Channel
                 _result.ErrorCode = ChatErrorCode.NotChannelOperator;
                 return;
             }
-            if (!_channel.GetChannelUserByNickName(_request.NickName, out _kickee))
+            _kickee = _channel.GetChannelUserByNickName(_request.NickName);
+            if (_kickee != null)
             {
                 _result.ErrorCode = ChatErrorCode.Parse;
                 return;

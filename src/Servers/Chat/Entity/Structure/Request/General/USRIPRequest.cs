@@ -11,13 +11,13 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if (ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
-            ErrorCode = true; // USRIP content is empty!
+            // USRIP content is empty!
         }
     }
 }

@@ -9,36 +9,34 @@ namespace Chat.Entity.Structure.Request
     /// </summary>
     public class GETKEYRequest : ChatRequestBase
     {
+        public string NickName { get; protected set; }
+        public string Cookie { get; protected set; }
+        public List<string> Keys { get; protected set; }
 
         public GETKEYRequest(string rawRequest) : base(rawRequest)
         {
             Keys = new List<string>();
         }
 
-        public string NickName { get; protected set; }
-        public string Cookie { get; protected set; }
-
-        public List<string> Keys { get; protected set; }
-
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
 
             if (_cmdParams.Count < 3)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             if (_longParam == null)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
@@ -48,8 +46,6 @@ namespace Chat.Entity.Structure.Request
             _longParam = _longParam.Substring(0, _longParam.Length - 2);
 
             Keys = StringExtensions.ConvertKeyStrToList(_longParam);
-
-            ErrorCode = true;
         }
     }
 }

@@ -22,15 +22,15 @@ namespace Chat.Abstraction.BaseClass
                 _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
                 return;
             }
-
-            if (!_session.UserInfo.GetJoinedChannelByName(_request.ChannelName, out _channel))
+            _channel = _session.UserInfo.GetJoinedChannelByName(_request.ChannelName);
+            if (_channel == null)
             {
                 _result.ErrorCode = ChatErrorCode.IRCError;
                 _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
                 return;
             }
-
-            if (!_channel.GetChannelUserBySession(_session, out _user))
+            _user = _channel.GetChannelUserByNickName(_session.UserInfo.NickName);
+            if (_user == null)
             {
                 _result.ErrorCode = ChatErrorCode.IRCError;
                 _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;

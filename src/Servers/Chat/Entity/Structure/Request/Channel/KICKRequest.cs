@@ -2,37 +2,37 @@
 
 namespace Chat.Entity.Structure.Request
 {
-    public class KICKRequest : ChatChannelRequestBase
+    internal sealed class KICKRequest : ChatChannelRequestBase
     {
+        public KICKRequest() { }
         public KICKRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public string NickName { get; protected set; }
-        public string Reason { get; protected set; }
+        public string NickName { get; set; }
+        public string Reason { get; set; }
 
         public override void Parse()
         {
             base.Parse();
-            if (!ErrorCode)
+            if (ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
 
             if (_cmdParams.Count != 2)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
             NickName = _cmdParams[1];
             if (_longParam == null)
             {
-                ErrorCode = false;
+                ErrorCode = ChatErrorCode.Parse;
                 return;
             }
             Reason = _longParam;
-            ErrorCode = true;
         }
     }
 }
