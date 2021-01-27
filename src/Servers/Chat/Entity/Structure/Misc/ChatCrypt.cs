@@ -1,7 +1,6 @@
-﻿using Chat.Entity.Structure.Misc;
-using System.Text;
+﻿using System.Text;
 
-namespace Chat.Handler.SystemHandler.Encryption
+namespace Chat.Entity.Structure.Misc
 {
     /// <summary>
     /// This class is used to encrypt and decrypt the data for peerchat.
@@ -22,7 +21,7 @@ namespace Chat.Handler.SystemHandler.Encryption
             byte t;
             int datapos = 0;
 
-            while ((size--) > 0)
+            while (size-- > 0)
             {
                 num1 = (byte)((num1 + 1) % 256);
                 num2 = (byte)((ctx.GSPeerChatCrypt[num1] + num2) % 256);

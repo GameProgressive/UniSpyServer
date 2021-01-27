@@ -3,7 +3,6 @@ using Chat.Entity.Structure.Request;
 using Chat.Handler.CmdHandler.General;
 using Chat.Handler.CommandSwitcher;
 using Chat.Handler.SystemHandler.ChannelManage;
-using Chat.Handler.SystemHandler.Encryption;
 using Serilog.Events;
 using System;
 using System.Text;

@@ -29,7 +29,7 @@ namespace Chat.Abstraction.BaseClass
                 _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
                 return;
             }
-            _user = _channel.GetChannelUserByNickName(_session.UserInfo.NickName);
+            _user = _channel.GetChannelUserBySession(_session);
             if (_user == null)
             {
                 _result.ErrorCode = ChatErrorCode.IRCError;

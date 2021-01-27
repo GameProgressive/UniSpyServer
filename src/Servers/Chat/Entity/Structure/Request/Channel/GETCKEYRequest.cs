@@ -14,9 +14,7 @@ namespace Chat.Entity.Structure.Request
         public string NickName { get; private set; }
         public string Cookie { get; private set; }
         public List<string> Keys { get; private set; }
-
         public GetKeyType RequestType { get; private set; }
-
         public GETCKEYRequest(string rawRequest) : base(rawRequest)
         {
             Keys = new List<string>();

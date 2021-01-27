@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc.ChannelInfo;
-using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using UniSpyLib.Abstraction.Interface;
@@ -8,16 +8,15 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.General
 {
     //todo unfinished
-    public class LISTHandler : ChatLogedInHandlerBase
+    internal sealed class LISTHandler : ChatLogedInHandlerBase
     {
-        new LISTRequest _request { get { return (LISTRequest)base._request; } }
+        private new LISTRequest _request => (LISTRequest)base._request;
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
         public LISTHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
         protected override void DataOperation()
         {
-            base.DataOperation();
             //add list response header
 
             _sendingBuffer = "";

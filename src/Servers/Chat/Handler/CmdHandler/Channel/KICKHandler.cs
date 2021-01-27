@@ -3,7 +3,7 @@ using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Channel;
-using Chat.Entity.Structure.Result;
+using Chat.Entity.Structure.Result.Channel;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 

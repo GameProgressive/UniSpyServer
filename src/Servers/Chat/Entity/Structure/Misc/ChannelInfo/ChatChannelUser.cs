@@ -8,7 +8,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         public bool IsVoiceable { get; set; }
         public bool IsChannelCreator { get; set; }
         public bool IsChannelOperator { get; set; }
-
         public ChatUserInfo UserInfo { get; private set; }
         public Dictionary<string, string> UserKeyValue { get; private set; }
 
@@ -41,7 +40,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             }
         }
 
-        public void UpdateUserKeyValue(Dictionary<string, string> data)
+        public void UpdateUserKeyValues(Dictionary<string, string> data)
         {
             foreach (var key in data.Keys)
             {

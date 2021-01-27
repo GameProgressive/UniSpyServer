@@ -1,15 +1,16 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Network;
 
-namespace Chat.Entity.Structure.Result
+namespace Chat.Entity.Structure.Result.General
 {
     internal class CRYPTResult : ChatResultBase
     {
-        public string ServerKey { get; protected set; }
-        public string ClientKey { get; protected set; }
-        public CRYPTResult(string clientKey, string serverKey)
+        public string ServerKey { get; set; }
+        public string ClientKey { get; set; }
+        public CRYPTResult()
         {
-            ServerKey = serverKey;
-            ClientKey = clientKey;
+            ServerKey = ChatServer.ServerKey;
+            ClientKey = ChatServer.ClientKey;
         }
     }
 }

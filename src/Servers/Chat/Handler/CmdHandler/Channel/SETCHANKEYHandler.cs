@@ -1,7 +1,9 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Response;
 using Chat.Entity.Structure.Response.Channel;
+using Chat.Entity.Structure.Result.Channel;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Channel
@@ -11,12 +13,17 @@ namespace Chat.Handler.CmdHandler.Channel
     // Otherwise, they will be set on the user,
     // Only ops can set channel keys on other users.
     // Set a value to NULL or "" to clear that key.
-    public class SETCHANKEYHandler : ChatChannelHandlerBase
+    internal sealed class SETCHANKEYHandler : ChatChannelHandlerBase
     {
-        protected new SETCHANKEYRequest _request { get { return (SETCHANKEYRequest)base._request; } }
-
+        private new SETCHANKEYRequest _request=>(SETCHANKEYRequest)base._request;
+        private new SETCHANKEYResult _result
+        {
+            get => (SETCHANKEYResult)base._result;
+            set => base._result = value;
+        }
         public SETCHANKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new SETCHANKEYResult();
         }
 
         protected override void DataOperation()
@@ -27,19 +34,13 @@ namespace Chat.Handler.CmdHandler.Channel
                 return;
             }
             _channel.Property.SetChannelKeyValue(_request.KeyValue);
+            _result.ChannelName = _result.ChannelName;
+            _result.ChannelUserIRCPrefix = _user.UserInfo.IRCPrefix;
+            
         }
-
-        protected override void BuildNormalResponse()
+        protected override void ResponseConstruct()
         {
-            string flags = "";
-            foreach (var kv in _request.KeyValue)
-            {
-                flags += $@"\{kv.Key}\{kv.Value}";
-            }
-            _sendingBuffer =
-                GETCHANKEYResponse.BuildGetChanKeyReply(
-                    _user, _channel.Property.ChannelName, "BCAST", flags);
+            _response = new SETCHANKEYResponse(_request, _result);
         }
-
     }
 }

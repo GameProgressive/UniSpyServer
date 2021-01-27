@@ -1,8 +1,34 @@
-namespace namespace Chat.Entity.Structure.Response
+using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.Misc;
+using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Response.Channel;
+using Chat.Entity.Structure.Result.Channel;
+using UniSpyLib.Abstraction.BaseClass;
+
+namespace Chat.Entity.Structure.Response
 {
-    internal sealed class SETCHANKEYResponse:ChatChannelResponseBase
+    internal sealed class SETCHANKEYResponse : ChatChannelResponseBase
     {
+        private new SETCHANKEYRequest _request => (SETCHANKEYRequest)base._request;
+        private new SETCHANKEYResult _result => (SETCHANKEYResult)base._result;
+        public SETCHANKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        {
+        }
 
-
+        protected override void BuildNormalResponse()
+        {
+            string flags = "";
+            foreach (var kv in _request.KeyValue)
+            {
+                flags += $@"\{kv.Key}\{kv.Value}";
+            }
+            var cmdParams = $"param1 {_result.ChannelName} BCAST {flags}";
+            SendingBuffer =
+                ChatIRCReplyBuilder.Build(
+                    _result.ChannelUserIRCPrefix,
+                    ChatReplyName.GetChanKey, 
+                    cmdParams,
+                    null);
+        }
     }
 }

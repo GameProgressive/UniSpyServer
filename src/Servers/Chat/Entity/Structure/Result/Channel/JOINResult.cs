@@ -2,13 +2,13 @@
 using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 
-namespace Chat.Entity.Structure.Result
+namespace Chat.Entity.Structure.Result.Channel
 {
     internal sealed class JOINResult : ChatResultBase
     {
         public string JoinerPrefix { get; set; }
-        public string JoinerNickName{get;set;}
-        public string ChannelUserNicks{get;set;}
+        public string JoinerNickName { get; set; }
+        public string ChannelUserNicks { get; set; }
         public bool IsCreateChannel { get; set; }
         public string ChannelModes { get; set; }
         public bool IsAlreadyJoinedChannel { get; set; }

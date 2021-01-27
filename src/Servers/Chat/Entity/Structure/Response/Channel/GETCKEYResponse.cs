@@ -1,7 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request;
-using Chat.Entity.Structure.Result;
+using Chat.Entity.Structure.Result.Channel;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
@@ -14,7 +14,21 @@ namespace Chat.Entity.Structure.Response.General
         public GETCKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
+        public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)
+        {
+            var cmdParams = $"* {channelName} {nickname} {cookie} {flags}";
+            return ChatIRCReplyBuilder.Build(ChatReplyName.GetCKey, cmdParams);
+        }
 
+        public static string BuildEndOfGetCKeyReply(string channelName, string cookie)
+        {
+            var cmdParams = $"param1 {channelName} {cookie}";
+            var tailing = "End Of /GETCKEY.";
+            return ChatIRCReplyBuilder.Build(
+                ChatReplyName.EndGetCKey,
+                cmdParams,
+                tailing);
+        }
         protected override void BuildNormalResponse()
         {
             SendingBuffer = "";

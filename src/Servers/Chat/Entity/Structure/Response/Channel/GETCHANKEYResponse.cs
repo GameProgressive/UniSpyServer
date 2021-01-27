@@ -16,9 +16,12 @@ namespace Chat.Entity.Structure.Response.Channel
 
         protected override void BuildNormalResponse()
         {
-            SendingBuffer = _result.ChannelUser.BuildReply(
-            ChatReplyName.GetChanKey,
-                $"param1 {_result.ChannelName} {_request.Cookie} {_result.Values}");
+            var cmdParams = $"param1 {_result.ChannelName} {_request.Cookie} {_result.Values}";
+            SendingBuffer = ChatIRCReplyBuilder.Build(
+                _result.ChannelUserIRCPrefix,
+                ChatReplyName.GetChanKey,
+                cmdParams,
+                null);
         }
     }
 }

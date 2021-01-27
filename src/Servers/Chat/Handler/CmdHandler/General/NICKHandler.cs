@@ -1,7 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
-using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
 using UniSpyLib.Abstraction.Interface;
 

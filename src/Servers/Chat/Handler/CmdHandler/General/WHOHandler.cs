@@ -2,7 +2,7 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
-using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Network;

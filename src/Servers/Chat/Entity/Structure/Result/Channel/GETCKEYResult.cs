@@ -1,7 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace Chat.Entity.Structure.Result
+namespace Chat.Entity.Structure.Result.Channel
 {
     internal class GETCKEYDataModel
     {

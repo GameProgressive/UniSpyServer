@@ -1,19 +1,16 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc;
 
-namespace Chat.Entity.Structure.Result
+namespace Chat.Entity.Structure.Result.Message
 {
-    public class ATMResult : ChatResultBase
+    internal sealed class ATMResult : ChatResultBase
     {
-        public ChatUserInfo UserInfo { get; protected set; }
-        public string Name { get; protected set; }
-        public string Message { get; protected set; }
+        public ChatUserInfo UserInfo { get; set; }
+        public string Name { get; set; }
+        public string Message { get; set; }
 
-        public ATMResult(ChatUserInfo userInfo, string name, string message)
+        public ATMResult()
         {
-            UserInfo = userInfo;
-            Name = name;
-            Message = message;
         }
     }
 }

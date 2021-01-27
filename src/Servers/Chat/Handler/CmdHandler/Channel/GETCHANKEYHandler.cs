@@ -26,9 +26,8 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-
+            _result.ChannelUserIRCPrefix = _user.UserInfo.IRCPrefix;
             _result.Values = _channel.Property.GetChannelValueString(_request.Keys);
-            _result.ChannelUser = _user;
             _result.ChannelName = _channel.Property.ChannelName;
         }
 

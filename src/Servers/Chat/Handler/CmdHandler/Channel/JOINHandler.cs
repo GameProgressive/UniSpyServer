@@ -4,7 +4,7 @@ using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.General;
-using Chat.Entity.Structure.Result;
+using Chat.Entity.Structure.Result.Channel;
 using Chat.Handler.SystemHandler.ChannelManage;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.Interface;

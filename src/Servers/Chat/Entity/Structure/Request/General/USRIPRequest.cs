@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 
-namespace Chat.Entity.Structure.Request
+namespace Chat.Entity.Structure.Request.General
 {
     public class USRIPRequest : ChatRequestBase
     {

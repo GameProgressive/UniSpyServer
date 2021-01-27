@@ -1,4 +1,7 @@
 ﻿using Chat.Entity.Structure;
+using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Response;
+using Chat.Entity.Structure.Result;
 using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
@@ -19,9 +22,7 @@ namespace Chat.Abstraction.BaseClass
     internal abstract class ChatCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected new ChatRequestBase _request => (ChatRequestBase)base._request;
-
         protected new ChatSession _session => (ChatSession)base._session;
-
         protected new ChatResultBase _result
         {
             get => (ChatResultBase)base._result;
@@ -31,6 +32,7 @@ namespace Chat.Abstraction.BaseClass
 
         public ChatCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new ChatDefaultResult();
         }
 
         //if we use this structure the error response should also write to _sendingBuffer
@@ -59,13 +61,12 @@ namespace Chat.Abstraction.BaseClass
         protected override void RequestCheck()
         {
         }
-
+        protected override void ResponseConstruct()
+        {
+            _response = new ChatDefaultResponse(_request, _result);
+        }
         protected override void Response()
         {
-            if (_response == null)
-            {
-                return;
-            }
             _response.Build();
             if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
             {

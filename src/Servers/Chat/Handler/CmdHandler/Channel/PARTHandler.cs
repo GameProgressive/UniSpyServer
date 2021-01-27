@@ -2,7 +2,7 @@
 using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Channel;
-using Chat.Entity.Structure.Result;
+using Chat.Entity.Structure.Result.Channel;
 using Chat.Handler.SystemHandler.ChannelManage;
 using QueryReport.Entity.Structure;
 using UniSpyLib.Abstraction.Interface;

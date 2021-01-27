@@ -3,7 +3,8 @@ using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request;
-using Chat.Entity.Structure.Response.General;
+using Chat.Entity.Structure.Response.Channel;
+using Chat.Entity.Structure.Result.Channel;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Channel
@@ -13,88 +14,64 @@ namespace Chat.Handler.CmdHandler.Channel
     // Otherwise, they will be set on the user,
     // Only ops can set channel keys on other users.
     // Set a value to NULL or "" to clear that key.
-    public class SETCKEYHandler : ChatChannelHandlerBase
+    internal sealed class SETCKEYHandler : ChatChannelHandlerBase
     {
-        protected new SETCKEYRequest _request { get { return (SETCKEYRequest)base._request; } }
-        bool IsSetOthersKeyValue;
+        private new SETCKEYRequest _request => (SETCKEYRequest)base._request;
+        private new SETCKEYResult _result
+        {
+            get => (SETCKEYResult)base._result;
+            set => base._result = value;
+        }
         ChatChannelUser _otherUser;
         public SETCKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            IsSetOthersKeyValue = false;
         }
 
         protected override void RequestCheck()
         {
             base.RequestCheck();
-
             if (_request.NickName != _session.UserInfo.NickName)
             {
                 if (!_user.IsChannelOperator)
                 {
-                    _errorCode = ChatErrorCode.NotChannelOperator;
+                    _result.ErrorCode = ChatErrorCode.NotChannelOperator;
                     return;
                 }
-                IsSetOthersKeyValue = true;
-                if (!_channel.GetChannelUserByNickName(_request.NickName, out _otherUser))
+                _result.IsSetOthersKeyValue = true;
+                _otherUser = _channel.GetChannelUserByNickName(_request.NickName);
+                if (_otherUser == null)
                 {
-                    _errorCode = ChatErrorCode.IRCError;
-                    _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
+                    _result.ErrorCode = ChatErrorCode.IRCError;
+                    _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
                     return;
                 }
             }
-
         }
 
         protected override void DataOperation()
         {
-            base.DataOperation();
-
-            if (IsSetOthersKeyValue)
+            _result.ChannelName = _channel.Property.ChannelName;
+            if (_result.IsSetOthersKeyValue)
             {
-                _otherUser.UpdateUserKeyValue(_request.KeyValues);
+                _otherUser.UpdateUserKeyValues(_request.KeyValues);
+                _result.NickName = _otherUser.UserInfo.NickName;
             }
             else
             {
-                _user.UpdateUserKeyValue(_request.KeyValues);
+                _user.UpdateUserKeyValues(_request.KeyValues);
+                _result.NickName = _user.UserInfo.NickName;
             }
         }
 
-        protected override void BuildNormalResponse()
+        protected override void ResponseConstruct()
         {
-            base.BuildNormalResponse();
-            //we only broadcast the b_flags
-            string flags = "";
-            if (_request.KeyValues.ContainsKey("b_flags"))
-            {
-                flags += @"\" + "b_flags" + @"\" + _request.KeyValues["b_flags"];
-            }
-
-            //todo check the paramemter
-            if (IsSetOthersKeyValue)
-            {
-                _sendingBuffer =
-                    GETCKEYResponse.BuildGetCKeyReply(
-                        _otherUser.UserInfo.NickName,
-                        _channel.Property.ChannelName,
-                        "BCAST", flags);
-            }
-            else
-            {
-                _sendingBuffer =
-                    GETCKEYResponse.BuildGetCKeyReply(
-                        _user.UserInfo.NickName,
-                        _channel.Property.ChannelName,
-                        "BCAST", flags);
-            }
+            _response = new SETCKEYResponse(_request, _result);
         }
 
         protected override void Response()
         {
-            if (_sendingBuffer == null || _sendingBuffer == "" || _sendingBuffer.Length < 3)
-            {
-                return;
-            }
-            _channel.MultiCast(_sendingBuffer);
+            _response.Build();
+            _channel.MultiCast((string)_response.SendingBuffer);
         }
     }
 }

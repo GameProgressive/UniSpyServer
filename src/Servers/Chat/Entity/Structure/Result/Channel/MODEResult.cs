@@ -1,6 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 
-namespace Chat.Entity.Structure.Result
+namespace Chat.Entity.Structure.Result.Channel
 {
     internal sealed class MODEResult : ChatResultBase
     {

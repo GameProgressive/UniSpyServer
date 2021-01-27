@@ -1,7 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using System.Linq;
 
-namespace Chat.Entity.Structure.Request
+namespace Chat.Entity.Structure.Request.General
 {
     public enum LoginType
     {
@@ -25,7 +25,7 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if(ErrorCode != ChatErrorCode.NoError)
+            if (ErrorCode != ChatErrorCode.NoError)
             {
                 ErrorCode = ChatErrorCode.Parse;
                 return;

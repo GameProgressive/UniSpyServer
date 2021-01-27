@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Chat.Abstraction.BaseClass;
 
-namespace Chat.Entity.Structure.Result
+namespace Chat.Entity.Structure.Result.General
 {
     internal class QUITDataModel
     {
