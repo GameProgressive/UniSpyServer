@@ -14,7 +14,8 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         public uint MaxNumberUser { get; private set; }
         public ChatChannelMode ChannelMode { get; set; }
         public DateTime ChannelCreatedTime { get; private set; }
-
+        public ConcurrentBag<ChatChannelUser> BanList { get; set; }
+        public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
         public string Password { get; set; }
         public Dictionary<string, string> ChannelKeyValue { get; private set; }
         public string ChannelTopic { get; set; }
@@ -25,6 +26,8 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             ChannelCreatedTime = DateTime.Now;
             ChannelMode = new ChatChannelMode();
             ChannelKeyValue = new Dictionary<string, string>();
+            BanList = new ConcurrentBag<ChatChannelUser>();
+            ChannelUsers = new ConcurrentBag<ChatChannelUser>();
         }
 
         public void SetDefaultProperties(ChatChannelUser creator, JOINRequest cmd)

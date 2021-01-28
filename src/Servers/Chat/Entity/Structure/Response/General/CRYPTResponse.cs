@@ -1,6 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Result.General;
+using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
@@ -13,7 +14,7 @@ namespace Chat.Entity.Structure.Response.General
         }
         protected override void BuildNormalResponse()
         {
-            var cmdParams = $"* {_result.ClientKey} {_result.ServerKey}";
+            var cmdParams = $"* {ChatServer.ClientKey} {ChatServer.ServerKey}";
             SendingBuffer = ChatIRCReplyBuilder.Build(
                 ChatReplyName.SecureKey, cmdParams);
         }

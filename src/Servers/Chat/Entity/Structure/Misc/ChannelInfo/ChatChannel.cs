@@ -10,13 +10,10 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
     internal sealed class ChatChannel
     {
         public ChatChannelProperty Property { get; private set; }
-        public ConcurrentBag<ChatChannelUser> BanList { get; set; }
-        public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
+
         public ChatChannel()
         {
             Property = new ChatChannelProperty();
-            BanList = new ConcurrentBag<ChatChannelUser>();
-            ChannelUsers = new ConcurrentBag<ChatChannelUser>();
         }
 
         /// <summary>
@@ -26,7 +23,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         /// <returns></returns>
         public bool MultiCast(string message)
         {
-            foreach (var user in ChannelUsers)
+            foreach (var user in Property.ChannelUsers)
             {
                 user.UserInfo.Session.SendAsync(message);
             }
@@ -35,7 +32,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         }
         public bool MultiCastExceptSender(ChatChannelUser sender, string message)
         {
-            foreach (var user in ChannelUsers)
+            foreach (var user in Property.ChannelUsers)
             {
                 if (user.UserInfo.Session.Id == sender.UserInfo.Session.Id)
                 {
@@ -49,7 +46,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         public string GetAllUsersNickString()
         {
             string nicks = "";
-            foreach (var user in ChannelUsers)
+            foreach (var user in Property.ChannelUsers)
             {
                 if (user.IsChannelCreator)
                 {
@@ -66,8 +63,8 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         }
         public void AddBindOnUserAndChannel(ChatChannelUser joiner)
         {
-            if (!ChannelUsers.Contains(joiner))
-                ChannelUsers.Add(joiner);
+            if (!Property.ChannelUsers.Contains(joiner))
+                Property.ChannelUsers.Add(joiner);
 
             if (!joiner.UserInfo.JoinedChannels.Contains(this))
                 joiner.UserInfo.JoinedChannels.Add(this);
@@ -75,8 +72,8 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         }
         public void RemoveBindOnUserAndChannel(ChatChannelUser leaver)
         {
-            if (ChannelUsers.Contains(leaver))
-                ChannelUsers.TryTake(out leaver);
+            if (Property.ChannelUsers.Contains(leaver))
+                Property.ChannelUsers.TryTake(out leaver);
 
             if (leaver.UserInfo.JoinedChannels.Contains(this))
             {
@@ -88,7 +85,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         public ChatChannelUser GetChannelUserBySession(ChatSession session)
         {
-            var result = ChannelUsers.Where(u => u.UserInfo.Session.Equals(session));
+            var result = Property.ChannelUsers.Where(u => u.UserInfo.Session.Equals(session));
             if (result.Count() == 1)
             {
                 return result.First();
@@ -100,7 +97,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         }
         public bool IsUserBanned(ChatChannelUser user)
         {
-            if (BanList.Contains(user))
+            if (Property.BanList.Contains(user))
             {
                 return true;
             }
@@ -111,7 +108,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         }
         public bool IsUserBanned(ChatSession session)
         {
-            if (BanList.Where(u => u.UserInfo.Session.Id == session.Id).Count() == 1)
+            if (Property.BanList.Where(u => u.UserInfo.Session.Id == session.Id).Count() == 1)
             {
                 return true;
             }
@@ -122,11 +119,11 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         }
         public bool IsUserExisted(ChatChannelUser user)
         {
-            return ChannelUsers.Contains(user);
+            return Property.ChannelUsers.Contains(user);
         }
         public ChatChannelUser GetChannelUserByUserName(string username)
         {
-            var result = ChannelUsers.Where(u => u.UserInfo.UserName == username);
+            var result = Property.ChannelUsers.Where(u => u.UserInfo.UserName == username);
             if (result.Count() == 1)
             {
                 return result.First();
@@ -138,7 +135,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         }
         public ChatChannelUser GetChannelUserByNickName(string nickName)
         {
-            var result = ChannelUsers.Where(u => u.UserInfo.NickName == nickName);
+            var result = Property.ChannelUsers.Where(u => u.UserInfo.NickName == nickName);
             if (result.Count() == 1)
             {
                 return result.First();
@@ -147,65 +144,6 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             {
                 return null;
             }
-        }
-
-        /// <summary>
-        /// because Join channel has its own command class
-        /// so we do not add join channel inside this class
-        /// leave channel do not have its IRC command and used many places
-        /// </summary>
-        /// <param name="session"></param>
-        public void LeaveChannel(ChatSession session, string reason)
-        {
-            ChatChannelUser user = GetChannelUserBySession(session);
-
-            if (user == null)
-            {
-                return;
-            }
-            LeaveChannel(user, reason);
-        }
-
-        public void LeaveChannel(ChatChannelUser user, string reason)
-        {
-            if (Property.IsPeerServer && user.IsChannelCreator)
-            {
-                KickAllUserAndShutDownChannel(user);
-            }
-            else
-            {
-                MultiCastLeave(user, reason);
-            }
-
-            RemoveBindOnUserAndChannel(user);
-        }
-        public void MultiCastLeave(ChatChannelUser leaver, string message)
-        {
-            string leaveMessage = ChatIRCReplyBuilder.Build(
-                leaver.UserInfo.IRCPrefix,
-                ChatReplyName.PART,
-                Property.ChannelName,
-                message);
-
-            MultiCast(leaveMessage);
-        }
-        private void KickAllUserAndShutDownChannel(ChatChannelUser kicker)
-        {
-            foreach (var user in ChannelUsers)
-            {
-                //kick all user out
-                string cmdParams = $"{Property.ChannelName} {kicker.UserInfo.NickName} {user.UserInfo.NickName}";
-                string message = "Server Hoster leaves channel";
-                string kickMsg = ChatIRCReplyBuilder.Build(ChatReplyName.KICK, cmdParams, message);
-                user.UserInfo.Session.SendAsync(kickMsg);
-            }
-
-            ChatChannelManager.RemoveChannel(this);
-            var fullKey = GameServerInfo.RedisOperator.BuildFullKey(
-                kicker.UserInfo.Session.RemoteIPEndPoint,
-                kicker.UserInfo.Session.UserInfo.GameName);
-
-            GameServerInfo.RedisOperator.DeleteKeyValue(fullKey);
         }
     }
 }

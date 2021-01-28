@@ -2,37 +2,37 @@
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
+using Chat.Entity.Structure.Result.General;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace Chat.Handler.CmdHandler.General
 {
-    public class LOGINHandler : ChatCmdHandlerBase
+    internal sealed class LOGINHandler : ChatCmdHandlerBase
     {
 
-        string _password;
-        protected new LOGINRequest _request { get { return (LOGINRequest)base._request; } }
-        uint _profileid;
-        uint _userid;
+       private new LOGINRequest _request => (LOGINRequest)base._request;
+        private new LOGINResult _result
+        {
+            get => (LOGINResult)base._result;
+            set => base._result = value;
+        }
         public LOGINHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new LOGINResult();
         }
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
             /// TODO: Verify which games does send a GS encoded password and not md5
             //we decoded gamespy encoded password then get md5 of it 
             //_password = GameSpyUtils.DecodePassword(_request.PasswordHash);
             //_password = StringExtensions.GetMD5Hash(_password);
-
-            _password = _request.PasswordHash;
         }
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             switch (_request.RequestType)
             {
                 case LoginType.NickAndEmailLogin:
@@ -42,16 +42,7 @@ namespace Chat.Handler.CmdHandler.General
                     UniqueNickLogin();
                     break;
             }
-
         }
-
-        protected override void BuildNormalResponse()
-        {
-            base.BuildNormalResponse();
-            _sendingBuffer = LOGINReply.BuildLoginReply(_userid, _profileid);
-        }
-
-
         public void NickAndEmailLogin()
         {
             using (var db = new retrospyContext())
@@ -60,7 +51,7 @@ namespace Chat.Handler.CmdHandler.General
                              join p in db.Profiles on u.Userid equals p.Userid
                              where u.Email == _request.Email
                              && p.Nick == _request.NickName
-                             && u.Password == _password
+                             && u.Password == _request.PasswordHash
                              select new
                              {
                                  userid = u.Userid,
@@ -71,11 +62,11 @@ namespace Chat.Handler.CmdHandler.General
 
                 if (result.Count() != 1)
                 {
-                    _errorCode = ChatErrorCode.DataOperation;
+                    _result.ErrorCode = ChatErrorCode.DataOperation;
                     return;
                 }
-                _profileid = result.First().profileid;
-                _userid = result.First().userid;
+                _result.ProfileID = result.First().profileid;
+                _result.UserID = result.First().userid;
             }
         }
         public void UniqueNickLogin()
@@ -97,12 +88,17 @@ namespace Chat.Handler.CmdHandler.General
                              };
                 if (result.Count() != 1)
                 {
-                    _errorCode = ChatErrorCode.DataOperation;
+                    _result.ErrorCode = ChatErrorCode.DataOperation;
                     return;
                 }
-                _profileid = result.First().profileid;
-                _userid = result.First().userid;
+                _result.ProfileID = result.First().profileid;
+                _result.UserID = result.First().userid;
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new LOGINResponse(_request, _result);
         }
     }
 }

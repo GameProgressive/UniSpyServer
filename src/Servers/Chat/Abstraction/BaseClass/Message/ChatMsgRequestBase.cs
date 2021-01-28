@@ -1,4 +1,6 @@
-﻿namespace Chat.Abstraction.BaseClass
+﻿using Chat.Entity.Structure;
+
+namespace Chat.Abstraction.BaseClass
 {
     public enum ChatMessageType
     {
@@ -21,7 +23,7 @@
             base.Parse();
             if(ErrorCode != ChatErrorCode.NoError)
             {
-                ErrorCode = false;
+                return;
             }
 
             if (_cmdParams[0].Contains("#"))
@@ -36,7 +38,6 @@
             }
 
             Message = _longParam;
-            ErrorCode = true;
         }
     }
 }

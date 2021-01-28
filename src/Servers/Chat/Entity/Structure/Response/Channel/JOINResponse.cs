@@ -1,6 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Result.Channel;
 using UniSpyLib.Abstraction.BaseClass;
 
@@ -32,12 +33,12 @@ namespace Chat.Entity.Structure.Response.General
             
             SendingBuffer = modeReply;
             //check the message :@<nickname> whether broadcast char @ ?
-            SendingBuffer += NAMEReply.BuildNameReply(
+            SendingBuffer += NAMESResponse.BuildNameReply(
                 _result.JoinerNickName,
                 _request.ChannelName,
                 _result.ChannelUserNicks);
 
-            SendingBuffer += NAMEReply.BuildEndOfNameReply(
+            SendingBuffer += NAMESResponse.BuildEndOfNameReply(
                 _result.JoinerNickName,
                  _request.ChannelName);
 

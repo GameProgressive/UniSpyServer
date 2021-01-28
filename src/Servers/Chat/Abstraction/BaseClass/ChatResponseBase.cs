@@ -42,7 +42,10 @@ namespace Chat.Abstraction.BaseClass
             }
         }
 
-        protected virtual void BuildIRCErrorResponse() { }
+        protected virtual void BuildIRCErrorResponse() 
+        {
+        
+        }
 
     }
 }
