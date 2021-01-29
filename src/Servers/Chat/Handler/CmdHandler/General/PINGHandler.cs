@@ -1,21 +1,29 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
+using Chat.Entity.Structure.Result.General;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.General
 {
-    public class PINGHandler : ChatCmdHandlerBase
+    internal sealed class PINGHandler : ChatLogedInHandlerBase
     {
-        new PINGRequest _request { get { return (PINGRequest)base._request; } }
+        private new PINGRequest _request { get { return (PINGRequest)base._request; } }
+        private new PINGResult _result
+        {
+            get => (PINGResult)base._result;
+            set => base._result = value;
+        }
         public PINGHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-
-        protected override void BuildNormalResponse()
+        protected override void DataOperation()
         {
-            base.BuildNormalResponse();
-            _sendingBuffer = PINGReply.BuildPingReply(_session.UserInfo);
+            _result.RequesterIRCPrefix = _session.UserInfo.IRCPrefix;
+        }
+        protected override void ResponseConstruct()
+        {
+            _response = new PINGResponse(_request, _result);
         }
     }
 }

@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Message
 {
-    public class PRIVMSGHandler : ChatMsgHandlerBase
+    internal sealed class PRIVMSGHandler : ChatMsgHandlerBase
     {
         new PRIVMSGRequest _request { get { return (PRIVMSGRequest)base._request; } }
         public PRIVMSGHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

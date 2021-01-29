@@ -7,7 +7,6 @@ namespace Chat.Handler.CmdHandler.Channel
 {
     internal sealed class NAMESHandler : ChatChannelHandlerBase
     {
-        private new NAMESRequest _request => (NAMESRequest)base._request;
         private new NAMESResult _result
         {
             get => (NAMESResult)base._result;

@@ -1,27 +1,30 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Application;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
+using Chat.Network;
+using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.General
 {
-    public class NICKHandler : ChatCmdHandlerBase
+    internal sealed class NICKHandler : ChatCmdHandlerBase
     {
-        new NICKRequest _request;
+        private new NICKRequest _request => (NICKRequest)base._request;
         public NICKHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _request = (NICKRequest)request;
         }
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
-
-            if (ChatSessionManager.IsNickNameExisted(_request.NickName))
+            if (ChatServerFactory.Server.Sessions.Values.
+                Where(s => ((ChatSession)s).UserInfo.NickName == _request.NickName)
+                .Count() == 1)
             {
-                _errorCode = ChatErrorCode.NickNameExisted;
+                _result.ErrorCode = ChatErrorCode.IRCError;
+                _result.IRCErrorCode = ChatIRCErrorCode.NickNameInUse;
                 return;
             }
         }
@@ -30,16 +33,9 @@ namespace Chat.Handler.CmdHandler.General
         {
             _session.UserInfo.NickName = _request.NickName;
         }
-
-        protected override void BuildErrorResponse()
+        protected override void ResponseConstruct()
         {
-            _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
-        }
-
-        protected override void BuildNormalResponse()
-        {
-            base.BuildNormalResponse();
-            _sendingBuffer = NICKReply.BuildWelcomeReply(_session.UserInfo);
+            _response = new NICKResponse(_request, _result);
         }
     }
 }

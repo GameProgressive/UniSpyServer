@@ -44,13 +44,7 @@ namespace Chat.Handler.CmdHandler.General
                         ChannelName = channel.Property.ChannelName,
 
                     });
-                channel.LeaveChannel(_session, _request.Reason);
             }
-        }
-
-        protected override void ResponseConstruct()
-        {
-            _response = new QUITResponse(_request, _result);
         }
         protected override void Response()
         {

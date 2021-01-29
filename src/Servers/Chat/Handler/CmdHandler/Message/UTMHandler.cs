@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Message
 {
-    public class UTMHandler : ChatMsgHandlerBase
+    internal sealed class UTMHandler : ChatMsgHandlerBase
     {
         new UTMRequest _request { get { return (UTMRequest)base._request; } }
 
@@ -15,7 +15,6 @@ namespace Chat.Handler.CmdHandler.Message
 
         protected override void BuildNormalResponse()
         {
-            base.BuildNormalResponse();
             switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:

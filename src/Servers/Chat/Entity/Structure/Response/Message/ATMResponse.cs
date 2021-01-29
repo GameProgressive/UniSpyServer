@@ -5,21 +5,25 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Message
 {
-    public class ATMResponse : ChatResponseBase
+    internal sealed class ATMResponse : ChatResponseBase
     {
-        protected new ATMResult _result
-        {
-            get { return (ATMResult)base._result; }
-        }
-        public ATMResponse(UniSpyResultBase result) : base(result)
+        private new ATMResult _result => (ATMResult)base._result;
+        public ATMResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
+
+
 
         public override void Build()
         {
             SendingBuffer = _result.UserInfo.BuildReply(
                 ChatReplyName.ATM,
                 $"{_result.Name} {_result.Message}");
+        }
+
+        protected override void BuildNormalResponse()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

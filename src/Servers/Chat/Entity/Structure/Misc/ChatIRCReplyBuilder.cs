@@ -133,14 +133,14 @@ namespace Chat.Entity.Structure.Misc
             return Build(command, null);
         }
 
-        public static string Build(string command, string cmdParams)
+        public static string Build(string cmd, string cmdParams)
         {
-            return Build(command, cmdParams, null);
+            return Build(cmd, cmdParams, null);
         }
 
-        public static string Build(string command, string cmdParams, string tailing)
+        public static string Build(string cmd, string cmdParams, string tailing)
         {
-            return Build(ChatServer.ServerDomain, command, cmdParams, tailing);
+            return Build(ChatServer.ServerDomain, cmd, cmdParams, tailing);
         }
 
         public static string Build(string prefix, string cmd, string cmdParams, string tailing)

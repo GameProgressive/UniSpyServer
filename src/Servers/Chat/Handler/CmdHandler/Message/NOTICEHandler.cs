@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Message
 {
-    public class NOTICEHandler : ChatMsgHandlerBase
+    internal sealed class NOTICEHandler : ChatMsgHandlerBase
     {
         new NOTICERequest _request { get { return (NOTICERequest)base._request; } }
         public NOTICEHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

@@ -1,25 +1,33 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
+using Chat.Entity.Structure.Result.General;
 using System.Net;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.General
 {
-    public class USRIPHandler : ChatCmdHandlerBase
+    internal sealed class USRIPHandler : ChatCmdHandlerBase
     {
-        new USRIPRequest _request { get { return (USRIPRequest)base._request; } }
+        private new USRIPRequest _request { get { return (USRIPRequest)base._request; } }
+        private new USRIPResult _result
+        {
+            get => (USRIPResult)base._result;
+            set => base._result = value;
+        }
         public USRIPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new USRIPResult();
         }
 
-        protected override void BuildNormalResponse()
+        protected override void DataOperation()
         {
-            base.BuildNormalResponse();
+            _result.RemoteIPAddress = _session.RemoteIPEndPoint.Address.ToString();
 
-            string ip = ((IPEndPoint)_session.Socket.RemoteEndPoint).Address.ToString();
-
-            _sendingBuffer = USRIPReply.BuildUserIPReply(ip);
+        }
+        protected override void ResponseConstruct()
+        {
+            _response = new USRIPResponse(_request, _result);
         }
     }
 }

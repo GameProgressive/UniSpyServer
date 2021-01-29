@@ -5,19 +5,15 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Message
 {
-    public class ATMHandler : ChatMsgHandlerBase
+    internal sealed class ATMHandler : ChatMsgHandlerBase
     {
-        new ATMRequest _request
-        {
-            get { return (ATMRequest)base._request; }
-        }
+        new ATMRequest _request => (ATMRequest)base._request;
         public ATMHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
         protected override void BuildNormalResponse()
         {
-            base.BuildNormalResponse();
             switch (_request.RequestType)
             {
                 case ChatMessageType.ChannelMessage:

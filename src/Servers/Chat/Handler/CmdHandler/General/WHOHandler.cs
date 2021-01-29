@@ -1,11 +1,14 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Application;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
+using Chat.Entity.Structure.Result.General;
 using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Network;
+using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.General
@@ -14,18 +17,21 @@ namespace Chat.Handler.CmdHandler.General
     /// Get a channel user's basic information
     /// same as WHOIS
     /// </summary>
-    public class WHOHandler : ChatLogedInHandlerBase
+    internal sealed class WHOHandler : ChatLogedInHandlerBase
     {
-        new WHORequest _request { get { return (WHORequest)base._request; } }
-        ChatChannel _resultChannel;
-        ChatSession _resultSession;
+        private new WHORequest _request => (WHORequest)base._request;
+        private new WHOResult _result
+        {
+            get => (WHOResult)base._result;
+            set => base._result = value;
+        }
         public WHOHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new WHOResult();
         }
 
         protected override void DataOperation()
         {
-            base.DataOperation();
             switch (_request.RequestType)
             {
                 case WHOType.GetChannelUsersInfo:
@@ -42,85 +48,54 @@ namespace Chat.Handler.CmdHandler.General
             ChatChannel channel;
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out channel))
             {
-                _errorCode = ChatErrorCode.NoSuchChannel;
+                _result.ErrorCode = ChatErrorCode.IRCError;
+                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
                 return;
             }
-            _resultChannel = channel;
-
+            foreach (var user in channel.Property.ChannelUsers)
+            {
+                var data = new WHODataModel
+                {
+                    ChannelName = channel.Property.ChannelName,
+                    UserName = user.UserInfo.UserName,
+                    NickName = user.UserInfo.NickName,
+                    PublicIPAddress = user.UserInfo.Session.RemoteIPEndPoint.Address.ToString(),
+                    Modes = user.GetUserModes()
+                };
+                _result.DataModels.Add(data);
+            }
         }
         /// <summary>
         /// Send all channel user information
         /// </summary>
         private void GetUserInfo()
         {
-            ChatSession session;
-            if (!ChatSessionManager.GetSessionByUserName(_request.NickName, out session))
+            var session = (ChatSession)ChatServerFactory.Server.Sessions.Values
+                .Where(s => ((ChatSession)s).UserInfo.NickName == _request.NickName)
+                .FirstOrDefault();
+            if (session == null)
             {
-                _errorCode = ChatErrorCode.NoSuchNick;
+                _result.ErrorCode = ChatErrorCode.IRCError;
+                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
                 return;
             }
-            _resultSession = session;
-        }
-
-        protected override void BuildNormalResponse()
-        {
-            base.BuildNormalResponse();
-            _sendingBuffer = "";
-            switch (_request.RequestType)
+            foreach (var channel in session.UserInfo.JoinedChannels)
             {
-                case WHOType.GetChannelUsersInfo:
-                    BuildWhoReplyForChannelUser();
-                    break;
-
-                case WHOType.GetUserInfo:
-                    BuildWhoReplyForUser();
-                    break;
+                ChatChannelUser user = channel.GetChannelUserBySession(session);
+                var data = new WHODataModel
+                {
+                    ChannelName = channel.Property.ChannelName,
+                    NickName = session.UserInfo.NickName, 
+                    UserName = session.UserInfo.UserName, 
+                    PublicIPAddress = session.RemoteIPEndPoint.Address.ToString(), 
+                    Modes = user.GetUserModes() 
+                };
+                _result.DataModels.Add(data);
             }
         }
-
-
-        protected override void BuildErrorResponse()
+        protected override void ResponseConstruct()
         {
-            base.BuildErrorResponse();
-            switch (_errorCode)
-            {
-                case ChatErrorCode.NoSuchChannel:
-                    _sendingBuffer =
-                        ChatIRCErrorCode.BuildNoSuchChannelError(_request.ChannelName);
-                    break;
-                case ChatErrorCode.NoSuchNick:
-                    _sendingBuffer = ChatIRCErrorCode.BuildNoSuchNickError();
-                    break;
-            }
-
-        }
-
-        private void BuildWhoReplyForChannelUser()
-        {
-            foreach (var user in _resultChannel.Property.ChannelUsers)
-            {
-                _sendingBuffer +=
-                    WHOReply.BuildWhoReply(
-                        _resultChannel.Property.ChannelName,
-                        user.UserInfo, user.GetUserModes());
-            }
-            _sendingBuffer +=
-                WHOReply.BuildEndOfWhoReply(_resultChannel.Property.ChannelName);
-        }
-        private void BuildWhoReplyForUser()
-        {
-            foreach (var channel in _resultSession.UserInfo.JoinedChannels)
-            {
-                ChatChannelUser user;
-                channel.GetChannelUserBySession(_resultSession, out user);
-                _sendingBuffer +=
-                    WHOReply.BuildWhoReply(
-                        channel.Property.ChannelName,
-                        _resultSession.UserInfo,
-                        user.GetUserModes());
-            }
-            _sendingBuffer +=
-                WHOReply.BuildEndOfWhoReply(_resultSession.UserInfo.NickName);
+            _response = new WHOResponse(_request, _result);
         }
     }
 }
