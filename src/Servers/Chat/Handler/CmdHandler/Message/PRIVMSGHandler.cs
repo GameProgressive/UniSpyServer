@@ -1,38 +1,33 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Message;
+using Chat.Entity.Structure.Result.Message;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Message
 {
     internal sealed class PRIVMSGHandler : ChatMsgHandlerBase
     {
-        new PRIVMSGRequest _request { get { return (PRIVMSGRequest)base._request; } }
+        private new PRIVMSGRequest _request => (PRIVMSGRequest)base._request;
+        private new PRIVMSGResult _result
+        {
+            get => (PRIVMSGResult)base._result;
+            set => base._result = value;
+        }
         public PRIVMSGHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new PRIVMSGResult();
         }
-
-        protected override void BuildNormalResponse()
+        protected override void DataOperation()
         {
-            base.BuildNormalResponse();
-            switch (_request.RequestType)
-            {
-                case ChatMessageType.ChannelMessage:
-                    BuildChannelMessage();
-                    break;
-                case ChatMessageType.UserMessage:
-                    BuildUserMessage();
-                    break;
-            }
+            base.DataOperation();
+            _result.UserIRCPrefix = _user.UserInfo.IRCPrefix;
         }
-
-        private void BuildUserMessage()
+        protected override void UserMessageDataOperation()
         {
-            _sendingBuffer =
-                PRIVMSGReply.BuildPrivMsgReply(_session.UserInfo, _request.NickName, _request.Message);
+            _result.TargetName = _user.UserInfo.Name;
         }
-
-        private void BuildChannelMessage()
+        protected override void ChannelMessageDataOpration()
         {
             if (!_channel.Property.ChannelMode.IsModeratedChannel)
             {
@@ -52,10 +47,11 @@ namespace Chat.Handler.CmdHandler.Message
             {
                 return;
             }
-
-            _sendingBuffer =
-               PRIVMSGReply.BuildPrivMsgReply(_user.UserInfo,
-               _request.ChannelName, _request.Message);
+            _result.IsBroadcastMessage = true;
+        }
+        protected override void ResponseConstruct()
+        {
+            _response = new PRIVMSGResponse(_request, _result);
         }
     }
 }

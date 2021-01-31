@@ -1,31 +1,36 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Message;
+using Chat.Entity.Structure.Result.Message;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Message
 {
     internal sealed class NOTICEHandler : ChatMsgHandlerBase
     {
-        new NOTICERequest _request { get { return (NOTICERequest)base._request; } }
+        private new NOTICERequest _request => (NOTICERequest)base._request;
+        private new NOTICEResult _result
+        {
+            get => (NOTICEResult)base._result;
+            set => base._result = value;
+        }
         public NOTICEHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new NOTICEResult();
         }
 
-        protected override void BuildNormalResponse()
+        protected override void DataOperation()
         {
-            base.BuildNormalResponse();
-            switch (_request.RequestType)
-            {
-                case ChatMessageType.ChannelMessage:
-                    _sendingBuffer = NOTICEReply.BuildNoticeReply(
-                            _user.UserInfo, _request.ChannelName, _request.Message);
-                    break;
-                case ChatMessageType.UserMessage:
-                    _sendingBuffer = NOTICEReply.BuildNoticeReply(
-                        _session.UserInfo, _request.NickName, _request.Message);
-                    break;
-            }
+            _result.UserIRCPrefix = _user.UserInfo.IRCPrefix;
+            base.DataOperation();
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new NOTICEResponse(_request, _result);
         }
     }
 }
+
+
+

@@ -81,7 +81,7 @@ namespace Chat.Handler.CmdHandler.Channel
                         _result.IRCErrorCode = ChatIRCErrorCode.BannedFromChan;
                         return;
                     }
-                    if (_channel.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
+                    if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
                     {
                         _result.ErrorCode = ChatErrorCode.IRCError;
                         _result.IRCErrorCode = ChatIRCErrorCode.ChannelIsFull;
@@ -147,10 +147,10 @@ namespace Chat.Handler.CmdHandler.Channel
                 return;
             }
             _response.Build();
-            if(!_result.IsAlreadyJoinedChannel)
+            if (!_result.IsAlreadyJoinedChannel)
             {
-            //first we send join information to all user in this channel
-            _channel.MultiCast(_response.SendingBufferOfChannelUsers);
+                //first we send join information to all user in this channel
+                _channel.MultiCast(_response.SendingBufferOfChannelUsers);
             }
             //TODO checkout whether need send mode in another single response
             _session.SendAsync(_response.SendingBuffer);

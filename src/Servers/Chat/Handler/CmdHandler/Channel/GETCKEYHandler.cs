@@ -39,7 +39,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         private void GetChannelAllUserKeyValue()
         {
-            foreach (var user in _channel.ChannelUsers)
+            foreach (var user in _channel.Property.ChannelUsers)
             {
                 GetUserKeyValue(user);
             }

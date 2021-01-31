@@ -6,7 +6,7 @@ namespace Chat.Entity.Structure.Result.Channel
     {
         public string ChannelModes { get; set; }
         public string ChannelName { get; set; }
-        public string NickName { get; set; }
+        public string JoinerNickName { get; set; }
         public MODEResult()
         {
         }

@@ -42,11 +42,11 @@ namespace Chat.Handler.CmdHandler.Channel
             {
                 case ModeRequestType.EnableUserQuietFlag:
                     _session.UserInfo.IsQuietMode = true;
-                    _result.NickName = _session.UserInfo.NickName;
+                    _result.JoinerNickName = _session.UserInfo.NickName;
                     break;
                 case ModeRequestType.DisableUserQuietFlag:
                     _session.UserInfo.IsQuietMode = false;
-                    _result.NickName = _session.UserInfo.NickName;
+                    _result.JoinerNickName = _session.UserInfo.NickName;
                     break;
                 case ModeRequestType.GetChannelModes:
                     _result.ChannelModes = _channel.Property.ChannelMode.GetChannelMode();

@@ -42,7 +42,7 @@ namespace Chat.Handler.CmdHandler.Channel
                 //      };
                 //      new KICKHandler(_session, kickRequest).Handle();
                 //  });
-                foreach (var user in _channel.ChannelUsers)
+                foreach (var user in _channel.Property.ChannelUsers)
                 {
                     // KickAllUserAndShutDownChannel(user);
                     // We create a new KICKHandler to handle KICK operation for us

@@ -1,11 +1,11 @@
-﻿using Chat.Abstraction.BaseClass;
+using Chat.Abstraction.BaseClass;
 using Chat.Abstraction.BaseClass.Message;
 
 namespace Chat.Entity.Structure.Result.Message
 {
-    internal sealed class ATMResult : ChatMsgResultBase
+    internal sealed class NOTICEResult : ChatMsgResultBase
     {
-        public ATMResult()
+        public NOTICEResult()
         {
         }
     }

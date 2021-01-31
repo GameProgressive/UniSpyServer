@@ -1,8 +1,7 @@
 ﻿using Chat.Entity.Structure.Misc;
-using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Request.General;
 using Chat.Handler.CmdHandler.General;
 using Chat.Handler.CommandSwitcher;
-using Chat.Handler.SystemHandler.ChannelManage;
 using Serilog.Events;
 using System;
 using System.Text;

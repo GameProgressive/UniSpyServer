@@ -26,7 +26,7 @@ namespace Chat.Entity.Structure.Response
             else
             {
                 //user mode reply
-                string cmdParams = $"{_result.NickName} {_result.ChannelName} {_result.ChannelModes}";
+                string cmdParams = $"{_result.JoinerNickName} {_result.ChannelName} {_result.ChannelModes}";
                 SendingBuffer = ChatIRCReplyBuilder.Build(ChatReplyName.ChannelModels, cmdParams);
             }
         }
