@@ -1,4 +1,5 @@
 ﻿using CDKey.Entity.Enumerate;
+using CDKey.Entity.Structure.Result;
 using CDKey.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
@@ -17,6 +18,7 @@ namespace CDKey.Abstraction.BaseClass
         }
         public CDKeyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new CDKeyDefaultResult();
         }
 
         public override void Handle()

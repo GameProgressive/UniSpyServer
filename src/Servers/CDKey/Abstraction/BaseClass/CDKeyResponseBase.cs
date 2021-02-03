@@ -1,4 +1,5 @@
 ﻿using System;
+using CDKey.Entity.Enumerate;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace CDKey.Abstraction.BaseClass
@@ -13,15 +14,17 @@ namespace CDKey.Abstraction.BaseClass
 
         public override void Build()
         {
-            throw new NotImplementedException();
+            if (_result.ErrorCode!= CDKeyErrorCode.NoError)
+            {
+                BuildErrorResponse();
+            }
+            else
+            {
+                BuildNormalResponse();
+            }
         }
 
         protected override void BuildErrorResponse()
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void BuildNormalResponse()
         {
             throw new NotImplementedException();
         }

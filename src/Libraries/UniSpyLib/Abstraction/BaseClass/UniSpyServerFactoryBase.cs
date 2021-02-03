@@ -93,11 +93,12 @@ namespace UniSpyLib.Abstraction.BaseClass
 
         public static void ShowRetroSpyLogo()
         {
-            Console.WriteLine(@" ___     _           ___             ___                      ");
-            Console.WriteLine(@"| _ \___| |_ _ _ ___/ __|_ __ _  _  / __| ___ _ ___ _____ _ _ ");
-            Console.WriteLine(@"|   / -_)  _| '_/ _ \__ \ '_ \ || | \__ \/ -_) '_\ V / -_) '_|");
-            Console.WriteLine(@"|_|_\___|\__|_| \___/___/ .__/\_, | |___/\___|_|  \_/\___|_|  ");
-            Console.WriteLine(@"                        |_|   |__/                            ");
+            // the ascii art font name is "small"
+            Console.WriteLine(@" _   _      _ ___           ___ ");
+            Console.WriteLine(@"| | | |_ _ (_) __|_ __ _  _/ __| ___ _ ___ _____ _ _ ");
+            Console.WriteLine(@"| |_| | ' \| \__ \ '_ \ || \__ \/ -_) '_\ V / -_) '_|");
+            Console.WriteLine(@" \___/|_||_|_|___/ .__/\_, |___/\___|_|  \_/\___|_|");
+            Console.WriteLine(@"                 |_|   |__/ ");
             Console.WriteLine(@"Version: " + RetroSpyVersion);
         }
     }

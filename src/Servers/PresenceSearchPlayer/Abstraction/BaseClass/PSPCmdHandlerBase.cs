@@ -29,7 +29,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         }
         public PSPCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new PSPBasicResult();
+            _result = new PSPDefaultResult();
         }
 
         public override void Handle()
@@ -58,7 +58,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 
         protected override void ResponseConstruct()
         {
-            _response = new PSPBasicResponse(_request, _result);
+            _response = new PSPDefaultResponse(_request, _result);
         }
         protected override void RequestCheck() { }
         protected override void Response()

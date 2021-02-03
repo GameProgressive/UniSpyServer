@@ -2,9 +2,9 @@
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class PSPBasicResult : PSPResultBase
+    public class PSPDefaultResult : PSPResultBase
     {
-        public PSPBasicResult()
+        public PSPDefaultResult()
         {
         }
     }

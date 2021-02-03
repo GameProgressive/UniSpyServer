@@ -1,4 +1,6 @@
 ﻿using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Structure.Response;
+using GameStatus.Entity.Structure.Result;
 using GameStatus.Handler.SystemHandler;
 using GameStatus.Network;
 using Serilog.Events;
@@ -24,6 +26,7 @@ namespace GameStatus.Abstraction.BaseClass
         }
         protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new GSDefaultResult();
         }
 
         public override void Handle()
@@ -56,7 +59,10 @@ namespace GameStatus.Abstraction.BaseClass
         protected override void RequestCheck()
         {
         }
-
+        protected override void ResponseConstruct()
+        {
+            _response = new GSDefaultResponse(_request, _result);
+        }
         protected override void Response()
         {
             if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
