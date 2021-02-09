@@ -9,16 +9,23 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 {
     internal abstract class PCMRequestBase : UniSpyRequestBase
     {
-        public new string CommandName { get; protected set; }
-        //public uint NamespaceID { get; protected set; }
+        public new string CommandName
+        {
+            get => (string)base.CommandName;
+            protected set => base.CommandName = value;
+        }
         public uint OperationID { get; protected set; }
 
-        public new string RawRequest { get; protected set; }
+        public new string RawRequest
+        {
+            get => (string)base.RawRequest;
+            set => base.RawRequest = value;
+        }
         public Dictionary<string, string> KeyValues { get; protected set; }
         public new GPErrorCode ErrorCode
         {
-            get { return (GPErrorCode)base.ErrorCode; }
-            protected set { base.ErrorCode = value; }
+            get => (GPErrorCode)base.ErrorCode;
+            protected set => base.ErrorCode = value;
         }
         public PCMRequestBase(string rawRequest) : base(rawRequest)
         {
