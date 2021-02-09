@@ -8,7 +8,7 @@
             "args": [
                 "build",
                 "-o",
-                "${workspaceFolder}/build/Debug/bin/",
+                "${workspaceFolder}/build/Debug/net5.0/",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

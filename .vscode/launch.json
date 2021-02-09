@@ -5,24 +5,24 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "PresenceConnectionManager",
+            "name": "PCM",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/PresenceConnectionManager.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/PresenceConnectionManager.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "stopAtEntry": false,
             "console": "integratedTerminal"
         },
         {
-            "name": "PresenceSearchPlayer",
+            "name": "PSP",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/PresenceSearchPlayer.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/PresenceSearchPlayer.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
             "stopAtEntry": false
         },
@@ -31,9 +31,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/NatNegotiation.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/NatNegotiation.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
             "stopAtEntry": false
         },
@@ -42,9 +42,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/CDKey.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/CDKey.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
             "stopAtEntry": false
         },
@@ -53,9 +53,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/Chat.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/Chat.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
             "stopAtEntry": false
         },
@@ -64,9 +64,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/QueryReport.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/QueryReport.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
             "stopAtEntry": false
         },
@@ -75,20 +75,20 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/ServerBrowser.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/ServerBrowser.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
             "stopAtEntry": false
         },
         {
-            "name": "StatsAndTracking",
+            "name": "GameStatus",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/StatsAndTracking.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/StatsAndTracking.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
             "stopAtEntry": false
         },
@@ -97,9 +97,9 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceRoot}/build/Debug/bin/WebServices.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/WebServices.dll",
             "args": [],
-            "cwd": "${workspaceRoot}/build/Debug/bin/",
+            "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
             "stopAtEntry": false
         }
@@ -108,36 +108,36 @@
         {
             "name": "GP Servers",
             "configurations": [
-                "PresenceConnectionManager",
-                "PresenceSearchPlayer"
+                "PCM",
+                "PSP"
             ]
         },
         {
             "name": "Legacy servers",
             "configurations": [
-                "PresenceConnectionManager",
-                "PresenceSearchPlayer",
+                "PCM",
+                "PSP",
                 "NatNeg",
                 "CDKey",
                 "Chat",
                 "QueryReport",
                 "ServerBrowser",
-                "StatsAndTracking"
+                "GameStatus"
             ]
         },
         {
-            "name": "Stats test servers",
+            "name": "GameStatus servers",
             "configurations": [
-                "PresenceConnectionManager",
-                "PresenceSearchPlayer",
-                "StatsAndTracking"
+                "PCM",
+                "PSP",
+                "GameStatus"
             ]
         },
         {
             "name": "New servers",
             "configurations": [
-                "PresenceConnectionManager",
-                "PresenceSearchPlayer",
+                "PCM",
+                "PSP",
                 "NatNeg",
                 "CDKey",
                 "Chat",
@@ -157,7 +157,7 @@
             "name": "Sake servers",
             "configurations": [
                 "WebServices",
-                "PresenceConnectionManager"
+                "PCM"
             ]
         }
     ]

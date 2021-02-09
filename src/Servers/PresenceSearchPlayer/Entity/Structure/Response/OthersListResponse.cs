@@ -21,7 +21,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
             }
 
             SendingBuffer += @"oldone";
-
         }
     }
 }

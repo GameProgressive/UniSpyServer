@@ -32,12 +32,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                              join n in db.Subprofiles on p.Profileid equals n.Profileid
                              where n.Uniquenick == _request.PreferredNick
                              && n.Namespaceid == _request.NamespaceID
-                             //&& n.Gamename == _request.GameName
+                             && n.Gamename == _request.GameName
                              select p.Profileid;
 
-                if (result.Count() == 0)
+                if (result.Count() != 0)
                 {
-                    _result.IsUniquenickExist = false;
+                    _result.IsUniquenickExist = true;
                 }
             }
         }

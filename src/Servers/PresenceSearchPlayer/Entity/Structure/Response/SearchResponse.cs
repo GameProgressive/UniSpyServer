@@ -26,7 +26,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
                 SendingBuffer += @"\lastname\" + info.Lastname;
                 SendingBuffer += @"\email\" + info.Email;
             }
-
+            //TODO check how many user data is allowed send to the client
             SendingBuffer += @"\bsrdone\\more\0\final\";
         }
     }

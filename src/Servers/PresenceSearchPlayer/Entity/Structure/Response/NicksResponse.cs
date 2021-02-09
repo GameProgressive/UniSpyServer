@@ -1,15 +1,14 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Result;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Response
 {
-    internal class NicksResponse : PSPResponseBase
+    internal sealed class NicksResponse : PSPResponseBase
     {
-        protected new NicksResult _result
-        {
-            get { return (NicksResult)base._result; }
-        }
+        private new NicksResult _result=> (NicksResult)base._result;
+        private new NicksRequest _request => (NicksRequest)base._request;
 
         internal NicksResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
@@ -22,13 +21,13 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
             {
                 SendingBuffer += @"\nick\";
                 SendingBuffer += info.NickName;
-                if (_result.IsRequireUniqueNicks)
+                if (_request.IsRequireUniqueNicks)
                 {
                     SendingBuffer += @"\uniquenick\";
                     SendingBuffer += info.UniqueNick;
                 }
-                SendingBuffer += @"\ndone\final\";
             }
+            SendingBuffer += @"\ndone\final\";
         }
     }
 }

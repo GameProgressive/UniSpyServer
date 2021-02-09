@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class NicksDataBaseModel
+    public class NicksDataModel
     {
         public string NickName;
         public string UniqueNick;
@@ -11,11 +11,11 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
 
     public class NicksResult : PSPResultBase
     {
-        public List<NicksDataBaseModel> DataBaseResults;
+        public List<NicksDataModel> DataBaseResults;
         public bool IsRequireUniqueNicks { get; set; }
         public NicksResult()
         {
-            DataBaseResults = new List<NicksDataBaseModel>();
+            DataBaseResults = new List<NicksDataModel>();
         }
     }
 }

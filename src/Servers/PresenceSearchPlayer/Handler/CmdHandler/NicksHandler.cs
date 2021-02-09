@@ -36,7 +36,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                              where u.Email == _request.Email
                              && u.Password == _request.Password
                              && n.Namespaceid == _request.NamespaceID
-                             select new NicksDataBaseModel
+                             select new NicksDataModel
                              {
                                  NickName = p.Nick,
                                  UniqueNick = n.Uniquenick

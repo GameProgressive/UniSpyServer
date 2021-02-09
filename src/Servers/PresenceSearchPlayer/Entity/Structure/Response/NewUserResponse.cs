@@ -14,7 +14,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
         protected new NewUserResult _result => (NewUserResult)base._result;
         protected override void BuildErrorResponse()
         {
-            if (_result.ErrorCode >= GPErrorCode.NewUser && _result.ErrorCode <= GPErrorCode.NewUserUniquenickInvalid)
+            if (_result.ErrorCode >= GPErrorCode.NewUser 
+            && _result.ErrorCode <= GPErrorCode.NewUserUniquenickInvalid)
             {
                 SendingBuffer = $@"\nur\{_result.ErrorCode}\final\";
             }
