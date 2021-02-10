@@ -17,12 +17,11 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public uint SubProfileID;
     }
 
-    internal class LogInResult : PCMResultBase
+    internal class LoginResult : PCMResultBase
     {
         public LogInDataModel DatabaseResults { get; set; }
         public string ResponseProof { get; set; }
-        public PCMUserInfo UserInfo { get; set; }
-        public LogInResult()
+        public LoginResult()
         {
         }
     }

@@ -7,10 +7,10 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    internal class LoginResponse : PCMResponseBase
+    internal sealed class LoginResponse : PCMResponseBase
     {
-        protected new LogInResult _result => (LogInResult)base._result;
-        protected new LoginRequest _request => (LoginRequest)base._request;
+        private new LoginResult _result => (LoginResult)base._result;
+        private new LoginRequest _request => (LoginRequest)base._request;
         public LoginResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
@@ -23,17 +23,15 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 
             SendingBuffer = @"\lc\2\sesskey\" + PCMUserInfo.SessionKey;
             SendingBuffer += @"\proof\" + _result.ResponseProof;
-            SendingBuffer += @"\userid\" + _result.UserInfo.UserID;
-            SendingBuffer += @"\profileid\" + _result.UserInfo.ProfileID;
+            SendingBuffer += @"\userid\" + _result.DatabaseResults.UserID;
+            SendingBuffer += @"\profileid\" + _result.DatabaseResults.ProfileID;
 
             if (_request.LoginType != LoginType.NickEmail)
             {
-                SendingBuffer += @"\uniquenick\" + _result.UserInfo.UniqueNick;
+                SendingBuffer += @"\uniquenick\" + _result.DatabaseResults.UniqueNick;
             }
             SendingBuffer += $@"\lt\{PCMUserInfo.LoginTicket}";
             SendingBuffer += $@"\id\{_request.OperationID}\final\";
-
-            _result.UserInfo.LoginStatus = LoginStatus.Completed;
         }
     }
 }

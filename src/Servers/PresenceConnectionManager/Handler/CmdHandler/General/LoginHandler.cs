@@ -2,6 +2,7 @@
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Entity.Structure.Request;
+using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceConnectionManager.Handler.CmdHandler.General;
 using PresenceConnectionManager.Network;
@@ -16,19 +17,17 @@ using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-
-
     internal class LoginHandler : PCMCmdHandlerBase
     {
         protected new LoginRequest _request => (LoginRequest)base._request;
-        protected new LogInResult _result
+        protected new LoginResult _result
         {
-            get { return (LogInResult)base._result; }
-            set { base._result = value; }
+            get => (LoginResult)base._result;
+            set => base._result = value;
         }
         public LoginHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new LogInResult();
+            _result = new LoginResult();
         }
 
         protected override void RequestCheck()
@@ -103,8 +102,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 return;
             }
 
-            ChallengeProofData proofData =
-                new ChallengeProofData(
+            ChallengeProofData proofData = new ChallengeProofData(
                             _request.UserData,
                             _request.LoginType,
                             _request.PartnerID,
@@ -114,9 +112,12 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
             _result.ResponseProof =
                ChallengeProof.GenerateProof(proofData);
-            _result.UserInfo = _session.UserInfo;
         }
 
+        protected override void ResponseConstruct()
+        {
+            _response = new LoginResponse(_request, _result);
+        }
         protected override void Response()
         {
             base.Response();
