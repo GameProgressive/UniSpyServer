@@ -1,6 +1,4 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Network;
-using System.Collections.Generic;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
@@ -14,7 +12,6 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         protected override void DataOperation()
         {
             _session.Disconnect();
-            PCMServer.LoggedInSession.Remove(_session.Id, out _);
         }
     }
 }

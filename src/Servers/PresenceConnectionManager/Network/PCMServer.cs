@@ -1,6 +1,4 @@
 ﻿using NetCoreServer;
-using System;
-using System.Collections.Concurrent;
 using System.Net;
 using UniSpyLib.Network;
 
@@ -13,14 +11,8 @@ namespace PresenceConnectionManager.Network
     /// </summary>
     internal sealed class PCMServer : UniSpyTCPServerBase
     {
-        /// <summary>
-        /// List of sucessfully logged in clients (Pid => Client Obj)
-        /// </summary>
-        public static ConcurrentDictionary<Guid, PCMSession> LoggedInSession;
-
         public PCMServer(IPAddress address, int port) : base(address, port)
         {
-            LoggedInSession = new ConcurrentDictionary<Guid, PCMSession>();
         }
 
         /// <summary>
