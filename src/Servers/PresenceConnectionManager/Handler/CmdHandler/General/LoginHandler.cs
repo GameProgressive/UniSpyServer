@@ -142,7 +142,6 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             _session.UserInfo.LoginStatus = LoginStatus.Completed;
             _session.UserInfo.SDKRevision = _request.SDKType;
 
-            PCMServer.LoggedInSession.GetOrAdd(_session.Id, _session);
             new SDKRevisionHandler(_session, _request).Handle();
         }
 

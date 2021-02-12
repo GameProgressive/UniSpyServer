@@ -1,7 +1,7 @@
 ﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
+using QueryReport.Handler.SystemHandler.Redis;
 using Serilog.Events;
 using System;
 using System.Linq;
@@ -25,8 +25,8 @@ namespace QueryReport.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO prevent one pc create multiple game servers
-            var searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
-            var matchedKeys = GameServerInfo.RedisOperator.GetMatchedKeys(searchKey);
+            var searchKey = GameServerInfoRedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
+            var matchedKeys = GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
             if (matchedKeys.Count() != 1)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Can not find game server");
@@ -35,11 +35,11 @@ namespace QueryReport.Handler.CmdHandler
             //add recive echo packet on gameserverList
 
             //we get the first key in matchedKeys
-            _result.GameServerInfo = GameServerInfo.RedisOperator.GetSpecificValue(matchedKeys[0]);
+            _result.GameServerInfo = GameServerInfoRedisOperator.GetSpecificValue(matchedKeys[0]);
 
             _result.GameServerInfo.LastPacket = DateTime.Now;
 
-            GameServerInfo.RedisOperator.SetKeyValue(matchedKeys[0], _result.GameServerInfo);
+            GameServerInfoRedisOperator.SetKeyValue(matchedKeys[0], _result.GameServerInfo);
         }
         protected override void ResponseConstruct()
         {

@@ -16,6 +16,7 @@
         <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="3.2.4" />
         <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
         <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+        <PackageReference Include="Macross.Json.Extensions" Version="1.5.0" />
     </ItemGroup>
     <ItemGroup>
         <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />

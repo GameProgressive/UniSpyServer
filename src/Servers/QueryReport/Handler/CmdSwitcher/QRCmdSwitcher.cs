@@ -26,7 +26,7 @@ namespace QueryReport.Handler.CmdSwitcher
         {
             var request = new QRRequestFactory(_rawRequest).Serialize();
             request.Parse();
-            if (!(bool)request.ErrorCode)
+            if ((QRErrorCode)request.ErrorCode != QRErrorCode.NoError)
             {
                 LogWriter.ToLog(LogEventLevel.Error, QRErrorMessage.GetErrorMessage(QRErrorCode.Parse));
                 return;

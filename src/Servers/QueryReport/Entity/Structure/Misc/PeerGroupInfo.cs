@@ -10,12 +10,6 @@ namespace QueryReport.Entity.Structure.Group
         public string GameName { get; protected set; }
         public uint GameID { get; protected set; }
         public List<PeerRoomInfo> PeerRooms { get; protected set; }
-        public static PeerGroupInfoRedisOperator RedisOperator { get; protected set; }
-
-        static PeerGroupInfo()
-        {
-            RedisOperator = new PeerGroupInfoRedisOperator();
-        }
 
         public PeerGroupInfo()
         {

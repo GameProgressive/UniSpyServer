@@ -1,5 +1,4 @@
 ﻿using QueryReport.Entity.Structure.ReportData;
-using QueryReport.Handler.SystemHandler.Redis;
 using System;
 using System.Net;
 
@@ -10,12 +9,6 @@ namespace QueryReport.Entity.Structure
     /// </summary>
     public class GameServerInfo
     {
-        public static GameServerInfoRedisOperator RedisOperator;
-
-        static GameServerInfo()
-        {
-            RedisOperator = new GameServerInfoRedisOperator();
-        }
         /// <summary>
         /// Last valid heart beat packet time
         /// </summary>
@@ -41,6 +34,7 @@ namespace QueryReport.Entity.Structure
             ServerData = new ServerData();
             PlayerData = new PlayerData();
             TeamData = new TeamData();
+            RemoteQueryReportIPEndPoint = (IPEndPoint)endPoint;
             RemoteQueryReportIP = ((IPEndPoint)endPoint).Address.ToString();
             RemoteQueryReportPort = ((IPEndPoint)endPoint).Port.ToString();
         }

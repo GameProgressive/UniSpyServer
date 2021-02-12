@@ -1,51 +1,151 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace UniSpyLib.MiscMethod
 {
-    public class IPEndPointConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            return (objectType == typeof(IPEndPoint));
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            IPEndPoint ep = (IPEndPoint)value;
-            JObject jo = new JObject();
-            jo.Add("Address", JToken.FromObject(ep.Address, serializer));
-            jo.Add("Port", ep.Port);
-            jo.WriteTo(writer);
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            JObject jo = JObject.Load(reader);
-            IPAddress address = jo["Address"].ToObject<IPAddress>(serializer);
-            int port = (int)jo["Port"];
-            return new IPEndPoint(address, port);
-        }
-    }
     public class IPAddressConverter : JsonConverter
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == typeof(IPAddress));
+            if (objectType == typeof(IPAddress)) return true;
+            if (objectType == typeof(List<IPAddress>)) return true;
+
+            return false;
         }
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString());
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="objectType"></param>
+        /// <param name="existingValue"></param>
+        /// <param name="serializer"></param>
+        /// <returns></returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            return IPAddress.Parse((string)reader.Value);
+            // convert an ipaddress represented as a string into an IPAddress object and return it to the caller
+            if (objectType == typeof(IPAddress))
+            {
+                return IPAddress.Parse(JToken.Load(reader).ToString());
+            }
+
+            // convert a json array of ipaddresses represented as strings into a List<IPAddress> object and return it to the caller
+            if (objectType == typeof(List<IPAddress>))
+            {
+                return JToken.Load(reader).Select(address => IPAddress.Parse((string)address)).ToList();
+            }
+
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="value"></param>
+        /// <param name="serializer"></param>
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            // convert an IPAddress object to a string representation of itself and write it to the serialiser
+            if (value.GetType() == typeof(IPAddress))
+            {
+                JToken.FromObject(value.ToString()).WriteTo(writer);
+                return;
+            }
+
+            // convert a List<IPAddress> object to an array of strings of ipaddresses and write it to the serialiser
+            if (value.GetType() == typeof(List<IPAddress>))
+            {
+                JToken.FromObject((from n in (List<IPAddress>)value select n.ToString()).ToList()).WriteTo(writer);
+                return;
+            }
+
+            throw new NotImplementedException();
         }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public class IPEndPointConverter : JsonConverter
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="objectType"></param>
+        /// <returns></returns>
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType == typeof(IPEndPoint);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <param name="objectType"></param>
+        /// <param name="existingValue"></param>
+        /// <param name="serializer"></param>
+        /// <returns></returns>
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        {
+            return JToken.Load(reader).ToString().ToIPEndPoint();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="writer"></param>
+        /// <param name="value"></param>
+        /// <param name="serializer"></param>
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        {
+            var ipEndPoint = value as IPEndPoint;
+            if (ipEndPoint != null)
+            {
+                if (ipEndPoint.Address != null || ipEndPoint.Port != 0)
+                {
+                    JToken.FromObject(string.Format("{0}:{1}", ipEndPoint.Address, ipEndPoint.Port)).WriteTo(writer);
+                    return;
+                }
+            }
+            writer.WriteNull();
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public static class IPAddressExtensions
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="ipEndPoint"></param>
+        /// <returns></returns>
+        public static IPEndPoint ToIPEndPoint(this string ipEndPoint)
+        {
+            if (string.IsNullOrWhiteSpace(ipEndPoint))
+            {
+                return null;
+            }
+
+            var components = ipEndPoint.Split(':');
+
+            return new IPEndPoint(IPAddress.Parse(components[0]), Convert.ToInt32(components[1]));
+        }
+
+    }
+
     public static class UniSpyJsonConverter
     {
         public static void Initialize()

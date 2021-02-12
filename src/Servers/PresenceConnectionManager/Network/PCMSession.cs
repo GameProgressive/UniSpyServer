@@ -1,6 +1,7 @@
 ﻿using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler.CommandSwitcher;
+using PresenceConnectionManager.Handler.SystemHandler;
 using PresenceConnectionManager.Structure.Data;
 using Serilog.Events;
 using System;
@@ -63,12 +64,6 @@ namespace PresenceConnectionManager.Network
             UserInfo.LoginStatus = LoginStatus.Processing;
             string sendingBuffer = $@"\lc\1\challenge\{ChallengeProofData.ServerChallenge}\id\{1}\final\";
             SendAsync(sendingBuffer);
-        }
-
-        public void StatusToLog(string status, string nick, uint pid, IPEndPoint remote, string reason)
-        {
-            string statusString = $@" [{status}] Nick:{nick}-PID:{pid}-IP:{remote}-Reason:{reason}";
-            LogWriter.ToLog(LogEventLevel.Information, statusString);
         }
     }
 }

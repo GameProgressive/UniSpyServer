@@ -4,6 +4,7 @@ using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
+using QueryReport.Handler.SystemHandler.Redis;
 using System;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
@@ -28,8 +29,8 @@ namespace QueryReport.Handler.CmdHandler
                 _session.InstantKey = _request.InstantKey;
             }
             _response = new QRDefaultResponse(_request, _result);
-            var searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
-            var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(searchKey);
+            var searchKey = GameServerInfoRedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
+            var result = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey);
             if (result.Count != 1)
             {
                 _result.ErrorCode = QRErrorCode.Database;
@@ -40,7 +41,7 @@ namespace QueryReport.Handler.CmdHandler
 
             gameServer.Value.LastPacket = DateTime.Now;
 
-            GameServerInfo.RedisOperator.SetKeyValue(gameServer.Key, gameServer.Value);
+            GameServerInfoRedisOperator.SetKeyValue(gameServer.Key, gameServer.Value);
         }
     }
 }
