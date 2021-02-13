@@ -3,6 +3,7 @@ using NATNegotiation.Entity.Structure;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
+using NATNegotiation.Handler.SystemHandler.Redis;
 using System;
 using UniSpyLib.Abstraction.Interface;
 
@@ -24,11 +25,11 @@ namespace NATNegotiation.Handler.CmdHandler
         }
         protected override void DataOperation()
         {            //TODO we get user infomation from redis
-            _fullKey = NatUserInfo.RedisOperator.BuildFullKey(
+            _fullKey = NNRedisOperator.BuildFullKey(
                                         _session.RemoteIPEndPoint,
                                         _request.PortType,
                                         _request.Cookie);
-            _userInfo = NatUserInfo.RedisOperator.GetSpecificValue(_fullKey);
+            _userInfo = NNRedisOperator.GetSpecificValue(_fullKey);
 
             if (_userInfo == null)
             {
@@ -37,7 +38,7 @@ namespace NATNegotiation.Handler.CmdHandler
             }
             _userInfo.InitRequestInfo = _request;
             _userInfo.LastPacketRecieveTime = DateTime.Now;
-            NatUserInfo.RedisOperator.SetKeyValue(_fullKey, _userInfo);
+            NNRedisOperator.SetKeyValue(_fullKey, _userInfo);
             _result.LocalEndPoint = _session.RemoteEndPoint;
         }
 

@@ -1,6 +1,7 @@
 ﻿using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure;
 using NATNegotiation.Entity.Structure.Result;
+using NATNegotiation.Handler.SystemHandler.Redis;
 using Serilog.Events;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
     {
         public static void Negotiate(NatPortType portType, byte version, uint cookie)
         {
-            var searchKey = NatUserInfo.RedisOperator.BuildSearchKey(portType, cookie);
+            var searchKey = NNRedisOperator.BuildSearchKey(portType, cookie);
 
-            List<string> matchedKeys = NatUserInfo.RedisOperator.GetMatchedKeys(searchKey);
+            List<string> matchedKeys = NNRedisOperator.GetMatchedKeys(searchKey);
             // because cookie is unique for each client we will only get 2 of keys
             if (matchedKeys.Count != 2)
             {
@@ -28,7 +29,7 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
 
             foreach (var key in matchedKeys)
             {
-                negotiatorPairs.Add(key, NatUserInfo.RedisOperator.GetSpecificValue(key));
+                negotiatorPairs.Add(key, NNRedisOperator.GetSpecificValue(key));
             }
 
             ////find negitiators and negotiatees by a same cookie
@@ -37,7 +38,7 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
 
             if (negotiators.Count() != 1 || negotiatees.Count() != 1)
             {
-                LogWriter.ToLog("No match found we continue waitting!");
+                LogWriter.ToLog("No match found, we keep waiting!");
                 return;
             }
 

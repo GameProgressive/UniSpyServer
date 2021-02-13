@@ -5,6 +5,7 @@ using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
 using NATNegotiation.Handler.SystemHandler.Manager;
+using NATNegotiation.Handler.SystemHandler.Redis;
 using System;
 using UniSpyLib.Abstraction.Interface;
 
@@ -32,10 +33,10 @@ namespace NATNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             //_userInfo.IsGotReportPacket = true;
-            string _fullKey = NatUserInfo.RedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
+            string _fullKey = NNRedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
             try
             {
-                _userInfo = NatUserInfo.RedisOperator.GetSpecificValue(_fullKey);
+                _userInfo = NNRedisOperator.GetSpecificValue(_fullKey);
             }
             catch
             {
@@ -50,12 +51,12 @@ namespace NATNegotiation.Handler.CmdHandler
                 }
 
                 _userInfo.RetryNATNegotiationTime++;
-                NatUserInfo.RedisOperator.SetKeyValue(_fullKey, _userInfo);
+                NNRedisOperator.SetKeyValue(_fullKey, _userInfo);
             }
             else
             {
                 // natnegotiation successed we delete the negotiator
-                NatUserInfo.RedisOperator.DeleteKeyValue(_fullKey);
+                NNRedisOperator.DeleteKeyValue(_fullKey);
             }
         }
 

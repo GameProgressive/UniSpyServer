@@ -23,14 +23,14 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var user = PCMServer.LoggedInSession.Values.Where(
+            /*var user = PCMServer.LoggedInSession.Values.Where(
                 u => u.UserInfo.ProductID == _request.ProductID
                 && u.UserInfo.ProfileID == _request.ProfileID);
 
             if (user.Count() == 0)
             {
                 return;
-            }
+            }*/
             //TODO
             //parse user to buddy message system
         }

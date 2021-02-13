@@ -2,6 +2,7 @@
 using System.Net;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
+
 namespace QueryReport.Handler.SystemHandler.Redis
 {
     public class GameServerInfoRedisOperator : UniSpyRedisOperatorBase<GameServerInfo>

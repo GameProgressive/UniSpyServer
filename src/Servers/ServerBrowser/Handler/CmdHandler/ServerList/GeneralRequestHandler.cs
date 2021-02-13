@@ -1,4 +1,4 @@
-﻿using QueryReport.Entity.Structure;
+﻿using QueryReport.Handler.SystemHandler.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Response;
@@ -25,8 +25,8 @@ namespace ServerBrowser.Handler.CmdHandler
         /// </summary>
         protected override void DataOperation()
         {
-            var searchKey = GameServerInfo.RedisOperator.BuildSearchKey(_request.GameName);
-            _result.GameServerInfos = GameServerInfo.RedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
+            var searchKey = GameServerInfoRedisOperator.BuildSearchKey(_request.GameName);
+            _result.GameServerInfos = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey).Values.ToList();
             _result.Flag = GameServerFlags.HasKeysFlag;
         }
 

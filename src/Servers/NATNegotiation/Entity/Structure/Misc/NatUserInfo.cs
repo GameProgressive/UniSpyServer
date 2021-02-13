@@ -1,5 +1,5 @@
 ﻿using NATNegotiation.Entity.Structure.Request;
-using NATNegotiation.Handler.SystemHandler;
+using NATNegotiation.Handler.SystemHandler.Redis;
 using System;
 using System.Net;
 

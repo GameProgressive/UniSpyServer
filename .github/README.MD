@@ -13,7 +13,7 @@ The server is written in C# and is inspired by the old OpenSpy project.
 See the [wiki](https://github.com/GameProgressive/UniSpyServer/wiki) for more information about project and the UniSpy Server.
 You can also use our Software Development Kit to create games or learn about the [UniSpySDK](https://github.com/GameProgressive/UniSpySDK).
 
-Technical papers and documentation about the GameSpy protocol and the games that use it, [GameSpyDoc](https://github.com/GameProgressive/GameSpyDocs).
+Technical papers and documentation about the GameSpy protocol and the games that use it, [GameSpyDocs](https://github.com/GameProgressive/GameSpyDocs).
 
 ## Credits
 * The [contributors](https://github.com/GameProgressive/UniSpyServer/graphs/contributors) of the project

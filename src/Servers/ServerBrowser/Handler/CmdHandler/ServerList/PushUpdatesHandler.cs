@@ -1,4 +1,4 @@
-﻿using QueryReport.Entity.Structure;
+﻿using QueryReport.Handler.SystemHandler.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Packet.Response;
@@ -24,7 +24,7 @@ namespace ServerBrowser.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            _result.GameServerInfos = GameServerInfo.RedisOperator.GetMatchedKeyValues(_request.GameName).Values.ToList();
+            _result.GameServerInfos = GameServerInfoRedisOperator.GetMatchedKeyValues(_request.GameName).Values.ToList();
             _result.Flag = GameServerFlags.HasFullRulesFlag;
             //TODO do filter
             //**************Currently we do not handle filter**********************
