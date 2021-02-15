@@ -1,11 +1,10 @@
 ﻿using QueryReport.Entity.Structure.Group;
+using QueryReport.Handler.SystemHandler.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Response.ServerList;
 using ServerBrowser.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
-using QueryReport.Handler.SystemHandler.Redis;
 namespace ServerBrowser.Handler.CmdHandler
 {
     internal sealed class SendGroupsHandler : ServerListHandlerBase

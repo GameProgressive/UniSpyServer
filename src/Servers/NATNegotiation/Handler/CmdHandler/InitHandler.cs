@@ -31,6 +31,7 @@ namespace NATNegotiation.Handler.CmdHandler
                                         _request.Cookie);
             _userInfo = NatUserInfoRedisOperator.GetSpecificValue(_fullKey);
 
+
             if (_userInfo == null)
             {
                 _userInfo = new NatUserInfo();
@@ -39,7 +40,6 @@ namespace NATNegotiation.Handler.CmdHandler
             _userInfo.InitRequestInfo = _request;
             _userInfo.LastPacketRecieveTime = DateTime.Now;
             NatUserInfoRedisOperator.SetKeyValue(_fullKey, _userInfo);
-            _result.LocalEndPoint = _session.RemoteEndPoint;
         }
 
         protected override void ResponseConstruct()

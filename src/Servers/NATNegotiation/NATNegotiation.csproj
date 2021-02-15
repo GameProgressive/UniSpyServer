@@ -15,8 +15,6 @@
         <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
-        <Folder Include="Handler\SystemHandler\" />
-        <Folder Include="Handler\SystemHandler\Manager\" />
         <Folder Include="Entity\Structure\Response\" />
         <Folder Include="Entity\Structure\Result\" />
     </ItemGroup>
