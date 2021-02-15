@@ -102,11 +102,11 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 return;
             }
 
-            ChallengeProofData proofData = new ChallengeProofData(
+            ChallengeProof proofData = new ChallengeProof(
                             _request.UserData,
                             _request.LoginType,
                             _request.PartnerID,
-                            ChallengeProofData.ServerChallenge,
+                            ChallengeProof.ServerChallenge,
                             _request.UserChallenge,
                             _result.DatabaseResults.PasswordHash);
 
@@ -132,7 +132,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 return;
             }
 
-            _session.UserInfo.UserStatus = GPStatus.Online;
+            _session.UserInfo.UserCurrentStatus = GPStatusCode.Online;
             _session.UserInfo.UserID = _result.DatabaseResults.UserID;
             _session.UserInfo.ProfileID = _result.DatabaseResults.ProfileID;
             _session.UserInfo.SubProfileID = _result.DatabaseResults.SubProfileID;
@@ -258,12 +258,12 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected bool IsChallengeCorrect()
         {
-            ChallengeProofData proofData = new ChallengeProofData(
+            ChallengeProof proofData = new ChallengeProof(
                 _request.UserData,
                 _request.LoginType,
                 _request.PartnerID,
                _request.UserChallenge,
-               ChallengeProofData.ServerChallenge,
+               ChallengeProof.ServerChallenge,
                _result.DatabaseResults.PasswordHash);
 
             string response = ChallengeProof.GenerateProof(proofData);

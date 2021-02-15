@@ -5,6 +5,7 @@ using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Result.Channel;
 using Chat.Handler.SystemHandler.ChannelManage;
 using QueryReport.Entity.Structure;
+using QueryReport.Handler.SystemHandler.Redis;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Channel
@@ -78,10 +79,10 @@ namespace Chat.Handler.CmdHandler.Channel
             {
                 _session.SendAsync(_response.SendingBuffer);
                 // remove serverInfo in Redis
-                var fullKey = GameServerInfo.RedisOperator.BuildFullKey(
+                var fullKey = GameServerInfoRedisOperator.BuildFullKey(
                     _user.UserInfo.Session.RemoteIPEndPoint,
                     _user.UserInfo.Session.UserInfo.GameName);
-                GameServerInfo.RedisOperator.DeleteKeyValue(fullKey);
+                GameServerInfoRedisOperator.DeleteKeyValue(fullKey);
             }
             // remove channel in ChannelManager
             ChatChannelManager.RemoveChannel(_channel);

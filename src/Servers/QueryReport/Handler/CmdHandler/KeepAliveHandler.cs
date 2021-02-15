@@ -39,7 +39,7 @@ namespace QueryReport.Handler.CmdHandler
 
             var gameServer = result.First();
 
-            gameServer.Value.LastPacket = DateTime.Now;
+            gameServer.Value.LastPacketReceivedTime = DateTime.Now;
 
             GameServerInfoRedisOperator.SetKeyValue(gameServer.Key, gameServer.Value);
         }

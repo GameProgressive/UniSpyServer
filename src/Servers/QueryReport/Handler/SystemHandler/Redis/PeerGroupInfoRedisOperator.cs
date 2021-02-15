@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace QueryReport.Handler.SystemHandler.Redis
 {
-    internal sealed class PeerGroupInfoRedisOperator : UniSpyRedisOperatorBase<PeerGroupInfo>
+    public sealed class PeerGroupInfoRedisOperator : UniSpyRedisOperatorBase<PeerGroupInfo>
     {
         static PeerGroupInfoRedisOperator()
         {

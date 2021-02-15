@@ -7,7 +7,7 @@ namespace NATNegotiation.Entity.Structure
 {
     internal sealed class NatUserInfo
     {
-        public static NNRedisOperator RedisOperator { get; private set; }
+        public static NatUserInfoRedisOperator RedisOperator { get; private set; }
         public IPEndPoint RemoteEndPoint { get; set; }
         public InitRequest InitRequestInfo { get; set; }
         public DateTime LastPacketRecieveTime;
@@ -15,7 +15,7 @@ namespace NATNegotiation.Entity.Structure
 
         static NatUserInfo()
         {
-            RedisOperator = new NNRedisOperator();
+            RedisOperator = new NatUserInfoRedisOperator();
         }
 
         public NatUserInfo()

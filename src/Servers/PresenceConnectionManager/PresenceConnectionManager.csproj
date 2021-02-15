@@ -27,5 +27,12 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Handler\SystemHandler\" />
+      <Folder Include="Handler\SystemHandler\Redis\" />
+      <Folder Include="Entity\Structure\Result\Buddy\" />
+      <Folder Include="Entity\Structure\Result\General\" />
+      <Folder Include="Entity\Structure\Result\Profile\" />
+      <Folder Include="Entity\Structure\Response\Buddy\" />
+      <Folder Include="Entity\Structure\Response\Profile\" />
+      <Folder Include="Entity\Structure\Response\General\" />
     </ItemGroup>
 </Project>

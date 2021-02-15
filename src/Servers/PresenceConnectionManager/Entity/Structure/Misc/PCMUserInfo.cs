@@ -1,9 +1,15 @@
-﻿using PresenceConnectionManager.Entity.Enumerate;
+﻿using System;
+using PresenceConnectionManager.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Structure.Data
 {
     internal class PCMUserInfo
     {
+        public const ushort SessionKey = 1111;
+        public const string LoginTicket = "0000000000000000000000__";
+
+        public Guid UserGuid { get; private set; }
+        public DateTime CreatedTime { get; private set; }
         public uint UserID;
         public uint ProfileID;
         public uint SubProfileID;
@@ -19,30 +25,19 @@ namespace PresenceConnectionManager.Structure.Data
         /// </summary>
         public string AuthToken;
 
-
         /// <summary>
-        /// Gets the current status of the player
+        /// Indicates the user's Login process status.
         /// </summary>
-        public PlayerStatus PlayerStatus = PlayerStatus.Offline;
-
-        public string UserChallenge;
-
-        public const ushort SessionKey = 1111;
-
         public LoginStatus LoginStatus;
-
         public SDKRevisionType SDKRevision;
-
         public uint GamePort;
-
         public GPBasic QuietModeFlag;
 
-        /////////////////////////User status//////////////////////////
-        public GPStatus UserStatus;
-
+        #region User status
+        public GPStatusCode UserCurrentStatus;
         public string StatusString;
-
         public string LocationString;
+        #endregion
 
         /// <summary>
         /// The profile id parameter that is sent back to the client is initially 2, 
@@ -51,15 +46,11 @@ namespace PresenceConnectionManager.Structure.Data
         /// </summary>
         public bool ProfileSent;
 
-        /// <summary>
-        /// This boolean checks if the client has received buddy information
-        /// </summary>
-        public bool BuddiesSent;
-
-        public bool BlockListSent;
-
-
-
-        public const string LoginTicket = "0000000000000000000000__";
+        public PCMUserInfo(Guid guid)
+        {
+            UserGuid = guid;
+            CreatedTime = DateTime.Now;
+            UserCurrentStatus = GPStatusCode.Offline;
+        }
     }
 }

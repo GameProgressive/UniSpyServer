@@ -3,29 +3,35 @@ using System.Net;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public class UniSpySessionManagerBase<TSession>
+    public class UniSpySessionManagerBase<TKey, TSession>
     {
-        public static ConcurrentDictionary<IPEndPoint, TSession> Sessions { get; protected set; }
-        public UniSpySessionManagerBase()
+        public static ConcurrentDictionary<TKey, TSession> Sessions { get; protected set; }
+        static UniSpySessionManagerBase()
         {
-            Sessions = new ConcurrentDictionary<IPEndPoint, TSession>();
+            Sessions = new ConcurrentDictionary<TKey, TSession>();
         }
 
-        public static TSession GetSession(IPEndPoint endPoint)
+        public static TSession GetSession(TKey key)
         {
             TSession session;
-            Sessions.TryGetValue(endPoint, out session);
-            return session;
+            if (Sessions.TryGetValue(key, out session))
+            {
+                return session;
+            }
+            else
+            {
+                return default(TSession);
+            }
         }
 
-        public static bool AddSession(IPEndPoint endPoint,TSession session)
+        public static bool AddSession(TKey key, TSession session)
         {
-            return Sessions.TryAdd(endPoint, session);
+            return Sessions.TryAdd(key, session);
         }
 
-        public static bool DeleteSession(IPEndPoint endPoint)
+        public static bool DeleteSession(TKey key)
         {
-            return Sessions.TryRemove(endPoint, out _);
+            return Sessions.TryRemove(key, out _);
         }
     }
 }

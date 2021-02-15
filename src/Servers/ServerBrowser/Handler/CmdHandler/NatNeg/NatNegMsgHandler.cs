@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.NatNeg;
+using QueryReport.Handler.SystemHandler.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Request;
@@ -34,7 +35,7 @@ namespace ServerBrowser.Handler.CmdHandler
             _adHocRequest = _session.ServerMessageList.First();
             _session.ServerMessageList.Remove(_adHocRequest);
 
-            var result = GameServerInfo.RedisOperator.GetMatchedKeyValues(_adHocRequest.TargetServerIP)
+            var result = GameServerInfoRedisOperator.GetMatchedKeyValues(_adHocRequest.TargetServerIP)
                 .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _adHocRequest.TargetServerHostPort);
 

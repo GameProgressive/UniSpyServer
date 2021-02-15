@@ -13,6 +13,9 @@ namespace UniSpyLib.Abstraction.BaseClass
     /// <typeparam name="T">The serialization type</typeparam>
     public abstract class UniSpyRedisOperatorBase<T>
     {
+        /// <summary>
+        /// Give value to this inside child class.
+        /// </summary>
         public static RedisDBNumber? _dbNumber;
         public static TimeSpan? _timeSpan;
 

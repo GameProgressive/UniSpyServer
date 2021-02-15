@@ -41,11 +41,11 @@ namespace QueryReport.Handler.CmdHandler
                 case HeartBeatReportType.ServerPlayerData:
                     _gameServerInfo.ServerData.Update(_request.ServerData);
                     _gameServerInfo.PlayerData.Update(_request.PlayerData);
-                    _gameServerInfo.LastPacket = DateTime.Now;
+                    _gameServerInfo.LastPacketReceivedTime = DateTime.Now;
                     break;
                 case HeartBeatReportType.ServerData:
                     _gameServerInfo.ServerData.Update(_request.ServerData);
-                    _gameServerInfo.LastPacket = DateTime.Now;
+                    _gameServerInfo.LastPacketReceivedTime = DateTime.Now;
                     break;
             }
 

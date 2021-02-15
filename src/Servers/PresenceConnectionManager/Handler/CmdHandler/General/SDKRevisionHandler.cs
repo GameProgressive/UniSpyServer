@@ -37,7 +37,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler.General
 
             if ((_session.UserInfo.SDKRevision ^ SDKRevisionType.GPINewStatusNotification) != 0)
             {
-                //send new status info
+                //send new status info?
             }
 
             if ((_session.UserInfo.SDKRevision ^ SDKRevisionType.GPINewListRetrevalOnLogin) != 0)

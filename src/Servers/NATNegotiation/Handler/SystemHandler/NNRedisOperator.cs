@@ -7,55 +7,36 @@ using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Handler.SystemHandler
 {
-    internal sealed class NNRedisOperator : UniSpyRedisOperatorBase<NatUserInfo>
+    internal sealed class NatUserInfoRedisOperator : UniSpyRedisOperatorBase<NatUserInfo>
     {
-        public NNRedisOperator() : base(RedisDBNumber.NatNeg)
+        static NatUserInfoRedisOperator()
         {
+            _dbNumber = RedisDBNumber.NatNeg;
         }
 
-        public string BuildFullKey(IPEndPoint iPEndPoint, NatPortType natPortType, uint cookie)
+        public static string BuildFullKey(IPEndPoint iPEndPoint, NatPortType natPortType, uint cookie)
         {
-            return base.BuildFullKey(iPEndPoint, natPortType, cookie);
+            return UniSpyRedisOperatorBase<NatUserInfo>.BuildFullKey(iPEndPoint, natPortType, cookie);
         }
-        public string BuildSearchKey(NatPortType portType, uint cookie)
+        public static string BuildSearchKey(NatPortType portType, uint cookie)
         {
-            return base.BuildSearchKey(portType, cookie);
+            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(portType, cookie);
         }
-        public string BuildSearchKey(IPEndPoint iPEndPoint, uint cookie)
+        public static string BuildSearchKey(IPEndPoint iPEndPoint, uint cookie)
         {
-            return base.BuildSearchKey(iPEndPoint, cookie);
+            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(iPEndPoint, cookie);
         }
-        public string BuildSearchKey(IPEndPoint iPEndpoint, NatPortType natPortType)
+        public static string BuildSearchKey(IPEndPoint iPEndpoint, NatPortType natPortType)
         {
-            return base.BuildSearchKey(iPEndpoint, natPortType);
+            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(iPEndpoint, natPortType);
         }
-        public string BuildSearchKey(IPEndPoint iPEndPoint)
+        public static string BuildSearchKey(IPEndPoint iPEndPoint)
         {
-            return base.BuildSearchKey(iPEndPoint);
+            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(iPEndPoint);
         }
-        public string BuildSearchKey(uint cookie)
+        public static string BuildSearchKey(uint cookie)
         {
-            return base.BuildSearchKey(cookie);
-        }
-
-        public override Dictionary<string, NatUserInfo> GetMatchedKeyValues(string searchKey)
-        {
-            return base.GetMatchedKeyValues(searchKey);
-        }
-
-        public override bool SetKeyValue(string key, NatUserInfo value)
-        {
-            return base.SetKeyValue(key, value);
-        }
-
-        public override NatUserInfo GetSpecificValue(string fullKey)
-        {
-            return base.GetSpecificValue(fullKey);
-        }
-
-        public override Dictionary<string, NatUserInfo> GetAllKeyValues()
-        {
-            return base.GetAllKeyValues();
+            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(cookie);
         }
     }
 }

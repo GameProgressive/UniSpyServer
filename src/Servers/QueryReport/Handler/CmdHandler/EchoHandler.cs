@@ -37,7 +37,7 @@ namespace QueryReport.Handler.CmdHandler
             //we get the first key in matchedKeys
             _result.GameServerInfo = GameServerInfoRedisOperator.GetSpecificValue(matchedKeys[0]);
 
-            _result.GameServerInfo.LastPacket = DateTime.Now;
+            _result.GameServerInfo.LastPacketReceivedTime = DateTime.Now;
 
             GameServerInfoRedisOperator.SetKeyValue(matchedKeys[0], _result.GameServerInfo);
         }

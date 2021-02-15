@@ -14,9 +14,9 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
     {
         public static void Negotiate(NatPortType portType, byte version, uint cookie)
         {
-            var searchKey = NatUserInfo.RedisOperator.BuildSearchKey(portType, cookie);
+            var searchKey = NatUserInfoRedisOperator.BuildSearchKey(portType, cookie);
 
-            List<string> matchedKeys = NatUserInfo.RedisOperator.GetMatchedKeys(searchKey);
+            List<string> matchedKeys = NatUserInfoRedisOperator.GetMatchedKeys(searchKey);
             // because cookie is unique for each client we will only get 2 of keys
             if (matchedKeys.Count != 2)
             {
@@ -28,7 +28,7 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
 
             foreach (var key in matchedKeys)
             {
-                negotiatorPairs.Add(key, NatUserInfo.RedisOperator.GetSpecificValue(key));
+                negotiatorPairs.Add(key, NatUserInfoRedisOperator.GetSpecificValue(key));
             }
 
             ////find negitiators and negotiatees by a same cookie

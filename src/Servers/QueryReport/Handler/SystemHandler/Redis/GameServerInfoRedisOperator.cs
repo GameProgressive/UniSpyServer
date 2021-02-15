@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 namespace QueryReport.Handler.SystemHandler.Redis
 {
-    public class GameServerInfoRedisOperator : UniSpyRedisOperatorBase<GameServerInfo>
+    public sealed class GameServerInfoRedisOperator : UniSpyRedisOperatorBase<GameServerInfo>
     {
         static GameServerInfoRedisOperator() 
         {

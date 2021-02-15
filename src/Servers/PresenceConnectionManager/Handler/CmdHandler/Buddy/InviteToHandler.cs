@@ -1,7 +1,7 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Request;
-using PresenceConnectionManager.Network;
-using System.Linq;
+using PresenceConnectionManager.Handler.SystemHandler;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
@@ -12,24 +12,25 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     internal class InviteToHandler : PCMCmdHandlerBase
     {
         //_session.SendAsync(@"\pinvite\\sesskey\223\profileid\13\productid\1038\final\");
-        protected new InviteToRequest _request
-        {
-            get { return (InviteToRequest)base._request; }
-        }
+        protected new InviteToRequest _request => (InviteToRequest)base._request;
         public InviteToHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            throw new System.NotImplementedException();
         }
 
         protected override void DataOperation()
         {
-            var user = PCMServer.LoggedInSession.Values.Where(
+            var session = PCMSessionManager.Sessions.Values.Where(
                 u => u.UserInfo.ProductID == _request.ProductID
-                && u.UserInfo.ProfileID == _request.ProfileID);
+                && u.UserInfo.ProfileID == _request.ProfileID).FirstOrDefault();
 
-            if (user.Count() == 0)
+            //user is offline
+            if (session == null)
             {
                 return;
+            }
+            else
+            {
+
             }
             //TODO
             //parse user to buddy message system

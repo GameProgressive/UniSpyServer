@@ -3,23 +3,25 @@ using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    internal class StatusInfoRequest : PCMRequestBase
+    internal sealed class StatusInfoRequest : PCMRequestBase
     {
-        public string StatusState { get; protected set; }
-        public string BuddyIP { get; protected set; }
-        public string HostIP { get; protected set; }
-        public string HostPrivateIP { get; protected set; }
-        public uint? QueryReportPort { get; protected set; }
-        public uint? HostPort { get; protected set; }
-        public uint? SessionFlags { get; protected set; }
-        public string RichStatus { get; protected set; }
-        public string GameType { get; protected set; }
-        public string GameVariant { get; protected set; }
-        public string GameMapName { get; protected set; }
-        public string QuietModeFlags { get; protected set; }
+        public bool IsGetStatusInfo { get; set; }
+        public string StatusState { get; private set; }
+        public string BuddyIP { get; private set; }
+        public string HostIP { get; private set; }
+        public string HostPrivateIP { get; private set; }
+        public uint? QueryReportPort { get; private set; }
+        public uint? HostPort { get; private set; }
+        public uint? SessionFlags { get; private set; }
+        public string RichStatus { get; private set; }
+        public string GameType { get; private set; }
+        public string GameVariant { get; private set; }
+        public string GameMapName { get; private set; }
+        public string QuietModeFlags { get; private set; }
 
         public StatusInfoRequest(string rawRequest) : base(rawRequest)
         {
+            IsGetStatusInfo = false;
         }
 
         public override void Parse()

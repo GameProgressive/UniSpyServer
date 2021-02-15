@@ -1,11 +1,10 @@
 ﻿using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler.CommandSwitcher;
-using PresenceConnectionManager.Handler.SystemHandler;
+using PresenceConnectionManager.Structure;
 using PresenceConnectionManager.Structure.Data;
 using Serilog.Events;
 using System;
-using System.Net;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
 
@@ -20,22 +19,12 @@ namespace PresenceConnectionManager.Network
     internal sealed class PCMSession : UniSpyTCPSessionBase
     {
         /// <summary>
-        /// Indicates whether this player successfully completed the login process
-        /// </summary>
-        public bool CompletedLoginProcess;
-
-        /// <summary>
         /// Indicates the date and time this connection was created
         /// </summary>
-        public readonly DateTime CreateTime;
-
         public PCMUserInfo UserInfo;
-
         public PCMSession(UniSpyTCPServerBase server) : base(server)
         {
-            UserInfo = new PCMUserInfo();
-            CreateTime = new DateTime();
-            CompletedLoginProcess = false;
+            UserInfo = new PCMUserInfo(Id);
         }
 
         protected override void OnConnected()
@@ -62,7 +51,7 @@ namespace PresenceConnectionManager.Network
             }
 
             UserInfo.LoginStatus = LoginStatus.Processing;
-            string sendingBuffer = $@"\lc\1\challenge\{ChallengeProofData.ServerChallenge}\id\{1}\final\";
+            string sendingBuffer = $@"\lc\1\challenge\{ChallengeProof.ServerChallenge}\id\{1}\final\";
             SendAsync(sendingBuffer);
         }
     }

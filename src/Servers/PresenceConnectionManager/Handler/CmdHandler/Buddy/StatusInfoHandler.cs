@@ -1,5 +1,7 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Request;
+using PresenceConnectionManager.Entity.Structure.Response.Buddy;
+using PresenceConnectionManager.Entity.Structure.Result.Buddy;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
@@ -10,12 +12,16 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     internal class StatusInfoHandler : PCMCmdHandlerBase
     {
         protected new StatusInfoRequest _request => (StatusInfoRequest)base._request;
-
+        private new StatusInfoResult _result
+        {
+            get => (StatusInfoResult)base._result;
+            set => base._result = value;
+        }
         public StatusInfoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new StatusInfoResult();
         }
-
-        protected override void DataOperation()
+        private void SaveStatusInfo()
         {
             using (var db = new retrospyContext())
             {
@@ -76,6 +82,57 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 {
                     _result.ErrorCode = GPErrorCode.DatabaseError;
                 }
+            }
+        }
+        private void ReadStatusInfo()
+        {
+            using (var db = new retrospyContext())
+            {
+                var result = db.Statusinfo
+                 .Where(s => s.Profileid == _session.UserInfo.ProfileID
+                 && s.Namespaceid == _session.UserInfo.NamespaceID)
+                 .Select(s => new StatusInfoResult
+                 {
+                     HostIP = s.Hostip,
+                     HostPrivateIP = s.Hostprivateip,
+                     QueryReportPort = s.Queryreport,
+                     HostPort = s.Hostport,
+                     SessionFlags = s.Sessionflags,
+                     RichStatus = s.Richstatus,
+                     GameType = s.Gametype,
+                     GameVariant = s.Gamevariant,
+                     GameMapName = s.Gamemapname,
+                     QuietModeFlags = s.Quietmodefalgs
+                 });
+
+                if(result.Count()!=1)
+                {
+                    _result.ErrorCode = GPErrorCode.DatabaseError;
+                    return;
+                }
+            }
+        }
+        protected override void DataOperation()
+        {
+            if (_request == null)
+            {
+                ReadStatusInfo();
+            }
+            else
+            {
+                SaveStatusInfo();
+            }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            if(_request == null)
+            {
+                _response = new StatusInfoResponse(_request, _result);
+            }
+            else
+            {
+                base.ResponseConstruct();
             }
         }
     }

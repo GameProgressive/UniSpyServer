@@ -8,7 +8,8 @@ namespace UniSpyLib.Extensions
     {
         PeerGroup = 0,
         GameServer = 1,
-        NatNeg = 2
+        NatNeg = 2,
+        GamePresence = 3
     }
 
     /// <summary>

@@ -61,7 +61,12 @@ namespace UniSpyLib.Extensions
         {
             return IPAddress.Parse(ip).GetAddressBytes();
         }
-
+        public static byte[] IPStringToHtonBytes(string ip)
+        {
+            var buffer = IPStringToBytes(ip);
+            Array.Reverse(buffer);
+            return buffer;
+        }
         public static byte[] IPToBytes(int ip)
         {
             return BitConverter.GetBytes(ip);

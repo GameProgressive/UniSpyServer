@@ -5,7 +5,7 @@ using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Response.ServerList;
 using ServerBrowser.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
-
+using QueryReport.Handler.SystemHandler.Redis;
 namespace ServerBrowser.Handler.CmdHandler
 {
     internal sealed class SendGroupsHandler : ServerListHandlerBase
@@ -19,7 +19,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var matchedKey = PeerGroupInfo.RedisOperator.GetMatchedKeys(_request.GameName);
+            var matchedKey = PeerGroupInfoRedisOperator.GetMatchedKeys(_request.GameName);
             // Game name is unique in redis database
             if (matchedKey.Count != 1)
             {
@@ -27,7 +27,7 @@ namespace ServerBrowser.Handler.CmdHandler
                 return;
             }
 
-            _peerGroup = PeerGroupInfo.RedisOperator.GetSpecificValue(matchedKey[0]);
+            _peerGroup = PeerGroupInfoRedisOperator.GetSpecificValue(matchedKey[0]);
         }
 
         protected override void ResponseConstruct()

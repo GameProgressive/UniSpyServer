@@ -219,7 +219,7 @@
         Count
     }
 
-    public enum GPStatus : uint
+    public enum GPStatusCode : uint
     {
         // Status
         /////////
@@ -237,7 +237,7 @@
     /// different for any service that uses GameSpy as backend (for example Nintendo
     /// Wifi Connection).
     /// </summary>
-    public enum PartnerID : uint
+    public enum GPPartnerID : uint
     {
         /// <summary>
         /// The client is directly connecting to the Server
