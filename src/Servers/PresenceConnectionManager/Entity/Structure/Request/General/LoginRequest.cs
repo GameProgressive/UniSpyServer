@@ -2,6 +2,7 @@
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;
+using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -89,10 +90,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             ParseOtherData();
         }
 
-        public uint GamePort { get; protected set; }
+        public int? GamePort { get; protected set; }
         public uint PartnerID { get; protected set; }
         public string GameName { get; private set; }
-        public QuietModeType QuietMode { get; private set; }
+        public QuietModeType QuietModeFlags { get; private set; }
 
         private void ParseOtherData()
         {
@@ -101,7 +102,8 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 uint partnerID;
                 if (!uint.TryParse(KeyValues["partnerid"], out partnerID))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
                 PartnerID = partnerID;
             }
@@ -112,7 +114,8 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 uint sdkRevisionType;
                 if (!uint.TryParse(KeyValues["sdkrevision"], out sdkRevisionType))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
 
                 SDKType = (SDKRevisionType)sdkRevisionType;
@@ -125,12 +128,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request
 
             if (KeyValues.ContainsKey("port"))
             {
-                uint gamePort;
-                if (!uint.TryParse(KeyValues["port"], out gamePort))
+                int htonGamePort;
+                if (!int.TryParse(KeyValues["port"], out htonGamePort))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
-                GamePort = gamePort;
+                GamePort = htonGamePort;
             }
 
             if (KeyValues.ContainsKey("quiet"))
@@ -138,10 +142,11 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 uint quiet;
                 if (!uint.TryParse(KeyValues["quiet"], out quiet))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
                 }
 
-                QuietMode = (QuietModeType)quiet;
+                QuietModeFlags = (QuietModeType)quiet;
             }
         }
     }

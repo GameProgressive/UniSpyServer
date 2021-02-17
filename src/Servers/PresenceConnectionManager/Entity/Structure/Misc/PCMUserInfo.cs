@@ -19,6 +19,7 @@ namespace PresenceConnectionManager.Structure.Data
         public uint PartnerID;
         public uint NamespaceID;
         public uint ProductID;
+        public int? GamePort;
         public string GameName;
         /// <summary>
         /// The connected clients Authentication Token
@@ -30,7 +31,6 @@ namespace PresenceConnectionManager.Structure.Data
         /// </summary>
         public LoginStatus LoginStatus;
         public SDKRevisionType SDKRevision;
-        public uint GamePort;
         public GPBasic QuietModeFlag;
 
         #region User status

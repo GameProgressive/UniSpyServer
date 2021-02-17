@@ -10,7 +10,6 @@ namespace ServerBrowser.Handler.CmdHandler
     internal sealed class SendGroupsHandler : ServerListHandlerBase
     {
         private PeerGroupInfo _peerGroup;
-
         public SendGroupsHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new SendGroupsResult();
