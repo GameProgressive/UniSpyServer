@@ -1,11 +1,9 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
-using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceConnectionManager.Handler.CmdHandler.General;
-using PresenceConnectionManager.Network;
 using PresenceConnectionManager.Structure;
 using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;

@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using PresenceConnectionManager.Structure.Data;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
@@ -22,9 +23,17 @@ namespace PresenceConnectionManager.Handler.SystemHandler.Redis
         /// <param name="uniqueNick"></param>
         /// <param name="namespaceID"></param>
         /// <returns></returns>
-        public static string BuildFullKey(IPEndPoint endPoint, uint userID, string userName, string nickName, uint profileID, string uniqueNick, uint namespaceID)
+        public static string BuildFullKey(Guid guid, uint userID, string userName, string nickName, uint profileID,uint subProfileID, string uniqueNick, uint namespaceID)
         {
-            return UniSpyRedisOperatorBase<PCMUserInfo>.BuildFullKey(endPoint, userID, userName, nickName, profileID, uniqueNick, namespaceID);
+            return BuildFullKey(
+                $"Guid:{guid}",
+                $"UserID:{userID}",
+                $"UserName:{userName}",
+                $"NickName:{nickName}",
+                $"ProfileID:{profileID}",
+                $"SubProfileID:{subProfileID}",
+                $"UniqueNick:{uniqueNick}",
+                $"NameSpaceID:{namespaceID}");
         }
     }
 }
