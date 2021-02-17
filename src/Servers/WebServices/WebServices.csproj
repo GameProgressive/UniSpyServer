@@ -56,18 +56,9 @@
         <Folder Include="Services\PatchingAndTracking\Entity\Structure\" />
         <Folder Include="Services\PatchingAndTracking\Entity\Structure\Model\" />
         <Folder Include="Services\PatchingAndTracking\Handler\Service\" />
-        <Folder Include="Services\SakeStorage\" />
-        <Folder Include="Services\SakeStorage\CommandHandler\" />
-        <Folder Include="Services\SakeStorage\CommandHandler\CreateRecord\" />
-        <Folder Include="Services\SakeStorage\Entity\" />
-        <Folder Include="Services\SakeStorage\Entity\Interface\" />
-        <Folder Include="Services\SakeStorage\Entity\Structure\" />
-        <Folder Include="Services\SakeStorage\Entity\Structure\Request\" />
-        <Folder Include="Services\SakeStorage\Entity\Structure\Response\" />
-        <Folder Include="Services\SakeStorage\Handler\" />
-        <Folder Include="Services\SakeStorage\Abstraction\" />
-        <Folder Include="Services\SakeStorage\Abstraction\BassClass\" />
-        <Folder Include="Services\SakeFile\" />
+        <Folder Include="Services\Sake\" />
+        <Folder Include="Services\Sake\SakeFile\" />
+        <Folder Include="Services\Sake\SakeStorage\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\SOAPMiddleware\SOAPMiddleware.csproj">
