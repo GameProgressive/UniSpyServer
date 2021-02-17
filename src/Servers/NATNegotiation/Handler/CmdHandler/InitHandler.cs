@@ -3,7 +3,7 @@ using NATNegotiation.Entity.Structure;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
-using NATNegotiation.Handler.SystemHandler;
+using NATNegotiation.Handler.SystemHandler.Redis;
 using System;
 using UniSpyLib.Abstraction.Interface;
 

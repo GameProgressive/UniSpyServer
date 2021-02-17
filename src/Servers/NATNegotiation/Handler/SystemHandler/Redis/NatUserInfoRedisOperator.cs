@@ -5,7 +5,7 @@ using System.Net;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 
-namespace NATNegotiation.Handler.SystemHandler
+namespace NATNegotiation.Handler.SystemHandler.Redis
 {
     internal sealed class NatUserInfoRedisOperator : UniSpyRedisOperatorBase<NatUserInfo>
     {
