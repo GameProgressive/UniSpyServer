@@ -6,6 +6,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     internal sealed class StatusInfoRequest : PCMRequestBase
     {
         public bool IsGetStatusInfo { get; set; }
+        #region Get buddy status info
+        public uint ProfileID { get; set; }
+        public uint SubProfileID { get; set; }
+        public uint NameSpaceID { get; set; }
+        #endregion
+
+        #region Set buddy status info
         public string StatusState { get; private set; }
         public string BuddyIP { get; private set; }
         public string HostIP { get; private set; }
@@ -18,7 +25,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         public string GameVariant { get; private set; }
         public string GameMapName { get; private set; }
         public string QuietModeFlags { get; private set; }
-
+        #endregion
         public StatusInfoRequest(string rawRequest) : base(rawRequest)
         {
             IsGetStatusInfo = false;

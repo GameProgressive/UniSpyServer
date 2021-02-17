@@ -24,7 +24,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             {
                 var result = from friend in db.Friends
                              where friend.Profileid == _request.DeleteProfileID
-                                   && friend.Namespaceid == _session.UserInfo.NamespaceID
+                                   && friend.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
                              select friend;
                 if (result.Count() != 1)
                 {

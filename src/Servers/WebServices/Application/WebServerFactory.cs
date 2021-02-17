@@ -4,6 +4,7 @@ using Serilog;
 using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 using UniSpyLib.UniSpyConfig;
 
 namespace WebServices.Application
@@ -20,19 +21,11 @@ namespace WebServices.Application
             ShowRetroSpyLogo();
             //currently we do not need database connection
             //LoadDatabaseConfig();
-            SettingUpSerilog();
+            LogWriter.SettngUpLogger();
             LoadServerConfig();
             _hostBuilder.Build().Run();
         }
 
-        private void SettingUpSerilog()
-        {
-            Log.Logger = new LoggerConfiguration()
-                    .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                        .WriteTo.File($"Logs/[{ServerName}]-.log",
-                        outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
-                        .CreateLogger();
-        }
         private static IHostBuilder CreateHostBuilder(UniSpyServerConfig cfg)
         {
             return Host.CreateDefaultBuilder()

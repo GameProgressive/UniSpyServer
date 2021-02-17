@@ -10,7 +10,6 @@ namespace UniSpyLib.Database.DatabaseModel.MySql
             Blocked = new HashSet<Blocked>();
             Friends = new HashSet<Friends>();
             Pstorage = new HashSet<Pstorage>();
-            Statusinfo = new HashSet<Statusinfo>();
             Subprofiles = new HashSet<Subprofiles>();
         }
 
@@ -63,7 +62,6 @@ namespace UniSpyLib.Database.DatabaseModel.MySql
         public virtual ICollection<Blocked> Blocked { get; set; }
         public virtual ICollection<Friends> Friends { get; set; }
         public virtual ICollection<Pstorage> Pstorage { get; set; }
-        public virtual ICollection<Statusinfo> Statusinfo { get; set; }
         public virtual ICollection<Subprofiles> Subprofiles { get; set; }
     }
 }

@@ -34,5 +34,7 @@
       <Folder Include="Entity\Structure\Response\Buddy\" />
       <Folder Include="Entity\Structure\Response\Profile\" />
       <Folder Include="Entity\Structure\Response\General\" />
+      <Folder Include="Entity\Structure\Misc\Status\" />
+      <Folder Include="Entity\Structure\Misc\Info\" />
     </ItemGroup>
 </Project>

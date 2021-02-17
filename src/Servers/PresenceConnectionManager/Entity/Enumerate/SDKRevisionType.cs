@@ -3,6 +3,7 @@ namespace PresenceConnectionManager.Entity.Enumerate
 {
     internal enum SDKRevisionType : uint
     {
+        Unknown = 0,
         /// <summary>
         /// Extended message support
         /// </summary>

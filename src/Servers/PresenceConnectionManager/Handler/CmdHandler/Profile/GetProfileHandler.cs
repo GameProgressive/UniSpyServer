@@ -1,10 +1,10 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using System.Collections.Generic;
+using System.Linq;
+using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceSearchPlayer.Entity.Enumerate;
-using System.Collections.Generic;
-using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
 
@@ -36,7 +36,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                              join s in db.Subprofiles on p.Profileid equals s.Profileid
                              join u in db.Users on p.Userid equals u.Userid
                              where p.Profileid == _request.ProfileID
-                             && s.Namespaceid == _session.UserInfo.NamespaceID
+                             && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
                              select new GetProfileDataModel
                              {
                                  Nick = p.Nick,

@@ -21,8 +21,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         {
             using (var db = new retrospyContext())
             {
-                var result = db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.ProfileID
-                && s.Namespaceid == _session.UserInfo.NamespaceID);
+                var result = db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID);
                 //&& s.Productid == _session.UserInfo.ProductID);
 
                 if (result.Count() == 0 || result.Count() > 1)
@@ -30,7 +30,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                     _result.ErrorCode = GPErrorCode.DatabaseError;
                 }
 
-                db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.SubProfileID)
+                db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.BasicInfo.SubProfileID)
                     .FirstOrDefault().Cdkeyenc = _request.CDKeyEnc;
 
                 db.SaveChanges();

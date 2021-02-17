@@ -16,27 +16,36 @@ namespace NATNegotiation.Handler.SystemHandler
 
         public static string BuildFullKey(IPEndPoint iPEndPoint, NatPortType natPortType, uint cookie)
         {
-            return UniSpyRedisOperatorBase<NatUserInfo>.BuildFullKey(iPEndPoint, natPortType, cookie);
+            return BuildFullKey(
+                $"IPEndPoint:{iPEndPoint}",
+                $"NatPortType:{natPortType}",
+                $"Cookie:{cookie}");
         }
-        public static string BuildSearchKey(NatPortType portType, uint cookie)
+        public static string BuildSearchKey(NatPortType natPortType, uint cookie)
         {
-            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(portType, cookie);
+            return BuildSearchKey(
+                $"NatPortType:{natPortType}",
+                $"Cookie:{cookie}");
         }
         public static string BuildSearchKey(IPEndPoint iPEndPoint, uint cookie)
         {
-            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(iPEndPoint, cookie);
+            return BuildSearchKey(
+                $"IPEndPoint:{iPEndPoint}",
+                $"Cookie:{cookie}");
         }
-        public static string BuildSearchKey(IPEndPoint iPEndpoint, NatPortType natPortType)
+        public static string BuildSearchKey(IPEndPoint iPEndPoint, NatPortType natPortType)
         {
-            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(iPEndpoint, natPortType);
+            return BuildSearchKey(
+                $"IPEndPoint:{iPEndPoint}",
+                $"NatPortType:{natPortType}");
         }
         public static string BuildSearchKey(IPEndPoint iPEndPoint)
         {
-            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(iPEndPoint);
+            return BuildSearchKey($"IPEndPoint:{iPEndPoint}");
         }
         public static string BuildSearchKey(uint cookie)
         {
-            return UniSpyRedisOperatorBase<NatUserInfo>.BuildSearchKey(cookie);
+            return BuildSearchKey($"Cookie:{cookie}");
         }
     }
 }

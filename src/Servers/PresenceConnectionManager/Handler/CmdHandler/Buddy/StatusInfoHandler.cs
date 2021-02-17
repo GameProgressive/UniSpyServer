@@ -9,6 +9,9 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
+    /// <summary>
+    /// TODO Status info should be stored in redis
+    /// </summary>
     internal class StatusInfoHandler : PCMCmdHandlerBase
     {
         protected new StatusInfoRequest _request => (StatusInfoRequest)base._request;
@@ -23,98 +26,98 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         private void SaveStatusInfo()
         {
-            using (var db = new retrospyContext())
-            {
-                var result = db.Statusinfo
-                    .Where(s => s.Profileid == _session.UserInfo.ProfileID
-                    && s.Namespaceid == _session.UserInfo.NamespaceID)
-                    .Select(s => s);
+            //using (var db = new retrospyContext())
+            //{
+            //    var result = db.Statusinfo
+            //        .Where(s => s.Profileid == _session.UserInfo.BasicInfo.ProfileID
+            //        && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID)
+            //        .Select(s => s);
 
-                if (result.Count() == 0)
-                {
-                    Statusinfo statusinfo = new Statusinfo
-                    {
-                        Profileid = _session.UserInfo.ProfileID,
-                        Namespaceid = _session.UserInfo.NamespaceID,
-                        Productid = _session.UserInfo.ProductID,
-                        Statusstate = _request.StatusState,
-                        //buddyip
-                        //buddyport
-                        Hostip = _request.HostIP,
-                        Hostprivateip = _request.HostPrivateIP,
-                        Queryreport = _request.QueryReportPort,
-                        Hostport = _request.HostPort,
-                        Sessionflags = _request.SessionFlags,
-                        Richstatus = _request.RichStatus,
-                        Gametype = _request.GameType,
-                        Gamevariant = _request.GameVariant,
-                        Gamemapname = _request.GameMapName,
-                        Quietmodefalgs = _request.QuietModeFlags
-                    };
+            //    if (result.Count() == 0)
+            //    {
+            //        Statusinfo statusinfo = new Statusinfo
+            //        {
+            //            Profileid = _session.UserInfo.BasicInfo.ProfileID,
+            //            Namespaceid = _session.UserInfo.BasicInfo.NamespaceID,
+            //            Productid = _session.UserInfo.BasicInfo.ProductID,
+            //            Statusstate = _request.StatusState,
+            //            //buddyip
+            //            //buddyport
+            //            Hostip = _request.HostIP,
+            //            Hostprivateip = _request.HostPrivateIP,
+            //            Queryreport = _request.QueryReportPort,
+            //            Hostport = _request.HostPort,
+            //            Sessionflags = _request.SessionFlags,
+            //            Richstatus = _request.RichStatus,
+            //            Gametype = _request.GameType,
+            //            Gamevariant = _request.GameVariant,
+            //            Gamemapname = _request.GameMapName,
+            //            Quietmodefalgs = _request.QuietModeFlags
+            //        };
 
-                    db.Statusinfo.Add(statusinfo);
+            //        db.Statusinfo.Add(statusinfo);
 
-                    db.SaveChanges();
-                }
-                else if (result.Count() == 1)
-                {
+            //        db.SaveChanges();
+            //    }
+            //    else if (result.Count() == 1)
+            //    {
 
-                    result.First().Profileid = _session.UserInfo.ProfileID;
-                    result.First().Namespaceid = _session.UserInfo.NamespaceID;
-                    result.First().Productid = _session.UserInfo.ProductID;
-                    result.First().Statusstate = _request.StatusState;
-                    //buddyip
-                    //buddyport
-                    result.First().Hostip = _request.HostIP;
-                    result.First().Hostprivateip = _request.HostPrivateIP;
-                    result.First().Queryreport = _request.QueryReportPort;
-                    result.First().Hostport = _request.HostPort;
-                    result.First().Sessionflags = _request.SessionFlags;
-                    result.First().Richstatus = _request.RichStatus;
-                    result.First().Gametype = _request.GameType;
-                    result.First().Gamevariant = _request.GameVariant;
-                    result.First().Gamemapname = _request.GameMapName;
-                    result.First().Quietmodefalgs = _request.QuietModeFlags;
+            //        result.First().Profileid = _session.UserInfo.BasicInfo.ProfileID;
+            //        result.First().Namespaceid = _session.UserInfo.BasicInfo.NamespaceID;
+            //        result.First().Productid = _session.UserInfo.BasicInfo.ProductID;
+            //        result.First().Statusstate = _request.StatusState;
+            //        //buddyip
+            //        //buddyport
+            //        result.First().Hostip = _request.HostIP;
+            //        result.First().Hostprivateip = _request.HostPrivateIP;
+            //        result.First().Queryreport = _request.QueryReportPort;
+            //        result.First().Hostport = _request.HostPort;
+            //        result.First().Sessionflags = _request.SessionFlags;
+            //        result.First().Richstatus = _request.RichStatus;
+            //        result.First().Gametype = _request.GameType;
+            //        result.First().Gamevariant = _request.GameVariant;
+            //        result.First().Gamemapname = _request.GameMapName;
+            //        result.First().Quietmodefalgs = _request.QuietModeFlags;
 
-                    db.SaveChanges();
-                }
-                else
-                {
-                    _result.ErrorCode = GPErrorCode.DatabaseError;
-                }
-            }
+            //        db.SaveChanges();
+            //    }
+            //    else
+            //    {
+            //        _result.ErrorCode = GPErrorCode.DatabaseError;
+            //    }
+            //}
         }
         private void ReadStatusInfo()
         {
-            using (var db = new retrospyContext())
-            {
-                var result = db.Statusinfo
-                 .Where(s => s.Profileid == _session.UserInfo.ProfileID
-                 && s.Namespaceid == _session.UserInfo.NamespaceID)
-                 .Select(s => new StatusInfoResult
-                 {
-                     HostIP = s.Hostip,
-                     HostPrivateIP = s.Hostprivateip,
-                     QueryReportPort = s.Queryreport,
-                     HostPort = s.Hostport,
-                     SessionFlags = s.Sessionflags,
-                     RichStatus = s.Richstatus,
-                     GameType = s.Gametype,
-                     GameVariant = s.Gamevariant,
-                     GameMapName = s.Gamemapname,
-                     QuietModeFlags = s.Quietmodefalgs
-                 });
+            //using (var db = new retrospyContext())
+            //{
+            //    var result = db.Statusinfo
+            //     .Where(s => s.Profileid == _session.UserInfo.BasicInfo.ProfileID
+            //     && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID)
+            //     .Select(s => new StatusInfoResult
+            //     {
+            //         HostIP = s.Hostip,
+            //         HostPrivateIP = s.Hostprivateip,
+            //         QueryReportPort = s.Queryreport,
+            //         HostPort = s.Hostport,
+            //         SessionFlags = s.Sessionflags,
+            //         RichStatus = s.Richstatus,
+            //         GameType = s.Gametype,
+            //         GameVariant = s.Gamevariant,
+            //         GameMapName = s.Gamemapname,
+            //         QuietModeFlags = s.Quietmodefalgs
+            //     });
 
-                if(result.Count()!=1)
-                {
-                    _result.ErrorCode = GPErrorCode.DatabaseError;
-                    return;
-                }
-            }
+            //    if (result.Count() != 1)
+            //    {
+            //        _result.ErrorCode = GPErrorCode.DatabaseError;
+            //        return;
+            //    }
+            //}
         }
         protected override void DataOperation()
         {
-            if (_request == null)
+            if (_request.IsGetStatusInfo)
             {
                 ReadStatusInfo();
             }
@@ -126,7 +129,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            if(_request == null)
+            if (_request.IsGetStatusInfo)
             {
                 _response = new StatusInfoResponse(_request, _result);
             }

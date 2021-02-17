@@ -4677,32 +4677,6 @@ CREATE TABLE IF NOT EXISTS `sakestorage` (
 /*!40000 ALTER TABLE `sakestorage` DISABLE KEYS */;
 /*!40000 ALTER TABLE `sakestorage` ENABLE KEYS */;
 
-CREATE TABLE IF NOT EXISTS `statusinfo` (
-  `statusinfoid` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `profileid` int(11) unsigned NOT NULL,
-  `namespaceid` int(11) unsigned NOT NULL,
-  `productid` int(10) unsigned NOT NULL DEFAULT 0,
-  `statusstate` enum('OFFLINE','ONLINE','PLAYING','STAGING','CHATTING','AWAY') DEFAULT 'OFFLINE',
-  `buddyip` varchar(16) DEFAULT NULL,
-  `hostip` varchar(16) DEFAULT NULL,
-  `hostprivateip` varchar(16) DEFAULT NULL,
-  `queryreport` int(10) unsigned DEFAULT NULL,
-  `hostport` int(10) unsigned DEFAULT NULL,
-  `sessionflags` int(10) unsigned DEFAULT NULL,
-  `richstatus` varchar(256) DEFAULT '',
-  `gametype` varchar(33) DEFAULT '',
-  `gamevariant` varchar(33) DEFAULT '',
-  `gamemapname` varchar(33) DEFAULT '',
-  `quietmodeflags` enum('NONE','MESSAGE','UTMS','LIST','ALL') NOT NULL DEFAULT 'NONE',
-  PRIMARY KEY (`statusinfoid`),
-  UNIQUE KEY `id` (`statusinfoid`),
-  KEY `profileid` (`profileid`),
-  CONSTRAINT `FK_statusinfo_profiles` FOREIGN KEY (`profileid`) REFERENCES `profiles` (`profileid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Buddy status info.';
-
-/*!40000 ALTER TABLE `statusinfo` DISABLE KEYS */;
-/*!40000 ALTER TABLE `statusinfo` ENABLE KEYS */;
-
 CREATE TABLE IF NOT EXISTS `subprofiles` (
   `subprofileid` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `profileid` int(11) unsigned NOT NULL,

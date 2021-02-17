@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             {
                 using (var db = new retrospyContext())
                 {
-                    db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.SubProfileID)
+                    db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.BasicInfo.SubProfileID)
                         .FirstOrDefault().Uniquenick = _request.UniqueNick;
                     db.SaveChanges();
                 }

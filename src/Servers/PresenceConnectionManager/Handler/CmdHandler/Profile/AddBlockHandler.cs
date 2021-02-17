@@ -19,14 +19,14 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             using (var db = new retrospyContext())
             {
                 if (db.Blocked.Where(b => b.Targetid == _request.ProfileID
-                && b.Namespaceid == _session.UserInfo.NamespaceID
-                && b.Profileid == _session.UserInfo.ProfileID).Count() == 0)
+                && b.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
+                && b.Profileid == _session.UserInfo.BasicInfo.ProfileID).Count() == 0)
                 {
                     Blocked blocked = new Blocked
                     {
-                        Profileid = _session.UserInfo.ProfileID,
+                        Profileid = _session.UserInfo.BasicInfo.ProfileID,
                         Targetid = _request.ProfileID,
-                        Namespaceid = _session.UserInfo.NamespaceID
+                        Namespaceid = _session.UserInfo.BasicInfo.NamespaceID
                     };
 
                     db.Blocked.Update(blocked);

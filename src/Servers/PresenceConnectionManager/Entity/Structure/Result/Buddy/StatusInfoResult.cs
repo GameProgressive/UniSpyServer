@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Misc;
 using UniSpyLib.Extensions;
 
 namespace PresenceConnectionManager.Entity.Structure.Result.Buddy
@@ -23,7 +24,7 @@ namespace PresenceConnectionManager.Entity.Structure.Result.Buddy
         public string QuietModeFlags { get; set; }
         public uint ProfileID { get; set; }
         public object ProductID { get; internal set; }
-
+        public PCMUserStatusInfo StatusInfo { get; set; }
         public StatusInfoResult()
         {
         }

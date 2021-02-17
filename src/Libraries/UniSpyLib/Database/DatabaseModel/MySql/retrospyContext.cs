@@ -24,7 +24,6 @@ namespace UniSpyLib.Database.DatabaseModel.MySql
         public virtual DbSet<Profiles> Profiles { get; set; }
         public virtual DbSet<Pstorage> Pstorage { get; set; }
         public virtual DbSet<Sakestorage> Sakestorage { get; set; }
-        public virtual DbSet<Statusinfo> Statusinfo { get; set; }
         public virtual DbSet<Subprofiles> Subprofiles { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
@@ -632,115 +631,6 @@ namespace UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
                     .HasCollation("utf8mb4_general_ci");
-            });
-
-            modelBuilder.Entity<Statusinfo>(entity =>
-            {
-                entity.ToTable("statusinfo");
-
-                entity.HasComment("Buddy status info.");
-
-                entity.HasIndex(e => e.Profileid)
-                    .HasName("profileid");
-
-                entity.HasIndex(e => e.Statusinfoid)
-                    .HasName("id")
-                    .IsUnique();
-
-                entity.Property(e => e.Statusinfoid)
-                    .HasColumnName("statusinfoid")
-                    .HasColumnType("int(11) unsigned");
-
-                entity.Property(e => e.Buddyip)
-                    .HasColumnName("buddyip")
-                    .HasColumnType("varchar(16)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Gamemapname)
-                    .HasColumnName("gamemapname")
-                    .HasColumnType("varchar(33)")
-                    .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Gametype)
-                    .HasColumnName("gametype")
-                    .HasColumnType("varchar(33)")
-                    .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Gamevariant)
-                    .HasColumnName("gamevariant")
-                    .HasColumnType("varchar(33)")
-                    .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Hostip)
-                    .HasColumnName("hostip")
-                    .HasColumnType("varchar(16)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Hostport)
-                    .HasColumnName("hostport")
-                    .HasColumnType("int(10) unsigned");
-
-                entity.Property(e => e.Hostprivateip)
-                    .HasColumnName("hostprivateip")
-                    .HasColumnType("varchar(16)")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Namespaceid)
-                    .HasColumnName("namespaceid")
-                    .HasColumnType("int(11) unsigned");
-
-                entity.Property(e => e.Productid)
-                    .HasColumnName("productid")
-                    .HasColumnType("int(10) unsigned");
-
-                entity.Property(e => e.Profileid)
-                    .HasColumnName("profileid")
-                    .HasColumnType("int(11) unsigned");
-
-                entity.Property(e => e.Queryreport)
-                    .HasColumnName("queryreport")
-                    .HasColumnType("int(10) unsigned");
-
-                entity.Property(e => e.Quietmodefalgs)
-                    .IsRequired()
-                    .HasColumnName("quietmodefalgs")
-                    .HasColumnType("enum('NONE','MESSAGE','UTMS','LIST','ALL')")
-                    .HasDefaultValueSql("'NONE'")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Richstatus)
-                    .HasColumnName("richstatus")
-                    .HasColumnType("varchar(256)")
-                    .HasDefaultValueSql("''")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.Property(e => e.Sessionflags)
-                    .HasColumnName("sessionflags")
-                    .HasColumnType("int(10) unsigned");
-
-                entity.Property(e => e.Statusstate)
-                    .HasColumnName("statusstate")
-                    .HasColumnType("enum('OFFLINE','ONLINE','PLAYING','STAGING','CHATTING','AWAY')")
-                    .HasDefaultValueSql("'OFFLINE'")
-                    .HasCharSet("utf8")
-                    .HasCollation("utf8_general_ci");
-
-                entity.HasOne(d => d.Profile)
-                    .WithMany(p => p.Statusinfo)
-                    .HasForeignKey(d => d.Profileid)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_statusinfo_profiles");
             });
 
             modelBuilder.Entity<Subprofiles>(entity =>

@@ -42,6 +42,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         {
             return RedisExtensions.DeleteKeyValue(fullKey, _dbNumber);
         }
+
         public static List<string> GetMatchedKeys(string searchKey)
         {
             return RedisExtensions.GetMatchedKeys(searchKey, _dbNumber);

@@ -6,6 +6,9 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
+    /// <summary>
+    /// TODO Status should be stored in redis
+    /// </summary>
     internal class StatusHandler : PCMCmdHandlerBase
     {
         protected new StatusRequest _request => (StatusRequest)base._request;
@@ -32,10 +35,10 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             //}
             //else
             //{
-                // set user status
-                _session.UserInfo.UserCurrentStatus = _request.StatusCode;
-                _session.UserInfo.StatusString = _request.StatusString;
-                _session.UserInfo.LocationString = _request.LocationString;
+            // set user status
+            _session.UserInfo.UserStatus.CurrentStatus = _request.StatusCode;
+            _session.UserInfo.UserStatus.StatusString = _request.StatusString;
+            _session.UserInfo.UserStatus.LocationString = _request.LocationString;
             //}
         }
     }

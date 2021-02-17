@@ -22,8 +22,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             using (var db = new retrospyContext())
             {
                 _result.ProfileIdList = db.Blocked
-                    .Where(f => f.Profileid == _session.UserInfo.ProfileID
-                    && f.Namespaceid == _session.UserInfo.NamespaceID)
+                    .Where(f => f.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                    && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID)
                     .Select(f => f.Targetid).ToList();
             }
         }

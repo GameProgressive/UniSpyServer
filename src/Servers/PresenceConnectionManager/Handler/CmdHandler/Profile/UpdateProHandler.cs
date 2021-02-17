@@ -18,17 +18,17 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             using (var db = new retrospyContext())
             {
                 Profiles profile = db.Profiles.Where(
-                    p => p.Userid == _session.UserInfo.UserID
-                    && p.Profileid == _session.UserInfo.ProfileID
+                    p => p.Userid == _session.UserInfo.BasicInfo.UserID
+                    && p.Profileid == _session.UserInfo.BasicInfo.ProfileID
                     && p.Nick == p.Nick).First();
 
                 Users user = db.Users.Where(
-                    u => u.Userid == _session.UserInfo.UserID).First();
+                    u => u.Userid == _session.UserInfo.BasicInfo.UserID).First();
 
                 Subprofiles subprofile = db.Subprofiles.Where(
-                    s => s.Profileid == _session.UserInfo.ProfileID
-                    && s.Namespaceid == _session.UserInfo.NamespaceID
-                    && s.Uniquenick == _session.UserInfo.UniqueNick).First();
+                    s => s.Profileid == _session.UserInfo.BasicInfo.ProfileID
+                    && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
+                    && s.Uniquenick == _session.UserInfo.BasicInfo.UniqueNick).First();
 
                 if (_request.HasPublicMaskFlag)
                 {

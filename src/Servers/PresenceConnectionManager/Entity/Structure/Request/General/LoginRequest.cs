@@ -2,7 +2,6 @@
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;
-using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -10,14 +9,15 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     {
         public string UserChallenge { get; protected set; }
         public string Response { get; protected set; }
-        public LoginType LoginType { get; protected set; }
-        public string Uniquenick { get; protected set; }
+        public string UniqueNick { get; protected set; }
         public string UserData { get; protected set; }
         public uint NamespaceID { get; private set; }
         public string AuthToken { get; protected set; }
         public string Nick { get; protected set; }
         public string Email { get; protected set; }
-        public SDKRevisionType SDKType { get; protected set; }
+        public uint ProductID { get; protected set; }
+        public LoginType LoginType { get; protected set; }
+        public SDKRevisionType SDKRevisionType { get; protected set; }
 
         public LoginRequest(string rawRequest) : base(rawRequest)
         {
@@ -47,8 +47,8 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                     ErrorCode = GPErrorCode.Parse; return;
                 }
                 LoginType = LoginType.UniquenickNamespaceID;
-                Uniquenick = KeyValues["uniquenick"];
-                UserData = Uniquenick;
+                UniqueNick = KeyValues["uniquenick"];
+                UserData = UniqueNick;
                 NamespaceID = namespaceID;
             }
             else if (KeyValues.ContainsKey("authtoken"))
@@ -118,7 +118,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                     return;
                 }
 
-                SDKType = (SDKRevisionType)sdkRevisionType;
+                SDKRevisionType = (SDKRevisionType)sdkRevisionType;
             }
 
             if (KeyValues.ContainsKey("gamename"))
@@ -136,7 +136,16 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 }
                 GamePort = htonGamePort;
             }
-
+            if (KeyValues.ContainsKey("productid"))
+            {
+                uint productID;
+                if (!uint.TryParse(KeyValues["productid"], out productID))
+                {
+                    ErrorCode = GPErrorCode.Parse;
+                    return;
+                }
+                ProductID = productID;
+            }
             if (KeyValues.ContainsKey("quiet"))
             {
                 uint quiet;

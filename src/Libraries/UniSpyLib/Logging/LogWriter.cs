@@ -17,6 +17,10 @@ namespace UniSpyLib.Logging
     {
         static LogWriter()
         {
+            SettngUpLogger();
+        }
+        public static void SettngUpLogger()
+        {
             LoggerConfiguration logConfig = new LoggerConfiguration();
 
             switch (ConfigManager.Config.MinimumLogLevel)
@@ -46,7 +50,6 @@ namespace UniSpyLib.Logging
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
-
         /// <summary>
         /// Convient to print log
         /// </summary>

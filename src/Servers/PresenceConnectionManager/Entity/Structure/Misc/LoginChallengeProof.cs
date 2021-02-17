@@ -6,7 +6,7 @@ using UniSpyLib.Extensions;
 
 namespace PresenceConnectionManager.Structure
 {
-    internal class ChallengeProof
+    internal class LoginChallengeProof
     {
         public const string ServerChallenge = "0000000000";
         public string UserData { get; private set; }
@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Structure
         public string Challenge2 { get; private set; }
         public string PasswordHash { get; private set; }
 
-        public ChallengeProof(string userData, LoginType loginType, uint partnerID, string challenge1, string challenge2, string passwordHash)
+        public LoginChallengeProof(string userData, LoginType loginType, uint partnerID, string challenge1, string challenge2, string passwordHash)
         {
             UserData = userData;
             LoginType = loginType;
@@ -33,7 +33,7 @@ namespace PresenceConnectionManager.Structure
         ///     The proof verification MD5 hash string that can be compared to what the _session sends,
         ///     to verify that the users entered password matches the specific user data in the database.
         /// </returns>
-        public static string GenerateProof(ChallengeProof data)
+        public static string GenerateProof(LoginChallengeProof data)
         {
             string tempUserData = data.UserData;
 

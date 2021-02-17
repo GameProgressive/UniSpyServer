@@ -41,7 +41,7 @@ namespace PresenceConnectionManager.Network
         public void SendServerChallenge()
         {
             // Only send the login challenge once
-            if (UserInfo.LoginStatus != LoginStatus.Connected)
+            if (UserInfo.BasicInfo.LoginStatus != LoginStatus.Connected)
             {
                 Disconnect();
                 // Throw the error                
@@ -50,8 +50,8 @@ namespace PresenceConnectionManager.Network
                     "The server challenge has already been sent. Cannot send another login challenge.");
             }
 
-            UserInfo.LoginStatus = LoginStatus.Processing;
-            string sendingBuffer = $@"\lc\1\challenge\{ChallengeProof.ServerChallenge}\id\{1}\final\";
+            UserInfo.BasicInfo.LoginStatus = LoginStatus.Processing;
+            string sendingBuffer = $@"\lc\1\challenge\{LoginChallengeProof.ServerChallenge}\id\{1}\final\";
             SendAsync(sendingBuffer);
         }
     }

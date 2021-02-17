@@ -30,28 +30,6 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             _result = new LoginResult();
         }
 
-        protected override void RequestCheck()
-        {
-            switch (_request.LoginType)
-            {
-                case LoginType.NickEmail:
-                    _session.UserInfo.Nick = _request.Nick;
-                    _session.UserInfo.Email = _request.Email;
-                    _session.UserInfo.NamespaceID = _request.NamespaceID;
-                    break;
-                case LoginType.UniquenickNamespaceID:
-                    _session.UserInfo.UniqueNick = _request.Uniquenick;
-                    _session.UserInfo.NamespaceID = _request.NamespaceID;
-                    break;
-                case LoginType.AuthToken:
-                    _session.UserInfo.AuthToken = _request.AuthToken;
-                    break;
-                default:
-                    LogWriter.ToLog(LogEventLevel.Error, "Unknown login method detected!");
-                    break;
-            }
-        }
-
         protected override void DataOperation()
         {
             try
@@ -102,22 +80,23 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 return;
             }
 
-            ChallengeProof proofData = new ChallengeProof(
+            LoginChallengeProof proofData = new LoginChallengeProof(
                             _request.UserData,
                             _request.LoginType,
                             _request.PartnerID,
-                            ChallengeProof.ServerChallenge,
+                            LoginChallengeProof.ServerChallenge,
                             _request.UserChallenge,
                             _result.DatabaseResults.PasswordHash);
 
             _result.ResponseProof =
-               ChallengeProof.GenerateProof(proofData);
+               LoginChallengeProof.GenerateProof(proofData);
         }
 
         protected override void ResponseConstruct()
         {
             _response = new LoginResponse(_request, _result);
         }
+
         protected override void Response()
         {
             base.Response();
@@ -127,20 +106,35 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 return;
             }
 
-            if (_result == null)
+            switch (_request.LoginType)
             {
-                return;
+                case LoginType.NickEmail:
+                    _session.UserInfo.BasicInfo.Nick = _request.Nick;
+                    _session.UserInfo.BasicInfo.Email = _request.Email;
+                    _session.UserInfo.BasicInfo.NamespaceID = _request.NamespaceID;
+                    _session.UserInfo.BasicInfo.UniqueNick = _result.DatabaseResults.UniqueNick;
+                    break;
+                case LoginType.UniquenickNamespaceID:
+                    _session.UserInfo.BasicInfo.UniqueNick = _request.UniqueNick;
+                    _session.UserInfo.BasicInfo.NamespaceID = _request.NamespaceID;
+                    break;
+                case LoginType.AuthToken:
+                    _session.UserInfo.BasicInfo.AuthToken = _request.AuthToken;
+                    break;
+                default:
+                    LogWriter.ToLog(LogEventLevel.Error, "Unknown login method detected!");
+                    break;
             }
 
-            _session.UserInfo.UserCurrentStatus = GPStatusCode.Online;
-            _session.UserInfo.UserID = _result.DatabaseResults.UserID;
-            _session.UserInfo.ProfileID = _result.DatabaseResults.ProfileID;
-            _session.UserInfo.SubProfileID = _result.DatabaseResults.SubProfileID;
-            //_session.UserData.ProductID =
-            _session.UserInfo.GameName = _request.GameName;
-            _session.UserInfo.GamePort = _request.GamePort;
-            _session.UserInfo.LoginStatus = LoginStatus.Completed;
-            _session.UserInfo.SDKRevision = _request.SDKType;
+            _session.UserInfo.UserStatus.CurrentStatus = GPStatusCode.Online;
+            _session.UserInfo.BasicInfo.UserID = _result.DatabaseResults.UserID;
+            _session.UserInfo.BasicInfo.ProfileID = _result.DatabaseResults.ProfileID;
+            _session.UserInfo.BasicInfo.SubProfileID = _result.DatabaseResults.SubProfileID;
+            _session.UserInfo.BasicInfo.ProductID = _request.ProductID;
+            _session.UserInfo.BasicInfo.GameName = _request.GameName;
+            _session.UserInfo.BasicInfo.GamePort = _request.GamePort;
+            _session.UserInfo.BasicInfo.LoginStatus = LoginStatus.Completed;
+            _session.UserInfo.SDKRevision.SDKRevisionType = _request.SDKRevisionType;
 
             new SDKRevisionHandler(_session, _request).Handle();
         }
@@ -151,7 +145,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             using (var db = new retrospyContext())
             {
                 var email = from u in db.Users
-                            where u.Email == _session.UserInfo.Email
+                            where u.Email == _request.Email
                             select u.Userid;
 
                 if (email.Count() == 0)
@@ -165,8 +159,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                           where u.Email == _session.UserInfo.Email
-                           && p.Nick == _session.UserInfo.Nick
+                           where u.Email == _request.Email
+                           && p.Nick == _request.Nick
                            && n.Namespaceid == _request.NamespaceID
                            select new LogInDataModel
                            {
@@ -198,8 +192,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 var info = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
                            join u in db.Users on p.Userid equals u.Userid
-                           where n.Uniquenick == _session.UserInfo.UniqueNick
-                           && n.Namespaceid == _session.UserInfo.NamespaceID
+                           where n.Uniquenick == _request.UniqueNick
+                           && n.Namespaceid == _request.NamespaceID
                            select new LogInDataModel
                            {
                                Email = u.Email,
@@ -230,9 +224,9 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid
                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                           where n.Authtoken == _session.UserInfo.AuthToken
-                           && n.Partnerid == _session.UserInfo.PartnerID
-                           && n.Namespaceid == _session.UserInfo.NamespaceID
+                           where n.Authtoken == _request.AuthToken
+                           && n.Partnerid == _request.PartnerID
+                           && n.Namespaceid == _request.NamespaceID
                            select new LogInDataModel
                            {
                                Email = u.Email,
@@ -258,15 +252,15 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected bool IsChallengeCorrect()
         {
-            ChallengeProof proofData = new ChallengeProof(
+            LoginChallengeProof proofData = new LoginChallengeProof(
                 _request.UserData,
                 _request.LoginType,
                 _request.PartnerID,
                _request.UserChallenge,
-               ChallengeProof.ServerChallenge,
+               LoginChallengeProof.ServerChallenge,
                _result.DatabaseResults.PasswordHash);
 
-            string response = ChallengeProof.GenerateProof(proofData);
+            string response = LoginChallengeProof.GenerateProof(proofData);
 
             if (_request.Response == response)
             {

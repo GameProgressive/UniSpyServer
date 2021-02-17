@@ -31,7 +31,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 if (_request.IsReplaceNickName)
                 {
                     var result = from p in db.Profiles
-                                 where p.Profileid == _session.UserInfo.ProfileID
+                                 where p.Profileid == _session.UserInfo.BasicInfo.ProfileID
                                  && p.Nick == _request.OldNick
                                  select p;
 
@@ -44,7 +44,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                         result.First().Nick = _request.NewNick;
                     }
 
-                    db.Profiles.Where(p => p.Profileid == _session.UserInfo.ProfileID
+                    db.Profiles.Where(p => p.Profileid == _session.UserInfo.BasicInfo.ProfileID
                     && p.Nick == _request.OldNick).First().Nick = _request.NewNick;
 
                     db.SaveChanges();
@@ -53,15 +53,15 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 {
                     Profiles profiles = new Profiles
                     {
-                        Profileid = _session.UserInfo.ProfileID,
+                        Profileid = _session.UserInfo.BasicInfo.ProfileID,
                         Nick = _request.NewNick,
-                        Userid = _session.UserInfo.UserID
+                        Userid = _session.UserInfo.BasicInfo.UserID
                     };
 
                     db.Add(profiles);
                 }
             }
-            _result.ProfileID = _session.UserInfo.ProfileID;
+            _result.ProfileID = _session.UserInfo.BasicInfo.ProfileID;
         }
 
         protected override void ResponseConstruct()
