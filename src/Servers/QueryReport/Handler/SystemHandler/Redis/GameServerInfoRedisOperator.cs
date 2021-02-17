@@ -15,19 +15,25 @@ namespace QueryReport.Handler.SystemHandler.Redis
 
         public static string BuildFullKey(IPEndPoint iPEndPoint, string gameName)
         {
-            return UniSpyRedisOperatorBase<GameServerInfo>.BuildFullKey(iPEndPoint, gameName);
+            return BuildFullKey(
+                $"IPEndPoint:{iPEndPoint}",
+                $"GameName:{gameName}");
         }
         public static string BuildSearchKey(IPEndPoint iPEndPoint, string gameName)
         {
-            return UniSpyRedisOperatorBase<GameServerInfo>.BuildSearchKey(iPEndPoint, gameName);
+            return BuildSearchKey(
+                $"IPEndPoint:{iPEndPoint}",
+                $"GameName:{gameName}");
         }
         public static string BuildSearchKey(IPEndPoint iPEndPoint)
         {
-            return UniSpyRedisOperatorBase<GameServerInfo>.BuildSearchKey(iPEndPoint);
+            return UniSpyRedisOperatorBase<GameServerInfo>
+                .BuildSearchKey($"IPEndPoint:{iPEndPoint}");
         }
         public static string BuildSearchKey(string gameName)
         {
-            return UniSpyRedisOperatorBase<GameServerInfo>.BuildSearchKey(gameName);
+            return UniSpyRedisOperatorBase<GameServerInfo>
+                .BuildSearchKey($"GameName:{gameName}");
         }
     }
 }

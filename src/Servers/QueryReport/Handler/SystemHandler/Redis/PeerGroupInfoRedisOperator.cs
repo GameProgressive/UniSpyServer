@@ -16,12 +16,14 @@ namespace QueryReport.Handler.SystemHandler.Redis
 
         public static string BuildSearchKey(string gameName)
         {
-            return UniSpyRedisOperatorBase<PeerGroupInfo>.BuildSearchKey(gameName);
+            return UniSpyRedisOperatorBase<PeerGroupInfo>
+                .BuildSearchKey($"GameName:{gameName}");
         }
 
         public static string BuildFullKey(string gameName)
         {
-            return UniSpyRedisOperatorBase<PeerGroupInfo>.BuildFullKey(gameName);
+            return UniSpyRedisOperatorBase<PeerGroupInfo>
+                .BuildFullKey($"GameName:{gameName}");
         }
         /// <summary>
         /// Select specific game room
@@ -46,6 +48,14 @@ namespace QueryReport.Handler.SystemHandler.Redis
                 return group;
             }
         }
+
+        public new static bool SetKeyValue(string gameName,PeerGroupInfo gameRoom)
+        {
+            return UniSpyRedisOperatorBase<PeerGroupInfo>.SetKeyValue(
+                $"GameName:{gameName}",
+                gameRoom);
+        }
+
         public static void LoadAllGameGroupsToRedis()
         {
             using (var db = new retrospyContext())
@@ -64,7 +74,7 @@ namespace QueryReport.Handler.SystemHandler.Redis
                         continue;
                     }
                     var gameRoom = LoadGameRooms(gameName);
-                    SetKeyValue(gameName, gameRoom);
+                    SetKeyValue(gameName,gameRoom);
                 }
             }
         }

@@ -10,18 +10,18 @@ namespace QueryReport.Handler.SystemHandler.ServerList
     {
         protected override void CheckExpire()
         {
-            base.CheckExpire();
-            var servers = GameServerInfoRedisOperator.GetAllKeyValues();
-            foreach (var server in servers)
-            {
-                // we calculate the interval between last packe and current time
-                var duration = DateTime.Now.Subtract(server.Value.LastPacketReceivedTime).TotalSeconds;
-                if (duration > 120)
-                {
-                    GameServerInfoRedisOperator.DeleteKeyValue(server.Key);
-                    LogWriter.ToLog($"Delete expired game server :{server.Key}");
-                }
-            }
+            //base.CheckExpire();
+            //var servers = GameServerInfoRedisOperator.GetAllKeyValues();
+            //foreach (var server in servers)
+            //{
+            //    // we calculate the interval between last packe and current time
+            //    var duration = DateTime.Now.Subtract(server.Value.LastPacketReceivedTime).TotalSeconds;
+            //    if (duration > 120)
+            //    {
+            //        GameServerInfoRedisOperator.DeleteKeyValue(server.Key);
+            //        LogWriter.ToLog($"Delete expired game server :{server.Key}");
+            //    }
+            //}
         }
     }
 }
