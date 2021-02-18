@@ -43,6 +43,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             else
             {
                 _session.UserInfo.StatusInfo = _request.StatusInfo;
+                // TODO notify every online friend?
             }
         }
 

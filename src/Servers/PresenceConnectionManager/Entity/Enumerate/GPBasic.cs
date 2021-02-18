@@ -2,18 +2,6 @@
 {
     public enum GPBasic : uint
     {
-        // Callbacks
-        ////////////
-        Error = 0,
-        RecvBuddyRequest,
-        RecvBuddyStatus,
-        RecvBuddyMessage,
-        RecvBuddyUTM,
-        RecvGameInvite,
-        TransferCallback,
-        RecvBuddyAuth,
-        RecvBuddyRevoke,
-
         // Global States.
         /////////////////
         InfoCaching = 0x0100,
@@ -183,54 +171,8 @@
 
         NewStatusInfoSupported = 0xC00,
         NewStatusInfoNotSupported = 0xC01,
-
-        //BM status
-        BmMessage = 1,
-        BmRquest = 2,
-        BmReply = 3, // only used on the backend
-        BmAuth = 4,
-        BmUTM = 5,
-        BmRevoke = 6,  // remote buddy removed from local list
-        BmStatus = 100,
-        BmInvite = 101,
-        BmPing = 102,
-        BmPong = 103,
-        BmKeysRequest = 104,
-        BmKeysReply = 105,
-        BmFileSendRequest = 200,
-        BmFileSendReply = 201,
-        BmFileBegin = 202,
-        BmFileEnd = 203,
-        BmFileData = 204,
-        BmFile_SKIP = 205,
-        BmFileTransferThrottle = 206,
-        BmFileTransferCancel = 207,
-        BmFileTransferKeepAlive = 208,
     }
-
-    public enum GPSPResult : uint
-    {
-        NoError,
-        MemoryError,
-        ParameterError,
-        NetworkError,
-        ServerError,
-        MISCError,
-        Count
-    }
-
-    public enum GPStatusCode : uint
-    {
-        // Status
-        /////////
-        Offline = 0,
-        Online = 1,
-        Playing = 2,
-        Staging = 3,
-        Chatting = 4,
-        Away = 5,
-    }
-
+ 
     /// <summary>
     /// This enum rapresers the known Parter IDs, This value was setted to 0 when
     /// a game is directly connecting to GameSpy, otherwise the Partner ID would be
@@ -252,29 +194,8 @@
         /// GameSpy SDK
         /// </summary>
         IGN = 10,
-
         //Nintendo = 11, // Please verify this
     }
 
-    /// <summary>
-    /// This enum rapresents the gender of a player.
-    /// </summary>
-    public enum PlayerSexType : ushort
-    {
-        /// <summary>
-        /// Gender is male
-        /// </summary>
-        Male,
 
-        /// <summary>
-        /// Gender is female
-        /// </summary>
-        Female,
-
-        /// <summary>
-        /// Unspecified or unknown gender, this is
-        /// used to mask the gender when the information is queried
-        /// </summary>
-        Pat
-    }
 }

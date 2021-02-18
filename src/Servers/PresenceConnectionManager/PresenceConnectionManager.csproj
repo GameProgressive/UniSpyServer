@@ -36,5 +36,6 @@
       <Folder Include="Entity\Structure\Response\General\" />
       <Folder Include="Entity\Structure\Misc\Status\" />
       <Folder Include="Entity\Structure\Misc\Info\" />
+      <Folder Include="Handler\CmdHandler\Buddy\BuddyMessage\" />
     </ItemGroup>
 </Project>

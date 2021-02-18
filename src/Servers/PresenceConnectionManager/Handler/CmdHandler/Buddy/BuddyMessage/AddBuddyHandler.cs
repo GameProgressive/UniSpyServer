@@ -23,10 +23,5 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             //else
             //store add request to database
         }
-
-        protected override void ResponseConstruct()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
