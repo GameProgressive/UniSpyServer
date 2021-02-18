@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Text;
 using UniSpyLib.Abstraction.Interface;
 
@@ -9,11 +10,13 @@ namespace UniSpyLib.Network
         public UniSpyUDPServerBase Server { get; private set; }
         public EndPoint RemoteEndPoint { get; private set; }
         public IPEndPoint RemoteIPEndPoint => (IPEndPoint)RemoteEndPoint;
-
+        public DateTime LastPacketReceivedTime { get; set; }
+        public TimeSpan SessionExistedTime => DateTime.Now.Subtract(LastPacketReceivedTime);
         public UniSpyUDPSessionBase(UniSpyUDPServerBase server, EndPoint endPoint)
         {
             Server = server;
             RemoteEndPoint = endPoint;
+            LastPacketReceivedTime = DateTime.Now;
         }
 
         public long Send(byte[] buffer, long offset, long size)

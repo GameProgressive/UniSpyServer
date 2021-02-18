@@ -1,9 +1,9 @@
 ﻿using NetCoreServer;
 using Serilog.Events;
 using System;
-using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
+using UniSpyLib.Abstraction.BaseClass.Network.TCP;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
@@ -14,7 +14,7 @@ namespace UniSpyLib.Network
     /// </summary>
     public abstract class UniSpyTCPServerBase : TcpServer, IUniSpyServer
     {
-        public new ConcurrentDictionary<Guid, TcpSession> Sessions => base.Sessions;
+        public UniSpyTCPSessionManagerBase SessionManager { get; protected set; }
         public Guid ServerID { get; private set; }
         /// <summary>
         /// Initialize TCP server with a given IP address and port number
@@ -24,6 +24,26 @@ namespace UniSpyLib.Network
         public UniSpyTCPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
+            SessionManager = new UniSpyTCPSessionManagerBase();
+        }
+
+        protected override void OnConnected(TcpSession session)
+        {
+            if (!SessionManager.Sessions.ContainsKey(session.Id))
+            {
+                SessionManager.AddSession(session.Id, (UniSpyTCPSessionBase)session);
+            }
+            //LogWriter.ToLog(LogEventLevel.Information, $"[Conn] IP:{session.Socket.RemoteEndPoint}");
+            base.OnConnected(session);
+        }
+
+        protected override void OnDisconnected(TcpSession session)
+        {
+            SessionManager.DeleteSession(session.Id);
+            //We create our own RemoteEndPoint because when client disconnect,
+            //the session socket will dispose immidiatly
+            //LogWriter.ToLog(LogEventLevel.Information, $"[Disc] IP:{((UniSpyTCPSessionBase)session).RemoteEndPoint}");
+            base.OnDisconnected(session);
         }
 
         /// <summary>

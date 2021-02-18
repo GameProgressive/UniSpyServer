@@ -27,5 +27,7 @@
         <Folder Include="Abstraction\Interface\" />
         <Folder Include="Entity\Structure\" />
         <Folder Include="Entity\Enumerate\" />
+        <Folder Include="Abstraction\BaseClass\Network\" />
+        <Folder Include="Abstraction\BaseClass\Factory\" />
     </ItemGroup>
 </Project>

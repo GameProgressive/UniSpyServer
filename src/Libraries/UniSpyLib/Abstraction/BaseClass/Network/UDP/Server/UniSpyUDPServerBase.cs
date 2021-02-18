@@ -1,10 +1,10 @@
-﻿using NetCoreServer;
-using Serilog.Events;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using NetCoreServer;
+using Serilog.Events;
+using UniSpyLib.Abstraction.BaseClass.Network.UDP;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
@@ -21,11 +21,12 @@ namespace UniSpyLib.Network
         /// <summary>
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
-        public static Dictionary<EndPoint, UniSpyUDPSessionBase> Sessions = new Dictionary<EndPoint, UniSpyUDPSessionBase>();
+        public UniSpyUDPSessionManagerBase SessionManager { get; protected set; }
 
         public UniSpyUDPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
+            SessionManager = new UniSpyUDPSessionManagerBase();
         }
 
         protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint)
@@ -39,8 +40,6 @@ namespace UniSpyLib.Network
             ReceiveAsync();
         }
 
-
-
         /// <summary>
         /// Handle error notification
         /// </summary>
@@ -53,14 +52,14 @@ namespace UniSpyLib.Network
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+                $"[Send] [{endpoint}] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             return base.Send(endpoint, buffer, offset, size);
         }
 
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
             LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+                $"[Send] [{endpoint}] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             return base.SendAsync(endpoint, buffer, offset, size);
         }
 
@@ -111,16 +110,21 @@ namespace UniSpyLib.Network
             Array.Copy(buffer, 0, message, 0, (int)size);
 
             LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+                $"[Recv] [{endPoint}]{StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
             //even if we did not response we keep receive message
             ReceiveAsync();
-
-            UniSpyUDPSessionBase session;
-            if (!Sessions.TryGetValue(endPoint, out session))
+            UniSpyUDPSessionBase tempSession;
+            if (SessionManager.Sessions.ContainsKey((IPEndPoint)endPoint))
             {
-                session = CreateSession(endPoint);
+                tempSession = SessionManager.GetSession((IPEndPoint)endPoint);
+                tempSession.LastPacketReceivedTime = DateTime.Now;
             }
-            OnReceived(session, message);
+            else
+            {
+                tempSession = CreateSession(endPoint);
+                SessionManager.AddSession(tempSession.RemoteIPEndPoint, tempSession);
+            }
+            OnReceived(tempSession, message);
         }
     }
 }

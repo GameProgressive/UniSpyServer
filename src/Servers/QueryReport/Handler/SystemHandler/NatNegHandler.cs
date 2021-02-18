@@ -30,10 +30,10 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
         {
             IPAddress address = IPAddress.Parse(cookie.GameServerRemoteIP);
             int port = int.Parse(cookie.GameServerRemotePort);
-            EndPoint endPoint = new IPEndPoint(address, port);
+            var endPoint = new IPEndPoint(address, port);
 
-            UniSpyUDPSessionBase session;
-            if (!QRServer.Sessions.TryGetValue(endPoint, out session))
+            UniSpyUDPSessionBase session = QRServerFactory.Server.SessionManager.GetSession(endPoint);
+            if (session == null)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Can not find game server in QR");
                 return;

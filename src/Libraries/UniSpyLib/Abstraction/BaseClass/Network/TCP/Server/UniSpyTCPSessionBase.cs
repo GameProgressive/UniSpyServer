@@ -16,8 +16,9 @@ namespace UniSpyLib.Network
     /// </summary>
     public class UniSpyTCPSessionBase : TcpSession, IUniSpySession
     {
-        public EndPoint RemoteEndPoint { get; protected set; }
-        public IPEndPoint RemoteIPEndPoint { get { return (IPEndPoint)RemoteEndPoint; } }
+        public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
+        public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint;
+        public new UniSpyTCPServerBase Server => (UniSpyTCPServerBase)base.Server;
 
         public UniSpyTCPSessionBase(UniSpyTCPServerBase server) : base(server)
         {
@@ -56,7 +57,7 @@ namespace UniSpyLib.Network
         {
 
             LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Send] { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+                $"[Send] [{RemoteIPEndPoint}] { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             return base.SendAsync(buffer, offset, size);
         }
@@ -80,25 +81,11 @@ namespace UniSpyLib.Network
             }
 
             LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+                $"[Recv] [{RemoteIPEndPoint}] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);
             OnReceived(tempBuffer);
-        }
-
-        protected override void OnConnected()
-        {
-            RemoteEndPoint = Socket.RemoteEndPoint;
-            LogWriter.ToLog(LogEventLevel.Information, $"[Conn] IP:{RemoteEndPoint}");
-            base.OnConnected();
-        }
-        protected override void OnDisconnected()
-        {
-            //We create our own RemoteEndPoint because when client disconnect,
-            //the session socket will dispose immidiatly
-            LogWriter.ToLog(LogEventLevel.Information, $"[Disc] IP:{RemoteEndPoint}");
-            base.OnDisconnected();
         }
 
         bool IUniSpySession.BaseSendAsync(byte[] buffer)

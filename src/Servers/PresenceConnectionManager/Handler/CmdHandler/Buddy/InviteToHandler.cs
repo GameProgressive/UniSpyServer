@@ -1,7 +1,9 @@
 ﻿using System.Linq;
 using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Application;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Handler.SystemHandler;
+using PresenceConnectionManager.Network;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
@@ -19,9 +21,9 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var session = PCMSessionManager.Sessions.Values.Where(
-                u => u.UserInfo.BasicInfo.ProductID == _request.ProductID
-                && u.UserInfo.BasicInfo.ProfileID == _request.ProfileID).FirstOrDefault();
+            var session = PCMServerFactory.Server.SessionManager.Sessions.Values.Where(
+                u => ((PCMSession)u).UserInfo.BasicInfo.ProductID == _request.ProductID
+                && ((PCMSession)u).UserInfo.BasicInfo.ProfileID == _request.ProfileID).FirstOrDefault();
 
             //user is offline
             if (session == null)
