@@ -10,7 +10,7 @@ namespace CDKey.Network
 {
     internal sealed class CDKeyServer : UniSpyUDPServerBase
     {
-        public CDKeyServer(IPAddress address, int port) : base(address, port)
+        public CDKeyServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
 

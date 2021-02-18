@@ -12,7 +12,11 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     internal class PCMServerFactory : UniSpyServerFactoryBase
     {
-        public new static PCMServer Server { get; protected set; }
+        public new static PCMServer Server
+        {
+            get => (PCMServer)UniSpyServerFactoryBase.Server;
+            private set => UniSpyServerFactoryBase.Server = value;
+        }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -29,17 +33,11 @@ namespace PresenceConnectionManager.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new PCMServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new PCMServer(cfg.ServerID, cfg.ListeningEndPoint);
                 Server.Start();
                 Console.WriteLine(
                       StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
-
-        /// <summary>
-        /// Stop a specific server
-        /// </summary>
-        /// <param name="cfg">The configuration of the specific server to stop</param>
-
     }
 }

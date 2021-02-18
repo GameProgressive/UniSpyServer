@@ -12,11 +12,11 @@ namespace QueryReport.Application
     /// </summary>
     internal sealed class QRServerFactory : UniSpyServerFactoryBase
     {
-        public new static QRServer Server { get; private set; }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="serverName">Server name in config file</param>
+        public new static QRServer Server
+        {
+            get => (QRServer)UniSpyServerFactoryBase.Server;
+            private set => UniSpyServerFactoryBase.Server = value;
+        }
         public QRServerFactory(string serverName) : base(serverName)
         {
         }
@@ -29,7 +29,7 @@ namespace QueryReport.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new QRServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new QRServer(cfg.ServerID, cfg.ListeningEndPoint);
                 Server.Start();
                 Console.WriteLine(
                     UniSpyLib.Extensions.StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));

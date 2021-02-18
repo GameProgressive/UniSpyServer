@@ -14,7 +14,6 @@ namespace NATNegotiation.Handler.CmdHandler
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-
     internal sealed class ReportHandler : NNCmdHandlerBase
     {
         private new ReportRequest _request => (ReportRequest)base._request;

@@ -12,11 +12,14 @@ namespace GameStatus.Application
     /// </summary>
     internal sealed class GSServerFactory : UniSpyServerFactoryBase
     {
-        public new static GSServer Server { get; private set; }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="serverName">Server name in config file</param>
+        public static new GSServer Server
+        {
+            get => (GSServer)UniSpyServerFactoryBase.Server;
+            private set => UniSpyServerFactoryBase.Server = value;
+        }        /// <summary>
+                 /// Constructor
+                 /// </summary>
+                 /// <param name="serverName">Server name in config file</param>
         public GSServerFactory(string serverName) : base(serverName)
         {
         }
@@ -29,7 +32,7 @@ namespace GameStatus.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new GSServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new GSServer(cfg.ServerID, cfg.ListeningEndPoint);
                 Server.Start();
                 Console.WriteLine(
                      StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));

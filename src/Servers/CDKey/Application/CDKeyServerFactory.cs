@@ -11,7 +11,11 @@ namespace CDKey.Application
     /// </summary>
     internal sealed class CDKeyServerFactory : UniSpyServerFactoryBase
     {
-        public static new CDKeyServer Server { get; private set; }
+        public static new CDKeyServer Server
+        {
+            get => (CDKeyServer)UniSpyServerFactoryBase.Server;
+            private set => UniSpyServerFactoryBase.Server = value;
+        } 
         /// <summary>
         /// Constructor
         /// </summary>
@@ -28,7 +32,7 @@ namespace CDKey.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new CDKeyServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new CDKeyServer(cfg.ServerID, cfg.ListeningEndPoint);
                 Server.Start();
                 Console.WriteLine(
                     StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));

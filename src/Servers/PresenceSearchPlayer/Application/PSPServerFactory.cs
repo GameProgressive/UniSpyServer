@@ -12,7 +12,11 @@ namespace PresenceSearchPlayer
     /// </summary>
     internal class PSPServerFactory : UniSpyServerFactoryBase
     {
-        public new static PSPServer Server { get; protected set; }
+        public new static PSPServer Server
+        {
+            get => (PSPServer)UniSpyServerFactoryBase.Server;
+            private set => UniSpyServerFactoryBase.Server = value;
+        }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -29,7 +33,7 @@ namespace PresenceSearchPlayer
         {
             if (cfg.Name == ServerName)
             {
-                Server = new PSPServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new PSPServer(cfg.ServerID, cfg.ListeningEndPoint);
                 Server.Start();
                 Console.WriteLine(
                     StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));

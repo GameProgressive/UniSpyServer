@@ -1,4 +1,5 @@
 ﻿using NATNegotiation.Handler.CmdSwitcher;
+using System;
 using System.Net;
 using UniSpyLib.Network;
 
@@ -6,7 +7,7 @@ namespace NATNegotiation.Network
 {
     public class NNServer : UniSpyUDPServerBase
     {
-        public NNServer(IPAddress address, int port) : base(address, port)
+        public NNServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
 

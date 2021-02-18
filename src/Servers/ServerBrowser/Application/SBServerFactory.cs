@@ -12,7 +12,11 @@ namespace ServerBrowser.Application
     /// </summary>
     public class SBServerFactory : UniSpyServerFactoryBase
     {
-        public new static SBServer Server { get; protected set; }
+        public new static SBServer Server
+        {
+            get => (SBServer)UniSpyServerFactoryBase.Server;
+            private set => UniSpyServerFactoryBase.Server = value;
+        }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -35,7 +39,7 @@ namespace ServerBrowser.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new SBServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new SBServer(cfg.ServerID, cfg.ListeningEndPoint);
                 Server.Start();
                 Console.WriteLine(
                     StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));

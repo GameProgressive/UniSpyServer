@@ -1,4 +1,5 @@
 ﻿using NetCoreServer;
+using System;
 using System.Net;
 using UniSpyLib.Network;
 
@@ -11,13 +12,10 @@ namespace PresenceConnectionManager.Network
     /// </summary>
     internal sealed class PCMServer : UniSpyTCPServerBase
     {
-        public PCMServer(IPAddress address, int port) : base(address, port)
+        public PCMServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="GPCMClient"/>
-        /// </summary>
         protected override TcpSession CreateSession()
         {
             return new PCMSession(this);

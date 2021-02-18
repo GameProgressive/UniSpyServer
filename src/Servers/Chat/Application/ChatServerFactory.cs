@@ -1,6 +1,5 @@
 ﻿using Chat.Network;
 using System;
-using System.Net;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
@@ -12,7 +11,11 @@ namespace Chat.Application
     /// </summary>
     internal sealed class ChatServerFactory : UniSpyServerFactoryBase
     {
-        public new static ChatServer Server { get; private set; }
+        public static new ChatServer Server
+        {
+            get => (ChatServer)UniSpyServerFactoryBase.Server;
+            private set => UniSpyServerFactoryBase.Server = value;
+        }
         /// <summary>
         /// Constructor
         /// </summary>
@@ -29,7 +32,7 @@ namespace Chat.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new ChatServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new ChatServer(cfg.ServerID,cfg.ListeningEndPoint);
                 Server.Start();
                 Console.WriteLine(
                     StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));

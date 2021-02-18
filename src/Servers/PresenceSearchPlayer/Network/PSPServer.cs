@@ -1,4 +1,5 @@
 ﻿using NetCoreServer;
+using System;
 using System.Net;
 using UniSpyLib.Network;
 
@@ -6,7 +7,7 @@ namespace PresenceSearchPlayer.Network
 {
     public class PSPServer : UniSpyTCPServerBase
     {
-        public PSPServer(IPAddress address, int port) : base(address, port)
+        public PSPServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
 

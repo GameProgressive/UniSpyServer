@@ -15,15 +15,8 @@ namespace PresenceConnectionManager.Handler.SystemHandler.Redis
         /// <summary>
         /// We define the parameters that PCM redis needed.
         /// </summary>
-        /// <param name="endPoint"></param>
-        /// <param name="userID"></param>
-        /// <param name="userName"></param>
-        /// <param name="nickName"></param>
-        /// <param name="profileID"></param>
-        /// <param name="uniqueNick"></param>
-        /// <param name="namespaceID"></param>
-        /// <returns></returns>
-        public static string BuildFullKey(Guid guid, uint userID, string userName, string nickName, uint profileID,uint subProfileID, string uniqueNick, uint namespaceID)
+        /// <returns>The full key in redis</returns>
+        public static string BuildFullKey(Guid guid, uint userID, string userName, string nickName, uint profileID, uint subProfileID, string uniqueNick, uint namespaceID)
         {
             return BuildFullKey(
                 $"Guid:{guid}",
@@ -34,6 +27,23 @@ namespace PresenceConnectionManager.Handler.SystemHandler.Redis
                 $"SubProfileID:{subProfileID}",
                 $"UniqueNick:{uniqueNick}",
                 $"NameSpaceID:{namespaceID}");
+        }
+        public static string BuildSearchKey(uint subProfileID)
+        {
+            return BuildSearchKey($"SubProfileID:{subProfileID}");
+        }
+        public static string BuildSearchKey(string uniqueNick, uint nameSpaceID)
+        {
+            return BuildSearchKey(
+                $"UniqueNick:{uniqueNick}",
+                $"NameSpaceID:{nameSpaceID}");
+        }
+        public static string BuildSearchKey(uint userID, uint profileID, uint nameSpaceID)
+        {
+            return BuildSearchKey(
+                $"UserID:{userID}",
+                $"ProfileID:{profileID}",
+                $"NameSpaceID:{nameSpaceID}");
         }
     }
 }

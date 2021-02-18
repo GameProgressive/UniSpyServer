@@ -14,7 +14,7 @@ namespace Chat.Network
         public static readonly string ServerKey = "0000000000000000";
         public new ConcurrentDictionary<Guid, TcpSession> Sessions => base.Sessions;
 
-        public ChatServer(IPAddress address, int port) : base(address, port)
+        public ChatServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
 

@@ -1,4 +1,5 @@
 ﻿using NetCoreServer;
+using System;
 using System.Net;
 using System.Text;
 using UniSpyLib.Network;
@@ -19,7 +20,7 @@ namespace ServerBrowser.Network
         public static byte[] BytesServerChallenge => Encoding.ASCII.GetBytes(ServerChallenge);
         public static readonly string ServerChallenge = "0000000000";
 
-        public SBServer(IPAddress address, int port) : base(address, port)
+        public SBServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
 

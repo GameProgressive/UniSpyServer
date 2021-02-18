@@ -1,6 +1,7 @@
 ﻿using QueryReport.Handler.CmdSwitcher;
 using QueryReport.Handler.SystemHandler.Redis;
 using QueryReport.Handler.SystemHandler.ServerList;
+using System;
 using System.Net;
 using UniSpyLib.Network;
 
@@ -8,7 +9,7 @@ namespace QueryReport.Network
 {
     public class QRServer : UniSpyUDPServerBase
     {
-        public QRServer(IPAddress address, int port) : base(address, port)
+        public QRServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
 

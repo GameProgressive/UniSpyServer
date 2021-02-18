@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 
@@ -14,15 +15,17 @@ namespace UniSpyLib.Network
     /// This is a template class that helps creating a UDP Server with
     /// logging functionality and ServerName, as required in the old network stack.
     /// </summary>
-    public abstract class UniSpyUDPServerBase : UdpServer
+    public abstract class UniSpyUDPServerBase : UdpServer, IUniSpyServer
     {
+        public Guid ServerID { get; private set; }
         /// <summary>
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public static Dictionary<EndPoint, UniSpyUDPSessionBase> Sessions = new Dictionary<EndPoint, UniSpyUDPSessionBase>();
 
-        public UniSpyUDPServerBase(IPEndPoint endpoint) : base(endpoint)
+        public UniSpyUDPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
+            ServerID = serverID;
         }
 
         protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint)
@@ -36,15 +39,7 @@ namespace UniSpyLib.Network
             ReceiveAsync();
         }
 
-        /// <summary>
-        /// Initialize UDP server with a given IP address and port number
-        /// </summary>
-        /// <param name="serverName">The name of the server that will be started</param>
-        /// <param name="address">IP address</param>
-        /// <param name="port">Port number</param>
-        public UniSpyUDPServerBase(IPAddress address, int port) : base(address, port)
-        {
-        }
+
 
         /// <summary>
         /// Handle error notification

@@ -1,8 +1,13 @@
-﻿namespace UniSpyLib.UniSpyConfig
+﻿using System;
+using System.Net;
+
+namespace UniSpyLib.UniSpyConfig
 {
     public class UniSpyServerConfig
     {
+        public Guid ServerID;
         public string Name;
+        public IPEndPoint ListeningEndPoint => new IPEndPoint(IPAddress.Parse(ListeningAddress), ListeningPort);
         public string ListeningAddress;
         public int ListeningPort;
         public string RemoteAddress;

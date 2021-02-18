@@ -12,7 +12,12 @@ namespace NATNegotiation.Application
     /// </summary>
     internal sealed class NNServerFactory : UniSpyServerFactoryBase
     {
-        public new static NNServer Server { get; private set; }
+        public new static NNServer Server
+        {
+            get => (NNServer)UniSpyServerFactoryBase.Server;
+            private set => UniSpyServerFactoryBase.Server = value;
+        }
+
         public NNServerFactory(string serverName) : base(serverName)
         {
         }
@@ -24,7 +29,7 @@ namespace NATNegotiation.Application
         {
             if (cfg.Name == ServerName)
             {
-                Server = new NNServer(IPAddress.Parse(cfg.ListeningAddress), cfg.ListeningPort);
+                Server = new NNServer(cfg.ServerID, cfg.ListeningEndPoint);
                 Server.Start();
                 Console.WriteLine(
                     StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));

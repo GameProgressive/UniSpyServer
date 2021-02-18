@@ -1,5 +1,6 @@
-﻿using StackExchange.Redis;
-using System;
+﻿using System;
+using StackExchange.Redis;
+using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
 using UniSpyLib.Extensions;
@@ -11,10 +12,10 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyServerFactoryBase
     {
-        public static readonly string RetroSpyVersion = "0.5.2";
+        public static readonly string RetroSpyVersion = "0.5.3";
         public static string ServerName { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
-        public static object Server { get; protected set; }
+        public static IUniSpyServer Server { get; protected set; }
         public UniSpyServerFactoryBase(string serverName)
         {
             ServerName = serverName;
