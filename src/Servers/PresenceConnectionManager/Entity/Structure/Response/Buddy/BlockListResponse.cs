@@ -15,8 +15,8 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 
         protected override void BuildNormalResponse()
         {
-            // \bdy\< num in list >\list\< profileid list - comma delimited >\final\
-            SendingBuffer = $@"\bdy\{_result.ProfileIdList.Count()}\list\";
+            // \blk\< num in list >\list\< profileid list - comma delimited >\final\
+            SendingBuffer = $@"\blk\{_result.ProfileIdList.Count()}\list\";
             foreach (var pid in _result.ProfileIdList)
             {
                 SendingBuffer += $@"{pid}";
