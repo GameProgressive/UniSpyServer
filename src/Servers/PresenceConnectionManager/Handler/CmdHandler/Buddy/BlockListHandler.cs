@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
@@ -6,17 +7,19 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal class BlockListHandler : PCMCmdHandlerBase
+    internal sealed class BlockListHandler : PCMCmdHandlerBase
     {
-        protected new BlockListResult _result
+        private new BlockListResult _result
         {
-            get { return (BlockListResult)base._result; }
-            set { base._result = value; }
+            get => (BlockListResult)base._result;
+            set => base._result = value;
         }
+ 
         public BlockListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new BlockListResult();
         }
+
         protected override void DataOperation()
         {
             using (var db = new retrospyContext())
@@ -26,6 +29,11 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                     && f.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID)
                     .Select(f => f.Targetid).ToList();
             }
+        }
+
+        protected override void ResponseConstruct()
+        {
+            _response = new BlockListResponse(null, _result);
         }
     }
 }

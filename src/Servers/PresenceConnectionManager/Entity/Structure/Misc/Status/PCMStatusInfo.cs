@@ -8,6 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Misc
     /// </summary>
     internal class PCMUserStatusInfo
     {
+        public string StatusState { get; set; }
         public string BuddyIP { get; set; }
         public string HostIP { get; set; }
         public string HostPrivateIP { get; set; }

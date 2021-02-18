@@ -1,17 +1,18 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
+using PresenceConnectionManager.Entity.Structure.Misc;
 using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     internal sealed class StatusRequest : PCMRequestBase
     {
-        public GPStatusCode StatusCode { get; private set; }
-        public string StatusString { get; private set; }
-        public string LocationString { get; private set; }
-
+        public PCMUserStatus Status { get; private set; }
+        public bool IsGetStatus { get; set; }
         public StatusRequest(string rawRequest) : base(rawRequest)
         {
+            Status = new PCMUserStatus();
+            IsGetStatus = false;
         }
 
         public override void Parse()
@@ -34,9 +35,9 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 return;
             }
 
-            StatusCode = (GPStatusCode)statusCode;
-            LocationString = KeyValues["locstring"];
-            StatusString = KeyValues["statstring"];
+            Status.CurrentStatus = (GPStatusCode)statusCode;
+            Status.LocationString = KeyValues["locstring"];
+            Status.StatusString = KeyValues["statstring"];
         }
     }
 }

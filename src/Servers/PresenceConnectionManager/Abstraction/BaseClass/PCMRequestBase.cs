@@ -27,6 +27,12 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             get => (GPErrorCode)base.ErrorCode;
             protected set => base.ErrorCode = value;
         }
+
+        public PCMRequestBase()
+        {
+            ErrorCode = GPErrorCode.NoError;
+        }
+
         public PCMRequestBase(string rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;

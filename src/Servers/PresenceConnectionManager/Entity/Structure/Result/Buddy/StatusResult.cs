@@ -1,13 +1,11 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Enumerate;
+using PresenceConnectionManager.Entity.Structure.Misc;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
     internal sealed class StatusResult : PCMResultBase
     {
-        public GPStatusCode UserStatus { get; set; }
-        public string StatusString { get; set; }
-        public string LocationString { get; set; }
+        public PCMUserStatus Status { get; set; }
         public StatusResult()
         {
         }

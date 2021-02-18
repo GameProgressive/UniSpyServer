@@ -124,7 +124,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                     break;
             }
 
-            _session.UserInfo.UserStatus.CurrentStatus = GPStatusCode.Online;
+            _session.UserInfo.Status.CurrentStatus = GPStatusCode.Online;
             _session.UserInfo.BasicInfo.UserID = _result.DatabaseResults.UserID;
             _session.UserInfo.BasicInfo.ProfileID = _result.DatabaseResults.ProfileID;
             _session.UserInfo.BasicInfo.SubProfileID = _result.DatabaseResults.SubProfileID;

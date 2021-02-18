@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Misc;
 using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
@@ -6,26 +7,18 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     internal sealed class StatusInfoRequest : PCMRequestBase
     {
         public bool IsGetStatusInfo { get; set; }
+
         #region Get buddy status info
         public uint ProfileID { get; set; }
-        public uint SubProfileID { get; set; }
         public uint NameSpaceID { get; set; }
         #endregion
+        public PCMUserStatusInfo StatusInfo { get; private set; }
 
-        #region Set buddy status info
-        public string StatusState { get; private set; }
-        public string BuddyIP { get; private set; }
-        public string HostIP { get; private set; }
-        public string HostPrivateIP { get; private set; }
-        public uint? QueryReportPort { get; private set; }
-        public uint? HostPort { get; private set; }
-        public uint? SessionFlags { get; private set; }
-        public string RichStatus { get; private set; }
-        public string GameType { get; private set; }
-        public string GameVariant { get; private set; }
-        public string GameMapName { get; private set; }
-        public string QuietModeFlags { get; private set; }
-        #endregion
+        public StatusInfoRequest()
+        {
+            IsGetStatusInfo = true;
+        }
+
         public StatusInfoRequest(string rawRequest) : base(rawRequest)
         {
             IsGetStatusInfo = false;
@@ -52,34 +45,34 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 ErrorCode = GPErrorCode.Parse; return;
             }
 
-            StatusState = KeyValues["state"];
-            HostIP = KeyValues["hostIp"];
-            HostPrivateIP = KeyValues["hprivIp"];
+            StatusInfo.StatusState = KeyValues["state"];
+            StatusInfo.HostIP = KeyValues["hostIp"];
+            StatusInfo.HostPrivateIP = KeyValues["hprivIp"];
 
-            uint qport;
-            if (!uint.TryParse(KeyValues["qport"], out qport))
+            int qport;
+            if (!int.TryParse(KeyValues["qport"], out qport))
             {
                 ErrorCode = GPErrorCode.Parse; return;
             }
-            QueryReportPort = qport;
-            uint hport;
-            if (uint.TryParse(KeyValues["hport"], out hport))
+            StatusInfo.QueryReportPort = qport;
+            int hport;
+            if (int.TryParse(KeyValues["hport"], out hport))
             {
                 ErrorCode = GPErrorCode.Parse; return;
             }
-            HostPort = hport;
+            StatusInfo.HostPort = hport;
 
             uint sessflags;
             if (!uint.TryParse(KeyValues["sessflags"], out sessflags))
             {
                 ErrorCode = GPErrorCode.Parse; return;
             }
-            SessionFlags = sessflags;
+            StatusInfo.SessionFlags = sessflags;
 
-            RichStatus = KeyValues["rechStatus"];
-            GameType = KeyValues["gameType"];
-            GameVariant = KeyValues["gameVariant"];
-            GameMapName = KeyValues["gameMapName"];
+            StatusInfo.RichStatus = KeyValues["rechStatus"];
+            StatusInfo.GameType = KeyValues["gameType"];
+            StatusInfo.GameVariant = KeyValues["gameVariant"];
+            StatusInfo.GameMapName = KeyValues["gameMapName"];
         }
     }
 }

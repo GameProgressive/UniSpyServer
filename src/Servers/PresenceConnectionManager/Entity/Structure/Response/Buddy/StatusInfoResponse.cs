@@ -19,14 +19,14 @@ namespace PresenceConnectionManager.Entity.Structure.Response.Buddy
         /// </summary>
         protected override void BuildNormalResponse()
         {
-            SendingBuffer = @$"bsi\\state\{_result.StatusState}\
-                profile\{_result.ProfileID}\bip\{_result.HtonBuddyIP}
-                hostIp\{_result.HtonHostIP}\
-                hprivIp\{_result.HostPrivateIP}\qport\{_result.QueryReportPort}\
-                hport\{_result.HostPort}\sessflags\{_result.SessionFlags}\
-                rstatus\{_result.RichStatus}\gameType\{_result.GameType}\
-                gameVnt\{_result.GameVariant}\gameMn\{_result.GameMapName}\
-                product\{_result.ProductID}\qmodeflags\{_result.QuietModeFlags}final\";
+            SendingBuffer = @$"bsi\\state\{_result.StatusInfo.StatusState}\
+                profile\{_result.ProfileID}\bip\{_result.StatusInfo.BuddyIP}
+                hostIp\{_result.StatusInfo}\
+                hprivIp\{_result.StatusInfo.HostPrivateIP}\qport\{_result.StatusInfo.QueryReportPort}\
+                hport\{_result.StatusInfo.HostPort}\sessflags\{_result.StatusInfo.SessionFlags}\
+                rstatus\{_result.StatusInfo.RichStatus}\gameType\{_result.StatusInfo.GameType}\
+                gameVnt\{_result.StatusInfo.GameVariant}\gameMn\{_result.StatusInfo.GameMapName}\
+                product\{_result.ProductID}\qmodeflags\{_result.StatusInfo.QuietModeFlags}final\";
         }
     }
 }

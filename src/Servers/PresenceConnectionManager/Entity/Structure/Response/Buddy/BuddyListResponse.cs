@@ -16,11 +16,11 @@ namespace PresenceConnectionManager.Entity.Structure.Response
         protected override void BuildNormalResponse()
         {
             // \bdy\< num in list >\list\< profileid list - comma delimited >\final\
-            SendingBuffer = $@"\bdy\{_result.ProfileIdList.Count()}\list\";
-            foreach (var pid in _result.ProfileIdList)
+            SendingBuffer = $@"\bdy\{_result.ProfileIDList.Count()}\list\";
+            foreach (var pid in _result.ProfileIDList)
             {
                 SendingBuffer += $@"{pid}";
-                if (pid != _result.ProfileIdList.Last())
+                if (pid != _result.ProfileIDList.Last())
                 {
                     SendingBuffer += ",";
                 }

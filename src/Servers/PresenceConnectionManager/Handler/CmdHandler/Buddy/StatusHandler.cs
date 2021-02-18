@@ -1,5 +1,4 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
@@ -25,21 +24,17 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            //TODO check if statushandler need send response
-            //if (_request == null)
-            //{
-            //    // get user status
-            //    _result.UserStatus = _session.UserInfo.UserCurrentStatus;
-            //    _result.StatusString = _session.UserInfo.StatusString;
-            //    _result.LocationString = _session.UserInfo.LocationString;
-            //}
-            //else
-            //{
             // set user status
-            _session.UserInfo.UserStatus.CurrentStatus = _request.StatusCode;
-            _session.UserInfo.UserStatus.StatusString = _request.StatusString;
-            _session.UserInfo.UserStatus.LocationString = _request.LocationString;
-            //}
+            if (_request.IsGetStatus)
+            {
+                //TODO check if statushandler need send response
+            }
+            else
+            {
+                _session.UserInfo.Status.CurrentStatus = _request.Status.CurrentStatus;
+                _session.UserInfo.Status.StatusString = _request.Status.StatusString;
+                _session.UserInfo.Status.LocationString = _request.Status.LocationString;
+            }
         }
     }
 }

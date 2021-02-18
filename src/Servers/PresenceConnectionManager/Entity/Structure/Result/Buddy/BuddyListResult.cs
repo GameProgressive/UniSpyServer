@@ -5,11 +5,11 @@ namespace PresenceConnectionManager.Entity.Structure.Result
 {
     internal class BuddyListResult : PCMResultBase
     {
-        public List<uint> ProfileIdList;
+        public List<uint> ProfileIDList;
 
         public BuddyListResult()
         {
-            ProfileIdList = new List<uint>();
+            ProfileIDList = new List<uint>();
         }
     }
 }
