@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine3.12 AS base
+FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine3.13 AS base
 WORKDIR /app
 EXPOSE 29910
 EXPOSE 29910/udp
