@@ -5,8 +5,6 @@ using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Result.Channel;
 using Chat.Handler.SystemHandler.ChannelManage;
 using QueryReport.Handler.SystemHandler.Redis;
-using QueryReport.Entity.Structure;
-using QueryReport.Handler.SystemHandler.Redis;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Channel
