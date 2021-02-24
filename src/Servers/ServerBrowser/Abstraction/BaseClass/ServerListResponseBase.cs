@@ -1,12 +1,10 @@
+using System.Collections.Generic;
+using System.Text;
 using QueryReport.Entity.Structure;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Misc;
-using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Network;
-using System.Collections.Generic;
-using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
@@ -28,13 +26,9 @@ namespace ServerBrowser.Abstraction.BaseClass
             serverListContext.AddRange(_result.ClientRemoteIP);
             serverListContext.AddRange(ServerListRequestBase.HtonQueryReportDefaultPort);
             serverListContext.AddRange(SendingBuffer);
-            PlainTextSendingBuffer = serverListContext.ToArray();
-            GOAEncryption enc = new GOAEncryption(
-                _result.GameSecretKey,
-                _request.Challenge,
-                SBServer.ServerChallenge);
-            SendingBuffer = enc.Encrypt(PlainTextSendingBuffer);
+            SendingBuffer = serverListContext.ToArray();
         }
+
         protected static List<byte> BuildCryptHeader()
         {
             var data = new List<byte>();

@@ -33,6 +33,8 @@ namespace ServerBrowser.Abstraction.BaseClass
             _result.GameSecretKey = secretKey;
             //this is client public ip and default query port
             _result.ClientRemoteIP = _session.RemoteIPEndPoint.Address.GetAddressBytes();
+            _session.GameSecretKey = secretKey;
+            _session.RequestChallenge = _request.Challenge;
         }
     }
 }
