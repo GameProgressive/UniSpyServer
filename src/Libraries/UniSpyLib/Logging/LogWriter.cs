@@ -107,13 +107,24 @@ namespace UniSpyLib.Logging
 
         public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer,long size)
         {
-            string tempData = StringExtensions.ReplaceUnreadableCharToHex(buffer, size);
-            LogNetworkTraffic(type, endPoint, tempData);
+            byte[] tempBuffer = new byte[size];
+            Array.Copy(buffer, tempBuffer, size);
+            LogNetworkTraffic(type, endPoint, tempBuffer);
         }
 
+        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer)
+        {
+            string tempData = StringExtensions.ReplaceUnreadableCharToHex(buffer);
+            LogNetworkTraffic(type, endPoint, tempData);
+        }
         public static void LogNetworkTraffic(string type, IPEndPoint endPoint, string buffer)
         {
             ToLog(LogEventLevel.Debug, $"[{type}] [{endPoint}] {buffer}");
         }
+        public static void LogNetworkSpam(IPEndPoint endPoint)
+        {
+            ToLog(LogEventLevel.Error, $"[Spam] [{endPoint}] spam we ignored!");
+        }
+
     }
 }

@@ -1,11 +1,8 @@
-﻿using Chat.Entity.Structure.Misc;
+﻿using System;
+using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request.General;
 using Chat.Handler.CmdHandler.General;
 using Chat.Handler.CommandSwitcher;
-using Serilog.Events;
-using System;
-using System.Text;
-using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
 
@@ -20,52 +17,32 @@ namespace Chat.Network
             UserInfo = new ChatUserInfo(this);
         }
 
-        protected override void OnReceived(string message)
-        {
-            base.OnReceived(message);
-
-            new ChatCommandSwitcher(this, message).Switch();
-        }
-
-        protected override void OnReceived(byte[] buffer, long offset, long size)
-        {
-            if (UserInfo.IsUsingEncryption)
-            {
-                DecryptData(ref buffer, size);
-            }
-            LogWriter.ToLog(LogEventLevel.Debug, $"[Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
-            byte[] temp = new byte[size];
-            Array.Copy(buffer, temp, size);
-            OnReceived(Encoding.ASCII.GetString(temp));
-        }
-
+        protected override void OnReceived(string message) => new ChatCommandSwitcher(this, message).Switch();
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,
-                    $"[Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
-
-            if (UserInfo.IsUsingEncryption)
-            {
-                EncryptData(ref buffer, size);
-            }
-
             if (UserInfo.IsQuietMode)
             {
                 return false;
             }
-
-            return BaseSendAsync(buffer, offset, size);
+            return base.SendAsync(buffer, offset, size);
         }
 
-        private void DecryptData(ref byte[] data, long size)
+        protected override byte[] Encrypt(byte[] buffer)
         {
-            ChatCrypt.Handle(UserInfo.ClientCTX, ref data, size);
+            if (UserInfo.IsUsingEncryption)
+            {
+                return ChatCrypt.Handle(UserInfo.ClientCTX, ref buffer);
+            }
+            else
+            {
+                return buffer;
+            }
         }
 
-        private void EncryptData(ref byte[] buffer, long size)
+        protected override byte[] Decrypt(byte[] buffer)
         {
-            ChatCrypt.Handle(UserInfo.ServerCTX, ref buffer, size);
+            return ChatCrypt.Handle(UserInfo.ClientCTX, ref buffer);
         }
 
         protected override void OnDisconnected()

@@ -21,32 +21,21 @@ namespace UniSpyLib.Network
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public UniSpyUDPSessionManagerBase SessionManager { get; protected set; }
-
         public UniSpyUDPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
             SessionManager = new UniSpyUDPSessionManagerBase();
         }
 
-        protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint)
-        {
-            return new UniSpyUDPSessionBase(this, endPoint);
-        }
+        protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new UniSpyUDPSessionBase(this, endPoint);
 
-        protected override void OnStarted()
-        {
-            // Start receive datagrams
-            ReceiveAsync();
-        }
 
-        /// <summary>
-        /// Handle error notification
-        /// </summary>
-        /// <param name="error">Socket error code</param>
-        protected override void OnError(SocketError error)
-        {
-            LogWriter.ToLog(LogEventLevel.Error, error.ToString());
-        }
+        protected override void OnStarted() => ReceiveAsync();
+        protected override void OnError(SocketError error) => LogWriter.ToLog(LogEventLevel.Error, error.ToString());
+
+        public bool BaseSendAsync(EndPoint endPoint, string buffer) => BaseSendAsync(endPoint, Encoding.ASCII.GetBytes(buffer));
+        public bool BaseSendAsync(EndPoint endPoint, byte[] buffer) => BaseSendAsync(endPoint, buffer, 0, buffer.Length);
+        public bool BaseSendAsync(EndPoint endpoint, byte[] buffer, long offset, long size) => base.SendAsync(endpoint, buffer, offset, size);
 
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
@@ -60,47 +49,23 @@ namespace UniSpyLib.Network
             return base.SendAsync(endpoint, buffer, offset, size);
         }
 
-        public bool BaseSendAsync(EndPoint endPoint, string buffer)
-        {
-            return BaseSendAsync(endPoint, Encoding.ASCII.GetBytes(buffer));
-        }
 
-        public bool BaseSendAsync(EndPoint endPoint, byte[] buffer)
-        {
-            return BaseSendAsync(endPoint, buffer, 0, buffer.Length);
-        }
+        /// <summary>
+        /// Continue receive datagrams
+        /// </summary>
+        /// <param name="endpoint"></param>
+        /// <param name="sent"></param>
+        protected override void OnSent(EndPoint endpoint, long sent) => ReceiveAsync();
 
-        public bool BaseSendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            return base.SendAsync(endpoint, buffer, offset, size);
-        }
-
-        protected override void OnSent(EndPoint endpoint, long sent)
-        {
-            base.OnSent(endpoint, sent);
-            // Continue receive datagrams
-            ReceiveAsync();
-        }
 
         protected virtual void OnReceived(UniSpyUDPSessionBase session, string message) { }
-
-        protected virtual void OnReceived(UniSpyUDPSessionBase session, byte[] message)
-        {
-            OnReceived(session, Encoding.ASCII.GetString(message));
-        }
-
-        protected virtual void OnReceived(EndPoint endPoint, string message) { }
-
-        protected virtual void OnReceived(EndPoint endPoint, byte[] message)
-        {
-            OnReceived(endPoint, Encoding.ASCII.GetString(message));
-        }
-
+        protected virtual void OnReceived(UniSpyUDPSessionBase session, byte[] message) => OnReceived(session, Encoding.ASCII.GetString(message));
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
             // Need at least 2 bytes
-            if (size < 2 && size > 2048)
+            if (size < 2 || size > OptionReceiveBufferSize)
             {
+                LogWriter.LogNetworkSpam((IPEndPoint)endPoint);
                 return;
             }
             byte[] message = new byte[(int)size];
@@ -123,5 +88,10 @@ namespace UniSpyLib.Network
             ReceiveAsync();
             OnReceived(tempSession, message);
         }
+
+        #region Encryption
+        protected virtual byte[] Encrypt(byte[] buffer) => buffer;
+        protected virtual byte[] Decryption(byte[] buffer) => buffer;
+        #endregion
     }
 }

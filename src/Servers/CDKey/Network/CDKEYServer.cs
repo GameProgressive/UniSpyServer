@@ -2,6 +2,7 @@
 using Serilog.Events;
 using System;
 using System.Net;
+using System.Text;
 using UniSpyLib.Encryption;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
@@ -13,39 +14,16 @@ namespace CDKey.Network
         public CDKeyServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
-
+        protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new CDKeySession(this, endPoint);
+        protected override byte[] Decryption(byte[] buffer)
+        { 
+            return XorEncoding.Encrypt(buffer, XorEncoding.XorType.Type0);
+        }
+        protected override byte[] Encrypt(byte[] buffer)
+        {
+            return XorEncoding.Encrypt(buffer, XorEncoding.XorType.Type0); ;
+        }
         protected override void OnReceived(UniSpyUDPSessionBase session, string message)
-        {
-            new CDKeyCmdSwitcher(session, message).Switch();
-        }
-
-        protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            string decrypted = Decrypt(buffer, offset, size);
-            LogWriter.ToLog(LogEventLevel.Debug, $"[Recv] {decrypted}");
-            OnReceived(endpoint, decrypted);
-        }
-
-        public override bool SendAsync(EndPoint endpoint, string text)
-        {
-            return BaseSendAsync(endpoint, Encrypt(text));
-        }
-
-        private string Decrypt(byte[] buffer, long offset, long size)
-        {
-            byte[] cipherText = new byte[(int)size];
-            Array.Copy(buffer, offset, cipherText, 0, (int)size);
-            return XorEncoding.Encrypt(cipherText, XorEncoding.XorType.Type0);
-        }
-
-        private string Encrypt(string plainText)
-        {
-            return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type0);
-        }
-
-        protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint)
-        {
-            return new CDKeySession(this, endPoint);
-        }
+            => new CDKeyCmdSwitcher(session, message).Switch();
     }
 }

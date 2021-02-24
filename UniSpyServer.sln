@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SOAPMiddleware", "src\Libra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NATNegotiation", "src\Servers\NATNegotiation\NATNegotiation.csproj", "{45E0BDD3-B845-4EEB-953A-0C9D2E4BA740}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyLib", "src\Libraries\UniSpyLib\UniSpyLib.csproj", "{5D63AEAE-0726-4A00-B85C-173BD60568AD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyLib", "src\Libraries\UniSpyLib\UniSpyLib.csproj", "{5D63AEAE-0726-4A00-B85C-173BD60568AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace Chat.Entity.Structure.Misc
 {
@@ -14,14 +15,16 @@ namespace Chat.Entity.Structure.Misc
         public const string DigitsCrypt = "aFl4uOD9sfWq1vGp";
         public const string NewDigitsCrypt = "qJ1h4N9cP3lzD0Ka";
         public const uint IPXorMask = 0xc3801dc7;
-        public static void Handle(GSPeerChatCTX ctx, ref byte[] data, long size)
+
+        public static byte[] Handle(GSPeerChatCTX ctx, ref byte[] data)
         {
             byte num1 = ctx.GSPeerChat1;
             byte num2 = ctx.GSPeerChat2;
             byte t;
             int datapos = 0;
-
-            while (size-- > 0)
+            List<byte> buffer = new List<byte>();
+            long size = data.Length;
+            while (0 < size--)
             {
                 num1 = (byte)((num1 + 1) % 256);
                 num2 = (byte)((ctx.GSPeerChatCrypt[num1] + num2) % 256);
@@ -30,10 +33,13 @@ namespace Chat.Entity.Structure.Misc
                 ctx.GSPeerChatCrypt[num2] = t;
                 t = (byte)((ctx.GSPeerChatCrypt[num2] + ctx.GSPeerChatCrypt[num1]) % 256);
                 data[datapos++] ^= ctx.GSPeerChatCrypt[t];
+                byte temp = (byte)(data[datapos++] ^ ctx.GSPeerChatCrypt[t]);
+                buffer.Add(temp);
             }
 
             ctx.GSPeerChat1 = num1;
             ctx.GSPeerChat2 = num2;
+            return buffer.ToArray();
         }
 
         /// <summary>

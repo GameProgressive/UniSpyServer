@@ -1,10 +1,5 @@
-﻿using GameStatus.Entity.Structure.Misc;
-using GameStatus.Handler.CmdSwitcher;
-using Serilog.Events;
-using System;
-using System.Text;
-using UniSpyLib.Encryption;
-using UniSpyLib.Logging;
+﻿using System.Text;
+using GameStatus.Entity.Structure.Misc;
 using UniSpyLib.Network;
 
 namespace GameStatus.Network
@@ -22,60 +17,15 @@ namespace GameStatus.Network
         /// <summary>
         /// When client connect, we send our challenge first
         /// </summary>
-        protected override void OnConnected()
+        protected override void OnConnected() => SendAsync(GSPlayerInfo.ChallengeResponse);
+
+        protected override byte[] Encrypt(byte[] buffer)
         {
-            SendAsync($@"\challenge\{GSPlayerInfo.Challenge}");
-            base.OnConnected();
+            return GSEncryption.Encrypt(buffer);
         }
-
-        protected override void OnReceived(byte[] buffer, long offset, long size)
+        protected override byte[] Decrypt(byte[] buffer)
         {
-            if (size < 2 && size > 2048)
-            {
-                LogWriter.ToLog(LogEventLevel.Error, "[Spam] client spam we ignored!");
-                return;
-            }
-
-            string plainText = Decrypt(buffer, size);
-            LogWriter.ToLog(LogEventLevel.Debug, $"[Recv] {plainText}");
-
-            OnReceived(plainText);
-        }
-
-        protected override void OnReceived(string message)
-        {
-            new GSCmdSwitcher(this, message).Switch();
-        }
-
-
-        /// <summary>
-        /// Encrypt and send async
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public override bool SendAsync(string plainText)
-        {
-            LogWriter.ToLog(LogEventLevel.Debug, $@"[Send] {plainText}\final\");
-
-            return BaseSendAsync(Encrypt(plainText));
-        }
-
-
-
-        private static string Decrypt(byte[] buffer, long size)
-        {
-            byte[] temp = new byte[(int)size];
-            Array.Copy(buffer, 0, temp, 0, (int)size);
-            //remove \final\, later we add final back
-            string cipherText = Encoding.ASCII.GetString(temp);
-            cipherText = cipherText.Substring(0, cipherText.Length - 7);
-
-            return XorEncoding.Encrypt(cipherText, XorEncoding.XorType.Type1) + @"\final\";
-        }
-
-        private static string Encrypt(string plainText)
-        {
-            return XorEncoding.Encrypt(plainText, XorEncoding.XorType.Type1) + @"\final\";
+            return GSEncryption.Decrypt(buffer);
         }
     }
 }
