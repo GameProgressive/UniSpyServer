@@ -48,17 +48,14 @@ namespace UniSpyLib.Network
             return base.SendAsync(buffer, offset, size);
         }
 
-        public override bool SendAsync(string text)
+        public override bool SendAsync(string buffer)
         {
-            return base.SendAsync(text);
+            return base.SendAsync(buffer);
         }
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-
-            LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Send] [{RemoteIPEndPoint}] { StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
-
+            LogWriter.LogNetworkTraffic("Send", RemoteIPEndPoint, buffer,size);
             return base.SendAsync(buffer, offset, size);
         }
         /// <summary>
@@ -79,9 +76,10 @@ namespace UniSpyLib.Network
                 LogWriter.ToLog(LogEventLevel.Error, "[Spam] client spam we ignored!");
                 return;
             }
+            LogWriter.LogNetworkTraffic("Recv", RemoteIPEndPoint, buffer, size);
 
-            LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Recv] [{RemoteIPEndPoint}] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            //LogWriter.ToLog(LogEventLevel.Debug,
+            //    $"[Recv] [{RemoteIPEndPoint}] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
 
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);

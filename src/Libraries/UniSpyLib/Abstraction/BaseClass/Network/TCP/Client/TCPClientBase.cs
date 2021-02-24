@@ -15,34 +15,24 @@ namespace UniSpyLib.Network
 
     public abstract class TCPClientBase : TcpClient
     {
-        private EndPoint _endPoint;
         /// <summary>
         /// We automatic connect to remote server address
         /// </summary>
         public TCPClientBase() : base
             (
-                ConfigManager.Config.Servers.Where(s => s.Name == UniSpyServerFactoryBase.ServerName).First().RemoteAddress
-               , ConfigManager.Config.Servers.Where(s => s.Name == UniSpyServerFactoryBase.ServerName).First().RemotePort
+                ConfigManager.Config.Servers
+            .Where(s => s.Name == UniSpyServerFactoryBase.ServerName)
+            .First().RemoteAddress
+               , ConfigManager.Config.Servers
+            .Where(s => s.Name == UniSpyServerFactoryBase.ServerName)
+            .First().RemotePort
             )
         {
         }
 
-        protected override void OnConnected()
-        {
-            _endPoint = Socket.RemoteEndPoint;
-            LogWriter.ToLog(LogEventLevel.Information, $"[Proxy] [Conn] IRC server: {_endPoint}");
-        }
-
-        protected override void OnDisconnected()
-        {
-            LogWriter.ToLog(LogEventLevel.Information, $"[Proxy] [Disc] IRC server: {_endPoint}");
-        }
-
         protected override void OnReceived(byte[] buffer, long offset, long size)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,
-                 $"[Proxy] [Recv] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
-
+            LogWriter.LogNetworkTraffic("Recv", Endpoint, buffer, size);
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, 0, tempBuffer, 0, size);
             OnReceived(tempBuffer);
@@ -52,20 +42,18 @@ namespace UniSpyLib.Network
         {
             OnReceived(Encoding.ASCII.GetString(buffer));
         }
-        protected virtual void OnReceived(string buffer)
-        {
-        }
+
+        protected virtual void OnReceived(string buffer) { }
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
-            LogWriter.LogNetworkTraffic("Proxy", "Send", StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size));
+            LogWriter.LogNetworkTraffic("Send", Endpoint, buffer, size);
             return base.SendAsync(buffer, offset, size);
         }
 
         public override long Send(byte[] buffer, long offset, long size)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Proxy] [Send] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.LogNetworkTraffic("Send", Endpoint, buffer, size);
             return base.Send(buffer, offset, size);
         }
 

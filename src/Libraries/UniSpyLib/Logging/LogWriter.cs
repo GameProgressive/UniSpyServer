@@ -1,6 +1,8 @@
 ﻿using Serilog;
 using Serilog.Events;
 using System;
+using System.Net;
+using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
@@ -19,6 +21,7 @@ namespace UniSpyLib.Logging
         {
             SettngUpLogger();
         }
+
         public static void SettngUpLogger()
         {
             LoggerConfiguration logConfig = new LoggerConfiguration();
@@ -57,25 +60,26 @@ namespace UniSpyLib.Logging
         /// <param name="message"></param>
         public static void ToLog(LogEventLevel level, string message)
         {
+            string tempMsg = $"[{UniSpyServerFactoryBase.ServerName}] {message}";
             switch (level)
             {
                 case LogEventLevel.Verbose:
-                    Log.Verbose($"[{UniSpyServerFactoryBase.ServerName}] " + message);
+                    Log.Verbose(tempMsg);
                     break;
                 case LogEventLevel.Information:
-                    Log.Information($"[{UniSpyServerFactoryBase.ServerName}] " + message);
+                    Log.Information(tempMsg);
                     break;
                 case LogEventLevel.Debug:
-                    Log.Debug($"[{UniSpyServerFactoryBase.ServerName}] " + message);
+                    Log.Debug(tempMsg);
                     break;
                 case LogEventLevel.Error:
-                    Log.Error($"[{UniSpyServerFactoryBase.ServerName}] " + message);
+                    Log.Error(tempMsg);
                     break;
                 case LogEventLevel.Fatal:
-                    Log.Fatal($"[{UniSpyServerFactoryBase.ServerName}] " + message);
+                    Log.Fatal(tempMsg);
                     break;
                 case LogEventLevel.Warning:
-                    Log.Warning($"[{UniSpyServerFactoryBase.ServerName}] " + message);
+                    Log.Warning(tempMsg);
                     break;
             }
         }
@@ -100,10 +104,16 @@ namespace UniSpyLib.Logging
         {
             ToLog(LogEventLevel.Verbose, $"[ => ] [{param.GetType().Name}]");
         }
-        public static void LogNetworkTraffic(string type, string status, string data)
+
+        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer,long size)
         {
-            ToLog(LogEventLevel.Debug, $"[{type}] [{status}] {data}");
+            string tempData = StringExtensions.ReplaceUnreadableCharToHex(buffer, size);
+            LogNetworkTraffic(type, endPoint, tempData);
+        }
+
+        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, string buffer)
+        {
+            ToLog(LogEventLevel.Debug, $"[{type}] [{endPoint}] {buffer}");
         }
     }
-
 }

@@ -28,7 +28,7 @@ namespace Chat.Entity.Structure.Request
             }
             _longParam = _longParam.Substring(1);
 
-            KeyValue = StringExtensions.ConvertKVStrToDic(_longParam);
+            KeyValue = StringExtensions.ConvertKVStringToDictionary(_longParam);
         }
     }
 }

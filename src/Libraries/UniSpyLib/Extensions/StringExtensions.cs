@@ -16,7 +16,7 @@ namespace UniSpyLib.Extensions
         /// <returns></returns>
         public static List<int> IndexesOf(this string str, string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
                 throw new ArgumentException("the string to find may not be empty", "value");
             List<int> indexes = new List<int>();
             for (int index = 0; ; index += value.Length)
@@ -46,19 +46,25 @@ namespace UniSpyLib.Extensions
         {
             using (MD5 Md5 = MD5.Create())
             {
-                if (Encoding == null) Encoding = Encoding.UTF8;
+                if (Encoding == null)
+                {
+                    Encoding = Encoding.UTF8;
+                }
                 return Md5.ComputeHash(Encoding.GetBytes(input)).ToHex(upperCase);
             }
         }
+        #region Undisplayable char convert
         /// <summary>
         /// Replace unreadable charactors to Hex for logging
         /// </summary>
-        /// <param name="buffer"></param>
-        /// <param name="size"></param>
+        /// <param name="message"></param>
+        /// <param name="length"></param>
         /// <returns></returns>
-        public static string ReplaceUnreadableCharToHex(byte[] buffer, int index, int size)
+        public static string ReplaceUnreadableCharToHex(byte[] message, long length)
         {
-            return ReplaceUnreadableCharToHex(buffer.Take(size).ToArray());
+            byte[] tempMessage = new byte[length];
+            Array.Copy(message, tempMessage, length);
+            return ReplaceUnreadableCharToHex(tempMessage);
         }
         public static string ReplaceUnreadableCharToHex(byte[] buffer)
         {
@@ -80,6 +86,7 @@ namespace UniSpyLib.Extensions
         {
             return ReplaceUnreadableCharToHex(Encoding.ASCII.GetBytes(buffer));
         }
+        #endregion
 
         public static string FormatTableContext(string part1, string part2, string part3)
         {
@@ -91,7 +98,7 @@ namespace UniSpyLib.Extensions
         }
 
 
-        public static Dictionary<string, string> ConvertKVStrToDic(string kvStr)
+        public static Dictionary<string, string> ConvertKVStringToDictionary(string kvStr)
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();
             List<string> keyValueList =
@@ -111,7 +118,7 @@ namespace UniSpyLib.Extensions
 
             return dic;
         }
-        public static string ConvertDicKVToStr(Dictionary<string, string> kv)
+        public static string ConvertDictionaryToKVString(Dictionary<string, string> kv)
         {
             string buffer = @"\";
             foreach (var data in kv)

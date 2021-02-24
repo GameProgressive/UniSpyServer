@@ -6,7 +6,6 @@ using NetCoreServer;
 using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass.Network.UDP;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 
 namespace UniSpyLib.Network
@@ -51,15 +50,13 @@ namespace UniSpyLib.Network
 
         public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Send] [{endpoint}] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.LogNetworkTraffic("Send", Endpoint, buffer, size);
             return base.Send(endpoint, buffer, offset, size);
         }
 
         public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Send] [{endpoint}] {StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.LogNetworkTraffic("Send", Endpoint, buffer, size);
             return base.SendAsync(endpoint, buffer, offset, size);
         }
 
@@ -109,10 +106,8 @@ namespace UniSpyLib.Network
             byte[] message = new byte[(int)size];
             Array.Copy(buffer, 0, message, 0, (int)size);
 
-            LogWriter.ToLog(LogEventLevel.Debug,
-                $"[Recv] [{endPoint}]{StringExtensions.ReplaceUnreadableCharToHex(buffer, 0, (int)size)}");
+            LogWriter.LogNetworkTraffic("Recv", (IPEndPoint)endPoint, buffer, size);
             //even if we did not response we keep receive message
-            ReceiveAsync();
             UniSpyUDPSessionBase tempSession;
             if (SessionManager.Sessions.ContainsKey((IPEndPoint)endPoint))
             {
@@ -124,6 +119,8 @@ namespace UniSpyLib.Network
                 tempSession = CreateSession(endPoint);
                 SessionManager.AddSession(tempSession.RemoteIPEndPoint, tempSession);
             }
+
+            ReceiveAsync();
             OnReceived(tempSession, message);
         }
     }

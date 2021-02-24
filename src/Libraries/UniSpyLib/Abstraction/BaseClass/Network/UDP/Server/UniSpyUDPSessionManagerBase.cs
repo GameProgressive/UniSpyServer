@@ -55,6 +55,27 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.UDP
             }
         }
 
+        //public UniSpyUDPSessionBase GetOrAdd(IPEndPoint key, UniSpyUDPSessionBase value)
+        //{
+        //    UniSpyUDPSessionBase tempSession;
+        //    if (Sessions.ContainsKey(key))
+        //    {
+        //        tempSession = GetSession(key);
+        //        tempSession.LastPacketReceivedTime = DateTime.Now;
+        //    }
+        //    else
+        //    {
+        //        tempSession = value;
+        //        AddSession(key, value);
+        //    }
+        //    return tempSession;
+        //}
+
+        public UniSpyUDPSessionBase GetOrAddSession(IPEndPoint key, UniSpyUDPSessionBase session)
+        {
+            return (UniSpyUDPSessionBase)Sessions.GetOrAdd(key, session);
+        }
+
         public bool AddSession(IPEndPoint key, UniSpyUDPSessionBase session)
         {
             return Sessions.TryAdd(key, session);

@@ -26,7 +26,7 @@ namespace Chat.Entity.Structure.Request
             {
                 ErrorCode = ChatErrorCode.Parse;
             }
-            KeyValues = StringExtensions.ConvertKVStrToDic(_longParam);
+            KeyValues = StringExtensions.ConvertKVStringToDictionary(_longParam);
         }
     }
 }
