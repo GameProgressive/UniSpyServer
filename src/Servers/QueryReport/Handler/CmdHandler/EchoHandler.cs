@@ -1,4 +1,5 @@
 ﻿using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Structure.Misc;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
 using QueryReport.Handler.SystemHandler.Redis;
@@ -25,7 +26,11 @@ namespace QueryReport.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO prevent one pc create multiple game servers
-            var searchKey = GameServerInfoRedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
+            var searchKey = new GameServerInfoRedisKey()
+            {
+                RemoteIPEndPoint = _session.RemoteIPEndPoint
+            };
+
             var matchedKeys = GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
             if (matchedKeys.Count() != 1)
             {

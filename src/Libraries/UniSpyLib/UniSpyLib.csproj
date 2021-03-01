@@ -29,5 +29,6 @@
         <Folder Include="Entity\Enumerate\" />
         <Folder Include="Abstraction\BaseClass\Network\" />
         <Folder Include="Abstraction\BaseClass\Factory\" />
+        <Folder Include="Abstraction\BaseClass\Redis\" />
     </ItemGroup>
 </Project>

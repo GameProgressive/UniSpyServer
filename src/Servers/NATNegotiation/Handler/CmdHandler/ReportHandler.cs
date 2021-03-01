@@ -1,6 +1,8 @@
 ﻿using NATNegotiation.Abstraction.BaseClass;
+using NATNegotiation.Application;
 using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Entity.Structure.Misc;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
@@ -23,7 +25,6 @@ namespace NATNegotiation.Handler.CmdHandler
             set { base._result = value; }
         }
         private NatUserInfo _userInfo;
-
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new ReportResult();
@@ -32,10 +33,17 @@ namespace NATNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             //_userInfo.IsGotReportPacket = true;
-            string _fullKey = NatUserInfoRedisOperator.BuildFullKey(_session.RemoteIPEndPoint, _request.PortType, _request.Cookie);
+            var fullKey = new NatUserInfoRedisKey()
+            {
+                ServerID = NNServerFactory.Server.ServerID,
+                RemoteIPEndPoint = _session.RemoteIPEndPoint,
+                PortType = _request.PortType,
+                Cookie = _request.Cookie
+            };
+
             try
             {
-                _userInfo = NatUserInfoRedisOperator.GetSpecificValue(_fullKey);
+                _userInfo = NatUserInfoRedisOperator.GetSpecificValue(fullKey);
             }
             catch
             {
@@ -50,12 +58,12 @@ namespace NATNegotiation.Handler.CmdHandler
                 }
 
                 _userInfo.RetryNATNegotiationTime++;
-                NatUserInfoRedisOperator.SetKeyValue(_fullKey, _userInfo);
+                NatUserInfoRedisOperator.SetKeyValue(fullKey, _userInfo);
             }
             else
             {
                 // natnegotiation successed we delete the negotiator
-                NatUserInfoRedisOperator.DeleteKeyValue(_fullKey);
+                NatUserInfoRedisOperator.DeleteKeyValue(fullKey);
             }
         }
 

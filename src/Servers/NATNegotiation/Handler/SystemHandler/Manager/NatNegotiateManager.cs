@@ -1,5 +1,6 @@
 ﻿using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Entity.Structure.Misc;
 using NATNegotiation.Entity.Structure.Result;
 using NATNegotiation.Handler.SystemHandler.Redis;
 using Serilog.Events;
@@ -15,7 +16,11 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
     {
         public static void Negotiate(NatPortType portType, byte version, uint cookie)
         {
-            var searchKey = NatUserInfoRedisOperator.BuildSearchKey(portType, cookie);
+            var searchKey = new NatUserInfoRedisKey()
+            {
+                PortType = portType,
+                Cookie = cookie
+            };
 
             List<string> matchedKeys = NatUserInfoRedisOperator.GetMatchedKeys(searchKey);
             // because cookie is unique for each client we will only get 2 of keys

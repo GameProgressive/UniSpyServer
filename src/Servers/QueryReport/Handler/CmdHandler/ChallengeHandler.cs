@@ -1,6 +1,7 @@
 ﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Misc;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
@@ -28,7 +29,11 @@ namespace QueryReport.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            var searchKey = GameServerInfoRedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
+            var searchKey = new GameServerInfoRedisKey()
+            {
+                RemoteIPEndPoint = _session.RemoteIPEndPoint
+            };
+
             var matchedKey = GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
             if (matchedKey.Count() != 1)
             {

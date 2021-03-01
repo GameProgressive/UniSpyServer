@@ -1,4 +1,5 @@
 ﻿using QueryReport.Entity.Structure.Group;
+using QueryReport.Entity.Structure.Misc;
 using QueryReport.Handler.SystemHandler.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
@@ -17,7 +18,9 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var matchedKey = PeerGroupInfoRedisOperator.GetMatchedKeys(_request.GameName);
+            var searchKey= new PeerGroupInfoRedisKey() { GameName = _request.GameName };
+            var matchedKey  =  PeerGroupInfoRedisOperator.GetMatchedKeys(searchKey);
+
             // Game name is unique in redis database
             if (matchedKey.Count != 1)
             {

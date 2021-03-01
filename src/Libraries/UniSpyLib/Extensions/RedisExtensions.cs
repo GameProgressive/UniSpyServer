@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyLib.Extensions
 {
-    public enum RedisDBNumber
+    public enum RedisDataBaseNumber
     {
         PeerGroup = 0,
         GameServer = 1,
@@ -18,7 +18,7 @@ namespace UniSpyLib.Extensions
     /// </summary>
     public class RedisExtensions
     {
-        public static bool SetKeyValue(string key, string value, RedisDBNumber? dbNumber, TimeSpan? timeSpan = null)
+        public static bool SetKeyValue(string key, string value, RedisDataBaseNumber? dbNumber, TimeSpan? timeSpan = null)
         {
             var redis = UniSpyServerFactoryBase.Redis.GetDatabase((int)dbNumber);
             return redis.StringSet(key, value, timeSpan);
@@ -30,7 +30,7 @@ namespace UniSpyLib.Extensions
         /// <param name="fullKey">The specific key</param>
         /// <param name="dbNumber">database number</param>
         /// <returns></returns>
-        public static string GetSpecificValue(string fullKey, RedisDBNumber? dbNumber)
+        public static string GetSpecificValue(string fullKey, RedisDataBaseNumber? dbNumber)
         {
             var redis = UniSpyServerFactoryBase.Redis.GetDatabase((int)dbNumber);
             var matchedKeys = GetMatchedKeys(fullKey, dbNumber);
@@ -48,14 +48,14 @@ namespace UniSpyLib.Extensions
             }
         }
 
-        public static bool DeleteKeyValue(string key, RedisDBNumber? dBNumber)
+        public static bool DeleteKeyValue(string key, RedisDataBaseNumber? dBNumber)
         {
             var redis = UniSpyServerFactoryBase.Redis.GetDatabase((int)dBNumber);
             return redis.KeyDelete(key);
         }
 
 
-        public static List<string> GetAllKeys(RedisDBNumber? dbNumber)
+        public static List<string> GetAllKeys(RedisDataBaseNumber? dbNumber)
         {
             List<string> matchedKeys = new List<string>();
 
@@ -75,7 +75,7 @@ namespace UniSpyLib.Extensions
         /// </summary>
         /// <param name="subKey">the substring of a key</param>
         /// <returns></returns>
-        public static List<string> GetMatchedKeys(string subKey, RedisDBNumber? dbNumber)
+        public static List<string> GetMatchedKeys(string subKey, RedisDataBaseNumber? dbNumber)
         {
             List<string> matchKeys = new List<string>();
 
@@ -90,7 +90,7 @@ namespace UniSpyLib.Extensions
             return matchKeys;
         }
 
-        public static Dictionary<string, string> GetMatchedKeyValues(string subKey, RedisDBNumber? dbNumber)
+        public static Dictionary<string, string> GetMatchedKeyValues(string subKey, RedisDataBaseNumber? dbNumber)
         {
             var dict = new Dictionary<string, string>();
             var matchedKeys = GetMatchedKeys(subKey, dbNumber);
@@ -102,7 +102,7 @@ namespace UniSpyLib.Extensions
         }
 
 
-        public static Dictionary<string, string> GetAllKeyValues(RedisDBNumber? dbNumber)
+        public static Dictionary<string, string> GetAllKeyValues(RedisDataBaseNumber? dbNumber)
         {
             var keys = GetAllKeys(dbNumber);
             var dict = new Dictionary<string, string>();

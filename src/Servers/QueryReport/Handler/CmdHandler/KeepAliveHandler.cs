@@ -1,6 +1,7 @@
 ﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Misc;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
@@ -28,8 +29,11 @@ namespace QueryReport.Handler.CmdHandler
             {
                 _session.InstantKey = _request.InstantKey;
             }
-            _response = new QRDefaultResponse(_request, _result);
-            var searchKey = GameServerInfoRedisOperator.BuildSearchKey(_session.RemoteIPEndPoint);
+            var searchKey = new GameServerInfoRedisKey()
+            {
+                RemoteIPEndPoint = _session.RemoteIPEndPoint
+            };
+
             var result = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey);
             if (result.Count != 1)
             {

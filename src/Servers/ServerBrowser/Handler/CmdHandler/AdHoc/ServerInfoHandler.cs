@@ -1,4 +1,5 @@
 ﻿using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Misc;
 using QueryReport.Handler.SystemHandler.Redis;
 using Serilog.Events;
 using ServerBrowser.Abstraction.BaseClass;
@@ -35,7 +36,8 @@ namespace ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {
             //_result.Flags = hasFullrule
-            var result = GameServerInfoRedisOperator.GetMatchedKeyValues(_request.TargetServerIP)
+            var searchKey = new GameServerInfoRedisKey() { RemoteIPEndPoint = _request.TargetIPEndPoint };
+            var result = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey)
                 .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);
             //TODO if there are no server found, we still send response back to client

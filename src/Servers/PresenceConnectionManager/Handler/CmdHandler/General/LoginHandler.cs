@@ -4,6 +4,7 @@ using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceConnectionManager.Handler.CmdHandler.General;
+using PresenceConnectionManager.Handler.SystemHandler.Redis;
 using PresenceConnectionManager.Structure;
 using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;

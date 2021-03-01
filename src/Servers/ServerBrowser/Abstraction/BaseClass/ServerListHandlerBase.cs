@@ -1,11 +1,6 @@
-﻿using QueryReport.Entity.Structure;
-using Serilog.Events;
-using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure.Result;
-using System.Collections.Generic;
+﻿using ServerBrowser.Entity.Enumerate;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {

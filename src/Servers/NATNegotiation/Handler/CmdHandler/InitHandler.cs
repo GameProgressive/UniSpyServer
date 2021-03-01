@@ -1,5 +1,7 @@
 ﻿using NATNegotiation.Abstraction.BaseClass;
+using NATNegotiation.Application;
 using NATNegotiation.Entity.Structure;
+using NATNegotiation.Entity.Structure.Misc;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
@@ -18,18 +20,21 @@ namespace NATNegotiation.Handler.CmdHandler
             set { base._result = value; }
         }
         private NatUserInfo _userInfo;
-        private string _fullKey;
         public InitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new InitResult();
         }
         protected override void DataOperation()
-        {            //TODO we get user infomation from redis
-            _fullKey = NatUserInfoRedisOperator.BuildFullKey(
-                                        _session.RemoteIPEndPoint,
-                                        _request.PortType,
-                                        _request.Cookie);
-            _userInfo = NatUserInfoRedisOperator.GetSpecificValue(_fullKey);
+        {
+            //TODO we get user infomation from redis
+            var fullKey = new NatUserInfoRedisKey()
+            {
+                ServerID = NNServerFactory.Server.ServerID,
+                RemoteIPEndPoint = _session.RemoteIPEndPoint,
+                PortType = _request.PortType,
+                Cookie = _request.Cookie
+            };
+            _userInfo = NatUserInfoRedisOperator.GetSpecificValue(fullKey);
 
 
             if (_userInfo == null)
@@ -39,7 +44,7 @@ namespace NATNegotiation.Handler.CmdHandler
             }
             _userInfo.InitRequestInfo = _request;
             _userInfo.LastPacketRecieveTime = DateTime.Now;
-            NatUserInfoRedisOperator.SetKeyValue(_fullKey, _userInfo);
+            NatUserInfoRedisOperator.SetKeyValue(fullKey, _userInfo);
         }
 
         protected override void ResponseConstruct()

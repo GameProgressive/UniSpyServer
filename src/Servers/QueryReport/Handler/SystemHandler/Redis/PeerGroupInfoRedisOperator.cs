@@ -4,6 +4,8 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 using UniSpyLib.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.BaseClass.Redis;
+using QueryReport.Entity.Structure.Misc;
 
 namespace QueryReport.Handler.SystemHandler.Redis
 {
@@ -11,20 +13,9 @@ namespace QueryReport.Handler.SystemHandler.Redis
     {
         static PeerGroupInfoRedisOperator()
         {
-            _dbNumber = RedisDBNumber.PeerGroup;
+            _dbNumber = RedisDataBaseNumber.PeerGroup;
         }
 
-        public static string BuildSearchKey(string gameName)
-        {
-            return UniSpyRedisOperatorBase<PeerGroupInfo>
-                .BuildSearchKey($"GameName:{gameName}");
-        }
-
-        public static string BuildFullKey(string gameName)
-        {
-            return UniSpyRedisOperatorBase<PeerGroupInfo>
-                .BuildFullKey($"GameName:{gameName}");
-        }
         /// <summary>
         /// Select specific game room
         /// </summary>
@@ -49,13 +40,6 @@ namespace QueryReport.Handler.SystemHandler.Redis
             }
         }
 
-        public new static bool SetKeyValue(string gameName,PeerGroupInfo gameRoom)
-        {
-            return UniSpyRedisOperatorBase<PeerGroupInfo>.SetKeyValue(
-                $"GameName:{gameName}",
-                gameRoom);
-        }
-
         public static void LoadAllGameGroupsToRedis()
         {
             using (var db = new retrospyContext())
@@ -67,14 +51,19 @@ namespace QueryReport.Handler.SystemHandler.Redis
 
                 foreach (var gameName in gameNames)
                 {
-                    var searchKey = BuildSearchKey(gameName);
+                    var searchKey = new PeerGroupInfoRedisKey()
+                    {
+                        GameName = gameName
+                    };
+
                     var matchedKeys = GetMatchedKeys(searchKey);
                     if (matchedKeys.Count() != 0)
                     {
                         continue;
                     }
                     var gameRoom = LoadGameRooms(gameName);
-                    SetKeyValue(gameName,gameRoom);
+                    var fullKey = new PeerGroupInfoRedisKey() { GameName = gameName };
+                    SetKeyValue(fullKey, gameRoom);
                 }
             }
         }

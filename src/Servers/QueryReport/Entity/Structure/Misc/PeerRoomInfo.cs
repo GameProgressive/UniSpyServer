@@ -9,8 +9,10 @@ namespace QueryReport.Entity.Structure.Group
         public static readonly List<string> GameSpyStandardKey =
             new List<string>
             {
-                "groupid","hostname","numwaiting","maxwaiting","maxplayers","numservers",
-                "numplayers","password","numGames","numplaying"
+                "groupid","hostname","numwaiting",
+                "maxwaiting","maxplayers","numservers",
+                "numplayers","password","numGames",
+                "numplaying"
             };
 
         public Dictionary<string, string> KeyValue { get; protected set; }

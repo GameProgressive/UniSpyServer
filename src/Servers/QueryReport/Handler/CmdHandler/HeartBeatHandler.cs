@@ -1,13 +1,15 @@
-﻿using QueryReport.Abstraction.BaseClass;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using QueryReport.Abstraction.BaseClass;
+using QueryReport.Application;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Misc;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
 using QueryReport.Handler.SystemHandler.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
@@ -56,9 +58,13 @@ namespace QueryReport.Handler.CmdHandler
 
         private void UpdateGameServerByState()
         {
-            var fullKey = GameServerInfoRedisOperator.BuildFullKey(
-                _session.RemoteIPEndPoint,
-                _gameServerInfo.ServerData.KeyValue["gamename"]);
+            var fullKey = new GameServerInfoRedisKey()
+            {
+                ServerID = QRServerFactory.Server.ServerID,
+                RemoteIPEndPoint = _session.RemoteIPEndPoint,
+                GameName = _gameServerInfo.ServerData.KeyValue["gamename"]
+            };
+
             if (_gameServerInfo.ServerData.ServerStatus == GameServerServerStatus.Shutdown)
             {
                 GameServerInfoRedisOperator.DeleteKeyValue(fullKey);
@@ -80,22 +86,32 @@ namespace QueryReport.Handler.CmdHandler
             int indexOfGameName = tempKeyVal.IndexOf("gamename");
             string gameName = tempKeyVal[indexOfGameName + 1];
 
-            string fullKey = GameServerInfoRedisOperator.BuildFullKey(_session.RemoteIPEndPoint, gameName);
+            var fullKey = new GameServerInfoRedisKey()
+            {
+                ServerID = QRServerFactory.Server.ServerID,
+                RemoteIPEndPoint = _session.RemoteIPEndPoint,
+                GameName = gameName
+            };
 
             //make sure one ip address create one server on each game
-            string searchKey = GameServerInfoRedisOperator.BuildSearchKey(_session.RemoteIPEndPoint, gameName);
+            var searchKey = new GameServerInfoRedisKey()
+            {
+                RemoteIPEndPoint = _session.RemoteIPEndPoint,
+                GameName = gameName
+            };
+
             List<string> matchedKeys =
                 GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
 
             //we check if the database have multiple game server if it contains
-            if (matchedKeys.Contains(fullKey))
+            if (matchedKeys.Contains(fullKey.BuildFullKey()))
             {
                 //save remote server data to local
                 _gameServerInfo = GameServerInfoRedisOperator.GetSpecificValue(fullKey);
                 //delete all servers except this server
                 foreach (var key in matchedKeys)
                 {
-                    if (key == fullKey)
+                    if (key == fullKey.BuildFullKey())
                     {
                         continue;
                     }

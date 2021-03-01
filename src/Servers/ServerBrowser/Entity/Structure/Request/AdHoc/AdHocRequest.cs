@@ -11,9 +11,9 @@ namespace ServerBrowser.Entity.Structure.Request
         /// <summary>
         /// The game server client search for
         /// </summary>
-        public string TargetServerIP => TargetEndPoint.Address.ToString();
-        public string TargetServerHostPort => TargetEndPoint.Port.ToString();
-        public IPEndPoint TargetEndPoint { get; private set; }
+        public string TargetServerIP => TargetIPEndPoint.Address.ToString();
+        public string TargetServerHostPort => TargetIPEndPoint.Port.ToString();
+        public IPEndPoint TargetIPEndPoint { get; private set; }
 
         public AdHocRequest(byte[] rawRequest) : base(rawRequest)
         {
@@ -34,7 +34,7 @@ namespace ServerBrowser.Entity.Structure.Request
             Array.Reverse(port);
 
             //TODO fix for gbrome!!!!!!!!!!!!!!!!!!!
-            TargetEndPoint = ByteTools.GetIPEndPoint(ip, port);
+            TargetIPEndPoint = ByteTools.GetIPEndPoint(ip, port);
         }
     }
 }
