@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
-using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Network;

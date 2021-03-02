@@ -1,15 +1,13 @@
-﻿using QueryReport.Entity.Structure.Group;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Database.DatabaseModel.MySql;
-using UniSpyLib.Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass.Redis;
-using QueryReport.Entity.Structure.Misc;
+using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyLib.Extensions;
 
-namespace QueryReport.Handler.SystemHandler.Redis
+namespace QueryReport.Entity.Structure.Redis
 {
-    public sealed class PeerGroupInfoRedisOperator : UniSpyRedisOperatorBase<PeerGroupInfo>
+    public sealed class PeerGroupInfoRedisOperator :
+        UniSpyRedisOperatorBase<PeerGroupInfoRedisKey, PeerGroupInfo>
     {
         static PeerGroupInfoRedisOperator()
         {

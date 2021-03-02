@@ -24,6 +24,7 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Handler\SystemHandler\Redis\" />
+        <Folder Include="Entity\Structure\Redis\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />

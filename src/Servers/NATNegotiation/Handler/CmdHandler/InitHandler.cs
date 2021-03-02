@@ -1,12 +1,10 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
+﻿using System;
+using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Application;
-using NATNegotiation.Entity.Structure;
-using NATNegotiation.Entity.Structure.Misc;
+using NATNegotiation.Entity.Structure.Redis;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
-using NATNegotiation.Handler.SystemHandler.Redis;
-using System;
 using UniSpyLib.Abstraction.Interface;
 
 namespace NATNegotiation.Handler.CmdHandler

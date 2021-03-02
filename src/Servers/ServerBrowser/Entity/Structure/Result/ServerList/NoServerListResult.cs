@@ -1,4 +1,5 @@
 ﻿using QueryReport.Entity.Structure;
+using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using System;
 using System.Collections.Generic;

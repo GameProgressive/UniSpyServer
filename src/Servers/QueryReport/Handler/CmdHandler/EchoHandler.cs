@@ -1,8 +1,7 @@
 ﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Structure.Misc;
+using QueryReport.Entity.Structure.Redis;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
-using QueryReport.Handler.SystemHandler.Redis;
 using Serilog.Events;
 using System;
 using System.Linq;

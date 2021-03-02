@@ -1,13 +1,11 @@
-﻿using NATNegotiation.Entity.Enumerate;
-using NATNegotiation.Entity.Structure;
-using NATNegotiation.Entity.Structure.Misc;
-using NATNegotiation.Entity.Structure.Result;
-using NATNegotiation.Handler.SystemHandler.Redis;
-using Serilog.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using NATNegotiation.Entity.Enumerate;
+using NATNegotiation.Entity.Structure.Redis;
+using NATNegotiation.Entity.Structure.Result;
+using Serilog.Events;
 using UniSpyLib.Logging;
 
 namespace NATNegotiation.Handler.SystemHandler.Manager
@@ -22,7 +20,7 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
                 Cookie = cookie
             };
 
-            List<string> matchedKeys = NatUserInfoRedisOperator.GetMatchedKeys(searchKey);
+            var matchedKeys = NatUserInfoRedisOperator.GetMatchedKeys(searchKey);
             // because cookie is unique for each client we will only get 2 of keys
             if (matchedKeys.Count != 2)
             {
@@ -30,7 +28,7 @@ namespace NATNegotiation.Handler.SystemHandler.Manager
                 return;
             }
 
-            Dictionary<string, NatUserInfo> negotiatorPairs = new Dictionary<string, NatUserInfo>();
+            var negotiatorPairs = new Dictionary<NatUserInfoRedisKey, NatUserInfo>();
 
             foreach (var key in matchedKeys)
             {

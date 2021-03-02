@@ -1,11 +1,9 @@
-﻿using System.Threading.Tasks;
-using Chat.Abstraction.BaseClass;
+﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Result.Channel;
 using Chat.Handler.SystemHandler.ChannelManage;
-using QueryReport.Entity.Structure.Misc;
-using QueryReport.Handler.SystemHandler.Redis;
+using QueryReport.Entity.Structure.Redis;
 using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.Channel

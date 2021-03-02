@@ -1,4 +1,4 @@
-﻿using QueryReport.Entity.Structure;
+﻿using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 
 namespace ServerBrowser.Entity.Structure.Result

@@ -82,7 +82,7 @@ namespace UniSpyLib.Extensions
             foreach (var endPoint in UniSpyServerFactoryBase.Redis.GetEndPoints())
             {
                 var server = UniSpyServerFactoryBase.Redis.GetServer(endPoint);
-                foreach (var key in server.Keys((int)dbNumber, pattern: $"*{subKey}*"))
+                foreach (var key in server.Keys(database: (int)dbNumber, pattern: subKey))
                 {
                     matchKeys.Add(key);
                 }

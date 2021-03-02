@@ -3,7 +3,7 @@ using NATNegotiation.Handler.SystemHandler;
 using System;
 using System.Net;
 
-namespace NATNegotiation.Entity.Structure
+namespace NATNegotiation.Entity.Structure.Redis
 {
     internal sealed class NatUserInfo
     {

@@ -1,8 +1,4 @@
-﻿using QueryReport.Entity.Structure;
-using QueryReport.Handler.SystemHandler.Redis;
-using System;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Handler.SystemHandler.ServerList
 {

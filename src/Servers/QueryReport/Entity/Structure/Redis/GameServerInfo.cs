@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace QueryReport.Entity.Structure
+namespace QueryReport.Entity.Structure.Redis
 {
     /// <summary>
     /// This is the server 

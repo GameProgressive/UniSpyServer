@@ -1,8 +1,8 @@
-﻿using QueryReport.Handler.CmdSwitcher;
-using QueryReport.Handler.SystemHandler.Redis;
-using QueryReport.Handler.SystemHandler.ServerList;
-using System;
+﻿using System;
 using System.Net;
+using QueryReport.Entity.Structure.Redis;
+using QueryReport.Handler.CmdSwitcher;
+using QueryReport.Handler.SystemHandler.ServerList;
 using UniSpyLib.Network;
 
 namespace QueryReport.Network
@@ -27,7 +27,7 @@ namespace QueryReport.Network
 
         protected override void OnReceived(UniSpyUDPSessionBase session, byte[] message)
         {
-            base.OnReceived(session, message);
+            //base.OnReceived(session, message);
             new QRCmdSwitcher(session, message).Switch();
         }
     }

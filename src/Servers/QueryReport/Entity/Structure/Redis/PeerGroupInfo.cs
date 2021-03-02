@@ -1,8 +1,7 @@
-﻿using QueryReport.Handler.SystemHandler.Redis;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace QueryReport.Entity.Structure.Group
+namespace QueryReport.Entity.Structure.Redis
 {
 
     public class PeerGroupInfo

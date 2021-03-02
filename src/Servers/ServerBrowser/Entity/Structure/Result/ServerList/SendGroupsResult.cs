@@ -1,6 +1,5 @@
-﻿using QueryReport.Entity.Structure.Group;
+﻿using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Enumerate;
 
 namespace ServerBrowser.Entity.Structure.Result
 {

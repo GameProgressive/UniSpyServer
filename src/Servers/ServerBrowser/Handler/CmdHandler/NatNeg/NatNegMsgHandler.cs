@@ -1,8 +1,6 @@
 ﻿using Newtonsoft.Json;
-using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Misc;
 using QueryReport.Entity.Structure.NatNeg;
-using QueryReport.Handler.SystemHandler.Redis;
+using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Request;
@@ -41,16 +39,16 @@ namespace ServerBrowser.Handler.CmdHandler
                 RemoteIPEndPoint = _adHocRequest.TargetIPEndPoint
             };
 
-            var result = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey)
+            var matchedKeys = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey)
                 .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _adHocRequest.TargetServerHostPort);
 
-            if (result.Count() != 1)
+            if (matchedKeys.Count() != 1)
             {
                 _result.ErrorCode = SBErrorCode.NoServersFound;
                 return;
             }
-            _gameServer = result.FirstOrDefault();
+            _gameServer = matchedKeys.First();
         }
 
         protected override void DataOperation()

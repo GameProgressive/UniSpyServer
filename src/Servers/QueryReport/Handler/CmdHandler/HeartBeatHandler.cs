@@ -4,12 +4,10 @@ using System.Linq;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Application;
 using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Misc;
+using QueryReport.Entity.Structure.Redis;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
-using QueryReport.Handler.SystemHandler.Redis;
 using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
@@ -100,22 +98,22 @@ namespace QueryReport.Handler.CmdHandler
                 GameName = gameName
             };
 
-            List<string> matchedKeys =
+            var matchedKeys =
                 GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
 
             //we check if the database have multiple game server if it contains
-            if (matchedKeys.Contains(fullKey.BuildFullKey()))
+            if (matchedKeys.Contains(fullKey))
             {
                 //save remote server data to local
                 _gameServerInfo = GameServerInfoRedisOperator.GetSpecificValue(fullKey);
                 //delete all servers except this server
-                foreach (var key in matchedKeys)
+                foreach (var matchedKey in matchedKeys)
                 {
-                    if (key == fullKey.BuildFullKey())
+                    if (matchedKey == fullKey)
                     {
                         continue;
                     }
-                    GameServerInfoRedisOperator.DeleteKeyValue(key);
+                    GameServerInfoRedisOperator.DeleteKeyValue(matchedKey);
                 }
             }
             else //redis do not have this server we create then update
