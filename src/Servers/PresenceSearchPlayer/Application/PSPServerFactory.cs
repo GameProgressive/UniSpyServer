@@ -32,12 +32,9 @@ namespace PresenceSearchPlayer
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(UniSpyServerConfig cfg)
         {
-           if (cfg.ServerName == ServerName)
+            if (cfg.ServerName == ServerName)
             {
                 Server = new PSPServer(cfg.ServerID, cfg.ListeningEndPoint);
-
-                Console.WriteLine(
-                    StringExtensions.FormatTableContext(cfg.ServerName, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

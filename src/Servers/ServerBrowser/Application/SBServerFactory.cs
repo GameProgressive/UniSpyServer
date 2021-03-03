@@ -41,9 +41,6 @@ namespace ServerBrowser.Application
            if (cfg.ServerName == ServerName)
             {
                 Server = new SBServer(cfg.ServerID, cfg.ListeningEndPoint);
-
-                Console.WriteLine(
-                    StringExtensions.FormatTableContext(cfg.ServerName, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

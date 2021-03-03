@@ -44,9 +44,6 @@ namespace WebServices.Application
            if (cfg.ServerName == ServerName)
             {
                 _hostBuilder = CreateHostBuilder(cfg);
-
-                Console.WriteLine(StringExtensions
-                  .FormatTableContext(cfg.ServerName, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }
