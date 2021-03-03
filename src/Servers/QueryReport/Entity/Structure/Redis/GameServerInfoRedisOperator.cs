@@ -8,7 +8,6 @@ namespace QueryReport.Entity.Structure.Redis
     {
         static GameServerInfoRedisOperator() 
         {
-            _dbNumber = RedisDataBaseNumber.GameServer;
         }
     }
 }

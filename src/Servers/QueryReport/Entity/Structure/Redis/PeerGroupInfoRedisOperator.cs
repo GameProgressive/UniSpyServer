@@ -9,11 +9,6 @@ namespace QueryReport.Entity.Structure.Redis
     public sealed class PeerGroupInfoRedisOperator :
         UniSpyRedisOperatorBase<PeerGroupInfoRedisKey, PeerGroupInfo>
     {
-        static PeerGroupInfoRedisOperator()
-        {
-            _dbNumber = RedisDataBaseNumber.PeerGroup;
-        }
-
         /// <summary>
         /// Select specific game room
         /// </summary>

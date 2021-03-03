@@ -3,6 +3,8 @@ using System.Net;
 using NATNegotiation.Entity.Enumerate;
 using Newtonsoft.Json;
 using UniSpyLib.Abstraction.BaseClass.Redis;
+using UniSpyLib.Extensions;
+
 namespace NATNegotiation.Entity.Structure.Redis
 {
     public class NatUserInfoRedisKey : UniSpyRedisKeyBase
@@ -14,6 +16,7 @@ namespace NATNegotiation.Entity.Structure.Redis
         public uint Cookie { get; set; }
         public NatUserInfoRedisKey()
         {
+            DatabaseNumber = RedisDataBaseNumber.NatNeg;
         }
     }
 }

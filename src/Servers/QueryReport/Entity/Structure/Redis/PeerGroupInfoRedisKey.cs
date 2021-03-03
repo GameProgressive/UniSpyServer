@@ -10,6 +10,7 @@ namespace QueryReport.Entity.Structure.Redis
         public string GameName { get; set; }
         public PeerGroupInfoRedisKey()
         {
+            DatabaseNumber = RedisDataBaseNumber.PeerGroup;
         }
     }
 }

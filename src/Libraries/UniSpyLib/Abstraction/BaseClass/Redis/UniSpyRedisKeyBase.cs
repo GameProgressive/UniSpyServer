@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using UniSpyLib.Extensions;
 
 namespace UniSpyLib.Abstraction.BaseClass.Redis
 {
@@ -10,6 +11,10 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
         public string RedisSearchKey => BuildSearchKey();
         [JsonIgnore]
         public string RedisFullKey => BuildFullKey();
+        [JsonIgnore]
+        public RedisDataBaseNumber? DatabaseNumber { get; protected set; }
+        [JsonIgnore]
+        public TimeSpan? ExpireTime { get; protected set; }
         public UniSpyRedisKeyBase()
         {
         }

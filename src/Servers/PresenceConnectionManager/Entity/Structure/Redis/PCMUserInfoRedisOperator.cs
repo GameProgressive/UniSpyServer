@@ -5,11 +5,7 @@ using UniSpyLib.Extensions;
 namespace PresenceConnectionManager.Handler.SystemHandler.Redis
 {
     internal sealed class PCMUserInfoRedisOperator :
-        UniSpyRedisOperatorBase<PCMUserInfoRedisKey,PCMUserInfo>
+        UniSpyRedisOperatorBase<PCMUserInfoRedisKey, PCMUserInfo>
     {
-        static PCMUserInfoRedisOperator()
-        {
-            _dbNumber = RedisDataBaseNumber.GamePresence;
-        }
-    }        
+    }
 }

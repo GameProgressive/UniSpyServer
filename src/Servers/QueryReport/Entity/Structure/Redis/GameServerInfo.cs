@@ -1,4 +1,5 @@
-﻿using QueryReport.Entity.Structure.ReportData;
+﻿using Newtonsoft.Json;
+using QueryReport.Entity.Structure.ReportData;
 using System;
 using System.Net;
 
@@ -12,14 +13,16 @@ namespace QueryReport.Entity.Structure.Redis
         /// <summary>
         /// Last valid heart beat packet time
         /// </summary>
-        public DateTime LastPacketReceivedTime;
-        public IPEndPoint RemoteQueryReportIPEndPoint;
+        public DateTime LastPacketReceivedTime { get; set; }
+        public IPEndPoint RemoteQueryReportIPEndPoint { get; set; }
+        [JsonIgnore]
         public string RemoteQueryReportIP => RemoteQueryReportIPEndPoint.Address.ToString();
+        [JsonIgnore]
         public string RemoteQueryReportPort => RemoteQueryReportIPEndPoint.Port.ToString();
-        public int InstantKey;
-        public ServerData ServerData;
-        public PlayerData PlayerData;
-        public TeamData TeamData;
+        public int InstantKey { get; set; }
+        public ServerData ServerData { get; set; }
+        public PlayerData PlayerData { get; set; }
+        public TeamData TeamData { get; set; }
 
         public GameServerInfo()
         {
@@ -29,12 +32,12 @@ namespace QueryReport.Entity.Structure.Redis
             LastPacketReceivedTime = DateTime.Now;
         }
 
-        public GameServerInfo(EndPoint endPoint)
+        public GameServerInfo(IPEndPoint endPoint)
         {
             ServerData = new ServerData();
             PlayerData = new PlayerData();
             TeamData = new TeamData();
-            RemoteQueryReportIPEndPoint = (IPEndPoint)endPoint;
+            RemoteQueryReportIPEndPoint = endPoint;
             LastPacketReceivedTime = DateTime.Now;
         }
     }

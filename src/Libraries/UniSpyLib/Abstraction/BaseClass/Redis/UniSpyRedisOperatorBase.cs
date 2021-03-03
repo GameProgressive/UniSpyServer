@@ -17,8 +17,6 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
         /// <summary>
         /// Give value to this inside child class.
         /// </summary>
-        public static RedisDataBaseNumber? _dbNumber;
-        public static TimeSpan? _timeSpan;
         static UniSpyRedisOperatorBase()
         {
         }
@@ -26,34 +24,23 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
         public static bool SetKeyValue(UniSpyRedisKeyBase key, TValue value)
         {
             var jsonStr = JsonConvert.SerializeObject(value);
-            return RedisExtensions.SetKeyValue(key.RedisFullKey, jsonStr, _dbNumber);
+            return RedisExtensions.SetKeyValue(key.RedisFullKey, jsonStr, key.DatabaseNumber);
         }
 
         public static TValue GetSpecificValue(UniSpyRedisKeyBase key)
         {
-            var value = RedisExtensions.GetSpecificValue(key.RedisFullKey, _dbNumber);
+            var value = RedisExtensions.GetSpecificValue(key.RedisFullKey, key.DatabaseNumber);
             return value == null ? default(TValue) : JsonConvert.DeserializeObject<TValue>(value);
         }
 
         public static bool DeleteKeyValue(UniSpyRedisKeyBase key)
         {
-            return RedisExtensions.DeleteKeyValue(key.RedisFullKey, _dbNumber);
+            return RedisExtensions.DeleteKeyValue(key.RedisFullKey, key.DatabaseNumber);
         }
 
         public static List<TKey> GetMatchedKeys(UniSpyRedisKeyBase key)
         {
-            var keyList = RedisExtensions.GetMatchedKeys(key.RedisSearchKey, _dbNumber);
-            List<TKey> keys = new List<TKey>();
-            foreach (var k in keyList)
-            {
-                keys.Add(JsonConvert.DeserializeObject<TKey>(k));
-            }
-            return keys;
-        }
-
-        public static List<TKey> GetAllKeys()
-        {
-            var keyList = RedisExtensions.GetAllKeys(_dbNumber);
+            var keyList = RedisExtensions.GetMatchedKeys(key.RedisSearchKey, key.DatabaseNumber);
             List<TKey> keys = new List<TKey>();
             foreach (var k in keyList)
             {
@@ -64,20 +51,31 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
 
         public static Dictionary<TKey, TValue> GetMatchedKeyValues(UniSpyRedisKeyBase key)
         {
-            var keyValuePairs = RedisExtensions.GetMatchedKeyValues(key.RedisSearchKey, _dbNumber);
+            var keyValuePairs = RedisExtensions.GetMatchedKeyValues(key.RedisSearchKey, key.DatabaseNumber);
             var newDict = keyValuePairs.ToDictionary(
                 k => JsonConvert.DeserializeObject<TKey>(k.Key),
                 k => JsonConvert.DeserializeObject<TValue>(k.Value));
             return newDict;
         }
 
-        public static Dictionary<TKey, TValue> GetAllKeyValues()
-        {
-            var keyValuePairs = RedisExtensions.GetAllKeyValues(_dbNumber);
-            var newDict = keyValuePairs.ToDictionary(
-                k => JsonConvert.DeserializeObject<TKey>(k.Key),
-                k => JsonConvert.DeserializeObject<TValue>(k.Value));
-            return newDict;
-        }
+        //public static List<TKey> GetAllKeys()
+        //{
+        //    var keyList = RedisExtensions.GetAllKeys();
+        //    List<TKey> keys = new List<TKey>();
+        //    foreach (var k in keyList)
+        //    {
+        //        keys.Add(JsonConvert.DeserializeObject<TKey>(k));
+        //    }
+        //    return keys;
+        //}
+
+        //public static Dictionary<TKey, TValue> GetAllKeyValues()
+        //{
+        //    var keyValuePairs = RedisExtensions.GetAllKeyValues();
+        //    var newDict = keyValuePairs.ToDictionary(
+        //        k => JsonConvert.DeserializeObject<TKey>(k.Key),
+        //        k => JsonConvert.DeserializeObject<TValue>(k.Value));
+        //    return newDict;
+        //}
     }
 }

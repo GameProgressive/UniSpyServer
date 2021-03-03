@@ -102,23 +102,13 @@ namespace QueryReport.Handler.CmdHandler
                 GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
 
             //we check if the database have multiple game server if it contains
-            if (matchedKeys.Contains(fullKey))
+            if (matchedKeys.Where(k => k.RedisFullKey == fullKey.RedisFullKey).Count() == 1)
             {
-                //save remote server data to local
                 _gameServerInfo = GameServerInfoRedisOperator.GetSpecificValue(fullKey);
-                //delete all servers except this server
-                foreach (var matchedKey in matchedKeys)
-                {
-                    if (matchedKey == fullKey)
-                    {
-                        continue;
-                    }
-                    GameServerInfoRedisOperator.DeleteKeyValue(matchedKey);
-                }
             }
-            else //redis do not have this server we create then update
+            else
             {
-                _gameServerInfo = new GameServerInfo(_session.RemoteEndPoint);
+                _gameServerInfo = new GameServerInfo(_session.RemoteIPEndPoint);
             }
         }
     }

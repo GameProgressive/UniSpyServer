@@ -1,6 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 using UniSpyLib.Abstraction.BaseClass.Redis;
+using UniSpyLib.Extensions;
 
 namespace PresenceConnectionManager.Handler.SystemHandler.Redis
 {
@@ -10,6 +11,7 @@ namespace PresenceConnectionManager.Handler.SystemHandler.Redis
         public Guid ServerID { get; set; }
         public PCMUserInfoRedisKey()
         {
+            DatabaseNumber = RedisDataBaseNumber.GamePresence;
         }
     }
 }
