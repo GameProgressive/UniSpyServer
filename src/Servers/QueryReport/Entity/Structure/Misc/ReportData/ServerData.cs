@@ -21,7 +21,6 @@ namespace QueryReport.Entity.Structure.ReportData
         {
             LogWriter.ToLog(LogEventLevel.Debug,
                 StringExtensions.ReplaceUnreadableCharToHex(serverData));
-
             string[] keyValueArray = serverData.Split("\0");
 
             for (int i = 0; i < keyValueArray.Length; i += 2)
@@ -45,17 +44,17 @@ namespace QueryReport.Entity.Structure.ReportData
                     // update exist value
                     if (KeyValue[tempKey] == tempValue)
                     {
-                        LogWriter.ToLog($"Ignoring same server key value {tempKey} : {tempValue}");
+                        //LogWriter.ToLog($"Ignoring same server key value {tempKey} : {tempValue}");
                     }
                     else
                     {
                         KeyValue[tempKey] = tempValue;
-                        LogWriter.ToLog($"Updated server key value {tempKey} : {tempValue}");
+                        //LogWriter.ToLog($"Updated server key value {tempKey} : {tempValue}");
                     }
                 }
                 else
                 {
-                    LogWriter.ToLog($"Added new server key value {tempKey}:{tempValue}");
+                    //LogWriter.ToLog($"Added new server key value {tempKey}:{tempValue}");
                     KeyValue.Add(tempKey, tempValue);
                 }
             }

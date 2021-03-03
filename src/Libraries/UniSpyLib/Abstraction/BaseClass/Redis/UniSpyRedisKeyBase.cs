@@ -35,9 +35,11 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
         private string BuildSearchKey()
         {
             var redisKey = JsonConvert.SerializeObject(this);
-            var pattern = new Regex("[ ',' , '{' , '}' ]");
-            var searchKey = pattern.Replace(redisKey, "*");
-            return searchKey;
+            var pattern1 = new Regex("[ ',' , '{' , '}' ]");
+            var pattern2 = new Regex("['\n',' ']");
+            redisKey = pattern1.Replace(redisKey, "*");
+            redisKey = pattern2.Replace(redisKey, "");
+            return redisKey;
         }
     }
 }

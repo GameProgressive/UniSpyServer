@@ -49,18 +49,18 @@ namespace QueryReport.Entity.Structure.ReportData
                     {
                         if (keyValue[tempKey] == tempValue)
                         {
-                            LogWriter.ToLog($"Ignoring same player key value {tempKey} : {tempValue}");
+                            //LogWriter.ToLog($"Ignoring same player key value {tempKey} : {tempValue}");
                         }
                         else
                         {
                             keyValue[tempKey] = tempValue;
-                            LogWriter.ToLog($"Updated player key value {tempKey} : {tempValue}");
+                            //LogWriter.ToLog($"Updated player key value {tempKey} : {tempValue}");
                         }
                     }
                     else
                     {
                         keyValue.Add(tempKey, tempValue);
-                        LogWriter.ToLog(LogEventLevel.Verbose, $"Updated new player key value {tempKey}:{tempValue}");
+                        //LogWriter.ToLog(LogEventLevel.Verbose, $"Updated new player key value {tempKey}:{tempValue}");
                     }
                 }
                 KeyValueList.Add(keyValue);

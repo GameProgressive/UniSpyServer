@@ -11,6 +11,8 @@ namespace QueryReport.Entity.Structure.Redis
         [JsonProperty(Order = -2)]
         public Guid ServerID { get; set; }
         public IPEndPoint RemoteIPEndPoint { get; set; }
+
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string GameName { get; set; }
         public GameServerInfoRedisKey()
         {

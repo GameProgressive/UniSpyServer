@@ -4,7 +4,6 @@ using StackExchange.Redis;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
-using UniSpyLib.Extensions;
 using UniSpyLib.MiscMethod;
 using UniSpyLib.UniSpyConfig;
 
