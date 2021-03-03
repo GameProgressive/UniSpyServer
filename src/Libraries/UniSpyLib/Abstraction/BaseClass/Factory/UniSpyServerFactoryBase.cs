@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using StackExchange.Redis;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
@@ -13,12 +14,11 @@ namespace UniSpyLib.Abstraction.BaseClass
     public abstract class UniSpyServerFactoryBase
     {
         public static readonly string RetroSpyVersion = "0.5.3";
-        public static string ServerName { get; protected set; }
         public static ConnectionMultiplexer Redis { get; protected set; }
         public static IUniSpyServer Server { get; protected set; }
-        public UniSpyServerFactoryBase(string serverName)
+        public static readonly string ServerName = Assembly.GetEntryAssembly().GetName().Name;
+        public UniSpyServerFactoryBase()
         {
-            ServerName = serverName;
         }
 
         public virtual void Start()
@@ -31,15 +31,16 @@ namespace UniSpyLib.Abstraction.BaseClass
 
         protected void LoadServerConfig()
         {
-            Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
-            Console.WriteLine(StringExtensions.FormatTableContext("Server Name", "Host Name", "Port"));
-            Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
             //Add all servers
             foreach (UniSpyServerConfig cfg in ConfigManager.Config.Servers)
             {
                 StartServer(cfg);
             }
-            Console.WriteLine(StringExtensions.FormatServerTableHeader("-----------", "--------------", "------"));
+            Server.Start();
+
+            var table = new ConsoleTables.ConsoleTable("Server Name", "Listening Address", "Listening Port");
+            table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
+            table.Write(ConsoleTables.Format.Alternative);
             Console.WriteLine("Server successfully started! ");
         }
 

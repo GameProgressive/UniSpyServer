@@ -20,7 +20,7 @@ namespace WebServices
 
             try
             {
-                Manager = new WebServerFactory(UniSpyServerName.Web);
+                Manager = new WebServerFactory();
                 Manager.Start();
             }
             catch (Exception e)

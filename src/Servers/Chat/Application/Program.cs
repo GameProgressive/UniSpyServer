@@ -16,7 +16,7 @@ namespace Chat.Application
             try
             {
                 //create a instance of ServerManager class
-                new ChatServerFactory(UniSpyServerName.Chat).Start();
+                new ChatServerFactory().Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.RetroSpyVersion;
             }
             catch (Exception e)

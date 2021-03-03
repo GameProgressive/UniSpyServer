@@ -88,16 +88,6 @@ namespace UniSpyLib.Extensions
         }
         #endregion
 
-        public static string FormatTableContext(string part1, string part2, string part3)
-        {
-            return $"|{part1,-11}|{part2,-14}|{part3,-6}|";
-        }
-        public static string FormatServerTableHeader(string part1, string part2, string part3)
-        {
-            return $"+{part1,-11}+{part2,-14}+{part3,-6}+";
-        }
-
-
         public static Dictionary<string, string> ConvertKVStringToDictionary(string kvStr)
         {
             Dictionary<string, string> dic = new Dictionary<string, string>();

@@ -13,7 +13,7 @@ namespace ServerBrowser.Application
 
             try
             {
-                new SBServerFactory(UniSpyServerName.SB).Start();
+                new SBServerFactory().Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.RetroSpyVersion;
             }
             catch (Exception e)

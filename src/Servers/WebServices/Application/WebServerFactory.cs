@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
+using System.Reflection;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
@@ -12,7 +13,7 @@ namespace WebServices.Application
     public class WebServerFactory : UniSpyServerFactoryBase
     {
         private IHostBuilder _hostBuilder;
-        public WebServerFactory(string serverName) : base(serverName)
+        public WebServerFactory()
         {
         }
 
@@ -40,12 +41,12 @@ namespace WebServices.Application
         }
         protected override void StartServer(UniSpyServerConfig cfg)
         {
-            if (cfg.Name == ServerName)
+           if (cfg.ServerName == ServerName)
             {
                 _hostBuilder = CreateHostBuilder(cfg);
 
                 Console.WriteLine(StringExtensions
-                  .FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                  .FormatTableContext(cfg.ServerName, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

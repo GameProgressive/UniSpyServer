@@ -21,10 +21,10 @@ namespace UniSpyLib.Network
         public TCPClientBase() : base
             (
                 ConfigManager.Config.Servers
-            .Where(s => s.Name == UniSpyServerFactoryBase.ServerName)
+            .Where(s => s.ServerName == UniSpyServerFactoryBase.ServerName)
             .First().RemoteAddress
                , ConfigManager.Config.Servers
-            .Where(s => s.Name == UniSpyServerFactoryBase.ServerName)
+            .Where(s => s.ServerName == UniSpyServerFactoryBase.ServerName)
             .First().RemotePort
             )
         {

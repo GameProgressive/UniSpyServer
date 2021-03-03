@@ -1,5 +1,6 @@
 ﻿using Chat.Network;
 using System;
+using System.Reflection;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
@@ -20,7 +21,7 @@ namespace Chat.Application
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public ChatServerFactory(string serverName) : base(serverName)
+        public ChatServerFactory()
         {
         }
 
@@ -30,12 +31,12 @@ namespace Chat.Application
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(UniSpyServerConfig cfg)
         {
-            if (cfg.Name == ServerName)
+            if (cfg.ServerName == ServerName)
             {
                 Server = new ChatServer(cfg.ServerID,cfg.ListeningEndPoint);
-                Server.Start();
+
                 Console.WriteLine(
-                    StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    StringExtensions.FormatTableContext(cfg.ServerName, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }

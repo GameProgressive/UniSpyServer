@@ -13,7 +13,7 @@ namespace QueryReport.Application
             try
             {
                 //create a instance of ServerManager class
-                new QRServerFactory(UniSpyServerName.QR).Start();
+                new QRServerFactory().Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.RetroSpyVersion;
             }
             catch (Exception e)

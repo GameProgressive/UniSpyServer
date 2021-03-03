@@ -1,6 +1,7 @@
 ﻿using ServerBrowser.Network;
 using System;
 using System.Net;
+using System.Reflection;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
@@ -21,7 +22,7 @@ namespace ServerBrowser.Application
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public SBServerFactory(string serverName) : base(serverName)
+        public SBServerFactory()
         {
         }
 
@@ -37,12 +38,12 @@ namespace ServerBrowser.Application
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(UniSpyServerConfig cfg)
         {
-            if (cfg.Name == ServerName)
+           if (cfg.ServerName == ServerName)
             {
                 Server = new SBServer(cfg.ServerID, cfg.ListeningEndPoint);
-                Server.Start();
+
                 Console.WriteLine(
-                    StringExtensions.FormatTableContext(cfg.Name, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
+                    StringExtensions.FormatTableContext(cfg.ServerName, cfg.ListeningAddress, cfg.ListeningPort.ToString()));
             }
         }
     }
