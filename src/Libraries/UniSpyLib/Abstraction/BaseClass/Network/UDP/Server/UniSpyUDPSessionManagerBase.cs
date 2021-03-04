@@ -2,7 +2,6 @@
 using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
-using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
 
@@ -37,53 +36,9 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.UDP
                 // we calculate the interval between last packe and current time
                 if (sess.SessionExistedTime > _expireTimeInterval)
                 {
-                    DeleteSession(sess.RemoteIPEndPoint);
+                    Sessions.TryRemove(sess.RemoteIPEndPoint, out _);
                 }
             });
-        }
-
-        public UniSpyUDPSessionBase GetSession(IPEndPoint key)
-        {
-            IUniSpySession session;
-            if (Sessions.TryGetValue(key, out session))
-            {
-                return (UniSpyUDPSessionBase)session;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        //public UniSpyUDPSessionBase GetOrAdd(IPEndPoint key, UniSpyUDPSessionBase value)
-        //{
-        //    UniSpyUDPSessionBase tempSession;
-        //    if (Sessions.ContainsKey(key))
-        //    {
-        //        tempSession = GetSession(key);
-        //        tempSession.LastPacketReceivedTime = DateTime.Now;
-        //    }
-        //    else
-        //    {
-        //        tempSession = value;
-        //        AddSession(key, value);
-        //    }
-        //    return tempSession;
-        //}
-
-        public UniSpyUDPSessionBase GetOrAddSession(IPEndPoint key, UniSpyUDPSessionBase session)
-        {
-            return (UniSpyUDPSessionBase)Sessions.GetOrAdd(key, session);
-        }
-
-        public bool AddSession(IPEndPoint key, UniSpyUDPSessionBase session)
-        {
-            return Sessions.TryAdd(key, session);
-        }
-
-        public bool DeleteSession(IPEndPoint key)
-        {
-            return Sessions.TryRemove(key, out _);
         }
     }
 }

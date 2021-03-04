@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using System.Text;
 using NetCoreServer;
 using Serilog.Events;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Network.UDP;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
@@ -21,6 +22,9 @@ namespace UniSpyLib.Network
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public UniSpyUDPSessionManagerBase SessionManager { get; protected set; }
+
+        UniSpySessionManagerBase IUniSpyServer.SessionManager => SessionManager;
+
         public UniSpyUDPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
@@ -76,13 +80,15 @@ namespace UniSpyLib.Network
             UniSpyUDPSessionBase tempSession;
             if (SessionManager.Sessions.ContainsKey((IPEndPoint)endPoint))
             {
-                tempSession = SessionManager.GetSession((IPEndPoint)endPoint);
+                IUniSpySession result;
+                SessionManager.Sessions.TryGetValue((IPEndPoint)endPoint, out result);
+                tempSession = (UniSpyUDPSessionBase)result;
                 tempSession.LastPacketReceivedTime = DateTime.Now;
             }
             else
             {
                 tempSession = CreateSession(endPoint);
-                SessionManager.AddSession(tempSession.RemoteIPEndPoint, tempSession);
+                SessionManager.Sessions.TryAdd(tempSession.RemoteIPEndPoint, tempSession);
             }
 
             ReceiveAsync();

@@ -12,15 +12,11 @@ namespace Chat.Network
         //we hard coded random key here for simplisity
         public static readonly string ClientKey = "0000000000000000";
         public static readonly string ServerKey = "0000000000000000";
-        public new ConcurrentDictionary<Guid, TcpSession> Sessions => base.Sessions;
-
         public ChatServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
 
-        protected override TcpSession CreateSession()
-        {
-            return new ChatSession(this);
-        }
+        protected override TcpSession CreateSession() => new ChatSession(this);
+
     }
 }

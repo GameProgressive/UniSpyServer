@@ -7,6 +7,7 @@ using QueryReport.Network;
 using Serilog.Events;
 using System.Net;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
 
@@ -32,7 +33,8 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
             int port = int.Parse(cookie.GameServerRemotePort);
             var endPoint = new IPEndPoint(address, port);
 
-            UniSpyUDPSessionBase session = QRServerFactory.Server.SessionManager.GetSession(endPoint);
+            IUniSpySession session;
+            QRServerFactory.Server.SessionManager.Sessions.TryGetValue(endPoint,out session);
             if (session == null)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Can not find game server in QR");

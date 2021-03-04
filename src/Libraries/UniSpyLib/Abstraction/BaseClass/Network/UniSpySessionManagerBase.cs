@@ -1,5 +1,8 @@
 ﻿using System.Collections.Concurrent;
+using System.Linq;
+using System.Net;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Network;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
@@ -10,33 +13,14 @@ namespace UniSpyLib.Abstraction.BaseClass
     /// <typeparam name="TSession"></typeparam>
     public abstract class UniSpySessionManagerBase
     {
-        public ConcurrentDictionary<object, IUniSpySession> Sessions { get; protected set; }
+        /// <summary>
+        /// The contravariance method for access
+        /// </summary>
+        public ConcurrentDictionary<object, IUniSpySession> Sessions { get; private set; }
+            
         public UniSpySessionManagerBase()
         {
             Sessions = new ConcurrentDictionary<object, IUniSpySession>();
-        }
-
-        protected IUniSpySession GetSession(object key)
-        {
-            IUniSpySession session;
-            if (Sessions.TryGetValue(key, out session))
-            {
-                return session;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        protected bool AddSession(object key, IUniSpySession session)
-        {
-            return Sessions.TryAdd(key, session);
-        }
-
-        protected bool DeleteSession(object key)
-        {
-            return Sessions.TryRemove(key, out _);
         }
     }
 }

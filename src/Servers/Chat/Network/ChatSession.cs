@@ -1,9 +1,7 @@
-﻿using System;
-using Chat.Entity.Structure.Misc;
+﻿using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request.General;
 using Chat.Handler.CmdHandler.General;
 using Chat.Handler.CommandSwitcher;
-using UniSpyLib.Logging;
 using UniSpyLib.Network;
 
 namespace Chat.Network

@@ -11,17 +11,13 @@ namespace NATNegotiation.Network
         {
         }
 
-        protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint)
-        {
-            return new NNSession(this, endPoint);
-        }
+        protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint) =>
+            new NNSession(this, endPoint);
 
         //TODO fix the natnegotiation for this architecture
 
         protected override void OnReceived(UniSpyUDPSessionBase session, byte[] message)
-        {
-            base.OnReceived(session, message);
-            new NNCmdSwitcher(session, message).Switch();
-        }
+        => new NNCmdSwitcher(session, message).Switch();
+
     }
 }

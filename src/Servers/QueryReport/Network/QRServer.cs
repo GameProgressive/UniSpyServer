@@ -21,14 +21,10 @@ namespace QueryReport.Network
         }
 
         protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint)
-        {
-            return new QRSession(this, endPoint);
-        }
+            => new QRSession(this, endPoint);
 
         protected override void OnReceived(UniSpyUDPSessionBase session, byte[] message)
-        {
-            //base.OnReceived(session, message);
-            new QRCmdSwitcher(session, message).Switch();
-        }
+            => new QRCmdSwitcher(session, message).Switch();
+
     }
 }

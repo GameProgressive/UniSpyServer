@@ -1,45 +1,69 @@
 ﻿using System;
-using System.Collections.Generic;
 using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace QueryReport.Entity.Structure.Redis
 {
     public class PeerRoomInfo
     {
-        public static readonly List<string> GameSpyStandardKey =
-            new List<string>
-            {
-                "groupid","hostname","numwaiting",
-                "maxwaiting","maxplayers","numservers",
-                "numplayers","password","numGames",
-                "numplaying"
-            };
-
-        public Dictionary<string, string> KeyValue { get; protected set; }
-
+        public uint GroupID { get; set; }
+        public string HostName { get; set; }
+        public uint NumberOfWaitingPlayers { get; set; }
+        public uint MaxNumberOfWaitingPlayers { get; set; }
+        public uint NumberOfServers { get; set; }
+        public uint NumberOfPlayers { get; set; }
+        public uint MaxNumberOfPlayers { get; set; }
+        public string Password { get; set; }
+        public uint NumberOfGames { get; set; }
+        public uint NumberOfPlayingPlayers { get; set; }
         public DateTime UpdateTime;
 
-        public PeerRoomInfo(Grouplist grouplist)
+        public PeerRoomInfo(Grouplist groupList)
         {
-            KeyValue = new Dictionary<string, string>();
-
-            KeyValue.Add("groupid", grouplist.Groupid.ToString());
-            KeyValue.Add("hostname", grouplist.Roomname);
-            KeyValue.Add("numwaiting", "0");
-            KeyValue.Add("maxwaiting", "200");
-            KeyValue.Add("maxplayers", "200");
-            KeyValue.Add("numservers", "0");
-            KeyValue.Add("numplayers", "0");
-            KeyValue.Add("password", "");
-            KeyValue.Add("numGames", "0");
-            KeyValue.Add("numplaying", "0");
-
             UpdateTime = DateTime.Now;
-
+            GroupID = groupList.Groupid;
+            HostName = groupList.Roomname;
+            NumberOfWaitingPlayers = 0;
+            MaxNumberOfWaitingPlayers = 200;
+            MaxNumberOfPlayers = 200;
+            NumberOfServers = 0;
+            NumberOfPlayers = 0;
+            Password = "";
+            NumberOfGames = 0;
+            NumberOfPlayingPlayers = 0;
         }
+
         public PeerRoomInfo()
         {
-            KeyValue = new Dictionary<string, string>();
+        }
+        public string GetValuebyGameSpyDefinedName(string key)
+        {
+            switch (key)
+            {
+                case "groupid":
+                    return GroupID.ToString();
+                case "hostname":
+                    return HostName;
+                case "numwaiting":
+                    return NumberOfWaitingPlayers.ToString();
+                case "maxwaiting":
+                    return MaxNumberOfWaitingPlayers.ToString();
+                case "maxplayers":
+                    return MaxNumberOfPlayers.ToString();
+                case "numservers":
+                    return NumberOfServers.ToString();
+                case "numplayers":
+                    return NumberOfPlayers.ToString();
+                case "password":
+                    return Password;
+                case "numGames":
+                    return NumberOfGames.ToString();
+                case "numplaying":
+                    return NumberOfPlayingPlayers.ToString();
+                default:
+                    throw new ArgumentException("No matched Property found by giving key");
+
+            }
+
         }
     }
 }

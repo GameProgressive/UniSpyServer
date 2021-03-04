@@ -1,10 +1,7 @@
-﻿using CDKey.Handler.CmdSwitcher;
-using Serilog.Events;
-using System;
+﻿using System;
 using System.Net;
-using System.Text;
+using CDKey.Handler.CmdSwitcher;
 using UniSpyLib.Encryption;
-using UniSpyLib.Logging;
 using UniSpyLib.Network;
 
 namespace CDKey.Network

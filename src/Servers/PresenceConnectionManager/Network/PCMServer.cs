@@ -1,6 +1,9 @@
 ﻿using NetCoreServer;
 using System;
+using System.Collections.Concurrent;
+using System.Linq;
 using System.Net;
+using UniSpyLib.Extensions;
 using UniSpyLib.Network;
 
 //GPCM represents GameSpy Connection Manager
@@ -16,10 +19,7 @@ namespace PresenceConnectionManager.Network
         {
         }
 
-        protected override TcpSession CreateSession()
-        {
-            return new PCMSession(this);
-        }
+        protected override TcpSession CreateSession() => new PCMSession(this);
 
     }
 }

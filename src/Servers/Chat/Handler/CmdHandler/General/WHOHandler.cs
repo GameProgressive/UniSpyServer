@@ -70,7 +70,7 @@ namespace Chat.Handler.CmdHandler.General
         /// </summary>
         private void GetUserInfo()
         {
-            var session = (ChatSession)ChatServerFactory.Server.Sessions.Values
+            var session = (ChatSession)ChatServerFactory.Server.SessionManager.Sessions.Values
                 .Where(s => ((ChatSession)s).UserInfo.NickName == _request.NickName)
                 .FirstOrDefault();
             if (session == null)
@@ -85,10 +85,10 @@ namespace Chat.Handler.CmdHandler.General
                 var data = new WHODataModel
                 {
                     ChannelName = channel.Property.ChannelName,
-                    NickName = session.UserInfo.NickName, 
-                    UserName = session.UserInfo.UserName, 
-                    PublicIPAddress = session.RemoteIPEndPoint.Address.ToString(), 
-                    Modes = user.GetUserModes() 
+                    NickName = session.UserInfo.NickName,
+                    UserName = session.UserInfo.UserName,
+                    PublicIPAddress = session.RemoteIPEndPoint.Address.ToString(),
+                    Modes = user.GetUserModes()
                 };
                 _result.DataModels.Add(data);
             }

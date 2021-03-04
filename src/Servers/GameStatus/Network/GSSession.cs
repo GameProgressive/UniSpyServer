@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using GameStatus.Entity.Structure.Misc;
+using GameStatus.Handler.CmdSwitcher;
 using UniSpyLib.Network;
 
 namespace GameStatus.Network
@@ -18,6 +19,7 @@ namespace GameStatus.Network
         /// When client connect, we send our challenge first
         /// </summary>
         protected override void OnConnected() => SendAsync(GSPlayerInfo.ChallengeResponse);
+        protected override void OnReceived(string message) => new GSCmdSwitcher(this, message).Switch();
 
         protected override byte[] Encrypt(byte[] buffer)
         {

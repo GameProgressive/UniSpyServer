@@ -11,10 +11,6 @@ namespace GameStatus.Network
         {
         }
 
-        protected override TcpSession CreateSession()
-        {
-            return new GSSession(this);
-        }
-
+        protected override TcpSession CreateSession() => new GSSession(this);
     }
 }

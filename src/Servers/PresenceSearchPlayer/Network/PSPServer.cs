@@ -11,9 +11,7 @@ namespace PresenceSearchPlayer.Network
         {
         }
 
-        protected override TcpSession CreateSession()
-        {
-            return new PSPSession(this);
-        }
+        protected override TcpSession CreateSession() => new PSPSession(this);
+
     }
 }
