@@ -19,7 +19,7 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void RequestCheck()
         {
-            if (ChatServerFactory.Server.SessionManager.Sessions.Values.
+            if (ChatServerFactory.Server.SessionManager.SessionPool.Values.
                 Where(s => ((ChatSession)s).UserInfo.NickName == _request.NickName)
                 .Count() == 1)
             {

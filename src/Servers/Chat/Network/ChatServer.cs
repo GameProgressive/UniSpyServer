@@ -14,6 +14,7 @@ namespace Chat.Network
         public static readonly string ServerKey = "0000000000000000";
         public ChatServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
+            SessionManager = new ChatSessionManager();
         }
 
         protected override TcpSession CreateSession() => new ChatSession(this);

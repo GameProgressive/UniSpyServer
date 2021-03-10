@@ -16,11 +16,10 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// <summary>
         /// The contravariance method for access
         /// </summary>
-        public ConcurrentDictionary<object, IUniSpySession> Sessions { get; private set; }
-            
+        public ConcurrentDictionary<object, IUniSpySession> SessionPool { get; private set; }
         public UniSpySessionManagerBase()
         {
-            Sessions = new ConcurrentDictionary<object, IUniSpySession>();
+            SessionPool = new ConcurrentDictionary<object, IUniSpySession>();
         }
     }
 }

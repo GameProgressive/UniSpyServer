@@ -11,6 +11,7 @@ namespace QueryReport.Network
     {
         public QRServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
+            SessionManager = new QRSessionManager();
         }
 
         public override bool Start()

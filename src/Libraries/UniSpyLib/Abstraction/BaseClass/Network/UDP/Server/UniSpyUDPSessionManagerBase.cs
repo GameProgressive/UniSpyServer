@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Timers;
@@ -7,11 +8,10 @@ using UniSpyLib.Network;
 
 namespace UniSpyLib.Abstraction.BaseClass.Network.UDP
 {
-    public class UniSpyUDPSessionManagerBase : UniSpySessionManagerBase
+    public abstract class UniSpyUDPSessionManagerBase : UniSpySessionManagerBase
     {
         protected TimeSpan _expireTimeInterval { get; set; }
         private Timer _timer;
-
         public UniSpyUDPSessionManagerBase()
         {
             //default settings
@@ -30,13 +30,13 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.UDP
         {
             //log which expire manager excuted
             LogWriter.LogCurrentClass(this);
-            Parallel.ForEach(Sessions.Values, (session) =>
+            Parallel.ForEach(SessionPool.Values, (session) =>
             {
                 UniSpyUDPSessionBase sess = (UniSpyUDPSessionBase)session;
                 // we calculate the interval between last packe and current time
                 if (sess.SessionExistedTime > _expireTimeInterval)
                 {
-                    Sessions.TryRemove(sess.RemoteIPEndPoint, out _);
+                    SessionPool.TryRemove(sess.RemoteIPEndPoint, out _);
                 }
             });
         }

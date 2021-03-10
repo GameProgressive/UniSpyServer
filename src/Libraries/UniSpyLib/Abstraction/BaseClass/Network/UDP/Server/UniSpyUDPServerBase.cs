@@ -28,7 +28,6 @@ namespace UniSpyLib.Network
         public UniSpyUDPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
-            SessionManager = new UniSpyUDPSessionManagerBase();
         }
 
         protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new UniSpyUDPSessionBase(this, endPoint);
@@ -78,17 +77,17 @@ namespace UniSpyLib.Network
             LogWriter.LogNetworkTraffic("Recv", (IPEndPoint)endPoint, buffer, size);
             //even if we did not response we keep receive message
             UniSpyUDPSessionBase tempSession;
-            if (SessionManager.Sessions.ContainsKey((IPEndPoint)endPoint))
+            if (SessionManager.SessionPool.ContainsKey((IPEndPoint)endPoint))
             {
                 IUniSpySession result;
-                SessionManager.Sessions.TryGetValue((IPEndPoint)endPoint, out result);
+                SessionManager.SessionPool.TryGetValue((IPEndPoint)endPoint, out result);
                 tempSession = (UniSpyUDPSessionBase)result;
                 tempSession.LastPacketReceivedTime = DateTime.Now;
             }
             else
             {
                 tempSession = CreateSession(endPoint);
-                SessionManager.Sessions.TryAdd(tempSession.RemoteIPEndPoint, tempSession);
+                SessionManager.SessionPool.TryAdd(tempSession.RemoteIPEndPoint, tempSession);
             }
 
             ReceiveAsync();

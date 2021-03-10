@@ -28,7 +28,7 @@ namespace Chat.Handler.CmdHandler.General
         protected override void RequestCheck()
         {
             // there only existed one nick name
-            var session = (ChatSession)ChatServerFactory.Server.SessionManager.Sessions.Values
+            var session = (ChatSession)ChatServerFactory.Server.SessionManager.SessionPool.Values
                  .Where(s => ((ChatSession)s).UserInfo.NickName == _request.NickName)
                  .FirstOrDefault();
             if (session == null)

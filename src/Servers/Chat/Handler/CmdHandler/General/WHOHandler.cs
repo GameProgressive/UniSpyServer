@@ -70,7 +70,7 @@ namespace Chat.Handler.CmdHandler.General
         /// </summary>
         private void GetUserInfo()
         {
-            var session = (ChatSession)ChatServerFactory.Server.SessionManager.Sessions.Values
+            var session = (ChatSession)ChatServerFactory.Server.SessionManager.SessionPool.Values
                 .Where(s => ((ChatSession)s).UserInfo.NickName == _request.NickName)
                 .FirstOrDefault();
             if (session == null)

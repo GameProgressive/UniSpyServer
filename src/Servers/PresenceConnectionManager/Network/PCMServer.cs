@@ -17,6 +17,7 @@ namespace PresenceConnectionManager.Network
     {
         public PCMServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
+            SessionManager = new PCMSessionManager();
         }
 
         protected override TcpSession CreateSession() => new PCMSession(this);

@@ -26,25 +26,20 @@ namespace UniSpyLib.Network
         public UniSpyTCPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
-            SessionManager = new UniSpyTCPSessionManagerBase();
         }
 
         protected override void OnConnected(TcpSession session)
         {
-            if (!SessionManager.Sessions.ContainsKey(session.Id))
+            if (!SessionManager.SessionPool.ContainsKey(session.Id))
             {
-                SessionManager.Sessions.TryAdd(session.Id, (UniSpyTCPSessionBase)session);
+                SessionManager.SessionPool.TryAdd(session.Id, (UniSpyTCPSessionBase)session);
             }
-            //LogWriter.ToLog(LogEventLevel.Information, $"[Conn] IP:{session.Socket.RemoteEndPoint}");
             base.OnConnected(session);
         }
 
         protected override void OnDisconnected(TcpSession session)
         {
-            SessionManager.Sessions.TryRemove(session.Id, out _);
-            //We create our own RemoteEndPoint because when client disconnect,
-            //the session socket will dispose immidiatly
-            //LogWriter.ToLog(LogEventLevel.Information, $"[Disc] IP:{((UniSpyTCPSessionBase)session).RemoteEndPoint}");
+            SessionManager.SessionPool.TryRemove(session.Id, out _);
             base.OnDisconnected(session);
         }
 

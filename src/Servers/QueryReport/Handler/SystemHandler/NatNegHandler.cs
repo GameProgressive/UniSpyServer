@@ -34,7 +34,7 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
             var endPoint = new IPEndPoint(address, port);
 
             IUniSpySession session;
-            QRServerFactory.Server.SessionManager.Sessions.TryGetValue(endPoint,out session);
+            QRServerFactory.Server.SessionManager.SessionPool.TryGetValue(endPoint,out session);
             if (session == null)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Can not find game server in QR");

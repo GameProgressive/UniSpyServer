@@ -9,6 +9,7 @@ namespace GameStatus.Network
     {
         public GSServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
+            SessionManager = new GSSessionManager();
         }
 
         protected override TcpSession CreateSession() => new GSSession(this);
