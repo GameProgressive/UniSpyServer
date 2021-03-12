@@ -9,6 +9,7 @@ namespace PresenceConnectionManager.Handler.SystemHandler.Redis
     {
         [JsonProperty(Order = -2)]
         public Guid ServerID { get; set; }
+        public string SessionHashValue { get; set; }
         public PCMUserInfoRedisKey()
         {
             DatabaseNumber = RedisDataBaseNumber.GamePresence;

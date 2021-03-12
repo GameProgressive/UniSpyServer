@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using StackExchange.Redis;
 using UniSpyLib.Abstraction.Interface;
@@ -12,10 +13,27 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyServerFactoryBase
     {
-        public static readonly string RetroSpyVersion = "0.5.3";
+        /// <summary>
+        /// UniSpy server version
+        /// </summary>
+        public static readonly string UniSpyVersion = "0.5.3";
+        /// <summary>
+        /// Redis connection
+        /// </summary>
         public static ConnectionMultiplexer Redis { get; protected set; }
+        /// <summary>
+        /// A UniSpyServer instance
+        /// </summary>
         public static IUniSpyServer Server { get; protected set; }
+        /// <summary>
+        /// The project base namespace name, specific server is created by this name
+        /// </summary>
         public static readonly string ServerName = Assembly.GetEntryAssembly().GetName().Name;
+        /// <summary>
+        /// The short name made up by upper case letters
+        /// </summary>
+        public static string ServerShortName = string.Concat(ServerName.Where(c => char.IsUpper(c)));
+
         public UniSpyServerFactoryBase()
         {
         }
@@ -38,7 +56,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             Server.Start();
 
             var table = new ConsoleTables.ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
+            table.AddRow(ServerShortName, Server.Endpoint.Address, Server.Endpoint.Port);
             table.Write(ConsoleTables.Format.Alternative);
             Console.WriteLine("Server successfully started! ");
         }
@@ -100,7 +118,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             Console.WriteLine(@"| |_| | ' \| \__ \ '_ \ || \__ \/ -_) '_\ V / -_) '_|");
             Console.WriteLine(@" \___/|_||_|_|___/ .__/\_, |___/\___|_|  \_/\___|_|");
             Console.WriteLine(@"                 |_|   |__/ ");
-            Console.WriteLine(@"Version: " + RetroSpyVersion);
+            Console.WriteLine(@"Version: " + UniSpyVersion);
         }
     }
 }

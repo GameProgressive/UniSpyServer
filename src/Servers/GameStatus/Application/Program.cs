@@ -14,7 +14,7 @@ namespace GameStatus.Application
             {
                 //create a instance of ServerManager class
                 new GSServerFactory().Start();
-                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.RetroSpyVersion;
+                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (Exception e)
             {

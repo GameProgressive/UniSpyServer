@@ -49,7 +49,7 @@ namespace UniSpyLib.Logging
             }
             Log.Logger = logConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{UniSpyServerFactoryBase.ServerName}]-.log",
+                .WriteTo.File($"Logs/[{UniSpyServerFactoryBase.ServerShortName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
