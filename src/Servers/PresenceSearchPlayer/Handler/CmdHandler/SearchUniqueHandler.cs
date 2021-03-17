@@ -26,7 +26,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 foreach (var id in _request.Namespaces)
                 {

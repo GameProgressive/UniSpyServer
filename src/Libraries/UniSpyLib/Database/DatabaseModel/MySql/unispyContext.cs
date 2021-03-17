@@ -2,14 +2,14 @@
 
 namespace UniSpyLib.Database.DatabaseModel.MySql
 {
-    public partial class retrospyContext : DbContext
+    public partial class unispyContext : DbContext
     {
-        public static string RetroSpyMySqlConnStr;
-        public retrospyContext()
+        public static string UniSpyMySqlConnStr;
+        public unispyContext()
         {
         }
 
-        public retrospyContext(DbContextOptions<retrospyContext> options)
+        public unispyContext(DbContextOptions<unispyContext> options)
             : base(options)
         {
         }
@@ -31,7 +31,7 @@ namespace UniSpyLib.Database.DatabaseModel.MySql
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(RetroSpyMySqlConnStr, x => x.ServerVersion("10.4.11-mariadb"));
+                optionsBuilder.UseMySql(UniSpyMySqlConnStr, x => x.ServerVersion("10.4.11-mariadb"));
             }
         }
 

@@ -31,7 +31,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var result = from b in db.Friends
                              where b.Profileid == _request.ProfileID && b.Namespaceid == _request.NamespaceID

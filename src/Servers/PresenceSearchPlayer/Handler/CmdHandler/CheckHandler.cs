@@ -28,7 +28,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 if (db.Users.Where(e => e.Email == _request.Email).Count() < 1)
                 {

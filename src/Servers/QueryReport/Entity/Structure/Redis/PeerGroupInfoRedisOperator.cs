@@ -16,7 +16,7 @@ namespace QueryReport.Entity.Structure.Redis
         /// <returns></returns>
         public static PeerGroupInfo LoadGameRooms(string gameName)
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var result = from g in db.Games
                              join gl in db.Grouplist on g.Gameid equals gl.Gameid
@@ -35,7 +35,7 @@ namespace QueryReport.Entity.Structure.Redis
 
         public static void LoadAllGameGroupsToRedis()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var gameNames = from gl in db.Grouplist
                                 join g in db.Games on gl.Gameid equals g.Gameid

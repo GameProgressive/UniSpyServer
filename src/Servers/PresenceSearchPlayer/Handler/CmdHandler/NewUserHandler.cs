@@ -33,7 +33,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 try
                 {
@@ -55,7 +55,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         private void UpdateOtherInfo()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
 
                 if (_request.HasPartnerIDFlag)
@@ -90,7 +90,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         private void DatabaseOperationByType()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 switch (NewUserStatus.CheckAccount)
                 {

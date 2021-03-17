@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 if (db.Blocked.Where(b => b.Targetid == _request.ProfileID
                 && b.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
