@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var result = from friend in db.Friends
                              where friend.Profileid == _request.DeleteProfileID

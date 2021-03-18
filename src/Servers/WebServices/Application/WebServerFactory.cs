@@ -19,7 +19,7 @@ namespace WebServices.Application
 
         public override void Start()
         {
-            ShowRetroSpyLogo();
+            ShowUniSpyLogo();
             //currently we do not need database connection
             //LoadDatabaseConfig();
             LogWriter.SettngUpLogger();

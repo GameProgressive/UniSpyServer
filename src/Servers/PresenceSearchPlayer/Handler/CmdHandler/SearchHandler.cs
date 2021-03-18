@@ -36,7 +36,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO verify the search condition whether needed namespaceid!!!!!
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 IQueryable<SearchDataBaseModel> result;
                 switch (_request.RequestType)

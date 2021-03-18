@@ -29,7 +29,7 @@ namespace GameStatus.Handler.CmdHandler
             //search player data in database;
             Dictionary<string, string> keyValues;
 
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var result = from ps in db.Pstorage
                              where ps.Ptype == (uint)_request.StorageType

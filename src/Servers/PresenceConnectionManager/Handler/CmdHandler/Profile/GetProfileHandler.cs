@@ -29,7 +29,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 //we have to make sure the search target has the same namespaceID
                 var result = from p in db.Profiles

@@ -26,7 +26,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var result = from p in db.Profiles
                              join n in db.Subprofiles on p.Profileid equals n.Profileid

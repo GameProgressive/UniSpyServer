@@ -4,8 +4,8 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-CREATE DATABASE IF NOT EXISTS `retrospy` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
-USE `retrospy`;
+CREATE DATABASE IF NOT EXISTS `unispy` /*!40100 DEFAULT CHARACTER SET utf8mb4 */;
+USE `unispy`;
 
 CREATE TABLE IF NOT EXISTS `addrequests` (
   `addrequestid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -4593,7 +4593,7 @@ CREATE TABLE IF NOT EXISTS `partner` (
 
 /*!40000 ALTER TABLE `partner` DISABLE KEYS */;
 INSERT INTO `partner` (`partnerid`, `partnername`) VALUES
-	(0, 'RetroSpy'),
+	(0, 'UniSpy'),
 	(95, 'Crytek');
 /*!40000 ALTER TABLE `partner` ENABLE KEYS */;
 
@@ -4603,7 +4603,7 @@ CREATE TABLE IF NOT EXISTS `profiles` (
   `nick` varchar(50) NOT NULL DEFAULT '',
   `serverflag` int(1) unsigned NOT NULL DEFAULT 0,
   `status` tinyint(3) unsigned DEFAULT 0,
-  `statstring` varchar(50) NOT NULL DEFAULT 'I love RetroSpy',
+  `statstring` varchar(50) NOT NULL DEFAULT 'I love UniSpy',
   `location` varchar(127) DEFAULT '',
   `firstname` varchar(50) NOT NULL DEFAULT '',
   `lastname` varchar(50) NOT NULL DEFAULT '',
@@ -4649,7 +4649,7 @@ CREATE TABLE IF NOT EXISTS `profiles` (
 
 /*!40000 ALTER TABLE `profiles` DISABLE KEYS */;
 INSERT INTO `profiles` (`profileid`, `userid`, `nick`, `serverflag`, `status`, `statstring`, `location`, `firstname`, `lastname`, `publicmask`, `latitude`, `longitude`, `aim`, `picture`, `occupationid`, `incomeid`, `industryid`, `marriedid`, `childcount`, `interests1`, `ownership1`, `connectiontype`, `sex`, `zipcode`, `countrycode`, `homepage`, `birthday`, `birthmonth`, `birthyear`, `icquin`, `quietflags`, `streetaddr`, `streeaddr`, `city`, `cpubrandid`, `cpuspeed`, `memory`, `videocard1string`, `videocard1ram`, `videocard2string`, `videocard2ram`, `subscription`, `adminrights`) VALUES
-	(1, 1, 'spyguy', 0, 0, 'I love RetroSpy', 'earth', 'spy', 'guy', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, '00000', '1', 'rspy.org', 0, 0, 0, 0, 0, '', '', '', 0, 0, 0, '', 0, '', 0, 0, 0);
+	(1, 1, 'spyguy', 0, 0, 'I love UniSpy', 'earth', 'spy', 'guy', 0, 0, 0, '0', 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, '00000', '1', 'rspy.org', 0, 0, 0, 0, 0, '', '', '', 0, 0, 0, '', 0, '', 0, 0, 0);
 /*!40000 ALTER TABLE `profiles` ENABLE KEYS */;
 
 CREATE TABLE IF NOT EXISTS `pstorage` (

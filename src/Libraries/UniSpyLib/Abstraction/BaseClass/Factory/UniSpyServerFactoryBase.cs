@@ -40,7 +40,7 @@ namespace UniSpyLib.Abstraction.BaseClass
 
         public virtual void Start()
         {
-            ShowRetroSpyLogo();
+            ShowUniSpyLogo();
             LoadDatabaseConfig();
             LoadServerConfig();
             UniSpyJsonConverter.Initialize();
@@ -74,7 +74,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             switch (ConfigManager.Config.Database.Type)
             {
                 case DatabaseType.MySql:
-                    retrospyContext.RetroSpyMySqlConnStr =
+                    unispyContext.UniSpyMySqlConnStr =
                     $"Server={ConfigManager.Config.Database.RemoteAddress};"
                     + $"Database={ConfigManager.Config.Database.DatabaseName};"
                     + $"Uid={ConfigManager.Config.Database.UserName};"
@@ -89,7 +89,7 @@ namespace UniSpyLib.Abstraction.BaseClass
 
             try
             {
-                new retrospyContext().Database.CanConnect();
+                new unispyContext().Database.CanConnect();
             }
             catch (Exception e)
             {
@@ -110,7 +110,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             Console.WriteLine($"Successfully connected to Redis!");
         }
 
-        public static void ShowRetroSpyLogo()
+        public static void ShowUniSpyLogo()
         {
             // the ascii art font name is "small"
             Console.WriteLine(@" _   _      _ ___           ___ ");

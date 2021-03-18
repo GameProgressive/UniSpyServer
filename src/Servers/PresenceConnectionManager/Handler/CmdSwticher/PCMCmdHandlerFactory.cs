@@ -19,9 +19,9 @@ namespace PresenceConnectionManager.Handler.CmdSwticher
         {
             switch (_request.CommandName)
             {
-                case PCMRequestName.Login://login to retrospy
+                case PCMRequestName.Login://login to unispy
                     return new LoginHandler(_session, _request);
-                case PCMRequestName.Logout://logout from retrospy
+                case PCMRequestName.Logout://logout from unispy
                     return new LogoutHandler(_session, _request);
                 case PCMRequestName.KeepAlive:
                     return new KeepAliveHandler(_session, _request);

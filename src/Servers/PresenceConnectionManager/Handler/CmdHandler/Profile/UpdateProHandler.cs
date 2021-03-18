@@ -15,7 +15,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 Profiles profile = db.Profiles.Where(
                     p => p.Userid == _session.UserInfo.BasicInfo.UserID

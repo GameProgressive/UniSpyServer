@@ -26,7 +26,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 if (_request.IsReplaceNickName)
                 {

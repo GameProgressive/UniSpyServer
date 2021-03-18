@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var result = db.Subprofiles.Where(s => s.Profileid == _session.UserInfo.BasicInfo.ProfileID
                 && s.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID);

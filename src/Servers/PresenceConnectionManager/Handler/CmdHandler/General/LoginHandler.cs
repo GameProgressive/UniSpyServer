@@ -141,7 +141,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         private void NickEmailLogin()
         {
             //Check email existence
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var email = from u in db.Users
                             where u.Email == _request.Email
@@ -186,7 +186,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         private void UniquenickLogin()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var info = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
@@ -218,7 +218,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         private void AuthtokenLogin()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid

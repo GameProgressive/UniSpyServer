@@ -22,7 +22,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new retrospyContext())
+            using (var db = new unispyContext())
             {
                 _result.ProfileIdList = db.Blocked
                     .Where(f => f.Profileid == _session.UserInfo.BasicInfo.ProfileID
