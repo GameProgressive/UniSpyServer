@@ -8,6 +8,7 @@ using Serilog.Events;
 using System.Net;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Entity.Structure;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
 
@@ -20,13 +21,14 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
             var subscriber = UniSpyServerFactoryBase.Redis.GetSubscriber();
 
             subscriber.Subscribe(
-                "NatNegCookieChannel", (channel, message)
+                UniSpyRedisChannelName.NatNegCookieChannel, (channel, message)
                 =>
                 {
                     NatNegCookie cookie = JsonConvert.DeserializeObject<NatNegCookie>(message);
                     SendNatNegCookieToGameServer(cookie);
                 });
         }
+
         public static void SendNatNegCookieToGameServer(NatNegCookie cookie)
         {
             IPAddress address = IPAddress.Parse(cookie.GameServerRemoteIP);
@@ -34,8 +36,8 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
             var endPoint = new IPEndPoint(address, port);
 
             IUniSpySession session;
-            QRServerFactory.Server.SessionManager.SessionPool.TryGetValue(endPoint,out session);
-            if (session == null)
+            
+            if (!QRServerFactory.Server.SessionManager.SessionPool.TryGetValue(endPoint, out session))
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Can not find game server in QR");
                 return;

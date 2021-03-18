@@ -23,7 +23,6 @@
         <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Handler\SystemHandler\Redis\" />
         <Folder Include="Entity\Structure\Redis\" />
     </ItemGroup>
     <ItemGroup>

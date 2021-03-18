@@ -4,10 +4,10 @@ using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Request;
-using StackExchange.Redis;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Entity.Structure;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
@@ -65,9 +65,9 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void Response()
         {
-            ISubscriber sub = UniSpyServerFactoryBase.Redis.GetSubscriber();
+            var subscriber = UniSpyServerFactoryBase.Redis.GetSubscriber();
             string jsonStr = JsonConvert.SerializeObject(_natNegCookie);
-            sub.Publish("NatNegCookieChannel", jsonStr);
+            subscriber.Publish(UniSpyRedisChannelName.NatNegCookieChannel, jsonStr);
         }
     }
 }

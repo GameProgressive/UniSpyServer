@@ -30,7 +30,10 @@ namespace ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {
             //_result.Flags = hasFullrule
-            var searchKey = new GameServerInfoRedisKey() { RemoteIPEndPoint = _request.TargetIPEndPoint };
+            var searchKey = new GameServerInfoRedisKey()
+            {
+                RemoteIPEndPoint = _request.TargetIPEndPoint
+            };
             var result = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey)
                 .Values.Where(s => s.ServerData.KeyValue.ContainsKey("hostport"))
                 .Where(s => s.ServerData.KeyValue["hostport"] == _request.TargetServerHostPort);

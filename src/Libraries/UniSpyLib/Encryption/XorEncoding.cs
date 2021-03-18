@@ -22,10 +22,10 @@ namespace UniSpyLib.Encryption
         /// <returns></returns>
         public static byte[] Encrypt(byte[] plaintext, XorType type)
         {
-            string enc0 = "gamespy";
-            string enc1 = "GameSpy3D";// '\0','a','m','e','S','p','y','3','D','\0'
-            string enc2 = "Industries";// { '\0', 'n', 'd', 'u', 's', 't', 'r', 'i', 'e', 's', '\0' }
-            string enc3 = "ProjectAphex";// { '\0','r','o','j','e','c','t','A','p','h','e','x','\0'}
+            string seed0 = "gamespy";
+            string seed1 = "GameSpy3D";
+            string seed2 = "Industries";
+            string seed3 = "ProjectAphex";
             //string statsfile = "gstats.dat";
 
             int length = plaintext.Length;
@@ -34,19 +34,19 @@ namespace UniSpyLib.Encryption
             switch (type)
             {
                 case XorType.Type0:
-                    temp = Encoding.ASCII.GetBytes(enc0);
+                    temp = Encoding.ASCII.GetBytes(seed0);
                     break;
                 case XorType.Type1:
-                    temp = Encoding.ASCII.GetBytes(enc1);
+                    temp = Encoding.ASCII.GetBytes(seed1);
                     break;
                 case XorType.Type2:
-                    temp = Encoding.ASCII.GetBytes(enc2);
+                    temp = Encoding.ASCII.GetBytes(seed2);
                     break;
                 case XorType.Type3:
-                    temp = Encoding.ASCII.GetBytes(enc3);
+                    temp = Encoding.ASCII.GetBytes(seed3);
                     break;
                 default:
-                    temp = Encoding.ASCII.GetBytes(enc0);
+                    temp = Encoding.ASCII.GetBytes(seed0);
                     break;
             }
 

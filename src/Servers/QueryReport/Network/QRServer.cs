@@ -2,7 +2,6 @@
 using System.Net;
 using QueryReport.Entity.Structure.Redis;
 using QueryReport.Handler.CmdSwitcher;
-using QueryReport.Handler.SystemHandler.ServerList;
 using UniSpyLib.Network;
 
 namespace QueryReport.Network
@@ -16,7 +15,6 @@ namespace QueryReport.Network
 
         public override bool Start()
         {
-            new ServerListManager().Start();
             PeerGroupInfoRedisOperator.LoadAllGameGroupsToRedis();
             return base.Start();
         }
