@@ -3,13 +3,13 @@ using GameStatus.Entity.Enumerate;
 
 namespace GameStatus.Entity.Structure.Request
 {
-    internal sealed class UdpGameRequest : GSRequestBase
+    internal sealed class UpdGameRequest : GSRequestBase
     {
         public uint ConnectionID { get; private set; }
         public bool IsDone { get; private set; }
         public bool IsClientLocalStorageAvailable { get; private set; }
         public string GameData { get; private set; }
-        public UdpGameRequest(string rawRequest) : base(rawRequest)
+        public UpdGameRequest(string rawRequest) : base(rawRequest)
         {
             IsClientLocalStorageAvailable = false;
             IsDone = false;

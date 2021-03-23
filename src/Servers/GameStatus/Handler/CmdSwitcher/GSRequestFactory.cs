@@ -32,7 +32,7 @@ namespace GameStatus.Handler.CmdSwitcher
                 case GSRequestName.SetPlayerData:
                     return new SetPDRequest(_rawRequest);
                 case GSRequestName.UpdateGameData:
-                    return new UdpGameRequest(_rawRequest);
+                    return new UpdGameRequest(_rawRequest);
                 case GSRequestName.CreateNewGamePlayerData:
                     return new NewGameRequest(_rawRequest);
                 default:
