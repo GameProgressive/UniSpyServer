@@ -1,11 +1,11 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using NATNegotiation.Entity.Enumerate;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace NATNegotiation.Handler.CmdSwitcher
 {
-    public class NNCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class NNCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        protected new byte[] _rawRequest { get { return (byte[])base._rawRequest; } }
         public NNCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
@@ -28,7 +28,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
         {
             var request = new NNRequestFactory(_rawRequest).Serialize();
             request.Parse();
-            if (!(bool)request.ErrorCode)
+            if ((NNErrorCode)request.ErrorCode != NNErrorCode.NoError)
             {
                 return;
             }

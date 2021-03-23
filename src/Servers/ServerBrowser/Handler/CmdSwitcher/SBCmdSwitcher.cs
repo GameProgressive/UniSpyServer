@@ -3,13 +3,10 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class SBCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        protected new byte[] _rawRequest
-        {
-            get { return (byte[])base._rawRequest; }
-            set { base._rawRequest = value; }
-        }
+        private new byte[] _rawRequest => (byte[])base._rawRequest;
+
         public SBCmdSwitcher(IUniSpySession session, byte[] rawRequest) : base(session, rawRequest)
         {
         }

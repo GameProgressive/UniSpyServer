@@ -8,7 +8,7 @@ using UniSpyLib.Logging;
 
 namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    internal class PSPCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class PSPCmdSwitcher : UniSpyCmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
         public PSPCmdSwitcher(IUniSpySession session, string rawRequest) : base(session, rawRequest)
@@ -41,10 +41,6 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
             foreach (var rawRequest in rawRequests)
             {
                 var request = new PSPRequestFactory(rawRequest).Serialize();
-                if (request == null)
-                {
-                    continue;
-                }
                 request.Parse();
                 if ((GPErrorCode)request.ErrorCode != GPErrorCode.NoError)
                 {

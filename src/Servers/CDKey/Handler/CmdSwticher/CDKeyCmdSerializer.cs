@@ -5,7 +5,7 @@ using UniSpyLib.Logging;
 
 namespace CDKey.Handler.CmdSwitcher
 {
-    internal class CDKeyCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
+    internal sealed class CDKeyCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
         public CDKeyCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

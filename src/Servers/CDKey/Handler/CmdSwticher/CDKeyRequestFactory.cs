@@ -7,12 +7,11 @@ using UniSpyLib.MiscMethod;
 
 namespace CDKey.Handler.CmdSwitcher
 {
-    internal class CDKeyRequestFactory : UniSpyRequestFactoryBase
+    internal sealed class CDKeyRequestFactory : UniSpyRequestFactoryBase
     {
-        protected new string _rawRequest;
+        private new string _rawRequest => (string)base._rawRequest;
         public CDKeyRequestFactory(object rawRequest) : base(rawRequest)
         {
-            _rawRequest = (string)rawRequest;
         }
 
         public override IUniSpyRequest Serialize()

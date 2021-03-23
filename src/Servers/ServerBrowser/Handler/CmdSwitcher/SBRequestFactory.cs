@@ -8,13 +8,9 @@ using UniSpyLib.Logging;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBRequestFactory : UniSpyRequestFactoryBase
+    internal sealed class SBRequestFactory : UniSpyRequestFactoryBase
     {
-        protected new byte[] _rawRequest
-        {
-            get { return (byte[])base._rawRequest; }
-            set { base._rawRequest = value; }
-        }
+        private new byte[] _rawRequest => (byte[])base._rawRequest;
 
         public SBRequestFactory(byte[] rawRequest) : base(rawRequest)
         {

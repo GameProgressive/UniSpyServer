@@ -5,12 +5,11 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace CDKey.Handler.CmdSwitcher
 {
-    internal class CDKeyCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class CDKeyCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        protected new string _rawRequest;
+        private new string _rawRequest => (string)base._rawRequest;
         public CDKeyCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
-            _rawRequest = (string)rawRequest;
         }
 
         protected override void SerializeCommandHandlers()

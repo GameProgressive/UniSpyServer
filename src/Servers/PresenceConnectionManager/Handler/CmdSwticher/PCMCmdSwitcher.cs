@@ -9,7 +9,7 @@ using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    internal class PCMCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class PCMCmdSwitcher : UniSpyCmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
 

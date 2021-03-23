@@ -1,15 +1,15 @@
-﻿using NATNegotiation.Entity.Enumerate;
+﻿using System;
+using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Structure.Request;
-using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
 namespace NATNegotiation.Handler.CmdSwitcher
 {
-    public class NNRequestFactory : UniSpyRequestFactoryBase
+    internal sealed class NNRequestFactory : UniSpyRequestFactoryBase
     {
-        protected new byte[] _rawRequest { get { return (byte[])base._rawRequest; } }
+        private new byte[] _rawRequest => (byte[])base._rawRequest;
         public NNRequestFactory(object rawRequest) : base(rawRequest)
         {
         }

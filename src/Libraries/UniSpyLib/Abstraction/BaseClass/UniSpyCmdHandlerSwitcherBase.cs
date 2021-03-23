@@ -36,6 +36,7 @@ namespace UniSpyLib.Abstraction.BaseClass
                     return;
                 }
 
+                // TODO changes foreach to parallel foreach
                 foreach (var handler in _handlers)
                 {
                     handler.Handle();
@@ -45,7 +46,6 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
-
         }
 
         protected abstract void SerializeRequests();
