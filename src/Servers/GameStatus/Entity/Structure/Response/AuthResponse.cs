@@ -15,7 +15,7 @@ namespace GameStatus.Entity.Structure.Response
 
         protected override void BuildNormalResponse()
         {
-            SendingBuffer = @$"\sesskey\{_result.SessionKey}\lid\{ _request.OperationID}";
+            SendingBuffer = $@"\sesskey\{_result.SessionKey}\lid\{ _request.OperationID}\final\";
         }
     }
 }

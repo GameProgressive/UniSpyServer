@@ -81,8 +81,6 @@ namespace GameStatus.Entity.Structure.Request
                 }
                 GetAllDataFlag = false;
             }
-
-            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

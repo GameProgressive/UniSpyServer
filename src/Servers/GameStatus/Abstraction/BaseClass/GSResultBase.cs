@@ -7,8 +7,8 @@ namespace GameStatus.Abstraction.BaseClass
     {
         public new GSErrorCode ErrorCode
         {
-            get { return (GSErrorCode)base.ErrorCode; }
-            set { base.ErrorCode = value; }
+            get => (GSErrorCode)base.ErrorCode;
+            set => base.ErrorCode = value;
         }
         public GSResultBase()
         {

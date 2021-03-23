@@ -11,18 +11,18 @@ namespace GameStatus.Abstraction.BaseClass
         public uint OperationID { get; protected set; }
         public new string CommandName
         {
-            get { return (string)base.CommandName; }
-            set { base.CommandName = value; }
+            get => (string)base.CommandName;
+            set => base.CommandName = value;
         }
         public new string RawRequest
         {
-            get { return (string)base.RawRequest; }
-            set { base.RawRequest = value; }
+            get => (string)base.RawRequest;
+            set => base.RawRequest = value;
         }
         public new GSErrorCode ErrorCode
         {
-            get { return (GSErrorCode)base.ErrorCode; }
-            protected set { base.ErrorCode = value; }
+            get => (GSErrorCode)base.ErrorCode;
+            protected set => base.ErrorCode = value;
         }
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
 
@@ -31,6 +31,7 @@ namespace GameStatus.Abstraction.BaseClass
             RawRequest = rawRequest;
             RequestKeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
             CommandName = RequestKeyValues.Keys.First();
+            ErrorCode = GSErrorCode.NoError;
         }
 
         public override void Parse()
@@ -63,8 +64,6 @@ namespace GameStatus.Abstraction.BaseClass
                 }
                 OperationID = operationID;
             }
-
-            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

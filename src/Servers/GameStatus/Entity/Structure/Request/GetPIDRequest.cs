@@ -39,8 +39,6 @@ namespace GameStatus.Entity.Structure.Request
                 ErrorCode = GSErrorCode.Parse;
                 return;
             }
-
-            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

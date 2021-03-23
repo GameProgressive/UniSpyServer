@@ -5,7 +5,6 @@ namespace GameStatus.Entity.Structure.Request
 {
 
     internal sealed class AuthPRequest : GSRequestBase
-
     {
         public AuthMethod RequestType { get; private set; }
         public uint ProfileID { get; private set; }
@@ -54,8 +53,6 @@ namespace GameStatus.Entity.Structure.Request
                 ErrorCode = GSErrorCode.Parse;
                 return;
             }
-
-            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

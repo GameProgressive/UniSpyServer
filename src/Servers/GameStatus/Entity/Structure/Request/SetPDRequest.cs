@@ -80,8 +80,6 @@ namespace GameStatus.Entity.Structure.Request
                     break;
                 KeyValueString += @"\" + d.Key + @"\" + d.Value;
             }
-
-            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

@@ -40,8 +40,6 @@ namespace GameStatus.Entity.Structure.Request
             }
 
             GameName = RequestKeyValues["gamename"];
-
-            ErrorCode = GSErrorCode.NoError;
         }
     }
 }

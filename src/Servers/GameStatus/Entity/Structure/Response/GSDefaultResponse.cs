@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Structure.Response
 {
-    internal sealed class GSDefaultResponse:GSResponseBase
+    internal sealed class GSDefaultResponse : GSResponseBase
     {
         public GSDefaultResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
