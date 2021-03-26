@@ -60,7 +60,7 @@ namespace UniSpyLib.Logging
         /// <param name="message"></param>
         public static void ToLog(LogEventLevel level, string message)
         {
-            string tempMsg = $"[{UniSpyServerFactoryBase.ServerName}] {message}";
+            string tempMsg = $"[{UniSpyServerFactoryBase.ServerShortName}] {message}";
             switch (level)
             {
                 case LogEventLevel.Verbose:
