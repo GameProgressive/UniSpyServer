@@ -1,5 +1,4 @@
-﻿using System.Text;
-using GameStatus.Entity.Structure.Misc;
+﻿using GameStatus.Entity.Structure.Misc;
 using GameStatus.Handler.CmdSwitcher;
 using UniSpyLib.Network;
 

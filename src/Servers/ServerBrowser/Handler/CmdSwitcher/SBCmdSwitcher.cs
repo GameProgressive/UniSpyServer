@@ -1,4 +1,5 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using ServerBrowser.Entity.Enumerate;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CommandSwitcher
@@ -29,7 +30,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
         {
             var request = new SBRequestFactory(_rawRequest).Serialize();
             request.Parse();
-            if (!(bool)request.ErrorCode)
+            if ((SBErrorCode)request.ErrorCode != SBErrorCode.NoError)
             {
                 return;
             }
