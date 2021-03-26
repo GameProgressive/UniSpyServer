@@ -35,7 +35,6 @@ namespace QueryReport.Handler.CmdSwitcher
                     return new ChallengeRequest(_rawRequest);
                 case QRPacketType.HeartBeat:
                     return new HeartBeatRequest(_rawRequest);
-
                 case QRPacketType.KeepAlive:
                     return new QRDefaultRequest(_rawRequest);
                 case QRPacketType.EchoResponse:

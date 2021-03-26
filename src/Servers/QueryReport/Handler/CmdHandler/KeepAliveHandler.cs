@@ -22,13 +22,9 @@ namespace QueryReport.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            if (_session.InstantKey != _request.InstantKey)
-            {
-                _session.InstantKey = _request.InstantKey;
-            }
             var searchKey = new GameServerInfoRedisKey()
             {
-                RemoteIPEndPoint = _session.RemoteIPEndPoint
+                InstantKey = _request.InstantKey
             };
 
             var result = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey);

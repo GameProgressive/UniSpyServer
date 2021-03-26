@@ -16,20 +16,14 @@ namespace QueryReport.Handler.CmdHandler
         //we do not need to implement this to check the correctness of the challenge response
         public ChallengeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-        }
-        protected override void RequestCheck()
-        {
             _result = new ChallengeResult();
-            if (_session.InstantKey != _request.InstantKey)
-            {
-                _result.ErrorCode = QRErrorCode.Parse;
-            }
         }
+
         protected override void DataOperation()
         {
             var searchKey = new GameServerInfoRedisKey()
             {
-                RemoteIPEndPoint = _session.RemoteIPEndPoint
+                InstantKey = _request.InstantKey
             };
 
             var matchedKey = GameServerInfoRedisOperator.GetMatchedKeys(searchKey);

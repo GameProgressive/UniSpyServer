@@ -60,9 +60,10 @@ namespace QueryReport.Handler.CmdHandler
             {
                 ServerID = QRServerFactory.Server.ServerID,
                 RemoteIPEndPoint = _session.RemoteIPEndPoint,
+                InstantKey = _request.InstantKey,
                 GameName = _gameServerInfo.ServerData.KeyValue["gamename"]
             };
-
+            _session.InstantKey = _request.InstantKey;
             if (_gameServerInfo.ServerData.ServerStatus == GameServerServerStatus.Shutdown)
             {
                 GameServerInfoRedisOperator.DeleteKeyValue(fullKey);

@@ -8,7 +8,7 @@ namespace QueryReport.Abstraction.BaseClass
     internal abstract class QRRequestBase : UniSpyRequestBase
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
-        public int InstantKey { get; protected set; }
+        public uint InstantKey { get; protected set; }
         public new QRPacketType CommandName
         {
             get { return (QRPacketType)base.CommandName; }
@@ -37,7 +37,7 @@ namespace QueryReport.Abstraction.BaseClass
                 ErrorCode = QRErrorCode.Parse;
             }
             CommandName = (QRPacketType)RawRequest[0];
-            InstantKey = BitConverter.ToInt32(ByteTools.SubBytes(RawRequest, 1, 4));
+            InstantKey = BitConverter.ToUInt32(ByteTools.SubBytes(RawRequest, 1, 4));
         }
     }
 }

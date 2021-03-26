@@ -19,9 +19,6 @@ namespace QueryReport.Handler.CmdHandler
         public AvailableHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-        protected override void DataOperation()
-        {
-        }
         protected override void ResponseConstruct()
         {
             _response = new AvaliableResponse(_request, _result);

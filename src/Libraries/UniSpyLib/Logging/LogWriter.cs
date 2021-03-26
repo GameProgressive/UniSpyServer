@@ -2,7 +2,6 @@
 using Serilog.Events;
 using System;
 using System.Net;
-using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
@@ -49,8 +48,10 @@ namespace UniSpyLib.Logging
             }
             Log.Logger = logConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
-                .WriteTo.File($"Logs/[{UniSpyServerFactoryBase.ServerShortName}]-.log",
-                outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}", rollingInterval: RollingInterval.Day)
+                .WriteTo.File(
+                path: $"Logs/[{UniSpyServerFactoryBase.ServerShortName}]-.log",
+                outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}",
+                rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
         /// <summary>
@@ -105,7 +106,7 @@ namespace UniSpyLib.Logging
             ToLog(LogEventLevel.Verbose, $"[ => ] [{param.GetType().Name}]");
         }
 
-        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer,long size)
+        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer, long size)
         {
             byte[] tempBuffer = new byte[size];
             Array.Copy(buffer, tempBuffer, size);

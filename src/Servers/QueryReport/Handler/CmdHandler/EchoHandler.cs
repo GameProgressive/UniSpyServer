@@ -27,7 +27,7 @@ namespace QueryReport.Handler.CmdHandler
             //TODO prevent one pc create multiple game servers
             var searchKey = new GameServerInfoRedisKey()
             {
-                RemoteIPEndPoint = _session.RemoteIPEndPoint
+                InstantKey = _request.InstantKey
             };
 
             var matchedKeys = GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
