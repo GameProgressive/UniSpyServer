@@ -28,6 +28,12 @@ namespace UniSpyLib.Network
             ServerID = serverID;
         }
 
+        public override bool Start()
+        {
+            SessionManager.Start();
+            return base.Start();
+        }
+
         protected override void OnConnected(TcpSession session)
         {
             if (!SessionManager.SessionPool.ContainsKey(session.Id))

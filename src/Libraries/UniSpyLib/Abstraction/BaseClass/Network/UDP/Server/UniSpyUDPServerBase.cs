@@ -29,7 +29,11 @@ namespace UniSpyLib.Network
         {
             ServerID = serverID;
         }
-
+        public override bool Start()
+        {
+            SessionManager.Start();
+            return base.Start();
+        }
         protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new UniSpyUDPSessionBase(this, endPoint);
 
 

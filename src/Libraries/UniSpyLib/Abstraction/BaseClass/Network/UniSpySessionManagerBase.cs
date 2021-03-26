@@ -21,5 +21,10 @@ namespace UniSpyLib.Abstraction.BaseClass
         {
             SessionPool = new ConcurrentDictionary<object, IUniSpySession>();
         }
+
+        public virtual bool Start()
+        {
+            return true;
+        }
     }
 }

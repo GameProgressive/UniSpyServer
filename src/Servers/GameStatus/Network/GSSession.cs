@@ -18,7 +18,7 @@ namespace GameStatus.Network
         /// <summary>
         /// When client connect, we send our challenge first
         /// </summary>
-        protected override void OnConnected() => SendAsync(GSPlayerInfo.ChallengeResponse);
+        protected override void OnConnected() => SendAsync(GSConstants.ChallengeResponse);
         protected override void OnReceived(string message) => new GSCmdSwitcher(this, message).Switch();
 
         protected override byte[] Encrypt(byte[] buffer)

@@ -34,8 +34,8 @@ namespace ServerBrowser.Abstraction.BaseClass
             var data = new List<byte>();
             data.Add(2 ^ 0xEC);
             data.AddRange(new byte[] { 0, 0 });
-            data.Add((byte)(SBServer.ServerChallenge.Length ^ 0xEA));
-            data.AddRange(Encoding.ASCII.GetBytes(SBServer.ServerChallenge));
+            data.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
+            data.AddRange(Encoding.ASCII.GetBytes(SBConstants.ServerChallenge));
             return data;
         }
         protected abstract List<byte> BuildServersInfo();

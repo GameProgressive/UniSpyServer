@@ -4,7 +4,7 @@ using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Entity.Structure.Request
 {
-    internal abstract class InitRequestBase : NNRequestBase
+    internal abstract class NNInitRequestBase : NNRequestBase
     {
         public static new readonly int Size = NNRequestBase.Size + 9;
 
@@ -14,7 +14,7 @@ namespace NATNegotiation.Entity.Structure.Request
         public string LocalIP { get; protected set; }
         public ushort LocalPort { get; protected set; }
 
-        public InitRequestBase(byte[] rawRequest) : base(rawRequest)
+        public NNInitRequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
 

@@ -140,7 +140,7 @@ namespace Chat.Entity.Structure.Misc
 
         public static string Build(string cmd, string cmdParams, string tailing)
         {
-            return Build(ChatServer.ServerDomain, cmd, cmdParams, tailing);
+            return Build(ChatConstants.ServerDomain, cmd, cmdParams, tailing);
         }
 
         public static string Build(string prefix, string cmd, string cmdParams, string tailing)

@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Structure.Misc;
 using Chat.Network;
 
 namespace Chat.Entity.Structure.Result.General
@@ -9,8 +10,8 @@ namespace Chat.Entity.Structure.Result.General
         public string ClientKey { get; set; }
         public CRYPTResult()
         {
-            ServerKey = ChatServer.ServerKey;
-            ClientKey = ChatServer.ClientKey;
+            ServerKey = ChatConstants.ServerKey;
+            ClientKey = ChatConstants.ClientKey;
         }
     }
 }

@@ -9,13 +9,14 @@ namespace Chat.Entity.Structure.Result.General
 {
     internal class LISTDataModel
     {
-        public string ChannelName;
-        public int TotalChannelUsers;
-        public string ChannelTopic;
+        public string ChannelName { get; set; }
+        public int TotalChannelUsers { get; set; }
+        public string ChannelTopic { get; set; }
     }
+
     internal sealed class LISTResult : ChatResultBase
     {
-        public string UserIRCPrefix;
+        public string UserIRCPrefix { get; set; }
         public List<LISTDataModel> ChannelInfos { get; set; }
         public LISTResult()
         {

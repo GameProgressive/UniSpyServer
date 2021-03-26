@@ -43,8 +43,8 @@ namespace Chat.Handler.CmdHandler.General
             _session.UserInfo.GameSecretKey = secretKey;
             _session.UserInfo.GameName = _request.GameName;
             // 2. Prepare two keys
-            ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatServer.ClientKey, _session.UserInfo.GameSecretKey);
-            ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatServer.ServerKey, _session.UserInfo.GameSecretKey);
+            ChatCrypt.Init(_session.UserInfo.ClientCTX, ChatConstants.ClientKey, _session.UserInfo.GameSecretKey);
+            ChatCrypt.Init(_session.UserInfo.ServerCTX, ChatConstants.ServerKey, _session.UserInfo.GameSecretKey);
         }
         protected override void ResponseConstruct()
         {

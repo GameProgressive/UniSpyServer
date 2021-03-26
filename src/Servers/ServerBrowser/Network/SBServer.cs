@@ -1,7 +1,6 @@
 ﻿using NetCoreServer;
 using System;
 using System.Net;
-using System.Text;
 using UniSpyLib.Network;
 
 namespace ServerBrowser.Network
@@ -12,15 +11,9 @@ namespace ServerBrowser.Network
     /// </summary>
     public class SBServer : UniSpyTCPServerBase
     {
-        /// <summary>
-        /// we are not gamespy,
-        /// for simplicity we use hard coded challenge
-        /// to reduce computation cost of our program
-        /// </summary>
-        public static readonly string ServerChallenge = "0000000000";
-
         public SBServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
+            SessionManager = new SBSessionManager();
         }
 
         protected override TcpSession CreateSession() => new SBSession(this);

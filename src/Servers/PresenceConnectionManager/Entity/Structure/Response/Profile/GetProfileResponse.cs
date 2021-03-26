@@ -7,12 +7,10 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 {
     internal class GetProfileResponse : PCMResponseBase
     {
+        protected new GetProfileResult _result => (GetProfileResult)base._result;
         public GetProfileResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
-        protected new GetProfileResult _result => (GetProfileResult)base._result;
-
         protected override void BuildNormalResponse()
         {
             SendingBuffer = @"\pi\\profileid\" + _result.UserProfile.ProfileID;

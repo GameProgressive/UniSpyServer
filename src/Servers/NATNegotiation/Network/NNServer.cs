@@ -9,6 +9,7 @@ namespace NATNegotiation.Network
     {
         public NNServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
+            SessionManager = new NNSessionManager();
         }
 
         protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint) =>

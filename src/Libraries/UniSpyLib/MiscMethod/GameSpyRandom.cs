@@ -40,7 +40,7 @@ namespace UniSpyLib.MiscMethod
 
         public static string GenerateRandomString(int count, StringType type)
         {
-            System.Random random = new System.Random((int)DateTime.Now.Ticks);
+            Random random = new Random((int)DateTime.Now.Ticks);
 
             StringBuilder builder = new StringBuilder(count);
 

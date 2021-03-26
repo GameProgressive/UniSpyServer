@@ -25,7 +25,7 @@ namespace ServerBrowser.Entity.Structure.Misc
             _encParam = encParam;
             _encParam = new SBEncryptionParameters();            
             _clientChallenge = Encoding.ASCII.GetBytes(clientChallenge);
-            _serverChallenge = Encoding.ASCII.GetBytes(SBServer.ServerChallenge);
+            _serverChallenge = Encoding.ASCII.GetBytes(SBConstants.ServerChallenge);
             _secretKey = Encoding.ASCII.GetBytes(secretKey);
             InitEncryptionAlgorithm();
         }

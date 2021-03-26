@@ -25,7 +25,7 @@ namespace Chat.Entity.Structure.Misc
         public bool IsUsingEncryption { get; set; }
         public bool IsQuietMode { get; set; }
         public string PublicIPAddress => Session.RemoteIPEndPoint.Address.ToString();
-        public string IRCPrefix => $"{NickName}!{UserName}@{ChatServer.ServerDomain}";
+        public string IRCPrefix => $"{NickName}!{UserName}@{ChatConstants.ServerDomain}";
 
         public ChatUserInfo(ChatSession session)
         {
