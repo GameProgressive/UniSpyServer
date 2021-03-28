@@ -17,10 +17,10 @@ namespace ServerBrowser.Abstraction.BaseClass
         }
         protected override void RequestCheck()
         {
-            string secretKey;
+            string secretKey = DataOperationExtensions
+                .GetSecretKey(_request.GameName);
             //we first check and get secrete key from database
-            if (!DataOperationExtensions
-                .GetSecretKey(_request.GameName, out secretKey))
+            if (secretKey == null)
             {
                 _result.ErrorCode = SBErrorCode.UnSupportedGame;
                 return;
@@ -29,7 +29,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             //this is client public ip and default query port
             _result.ClientRemoteIP = _session.RemoteIPEndPoint.Address.GetAddressBytes();
             _session.GameSecretKey = secretKey;
-            _session.RequestChallenge = _request.Challenge;
+            _session.Challenge = _request.Challenge;
         }
     }
 }

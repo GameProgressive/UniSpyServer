@@ -9,7 +9,7 @@ namespace ServerBrowser.Network
     internal sealed class SBSession : UniSpyTCPSessionBase
     {
         public string GameSecretKey { get; set; }
-        public string RequestChallenge { get; set; }
+        public string Challenge { get; set; }
         public SBEncryptionParameters EncParams { get; set; }
         public List<AdHocRequest> ServerMessageList { get; set; }
 
@@ -27,7 +27,7 @@ namespace ServerBrowser.Network
             {
                 enc = new SBEncryption(
                 GameSecretKey,
-                RequestChallenge,
+                Challenge,
                 EncParams);
             }
             else

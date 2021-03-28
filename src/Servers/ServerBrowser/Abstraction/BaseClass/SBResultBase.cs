@@ -13,6 +13,7 @@ namespace ServerBrowser.Abstraction.BaseClass
 
         public SBResultBase()
         {
+            ErrorCode = SBErrorCode.NoError;
         }
     }
 }

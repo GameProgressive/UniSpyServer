@@ -15,15 +15,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     public class NewUserHandler : PSPCmdHandlerBase
     {
-        protected new NewUserRequest _request
-        {
-            get { return (NewUserRequest)base._request; }
-        }
+        protected new NewUserRequest _request => (NewUserRequest)base._request;
 
         protected new NewUserResult _result
         {
-            get { return (NewUserResult)base._result; }
-            set { base._result = value; }
+            get => (NewUserResult)base._result;
+            set => base._result = value;
         }
 
         public NewUserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

@@ -4,7 +4,7 @@ namespace UniSpyLib.Extensions
 {
     public class DataOperationExtensions
     {
-        public static bool GetSecretKey(string gameName, out string secretKey)
+        public static string GetSecretKey(string gameName)
         {
             using (var db = new unispyContext())
             {
@@ -12,16 +12,7 @@ namespace UniSpyLib.Extensions
                              where p.Gamename == gameName
                              select new { p.Secretkey };
 
-                if (result.Count() == 1 && result.First() != null)
-                {
-                    secretKey = result.First().Secretkey;
-                    return true;
-                }
-                else
-                {
-                    secretKey = null;
-                    return false;
-                }
+                return result.First().Secretkey;
             }
         }
     }

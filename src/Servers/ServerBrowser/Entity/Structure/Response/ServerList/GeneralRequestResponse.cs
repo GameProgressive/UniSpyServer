@@ -1,7 +1,6 @@
 ﻿using QueryReport.Entity.Structure;
 using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Entity.Structure.Result;
@@ -21,21 +20,19 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
 
         protected override void BuildNormalResponse()
         {
-            List<byte> serverListContext = new List<byte>();
-            serverListContext.AddRange(BuildServerKeys());
+            BuildServerKeys();
             //we use NTS string so total unique value list is 0
-            serverListContext.AddRange(BuildUniqueValue());
+            BuildUniqueValue();
             //add server infomation such as public ip etc.
-            serverListContext.AddRange(BuildServersInfo());
-            //after all server information is added we add the end flag
-            serverListContext.AddRange(SBStringFlag.AllServerEndFlag);
-            SendingBuffer = serverListContext.ToArray();
+            BuildServersInfo();
+
+            SendingBuffer = _serverListContext.ToArray();
             // Finally we add the other header
             base.BuildNormalResponse();
         }
-        protected override List<byte> BuildServersInfo()
+
+        protected override void BuildServersInfo()
         {
-            List<byte> data = new List<byte>();
             foreach (var serverInfo in _result.GameServerInfos)
             {
                 //we check the server
@@ -45,15 +42,17 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
                 {
                     continue;
                 }
-                data.AddRange(BuildServerInfoHeader((GameServerFlags)_result.Flag, serverInfo));
+                List<byte> header = new List<byte>();
+                BuildServerInfoHeader(_result.Flag, serverInfo);
                 foreach (var key in _request.Keys)
                 {
-                    data.Add(SBStringFlag.NTSStringFlag);
-                    data.AddRange(Encoding.ASCII.GetBytes(serverInfo.ServerData.KeyValue[key]));
-                    data.Add(SBStringFlag.StringSpliter);
+                    _serverListContext.Add(SBStringFlag.NTSStringFlag);
+                    _serverListContext.AddRange(Encoding.ASCII.GetBytes(serverInfo.ServerData.KeyValue[key]));
+                    _serverListContext.Add(SBStringFlag.StringSpliter);
                 }
             }
-            return data;
+            //after all server information is added we add the end flag
+            _serverListContext.AddRange(SBStringFlag.AllServerEndFlag);
         }
 
         private bool IsSkipThisServer(GameServerInfo serverInfo)

@@ -17,7 +17,7 @@ namespace ServerBrowser.Entity.Structure.Response.ServerList
         {
         }
 
-        protected override List<byte> BuildServersInfo()
+        protected override void BuildServersInfo()
         {
             throw new NotImplementedException();
         }
