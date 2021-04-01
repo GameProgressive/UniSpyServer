@@ -13,14 +13,7 @@ namespace CDKey.Network
             SessionManager = new CDKeySessionManager();
         }
         protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new CDKeySession(this, endPoint);
-        protected override byte[] Decryption(byte[] buffer)
-        {
-            return XorEncoding.Encrypt(buffer, XorEncoding.XorType.Type0);
-        }
-        protected override byte[] Encrypt(byte[] buffer)
-        {
-            return XorEncoding.Encrypt(buffer, XorEncoding.XorType.Type0); ;
-        }
+
         protected override void OnReceived(UniSpyUDPSessionBase session, string message)
             => new CDKeyCmdSwitcher(session, message).Switch();
     }

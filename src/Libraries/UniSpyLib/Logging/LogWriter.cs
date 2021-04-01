@@ -2,6 +2,7 @@
 using Serilog.Events;
 using System;
 using System.Net;
+using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
@@ -106,6 +107,23 @@ namespace UniSpyLib.Logging
             ToLog(LogEventLevel.Verbose, $"[ => ] [{param.GetType().Name}]");
         }
 
+        public static void LogNetworkSending(IPEndPoint endPoint, byte[] buffer)
+        {
+            LogNetworkTraffic("Send", endPoint, buffer);
+        }
+        public static void LogNetworkSending(IPEndPoint endPoint, string buffer)
+        {
+            LogNetworkSending(endPoint, Encoding.ASCII.GetBytes(buffer));
+        }
+        public static void LogNetworkReceiving(IPEndPoint endPoint, byte[] buffer)
+        {
+            LogNetworkTraffic("Recv", endPoint, buffer);
+        }
+        public static void LogNetworkReceiving(IPEndPoint endPoint, string buffer)
+        {
+            LogNetworkReceiving(endPoint, Encoding.ASCII.GetBytes(buffer));
+        }
+
         public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer, long size)
         {
             byte[] tempBuffer = new byte[size];
@@ -113,15 +131,16 @@ namespace UniSpyLib.Logging
             LogNetworkTraffic(type, endPoint, tempBuffer);
         }
 
-        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer)
+        private static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer)
         {
             string tempData = StringExtensions.ReplaceUnreadableCharToHex(buffer);
             LogNetworkTraffic(type, endPoint, tempData);
         }
-        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, string buffer)
+        private static void LogNetworkTraffic(string type, IPEndPoint endPoint, string buffer)
         {
             ToLog(LogEventLevel.Debug, $"[{type}] [{endPoint}] {buffer}");
         }
+
         public static void LogNetworkSpam(IPEndPoint endPoint)
         {
             ToLog(LogEventLevel.Error, $"[Spam] [{endPoint}] spam we ignored!");

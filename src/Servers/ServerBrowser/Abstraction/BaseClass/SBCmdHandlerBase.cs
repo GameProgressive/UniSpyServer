@@ -54,18 +54,25 @@ namespace ServerBrowser.Abstraction.BaseClass
         {
             _response = new SBDefaultResponse(_request, _result);
         }
-        protected override void Response()
+        protected override void Encrypt()
         {
-            if (_response == null)
+            SBEncryption enc;
+            if (_session.EncParams == null)
             {
-                return;
+                _session.EncParams = new SBEncryptionParameters();
+                enc = new SBEncryption(
+                GameSecretKey,
+                ClientChallenge,
+                _encParams);
             }
-            _response.Build();
-            if (!StringExtensions.CheckResponseValidation((byte[])_response.SendingBuffer))
+            else
             {
-                return;
+                enc = new SBEncryption(_encParams);
             }
-            _session.SendAsync((byte[])_response.SendingBuffer);
+
+            var cryptHeader = buffer.Take(14);
+            var cipherBody = enc.Encrypt(buffer.Skip(14).ToArray());
+            return cryptHeader.Concat(cipherBody).ToArray();
         }
     }
 }

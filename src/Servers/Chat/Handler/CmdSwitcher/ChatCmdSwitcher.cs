@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Text;
 using Chat.Entity.Structure;
+using Chat.Entity.Structure.Misc;
+using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
@@ -8,10 +11,15 @@ namespace Chat.Handler.CommandSwitcher
     /// <summary>
     /// Process request to Commands
     /// </summary>
-    internal sealed class ChatCommandSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class ChatCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new string _rawRequest => (string)base._rawRequest;
-        public ChatCommandSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
+        private new string _rawRequest
+        {
+            get => (string)base._rawRequest;
+            set => base._rawRequest = value;
+        }
+        private new ChatSession _session => (ChatSession)base._session;
+        public ChatCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 
@@ -20,6 +28,15 @@ namespace Chat.Handler.CommandSwitcher
             foreach (var request in _requests)
             {
                 _handlers.Add(new ChatCmdHandlerFactory(_session, request).Serialize());
+            }
+        }
+
+        protected override void Decrypt()
+        {
+            if (_session.UserInfo.IsUsingEncryption)
+            {
+                byte[] buffer = Encoding.ASCII.GetBytes(_rawRequest);
+                _rawRequest = Encoding.ASCII.GetString(ChatCrypt.Handle(_session.UserInfo.ClientCTX, ref buffer));
             }
         }
 

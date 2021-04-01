@@ -36,6 +36,7 @@
         <Folder Include="Handler\SystemHandler\Error\" />
         <Folder Include="Handler\CmdHandler\AdHoc\" />
         <Folder Include="Handler\CmdHandler\NatNeg\" />
+        <Folder Include="Abstraction\BaseClass\ServerList\" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />

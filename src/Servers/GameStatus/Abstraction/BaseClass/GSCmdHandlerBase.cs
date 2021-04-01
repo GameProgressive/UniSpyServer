@@ -1,4 +1,6 @@
-﻿using GameStatus.Entity.Enumerate;
+﻿using System.Text;
+using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Structure.Misc;
 using GameStatus.Entity.Structure.Response;
 using GameStatus.Entity.Structure.Result;
 using GameStatus.Handler.SystemHandler;
@@ -23,6 +25,11 @@ namespace GameStatus.Abstraction.BaseClass
         {
             get { return (GSResultBase)base._result; }
             set { base._result = value; }
+        }
+        protected new string _sendingBuffer
+        {
+            get => (string)base._sendingBuffer;
+            set => base._sendingBuffer = value;
         }
         protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -63,14 +70,10 @@ namespace GameStatus.Abstraction.BaseClass
         {
             _response = new GSDefaultResponse(_request, _result);
         }
-        protected override void Response()
+        protected override void Encrypt()
         {
-            if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
-            {
-                return;
-            }
-
-            _session.SendAsync((string)_response.SendingBuffer);
+            byte[] buffer = Encoding.ASCII.GetBytes(_sendingBuffer);
+            _sendingBuffer = Encoding.ASCII.GetString(GSEncryption.Encrypt(buffer));
         }
     }
 }

@@ -3,6 +3,7 @@ using CDKey.Entity.Structure.Result;
 using CDKey.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace CDKey.Abstraction.BaseClass
@@ -11,6 +12,7 @@ namespace CDKey.Abstraction.BaseClass
     {
         protected new CDKeySession _session => (CDKeySession)base._session;
         protected new CDKeyRequestBase _request => (CDKeyRequestBase)base._request;
+        protected new CDKeyResponseBase _response => (CDKeyResponseBase)base._response;
         protected new CDKeyResultBase _result
         {
             get => (CDKeyResultBase)base._result;
@@ -42,18 +44,10 @@ namespace CDKey.Abstraction.BaseClass
         }
 
 
-        protected override void Response()
+        protected override void Encrypt()
         {
-            if (_response == null)
-            {
-                return;
-            }
-            _response.Build();
-            if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
-            {
-                return;
-            }
-            _session.SendAsync((string)_response.SendingBuffer);
+            base.Encrypt();
+            _sendingBuffer = XorEncoding.Encrypt((string)_response.SendingBuffer, XorEncoding.XorType.Type0);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 using ServerBrowser.Network;
 
 namespace ServerBrowser.Entity.Structure.Misc
@@ -15,38 +16,23 @@ namespace ServerBrowser.Entity.Structure.Misc
 
     public class SBEncryption
     {
-        private SBEncryptionParameters _encParam;
+        private SBEncryptionParameters _encParams;
         private byte[] _clientChallenge = new byte[8];
         private byte[] _serverChallenge;
         private byte[] _secretKey;
         public SBEncryption(string secretKey, string clientChallenge, SBEncryptionParameters encParam)
         {
             // reference private filed to encParams
-            _encParam = encParam;
-            _encParam = new SBEncryptionParameters();            
+            _encParams = encParam;
             _clientChallenge = Encoding.ASCII.GetBytes(clientChallenge);
             _serverChallenge = Encoding.ASCII.GetBytes(SBConstants.ServerChallenge);
             _secretKey = Encoding.ASCII.GetBytes(secretKey);
             InitEncryptionAlgorithm();
         }
 
-        /// <summary>
-        /// Initialize permutation table
-        /// </summary>
-        /// <param name="secretKey">game secret key</param>
-        /// <param name="serverChallenge">can be null</param>
-        private SBEncryption(string secretKey, string clientChallenge, string serverChallenge)
+        public SBEncryption(SBEncryptionParameters encParams)
         {
-            _encParam = new SBEncryptionParameters();
-            _clientChallenge = Encoding.ASCII.GetBytes(clientChallenge);
-            _serverChallenge = Encoding.ASCII.GetBytes(serverChallenge);
-            _secretKey = Encoding.ASCII.GetBytes(secretKey);
-            InitEncryptionAlgorithm();
-        }
-
-        public SBEncryption(SBEncryptionParameters state)
-        {
-            _encParam = state;
+            _encParams = encParams;
         }
 
         /// <summary>
@@ -76,7 +62,7 @@ namespace ServerBrowser.Entity.Structure.Misc
         private void InitEncryptionParameters()
         {
             uint i;
-            byte toSwap, swaptemp, randomSum;
+            byte toSwap, swapTemp, randomSum;
             byte keyPosition;
 
             if (_clientChallenge.Length < 1)
@@ -88,7 +74,7 @@ namespace ServerBrowser.Entity.Structure.Misc
             //generate ascii table
             for (i = 0; i < 256; i++)
             {
-                _encParam.Register[i] = (byte)i;
+                _encParams.Register[i] = (byte)i;
             }
 
             toSwap = 0;
@@ -97,9 +83,9 @@ namespace ServerBrowser.Entity.Structure.Misc
             for (i = 255; i > 0; i--)
             {
                 toSwap = IndexPositionGeneration(i, ref randomSum, ref keyPosition);
-                swaptemp = _encParam.Register[i];
-                _encParam.Register[i] = _encParam.Register[toSwap];
-                _encParam.Register[toSwap] = swaptemp;
+                swapTemp = _encParams.Register[i];
+                _encParams.Register[i] = _encParams.Register[toSwap];
+                _encParams.Register[toSwap] = swapTemp;
             }
 
             // Initialize the indices and data dependencies.
@@ -107,11 +93,11 @@ namespace ServerBrowser.Entity.Structure.Misc
             // to reduce what is known about the state of the state.cards
             // when the first byte is emitted.
 
-            _encParam.Index0 = _encParam.Register[1];
-            _encParam.Index1 = _encParam.Register[3];
-            _encParam.Index2 = _encParam.Register[5];
-            _encParam.Index3 = _encParam.Register[7];
-            _encParam.Index4 = _encParam.Register[randomSum];
+            _encParams.Index0 = _encParams.Register[1];
+            _encParams.Index1 = _encParams.Register[3];
+            _encParams.Index2 = _encParams.Register[5];
+            _encParams.Index3 = _encParams.Register[7];
+            _encParams.Index4 = _encParams.Register[randomSum];
         }
 
         public byte[] Encrypt(string plainStr)
@@ -135,39 +121,39 @@ namespace ServerBrowser.Entity.Structure.Misc
         {
             // Initialize the indices and data dependencies.
             byte i, j;
-            _encParam.Index0 = 1;
-            _encParam.Index1 = 3;
-            _encParam.Index2 = 5;
-            _encParam.Index3 = 7;
-            _encParam.Index4 = 11;
+            _encParams.Index0 = 1;
+            _encParams.Index1 = 3;
+            _encParams.Index2 = 5;
+            _encParams.Index3 = 7;
+            _encParams.Index4 = 11;
 
             // Start with state.cards all in inverse order.
             for (i = 0, j = 255; i <= 255; i++, j--)
             {
-                _encParam.Register[i] = j;
+                _encParams.Register[i] = j;
             }
         }
 
         private byte ByteShift(byte b)
         {
             byte swapTempStorage;
-            _encParam.Index1 = (byte)(_encParam.Index1 + _encParam.Register[_encParam.Index0++]);
-            swapTempStorage = _encParam.Register[_encParam.Index4];
-            _encParam.Register[_encParam.Index4] = _encParam.Register[_encParam.Index1];
-            _encParam.Register[_encParam.Index1] = _encParam.Register[_encParam.Index3];
-            _encParam.Register[_encParam.Index3] = _encParam.Register[_encParam.Index0];
-            _encParam.Register[_encParam.Index0] = swapTempStorage;
-            _encParam.Index2 = (byte)(_encParam.Index2 + _encParam.Register[swapTempStorage]);
+            _encParams.Index1 = (byte)(_encParams.Index1 + _encParams.Register[_encParams.Index0++]);
+            swapTempStorage = _encParams.Register[_encParams.Index4];
+            _encParams.Register[_encParams.Index4] = _encParams.Register[_encParams.Index1];
+            _encParams.Register[_encParams.Index1] = _encParams.Register[_encParams.Index3];
+            _encParams.Register[_encParams.Index3] = _encParams.Register[_encParams.Index0];
+            _encParams.Register[_encParams.Index0] = swapTempStorage;
+            _encParams.Index2 = (byte)(_encParams.Index2 + _encParams.Register[swapTempStorage]);
 
 
-            _encParam.Index4 = (byte)(b ^ _encParam.Register[(_encParam.Register[_encParam.Index2] +
-                _encParam.Register[_encParam.Index0]) & 0xFF] ^
-               _encParam.Register[_encParam.Register[(_encParam.Register[_encParam.Index3] +
-               _encParam.Register[_encParam.Index4] +
-               _encParam.Register[_encParam.Index1]) & 0xFF]]);
-            _encParam.Index3 = b;
+            _encParams.Index4 = (byte)(b ^ _encParams.Register[(_encParams.Register[_encParams.Index2] +
+                _encParams.Register[_encParams.Index0]) & 0xFF] ^
+               _encParams.Register[_encParams.Register[(_encParams.Register[_encParams.Index3] +
+               _encParams.Register[_encParams.Index4] +
+               _encParams.Register[_encParams.Index1]) & 0xFF]]);
+            _encParams.Index3 = b;
 
-            return _encParam.Index4;
+            return _encParams.Index4;
         }
 
 
@@ -198,7 +184,7 @@ namespace ServerBrowser.Entity.Structure.Misc
 
             do
             {
-                randomSum = (byte)(_encParam.Register[randomSum] + _clientChallenge[keyPosition++]);
+                randomSum = (byte)(_encParams.Register[randomSum] + _clientChallenge[keyPosition++]);
 
                 if (keyPosition >= _clientChallenge.Length)
                 {
@@ -214,6 +200,16 @@ namespace ServerBrowser.Entity.Structure.Misc
             while (swapIndex > limit);
 
             return swapIndex;
+        }
+        public static byte[] BuildCryptHeader()
+        {
+            // cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes
+            var cryptHeader = new List<byte>();
+            cryptHeader.Add(2 ^ 0xEC);
+            cryptHeader.AddRange(new byte[] { 0, 0 });
+            cryptHeader.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
+            cryptHeader.AddRange(Encoding.ASCII.GetBytes(SBConstants.ServerChallenge));
+            return cryptHeader.ToArray();
         }
     }
 }

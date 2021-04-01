@@ -1,13 +1,17 @@
 ﻿using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-
+using UniSpyLib.Encryption;
 
 namespace CDKey.Handler.CmdSwitcher
 {
     internal sealed class CDKeyCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new string _rawRequest => (string)base._rawRequest;
+        private new string _rawRequest
+        {
+            get => (string)base._rawRequest;
+            set => base._rawRequest = value;
+        }
         public CDKeyCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
@@ -35,6 +39,11 @@ namespace CDKey.Handler.CmdSwitcher
 
                 _requests.Add(request);
             }
+        }
+
+        protected override void Decrypt()
+        {
+            _rawRequest = XorEncoding.Encrypt(_rawRequest, XorEncoding.XorType.Type0);
         }
     }
 }

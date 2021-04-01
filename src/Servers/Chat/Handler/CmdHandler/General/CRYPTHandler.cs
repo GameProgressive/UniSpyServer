@@ -31,9 +31,8 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            string secretKey;
-            if (!DataOperationExtensions.GetSecretKey(_request.GameName, out secretKey)
-                || secretKey == null)
+            string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
+            if (secretKey == null)
             {
                 LogWriter.ToLog(LogEventLevel.Error, "secret key not found!");
                 _result.ErrorCode = ChatErrorCode.UnSupportedGame;

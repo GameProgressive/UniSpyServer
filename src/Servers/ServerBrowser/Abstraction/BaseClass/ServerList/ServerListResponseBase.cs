@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using QueryReport.Entity.Structure.Redis;
@@ -22,26 +23,25 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected override void BuildNormalResponse()
         {
             //Add crypt header
-            _serverListContext.AddRange(BuildCryptHeader());
+            BuildCryptHeader();
+            _serverListContext.InsertRange(13, ByteTools.GetBytes((short)_serverListContext.Count, true));
             // Message length should be added here, between 2 line codes
-            _serverListContext.AddRange(_result.ClientRemoteIP);
-            _serverListContext.AddRange(ServerListRequestBase.HtonQueryReportDefaultPort);
-            _serverListContext.AddRange(SendingBuffer);
-            SendingBuffer = _serverListContext.ToArray();
+            _serverListContext.InsertRange(15, _result.ClientRemoteIP);
+            _serverListContext.InsertRange(19, ServerListRequestBase.HtonQueryReportDefaultPort);
         }
 
-        protected static List<byte> BuildCryptHeader()
+        protected void BuildCryptHeader()
         {
-            var data = new List<byte>();
-            data.Add(2 ^ 0xEC);
-            data.AddRange(new byte[] { 0, 0 });
-            data.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
-            data.AddRange(Encoding.ASCII.GetBytes(SBConstants.ServerChallenge));
-            return data;
+            // cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes
+            var cryptHeader = new List<byte>();
+            cryptHeader.Add(2 ^ 0xEC);
+            // add message length
+            cryptHeader.AddRange(new byte[] { 0, 0 });
+            cryptHeader.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
+            cryptHeader.AddRange(Encoding.ASCII.GetBytes(SBConstants.ServerChallenge));
+            _serverListContext.InsertRange(0, cryptHeader);
         }
-
         protected abstract void BuildServersInfo();
-
         protected void BuildServerInfoHeader(GameServerFlags? flag, GameServerInfo serverInfo)
         {
             List<byte> header = new List<byte>();

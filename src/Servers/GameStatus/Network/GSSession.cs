@@ -19,14 +19,5 @@ namespace GameStatus.Network
         /// </summary>
         protected override void OnConnected() => SendAsync(GSConstants.ChallengeResponse);
         protected override void OnReceived(string message) => new GSCmdSwitcher(this, message).Switch();
-
-        protected override byte[] Encrypt(byte[] buffer)
-        {
-            return GSEncryption.Encrypt(buffer);
-        }
-        protected override byte[] Decrypt(byte[] buffer)
-        {
-            return GSEncryption.Decrypt(buffer);
-        }
     }
 }

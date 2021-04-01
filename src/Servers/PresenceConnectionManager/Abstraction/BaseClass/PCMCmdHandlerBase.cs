@@ -5,6 +5,7 @@ using PresenceSearchPlayer.Entity.Enumerate;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
+using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
@@ -76,7 +77,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             {
                 return;
             }
-            base._session.SendAsync((string)_response.SendingBuffer);
+            _session.SendAsync((string)_response.SendingBuffer);
         }
     }
 }

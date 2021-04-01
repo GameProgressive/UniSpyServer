@@ -28,38 +28,9 @@ namespace UniSpyLib.Network
         public bool BaseSendAsync(byte[] buffer) => BaseSendAsync(buffer, 0, buffer.Length);
         protected bool BaseSendAsync(byte[] buffer, long offset, long size) => base.SendAsync(buffer, offset, size);
         public override bool SendAsync(string buffer) => base.SendAsync(buffer);
-        public override bool SendAsync(byte[] buffer, long offset, long size)
-        {
-            LogWriter.LogNetworkTraffic("Send", RemoteIPEndPoint, buffer, size);
-            byte[] cipherText = Encrypt(buffer);
-            Array.Copy(cipherText, buffer, size);
-            return base.SendAsync(buffer, offset, size);
-        }
 
         protected virtual void OnReceived(string message) { }
         protected virtual void OnReceived(byte[] buffer) => OnReceived(Encoding.ASCII.GetString(buffer));
-
-        protected override void OnReceived(byte[] buffer, long offset, long size)
-        {
-            if (size < 2 || size > OptionReceiveBufferSize)
-            {
-                LogWriter.LogNetworkSpam(RemoteIPEndPoint);
-                return;
-            }
-            byte[] tempBuffer = new byte[size];
-            Array.Copy(buffer, tempBuffer, size);
-
-            byte[] plainText = Decrypt(tempBuffer);
-            LogWriter.LogNetworkTraffic("Recv", RemoteIPEndPoint, plainText);
-
-            OnReceived(plainText);
-        }
-
-        #region Encrytion
-        protected virtual byte[] Encrypt(byte[] buffer) => buffer;
-        protected virtual byte[] Decrypt(byte[] buffer) => buffer;
-        #endregion
-
     }
 }
 

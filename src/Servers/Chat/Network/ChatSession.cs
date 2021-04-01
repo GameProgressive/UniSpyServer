@@ -15,7 +15,7 @@ namespace Chat.Network
             UserInfo = new ChatUserInfo(this);
         }
 
-        protected override void OnReceived(string message) => new ChatCommandSwitcher(this, message).Switch();
+        protected override void OnReceived(string message) => new ChatCmdSwitcher(this, message).Switch();
 
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
@@ -24,23 +24,6 @@ namespace Chat.Network
                 return false;
             }
             return base.SendAsync(buffer, offset, size);
-        }
-
-        protected override byte[] Encrypt(byte[] buffer)
-        {
-            if (UserInfo.IsUsingEncryption)
-            {
-                return ChatCrypt.Handle(UserInfo.ClientCTX, ref buffer);
-            }
-            else
-            {
-                return buffer;
-            }
-        }
-
-        protected override byte[] Decrypt(byte[] buffer)
-        {
-            return ChatCrypt.Handle(UserInfo.ClientCTX, ref buffer);
         }
 
         protected override void OnDisconnected()

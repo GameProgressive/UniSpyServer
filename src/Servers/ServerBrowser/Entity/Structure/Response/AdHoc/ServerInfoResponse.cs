@@ -22,11 +22,9 @@ namespace ServerBrowser.Entity.Structure.Response
         {
             _serverListContext.Add((byte)SBServerResponseType.PushServerMessage);
             BuildServersInfo();
+            // add message length here
+            _serverListContext.InsertRange(0, ByteTools.GetBytes((short)(_serverListContext.Count + 2), true));
             PlainTextSendingBuffer = _serverListContext.ToArray();
-            byte[] msgLength =
-                ByteTools.GetBytes((short)(_serverListContext.Count + 2), true);
-            _serverListContext.InsertRange(0, msgLength);
-            SendingBuffer = _serverListContext.ToArray();
         }
 
         protected override void BuildServersInfo()

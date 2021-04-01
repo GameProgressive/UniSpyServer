@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -22,9 +23,9 @@ namespace UniSpyLib.Network
         /// currently, we do not to care how to delete elements in dictionary
         /// </summary>
         public UniSpyUDPSessionManagerBase SessionManager { get; protected set; }
-
         UniSpySessionManagerBase IUniSpyServer.SessionManager => SessionManager;
-
+        private Func<byte[], string> _encodingMessageGetString => Encoding.ASCII.GetString;
+        private Func<string, byte[]> _encodingMessageGetBytes => Encoding.ASCII.GetBytes;
         public UniSpyUDPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
@@ -34,29 +35,15 @@ namespace UniSpyLib.Network
             SessionManager.Start();
             return base.Start();
         }
-        protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new UniSpyUDPSessionBase(this, endPoint);
-
 
         protected override void OnStarted() => ReceiveAsync();
         protected override void OnError(SocketError error) => LogWriter.ToLog(LogEventLevel.Error, error.ToString());
-
-        public bool BaseSendAsync(EndPoint endPoint, string buffer) => BaseSendAsync(endPoint, Encoding.ASCII.GetBytes(buffer));
+        protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new UniSpyUDPSessionBase(this, endPoint);
+        #region Raw message sending method
+        public bool BaseSendAsync(EndPoint endPoint, string buffer) => BaseSendAsync(endPoint, _encodingMessageGetBytes(buffer));
         public bool BaseSendAsync(EndPoint endPoint, byte[] buffer) => BaseSendAsync(endPoint, buffer, 0, buffer.Length);
         public bool BaseSendAsync(EndPoint endpoint, byte[] buffer, long offset, long size) => base.SendAsync(endpoint, buffer, offset, size);
-
-        public override long Send(EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            LogWriter.LogNetworkTraffic("Send", Endpoint, buffer, size);
-            return base.Send(endpoint, buffer, offset, size);
-        }
-
-        public override bool SendAsync(EndPoint endpoint, byte[] buffer, long offset, long size)
-        {
-            LogWriter.LogNetworkTraffic("Send", Endpoint, buffer, size);
-            return base.SendAsync(endpoint, buffer, offset, size);
-        }
-
-
+        #endregion
         /// <summary>
         /// Continue receive datagrams
         /// </summary>
@@ -66,20 +53,11 @@ namespace UniSpyLib.Network
 
 
         protected virtual void OnReceived(UniSpyUDPSessionBase session, string message) { }
-        protected virtual void OnReceived(UniSpyUDPSessionBase session, byte[] message) => OnReceived(session, Encoding.ASCII.GetString(message));
+        protected virtual void OnReceived(UniSpyUDPSessionBase session, byte[] message) => OnReceived(session, _encodingMessageGetString(message));
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
-            // Need at least 2 bytes
-            if (size < 2 || size > OptionReceiveBufferSize)
-            {
-                LogWriter.LogNetworkSpam((IPEndPoint)endPoint);
-                return;
-            }
-            byte[] message = new byte[(int)size];
-            Array.Copy(buffer, 0, message, 0, (int)size);
-
-            LogWriter.LogNetworkTraffic("Recv", (IPEndPoint)endPoint, buffer, size);
             //even if we did not response we keep receive message
+            ReceiveAsync();
             UniSpyUDPSessionBase tempSession;
             if (SessionManager.SessionPool.ContainsKey((IPEndPoint)endPoint))
             {
@@ -94,13 +72,7 @@ namespace UniSpyLib.Network
                 SessionManager.SessionPool.TryAdd(tempSession.RemoteIPEndPoint, tempSession);
             }
 
-            ReceiveAsync();
-            OnReceived(tempSession, message);
+            OnReceived(tempSession, buffer.Take((int)size).ToArray());
         }
-
-        #region Encryption
-        protected virtual byte[] Encrypt(byte[] buffer) => buffer;
-        protected virtual byte[] Decryption(byte[] buffer) => buffer;
-        #endregion
     }
 }

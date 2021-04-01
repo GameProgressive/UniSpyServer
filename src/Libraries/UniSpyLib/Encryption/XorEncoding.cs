@@ -11,6 +11,12 @@ namespace UniSpyLib.Encryption
             Type2,
             Type3
         }
+        public static string Encrypt(string plainText, XorType type)
+        {
+            return Encoding.ASCII.GetString(
+                Encrypt(
+                    Encoding.ASCII.GetBytes(plainText), type));
+        }
         /// <summary>
         /// simple xor encoding for Gstats,GPSP,GPCM
         /// </summary>

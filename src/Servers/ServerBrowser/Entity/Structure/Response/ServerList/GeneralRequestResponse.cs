@@ -25,8 +25,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
             BuildUniqueValue();
             //add server infomation such as public ip etc.
             BuildServersInfo();
-
-            SendingBuffer = _serverListContext.ToArray();
             // Finally we add the other header
             base.BuildNormalResponse();
         }

@@ -1,4 +1,6 @@
-﻿using Chat.Entity.Structure;
+﻿using System.Text;
+using Chat.Entity.Structure;
+using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response;
 using Chat.Entity.Structure.Result;
@@ -22,6 +24,11 @@ namespace Chat.Abstraction.BaseClass
     internal abstract class ChatCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected new ChatRequestBase _request => (ChatRequestBase)base._request;
+        protected new ChatResponseBase _response
+        {
+            get => (ChatResponseBase)base._response;
+            set => base._response = value;
+        }
         protected new ChatSession _session => (ChatSession)base._session;
         protected new ChatResultBase _result
         {
@@ -65,14 +72,18 @@ namespace Chat.Abstraction.BaseClass
         {
             _response = new ChatDefaultResponse(_request, _result);
         }
-        protected override void Response()
+
+        protected override void Encrypt()
         {
-            _response.Build();
-            if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
+            if (_session.UserInfo.IsUsingEncryption)
             {
-                return;
+                byte[] buffer = Encoding.ASCII.GetBytes(_response.SendingBuffer);
+                _sendingBuffer = Encoding.ASCII.GetString(ChatCrypt.Handle(_session.UserInfo.ClientCTX, ref buffer));
             }
-            base._session.SendAsync((string)_response.SendingBuffer);
+            else
+            {
+                _sendingBuffer = _response.SendingBuffer;
+            }
         }
     }
 }
