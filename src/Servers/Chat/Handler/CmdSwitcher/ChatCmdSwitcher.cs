@@ -5,6 +5,7 @@ using Chat.Entity.Structure.Misc;
 using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
 
 namespace Chat.Handler.CommandSwitcher
 {
@@ -36,7 +37,7 @@ namespace Chat.Handler.CommandSwitcher
             if (_session.UserInfo.IsUsingEncryption)
             {
                 byte[] buffer = Encoding.ASCII.GetBytes(_rawRequest);
-                _rawRequest = Encoding.ASCII.GetString(ChatCrypt.Handle(_session.UserInfo.ClientCTX, ref buffer));
+                _rawRequest = UniSpyEncoding.GetString(ChatCrypt.Handle(_session.UserInfo.ClientCTX, ref buffer));
             }
         }
 

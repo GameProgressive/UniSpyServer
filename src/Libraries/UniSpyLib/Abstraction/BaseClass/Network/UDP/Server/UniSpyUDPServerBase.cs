@@ -8,6 +8,7 @@ using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Network.UDP;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
 using UniSpyLib.Logging;
 
 namespace UniSpyLib.Network
@@ -24,8 +25,6 @@ namespace UniSpyLib.Network
         /// </summary>
         public UniSpyUDPSessionManagerBase SessionManager { get; protected set; }
         UniSpySessionManagerBase IUniSpyServer.SessionManager => SessionManager;
-        private Func<byte[], string> _encodingMessageGetString => Encoding.ASCII.GetString;
-        private Func<string, byte[]> _encodingMessageGetBytes => Encoding.ASCII.GetBytes;
         public UniSpyUDPServerBase(Guid serverID, IPEndPoint endpoint) : base(endpoint)
         {
             ServerID = serverID;
@@ -40,7 +39,7 @@ namespace UniSpyLib.Network
         protected override void OnError(SocketError error) => LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new UniSpyUDPSessionBase(this, endPoint);
         #region Raw message sending method
-        public bool BaseSendAsync(EndPoint endPoint, string buffer) => BaseSendAsync(endPoint, _encodingMessageGetBytes(buffer));
+        public bool BaseSendAsync(EndPoint endPoint, string buffer) => BaseSendAsync(endPoint, UniSpyEncoding.GetBytes(buffer));
         public bool BaseSendAsync(EndPoint endPoint, byte[] buffer) => BaseSendAsync(endPoint, buffer, 0, buffer.Length);
         public bool BaseSendAsync(EndPoint endpoint, byte[] buffer, long offset, long size) => base.SendAsync(endpoint, buffer, offset, size);
         #endregion
@@ -53,7 +52,7 @@ namespace UniSpyLib.Network
 
 
         protected virtual void OnReceived(UniSpyUDPSessionBase session, string message) { }
-        protected virtual void OnReceived(UniSpyUDPSessionBase session, byte[] message) => OnReceived(session, _encodingMessageGetString(message));
+        protected virtual void OnReceived(UniSpyUDPSessionBase session, byte[] message) => OnReceived(session, UniSpyEncoding.GetString(message));
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
             //even if we did not response we keep receive message

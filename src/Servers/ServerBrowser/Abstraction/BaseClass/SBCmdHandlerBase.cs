@@ -54,25 +54,6 @@ namespace ServerBrowser.Abstraction.BaseClass
         {
             _response = new SBDefaultResponse(_request, _result);
         }
-        protected override void Encrypt()
-        {
-            SBEncryption enc;
-            if (_session.EncParams == null)
-            {
-                _session.EncParams = new SBEncryptionParameters();
-                enc = new SBEncryption(
-                GameSecretKey,
-                ClientChallenge,
-                _encParams);
-            }
-            else
-            {
-                enc = new SBEncryption(_encParams);
-            }
-
-            var cryptHeader = buffer.Take(14);
-            var cipherBody = enc.Encrypt(buffer.Skip(14).ToArray());
-            return cryptHeader.Concat(cipherBody).ToArray();
-        }
+        
     }
 }

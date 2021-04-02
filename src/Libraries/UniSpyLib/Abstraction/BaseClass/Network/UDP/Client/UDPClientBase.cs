@@ -28,8 +28,6 @@ namespace UniSpyLib.Network.Udp
 
         protected override void OnReceived(EndPoint endpoint, byte[] buffer, long offset, long size)
         {
-            Console.WriteLine("Incoming: " + Encoding.ASCII.GetString(buffer, (int)offset, (int)size));
-
             // Continue receive datagrams
             ReceiveAsync();
         }

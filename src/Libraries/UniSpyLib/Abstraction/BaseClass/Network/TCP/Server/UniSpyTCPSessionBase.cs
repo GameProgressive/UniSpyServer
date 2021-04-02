@@ -5,6 +5,7 @@ using System.Text;
 using NetCoreServer;
 using Serilog.Events;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
 using UniSpyLib.Logging;
 
 namespace UniSpyLib.Network
@@ -30,7 +31,7 @@ namespace UniSpyLib.Network
         public override bool SendAsync(string buffer) => base.SendAsync(buffer);
 
         protected virtual void OnReceived(string message) { }
-        protected virtual void OnReceived(byte[] buffer) => OnReceived(Encoding.ASCII.GetString(buffer));
+        protected virtual void OnReceived(byte[] buffer) => OnReceived(UniSpyEncoding.GetString(buffer));
     }
 }
 

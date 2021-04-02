@@ -1,8 +1,9 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace UniSpyLib.Encryption
 {
-    public class XorEncoding
+    public class XOREncoding
     {
         public enum XorType : uint
         {
@@ -11,11 +12,11 @@ namespace UniSpyLib.Encryption
             Type2,
             Type3
         }
-        public static string Encrypt(string plainText, XorType type)
+        public static string Encode(string plainText, XorType type)
         {
-            return Encoding.ASCII.GetString(
-                Encrypt(
-                    Encoding.ASCII.GetBytes(plainText), type));
+            return
+            UniSpyEncoding.GetString(
+                Encode(UniSpyEncoding.GetBytes(plainText), type));
         }
         /// <summary>
         /// simple xor encoding for Gstats,GPSP,GPCM
@@ -26,13 +27,12 @@ namespace UniSpyLib.Encryption
         /// <param name ="enc2">used in GStats</param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static byte[] Encrypt(byte[] plaintext, XorType type)
+        public static byte[] Encode(byte[] plaintext, XorType type)
         {
             string seed0 = "gamespy";
             string seed1 = "GameSpy3D";
             string seed2 = "Industries";
             string seed3 = "ProjectAphex";
-            //string statsfile = "gstats.dat";
 
             int length = plaintext.Length;
             int index = 0;

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 using UniSpyLib.UniSpyConfig;
@@ -40,7 +41,7 @@ namespace UniSpyLib.Network
 
         protected virtual void OnReceived(byte[] buffer)
         {
-            OnReceived(Encoding.ASCII.GetString(buffer));
+            OnReceived(UniSpyEncoding.GetString(buffer));
         }
 
         protected virtual void OnReceived(string buffer) { }

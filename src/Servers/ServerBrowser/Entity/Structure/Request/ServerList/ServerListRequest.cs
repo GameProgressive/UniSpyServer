@@ -3,6 +3,7 @@ using ServerBrowser.Entity.Enumerate;
 using System;
 using System.Linq;
 using System.Text;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
@@ -32,13 +33,13 @@ namespace ServerBrowser.Entity.Structure.Request
             GameVersion = BitConverter.ToInt32(ByteTools.SubBytes(RawRequest, 5, 4));
 
             //because there are empty string we can not use StringSplitOptions.RemoveEmptyEntries
-            string remainData = Encoding.ASCII.GetString(RawRequest.Skip(9).ToArray());
+            string remainData = UniSpyEncoding.GetString(RawRequest.Skip(9).ToArray());
             remainData.IndexOf('\0');
             DevGameName = remainData.Substring(0, remainData.IndexOf('\0'));
             remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
             GameName = remainData.Substring(0, remainData.IndexOf('\0'));
             remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
-            Challenge = remainData.Substring(0, remainData.IndexOf('\0')).Substring(0, 8);
+            ClientChallenge = remainData.Substring(0, remainData.IndexOf('\0')).Substring(0, 8);
 
             if (remainData.Substring(0, remainData.IndexOf('\0')).Length > 8)
             {

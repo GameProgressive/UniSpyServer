@@ -8,6 +8,7 @@ using GameStatus.Network;
 using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 
@@ -73,7 +74,7 @@ namespace GameStatus.Abstraction.BaseClass
         protected override void Encrypt()
         {
             byte[] buffer = Encoding.ASCII.GetBytes(_sendingBuffer);
-            _sendingBuffer = Encoding.ASCII.GetString(GSEncryption.Encrypt(buffer));
+            _sendingBuffer = UniSpyEncoding.GetString(GSEncryption.Encrypt(buffer));
         }
     }
 }

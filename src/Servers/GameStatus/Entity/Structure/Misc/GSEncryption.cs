@@ -16,7 +16,7 @@ namespace GameStatus.Entity.Structure.Misc
         {
             //remove \final\, later we add final back
             byte[] cipher = buffer.Take(buffer.Length - 7).ToArray();
-            byte[] plain = XorEncoding.Encrypt(cipher, XorEncoding.XorType.Type1);
+            byte[] plain = XOREncoding.Encode(cipher, XOREncoding.XorType.Type1);
             Array.Copy(plain, buffer, plain.Length);
             return buffer;
         }
@@ -28,7 +28,7 @@ namespace GameStatus.Entity.Structure.Misc
         public static byte[] Encrypt(byte[] buffer)
         {
             byte[] plain = buffer.Take(buffer.Length - 7).ToArray();
-            byte[] cipher = XorEncoding.Encrypt(plain, XorEncoding.XorType.Type1);
+            byte[] cipher = XOREncoding.Encode(plain, XOREncoding.XorType.Type1);
             Array.Copy(cipher, buffer, cipher.Length);
             return buffer;
         }

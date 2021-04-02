@@ -3,6 +3,7 @@ using QueryReport.Entity.Enumerate;
 using System;
 using System.Linq;
 using System.Text;
+using UniSpyLib.Encryption;
 
 namespace QueryReport.Entity.Structure.Request
 {
@@ -23,7 +24,7 @@ namespace QueryReport.Entity.Structure.Request
             base.Parse();
             int playerPos, teamPos;
             int playerLenth, teamLength;
-            DataPartition = Encoding.ASCII.GetString(RawRequest.Skip(5).ToArray());
+            DataPartition = UniSpyEncoding.GetString(RawRequest.Skip(5).ToArray());
 
             playerPos = DataPartition.IndexOf("player_\0", StringComparison.Ordinal);
             teamPos = DataPartition.IndexOf("team_t\0", StringComparison.Ordinal);

@@ -47,7 +47,7 @@ namespace CDKey.Abstraction.BaseClass
         protected override void Encrypt()
         {
             base.Encrypt();
-            _sendingBuffer = XorEncoding.Encrypt((string)_response.SendingBuffer, XorEncoding.XorType.Type0);
+            _sendingBuffer = XOREncoding.Encode((string)_response.SendingBuffer, XOREncoding.XorType.Type0);
         }
     }
 }

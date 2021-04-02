@@ -4,6 +4,7 @@ using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Structure.Misc;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
@@ -44,7 +45,7 @@ namespace GameStatus.Handler.CmdSwitcher
         protected override void Decrypt()
         {
             byte[] buffer = Encoding.ASCII.GetBytes(_rawRequest);
-            _rawRequest = Encoding.ASCII.GetString(GSEncryption.Decrypt(buffer));
+            _rawRequest = UniSpyEncoding.GetString(GSEncryption.Decrypt(buffer));
         }
     }
 }

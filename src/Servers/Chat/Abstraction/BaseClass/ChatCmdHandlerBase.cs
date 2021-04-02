@@ -7,6 +7,7 @@ using Chat.Entity.Structure.Result;
 using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace Chat.Abstraction.BaseClass
@@ -77,8 +78,8 @@ namespace Chat.Abstraction.BaseClass
         {
             if (_session.UserInfo.IsUsingEncryption)
             {
-                byte[] buffer = Encoding.ASCII.GetBytes(_response.SendingBuffer);
-                _sendingBuffer = Encoding.ASCII.GetString(ChatCrypt.Handle(_session.UserInfo.ClientCTX, ref buffer));
+                byte[] buffer = UniSpyEncoding.GetBytes(_response.SendingBuffer);
+                _sendingBuffer = UniSpyEncoding.GetString(ChatCrypt.Handle(_session.UserInfo.ClientCTX, ref buffer));
             }
             else
             {

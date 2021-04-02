@@ -7,7 +7,7 @@ namespace ServerBrowser.Abstraction.BaseClass
     {
         protected new SBRequestBase _request => (SBRequestBase)base._request;
         protected new SBResultBase _result => (SBResultBase)base._result;
-        protected new byte[] SendingBuffer
+        public new byte[] SendingBuffer
         {
             get => (byte[])base.SendingBuffer;
             set => base.SendingBuffer = value;

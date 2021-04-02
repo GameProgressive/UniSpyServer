@@ -1,6 +1,7 @@
 ﻿using ServerBrowser.Abstraction.BaseClass;
 using System;
 using System.Text;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
@@ -26,12 +27,12 @@ namespace ServerBrowser.Entity.Structure.Request
 
             int nameLength = BitConverter.ToInt32(
                 ByteTools.SubBytes(RawRequest, 11, 11 + 4));
-            SearchName = Encoding.ASCII.GetString(
+            SearchName = UniSpyEncoding.GetString(
                 ByteTools.SubBytes(RawRequest, 15, nameLength));
 
             int messageLength = BitConverter.ToInt32(
                 ByteTools.SubBytes(RawRequest, 15 + nameLength, 4));
-            Message = Encoding.ASCII.GetString(
+            Message = UniSpyEncoding.GetString(
                 ByteTools.SubBytes(RawRequest, 15 + nameLength + 4, messageLength));
         }
     }

@@ -2,6 +2,7 @@
 using NATNegotiation.Entity.Enumerate;
 using System;
 using System.Text;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Entity.Structure.Request
@@ -36,7 +37,7 @@ namespace NATNegotiation.Entity.Structure.Request
                 ByteTools.SubBytes(RawRequest, 17, sizeof(int)));
             MappingScheme = (NATNegotiationMappingScheme)BitConverter.ToInt32(
                 ByteTools.SubBytes(RawRequest, 19, sizeof(int)));
-            GameName = Encoding.ASCII.GetString(
+            GameName = UniSpyEncoding.GetString(
                 ByteTools.SubBytes(RawRequest, 23, RawRequest.Length - 23));
         }
     }
