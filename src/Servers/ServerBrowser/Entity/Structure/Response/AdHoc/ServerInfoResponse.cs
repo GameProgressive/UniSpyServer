@@ -12,7 +12,7 @@ namespace ServerBrowser.Entity.Structure.Response
     /// <summary>
     /// Get a server's information
     /// </summary>
-    internal sealed class ServerInfoResponse : ServerListResponseBase
+    internal sealed class ServerInfoResponse : ServerListUpdateOptionResponseBase
     {
         private new ServerInfoResult _result => (ServerInfoResult)base._result;
         public ServerInfoResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
@@ -25,7 +25,6 @@ namespace ServerBrowser.Entity.Structure.Response
             BuildServersInfo();
             // add message length here
             _serverListContext.InsertRange(0, ByteTools.GetBytes((short)(_serverListContext.Count + 2), true));
-            PlainTextSendingBuffer = _serverListContext.ToArray();
         }
 
         protected override void BuildServersInfo()

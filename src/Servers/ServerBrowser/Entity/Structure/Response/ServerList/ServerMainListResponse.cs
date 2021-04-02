@@ -11,11 +11,11 @@ using UniSpyLib.Encryption;
 
 namespace ServerBrowser.Entity.Structure.Packet.Response
 {
-    internal sealed class GeneralRequestResponse : ServerListResponseBase
+    internal sealed class ServerMainListResponse : ServerListUpdateOptionResponseBase
     {
         private new ServerListRequest _request => (ServerListRequest)base._request;
-        private new GeneralRequestResult _result => (GeneralRequestResult)base._result;
-        public GeneralRequestResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        private new ServerMainListResult _result => (ServerMainListResult)base._result;
+        public ServerMainListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

@@ -11,16 +11,16 @@ namespace ServerBrowser.Handler.CmdHandler
     /// <summary>
     /// Search peer to peer game servers to client
     /// </summary>
-    internal sealed class PushUpdatesHandler : ServerListHandlerBase
+    internal sealed class P2PServerMainListHandler : ServerListUpdateOptionHandlerBase
     {
-        private new GeneralRequestResult _result
+        private new ServerMainListResult _result
         {
-            get => (GeneralRequestResult)base._result;
+            get => (ServerMainListResult)base._result;
             set => base._result = value;
         }
-        public PushUpdatesHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public P2PServerMainListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new GeneralRequestResult();
+            _result = new ServerMainListResult();
         }
         protected override void DataOperation()
         {
@@ -37,7 +37,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new GeneralRequestResponse(_request, _result);
+            _response = new ServerMainListResponse(_request, _result);
         }
     }
 }

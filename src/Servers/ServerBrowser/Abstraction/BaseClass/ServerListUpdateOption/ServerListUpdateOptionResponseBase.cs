@@ -10,12 +10,12 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class ServerListResponseBase : SBResponseBase
+    internal abstract class ServerListUpdateOptionResponseBase : SBResponseBase
     {
-        protected new ServerListRequestBase _request => (ServerListRequestBase)base._request;
-        protected new ServerListResultBase _result => (ServerListResultBase)base._result;
+        protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
+        protected new ServerListUpdateOptionResultBase _result => (ServerListUpdateOptionResultBase)base._result;
         protected List<byte> _serverListContext;
-        public ServerListResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public ServerListUpdateOptionResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
             _serverListContext = new List<byte>();
         }
@@ -25,7 +25,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             //Add crypt header
             BuildCryptHeader();
             _serverListContext.InsertRange(13, _result.ClientRemoteIP);
-            _serverListContext.InsertRange(17, ServerListRequestBase.HtonQueryReportDefaultPort);
+            _serverListContext.InsertRange(17, ServerListUpdateOptionRequestBase.HtonQueryReportDefaultPort);
         }
 
         protected void BuildCryptHeader()

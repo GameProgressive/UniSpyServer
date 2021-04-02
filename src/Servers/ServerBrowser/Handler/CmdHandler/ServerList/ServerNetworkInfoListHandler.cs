@@ -9,19 +9,21 @@ namespace ServerBrowser.Handler.CmdHandler
     /// No server list update option only get ip and host port for client
     /// so we do not need to implement server key, info, uniquevalue stuff
     /// </summary>
-    internal sealed class NoServerListHandler : ServerListHandlerBase
+    internal sealed class ServerNetworkInfoListHandler : ServerListUpdateOptionHandlerBase
     {
-        public NoServerListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerNetworkInfoListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new GeneralRequestResult();
+            _result = new ServerMainListResult();
         }
+
         protected override void DataOperation()
         {
-            throw new System.NotImplementedException();
+            // because we only need ip and host port, so we do nothing here
         }
+
         protected override void ResponseConstruct()
         {
-            _response = new GeneralRequestResponse(_request, _result);
+            _response = new ServerMainListResponse(_request, _result);
         }
     }
 }

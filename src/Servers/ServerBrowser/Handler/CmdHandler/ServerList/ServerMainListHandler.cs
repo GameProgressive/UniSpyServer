@@ -8,16 +8,16 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
-    internal sealed class GeneralRequestHandler : ServerListHandlerBase
+    internal sealed class ServerMainListHandler : ServerListUpdateOptionHandlerBase
     {
-        private new GeneralRequestResult _result
+        private new ServerMainListResult _result
         {
-            get => (GeneralRequestResult)base._result;
+            get => (ServerMainListResult)base._result;
             set => base._result = value;
         }
-        public GeneralRequestHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerMainListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new GeneralRequestResult();
+            _result = new ServerMainListResult();
         }
         /// <summary>
         /// we need to send empty server list response to game,
@@ -36,7 +36,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new GeneralRequestResponse(_request, _result);
+            _response = new ServerMainListResponse(_request, _result);
         }
     }
 }

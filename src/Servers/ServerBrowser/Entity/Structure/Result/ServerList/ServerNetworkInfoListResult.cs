@@ -10,12 +10,10 @@ using System.Threading.Tasks;
 namespace ServerBrowser.Entity.Structure.Result.ServerList
 {
 
-    internal sealed class NoServerListResult : ServerListResultBase
+    internal sealed class ServerNetworkInfoListResult : ServerMainListResult
     {
-        public List<GameServerInfo> GameServerInfos { get; set; }
-        public NoServerListResult()
+        public ServerNetworkInfoListResult()
         {
-            GameServerInfos = new List<GameServerInfo>();
         }
     }
 }

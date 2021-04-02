@@ -5,20 +5,20 @@ using ServerBrowser.Entity.Structure.Misc;
 using System.Linq;
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class ServerListHandlerBase : SBCmdHandlerBase
+    internal abstract class ServerListUpdateOptionHandlerBase : SBCmdHandlerBase
     {
-        protected new ServerListRequestBase _request => (ServerListRequestBase)base._request;
-        protected new ServerListResultBase _result
+        protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
+        protected new ServerListUpdateOptionResultBase _result
         {
-            get => (ServerListResultBase)base._result;
+            get => (ServerListUpdateOptionResultBase)base._result;
             set => base._result = value;
         }
-        protected new ServerListResponseBase _response
+        protected new ServerListUpdateOptionResponseBase _response
         {
-            get => (ServerListResponseBase)base._response;
+            get => (ServerListUpdateOptionResponseBase)base._response;
             set => base._response = value;
         }
-        public ServerListHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public ServerListUpdateOptionHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
         protected override void RequestCheck()

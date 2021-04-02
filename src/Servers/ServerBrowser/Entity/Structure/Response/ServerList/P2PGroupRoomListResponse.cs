@@ -10,11 +10,11 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Response.ServerList
 {
-    internal sealed class SendGroupsResponse : ServerListResponseBase
+    internal sealed class P2PGroupRoomListResponse : ServerListUpdateOptionResponseBase
     {
-        private new SendGroupsResult _result => (SendGroupsResult)base._result;
+        private new P2PGroupRoomListResult _result => (P2PGroupRoomListResult)base._result;
         private new ServerListRequest _request => (ServerListRequest)base._request;
-        public SendGroupsResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public P2PGroupRoomListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

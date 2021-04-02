@@ -21,18 +21,18 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.ServerListRequest:
                     switch (((ServerListRequest)_request).UpdateOption)
                     {
-                        case SBServerListUpdateOption.NoServerList:
-                            return new NoServerListHandler(_session, _request);
-                        case SBServerListUpdateOption.GeneralRequest:
-                            return new GeneralRequestHandler(_session, _request);
-                        case SBServerListUpdateOption.SendGroups:
-                            return new SendGroupsHandler(_session, _request);
+                        case SBServerListUpdateOption.ServerNetworkInfoList:
+                            return new ServerNetworkInfoListHandler(_session, _request);
+                        case SBServerListUpdateOption.ServerMainList:
+                            return new ServerMainListHandler(_session, _request);
+                        case SBServerListUpdateOption.P2PGroupRoomList:
+                            return new P2PGroupRoomListHandler(_session, _request);
                         case SBServerListUpdateOption.LimitResultCount:
-                            return new PushUpdatesHandler(_session, _request);
-                        case SBServerListUpdateOption.PushUpdates:
+                            return new P2PServerMainListHandler(_session, _request);
+                        case SBServerListUpdateOption.P2PServerMainList:
                             // worms 3d send this after join group room
                             // we should send adhoc servers which are in this room to worms3d
-                            return new PushUpdatesHandler(_session, _request);
+                            return new P2PServerMainListHandler(_session, _request);
                         default:
                             return null;
                     }

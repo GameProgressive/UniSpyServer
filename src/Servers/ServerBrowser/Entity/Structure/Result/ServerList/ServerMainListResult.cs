@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace ServerBrowser.Entity.Structure.Result
 {
-    internal sealed class GeneralRequestResult : ServerListResultBase
+    internal class ServerMainListResult : ServerListUpdateOptionResultBase
     {
         public List<GameServerInfo> GameServerInfos { get; set; }
-        public GeneralRequestResult()
+        public ServerMainListResult()
         {
             GameServerInfos = new List<GameServerInfo>();
         }

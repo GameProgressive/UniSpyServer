@@ -2,12 +2,12 @@
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class ServerListResultBase : SBResultBase
+    internal abstract class ServerListUpdateOptionResultBase : SBResultBase
     {
         public byte[] ClientRemoteIP { get; set; }
         public GameServerFlags? Flag { get; set; }
         public string GameSecretKey { get; set; }
-        protected ServerListResultBase()
+        protected ServerListUpdateOptionResultBase()
         {
         }
     }
