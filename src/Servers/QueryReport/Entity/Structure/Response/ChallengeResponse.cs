@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Encryption;
 
 namespace QueryReport.Entity.Structure.Response
 {
@@ -19,7 +20,7 @@ namespace QueryReport.Entity.Structure.Response
             List<byte> data = new List<byte>();
 
             data.AddRange(SendingBuffer);
-            data.AddRange(Encoding.ASCII.GetBytes(Message));
+            data.AddRange(UniSpyEncoding.GetBytes(Message));
 
             SendingBuffer = data.ToArray();
         }

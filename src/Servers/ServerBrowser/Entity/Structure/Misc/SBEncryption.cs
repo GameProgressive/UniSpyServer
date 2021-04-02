@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using ServerBrowser.Network;
+using UniSpyLib.Encryption;
 
 namespace ServerBrowser.Entity.Structure.Misc
 {
@@ -24,9 +25,9 @@ namespace ServerBrowser.Entity.Structure.Misc
         {
             // reference private filed to encParams
             _encParams = encParam;
-            _clientChallenge = Encoding.ASCII.GetBytes(clientChallenge);
-            _serverChallenge = Encoding.ASCII.GetBytes(SBConstants.ServerChallenge);
-            _secretKey = Encoding.ASCII.GetBytes(secretKey);
+            _clientChallenge = UniSpyEncoding.GetBytes(clientChallenge);
+            _serverChallenge = UniSpyEncoding.GetBytes(SBConstants.ServerChallenge);
+            _secretKey = UniSpyEncoding.GetBytes(secretKey);
             InitEncryptionAlgorithm();
         }
 
@@ -102,7 +103,7 @@ namespace ServerBrowser.Entity.Structure.Misc
 
         public byte[] Encrypt(string plainStr)
         {
-            byte[] plainText = Encoding.ASCII.GetBytes(plainStr);
+            byte[] plainText = UniSpyEncoding.GetBytes(plainStr);
             return Encrypt(plainText);
         }
 
@@ -208,7 +209,7 @@ namespace ServerBrowser.Entity.Structure.Misc
             cryptHeader.Add(2 ^ 0xEC);
             cryptHeader.AddRange(new byte[] { 0, 0 });
             cryptHeader.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
-            cryptHeader.AddRange(Encoding.ASCII.GetBytes(SBConstants.ServerChallenge));
+            cryptHeader.AddRange(UniSpyEncoding.GetBytes(SBConstants.ServerChallenge));
             return cryptHeader.ToArray();
         }
     }

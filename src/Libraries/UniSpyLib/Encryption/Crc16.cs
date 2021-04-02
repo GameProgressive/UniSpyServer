@@ -42,7 +42,7 @@ namespace UniSpyLib.Encryption
         /// <returns></returns>
         public ushort ComputeChecksum(string Input)
         {
-            return ComputeChecksum(Encoding.ASCII.GetBytes(Input));
+            return ComputeChecksum(UniSpyEncoding.GetBytes(Input));
         }
 
         /// <summary>

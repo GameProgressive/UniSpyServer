@@ -2,6 +2,7 @@
 using System.Net;
 using System.Text;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Encryption;
 
 namespace UniSpyLib.Network
 {
@@ -41,7 +42,7 @@ namespace UniSpyLib.Network
 
         public bool SendAsync(string text)
         {
-            return Server.SendAsync(RemoteEndPoint, Encoding.ASCII.GetBytes(text));
+            return Server.SendAsync(RemoteEndPoint, UniSpyEncoding.GetBytes(text));
         }
 
         public bool SendAsync(byte[] buffer)

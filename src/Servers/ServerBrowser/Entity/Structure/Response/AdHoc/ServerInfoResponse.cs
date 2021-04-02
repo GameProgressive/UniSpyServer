@@ -4,6 +4,7 @@ using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Result;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Response
@@ -35,18 +36,18 @@ namespace ServerBrowser.Entity.Structure.Response
 
             foreach (var kv in _result.GameServerInfo.ServerData.KeyValue)
             {
-                _serverListContext.AddRange(Encoding.ASCII.GetBytes(kv.Key));
+                _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Key));
                 _serverListContext.Add(SBStringFlag.StringSpliter);
-                _serverListContext.AddRange(Encoding.ASCII.GetBytes(kv.Value));
+                _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Value));
                 _serverListContext.Add(SBStringFlag.StringSpliter);
             }
             foreach (var player in _result.GameServerInfo.PlayerData.KeyValueList)
             {
                 foreach (var kv in player)
                 {
-                    _serverListContext.AddRange(Encoding.ASCII.GetBytes(kv.Key));
+                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Key));
                     _serverListContext.Add(SBStringFlag.StringSpliter);
-                    _serverListContext.AddRange(Encoding.ASCII.GetBytes(kv.Value));
+                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Value));
                     _serverListContext.Add(SBStringFlag.StringSpliter);
                 }
             }
@@ -54,9 +55,9 @@ namespace ServerBrowser.Entity.Structure.Response
             {
                 foreach (var kv in team)
                 {
-                    _serverListContext.AddRange(Encoding.ASCII.GetBytes(kv.Key));
+                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Key));
                     _serverListContext.Add(SBStringFlag.StringSpliter);
-                    _serverListContext.AddRange(Encoding.ASCII.GetBytes(kv.Value));
+                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Value));
                     _serverListContext.Add(SBStringFlag.StringSpliter);
                 }
             }

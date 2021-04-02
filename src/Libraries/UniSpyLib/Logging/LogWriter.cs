@@ -4,6 +4,7 @@ using System;
 using System.Net;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
 
@@ -113,7 +114,7 @@ namespace UniSpyLib.Logging
         }
         public static void LogNetworkSending(IPEndPoint endPoint, string buffer)
         {
-            LogNetworkSending(endPoint, Encoding.ASCII.GetBytes(buffer));
+            LogNetworkSending(endPoint, UniSpyEncoding.GetBytes(buffer));
         }
         public static void LogNetworkReceiving(IPEndPoint endPoint, byte[] buffer)
         {
@@ -121,7 +122,7 @@ namespace UniSpyLib.Logging
         }
         public static void LogNetworkReceiving(IPEndPoint endPoint, string buffer)
         {
-            LogNetworkReceiving(endPoint, Encoding.ASCII.GetBytes(buffer));
+            LogNetworkReceiving(endPoint, UniSpyEncoding.GetBytes(buffer));
         }
 
         public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer, long size)

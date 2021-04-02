@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using UniSpyLib.Encryption;
 
 namespace Chat.Entity.Structure.Misc
 {
@@ -50,8 +51,8 @@ namespace Chat.Entity.Structure.Misc
         /// <param name="gamekey"></param>
         public static void Init(GSPeerChatCTX ctx, string challengeKey, string secretKey)
         {
-            byte[] challengeBytes = Encoding.ASCII.GetBytes(challengeKey);
-            byte[] secretKeyBytes = Encoding.ASCII.GetBytes(secretKey);
+            byte[] challengeBytes = UniSpyEncoding.GetBytes(challengeKey);
+            byte[] secretKeyBytes = UniSpyEncoding.GetBytes(secretKey);
 
             ctx.GSPeerChat1 = 0;
             ctx.GSPeerChat2 = 0;

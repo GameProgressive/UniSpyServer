@@ -5,6 +5,7 @@ using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Misc;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
@@ -13,7 +14,6 @@ namespace ServerBrowser.Abstraction.BaseClass
     {
         protected new ServerListRequestBase _request => (ServerListRequestBase)base._request;
         protected new ServerListResultBase _result => (ServerListResultBase)base._result;
-        public byte[] PlainTextSendingBuffer { get; protected set; }
         protected List<byte> _serverListContext;
         public ServerListResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
@@ -24,10 +24,8 @@ namespace ServerBrowser.Abstraction.BaseClass
         {
             //Add crypt header
             BuildCryptHeader();
-            _serverListContext.InsertRange(13, ByteTools.GetBytes((short)_serverListContext.Count, true));
-            // Message length should be added here, between 2 line codes
-            _serverListContext.InsertRange(15, _result.ClientRemoteIP);
-            _serverListContext.InsertRange(19, ServerListRequestBase.HtonQueryReportDefaultPort);
+            _serverListContext.InsertRange(13, _result.ClientRemoteIP);
+            _serverListContext.InsertRange(17, ServerListRequestBase.HtonQueryReportDefaultPort);
         }
 
         protected void BuildCryptHeader()
@@ -35,10 +33,11 @@ namespace ServerBrowser.Abstraction.BaseClass
             // cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes
             var cryptHeader = new List<byte>();
             cryptHeader.Add(2 ^ 0xEC);
-            // add message length
+            #region message length?
             cryptHeader.AddRange(new byte[] { 0, 0 });
+            #endregion
             cryptHeader.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
-            cryptHeader.AddRange(Encoding.ASCII.GetBytes(SBConstants.ServerChallenge));
+            cryptHeader.AddRange(UniSpyEncoding.GetBytes(SBConstants.ServerChallenge));
             _serverListContext.InsertRange(0, cryptHeader);
         }
         protected abstract void BuildServersInfo();
@@ -135,7 +134,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             foreach (var key in _request.Keys)
             {
                 _serverListContext.Add((byte)SBKeyType.String);
-                _serverListContext.AddRange(Encoding.ASCII.GetBytes(key));
+                _serverListContext.AddRange(UniSpyEncoding.GetBytes(key));
                 _serverListContext.Add(SBStringFlag.StringSpliter);
             }
         }

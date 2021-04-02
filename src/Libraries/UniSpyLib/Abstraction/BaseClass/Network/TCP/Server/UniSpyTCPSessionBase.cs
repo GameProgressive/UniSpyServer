@@ -25,7 +25,7 @@ namespace UniSpyLib.Network
         protected override void OnError(SocketError error) => LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         bool IUniSpySession.BaseSendAsync(byte[] buffer) => BaseSendAsync(buffer);
         bool IUniSpySession.BaseSendAsync(string buffer) => BaseSendAsync(buffer);
-        public bool BaseSendAsync(string buffer) => BaseSendAsync(Encoding.ASCII.GetBytes(buffer));
+        public bool BaseSendAsync(string buffer) => BaseSendAsync(UniSpyEncoding.GetBytes(buffer));
         public bool BaseSendAsync(byte[] buffer) => BaseSendAsync(buffer, 0, buffer.Length);
         protected bool BaseSendAsync(byte[] buffer, long offset, long size) => base.SendAsync(buffer, offset, size);
         public override bool SendAsync(string buffer) => base.SendAsync(buffer);

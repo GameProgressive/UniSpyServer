@@ -40,19 +40,19 @@ namespace UniSpyLib.Encryption
             switch (type)
             {
                 case XorType.Type0:
-                    temp = Encoding.ASCII.GetBytes(seed0);
+                    temp = UniSpyEncoding.GetBytes(seed0);
                     break;
                 case XorType.Type1:
-                    temp = Encoding.ASCII.GetBytes(seed1);
+                    temp = UniSpyEncoding.GetBytes(seed1);
                     break;
                 case XorType.Type2:
-                    temp = Encoding.ASCII.GetBytes(seed2);
+                    temp = UniSpyEncoding.GetBytes(seed2);
                     break;
                 case XorType.Type3:
-                    temp = Encoding.ASCII.GetBytes(seed3);
+                    temp = UniSpyEncoding.GetBytes(seed3);
                     break;
                 default:
-                    temp = Encoding.ASCII.GetBytes(seed0);
+                    temp = UniSpyEncoding.GetBytes(seed0);
                     break;
             }
 

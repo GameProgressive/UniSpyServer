@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using UniSpyLib.Encryption;
 
 namespace UniSpyLib.Extensions
 {
@@ -84,7 +85,7 @@ namespace UniSpyLib.Extensions
         }
         public static string ReplaceUnreadableCharToHex(string buffer)
         {
-            return ReplaceUnreadableCharToHex(Encoding.ASCII.GetBytes(buffer));
+            return ReplaceUnreadableCharToHex(UniSpyEncoding.GetBytes(buffer));
         }
         #endregion
 

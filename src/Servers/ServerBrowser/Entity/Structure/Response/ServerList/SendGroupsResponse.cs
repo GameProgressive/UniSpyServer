@@ -5,6 +5,7 @@ using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Entity.Structure.Result;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Response.ServerList
@@ -33,7 +34,7 @@ namespace ServerBrowser.Entity.Structure.Response.ServerList
                 {
                     _serverListContext.Add(SBStringFlag.NTSStringFlag);
                     var value = room.GetValuebyGameSpyDefinedName(key);
-                    _serverListContext.AddRange(Encoding.ASCII.GetBytes(value));
+                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(value));
                     _serverListContext.Add(SBStringFlag.StringSpliter);
                 }
             }

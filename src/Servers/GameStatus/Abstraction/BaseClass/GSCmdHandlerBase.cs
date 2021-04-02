@@ -73,7 +73,7 @@ namespace GameStatus.Abstraction.BaseClass
         }
         protected override void Encrypt()
         {
-            byte[] buffer = Encoding.ASCII.GetBytes(_sendingBuffer);
+            byte[] buffer = UniSpyEncoding.GetBytes(_sendingBuffer);
             _sendingBuffer = UniSpyEncoding.GetString(GSEncryption.Encrypt(buffer));
         }
     }

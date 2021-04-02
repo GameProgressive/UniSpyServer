@@ -7,6 +7,7 @@ using ServerBrowser.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Encryption;
 
 namespace ServerBrowser.Entity.Structure.Packet.Response
 {
@@ -45,7 +46,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
                 foreach (var key in _request.Keys)
                 {
                     _serverListContext.Add(SBStringFlag.NTSStringFlag);
-                    _serverListContext.AddRange(Encoding.ASCII.GetBytes(serverInfo.ServerData.KeyValue[key]));
+                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData.KeyValue[key]));
                     _serverListContext.Add(SBStringFlag.StringSpliter);
                 }
             }

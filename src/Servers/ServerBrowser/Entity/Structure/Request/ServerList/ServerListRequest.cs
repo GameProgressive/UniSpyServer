@@ -50,7 +50,7 @@ namespace ServerBrowser.Entity.Structure.Request
             Keys = remainData.Substring(0, remainData.IndexOf('\0')).Split("\\", StringSplitOptions.RemoveEmptyEntries);
             remainData = remainData.Substring(remainData.IndexOf('\0') + 1);
 
-            byte[] byteUpdateOptions = Encoding.ASCII.GetBytes(remainData.Substring(0, 4));
+            byte[] byteUpdateOptions = UniSpyEncoding.GetBytes(remainData.Substring(0, 4));
             //gamespy send this in big endian, we need to convert to little endian
             Array.Reverse(byteUpdateOptions);
 
@@ -58,7 +58,7 @@ namespace ServerBrowser.Entity.Structure.Request
 
             if ((UpdateOption & SBServerListUpdateOption.AlternateSourceIP) != 0)
             {
-                SourceIP = Encoding.ASCII.GetBytes(remainData.Substring(0, 4));
+                SourceIP = UniSpyEncoding.GetBytes(remainData.Substring(0, 4));
                 remainData = remainData.Substring(7);
             }
 
