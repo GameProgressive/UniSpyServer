@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using QueryReport.Entity.Structure.NatNeg;
+using QueryReport.Entity.Structure.NATNeg;
 using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
@@ -18,7 +18,7 @@ namespace ServerBrowser.Handler.CmdHandler
     {
         private new NatNegMsgRequest _request => (NatNegMsgRequest)base._request;
         private AdHocRequest _adHocRequest;
-        private NatNegCookie _natNegCookie;
+        private NATNegCookie _natNegCookie;
         private GameServerInfo _gameServer;
         public NatNegMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -54,7 +54,7 @@ namespace ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {            
             //TODO check the if the remote endpoint is correct
-            _natNegCookie = new NatNegCookie
+            _natNegCookie = new NATNegCookie
             {
                 GameServerRemoteEndPoint = _gameServer.RemoteQueryReportIPEndPoint,
                 GameServerRemoteIP = _adHocRequest.TargetServerIP,

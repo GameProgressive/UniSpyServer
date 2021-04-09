@@ -1,8 +1,8 @@
 ﻿using System.Net;
 
-namespace QueryReport.Entity.Structure.NatNeg
+namespace QueryReport.Entity.Structure.NATNeg
 {
-    public class NatNegCookie
+    public class NATNegCookie
     {
         public string GameServerRemoteIP { get; set; }
         public string GameServerRemotePort { get; set; }
@@ -10,7 +10,7 @@ namespace QueryReport.Entity.Structure.NatNeg
         public string GameName { get; set; }
         public byte[] NatNegMessage { get; set; }
 
-        public NatNegCookie()
+        public NATNegCookie()
         {
         }
     }

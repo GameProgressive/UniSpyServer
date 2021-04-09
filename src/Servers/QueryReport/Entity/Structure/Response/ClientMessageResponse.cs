@@ -1,10 +1,11 @@
 ﻿using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Result;
 using System;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
 
-namespace QueryReport.Entity.Structure.Request
+namespace QueryReport.Entity.Structure.Response
 {
     internal sealed class ClientMessageResponse : QRResponseBase
     {

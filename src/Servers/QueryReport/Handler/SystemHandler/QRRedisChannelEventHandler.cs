@@ -1,37 +1,28 @@
-﻿using Newtonsoft.Json;
+using System.Net;
 using QueryReport.Application;
 using QueryReport.Entity.Structure.NATNeg;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
 using QueryReport.Network;
 using Serilog.Events;
-using System.Net;
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Entity.Structure;
 using UniSpyLib.Logging;
 
-namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
+namespace QueryReport.Handler.SystemHandler
 {
-    internal static class NatNegHandler
+    internal class QRRedisChannelEventHandler : UniSpyRedisChannelEventBase<NATNegCookie>
     {
-        static NatNegHandler()
+        public QRRedisChannelEventHandler()
         {
-            var subscriber = UniSpyServerFactoryBase.Redis.GetSubscriber();
-
-            subscriber.Subscribe(
-                UniSpyRedisChannelName.NatNegCookieChannel, (channel, message)
-                =>
-                {
-                    NATNegCookie cookie = JsonConvert.DeserializeObject<NATNegCookie>(message);
-                    SendNatNegCookieToGameServer(cookie);
-                });
+            _redisChannelName = UniSpyRedisChannelName.NatNegCookieChannel;
         }
 
-        public static void SendNatNegCookieToGameServer(NATNegCookie cookie)
+        public override void ReceivedMessage(NATNegCookie message)
         {
-            IPAddress address = IPAddress.Parse(cookie.GameServerRemoteIP);
-            int port = int.Parse(cookie.GameServerRemotePort);
+            IPAddress address = IPAddress.Parse(message.GameServerRemoteIP);
+            int port = int.Parse(message.GameServerRemotePort);
             var endPoint = new IPEndPoint(address, port);
 
             IUniSpySession session;
@@ -44,7 +35,7 @@ namespace QueryReport.Handler.SystemHandler.NatNegCookieManage
 
             var result = new ClientMessageResult
             {
-                NatNegMessage = cookie.NatNegMessage,
+                NatNegMessage = message.NatNegMessage,
                 MessageKey = 0,
                 InstantKey = ((QRSession)session).InstantKey
             };

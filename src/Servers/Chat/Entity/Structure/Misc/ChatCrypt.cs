@@ -17,7 +17,7 @@ namespace Chat.Entity.Structure.Misc
         public const string NewDigitsCrypt = "qJ1h4N9cP3lzD0Ka";
         public const uint IPXorMask = 0xc3801dc7;
 
-        public static byte[] Handle(GSPeerChatCTX ctx, ref byte[] data)
+        public static byte[] Handle(GSPeerChatCTX ctx, byte[] data)
         {
             byte num1 = ctx.GSPeerChat1;
             byte num2 = ctx.GSPeerChat2;
@@ -25,7 +25,7 @@ namespace Chat.Entity.Structure.Misc
             int datapos = 0;
             List<byte> buffer = new List<byte>();
             long size = data.Length;
-            while (0 < size--)
+            while (size-- > 0)
             {
                 num1 = (byte)((num1 + 1) % 256);
                 num2 = (byte)((ctx.GSPeerChatCrypt[num1] + num2) % 256);

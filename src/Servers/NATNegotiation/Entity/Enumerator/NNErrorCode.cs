@@ -9,6 +9,7 @@
         VersionError,
         PacketTypeError,
         CookieError,
+        ClientNotFound,
         InitPacketError,
         ConnectPacketError,
         ReportPacketError

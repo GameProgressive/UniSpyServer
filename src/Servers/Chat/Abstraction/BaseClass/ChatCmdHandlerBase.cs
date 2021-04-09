@@ -1,14 +1,11 @@
-﻿using System.Text;
-using Chat.Entity.Structure;
+﻿using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
-using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response;
 using Chat.Entity.Structure.Result;
 using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
 
 namespace Chat.Abstraction.BaseClass
 {
@@ -73,13 +70,14 @@ namespace Chat.Abstraction.BaseClass
         {
             _response = new ChatDefaultResponse(_request, _result);
         }
-
         protected override void Encrypt()
         {
             if (_session.UserInfo.IsUsingEncryption)
             {
-                byte[] buffer = UniSpyEncoding.GetBytes(_response.SendingBuffer);
-                _sendingBuffer = UniSpyEncoding.GetString(ChatCrypt.Handle(_session.UserInfo.ClientCTX, ref buffer));
+                _sendingBuffer = UniSpyEncoding.GetString(
+                    ChatCrypt.Handle(
+                        _session.UserInfo.ClientCTX,
+                        UniSpyEncoding.GetBytes(_response.SendingBuffer)));
             }
             else
             {

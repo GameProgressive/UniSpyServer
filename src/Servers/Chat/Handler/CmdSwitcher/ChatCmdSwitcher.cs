@@ -36,8 +36,10 @@ namespace Chat.Handler.CommandSwitcher
         {
             if (_session.UserInfo.IsUsingEncryption)
             {
-                byte[] buffer = UniSpyEncoding.GetBytes(_rawRequest);
-                _rawRequest = UniSpyEncoding.GetString(ChatCrypt.Handle(_session.UserInfo.ClientCTX, ref buffer));
+                _rawRequest = UniSpyEncoding.GetString(
+                    ChatCrypt.Handle(
+                        _session.UserInfo.ClientCTX,
+                        UniSpyEncoding.GetBytes(_rawRequest)));
             }
         }
 

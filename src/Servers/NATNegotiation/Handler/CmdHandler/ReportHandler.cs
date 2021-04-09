@@ -6,7 +6,6 @@ using NATNegotiation.Entity.Structure.Redis;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
-using NATNegotiation.Handler.SystemHandler.Manager;
 using UniSpyLib.Abstraction.Interface;
 
 namespace NATNegotiation.Handler.CmdHandler
@@ -52,7 +51,13 @@ namespace NATNegotiation.Handler.CmdHandler
             {
                 foreach (NatPortType portType in Enum.GetValues(typeof(NatPortType)))
                 {
-                    NatNegotiateManager.Negotiate(portType, _request.Version, _request.Cookie);
+                    var request = new ConnectRequest
+                    {
+                        PortType = portType,
+                        Version = _request.Version,
+                        Cookie = _request.Cookie
+                    };
+                    new ConnectHandler(_session, request).Handle();
                 }
 
                 _userInfo.RetryNATNegotiationTime++;
