@@ -1,7 +1,6 @@
 ﻿using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Entity.Enumerate;
 using System;
-using System.Text;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 

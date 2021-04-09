@@ -27,7 +27,6 @@ namespace NATNegotiation.Handler.CmdHandler
         private ConnectResponse _responseToNegotiatee;
         private KeyValuePair<NatUserInfoRedisKey, NatUserInfo> _negotiator;
         private KeyValuePair<NatUserInfoRedisKey, NatUserInfo> _negotiatee;
-
         public ConnectHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new ConnectResult();
