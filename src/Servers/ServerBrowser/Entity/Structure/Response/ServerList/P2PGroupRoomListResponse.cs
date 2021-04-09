@@ -17,25 +17,30 @@ namespace ServerBrowser.Entity.Structure.Response.ServerList
         public P2PGroupRoomListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
+        protected override void BuildNormalResponse()
+        {
+            base.BuildNormalResponse();
+            SendingBuffer = _serverListData.ToArray();
+        }
 
         protected override void BuildServersInfo()
         {
             foreach (var room in _result.PeerGroupInfo.PeerRooms)
             {
                 //add has key flag
-                _serverListContext.Add((byte)GameServerFlags.HasKeysFlag);
+                _serverListData.Add((byte)GameServerFlags.HasKeysFlag);
                 //in group list server ip is group id
 
                 byte[] groupid = ByteTools.GetBytes(room.GroupID, true);
 
-                _serverListContext.AddRange(groupid);
+                _serverListData.AddRange(groupid);
 
                 foreach (var key in _request.Keys)
                 {
-                    _serverListContext.Add(SBStringFlag.NTSStringFlag);
+                    _serverListData.Add(SBStringFlag.NTSStringFlag);
                     var value = room.GetValuebyGameSpyDefinedName(key);
-                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(value));
-                    _serverListContext.Add(SBStringFlag.StringSpliter);
+                    _serverListData.AddRange(UniSpyEncoding.GetBytes(value));
+                    _serverListData.Add(SBStringFlag.StringSpliter);
                 }
             }
         }

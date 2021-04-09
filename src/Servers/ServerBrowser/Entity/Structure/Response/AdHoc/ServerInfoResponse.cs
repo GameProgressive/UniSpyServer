@@ -21,10 +21,10 @@ namespace ServerBrowser.Entity.Structure.Response
 
         protected override void BuildNormalResponse()
         {
-            _serverListContext.Add((byte)SBServerResponseType.PushServerMessage);
+            _serverListData.Add((byte)SBServerResponseType.PushServerMessage);
             BuildServersInfo();
             // add message length here
-            _serverListContext.InsertRange(0, ByteTools.GetBytes((short)(_serverListContext.Count + 2), true));
+            _serverListData.InsertRange(0, ByteTools.GetBytes((short)(_serverListData.Count + 2), true));
         }
 
         protected override void BuildServersInfo()
@@ -35,29 +35,29 @@ namespace ServerBrowser.Entity.Structure.Response
 
             foreach (var kv in _result.GameServerInfo.ServerData.KeyValue)
             {
-                _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                _serverListContext.Add(SBStringFlag.StringSpliter);
-                _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                _serverListContext.Add(SBStringFlag.StringSpliter);
+                _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
+                _serverListData.Add(SBStringFlag.StringSpliter);
+                _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
+                _serverListData.Add(SBStringFlag.StringSpliter);
             }
             foreach (var player in _result.GameServerInfo.PlayerData.KeyValueList)
             {
                 foreach (var kv in player)
                 {
-                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                    _serverListContext.Add(SBStringFlag.StringSpliter);
-                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                    _serverListContext.Add(SBStringFlag.StringSpliter);
+                    _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
+                    _serverListData.Add(SBStringFlag.StringSpliter);
+                    _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
+                    _serverListData.Add(SBStringFlag.StringSpliter);
                 }
             }
             foreach (var team in _result.GameServerInfo.TeamData.KeyValueList)
             {
                 foreach (var kv in team)
                 {
-                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                    _serverListContext.Add(SBStringFlag.StringSpliter);
-                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                    _serverListContext.Add(SBStringFlag.StringSpliter);
+                    _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
+                    _serverListData.Add(SBStringFlag.StringSpliter);
+                    _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
+                    _serverListData.Add(SBStringFlag.StringSpliter);
                 }
             }
         }

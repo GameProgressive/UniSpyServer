@@ -5,6 +5,9 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyResponseBase : IUniSpyResponse
     {
+        /// <summary>
+        /// Represents the plaintext response data
+        /// </summary>
         public object SendingBuffer { get; protected set; }
         protected UniSpyResultBase _result { get; }
         protected UniSpyRequestBase _request { get; }

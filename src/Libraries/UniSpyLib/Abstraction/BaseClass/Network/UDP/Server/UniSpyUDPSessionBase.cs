@@ -20,50 +20,18 @@ namespace UniSpyLib.Network
             LastPacketReceivedTime = DateTime.Now;
         }
 
-        public long Send(byte[] buffer, long offset, long size)
-        {
-            return Server.Send(RemoteEndPoint, buffer, offset, size);
-        }
+        public long Send(byte[] buffer, long offset, long size) => Server.Send(RemoteEndPoint, buffer, offset, size);
+        public long Send(byte[] buffer) => Server.Send(RemoteEndPoint, buffer);
+        public long Send(string buffer) => Server.Send(RemoteEndPoint, buffer);
 
-        public long Send(byte[] buffer)
-        {
-            return Server.Send(RemoteEndPoint, buffer);
-        }
 
-        public long Send(string buffer)
-        {
-            return Server.Send(RemoteEndPoint, buffer);
-        }
+        public bool SendAsync(byte[] buffer, long offset, long size) => Server.SendAsync(RemoteEndPoint, buffer, offset, size);
+        public bool SendAsync(string text) => Server.SendAsync(RemoteEndPoint, UniSpyEncoding.GetBytes(text));
+        public bool SendAsync(byte[] buffer) => Server.SendAsync(RemoteEndPoint, buffer);
 
-        public bool SendAsync(byte[] buffer, long offset, long size)
-        {
-            return Server.SendAsync(RemoteEndPoint, buffer, offset, size);
-        }
 
-        public bool SendAsync(string text)
-        {
-            return Server.SendAsync(RemoteEndPoint, UniSpyEncoding.GetBytes(text));
-        }
-
-        public bool SendAsync(byte[] buffer)
-        {
-            return Server.SendAsync(RemoteEndPoint, buffer);
-        }
-
-        public bool BaseSendAsync(string buffer)
-        {
-            return Server.BaseSendAsync(RemoteEndPoint, buffer);
-        }
-
-        public bool BaseSendAsync(byte[] buffer)
-        {
-            return Server.BaseSendAsync(RemoteEndPoint, buffer);
-        }
-
-        public bool BaseSendAsync(byte[] buffer, long offset, long size)
-        {
-            return Server.BaseSendAsync(RemoteEndPoint, buffer, offset, size);
-        }
-
+        public bool BaseSendAsync(string buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
+        public bool BaseSendAsync(byte[] buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
+        public bool BaseSendAsync(byte[] buffer, long offset, long size) => Server.BaseSendAsync(RemoteEndPoint, buffer, offset, size);
     }
 }

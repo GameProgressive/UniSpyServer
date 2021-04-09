@@ -57,21 +57,21 @@ namespace UniSpyLib.Network
         {
             //even if we did not response we keep receive message
             ReceiveAsync();
-            UniSpyUDPSessionBase tempSession;
+            UniSpyUDPSessionBase session;
             if (SessionManager.SessionPool.ContainsKey((IPEndPoint)endPoint))
             {
                 IUniSpySession result;
                 SessionManager.SessionPool.TryGetValue((IPEndPoint)endPoint, out result);
-                tempSession = (UniSpyUDPSessionBase)result;
-                tempSession.LastPacketReceivedTime = DateTime.Now;
+                session = (UniSpyUDPSessionBase)result;
+                session.LastPacketReceivedTime = DateTime.Now;
             }
             else
             {
-                tempSession = CreateSession(endPoint);
-                SessionManager.SessionPool.TryAdd(tempSession.RemoteIPEndPoint, tempSession);
+                session = CreateSession(endPoint);
+                SessionManager.SessionPool.TryAdd(session.RemoteIPEndPoint, session);
             }
 
-            OnReceived(tempSession, buffer.Take((int)size).ToArray());
+            OnReceived(session, buffer.Skip((int)offset).Take((int)size).ToArray());
         }
     }
 }

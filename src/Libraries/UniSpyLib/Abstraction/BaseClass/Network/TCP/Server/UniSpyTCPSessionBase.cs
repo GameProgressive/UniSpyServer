@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -30,8 +31,11 @@ namespace UniSpyLib.Network
         protected bool BaseSendAsync(byte[] buffer, long offset, long size) => base.SendAsync(buffer, offset, size);
         public override bool SendAsync(string buffer) => base.SendAsync(buffer);
 
+
         protected virtual void OnReceived(string message) { }
         protected virtual void OnReceived(byte[] buffer) => OnReceived(UniSpyEncoding.GetString(buffer));
+        protected override void OnReceived(byte[] buffer, long offset, long size) => OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
+
     }
 }
 

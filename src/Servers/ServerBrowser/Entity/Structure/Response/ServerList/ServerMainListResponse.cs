@@ -21,13 +21,16 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
 
         protected override void BuildNormalResponse()
         {
+            // we add the other header
+            base.BuildNormalResponse();
+            // we add the server keys
             BuildServerKeys();
             //we use NTS string so total unique value list is 0
             BuildUniqueValue();
             //add server infomation such as public ip etc.
             BuildServersInfo();
-            // Finally we add the other header
-            base.BuildNormalResponse();
+
+            SendingBuffer = _serverListData.ToArray();
         }
 
         protected override void BuildServersInfo()
@@ -45,13 +48,13 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
                 BuildServerInfoHeader(_result.Flag, serverInfo);
                 foreach (var key in _request.Keys)
                 {
-                    _serverListContext.Add(SBStringFlag.NTSStringFlag);
-                    _serverListContext.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData.KeyValue[key]));
-                    _serverListContext.Add(SBStringFlag.StringSpliter);
+                    _serverListData.Add(SBStringFlag.NTSStringFlag);
+                    _serverListData.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData.KeyValue[key]));
+                    _serverListData.Add(SBStringFlag.StringSpliter);
                 }
             }
             //after all server information is added we add the end flag
-            _serverListContext.AddRange(SBStringFlag.AllServerEndFlag);
+            _serverListData.AddRange(SBStringFlag.AllServerEndFlag);
         }
 
         private bool IsSkipThisServer(GameServerInfo serverInfo)

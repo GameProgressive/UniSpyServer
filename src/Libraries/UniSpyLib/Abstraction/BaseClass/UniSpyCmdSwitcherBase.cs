@@ -60,11 +60,11 @@ namespace UniSpyLib.Abstraction.BaseClass
         protected virtual void Decrypt() { }
         private void LogNetworkTraffic()
         {
-            if (_rawRequest.GetType() == typeof(string))
+            if (_rawRequest.GetType().Equals(typeof(string)))
             {
                 LogWriter.LogNetworkReceiving(_session.RemoteIPEndPoint, (string)_rawRequest);
             }
-            else if (_rawRequest.GetType() == typeof(byte[]))
+            else if (_rawRequest.GetType().Equals(typeof(byte[])))
             {
                 LogWriter.LogNetworkReceiving(_session.RemoteIPEndPoint, (byte[])_rawRequest);
             }

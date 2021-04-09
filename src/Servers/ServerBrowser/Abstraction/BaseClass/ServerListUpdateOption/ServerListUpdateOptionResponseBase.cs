@@ -14,18 +14,18 @@ namespace ServerBrowser.Abstraction.BaseClass
     {
         protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
         protected new ServerListUpdateOptionResultBase _result => (ServerListUpdateOptionResultBase)base._result;
-        protected List<byte> _serverListContext;
+        protected List<byte> _serverListData;
         public ServerListUpdateOptionResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
-            _serverListContext = new List<byte>();
+            _serverListData = new List<byte>();
         }
 
         protected override void BuildNormalResponse()
         {
             //Add crypt header
             BuildCryptHeader();
-            _serverListContext.InsertRange(13, _result.ClientRemoteIP);
-            _serverListContext.InsertRange(17, ServerListUpdateOptionRequestBase.HtonQueryReportDefaultPort);
+            _serverListData.AddRange(_result.ClientRemoteIP);
+            _serverListData.AddRange(ServerListUpdateOptionRequestBase.HtonQueryReportDefaultPort);
         }
 
         protected void BuildCryptHeader()
@@ -38,8 +38,9 @@ namespace ServerBrowser.Abstraction.BaseClass
             #endregion
             cryptHeader.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
             cryptHeader.AddRange(UniSpyEncoding.GetBytes(SBConstants.ServerChallenge));
-            _serverListContext.InsertRange(0, cryptHeader);
+            _serverListData.AddRange(cryptHeader);
         }
+
         protected abstract void BuildServersInfo();
         protected void BuildServerInfoHeader(GameServerFlags? flag, GameServerInfo serverInfo)
         {
@@ -57,7 +58,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             //we check icmp support here
             CheckICMPSupport(header, serverInfo);
 
-            _serverListContext.AddRange(header);
+            _serverListData.AddRange(header);
         }
         protected void CheckPrivateIP(List<byte> header, GameServerInfo server)
         {
@@ -123,19 +124,19 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected void BuildUniqueValue()
         {
             //because we are using NTS string so we do not have any value here
-            _serverListContext.Add(0);
+            _serverListData.Add(0);
         }
 
         protected void BuildServerKeys()
         {
             //we add the total number of the requested keys
-            _serverListContext.Add((byte)_request.Keys.Length);
+            _serverListData.Add((byte)_request.Keys.Length);
             //then we add the keys
             foreach (var key in _request.Keys)
             {
-                _serverListContext.Add((byte)SBKeyType.String);
-                _serverListContext.AddRange(UniSpyEncoding.GetBytes(key));
-                _serverListContext.Add(SBStringFlag.StringSpliter);
+                _serverListData.Add((byte)SBKeyType.String);
+                _serverListData.AddRange(UniSpyEncoding.GetBytes(key));
+                _serverListData.Add(SBStringFlag.StringSpliter);
             }
         }
     }
