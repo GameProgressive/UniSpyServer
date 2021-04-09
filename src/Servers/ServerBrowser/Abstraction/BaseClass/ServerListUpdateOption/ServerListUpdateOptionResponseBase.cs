@@ -25,7 +25,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             //Add crypt header
             BuildCryptHeader();
             _serverListData.AddRange(_result.ClientRemoteIP);
-            _serverListData.AddRange(ServerListUpdateOptionRequestBase.HtonQueryReportDefaultPort);
+            _serverListData.AddRange(SBConstants.HtonQueryReportDefaultPort);
         }
 
         protected void BuildCryptHeader()

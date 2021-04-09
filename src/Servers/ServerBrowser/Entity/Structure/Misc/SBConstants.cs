@@ -1,3 +1,5 @@
+using UniSpyLib.Extensions;
+
 namespace ServerBrowser.Entity.Structure.Misc
 {
     internal class SBConstants
@@ -13,5 +15,9 @@ namespace ServerBrowser.Entity.Structure.Misc
         /// to reduce computation cost of our program
         /// </summary>
         internal const string ServerChallenge = "0000000000";
+        internal const ushort QueryReportDefaultPort = 6500;
+        internal static byte[] HtonQueryReportDefaultPort 
+        => ByteTools.GetBytes(SBConstants.QueryReportDefaultPort, true);
+
     }
 }
