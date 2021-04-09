@@ -64,11 +64,11 @@ namespace UniSpyLib.Abstraction.BaseClass
 
         private void LogNetworkTraffic()
         {
-            if (_sendingBuffer.GetType().Equals(typeof(byte[])))
+            if (_response.SendingBuffer.GetType().Equals(typeof(byte[])))
             {
                 LogWriter.LogNetworkSending(_session.RemoteIPEndPoint, (byte[])_response.SendingBuffer);
             }
-            else if (_sendingBuffer.GetType().Equals(typeof(string)))
+            else if (_response.SendingBuffer.GetType().Equals(typeof(string)))
             {
                 LogWriter.LogNetworkSending(_session.RemoteIPEndPoint, (string)_response.SendingBuffer);
             }
