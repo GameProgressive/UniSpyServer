@@ -24,9 +24,16 @@ namespace WebServices.Application
             //LoadDatabaseConfig();
             LogWriter.SettngUpLogger();
             LoadServerConfig();
-            _hostBuilder.Build().Run();
-        }
 
+        }
+        protected override void StartServer(UniSpyServerConfig cfg)
+        {
+            if (cfg.ServerName == ServerName)
+            {
+                _hostBuilder = CreateHostBuilder(cfg);
+                _hostBuilder.Build().Run();
+            }
+        }
         private static IHostBuilder CreateHostBuilder(UniSpyServerConfig cfg)
         {
             return Host.CreateDefaultBuilder()
@@ -38,13 +45,6 @@ namespace WebServices.Application
                            //.UseContentRoot(Directory.GetCurrentDirectory())
                            .UseStartup<Startup>();
             });
-        }
-        protected override void StartServer(UniSpyServerConfig cfg)
-        {
-           if (cfg.ServerName == ServerName)
-            {
-                _hostBuilder = CreateHostBuilder(cfg);
-            }
         }
     }
 }
