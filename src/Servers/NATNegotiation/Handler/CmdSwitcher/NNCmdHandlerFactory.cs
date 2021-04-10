@@ -1,4 +1,5 @@
-﻿using NATNegotiation.Entity.Enumerate;
+﻿using System;
+using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Handler.CmdHandler;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
