@@ -61,7 +61,7 @@ namespace QueryReport.Handler.CmdHandler
                 ServerID = QRServerFactory.Server.ServerID,
                 RemoteIPEndPoint = _session.RemoteIPEndPoint,
                 InstantKey = _request.InstantKey,
-                GameName = _gameServerInfo.ServerData.KeyValue["gamename"]
+                GameName = _request.GameName
             };
             _session.InstantKey = _request.InstantKey;
             if (_gameServerInfo.ServerData.ServerStatus == GameServerServerStatus.Shutdown)
@@ -81,27 +81,31 @@ namespace QueryReport.Handler.CmdHandler
 
         private void CheckSpamGameServer()
         {
-            List<string> tempKeyVal = _request.DataPartition.Split('\0').ToList();
-            int indexOfGameName = tempKeyVal.IndexOf("gamename");
-            string gameName = tempKeyVal[indexOfGameName + 1];
-
-            var fullKey = new GameServerInfoRedisKey()
-            {
-                ServerID = QRServerFactory.Server.ServerID,
-                RemoteIPEndPoint = _session.RemoteIPEndPoint,
-                GameName = gameName
-            };
-
             //make sure one ip address create one server on each game
             var searchKey = new GameServerInfoRedisKey()
             {
                 RemoteIPEndPoint = _session.RemoteIPEndPoint,
-                GameName = gameName
+                GameName = _request.GameName
             };
 
             var matchedKeys =
                 GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
 
+
+            var duplicatedKeys = matchedKeys.Where(k => k.RemoteIPEndPoint.Equals(_session.RemoteIPEndPoint) && k.InstantKey != _request.InstantKey).Select(k=>k);
+
+            foreach (var key in duplicatedKeys)
+            {
+                GameServerInfoRedisOperator.DeleteKeyValue(key);
+            }
+
+            var fullKey = new GameServerInfoRedisKey()
+            {
+                ServerID = QRServerFactory.Server.ServerID,
+                RemoteIPEndPoint = _session.RemoteIPEndPoint,
+                GameName = _request.GameName,
+                InstantKey = _request.InstantKey
+            };
             //we check if the database have multiple game server if it contains
             if (matchedKeys.Where(k => k.RedisFullKey == fullKey.RedisFullKey).Count() == 1)
             {

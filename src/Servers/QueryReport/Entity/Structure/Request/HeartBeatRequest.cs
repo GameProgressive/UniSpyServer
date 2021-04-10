@@ -1,6 +1,7 @@
 ﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UniSpyLib.Encryption;
@@ -12,6 +13,15 @@ namespace QueryReport.Entity.Structure.Request
         public string ServerData { get; private set; }
         public string PlayerData { get; private set; }
         public string TeamData { get; private set; }
+        public string GameName
+        {
+            get
+            {
+                List<string> tempKeyVal = DataPartition.Split('\0').ToList();
+                int indexOfGameName = tempKeyVal.IndexOf("gamename");
+                return tempKeyVal[indexOfGameName + 1];
+            }
+        }
         public string DataPartition { get; private set; }
         public HeartBeatReportType ReportType { get; set; }
 
