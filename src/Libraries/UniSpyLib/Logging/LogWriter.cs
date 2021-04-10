@@ -51,7 +51,7 @@ namespace UniSpyLib.Logging
             Log.Logger = logConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File(
-                path: $"Logs/[{UniSpyServerFactoryBase.ServerShortName}]-.log",
+                path: $"Logs/[{UniSpyServerFactoryBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}",
                 rollingInterval: RollingInterval.Day)
                 .CreateLogger();
@@ -63,26 +63,25 @@ namespace UniSpyLib.Logging
         /// <param name="message"></param>
         public static void ToLog(LogEventLevel level, string message)
         {
-            string tempMsg = $"[{UniSpyServerFactoryBase.ServerShortName}] {message}";
             switch (level)
             {
                 case LogEventLevel.Verbose:
-                    Log.Verbose(tempMsg);
+                    Log.Verbose(message);
                     break;
                 case LogEventLevel.Information:
-                    Log.Information(tempMsg);
+                    Log.Information(message);
                     break;
                 case LogEventLevel.Debug:
-                    Log.Debug(tempMsg);
+                    Log.Debug(message);
                     break;
                 case LogEventLevel.Error:
-                    Log.Error(tempMsg);
+                    Log.Error(message);
                     break;
                 case LogEventLevel.Fatal:
-                    Log.Fatal(tempMsg);
+                    Log.Fatal(message);
                     break;
                 case LogEventLevel.Warning:
-                    Log.Warning(tempMsg);
+                    Log.Warning(message);
                     break;
             }
         }
