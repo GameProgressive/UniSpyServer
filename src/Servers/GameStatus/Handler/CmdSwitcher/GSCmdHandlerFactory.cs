@@ -9,7 +9,6 @@ namespace GameStatus.Handler.CmdSwitcher
 {
     internal sealed class GSCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
-        private new GSRequestBase _request => (GSRequestBase)base._request;
         public GSCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -33,7 +32,7 @@ namespace GameStatus.Handler.CmdSwitcher
                 case GSRequestName.CreateNewGamePlayerData:
                     return new NewGameHandler(_session, _request);
                 default:
-                    LogWriter.UnknownDataRecieved(_request.RawRequest);
+                    LogWriter.UnknownDataRecieved((string)_request.RawRequest);
                     return null;
             }
         }

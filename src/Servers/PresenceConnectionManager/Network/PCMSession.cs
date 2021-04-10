@@ -32,12 +32,7 @@ namespace PresenceConnectionManager.Network
             SendServerChallenge();
             base.OnConnected();
         }
-
-        protected override void OnReceived(string message)
-        {
-            new PCMCmdSwitcher(this, message).Switch();
-        }
-
+        protected override void OnReceived(string message) => new PCMCmdSwitcher(this, message).Switch();
         public void SendServerChallenge()
         {
             // Only send the login challenge once

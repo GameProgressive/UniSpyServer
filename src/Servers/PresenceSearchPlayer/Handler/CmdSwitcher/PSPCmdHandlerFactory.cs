@@ -10,7 +10,6 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
     internal sealed class PSPCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
-        private new PSPRequestBase _request => (PSPRequestBase)base._request;
         public PSPCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -42,7 +41,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
                 case PSPRequestName.UniqueSearch:
                     return new UniqueSearchHandler(_session, _request);
                 default:
-                    LogWriter.UnknownDataRecieved(_request.RawRequest);
+                    LogWriter.UnknownDataRecieved((string)_request.RawRequest);
                     return null;
 
             }

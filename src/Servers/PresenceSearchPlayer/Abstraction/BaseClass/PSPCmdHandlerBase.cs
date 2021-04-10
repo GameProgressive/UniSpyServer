@@ -55,26 +55,11 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             ResponseConstruct();
             Response();
         }
+        protected override void RequestCheck() { }
 
         protected override void ResponseConstruct()
         {
             _response = new PSPDefaultResponse(_request, _result);
         }
-        protected override void RequestCheck() { }
-        protected override void Response()
-        {
-            if (_response == null)
-            {
-                return;
-            }
-            _response.Build();
-            // if _response is null the exception will be throw
-            if (!StringExtensions.CheckResponseValidation((string)_response.SendingBuffer))
-            {
-                return;
-            }
-            _session.SendAsync((string)_response.SendingBuffer);
-        }
-
     }
 }

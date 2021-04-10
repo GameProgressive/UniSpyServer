@@ -9,7 +9,6 @@ namespace QueryReport.Handler.CmdSwitcher
 {
     internal sealed class QRCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
-        private new QRRequestBase _request => (QRRequestBase)base._request;
         public QRCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -20,7 +19,6 @@ namespace QueryReport.Handler.CmdSwitcher
             {
                 case QRPacketType.AvaliableCheck:
                     return new AvailableHandler(_session, _request);
-
                 //verify challenge to check game server is real or fake;
                 //after verify we can add game server to server list
                 case QRPacketType.Challenge:
@@ -39,7 +37,7 @@ namespace QueryReport.Handler.CmdSwitcher
                     return new ClientMsgAckHandler(_session, _request);
 
                 default:
-                    LogWriter.UnknownDataRecieved(_request.RawRequest);
+                    LogWriter.UnknownDataRecieved((byte[])_request.RawRequest);
                     return null;
 
             }

@@ -60,18 +60,5 @@ namespace QueryReport.Abstraction.BaseClass
         {
             _response = new QRDefaultResponse(_request, _result);
         }
-        protected override void Response()
-        {
-            if (_response == null)
-            {
-                return;
-            }
-            _response.Build();
-            if (!StringExtensions.CheckResponseValidation((byte[])_response.SendingBuffer))
-            {
-                return;
-            }
-            _session.Send((byte[])_response.SendingBuffer);
-        }
     }
 }

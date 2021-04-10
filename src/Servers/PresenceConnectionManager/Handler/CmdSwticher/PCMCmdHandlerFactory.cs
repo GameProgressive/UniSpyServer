@@ -10,7 +10,6 @@ namespace PresenceConnectionManager.Handler.CmdSwticher
 {
     internal class PCMCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
     {
-        private new PCMRequestBase _request => (PCMRequestBase)base._request;
         public PCMCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

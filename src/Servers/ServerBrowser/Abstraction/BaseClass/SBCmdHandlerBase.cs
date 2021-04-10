@@ -46,14 +46,12 @@ namespace ServerBrowser.Abstraction.BaseClass
             Response();
         }
 
-        protected override void RequestCheck()
-        {
-        }
+        protected override void RequestCheck() { }
 
         protected override void ResponseConstruct()
         {
             _response = new SBDefaultResponse(_request, _result);
         }
-        
+
     }
 }

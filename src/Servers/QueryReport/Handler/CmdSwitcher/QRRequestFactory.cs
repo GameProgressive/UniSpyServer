@@ -10,8 +10,8 @@ namespace QueryReport.Handler.CmdSwitcher
     {
         private new byte[] _rawRequest
         {
-            get { return (byte[])base._rawRequest; }
-            set { base._rawRequest = value; }
+            get => (byte[])base._rawRequest;
+            set => base._rawRequest = value;
         }
 
         public QRRequestFactory(byte[] rawRequest) : base(rawRequest)

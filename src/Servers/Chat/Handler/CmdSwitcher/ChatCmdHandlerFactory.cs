@@ -16,11 +16,11 @@ namespace Chat.Handler.CommandSwitcher
 
         public override IUniSpyHandler Serialize()
         {
-            string cmdName = ((ChatRequestBase)_request).CommandName;
+
             Type handlerType = AppDomain.CurrentDomain
                     .GetAssemblies()
                     .SelectMany(x => x.GetTypes())
-                    .FirstOrDefault(t => t.Name == cmdName + "Handler");
+                    .FirstOrDefault(t => t.Name == $"{(string)_request.CommandName}Handler");
 
             if (handlerType != null)
             {
@@ -32,13 +32,13 @@ namespace Chat.Handler.CommandSwitcher
                 }
                 else
                 {
-                    LogWriter.ToLog(LogEventLevel.Error, $"Unknown command {cmdName}!");
+                    LogWriter.ToLog(LogEventLevel.Error, $"Unknown command {(string)_request.CommandName}!");
                     return null;
                 }
             }
             else
             {
-                LogWriter.ToLog(LogEventLevel.Error, $"{cmdName}Handler not implemented!");
+                LogWriter.ToLog(LogEventLevel.Error, $"{(string)_request.CommandName}Handler not implemented!");
                 return null;
             }
         }
