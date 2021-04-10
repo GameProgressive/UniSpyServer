@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using System;
-using System.Reflection;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
 using UniSpyLib.Logging;
 using UniSpyLib.UniSpyConfig;
 
