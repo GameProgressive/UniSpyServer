@@ -42,7 +42,8 @@ namespace GameStatus.Abstraction.BaseClass
             RequestCheck();
             if (_result.ErrorCode != GSErrorCode.NoError)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_result.ErrorCode));
+                ResponseConstruct();
+                Response();
                 return;
             }
 
@@ -50,18 +51,12 @@ namespace GameStatus.Abstraction.BaseClass
 
             if (_result.ErrorCode == GSErrorCode.Database)
             {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_result.ErrorCode));
+                ResponseConstruct();
+                Response();
                 return;
             }
 
             ResponseConstruct();
-
-            if (_result.ErrorCode != GSErrorCode.NoError)
-            {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(_result.ErrorCode));
-                return;
-            }
-
             Response();
         }
         protected override void RequestCheck()
@@ -73,7 +68,7 @@ namespace GameStatus.Abstraction.BaseClass
         }
         protected override void Encrypt()
         {
-            byte[] buffer = UniSpyEncoding.GetBytes(_sendingBuffer);
+            byte[] buffer = UniSpyEncoding.GetBytes((string)_response.SendingBuffer);
             _sendingBuffer = UniSpyEncoding.GetString(GSEncryption.Encrypt(buffer));
         }
     }

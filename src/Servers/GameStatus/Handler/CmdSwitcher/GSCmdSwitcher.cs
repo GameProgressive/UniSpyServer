@@ -1,8 +1,13 @@
-﻿using GameStatus.Entity.Enumerate;
+﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Structure.Misc;
+using GameStatus.Handler.SystemHandler;
+using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Encryption;
+using UniSpyLib.Logging;
+using UniSpyLib.Network;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
@@ -36,6 +41,7 @@ namespace GameStatus.Handler.CmdSwitcher
             request.Parse();
             if ((GSErrorCode)request.ErrorCode != GSErrorCode.NoError)
             {
+                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(((GSRequestBase)request).ErrorCode));
                 return;
             }
             _requests.Add(request);

@@ -52,9 +52,8 @@ namespace GameStatus.Abstraction.BaseClass
                 }
                 OperationID = operationID;
             }
-
             //worms 3d use id not lid so we added an condition here
-            if (RequestKeyValues.ContainsKey("id"))
+            else if (RequestKeyValues.ContainsKey("id"))
             {
                 uint operationID;
                 if (!uint.TryParse(RequestKeyValues["id"], out operationID))
