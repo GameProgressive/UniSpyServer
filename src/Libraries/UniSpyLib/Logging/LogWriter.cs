@@ -95,11 +95,11 @@ namespace UniSpyLib.Logging
         {
             ToLog(LogEventLevel.Information, message);
         }
-        public static void UnknownDataRecieved(string data)
+        public static void LogUnkownRequest(string data)
         {
             ToLog(LogEventLevel.Error, $"[Unknown] {data}");
         }
-        public static void UnknownDataRecieved(byte[] data)
+        public static void LogUnkownRequest(byte[] data)
         {
             ToLog(LogEventLevel.Error, $"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
         }

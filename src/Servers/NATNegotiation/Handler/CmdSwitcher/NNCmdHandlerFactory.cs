@@ -26,7 +26,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
                 case NatPacketType.ErtAck:
                     return new ErtAckHandler(_session, _request);
                 default:
-                    return null;
+                    throw new NotImplementedException();
             }
         }
     }

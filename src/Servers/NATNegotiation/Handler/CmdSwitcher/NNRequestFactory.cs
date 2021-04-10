@@ -31,7 +31,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
                 case NatPacketType.ErtAck:
                     return new ErtAckRequest(_rawRequest);
                 default:
-                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    LogWriter.LogUnkownRequest(_rawRequest);
                     return null;
             }
         }

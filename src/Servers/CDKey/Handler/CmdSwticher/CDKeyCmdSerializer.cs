@@ -29,8 +29,7 @@ namespace CDKey.Handler.CmdSwitcher
                 case "uon":
                     throw new NotImplementedException();
                 default:
-                    LogWriter.UnknownDataRecieved((string)_request.RawRequest);
-                    return null;
+                    throw new NotImplementedException();
             }
         }
     }

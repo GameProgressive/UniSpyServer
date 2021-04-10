@@ -42,7 +42,7 @@ namespace QueryReport.Handler.CmdSwitcher
                 case QRPacketType.ClientMessageACK:
                     return new QRDefaultRequest(_rawRequest);
                 default:
-                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    LogWriter.LogUnkownRequest(_rawRequest);
                     return null;
             }
         }

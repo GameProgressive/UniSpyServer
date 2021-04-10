@@ -37,7 +37,7 @@ namespace PresenceConnectionManager.Handler.CmdSwticher
                 case PCMRequestName.NewProfile://create an new profile
                     return new NewProfileHandler(_session, _request);
                 case PCMRequestName.DelProfile://delete profile
-                    throw new NotImplementedException();
+                    goto default;
                 case PCMRequestName.AddBlock://add an user to our block list
                     return new AddBlockHandler(_session, _request);
                 case PCMRequestName.RemoveBlock:
@@ -49,12 +49,11 @@ namespace PresenceConnectionManager.Handler.CmdSwticher
                 case PCMRequestName.Status://update current logged in user's status info
                     return new StatusHandler(_session, _request);
                 case PCMRequestName.StatusInfo:
-                    throw new NotImplementedException();
+                    goto default;
                 case PCMRequestName.InviteTo:
-                    throw new NotImplementedException();
+                    goto default;
                 default:
-                    LogWriter.UnknownDataRecieved("");
-                    throw new Exception();
+                    throw new NotImplementedException();
             }
         }
     }

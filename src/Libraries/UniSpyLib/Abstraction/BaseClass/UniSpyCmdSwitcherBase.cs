@@ -8,8 +8,8 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyCmdSwitcherBase
     {
-        protected IUniSpySession _session;
         protected object _rawRequest;
+        protected IUniSpySession _session;
         protected List<IUniSpyRequest> _requests;
         protected List<IUniSpyHandler> _handlers;
         public UniSpyCmdSwitcherBase(IUniSpySession session, object rawRequest)

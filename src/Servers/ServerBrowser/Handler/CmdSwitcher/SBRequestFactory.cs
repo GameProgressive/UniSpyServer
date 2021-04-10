@@ -37,7 +37,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.MapLoopRequest:
                     return null;
                 default:
-                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    LogWriter.LogUnkownRequest(_rawRequest);
                     return null;
             }
         }

@@ -27,7 +27,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
                 case PSPRequestName.PMatch:
                     //    PmatchHandler pmatch = new PmatchHandler(request);
                     //    pmatch.Handle(session);
-                    throw new NotImplementedException();
+                    goto default;
                 case PSPRequestName.Check:
                     return new CheckHandler(_session, _request);
                 case PSPRequestName.NewUser:
@@ -41,8 +41,8 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
                 case PSPRequestName.UniqueSearch:
                     return new UniqueSearchHandler(_session, _request);
                 default:
-                    LogWriter.UnknownDataRecieved((string)_request.RawRequest);
-                    return null;
+                    throw new NotImplementedException();
+
 
             }
         }

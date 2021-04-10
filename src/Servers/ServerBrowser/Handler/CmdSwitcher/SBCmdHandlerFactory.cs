@@ -1,9 +1,9 @@
-﻿using ServerBrowser.Entity.Enumerate;
+﻿using System;
+using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Handler.CmdHandler;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
@@ -39,9 +39,9 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.ServerInfoRequest:
                     return new ServerInfoHandler(_session, _request);
                 case SBClientRequestType.PlayerSearchRequest:
-                    return null;
+                    goto default;
                 case SBClientRequestType.MapLoopRequest:
-                    return null;
+                    goto default;
                 case SBClientRequestType.SendMessageRequest:
                     //TODO
                     //Cryptorx's game use this command
@@ -49,8 +49,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 case SBClientRequestType.NatNegRequest:
                     return new NatNegMsgHandler(_session, _request);
                 default:
-                    LogWriter.UnknownDataRecieved((byte[])_request.RawRequest);
-                    return null;
+                    throw new NotImplementedException();
             }
         }
     }

@@ -13,7 +13,6 @@ namespace UniSpyLib.Abstraction.BaseClass
             _session = session;
             LogWriter.LogCurrentClass(this);
         }
-
         public abstract IUniSpyHandler Serialize();
     }
 }

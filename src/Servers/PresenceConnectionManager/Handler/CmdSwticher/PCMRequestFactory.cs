@@ -61,7 +61,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
                 case PCMRequestName.InviteTo:
                     return new InviteToRequest(_rawRequest);
                 default:
-                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    LogWriter.LogUnkownRequest(_rawRequest);
                     return null;
             }
         }

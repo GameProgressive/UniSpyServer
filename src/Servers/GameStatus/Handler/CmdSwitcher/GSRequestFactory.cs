@@ -36,7 +36,7 @@ namespace GameStatus.Handler.CmdSwitcher
                 case GSRequestName.CreateNewGamePlayerData:
                     return new NewGameRequest(_rawRequest);
                 default:
-                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    LogWriter.LogUnkownRequest(_rawRequest);
                     return null;
             }
         }

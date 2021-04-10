@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using GameStatus.Entity.Enumerate;
+﻿using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Structure.Misc;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;

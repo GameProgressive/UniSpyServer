@@ -41,7 +41,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
                 case PSPRequestName.UniqueSearch:
                     return new UniqueSearchRequest(_rawRequest);
                 default:
-                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    LogWriter.LogUnkownRequest(_rawRequest);
                     return null;
             }
         }

@@ -34,7 +34,7 @@ namespace CDKey.Handler.CmdSwitcher
                 case RequestName.UON:
                     return null;
                 default:
-                    LogWriter.UnknownDataRecieved(_rawRequest);
+                    LogWriter.LogUnkownRequest(_rawRequest);
                     return null;
             }
         }

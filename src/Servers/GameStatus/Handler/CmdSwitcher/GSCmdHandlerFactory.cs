@@ -1,5 +1,4 @@
-﻿using GameStatus.Abstraction.BaseClass;
-using GameStatus.Entity.Structure.Misc;
+﻿using GameStatus.Entity.Structure.Misc;
 using GameStatus.Handler.CmdHandler;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
@@ -32,8 +31,7 @@ namespace GameStatus.Handler.CmdSwitcher
                 case GSRequestName.CreateNewGamePlayerData:
                     return new NewGameHandler(_session, _request);
                 default:
-                    LogWriter.UnknownDataRecieved((string)_request.RawRequest);
-                    return null;
+                    throw new NotImplementedException();
             }
         }
     }

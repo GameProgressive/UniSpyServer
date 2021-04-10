@@ -1,4 +1,5 @@
-﻿using QueryReport.Abstraction.BaseClass;
+﻿using System;
+using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Handler.CmdHandler;
 using UniSpyLib.Abstraction.BaseClass;
@@ -23,23 +24,16 @@ namespace QueryReport.Handler.CmdSwitcher
                 //after verify we can add game server to server list
                 case QRPacketType.Challenge:
                     return new ChallengeHandler(_session, _request);
-
                 case QRPacketType.HeartBeat:
                     return new HeartBeatHandler(_session, _request);
-
                 case QRPacketType.KeepAlive:
                     return new KeepAliveHandler(_session, _request);
-
                 case QRPacketType.EchoResponse:
                     return new EchoHandler(_session, _request);
-
                 case QRPacketType.ClientMessageACK:
                     return new ClientMsgAckHandler(_session, _request);
-
                 default:
-                    LogWriter.UnknownDataRecieved((byte[])_request.RawRequest);
-                    return null;
-
+                    throw new NotImplementedException();
             }
         }
     }
