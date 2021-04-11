@@ -3,8 +3,6 @@ using CDKey.Entity.Structure.Result;
 using CDKey.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
 
 namespace CDKey.Abstraction.BaseClass
 {
@@ -41,12 +39,6 @@ namespace CDKey.Abstraction.BaseClass
 
             ResponseConstruct();
             Response();
-        }
-
-
-        protected override void Encrypt()
-        {
-            _sendingBuffer = XOREncoding.Encode((string)_response.SendingBuffer, XOREncoding.XorType.Type0);
         }
     }
 }

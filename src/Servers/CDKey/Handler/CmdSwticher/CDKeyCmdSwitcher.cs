@@ -40,10 +40,5 @@ namespace CDKey.Handler.CmdSwitcher
                 _requests.Add(request);
             }
         }
-
-        protected override void Decrypt()
-        {
-            _rawRequest = XOREncoding.Encode(_rawRequest, XOREncoding.XorType.Type0);
-        }
     }
 }

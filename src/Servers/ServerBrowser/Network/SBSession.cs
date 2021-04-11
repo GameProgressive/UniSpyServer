@@ -20,5 +20,24 @@ namespace ServerBrowser.Network
         }
 
         protected override void OnReceived(byte[] message) => new SBCmdSwitcher(this, message).Switch();
+        protected override byte[] Encrypt(byte[] buffer)
+        {
+            SBEncryption enc;
+            if (EncParams == null)
+            {
+                EncParams = new SBEncryptionParameters();
+                enc = new SBEncryption(
+                GameSecretKey,
+                ClientChallenge,
+                EncParams);
+            }
+            else
+            {
+                enc = new SBEncryption(EncParams);
+            }
+            var cryptHeader = buffer.Take(14);
+            var cipherBody = enc.Encrypt(buffer.Skip(14).ToArray());
+            return cryptHeader.Concat(cipherBody).ToArray();
+        }
     }
 }

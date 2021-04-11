@@ -16,5 +16,14 @@ namespace CDKey.Network
 
         protected override void OnReceived(UniSpyUDPSessionBase session, string message)
             => new CDKeyCmdSwitcher(session, message).Switch();
+
+        protected override byte[] Decrypt(byte[] buffer)
+        {
+            return XOREncoding.Encode(buffer, XOREncoding.XorType.Type0);
+        }
+        protected override byte[] Encrypt(byte[] buffer)
+        {
+            return XOREncoding.Encode(buffer, XOREncoding.XorType.Type0);
+        }
     }
 }

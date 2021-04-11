@@ -70,19 +70,13 @@ namespace Chat.Abstraction.BaseClass
         {
             _response = new ChatDefaultResponse(_request, _result);
         }
-        protected override void Encrypt()
+        protected override void Response()
         {
-            if (_session.UserInfo.IsUsingEncryption)
+            if (_session.UserInfo.IsQuietMode)
             {
-                _sendingBuffer = UniSpyEncoding.GetString(
-                    ChatCrypt.Handle(
-                        _session.UserInfo.ClientCTX,
-                        UniSpyEncoding.GetBytes(_response.SendingBuffer)));
+                return;
             }
-            else
-            {
-                _sendingBuffer = _response.SendingBuffer;
-            }
+            base.Response();
         }
     }
 }

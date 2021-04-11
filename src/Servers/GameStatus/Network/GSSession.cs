@@ -20,5 +20,9 @@ namespace GameStatus.Network
         /// </summary>
         protected override void OnConnected() => SendAsync(GSEncryption.Encrypt(UniSpyEncoding.GetBytes(GSConstants.ChallengeResponse)));
         protected override void OnReceived(string message) => new GSCmdSwitcher(this, message).Switch();
+
+        protected override byte[] Decrypt(byte[] buffer) => GSEncryption.Decrypt(buffer);
+        protected override byte[] Encrypt(byte[] buffer) => GSEncryption.Encrypt(buffer);
+
     }
 }

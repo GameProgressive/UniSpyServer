@@ -19,6 +19,7 @@ namespace Chat.Entity.Structure.Result.General
 
         public QUITResult()
         {
+            ChannelInfos = new List<QUITDataModel>();
         }
     }
 }

@@ -25,9 +25,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         {
             try
             {
-                // we first decrypt raw request and log it
-                Decrypt();
-                LogNetworkTraffic();
                 SerializeRequests();
                 if (_requests.Count == 0)
                 {
@@ -53,25 +50,5 @@ namespace UniSpyLib.Abstraction.BaseClass
 
         protected abstract void SerializeRequests();
         protected abstract void SerializeCommandHandlers();
-
-        /// <summary>
-        /// Decrypt message and log decrypted message
-        /// </summary>
-        protected virtual void Decrypt() { }
-        private void LogNetworkTraffic()
-        {
-            if (_rawRequest.GetType().Equals(typeof(string)))
-            {
-                LogWriter.LogNetworkReceiving(_session.RemoteIPEndPoint, (string)_rawRequest);
-            }
-            else if (_rawRequest.GetType().Equals(typeof(byte[])))
-            {
-                LogWriter.LogNetworkReceiving(_session.RemoteIPEndPoint, (byte[])_rawRequest);
-            }
-            else
-            {
-                throw new FormatException("_rawRequest is an unknown type!");
-            }
-        }
     }
 }

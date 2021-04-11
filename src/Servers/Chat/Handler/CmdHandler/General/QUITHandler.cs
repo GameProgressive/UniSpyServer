@@ -20,11 +20,9 @@ namespace Chat.Handler.CmdHandler.General
             set => base._result = value;
         }
         // when a user disconnected with server we can call this function
-        public QUITHandler(IUniSpySession session) : base(session, null)
-        {
-        }
         public QUITHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new QUITResult();
         }
 
         protected override void DataOperation()
@@ -46,6 +44,7 @@ namespace Chat.Handler.CmdHandler.General
                     });
             }
         }
+
         protected override void Response()
         {
             _response.Build();

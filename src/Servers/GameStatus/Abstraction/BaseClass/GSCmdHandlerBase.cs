@@ -27,11 +27,6 @@ namespace GameStatus.Abstraction.BaseClass
             get { return (GSResultBase)base._result; }
             set { base._result = value; }
         }
-        protected new string _sendingBuffer
-        {
-            get => (string)base._sendingBuffer;
-            set => base._sendingBuffer = value;
-        }
         protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new GSDefaultResult();
@@ -65,11 +60,6 @@ namespace GameStatus.Abstraction.BaseClass
         protected override void ResponseConstruct()
         {
             _response = new GSDefaultResponse(_request, _result);
-        }
-        protected override void Encrypt()
-        {
-            byte[] buffer = UniSpyEncoding.GetBytes((string)_response.SendingBuffer);
-            _sendingBuffer = UniSpyEncoding.GetString(GSEncryption.Encrypt(buffer));
         }
     }
 }

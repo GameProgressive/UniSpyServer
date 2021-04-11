@@ -2,6 +2,7 @@
 using Chat.Entity.Structure.Request.General;
 using Chat.Handler.CmdHandler.General;
 using Chat.Handler.CommandSwitcher;
+using UniSpyLib.Encryption;
 using UniSpyLib.Network;
 
 namespace Chat.Network
@@ -9,31 +10,43 @@ namespace Chat.Network
     internal sealed class ChatSession : UniSpyTCPSessionBase
     {
         public ChatUserInfo UserInfo { get; private set; }
-
         public ChatSession(ChatServer server) : base(server)
         {
             UserInfo = new ChatUserInfo(this);
         }
-
         protected override void OnReceived(string message) => new ChatCmdSwitcher(this, message).Switch();
-
-        public override bool SendAsync(byte[] buffer, long offset, long size)
-        {
-            if (UserInfo.IsQuietMode)
-            {
-                return false;
-            }
-            return base.SendAsync(buffer, offset, size);
-        }
-
         protected override void OnDisconnected()
         {
-            var quitRequest = new QUITRequest()
+            var request = new QUITRequest()
             {
                 Reason = "Server Host leaves channel"
             };
-            new QUITHandler(this, quitRequest).Handle();
+            new QUITHandler(this, request).Handle();
             base.OnDisconnected();
+        }
+
+        protected override byte[] Encrypt(byte[] buffer)
+        {
+            if (UserInfo.IsUsingEncryption)
+            {
+                return ChatCrypt.Handle(UserInfo.ClientCTX, buffer);
+            }
+            else
+            {
+                return buffer;
+            }
+        }
+
+        protected override byte[] Decrypt(byte[] buffer)
+        {
+            if (UserInfo.IsUsingEncryption)
+            {
+                return ChatCrypt.Handle(UserInfo.ClientCTX, buffer);
+            }
+            else
+            {
+                return buffer;
+            }
         }
     }
 }

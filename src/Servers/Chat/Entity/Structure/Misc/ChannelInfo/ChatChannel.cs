@@ -4,6 +4,7 @@ using Chat.Network;
 using QueryReport.Entity.Structure;
 using System.Collections.Concurrent;
 using System.Linq;
+using UniSpyLib.Logging;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
@@ -27,7 +28,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             {
                 user.UserInfo.Session.SendAsync(message);
             }
-
+            LogWriter.LogNetworkMultiCast(message);
             return true;
         }
         public bool MultiCastExceptSender(ChatChannelUser sender, string message)

@@ -23,7 +23,6 @@ namespace Chat.Application
             {
                 LogWriter.ToLog(LogEventLevel.Error, e.ToString());
             }
-
             Console.WriteLine("Press < Q > to exit. ");
             while (Console.ReadKey().Key != ConsoleKey.Q) { }
         }

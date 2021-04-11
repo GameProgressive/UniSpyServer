@@ -30,6 +30,10 @@ namespace UniSpyLib.Network
 
         public override bool Start()
         {
+            if (OptionSendBufferSize > int.MaxValue || OptionReceiveBufferSize > int.MaxValue)
+            {
+                throw new ArgumentException("Buffer size can not big than length of integer!");
+            }
             SessionManager.Start();
             return base.Start();
         }

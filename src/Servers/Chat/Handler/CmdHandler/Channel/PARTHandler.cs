@@ -23,6 +23,7 @@ namespace Chat.Handler.CmdHandler.Channel
         }
         public PARTHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new PARTResult();
         }
 
         protected override void DataOperation()

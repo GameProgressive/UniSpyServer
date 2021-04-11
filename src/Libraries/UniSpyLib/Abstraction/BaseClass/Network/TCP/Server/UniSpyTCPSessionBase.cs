@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using NetCoreServer;
 using Serilog.Events;
 using UniSpyLib.Abstraction.Interface;
@@ -23,19 +22,53 @@ namespace UniSpyLib.Network
         public UniSpyTCPSessionBase(UniSpyTCPServerBase server) : base(server)
         {
         }
-        protected override void OnError(SocketError error) => LogWriter.ToLog(LogEventLevel.Error, error.ToString());
-        bool IUniSpySession.BaseSendAsync(byte[] buffer) => BaseSendAsync(buffer);
-        bool IUniSpySession.BaseSendAsync(string buffer) => BaseSendAsync(buffer);
+        /// <summary>
+        /// Send unencrypted data
+        /// </summary>
+        /// <param name="buffer">plaintext</param>
+        /// <returns>is sending succeed</returns>
         public bool BaseSendAsync(string buffer) => BaseSendAsync(UniSpyEncoding.GetBytes(buffer));
-        public bool BaseSendAsync(byte[] buffer) => BaseSendAsync(buffer, 0, buffer.Length);
-        protected bool BaseSendAsync(byte[] buffer, long offset, long size) => base.SendAsync(buffer, offset, size);
+        /// <summary>
+        /// Send unencrypted data
+        /// </summary>
+        /// <param name="buffer">plaintext</param>
+        /// <returns>is sending succeed</returns>
+        public bool BaseSendAsync(byte[] buffer)
+        {
+            LogWriter.LogNetworkSending(RemoteIPEndPoint, buffer);
+            return base.SendAsync(buffer, 0, buffer.Length);
+        }
+        protected override void OnError(SocketError error) => LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         public override bool SendAsync(string buffer) => base.SendAsync(buffer);
-
-
+        public override bool SendAsync(byte[] buffer, long offset, long size)
+        {
+            byte[] plainText = buffer.Skip((int)offset).Take((int)size).ToArray();
+            LogWriter.LogNetworkSending(RemoteIPEndPoint, plainText);
+            byte[] cipherText = Encrypt(plainText);
+            Array.Copy(cipherText, buffer, size);
+            return base.SendAsync(buffer, offset, size);
+        }
         protected virtual void OnReceived(string message) { }
         protected virtual void OnReceived(byte[] buffer) => OnReceived(UniSpyEncoding.GetString(buffer));
-        protected override void OnReceived(byte[] buffer, long offset, long size) => OnReceived(buffer.Skip((int)offset).Take((int)size).ToArray());
-
+        protected override void OnReceived(byte[] buffer, long offset, long size)
+        {
+            byte[] cipherText = buffer.Skip((int)offset).Take((int)size).ToArray();
+            byte[] plainText = Decrypt(cipherText);
+            LogWriter.LogNetworkReceiving(RemoteIPEndPoint, plainText);
+            OnReceived(plainText);
+        }
+        /// <summary>
+        /// The virtual method, which helps child class to encrypt data
+        /// </summary>
+        /// <param name="buffer">plaintext</param>
+        /// <returns>ciphertext</returns>
+        protected virtual byte[] Encrypt(byte[] buffer) => buffer;
+        /// <summary>
+        /// The virtual method, which helps child class to decrypt data
+        /// </summary>
+        /// <param name="buffer">ciphertext</param>
+        /// <returns>plaintext</returns>
+        protected virtual byte[] Decrypt(byte[] buffer) => buffer;
     }
 }
 

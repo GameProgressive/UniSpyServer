@@ -32,17 +32,6 @@ namespace Chat.Handler.CommandSwitcher
             }
         }
 
-        protected override void Decrypt()
-        {
-            if (_session.UserInfo.IsUsingEncryption)
-            {
-                _rawRequest = UniSpyEncoding.GetString(
-                    ChatCrypt.Handle(
-                        _session.UserInfo.ClientCTX,
-                        UniSpyEncoding.GetBytes(_rawRequest)));
-            }
-        }
-
         protected override void SerializeRequests()
         {
             string[] rawRequests = _rawRequest.Replace("\r", "")

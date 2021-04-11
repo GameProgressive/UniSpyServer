@@ -212,7 +212,7 @@ namespace UniSpyLib.Database.DatabaseModel.MySql
 
             modelBuilder.Entity<Grouplist>(entity =>
             {
-                entity.HasKey(e => e.Groupid)
+                entity.HasKey(e => e.GroupID)
                     .HasName("PRIMARY");
 
                 entity.ToTable("grouplist");
@@ -222,11 +222,11 @@ namespace UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasIndex(e => e.Gameid)
                     .HasName("gameid");
 
-                entity.HasIndex(e => e.Groupid)
+                entity.HasIndex(e => e.GroupID)
                     .HasName("id")
                     .IsUnique();
 
-                entity.Property(e => e.Groupid)
+                entity.Property(e => e.GroupID)
                     .HasColumnName("groupid")
                     .HasColumnType("int(11) unsigned");
 

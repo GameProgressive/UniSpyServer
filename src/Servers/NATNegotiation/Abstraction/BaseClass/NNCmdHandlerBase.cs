@@ -47,28 +47,11 @@ namespace NATNegotiation.Abstraction.BaseClass
             ResponseConstruct();
             Response();
         }
-        protected override void RequestCheck()
-        {
-        }
-        protected override void DataOperation()
-        {
-        }
+        protected override void RequestCheck() { }
+        protected override void DataOperation() { }
         protected override void ResponseConstruct()
         {
             _response = new NNDefaultResponse(_request, _result);
-        }
-        protected override void Response()
-        {
-            if (_response == null)
-            {
-                return;
-            }
-            _response.Build();
-            if (!StringExtensions.CheckResponseValidation((byte[])_response.SendingBuffer))
-            {
-                return;
-            }
-            _session.Send((byte[])_response.SendingBuffer);
         }
     }
 }

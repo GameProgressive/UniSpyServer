@@ -28,10 +28,7 @@ namespace UniSpyLib.Network
         public bool SendAsync(byte[] buffer, long offset, long size) => Server.SendAsync(RemoteEndPoint, buffer, offset, size);
         public bool SendAsync(string text) => Server.SendAsync(RemoteEndPoint, UniSpyEncoding.GetBytes(text));
         public bool SendAsync(byte[] buffer) => Server.SendAsync(RemoteEndPoint, buffer);
-
-
-        public bool BaseSendAsync(string buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
         public bool BaseSendAsync(byte[] buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
-        public bool BaseSendAsync(byte[] buffer, long offset, long size) => Server.BaseSendAsync(RemoteEndPoint, buffer, offset, size);
+        public bool BaseSendAsync(string buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
     }
 }

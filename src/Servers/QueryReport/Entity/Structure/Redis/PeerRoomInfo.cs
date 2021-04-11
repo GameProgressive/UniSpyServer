@@ -20,7 +20,7 @@ namespace QueryReport.Entity.Structure.Redis
         public PeerRoomInfo(Grouplist groupList)
         {
             UpdateTime = DateTime.Now;
-            GroupID = groupList.Groupid;
+            GroupID = groupList.GroupID;
             HostName = groupList.Roomname;
             NumberOfWaitingPlayers = 0;
             MaxNumberOfWaitingPlayers = 200;

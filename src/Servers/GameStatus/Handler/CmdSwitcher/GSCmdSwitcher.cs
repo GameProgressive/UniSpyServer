@@ -46,10 +46,5 @@ namespace GameStatus.Handler.CmdSwitcher
             }
             _requests.Add(request);
         }
-        protected override void Decrypt()
-        {
-            byte[] buffer = UniSpyEncoding.GetBytes(_rawRequest);
-            _rawRequest = UniSpyEncoding.GetString(GSEncryption.Decrypt(buffer));
-        }
     }
 }

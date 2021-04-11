@@ -1,6 +1,7 @@
 ﻿using Serilog;
 using Serilog.Events;
 using System;
+using System.Linq;
 using System.Net;
 using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
@@ -86,65 +87,30 @@ namespace UniSpyLib.Logging
             }
         }
 
-        public static void ToLog(Exception e)
-        {
-            ToLog(LogEventLevel.Error, e.ToString());
-        }
-        public static void ToLog(string message)
-        {
-            ToLog(LogEventLevel.Information, message);
-        }
-        public static void LogUnkownRequest(string data)
-        {
-            ToLog(LogEventLevel.Error, $"[Unknown] {data}");
-        }
+        public static void ToLog(Exception e) => ToLog(LogEventLevel.Error, e.ToString());
+        public static void ToLog(string message) => ToLog(LogEventLevel.Information, message);
+        public static void LogUnkownRequest(string data) => ToLog(LogEventLevel.Error, $"[Unknown] {data}");
         public static void LogUnkownRequest(byte[] data)
-        {
-            ToLog(LogEventLevel.Error, $"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
-        }
+        => ToLog(LogEventLevel.Error, $"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
         public static void LogCurrentClass(object param)
-        {
-            ToLog(LogEventLevel.Verbose, $"[ => ] [{param.GetType().Name}]");
-        }
-
+        => ToLog(LogEventLevel.Verbose, $"[ => ] [{param.GetType().Name}]");
+        public static void LogNetworkMultiCast(string buffer)
+        => ToLog(LogEventLevel.Debug, $"[Muti] {StringExtensions.ReplaceUnreadableCharToHex(buffer)}");
         public static void LogNetworkSending(IPEndPoint endPoint, byte[] buffer)
-        {
-            LogNetworkTraffic("Send", endPoint, buffer);
-        }
+        => LogNetworkTraffic("Send", endPoint, buffer);
         public static void LogNetworkSending(IPEndPoint endPoint, string buffer)
-        {
-            LogNetworkSending(endPoint, UniSpyEncoding.GetBytes(buffer));
-        }
+        => LogNetworkSending(endPoint, UniSpyEncoding.GetBytes(buffer));
         public static void LogNetworkReceiving(IPEndPoint endPoint, byte[] buffer)
-        {
-            LogNetworkTraffic("Recv", endPoint, buffer);
-        }
+        => LogNetworkTraffic("Recv", endPoint, buffer);
         public static void LogNetworkReceiving(IPEndPoint endPoint, string buffer)
-        {
-            LogNetworkReceiving(endPoint, UniSpyEncoding.GetBytes(buffer));
-        }
-
+        => LogNetworkReceiving(endPoint, UniSpyEncoding.GetBytes(buffer));
         public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer, long size)
-        {
-            byte[] tempBuffer = new byte[size];
-            Array.Copy(buffer, tempBuffer, size);
-            LogNetworkTraffic(type, endPoint, tempBuffer);
-        }
-
+        => LogNetworkTraffic(type, endPoint, buffer.Take((int)size).ToArray());
         private static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer)
-        {
-            string tempData = StringExtensions.ReplaceUnreadableCharToHex(buffer);
-            LogNetworkTraffic(type, endPoint, tempData);
-        }
+        => LogNetworkTraffic(type, endPoint, StringExtensions.ReplaceUnreadableCharToHex(buffer));
         private static void LogNetworkTraffic(string type, IPEndPoint endPoint, string buffer)
-        {
-            ToLog(LogEventLevel.Debug, $"[{type}] [{endPoint}] {buffer}");
-        }
-
+        => ToLog(LogEventLevel.Debug, $"[{type}] [{endPoint}] {buffer}");
         public static void LogNetworkSpam(IPEndPoint endPoint)
-        {
-            ToLog(LogEventLevel.Error, $"[Spam] [{endPoint}] spam we ignored!");
-        }
-
+        => ToLog(LogEventLevel.Error, $"[Spam] [{endPoint}] spam we ignored!");
     }
 }

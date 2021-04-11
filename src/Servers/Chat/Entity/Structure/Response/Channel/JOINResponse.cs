@@ -18,9 +18,9 @@ namespace Chat.Entity.Structure.Response.General
 
         protected override void BuildNormalResponse()
         {
-             string modeReply = MODEResponse.BuildModeReply(
-                       _request.ChannelName, _result.ChannelModes);
-                       
+            string modeReply = MODEResponse.BuildModeReply(
+                      _request.ChannelName, _result.ChannelModes);
+
             if (!_result.IsAlreadyJoinedChannel)
             {
                 SendingBufferOfChannelUsers = ChatIRCReplyBuilder.Build(
@@ -30,7 +30,7 @@ namespace Chat.Entity.Structure.Response.General
                     null);
                 SendingBufferOfChannelUsers += modeReply;
             }
-            
+
             SendingBuffer = modeReply;
             //check the message :@<nickname> whether broadcast char @ ?
             SendingBuffer += NAMESResponse.BuildNameReply(
@@ -42,7 +42,7 @@ namespace Chat.Entity.Structure.Response.General
                 _result.JoinerNickName,
                  _request.ChannelName);
 
-            SendingBuffer = ChatIRCReplyBuilder.Build(
+            SendingBuffer += ChatIRCReplyBuilder.Build(
                 _result.JoinerPrefix,
                 ChatReplyName.JOIN,
                 _request.ChannelName,

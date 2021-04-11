@@ -4,17 +4,13 @@ namespace UniSpyLib.Abstraction.Interface
 {
     public interface IUniSpySession
     {
-        public EndPoint RemoteEndPoint { get; }
-        public IPEndPoint RemoteIPEndPoint { get; }
-        public long Send(byte[] buffer, long offset, long size);
-        public long Send(string text);
-        public long Send(byte[] buffer);
-
-        public bool SendAsync(byte[] buffer, long offset, long size);
-        public bool SendAsync(string text);
-        public bool SendAsync(byte[] buffer);
-
-        public bool BaseSendAsync(string buffer);
-        public bool BaseSendAsync(byte[] buffer);
+        EndPoint RemoteEndPoint { get; }
+        IPEndPoint RemoteIPEndPoint { get; }
+        long Send(string text);
+        long Send(byte[] buffer);
+        bool SendAsync(string text);
+        bool SendAsync(byte[] buffer);
+        bool BaseSendAsync(string buffer);
+        bool BaseSendAsync(byte[] buffer);
     }
 }

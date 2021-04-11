@@ -44,14 +44,13 @@ namespace Chat.Entity.Structure.Request
         SetChannelModesWithUserLimit,
     }
 
-    public class MODERequest : ChatRequestBase
+    public class MODERequest : ChatChannelRequestBase
     {
         public MODERequest(string rawRequest) : base(rawRequest)
         {
         }
 
         public ModeRequestType RequestType { get; protected set; }
-        public string ChannelName { get; protected set; }
         public string NickName { get; protected set; }
         public string UserName { get; protected set; }
         public uint LimitNumber { get; protected set; }

@@ -154,13 +154,13 @@ namespace Chat.Entity.Structure.Misc
 
             buffer += $"{cmd} {cmdParams}";
 
-            if (tailing != "" || tailing != null)
+            if (tailing == "" || tailing == null)
             {
-                buffer += $" :{tailing}\r\n";
+                buffer += "\r\n";
             }
             else
             {
-                buffer += "\r\n";
+                buffer += $" :{tailing}\r\n";
             }
 
             return buffer;

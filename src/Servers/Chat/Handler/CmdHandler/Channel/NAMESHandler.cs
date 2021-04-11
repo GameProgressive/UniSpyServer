@@ -1,5 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.Request.General;
+using Chat.Entity.Structure.Response.Channel;
 using Chat.Entity.Structure.Result.Channel;
 using UniSpyLib.Abstraction.Interface;
 
@@ -14,6 +14,7 @@ namespace Chat.Handler.CmdHandler.Channel
         }
         public NAMESHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
+            _result = new NAMESResult();
         }
         protected override void DataOperation()
         {
@@ -21,10 +22,9 @@ namespace Chat.Handler.CmdHandler.Channel
             _result.ChannelName = _channel.Property.ChannelName;
             _result.RequesterNickName = _user.UserInfo.NickName;
         }
-        protected override void Response()
+        protected override void ResponseConstruct()
         {
-            _response.Build();
-            _session.SendAsync((string)_response.SendingBuffer);
+            _response = new NAMESResponse(_request, _result);
         }
     }
 }

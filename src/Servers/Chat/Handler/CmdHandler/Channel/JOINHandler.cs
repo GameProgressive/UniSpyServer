@@ -142,19 +142,14 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void Response()
         {
-            if (_response == null)
-            {
-                return;
-            }
-            _response.Build();
+            base.Response();
+            //TODO checkout whether need send mode in another single response
+            // _session.SendAsync(_response.ModeReply);
             if (!_result.IsAlreadyJoinedChannel)
             {
                 //first we send join information to all user in this channel
                 _channel.MultiCast(_response.SendingBufferOfChannelUsers);
             }
-            //TODO checkout whether need send mode in another single response
-            _session.SendAsync(_response.SendingBuffer);
-            // _session.SendAsync(_response.ModeReply);
         }
     }
 }

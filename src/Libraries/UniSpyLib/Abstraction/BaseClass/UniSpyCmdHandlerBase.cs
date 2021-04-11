@@ -10,10 +10,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         protected IUniSpyRequest _request { get; }
         protected IUniSpyResponse _response { get; set; }
         protected UniSpyResultBase _result { get; set; }
-        /// <summary>
-        /// Encrypted sending buffer
-        /// </summary>
-        protected object _sendingBuffer { get; set; }
         public UniSpyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request)
         {
             _session = session;
@@ -42,39 +38,13 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 return;
             }
-            LogNetworkTraffic();
-            Encrypt();
-
-            if (_sendingBuffer.GetType().Equals(typeof(byte[])))
-            {
-                _session.SendAsync((byte[])_sendingBuffer);
-            }
-            else if (_sendingBuffer.GetType().Equals(typeof(string)))
-            {
-                _session.SendAsync((string)_sendingBuffer);
-            }
-        }
-        /// <summary>
-        /// Encrypt message
-        /// </summary>
-        protected virtual void Encrypt()
-        {
-            _sendingBuffer = _response.SendingBuffer;
-        }
-
-        private void LogNetworkTraffic()
-        {
             if (_response.SendingBuffer.GetType().Equals(typeof(byte[])))
             {
-                LogWriter.LogNetworkSending(_session.RemoteIPEndPoint, (byte[])_response.SendingBuffer);
+                _session.SendAsync((byte[])_response.SendingBuffer);
             }
             else if (_response.SendingBuffer.GetType().Equals(typeof(string)))
             {
-                LogWriter.LogNetworkSending(_session.RemoteIPEndPoint, (string)_response.SendingBuffer);
-            }
-            else
-            {
-                throw new FormatException("SendingBuffer is an unknown type");
+                _session.SendAsync((string)_response.SendingBuffer);
             }
         }
     }
