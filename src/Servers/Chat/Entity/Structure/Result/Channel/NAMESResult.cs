@@ -9,7 +9,7 @@ namespace Chat.Entity.Structure.Result.Channel
 {
     internal sealed class NAMESResult : ChatResultBase
     {
-        public string ChannelUserNickString { get; set; }
+        public string AllChannelUserNick { get; set; }
         public string ChannelName { get; set; }
         public string RequesterNickName { get; set; }
         public NAMESResult()

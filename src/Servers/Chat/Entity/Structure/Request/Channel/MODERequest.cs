@@ -21,25 +21,19 @@ namespace Chat.Entity.Structure.Request
     public enum ModeRequestType
     {
         GetChannelModes,
-
+        GetChannelUserModes,
         EnableUserQuietFlag,
         DisableUserQuietFlag,
-
         AddChannelPassword,
         RemoveChannelPassword,
-
         AddChannelUserLimits,
         RemoveChannelUserLimits,
-
         AddBanOnUser,
         RemoveBanOnUser,
-
         AddChannelOperator,
         RemoveChannelOperator,
-
         EnableUserVoicePermission,
         DisableUserVoicePermission,
-
         SetChannelModes,
         SetChannelModesWithUserLimit,
     }
@@ -49,15 +43,13 @@ namespace Chat.Entity.Structure.Request
         public MODERequest(string rawRequest) : base(rawRequest)
         {
         }
-
-        public ModeRequestType RequestType { get; protected set; }
-        public string NickName { get; protected set; }
-        public string UserName { get; protected set; }
-        public uint LimitNumber { get; protected set; }
-        public string ModeFlag { get; protected set; }
-        public string Password { get; protected set; }
-
-
+        public MODERequest() { }
+        public ModeRequestType RequestType { get; set; }
+        public string NickName { get; set; }
+        public string UserName { get; set; }
+        public uint LimitNumber { get; set; }
+        public string ModeFlag { get; set; }
+        public string Password { get; set; }
         public override void Parse()
         {
             base.Parse();

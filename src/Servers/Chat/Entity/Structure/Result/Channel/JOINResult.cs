@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Result.Channel
     {
         public string JoinerPrefix { get; set; }
         public string JoinerNickName { get; set; }
-        public string ChannelUserNicks { get; set; }
+        public string AllChannelUserNicks { get; set; }
         public bool IsCreateChannel { get; set; }
         public string ChannelModes { get; set; }
         public bool IsAlreadyJoinedChannel { get; set; }

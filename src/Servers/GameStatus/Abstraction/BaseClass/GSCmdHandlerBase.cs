@@ -54,9 +54,7 @@ namespace GameStatus.Abstraction.BaseClass
             ResponseConstruct();
             Response();
         }
-        protected override void RequestCheck()
-        {
-        }
+        protected override void RequestCheck() { }
         protected override void ResponseConstruct()
         {
             _response = new GSDefaultResponse(_request, _result);

@@ -16,13 +16,13 @@ namespace Chat.Entity.Structure.Response.General
         {
         }
 
-        public static string BuildModeReply(string channelName, string modes)
+        public static string BuildChannelModeReply(string channelName, string modes)
         {
             var cmdParams = $"{channelName} {modes}";
             return ChatIRCReplyBuilder.Build(ChatReplyName.MODE, cmdParams);
         }
 
-        public static string BuildChannelModesReply(string nickName, string channelName, string modes)
+        public static string BuildChannelUserModesReply(string nickName, string channelName, string modes)
         {
             return ChatIRCReplyBuilder.Build(ChatReplyName.ChannelModels,
                 $"{nickName} {channelName} {modes}");
@@ -33,7 +33,11 @@ namespace Chat.Entity.Structure.Response.General
             // we only broadcast the channel 
             if (_request.RequestType == ModeRequestType.GetChannelModes)
             {
-                SendingBuffer = BuildModeReply(_result.ChannelName, _result.ChannelModes);
+                SendingBuffer = BuildChannelModeReply(_result.ChannelName, _result.ChannelModes);
+            }
+            else
+            {
+                SendingBuffer = BuildChannelUserModesReply(_result.JoinerNickName, _result.ChannelName, _result.ChannelModes);
             }
         }
     }

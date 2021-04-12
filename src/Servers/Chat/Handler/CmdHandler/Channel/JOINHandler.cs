@@ -3,6 +3,7 @@ using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request;
+using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
 using Chat.Entity.Structure.Result.Channel;
 using Chat.Handler.SystemHandler.ChannelManage;
@@ -113,7 +114,7 @@ namespace Chat.Handler.CmdHandler.Channel
                 ChatChannelManager.AddChannel(_request.ChannelName, _channel);
             }
 
-            _result.ChannelUserNicks = _channel.GetAllUsersNickString();
+            _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _session.UserInfo.NickName;
             _result.ChannelModes = _channel.Property.ChannelMode.GetChannelMode();
             _result.JoinerPrefix = _session.UserInfo.IRCPrefix;
@@ -143,13 +144,36 @@ namespace Chat.Handler.CmdHandler.Channel
         protected override void Response()
         {
             base.Response();
-            //TODO checkout whether need send mode in another single response
-            // _session.SendAsync(_response.ModeReply);
             if (!_result.IsAlreadyJoinedChannel)
             {
                 //first we send join information to all user in this channel
-                _channel.MultiCast(_response.SendingBufferOfChannelUsers);
+                _channel.MultiCast(_response.SendingBuffer);
             }
+            var namesRequest = new NAMESRequest
+            {
+                ChannelName = _request.ChannelName
+            };
+            new NAMESHandler(_session, namesRequest).Handle();
+
+            var userModeRequest = new MODERequest
+            {
+                RequestType = ModeRequestType.GetChannelUserModes,
+                ChannelName = _request.ChannelName,
+                NickName = _user.UserInfo.NickName,
+                UserName = _user.UserInfo.UserName,
+                Password = _request.Password
+            };
+            new MODEHandler(_session, userModeRequest).Handle();
+
+            var channelModeRequest = new MODERequest
+            {
+                RequestType = ModeRequestType.GetChannelModes,
+                ChannelName = _request.ChannelName,
+                NickName = _user.UserInfo.NickName,
+                UserName = _user.UserInfo.UserName,
+                Password = _request.Password
+            };
+            new MODEHandler(_session, channelModeRequest).Handle();
         }
     }
 }

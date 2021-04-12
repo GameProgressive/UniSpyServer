@@ -18,7 +18,7 @@ namespace Chat.Handler.CmdHandler.Channel
         }
         protected override void DataOperation()
         {
-            _result.ChannelUserNickString = _channel.GetAllUsersNickString();
+            _result.AllChannelUserNick = _channel.GetAllUsersNickString();
             _result.ChannelName = _channel.Property.ChannelName;
             _result.RequesterNickName = _user.UserInfo.NickName;
         }

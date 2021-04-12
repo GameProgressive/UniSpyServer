@@ -7,5 +7,6 @@ namespace Chat.Entity.Structure.Request.General
         public NAMESRequest(string rawRequest) : base(rawRequest)
         {
         }
+        public NAMESRequest() { }
     }
 }

@@ -16,7 +16,7 @@ namespace Chat.Entity.Structure.Response.Channel
             SendingBuffer = BuildNameReply(
                 _result.RequesterNickName,
                 _result.ChannelName,
-                _result.ChannelUserNickString);
+                _result.AllChannelUserNick);
             SendingBuffer += BuildEndOfNameReply(
                 _result.RequesterNickName,
                 _result.ChannelName);

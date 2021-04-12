@@ -48,6 +48,10 @@ namespace Chat.Handler.CmdHandler.Channel
                     _session.UserInfo.IsQuietMode = false;
                     _result.JoinerNickName = _session.UserInfo.NickName;
                     break;
+                // We get user nick name then get channel modes
+                case ModeRequestType.GetChannelUserModes:
+                    _result.JoinerNickName = _request.NickName;
+                    goto case ModeRequestType.GetChannelModes;
                 case ModeRequestType.GetChannelModes:
                     _result.ChannelModes = _channel.Property.ChannelMode.GetChannelMode();
                     _result.ChannelName = _channel.Property.ChannelName;
@@ -63,7 +67,6 @@ namespace Chat.Handler.CmdHandler.Channel
             //we check if the user is operator in channel
             if (!_user.IsChannelOperator)
             {
-                _result.ErrorCode = ChatErrorCode.DataOperation;
                 return;
             }
             _channel.Property.SetProperties(_user, _request);
