@@ -57,14 +57,15 @@ namespace UniSpyLib.Network
             LogWriter.LogNetworkReceiving(RemoteIPEndPoint, plainText);
             OnReceived(plainText);
         }
+        
         /// <summary>
-        /// The virtual method, which helps child class to encrypt data
+        /// The virtual method override by child class, which helps child class to encrypt data
         /// </summary>
         /// <param name="buffer">plaintext</param>
         /// <returns>ciphertext</returns>
         protected virtual byte[] Encrypt(byte[] buffer) => buffer;
         /// <summary>
-        /// The virtual method, which helps child class to decrypt data
+        /// The virtual method override by child class, which helps child class to decrypt data
         /// </summary>
         /// <param name="buffer">ciphertext</param>
         /// <returns>plaintext</returns>
