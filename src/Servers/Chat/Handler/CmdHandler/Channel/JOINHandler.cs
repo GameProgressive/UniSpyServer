@@ -143,7 +143,12 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void Response()
         {
-            base.Response();
+            // base.Response();
+            if (_response == null)
+            {
+                return;
+            }
+            _response.Build();
             if (!_result.IsAlreadyJoinedChannel)
             {
                 //first we send join information to all user in this channel

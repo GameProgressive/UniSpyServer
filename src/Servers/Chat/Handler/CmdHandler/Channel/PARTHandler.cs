@@ -44,7 +44,6 @@ namespace Chat.Handler.CmdHandler.Channel
                 //  });
                 foreach (var user in _channel.Property.ChannelUsers)
                 {
-                    // KickAllUserAndShutDownChannel(user);
                     // We create a new KICKHandler to handle KICK operation for us
                     var kickRequest = new KICKRequest
                     {

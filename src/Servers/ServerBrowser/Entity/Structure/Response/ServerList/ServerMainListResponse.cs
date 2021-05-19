@@ -44,7 +44,6 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
                 {
                     continue;
                 }
-                List<byte> header = new List<byte>();
                 BuildServerInfoHeader(_result.Flag, serverInfo);
                 foreach (var key in _request.Keys)
                 {
