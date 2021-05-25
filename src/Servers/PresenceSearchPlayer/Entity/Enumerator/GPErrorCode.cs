@@ -51,7 +51,7 @@
         // Updatepro.
         /////////////
         UpdatePro = 0x0500,
-        UpdatePROBadNick,
+        UpdateProBadNick,
 
         // Addbuddy.
         ////////////

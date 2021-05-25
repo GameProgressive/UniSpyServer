@@ -5,6 +5,7 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public class UniSpyExceptionBase : Exception
     {
+        public object ErrorCode { get; protected set; }
         public UniSpyExceptionBase()
         {
         }
@@ -14,10 +15,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         }
 
         public UniSpyExceptionBase(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected UniSpyExceptionBase(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

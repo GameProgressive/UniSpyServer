@@ -121,7 +121,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler.Error
                     return "A profile with the nickname provided already exists.";
                 case GPErrorCode.UpdatePro:
                     return "There was an error updating the profile information.";
-                case GPErrorCode.UpdatePROBadNick:
+                case GPErrorCode.UpdateProBadNick:
                     return "A user with the nickname provided already exists.";
                 #endregion
 
