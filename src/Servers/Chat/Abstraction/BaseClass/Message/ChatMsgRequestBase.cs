@@ -21,10 +21,6 @@ namespace Chat.Abstraction.BaseClass
         public override void Parse()
         {
             base.Parse();
-            if(ErrorCode != ChatErrorCode.NoError)
-            {
-                return;
-            }
 
             if (_cmdParams[0].Contains("#"))
             {

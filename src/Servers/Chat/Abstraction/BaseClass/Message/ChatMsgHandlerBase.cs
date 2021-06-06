@@ -3,6 +3,7 @@ using Chat.Entity.Structure.Misc;
 using UniSpyLib.Abstraction.Interface;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Abstraction.BaseClass.Message;
+using Chat.Entity.Exception;
 
 namespace Chat.Abstraction.BaseClass
 {
@@ -11,8 +12,8 @@ namespace Chat.Abstraction.BaseClass
         protected new ChatMsgRequestBase _request => (ChatMsgRequestBase)base._request;
         protected new ChatMsgResultBase _result
         {
-            get =>(ChatMsgResultBase)base._result;
-            set =>base._result = value;
+            get => (ChatMsgResultBase)base._result;
+            set => base._result = value;
         }
         protected ChatChannelUser _reciever;
         public ChatMsgHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -33,14 +34,12 @@ namespace Chat.Abstraction.BaseClass
                         _reciever = _channel.GetChannelUserByNickName(_request.NickName);
                         if (_reciever == null)
                         {
-                            _result.ErrorCode = ChatErrorCode.IRCError;
-                            _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
+                            throw new ChatIRCException("No nick found.", ChatIRCErrorCode.NoSuchNick);
                         }
                     }
                     break;
                 default:
-                    _result.ErrorCode = ChatErrorCode.Parse;
-                    break;
+                    throw new ChatException("Unknown chat message request type.");
             }
         }
         protected override void DataOperation()

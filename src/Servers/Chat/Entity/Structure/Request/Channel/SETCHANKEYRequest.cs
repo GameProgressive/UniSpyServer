@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyLib.Extensions;
 
@@ -15,16 +16,10 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if(ErrorCode != ChatErrorCode.NoError)
-            {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
-            }
 
             if (_longParam == null)
             {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
+                throw new ChatException("Channel keys and values are missing.");
             }
             _longParam = _longParam.Substring(1);
 

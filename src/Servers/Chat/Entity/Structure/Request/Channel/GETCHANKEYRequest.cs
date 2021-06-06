@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Extensions;
@@ -16,22 +17,15 @@ namespace Chat.Entity.Structure.Request.Channel
         public override void Parse()
         {
             base.Parse();
-            if(ErrorCode != ChatErrorCode.NoError)
-            {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
-            }
 
             if (_cmdParams.Count != 3)
             {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
+                throw new ChatException("cmdParams number is invalid.");
             }
 
             if (_longParam == null || _longParam.Last() != '\0')
             {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
+                throw new ChatException("long parameter is incorrect.");
             }
 
             Cookie = _cmdParams[1];

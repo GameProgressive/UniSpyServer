@@ -47,7 +47,7 @@ namespace Chat.Entity.Structure.Misc
 
         #region advance irc reply builder
 
-        private static string BuildChannelError(string ircError, string channelName, string message)
+        public static string BuildChannelError(string ircError, string channelName, string message)
         {
             return Build(ircError, $"* {channelName} param2", message);
         }

@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
@@ -14,17 +15,11 @@ namespace Chat.Entity.Structure.Request.General
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != ChatErrorCode.NoError)
-            {
-                ErrorCode = ChatErrorCode.NoError;
-                return;
-            }
 
 
             if (_longParam == null)
             {
-                ErrorCode = ChatErrorCode.NoError;
-                return;
+                throw new ChatException("Quit reason is missing.");
             }
 
             Reason = _longParam;

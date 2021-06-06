@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request;
@@ -34,14 +35,12 @@ namespace Chat.Handler.CmdHandler.Channel
 
             if (!_user.IsChannelOperator)
             {
-                _result.ErrorCode = ChatErrorCode.NotChannelOperator;
-                return;
+                throw new ChatException("Kick operation failed because you are not channel operator.");
             }
-            _kickee = _channel.GetChannelUserByNickName(_request.NickName);
+            _kickee = _channel.GetChannelUserByNickName(_request.KickeeNickName);
             if (_kickee != null)
             {
-                _result.ErrorCode = ChatErrorCode.Parse;
-                return;
+                throw new ChatException($"Can not find kickee:{_request.KickeeNickName} in channel.");
             }
         }
         protected override void DataOperation()

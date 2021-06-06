@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using UniSpyLib.Abstraction.BaseClass;
 
@@ -28,7 +29,6 @@ namespace Chat.Abstraction.BaseClass
         /// <param name="request"></param>
         public ChatRequestBase(string rawRequest) : base(rawRequest)
         {
-            ErrorCode = ChatErrorCode.NoError;
         }
 
         public override void Parse()
@@ -40,7 +40,7 @@ namespace Chat.Abstraction.BaseClass
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)
             {
-                ErrorCode = ChatErrorCode.Parse;
+                throw new ChatException($"IRC request is invalid {RawRequest}");
             }
 
             int indexOfColon = RawRequest.IndexOf(':');

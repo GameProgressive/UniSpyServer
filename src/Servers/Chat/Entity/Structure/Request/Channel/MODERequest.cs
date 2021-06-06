@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request
 {
@@ -53,11 +54,7 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != ChatErrorCode.NoError)
-            {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
-            }
+
 
 
             if (_cmdParams.Count == 1)
@@ -151,10 +148,9 @@ namespace Chat.Entity.Structure.Request
                         RequestType = ModeRequestType.SetChannelModes;
                     }
                 }
-                ErrorCode = ChatErrorCode.Parse;
-                return;
+                throw new ChatException("Unknown mode request type.");
             }
-            ErrorCode = ChatErrorCode.Parse;
+            throw new ChatException("number of IRC parameters are incorrect.");
         }
     }
 }

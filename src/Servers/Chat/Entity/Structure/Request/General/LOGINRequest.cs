@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using System.Linq;
 
 namespace Chat.Entity.Structure.Request.General
@@ -25,19 +26,14 @@ namespace Chat.Entity.Structure.Request.General
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != ChatErrorCode.NoError)
-            {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
-            }
+
 
 
             uint namespaceid;
 
             if (!uint.TryParse(_cmdParams[0], out namespaceid))
             {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
+                throw new ChatException("namespaceid format is incorrect.");
             }
 
             NameSpaceID = namespaceid;
@@ -49,8 +45,7 @@ namespace Chat.Entity.Structure.Request.General
 
                 if (_longParam.Count(c => c == '@') != 2)
                 {
-                    ErrorCode = ChatErrorCode.Parse;
-                    return;
+                    throw new ChatException("The profile nick format is incorrect.");
                 }
 
                 int profilenickIndex = _longParam.IndexOf("@");

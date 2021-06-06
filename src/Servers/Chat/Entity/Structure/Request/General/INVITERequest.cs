@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
@@ -14,16 +15,11 @@ namespace Chat.Entity.Structure.Request.General
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != ChatErrorCode.NoError)
-            {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
-            }
+
 
             if (_cmdParams.Count != 2)
             {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
+                throw new ChatException("The number of IRC cmd params in GETKEY request is incorrect.");
             }
 
             ChannelName = _cmdParams[0];

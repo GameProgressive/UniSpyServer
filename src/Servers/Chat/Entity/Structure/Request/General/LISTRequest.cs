@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
@@ -15,18 +16,13 @@ namespace Chat.Entity.Structure.Request.General
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != ChatErrorCode.NoError)
-            {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
-            }
+
 
             if (_cmdParams.Count == 0)
             {
-                IsSearchingChannel = true;
-                ErrorCode = ChatErrorCode.Parse;
+                throw new ChatException("Search filter is missing.");
             }
-
+            IsSearchingChannel = true;
             Filter = _cmdParams[0];
         }
 

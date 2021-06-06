@@ -1,5 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Application;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request.General;
@@ -23,9 +24,7 @@ namespace Chat.Handler.CmdHandler.General
                 Where(s => ((ChatSession)s).UserInfo.NickName == _request.NickName)
                 .Count() == 1)
             {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.NickNameInUse;
-                return;
+                throw new ChatIRCException($"The nick name: {_request.NickName} is already in use.", ChatIRCErrorCode.NickNameInUse);
             }
         }
 

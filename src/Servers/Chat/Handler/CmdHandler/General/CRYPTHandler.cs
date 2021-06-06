@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request.General;
@@ -31,10 +32,8 @@ namespace Chat.Handler.CmdHandler.General
             string secretKey = DataOperationExtensions.GetSecretKey(_request.GameName);
             if (secretKey == null)
             {
-                LogWriter.ToLog(LogEventLevel.Error, "secret key not found!");
-                _result.ErrorCode = ChatErrorCode.UnSupportedGame;
                 _session.Disconnect();
-                return;
+                throw new ChatException("secret key not found.");
             }
             _session.UserInfo.GameSecretKey = secretKey;
             _session.UserInfo.GameName = _request.GameName;

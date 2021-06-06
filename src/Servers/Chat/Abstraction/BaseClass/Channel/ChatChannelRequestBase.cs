@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Entity.Exception;
+using Chat.Entity.Structure;
 
 namespace Chat.Abstraction.BaseClass
 {
@@ -12,14 +13,10 @@ namespace Chat.Abstraction.BaseClass
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != ChatErrorCode.NoError)
-            {
-                return;
-            }
 
             if (_cmdParams.Count < 1)
             {
-                ErrorCode = ChatErrorCode.Parse;
+                throw new ChatException("channel name is missing.");
             }
             ChannelName = _cmdParams[0];
         }

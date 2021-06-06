@@ -1,5 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
+using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.General;
@@ -50,8 +52,7 @@ namespace Chat.Handler.CmdHandler.Channel
             ChatChannelUser user = _channel.GetChannelUserByNickName(_request.NickName);
             if (user == null)
             {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                return;
+                throw new ChatIRCException($"Can not find user with nickname:{_request.NickName} in channels.", ChatIRCErrorCode.NoSuchNick);
             }
             GetUserKeyValue(user);
         }
@@ -61,8 +62,7 @@ namespace Chat.Handler.CmdHandler.Channel
             //we do not have key value so we do not construct getckey response
             if (user.UserKeyValue.Count == 0)
             {
-                _result.ErrorCode = ChatErrorCode.DataOperation;
-                return;
+                throw new ChatException("User's key value are empty.");
             }
 
             if (_request.Keys.Count == 1 && _request.Keys.Contains("b_flags"))

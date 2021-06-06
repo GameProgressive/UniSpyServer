@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
@@ -34,16 +35,14 @@ namespace Chat.Handler.CmdHandler.Channel
             {
                 if (!_user.IsChannelOperator)
                 {
-                    _result.ErrorCode = ChatErrorCode.NotChannelOperator;
-                    return;
+                    throw new ChatException("SETCKEY failed because you are not channel operator.");
                 }
                 _result.IsSetOthersKeyValue = true;
                 _otherUser = _channel.GetChannelUserByNickName(_request.NickName);
                 if (_otherUser == null)
                 {
-                    _result.ErrorCode = ChatErrorCode.IRCError;
-                    _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
-                    return;
+                    throw new ChatIRCException($"Can not find user:{_request.NickName} in channel {_request.ChannelName}", ChatIRCErrorCode.NoSuchNick);
+
                 }
             }
         }

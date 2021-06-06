@@ -1,5 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Application;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
@@ -10,7 +11,6 @@ using Chat.Handler.SystemHandler.ChannelManage;
 using Chat.Network;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
-
 namespace Chat.Handler.CmdHandler.General
 {
     /// <summary>
@@ -48,9 +48,7 @@ namespace Chat.Handler.CmdHandler.General
             ChatChannel channel;
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out channel))
             {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
-                return;
+                throw new ChatIRCChannelException($"The channel is not exist.", ChatIRCErrorCode.NoSuchChannel, _request.ChannelName);
             }
             foreach (var user in channel.Property.ChannelUsers)
             {

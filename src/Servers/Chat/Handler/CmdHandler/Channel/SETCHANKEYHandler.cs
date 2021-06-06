@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response;
@@ -15,7 +16,7 @@ namespace Chat.Handler.CmdHandler.Channel
     // Set a value to NULL or "" to clear that key.
     internal sealed class SETCHANKEYHandler : ChatChannelHandlerBase
     {
-        private new SETCHANKEYRequest _request=>(SETCHANKEYRequest)base._request;
+        private new SETCHANKEYRequest _request => (SETCHANKEYRequest)base._request;
         private new SETCHANKEYResult _result
         {
             get => (SETCHANKEYResult)base._result;
@@ -30,13 +31,12 @@ namespace Chat.Handler.CmdHandler.Channel
         {
             if (!_user.IsChannelOperator)
             {
-                _result.ErrorCode = ChatErrorCode.NotChannelOperator;
-                return;
+                throw new ChatException("SETCHANKEY failed because you are not channel operator.");
             }
             _channel.Property.SetChannelKeyValue(_request.KeyValue);
             _result.ChannelName = _result.ChannelName;
             _result.ChannelUserIRCPrefix = _user.UserInfo.IRCPrefix;
-            
+
         }
         protected override void ResponseConstruct()
         {

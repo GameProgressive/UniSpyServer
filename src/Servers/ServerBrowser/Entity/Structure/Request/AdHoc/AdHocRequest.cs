@@ -17,7 +17,6 @@ namespace ServerBrowser.Entity.Structure.Request
 
         public AdHocRequest(byte[] rawRequest) : base(rawRequest)
         {
-            ErrorCode = SBErrorCode.NoError;
         }
 
         public override void Parse()

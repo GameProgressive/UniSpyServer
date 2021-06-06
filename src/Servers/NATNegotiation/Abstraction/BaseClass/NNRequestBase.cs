@@ -20,24 +20,17 @@ namespace NATNegotiation.Abstraction.BaseClass
             set => base.CommandName = value;
         }
         public new byte[] RawRequest => (byte[])base.RawRequest;
-        public new NNErrorCode ErrorCode
-        {
-            get => (NNErrorCode)base.ErrorCode;
-            protected set => base.ErrorCode = value;
-        }
         public byte Version { get; set; }
         public uint Cookie { get; set; }
 
         public NNRequestBase(byte[] rawRequest) : base(rawRequest)
         {
-            ErrorCode = NNErrorCode.NoError;
         }
         public NNRequestBase() { }
         public override void Parse()
         {
             if (RawRequest.Length < Size)
             {
-                ErrorCode = NNErrorCode.Parse;
                 return;
             }
 

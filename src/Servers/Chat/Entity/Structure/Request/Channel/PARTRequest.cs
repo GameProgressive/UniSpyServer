@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request
 {
@@ -14,11 +15,10 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != ChatErrorCode.NoError)
+            if (_longParam == null)
             {
-                return;
+                throw new ChatException("The reason of living channel is missing.");
             }
-
             Reason = _longParam;
         }
     }

@@ -9,10 +9,5 @@ namespace Chat.Abstraction.BaseClass
         protected ChatChannelResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
-        protected override void BuildIRCErrorResponse()
-        {
-            SendingBuffer = ChatIRCReplyBuilder.BuildByIRCErrorCode(_result.IRCErrorCode, _request.ChannelName);
-        }
     }
 }

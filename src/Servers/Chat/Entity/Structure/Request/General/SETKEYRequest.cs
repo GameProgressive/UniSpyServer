@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyLib.Extensions;
 
@@ -16,15 +17,10 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if(ErrorCode != ChatErrorCode.NoError)
-            {
-                ErrorCode = ChatErrorCode.Parse;
-                return;
-            }
 
             if (_longParam == null)
             {
-                ErrorCode = ChatErrorCode.Parse;
+                throw new ChatException("The keys and values are missing.");
             }
             KeyValues = StringExtensions.ConvertKVStringToDictionary(_longParam);
         }

@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Channel;
@@ -24,8 +25,7 @@ namespace Chat.Handler.CmdHandler.Channel
         {
             if (!_user.IsChannelOperator)
             {
-                _result.ErrorCode = ChatErrorCode.NotChannelOperator;
-                return;
+                throw new ChatException("Edit topic failed because you are not channel operator.");
             }
             switch (_request.RequestType)
             {

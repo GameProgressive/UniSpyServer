@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Entity.Exception;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using UniSpyLib.Abstraction.Interface;
@@ -16,25 +17,11 @@ namespace Chat.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
-            if (_session.UserInfo.JoinedChannels.Count == 0)
-            {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
-                return;
-            }
             _channel = _session.UserInfo.GetJoinedChannelByName(_request.ChannelName);
-            if (_channel == null)
-            {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchChannel;
-                return;
-            }
             _user = _channel.GetChannelUserBySession(_session);
             if (_user == null)
             {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.NoSuchNick;
-                return;
+                throw new ChatIRCException($"Can not find user with nickname: {_session.UserInfo.NickName} username: {_session.UserInfo.UserName}", ChatIRCErrorCode.NoSuchNick);
             }
         }
     }

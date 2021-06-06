@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
@@ -12,7 +13,7 @@ namespace Chat.Handler.CmdHandler.General
     internal sealed class LOGINHandler : ChatCmdHandlerBase
     {
 
-       private new LOGINRequest _request => (LOGINRequest)base._request;
+        private new LOGINRequest _request => (LOGINRequest)base._request;
         private new LOGINResult _result
         {
             get => (LOGINResult)base._result;
@@ -62,8 +63,7 @@ namespace Chat.Handler.CmdHandler.General
 
                 if (result.Count() != 1)
                 {
-                    _result.ErrorCode = ChatErrorCode.DataOperation;
-                    return;
+                    throw new ChatException($"Can not find user with nickname:{_request.NickName} in database.");
                 }
                 _result.ProfileID = result.First().profileid;
                 _result.UserID = result.First().userid;
@@ -88,8 +88,7 @@ namespace Chat.Handler.CmdHandler.General
                              };
                 if (result.Count() != 1)
                 {
-                    _result.ErrorCode = ChatErrorCode.DataOperation;
-                    return;
+                    throw new ChatException($"Can not find user with uniquenick:{_request.UniqueNick} in database.");
                 }
                 _result.ProfileID = result.First().profileid;
                 _result.UserID = result.First().userid;

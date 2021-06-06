@@ -20,32 +20,7 @@ namespace Chat.Abstraction.BaseClass
 
         public override void Build()
         {
-            if (_result.ErrorCode != ChatErrorCode.NoError)
-            {
-                BuildErrorResponse();
-            }
-            else
-            {
-                BuildNormalResponse();
-            }
+            BuildNormalResponse();
         }
-
-        protected override void BuildErrorResponse()
-        {
-            if (_result.ErrorCode == ChatErrorCode.IRCError)
-            {
-                BuildIRCErrorResponse();
-            }
-            else
-            {
-                LogWriter.ToLog(LogEventLevel.Error, _result.ErrorCode.ToString());
-            }
-        }
-
-        protected virtual void BuildIRCErrorResponse() 
-        {
-        
-        }
-
     }
 }

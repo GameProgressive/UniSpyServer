@@ -1,4 +1,5 @@
-﻿using Chat.Entity.Structure;
+﻿using Chat.Entity.Exception;
+using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Response;
 using Chat.Entity.Structure.Result;
@@ -43,25 +44,18 @@ namespace Chat.Abstraction.BaseClass
         //if we use this structure the error response should also write to _sendingBuffer
         public override void Handle()
         {
-            RequestCheck();
-
-            if (_result.ErrorCode != ChatErrorCode.NoError)
+            try
             {
+                RequestCheck();
+                DataOperation();
                 ResponseConstruct();
                 Response();
-                return;
             }
-
-            DataOperation();
-            if (_result.ErrorCode != ChatErrorCode.NoError)
+            catch (ChatIRCException e)
             {
-                ResponseConstruct();
-                Response();
-                return;
+                _session.SendAsync(e.ErrorResponse);
             }
 
-            ResponseConstruct();
-            Response();
         }
         protected override void RequestCheck()
         {

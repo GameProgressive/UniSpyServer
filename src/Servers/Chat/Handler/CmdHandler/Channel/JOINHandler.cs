@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
@@ -51,9 +52,7 @@ namespace Chat.Handler.CmdHandler.Channel
             //but GameSpy Arcade can join more than one channel
             if (_session.UserInfo.JoinedChannels.Count > 3)
             {
-                _result.ErrorCode = ChatErrorCode.IRCError;
-                _result.IRCErrorCode = ChatIRCErrorCode.TooManyChannels;
-                return;
+                throw new ChatIRCException("You are join too many channels", ChatIRCErrorCode.TooManyChannels);
             }
         }
 
@@ -73,28 +72,23 @@ namespace Chat.Handler.CmdHandler.Channel
                     if (_channel.Property.ChannelMode.IsInviteOnly)
                     {
                         //invited only
-                        _result.ErrorCode = ChatErrorCode.IRCError;
-                        return;
+                        throw new ChatIRCChannelException("This is an invited only channel.", ChatIRCErrorCode.InviteOnlyChan, _request.ChannelName);
                     }
                     if (_channel.IsUserBanned(_user))
                     {
-                        _result.ErrorCode = ChatErrorCode.IRCError;
-                        _result.IRCErrorCode = ChatIRCErrorCode.BannedFromChan;
-                        return;
+                        throw new ChatIRCChannelException("You are banned from this channel.", ChatIRCErrorCode.BannedFromChan, _request.ChannelName);
                     }
                     if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
                     {
-                        _result.ErrorCode = ChatErrorCode.IRCError;
-                        _result.IRCErrorCode = ChatIRCErrorCode.ChannelIsFull;
-                        return;
+                        throw new ChatIRCChannelException("The channel you are join is full.", ChatIRCErrorCode.ChannelIsFull, _request.ChannelName);
+
                     }
                     //if all pass, it mean  we excute join channel
                     _user.SetDefaultProperties(false);
                     //simple check for avoiding program crash
                     if (_channel.IsUserExisted(_user))
                     {
-                        _result.ErrorCode = ChatErrorCode.UserAlreadyInChannel;
-                        return;
+                        throw new ChatException($"{_session.UserInfo.NickName} is already in channel {_request.ChannelName}");
                     }
                     _channel.AddBindOnUserAndChannel(_user);
 
