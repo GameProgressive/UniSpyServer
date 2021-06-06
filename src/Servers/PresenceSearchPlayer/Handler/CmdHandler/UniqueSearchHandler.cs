@@ -24,19 +24,26 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            try
             {
-                var result = from p in db.Profiles
-                             join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             where n.Uniquenick == _request.PreferredNick
-                             && n.Namespaceid == _request.NamespaceID
-                             && n.Gamename == _request.GameName
-                             select p.Profileid;
-
-                if (result.Count() != 0)
+                using (var db = new unispyContext())
                 {
-                    _result.IsUniquenickExist = true;
+                    var result = from p in db.Profiles
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 where n.Uniquenick == _request.PreferredNick
+                                 && n.Namespaceid == _request.NamespaceID
+                                 && n.Gamename == _request.GameName
+                                 select p.Profileid;
+
+                    if (result.Count() != 0)
+                    {
+                        _result.IsUniquenickExist = true;
+                    }
                 }
+            }
+            catch (System.Exception e)
+            {
+                throw new GPGeneralException("Unknown error occurs in database operation.", Entity.Enumerate.GPErrorCode.DatabaseError, e);
             }
         }
 

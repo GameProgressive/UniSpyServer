@@ -29,28 +29,26 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
+
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
-                ErrorCode = GPErrorCode.NewUserBadPasswords;
-                return;
+                throw new GPGeneralException("password provided is invalid.", GPErrorCode.Parse);
             }
             Password = md5Password;
 
             if (!RequestKeyValues.ContainsKey("nick"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("nickname is missing.", GPErrorCode.Parse);
             }
 
-            if (!RequestKeyValues.ContainsKey("email") || !GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
+            if (!RequestKeyValues.ContainsKey("email"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("email is missing.", GPErrorCode.Parse);
+            }
+            if (!GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
+            {
+                throw new GPGeneralException("email format is incorrect.", GPErrorCode.Parse);
             }
 
             Nick = RequestKeyValues["nick"];
@@ -63,8 +61,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     uint namespaceID;
                     if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                     {
-                        ErrorCode = GPErrorCode.Parse;
-                        return;
+                        throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
                     }
 
                     NamespaceID = namespaceID;
@@ -83,8 +80,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint partnerid;
                 if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerid))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("partnerid is incorrect.", GPErrorCode.Parse);
                 }
                 HasPartnerIDFlag = true;
                 PartnerID = partnerid;
@@ -97,8 +93,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint productid;
                 if (!uint.TryParse(RequestKeyValues["productid"], out productid))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("productid is incorrect.", GPErrorCode.Parse);
+
                 }
                 HasProductIDFlag = true;
                 ProductID = productid;
@@ -116,8 +112,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint port;
                 if (!uint.TryParse(RequestKeyValues["port"], out port))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("port is incorrect.", GPErrorCode.Parse);
                 }
                 HasGamePortFlag = true;
                 GamePort = port;

@@ -20,24 +20,19 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             base.Parse();
 
 
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
+
 
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
-                ErrorCode = GPErrorCode.NewUserBadPasswords;
-                return;
+                throw new GPGeneralException("password provided is invalid.", GPErrorCode.Parse);
             }
             Password = md5Password;
 
 
             if (!RequestKeyValues.ContainsKey("email"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("email is missing.", GPErrorCode.Parse);
             }
 
             IsRequireUniqueNicks = true;
@@ -55,8 +50,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
                 }
                 NamespaceID = namespaceID;
             }

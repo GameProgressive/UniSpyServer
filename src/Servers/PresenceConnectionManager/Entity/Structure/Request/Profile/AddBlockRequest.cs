@@ -14,10 +14,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         {
             base.Parse();
 
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
+
 
             if (!KeyValues.ContainsKey("profileid"))
             {

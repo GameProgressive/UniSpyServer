@@ -15,28 +15,22 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
+
 
             if (!RequestKeyValues.ContainsKey("gamename"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("gamename is missing.", GPErrorCode.Parse);
             }
 
             if (!RequestKeyValues.ContainsKey("profileid") || !RequestKeyValues.ContainsKey("namespaceid"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("profileid or namespaceid is missing.", GPErrorCode.Parse);
             }
 
             uint profileID = 0;
             if (!RequestKeyValues.ContainsKey("profileid") && !uint.TryParse(RequestKeyValues["profileid"], out profileID))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("profileid is incorrect.", GPErrorCode.Parse);
             }
 
             if (RequestKeyValues.ContainsKey("namespaceid"))
@@ -44,8 +38,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
                 }
 
                 NamespaceID = namespaceID;

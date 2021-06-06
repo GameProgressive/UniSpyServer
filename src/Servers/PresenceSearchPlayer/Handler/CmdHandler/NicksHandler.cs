@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
@@ -28,24 +29,30 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            try
             {
-                var result = from u in db.Users
-                             join p in db.Profiles on u.Userid equals p.Userid
-                             join n in db.Subprofiles on p.Profileid equals n.Profileid
-                             where u.Email == _request.Email
-                             && u.Password == _request.Password
-                             && n.Namespaceid == _request.NamespaceID
-                             select new NicksDataModel
-                             {
-                                 NickName = p.Nick,
-                                 UniqueNick = n.Uniquenick
-                             };
+                using (var db = new unispyContext())
+                {
+                    var result = from u in db.Users
+                                 join p in db.Profiles on u.Userid equals p.Userid
+                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                 where u.Email == _request.Email
+                                 && u.Password == _request.Password
+                                 && n.Namespaceid == _request.NamespaceID
+                                 select new NicksDataModel
+                                 {
+                                     NickName = p.Nick,
+                                     UniqueNick = n.Uniquenick
+                                 };
 
-                //we store data in strong type so we can use in next step
-                _result.DataBaseResults.AddRange(result.ToList());
+                    //we store data in strong type so we can use in next step
+                    _result.DataBaseResults.AddRange(result.ToList());
+                }
             }
-
+            catch (System.Exception e)
+            {
+                throw new GPGeneralException($"Unknown error occurs in database operation.", GPErrorCode.DatabaseError, e);
+            }
         }
 
         protected override void ResponseConstruct()

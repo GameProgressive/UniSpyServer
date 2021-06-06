@@ -14,10 +14,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
+
             if (!KeyValues.ContainsKey("productid") || !KeyValues.ContainsKey("sesskey"))
             {
                 ErrorCode = GPErrorCode.Parse; return;

@@ -26,19 +26,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 
         public override void Build()
         {
-            if (_result.ErrorCode != GPErrorCode.NoError)
-            {
-                BuildErrorResponse();
-            }
-            else
-            {
-                BuildNormalResponse();
-            }
-        }
-
-        protected override void BuildErrorResponse()
-        {
-            SendingBuffer = ErrorMsg.BuildGPErrorMsg(_result.ErrorCode);
+            BuildNormalResponse();
         }
     }
 }

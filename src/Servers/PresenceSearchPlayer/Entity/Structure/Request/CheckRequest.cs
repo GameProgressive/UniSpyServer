@@ -7,7 +7,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     internal class CheckRequest : PSPRequestBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
-
         public CheckRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -19,27 +18,22 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-                return;
 
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
-                ErrorCode = GPErrorCode.NewUserBadPasswords;
+                throw new GPGeneralException("password provided is invalid.", GPErrorCode.Parse);
             }
             Password = md5Password;
 
             if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("email") || Password == null)
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("check request is incompelete.", GPErrorCode.Parse);
             }
-
 
             if (!GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
             {
-                ErrorCode = GPErrorCode.CheckBadMail;
-                return;
+                throw new GPGeneralException("email format is incorrect", GPErrorCode.Parse);
             }
 
             Nick = RequestKeyValues["nick"];

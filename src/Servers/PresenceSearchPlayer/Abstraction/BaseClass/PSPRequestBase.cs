@@ -39,8 +39,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
                 ushort operationID;
                 if (!ushort.TryParse(RequestKeyValues["id"], out operationID))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("operation id is invalid.", GPErrorCode.Parse);
                 }
                 OperationID = operationID;
             }

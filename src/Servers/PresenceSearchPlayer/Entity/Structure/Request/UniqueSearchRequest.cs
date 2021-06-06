@@ -17,37 +17,33 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
+
 
             if (!RequestKeyValues.ContainsKey("preferrednick"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("preferrednick is missing.", GPErrorCode.Parse);
             }
 
             PreferredNick = RequestKeyValues["preferrednick"];
 
             if (!RequestKeyValues.ContainsKey("gamename"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("gamename is missing.", GPErrorCode.Parse);
             }
             GameName = RequestKeyValues["gamename"];
 
-            if (RequestKeyValues.ContainsKey("namespaceid"))
+            if (!RequestKeyValues.ContainsKey("namespaceid"))
             {
-                uint namespaceID;
-                if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
-                {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
-                }
-
-                NamespaceID = namespaceID;
+                throw new GPGeneralException("namespaceid is missing.", GPErrorCode.Parse);
             }
+
+            uint namespaceID;
+            if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
+            {
+                throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
+            }
+
+            NamespaceID = namespaceID;
         }
     }
 }

@@ -26,22 +26,29 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            try
             {
-                foreach (var pid in _request.ProfileIDs)
+                using (var db = new unispyContext())
                 {
-                    var result = from n in db.Subprofiles
-                                 where n.Profileid == pid
-                                 && n.Namespaceid == _request.NamespaceID
-                                 //select new { uniquenick = n.Uniquenick };
-                                 select new OthersListDatabaseModel
-                                 {
-                                     ProfileID = n.Profileid,
-                                     Uniquenick = n.Uniquenick
-                                 };
+                    foreach (var pid in _request.ProfileIDs)
+                    {
+                        var result = from n in db.Subprofiles
+                                     where n.Profileid == pid
+                                     && n.Namespaceid == _request.NamespaceID
+                                     //select new { uniquenick = n.Uniquenick };
+                                     select new OthersListDatabaseModel
+                                     {
+                                         ProfileID = n.Profileid,
+                                         Uniquenick = n.Uniquenick
+                                     };
 
-                    _result.DatabaseResults.AddRange(result.ToList());
+                        _result.DatabaseResults.AddRange(result.ToList());
+                    }
                 }
+            }
+            catch (System.Exception e)
+            {
+                throw new GPGeneralException("Unknown error occurs in database operation.", Entity.Enumerate.GPErrorCode.DatabaseError, e);
             }
         }
 

@@ -29,33 +29,41 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            try
             {
-                var result = from b in db.Friends
-                             where b.Profileid == _request.ProfileID && b.Namespaceid == _request.NamespaceID
-                             select b.Targetid;
-
-                foreach (var info in result)
+                using (var db = new unispyContext())
                 {
-                    var b = from p in db.Profiles
-                            join n in db.Subprofiles on p.Profileid equals n.Profileid
-                            join u in db.Users on p.Userid equals u.Userid
-                            where n.Namespaceid == _request.NamespaceID
-                            && n.Profileid == info && n.Gamename == _request.GameName
-                            select new OthersDatabaseModel
-                            {
-                                Profileid = p.Profileid,
-                                Nick = p.Nick,
-                                Uniquenick = n.Uniquenick,
-                                Lastname = p.Lastname,
-                                Firstname = p.Firstname,
-                                Userid = u.Userid,
-                                Email = u.Email
-                            };
+                    var result = from b in db.Friends
+                                 where b.Profileid == _request.ProfileID && b.Namespaceid == _request.NamespaceID
+                                 select b.Targetid;
 
-                    _result.DatabaseResults.Add(b.First());
+                    foreach (var info in result)
+                    {
+                        var b = from p in db.Profiles
+                                join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                join u in db.Users on p.Userid equals u.Userid
+                                where n.Namespaceid == _request.NamespaceID
+                                && n.Profileid == info && n.Gamename == _request.GameName
+                                select new OthersDatabaseModel
+                                {
+                                    Profileid = p.Profileid,
+                                    Nick = p.Nick,
+                                    Uniquenick = n.Uniquenick,
+                                    Lastname = p.Lastname,
+                                    Firstname = p.Firstname,
+                                    Userid = u.Userid,
+                                    Email = u.Email
+                                };
+
+                        _result.DatabaseResults.Add(b.First());
+                    }
                 }
             }
+            catch (System.Exception e)
+            {
+                throw new GPGeneralException("Unknown error occurs in database operation.", Entity.Enumerate.GPErrorCode.DatabaseError, e);
+            }
+
         }
 
         protected override void ResponseConstruct()

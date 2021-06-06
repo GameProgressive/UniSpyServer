@@ -17,15 +17,11 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
+
 
             if (!RequestKeyValues.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("valid request is incomplete.", GPErrorCode.Parse);
             }
 
             Email = RequestKeyValues["email"];
@@ -35,8 +31,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
                 }
 
                 NamespaceID = namespaceID;

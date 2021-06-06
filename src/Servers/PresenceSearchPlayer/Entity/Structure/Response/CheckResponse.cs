@@ -13,19 +13,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
         {
         }
 
-        protected override void BuildErrorResponse()
-        {
-            if (_result.ErrorCode == GPErrorCode.Check
-              || _result.ErrorCode > GPErrorCode.CheckBadPassword)
-            {
-                SendingBuffer = $@"\cur\{ _result.ErrorCode}\final\";
-            }
-            else
-            {
-                base.BuildErrorResponse();
-            }
-        }
-
         protected override void BuildNormalResponse()
         {
             SendingBuffer = $@"\cur\0\pid\{_result.ProfileID}\final\";

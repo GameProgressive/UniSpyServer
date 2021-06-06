@@ -24,21 +24,28 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            try
             {
-                var result = from u in db.Users
-                                 //According to FSW partnerid is not nessesary
-                             where u.Email == _request.Email
-                             select u.Userid;
+                using (var db = new unispyContext())
+                {
+                    var result = from u in db.Users
+                                     //According to FSW partnerid is not nessesary
+                                 where u.Email == _request.Email
+                                 select u.Userid;
 
-                if (result.Count() == 0)
-                {
-                    _result.IsAccountValid = false;
+                    if (result.Count() == 0)
+                    {
+                        _result.IsAccountValid = false;
+                    }
+                    else if (result.Count() == 1)
+                    {
+                        _result.IsAccountValid = true;
+                    }
                 }
-                else if (result.Count() == 1)
-                {
-                    _result.IsAccountValid = true;
-                }
+            }
+            catch (System.Exception e)
+            {
+                throw new GPGeneralException("Unknown error occurs in database operation.", Entity.Enumerate.GPErrorCode.DatabaseError, e);
             }
         }
 

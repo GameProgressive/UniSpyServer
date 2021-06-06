@@ -13,10 +13,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
+
 
             if (!KeyValues.ContainsKey("profileid"))
             {

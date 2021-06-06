@@ -19,26 +19,27 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
 
             if (!RequestKeyValues.ContainsKey("opids") || !RequestKeyValues.ContainsKey("namespaceid"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("opids or namespaceid is missing.", GPErrorCode.Parse);
             }
 
-            ProfileIDs = RequestKeyValues["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
+            try
+            {
+                ProfileIDs = RequestKeyValues["opids"].TrimStart('|').Split('|').Select(uint.Parse).ToList();
+            }
+            catch (System.Exception e)
+            {
+                throw new GPGeneralException("opids is incorrect", GPErrorCode.Parse, e);
+            }
 
             if (RequestKeyValues.ContainsKey("namespaceid"))
             {
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
                 }
 
                 NamespaceID = namespaceID;

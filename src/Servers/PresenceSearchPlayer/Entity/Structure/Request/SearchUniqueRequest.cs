@@ -11,25 +11,34 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public List<uint> Namespaces { get; protected set; }
         public SearchUniqueRequest(string rawRequest) : base(rawRequest)
         {
-
         }
 
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
 
             if (!RequestKeyValues.ContainsKey("uniquenick") || !RequestKeyValues.ContainsKey("namespaces"))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("searchunique request is incomplete.", GPErrorCode.Parse);
             }
 
-            Uniquenick = RequestKeyValues["uniquenick"];
-            Namespaces = RequestKeyValues["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
+            try
+            {
+                Uniquenick = RequestKeyValues["uniquenick"];
+            }
+            catch
+            {
+                throw new GPGeneralException("uniquenick is missing.", GPErrorCode.Parse);
+            }
+
+            try
+            {
+                Namespaces = RequestKeyValues["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
+            }
+            catch
+            {
+                throw new GPGeneralException("namespaces is incorrect.", GPErrorCode.Parse);
+            }
         }
     }
 }

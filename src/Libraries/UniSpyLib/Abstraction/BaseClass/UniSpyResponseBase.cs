@@ -22,8 +22,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// Build response message
         /// </summary>
         public abstract void Build();
-
-        protected abstract void BuildErrorResponse();
         protected abstract void BuildNormalResponse();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Enumerator;
+using PresenceSearchPlayer.Entity.Structure.Exception;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
@@ -38,15 +39,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                 }
                 catch (Exception e)
                 {
-                    LogWriter.ToLog(LogEventLevel.Error, e.ToString());
-                    _result.ErrorCode = GPErrorCode.DatabaseError;
+                    throw new GPGeneralException("Unknown error occurs in database operation.", GPErrorCode.DatabaseError, e);
                 }
 
                 //update other information
-                if (_result.ErrorCode == GPErrorCode.NoError)
-                {
-                    UpdateOtherInfo();
-                }
+                UpdateOtherInfo();
+
             }
         }
 
@@ -106,9 +104,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         else
                         {
                             // double user in database
-                            _result.ErrorCode = GPErrorCode.DatabaseError;
-                            LogWriter.ToLog(LogEventLevel.Error, "There are two same records in User table!");
-                            break;
+                            throw new NewUserException("There are two same records in User table!", GPErrorCode.NewUserBadNick);
                         }
 
                     case NewUserStatus.AccountNotExist:
@@ -121,8 +117,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 
                         if (_result.User.Password != _request.Password)
                         {
-                            _result.ErrorCode = GPErrorCode.NewUserBadPasswords;
-                            break;
+                            throw new NewUserException("password is incorrect when creating new user.", GPErrorCode.NewUserBadPasswords);
                         }
                         else
                         {
@@ -144,9 +139,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         else
                         {
                             //there are two profiles we stop
-                            _result.ErrorCode = GPErrorCode.DatabaseError;
-                            LogWriter.ToLog(LogEventLevel.Error, "There are two same records in Profile table!");
-                            break;
+                            throw new NewUserException("There are two same records in Profile table.", GPErrorCode.NewUserUniquenickInUse);
                         }
 
                     case NewUserStatus.ProfileNotExist:
@@ -173,9 +166,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         }
                         else
                         {
-                            _result.ErrorCode = GPErrorCode.DatabaseError;
-                            LogWriter.ToLog(LogEventLevel.Error, "There are two same records in SubProfile table!");
-                            break;
+                            throw new NewUserException("There are two same records in SubProfile table!", GPErrorCode.NewUserUniquenickInUse);
                         }
 
                     case NewUserStatus.SubProfileNotExist:
@@ -192,8 +183,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         break;
 
                     case NewUserStatus.SubProfileExist:
-                        _result.ErrorCode = GPErrorCode.NewUserUniquenickInUse;
-                        break;
+                        throw new NewUserException("unique nick is in use.", GPErrorCode.NewUserUniquenickInUse);
                 }
             }
         }

@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Structure.Exception;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
@@ -32,30 +33,34 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
             {
                 if (db.Users.Where(e => e.Email == _request.Email).Count() < 1)
                 {
-                    _result.ErrorCode = GPErrorCode.CheckBadMail;
-                    return;
+                    throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadMail);
                 }
 
                 if (db.Users.Where(u => u.Email == _request.Email && u.Password == _request.Password).Count() < 1)
                 {
-                    _result.ErrorCode = GPErrorCode.CheckBadPassword;
-                    return;
+                    throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadPassword);
                 }
-
-                var result = from p in db.Profiles
-                             join u in db.Users on p.Userid equals u.Userid
-                             where u.Email.Equals(_request.Email)
-                             && u.Password.Equals(_request.Password)
-                             && p.Nick.Equals(_request.Nick)
-                             select p.Profileid;
-
-                if (result.Count() == 1)
+                try
                 {
-                    _result.ProfileID = result.First();
+                    var result = from p in db.Profiles
+                                 join u in db.Users on p.Userid equals u.Userid
+                                 where u.Email.Equals(_request.Email)
+                                 && u.Password.Equals(_request.Password)
+                                 && p.Nick.Equals(_request.Nick)
+                                 select p.Profileid;
+
+                    if (result.Count() == 1)
+                    {
+                        _result.ProfileID = result.First();
+                    }
+                    else
+                    {
+                        throw new CheckException();
+                    }
                 }
-                else
+                catch (System.Exception e)
                 {
-                    _result.ErrorCode = GPErrorCode.CheckBadNick;
+                    throw new GPGeneralException("Unknown error occurs in database operation.", Entity.Enumerate.GPErrorCode.DatabaseError, e);
                 }
             }
         }

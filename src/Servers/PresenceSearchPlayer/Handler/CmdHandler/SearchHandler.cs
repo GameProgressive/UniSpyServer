@@ -116,6 +116,10 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         result = null;
                         break;
                 }
+                if (result == null)
+                {
+                    return;
+                }
                 _result.DataBaseResults.AddRange(result.ToList());
             }
         }

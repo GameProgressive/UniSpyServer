@@ -26,27 +26,34 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            try
             {
-                foreach (var id in _request.Namespaces)
+                using (var db = new unispyContext())
                 {
-                    var result = from p in db.Profiles
-                                 join n in db.Subprofiles on p.Profileid equals n.Profileid
-                                 join u in db.Users on p.Userid equals u.Userid
-                                 where n.Uniquenick == _request.Uniquenick
-                                 && n.Namespaceid == id
-                                 select new SearchUniqueDatabaseModel
-                                 {
-                                     Profileid = n.Profileid,
-                                     Nick = p.Nick,
-                                     Uniquenick = n.Uniquenick,
-                                     Email = u.Email,
-                                     Firstname = p.Firstname,
-                                     Lastname = p.Lastname,
-                                     NamespaceID = n.Namespaceid
-                                 };
-                    _result.DatabaseResults.AddRange(result.ToList());
+                    foreach (var id in _request.Namespaces)
+                    {
+                        var result = from p in db.Profiles
+                                     join n in db.Subprofiles on p.Profileid equals n.Profileid
+                                     join u in db.Users on p.Userid equals u.Userid
+                                     where n.Uniquenick == _request.Uniquenick
+                                     && n.Namespaceid == id
+                                     select new SearchUniqueDatabaseModel
+                                     {
+                                         Profileid = n.Profileid,
+                                         Nick = p.Nick,
+                                         Uniquenick = n.Uniquenick,
+                                         Email = u.Email,
+                                         Firstname = p.Firstname,
+                                         Lastname = p.Lastname,
+                                         NamespaceID = n.Namespaceid
+                                     };
+                        _result.DatabaseResults.AddRange(result.ToList());
+                    }
                 }
+            }
+            catch (System.Exception e)
+            {
+                throw new GPGeneralException("Unknown error occurs in database operation.", Entity.Enumerate.GPErrorCode.DatabaseError, e);
             }
         }
 
