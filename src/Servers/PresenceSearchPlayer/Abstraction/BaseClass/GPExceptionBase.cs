@@ -21,6 +21,5 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         {
             ErrorCode = errorCode;
         }
-
     }
 }
