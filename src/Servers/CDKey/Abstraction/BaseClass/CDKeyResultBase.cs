@@ -5,11 +5,6 @@ namespace CDKey.Abstraction.BaseClass
 {
     internal abstract class CDKeyResultBase : UniSpyResultBase
     {
-        public new CDKeyErrorCode ErrorCode
-        {
-            get => (CDKeyErrorCode)base.ErrorCode;
-            set => base.ErrorCode = value;
-        }
         protected CDKeyResultBase()
         {
         }

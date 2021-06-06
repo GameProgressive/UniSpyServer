@@ -31,12 +31,6 @@ namespace CDKey.Handler.CmdSwitcher
             {
                 var request = new CDKeyRequestFactory(command).Serialize();
                 request.Parse();
-
-                if (!(bool)request.ErrorCode)
-                {
-                    return;
-                }
-
                 _requests.Add(request);
             }
         }

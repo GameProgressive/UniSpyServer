@@ -24,19 +24,7 @@ namespace CDKey.Abstraction.BaseClass
         public override void Handle()
         {
             RequestCheck();
-            if (_result.ErrorCode != CDKeyErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-            }
-
             DataOperation();
-            if (_result.ErrorCode != CDKeyErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-            }
-
             ResponseConstruct();
             Response();
         }
