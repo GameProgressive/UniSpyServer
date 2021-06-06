@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Request
         {
         }
 
-        public string NickName { get; set; }
+        public string KickeeNickName { get; set; }
         public string Reason { get; set; }
 
         public override void Parse()
@@ -21,7 +21,7 @@ namespace Chat.Entity.Structure.Request
             {
                 throw new ChatException("number of IRC parameters are incorrect.");
             }
-            NickName = _cmdParams[1];
+            KickeeNickName = _cmdParams[1];
             if (_longParam == null)
             {
                 throw new ChatException("IRC long parameters is missing.");

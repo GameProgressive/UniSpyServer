@@ -47,7 +47,7 @@ namespace Chat.Handler.CmdHandler.Channel
                     // We create a new KICKHandler to handle KICK operation for us
                     var kickRequest = new KICKRequest
                     {
-                        NickName = user.UserInfo.NickName,
+                        KickeeNickName = user.UserInfo.NickName,
                         ChannelName = _channel.Property.ChannelName,
                         Reason = _request.Reason
                     };
