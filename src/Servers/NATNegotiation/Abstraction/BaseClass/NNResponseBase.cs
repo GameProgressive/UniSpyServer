@@ -16,8 +16,8 @@ namespace NATNegotiation.Abstraction.BaseClass
 
         public new byte[] SendingBuffer
         {
-            get { return (byte[])base.SendingBuffer; }
-            protected set { base.SendingBuffer = value; }
+            get => (byte[])base.SendingBuffer;
+            protected set => base.SendingBuffer = value;
         }
 
         public NNResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

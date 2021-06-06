@@ -11,11 +11,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         public ChatUserInfo UserInfo { get; private set; }
         public Dictionary<string, string> UserKeyValue { get; private set; }
 
-        public string BFlags
-        {
-            get { return @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"]; }
-        }
-
+        public string BFlags => @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"];
 
         public ChatChannelUser(ChatUserInfo userInfo)
         {

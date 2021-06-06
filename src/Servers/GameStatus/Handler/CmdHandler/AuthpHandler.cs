@@ -20,8 +20,8 @@ namespace GameStatus.Handler.CmdHandler
         private new AuthPRequest _request => (AuthPRequest)base._request;
         private new AuthPResult _result
         {
-            get { return (AuthPResult)base._result; }
-            set { base._result = value; }
+            get => (AuthPResult)base._result;
+            set => base._result = value;
         }
         public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

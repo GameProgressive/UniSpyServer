@@ -14,8 +14,8 @@ namespace NATNegotiation.Handler.CmdHandler
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result
         {
-            get { return (InitResult)base._result; }
-            set { base._result = value; }
+            get => (InitResult)base._result;
+            set => base._result = value;
         }
         private NatUserInfo _userInfo;
         public InitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

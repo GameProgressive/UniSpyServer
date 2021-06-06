@@ -7,8 +7,8 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
     {
         public new GPErrorCode ErrorCode
         {
-            get { return (GPErrorCode)base.ErrorCode; }
-            set { base.ErrorCode = value; }
+            get => (GPErrorCode)base.ErrorCode;
+            set => base.ErrorCode = value;
         }
 
         public PCMResultBase()

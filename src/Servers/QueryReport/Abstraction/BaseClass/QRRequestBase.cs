@@ -11,18 +11,18 @@ namespace QueryReport.Abstraction.BaseClass
         public uint InstantKey { get; protected set; }
         public new QRPacketType CommandName
         {
-            get { return (QRPacketType)base.CommandName; }
-            protected set { base.CommandName = value; }
+            get => (QRPacketType)base.CommandName;
+            protected set => base.CommandName = value;
         }
         public new byte[] RawRequest
         {
-            get { return (byte[])base.RawRequest; }
-            protected set { base.RawRequest = value; }
+            get => (byte[])base.RawRequest;
+            protected set => base.RawRequest = value;
         }
         public new QRErrorCode ErrorCode
         {
-            get { return (QRErrorCode)base.ErrorCode; }
-            protected set { base.ErrorCode = value; }
+            get => (QRErrorCode)base.ErrorCode;
+            protected set => base.ErrorCode = value;
         }
 
         public QRRequestBase(object rawRequest) : base(rawRequest)

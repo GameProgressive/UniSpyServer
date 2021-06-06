@@ -13,14 +13,12 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     internal class GetProfileHandler : PCMCmdHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
-        protected new GetProfileRequest _request
-        {
-            get { return (GetProfileRequest)base._request; }
-        }
+        protected new GetProfileRequest _request => (GetProfileRequest)base._request;
+
         protected new GetProfileResult _result
         {
-            get { return (GetProfileResult)base._result; }
-            set { base._result = value; }
+            get => (GetProfileResult)base._result;
+            set => base._result = value;
         }
 
         public GetProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

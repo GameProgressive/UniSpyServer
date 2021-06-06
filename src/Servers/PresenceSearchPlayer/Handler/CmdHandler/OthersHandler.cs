@@ -15,14 +15,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// </summary>
     internal class OthersHandler : PSPCmdHandlerBase
     {
-        protected new OthersRequest _request
-        {
-            get { return (OthersRequest)base._request; }
-        }
+        protected new OthersRequest _request => (OthersRequest)base._request;
+
         protected new OthersResult _result
         {
-            get { return (OthersResult)base._result; }
-            set { base._result = value; }
+            get => (OthersResult)base._result;
+            set => base._result = value;
         }
         public OthersHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

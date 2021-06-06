@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public class UniSpyExceptionBase : Exception
+    public abstract class UniSpyExceptionBase : Exception
     {
         public object ErrorCode { get; protected set; }
         public UniSpyExceptionBase()

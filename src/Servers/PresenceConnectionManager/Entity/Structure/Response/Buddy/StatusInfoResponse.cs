@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response.Buddy
         /// </summary>
         protected override void BuildNormalResponse()
         {
-            SendingBuffer = @$"bsi\\state\{_result.StatusInfo.StatusState}\
+            SendingBuffer = $@"bsi\\state\{_result.StatusInfo.StatusState}\
                 profile\{_result.ProfileID}\bip\{_result.StatusInfo.BuddyIP}
                 hostIp\{_result.StatusInfo}\
                 hprivIp\{_result.StatusInfo.HostPrivateIP}\qport\{_result.StatusInfo.QueryReportPort}\

@@ -18,8 +18,8 @@ namespace NATNegotiation.Handler.CmdHandler
         private new ReportRequest _request => (ReportRequest)base._request;
         private new ReportResult _result
         {
-            get { return (ReportResult)base._result; }
-            set { base._result = value; }
+            get => (ReportResult)base._result;
+            set => base._result = value;
         }
         private NatUserInfo _userInfo;
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

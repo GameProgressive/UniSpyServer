@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 {
     internal class RegisterNickHandler : PCMCmdHandlerBase
     {
-        protected new RegisterNickRequest _request { get { return (RegisterNickRequest)base._request; } }
+        protected new RegisterNickRequest _request => (RegisterNickRequest)base._request;
         public RegisterNickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

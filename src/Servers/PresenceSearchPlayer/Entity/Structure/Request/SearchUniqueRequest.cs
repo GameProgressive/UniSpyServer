@@ -30,8 +30,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             Uniquenick = RequestKeyValues["uniquenick"];
             Namespaces = RequestKeyValues["namespaces"].TrimStart(',').Split(',').Select(uint.Parse).ToList();
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

@@ -17,8 +17,8 @@ namespace GameStatus.Handler.CmdHandler
         private new GetPDRequest _request => (GetPDRequest)base._request;
         private new GetPDResult _result
         {
-            get { return (GetPDResult)base._result; }
-            set { base._result = value; }
+            get => (GetPDResult)base._result;
+            set => base._result = value;
         }
         public GetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -7,8 +7,8 @@ namespace QueryReport.Abstraction.BaseClass
     {
         public new QRErrorCode ErrorCode
         {
-            get { return (QRErrorCode)base.ErrorCode; }
-            set { base.ErrorCode = value; }
+            get => (QRErrorCode)base.ErrorCode;
+            set => base.ErrorCode = value;
         }
         public QRPacketType? PacketType { get; protected set; }
         public QRResultBase()

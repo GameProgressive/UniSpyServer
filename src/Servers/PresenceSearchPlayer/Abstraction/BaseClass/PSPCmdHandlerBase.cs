@@ -14,19 +14,17 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         /// Be careful the return of query function should be List type,
         /// the decision formula should use _result.Count==0
         /// </summary>
-        protected new PSPRequestBase _request
-        {
-            get { return (PSPRequestBase)base._request; }
-        }
-        protected new PSPSession _session
-        {
-            get { return (PSPSession)base._session; }
-        }
+        protected new PSPRequestBase _request => (PSPRequestBase)base._request;
+
+
+        protected new PSPSession _session => (PSPSession)base._session;
+
         protected new PSPResultBase _result
         {
-            get { return (PSPResultBase)base._result; }
-            set { base._result = value; }
+            get => (PSPResultBase)base._result;
+            set => base._result = value;
         }
+
         public PSPCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new PSPDefaultResult();

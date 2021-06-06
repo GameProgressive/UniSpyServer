@@ -128,8 +128,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 HasCDKeyEncFlag = true;
                 CDKeyEnc = RequestKeyValues["cdkeyenc"];
             }
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

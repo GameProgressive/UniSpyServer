@@ -10,7 +10,7 @@ namespace Chat.Handler.CmdHandler.General
     /// </summary>
     internal sealed class SETKEYHandler : ChatLogedInHandlerBase
     {
-        new SETKEYRequest _request { get { return (SETKEYRequest)base._request; } }
+        new SETKEYRequest _request => (SETKEYRequest)base._request;
         public SETKEYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

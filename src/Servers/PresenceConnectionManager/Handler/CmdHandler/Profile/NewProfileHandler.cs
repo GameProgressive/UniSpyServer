@@ -13,12 +13,12 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     {
         protected new NewProfileRequest _request
         {
-            get { return (NewProfileRequest)base._request; }
+            get => (NewProfileRequest)base._request;
         }
         protected new NewProfileResult _result
         {
-            get { return (NewProfileResult)base._result; }
-            set { base._result = value; }
+            get => (NewProfileResult)base._result;
+            set => base._result = value;
         }
         public NewProfileHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

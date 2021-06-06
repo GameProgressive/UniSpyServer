@@ -18,8 +18,8 @@ namespace GameStatus.Handler.CmdHandler
         private new GetPIDRequest _request => (GetPIDRequest)base._request;
         private new GetPIDResult _result
         {
-            get { return (GetPIDResult)base._result; }
-            set { base._result = value; }
+            get => (GetPIDResult)base._result;
+            set => base._result = value;
         }
         public GetPIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

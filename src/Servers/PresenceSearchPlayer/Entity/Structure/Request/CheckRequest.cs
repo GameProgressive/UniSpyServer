@@ -44,8 +44,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             Nick = RequestKeyValues["nick"];
             Email = RequestKeyValues["email"];
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

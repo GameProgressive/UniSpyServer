@@ -14,14 +14,11 @@ namespace Chat.Handler.CmdHandler.General
 {
     internal sealed class CRYPTHandler : ChatCmdHandlerBase
     {
-        private new CRYPTRequest _request
-        {
-            get { return (CRYPTRequest)base._request; }
-        }
+        private new CRYPTRequest _request => (CRYPTRequest)base._request;
         private new CRYPTResult _result
         {
-            get { return (CRYPTResult)base._result; }
-            set { base._result = value; }
+            get => (CRYPTResult)base._result;
+            set => base._result = value;
         }
         // CRYPT des 1 gamename
         public CRYPTHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

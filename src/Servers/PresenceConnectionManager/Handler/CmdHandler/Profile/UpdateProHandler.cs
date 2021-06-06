@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 {
     internal class UpdateProHandler : PCMCmdHandlerBase
     {
-        protected new UpdateProRequest _request { get { return (UpdateProRequest)base._request; } }
+        protected new UpdateProRequest _request => (UpdateProRequest)base._request;
         public UpdateProHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

@@ -11,8 +11,8 @@ namespace GameStatus.Handler.CmdHandler
         //"\newgame\\connid\%d\sesskey\%d"
         private new NewGameResult _result
         {
-            get { return (NewGameResult)base._result; }
-            set { base._result = value; }
+            get => (NewGameResult)base._result;
+            set => base._result = value;
         }
         public NewGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

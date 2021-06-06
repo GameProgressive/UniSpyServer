@@ -7,8 +7,8 @@ namespace NATNegotiation.Abstraction.BaseClass
     {
         internal new NNErrorCode ErrorCode
         {
-            get { return (NNErrorCode)base.ErrorCode; }
-            set { base.ErrorCode = value; }
+            get => (NNErrorCode)base.ErrorCode;
+            set => base.ErrorCode = value;
         }
         public NatPacketType? PacketType { get; set; }
         public NNResultBase()

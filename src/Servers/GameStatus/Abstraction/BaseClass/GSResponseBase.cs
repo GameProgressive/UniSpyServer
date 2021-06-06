@@ -10,8 +10,8 @@ namespace GameStatus.Abstraction.BaseClass
         protected new GSResultBase _result => (GSResultBase)base._result;
         protected new string SendingBuffer
         {
-            get { return (string)base.SendingBuffer; }
-            set { base.SendingBuffer = value; }
+            get => (string)base.SendingBuffer;
+            set => base.SendingBuffer = value;
         }
         public GSResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

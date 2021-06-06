@@ -17,8 +17,8 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
         protected new SearchUniqueRequest _request => (SearchUniqueRequest)base._request;
         protected new SearchUniqueResult _result
         {
-            get { return (SearchUniqueResult)base._result; }
-            set { base._result = value; }
+            get => (SearchUniqueResult)base._result;
+            set => base._result = value;
         }
         public SearchUniqueHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

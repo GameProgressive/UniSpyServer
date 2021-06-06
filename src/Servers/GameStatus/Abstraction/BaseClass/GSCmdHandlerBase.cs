@@ -24,8 +24,8 @@ namespace GameStatus.Abstraction.BaseClass
         protected new GSRequestBase _request => (GSRequestBase)base._request;
         protected new GSResultBase _result
         {
-            get { return (GSResultBase)base._result; }
-            set { base._result = value; }
+            get => (GSResultBase)base._result;
+            set => base._result = value;
         }
         protected GSCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

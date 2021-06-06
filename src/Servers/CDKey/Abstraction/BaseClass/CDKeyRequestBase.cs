@@ -7,8 +7,8 @@ namespace CDKey.Abstraction.BaseClass
     {
         public new CDKeyErrorCode ErrorCode
         {
-            get { return (CDKeyErrorCode)base.ErrorCode; }
-            protected set { base.ErrorCode = value; }
+            get => (CDKeyErrorCode)base.ErrorCode;
+            protected set => base.ErrorCode = value;
         }
         public CDKeyRequestBase(string rawRequest) : base(rawRequest)
         {

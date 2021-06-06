@@ -43,8 +43,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
                 NamespaceID = namespaceID;
             }
-            ErrorCode = GPErrorCode.NoError;
-
         }
     }
 }

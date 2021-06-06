@@ -10,14 +10,14 @@ namespace ServerBrowser.Abstraction.BaseClass
         public new byte[] RawRequest => (byte[])base.RawRequest;
         public new SBErrorCode ErrorCode
         {
-            get { return (SBErrorCode)base.ErrorCode; }
-            protected set { base.ErrorCode = value; }
+            get => (SBErrorCode)base.ErrorCode;
+            protected set => base.ErrorCode = value;
         }
 
         public new SBClientRequestType CommandName
         {
-            get { return (SBClientRequestType)base.CommandName; }
-            protected set { base.CommandName = value; }
+            get => (SBClientRequestType)base.CommandName;
+            protected set => base.CommandName = value;
         }
         public SBRequestBase(object rawRequest) : base(rawRequest)
         {

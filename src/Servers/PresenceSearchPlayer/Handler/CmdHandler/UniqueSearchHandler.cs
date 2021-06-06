@@ -11,14 +11,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     internal class UniqueSearchHandler : PSPCmdHandlerBase
     {
-        protected new UniqueSearchRequest _request
-        {
-            get { return (UniqueSearchRequest)base._request; }
-        }
+        protected new UniqueSearchRequest _request => (UniqueSearchRequest)base._request;
+
         protected new UniqueSearchResult _result
         {
-            get { return (UniqueSearchResult)base._result; }
-            set { base._result = value; }
+            get => (UniqueSearchResult)base._result;
+            set => base._result = value;
         }
         public UniqueSearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

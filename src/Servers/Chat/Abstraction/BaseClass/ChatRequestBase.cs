@@ -14,20 +14,15 @@ namespace Chat.Abstraction.BaseClass
         /// </summary>
         public new ChatErrorCode ErrorCode
         {
-            get { return (ChatErrorCode)base.ErrorCode; }
-            protected set { base.ErrorCode = value; }
+            get => (ChatErrorCode)base.ErrorCode;
+            protected set => base.ErrorCode = value;
         }
-        public new string RawRequest
-        {
-            get { return (string)base.RawRequest; }
-        }
-
+        public new string RawRequest => (string)base.RawRequest;
         public new string CommandName
         {
-            get { return (string)base.CommandName; }
-            set { base.CommandName = value; }
+            get => (string)base.CommandName;
+            set => base.CommandName = value;
         }
-
         protected string _prefix;
         protected List<string> _cmdParams;
         protected string _longParam;

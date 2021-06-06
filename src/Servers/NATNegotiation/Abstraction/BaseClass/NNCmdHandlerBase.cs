@@ -18,8 +18,8 @@ namespace NATNegotiation.Abstraction.BaseClass
         protected new NNRequestBase _request => (NNRequestBase)base._request;
         protected new NNResultBase _result
         {
-            get { return (NNResultBase)base._result; }
-            set { base._result = value; }
+            get => (NNResultBase)base._result;
+            set => base._result = value;
         }
         public NNCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

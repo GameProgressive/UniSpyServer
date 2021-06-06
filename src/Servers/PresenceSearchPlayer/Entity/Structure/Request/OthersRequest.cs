@@ -53,7 +53,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             ProfileID = profileID;
             GameName = RequestKeyValues["gamename"];
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

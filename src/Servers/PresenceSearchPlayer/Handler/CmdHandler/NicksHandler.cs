@@ -17,10 +17,10 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     {
         protected new NicksResult _result
         {
-            get { return (NicksResult)base._result; }
-            set { base._result = value; }
+            get => (NicksResult)base._result;
+            set => base._result = value;
         }
-        protected new NicksRequest _request { get { return (NicksRequest)base._request; } }
+        protected new NicksRequest _request => (NicksRequest)base._request;
         public NicksHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new NicksResult();

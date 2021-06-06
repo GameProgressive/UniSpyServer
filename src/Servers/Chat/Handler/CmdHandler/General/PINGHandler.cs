@@ -8,7 +8,7 @@ namespace Chat.Handler.CmdHandler.General
 {
     internal sealed class PINGHandler : ChatLogedInHandlerBase
     {
-        private new PINGRequest _request { get { return (PINGRequest)base._request; } }
+        private new PINGRequest _request => (PINGRequest)base._request;
         private new PINGResult _result
         {
             get => (PINGResult)base._result;

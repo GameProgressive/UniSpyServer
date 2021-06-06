@@ -10,7 +10,7 @@ namespace Chat.Handler.CmdHandler.General
     /// </summary>
     internal sealed class GETUDPRELAYHandler : ChatCmdHandlerBase
     {
-        new GETUDPRELAYRequest _request { get { return (GETUDPRELAYRequest)base._request; } }
+        new GETUDPRELAYRequest _request => (GETUDPRELAYRequest)base._request;
         public GETUDPRELAYHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

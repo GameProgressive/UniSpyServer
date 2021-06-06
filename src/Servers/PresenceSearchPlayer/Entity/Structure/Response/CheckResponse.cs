@@ -7,10 +7,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
 {
     internal class CheckResponse : PSPResponseBase
     {
-        protected new CheckResult _result
-        {
-            get { return (CheckResult)base._result; }
-        }
+        protected new CheckResult _result => (CheckResult)base._result;
 
         public CheckResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
@@ -21,7 +18,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
             if (_result.ErrorCode == GPErrorCode.Check
               || _result.ErrorCode > GPErrorCode.CheckBadPassword)
             {
-                SendingBuffer = @$"\cur\{ _result.ErrorCode}\final\";
+                SendingBuffer = $@"\cur\{ _result.ErrorCode}\final\";
             }
             else
             {
@@ -31,7 +28,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
 
         protected override void BuildNormalResponse()
         {
-            SendingBuffer = @$"\cur\0\pid\{_result.ProfileID}\final\";
+            SendingBuffer = $@"\cur\0\pid\{_result.ProfileID}\final\";
         }
     }
 }

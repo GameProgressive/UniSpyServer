@@ -7,7 +7,7 @@ namespace QueryReport.Handler.CmdHandler
 {
     internal sealed class ClientMessageHandler : QRCmdHandlerBase
     {
-        private new ClientMessageRequest _request { get { return (ClientMessageRequest)base._request; } }
+        private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
         public ClientMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

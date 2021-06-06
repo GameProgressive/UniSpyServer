@@ -54,7 +54,6 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
                 }
                 OperationID = operationID;
             }
-            ErrorCode = GPErrorCode.NoError;
         }
 
         public static string NormalizeRequest(string message)

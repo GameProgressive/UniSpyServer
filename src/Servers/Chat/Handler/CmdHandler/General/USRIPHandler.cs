@@ -9,7 +9,7 @@ namespace Chat.Handler.CmdHandler.General
 {
     internal sealed class USRIPHandler : ChatCmdHandlerBase
     {
-        private new USRIPRequest _request { get { return (USRIPRequest)base._request; } }
+        private new USRIPRequest _request => (USRIPRequest)base._request;
         private new USRIPResult _result
         {
             get => (USRIPResult)base._result;

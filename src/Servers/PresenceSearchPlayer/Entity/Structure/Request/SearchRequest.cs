@@ -121,8 +121,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 ErrorCode = GPErrorCode.Parse;
                 return;
             }
-
-            ErrorCode = GPErrorCode.NoError;
         }
     }
 }

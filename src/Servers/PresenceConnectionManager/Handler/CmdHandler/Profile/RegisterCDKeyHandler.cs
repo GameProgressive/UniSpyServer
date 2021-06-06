@@ -9,10 +9,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 {
     internal class RegisterCDKeyHandler : PCMCmdHandlerBase
     {
-        protected new RegisterCDKeyRequest _request
-        {
-            get { return (RegisterCDKeyRequest)base._request; }
-        }
+        protected new RegisterCDKeyRequest _request => (RegisterCDKeyRequest)base._request;
         public RegisterCDKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

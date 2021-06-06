@@ -11,18 +11,18 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
         public new string RawRequest
         {
-            get { return (string)base.RawRequest; }
+            get => (string)base.RawRequest;
         }
         public new string CommandName
         {
-            get { return (string)base.CommandName; }
-            protected set { base.CommandName = value; }
+            get => (string)base.CommandName;
+            protected set => base.CommandName = value;
         }
         public ushort OperationID { get; protected set; }
         public new GPErrorCode ErrorCode
         {
-            get { return (GPErrorCode)base.ErrorCode; }
-            set { base.ErrorCode = value; }
+            get => (GPErrorCode)base.ErrorCode;
+            set => base.ErrorCode = value;
         }
         public PSPRequestBase(string rawRequest) : base(rawRequest)
         {

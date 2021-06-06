@@ -20,14 +20,12 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     internal class SearchHandler : PSPCmdHandlerBase
     {
-        protected new SearchRequest _request
-        {
-            get { return (SearchRequest)base._request; }
-        }
+        protected new SearchRequest _request => (SearchRequest)base._request;
+
         protected new SearchResult _result
         {
-            get { return (SearchResult)base._result; }
-            set { base._result = value; }
+            get => (SearchResult)base._result;
+            set => base._result = value;
         }
         public SearchHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

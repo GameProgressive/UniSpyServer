@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     internal class AddBlockHandler : PCMCmdHandlerBase
     {
 
-        protected new AddBlockRequest _request { get { return (AddBlockRequest)base._request; } }
+        protected new AddBlockRequest _request => (AddBlockRequest)base._request;
         public AddBlockHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

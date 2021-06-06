@@ -13,8 +13,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     {
         protected new BuddyListResult _result
         {
-            get { return (BuddyListResult)base._result; }
-            set { base._result = value; }
+            get => (BuddyListResult)base._result;
+            set => base._result = value;
         }
         public BuddyListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -43,12 +43,12 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                 return;
             }
 
-            Parallel.ForEach(_result.ProfileIDList ,(profileID)=>
+            Parallel.ForEach(_result.ProfileIDList, (profileID) =>
             {
                 var request = new StatusInfoRequest
                 {
                     ProfileID = profileID,
-                    NameSpaceID = _session.UserInfo.BasicInfo.NamespaceID                    ,
+                    NameSpaceID = _session.UserInfo.BasicInfo.NamespaceID,
                     IsGetStatusInfo = true
                 };
                 new StatusInfoHandler(_session, request).Handle();

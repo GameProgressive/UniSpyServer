@@ -10,15 +10,14 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     internal class ValidHandler : PSPCmdHandlerBase
     {
-        protected new ValidRequest _request
-        {
-            get { return (ValidRequest)base._request; }
-        }
+        protected new ValidRequest _request => (ValidRequest)base._request;
+
         protected new ValidResult _result
         {
-            get { return (ValidResult)base._result; }
-            set { base._result = value; }
+            get => (ValidResult)base._result;
+            set => base._result = value;
         }
+
         public ValidHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new ValidResult();
