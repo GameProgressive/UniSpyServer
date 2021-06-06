@@ -40,27 +40,21 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                 {
                     throw new CheckException("No account exists with the provided email address.", GPErrorCode.CheckBadPassword);
                 }
-                try
-                {
-                    var result = from p in db.Profiles
-                                 join u in db.Users on p.Userid equals u.Userid
-                                 where u.Email.Equals(_request.Email)
-                                 && u.Password.Equals(_request.Password)
-                                 && p.Nick.Equals(_request.Nick)
-                                 select p.Profileid;
 
-                    if (result.Count() == 1)
-                    {
-                        _result.ProfileID = result.First();
-                    }
-                    else
-                    {
-                        throw new CheckException();
-                    }
-                }
-                catch (System.Exception e)
+                var result = from p in db.Profiles
+                             join u in db.Users on p.Userid equals u.Userid
+                             where u.Email.Equals(_request.Email)
+                             && u.Password.Equals(_request.Password)
+                             && p.Nick.Equals(_request.Nick)
+                             select p.Profileid;
+
+                if (result.Count() == 1)
                 {
-                    throw new GPGeneralException("Unknown error occurs in database operation.", Entity.Enumerate.GPErrorCode.DatabaseError, e);
+                    _result.ProfileID = result.First();
+                }
+                else
+                {
+                    throw new CheckException();
                 }
             }
         }

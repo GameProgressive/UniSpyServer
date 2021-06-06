@@ -7,7 +7,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
     public class GPGeneralException : GPExceptionBase
     {
         public new GPErrorCode ErrorCode => (GPErrorCode)base.ErrorCode;
-        public override string ErrorResponse => $@"\error\\err\{(uint)this.ErrorCode}\fatal\\errmsg\{this.Message}\final\";
+        public override string ErrorResponse => $@"\error\\err\{(uint)ErrorCode}\fatal\\errmsg\{this.Message}\final\";
         public GPGeneralException() : this("There was an unknown error occurs.", GPErrorCode.General)
         {
         }

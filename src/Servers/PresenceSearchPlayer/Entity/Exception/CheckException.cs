@@ -5,7 +5,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Exception
 {
     public class CheckException : GPExceptionBase
     {
-        public override string ErrorResponse => $@"\cur\{ ErrorCode}\final\";
+        public override string ErrorResponse => $@"\cur\{(uint)ErrorCode}\final\";
         public CheckException() : this("There was an error checking the user account.", GPErrorCode.Check)
         {
         }

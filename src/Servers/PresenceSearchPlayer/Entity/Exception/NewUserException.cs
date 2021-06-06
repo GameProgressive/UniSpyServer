@@ -6,7 +6,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Exception
 {
     public class NewUserException : GPExceptionBase
     {
-        public override string ErrorResponse => $@"\nur\{ErrorCode}\final\";
+        public override string ErrorResponse => $@"\nur\{(uint)ErrorCode}\final\";
         public NewUserException() : this("There was an unknown error creating user account.", GPErrorCode.NewUser)
         {
         }
