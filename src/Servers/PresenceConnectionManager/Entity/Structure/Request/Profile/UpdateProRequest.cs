@@ -1,5 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System;
 using UniSpyLib.MiscMethod;
@@ -50,7 +51,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 PublicMasks mask;
                 if (!Enum.TryParse(KeyValues["publicmask"], out mask))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    throw new GPGeneralException("publicmask format is incorrect.", GPErrorCode.Parse);
                 }
                 HasPublicMaskFlag = true;
                 PublicMask = mask;
@@ -73,7 +74,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 uint icq;
                 if (!uint.TryParse(KeyValues["icquin"], out icq))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    throw new GPGeneralException("icquin format is incorrect.", GPErrorCode.Parse);
                 }
                 HasICQFlag = true;
                 ICQUIN = icq;
@@ -110,7 +111,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 
                 if (!byte.TryParse(KeyValues["sex"], out sex))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    throw new GPGeneralException("sex format is incorrect.", GPErrorCode.Parse);
                 }
                 HasSexFlag = true;
                 Sex = sex;

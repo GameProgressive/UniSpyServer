@@ -19,15 +19,9 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             protected set => base.CommandName = value;
         }
         public ushort OperationID { get; protected set; }
-        public new GPErrorCode ErrorCode
-        {
-            get => (GPErrorCode)base.ErrorCode;
-            set => base.ErrorCode = value;
-        }
         public PSPRequestBase(string rawRequest) : base(rawRequest)
         {
             RequestKeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
-            ErrorCode = GPErrorCode.NoError;
         }
 
         public override void Parse()

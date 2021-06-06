@@ -22,10 +22,6 @@ namespace NATNegotiation.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != NNErrorCode.NoError)
-            {
-                return;
-            }
 
             PortType = (NatPortType)RawRequest[13];
             ClientIndex = RawRequest[14];

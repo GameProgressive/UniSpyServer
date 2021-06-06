@@ -2,6 +2,7 @@
 using System.Linq;
 using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
+using QueryReport.Entity.Exception;
 using QueryReport.Entity.Structure.Redis;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Result;
@@ -30,8 +31,7 @@ namespace QueryReport.Handler.CmdHandler
             var result = GameServerInfoRedisOperator.GetMatchedKeyValues(searchKey);
             if (result.Count != 1)
             {
-                _result.ErrorCode = QRErrorCode.Database;
-                return;
+                throw new QRException("No server or multiple servers found in redis, please make sure there is only one server.");
             }
 
             var gameServer = result.First();

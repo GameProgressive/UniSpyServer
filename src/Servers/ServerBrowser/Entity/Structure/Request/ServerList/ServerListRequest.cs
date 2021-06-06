@@ -1,5 +1,6 @@
 ﻿using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
+using ServerBrowser.Entity.Exception;
 using System;
 using System.Linq;
 using System.Text;
@@ -23,8 +24,7 @@ namespace ServerBrowser.Entity.Structure.Request
             CommandName = SBClientRequestType.ServerListRequest;
             if (RequestLength != RawRequest.Length)
             {
-                ErrorCode = SBErrorCode.Parse;
-                return;
+                throw new SBException("Server list request length is not correct.");
             }
 
             RequestVersion = RawRequest[2];

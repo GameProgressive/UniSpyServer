@@ -2,6 +2,7 @@
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
@@ -37,7 +38,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                     if (result.Count() != 1)
                     {
-                        _result.ErrorCode = GPErrorCode.DatabaseError;
+                        throw new GPGeneralException("No user infomation found in database.", GPErrorCode.DatabaseError);
                     }
                     else
                     {

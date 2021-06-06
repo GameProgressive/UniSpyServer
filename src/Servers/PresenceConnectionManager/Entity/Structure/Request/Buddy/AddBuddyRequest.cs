@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
@@ -18,13 +19,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request
 
             if (!KeyValues.ContainsKey("sesskey") || !KeyValues.ContainsKey("newprofileid") || !KeyValues.ContainsKey("reason"))
             {
-                ErrorCode = GPErrorCode.Parse; return;
+                throw new GPGeneralException("addbuddy request is invalid.", GPErrorCode.Parse);
             }
 
             uint friendPID;
             if (!uint.TryParse(KeyValues["newprofileid"], out friendPID))
             {
-                ErrorCode = GPErrorCode.Parse; return;
+                throw new GPGeneralException("newprofileid format is incorrect.", GPErrorCode.Parse);
             }
 
             FriendProfileID = friendPID;

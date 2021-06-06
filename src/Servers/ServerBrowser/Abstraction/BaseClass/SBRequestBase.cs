@@ -8,12 +8,6 @@ namespace ServerBrowser.Abstraction.BaseClass
     {
         public int RequestLength { get; private set; }
         public new byte[] RawRequest => (byte[])base.RawRequest;
-        public new SBErrorCode ErrorCode
-        {
-            get => (SBErrorCode)base.ErrorCode;
-            protected set => base.ErrorCode = value;
-        }
-
         public new SBClientRequestType CommandName
         {
             get => (SBClientRequestType)base.CommandName;
@@ -21,7 +15,6 @@ namespace ServerBrowser.Abstraction.BaseClass
         }
         public SBRequestBase(object rawRequest) : base(rawRequest)
         {
-            ErrorCode = SBErrorCode.NoError;
         }
 
         public override void Parse()

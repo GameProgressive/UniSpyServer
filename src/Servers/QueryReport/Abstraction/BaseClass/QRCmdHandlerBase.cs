@@ -25,32 +25,8 @@ namespace QueryReport.Abstraction.BaseClass
         public override void Handle()
         {
             RequestCheck();
-
-            if (_result.ErrorCode != QRErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             DataOperation();
-
-            if (_result.ErrorCode == QRErrorCode.Database)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             ResponseConstruct();
-
-            if (_result.ErrorCode != QRErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             Response();
         }
 

@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
@@ -15,20 +16,21 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         {
             base.Parse();
 
-            if (!KeyValues.ContainsKey("productid") || !KeyValues.ContainsKey("sesskey"))
+            if (!KeyValues.ContainsKey("productid"))
             {
-                ErrorCode = GPErrorCode.Parse; return;
+                throw new GPGeneralException("productid is missing.", GPErrorCode.Parse);
             }
 
             if (!KeyValues.ContainsKey("sesskey"))
             {
-                ErrorCode = GPErrorCode.Parse; return;
+                throw new GPGeneralException("sesskey is missing.", GPErrorCode.Parse);
+
             }
 
             uint productID;
             if (!uint.TryParse(KeyValues["productid"], out productID))
             {
-                ErrorCode = GPErrorCode.Parse; return;
+                throw new GPGeneralException("productid format is incorrect.", GPErrorCode.Parse);
             }
 
             ProductID = productID;
@@ -36,7 +38,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             uint profileID;
             if (!uint.TryParse(KeyValues["profileid"], out profileID))
             {
-                ErrorCode = GPErrorCode.Parse; return;
+                throw new GPGeneralException("profileid format is incorrect.", GPErrorCode.Parse);
             }
             ProfileID = profileID;
         }

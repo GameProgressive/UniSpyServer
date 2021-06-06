@@ -6,14 +6,21 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
     public abstract class GPExceptionBase : UniSpyExceptionBase
     {
-        public new GPErrorCode ErrorCode => (GPErrorCode)base.ErrorCode;
-
-        public GPExceptionBase(string message, GPErrorCode errorCode) : base(message, errorCode)
+        public GPErrorCode ErrorCode { get; private set; }
+        public abstract string ErrorResponse { get; }
+        
+        protected GPExceptionBase()
         {
         }
-
-        public GPExceptionBase(string message, GPErrorCode errorCode, Exception innerException) : base(message, errorCode, innerException)
+        public GPExceptionBase(string message, GPErrorCode errorCode) : base(message)
         {
+            ErrorCode = errorCode;
         }
+
+        public GPExceptionBase(string message, GPErrorCode errorCode, Exception innerException) : base(message, innerException)
+        {
+            ErrorCode = errorCode;
+        }
+
     }
 }

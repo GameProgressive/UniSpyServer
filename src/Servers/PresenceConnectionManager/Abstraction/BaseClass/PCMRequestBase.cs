@@ -1,4 +1,5 @@
-﻿using PresenceSearchPlayer.Entity.Enumerate;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
@@ -22,21 +23,13 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             set => base.RawRequest = value;
         }
         public Dictionary<string, string> KeyValues { get; protected set; }
-        public new GPErrorCode ErrorCode
-        {
-            get => (GPErrorCode)base.ErrorCode;
-            protected set => base.ErrorCode = value;
-        }
 
         public PCMRequestBase()
         {
-            ErrorCode = GPErrorCode.NoError;
         }
 
         public PCMRequestBase(string rawRequest) : base(rawRequest)
         {
-            RawRequest = rawRequest;
-            ErrorCode = GPErrorCode.NoError;
         }
 
         public override void Parse()
@@ -49,8 +42,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
                 uint operationID;
                 if (!uint.TryParse(KeyValues["id"], out operationID))
                 {
-                    ErrorCode = GPErrorCode.Parse;
-                    return;
+                    throw new GPGeneralException("namespaceid is invalid.", GPErrorCode.Parse);
                 }
                 OperationID = operationID;
             }

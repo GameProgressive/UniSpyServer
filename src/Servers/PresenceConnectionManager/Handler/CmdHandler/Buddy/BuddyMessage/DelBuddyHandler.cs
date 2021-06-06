@@ -1,5 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Request;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
@@ -26,11 +27,15 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                              where friend.Profileid == _request.DeleteProfileID
                                    && friend.Namespaceid == _session.UserInfo.BasicInfo.NamespaceID
                              select friend;
-                if (result.Count() != 1)
+                if (result.Count() == 0)
                 {
-                    _result.ErrorCode = GPErrorCode.DatabaseError;
-                    return;
+                    throw new GPGeneralException("No buddy found in database.", GPErrorCode.DatabaseError);
                 }
+                else if (result.Count() > 1)
+                {
+                    throw new GPGeneralException("More than one buddy found in database, please check database.", GPErrorCode.DatabaseError);
+                }
+
                 db.Friends.Remove(result.FirstOrDefault());
             }
         }

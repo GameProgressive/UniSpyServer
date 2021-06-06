@@ -28,8 +28,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             //we first check and get secrete key from database
             if (secretKey == null)
             {
-                _result.ErrorCode = SBErrorCode.UnSupportedGame;
-                return;
+                throw new System.ArgumentNullException("Can not find secretkey in database.");
             }
             _result.GameSecretKey = secretKey;
             //this is client public ip and default query port

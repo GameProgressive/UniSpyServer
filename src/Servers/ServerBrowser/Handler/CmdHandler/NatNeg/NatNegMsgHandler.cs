@@ -3,6 +3,7 @@ using QueryReport.Entity.Structure.NATNeg;
 using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
+using ServerBrowser.Entity.Exception;
 using ServerBrowser.Entity.Structure.Request;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
@@ -28,8 +29,7 @@ namespace ServerBrowser.Handler.CmdHandler
         {
             if (_session.ServerMessageList.Count == 0)
             {
-                _result.ErrorCode = SBErrorCode.Parse;
-                return;
+                throw new SBException("There are no server messages in _session.ServerMessageList.");
             }
             _adHocRequest = _session.ServerMessageList.First();
             _session.ServerMessageList.Remove(_adHocRequest);
@@ -45,14 +45,13 @@ namespace ServerBrowser.Handler.CmdHandler
 
             if (matchedKeys.Count() != 1)
             {
-                _result.ErrorCode = SBErrorCode.NoServersFound;
-                return;
+                throw new SBException("No server found in database.");
             }
             _gameServer = matchedKeys.First();
         }
 
         protected override void DataOperation()
-        {            
+        {
             //TODO check the if the remote endpoint is correct
             _natNegCookie = new NATNegCookie
             {

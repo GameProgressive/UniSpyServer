@@ -1,6 +1,7 @@
 ﻿using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceConnectionManager.Network;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
@@ -29,26 +30,17 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 
         public override void Handle()
         {
-            RequestCheck();
-
-            if (_result.ErrorCode != GPErrorCode.NoError)
+            try
             {
+                RequestCheck();
+                DataOperation();
                 ResponseConstruct();
                 Response();
-                return;
             }
-
-            DataOperation();
-
-            if (_result.ErrorCode != GPErrorCode.NoError)
+            catch (GPExceptionBase e)
             {
-                ResponseConstruct();
-                Response();
-                return;
+                _session.SendAsync(e.ErrorResponse);
             }
-
-            ResponseConstruct();
-            Response();
         }
 
         protected override void RequestCheck()

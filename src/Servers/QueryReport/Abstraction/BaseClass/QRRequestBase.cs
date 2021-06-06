@@ -1,4 +1,5 @@
 ﻿using QueryReport.Entity.Enumerate;
+using QueryReport.Entity.Exception;
 using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
@@ -19,22 +20,16 @@ namespace QueryReport.Abstraction.BaseClass
             get => (byte[])base.RawRequest;
             protected set => base.RawRequest = value;
         }
-        public new QRErrorCode ErrorCode
-        {
-            get => (QRErrorCode)base.ErrorCode;
-            protected set => base.ErrorCode = value;
-        }
 
         public QRRequestBase(object rawRequest) : base(rawRequest)
         {
-            ErrorCode = QRErrorCode.NoError;
         }
 
         public override void Parse()
         {
             if (RawRequest.Length < 3)
             {
-                ErrorCode = QRErrorCode.Parse;
+                throw new QRException("Query report request is invalid.");
             }
             CommandName = (QRPacketType)RawRequest[0];
             InstantKey = BitConverter.ToUInt32(ByteTools.SubBytes(RawRequest, 1, 4));

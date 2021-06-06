@@ -1,6 +1,7 @@
 ﻿using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
+using ServerBrowser.Entity.Exception;
 using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Entity.Structure.Response;
 using ServerBrowser.Entity.Structure.Result;
@@ -40,8 +41,7 @@ namespace ServerBrowser.Handler.CmdHandler
             //TODO if there are no server found, we still send response back to client
             if (result.Count() != 1)
             {
-                _result.ErrorCode = SBErrorCode.NoServersFound;
-                return;
+                throw new SBException("No server found in database.");
             }
             _result.GameServerInfo = result.FirstOrDefault();
         }

@@ -1,6 +1,8 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using System;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
@@ -24,9 +26,9 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                     db.SaveChanges();
                 }
             }
-            catch
+            catch (Exception e)
             {
-                _result.ErrorCode = GPErrorCode.DatabaseError;
+                throw new GPGeneralException(e.Message, GPErrorCode.DatabaseError);
             }
         }
     }

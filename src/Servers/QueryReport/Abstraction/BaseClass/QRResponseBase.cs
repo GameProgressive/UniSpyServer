@@ -20,18 +20,7 @@ namespace QueryReport.Abstraction.BaseClass
         }
         public override void Build()
         {
-            if (_result.ErrorCode != QRErrorCode.NoError)
-            {
-                BuildErrorResponse();
-            }
-            else
-            {
-                BuildNormalResponse();
-            }
-        }
-        protected override void BuildErrorResponse()
-        {
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, _result.ErrorCode.ToString());
+            BuildNormalResponse();
         }
         protected override void BuildNormalResponse()
         {

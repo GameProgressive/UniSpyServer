@@ -34,22 +34,11 @@ namespace NATNegotiation.Abstraction.BaseClass
             SendingBuffer = data.ToArray();
         }
 
-        protected override void BuildErrorResponse()
-        {
-            // now we only log error.
-            LogWriter.ToLog(LogEventLevel.Error, _result.ErrorCode.ToString());
-        }
-
         public override void Build()
         {
-            if (_result.ErrorCode != NNErrorCode.NoError)
-            {
-                BuildErrorResponse();
-            }
-            else
-            {
-                BuildNormalResponse();
-            }
+
+            BuildNormalResponse();
+
         }
     }
 }

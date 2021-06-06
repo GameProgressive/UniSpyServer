@@ -25,23 +25,7 @@ namespace ServerBrowser.Abstraction.BaseClass
         public override void Handle()
         {
             RequestCheck();
-
-            if (_result.ErrorCode != SBErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             DataOperation();
-
-            if (_result.ErrorCode != SBErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             ResponseConstruct();
             Response();
         }

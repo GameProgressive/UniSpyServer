@@ -21,16 +21,7 @@ namespace ServerBrowser.Abstraction.BaseClass
         /// </summary>
         public override void Build()
         {
-            if (_result.ErrorCode != Entity.Enumerate.SBErrorCode.NoError)
-            {
-                BuildErrorResponse();
-            }
             BuildNormalResponse();
-        }
-
-        protected override void BuildErrorResponse()
-        {
-            LogWriter.ToLog(Serilog.Events.LogEventLevel.Error, _result.ErrorCode.ToString());
         }
     }
 }

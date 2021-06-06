@@ -30,10 +30,6 @@ namespace ServerBrowser.Handler.CommandSwitcher
         {
             var request = new SBRequestFactory(_rawRequest).Serialize();
             request.Parse();
-            if ((SBErrorCode)request.ErrorCode != SBErrorCode.NoError)
-            {
-                return;
-            }
             _requests.Add(request);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Misc;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
@@ -20,16 +21,19 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             base.Parse();
 
 
-            if (!KeyValues.ContainsKey("status") || !KeyValues.ContainsKey("statstring") || !KeyValues.ContainsKey("locstring"))
-            {
-                ErrorCode = GPErrorCode.Parse;
-                return;
-            }
+            if (!KeyValues.ContainsKey("status"))
+                throw new GPGeneralException("status is missing.", GPErrorCode.Parse);
+
+            if (!KeyValues.ContainsKey("statstring"))
+                throw new GPGeneralException("statstring is missing.", GPErrorCode.Parse);
+
+            if (!KeyValues.ContainsKey("locstring"))
+                throw new GPGeneralException("locstring is missing.", GPErrorCode.Parse);
+
             uint statusCode;
             if (!uint.TryParse(KeyValues["status"], out statusCode))
             {
-                ErrorCode = GPErrorCode.Parse;
-                return;
+                throw new GPGeneralException("status format is incorrect.", GPErrorCode.Parse);
             }
 
             Status.CurrentStatus = (GPStatusCode)statusCode;

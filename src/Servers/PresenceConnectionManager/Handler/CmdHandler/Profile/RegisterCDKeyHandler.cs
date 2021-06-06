@@ -1,5 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Request;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
@@ -24,7 +25,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (result.Count() == 0 || result.Count() > 1)
                 {
-                    _result.ErrorCode = GPErrorCode.DatabaseError;
+                    throw new GPGeneralException("No user infomation found in database.", GPErrorCode.DatabaseError);
                 }
 
                 db.Subprofiles.Where(s => s.Subprofileid == _session.UserInfo.BasicInfo.SubProfileID)

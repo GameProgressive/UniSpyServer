@@ -3,6 +3,7 @@ using System.Linq;
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Application;
 using NATNegotiation.Entity.Enumerate;
+using NATNegotiation.Entity.Exception;
 using NATNegotiation.Entity.Structure.Redis;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
@@ -45,9 +46,7 @@ namespace NATNegotiation.Handler.CmdHandler
             // because cookie is unique for each client we will only get 2 of keys
             if (_matchedKeys.Count != 2)
             {
-                LogWriter.ToLog("No match found we continue waitting.");
-                _result.ErrorCode = NNErrorCode.ClientNotFound;
-                return;
+                throw new NNException("No users match found we continue waitting.");
             }
 
 

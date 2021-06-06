@@ -1,5 +1,6 @@
 ﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
+using QueryReport.Entity.Exception;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -64,8 +65,7 @@ namespace QueryReport.Entity.Structure.Request
             }
             else
             {
-                ErrorCode = QRErrorCode.Parse;
-                return;
+                throw new QRException("HeartBeat request is invalid.");
             }
         }
     }

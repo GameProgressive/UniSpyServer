@@ -1,4 +1,5 @@
-﻿using PresenceSearchPlayer.Entity.Enumerate;
+﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Handler.CmdHandler.Error;
 using Serilog.Events;
 using System;
@@ -41,12 +42,13 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
             foreach (var rawRequest in rawRequests)
             {
                 var request = new PSPRequestFactory(rawRequest).Serialize();
-                request.Parse();
-                if ((GPErrorCode)request.ErrorCode != GPErrorCode.NoError)
+                try
                 {
-                    _session.SendAsync(
-                        ErrorMsg.BuildGPErrorMsg(
-                            (GPErrorCode)request.ErrorCode));
+                    request.Parse();
+                }
+                catch (GPExceptionBase e)
+                {
+                    _session.SendAsync(e.ErrorResponse);
                     continue;
                 }
                 _requests.Add(request);

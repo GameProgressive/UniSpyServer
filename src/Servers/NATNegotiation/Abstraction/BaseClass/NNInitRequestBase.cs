@@ -23,10 +23,7 @@ namespace NATNegotiation.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != NNErrorCode.NoError)
-            {
-                return;
-            }
+
             PortType = (NatPortType)RawRequest[NNRequestBase.Size];//
             ClientIndex = RawRequest[NNRequestBase.Size + 1];//00
             UseGamePort = RawRequest[NNRequestBase.Size + 2];//00

@@ -1,5 +1,6 @@
 ﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Enumerate;
+using QueryReport.Entity.Exception;
 
 namespace QueryReport.Entity.Structure.Request
 {
@@ -21,16 +22,14 @@ namespace QueryReport.Entity.Structure.Request
             {
                 if (RawRequest[i] != AvaliableRequest.Prefix[i])
                 {
-                    ErrorCode = QRErrorCode.Parse;
-                    return;
+                    throw new QRException("Avaliable request prefix is invalid.");
                 }
             }
 
             //postfix check
             if (RawRequest[RawRequest.Length - 1] != AvaliableRequest.Postfix)
             {
-                ErrorCode = QRErrorCode.Parse;
-                return;
+                throw new QRException("Avaliable request postfix is invalid.");
             }
         }
     }

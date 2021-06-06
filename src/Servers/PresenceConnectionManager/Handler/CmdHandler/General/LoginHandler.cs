@@ -6,6 +6,7 @@ using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceConnectionManager.Handler.CmdHandler.General;
 using PresenceConnectionManager.Handler.SystemHandler.Redis;
 using PresenceConnectionManager.Structure;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using Serilog.Events;
 using System.Collections.Generic;
@@ -48,35 +49,27 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                         break;
                 }
             }
-            catch
+            catch (System.Exception e)
             {
-                _result.ErrorCode = GPErrorCode.DatabaseError;
+                throw new GPGeneralException($"{e}", GPErrorCode.DatabaseError);
             }
 
-            //Arves is correct
-            if (_result.ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
 
             if (!IsChallengeCorrect())
             {
-                _result.ErrorCode = GPErrorCode.LoginBadPassword;
-                return;
+                throw new GPGeneralException($"password is incorrect.", GPErrorCode.LoginBadPassword);
             }
 
             if (!_result.DatabaseResults.EmailVerifiedFlag)
             {
-                _result.ErrorCode = GPErrorCode.LoginBadProfile;
-                return;
+                throw new GPGeneralException($"email is incorrect.", GPErrorCode.LoginBadProfile);
             }
 
             // Check the status of the account.
             // If the single profile is banned, the account or the player status.
             if (_result.DatabaseResults.BannedFlag)
             {
-                _result.ErrorCode = GPErrorCode.LoginProfileDeleted;
-                return;
+                throw new GPGeneralException($"profile is banned.", GPErrorCode.LoginProfileDeleted);
             }
 
             LoginChallengeProof proofData = new LoginChallengeProof(
@@ -100,11 +93,6 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         {
             base.Response();
             //Arves is correct we need to check this
-            if (_result.ErrorCode != GPErrorCode.NoError)
-            {
-                return;
-            }
-
             switch (_request.LoginType)
             {
                 case LoginType.NickEmail:
@@ -121,8 +109,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                     _session.UserInfo.BasicInfo.AuthToken = _request.AuthToken;
                     break;
                 default:
-                    LogWriter.ToLog(LogEventLevel.Error, "Unknown login method detected!");
-                    break;
+                    throw new GPGeneralException("Invalid login method detected.", GPErrorCode.Parse);
             }
 
             _session.UserInfo.Status.CurrentStatus = GPStatusCode.Online;
@@ -149,8 +136,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (email.Count() == 0)
                 {
-                    _result.ErrorCode = GPErrorCode.LoginBadEmail;
-                    return;
+                    throw new GPGeneralException("email is not in database.", GPErrorCode.LoginBadEmail);
                 }
 
                 //Grab information from database
@@ -177,8 +163,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (info.Count() != 1)
                 {
-                    _result.ErrorCode = GPErrorCode.LoginBadProfile;
-                    return;
+                    throw new GPGeneralException("No user profile found in database.", GPErrorCode.LoginBadProfile);
                 }
                 _result.DatabaseResults = info.First();
             }
@@ -209,8 +194,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (info.Count() != 1)
                 {
-                    _result.ErrorCode = GPErrorCode.LoginBadUniquenick;
-                    return;
+                    throw new GPGeneralException("No user uniquenick found in database.", GPErrorCode.LoginBadUniquenick);
                 }
                 _result.DatabaseResults = info.First();
             }
@@ -242,8 +226,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (info.Count() != 1)
                 {
-                    _result.ErrorCode = GPErrorCode.LoginBadPreAuth;
-                    return;
+                    throw new GPGeneralException("No authentication info found in database.", GPErrorCode.LoginBadPreAuth);
                 }
                 _result.DatabaseResults = info.First();
             }

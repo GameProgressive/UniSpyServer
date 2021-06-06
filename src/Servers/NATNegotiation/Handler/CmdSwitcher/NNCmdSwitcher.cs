@@ -28,11 +28,6 @@ namespace NATNegotiation.Handler.CmdSwitcher
         {
             var request = new NNRequestFactory(_rawRequest).Serialize();
             request.Parse();
-            if ((NNErrorCode)request.ErrorCode != NNErrorCode.NoError)
-            {
-                return;
-            }
-
             _requests.Add(request);
         }
     }

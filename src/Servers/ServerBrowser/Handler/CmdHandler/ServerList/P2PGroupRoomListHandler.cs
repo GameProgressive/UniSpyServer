@@ -1,6 +1,7 @@
 ﻿using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
+using ServerBrowser.Entity.Exception;
 using ServerBrowser.Entity.Structure.Response.ServerList;
 using ServerBrowser.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
@@ -25,8 +26,7 @@ namespace ServerBrowser.Handler.CmdHandler
             // Game name is unique in redis database
             if (matchedKey.Count != 1)
             {
-                _result.ErrorCode = SBErrorCode.NoGroupRoomFound;
-                return;
+                throw new SBException("There are no group room found in database.");
             }
 
             _peerGroup = PeerGroupInfoRedisOperator.GetSpecificValue(matchedKey[0]);

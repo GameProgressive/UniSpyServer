@@ -29,21 +29,7 @@ namespace NATNegotiation.Abstraction.BaseClass
         public override void Handle()
         {
             RequestCheck();
-            if (_result.ErrorCode != NNErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             DataOperation();
-            if (_result.ErrorCode != NNErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             ResponseConstruct();
             Response();
         }

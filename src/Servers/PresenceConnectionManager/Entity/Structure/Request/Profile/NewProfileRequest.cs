@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
@@ -26,9 +27,8 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             {
                 if (!KeyValues.ContainsKey("oldnick") && !KeyValues.ContainsKey("nick"))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    throw new GPGeneralException("oldnick or nick is missing.", GPErrorCode.Parse);
                 }
-
                 OldNick = KeyValues["oldnick"];
                 NewNick = KeyValues["nick"];
                 IsReplaceNickName = true;
@@ -37,7 +37,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             {
                 if (!KeyValues.ContainsKey("nick"))
                 {
-                    ErrorCode = GPErrorCode.Parse; return;
+                    throw new GPGeneralException("nick is missing.", GPErrorCode.Parse);
                 }
                 NewNick = KeyValues["nick"];
                 IsReplaceNickName = false;

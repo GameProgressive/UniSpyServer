@@ -5,20 +5,16 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyExceptionBase : Exception
     {
-        public object ErrorCode { get; private set; }
-        public abstract string ErrorResponse { get; }
         public UniSpyExceptionBase()
         {
         }
 
-        public UniSpyExceptionBase(string message, object errorCode) : base(message)
+        public UniSpyExceptionBase(string message) : base(message)
         {
-            ErrorCode = errorCode;
         }
 
-        public UniSpyExceptionBase(string message, object errorCode, Exception innerException) : base(message, innerException)
+        public UniSpyExceptionBase(string message, Exception innerException) : base(message, innerException)
         {
-            ErrorCode = errorCode;
         }
     }
 
