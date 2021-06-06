@@ -19,19 +19,10 @@ namespace GameStatus.Abstraction.BaseClass
 
         public override void Build()
         {
-            if (_result.ErrorCode != GSErrorCode.NoError)
-            {
-                BuildErrorResponse();
-            }
-            else
-            {
-                BuildNormalResponse();
-            }
+
+            BuildNormalResponse();
+
         }
 
-        protected override void BuildErrorResponse()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

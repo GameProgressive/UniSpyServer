@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 using System;
 using System.Collections.Generic;
 
@@ -21,18 +22,14 @@ namespace GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GSErrorCode.NoError)
-            {
-                return;
-            }
+
 
             if (RequestKeyValues.ContainsKey("pid"))
             {
                 uint profileID;
                 if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
                 {
-                    ErrorCode = GSErrorCode.Parse;
-                    return;
+                    throw new GSException("pid format is incorrect.");
                 }
                 ProfileID = profileID;
             }
@@ -42,10 +39,8 @@ namespace GameStatus.Entity.Structure.Request
                 PersistStorageType storageType;
                 if (!Enum.TryParse(RequestKeyValues["ptype"], out storageType))
                 {
-                    ErrorCode = GSErrorCode.Parse;
-                    return;
+                    throw new GSException("ptype format is incorrect.");
                 }
-
                 StorageType = storageType;
             }
 
@@ -55,16 +50,14 @@ namespace GameStatus.Entity.Structure.Request
                 uint dataIndex;
                 if (!uint.TryParse(RequestKeyValues["dindex"], out dataIndex))
                 {
-                    ErrorCode = GSErrorCode.Parse;
-                    return;
+                    throw new GSException("dindex format is incorrect.");
                 }
                 DataIndex = dataIndex;
             }
 
             if (!RequestKeyValues.ContainsKey("keys"))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("keys is missing.");
             }
 
             string keys = RequestKeyValues["keys"];

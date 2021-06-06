@@ -41,10 +41,13 @@ namespace Chat.Handler.CommandSwitcher
             foreach (var rawRequest in rawRequests)
             {
                 var request = new ChatRequestFacotry(rawRequest).Serialize();
-                request.Parse();
-                if ((ChatErrorCode)request.ErrorCode != ChatErrorCode.NoError)
+                try
                 {
-                    break;
+                    request.Parse();
+                }
+                catch
+                {
+                    continue;
                 }
                 _requests.Add(request);
             }

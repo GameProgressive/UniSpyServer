@@ -39,11 +39,6 @@ namespace GameStatus.Handler.CmdSwitcher
         {
             var request = new GSRequestFactory(_rawRequest).Serialize();
             request.Parse();
-            if ((GSErrorCode)request.ErrorCode != GSErrorCode.NoError)
-            {
-                LogWriter.ToLog(LogEventLevel.Error, ErrorMessage.ToMsg(((GSRequestBase)request).ErrorCode));
-                return;
-            }
             _requests.Add(request);
         }
     }

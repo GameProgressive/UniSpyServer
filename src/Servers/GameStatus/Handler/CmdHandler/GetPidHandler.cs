@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 using GameStatus.Entity.Structure.Request;
 using GameStatus.Entity.Structure.Response;
 using GameStatus.Entity.Structure.Result;
@@ -35,8 +36,7 @@ namespace GameStatus.Handler.CmdHandler
                              select s.Profileid;
                 if (result.Count() != 1)
                 {
-                    _result.ErrorCode = GSErrorCode.Database;
-                    return;
+                    throw new GSException("No records found in database by authtoken.");
                 }
                 _protileid = result.First();
             }

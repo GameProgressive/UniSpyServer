@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
@@ -20,18 +21,14 @@ namespace GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GSErrorCode.NoError)
-            {
-                return;
-            }
+
             if (RequestKeyValues.ContainsKey("pid") && RequestKeyValues.ContainsKey("resp"))
             {
                 //we parse profileid here
                 uint profileID;
                 if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
                 {
-                    ErrorCode = GSErrorCode.Parse;
-                    return;
+                    throw new GSException("pid format is incorrect.");
                 }
                 ProfileID = profileID;
                 RequestType = AuthMethod.ProfileIDAuth;
@@ -50,8 +47,7 @@ namespace GameStatus.Entity.Structure.Request
             }
             else
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("Unknown authp request method.");
             }
         }
     }

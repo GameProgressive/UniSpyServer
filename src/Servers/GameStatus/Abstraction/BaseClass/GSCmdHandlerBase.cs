@@ -35,22 +35,7 @@ namespace GameStatus.Abstraction.BaseClass
         public override void Handle()
         {
             RequestCheck();
-            if (_result.ErrorCode != GSErrorCode.NoError)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             DataOperation();
-
-            if (_result.ErrorCode == GSErrorCode.Database)
-            {
-                ResponseConstruct();
-                Response();
-                return;
-            }
-
             ResponseConstruct();
             Response();
         }

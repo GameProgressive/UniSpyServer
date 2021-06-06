@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
@@ -15,15 +16,11 @@ namespace GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GSErrorCode.NoError)
-            {
-                return;
-            }
+
             if (RequestKeyValues.ContainsKey("connid") && RequestKeyValues.ContainsKey("challenge")
             || !RequestKeyValues.ContainsKey("connid") && !RequestKeyValues.ContainsKey("challenge"))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("newgame request is invalid.");
             }
             if (RequestKeyValues.ContainsKey("challenge"))
             {
@@ -35,8 +32,7 @@ namespace GameStatus.Entity.Structure.Request
                 uint connectionID;
                 if (!uint.TryParse(RequestKeyValues["connid"], out connectionID))
                 {
-                    ErrorCode = GSErrorCode.Parse;
-                    return;
+                    throw new GSException("connid format is incorrect.");
                 }
                 ConnectionID = connectionID;
             }

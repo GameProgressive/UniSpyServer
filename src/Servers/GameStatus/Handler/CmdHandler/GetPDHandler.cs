@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 using GameStatus.Entity.Structure.Request;
 using GameStatus.Entity.Structure.Response;
 using GameStatus.Entity.Structure.Result;
@@ -39,8 +40,7 @@ namespace GameStatus.Handler.CmdHandler
 
                 if (result.Count() != 1)
                 {
-                    _result.ErrorCode = GSErrorCode.Database;
-                    return;
+                    throw new GSException("No records found in database.");
                 }
                 else
                 {
@@ -63,8 +63,7 @@ namespace GameStatus.Handler.CmdHandler
                     }
                     else
                     {
-                        _result.ErrorCode = GSErrorCode.Database;
-                        break;
+                        throw new GSException($"can not find key:{key} in GetPD request.");
                     }
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
@@ -17,10 +18,7 @@ namespace GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GSErrorCode.NoError)
-            {
-                return;
-            }
+
             if (RequestKeyValues.ContainsKey("dl"))
             {
                 IsClientLocalStorageAvailable = true;
@@ -28,21 +26,18 @@ namespace GameStatus.Entity.Structure.Request
 
             if (!RequestKeyValues.ContainsKey("done"))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("done is missing.");
             }
             bool isDone;
             if (!bool.TryParse(RequestKeyValues["done"], out isDone))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("done format is incorrect.");
             }
             IsDone = isDone;
 
             if (!RequestKeyValues.ContainsKey("gamedata"))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("gamedata is missing.");
             }
             GameData = RequestKeyValues["gamedata"];
 

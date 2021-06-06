@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 using System;
 using System.Linq;
 
@@ -22,37 +23,37 @@ namespace GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GSErrorCode.NoError)
-            {
-                return;
-            }
 
-            if (!RequestKeyValues.ContainsKey("pid") || !RequestKeyValues.ContainsKey("ptype")
-                || !RequestKeyValues.ContainsKey("dindex") || !RequestKeyValues.ContainsKey("length"))
-            {
-                ErrorCode = GSErrorCode.Parse;
-                return;
-            }
+
+            if (!RequestKeyValues.ContainsKey("pid"))
+                throw new GSException("length is missing.");
+
+            if (!RequestKeyValues.ContainsKey("ptype"))
+                throw new GSException("length is missing.");
+
+            if (!RequestKeyValues.ContainsKey("dindex"))
+                throw new GSException("length is missing.");
+
+            if (!RequestKeyValues.ContainsKey("length"))
+                throw new GSException("length is missing.");
+
 
             uint profileID;
             if (!uint.TryParse(RequestKeyValues["pid"], out profileID))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("pid format is incorrect.");
             }
             ProfileID = profileID;
 
             uint storageType;
             if (!uint.TryParse(RequestKeyValues["ptype"], out storageType))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("ptype is missing.");
             }
 
             if (!Enum.IsDefined(typeof(PersistStorageType), storageType))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("storage type is incorrect.");
             }
 
             StorageType = (PersistStorageType)storageType;
@@ -60,16 +61,14 @@ namespace GameStatus.Entity.Structure.Request
             uint dindex;
             if (!uint.TryParse(RequestKeyValues["dindex"], out dindex))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("dindex format is incorrect.");
             }
             DataIndex = dindex;
 
             uint length;
             if (!uint.TryParse(RequestKeyValues["length"], out length))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("length format is incorrect.");
             }
             Length = length;
 

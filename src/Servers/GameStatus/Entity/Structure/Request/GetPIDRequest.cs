@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
@@ -15,15 +16,11 @@ namespace GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GSErrorCode.NoError)
-            {
-                return;
-            }
+
 
             if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("keyhash"))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("nick or keyhash is missing.");
             }
 
             if (RequestKeyValues.ContainsKey("nick"))
@@ -36,8 +33,7 @@ namespace GameStatus.Entity.Structure.Request
             }
             else
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("Unknown GetPID request type.");
             }
         }
     }

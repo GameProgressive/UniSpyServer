@@ -1,4 +1,5 @@
 ﻿using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
@@ -19,11 +20,6 @@ namespace GameStatus.Abstraction.BaseClass
             get => (string)base.RawRequest;
             set => base.RawRequest = value;
         }
-        public new GSErrorCode ErrorCode
-        {
-            get => (GSErrorCode)base.ErrorCode;
-            protected set => base.ErrorCode = value;
-        }
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
 
         public GSRequestBase(string rawRequest) : base(rawRequest)
@@ -31,15 +27,13 @@ namespace GameStatus.Abstraction.BaseClass
             RawRequest = rawRequest;
             RequestKeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
             CommandName = RequestKeyValues.Keys.First();
-            ErrorCode = GSErrorCode.NoError;
         }
 
         public override void Parse()
         {
             if (!RequestKeyValues.ContainsKey("lid") && !RequestKeyValues.ContainsKey("id"))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("namespaceid is missing.");
             }
 
             if (RequestKeyValues.ContainsKey("lid"))
@@ -47,8 +41,7 @@ namespace GameStatus.Abstraction.BaseClass
                 uint operationID;
                 if (!uint.TryParse(RequestKeyValues["lid"], out operationID))
                 {
-                    ErrorCode = GSErrorCode.Parse;
-                    return;
+                    throw new GSException("namespaceid format is incorrect.");
                 }
                 OperationID = operationID;
             }
@@ -58,8 +51,7 @@ namespace GameStatus.Abstraction.BaseClass
                 uint operationID;
                 if (!uint.TryParse(RequestKeyValues["id"], out operationID))
                 {
-                    ErrorCode = GSErrorCode.Parse;
-                    return;
+                    throw new GSException("namespaceid format is incorrect.");
                 }
                 OperationID = operationID;
             }

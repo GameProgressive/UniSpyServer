@@ -1,5 +1,6 @@
 ﻿using GameStatus.Abstraction.BaseClass;
 using GameStatus.Entity.Enumerate;
+using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
@@ -17,15 +18,16 @@ namespace GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            if (ErrorCode != GSErrorCode.NoError)
+
+
+            if (!RequestKeyValues.ContainsKey("gamename"))
             {
-                return;
+                throw new GSException("gamename is missing.");
             }
 
-            if (!RequestKeyValues.ContainsKey("gamename") && !RequestKeyValues.ContainsKey("response"))
+            if (!RequestKeyValues.ContainsKey("response"))
             {
-                ErrorCode = GSErrorCode.Parse;
-                return;
+                throw new GSException("response is missing.");
             }
 
             if (RequestKeyValues.ContainsKey("port"))
@@ -33,8 +35,7 @@ namespace GameStatus.Entity.Structure.Request
                 uint port;
                 if (!uint.TryParse(RequestKeyValues["port"], out port))
                 {
-                    ErrorCode = GSErrorCode.Parse;
-                    return;
+                    throw new GSException("port format is incorrect.");
                 }
                 Port = port;
             }

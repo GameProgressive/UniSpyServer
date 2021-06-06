@@ -12,11 +12,6 @@ namespace Chat.Abstraction.BaseClass
         /// True means there are no errors
         /// False means there are errors
         /// </summary>
-        public new ChatErrorCode ErrorCode
-        {
-            get => (ChatErrorCode)base.ErrorCode;
-            protected set => base.ErrorCode = value;
-        }
         public new string RawRequest => (string)base.RawRequest;
         public new string CommandName
         {
