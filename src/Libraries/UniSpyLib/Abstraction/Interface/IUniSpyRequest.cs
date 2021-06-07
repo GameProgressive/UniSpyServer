@@ -1,10 +1,10 @@
 ﻿
 namespace UniSpyLib.Abstraction.Interface
 {
-    public interface IUniSpyRequest
+    interface IUniSpyRequest
     {
-        public object CommandName { get; }
-        public object RawRequest { get; }
-        public void Parse();
+        object CommandName { get; }
+        object RawRequest { get; }
+        void Parse();
     }
 }

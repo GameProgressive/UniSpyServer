@@ -1,7 +1,7 @@
 ﻿namespace UniSpyLib.Abstraction.Interface
 {
-    public interface IUniSpyHandler
+    interface IUniSpyHandler
     {
-        public void Handle();
+        void Handle();
     }
 }

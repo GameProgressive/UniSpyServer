@@ -4,11 +4,11 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyLib.Abstraction.Interface
 {
-    public interface IUniSpyServer
+    interface IUniSpyServer
     {
-        public Guid ServerID { get; }
-        public IPEndPoint Endpoint { get; }
-        public UniSpySessionManagerBase SessionManager { get; }
-        public bool Start();
+        Guid ServerID { get; }
+        IPEndPoint Endpoint { get; }
+        UniSpySessionManagerBase SessionManager { get; }
+        bool Start();
     }
 }
