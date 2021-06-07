@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
@@ -14,15 +15,20 @@ namespace Chat.Entity.Structure.Request.General
         {
             base.Parse();
 
-
-            if (_cmdParams.Count == 0)
+            if (_cmdParams != null)
+            {
+                NickName = _cmdParams[0];
+            }
+            else if (_longParam != null)
             {
                 NickName = _longParam;
             }
             else
             {
-                NickName = _cmdParams[0];
+                throw new ChatException("NICK request is invalid.");
             }
+
+
         }
     }
 }

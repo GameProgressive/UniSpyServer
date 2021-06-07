@@ -14,6 +14,7 @@ namespace NATNegotiation.Entity.Structure.Response
         }
         protected override void BuildNormalResponse()
         {
+            base.BuildNormalResponse();
             List<byte> data = new List<byte>();
             data.AddRange(SendingBuffer);
             data.AddRange(_result.RemoteIPAddress);
