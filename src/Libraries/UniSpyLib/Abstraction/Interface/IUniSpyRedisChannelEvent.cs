@@ -1,7 +1,7 @@
 ﻿using System;
 namespace UniSpyLib.Abstraction.Interface
 {
-    interface IUniSpyRedisChannelEvent
+    public interface IUniSpyRedisChannelEvent
     {
         void StartSubscribe();
         void ReceivedMessage();
