@@ -1,6 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
+
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
@@ -19,12 +19,12 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 
             if (!KeyValues.ContainsKey("sesskey"))
             {
-                throw new GPGeneralException("sesskey is missing.", GPErrorCode.Parse);
+                throw new GPParseException("sesskey is missing.");
             }
 
             if (!KeyValues.ContainsKey("uniquenick"))
             {
-                throw new GPGeneralException("uniquenick is missing.", GPErrorCode.Parse);
+                throw new GPParseException("uniquenick is missing.");
             }
             SessionKey = KeyValues["sesskey"];
             UniqueNick = KeyValues["uniquenick"];

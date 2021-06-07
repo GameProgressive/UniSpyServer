@@ -4,6 +4,7 @@ using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
@@ -38,7 +39,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                     if (result.Count() != 1)
                     {
-                        throw new GPGeneralException("No user infomation found in database.", GPErrorCode.DatabaseError);
+                        throw new GPDatabaseException("No user infomation found in database.");
                     }
                     else
                     {

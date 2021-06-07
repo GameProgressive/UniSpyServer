@@ -1,6 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
+
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
@@ -19,19 +19,19 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 
             if (!KeyValues.ContainsKey("profileid"))
             {
-                throw new GPGeneralException("profileid is missing", GPErrorCode.Parse);
+                throw new GPParseException("profileid is missing");
             }
 
             uint profileID;
             if (!uint.TryParse(KeyValues["profileid"], out profileID))
             {
-                throw new GPGeneralException("profileid format is incorrect", GPErrorCode.Parse);
+                throw new GPParseException("profileid format is incorrect");
             }
             ProfileID = profileID;
 
             if (!KeyValues.ContainsKey("sesskey"))
             {
-                throw new GPGeneralException("sesskey is missing", GPErrorCode.Parse);
+                throw new GPParseException("sesskey is missing");
             }
             SessionKey = KeyValues["sesskey"];
         }

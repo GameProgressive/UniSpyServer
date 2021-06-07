@@ -1,6 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
+
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -18,13 +18,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request
 
             if (!KeyValues.ContainsKey("delprofileid"))
             {
-                throw new GPGeneralException("delprofileid is missing.", GPErrorCode.Parse);
+                throw new GPParseException("delprofileid is missing.");
             }
 
             uint deleteProfileID;
             if (!uint.TryParse(KeyValues["delprofileid"], out deleteProfileID))
             {
-                throw new GPGeneralException("delprofileid format is incorrect.", GPErrorCode.Parse);
+                throw new GPParseException("delprofileid format is incorrect.");
             }
 
             DeleteProfileID = deleteProfileID;

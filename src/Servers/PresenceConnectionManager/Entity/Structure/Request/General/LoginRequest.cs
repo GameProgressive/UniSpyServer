@@ -1,9 +1,7 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Enumerate;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
-using Serilog.Events;
-using UniSpyLib.Logging;
+using PresenceSearchPlayer.Entity.Exception.General;
+
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     internal class LoginRequest : PCMRequestBase
@@ -30,11 +28,11 @@ namespace PresenceConnectionManager.Entity.Structure.Request
 
 
             if (!KeyValues.ContainsKey("challenge"))
-                throw new GPGeneralException("challenge is missing", GPErrorCode.Parse);
+                throw new GPParseException("challenge is missing");
 
             if (!KeyValues.ContainsKey("response"))
             {
-                throw new GPGeneralException("response is missing", GPErrorCode.Parse);
+                throw new GPParseException("response is missing");
             }
 
             UserChallenge = KeyValues["challenge"];
@@ -45,7 +43,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(KeyValues["namespaceid"], out namespaceID))
                 {
-                    throw new GPGeneralException("namespaceid format is incorrect", GPErrorCode.Parse);
+                    throw new GPParseException("namespaceid format is incorrect");
                 }
                 LoginType = LoginType.UniquenickNamespaceID;
                 UniqueNick = KeyValues["uniquenick"];
@@ -66,7 +64,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 int Pos = UserData.IndexOf('@');
                 if (Pos == -1 || Pos < 1 || (Pos + 1) >= UserData.Length)
                 {
-                    throw new GPGeneralException("user format is incorrect", GPErrorCode.Parse);
+                    throw new GPParseException("user format is incorrect");
                 }
                 Nick = UserData.Substring(0, Pos);
                 Email = UserData.Substring(Pos + 1);
@@ -77,14 +75,14 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                     uint namespaceID;
                     if (!uint.TryParse(KeyValues["namespaceid"], out namespaceID))
                     {
-                        throw new GPGeneralException("namespaceid format is incorrect", GPErrorCode.Parse);
+                        throw new GPParseException("namespaceid format is incorrect");
                     }
                     NamespaceID = namespaceID;
                 }
             }
             else
             {
-                throw new GPGeneralException("Unknown login method detected.", GPErrorCode.Parse);
+                throw new GPParseException("Unknown login method detected.");
             }
 
             ParseOtherData();
@@ -102,7 +100,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 uint partnerID;
                 if (!uint.TryParse(KeyValues["partnerid"], out partnerID))
                 {
-                    throw new GPGeneralException("partnerid format is incorrect", GPErrorCode.Parse);
+                    throw new GPParseException("partnerid format is incorrect");
                 }
                 PartnerID = partnerID;
             }
@@ -113,7 +111,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 uint sdkRevisionType;
                 if (!uint.TryParse(KeyValues["sdkrevision"], out sdkRevisionType))
                 {
-                    throw new GPGeneralException("sdkrevision format is incorrect", GPErrorCode.Parse);
+                    throw new GPParseException("sdkrevision format is incorrect");
                 }
 
                 SDKRevisionType = (SDKRevisionType)sdkRevisionType;
@@ -129,7 +127,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 int htonGamePort;
                 if (!int.TryParse(KeyValues["port"], out htonGamePort))
                 {
-                    throw new GPGeneralException("port format is incorrect", GPErrorCode.Parse);
+                    throw new GPParseException("port format is incorrect");
                 }
                 GamePort = htonGamePort;
             }
@@ -138,7 +136,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 uint productID;
                 if (!uint.TryParse(KeyValues["productid"], out productID))
                 {
-                    throw new GPGeneralException("productid format is incorrect", GPErrorCode.Parse);
+                    throw new GPParseException("productid format is incorrect");
                 }
                 ProductID = productID;
             }
@@ -147,7 +145,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 uint quiet;
                 if (!uint.TryParse(KeyValues["quiet"], out quiet))
                 {
-                    throw new GPGeneralException("quiet format is incorrect", GPErrorCode.Parse);
+                    throw new GPParseException("quiet format is incorrect");
                 }
 
                 QuietModeFlags = (QuietModeType)quiet;

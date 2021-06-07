@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -19,18 +20,18 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             if (!RequestKeyValues.ContainsKey("gamename"))
             {
-                throw new GPGeneralException("gamename is missing.", GPErrorCode.Parse);
+                throw new GPParseException("gamename is missing.");
             }
 
             if (!RequestKeyValues.ContainsKey("profileid") || !RequestKeyValues.ContainsKey("namespaceid"))
             {
-                throw new GPGeneralException("profileid or namespaceid is missing.", GPErrorCode.Parse);
+                throw new GPParseException("profileid or namespaceid is missing.");
             }
 
             uint profileID = 0;
             if (!RequestKeyValues.ContainsKey("profileid") && !uint.TryParse(RequestKeyValues["profileid"], out profileID))
             {
-                throw new GPGeneralException("profileid is incorrect.", GPErrorCode.Parse);
+                throw new GPParseException("profileid is incorrect.");
             }
 
             if (RequestKeyValues.ContainsKey("namespaceid"))
@@ -38,7 +39,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
+                    throw new GPParseException("namespaceid is incorrect.");
                 }
 
                 NamespaceID = namespaceID;

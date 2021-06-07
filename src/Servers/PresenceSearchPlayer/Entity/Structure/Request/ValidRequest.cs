@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
@@ -21,7 +22,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             if (!RequestKeyValues.ContainsKey("email") && !GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
             {
-                throw new GPGeneralException("valid request is incomplete.", GPErrorCode.Parse);
+                throw new GPParseException("valid request is incomplete.");
             }
 
             Email = RequestKeyValues["email"];
@@ -31,7 +32,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
+                    throw new GPParseException("namespaceid is incorrect.");
                 }
 
                 NamespaceID = namespaceID;

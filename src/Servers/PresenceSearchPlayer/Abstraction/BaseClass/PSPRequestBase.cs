@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
@@ -33,7 +34,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
                 ushort operationID;
                 if (!ushort.TryParse(RequestKeyValues["id"], out operationID))
                 {
-                    throw new GPGeneralException("operation id is invalid.", GPErrorCode.Parse);
+                    throw new GPParseException("operation id is invalid.");
                 }
                 OperationID = operationID;
             }

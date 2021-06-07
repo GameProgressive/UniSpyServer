@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
@@ -22,18 +23,18 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
-                throw new GPGeneralException("password provided is invalid.", GPErrorCode.Parse);
+                throw new GPParseException("password provided is invalid.");
             }
             Password = md5Password;
 
             if (!RequestKeyValues.ContainsKey("nick") || !RequestKeyValues.ContainsKey("email") || Password == null)
             {
-                throw new GPGeneralException("check request is incompelete.", GPErrorCode.Parse);
+                throw new GPParseException("check request is incompelete.");
             }
 
             if (!GameSpyUtils.IsEmailFormatCorrect(RequestKeyValues["email"]))
             {
-                throw new GPGeneralException("email format is incorrect", GPErrorCode.Parse);
+                throw new GPParseException("email format is incorrect");
             }
 
             Nick = RequestKeyValues["nick"];

@@ -6,6 +6,7 @@ using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
 
@@ -70,7 +71,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (result.Count() == 0)
                 {
-                    throw new GPGeneralException($"No profile of profileid:{_request.ProfileID} found in database.", GPErrorCode.DatabaseError);
+                    throw new GPDatabaseException($"No profile of profileid:{_request.ProfileID} found in database.");
                 }
 
                 _result.UserProfile = result.First();

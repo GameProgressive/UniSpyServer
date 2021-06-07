@@ -1,7 +1,7 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Structure.Misc;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
+
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -40,7 +40,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
                 || !KeyValues.ContainsKey("gameVariant")
                 || !KeyValues.ContainsKey("gameMapName"))
             {
-                throw new GPGeneralException("StatusInfo request is invalid.", GPErrorCode.Parse);
+                throw new GPParseException("StatusInfo request is invalid.");
             }
 
             StatusInfo.StatusState = KeyValues["state"];
@@ -50,20 +50,20 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             int qport;
             if (!int.TryParse(KeyValues["qport"], out qport))
             {
-                throw new GPGeneralException("qport format is incorrect.", GPErrorCode.Parse);
+                throw new GPParseException("qport format is incorrect.");
             }
             StatusInfo.QueryReportPort = qport;
             int hport;
             if (int.TryParse(KeyValues["hport"], out hport))
             {
-                throw new GPGeneralException("hport format is incorrect.", GPErrorCode.Parse);
+                throw new GPParseException("hport format is incorrect.");
             }
             StatusInfo.HostPort = hport;
 
             uint sessflags;
             if (!uint.TryParse(KeyValues["sessflags"], out sessflags))
             {
-                throw new GPGeneralException("sessflags format is incorrect.", GPErrorCode.Parse);
+                throw new GPParseException("sessflags format is incorrect.");
             }
             StatusInfo.SessionFlags = sessflags;
 

@@ -1,6 +1,7 @@
 ﻿using PresenceConnectionManager.Handler.CmdSwticher;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Handler.CmdHandler.Error;
 using Serilog.Events;
 using System;
@@ -48,7 +49,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
                 {
                     request.Parse();
                 }
-                catch (GPGeneralException e)
+                catch (GPException e)
                 {
                     _session.SendAsync(e.ErrorResponse);
                 }

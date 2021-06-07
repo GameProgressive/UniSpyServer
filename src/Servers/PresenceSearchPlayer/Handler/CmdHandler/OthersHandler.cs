@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
@@ -61,7 +62,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
             }
             catch (System.Exception e)
             {
-                throw new GPGeneralException("Unknown error occurs in database operation.", Entity.Enumerate.GPErrorCode.DatabaseError, e);
+                throw new GPDatabaseException("Unknown error occurs in database operation.", e);
             }
 
         }

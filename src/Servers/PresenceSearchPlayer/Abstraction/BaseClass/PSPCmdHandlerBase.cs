@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
 using PresenceSearchPlayer.Network;
@@ -36,7 +37,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
                 ResponseConstruct();
                 Response();
             }
-            catch (GPExceptionBase e)
+            catch (GPException e)
             {
                 _session.SendAsync(e.ErrorResponse);
             }

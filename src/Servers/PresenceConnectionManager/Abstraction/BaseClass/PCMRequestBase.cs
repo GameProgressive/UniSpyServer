@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
@@ -42,7 +43,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
                 uint operationID;
                 if (!uint.TryParse(KeyValues["id"], out operationID))
                 {
-                    throw new GPGeneralException("namespaceid is invalid.", GPErrorCode.Parse);
+                    throw new GPParseException("namespaceid is invalid.");
                 }
                 OperationID = operationID;
             }

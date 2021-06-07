@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,7 +23,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             if (!RequestKeyValues.ContainsKey("opids") || !RequestKeyValues.ContainsKey("namespaceid"))
             {
-                throw new GPGeneralException("opids or namespaceid is missing.", GPErrorCode.Parse);
+                throw new GPParseException("opids or namespaceid is missing.");
             }
 
             try
@@ -31,7 +32,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             catch (System.Exception e)
             {
-                throw new GPGeneralException("opids is incorrect", GPErrorCode.Parse, e);
+                throw new GPParseException("opids is incorrect", e);
             }
 
             if (RequestKeyValues.ContainsKey("namespaceid"))
@@ -39,7 +40,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint namespaceID;
                 if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                 {
-                    throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
+                    throw new GPParseException("namespaceid is incorrect.");
                 }
 
                 NamespaceID = namespaceID;

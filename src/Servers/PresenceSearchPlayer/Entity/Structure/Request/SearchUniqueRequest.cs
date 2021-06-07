@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,7 +20,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
             if (!RequestKeyValues.ContainsKey("uniquenick") || !RequestKeyValues.ContainsKey("namespaces"))
             {
-                throw new GPGeneralException("searchunique request is incomplete.", GPErrorCode.Parse);
+                throw new GPParseException("searchunique request is incomplete.");
             }
 
             try
@@ -28,7 +29,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             catch
             {
-                throw new GPGeneralException("uniquenick is missing.", GPErrorCode.Parse);
+                throw new GPParseException("uniquenick is missing.");
             }
 
             try
@@ -37,7 +38,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             catch
             {
-                throw new GPGeneralException("namespaces is incorrect.", GPErrorCode.Parse);
+                throw new GPParseException("namespaces is incorrect.");
             }
         }
     }

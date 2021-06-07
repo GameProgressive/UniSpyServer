@@ -2,6 +2,7 @@
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using System;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
@@ -28,7 +29,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             }
             catch (Exception e)
             {
-                throw new GPGeneralException(e.Message, GPErrorCode.DatabaseError);
+                throw new GPDatabaseException(e.Message);
             }
         }
     }

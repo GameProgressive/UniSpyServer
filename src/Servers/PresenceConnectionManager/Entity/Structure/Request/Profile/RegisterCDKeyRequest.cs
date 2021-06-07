@@ -1,6 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
+
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
 
             if (!KeyValues.ContainsKey("cdkeyenc"))
             {
-                throw new GPGeneralException("cdkeyenc is missing.", GPErrorCode.Parse);
+                throw new GPParseException("cdkeyenc is missing.");
             }
 
             CDKeyEnc = KeyValues["cdkeyenc"];

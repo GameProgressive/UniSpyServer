@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
@@ -37,7 +38,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 && !RequestKeyValues.ContainsKey("namespaceid")
                 && !RequestKeyValues.ContainsKey("gamename"))
             {
-                throw new GPGeneralException(" Search request is incomplete.", GPErrorCode.Parse);
+                throw new GPParseException(" Search request is incomplete.");
             }
 
             if (RequestKeyValues.ContainsKey("gamename"))
@@ -50,7 +51,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint profileID;
                 if (!uint.TryParse(RequestKeyValues["profileid"], out profileID))
                 {
-                    throw new GPGeneralException("profileid is incorrect.", GPErrorCode.Parse);
+                    throw new GPParseException("profileid is incorrect.");
 
                 }
                 ProfileID = profileID;
@@ -61,7 +62,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 uint partnerID;
                 if (!uint.TryParse(RequestKeyValues["partnerid"], out partnerID))
                 {
-                    throw new GPGeneralException("partnerid is incorrect.", GPErrorCode.Parse);
+                    throw new GPParseException("partnerid is incorrect.");
                 }
                 PartnerID = partnerID;
             }
@@ -71,7 +72,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 int skip;
                 if (!int.TryParse(RequestKeyValues["skip"], out skip))
                 {
-                    throw new GPGeneralException("skip number is incorrect.", GPErrorCode.Parse);
+                    throw new GPParseException("skip number is incorrect.");
                 }
                 SkipNum = skip;
             }
@@ -83,7 +84,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     uint namespaceID;
                     if (!uint.TryParse(RequestKeyValues["namespaceid"], out namespaceID))
                     {
-                        throw new GPGeneralException("namespaceid is incorrect.", GPErrorCode.Parse);
+                        throw new GPParseException("namespaceid is incorrect.");
                     }
                     NamespaceID = namespaceID;
                 }
@@ -110,7 +111,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             }
             else
             {
-                throw new GPGeneralException("unknown search request type.", GPErrorCode.Parse);
+                throw new GPParseException("unknown search request type.");
             }
         }
     }

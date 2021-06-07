@@ -13,7 +13,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         {
         }
 
-        public UniSpyExceptionBase(string message, Exception innerException) : base(message, innerException)
+        public UniSpyExceptionBase(string message, System.Exception innerException) : base(message, innerException)
         {
         }
     }

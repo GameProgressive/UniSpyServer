@@ -1,6 +1,4 @@
-﻿using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceSearchPlayer.Handler.CmdHandler.Error;
+﻿using PresenceSearchPlayer.Entity.Exception.General;
 using Serilog.Events;
 using System;
 using UniSpyLib.Abstraction.BaseClass;
@@ -46,7 +44,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
                 {
                     request.Parse();
                 }
-                catch (GPExceptionBase e)
+                catch (GPException e)
                 {
                     _session.SendAsync(e.ErrorResponse);
                     continue;

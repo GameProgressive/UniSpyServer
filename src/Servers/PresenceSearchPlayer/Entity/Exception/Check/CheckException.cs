@@ -1,9 +1,10 @@
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceSearchPlayer.Entity.Structure.Exception
 {
-    public class CheckException : GPExceptionBase
+    public class CheckException : GPException
     {
         public override string ErrorResponse => $@"\cur\{(uint)ErrorCode}\final\";
         public CheckException() : this("There was an error checking the user account.", GPErrorCode.Check)

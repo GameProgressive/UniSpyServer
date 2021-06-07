@@ -2,6 +2,7 @@
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
@@ -29,11 +30,11 @@ namespace PresenceConnectionManager.Handler.CmdHandler
                              select friend;
                 if (result.Count() == 0)
                 {
-                    throw new GPGeneralException("No buddy found in database.", GPErrorCode.DatabaseError);
+                    throw new GPDatabaseException("No buddy found in database.");
                 }
                 else if (result.Count() > 1)
                 {
-                    throw new GPGeneralException("More than one buddy found in database, please check database.", GPErrorCode.DatabaseError);
+                    throw new GPDatabaseException("More than one buddy found in database, please check database.");
                 }
 
                 db.Friends.Remove(result.FirstOrDefault());
