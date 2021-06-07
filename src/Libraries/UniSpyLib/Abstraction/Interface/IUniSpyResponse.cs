@@ -3,6 +3,6 @@
     public interface IUniSpyResponse
     {
         object SendingBuffer { get; }
-        public void Build();
+        void Build();
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IUniSpyHandler
     {
-        public void Handle();
+        void Handle();
     }
 }
