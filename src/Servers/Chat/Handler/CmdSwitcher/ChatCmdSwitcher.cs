@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Text;
-using Chat.Entity.Structure;
-using Chat.Entity.Structure.Misc;
 using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Encryption;
 
 namespace Chat.Handler.CommandSwitcher
 {

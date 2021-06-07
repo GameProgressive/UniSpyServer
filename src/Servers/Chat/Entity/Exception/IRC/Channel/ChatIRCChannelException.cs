@@ -1,3 +1,4 @@
+using Chat.Entity.Exception.IRC.General;
 using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception
