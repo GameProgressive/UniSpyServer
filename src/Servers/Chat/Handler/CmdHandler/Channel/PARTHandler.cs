@@ -28,6 +28,8 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
+            _result.LeaverIRCPrefix = _user.UserInfo.IRCPrefix;
+            _result.ChannelName = _channel.Property.ChannelName;
             if (_channel.Property.IsPeerServer && _user.IsChannelCreator)
             {
                 // Parallel.ForEach(_channel.ChannelUsers, (user) =>

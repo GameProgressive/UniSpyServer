@@ -2,7 +2,7 @@
 {
     public class ChatIRCErrorCode
     {
-        //gameSpy standard irc  error
+        //GameSpy standard irc error
         public const string NoSuchNick = "401";
         public const string NoSuchChannel = "403";
         public const string TooManyChannels = "405";

@@ -1,5 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Exception;
+using Chat.Entity.Exception.IRC.Channel;
+using Chat.Entity.Exception.IRC.General;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
@@ -52,7 +54,7 @@ namespace Chat.Handler.CmdHandler.Channel
             //but GameSpy Arcade can join more than one channel
             if (_session.UserInfo.JoinedChannels.Count > 3)
             {
-                throw new ChatIRCException("You are join too many channels", ChatIRCErrorCode.TooManyChannels);
+                throw new ChatIRCTooManyChannels($"{_session.UserInfo.NickName} is join too many channels");
             }
         }
 
@@ -76,11 +78,11 @@ namespace Chat.Handler.CmdHandler.Channel
                     }
                     if (_channel.IsUserBanned(_user))
                     {
-                        throw new ChatIRCChannelException("You are banned from this channel.", ChatIRCErrorCode.BannedFromChan, _request.ChannelName);
+                        throw new ChatIRCBannedFromChanException($"You are banned from this channel:{_request.ChannelName}.", _request.ChannelName);
                     }
                     if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
                     {
-                        throw new ChatIRCChannelException("The channel you are join is full.", ChatIRCErrorCode.ChannelIsFull, _request.ChannelName);
+                        throw new ChatIRCChannelIsFullException($"The channel:{_request.ChannelName} you are join is full.", _request.ChannelName);
 
                     }
                     //if all pass, it mean  we excute join channel

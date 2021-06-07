@@ -4,6 +4,7 @@ using UniSpyLib.Abstraction.Interface;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Abstraction.BaseClass.Message;
 using Chat.Entity.Exception;
+using Chat.Entity.Exception.IRC.General;
 
 namespace Chat.Abstraction.BaseClass
 {
@@ -34,7 +35,7 @@ namespace Chat.Abstraction.BaseClass
                         _reciever = _channel.GetChannelUserByNickName(_request.NickName);
                         if (_reciever == null)
                         {
-                            throw new ChatIRCException("No nick found.", ChatIRCErrorCode.NoSuchNick);
+                            throw new ChatIRCNoSuchNickException($"No user with nickname: {_request.NickName} found in channel: {_channel.Property.ChannelName}.");
                         }
                     }
                     break;

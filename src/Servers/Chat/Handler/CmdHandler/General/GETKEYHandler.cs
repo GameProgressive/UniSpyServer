@@ -1,5 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Exception;
+using Chat.Entity.Exception.IRC.General;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Channel;
@@ -32,7 +33,7 @@ namespace Chat.Handler.CmdHandler.General
                 var user = channel.GetChannelUserByNickName(_request.NickName);
                 if (user == null)
                 {
-                    throw new ChatIRCException($"Can not find user:{_request.NickName}", ChatIRCErrorCode.NoSuchNick);
+                    throw new ChatIRCNoSuchNickException($"Can not find user:{_request.NickName}");
                 }
                 else
                 {

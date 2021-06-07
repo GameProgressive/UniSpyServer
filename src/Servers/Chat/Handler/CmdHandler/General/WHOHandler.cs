@@ -1,6 +1,7 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Application;
 using Chat.Entity.Exception;
+using Chat.Entity.Exception.IRC.General;
 using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Misc.ChannelInfo;
@@ -73,7 +74,7 @@ namespace Chat.Handler.CmdHandler.General
                 .FirstOrDefault();
             if (session == null)
             {
-                throw new ChatIRCException($"Can not find user with nickname:{_request.NickName}.", ChatIRCErrorCode.NoSuchNick);
+                throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");
 
             }
             foreach (var channel in session.UserInfo.JoinedChannels)

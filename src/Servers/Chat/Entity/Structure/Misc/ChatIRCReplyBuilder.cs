@@ -142,7 +142,10 @@ namespace Chat.Entity.Structure.Misc
         {
             return Build(ChatConstants.ServerDomain, cmd, cmdParams, tailing);
         }
-
+        public static string Build(ChatIRCErrorCode cmd, string cmdParams, string tailing)
+        {
+            return Build(cmd.ToString(), cmdParams, tailing);
+        }
         public static string Build(string prefix, string cmd, string cmdParams, string tailing)
         {
             string buffer = "";

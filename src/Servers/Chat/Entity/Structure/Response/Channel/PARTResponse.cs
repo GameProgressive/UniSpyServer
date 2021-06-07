@@ -16,7 +16,7 @@ namespace Chat.Entity.Structure.Response.Channel
         {
             SendingBuffer = BuildPartReply(
                   _result.LeaverIRCPrefix,
-                  ChatReplyName.PART,
+                  _result.ChannelName,
                   _result.Message);
         }
 
