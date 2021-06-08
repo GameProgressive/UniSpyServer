@@ -1,4 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
+using Chat.Entity.Exception;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Result.Message;
@@ -8,8 +9,8 @@ namespace Chat.Entity.Structure.Response.Message
 {
     internal sealed class PRIVMSGResponse : ChatResponseBase
     {
-        private new PRIVMSGResult _result =>(PRIVMSGResult)base._result;
-        private new PRIVMSGRequest _request =>(PRIVMSGRequest)base._request;
+        private new PRIVMSGResult _result => (PRIVMSGResult)base._result;
+        private new PRIVMSGRequest _request => (PRIVMSGRequest)base._request;
         public PRIVMSGResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }

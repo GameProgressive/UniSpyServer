@@ -1,5 +1,4 @@
 ﻿using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceSearchPlayer.Handler.CmdHandler.Error;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass

@@ -18,14 +18,29 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void RequestCheck()
         {
+            string newNickName = _request.NickName;
+            uint count = 0;
             if (ChatServerFactory.Server.SessionManager.SessionPool.Values.
-                Where(s => ((ChatSession)s).UserInfo.NickName == _request.NickName)
-                .Count() == 1)
+                   Where(s => ((ChatSession)s).UserInfo.NickName == newNickName)
+                   .Count() == 1)
             {
+                while (true)
+                {
+                    if (ChatServerFactory.Server.SessionManager.SessionPool.Values.
+                        Where(s => ((ChatSession)s).UserInfo.NickName == newNickName)
+                        .Count() == 1)
+                    {
+                        newNickName = $"{newNickName}{count++}";
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
                 throw new ChatIRCNickNameInUseException(
                     $"The nick name: {_request.NickName} is already in use",
                     _request.NickName,
-                    _request.NickName);
+                    newNickName);
             }
         }
 

@@ -25,7 +25,7 @@ namespace Chat.Handler.CmdHandler.Message
         }
         protected override void UserMessageDataOperation()
         {
-            _result.TargetName = _user.UserInfo.Name;
+            _result.TargetName = _reciever.UserInfo.NickName;
         }
         protected override void ChannelMessageDataOpration()
         {
@@ -48,6 +48,7 @@ namespace Chat.Handler.CmdHandler.Message
                 return;
             }
             _result.IsBroadcastMessage = true;
+            _result.TargetName = _channel.Property.ChannelName;
         }
         protected override void ResponseConstruct()
         {

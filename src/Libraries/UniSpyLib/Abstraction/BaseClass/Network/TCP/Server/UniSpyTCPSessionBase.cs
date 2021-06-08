@@ -17,7 +17,7 @@ namespace UniSpyLib.Network
     public class UniSpyTCPSessionBase : TcpSession, IUniSpySession
     {
         public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
-        public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint;
+        public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint ?? null;
         public new UniSpyTCPServerBase Server => (UniSpyTCPServerBase)base.Server;
         public UniSpyTCPSessionBase(UniSpyTCPServerBase server) : base(server)
         {
@@ -57,7 +57,7 @@ namespace UniSpyLib.Network
             LogWriter.LogNetworkReceiving(RemoteIPEndPoint, plainText);
             OnReceived(plainText);
         }
-        
+
         /// <summary>
         /// The virtual method override by child class, which helps child class to encrypt data
         /// </summary>

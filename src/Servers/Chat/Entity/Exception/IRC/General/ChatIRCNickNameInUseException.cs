@@ -6,7 +6,7 @@ namespace Chat.Entity.Exception.IRC.General
     {
         private string _oldNickName;
         private string _newNickName;
-        public override string ErrorResponse => ChatIRCReplyBuilder.Build(ChatIRCErrorCode.NickNameInUse, $"NICK {_newNickName} 0");
+        public override string ErrorResponse => ChatIRCReplyBuilder.Build(ChatIRCErrorCode.NickNameInUse, $"{_oldNickName} {_newNickName} *");
         public ChatIRCNickNameInUseException()
         {
         }

@@ -2,7 +2,6 @@
 using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Exception.General;
-using PresenceSearchPlayer.Handler.CmdHandler.Error;
 using Serilog.Events;
 using System;
 using UniSpyLib.Abstraction.BaseClass;

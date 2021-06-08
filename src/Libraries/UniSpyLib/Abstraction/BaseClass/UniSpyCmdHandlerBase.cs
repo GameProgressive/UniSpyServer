@@ -9,6 +9,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         protected IUniSpySession _session { get; }
         protected IUniSpyRequest _request { get; }
         protected IUniSpyResponse _response { get; set; }
+        protected object _responseBuffer { get; set; }
         protected UniSpyResultBase _result { get; set; }
         public UniSpyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request)
         {
