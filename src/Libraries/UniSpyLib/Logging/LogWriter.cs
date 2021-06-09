@@ -87,7 +87,7 @@ namespace UniSpyLib.Logging
             }
         }
 
-        public static void ToLog(Exception e) => ToLog(LogEventLevel.Error, e.ToString());
+        public static void ToLog(Exception e) => ToLog(LogEventLevel.Error, e.Message);
         public static void ToLog(string message) => ToLog(LogEventLevel.Information, message);
         public static void LogUnkownRequest(string data) => ToLog(LogEventLevel.Error, $"[Unknown] {data}");
         public static void LogUnkownRequest(byte[] data)

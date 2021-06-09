@@ -42,9 +42,9 @@ namespace UniSpyLib.Abstraction.BaseClass
                     handler.Handle();
                 }
             }
-            catch (Exception e)
+            catch (UniSpyExceptionBase e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
         }
 

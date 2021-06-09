@@ -23,19 +23,19 @@ namespace Chat.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
-            switch (_request.RequestType)
+            switch (_request.MessageType)
             {
                 case ChatMessageType.ChannelMessage:
                     base.RequestCheck();
                     break;
                 case ChatMessageType.UserMessage:
-
-                    if (_request.RequestType == ChatMessageType.UserMessage)
+                    if (_request.MessageType == ChatMessageType.UserMessage)
                     {
                         _reciever = _channel.GetChannelUserByNickName(_request.NickName);
                         if (_reciever == null)
                         {
-                            throw new ChatIRCNoSuchNickException($"No user with nickname: {_request.NickName} found in channel: {_channel.Property.ChannelName}.");
+                            throw new ChatIRCNoSuchNickException(
+                                $"No nickname: {_request.NickName} found in channel: {_channel.Property.ChannelName}.");
                         }
                     }
                     break;
@@ -45,7 +45,7 @@ namespace Chat.Abstraction.BaseClass
         }
         protected override void DataOperation()
         {
-            switch (_request.RequestType)
+            switch (_request.MessageType)
             {
                 case ChatMessageType.ChannelMessage:
                     ChannelMessageDataOpration();
@@ -68,7 +68,7 @@ namespace Chat.Abstraction.BaseClass
         {
             // response can not be null!
             _response.Build();
-            switch (_request.RequestType)
+            switch (_request.MessageType)
             {
                 case ChatMessageType.ChannelMessage:
                     _channel.MultiCastExceptSender(_user, (string)_response.SendingBuffer);
@@ -77,7 +77,6 @@ namespace Chat.Abstraction.BaseClass
                     _reciever.UserInfo.Session.SendAsync((string)_response.SendingBuffer);
                     break;
             }
-
         }
     }
 }

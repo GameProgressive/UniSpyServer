@@ -17,7 +17,20 @@ namespace UniSpyLib.Network
     public class UniSpyTCPSessionBase : TcpSession, IUniSpySession
     {
         public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
-        public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint ?? null;
+        public IPEndPoint RemoteIPEndPoint
+        {
+            get
+            {
+                try
+                {
+                    return (IPEndPoint)Socket.RemoteEndPoint;
+                }
+                catch (Exception e)
+                {
+                    throw new ApplicationException("Client already disconnected.", e);
+                }
+            }
+        }
         public new UniSpyTCPServerBase Server => (UniSpyTCPServerBase)base.Server;
         public UniSpyTCPSessionBase(UniSpyTCPServerBase server) : base(server)
         {

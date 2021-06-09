@@ -4,18 +4,13 @@ using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceConnectionManager.Handler.CmdHandler.General;
-using PresenceConnectionManager.Handler.SystemHandler.Redis;
 using PresenceConnectionManager.Structure;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Exception.Login;
-using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
-using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
@@ -138,7 +133,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (email.Count() == 0)
                 {
-                    throw new GPLoginBadEmailException("email is not in database.");
+                    throw new GPLoginBadEmailException($"email: {_request.Email} is invalid.");
                 }
 
                 //Grab information from database
@@ -196,7 +191,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (info.Count() != 1)
                 {
-                    throw new GPLoginBadUniquenickException();
+                    throw new GPLoginBadUniquenickException($"The uniquenick: {_request.UniqueNick} is invalid.");
                 }
                 _result.DatabaseResults = info.First();
             }
@@ -228,7 +223,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
                 if (info.Count() != 1)
                 {
-                    throw new GPLoginBadPreAuthException();
+                    throw new GPLoginBadPreAuthException("The pre-authentication token is invalid.");
                 }
                 _result.DatabaseResults = info.First();
             }

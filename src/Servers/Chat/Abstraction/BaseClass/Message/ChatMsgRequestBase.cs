@@ -14,7 +14,7 @@ namespace Chat.Abstraction.BaseClass
         {
         }
 
-        public ChatMessageType RequestType { get; protected set; }
+        public ChatMessageType MessageType { get; protected set; }
         public string NickName { get; protected set; }
         public string Message { get; protected set; }
 
@@ -24,15 +24,14 @@ namespace Chat.Abstraction.BaseClass
 
             if (_cmdParams[0].Contains("#"))
             {
-                RequestType = ChatMessageType.ChannelMessage;
+                MessageType = ChatMessageType.ChannelMessage;
             }
             else
             {
-                RequestType = ChatMessageType.UserMessage;
+                MessageType = ChatMessageType.UserMessage;
                 ChannelName = null;
                 NickName = _cmdParams[0];
             }
-
             Message = _longParam;
         }
     }

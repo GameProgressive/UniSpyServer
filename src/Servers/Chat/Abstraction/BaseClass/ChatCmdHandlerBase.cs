@@ -35,7 +35,6 @@ namespace Chat.Abstraction.BaseClass
 
         public ChatCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new ChatDefaultResult();
         }
 
         //if we use this structure the error response should also write to _sendingBuffer

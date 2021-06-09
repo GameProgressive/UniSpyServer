@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.Misc.ChannelInfo;
+﻿using Chat.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Result.Channel
 {
@@ -9,9 +7,7 @@ namespace Chat.Entity.Structure.Result.Channel
         public string JoinerPrefix { get; set; }
         public string JoinerNickName { get; set; }
         public string AllChannelUserNicks { get; set; }
-        public bool IsCreateChannel { get; set; }
         public string ChannelModes { get; set; }
-        public bool IsAlreadyJoinedChannel { get; set; }
 
         // public string ChannelModes { get; set; }
         // public List<string> NickNames { get; set; }
