@@ -37,7 +37,8 @@ namespace UniSpyLib.Abstraction.BaseClass
         public virtual void Start()
         {
             ShowUniSpyLogo();
-            LoadDatabaseConfig();
+            ConnectMySql();
+            ConnectRedis();
             LoadServerConfig();
             UniSpyJsonConverter.Initialize();
         }
@@ -64,9 +65,21 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// <param name="cfg"></param>
         protected abstract void StartServer(UniSpyServerConfig cfg);
 
-        protected void LoadDatabaseConfig()
+        public void ConnectRedis()
         {
-            //Determine which database is used and establish the database connection.
+            try
+            {
+                Redis = ConnectionMultiplexer.Connect(
+                    $"{ConfigManager.Config.Redis.RemoteAddress}:{ConfigManager.Config.Redis.RemotePort}");
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Can not connect to Redis", e);
+            }
+            Console.WriteLine($"Successfully connected to Redis!");
+        }
+        public void ConnectMySql()
+        {//Determine which database is used and establish the database connection.
             switch (ConfigManager.Config.Database.Type)
             {
                 case DatabaseType.MySql:
@@ -93,19 +106,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             }
 
             Console.WriteLine($"Successfully connected to {ConfigManager.Config.Database.Type}!");
-
-            try
-            {
-                Redis = ConnectionMultiplexer.Connect(
-                    $"{ConfigManager.Config.Redis.RemoteAddress}:{ConfigManager.Config.Redis.RemotePort}");
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Can not connect to Redis", e);
-            }
-            Console.WriteLine($"Successfully connected to Redis!");
         }
-
         public static void ShowUniSpyLogo()
         {
             // the ascii art font name is "small"

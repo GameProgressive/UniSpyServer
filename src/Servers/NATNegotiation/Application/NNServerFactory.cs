@@ -4,6 +4,7 @@ using System.Net;
 using System.Reflection;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
+using UniSpyLib.MiscMethod;
 using UniSpyLib.UniSpyConfig;
 
 namespace NATNegotiation.Application
@@ -23,12 +24,23 @@ namespace NATNegotiation.Application
         {
         }
         /// <summary>
+        /// NatNeg server do not need to access to MySql database
+        /// </summary>
+        public override void Start()
+        {
+            ShowUniSpyLogo();
+            ConnectRedis();
+            LoadServerConfig();
+            UniSpyJsonConverter.Initialize();
+        }
+
+        /// <summary>
         /// Starts a specific server, you can also start all server in once if you do not check the server name.
         /// </summary>
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(UniSpyServerConfig cfg)
         {
-           if (cfg.ServerName == ServerName)
+            if (cfg.ServerName == ServerName)
             {
                 Server = new NNServer(cfg.ServerID, cfg.ListeningEndPoint);
             }
