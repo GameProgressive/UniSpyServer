@@ -1,5 +1,6 @@
 ﻿using QueryReport.Network;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.MiscMethod;
 using UniSpyLib.UniSpyConfig;
 
 namespace QueryReport.Application
@@ -18,7 +19,13 @@ namespace QueryReport.Application
         public QRServerFactory()
         {
         }
-
+        public override void Start()
+        {
+            ShowUniSpyLogo();
+            ConnectRedis();
+            LoadServerConfig();
+            UniSpyJsonConverter.Initialize();
+        }
         /// <summary>
         /// Starts a specific server
         /// </summary>
@@ -28,7 +35,6 @@ namespace QueryReport.Application
             if (cfg.ServerName == ServerName)
             {
                 Server = new QRServer(cfg.ServerID, cfg.ListeningEndPoint);
-
             }
         }
     }

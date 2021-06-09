@@ -23,7 +23,6 @@ namespace QueryReport.Abstraction.BaseClass
             data.AddRange(QRRequestBase.MagicData);
             data.Add((byte)_request.CommandName);
             data.AddRange(BitConverter.GetBytes(_request.InstantKey));
-
             SendingBuffer = data.ToArray();
         }
     }
