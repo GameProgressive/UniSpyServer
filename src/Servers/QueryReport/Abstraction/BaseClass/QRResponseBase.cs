@@ -1,8 +1,6 @@
-﻿using QueryReport.Entity.Enumerate;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Logging;
 
 namespace QueryReport.Abstraction.BaseClass
 {

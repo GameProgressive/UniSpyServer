@@ -1,9 +1,6 @@
 ﻿using NetCoreServer;
 using System;
-using System.Collections.Concurrent;
-using System.Linq;
 using System.Net;
-using UniSpyLib.Extensions;
 using UniSpyLib.Network;
 
 //GPCM represents GameSpy Connection Manager

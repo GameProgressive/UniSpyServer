@@ -14,7 +14,7 @@ namespace CDKey.Application
             private set => UniSpyServerFactoryBase.Server = value;
         }
 
-        public CDKeyServerFactory() 
+        public CDKeyServerFactory()
         {
         }
 

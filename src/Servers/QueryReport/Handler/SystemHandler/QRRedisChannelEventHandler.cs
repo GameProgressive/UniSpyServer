@@ -1,10 +1,10 @@
-using System.Net;
 using QueryReport.Application;
 using QueryReport.Entity.Structure.NATNeg;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
 using QueryReport.Network;
 using Serilog.Events;
+using System.Net;
 using UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Entity.Structure;
@@ -26,7 +26,7 @@ namespace QueryReport.Handler.SystemHandler
             var endPoint = new IPEndPoint(address, port);
 
             IUniSpySession session;
-            
+
             if (!QRServerFactory.Server.SessionManager.SessionPool.TryGetValue(endPoint, out session))
             {
                 LogWriter.ToLog(LogEventLevel.Error, "Can not find game server in QR");

@@ -1,7 +1,6 @@
 ﻿using Serilog.Events;
 using System;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Entity.Structure;
 using UniSpyLib.Logging;
 
 namespace CDKey.Application

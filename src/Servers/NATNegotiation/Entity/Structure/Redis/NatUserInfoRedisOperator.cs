@@ -1,5 +1,4 @@
 ﻿using UniSpyLib.Abstraction.BaseClass.Redis;
-using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Entity.Structure.Redis
 {

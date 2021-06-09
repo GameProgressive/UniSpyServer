@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace UniSpyLib.Encryption
+﻿namespace UniSpyLib.Encryption
 {
     public enum Crc16Mode : ushort
     {

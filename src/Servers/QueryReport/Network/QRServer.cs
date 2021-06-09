@@ -1,7 +1,7 @@
-﻿using System;
-using System.Net;
-using QueryReport.Entity.Structure.Redis;
+﻿using QueryReport.Entity.Structure.Redis;
 using QueryReport.Handler.CmdSwitcher;
+using System;
+using System.Net;
 using UniSpyLib.Network;
 
 namespace QueryReport.Network

@@ -1,5 +1,4 @@
-﻿using System;
-namespace PresenceConnectionManager.Entity.Enumerate
+﻿namespace PresenceConnectionManager.Entity.Enumerate
 {
     public enum GPStatusCode
     {

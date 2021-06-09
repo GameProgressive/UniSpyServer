@@ -1,10 +1,8 @@
-﻿using System;
-using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
+﻿using QueryReport.Entity.Enumerate;
 using QueryReport.Handler.CmdHandler;
+using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
 
 namespace QueryReport.Handler.CmdSwitcher
 {

@@ -20,6 +20,6 @@ namespace Chat.Entity.Structure.Response.General
             return ChatIRCReplyBuilder.Build(ChatReplyName.UserIP, null, $"@{ip}");
         }
 
-   
+
     }
 }

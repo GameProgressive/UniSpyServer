@@ -1,5 +1,4 @@
-﻿using NATNegotiation.Entity.Enumerate;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace NATNegotiation.Handler.CmdSwitcher

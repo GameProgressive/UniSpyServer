@@ -1,6 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc;
-using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Result.General;
 using UniSpyLib.Abstraction.BaseClass;
 
@@ -18,7 +17,7 @@ namespace Chat.Entity.Structure.Response.General
             foreach (var info in _result.ChannelInfos)
             {
                 var cmdParams = $"param1 {info.ChannelName} {info.TotalChannelUsers} {info.ChannelTopic}";
-                SendingBuffer+= ChatIRCReplyBuilder.Build(
+                SendingBuffer += ChatIRCReplyBuilder.Build(
                     _result.UserIRCPrefix,
                     ChatReplyName.ListStart,
                     cmdParams,

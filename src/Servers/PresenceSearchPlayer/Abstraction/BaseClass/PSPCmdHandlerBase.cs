@@ -1,11 +1,9 @@
-﻿using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceSearchPlayer.Entity.Exception.General;
+﻿using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
 using PresenceSearchPlayer.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {

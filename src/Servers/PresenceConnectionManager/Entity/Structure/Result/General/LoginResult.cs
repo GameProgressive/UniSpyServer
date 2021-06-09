@@ -1,5 +1,4 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Structure.Data;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {

@@ -1,6 +1,5 @@
 ﻿using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Exception;
 using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Entity.Structure.Response;

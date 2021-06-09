@@ -1,18 +1,14 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Exception.NewUser;
-using PresenceSearchPlayer.Entity.Structure.Exception;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
-using Serilog.Events;
 using System;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
-using UniSpyLib.Logging;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {

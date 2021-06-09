@@ -16,7 +16,7 @@ namespace ServerBrowser.Entity.Structure.Misc
         /// </summary>
         internal const string ServerChallenge = "0000000000";
         internal const ushort QueryReportDefaultPort = 6500;
-        internal static byte[] HtonQueryReportDefaultPort 
+        internal static byte[] HtonQueryReportDefaultPort
         => ByteTools.GetBytes(SBConstants.QueryReportDefaultPort, true);
 
     }

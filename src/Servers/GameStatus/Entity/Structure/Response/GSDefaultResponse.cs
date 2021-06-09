@@ -1,5 +1,4 @@
-﻿using System;
-using GameStatus.Abstraction.BaseClass;
+﻿using GameStatus.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Structure.Response

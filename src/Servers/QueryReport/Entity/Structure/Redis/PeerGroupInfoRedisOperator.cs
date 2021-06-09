@@ -2,7 +2,6 @@
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyLib.Database.DatabaseModel.MySql;
-using UniSpyLib.Extensions;
 
 namespace QueryReport.Entity.Structure.Redis
 {

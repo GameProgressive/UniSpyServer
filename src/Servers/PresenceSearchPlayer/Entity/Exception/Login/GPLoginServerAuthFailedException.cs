@@ -1,12 +1,10 @@
-using System;
-using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceSearchPlayer.Entity.Exception.Login
 {
     public class GPLoginServerAuthFailedException : GPLoginException
     {
-        public GPLoginServerAuthFailedException() : base("Login server authentication failed!",GPErrorCode.LoginServerAuthFaild)
+        public GPLoginServerAuthFailedException() : base("Login server authentication failed!", GPErrorCode.LoginServerAuthFaild)
         {
         }
 

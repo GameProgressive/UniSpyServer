@@ -1,4 +1,3 @@
-using System;
 using Chat.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Result.Channel

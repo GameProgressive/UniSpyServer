@@ -1,10 +1,8 @@
-﻿using Chat.Entity.Structure;
-using Chat.Entity.Structure.Misc;
-using UniSpyLib.Abstraction.Interface;
-using Chat.Entity.Structure.Misc.ChannelInfo;
-using Chat.Abstraction.BaseClass.Message;
+﻿using Chat.Abstraction.BaseClass.Message;
 using Chat.Entity.Exception;
 using Chat.Entity.Exception.IRC.General;
+using Chat.Entity.Structure.Misc.ChannelInfo;
+using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {

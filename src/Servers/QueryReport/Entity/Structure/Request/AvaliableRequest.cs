@@ -1,5 +1,4 @@
 ﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Exception;
 
 namespace QueryReport.Entity.Structure.Request

@@ -1,5 +1,4 @@
-﻿using Chat.Entity.Structure.Misc;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Abstraction.BaseClass
 {

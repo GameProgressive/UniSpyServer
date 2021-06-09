@@ -1,5 +1,4 @@
 ﻿using Chat.Entity.Exception;
-using Chat.Entity.Structure;
 
 namespace Chat.Abstraction.BaseClass
 {

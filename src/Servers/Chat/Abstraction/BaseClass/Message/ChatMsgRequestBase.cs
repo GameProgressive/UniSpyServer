@@ -1,6 +1,4 @@
-﻿using Chat.Entity.Structure;
-
-namespace Chat.Abstraction.BaseClass
+﻿namespace Chat.Abstraction.BaseClass
 {
     public enum ChatMessageType
     {

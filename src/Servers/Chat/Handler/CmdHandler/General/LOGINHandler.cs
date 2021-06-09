@@ -1,6 +1,5 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Exception;
-using Chat.Entity.Structure;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
 using Chat.Entity.Structure.Result.General;

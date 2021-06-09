@@ -1,6 +1,5 @@
 ﻿using Chat.Entity.Exception.IRC.General;
 using Chat.Entity.Structure.Response;
-using Chat.Entity.Structure.Result;
 using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;

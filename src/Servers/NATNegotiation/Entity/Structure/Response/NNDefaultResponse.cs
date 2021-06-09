@@ -1,5 +1,4 @@
-﻿using System;
-using NATNegotiation.Abstraction.BaseClass;
+﻿using NATNegotiation.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Entity.Structure.Response

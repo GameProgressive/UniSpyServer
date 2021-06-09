@@ -16,7 +16,7 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            
+
             if (_cmdParams.Count != 2)
             {
                 throw new ChatException("number of IRC parameters are incorrect.");

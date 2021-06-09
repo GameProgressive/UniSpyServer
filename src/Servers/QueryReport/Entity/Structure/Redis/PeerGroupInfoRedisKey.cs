@@ -1,6 +1,4 @@
-﻿using System;
-using Newtonsoft.Json;
-using UniSpyLib.Abstraction.BaseClass.Redis;
+﻿using UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyLib.Extensions;
 
 namespace QueryReport.Entity.Structure.Redis

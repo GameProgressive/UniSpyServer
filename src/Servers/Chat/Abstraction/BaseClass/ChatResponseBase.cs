@@ -1,7 +1,4 @@
-﻿using Chat.Entity.Structure;
-using Serilog.Events;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Logging;
+﻿using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Abstraction.BaseClass
 {

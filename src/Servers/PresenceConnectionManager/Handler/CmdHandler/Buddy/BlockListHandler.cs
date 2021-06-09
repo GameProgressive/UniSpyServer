@@ -14,7 +14,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             get => (BlockListResult)base._result;
             set => base._result = value;
         }
- 
+
         public BlockListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new BlockListResult();

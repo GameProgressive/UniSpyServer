@@ -1,9 +1,5 @@
 ﻿using ServerBrowser.Network;
-using System;
-using System.Net;
-using System.Reflection;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
 
 namespace ServerBrowser.Application
@@ -38,7 +34,7 @@ namespace ServerBrowser.Application
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(UniSpyServerConfig cfg)
         {
-           if (cfg.ServerName == ServerName)
+            if (cfg.ServerName == ServerName)
             {
                 Server = new SBServer(cfg.ServerID, cfg.ListeningEndPoint);
             }

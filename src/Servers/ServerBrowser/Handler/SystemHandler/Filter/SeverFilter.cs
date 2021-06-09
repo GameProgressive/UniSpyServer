@@ -1,5 +1,4 @@
-﻿using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Redis;
+﻿using QueryReport.Entity.Structure.Redis;
 using System.Collections.Generic;
 using System.Net;
 

@@ -1,4 +1,3 @@
-using PresenceSearchPlayer.Abstraction.BaseClass;
 using PresenceSearchPlayer.Entity.Enumerate;
 namespace PresenceSearchPlayer.Entity.Exception.General
 {

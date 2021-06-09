@@ -1,5 +1,4 @@
-﻿using ServerBrowser.Entity.Enumerate;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {

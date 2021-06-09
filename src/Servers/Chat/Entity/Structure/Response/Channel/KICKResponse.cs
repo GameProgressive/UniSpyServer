@@ -13,12 +13,12 @@ namespace Chat.Entity.Structure.Response.Channel
         }
 
         private new KICKResult _result => (KICKResult)base._result;
-        private new KICKRequest _request =>(KICKRequest)base._request;
+        private new KICKRequest _request => (KICKRequest)base._request;
 
         public override void Build()
         {
             var cmdParams = $"{_result.ChannelName} {_result.KickerNickName} {_result.KickeeNickName}";
-            
+
             SendingBuffer = ChatIRCReplyBuilder.Build(_result.KickerIRCPrefix, ChatReplyName.KICK, cmdParams, null);
         }
     }

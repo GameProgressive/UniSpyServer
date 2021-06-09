@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using StackExchange.Redis;
+using System;
 using System.Reflection;
-using StackExchange.Redis;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 using UniSpyLib.Encryption;
 
 namespace Chat.Entity.Structure.Misc

@@ -2,7 +2,6 @@
 using Chat.Network;
 using System.Collections.Concurrent;
 using System.Linq;
-using System.Net;
 namespace Chat.Entity.Structure.Misc
 {
     internal class ChatUserInfo

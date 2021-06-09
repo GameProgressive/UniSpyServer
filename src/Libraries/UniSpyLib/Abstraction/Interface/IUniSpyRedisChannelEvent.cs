@@ -1,5 +1,4 @@
-﻿using System;
-namespace UniSpyLib.Abstraction.Interface
+﻿namespace UniSpyLib.Abstraction.Interface
 {
     public interface IUniSpyRedisChannelEvent
     {

@@ -2,7 +2,6 @@
 using Chat.Entity.Structure.Request.General;
 using Chat.Handler.CmdHandler.General;
 using Chat.Handler.CommandSwitcher;
-using UniSpyLib.Encryption;
 using UniSpyLib.Network;
 
 namespace Chat.Network

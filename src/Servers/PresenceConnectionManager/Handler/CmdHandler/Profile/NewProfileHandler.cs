@@ -2,8 +2,6 @@
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
-using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;

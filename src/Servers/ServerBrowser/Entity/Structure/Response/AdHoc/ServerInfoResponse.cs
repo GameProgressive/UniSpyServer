@@ -2,7 +2,6 @@ using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Result;
-using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;

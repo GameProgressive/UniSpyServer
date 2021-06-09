@@ -1,5 +1,4 @@
-﻿using System;
-using PresenceConnectionManager.Entity.Enumerate;
+﻿using PresenceConnectionManager.Entity.Enumerate;
 
 namespace PresenceConnectionManager.Entity.Structure.Misc
 {

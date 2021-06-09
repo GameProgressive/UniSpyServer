@@ -1,7 +1,6 @@
-﻿using System;
-namespace PresenceConnectionManager.Entity.Enumerate
+﻿namespace PresenceConnectionManager.Entity.Enumerate
 {
-    public enum GenderType: ushort
+    public enum GenderType : ushort
     {
         /// <summary>
         /// Gender is male

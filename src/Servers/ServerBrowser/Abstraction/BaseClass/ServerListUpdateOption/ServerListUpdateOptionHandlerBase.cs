@@ -1,8 +1,5 @@
-﻿using ServerBrowser.Entity.Enumerate;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Extensions;
-using ServerBrowser.Entity.Structure.Misc;
-using System.Linq;
 namespace ServerBrowser.Abstraction.BaseClass
 {
     internal abstract class ServerListUpdateOptionHandlerBase : SBCmdHandlerBase

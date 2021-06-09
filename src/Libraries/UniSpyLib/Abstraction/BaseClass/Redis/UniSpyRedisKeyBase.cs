@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
+using System;
 using UniSpyLib.Extensions;
 
 namespace UniSpyLib.Abstraction.BaseClass.Redis
@@ -34,9 +34,9 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
         private string BuildSearchKey()
         {
             var redisKey = JsonConvert.SerializeObject(this);
-            redisKey = redisKey.Replace("{","*").Replace("}","*")
-            .Replace(",","*").Replace("\n","");
-            
+            redisKey = redisKey.Replace("{", "*").Replace("}", "*")
+            .Replace(",", "*").Replace("\n", "");
+
             return redisKey;
         }
     }

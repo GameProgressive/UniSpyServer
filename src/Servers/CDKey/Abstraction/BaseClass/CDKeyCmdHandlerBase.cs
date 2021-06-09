@@ -1,5 +1,4 @@
-﻿using CDKey.Entity.Enumerate;
-using CDKey.Entity.Structure.Result;
+﻿using CDKey.Entity.Structure.Result;
 using CDKey.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;

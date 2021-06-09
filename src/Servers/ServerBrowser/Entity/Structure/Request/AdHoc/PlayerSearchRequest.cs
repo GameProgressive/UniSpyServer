@@ -1,6 +1,5 @@
 ﻿using ServerBrowser.Abstraction.BaseClass;
 using System;
-using System.Text;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 

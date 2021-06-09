@@ -1,5 +1,3 @@
-using System;
-
 namespace UniSpyLib.Entity.Structure
 {
     public class UniSpyRedisChannelName

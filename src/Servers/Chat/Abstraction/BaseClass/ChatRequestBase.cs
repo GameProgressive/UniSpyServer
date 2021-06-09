@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Chat.Entity.Exception;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Chat.Entity.Exception;
-using Chat.Entity.Structure;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Abstraction.BaseClass

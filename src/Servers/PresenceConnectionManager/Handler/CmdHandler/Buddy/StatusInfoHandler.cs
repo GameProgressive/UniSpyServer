@@ -1,10 +1,10 @@
-﻿using System.Linq;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Application;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Response.Buddy;
 using PresenceConnectionManager.Entity.Structure.Result.Buddy;
 using PresenceConnectionManager.Network;
+using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler

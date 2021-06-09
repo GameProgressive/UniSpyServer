@@ -1,5 +1,4 @@
 ﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request;
 using Chat.Entity.Structure.Response.Message;
 using Chat.Entity.Structure.Result.Message;

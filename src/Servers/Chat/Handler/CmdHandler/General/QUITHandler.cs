@@ -1,13 +1,10 @@
-﻿using System.Reflection;
-using System.Linq;
-using Chat.Abstraction.BaseClass;
+﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Misc.ChannelInfo;
 using Chat.Entity.Structure.Request;
-using Chat.Entity.Structure.Response.General;
-using UniSpyLib.Abstraction.Interface;
-using Chat.Handler.CmdHandler.Channel;
-using Chat.Entity.Structure.Result.General;
 using Chat.Entity.Structure.Request.General;
+using Chat.Entity.Structure.Result.General;
+using Chat.Handler.CmdHandler.Channel;
+using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.General
 {
@@ -57,7 +54,7 @@ namespace Chat.Handler.CmdHandler.General
                     ChannelName = channelInfo.ChannelName,
                     Reason = _request.Reason
                 };
-                new PARTHandler(_session,partRequest).Handle();
+                new PARTHandler(_session, partRequest).Handle();
             }
         }
     }

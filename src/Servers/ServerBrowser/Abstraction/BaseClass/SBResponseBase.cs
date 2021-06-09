@@ -1,5 +1,4 @@
 ﻿using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {

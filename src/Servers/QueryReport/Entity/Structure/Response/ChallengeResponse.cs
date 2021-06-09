@@ -1,6 +1,5 @@
 ﻿using QueryReport.Abstraction.BaseClass;
 using System.Collections.Generic;
-using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Encryption;
 

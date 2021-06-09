@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
+﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Entity.Exception;
 using QueryReport.Entity.Structure.Redis;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Result;
+using System;
+using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler

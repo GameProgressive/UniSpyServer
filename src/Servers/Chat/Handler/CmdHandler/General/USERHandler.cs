@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Chat.Abstraction.BaseClass;
+﻿using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request.General;
 using UniSpyLib.Abstraction.Interface;
 

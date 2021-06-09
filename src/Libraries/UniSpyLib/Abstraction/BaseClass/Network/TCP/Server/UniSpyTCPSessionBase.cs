@@ -1,9 +1,9 @@
-﻿using System;
+﻿using NetCoreServer;
+using Serilog.Events;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using NetCoreServer;
-using Serilog.Events;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Encryption;
 using UniSpyLib.Logging;

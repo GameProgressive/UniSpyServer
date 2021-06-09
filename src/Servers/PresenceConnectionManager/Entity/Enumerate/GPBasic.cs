@@ -172,7 +172,7 @@
         NewStatusInfoSupported = 0xC00,
         NewStatusInfoNotSupported = 0xC01,
     }
- 
+
     /// <summary>
     /// This enum rapresers the known Parter IDs, This value was setted to 0 when
     /// a game is directly connecting to GameSpy, otherwise the Partner ID would be

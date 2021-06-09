@@ -1,5 +1,4 @@
 ﻿using GameStatus.Abstraction.BaseClass;
-using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request

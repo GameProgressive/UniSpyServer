@@ -1,11 +1,8 @@
-﻿using QueryReport.Entity.Structure;
-using QueryReport.Entity.Structure.Redis;
+﻿using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
 using ServerBrowser.Entity.Structure.Misc;
 using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Entity.Structure.Result;
-using System.Collections.Generic;
-using System.Text;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Encryption;
 

@@ -1,8 +1,5 @@
 ﻿using Chat.Network;
-using System;
-using System.Reflection;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
 
 namespace Chat.Application
@@ -33,7 +30,7 @@ namespace Chat.Application
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new ChatServer(cfg.ServerID,cfg.ListeningEndPoint);
+                Server = new ChatServer(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

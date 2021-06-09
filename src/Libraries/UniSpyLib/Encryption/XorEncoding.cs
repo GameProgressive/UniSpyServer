@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text;
-
-namespace UniSpyLib.Encryption
+﻿namespace UniSpyLib.Encryption
 {
     public class XOREncoding
     {

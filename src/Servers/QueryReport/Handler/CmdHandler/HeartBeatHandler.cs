@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using QueryReport.Abstraction.BaseClass;
+﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Application;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Redis;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
+using System;
+using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
@@ -92,7 +91,7 @@ namespace QueryReport.Handler.CmdHandler
                 GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
 
 
-            var duplicatedKeys = matchedKeys.Where(k => k.RemoteIPEndPoint.Equals(_session.RemoteIPEndPoint) && k.InstantKey != _request.InstantKey).Select(k=>k);
+            var duplicatedKeys = matchedKeys.Where(k => k.RemoteIPEndPoint.Equals(_session.RemoteIPEndPoint) && k.InstantKey != _request.InstantKey).Select(k => k);
 
             foreach (var key in duplicatedKeys)
             {

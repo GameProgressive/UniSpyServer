@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text;
-using ServerBrowser.Network;
 using UniSpyLib.Encryption;
 
 namespace ServerBrowser.Entity.Structure.Misc

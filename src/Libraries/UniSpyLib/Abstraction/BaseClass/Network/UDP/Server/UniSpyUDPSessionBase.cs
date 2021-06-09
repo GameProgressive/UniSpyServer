@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Text;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Encryption;
 

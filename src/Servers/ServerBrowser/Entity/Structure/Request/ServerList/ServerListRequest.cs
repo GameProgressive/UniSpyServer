@@ -3,7 +3,6 @@ using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Exception;
 using System;
 using System.Linq;
-using System.Text;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 

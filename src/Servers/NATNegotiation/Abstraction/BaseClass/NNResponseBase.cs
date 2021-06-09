@@ -1,9 +1,6 @@
-﻿using NATNegotiation.Entity.Enumerate;
-using Serilog.Events;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Logging;
 // ReSharper disable All
 
 namespace NATNegotiation.Abstraction.BaseClass

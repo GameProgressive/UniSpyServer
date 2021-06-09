@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net;
-using Newtonsoft.Json;
 using UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyLib.Extensions;
 
@@ -8,7 +8,7 @@ namespace QueryReport.Entity.Structure.Redis
 {
     public class GameServerInfoRedisKey : UniSpyRedisKeyBase
     {
-        [JsonProperty(Order = -2,NullValueHandling =NullValueHandling.Ignore)]
+        [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         public Guid? ServerID { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public IPEndPoint RemoteIPEndPoint { get; set; }

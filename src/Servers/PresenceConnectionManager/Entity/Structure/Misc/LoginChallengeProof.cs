@@ -1,6 +1,4 @@
 ﻿using PresenceConnectionManager.Entity.Enumerate;
-using PresenceConnectionManager.Entity.Structure;
-using System;
 using System.Text;
 using UniSpyLib.Extensions;
 

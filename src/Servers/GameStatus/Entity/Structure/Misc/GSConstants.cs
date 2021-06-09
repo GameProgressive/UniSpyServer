@@ -1,5 +1,4 @@
-﻿using System;
-namespace GameStatus.Entity.Structure.Misc
+﻿namespace GameStatus.Entity.Structure.Misc
 {
     public class GSConstants
     {

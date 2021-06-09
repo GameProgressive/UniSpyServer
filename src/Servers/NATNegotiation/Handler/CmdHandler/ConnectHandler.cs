@@ -1,14 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
 using NATNegotiation.Abstraction.BaseClass;
 using NATNegotiation.Application;
-using NATNegotiation.Entity.Enumerate;
 using NATNegotiation.Entity.Exception;
 using NATNegotiation.Entity.Structure.Redis;
 using NATNegotiation.Entity.Structure.Request;
 using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
 using Serilog.Events;
+using System.Collections.Generic;
+using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 

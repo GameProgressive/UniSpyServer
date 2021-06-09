@@ -1,5 +1,4 @@
-﻿using Chat.Network;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {

@@ -1,5 +1,4 @@
-﻿using System;
-namespace Chat.Entity.Structure.Misc
+﻿namespace Chat.Entity.Structure.Misc
 {
     public class ChatConstants
     {

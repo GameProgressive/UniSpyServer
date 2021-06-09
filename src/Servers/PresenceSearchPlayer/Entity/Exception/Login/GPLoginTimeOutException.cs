@@ -1,5 +1,4 @@
-﻿using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Enumerate;
+﻿using PresenceSearchPlayer.Entity.Enumerate;
 
 namespace PresenceSearchPlayer.Entity.Exception.Login
 {

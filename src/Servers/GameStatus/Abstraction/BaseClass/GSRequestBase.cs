@@ -1,5 +1,4 @@
-﻿using GameStatus.Entity.Enumerate;
-using GameStatus.Entity.Exception;
+﻿using GameStatus.Entity.Exception;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;

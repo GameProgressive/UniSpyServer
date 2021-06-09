@@ -1,10 +1,8 @@
-﻿using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Structure.Response;
+﻿using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
 using QueryReport.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
 
 namespace QueryReport.Abstraction.BaseClass
 {

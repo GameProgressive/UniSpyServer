@@ -1,6 +1,4 @@
-﻿using Serilog.Events;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 

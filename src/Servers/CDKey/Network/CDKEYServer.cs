@@ -1,6 +1,6 @@
-﻿using System;
+﻿using CDKey.Handler.CmdSwitcher;
+using System;
 using System.Net;
-using CDKey.Handler.CmdSwitcher;
 using UniSpyLib.Encryption;
 using UniSpyLib.Network;
 

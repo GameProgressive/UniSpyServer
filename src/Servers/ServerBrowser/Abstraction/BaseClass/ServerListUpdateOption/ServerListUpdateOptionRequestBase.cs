@@ -1,6 +1,4 @@
 ﻿using ServerBrowser.Entity.Enumerate;
-using UniSpyLib.Extensions;
-using ServerBrowser.Entity.Structure.Misc;
 namespace ServerBrowser.Abstraction.BaseClass
 {
     internal abstract class ServerListUpdateOptionRequestBase : SBRequestBase

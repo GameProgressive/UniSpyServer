@@ -1,5 +1,4 @@
-﻿using GameStatus.Entity.Enumerate;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Abstraction.BaseClass
 {

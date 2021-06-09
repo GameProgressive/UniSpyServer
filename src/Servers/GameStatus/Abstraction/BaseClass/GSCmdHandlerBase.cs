@@ -1,16 +1,8 @@
-﻿using System.Text;
-using GameStatus.Entity.Enumerate;
-using GameStatus.Entity.Structure.Misc;
-using GameStatus.Entity.Structure.Response;
+﻿using GameStatus.Entity.Structure.Response;
 using GameStatus.Entity.Structure.Result;
-using GameStatus.Handler.SystemHandler;
 using GameStatus.Network;
-using Serilog.Events;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
 
 namespace GameStatus.Abstraction.BaseClass
 {

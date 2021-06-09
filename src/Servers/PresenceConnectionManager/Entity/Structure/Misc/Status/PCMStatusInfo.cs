@@ -1,7 +1,4 @@
-﻿using System;
-using PresenceConnectionManager.Entity.Enumerate;
-
-namespace PresenceConnectionManager.Entity.Structure.Misc
+﻿namespace PresenceConnectionManager.Entity.Structure.Misc
 {
     /// <summary>
     /// This status info class is for new SDK version

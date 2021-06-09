@@ -25,7 +25,7 @@ namespace Chat.Entity.Structure.Response
             SendingBuffer =
                 ChatIRCReplyBuilder.Build(
                     _result.ChannelUserIRCPrefix,
-                    ChatReplyName.GetChanKey, 
+                    ChatReplyName.GetChanKey,
                     cmdParams,
                     null);
         }

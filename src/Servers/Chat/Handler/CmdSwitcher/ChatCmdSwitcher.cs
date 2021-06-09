@@ -1,5 +1,5 @@
-﻿using System;
-using Chat.Network;
+﻿using Chat.Network;
+using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 

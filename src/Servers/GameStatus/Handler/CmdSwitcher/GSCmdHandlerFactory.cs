@@ -1,9 +1,8 @@
-﻿using System;
-using GameStatus.Entity.Structure.Misc;
+﻿using GameStatus.Entity.Structure.Misc;
 using GameStatus.Handler.CmdHandler;
+using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
 
 namespace GameStatus.Handler.CmdSwitcher
 {

@@ -1,6 +1,5 @@
-using System;
-using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Enumerate;
+using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceSearchPlayer.Entity.Exception.AddBuddy
 {

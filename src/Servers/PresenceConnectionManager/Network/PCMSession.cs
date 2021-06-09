@@ -1,10 +1,8 @@
 ﻿using PresenceConnectionManager.Entity.Enumerate;
-using PresenceConnectionManager.Entity.Structure;
 using PresenceConnectionManager.Handler.CommandSwitcher;
 using PresenceConnectionManager.Structure;
 using PresenceConnectionManager.Structure.Data;
 using Serilog.Events;
-using System;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
 

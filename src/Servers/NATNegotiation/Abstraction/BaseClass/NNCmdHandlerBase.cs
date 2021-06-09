@@ -1,10 +1,8 @@
-﻿using NATNegotiation.Entity.Enumerate;
-using NATNegotiation.Entity.Structure.Response;
+﻿using NATNegotiation.Entity.Structure.Response;
 using NATNegotiation.Entity.Structure.Result;
 using NATNegotiation.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {

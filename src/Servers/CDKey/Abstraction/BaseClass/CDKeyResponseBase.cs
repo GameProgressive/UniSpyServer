@@ -1,6 +1,4 @@
-﻿using System;
-using CDKey.Entity.Enumerate;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyLib.Abstraction.BaseClass;
 
 namespace CDKey.Abstraction.BaseClass
 {

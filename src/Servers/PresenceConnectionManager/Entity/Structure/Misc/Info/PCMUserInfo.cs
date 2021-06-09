@@ -1,5 +1,5 @@
-﻿using System;
-using PresenceConnectionManager.Entity.Structure.Misc;
+﻿using PresenceConnectionManager.Entity.Structure.Misc;
+using System;
 
 namespace PresenceConnectionManager.Structure.Data
 {

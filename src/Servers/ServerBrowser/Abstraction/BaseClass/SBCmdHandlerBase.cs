@@ -1,10 +1,8 @@
-﻿using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure.Response;
+﻿using ServerBrowser.Entity.Structure.Response;
 using ServerBrowser.Entity.Structure.Result;
 using ServerBrowser.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {

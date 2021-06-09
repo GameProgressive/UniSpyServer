@@ -1,8 +1,6 @@
 ﻿using Chat.Abstraction.BaseClass;
 using Chat.Application;
-using Chat.Entity.Exception;
 using Chat.Entity.Exception.IRC.General;
-using Chat.Entity.Structure;
 using Chat.Entity.Structure.Misc;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;

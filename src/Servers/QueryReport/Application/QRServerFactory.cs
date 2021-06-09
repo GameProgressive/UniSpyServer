@@ -1,7 +1,4 @@
 ﻿using QueryReport.Network;
-using System;
-using System.Net;
-using System.Reflection;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.UniSpyConfig;
 
@@ -28,7 +25,7 @@ namespace QueryReport.Application
         /// <param name="cfg">The configuration of the specific server to run</param>
         protected override void StartServer(UniSpyServerConfig cfg)
         {
-           if (cfg.ServerName == ServerName)
+            if (cfg.ServerName == ServerName)
             {
                 Server = new QRServer(cfg.ServerID, cfg.ListeningEndPoint);
 
