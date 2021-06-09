@@ -16,7 +16,7 @@ namespace Chat.Entity.Structure.Response.General
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             // string modeReply = MODEResponse.BuildChannelModeReply(
             //           _request.ChannelName, _result.ChannelModes);

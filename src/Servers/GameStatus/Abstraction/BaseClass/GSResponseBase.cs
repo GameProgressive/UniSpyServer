@@ -17,12 +17,5 @@ namespace GameStatus.Abstraction.BaseClass
         {
         }
 
-        public override void Build()
-        {
-
-            BuildNormalResponse();
-
-        }
-
     }
 }

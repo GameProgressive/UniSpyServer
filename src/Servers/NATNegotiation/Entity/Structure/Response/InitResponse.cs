@@ -15,9 +15,9 @@ namespace NATNegotiation.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
-            base.BuildNormalResponse();
+            base.Build();
             List<byte> data = new List<byte>();
             data.AddRange(SendingBuffer);
             data.Add((byte)_request.PortType);

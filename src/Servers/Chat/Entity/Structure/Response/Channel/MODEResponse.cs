@@ -15,7 +15,7 @@ namespace Chat.Entity.Structure.Response
 
         private new MODERequest _request => (MODERequest)base._request;
         private new MODEResult _result => (MODEResult)base._result;
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             if (_request.RequestType == ModeRequestType.GetChannelModes)
             {

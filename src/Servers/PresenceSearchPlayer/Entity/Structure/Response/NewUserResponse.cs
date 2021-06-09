@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
 
         protected new NewUserResult _result => (NewUserResult)base._result;
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = $@"\nur\\pid\{_result.SubProfile.Profileid}\final\";
         }

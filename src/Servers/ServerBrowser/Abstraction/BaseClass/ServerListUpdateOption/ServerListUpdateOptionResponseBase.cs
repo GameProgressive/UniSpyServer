@@ -20,7 +20,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             _serverListData = new List<byte>();
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             //Add crypt header
             BuildCryptHeader();

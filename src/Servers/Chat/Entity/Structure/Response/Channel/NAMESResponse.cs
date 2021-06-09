@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Response.Channel
         public NAMESResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = BuildNameReply(
                 _result.RequesterNickName,

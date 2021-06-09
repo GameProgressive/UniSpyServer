@@ -17,9 +17,9 @@ namespace ServerBrowser.Entity.Structure.Response.ServerList
         public P2PGroupRoomListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
-            base.BuildNormalResponse();
+            base.Build();
             SendingBuffer = _serverListData.ToArray();
         }
 

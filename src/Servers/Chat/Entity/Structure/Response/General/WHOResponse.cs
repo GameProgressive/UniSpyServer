@@ -13,7 +13,7 @@ namespace Chat.Entity.Structure.Response.General
         public WHOResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = "";
             foreach (var data in _result.DataModels)

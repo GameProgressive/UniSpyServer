@@ -29,7 +29,7 @@ namespace Chat.Entity.Structure.Response.General
                 cmdParams,
                 tailing);
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = "";
             foreach (var data in _result.DataResults)

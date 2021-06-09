@@ -12,7 +12,7 @@ namespace Chat.Entity.Structure.Response.General
         public NICKResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = BuildWelcomeReply(_request.NickName);
         }

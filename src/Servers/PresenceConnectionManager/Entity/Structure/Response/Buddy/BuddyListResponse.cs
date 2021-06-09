@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 
         protected new BuddyListResult _result => (BuddyListResult)base._result;
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             // \bdy\< num in list >\list\< profileid list - comma delimited >\final\
             SendingBuffer = $@"\bdy\{_result.ProfileIDList.Count()}\list\";

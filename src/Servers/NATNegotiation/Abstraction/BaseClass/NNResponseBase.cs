@@ -24,7 +24,7 @@ namespace NATNegotiation.Abstraction.BaseClass
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             List<byte> data = new List<byte>();
             data.AddRange(NNRequestBase.MagicData);
@@ -32,11 +32,6 @@ namespace NATNegotiation.Abstraction.BaseClass
             data.Add((byte)_result.PacketType);
             data.AddRange(BitConverter.GetBytes(_request.Cookie));
             SendingBuffer = data.ToArray();
-        }
-
-        public override void Build()
-        {
-            BuildNormalResponse();
         }
     }
 }

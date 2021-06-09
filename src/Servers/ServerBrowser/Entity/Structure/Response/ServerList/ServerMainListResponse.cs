@@ -19,10 +19,10 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             // we add the other header
-            base.BuildNormalResponse();
+            base.Build();
             // we add the server keys
             BuildServerKeys();
             //we use NTS string so total unique value list is 0

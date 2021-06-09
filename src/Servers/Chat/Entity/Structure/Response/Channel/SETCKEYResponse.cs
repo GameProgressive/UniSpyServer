@@ -14,7 +14,7 @@ namespace Chat.Entity.Structure.Response.Channel
         public SETCKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             //we only broadcast the b_flags
             string flags = "";

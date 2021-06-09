@@ -16,9 +16,9 @@ namespace ServerBrowser.Entity.Structure.Response.ServerList
         public ServerNetworkInfoListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
-            base.BuildNormalResponse();
+            base.Build();
             SendingBuffer = _serverListData.ToArray();
         }
         protected override void BuildServersInfo()

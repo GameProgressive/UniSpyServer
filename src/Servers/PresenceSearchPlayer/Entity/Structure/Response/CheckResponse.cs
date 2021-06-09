@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = $@"\cur\0\pid\{_result.ProfileID}\final\";
         }

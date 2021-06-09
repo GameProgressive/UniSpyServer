@@ -18,11 +18,8 @@ namespace QueryReport.Abstraction.BaseClass
         protected QRResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
+
         public override void Build()
-        {
-            BuildNormalResponse();
-        }
-        protected override void BuildNormalResponse()
         {
             List<byte> data = new List<byte>();
             data.AddRange(QRRequestBase.MagicData);

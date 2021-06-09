@@ -12,7 +12,7 @@ namespace Chat.Entity.Structure.Response.General
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = ChatIRCReplyBuilder.Build(
                 ChatReplyName.Login,

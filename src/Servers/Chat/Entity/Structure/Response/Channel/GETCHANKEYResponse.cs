@@ -14,7 +14,7 @@ namespace Chat.Entity.Structure.Response.Channel
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             var cmdParams = $"param1 {_result.ChannelName} {_request.Cookie} {_result.Values}";
             SendingBuffer = ChatIRCReplyBuilder.Build(

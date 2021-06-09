@@ -12,7 +12,7 @@ namespace Chat.Entity.Structure.Response.Channel
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = BuildPartReply(
                   _result.LeaverIRCPrefix,

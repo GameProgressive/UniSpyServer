@@ -11,13 +11,5 @@ namespace CDKey.Abstraction.BaseClass
         public CDKeyResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
-        public override void Build()
-        {
-
-            BuildNormalResponse();
-
-        }
-
     }
 }

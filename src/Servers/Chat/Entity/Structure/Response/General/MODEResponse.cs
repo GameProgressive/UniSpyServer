@@ -28,7 +28,7 @@ namespace Chat.Entity.Structure.Response.General
                 $"{nickName} {channelName} {modes}");
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             // we only broadcast the channel 
             if (_request.RequestType == ModeRequestType.GetChannelModes)

@@ -13,7 +13,7 @@ namespace GameStatus.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = $@"\getpidr\{_result.ProfileID}\lid\{ _request.OperationID}\final\";
         }

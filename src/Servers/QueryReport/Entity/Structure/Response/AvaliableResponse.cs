@@ -13,7 +13,7 @@ namespace QueryReport.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             List<byte> buffer = new List<byte>();
 

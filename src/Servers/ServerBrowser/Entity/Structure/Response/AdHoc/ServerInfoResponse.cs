@@ -19,7 +19,7 @@ namespace ServerBrowser.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             _serverListData.Add((byte)SBServerResponseType.PushServerMessage);
             BuildServersInfo();

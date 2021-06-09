@@ -21,7 +21,7 @@ namespace Chat.Entity.Structure.Response.Channel
             return ChatIRCReplyBuilder.Build(ChatReplyName.TOPIC, channelName, channelTopic);
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             if (_result.ChannelTopic == "" || _result.ChannelTopic == null)
             {

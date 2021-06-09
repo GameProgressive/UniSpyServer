@@ -13,7 +13,7 @@ namespace Chat.Entity.Structure.Response.Message
         public NOTICEResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = ChatIRCReplyBuilder.Build(_result.UserIRCPrefix, _result.TargetName, _request.Message);
         }

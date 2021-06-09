@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             // \bm\<buddy message type>\f\<profile id>\date\<date>
             // GPI_BM_MESSAGE: \msg\<msg>\

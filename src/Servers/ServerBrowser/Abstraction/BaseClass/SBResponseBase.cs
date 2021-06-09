@@ -3,6 +3,10 @@ using UniSpyLib.Logging;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
+
+    /// <summary>
+    /// SB always need to response to client even there are no server or error occured
+    /// </summary>
     internal abstract class SBResponseBase : UniSpyResponseBase
     {
         protected new SBRequestBase _request => (SBRequestBase)base._request;
@@ -16,12 +20,5 @@ namespace ServerBrowser.Abstraction.BaseClass
         {
         }
 
-        /// <summary>
-        /// SB always need to response to client even there are no server or error occured
-        /// </summary>
-        public override void Build()
-        {
-            BuildNormalResponse();
-        }
     }
 }

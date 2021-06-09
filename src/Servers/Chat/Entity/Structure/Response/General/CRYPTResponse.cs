@@ -12,7 +12,7 @@ namespace Chat.Entity.Structure.Response.General
         public CRYPTResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             var cmdParams = $"* {ChatConstants.ClientKey} {ChatConstants.ServerKey}";
             SendingBuffer = ChatIRCReplyBuilder.Build(

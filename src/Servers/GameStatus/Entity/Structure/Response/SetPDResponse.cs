@@ -14,7 +14,7 @@ namespace GameStatus.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             throw new NotImplementedException();
         }

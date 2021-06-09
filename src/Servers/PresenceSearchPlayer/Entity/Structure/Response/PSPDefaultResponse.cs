@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
         }
     }

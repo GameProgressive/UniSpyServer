@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             // \blk\< num in list >\list\< profileid list - comma delimited >\final\
             SendingBuffer = $@"\blk\{_result.ProfileIdList.Count()}\list\";

@@ -15,7 +15,7 @@ namespace Chat.Entity.Structure.Response.Channel
         private new KICKResult _result => (KICKResult)base._result;
         private new KICKRequest _request =>(KICKRequest)base._request;
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             var cmdParams = $"{_result.ChannelName} {_result.KickerNickName} {_result.KickeeNickName}";
             

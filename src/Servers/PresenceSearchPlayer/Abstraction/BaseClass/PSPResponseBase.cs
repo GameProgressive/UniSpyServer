@@ -22,10 +22,5 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         protected PSPResponseBase(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
-        public override void Build()
-        {
-            BuildNormalResponse();
-        }
     }
 }

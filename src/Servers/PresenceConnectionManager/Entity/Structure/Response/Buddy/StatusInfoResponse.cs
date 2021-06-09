@@ -17,7 +17,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response.Buddy
         /// \bsi\\state\\profile\\bip\\bport\\hostip\\hprivip\\qport\\hport\\sessflags\\rstatus\\
         /// gameType\\gameVnt\\gameMn\\product\\qmodeflags\
         /// </summary>
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = $@"bsi\\state\{_result.StatusInfo.StatusState}\
                 profile\{_result.ProfileID}\bip\{_result.StatusInfo.BuddyIP}

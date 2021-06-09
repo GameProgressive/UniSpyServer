@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
         public GetProfileResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = @"\pi\\profileid\" + _result.UserProfile.ProfileID;
             SendingBuffer += @"\nick\" + _result.UserProfile.Nick;

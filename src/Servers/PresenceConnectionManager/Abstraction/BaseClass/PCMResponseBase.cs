@@ -16,10 +16,5 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         protected PCMResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
-        public override void Build()
-        {
-            BuildNormalResponse();
-        }
     }
 }

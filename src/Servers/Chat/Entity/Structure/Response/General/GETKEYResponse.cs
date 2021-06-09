@@ -14,7 +14,7 @@ namespace Chat.Entity.Structure.Response.Channel
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             SendingBuffer = "";
             foreach (var flag in _result.Flags)

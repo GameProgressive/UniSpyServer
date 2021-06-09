@@ -17,10 +17,5 @@ namespace Chat.Abstraction.BaseClass
         protected ChatResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
-        public override void Build()
-        {
-            BuildNormalResponse();
-        }
     }
 }

@@ -14,7 +14,7 @@ namespace Chat.Entity.Structure.Response
         {
         }
 
-        protected override void BuildNormalResponse()
+        public override void Build()
         {
             string flags = "";
             foreach (var kv in _request.KeyValue)
