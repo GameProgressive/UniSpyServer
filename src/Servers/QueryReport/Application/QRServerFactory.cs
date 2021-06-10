@@ -19,13 +19,6 @@ namespace QueryReport.Application
         public QRServerFactory()
         {
         }
-        public override void Start()
-        {
-            ShowUniSpyLogo();
-            ConnectRedis();
-            LoadServerConfig();
-            UniSpyJsonConverter.Initialize();
-        }
         /// <summary>
         /// Starts a specific server
         /// </summary>
