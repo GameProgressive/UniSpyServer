@@ -13,8 +13,7 @@ namespace Chat.Entity.Structure.Result.General
     }
     internal sealed class WHOResult : ChatResultBase
     {
-        public List<WHODataModel> DataModels { get; set; }
-
+        public List<WHODataModel> DataModels { get; }
         public WHOResult()
         {
             DataModels = new List<WHODataModel>();

@@ -5,7 +5,7 @@ namespace Chat.Entity.Structure.Result.Channel
 {
     internal class GETKEYResult : ChatResultBase
     {
-        public List<string> Flags;
+        public List<string> Flags { get; }
         /// <summary>
         /// The reciever's nick name
         /// </summary>

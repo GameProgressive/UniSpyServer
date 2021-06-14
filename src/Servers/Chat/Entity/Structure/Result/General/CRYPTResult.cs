@@ -5,8 +5,8 @@ namespace Chat.Entity.Structure.Result.General
 {
     internal class CRYPTResult : ChatResultBase
     {
-        public string ServerKey { get; set; }
-        public string ClientKey { get; set; }
+        public string ServerKey { get; }
+        public string ClientKey { get; }
         public CRYPTResult()
         {
             ServerKey = ChatConstants.ServerKey;

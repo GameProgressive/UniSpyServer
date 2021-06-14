@@ -1,4 +1,5 @@
-﻿using Chat.Abstraction.BaseClass;
+﻿using System.Collections.Generic;
+using Chat.Abstraction.BaseClass;
 using Chat.Entity.Structure.Request.General;
 using Chat.Entity.Structure.Response.General;
 using Chat.Entity.Structure.Result.General;
@@ -34,7 +35,7 @@ namespace Chat.Handler.CmdHandler.General
                     TotalChannelUsers = channel.Property.ChannelUsers.Count,
                     ChannelTopic = channel.Property.ChannelTopic
                 };
-                _result.ChannelInfos.Add(channelInfo);
+                _result.ChannelInfoList.Add(channelInfo);
             }
         }
 

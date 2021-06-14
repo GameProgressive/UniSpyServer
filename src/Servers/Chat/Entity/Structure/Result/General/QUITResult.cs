@@ -14,7 +14,7 @@ namespace Chat.Entity.Structure.Result.General
     internal class QUITResult : ChatResultBase
     {
         public string QuiterPrefix { get; set; }
-        public List<QUITDataModel> ChannelInfos { get; set; }
+        public List<QUITDataModel> ChannelInfos { get; }
         public string Message { get; set; }
 
         public QUITResult()

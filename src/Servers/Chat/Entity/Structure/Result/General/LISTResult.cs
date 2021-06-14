@@ -13,10 +13,10 @@ namespace Chat.Entity.Structure.Result.General
     internal sealed class LISTResult : ChatResultBase
     {
         public string UserIRCPrefix { get; set; }
-        public List<LISTDataModel> ChannelInfos { get; set; }
+        public List<LISTDataModel> ChannelInfoList { get; }
         public LISTResult()
         {
-            ChannelInfos = new List<LISTDataModel>();
+            ChannelInfoList = new List<LISTDataModel>();
         }
     }
 }

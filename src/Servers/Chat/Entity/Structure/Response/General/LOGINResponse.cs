@@ -16,7 +16,7 @@ namespace Chat.Entity.Structure.Response.General
         {
             SendingBuffer = ChatIRCReplyBuilder.Build(
                 ChatReplyName.Login,
-                cmdParams: $"param1 {_result.UserID} {_result.ProfileID}");
+                cmdParams: $"* {_result.UserID} {_result.ProfileID}");
         }
     }
 }

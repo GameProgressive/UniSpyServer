@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Result.Channel
 
     internal sealed class GETCKEYResult : ChatResultBase
     {
-        public List<GETCKEYDataModel> DataResults { get; set; }
+        public List<GETCKEYDataModel> DataResults { get; }
         public string ChannelName { get; set; }
         public GETCKEYResult()
         {

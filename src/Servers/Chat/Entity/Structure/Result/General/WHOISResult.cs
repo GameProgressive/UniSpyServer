@@ -5,7 +5,7 @@ namespace Chat.Entity.Structure.Result.General
 {
     internal sealed class WHOISResult : ChatResultBase
     {
-        public List<string> JoinedChannelName { get; set; }
+        public List<string> JoinedChannelName { get; }
         public string NickName { get; set; }
         public string UserName { get; set; }
         public string Name { get; set; }

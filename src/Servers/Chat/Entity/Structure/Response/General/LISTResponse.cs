@@ -14,7 +14,7 @@ namespace Chat.Entity.Structure.Response.General
         public override void Build()
         {
             SendingBuffer = "";
-            foreach (var info in _result.ChannelInfos)
+            foreach (var info in _result.ChannelInfoList)
             {
                 var cmdParams = $"param1 {info.ChannelName} {info.TotalChannelUsers} {info.ChannelTopic}";
                 SendingBuffer += ChatIRCReplyBuilder.Build(

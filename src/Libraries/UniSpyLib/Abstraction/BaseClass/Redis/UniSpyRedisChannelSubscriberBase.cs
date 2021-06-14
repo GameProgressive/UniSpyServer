@@ -2,15 +2,16 @@
 
 namespace UniSpyLib.Abstraction.BaseClass.Redis
 {
-    public class UniSpyRedisChannelEventBase<T>
+    public abstract class UniSpyRedisChannelSubscriberBase<T>
     {
         protected string _redisChannelName;
         /// <summary>
         /// Get all subscriber in Redis
         /// </summary>
         protected ISubscriber _subscriber => UniSpyServerFactoryBase.Redis.GetSubscriber();
-        public UniSpyRedisChannelEventBase()
+        public UniSpyRedisChannelSubscriberBase(string redisChannelName)
         {
+            _redisChannelName = redisChannelName;
         }
 
         /// <summary>
