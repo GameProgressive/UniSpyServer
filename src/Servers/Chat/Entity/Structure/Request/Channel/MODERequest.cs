@@ -41,16 +41,21 @@ namespace Chat.Entity.Structure.Request
 
     public class MODERequest : ChatChannelRequestBase
     {
-        public MODERequest(string rawRequest) : base(rawRequest)
+        public new string ChannelName
         {
+            get => base.ChannelName;
+            set => base.ChannelName = value;
         }
-        public MODERequest() { }
         public ModeRequestType RequestType { get; set; }
         public string NickName { get; set; }
         public string UserName { get; set; }
         public uint LimitNumber { get; set; }
         public string ModeFlag { get; set; }
         public string Password { get; set; }
+        public MODERequest(string rawRequest) : base(rawRequest)
+        {
+        }
+        public MODERequest() { }
         public override void Parse()
         {
             base.Parse();

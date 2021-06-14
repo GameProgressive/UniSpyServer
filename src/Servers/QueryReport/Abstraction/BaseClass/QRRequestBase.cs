@@ -25,6 +25,10 @@ namespace QueryReport.Abstraction.BaseClass
         {
         }
 
+        protected QRRequestBase()
+        {
+        }
+
         public override void Parse()
         {
             if (RawRequest.Length < 3)

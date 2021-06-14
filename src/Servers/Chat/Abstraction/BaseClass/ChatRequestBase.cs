@@ -16,12 +16,13 @@ namespace Chat.Abstraction.BaseClass
         public new string CommandName
         {
             get => (string)base.CommandName;
-            set => base.CommandName = value;
+            protected set => base.CommandName = value;
         }
         protected string _prefix;
         protected List<string> _cmdParams;
         protected string _longParam;
-        public ChatRequestBase() { }
+        public ChatRequestBase()
+        { }
         /// <summary>
         /// create instance for Handler
         /// </summary>

@@ -5,13 +5,16 @@ namespace Chat.Entity.Structure.Request
 {
     internal sealed class PARTRequest : ChatChannelRequestBase
     {
+        public new string ChannelName
+        {
+            get => base.ChannelName;
+            set => base.ChannelName = value;
+        }
+        public string Reason { get; set; }
         public PARTRequest() { }
         public PARTRequest(string rawRequest) : base(rawRequest)
         {
         }
-
-        public string Reason { get; set; }
-
         public override void Parse()
         {
             base.Parse();

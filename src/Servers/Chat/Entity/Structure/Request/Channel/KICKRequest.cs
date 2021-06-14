@@ -5,11 +5,15 @@ namespace Chat.Entity.Structure.Request
 {
     internal sealed class KICKRequest : ChatChannelRequestBase
     {
+        public new string ChannelName
+        {
+            get => base.ChannelName;
+            set => base.ChannelName = value;
+        }
         public KICKRequest() { }
         public KICKRequest(string rawRequest) : base(rawRequest)
         {
         }
-
         public string KickeeNickName { get; set; }
         public string Reason { get; set; }
 
