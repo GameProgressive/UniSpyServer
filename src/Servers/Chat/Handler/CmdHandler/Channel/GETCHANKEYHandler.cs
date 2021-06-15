@@ -13,8 +13,8 @@ namespace Chat.Handler.CmdHandler.Channel
     // Set a value to NULL or "" to clear that key.
     internal sealed class GETCHANKEYHandler : ChatChannelHandlerBase
     {
-        protected new GETCHANKEYRequest _request => (GETCHANKEYRequest)base._request;
-        protected new GETCHANKEYResult _result
+        private new GETCHANKEYRequest _request => (GETCHANKEYRequest)base._request;
+        private new GETCHANKEYResult _result
         {
             get => (GETCHANKEYResult)base._result;
             set => base._result = value;

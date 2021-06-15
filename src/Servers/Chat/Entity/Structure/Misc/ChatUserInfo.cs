@@ -7,11 +7,11 @@ namespace Chat.Entity.Structure.Misc
     internal sealed class ChatUserInfo
     {
         //indicates which channel this user is in
-        public ConcurrentBag<ChatChannel> JoinedChannels { get; protected set; }
+        public ConcurrentBag<ChatChannel> JoinedChannels { get; private set; }
         public ChatSession Session { get; private set; }
         // secure connection
         public GSPeerChatCTX ClientCTX { get; set; }
-        public GSPeerChatCTX ServerCTX { get; protected set; }
+        public GSPeerChatCTX ServerCTX { get; private set; }
         public string GameName { get; set; }
         public string NickName { get; set; }
         public string UserName { get; set; }

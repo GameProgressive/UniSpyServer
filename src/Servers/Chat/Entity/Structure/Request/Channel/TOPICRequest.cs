@@ -14,8 +14,8 @@ namespace Chat.Entity.Structure.Request
         {
         }
 
-        public string ChannelTopic { get; protected set; }
-        public TOPICCmdType RequestType { get; protected set; }
+        public string ChannelTopic { get; private set; }
+        public TOPICCmdType RequestType { get; private set; }
 
         public override void Parse()
         {

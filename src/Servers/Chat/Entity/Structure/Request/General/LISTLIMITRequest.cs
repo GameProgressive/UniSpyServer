@@ -9,8 +9,8 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public int MaxNumberOfChannels { get; protected set; }
-        public string Filter { get; protected set; }
+        public int MaxNumberOfChannels { get; private set; }
+        public string Filter { get; private set; }
 
         public override void Parse()
         {

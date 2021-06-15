@@ -9,8 +9,8 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public string ChannelName { get; protected set; }
-        public string UserName { get; protected set; }
+        public string ChannelName { get; private set; }
+        public string UserName { get; private set; }
 
         public override void Parse()
         {

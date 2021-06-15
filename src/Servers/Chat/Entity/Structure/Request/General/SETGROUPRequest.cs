@@ -9,7 +9,7 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public string GroupName { get; protected set; }
+        public string GroupName { get; private set; }
         public override void Parse()
         {
             base.Parse();

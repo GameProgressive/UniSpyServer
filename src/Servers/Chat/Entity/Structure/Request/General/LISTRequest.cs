@@ -9,9 +9,9 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public bool IsSearchingChannel { get; protected set; }
-        public bool IsSearchingUser { get; protected set; }
-        public string Filter { get; protected set; }
+        public bool IsSearchingChannel { get; private set; }
+        public bool IsSearchingUser { get; private set; }
+        public string Filter { get; private set; }
 
         public override void Parse()
         {

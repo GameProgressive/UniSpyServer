@@ -8,8 +8,8 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public string AuthToken { get; protected set; }
-        public string PartnerChallenge { get; protected set; }
+        public string AuthToken { get; private set; }
+        public string PartnerChallenge { get; private set; }
 
         public override void Parse()
         {

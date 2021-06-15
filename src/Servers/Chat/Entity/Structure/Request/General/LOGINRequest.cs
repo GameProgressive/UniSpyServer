@@ -16,12 +16,12 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public LoginType RequestType { get; protected set; }
-        public uint NameSpaceID { get; protected set; }
-        public string NickName { get; protected set; }
-        public string Email { get; protected set; }
-        public string UniqueNick { get; protected set; }
-        public string PasswordHash { get; protected set; }
+        public LoginType RequestType { get; private set; }
+        public uint NameSpaceID { get; private set; }
+        public string NickName { get; private set; }
+        public string Email { get; private set; }
+        public string UniqueNick { get; private set; }
+        public string PasswordHash { get; private set; }
 
         public override void Parse()
         {

@@ -9,7 +9,7 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public string CDKey { get; protected set; }
+        public string CDKey { get; private set; }
 
         public override void Parse()
         {

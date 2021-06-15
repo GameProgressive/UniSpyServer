@@ -8,9 +8,9 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public string NamespaceID { get; protected set; }
-        public string UniqueNick { get; protected set; }
-        public string CDKey { get; protected set; }
+        public string NamespaceID { get; private set; }
+        public string UniqueNick { get; private set; }
+        public string CDKey { get; private set; }
         public override void Parse()
         {
             base.Parse();

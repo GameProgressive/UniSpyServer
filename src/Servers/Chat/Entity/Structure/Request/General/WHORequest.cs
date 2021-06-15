@@ -15,10 +15,10 @@ namespace Chat.Entity.Structure.Request.General
         }
 
         //TODO becareful there are channel name
-        public string ChannelName { get; protected set; }
-        public string NickName { get; protected set; }
+        public string ChannelName { get; private set; }
+        public string NickName { get; private set; }
 
-        public WHOType RequestType { get; protected set; }
+        public WHOType RequestType { get; private set; }
         public override void Parse()
         {
             base.Parse();

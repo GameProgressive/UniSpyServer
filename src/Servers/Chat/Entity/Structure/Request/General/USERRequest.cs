@@ -8,11 +8,11 @@ namespace Chat.Entity.Structure.Request.General
         {
         }
 
-        public string UserName { get; protected set; }
-        public string Hostname { get; protected set; }
-        public string ServerName { get; protected set; }
-        public string NickName { get; protected set; }
-        public string Name { get; protected set; }
+        public string UserName { get; private set; }
+        public string Hostname { get; private set; }
+        public string ServerName { get; private set; }
+        public string NickName { get; private set; }
+        public string Name { get; private set; }
 
         public override void Parse()
         {

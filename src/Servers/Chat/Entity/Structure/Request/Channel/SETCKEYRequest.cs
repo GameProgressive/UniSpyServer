@@ -8,9 +8,9 @@ namespace Chat.Entity.Structure.Request
 
     internal sealed class SETCKEYRequest : ChatChannelRequestBase
     {
-        public string NickName { get; protected set; }
+        public string NickName { get; private set; }
 
-        public Dictionary<string, string> KeyValues { get; protected set; }
+        public Dictionary<string, string> KeyValues { get; private set; }
 
         public SETCKEYRequest(string rawRequest) : base(rawRequest)
         {
