@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Request
         SetChannelTopic
     }
 
-    public class TOPICRequest : ChatChannelRequestBase
+    internal sealed class TOPICRequest : ChatChannelRequestBase
     {
         public TOPICRequest(string rawRequest) : base(rawRequest)
         {

@@ -1,6 +1,6 @@
 ﻿namespace Chat.Entity.Structure.Misc
 {
-    public class ChatConstants
+    internal sealed class ChatConstants
     {
         public const string ServerDomain = "unispy.net";
         //we hard coded random key here for simplisity

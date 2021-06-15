@@ -5,7 +5,7 @@ using UniSpyLib.Extensions;
 
 namespace Chat.Entity.Structure.Request
 {
-    public class SETKEYRequest : ChatRequestBase
+    internal sealed class SETKEYRequest : ChatRequestBase
     {
         public Dictionary<string, string> KeyValues { get; protected set; }
 

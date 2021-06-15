@@ -3,7 +3,7 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class WHOISRequest : ChatRequestBase
+    internal sealed class WHOISRequest : ChatRequestBase
     {
         public WHOISRequest(string rawRequest) : base(rawRequest)
         {

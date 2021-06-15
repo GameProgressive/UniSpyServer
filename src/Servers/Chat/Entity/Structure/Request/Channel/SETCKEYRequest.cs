@@ -6,7 +6,7 @@ using UniSpyLib.Extensions;
 namespace Chat.Entity.Structure.Request
 {
 
-    public class SETCKEYRequest : ChatChannelRequestBase
+    internal sealed class SETCKEYRequest : ChatChannelRequestBase
     {
         public string NickName { get; protected set; }
 

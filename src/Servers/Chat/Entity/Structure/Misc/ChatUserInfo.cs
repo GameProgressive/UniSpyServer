@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Linq;
 namespace Chat.Entity.Structure.Misc
 {
-    internal class ChatUserInfo
+    internal sealed class ChatUserInfo
     {
         //indicates which channel this user is in
         public ConcurrentBag<ChatChannel> JoinedChannels { get; protected set; }

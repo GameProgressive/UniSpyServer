@@ -3,7 +3,7 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class QUITRequest : ChatRequestBase
+    internal sealed class QUITRequest : ChatRequestBase
     {
         public QUITRequest() { }
         public QUITRequest(string rawRequest) : base(rawRequest)

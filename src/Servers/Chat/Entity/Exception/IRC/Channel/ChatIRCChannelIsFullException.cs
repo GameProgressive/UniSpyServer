@@ -2,7 +2,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception.IRC.Channel
 {
-    internal class ChatIRCChannelIsFullException : ChatIRCChannelException
+    internal sealed class ChatIRCChannelIsFullException : ChatIRCChannelException
     {
         public ChatIRCChannelIsFullException(string message, string channelName) : base(message, ChatIRCErrorCode.ChannelIsFull, channelName)
         {

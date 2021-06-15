@@ -1,7 +1,7 @@
 using Chat.Entity.Structure.Misc;
 namespace Chat.Entity.Exception.IRC.General
 {
-    internal class ChatIRCTooManyChannels : ChatIRCException
+    internal sealed class ChatIRCTooManyChannels : ChatIRCException
     {
         public ChatIRCTooManyChannels()
         {

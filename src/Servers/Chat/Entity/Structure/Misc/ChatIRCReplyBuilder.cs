@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Misc
 {
-    public class ChatIRCReplyBuilder
+    internal sealed class ChatIRCReplyBuilder
     {
         public static string BuildByIRCErrorCode(string ircErrorCode, params object[] args)
         {

@@ -2,7 +2,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception.IRC.Channel
 {
-    internal class ChatIRCBannedFromChanException : ChatIRCChannelException
+    internal sealed class ChatIRCBannedFromChanException : ChatIRCChannelException
     {
         public ChatIRCBannedFromChanException(string message, string channelName) : base(message, ChatIRCErrorCode.BannedFromChan, channelName)
         {

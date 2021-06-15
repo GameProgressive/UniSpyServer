@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Request
 {
-    public class PRIVMSGRequest : ChatMsgRequestBase
+    internal sealed class PRIVMSGRequest : ChatMsgRequestBase
     {
         public PRIVMSGRequest(string rawRequest) : base(rawRequest)
         {

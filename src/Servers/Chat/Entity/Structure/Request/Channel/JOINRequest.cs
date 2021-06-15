@@ -3,7 +3,7 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request
 {
-    public class JOINRequest : ChatChannelRequestBase
+    internal sealed class JOINRequest : ChatChannelRequestBase
     {
         public JOINRequest(string rawRequest) : base(rawRequest)
         {

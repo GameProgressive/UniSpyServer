@@ -3,7 +3,7 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class CDKEYRequest : ChatRequestBase
+    internal sealed class CDKEYRequest : ChatRequestBase
     {
         public CDKEYRequest(string rawRequest) : base(rawRequest)
         {

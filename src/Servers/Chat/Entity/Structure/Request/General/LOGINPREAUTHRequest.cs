@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class LOGINPREAUTHRequest : ChatRequestBase
+    internal sealed class LOGINPREAUTHRequest : ChatRequestBase
     {
         public LOGINPREAUTHRequest(string rawRequest) : base(rawRequest)
         {

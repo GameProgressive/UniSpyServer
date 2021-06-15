@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result.Channel
 {
-    internal class GETCKEYDataModel
+    internal sealed class GETCKEYDataModel
     {
         public string NickName { get; set; }
         public string UserValues { get; set; }

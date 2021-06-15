@@ -2,7 +2,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception.IRC.General
 {
-    internal class ChatIRCRegisterNickFaildException : ChatIRCException
+    internal sealed class ChatIRCRegisterNickFaildException : ChatIRCException
     {
         public ChatIRCRegisterNickFaildException()
         {

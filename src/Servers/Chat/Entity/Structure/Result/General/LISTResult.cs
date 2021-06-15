@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result.General
 {
-    internal class LISTDataModel
+    internal sealed class LISTDataModel
     {
         public string ChannelName { get; set; }
         public int TotalChannelUsers { get; set; }

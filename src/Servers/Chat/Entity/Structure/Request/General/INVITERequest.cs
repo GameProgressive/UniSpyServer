@@ -3,7 +3,7 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class INVITERequest : ChatRequestBase
+    internal sealed class INVITERequest : ChatRequestBase
     {
         public INVITERequest(string rawRequest) : base(rawRequest)
         {

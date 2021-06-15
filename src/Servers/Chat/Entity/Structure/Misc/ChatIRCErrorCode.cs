@@ -1,6 +1,6 @@
 ﻿namespace Chat.Entity.Structure.Misc
 {
-    public class ChatIRCErrorCode
+    internal sealed class ChatIRCErrorCode
     {
         //GameSpy standard irc error
         public const string NoSuchNick = "401";

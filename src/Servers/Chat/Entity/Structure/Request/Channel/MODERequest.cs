@@ -39,7 +39,7 @@ namespace Chat.Entity.Structure.Request
         SetChannelModesWithUserLimit,
     }
 
-    public class MODERequest : ChatChannelRequestBase
+    internal sealed class MODERequest : ChatChannelRequestBase
     {
         public new string ChannelName
         {

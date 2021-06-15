@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class PONGRequest : ChatRequestBase
+    internal sealed class PONGRequest : ChatRequestBase
     {
         public PONGRequest(string rawRequest) : base(rawRequest)
         {

@@ -2,7 +2,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception.IRC.Channel
 {
-    internal class ChatIRCNoSuchChannelException : ChatIRCChannelException
+    internal sealed class ChatIRCNoSuchChannelException : ChatIRCChannelException
     {
         public ChatIRCNoSuchChannelException()
         {

@@ -3,7 +3,7 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class SETGROUPRequest : ChatChannelRequestBase
+    internal sealed class SETGROUPRequest : ChatChannelRequestBase
     {
         public SETGROUPRequest(string rawRequest) : base(rawRequest)
         {

@@ -3,7 +3,7 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class NICKRequest : ChatRequestBase
+    internal sealed class NICKRequest : ChatRequestBase
     {
         public NICKRequest(string rawRequest) : base(rawRequest)
         {

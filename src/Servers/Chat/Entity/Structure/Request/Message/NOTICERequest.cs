@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Request
 {
-    public class NOTICERequest : ChatMsgRequestBase
+    internal sealed class NOTICERequest : ChatMsgRequestBase
     {
         public NOTICERequest(string rawRequest) : base(rawRequest)
         {

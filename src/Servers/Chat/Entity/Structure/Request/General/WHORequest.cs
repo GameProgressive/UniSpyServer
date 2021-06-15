@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Request.General
         GetChannelUsersInfo,
         GetUserInfo
     }
-    public class WHORequest : ChatRequestBase
+    internal sealed class WHORequest : ChatRequestBase
     {
         public WHORequest(string rawRequest) : base(rawRequest)
         {

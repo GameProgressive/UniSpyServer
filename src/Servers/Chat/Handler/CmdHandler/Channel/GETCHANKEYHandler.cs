@@ -11,7 +11,7 @@ namespace Chat.Handler.CmdHandler.Channel
     // Otherwise, they will be set on the user,
     // Only ops can set channel keys on other users.
     // Set a value to NULL or "" to clear that key.
-    internal class GETCHANKEYHandler : ChatChannelHandlerBase
+    internal sealed class GETCHANKEYHandler : ChatChannelHandlerBase
     {
         protected new GETCHANKEYRequest _request => (GETCHANKEYRequest)base._request;
         protected new GETCHANKEYResult _result

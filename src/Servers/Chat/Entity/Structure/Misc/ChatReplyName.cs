@@ -1,6 +1,6 @@
 ﻿namespace Chat.Entity.Structure.Misc
 {
-    public class ChatReplyName
+    internal sealed class ChatReplyName
     {
         public const string Welcome = "001";
         public const string UserIP = "302";

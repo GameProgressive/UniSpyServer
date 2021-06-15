@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class NAMESRequest : ChatChannelRequestBase
+    internal sealed class NAMESRequest : ChatChannelRequestBase
     {
         public new string ChannelName
         {

@@ -8,11 +8,11 @@ namespace Chat.Entity.Structure.Request
     /// <summary>
     /// Retrieves a list of global key/value for a single user, or all users.
     /// </summary>
-    public class GETKEYRequest : ChatRequestBase
+    internal sealed class GETKEYRequest : ChatRequestBase
     {
-        public string NickName { get; protected set; }
-        public string Cookie { get; protected set; }
-        public List<string> Keys { get; protected set; }
+        public string NickName { get; private set; }
+        public string Cookie { get; private set; }
+        public List<string> Keys { get; private set; }
         public GETKEYRequest(string rawRequest) : base(rawRequest)
         {
             Keys = new List<string>();
@@ -21,8 +21,6 @@ namespace Chat.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-
-
             if (_cmdParams.Count < 3)
             {
                 throw new ChatException("The number of IRC cmd params in GETKEY request is incorrect.");

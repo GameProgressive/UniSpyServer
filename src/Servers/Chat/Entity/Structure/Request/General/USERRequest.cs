@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class USERRequest : ChatRequestBase
+    internal sealed class USERRequest : ChatRequestBase
     {
         public USERRequest(string rawRequest) : base(rawRequest)
         {

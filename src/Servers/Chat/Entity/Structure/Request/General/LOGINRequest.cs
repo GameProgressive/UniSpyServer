@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Request.General
         NickAndEmailLogin,
     }
 
-    public class LOGINRequest : ChatRequestBase
+    internal sealed class LOGINRequest : ChatRequestBase
     {
         public LOGINRequest(string rawRequest) : base(rawRequest)
         {

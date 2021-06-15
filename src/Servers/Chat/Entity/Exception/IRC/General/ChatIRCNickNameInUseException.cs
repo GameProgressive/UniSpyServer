@@ -2,7 +2,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception.IRC.General
 {
-    internal class ChatIRCNickNameInUseException : ChatIRCException
+    internal sealed class ChatIRCNickNameInUseException : ChatIRCException
     {
         private string _oldNickName;
         private string _newNickName;

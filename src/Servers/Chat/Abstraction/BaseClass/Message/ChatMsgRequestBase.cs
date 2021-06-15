@@ -6,7 +6,7 @@
         UserMessage
     }
 
-    public class ChatMsgRequestBase : ChatChannelRequestBase
+    internal class ChatMsgRequestBase : ChatChannelRequestBase
     {
         public ChatMsgRequestBase(string rawRequest) : base(rawRequest)
         {

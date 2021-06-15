@@ -3,7 +3,7 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class LISTLIMITRequest : ChatRequestBase
+    internal sealed class LISTLIMITRequest : ChatRequestBase
     {
         public LISTLIMITRequest(string rawRequest) : base(rawRequest)
         {

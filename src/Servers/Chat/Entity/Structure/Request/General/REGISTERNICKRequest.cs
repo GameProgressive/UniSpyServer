@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class REGISTERNICKRequest : ChatRequestBase
+    internal sealed class REGISTERNICKRequest : ChatRequestBase
     {
         public REGISTERNICKRequest(string rawRequest) : base(rawRequest)
         {

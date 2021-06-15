@@ -3,16 +3,15 @@ using Chat.Entity.Exception;
 
 namespace Chat.Entity.Structure.Request.General
 {
-    public class CRYPTRequest : ChatRequestBase
+    internal sealed class CRYPTRequest : ChatRequestBase
     {
         public CRYPTRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public string VersionID { get; protected set; }
-        public string GameName { get; protected set; }
+        public string VersionID { get; private set; }
+        public string GameName { get; private set; }
         //CRYPT des %d %s
-
         public override void Parse()
         {
             base.Parse();
