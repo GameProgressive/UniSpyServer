@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Entity.Structure.Response
 {
-    public sealed class ConnectResponse : NNResponseBase
+    internal sealed class ConnectResponse : NNResponseBase
     {
         private new ConnectResult _result => (ConnectResult)base._result;
 

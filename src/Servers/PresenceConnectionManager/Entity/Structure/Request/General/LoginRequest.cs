@@ -4,19 +4,19 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    internal class LoginRequest : PCMRequestBase
+    internal sealed class LoginRequest : PCMRequestBase
     {
-        public string UserChallenge { get; protected set; }
-        public string Response { get; protected set; }
-        public string UniqueNick { get; protected set; }
-        public string UserData { get; protected set; }
+        public string UserChallenge { get; private set; }
+        public string Response { get; private set; }
+        public string UniqueNick { get; private set; }
+        public string UserData { get; private set; }
         public uint NamespaceID { get; private set; }
-        public string AuthToken { get; protected set; }
-        public string Nick { get; protected set; }
-        public string Email { get; protected set; }
-        public uint ProductID { get; protected set; }
-        public LoginType LoginType { get; protected set; }
-        public SDKRevisionType SDKRevisionType { get; protected set; }
+        public string AuthToken { get; private set; }
+        public string Nick { get; private set; }
+        public string Email { get; private set; }
+        public uint ProductID { get; private set; }
+        public LoginType LoginType { get; private set; }
+        public SDKRevisionType SDKRevisionType { get; private set; }
 
         public LoginRequest(string rawRequest) : base(rawRequest)
         {
@@ -88,8 +88,8 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             ParseOtherData();
         }
 
-        public int? GamePort { get; protected set; }
-        public uint PartnerID { get; protected set; }
+        public int? GamePort { get; private set; }
+        public uint PartnerID { get; private set; }
         public string GameName { get; private set; }
         public QuietModeType QuietModeFlags { get; private set; }
 

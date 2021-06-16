@@ -7,7 +7,7 @@ namespace ServerBrowser.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    public class SBServerFactory : UniSpyServerFactoryBase
+    internal sealed class SBServerFactory : UniSpyServerFactoryBase
     {
         public new static SBServer Server
         {

@@ -7,7 +7,7 @@ namespace PresenceSearchPlayer
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal class PSPServerFactory : UniSpyServerFactoryBase
+    internal sealed class PSPServerFactory : UniSpyServerFactoryBase
     {
         public new static PSPServer Server
         {

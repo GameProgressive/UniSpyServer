@@ -6,7 +6,7 @@ using UniSpyLib.Network;
 
 namespace QueryReport.Network
 {
-    public class QRServer : UniSpyUDPServerBase
+    internal sealed class QRServer : UniSpyUDPServerBase
     {
         public QRServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {

@@ -4,7 +4,7 @@ using System.ServiceModel;
 namespace RetroSpyServices.Motd.Entity.Interface
 {
     [ServiceContract]
-    public interface IMotdService
+    internal interface IMotdService
     {
         [OperationContract]
         string Test(string s);

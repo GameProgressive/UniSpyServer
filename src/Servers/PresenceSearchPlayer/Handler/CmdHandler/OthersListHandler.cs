@@ -10,11 +10,11 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
 
-    internal class OthersListHandler : PSPCmdHandlerBase
+    internal sealed class OthersListHandler : PSPCmdHandlerBase
     {
-        protected new OthersListRequest _request => (OthersListRequest)base._request;
+        private new OthersListRequest _request => (OthersListRequest)base._request;
 
-        protected new OthersListResult _result
+        private new OthersListResult _result
         {
             get => (OthersListResult)base._result;
             set => base._result = value;

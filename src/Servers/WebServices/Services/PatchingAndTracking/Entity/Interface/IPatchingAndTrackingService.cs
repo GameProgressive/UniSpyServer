@@ -4,7 +4,7 @@ using System.ServiceModel;
 namespace RetroSpyServices.PatchingAndTracking.Entity.Interface
 {
     [ServiceContract]
-    public interface IPatchingAndTrackingService
+    internal interface IPatchingAndTrackingService
     {
         [OperationContract]
         string Test(string s);

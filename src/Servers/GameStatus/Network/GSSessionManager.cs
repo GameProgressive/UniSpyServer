@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.TCP;
 
 namespace GameStatus.Network
 {
-    public class GSSessionManager : UniSpyTCPSessionManagerBase
+    internal sealed class GSSessionManager : UniSpyTCPSessionManagerBase
     {
         public GSSessionManager()
         {

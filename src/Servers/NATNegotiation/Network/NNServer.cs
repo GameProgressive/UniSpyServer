@@ -5,7 +5,7 @@ using UniSpyLib.Network;
 
 namespace NATNegotiation.Network
 {
-    public class NNServer : UniSpyUDPServerBase
+    internal sealed class NNServer : UniSpyUDPServerBase
     {
         public NNServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {

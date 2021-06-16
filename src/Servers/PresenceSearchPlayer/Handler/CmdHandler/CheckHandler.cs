@@ -11,13 +11,13 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal class CheckHandler : PSPCmdHandlerBase
+    internal sealed class CheckHandler : PSPCmdHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final
         //check is request recieved correct and convert password into our MD5 type
-        protected new CheckRequest _request => (CheckRequest)base._request;
-        protected new CheckResult _result
+        private new CheckRequest _request => (CheckRequest)base._request;
+        private new CheckResult _result
         {
             get => (CheckResult)base._result;
             set => base._result = value;

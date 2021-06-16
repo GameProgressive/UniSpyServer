@@ -14,11 +14,11 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Get buddy's information
     /// </summary>
-    internal class OthersHandler : PSPCmdHandlerBase
+    internal sealed class OthersHandler : PSPCmdHandlerBase
     {
-        protected new OthersRequest _request => (OthersRequest)base._request;
+        private new OthersRequest _request => (OthersRequest)base._request;
 
-        protected new OthersResult _result
+        private new OthersResult _result
         {
             get => (OthersResult)base._result;
             set => base._result = value;

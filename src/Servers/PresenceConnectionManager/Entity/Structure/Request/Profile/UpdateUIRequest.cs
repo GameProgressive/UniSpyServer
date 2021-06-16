@@ -12,7 +12,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         {
             base.Parse();
 
-
             if (KeyValues.ContainsKey(""))
             {
 

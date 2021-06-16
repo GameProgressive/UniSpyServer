@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.UDP;
 namespace QueryReport.Network
 {
 
-    public class QRSessionManager : UniSpyUDPSessionManagerBase
+    internal sealed class QRSessionManager : UniSpyUDPSessionManagerBase
     {
         public QRSessionManager()
         {

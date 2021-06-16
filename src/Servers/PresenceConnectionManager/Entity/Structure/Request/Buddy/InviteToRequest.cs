@@ -4,10 +4,10 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    internal class InviteToRequest : PCMRequestBase
+    internal sealed class InviteToRequest : PCMRequestBase
     {
-        public uint ProductID { get; protected set; }
-        public uint ProfileID { get; protected set; }
+        public uint ProductID { get; private set; }
+        public uint ProfileID { get; private set; }
         public InviteToRequest(string rawRequest) : base(rawRequest)
         {
         }

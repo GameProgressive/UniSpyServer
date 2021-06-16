@@ -14,14 +14,14 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    internal class NicksHandler : PSPCmdHandlerBase
+    internal sealed class NicksHandler : PSPCmdHandlerBase
     {
-        protected new NicksResult _result
+        private new NicksResult _result
         {
             get => (NicksResult)base._result;
             set => base._result = value;
         }
-        protected new NicksRequest _request => (NicksRequest)base._request;
+        private new NicksRequest _request => (NicksRequest)base._request;
         public NicksHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new NicksResult();

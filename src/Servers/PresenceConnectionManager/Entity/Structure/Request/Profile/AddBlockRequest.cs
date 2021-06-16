@@ -15,8 +15,6 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         {
             base.Parse();
 
-
-
             if (!KeyValues.ContainsKey("profileid"))
             {
                 throw new GPParseException("profileid is missing");

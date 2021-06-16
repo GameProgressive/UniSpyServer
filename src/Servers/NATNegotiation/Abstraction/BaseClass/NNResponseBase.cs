@@ -5,22 +5,18 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace NATNegotiation.Abstraction.BaseClass
 {
-    public abstract class NNResponseBase : UniSpyResponseBase
+    internal abstract class NNResponseBase : UniSpyResponseBase
     {
         protected new NNRequestBase _request => (NNRequestBase)base._request;
-
         protected new NNResultBase _result => (NNResultBase)base._result;
-
         public new byte[] SendingBuffer
         {
             get => (byte[])base.SendingBuffer;
             protected set => base.SendingBuffer = value;
         }
-
         public NNResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
         public override void Build()
         {
             List<byte> data = new List<byte>();

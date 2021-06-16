@@ -7,9 +7,9 @@ namespace PresenceConnectionManager.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal class PCMServerFactory : UniSpyServerFactoryBase
+    internal sealed class PCMServerFactory : UniSpyServerFactoryBase
     {
-        public new static PCMServer Server
+        internal new static PCMServer Server
         {
             get => (PCMServer)UniSpyServerFactoryBase.Server;
             private set => UniSpyServerFactoryBase.Server = value;

@@ -5,7 +5,7 @@ using System.Xml.Linq;
 namespace RetroSpyServices.Authentication.Entity.Interface
 {
     [ServiceContract]
-    public interface IAuthService
+    internal interface IAuthService
     {
         [OperationContract]
         string LoginUniqueNick(string s);

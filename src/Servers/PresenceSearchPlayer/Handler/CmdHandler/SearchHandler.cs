@@ -18,11 +18,11 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal class SearchHandler : PSPCmdHandlerBase
+    internal sealed class SearchHandler : PSPCmdHandlerBase
     {
-        protected new SearchRequest _request => (SearchRequest)base._request;
+        private new SearchRequest _request => (SearchRequest)base._request;
 
-        protected new SearchResult _result
+        private new SearchResult _result
         {
             get => (SearchResult)base._result;
             set => base._result = value;

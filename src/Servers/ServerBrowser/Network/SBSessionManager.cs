@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.TCP;
 
 namespace ServerBrowser.Network
 {
-    public class SBSessionManager : UniSpyTCPSessionManagerBase
+    internal sealed class SBSessionManager : UniSpyTCPSessionManagerBase
     {
         public SBSessionManager()
         {

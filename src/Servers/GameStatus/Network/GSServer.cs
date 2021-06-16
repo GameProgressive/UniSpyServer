@@ -5,7 +5,7 @@ using UniSpyLib.Network;
 
 namespace GameStatus.Network
 {
-    public class GSServer : UniSpyTCPServerBase
+    internal sealed class GSServer : UniSpyTCPServerBase
     {
         public GSServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {

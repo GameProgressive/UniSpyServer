@@ -9,11 +9,10 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal class ValidHandler : PSPCmdHandlerBase
+    internal sealed class ValidHandler : PSPCmdHandlerBase
     {
-        protected new ValidRequest _request => (ValidRequest)base._request;
-
-        protected new ValidResult _result
+        private new ValidRequest _request => (ValidRequest)base._request;
+        private new ValidResult _result
         {
             get => (ValidResult)base._result;
             set => base._result = value;

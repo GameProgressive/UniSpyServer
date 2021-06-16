@@ -5,7 +5,7 @@ using System.Xml.Linq;
 namespace RetroSpyServices.Competitive.Entity.Interface
 {
     [ServiceContract]
-    public interface ICompetitiveService
+    internal interface ICompetitiveService
     {
         [OperationContract]
         string Test(string s);

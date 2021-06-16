@@ -13,10 +13,10 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    internal class SearchUniqueHandler : PSPCmdHandlerBase
+    internal sealed class SearchUniqueHandler : PSPCmdHandlerBase
     {
-        protected new SearchUniqueRequest _request => (SearchUniqueRequest)base._request;
-        protected new SearchUniqueResult _result
+        private new SearchUniqueRequest _request => (SearchUniqueRequest)base._request;
+        private new SearchUniqueResult _result
         {
             get => (SearchUniqueResult)base._result;
             set => base._result = value;

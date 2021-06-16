@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.UDP;
 
 namespace NATNegotiation.Network
 {
-    public class NNSessionManager : UniSpyUDPSessionManagerBase
+    internal sealed class NNSessionManager : UniSpyUDPSessionManagerBase
     {
         public NNSessionManager()
         {

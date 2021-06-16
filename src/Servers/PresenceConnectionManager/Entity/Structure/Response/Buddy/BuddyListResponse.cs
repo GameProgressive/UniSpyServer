@@ -5,13 +5,13 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    internal class BuddyListResponse : PCMResponseBase
+    internal sealed class BuddyListResponse : PCMResponseBase
     {
         public BuddyListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
-        protected new BuddyListResult _result => (BuddyListResult)base._result;
+        private new BuddyListResult _result => (BuddyListResult)base._result;
 
         public override void Build()
         {

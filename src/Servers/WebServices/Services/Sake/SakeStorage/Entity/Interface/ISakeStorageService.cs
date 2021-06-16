@@ -6,7 +6,7 @@ using WebServices.RetroSpyServices.Sake.Entity.Structure.Response;
 namespace RetroSpyServices.Sake.Entity.Interface
 {
     [ServiceContract(Namespace = SakeXmlLable.SakeNameSpace)]
-    public interface ISakeStorageService
+    internal interface ISakeStorageService
     {
         [OperationContract]
         public SakeDeleteRecordResponse DeleteRecord(SakeDeleteRecordRequest request);

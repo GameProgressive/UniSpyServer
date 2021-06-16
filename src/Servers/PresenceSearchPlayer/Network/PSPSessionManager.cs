@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.TCP;
 
 namespace PresenceSearchPlayer.Network
 {
-    public class PSPSessionManager : UniSpyTCPSessionManagerBase
+    internal sealed class PSPSessionManager : UniSpyTCPSessionManagerBase
     {
         public PSPSessionManager()
         {

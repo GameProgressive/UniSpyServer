@@ -4,7 +4,7 @@ using System.ServiceModel;
 namespace RetroSpyServices.Direct2Game.Entity.Interface
 {
     [ServiceContract]
-    public interface IDirect2GameService
+    internal interface IDirect2GameService
     {
         [OperationContract]
         string Test(string s);
