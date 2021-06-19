@@ -19,6 +19,10 @@ namespace CDKey.Application
                 new CDKeyServerFactory().Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
+            catch (UniSpyExceptionBase e)
+            {
+                LogWriter.ToLog(e);
+            }
             catch (Exception e)
             {
                 LogWriter.ToLog(LogEventLevel.Error, e.ToString());

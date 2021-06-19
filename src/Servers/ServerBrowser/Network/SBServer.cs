@@ -1,4 +1,5 @@
 ﻿using NetCoreServer;
+using QueryReport.Handler.SystemHandler;
 using System;
 using System.Net;
 using UniSpyLib.Network;
@@ -11,11 +12,12 @@ namespace ServerBrowser.Network
     /// </summary>
     internal sealed class SBServer : UniSpyTCPServerBase
     {
+        public QRRedisChannelSubscriber RedisChannelSubscriber { get; private set; }
         public SBServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
             SessionManager = new SBSessionManager();
+            RedisChannelSubscriber = new QRRedisChannelSubscriber();
         }
-
         protected override TcpSession CreateSession() => new SBSession(this);
     }
 }

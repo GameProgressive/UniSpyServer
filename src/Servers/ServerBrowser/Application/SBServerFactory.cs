@@ -1,6 +1,7 @@
 ﻿using ServerBrowser.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.UniSpyConfig;
+using QueryReport.Handler.SystemHandler;
 
 namespace ServerBrowser.Application
 {
@@ -14,19 +15,9 @@ namespace ServerBrowser.Application
             get => (SBServer)UniSpyServerFactoryBase.Server;
             private set => UniSpyServerFactoryBase.Server = value;
         }
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="serverName">Server name in config file</param>
         public SBServerFactory()
         {
         }
-
-        /// <summary>
-        /// Checks if a specific server is running
-        /// </summary>
-        /// <param name="cfg">The specific server configuration</param>
-        /// <returns>true if the server is running, false if the server is not running or the specified server does not exist</returns>
 
         /// <summary>
         /// Starts a specific server

@@ -2,6 +2,7 @@ using Serilog.Events;
 using System;
 using System.IO;
 using System.Reflection;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
 using WebServices.Application;
 
@@ -21,6 +22,10 @@ namespace WebServices
             {
                 Manager = new WebServerFactory();
                 Manager.Start();
+            }
+            catch (UniSpyExceptionBase e)
+            {
+                LogWriter.ToLog(e);
             }
             catch (Exception e)
             {

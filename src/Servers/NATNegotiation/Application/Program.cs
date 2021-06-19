@@ -18,6 +18,10 @@ namespace NATNegotiation.Application
                 new NNServerFactory().Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
+            catch (UniSpyExceptionBase e)
+            {
+                LogWriter.ToLog(e);
+            }
             catch (Exception e)
             {
                 LogWriter.ToLog(LogEventLevel.Error, e.ToString());

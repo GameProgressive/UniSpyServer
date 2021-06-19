@@ -16,6 +16,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// UniSpy server version
         /// </summary>
         public static readonly string UniSpyVersion = "0.5.3";
+        public static readonly string ServerName = Assembly.GetEntryAssembly().GetName().Name;
         /// <summary>
         /// Redis connection
         /// </summary>
@@ -27,7 +28,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// <summary>
         /// The project base namespace name, specific server is created by this name
         /// </summary>
-        public static readonly string ServerName = Assembly.GetEntryAssembly().GetName().Name;
 
         public UniSpyServerFactoryBase()
         {

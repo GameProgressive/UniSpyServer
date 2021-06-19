@@ -2,7 +2,7 @@
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.MiscMethod;
 using UniSpyLib.UniSpyConfig;
-
+using QueryReport.Handler.SystemHandler;
 namespace QueryReport.Application
 {
 
@@ -19,6 +19,7 @@ namespace QueryReport.Application
         public QRServerFactory()
         {
         }
+
         /// <summary>
         /// Starts a specific server
         /// </summary>

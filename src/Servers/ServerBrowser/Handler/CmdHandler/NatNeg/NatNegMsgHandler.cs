@@ -1,13 +1,11 @@
-﻿using Newtonsoft.Json;
-using QueryReport.Entity.Structure.NATNeg;
+﻿using QueryReport.Entity.Structure.NATNeg;
 using QueryReport.Entity.Structure.Redis;
 using ServerBrowser.Abstraction.BaseClass;
+using ServerBrowser.Application;
 using ServerBrowser.Entity.Exception;
 using ServerBrowser.Entity.Structure.Request;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Entity.Structure;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
@@ -63,9 +61,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void Response()
         {
-            var subscriber = UniSpyServerFactoryBase.Redis.GetSubscriber();
-            string jsonStr = JsonConvert.SerializeObject(_natNegCookie);
-            subscriber.Publish(UniSpyRedisChannelName.NatNegCookieChannel, jsonStr);
+            SBServerFactory.Server.RedisChannelSubscriber.PublishMessage(_natNegCookie);
         }
     }
 }

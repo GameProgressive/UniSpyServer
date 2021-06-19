@@ -16,6 +16,8 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
 
         /// <summary>
         /// Run StartSubscribe manually
+        /// Some server only require publish message
+        /// so they do not need to run this function
         /// </summary>
         public void StartSubscribe()
         {
