@@ -14,7 +14,6 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
         public PCMCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
-
         protected override void DeserializeRequests()
         {
             try
