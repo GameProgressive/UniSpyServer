@@ -27,7 +27,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
 
         protected override void SerializeRequests()
         {
-            var request = new SBRequestFactory(_rawRequest).Serialize();
+            var request = new SBRequestFactory(_rawRequest).Deserialize();
             request.Parse();
             _requests.Add(request);
         }

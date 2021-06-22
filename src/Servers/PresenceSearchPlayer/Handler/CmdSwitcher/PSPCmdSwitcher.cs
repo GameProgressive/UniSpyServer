@@ -39,7 +39,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
             _rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
             foreach (var rawRequest in rawRequests)
             {
-                var request = new PSPRequestFactory(rawRequest).Serialize();
+                var request = new PSPRequestFactory(rawRequest).Deserialize();
                 try
                 {
                     request.Parse();

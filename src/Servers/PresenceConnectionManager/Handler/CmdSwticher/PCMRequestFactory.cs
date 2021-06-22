@@ -18,29 +18,32 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
     {
         private new string _rawRequest => (string)base._rawRequest;
 
-        private Dictionary<string, Type> Requests = new();
-
         public PCMRequestFactory(object rawRequest) : base(rawRequest)
         {
-            var assemblies = from type in Assembly.GetExecutingAssembly().GetTypes() where type.Namespace == "PresenceConnectionManager.Entity.Structure.Request" select type;
+            var assemblies = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.Name == RequestNamespace);
+            if (assemblies.Count() == 0)
+            {
+                throw new NotImplementedException("Requests have not been implemented");
+            }
+
             foreach (var assembly in assemblies)
             {
-                var attr = (CommandAttribute)assembly.GetCustomAttributes().FirstOrDefault(x => x.GetType() == typeof(CommandAttribute));
+                var attr = (CommandAttribute)assembly.GetCustomAttributes()
+                                                     .FirstOrDefault(x => x.GetType() == typeof(CommandAttribute));
 
                 if (attr == null)
-                    continue;
+                    throw new NotImplementedException("Requests have no attribute");
 
-                if (Requests.ContainsKey(attr.Name))
+                if (RequestMapping.ContainsKey(attr.Name))
                 {
-                    LogWriter.ToLog(Serilog.Events.LogEventLevel.Warning, $"Command override {attr.Name} for type {assembly.FullName}");
-                    continue;
+                    throw new ArgumentException($"Duplicate commands {attr.Name} for type {assembly.FullName}");
                 }
 
-                Requests.Add(attr.Name, assembly);
+                RequestMapping.Add(attr.Name, assembly);
             }
         }
 
-        public override IUniSpyRequest Serialize()
+        public override IUniSpyRequest Deserialize()
         {
             // Read client message, and parse it into key value pairs
             var keyValues = GameSpyUtils.ConvertToKeyValue(_rawRequest);
@@ -50,13 +53,13 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
 
             var key = keyValues.Keys.First();
 
-            if (!Requests.ContainsKey(key))
+            if (!RequestMapping.ContainsKey(key))
             {
                 LogWriter.LogUnkownRequest(_rawRequest);
                 return null;
             }
 
-            return (IUniSpyRequest)Activator.CreateInstance(Requests[key], _rawRequest);
+            return (IUniSpyRequest)Activator.CreateInstance(RequestMapping[key], _rawRequest);
 
             /*switch (keyValues.Keys.First())
             {

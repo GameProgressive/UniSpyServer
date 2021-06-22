@@ -20,7 +20,7 @@ namespace QueryReport.Handler.CmdSwitcher
 
         protected override void SerializeRequests()
         {
-            var request = new QRRequestFactory(_rawRequest).Serialize();
+            var request = new QRRequestFactory(_rawRequest).Deserialize();
             request.Parse();
             _requests.Add(request);
         }

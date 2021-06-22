@@ -15,7 +15,7 @@ namespace GameStatus.Handler.CmdSwitcher
         {
         }
 
-        public override IUniSpyRequest Serialize()
+        public override IUniSpyRequest Deserialize()
         {
             var keyValues = GameSpyUtils.ConvertToKeyValue(_rawRequest);
             switch (keyValues.Keys.First())

@@ -18,7 +18,7 @@ namespace QueryReport.Handler.CmdSwitcher
         {
         }
 
-        public override IUniSpyRequest Serialize()
+        public override IUniSpyRequest Deserialize()
         {
             if (_rawRequest.Length < 1)
             {

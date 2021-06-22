@@ -14,7 +14,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
         {
         }
 
-        public override IUniSpyRequest Serialize()
+        public override IUniSpyRequest Deserialize()
         {
             switch ((NatPacketType)_rawRequest[7])
             {

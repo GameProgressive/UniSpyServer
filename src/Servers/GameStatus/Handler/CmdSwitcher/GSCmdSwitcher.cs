@@ -29,7 +29,7 @@ namespace GameStatus.Handler.CmdSwitcher
 
         protected override void SerializeRequests()
         {
-            var request = new GSRequestFactory(_rawRequest).Serialize();
+            var request = new GSRequestFactory(_rawRequest).Deserialize();
             request.Parse();
             _requests.Add(request);
         }

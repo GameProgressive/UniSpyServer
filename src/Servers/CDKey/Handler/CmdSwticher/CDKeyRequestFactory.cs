@@ -14,7 +14,7 @@ namespace CDKey.Handler.CmdSwitcher
         {
         }
 
-        public override IUniSpyRequest Serialize()
+        public override IUniSpyRequest Deserialize()
         {
             var kv = GameSpyUtils.ConvertToKeyValue(_rawRequest);
 

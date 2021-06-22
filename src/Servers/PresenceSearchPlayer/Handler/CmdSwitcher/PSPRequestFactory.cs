@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
         {
         }
 
-        public override IUniSpyRequest Serialize()
+        public override IUniSpyRequest Deserialize()
         {
             // Read client message, and parse it into key value pairs
             var keyValues = GameSpyUtils.ConvertToKeyValue(_rawRequest);

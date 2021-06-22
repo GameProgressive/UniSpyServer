@@ -25,7 +25,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
 
         protected override void SerializeRequests()
         {
-            var request = new NNRequestFactory(_rawRequest).Serialize();
+            var request = new NNRequestFactory(_rawRequest).Deserialize();
             request.Parse();
             _requests.Add(request);
         }

@@ -41,7 +41,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
 
             foreach (var rawRequest in rawRequests)
             {
-                var request = new PCMRequestFactory(rawRequest).Serialize();
+                var request = new PCMRequestFactory(rawRequest).Deserialize();
                 try
                 {
                     request.Parse();

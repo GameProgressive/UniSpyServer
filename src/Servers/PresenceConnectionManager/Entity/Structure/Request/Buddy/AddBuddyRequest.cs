@@ -3,7 +3,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    [Command(PCMRequestName.AddBuddy)]
+    [Command("addbuddy")]
     internal sealed class AddBuddyRequest : PCMRequestBase
     {
         public uint FriendProfileID { get; private set; }

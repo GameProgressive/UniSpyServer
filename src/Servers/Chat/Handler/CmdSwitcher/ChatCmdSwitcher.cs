@@ -36,7 +36,7 @@ namespace Chat.Handler.CommandSwitcher
             // next we handle each command
             foreach (var rawRequest in rawRequests)
             {
-                var request = new ChatRequestFacotry(rawRequest).Serialize();
+                var request = new ChatRequestFacotry(rawRequest).Deserialize();
                 try
                 {
                     request.Parse();

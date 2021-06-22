@@ -28,7 +28,7 @@ namespace CDKey.Handler.CmdSwitcher
             string[] commands = _rawRequest.Split(@"\r\n", StringSplitOptions.RemoveEmptyEntries);
             foreach (var command in commands)
             {
-                var request = new CDKeyRequestFactory(command).Serialize();
+                var request = new CDKeyRequestFactory(command).Deserialize();
                 request.Parse();
                 _requests.Add(request);
             }

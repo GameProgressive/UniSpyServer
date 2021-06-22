@@ -16,7 +16,7 @@ namespace Chat.Handler.CommandSwitcher
         }
 
 
-        public override IUniSpyRequest Serialize()
+        public override IUniSpyRequest Deserialize()
         {
             string commandName = ChatRequestBase.GetCommandName(_rawRequest);
             Type requestType = AppDomain.CurrentDomain

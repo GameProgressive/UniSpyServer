@@ -16,7 +16,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
         {
         }
 
-        public override IUniSpyRequest Serialize()
+        public override IUniSpyRequest Deserialize()
         {
             if (_rawRequest.Take(6).SequenceEqual(NNRequestBase.MagicData))
             {
