@@ -10,7 +10,6 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 using UniSpyLib.MiscMethod;
 using UniSpyLib.UniSpyConfig;
 
-
 namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyServerFactoryBase
@@ -141,7 +140,10 @@ namespace UniSpyLib.Abstraction.BaseClass
         private static Dictionary<string, Type> LoadUniSpyComponents(string nspace)
         {
             var mapping = new Dictionary<string, Type>();
-            var assemblies = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.Name == nspace);
+            
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                       .SelectMany(t => t.GetTypes()).Where(t => t.FullName.Contains(nspace)).ToList();
+
             if (assemblies.Count() == 0)
             {
                 throw new NotImplementedException("Components have not been implemented");
