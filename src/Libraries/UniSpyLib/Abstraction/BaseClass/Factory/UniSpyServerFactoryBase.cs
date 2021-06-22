@@ -125,12 +125,12 @@ namespace UniSpyLib.Abstraction.BaseClass
         }
         private void LoadUniSpyRequests()
         {
-            var requestNamespace = $"{typeof(UniSpyServerFactoryBase).Namespace.Split('.').First()}.Entity.Structure.Request";
+            var requestNamespace = $"{this.GetType().Namespace.Split('.').First()}.Entity.Structure.Request";
             RequestMapping = LoadUniSpyComponents(requestNamespace);
         }
         private void LoadUniSpyHandlers()
         {
-            var handlerNamespace = $"{typeof(UniSpyServerFactoryBase).Namespace.Split('.').First()}.Handler.CmdHandler";
+            var handlerNamespace = $"{this.GetType().Namespace.Split('.').First()}.Handler.CmdHandler";
             HandlerMapping = LoadUniSpyComponents(handlerNamespace);
         }
         /// <summary>
