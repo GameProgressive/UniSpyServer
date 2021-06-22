@@ -140,7 +140,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         private static Dictionary<string, Type> LoadUniSpyComponents(string nspace)
         {
             var mapping = new Dictionary<string, Type>();
-            
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()
                        .SelectMany(t => t.GetTypes()).Where(t => t.FullName.Contains(nspace)).ToList();
 
@@ -152,9 +151,8 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 var attr = (CommandAttribute)assembly.GetCustomAttributes()
                                                      .FirstOrDefault(x => x.GetType() == typeof(CommandAttribute));
-
                 if (attr == null)
-                    throw new NotImplementedException("Components have no attribute");
+                    continue;
 
                 if (mapping.ContainsKey(attr.Name))
                 {
