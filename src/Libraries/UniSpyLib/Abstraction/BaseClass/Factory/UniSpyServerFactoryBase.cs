@@ -1,5 +1,8 @@
-﻿using StackExchange.Redis;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using StackExchange.Redis;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
@@ -26,9 +29,11 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// </summary>
         public static IUniSpyServer Server { get; protected set; }
         /// <summary>
-        /// The project base namespace name, specific server is created by this name
+        /// The gamespy requests and UniSpy requets mapping dictionary
         /// </summary>
-
+        /// <returns></returns>
+        public static Dictionary<string, Type> RequestMapping;
+        public static Dictionary<string, Type> HandlerMapping;
         public UniSpyServerFactoryBase()
         {
         }
@@ -36,6 +41,8 @@ namespace UniSpyLib.Abstraction.BaseClass
         public virtual void Start()
         {
             ShowUniSpyLogo();
+            LoadUniSpyRequests();
+            LoadUniSpyHandlers();
             ConnectMySql();
             ConnectRedis();
             LoadServerConfig();
@@ -115,6 +122,45 @@ namespace UniSpyLib.Abstraction.BaseClass
             Console.WriteLine(@" \___/|_||_|_|___/ .__/\_, |___/\___|_|  \_/\___|_|");
             Console.WriteLine(@"                 |_|   |__/ ");
             Console.WriteLine(@"Version: " + UniSpyVersion);
+        }
+        private void LoadUniSpyRequests()
+        {
+            var requestNamespace = $"{typeof(UniSpyServerFactoryBase).Namespace.Split('.').First()}.Entity.Structure.Request";
+            RequestMapping = LoadUniSpyComponents(requestNamespace);
+        }
+        private void LoadUniSpyHandlers()
+        {
+            var handlerNamespace = $"{typeof(UniSpyServerFactoryBase).Namespace.Split('.').First()}.Handler.CmdHandler";
+            HandlerMapping = LoadUniSpyComponents(handlerNamespace);
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nspace"> namespace</param>
+        /// <returns></returns>
+        private static Dictionary<string, Type> LoadUniSpyComponents(string nspace)
+        {
+            var mapping = new Dictionary<string, Type>();
+            var assemblies = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.Name == nspace);
+            if (assemblies.Count() == 0)
+            {
+                throw new NotImplementedException("Requests have not been implemented");
+            }
+            foreach (var assembly in assemblies)
+            {
+                var attr = (CommandAttribute)assembly.GetCustomAttributes()
+                                                     .FirstOrDefault(x => x.GetType() == typeof(CommandAttribute));
+
+                if (attr == null)
+                    throw new NotImplementedException("Components have no attribute");
+
+                if (mapping.ContainsKey(attr.Name))
+                {
+                    throw new ArgumentException($"Duplicate commands {attr.Name} for type {assembly.FullName}");
+                }
+                mapping.Add(attr.Name, assembly);
+            }
+            return mapping;
         }
     }
 }
