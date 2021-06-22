@@ -3,7 +3,8 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal class LogoutHandler : PCMCmdHandlerBase
+    [Command("logout")]
+    internal sealed class LogoutHandler : PCMCmdHandlerBase
     {
         public LogoutHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

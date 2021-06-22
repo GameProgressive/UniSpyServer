@@ -4,6 +4,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
+    [Command("login")]
     internal sealed class LoginRequest : PCMRequestBase
     {
         public string UserChallenge { get; private set; }

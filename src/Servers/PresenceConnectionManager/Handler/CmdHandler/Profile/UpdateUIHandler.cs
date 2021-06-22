@@ -6,7 +6,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// <summary>
     /// Update user information (email)
     /// </summary>
-    internal class UpdateUIHandler : PCMCmdHandlerBase
+    [Command("updateui")]
+    internal sealed class UpdateUIHandler : PCMCmdHandlerBase
     {
         public UpdateUIHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

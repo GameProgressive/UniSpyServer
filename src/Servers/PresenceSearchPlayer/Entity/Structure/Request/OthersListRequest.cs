@@ -8,10 +8,10 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
     //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
     //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
-    internal class OthersListRequest : PSPRequestBase
+    internal sealed class OthersListRequest : PSPRequestBase
     {
-        public List<uint> ProfileIDs { get; protected set; }
-        public uint NamespaceID { get; protected set; }
+        public List<uint> ProfileIDs { get; private set; }
+        public uint NamespaceID { get; private set; }
         public OthersListRequest(string rawRequest) : base(rawRequest)
         {
         }

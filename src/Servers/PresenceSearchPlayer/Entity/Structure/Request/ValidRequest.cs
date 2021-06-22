@@ -4,15 +4,15 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal class ValidRequest : PSPRequestBase
+    internal sealed class ValidRequest : PSPRequestBase
     {
         public ValidRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public uint NamespaceID { get; protected set; }
+        public uint NamespaceID { get; private set; }
         public string Email { get; private set; }
-        public string GameName { get; protected set; }
+        public string GameName { get; private set; }
 
         public override void Parse()
         {

@@ -11,11 +11,11 @@ namespace ServerBrowser.Handler.CommandSwitcher
         {
         }
 
-        protected override void SerializeCommandHandlers()
+        protected override void DeserializeCmdHandlers()
         {
             foreach (var request in _requests)
             {
-                var handler = new SBCmdHandlerFactory(_session, request).Serialize();
+                var handler = new SBCmdHandlerFactory(_session, request).Deserialize();
                 if (handler == null)
                 {
                     continue;
@@ -25,7 +25,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             }
         }
 
-        protected override void SerializeRequests()
+        protected override void DeserializeRequests()
         {
             var request = new SBRequestFactory(_rawRequest).Deserialize();
             request.Parse();

@@ -4,7 +4,8 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal class RemoveBlockHandler : PCMCmdHandlerBase
+    [Command("removeblk")]
+    internal sealed class RemoveBlockHandler : PCMCmdHandlerBase
     {
         public RemoveBlockHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

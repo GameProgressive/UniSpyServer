@@ -10,15 +10,15 @@ namespace QueryReport.Handler.CmdSwitcher
         {
         }
 
-        protected override void SerializeCommandHandlers()
+        protected override void DeserializeCmdHandlers()
         {
             foreach (var request in _requests)
             {
-                _handlers.Add(new QRCmdHandlerFactory(_session, request).Serialize());
+                _handlers.Add(new QRCmdHandlerFactory(_session, request).Deserialize());
             }
         }
 
-        protected override void SerializeRequests()
+        protected override void DeserializeRequests()
         {
             var request = new QRRequestFactory(_rawRequest).Deserialize();
             request.Parse();

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal class BuddyListResult : PCMResultBase
+    internal sealed class BuddyListResult : PCMResultBase
     {
         public List<uint> ProfileIDList;
 

@@ -4,6 +4,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
+    [Command("registernick")]
     internal sealed class RegisterNickRequest : PCMRequestBase
     {
         public string UniqueNick { get; private set; }

@@ -4,7 +4,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal class NicksRequest : PSPRequestBase
+    internal sealed class NicksRequest : PSPRequestBase
     {
         public NicksRequest(string rawRequest) : base(rawRequest)
         {
@@ -12,8 +12,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
         public string Password { get; private set; }
         public string Email { get; private set; }
-        public uint NamespaceID { get; protected set; }
-        public bool IsRequireUniqueNicks { get; protected set; }
+        public uint NamespaceID { get; private set; }
+        public bool IsRequireUniqueNicks { get; private set; }
 
         public override void Parse()
         {

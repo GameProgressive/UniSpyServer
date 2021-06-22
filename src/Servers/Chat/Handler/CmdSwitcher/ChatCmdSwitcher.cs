@@ -20,15 +20,15 @@ namespace Chat.Handler.CommandSwitcher
         {
         }
 
-        protected override void SerializeCommandHandlers()
+        protected override void DeserializeCmdHandlers()
         {
             foreach (var request in _requests)
             {
-                _handlers.Add(new ChatCmdHandlerFactory(_session, request).Serialize());
+                _handlers.Add(new ChatCmdHandlerFactory(_session, request).Deserialize());
             }
         }
 
-        protected override void SerializeRequests()
+        protected override void DeserializeRequests()
         {
             string[] rawRequests = _rawRequest.Replace("\r", "")
                    .Split("\n", StringSplitOptions.RemoveEmptyEntries);

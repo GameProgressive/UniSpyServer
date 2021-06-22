@@ -6,10 +6,10 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal class AddBlockHandler : PCMCmdHandlerBase
+    [Command("addblock")]
+    internal sealed class AddBlockHandler : PCMCmdHandlerBase
     {
-
-        protected new AddBlockRequest _request => (AddBlockRequest)base._request;
+        private new AddBlockRequest _request => (AddBlockRequest)base._request;
         public AddBlockHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

@@ -3,7 +3,7 @@ using NATNegotiation.Entity.Enumerate;
 
 namespace NATNegotiation.Entity.Structure.Request
 {
-    internal class ConnectRequest : NNRequestBase
+    internal sealed class ConnectRequest : NNRequestBase
     {
         public NatPortType PortType { get; set; }
         public ConnectRequest() { }

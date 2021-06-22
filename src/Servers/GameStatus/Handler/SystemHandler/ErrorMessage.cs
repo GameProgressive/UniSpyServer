@@ -2,7 +2,7 @@
 
 namespace GameStatus.Handler.SystemHandler
 {
-    internal class ErrorMessage
+    internal sealed class ErrorMessage
     {
         public static string ToMsg(GSErrorCode error)
         {

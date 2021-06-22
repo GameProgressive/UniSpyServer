@@ -4,6 +4,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
+    [Command("newprofile")]
     internal sealed class NewProfileRequest : PCMRequestBase
     {
         //create a new profile with new nick 

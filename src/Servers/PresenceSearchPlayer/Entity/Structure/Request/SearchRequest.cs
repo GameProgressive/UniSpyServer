@@ -11,17 +11,17 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         EmailSearch
     }
 
-    internal class SearchRequest : PSPRequestBase
+    internal sealed class SearchRequest : PSPRequestBase
     {
-        public int SkipNum { get; protected set; }
-        public SearchRequestType RequestType { get; protected set; }
+        public int SkipNum { get; private set; }
+        public SearchRequestType RequestType { get; private set; }
         public string GameName { get; private set; }
         public uint ProfileID { get; private set; }
         public uint PartnerID { get; private set; }
         public string Email { get; private set; }
         public string Nick { get; private set; }
         public string Uniquenick { get; private set; }
-        public uint NamespaceID { get; protected set; }
+        public uint NamespaceID { get; private set; }
         public SearchRequest(string rawRequest) : base(rawRequest)
         {
         }

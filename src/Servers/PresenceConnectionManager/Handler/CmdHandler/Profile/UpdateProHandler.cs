@@ -6,9 +6,10 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal class UpdateProHandler : PCMCmdHandlerBase
+    [Command("updatepro")]
+    internal sealed class UpdateProHandler : PCMCmdHandlerBase
     {
-        protected new UpdateProRequest _request => (UpdateProRequest)base._request;
+        private new UpdateProRequest _request => (UpdateProRequest)base._request;
         public UpdateProHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

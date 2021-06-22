@@ -4,6 +4,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
+    [Command("getprofile")]
     internal sealed class GetProfileRequest : PCMRequestBase
     {
         public uint ProfileID { get; private set; }

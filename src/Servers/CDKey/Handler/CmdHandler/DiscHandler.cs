@@ -3,7 +3,7 @@
     /// <summary>
     /// disconnect from cdkey server
     /// </summary>
-    internal class DiscHandler
+    internal sealed class DiscHandler
     {
         /// <summary>
         /// handle disconnect request;

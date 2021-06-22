@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Application
     /// <summary>
     /// This class represents a RetroSpy Server program
     /// </summary>
-    internal class Program
+    internal sealed class Program
     {
         private static void Main(string[] args)
         {

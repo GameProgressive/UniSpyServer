@@ -7,6 +7,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
+    [Command("updatepro")]
     internal sealed class UpdateProRequest : PCMRequestBase
     {
         public UpdateProRequest(string rawRequest) : base(rawRequest)

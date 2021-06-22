@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Misc
 {
-    internal class PCMSDKRevision
+    internal sealed class PCMSDKRevision
     {
         public SDKRevisionType? SDKRevisionType { get; set; }
         public bool IsSDKRevisionValid => SDKRevisionType == 0 ? false : true;

@@ -9,11 +9,11 @@ namespace NATNegotiation.Handler.CmdSwitcher
         {
         }
 
-        protected override void SerializeCommandHandlers()
+        protected override void DeserializeCmdHandlers()
         {
             foreach (var request in _requests)
             {
-                var handler = new NNCmdHandlerFactory(_session, request).Serialize();
+                var handler = new NNCmdHandlerFactory(_session, request).Deserialize();
                 if (handler == null)
                 {
                     return;
@@ -23,7 +23,7 @@ namespace NATNegotiation.Handler.CmdSwitcher
             }
         }
 
-        protected override void SerializeRequests()
+        protected override void DeserializeRequests()
         {
             var request = new NNRequestFactory(_rawRequest).Deserialize();
             request.Parse();

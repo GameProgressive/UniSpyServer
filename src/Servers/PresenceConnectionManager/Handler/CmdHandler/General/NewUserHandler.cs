@@ -1,9 +1,11 @@
-﻿using PresenceConnectionManager.Entity.Structure.Response;
+﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
+    [Command("newuser")]
     internal sealed class NewUserHandler : PresenceSearchPlayer.Handler.CmdHandler.NewUserHandler
     {
         public NewUserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

@@ -5,7 +5,7 @@ using UniSpyLib.Logging;
 
 namespace QueryReport.Application
 {
-    internal class Program
+    internal sealed class Program
     {
         static void Main(string[] args)
         {

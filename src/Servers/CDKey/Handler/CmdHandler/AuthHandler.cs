@@ -1,6 +1,6 @@
 ﻿namespace CDKey.Handler.CmdHandler
 {
-    internal class AuthHandler
+    internal sealed class AuthHandler
     {
     }
 }

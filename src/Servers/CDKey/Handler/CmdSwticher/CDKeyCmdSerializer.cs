@@ -10,7 +10,7 @@ namespace CDKey.Handler.CmdSwitcher
         {
         }
 
-        public override IUniSpyHandler Serialize()
+        public override IUniSpyHandler Deserialize()
         {
             switch (_request.CommandName)
             {

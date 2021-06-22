@@ -1,56 +1,57 @@
-﻿using PresenceConnectionManager.Handler.CmdSwticher;
-using PresenceSearchPlayer.Entity.Exception.General;
-using Serilog.Events;
+﻿using PresenceSearchPlayer.Entity.Exception.General;
 using System;
+using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
+using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
     internal sealed class PCMCmdSwitcher : UniSpyCmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
-
         public PCMCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 
-        protected override void SerializeCommandHandlers()
+        protected override void DeserializeRequests()
         {
-            foreach (var request in _requests)
+            try
             {
-                var handler = new PCMCmdHandlerFactory(_session, request).Serialize();
-                if (handler == null)
+                if (_rawRequest[0] != '\\')
                 {
-                    return;
+                    throw new GPParseException("Request format is invalid");
                 }
-                _handlers.Add(handler);
-            }
-        }
+                var rawRequests = _rawRequest.Split(@"\final\", StringSplitOptions.RemoveEmptyEntries);
 
-        protected override void SerializeRequests()
-        {
-
-            if (_rawRequest[0] != '\\')
-            {
-                LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
-                return;
-            }
-            string[] rawRequests = _rawRequest.Split("\\final\\", StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (var rawRequest in rawRequests)
-            {
-                var request = new PCMRequestFactory(rawRequest).Deserialize();
-                try
+                foreach (var rawRequest in rawRequests)
                 {
+                    // Read client message, and parse it into key value pairs
+                    var keyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
+
+                    if (keyValues.Keys.Count < 1)
+                        throw new GPException("Request command not found"); // malformed query
+
+                    var key = keyValues.Keys.First();
+
+                    if (!UniSpyServerFactoryBase.RequestMapping.ContainsKey(key))
+                    {
+                        LogWriter.LogUnkownRequest(_rawRequest);
+                        throw new GPParseException($"Unknown request: {key}");
+                    }
+                    var request = (IUniSpyRequest)Activator.CreateInstance(
+                        UniSpyServerFactoryBase.RequestMapping[key],
+                        _rawRequest);
+
                     request.Parse();
+                    _requests.Add(request);
                 }
-                catch (GPException e)
-                {
-                    _session.SendAsync(e.ErrorResponse);
-                }
-                _requests.Add(request);
+            }
+            catch (GPParseException e)
+            {
+                _session.SendAsync(e.ErrorResponse);
+                throw e;
             }
         }
     }

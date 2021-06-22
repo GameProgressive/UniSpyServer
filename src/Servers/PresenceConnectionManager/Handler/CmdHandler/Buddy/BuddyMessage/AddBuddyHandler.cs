@@ -6,9 +6,10 @@ using UniSpyLib.Abstraction.Interface;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
-    internal class AddBuddyHandler : PCMCmdHandlerBase
+    [Command("addbuddy")]
+    internal sealed class AddBuddyHandler : PCMCmdHandlerBase
     {
-        protected new AddBuddyRequest _request => (AddBuddyRequest)base._request;
+        private new AddBuddyRequest _request => (AddBuddyRequest)base._request;
 
         public AddBuddyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

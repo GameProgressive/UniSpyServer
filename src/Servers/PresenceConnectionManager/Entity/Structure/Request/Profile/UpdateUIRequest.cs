@@ -2,6 +2,7 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
+    [Command("updateui")]
     internal sealed class UpdateUIRequest : PCMRequestBase
     {
         public UpdateUIRequest(string rawRequest) : base(rawRequest)

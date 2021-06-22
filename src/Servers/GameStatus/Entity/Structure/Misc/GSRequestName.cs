@@ -1,6 +1,6 @@
 ﻿namespace GameStatus.Entity.Structure.Misc
 {
-    internal class GSRequestName
+    internal sealed class GSRequestName
     {
         /// <summary>
         /// Authenticate user

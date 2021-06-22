@@ -5,10 +5,10 @@ using System.Linq;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal class SearchUniqueRequest : PSPRequestBase
+    internal sealed class SearchUniqueRequest : PSPRequestBase
     {
         public string Uniquenick { get; private set; }
-        public List<uint> Namespaces { get; protected set; }
+        public List<uint> Namespaces { get; private set; }
         public SearchUniqueRequest(string rawRequest) : base(rawRequest)
         {
         }

@@ -5,6 +5,10 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
+    /// <summary>
+    /// Update a user's status information
+    /// </summary>
+    [Command("statusinfo")]
     internal sealed class StatusInfoRequest : PCMRequestBase
     {
         public bool IsGetStatusInfo { get; set; }

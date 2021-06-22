@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Abstraction.SystemHandler.Buddy
 {
-    internal class BuddyStatusInfoHandler : PCMCmdHandlerBase
+    internal sealed class BuddyStatusInfoHandler : PCMCmdHandlerBase
     {
         // This is what the message should look like.  Its broken up for easy viewing.
         //

@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace NATNegotiation.Handler.CmdHandler
 {
 
-    internal class ErtAckHandler : NNCmdHandlerBase
+    internal sealed class ErtAckHandler : NNCmdHandlerBase
     {
         private new ErtAckRequest _request => (ErtAckRequest)base._request;
         public ErtAckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

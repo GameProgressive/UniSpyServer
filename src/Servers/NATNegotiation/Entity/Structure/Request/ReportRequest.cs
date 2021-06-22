@@ -6,7 +6,7 @@ using UniSpyLib.Extensions;
 
 namespace NATNegotiation.Entity.Structure.Request
 {
-    internal class ReportRequest : NNRequestBase
+    internal sealed class ReportRequest : NNRequestBase
     {
         public NatPortType PortType;
         public byte ClientIndex;

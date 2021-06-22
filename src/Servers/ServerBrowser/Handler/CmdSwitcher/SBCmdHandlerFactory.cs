@@ -13,7 +13,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
         {
         }
 
-        public override IUniSpyHandler Serialize()
+        public override IUniSpyHandler Deserialize()
         {
             //we do not need to handle GOA query because it is handled by game server
             switch (_request.CommandName)

@@ -8,9 +8,10 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal class RegisterNickHandler : PCMCmdHandlerBase
+    [Command("registernick")]
+    internal sealed class RegisterNickHandler : PCMCmdHandlerBase
     {
-        protected new RegisterNickRequest _request => (RegisterNickRequest)base._request;
+        private new RegisterNickRequest _request => (RegisterNickRequest)base._request;
         public RegisterNickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

@@ -2,7 +2,7 @@
 
 namespace NATNegotiation.Entity.Structure.Result
 {
-    internal sealed class AddressResult : InitResult
+    internal class AddressResult : InitResult
     {
         public AddressResult()
         {

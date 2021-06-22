@@ -1,6 +1,6 @@
 ﻿namespace NATNegotiation.Entity.Structure.Request
 {
-    internal class AddressRequest : NNInitRequestBase
+    internal sealed class AddressRequest : NNInitRequestBase
     {
         public AddressRequest(byte[] rawRequest) : base(rawRequest)
         {

@@ -7,9 +7,10 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal class RegisterCDKeyHandler : PCMCmdHandlerBase
+    [Command("registercdkey")]
+    internal sealed class RegisterCDKeyHandler : PCMCmdHandlerBase
     {
-        protected new RegisterCDKeyRequest _request => (RegisterCDKeyRequest)base._request;
+        private new RegisterCDKeyRequest _request => (RegisterCDKeyRequest)base._request;
         public RegisterCDKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

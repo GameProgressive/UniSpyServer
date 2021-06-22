@@ -3,7 +3,7 @@
     /// <summary>
     /// This status info class is for new SDK version
     /// </summary>
-    internal class PCMUserStatusInfo
+    internal sealed class PCMUserStatusInfo
     {
         public string StatusState { get; set; }
         public string BuddyIP { get; set; }

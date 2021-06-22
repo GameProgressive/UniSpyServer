@@ -14,10 +14,11 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal class LoginHandler : PCMCmdHandlerBase
+    [Command("login")]
+    internal sealed class LoginHandler : PCMCmdHandlerBase
     {
-        protected new LoginRequest _request => (LoginRequest)base._request;
-        protected new LoginResult _result
+        private new LoginRequest _request => (LoginRequest)base._request;
+        private new LoginResult _result
         {
             get => (LoginResult)base._result;
             set => base._result = value;
@@ -229,7 +230,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
             }
         }
 
-        protected bool IsChallengeCorrect()
+        private bool IsChallengeCorrect()
         {
             LoginChallengeProof proofData = new LoginChallengeProof(
                 _request.UserData,

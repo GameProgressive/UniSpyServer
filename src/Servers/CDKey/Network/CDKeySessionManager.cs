@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.UDP;
 
 namespace CDKey.Network
 {
-    internal class CDKeySessionManager : UniSpyUDPSessionManagerBase
+    internal sealed class CDKeySessionManager : UniSpyUDPSessionManagerBase
     {
         public CDKeySessionManager()
         {

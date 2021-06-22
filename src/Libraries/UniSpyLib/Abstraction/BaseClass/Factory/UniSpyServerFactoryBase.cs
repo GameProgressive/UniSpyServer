@@ -144,7 +144,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             var assemblies = Assembly.GetExecutingAssembly().GetTypes().Where(t => t.Name == nspace);
             if (assemblies.Count() == 0)
             {
-                throw new NotImplementedException("Requests have not been implemented");
+                throw new NotImplementedException("Componets have not been implemented");
             }
             foreach (var assembly in assemblies)
             {

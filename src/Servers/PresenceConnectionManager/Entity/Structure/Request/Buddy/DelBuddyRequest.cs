@@ -4,6 +4,10 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
+    /// <summary>
+    /// Delete a user from my friend list
+    /// </summary>
+    [Command("delbuddy")]
     internal sealed class DelBuddyRequest : PCMRequestBase
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\

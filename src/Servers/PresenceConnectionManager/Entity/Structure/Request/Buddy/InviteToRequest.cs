@@ -4,6 +4,10 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
+    /// <summary>
+    /// Invite a user to a room or a game
+    /// </summary>
+    [Command("inviteto")]
     internal sealed class InviteToRequest : PCMRequestBase
     {
         public uint ProductID { get; private set; }

@@ -14,11 +14,11 @@ namespace GameStatus.Handler.CmdSwitcher
         {
         }
 
-        protected override void SerializeCommandHandlers()
+        protected override void DeserializeCmdHandlers()
         {
             foreach (var request in _requests)
             {
-                var handler = new GSCmdHandlerFactory(_session, request).Serialize();
+                var handler = new GSCmdHandlerFactory(_session, request).Deserialize();
                 if (handler == null)
                 {
                     return;
@@ -27,7 +27,7 @@ namespace GameStatus.Handler.CmdSwitcher
             }
         }
 
-        protected override void SerializeRequests()
+        protected override void DeserializeRequests()
         {
             var request = new GSRequestFactory(_rawRequest).Deserialize();
             request.Parse();

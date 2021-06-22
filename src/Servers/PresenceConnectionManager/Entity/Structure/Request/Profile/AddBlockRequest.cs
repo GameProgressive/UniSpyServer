@@ -4,6 +4,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
+    [Command("addblock")]
     internal sealed class AddBlockRequest : PCMRequestBase
     {
         public uint ProfileID;

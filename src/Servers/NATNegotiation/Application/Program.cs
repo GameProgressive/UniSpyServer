@@ -7,7 +7,7 @@ namespace NATNegotiation.Application
     /// <summary>
     /// This class represents a RetroSpy Server program
     /// </summary>
-    internal class Program
+    internal sealed class Program
     {
         static void Main(string[] args)
         {

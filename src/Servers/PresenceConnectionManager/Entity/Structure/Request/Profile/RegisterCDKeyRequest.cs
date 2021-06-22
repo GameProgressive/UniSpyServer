@@ -7,6 +7,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// <summary>
     /// \registercdkey\sesskey\<sesskey>\cdkeyenc\<cdkeyenc>\id\<id>\final\
     /// </summary>
+    [Command("registercdkey")]
     internal sealed class RegisterCDKeyRequest : PCMRequestBase
     {
         public string CDKeyEnc { get; private set; }

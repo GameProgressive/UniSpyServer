@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal class NewProfileResult : PCMResultBase
+    internal sealed class NewProfileResult : PCMResultBase
     {
         public uint ProfileID;
 

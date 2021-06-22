@@ -4,10 +4,10 @@ using PresenceSearchPlayer.Entity.Exception.General;
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
 
-    internal class UniqueSearchRequest : PSPRequestBase
+    internal sealed class UniqueSearchRequest : PSPRequestBase
     {
-        public string PreferredNick { get; protected set; }
-        public uint NamespaceID { get; protected set; }
+        public string PreferredNick { get; private set; }
+        public uint NamespaceID { get; private set; }
         public UniqueSearchRequest(string rawRequest) : base(rawRequest)
         {
         }

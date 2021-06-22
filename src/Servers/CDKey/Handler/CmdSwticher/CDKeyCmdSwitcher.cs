@@ -15,15 +15,15 @@ namespace CDKey.Handler.CmdSwitcher
         {
         }
 
-        protected override void SerializeCommandHandlers()
+        protected override void DeserializeCmdHandlers()
         {
             foreach (var request in _requests)
             {
-                _handlers.Add(new CDKeyCmdHandlerFactory(_session, request).Serialize());
+                _handlers.Add(new CDKeyCmdHandlerFactory(_session, request).Deserialize());
             }
         }
 
-        protected override void SerializeRequests()
+        protected override void DeserializeRequests()
         {
             string[] commands = _rawRequest.Split(@"\r\n", StringSplitOptions.RemoveEmptyEntries);
             foreach (var command in commands)

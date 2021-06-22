@@ -2,7 +2,7 @@
 
 namespace QueryReport.Handler.SystemHandler.ErrorMessage
 {
-    internal class QRErrorMessage
+    internal sealed class QRErrorMessage
     {
         public static string GetErrorMessage(QRErrorCode error)
         {

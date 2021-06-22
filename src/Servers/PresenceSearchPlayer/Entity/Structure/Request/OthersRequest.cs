@@ -3,7 +3,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal class OthersRequest : PSPRequestBase
+    internal sealed class OthersRequest : PSPRequestBase
     {
         public OthersRequest(string rawRequest) : base(rawRequest)
         {
@@ -11,7 +11,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
         public uint ProfileID { get; private set; }
         public string GameName { get; private set; }
-        public uint NamespaceID { get; protected set; }
+        public uint NamespaceID { get; private set; }
         public override void Parse()
         {
             base.Parse();

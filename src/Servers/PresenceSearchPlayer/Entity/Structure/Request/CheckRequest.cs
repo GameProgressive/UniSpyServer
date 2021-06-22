@@ -4,7 +4,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal class CheckRequest : PSPRequestBase
+    internal sealed class CheckRequest : PSPRequestBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         public CheckRequest(string rawRequest) : base(rawRequest)

@@ -14,11 +14,11 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
         {
         }
 
-        protected override void SerializeCommandHandlers()
+        protected override void DeserializeCmdHandlers()
         {
             foreach (var request in _requests)
             {
-                var handler = new PSPCmdHandlerFactory(_session, request).Serialize();
+                var handler = new PSPCmdHandlerFactory(_session, request).Deserialize();
                 if (handler == null)
                 {
                     return;
@@ -27,7 +27,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
             }
         }
 
-        protected override void SerializeRequests()
+        protected override void DeserializeRequests()
         {
             if (_rawRequest[0] != '\\')
             {

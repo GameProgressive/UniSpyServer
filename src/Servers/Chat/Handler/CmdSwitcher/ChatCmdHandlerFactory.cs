@@ -13,7 +13,7 @@ namespace Chat.Handler.CommandSwitcher
         {
         }
 
-        public override IUniSpyHandler Serialize()
+        public override IUniSpyHandler Deserialize()
         {
 
             Type handlerType = AppDomain.CurrentDomain

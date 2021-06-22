@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
@@ -23,12 +24,12 @@ namespace UniSpyLib.Abstraction.BaseClass
         {
             try
             {
-                SerializeRequests();
+                DeserializeRequests();
                 if (_requests.Count == 0)
                 {
                     return;
                 }
-                SerializeCommandHandlers();
+                DeserializeCmdHandlers();
                 if (_handlers.Count == 0)
                 {
                     return;
@@ -46,7 +47,21 @@ namespace UniSpyLib.Abstraction.BaseClass
             }
         }
 
-        protected abstract void SerializeRequests();
-        protected abstract void SerializeCommandHandlers();
+        protected abstract void DeserializeRequests();
+        protected virtual void DeserializeCmdHandlers()
+        {
+            foreach (var request in _requests)
+            {
+                var handler = (IUniSpyHandler)Activator.CreateInstance(
+                    UniSpyServerFactoryBase.RequestMapping[(string)request.CommandName],
+                    _rawRequest);
+
+                if (handler == null)
+                {
+                    return;
+                }
+                _handlers.Add(handler);
+            }
+        }
     }
 }

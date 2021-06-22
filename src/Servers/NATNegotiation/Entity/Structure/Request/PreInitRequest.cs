@@ -2,7 +2,7 @@
 
 namespace NATNegotiation.Entity.Structure.Request
 {
-    internal class PreInitRequest : NNRequestBase
+    internal sealed class PreInitRequest : NNRequestBase
     {
         public int CLientIndex;
         public int State;

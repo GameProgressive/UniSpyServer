@@ -2,7 +2,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Misc
 {
-    internal class SBConstants
+    internal sealed class SBConstants
     {
         internal const string LocalIP0 = "localip0";
         internal const string LocalIP1 = "localip1";

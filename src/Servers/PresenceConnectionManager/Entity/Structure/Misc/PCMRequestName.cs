@@ -1,6 +1,6 @@
 ﻿namespace PresenceConnectionManager.Entity.Structure
 {
-    internal class PCMRequestName
+    internal sealed class PCMRequestName
     {
         /// <summary>
         /// Log in to PCM server
@@ -53,23 +53,5 @@
         /// <summary>
         /// Add a user to my friend list
         /// </summary>
-        public const string AddBuddy = "addbuddy";
-        /// <summary>
-        /// Delete a user from my friend list
-        /// </summary>
-        public const string DelBuddy = "delbuddy";
-        /// <summary>
-        /// Update a user's status after login
-        /// </summary>
-        public const string Status = "status";
-        /// <summary>
-        /// Update a user's status information
-        /// </summary>
-        public const string StatusInfo = "statusinfo";
-        /// <summary>
-        /// Invite a user to a room or a game
-        /// </summary>
-        public const string InviteTo = "inviteto";
-
     }
 }

@@ -3,7 +3,7 @@ using QueryReport.Entity.Exception;
 
 namespace QueryReport.Entity.Structure.Request
 {
-    internal class AvaliableRequest : QRRequestBase
+    internal sealed class AvaliableRequest : QRRequestBase
     {
         public static readonly byte[] Prefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
         public static readonly byte Postfix = 0x00;

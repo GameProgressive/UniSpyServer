@@ -1,10 +1,12 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Structure.Request;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler.General
 {
-    internal class SDKRevisionHandler : PCMCmdHandlerBase
+    internal sealed class SDKRevisionHandler : PCMCmdHandlerBase
     {
+        private new LoginRequest _request => (LoginRequest)base._request;
         public SDKRevisionHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
