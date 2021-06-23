@@ -23,14 +23,14 @@ namespace NatNegotiation.Application
         /// <summary>
         /// NatNeg server do not need to access to MySql database
         /// </summary>
-        public override async Task Start()
+        public override void Start()
         {
-            await ShowUniSpyLogo();
-            await LoadUniSpyRequests();
-            await LoadUniSpyHandlers();
-            await ConnectRedis();
-            await LoadServerConfig();
-            await UniSpyJsonConverter.Initialize();
+            ShowUniSpyLogo();
+            LoadUniSpyRequests();
+            LoadUniSpyHandlers();
+            ConnectRedis();
+            LoadServerConfig();
+            UniSpyJsonConverter.Initialize();
         }
 
         /// <summary>

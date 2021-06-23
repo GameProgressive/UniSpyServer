@@ -39,18 +39,18 @@ namespace UniSpyLib.Abstraction.BaseClass
         {
         }
 
-        public virtual async Task Start()
+        public virtual void Start()
         {
-            await ShowUniSpyLogo();
-            await LoadUniSpyRequests();
-            await LoadUniSpyHandlers();
-            await ConnectMySql();
-            await ConnectRedis();
-            await LoadServerConfig();
-            await UniSpyJsonConverter.Initialize();
+             ShowUniSpyLogo();
+             LoadUniSpyRequests();
+             LoadUniSpyHandlers();
+             ConnectMySql();
+             ConnectRedis();
+             LoadServerConfig();
+             UniSpyJsonConverter.Initialize();
         }
 
-        protected async Task LoadServerConfig()
+        protected void LoadServerConfig()
         {
             //Add all servers
             foreach (UniSpyServerConfig cfg in ConfigManager.Config.Servers)
@@ -62,7 +62,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             var table = new ConsoleTables.ConsoleTable("Server Name", "Listening Address", "Listening Port");
             table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
             table.Write(ConsoleTables.Format.Alternative);
-            Console.WriteLine("Server successfully started! ");
+            Console.WriteLine("Server successfully started!");
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// <param name="cfg"></param>
         protected abstract void StartServer(UniSpyServerConfig cfg);
 
-        protected async Task ConnectRedis()
+        protected void ConnectRedis()
         {
             try
             {
@@ -85,8 +85,9 @@ namespace UniSpyLib.Abstraction.BaseClass
             }
             Console.WriteLine($"Successfully connected to Redis!");
         }
-        protected async Task ConnectMySql()
-        {//Determine which database is used and establish the database connection.
+        protected void ConnectMySql()
+        {
+            //Determine which database is used and establish the database connection.
             switch (ConfigManager.Config.Database.Type)
             {
                 case DatabaseType.MySql:
@@ -114,7 +115,7 @@ namespace UniSpyLib.Abstraction.BaseClass
 
             Console.WriteLine($"Successfully connected to {ConfigManager.Config.Database.Type}!");
         }
-        protected static async Task ShowUniSpyLogo()
+        protected static void ShowUniSpyLogo()
         {
             // the ascii art font name is "small"
             Console.WriteLine(@" _   _      _ ___           ___ ");
@@ -124,22 +125,22 @@ namespace UniSpyLib.Abstraction.BaseClass
             Console.WriteLine(@"                 |_|   |__/ ");
             Console.WriteLine(@"Version: " + UniSpyVersion);
         }
-        protected async Task LoadUniSpyRequests()
+        protected void LoadUniSpyRequests()
         {
             var requestNamespace = $"{this.GetType().Namespace.Split('.').First()}.Entity.Structure.Request";
-            RequestMapping = await LoadUniSpyComponents(requestNamespace);
+            RequestMapping =  LoadUniSpyComponents(requestNamespace);
         }
-        protected async Task LoadUniSpyHandlers()
+        protected void LoadUniSpyHandlers()
         {
             var handlerNamespace = $"{this.GetType().Namespace.Split('.').First()}.Handler.CmdHandler";
-            HandlerMapping = await LoadUniSpyComponents(handlerNamespace);
+            HandlerMapping =  LoadUniSpyComponents(handlerNamespace);
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="nspace"> namespace</param>
         /// <returns></returns>
-        private static async Task<Dictionary<object, Type>> LoadUniSpyComponents(string nspace)
+        private static Dictionary<object, Type> LoadUniSpyComponents(string nspace)
         {
             var mapping = new Dictionary<object, Type>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()

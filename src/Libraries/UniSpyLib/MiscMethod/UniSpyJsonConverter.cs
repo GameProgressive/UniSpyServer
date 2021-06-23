@@ -149,7 +149,7 @@ namespace UniSpyLib.MiscMethod
 
     public static class UniSpyJsonConverter
     {
-        public static async Task Initialize()
+        public static void Initialize()
         {
             var settings = new JsonSerializerSettings();
             settings.Converters.Add(new IPAddressConverter());

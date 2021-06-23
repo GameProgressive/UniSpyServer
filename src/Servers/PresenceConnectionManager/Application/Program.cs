@@ -11,13 +11,13 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     internal sealed class Program
     {
-        private static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                var factory = new PCMServerFactory();
-                await factory.Start();
+                new PCMServerFactory().Start();
+
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

@@ -15,13 +15,13 @@ namespace WebServices.Application
         {
         }
 
-        public override async Task Start()
+        public override void Start()
         {
-            await ShowUniSpyLogo();
+            ShowUniSpyLogo();
             //currently we do not need database connection
             //LoadDatabaseConfig();
             LogWriter.SettngUpLogger();
-            await LoadServerConfig();
+            LoadServerConfig();
 
         }
         protected override void StartServer(UniSpyServerConfig cfg)

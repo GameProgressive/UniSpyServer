@@ -8,13 +8,13 @@ namespace QueryReport.Application
 {
     internal sealed class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                var factory = new QRServerFactory();
-                await factory.Start();
+                new QRServerFactory().Start();
+
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

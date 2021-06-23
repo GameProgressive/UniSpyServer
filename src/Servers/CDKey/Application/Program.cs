@@ -11,14 +11,14 @@ namespace CDKey.Application
     /// </summary>
     internal static class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
 
             try
             {
                 //create a instance of ServerManager class
-                var factory = new CDKeyServerFactory();
-                await factory.Start();
+                new CDKeyServerFactory().Start();
+
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

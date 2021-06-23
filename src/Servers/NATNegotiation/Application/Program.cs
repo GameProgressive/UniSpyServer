@@ -10,14 +10,14 @@ namespace NatNegotiation.Application
     /// </summary>
     internal sealed class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
 
             try
             {
                 //create a instance of ServerManager class
-                var factory = new NNServerFactory();
-                await factory.Start();
+                new NNServerFactory().Start();
+
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

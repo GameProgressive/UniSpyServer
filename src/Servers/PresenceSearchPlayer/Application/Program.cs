@@ -8,13 +8,13 @@ namespace PresenceSearchPlayer
 {
     internal sealed class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                var factory = new PSPServerFactory();
-                await factory.Start();
+                new PSPServerFactory().Start();
+
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

@@ -8,13 +8,13 @@ namespace ServerBrowser.Application
 {
     internal sealed class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
 
             try
             {
-                var factory = new SBServerFactory();
-                await factory.Start();
+                new SBServerFactory().Start();
+
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

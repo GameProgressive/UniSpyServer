@@ -11,13 +11,13 @@ namespace Chat.Application
     /// </summary>
     internal static class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                var factory = new ChatServerFactory();
-                await factory.Start();
+                new ChatServerFactory().Start();
+
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

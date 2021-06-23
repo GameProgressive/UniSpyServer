@@ -11,7 +11,7 @@ namespace WebServices
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static void Main(string[] args)
         {
             //the working directory is different than binary execute file directory
             //we set the working directory as same as binary execute directory so we can read RetroSpyConfig.json
@@ -20,8 +20,7 @@ namespace WebServices
 
             try
             {
-                var manager = new WebServerFactory();
-                await manager.Start();
+                new WebServerFactory().Start();
             }
             catch (UniSpyExceptionBase e)
             {

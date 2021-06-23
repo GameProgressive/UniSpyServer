@@ -8,13 +8,13 @@ namespace GameStatus.Application
 {
     internal static class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                var factory = new GSServerFactory();
-                await factory.Start();
+                new GSServerFactory().Start();
+
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (Exception e)
