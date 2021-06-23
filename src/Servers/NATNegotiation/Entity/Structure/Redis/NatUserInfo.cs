@@ -1,8 +1,8 @@
-﻿using NATNegotiation.Entity.Structure.Request;
+﻿using NatNegotiation.Entity.Structure.Request;
 using System;
 using System.Net;
 
-namespace NATNegotiation.Entity.Structure.Redis
+namespace NatNegotiation.Entity.Structure.Redis
 {
     internal sealed class NatUserInfo
     {

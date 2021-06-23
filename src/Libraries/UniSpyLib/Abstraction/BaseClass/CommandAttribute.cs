@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass
+namespace UniSpyLib.Abstraction.BaseClass
 {
     public class CommandAttribute : Attribute
     {

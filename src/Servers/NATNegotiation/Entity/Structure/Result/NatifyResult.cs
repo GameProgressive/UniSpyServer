@@ -1,7 +1,7 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Enumerate;
 
-namespace NATNegotiation.Entity.Structure.Result
+namespace NatNegotiation.Entity.Structure.Result
 {
     internal sealed class NatifyResult : NNResultBase
     {

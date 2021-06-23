@@ -1,6 +1,6 @@
-﻿using NATNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Entity.Enumerate;
 
-namespace NATNegotiation.Entity.Structure.Result
+namespace NatNegotiation.Entity.Structure.Result
 {
     internal class AddressResult : InitResult
     {

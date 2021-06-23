@@ -1,9 +1,10 @@
-﻿using NATNegotiation.Network;
+﻿using System.Threading.Tasks;
+using NatNegotiation.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.MiscMethod;
 using UniSpyLib.UniSpyConfig;
 
-namespace NATNegotiation.Application
+namespace NatNegotiation.Application
 {
     /// <summary>
     /// A factory that create the instance of servers
@@ -22,14 +23,14 @@ namespace NATNegotiation.Application
         /// <summary>
         /// NatNeg server do not need to access to MySql database
         /// </summary>
-        public override void Start()
+        public override async Task Start()
         {
-            ShowUniSpyLogo();
-            LoadUniSpyRequests();
-            LoadUniSpyHandlers();
-            ConnectRedis();
-            LoadServerConfig();
-            UniSpyJsonConverter.Initialize();
+            await ShowUniSpyLogo();
+            await LoadUniSpyRequests();
+            await LoadUniSpyHandlers();
+            await ConnectRedis();
+            await LoadServerConfig();
+            await UniSpyJsonConverter.Initialize();
         }
 
         /// <summary>

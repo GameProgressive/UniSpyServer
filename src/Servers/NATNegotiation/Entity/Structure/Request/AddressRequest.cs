@@ -1,8 +1,9 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
+﻿
+using UniSpyLib.Abstraction.BaseClass;
 
-namespace NATNegotiation.Entity.Structure.Request
+namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command(10)]
+    [Command((byte)10)]
     internal sealed class AddressRequest : NNInitRequestBase
     {
         public AddressRequest(byte[] rawRequest) : base(rawRequest)

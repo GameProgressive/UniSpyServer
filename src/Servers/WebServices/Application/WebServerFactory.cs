@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using UniSpyLib.Abstraction.BaseClass;
@@ -14,13 +15,13 @@ namespace WebServices.Application
         {
         }
 
-        public override void Start()
+        public override async Task Start()
         {
-            ShowUniSpyLogo();
+            await ShowUniSpyLogo();
             //currently we do not need database connection
             //LoadDatabaseConfig();
             LogWriter.SettngUpLogger();
-            LoadServerConfig();
+            await LoadServerConfig();
 
         }
         protected override void StartServer(UniSpyServerConfig cfg)

@@ -1,11 +1,11 @@
-﻿using NATNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Entity.Enumerate;
 using Newtonsoft.Json;
 using System;
 using System.Net;
 using UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyLib.Extensions;
 
-namespace NATNegotiation.Entity.Structure.Redis
+namespace NatNegotiation.Entity.Structure.Redis
 {
     public class NatUserInfoRedisKey : UniSpyRedisKeyBase
     {

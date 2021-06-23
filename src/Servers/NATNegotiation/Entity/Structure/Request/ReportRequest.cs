@@ -1,20 +1,20 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Enumerate;
 using System;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
-namespace NATNegotiation.Entity.Structure.Request
+namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command(13)]
+    [Command((byte)13)]
     internal sealed class ReportRequest : NNRequestBase
     {
         public NatPortType PortType { get; set; }
         public byte ClientIndex { get; set; }
-        public NATNegotiationResult NatResult { get; set; }
-        public NATNegotiationType NatType { get; set; }
-        public NATNegotiationMappingScheme MappingScheme { get; set; }
+        public NatNegResult NatResult { get; set; }
+        public NatNegType NatType { get; set; }
+        public NatMappingScheme MappingScheme { get; set; }
         public string GameName { get; set; }
 
         public ReportRequest(byte[] rawRequest) : base(rawRequest)
@@ -28,11 +28,11 @@ namespace NATNegotiation.Entity.Structure.Request
             PortType = (NatPortType)RawRequest[13];
             ClientIndex = RawRequest[14];
 
-            NatResult = (NATNegotiationResult)RawRequest[15];
+            NatResult = (NatNegResult)RawRequest[15];
 
-            NatType = (NATNegotiationType)BitConverter.ToInt32(
+            NatType = (NatNegType)BitConverter.ToInt32(
                 ByteTools.SubBytes(RawRequest, 17, sizeof(int)));
-            MappingScheme = (NATNegotiationMappingScheme)BitConverter.ToInt32(
+            MappingScheme = (NatMappingScheme)BitConverter.ToInt32(
                 ByteTools.SubBytes(RawRequest, 19, sizeof(int)));
             GameName = UniSpyEncoding.GetString(
                 ByteTools.SubBytes(RawRequest, 23, RawRequest.Length - 23));

@@ -2,6 +2,7 @@ using Serilog.Events;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
 using WebServices.Application;
@@ -10,8 +11,7 @@ namespace WebServices
 {
     public class Program
     {
-        private static WebServerFactory Manager;
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             //the working directory is different than binary execute file directory
             //we set the working directory as same as binary execute directory so we can read RetroSpyConfig.json
@@ -20,8 +20,8 @@ namespace WebServices
 
             try
             {
-                Manager = new WebServerFactory();
-                Manager.Start();
+                var manager = new WebServerFactory();
+                await manager.Start();
             }
             catch (UniSpyExceptionBase e)
             {

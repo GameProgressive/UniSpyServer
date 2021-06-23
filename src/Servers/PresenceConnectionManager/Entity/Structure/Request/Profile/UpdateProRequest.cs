@@ -3,6 +3,7 @@ using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Exception.General;
 
 using System;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile

@@ -1,5 +1,6 @@
 ﻿using Serilog.Events;
 using System;
+using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
 
@@ -10,12 +11,13 @@ namespace Chat.Application
     /// </summary>
     internal static class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                new ChatServerFactory().Start();
+                var factory = new ChatServerFactory();
+                await factory.Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

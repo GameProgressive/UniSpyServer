@@ -1,9 +1,9 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
@@ -30,25 +30,27 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// <summary>
         /// The gamespy requests and UniSpy requets mapping dictionary
         /// </summary>
-        /// <returns></returns>
         public static Dictionary<object, Type> RequestMapping { get; private set; }
+        /// <summary>
+        /// The gamespy requests and UniSpy requets mapping dictionary
+        /// </summary>
         public static Dictionary<object, Type> HandlerMapping { get; private set; }
         public UniSpyServerFactoryBase()
         {
         }
 
-        public virtual void Start()
+        public virtual async Task Start()
         {
-            ShowUniSpyLogo();
-            LoadUniSpyRequests();
-            LoadUniSpyHandlers();
-            ConnectMySql();
-            ConnectRedis();
-            LoadServerConfig();
-            UniSpyJsonConverter.Initialize();
+            await ShowUniSpyLogo();
+            await LoadUniSpyRequests();
+            await LoadUniSpyHandlers();
+            await ConnectMySql();
+            await ConnectRedis();
+            await LoadServerConfig();
+            await UniSpyJsonConverter.Initialize();
         }
 
-        protected void LoadServerConfig()
+        protected async Task LoadServerConfig()
         {
             //Add all servers
             foreach (UniSpyServerConfig cfg in ConfigManager.Config.Servers)
@@ -70,7 +72,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// <param name="cfg"></param>
         protected abstract void StartServer(UniSpyServerConfig cfg);
 
-        public void ConnectRedis()
+        protected async Task ConnectRedis()
         {
             try
             {
@@ -83,7 +85,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             }
             Console.WriteLine($"Successfully connected to Redis!");
         }
-        public void ConnectMySql()
+        protected async Task ConnectMySql()
         {//Determine which database is used and establish the database connection.
             switch (ConfigManager.Config.Database.Type)
             {
@@ -112,7 +114,7 @@ namespace UniSpyLib.Abstraction.BaseClass
 
             Console.WriteLine($"Successfully connected to {ConfigManager.Config.Database.Type}!");
         }
-        public static void ShowUniSpyLogo()
+        protected static async Task ShowUniSpyLogo()
         {
             // the ascii art font name is "small"
             Console.WriteLine(@" _   _      _ ___           ___ ");
@@ -122,22 +124,22 @@ namespace UniSpyLib.Abstraction.BaseClass
             Console.WriteLine(@"                 |_|   |__/ ");
             Console.WriteLine(@"Version: " + UniSpyVersion);
         }
-        protected void LoadUniSpyRequests()
+        protected async Task LoadUniSpyRequests()
         {
             var requestNamespace = $"{this.GetType().Namespace.Split('.').First()}.Entity.Structure.Request";
-            RequestMapping = LoadUniSpyComponents(requestNamespace);
+            RequestMapping = await LoadUniSpyComponents(requestNamespace);
         }
-        protected void LoadUniSpyHandlers()
+        protected async Task LoadUniSpyHandlers()
         {
             var handlerNamespace = $"{this.GetType().Namespace.Split('.').First()}.Handler.CmdHandler";
-            HandlerMapping = LoadUniSpyComponents(handlerNamespace);
+            HandlerMapping = await LoadUniSpyComponents(handlerNamespace);
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="nspace"> namespace</param>
         /// <returns></returns>
-        private static Dictionary<object, Type> LoadUniSpyComponents(string nspace)
+        private static async Task<Dictionary<object, Type>> LoadUniSpyComponents(string nspace)
         {
             var mapping = new Dictionary<object, Type>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()

@@ -1,4 +1,4 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
+﻿using NatNegotiation.Abstraction.BaseClass;
 using ServerBrowser.Entity.Enumerate;
 using ServerBrowser.Entity.Structure.Request;
 using System.Linq;

@@ -1,5 +1,6 @@
 ﻿using Serilog.Events;
 using System;
+using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
 
@@ -10,12 +11,13 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     internal sealed class Program
     {
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             try
             {
                 //create a instance of ServerManager class
-                new PCMServerFactory().Start();
+                var factory = new PCMServerFactory();
+                await factory.Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

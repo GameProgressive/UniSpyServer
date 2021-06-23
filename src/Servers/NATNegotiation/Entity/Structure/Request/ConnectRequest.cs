@@ -1,10 +1,9 @@
-using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
-using PresenceConnectionManager.Abstraction.BaseClass;
-
-namespace NATNegotiation.Entity.Structure.Request
+using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Enumerate;
+using UniSpyLib.Abstraction.BaseClass;
+namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command(5)]
+    [Command((byte)5)]
     internal sealed class ConnectRequest : NNRequestBase
     {
         public NatPortType PortType { get; set; }

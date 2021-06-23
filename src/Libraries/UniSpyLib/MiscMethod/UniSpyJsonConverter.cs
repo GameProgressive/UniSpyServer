@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace UniSpyLib.MiscMethod
 {
@@ -148,7 +149,7 @@ namespace UniSpyLib.MiscMethod
 
     public static class UniSpyJsonConverter
     {
-        public static void Initialize()
+        public static async Task Initialize()
         {
             var settings = new JsonSerializerSettings();
             settings.Converters.Add(new IPAddressConverter());

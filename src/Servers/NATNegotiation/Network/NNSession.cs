@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using UniSpyLib.Network;
-namespace NATNegotiation.Network
+namespace NatNegotiation.Network
 {
     internal sealed class NNSession : UniSpyUDPSessionBase
     {

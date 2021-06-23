@@ -1,9 +1,9 @@
-﻿using NATNegotiation.Entity.Enumerate;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using NatNegotiation.Entity.Enumerate;
+using UniSpyLib.Abstraction.BaseClass;
 
-namespace NATNegotiation.Entity.Structure.Request
+namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command(12)]
+    [Command((byte)12)]
     internal sealed class NatifyRequest : NNInitRequestBase
     {
         public NatifyRequest(byte[] rawRequest) : base(rawRequest)

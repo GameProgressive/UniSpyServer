@@ -1,10 +1,10 @@
-﻿using NATNegotiation.Entity.Structure.Response;
-using NATNegotiation.Entity.Structure.Result;
-using NATNegotiation.Network;
+﻿using NatNegotiation.Entity.Structure.Response;
+using NatNegotiation.Entity.Structure.Result;
+using NatNegotiation.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
-namespace NATNegotiation.Abstraction.BaseClass
+namespace NatNegotiation.Abstraction.BaseClass
 {
     /// <summary>
     /// because we are using self defined error code so we do not need

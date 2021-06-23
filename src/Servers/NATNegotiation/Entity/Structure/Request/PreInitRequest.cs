@@ -1,14 +1,14 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass;
 
-namespace NATNegotiation.Entity.Structure.Request
+namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command(15)]
+    [Command((byte)15)]
     internal sealed class PreInitRequest : NNRequestBase
     {
-        public int CLientIndex;
-        public int State;
-        public int ClientID;
+        public int CLientIndex { get; private set; }
+        public int State { get; private set; }
+        public int ClientID { get; private set; }
         public PreInitRequest(byte[] rawRequest) : base(rawRequest)
         {
         }

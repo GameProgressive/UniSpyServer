@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
 // ReSharper disable All
 
-namespace NATNegotiation.Abstraction.BaseClass
+namespace NatNegotiation.Abstraction.BaseClass
 {
     internal abstract class NNResponseBase : UniSpyResponseBase
     {

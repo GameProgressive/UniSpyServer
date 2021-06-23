@@ -1,21 +1,23 @@
 ﻿using Serilog.Events;
 using System;
+using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
-namespace NATNegotiation.Application
+namespace NatNegotiation.Application
 {
     /// <summary>
     /// This class represents a RetroSpy Server program
     /// </summary>
     internal sealed class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
             try
             {
                 //create a instance of ServerManager class
-                new NNServerFactory().Start();
+                var factory = new NNServerFactory();
+                await factory.Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

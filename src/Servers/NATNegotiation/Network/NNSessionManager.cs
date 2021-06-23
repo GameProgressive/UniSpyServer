@@ -1,6 +1,6 @@
 using UniSpyLib.Abstraction.BaseClass.Network.UDP;
 
-namespace NATNegotiation.Network
+namespace NatNegotiation.Network
 {
     internal sealed class NNSessionManager : UniSpyUDPSessionManagerBase
     {

@@ -9,6 +9,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Exception.Login;
 using System.Collections.Generic;
 using System.Linq;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
 

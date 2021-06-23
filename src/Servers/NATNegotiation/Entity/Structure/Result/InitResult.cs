@@ -1,8 +1,8 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Enumerate;
 using System.Net;
 
-namespace NATNegotiation.Entity.Structure.Result
+namespace NatNegotiation.Entity.Structure.Result
 {
     internal class InitResult : NNResultBase
     {

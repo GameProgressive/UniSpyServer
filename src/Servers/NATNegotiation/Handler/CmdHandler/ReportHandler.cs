@@ -1,19 +1,21 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Application;
-using NATNegotiation.Entity.Enumerate;
-using NATNegotiation.Entity.Exception;
-using NATNegotiation.Entity.Structure.Redis;
-using NATNegotiation.Entity.Structure.Request;
-using NATNegotiation.Entity.Structure.Response;
-using NATNegotiation.Entity.Structure.Result;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Application;
+using NatNegotiation.Entity.Enumerate;
+using NatNegotiation.Entity.Exception;
+using NatNegotiation.Entity.Structure.Redis;
+using NatNegotiation.Entity.Structure.Request;
+using NatNegotiation.Entity.Structure.Response;
+using NatNegotiation.Entity.Structure.Result;
+using UniSpyLib.Abstraction.BaseClass;
 using System;
 using UniSpyLib.Abstraction.Interface;
 
-namespace NATNegotiation.Handler.CmdHandler
+namespace NatNegotiation.Handler.CmdHandler
 {
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
+    [Command((byte)13)]
     internal sealed class ReportHandler : NNCmdHandlerBase
     {
         private new ReportRequest _request => (ReportRequest)base._request;
@@ -48,7 +50,7 @@ namespace NATNegotiation.Handler.CmdHandler
                 throw new NNException("No user found in redis.");
             }
 
-            if (_request.NatResult != NATNegotiationResult.Success)
+            if (_request.NatResult != NatNegResult.Success)
             {
                 foreach (NatPortType portType in Enum.GetValues(typeof(NatPortType)))
                 {

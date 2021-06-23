@@ -1,8 +1,9 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
+﻿
+using UniSpyLib.Abstraction.BaseClass;
 
-namespace NATNegotiation.Entity.Structure.Request
+namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command(3)]
+    [Command((byte)3)]
     internal sealed class ErtAckRequest : NNInitRequestBase
     {
         public ErtAckRequest(byte[] rawRequest) : base(rawRequest)

@@ -1,5 +1,6 @@
 ﻿using Serilog.Events;
 using System;
+using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Logging;
 
@@ -7,12 +8,13 @@ namespace ServerBrowser.Application
 {
     internal sealed class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
 
             try
             {
-                new SBServerFactory().Start();
+                var factory = new SBServerFactory();
+                await factory.Start();
                 Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)

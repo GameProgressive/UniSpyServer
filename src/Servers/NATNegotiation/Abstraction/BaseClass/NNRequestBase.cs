@@ -1,9 +1,9 @@
-﻿using NATNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Entity.Enumerate;
 using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 
-namespace NATNegotiation.Abstraction.BaseClass
+namespace NatNegotiation.Abstraction.BaseClass
 {
     /// <summary>
     /// NatNeg request base

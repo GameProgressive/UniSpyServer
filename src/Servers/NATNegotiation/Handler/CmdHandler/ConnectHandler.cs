@@ -1,18 +1,20 @@
-using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Application;
-using NATNegotiation.Entity.Exception;
-using NATNegotiation.Entity.Structure.Redis;
-using NATNegotiation.Entity.Structure.Request;
-using NATNegotiation.Entity.Structure.Response;
-using NATNegotiation.Entity.Structure.Result;
+using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Application;
+using NatNegotiation.Entity.Exception;
+using NatNegotiation.Entity.Structure.Redis;
+using NatNegotiation.Entity.Structure.Request;
+using NatNegotiation.Entity.Structure.Response;
+using NatNegotiation.Entity.Structure.Result;
+using UniSpyLib.Abstraction.BaseClass;
 using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 
-namespace NATNegotiation.Handler.CmdHandler
+namespace NatNegotiation.Handler.CmdHandler
 {
+    [Command((byte)5)]
     internal sealed class ConnectHandler : NNCmdHandlerBase
     {
         private new ConnectRequest _request => (ConnectRequest)base._request;

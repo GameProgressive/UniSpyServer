@@ -1,8 +1,8 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Enumerate;
 using UniSpyLib.Extensions;
 
-namespace NATNegotiation.Entity.Structure.Request
+namespace NatNegotiation.Entity.Structure.Request
 {
     internal abstract class NNInitRequestBase : NNRequestBase
     {

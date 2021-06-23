@@ -1,7 +1,7 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
+﻿using NatNegotiation.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass;
 
-namespace NATNegotiation.Entity.Structure.Response
+namespace NatNegotiation.Entity.Structure.Response
 {
     internal sealed class NNDefaultResponse : NNResponseBase
     {

@@ -53,7 +53,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             foreach (var request in _requests)
             {
                 var handler = (IUniSpyHandler)Activator.CreateInstance(
-                    UniSpyServerFactoryBase.HandlerMapping[(string)request.CommandName],
+                    UniSpyServerFactoryBase.HandlerMapping[(byte)request.CommandName],
                     _session, request);
 
                 if (handler == null)

@@ -1,7 +1,7 @@
-﻿using NATNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Entity.Enumerate;
 using UniSpyLib.Abstraction.BaseClass;
 
-namespace NATNegotiation.Abstraction.BaseClass
+namespace NatNegotiation.Abstraction.BaseClass
 {
     public class NNResultBase : UniSpyResultBase
     {

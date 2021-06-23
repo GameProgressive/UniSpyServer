@@ -1,11 +1,11 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Structure.Request;
-using NATNegotiation.Entity.Structure.Result;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Structure.Request;
+using NatNegotiation.Entity.Structure.Result;
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 
-namespace NATNegotiation.Entity.Structure.Response
+namespace NatNegotiation.Entity.Structure.Response
 {
     internal sealed class InitResponse : NNResponseBase
     {

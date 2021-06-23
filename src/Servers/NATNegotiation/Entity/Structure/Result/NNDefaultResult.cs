@@ -1,6 +1,6 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
+﻿using NatNegotiation.Abstraction.BaseClass;
 
-namespace NATNegotiation.Entity.Structure.Result
+namespace NatNegotiation.Entity.Structure.Result
 {
     internal sealed class NNDefaultResult : NNResultBase
     {

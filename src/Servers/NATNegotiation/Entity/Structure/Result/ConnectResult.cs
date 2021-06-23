@@ -1,9 +1,9 @@
-﻿using NATNegotiation.Abstraction.BaseClass;
-using NATNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Enumerate;
 using System.Net;
 using UniSpyLib.Extensions;
 
-namespace NATNegotiation.Entity.Structure.Result
+namespace NatNegotiation.Entity.Structure.Result
 {
     public class ConnectResult : NNResultBase
     {
