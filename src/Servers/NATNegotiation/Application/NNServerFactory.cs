@@ -25,6 +25,8 @@ namespace NATNegotiation.Application
         public override void Start()
         {
             ShowUniSpyLogo();
+            LoadUniSpyRequests();
+            LoadUniSpyHandlers();
             ConnectRedis();
             LoadServerConfig();
             UniSpyJsonConverter.Initialize();

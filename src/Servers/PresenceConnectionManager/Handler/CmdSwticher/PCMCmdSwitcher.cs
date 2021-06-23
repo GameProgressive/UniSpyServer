@@ -28,7 +28,7 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
                 {
                     // Read client message, and parse it into key value pairs
                     var keyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
-
+                    
                     if (keyValues.Keys.Count < 1)
                         throw new GPException("Request command not found"); // malformed query
 

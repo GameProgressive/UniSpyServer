@@ -31,8 +31,8 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// The gamespy requests and UniSpy requets mapping dictionary
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string, Type> RequestMapping;
-        public static Dictionary<string, Type> HandlerMapping;
+        public static Dictionary<object, Type> RequestMapping { get; private set; }
+        public static Dictionary<object, Type> HandlerMapping { get; private set; }
         public UniSpyServerFactoryBase()
         {
         }
@@ -122,12 +122,12 @@ namespace UniSpyLib.Abstraction.BaseClass
             Console.WriteLine(@"                 |_|   |__/ ");
             Console.WriteLine(@"Version: " + UniSpyVersion);
         }
-        private void LoadUniSpyRequests()
+        protected void LoadUniSpyRequests()
         {
             var requestNamespace = $"{this.GetType().Namespace.Split('.').First()}.Entity.Structure.Request";
             RequestMapping = LoadUniSpyComponents(requestNamespace);
         }
-        private void LoadUniSpyHandlers()
+        protected void LoadUniSpyHandlers()
         {
             var handlerNamespace = $"{this.GetType().Namespace.Split('.').First()}.Handler.CmdHandler";
             HandlerMapping = LoadUniSpyComponents(handlerNamespace);
@@ -137,9 +137,9 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// </summary>
         /// <param name="nspace"> namespace</param>
         /// <returns></returns>
-        private static Dictionary<string, Type> LoadUniSpyComponents(string nspace)
+        private static Dictionary<object, Type> LoadUniSpyComponents(string nspace)
         {
-            var mapping = new Dictionary<string, Type>();
+            var mapping = new Dictionary<object, Type>();
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()
                        .SelectMany(t => t.GetTypes()).Where(t => t.FullName.Contains(nspace)).ToList();
 

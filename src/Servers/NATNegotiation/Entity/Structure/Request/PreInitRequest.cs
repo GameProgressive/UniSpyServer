@@ -1,7 +1,9 @@
 ﻿using NATNegotiation.Abstraction.BaseClass;
+using PresenceConnectionManager.Abstraction.BaseClass;
 
 namespace NATNegotiation.Entity.Structure.Request
 {
+    [Command(15)]
     internal sealed class PreInitRequest : NNRequestBase
     {
         public int CLientIndex;
