@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
 using RetroSpyServices.Sake.Handler.Service;
-using SOAPMiddleware.MiddlewareComponent;
+using SoapCore;
 using System.ServiceModel;
 
 namespace WebServices
@@ -63,7 +63,7 @@ namespace WebServices
             //endpoints.UseSoapEndpoint<Motd.MotdService>("/motd/motd.asp", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
             //});
 
-            app.UseSOAPEndpoint<SakeStorageService>(
+            app.UseSoapEndpoint<SakeStorageService>(
                 "/SakeStorageServer/StorageServer.asmx",
                 new BasicHttpBinding());
         }
