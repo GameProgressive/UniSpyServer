@@ -28,7 +28,7 @@ namespace WebServices
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
         }
     }

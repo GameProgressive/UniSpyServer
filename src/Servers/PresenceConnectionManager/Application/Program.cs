@@ -7,7 +7,7 @@ using UniSpyLib.Logging;
 namespace PresenceConnectionManager.Application
 {
     /// <summary>
-    /// This class represents a RetroSpy Server program
+    /// This class represents a UniSpyServer program
     /// </summary>
     internal sealed class Program
     {
@@ -18,7 +18,7 @@ namespace PresenceConnectionManager.Application
                 //create a instance of ServerManager class
                 new PCMServerFactory().Start();
 
-                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)
             {
@@ -26,7 +26,7 @@ namespace PresenceConnectionManager.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
 
             Console.WriteLine("Press < Q > to exit. ");

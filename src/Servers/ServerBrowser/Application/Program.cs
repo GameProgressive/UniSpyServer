@@ -15,7 +15,7 @@ namespace ServerBrowser.Application
             {
                 new SBServerFactory().Start();
 
-                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)
             {
@@ -23,7 +23,7 @@ namespace ServerBrowser.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
 
             Console.WriteLine("Press < Q > to exit. ");

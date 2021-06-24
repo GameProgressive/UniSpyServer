@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer
                 //create a instance of ServerManager class
                 new PSPServerFactory().Start();
 
-                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)
             {
@@ -23,7 +23,7 @@ namespace PresenceSearchPlayer
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
 
             Console.WriteLine("Press < Q > to exit. ");

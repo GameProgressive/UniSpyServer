@@ -15,7 +15,7 @@ namespace QueryReport.Application
                 //create a instance of ServerManager class
                 new QRServerFactory().Start();
 
-                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)
             {
@@ -23,7 +23,7 @@ namespace QueryReport.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
 
             Console.WriteLine("Press < Q > to exit. ");

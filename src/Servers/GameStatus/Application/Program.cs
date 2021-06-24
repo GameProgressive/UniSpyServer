@@ -15,11 +15,11 @@ namespace GameStatus.Application
                 //create a instance of ServerManager class
                 new GSServerFactory().Start();
 
-                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
 
             Console.WriteLine("Press < Q > to exit. ");

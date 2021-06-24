@@ -52,14 +52,5 @@ namespace UniSpyLib.Network
             SessionManager.SessionPool.TryRemove(session.Id, out _);
             base.OnDisconnected(session);
         }
-
-        /// <summary>
-        /// Handle error notification
-        /// </summary>
-        /// <param name="error">Socket error code</param>
-        protected override void OnError(SocketError error)
-        {
-            LogWriter.ToLog(LogEventLevel.Error, error.ToString());
-        }
     }
 }

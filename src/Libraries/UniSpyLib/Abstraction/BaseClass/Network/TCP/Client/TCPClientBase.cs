@@ -54,10 +54,5 @@ namespace UniSpyLib.Network
             LogWriter.LogNetworkTraffic("Send", Endpoint, buffer, size);
             return base.Send(buffer, offset, size);
         }
-
-        protected override void OnError(SocketError error)
-        {
-            LogWriter.ToLog(LogEventLevel.Error, error.ToString());
-        }
     }
 }

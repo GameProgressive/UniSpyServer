@@ -6,7 +6,7 @@ using UniSpyLib.Logging;
 namespace NatNegotiation.Application
 {
     /// <summary>
-    /// This class represents a RetroSpy Server program
+    /// This class represents a UniSpyServer program
     /// </summary>
     internal sealed class Program
     {
@@ -18,7 +18,7 @@ namespace NatNegotiation.Application
                 //create a instance of ServerManager class
                 new NNServerFactory().Start();
 
-                Console.Title = "RetroSpy Server " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyExceptionBase e)
             {
@@ -26,7 +26,7 @@ namespace NatNegotiation.Application
             }
             catch (Exception e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
 
             Console.WriteLine("Press < Q > to exit. ");

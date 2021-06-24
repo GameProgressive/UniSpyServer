@@ -39,7 +39,7 @@ namespace UniSpyLib.MiscMethod
             }
             catch (IndexOutOfRangeException e)
             {
-                LogWriter.ToLog(LogEventLevel.Error, e.ToString());
+                LogWriter.ToLog(e);
             }
 
             return dict;

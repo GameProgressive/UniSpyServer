@@ -39,7 +39,6 @@ namespace UniSpyLib.Network
         }
 
         protected override void OnStarted() => ReceiveAsync();
-        protected override void OnError(SocketError error) => LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         protected virtual UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new UniSpyUDPSessionBase(this, endPoint);
         /// <summary>
         /// Continue receive datagrams

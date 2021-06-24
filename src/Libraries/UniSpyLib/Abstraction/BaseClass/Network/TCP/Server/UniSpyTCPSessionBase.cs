@@ -51,7 +51,6 @@ namespace UniSpyLib.Network
             LogWriter.LogNetworkSending(RemoteIPEndPoint, buffer);
             return base.SendAsync(buffer, 0, buffer.Length);
         }
-        protected override void OnError(SocketError error) => LogWriter.ToLog(LogEventLevel.Error, error.ToString());
         public override bool SendAsync(string buffer) => base.SendAsync(buffer);
         public override bool SendAsync(byte[] buffer, long offset, long size)
         {
