@@ -57,12 +57,16 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 StartServer(cfg);
             }
-            Server.Start();
 
-            var table = new ConsoleTables.ConsoleTable("Server Name", "Listening Address", "Listening Port");
-            table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
-            table.Write(ConsoleTables.Format.Alternative);
-            Console.WriteLine("Server successfully started!");
+            if (Server != null) // asp.net web server does not implement a Server interface, therefore this code should not be called
+            {
+                Server.Start();
+
+                var table = new ConsoleTables.ConsoleTable("Server Name", "Listening Address", "Listening Port");
+                table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
+                table.Write(ConsoleTables.Format.Alternative);
+                Console.WriteLine("Server successfully started!");
+            }
         }
 
         /// <summary>
