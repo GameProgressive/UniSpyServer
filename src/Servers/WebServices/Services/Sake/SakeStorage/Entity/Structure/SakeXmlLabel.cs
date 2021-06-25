@@ -1,6 +1,6 @@
 ﻿namespace WebServices.RetroSpyServices.Sake.Entity.Structure
 {
-    public class SakeXmlLable
+    public class SakeXmlLabel
     {
         public const string SakeNameSpace = "http://gamespy.com/sake";
         public const string Values = "values";

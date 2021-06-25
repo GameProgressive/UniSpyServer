@@ -28,10 +28,10 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
     //        </ns1:string>
     //    </ns1:fields>
     //</ns1:GetRandomRecords>
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class SakeGetRamdomRecordRequest : SakeRequestBase
     {
-        [DataMember(Name = SakeXmlLable.Max)]
+        [DataMember(Name = SakeXmlLabel.Max)]
         public uint Max;
     }
 }

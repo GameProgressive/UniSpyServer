@@ -2,7 +2,7 @@
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
 {
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class SakeDeleteRecordRequest : SakeRequestBase
     {
     }

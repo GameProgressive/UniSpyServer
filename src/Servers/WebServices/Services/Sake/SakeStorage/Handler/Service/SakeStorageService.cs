@@ -1,12 +1,15 @@
 ﻿using RetroSpyServices.Sake.Entity.Interface;
 using System;
+using System.ServiceModel;
+using UniSpyWebService.Models.SakeStorageServer.Response;
 using WebServices.RetroSpyServices.Sake.Entity.Structure.Request;
 using WebServices.RetroSpyServices.Sake.Entity.Structure.Response;
 using WebServices.RetroSpyServices.Sake.Handler.CommandHandler;
 
 namespace RetroSpyServices.Sake.Handler.Service
 {
-    public class SakeStorageService : ISakeStorageService
+    [ServiceContract(Namespace = "http://gamespy.com/sake")]
+    public class SakeStorageService /*: ISakeStorageService*/
     {
         public SakeCreateRecordResponse CreateRecord(SakeCreateRecordRequest request)
         {
@@ -39,9 +42,42 @@ namespace RetroSpyServices.Sake.Handler.Service
             throw new NotImplementedException();
         }
 
-        public SakeSearchForRecordResponse SearchForRecords(SakeSearchForRecordRequest request)
+        [OperationContract(Action = "SearchForRecords")]
+        public SakeResponse SearchForRecords(uint gameid, string secretKey, string loginTicket, string tableid, string filter, string sort, uint offset, uint max, int surrounding, uint[] ownerids, bool cacheFlag, string[] fields)
         {
-            throw new NotImplementedException();
+            return new SakeResponse
+            {
+                response = new Response
+                {
+                    result = new Result
+                    {
+                        Code = "Success"
+                    },
+                    values = new UniSpyWebService.Models.SakeStorageServer.Response.Values
+                    {
+                        values = new ArrayOfValues
+                        {
+                            RecordValue = new RecordValue[]
+                            {
+                                new RecordValue
+                                {
+                                    booleanValue = new BooleanValue
+                                    {
+                                        value = true
+                                    }
+                                },
+                                new RecordValue
+                                {
+                                    floatValue = new FloatValue
+                                    {
+                                        value = 10.0f
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
         }
 
         public SakeUpdateRecordResponse UpdateRecord(SakeUpdateRecordRequest request)

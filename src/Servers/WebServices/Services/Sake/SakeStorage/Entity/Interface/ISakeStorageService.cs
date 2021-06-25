@@ -5,7 +5,7 @@ using WebServices.RetroSpyServices.Sake.Entity.Structure.Response;
 
 namespace RetroSpyServices.Sake.Entity.Interface
 {
-    [ServiceContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [ServiceContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     internal interface ISakeStorageService
     {
         [OperationContract]

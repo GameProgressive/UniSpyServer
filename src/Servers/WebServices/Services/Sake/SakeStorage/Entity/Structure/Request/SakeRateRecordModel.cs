@@ -2,10 +2,10 @@
 
 namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
 {
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class SakeRateRecordRequest : SakeRequestBase
     {
-        [DataMember(Name = SakeXmlLable.Rating)]
+        [DataMember(Name = SakeXmlLabel.Rating)]
         public uint Rating;
     }
 }

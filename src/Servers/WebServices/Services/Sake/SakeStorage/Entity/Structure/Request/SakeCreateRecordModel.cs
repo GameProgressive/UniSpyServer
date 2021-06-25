@@ -33,40 +33,40 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
     //        </ns1:CreateRecord>
     //    </SOAP-ENV:Body>
     //</SOAP-ENV:Envelope>
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class SakeCreateRecordRequest : SakeRequestBase
     {
-        [DataMember(Name = SakeXmlLable.Values)]
+        [DataMember(Name = SakeXmlLabel.Values)]
         public Values Values;
     }
 
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class Values
     {
-        [DataMember(Name = SakeXmlLable.RecordField)]
+        [DataMember(Name = SakeXmlLabel.RecordField)]
         public RecordField RecordFieldList { get; set; }
     }
 
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class RecordField
     {
-        [DataMember(Name = SakeXmlLable.Name)]
+        [DataMember(Name = SakeXmlLabel.Name)]
         public string Name { get; set; }
-        [DataMember(Name = SakeXmlLable.Value)]
+        [DataMember(Name = SakeXmlLabel.Value)]
         public Value Value { get; set; }
     }
 
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class Value
     {
-        [DataMember(Name = SakeXmlLable.AsciiStringValue)]
+        [DataMember(Name = SakeXmlLabel.AsciiStringValue)]
         public AsciiStringValue AsciiStringValue { get; set; }
     }
 
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class AsciiStringValue
     {
-        [DataMember(Name = SakeXmlLable.Value)]
+        [DataMember(Name = SakeXmlLabel.Value)]
         public string Value { get; set; }
     }
 }

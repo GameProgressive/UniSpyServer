@@ -14,7 +14,7 @@ namespace WebServices
         public static void Main(string[] args)
         {
             //the working directory is different than binary execute file directory
-            //we set the working directory as same as binary execute directory so we can read RetroSpyConfig.json
+            //we set the working directory as same as binary execute directory so we can read config file
             var executeDirectory = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
             Directory.SetCurrentDirectory(executeDirectory);
 

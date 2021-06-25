@@ -61,10 +61,10 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
     //                    </ns1:string>
     //                </ns1:fields>
     //            </ns1:GetMyRecords>
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class SakeGetMyRecordsRequest : SakeRequestBase
     {
-        [DataMember(Name = SakeXmlLable.Fields)]
+        [DataMember(Name = SakeXmlLabel.Fields)]
         public List<Dictionary<string, string>> Fields;
     }
 }

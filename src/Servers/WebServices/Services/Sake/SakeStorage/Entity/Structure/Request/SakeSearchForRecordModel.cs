@@ -44,28 +44,28 @@ namespace WebServices.RetroSpyServices.Sake.Entity.Structure.Request
     //                    </ns1:string>
     //                </ns1:fields>
     //            </ns1:SearchForRecords>
-    [DataContract(Namespace = SakeXmlLable.SakeNameSpace)]
+    [DataContract(Namespace = SakeXmlLabel.SakeNameSpace)]
     public class SakeSearchForRecordRequest : SakeRequestBase
     {
-        [DataMember(Name = SakeXmlLable.Filter)]
+        [DataMember(Name = SakeXmlLabel.Filter)]
         public string Filter;
 
-        [DataMember(Name = SakeXmlLable.Sort)]
+        [DataMember(Name = SakeXmlLabel.Sort)]
         public string Sort;
 
-        [DataMember(Name = SakeXmlLable.Offset)]
+        [DataMember(Name = SakeXmlLabel.Offset)]
         public uint Offset;
 
-        [DataMember(Name = SakeXmlLable.Max)]
+        [DataMember(Name = SakeXmlLabel.Max)]
         public uint Max;
 
-        [DataMember(Name = SakeXmlLable.Surrounding)]
+        [DataMember(Name = SakeXmlLabel.Surrounding)]
         public uint Surrounding;
 
-        [DataMember(Name = SakeXmlLable.OwnerID)]
+        [DataMember(Name = SakeXmlLabel.OwnerID)]
         public uint OwnerID;
 
-        [DataMember(Name = SakeXmlLable.CacheFlag)]
+        [DataMember(Name = SakeXmlLabel.CacheFlag)]
         public bool CacheFlag;
 
         //    <ns1:fields>

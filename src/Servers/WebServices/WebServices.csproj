@@ -22,6 +22,12 @@
       <ExternalConsole>true</ExternalConsole>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="Services\Sake\SakeFile\**" />
+      <Content Remove="Services\Sake\SakeFile\**" />
+      <EmbeddedResource Remove="Services\Sake\SakeFile\**" />
+      <None Remove="Services\Sake\SakeFile\**" />
+    </ItemGroup>
+    <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
         <PackageReference Include="SoapCore" Version="1.1.0.9" />
         <PackageReference Include="System.ServiceModel.Http" Version="4.8.1" />
@@ -57,9 +63,6 @@
         <Folder Include="Services\PatchingAndTracking\Entity\Structure\" />
         <Folder Include="Services\PatchingAndTracking\Entity\Structure\Model\" />
         <Folder Include="Services\PatchingAndTracking\Handler\Service\" />
-        <Folder Include="Services\Sake\" />
-        <Folder Include="Services\Sake\SakeFile\" />
-        <Folder Include="Services\Sake\SakeStorage\" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj">

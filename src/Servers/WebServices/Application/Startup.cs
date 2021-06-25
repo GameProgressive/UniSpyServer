@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using RetroSpyServices.Sake.Handler.Service;
 using SoapCore;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.Text;
 
 namespace WebServices
 {
@@ -35,13 +37,12 @@ namespace WebServices
                 options.AllowSynchronousIO = true;
             });
 
-            services.AddRouting();
+            services.AddSoapCore();
 
-            //PublicServices
-            //services.TryAddSingleton<AuthService>();
-            //services.TryAddSingleton<CompetitiveService>();
-            //services.TryAddSingleton<Direct2GameService>();
-            //services.TryAddSingleton<MotdService>();
+            //services.AddRouting();
+
+            //Public Services (SOAP)
+
             services.TryAddSingleton<SakeStorageService>();
         }
 
@@ -49,23 +50,15 @@ namespace WebServices
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseRouting();
+            //app.UseAuthorization();
 
-            /*app.UseEndpoints(endpoints =>
-            {
-                // PublicServices
-                /*endpoints.UseSoapEndpoint<AuthService>(
-                    "/AuthService/AuthService.asmx",
-                    new BasicHttpBinding(), SoapSerializer.XmlSerializer);*/
-            //endpoints.UseSoapEndpoint<PublicServices.Competitive.CompetitiveService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
-            //endpoints.UseSoapEndpoint<PublicServices.Direct2Game.Direct2GameService>("/", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
-
-            // Non-PublicServices
-            //endpoints.UseSoapEndpoint<Motd.MotdService>("/motd/motd.asp", new BasicHttpBinding(), SoapSerializer.XmlSerializer);
-            //});
+            var soapEncoder = new SoapEncoderOptions();
+            soapEncoder.MessageVersion = MessageVersion.Soap11; // Only Soap11 is supported by the client
+            soapEncoder.WriteEncoding = new UTF8Encoding(false); // We need without BOM or the client won't parse it (it does not detect the UTF8 BOM)
 
             app.UseSoapEndpoint<SakeStorageService>(
                 "/SakeStorageServer/StorageServer.asmx",
-                new BasicHttpBinding());
+                soapEncoder, SoapSerializer.XmlSerializer);
         }
     }
 }
