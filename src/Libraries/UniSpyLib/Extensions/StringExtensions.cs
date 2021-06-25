@@ -135,15 +135,7 @@ namespace UniSpyLib.Extensions
         /// <returns>return true if the string is valid</returns>
         public static bool CheckResponseValidation(string buffer)
         {
-            if (buffer == null)
-            {
-                return false;
-            }
-            if (buffer == "" || buffer.Length < 3)
-            {
-                return false;
-            }
-            return true;
+            return buffer?.Length > 3;
         }
 
         public static bool CheckResponseValidation(byte[] buffer)
