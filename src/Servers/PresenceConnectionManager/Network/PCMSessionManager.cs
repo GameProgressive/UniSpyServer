@@ -1,8 +1,10 @@
-using UniSpyLib.Abstraction.BaseClass.Network.TCP;
+
+
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
 namespace PresenceConnectionManager.Network
 {
-    internal sealed class PCMSessionManager : UniSpyTCPSessionManagerBase
+    internal sealed class PCMSessionManager : UniSpyTcpSessionManager
     {
         public PCMSessionManager()
         {

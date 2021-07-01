@@ -1,12 +1,12 @@
 ﻿using System.Net;
-using UniSpyLib.Network;
+using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace QueryReport.Network
 {
-    internal sealed class QRSession : UniSpyUDPSessionBase
+    internal sealed class QRSession : UniSpyUdpSession
     {
         public uint InstantKey { get; set; }
-        public QRSession(UniSpyUDPServerBase server, EndPoint endPoint) : base(server, endPoint)
+        public QRSession(UniSpyUdpServer server, EndPoint endPoint) : base(server, endPoint)
         {
         }
     }

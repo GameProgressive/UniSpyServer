@@ -1,10 +1,8 @@
-
-using UniSpyLib.Abstraction.BaseClass.Network.UDP;
+using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace QueryReport.Network
 {
-
-    internal sealed class QRSessionManager : UniSpyUDPSessionManagerBase
+    internal sealed class QRSessionManager : UniSpyUdpSessionManager
     {
         public QRSessionManager()
         {

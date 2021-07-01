@@ -4,8 +4,7 @@ using PresenceConnectionManager.Structure;
 using PresenceConnectionManager.Structure.Data;
 using Serilog.Events;
 using UniSpyLib.Logging;
-using UniSpyLib.Network;
-
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace PresenceConnectionManager.Network
 {
     /// <summary>
@@ -14,13 +13,13 @@ namespace PresenceConnectionManager.Network
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    internal sealed class PCMSession : UniSpyTCPSessionBase
+    internal sealed class PCMSession : UniSpyTcpSession
     {
         /// <summary>
         /// Indicates the date and time this connection was created
         /// </summary>
         public PCMUserInfo UserInfo;
-        public PCMSession(UniSpyTCPServerBase server) : base(server)
+        public PCMSession(UniSpyTcpServer server) : base(server)
         {
             UserInfo = new PCMUserInfo(Id);
         }

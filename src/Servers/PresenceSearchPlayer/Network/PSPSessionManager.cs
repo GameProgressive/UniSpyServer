@@ -1,8 +1,10 @@
-using UniSpyLib.Abstraction.BaseClass.Network.TCP;
+
+
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
 namespace PresenceSearchPlayer.Network
 {
-    internal sealed class PSPSessionManager : UniSpyTCPSessionManagerBase
+    internal sealed class PSPSessionManager : UniSpyTcpSessionManager
     {
         public PSPSessionManager()
         {

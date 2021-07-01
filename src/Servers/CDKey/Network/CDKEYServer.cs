@@ -1,20 +1,20 @@
 ﻿using CDKey.Handler.CmdSwitcher;
 using System;
 using System.Net;
+using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 using UniSpyLib.Encryption;
-using UniSpyLib.Network;
 
 namespace CDKey.Network
 {
-    internal sealed class CDKeyServer : UniSpyUDPServerBase
+    internal sealed class CDKeyServer : UniSpyUdpServer
     {
         public CDKeyServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
             SessionManager = new CDKeySessionManager();
         }
-        protected override UniSpyUDPSessionBase CreateSession(EndPoint endPoint) => new CDKeySession(this, endPoint);
+        protected override UniSpyUdpSession CreateSession(EndPoint endPoint) => new CDKeySession(this, endPoint);
 
-        protected override void OnReceived(UniSpyUDPSessionBase session, string message)
+        protected override void OnReceived(UniSpyUdpSession session, string message)
             => new CDKeyCmdSwitcher(session, message).Switch();
 
         protected override byte[] Decrypt(byte[] buffer)

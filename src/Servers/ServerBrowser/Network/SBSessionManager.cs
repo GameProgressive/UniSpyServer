@@ -1,8 +1,10 @@
-using UniSpyLib.Abstraction.BaseClass.Network.TCP;
+
+
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
 namespace ServerBrowser.Network
 {
-    internal sealed class SBSessionManager : UniSpyTCPSessionManagerBase
+    internal sealed class SBSessionManager : UniSpyTcpSessionManager
     {
         public SBSessionManager()
         {

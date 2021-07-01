@@ -1,11 +1,10 @@
 ﻿using NetCoreServer;
 using System;
 using System.Net;
-using UniSpyLib.Network;
-
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace Chat.Network
 {
-    internal sealed class ChatServer : UniSpyTCPServerBase
+    internal sealed class ChatServer : UniSpyTcpServer
     {
         public ChatServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {

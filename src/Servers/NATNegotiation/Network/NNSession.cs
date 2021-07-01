@@ -1,10 +1,11 @@
 ﻿using System.Net;
-using UniSpyLib.Network;
+using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+
 namespace NatNegotiation.Network
 {
-    internal sealed class NNSession : UniSpyUDPSessionBase
+    internal sealed class NNSession : UniSpyUdpSession
     {
-        public NNSession(UniSpyUDPServerBase server, EndPoint endPoint) : base(server, endPoint)
+        public NNSession(UniSpyUdpServer server, EndPoint endPoint) : base(server, endPoint)
         {
         }
     }

@@ -1,11 +1,11 @@
 ﻿using System.Net;
-using UniSpyLib.Network;
+using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace CDKey.Network
 {
-    internal sealed class CDKeySession : UniSpyUDPSessionBase
+    internal sealed class CDKeySession : UniSpyUdpSession
     {
-        public CDKeySession(UniSpyUDPServerBase server, EndPoint endPoint) : base(server, endPoint)
+        public CDKeySession(UniSpyUdpServer server, EndPoint endPoint) : base(server, endPoint)
         {
         }
     }

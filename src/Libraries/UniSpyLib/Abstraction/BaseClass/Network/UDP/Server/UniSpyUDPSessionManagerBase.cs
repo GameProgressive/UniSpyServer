@@ -4,13 +4,13 @@ using System.Timers;
 using UniSpyLib.Logging;
 using UniSpyLib.Network;
 
-namespace UniSpyLib.Abstraction.BaseClass.Network.UDP
+namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
-    public abstract class UniSpyUDPSessionManagerBase : UniSpySessionManagerBase
+    public abstract class UniSpyUdpSessionManager : UniSpySessionManager
     {
         protected TimeSpan _expireTimeInterval { get; set; }
         private Timer _timer;
-        public UniSpyUDPSessionManagerBase()
+        public UniSpyUdpSessionManager()
         {
             //default settings
             _timer = new Timer
@@ -30,7 +30,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.UDP
             LogWriter.LogCurrentClass(this);
             Parallel.ForEach(SessionPool.Values, (session) =>
             {
-                UniSpyUDPSessionBase sess = (UniSpyUDPSessionBase)session;
+                UniSpyUdpSession sess = (UniSpyUdpSession)session;
                 // we calculate the interval between last packe and current time
                 if (sess.SessionExistedTime > _expireTimeInterval)
                 {

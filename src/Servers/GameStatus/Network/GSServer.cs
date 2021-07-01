@@ -1,11 +1,11 @@
 ﻿using NetCoreServer;
 using System;
 using System.Net;
-using UniSpyLib.Network;
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
 namespace GameStatus.Network
 {
-    internal sealed class GSServer : UniSpyTCPServerBase
+    internal sealed class GSServer : UniSpyTcpServer
     {
         public GSServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {

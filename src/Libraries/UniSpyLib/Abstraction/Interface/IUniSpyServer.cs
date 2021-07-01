@@ -8,7 +8,7 @@ namespace UniSpyLib.Abstraction.Interface
     {
         Guid ServerID { get; }
         IPEndPoint Endpoint { get; }
-        UniSpySessionManagerBase SessionManager { get; }
+        UniSpySessionManager SessionManager { get; }
         bool Start();
     }
 }

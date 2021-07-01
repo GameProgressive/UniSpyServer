@@ -2,7 +2,7 @@
 using QueryReport.Handler.SystemHandler;
 using System;
 using System.Net;
-using UniSpyLib.Network;
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
 namespace ServerBrowser.Network
 {
@@ -10,7 +10,7 @@ namespace ServerBrowser.Network
     /// This class emulates the master.gamespy.com TCP server on port 28910.
     /// This server is responisible for sending server lists to the online server browser in the game.
     /// </summary>
-    internal sealed class SBServer : UniSpyTCPServerBase
+    internal sealed class SBServer : UniSpyTcpServer
     {
         public QRRedisChannelSubscriber RedisChannelSubscriber { get; private set; }
         public SBServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)

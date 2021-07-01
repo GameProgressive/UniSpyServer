@@ -2,11 +2,10 @@
 using Chat.Entity.Structure.Request.General;
 using Chat.Handler.CmdHandler.General;
 using Chat.Handler.CommandSwitcher;
-using UniSpyLib.Network;
-
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace Chat.Network
 {
-    internal sealed class ChatSession : UniSpyTCPSessionBase
+    internal sealed class ChatSession : UniSpyTcpSession
     {
         public ChatUserInfo UserInfo { get; private set; }
         public ChatSession(ChatServer server) : base(server)

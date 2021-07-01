@@ -3,18 +3,17 @@ using ServerBrowser.Entity.Structure.Request;
 using ServerBrowser.Handler.CommandSwitcher;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Network;
-
+using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace ServerBrowser.Network
 {
-    internal sealed class SBSession : UniSpyTCPSessionBase
+    internal sealed class SBSession : UniSpyTcpSession
     {
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
         public List<AdHocRequest> ServerMessageList { get; set; }
         public SBEncryptionParameters EncParams { get; set; }
 
-        public SBSession(UniSpyTCPServerBase server) : base(server)
+        public SBSession(UniSpyTcpServer server) : base(server)
         {
             ServerMessageList = new List<AdHocRequest>();
         }
