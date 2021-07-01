@@ -1,6 +1,7 @@
 using System.Net;
 using NetCoreServer;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
@@ -31,10 +32,28 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Http.Server
                 throw new UniSpyException("The buffer type is invalid");
             }
         }
-
+        public new bool SendResponseAsync(HttpResponse response)
+        {
+            LogWriter.LogNetworkSending(RemoteIPEndPoint, response.Body);
+            return base.SendResponseAsync(response);
+        }
         public bool SendAsync(object buffer)
         {
-            throw new System.NotImplementedException();
+            var bufferType = buffer.GetType();
+            if (bufferType == typeof(HttpResponse))
+            {
+                SendResponseAsync((HttpResponse)buffer);
+                return true;
+            }
+            else if (bufferType == typeof(string))
+            {
+                SendResponseBodyAsync((string)buffer);
+                return true;
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
         }
     }
 }
