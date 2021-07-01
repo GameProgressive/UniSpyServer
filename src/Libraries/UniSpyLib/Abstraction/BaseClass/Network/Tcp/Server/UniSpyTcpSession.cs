@@ -17,20 +17,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
     public abstract class UniSpyTcpSession : TcpSession, IUniSpySession
     {
         public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
-        public IPEndPoint RemoteIPEndPoint
-        {
-            get
-            {
-                try
-                {
-                    return (IPEndPoint)Socket.RemoteEndPoint;
-                }
-                catch (Exception e)
-                {
-                    throw new ApplicationException("Client already disconnected.", e);
-                }
-            }
-        }
+        public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint;
         public new UniSpyTcpServer Server => (UniSpyTcpServer)base.Server;
         public UniSpyTcpSession(UniSpyTcpServer server) : base(server)
         {
@@ -82,6 +69,43 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         /// <param name="buffer">ciphertext</param>
         /// <returns>plaintext</returns>
         protected virtual byte[] Decrypt(byte[] buffer) => buffer;
+
+        public bool SendAsync(object buffer)
+        {
+            var bufferType = buffer.GetType();
+
+            if (bufferType == typeof(string))
+            {
+                return SendAsync((string)buffer);
+            }
+            else if (bufferType == typeof(byte[]))
+            {
+                return SendAsync((byte[])buffer);
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
+
+        public bool BaseSendAsync(object buffer)
+        {
+            var bufferType = buffer.GetType();
+            if (bufferType == typeof(string))
+            {
+
+                return BaseSendAsync((string)buffer);
+            }
+            else if (bufferType == typeof(byte[]))
+            {
+                LogWriter.LogNetworkSending(RemoteIPEndPoint, (byte[])buffer);
+                return BaseSendAsync((byte[])buffer);
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
     }
 }
 

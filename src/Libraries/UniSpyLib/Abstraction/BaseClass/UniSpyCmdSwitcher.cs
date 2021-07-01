@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace UniSpyLib.Abstraction.BaseClass

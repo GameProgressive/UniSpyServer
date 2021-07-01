@@ -19,15 +19,42 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             LastPacketReceivedTime = DateTime.Now;
         }
 
-        public long Send(byte[] buffer, long offset, long size) => Server.Send(RemoteEndPoint, buffer, offset, size);
-        public long Send(byte[] buffer) => Server.Send(RemoteEndPoint, buffer);
-        public long Send(string buffer) => Server.Send(RemoteEndPoint, buffer);
-
-
         public bool SendAsync(byte[] buffer, long offset, long size) => Server.SendAsync(RemoteEndPoint, buffer, offset, size);
         public bool SendAsync(string text) => Server.SendAsync(RemoteEndPoint, UniSpyEncoding.GetBytes(text));
         public bool SendAsync(byte[] buffer) => Server.SendAsync(RemoteEndPoint, buffer);
         public bool BaseSendAsync(byte[] buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
         public bool BaseSendAsync(string buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
+
+        public bool SendAsync(object buffer)
+        {
+            if (buffer.GetType() == typeof(string))
+            {
+                return SendAsync((string)buffer);
+            }
+            else if (buffer.GetType() == typeof(byte[]))
+            {
+                return SendAsync((byte[])buffer);
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
+
+        public bool BaseSendAsync(object buffer)
+        {
+            if (buffer.GetType() == typeof(string))
+            {
+                return BaseSendAsync((string)buffer);
+            }
+            else if (buffer.GetType() == typeof(byte[]))
+            {
+                return BaseSendAsync((byte[])buffer);
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
     }
 }

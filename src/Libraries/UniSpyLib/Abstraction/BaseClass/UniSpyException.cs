@@ -2,7 +2,7 @@ using System;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UniSpyException : Exception
+    public class UniSpyException : Exception
     {
         public UniSpyException()
         {
