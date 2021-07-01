@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Response.General
     {
         private new WHORequest _request => (WHORequest)base._request;
         private new WHOResult _result => (WHOResult)base._result;
-        public WHOResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public WHOResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
         public override void Build()

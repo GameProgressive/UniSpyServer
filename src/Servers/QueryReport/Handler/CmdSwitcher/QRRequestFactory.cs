@@ -6,7 +6,7 @@ using UniSpyLib.Logging;
 
 namespace QueryReport.Handler.CmdSwitcher
 {
-    internal sealed class QRRequestFactory : UniSpyRequestFactoryBase
+    internal sealed class QRRequestFactory : UniSpyRequestFactory
     {
         private new byte[] _rawRequest
         {

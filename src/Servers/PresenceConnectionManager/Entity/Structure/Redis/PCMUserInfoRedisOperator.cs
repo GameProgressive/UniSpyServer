@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass.Redis;
 namespace PresenceConnectionManager.Handler.SystemHandler.Redis
 {
     internal sealed class PCMUserInfoRedisOperator :
-        UniSpyRedisOperatorBase<PCMUserInfoRedisKey, PCMUserInfo>
+        UniSpyRedisOperator<PCMUserInfoRedisKey, PCMUserInfo>
     {
     }
 }

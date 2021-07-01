@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Response.General
         private new GETCKEYResult _result => (GETCKEYResult)base._result;
         private new GETCKEYRequest _request => (GETCKEYRequest)base._request;
 
-        public GETCKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public GETCKEYResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
         public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)

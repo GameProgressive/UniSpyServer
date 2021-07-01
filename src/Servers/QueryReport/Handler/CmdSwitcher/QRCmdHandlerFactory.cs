@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdSwitcher
 {
-    internal sealed class QRCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
+    internal sealed class QRCmdHandlerFactory : UniSpyCmdHandlerFactory
     {
         public QRCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -9,7 +9,7 @@ namespace Chat.Entity.Structure.Response
     //TODO apply channel abstraction into this class
     internal sealed class MODEResponse : ChatResponseBase
     {
-        public MODEResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public MODEResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

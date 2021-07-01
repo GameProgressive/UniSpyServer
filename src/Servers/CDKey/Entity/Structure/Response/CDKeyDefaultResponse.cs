@@ -5,7 +5,7 @@ namespace CDKey.Entity.Structure.Response
 {
     internal sealed class CDKeyDefaultResponse : CDKeyResponseBase
     {
-        public CDKeyDefaultResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public CDKeyDefaultResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

@@ -90,7 +90,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/Servers/NATNegotiation/NATNegotiation.csproj",
+                "${workspaceFolder}/src/Servers/NatNegotiation/NatNegotiation.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net5.0/",
                 "/property:GenerateFullPaths=true",

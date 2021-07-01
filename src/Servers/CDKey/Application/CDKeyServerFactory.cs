@@ -1,17 +1,18 @@
 ﻿using CDKey.Network;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.UniSpyConfig;
 namespace CDKey.Application
 {
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class CDKeyServerFactory : UniSpyServerFactoryBase
+    internal sealed class CDKeyServerFactory : UniSpyServerFactory
     {
         public static new CDKeyServer Server
         {
-            get => (CDKeyServer)UniSpyServerFactoryBase.Server;
-            private set => UniSpyServerFactoryBase.Server = value;
+            get => (CDKeyServer)UniSpyServerFactory.Server;
+            private set => UniSpyServerFactory.Server = value;
         }
 
         public CDKeyServerFactory()

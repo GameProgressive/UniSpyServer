@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
+    public class SBCmdHandlerFactory : UniSpyCmdHandlerFactory
     {
         public SBCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

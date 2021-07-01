@@ -9,7 +9,7 @@ namespace QueryReport.Entity.Structure.Response
     {
         public static readonly byte[] ResponsePrefix = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
 
-        public AvaliableResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public AvaliableResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

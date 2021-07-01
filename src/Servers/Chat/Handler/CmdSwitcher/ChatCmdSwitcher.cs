@@ -8,7 +8,7 @@ namespace Chat.Handler.CommandSwitcher
     /// <summary>
     /// Process request to Commands
     /// </summary>
-    internal sealed class ChatCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class ChatCmdSwitcher : UniSpyCmdSwitcher
     {
         private new string _rawRequest
         {

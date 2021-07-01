@@ -1,5 +1,6 @@
 ﻿using Chat.Network;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.UniSpyConfig;
 
 namespace Chat.Application
@@ -7,12 +8,12 @@ namespace Chat.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class ChatServerFactory : UniSpyServerFactoryBase
+    internal sealed class ChatServerFactory : UniSpyServerFactory
     {
         public static new ChatServer Server
         {
-            get => (ChatServer)UniSpyServerFactoryBase.Server;
-            private set => UniSpyServerFactoryBase.Server = value;
+            get => (ChatServer)UniSpyServerFactory.Server;
+            private set => UniSpyServerFactory.Server = value;
         }
         /// <summary>
         /// Constructor

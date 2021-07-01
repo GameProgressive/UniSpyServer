@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Exception.General
 {
-    public class GPException : UniSpyExceptionBase
+    public class GPException : UniSpyException
     {
         public GPErrorCode ErrorCode { get; private set; }
         public virtual string ErrorResponse => $@"\error\\err\{(uint)ErrorCode}\fatal\\errmsg\{this.Message}\final\";

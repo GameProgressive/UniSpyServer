@@ -5,7 +5,7 @@ namespace ServerBrowser.Entity.Structure.Response
 {
     internal sealed class SBDefaultResponse : SBResponseBase
     {
-        public SBDefaultResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public SBDefaultResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

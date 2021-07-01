@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
     {
         private new BlockListResult _result => (BlockListResult)base._result;
 
-        public BlockListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public BlockListResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

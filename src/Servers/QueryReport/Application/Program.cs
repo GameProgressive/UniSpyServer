@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Logging;
 
 namespace QueryReport.Application
@@ -15,9 +16,9 @@ namespace QueryReport.Application
                 //create a instance of ServerManager class
                 new QRServerFactory().Start();
 
-                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactory.UniSpyVersion;
             }
-            catch (UniSpyExceptionBase e)
+            catch (UniSpyException e)
             {
                 LogWriter.ToLog(e);
             }

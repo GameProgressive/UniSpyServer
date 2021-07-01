@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdSwitcher
 {
-    internal sealed class QRCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class QRCmdSwitcher : UniSpyCmdSwitcher
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
         public QRCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)

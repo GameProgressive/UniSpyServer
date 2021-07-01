@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Response.General
         private new JOINResult _result => (JOINResult)base._result;
         private new JOINRequest _request => (JOINRequest)base._request;
         // public string SendingBufferOfChannelUsers { get; private set; }
-        public JOINResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public JOINResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

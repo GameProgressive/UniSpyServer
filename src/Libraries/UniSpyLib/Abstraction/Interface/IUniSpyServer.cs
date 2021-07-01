@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Network;
 
 namespace UniSpyLib.Abstraction.Interface
 {

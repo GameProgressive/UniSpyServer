@@ -9,7 +9,7 @@ namespace ServerBrowser.Entity.Structure.Response.ServerList
     /// </summary>
     internal sealed class ServerNetworkInfoListResponse : ServerListUpdateOptionResponseBase
     {
-        public ServerNetworkInfoListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public ServerNetworkInfoListResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
         public override void Build()

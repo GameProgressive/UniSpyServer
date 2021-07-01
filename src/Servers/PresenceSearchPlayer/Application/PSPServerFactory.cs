@@ -1,5 +1,6 @@
 ﻿using PresenceSearchPlayer.Network;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.UniSpyConfig;
 
 namespace PresenceSearchPlayer
@@ -7,12 +8,12 @@ namespace PresenceSearchPlayer
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class PSPServerFactory : UniSpyServerFactoryBase
+    internal sealed class PSPServerFactory : UniSpyServerFactory
     {
         public new static PSPServer Server
         {
-            get => (PSPServer)UniSpyServerFactoryBase.Server;
-            private set => UniSpyServerFactoryBase.Server = value;
+            get => (PSPServer)UniSpyServerFactory.Server;
+            private set => UniSpyServerFactory.Server = value;
         }
         /// <summary>
         /// Constructor

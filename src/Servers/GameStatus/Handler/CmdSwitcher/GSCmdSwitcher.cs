@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
-    internal sealed class GSCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class GSCmdSwitcher : UniSpyCmdSwitcher
     {
         private new string _rawRequest
         {

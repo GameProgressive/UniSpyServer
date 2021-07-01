@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.General
     internal sealed class LISTResponse : ChatResponseBase
     {
         private new LISTResult _result => (LISTResult)base._result;
-        public LISTResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public LISTResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
         public override void Build()

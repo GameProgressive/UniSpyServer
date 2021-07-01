@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    internal abstract class QRCmdHandlerBase : UniSpyCmdHandlerBase
+    internal abstract class QRCmdHandlerBase : UniSpyCmdHandler
     {
         protected new QRRequestBase _request => (QRRequestBase)base._request;
         protected new QRSession _session => (QRSession)base._session;

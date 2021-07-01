@@ -9,7 +9,7 @@ namespace QueryReport.Entity.Structure.Response
     {
         private static string Message = "RetroSpy echo!";
 
-        public ChallengeResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public ChallengeResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

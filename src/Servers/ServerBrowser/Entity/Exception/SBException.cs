@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace ServerBrowser.Entity.Exception
 {
-    public class SBException : UniSpyExceptionBase
+    public class SBException : UniSpyException
     {
         public SBException()
         {

@@ -5,7 +5,7 @@ using UniSpyLib.Extensions;
 
 namespace PresenceConnectionManager.Handler.SystemHandler.Redis
 {
-    internal sealed class PCMUserInfoRedisKey : UniSpyRedisKeyBase
+    internal sealed class PCMUserInfoRedisKey : UniSpyRedisKey
     {
         [JsonProperty(Order = -2)]
         public Guid ServerID { get; set; }

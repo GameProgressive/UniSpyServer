@@ -2,7 +2,7 @@
 
 namespace CDKey.Abstraction.BaseClass
 {
-    internal abstract class CDKeyRequestBase : UniSpyRequestBase
+    internal abstract class CDKeyRequestBase : UniSpyRequest
     {
         public CDKeyRequestBase(string rawRequest) : base(rawRequest)
         {

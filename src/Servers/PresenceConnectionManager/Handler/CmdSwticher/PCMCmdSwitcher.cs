@@ -2,13 +2,14 @@
 using System;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    internal sealed class PCMCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class PCMCmdSwitcher : UniSpyCmdSwitcher
     {
         private new string _rawRequest => (string)base._rawRequest;
         public PCMCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
@@ -34,13 +35,13 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
 
                     var key = keyValues.Keys.First();
 
-                    if (!UniSpyServerFactoryBase.RequestMapping.ContainsKey(key))
+                    if (!UniSpyServerFactory.RequestMapping.ContainsKey(key))
                     {
                         LogWriter.LogUnkownRequest(_rawRequest);
                         throw new GPParseException($"Unknown request: {key}");
                     }
                     var request = (IUniSpyRequest)Activator.CreateInstance(
-                        UniSpyServerFactoryBase.RequestMapping[key],
+                        UniSpyServerFactory.RequestMapping[key],
                         _rawRequest);
 
                     request.Parse();

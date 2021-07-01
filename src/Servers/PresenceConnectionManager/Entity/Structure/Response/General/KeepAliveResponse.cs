@@ -5,7 +5,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 {
     internal sealed class KeepAliveResponse : PCMResponseBase
     {
-        public KeepAliveResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public KeepAliveResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

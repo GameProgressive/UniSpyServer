@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Response.Message
     {
         private new PRIVMSGResult _result => (PRIVMSGResult)base._result;
         private new PRIVMSGRequest _request => (PRIVMSGRequest)base._request;
-        public PRIVMSGResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public PRIVMSGResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

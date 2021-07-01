@@ -3,7 +3,7 @@ using UniSpyLib.Extensions;
 
 namespace QueryReport.Entity.Structure.Redis
 {
-    public class PeerGroupInfoRedisKey : UniSpyRedisKeyBase
+    public class PeerGroupInfoRedisKey : UniSpyRedisKey
     {
         public string GameName { get; set; }
         public PeerGroupInfoRedisKey()

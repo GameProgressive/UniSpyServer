@@ -9,7 +9,7 @@ namespace GameStatus.Entity.Structure.Response
     {
         private new AuthResult _result => (AuthResult)base._result;
         private new AuthRequest _request => (AuthRequest)base._request;
-        public AuthResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public AuthResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

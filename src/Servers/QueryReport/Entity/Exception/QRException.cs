@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Entity.Exception
 {
-    internal sealed class QRException : UniSpyExceptionBase
+    internal sealed class QRException : UniSpyException
     {
         public QRException()
         {

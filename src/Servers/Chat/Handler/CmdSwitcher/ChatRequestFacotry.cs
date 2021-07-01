@@ -8,7 +8,7 @@ using UniSpyLib.Logging;
 
 namespace Chat.Handler.CommandSwitcher
 {
-    internal sealed class ChatRequestFacotry : UniSpyRequestFactoryBase
+    internal sealed class ChatRequestFacotry : UniSpyRequestFactory
     {
         private new string _rawRequest => (string)base._rawRequest;
         public ChatRequestFacotry(object rawRequest) : base(rawRequest)

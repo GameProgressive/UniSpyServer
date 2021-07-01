@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Response.General
     {
         private new MODERequest _request => (MODERequest)base._request;
         private new MODEResult _result => (MODEResult)base._result;
-        public MODEResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public MODEResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

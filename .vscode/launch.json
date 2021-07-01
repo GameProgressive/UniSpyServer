@@ -30,11 +30,11 @@
             "stopAtEntry": false
         },
         {
-            "name": "NATNeg",
+            "name": "NatNeg",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build_natneg",
-            "program": "${workspaceRoot}/build/Debug/net5.0/NATNegotiation.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/NatNegotiation.dll",
             "args": [],
             "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",

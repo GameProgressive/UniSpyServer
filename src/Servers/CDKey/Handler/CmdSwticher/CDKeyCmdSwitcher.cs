@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace CDKey.Handler.CmdSwitcher
 {
-    internal sealed class CDKeyCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class CDKeyCmdSwitcher : UniSpyCmdSwitcher
     {
         private new string _rawRequest
         {

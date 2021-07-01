@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.Channel
     internal sealed class PARTResponse : ChatResponseBase
     {
         private new PARTResult _result => (PARTResult)base._result;
-        public PARTResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public PARTResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

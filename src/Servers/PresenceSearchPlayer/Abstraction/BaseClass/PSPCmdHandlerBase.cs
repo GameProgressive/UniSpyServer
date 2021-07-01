@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class PSPCmdHandlerBase : UniSpyCmdHandlerBase
+    public abstract class PSPCmdHandlerBase : UniSpyCmdHandler
     {
         /// <summary>
         /// Be careful the return of query function should be List type,

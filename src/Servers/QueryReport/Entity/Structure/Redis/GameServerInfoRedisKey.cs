@@ -6,7 +6,7 @@ using UniSpyLib.Extensions;
 
 namespace QueryReport.Entity.Structure.Redis
 {
-    public class GameServerInfoRedisKey : UniSpyRedisKeyBase
+    public class GameServerInfoRedisKey : UniSpyRedisKey
     {
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         public Guid? ServerID { get; set; }

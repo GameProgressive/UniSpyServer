@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using System.Net;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 using UniSpyLib.UniSpyConfig;
@@ -51,7 +52,7 @@ namespace UniSpyLib.Logging
             Log.Logger = logConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File(
-                path: $"Logs/[{UniSpyServerFactoryBase.ServerName}]-.log",
+                path: $"Logs/[{UniSpyServerFactory.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}",
                 rollingInterval: RollingInterval.Day)
                 .CreateLogger();

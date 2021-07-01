@@ -6,7 +6,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace QueryReport.Entity.Structure.Redis
 {
     public sealed class PeerGroupInfoRedisOperator :
-        UniSpyRedisOperatorBase<PeerGroupInfoRedisKey, PeerGroupInfo>
+        UniSpyRedisOperator<PeerGroupInfoRedisKey, PeerGroupInfo>
     {
         /// <summary>
         /// Select specific game room

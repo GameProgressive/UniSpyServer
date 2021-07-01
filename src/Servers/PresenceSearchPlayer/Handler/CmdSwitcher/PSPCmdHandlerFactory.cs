@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    internal sealed class PSPCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
+    internal sealed class PSPCmdHandlerFactory : UniSpyCmdHandlerFactory
     {
         public PSPCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

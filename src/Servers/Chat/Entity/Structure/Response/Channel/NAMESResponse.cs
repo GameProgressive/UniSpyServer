@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.Channel
     internal sealed class NAMESResponse : ChatChannelResponseBase
     {
         private new NAMESResult _result => (NAMESResult)base._result;
-        public NAMESResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public NAMESResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
         public override void Build()

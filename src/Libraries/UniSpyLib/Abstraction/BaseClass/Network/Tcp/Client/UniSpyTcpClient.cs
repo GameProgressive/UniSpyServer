@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Encryption;
 using UniSpyLib.Logging;
 using UniSpyLib.UniSpyConfig;
@@ -17,10 +18,10 @@ namespace UniSpyLib.Network.Tcp.Client
         public UniSpyTcpClient() : base
             (
                 ConfigManager.Config.Servers
-            .Where(s => s.ServerName == UniSpyServerFactoryBase.ServerName)
+            .Where(s => s.ServerName == UniSpyServerFactory.ServerName)
             .First().RemoteAddress
                , ConfigManager.Config.Servers
-            .Where(s => s.ServerName == UniSpyServerFactoryBase.ServerName)
+            .Where(s => s.ServerName == UniSpyServerFactory.ServerName)
             .First().RemotePort
             )
         {

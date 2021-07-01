@@ -12,7 +12,7 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
     {
         private new ServerListRequest _request => (ServerListRequest)base._request;
         private new ServerMainListResult _result => (ServerMainListResult)base._result;
-        public ServerMainListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public ServerMainListResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

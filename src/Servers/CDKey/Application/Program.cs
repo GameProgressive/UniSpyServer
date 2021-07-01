@@ -1,7 +1,6 @@
-﻿using Serilog.Events;
-using System;
-using System.Threading.Tasks;
+﻿using System;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Logging;
 
 namespace CDKey.Application
@@ -19,9 +18,9 @@ namespace CDKey.Application
                 //create a instance of ServerManager class
                 new CDKeyServerFactory().Start();
 
-                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactory.UniSpyVersion;
             }
-            catch (UniSpyExceptionBase e)
+            catch (UniSpyException e)
             {
                 LogWriter.ToLog(e);
             }

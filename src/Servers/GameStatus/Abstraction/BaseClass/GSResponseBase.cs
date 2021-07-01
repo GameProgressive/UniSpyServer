@@ -2,7 +2,7 @@
 
 namespace GameStatus.Abstraction.BaseClass
 {
-    internal abstract class GSResponseBase : UniSpyResponseBase
+    internal abstract class GSResponseBase : UniSpyResponse
     {
         protected new GSRequestBase _request => (GSRequestBase)base._request;
         protected new GSResultBase _result => (GSResultBase)base._result;
@@ -11,7 +11,7 @@ namespace GameStatus.Abstraction.BaseClass
             get => (string)base.SendingBuffer;
             set => base.SendingBuffer = value;
         }
-        public GSResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public GSResponseBase(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

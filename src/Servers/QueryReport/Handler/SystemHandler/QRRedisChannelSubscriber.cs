@@ -12,7 +12,7 @@ using UniSpyLib.Entity.Structure;
 
 namespace QueryReport.Handler.SystemHandler
 {
-    public class QRRedisChannelSubscriber : UniSpyRedisChannelSubscriberBase<NATNegCookie>
+    public class QRRedisChannelSubscriber : UniSpyRedisChannelSubscriber<NATNegCookie>
     {
         public QRRedisChannelSubscriber() : base(UniSpyRedisChannelName.NatNegCookieChannel)
         {

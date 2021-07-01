@@ -8,7 +8,7 @@ using UniSpyLib.MiscMethod;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
-    internal sealed class GSRequestFactory : UniSpyRequestFactoryBase
+    internal sealed class GSRequestFactory : UniSpyRequestFactory
     {
         private new string _rawRequest => (string)base._rawRequest;
         public GSRequestFactory(object rawRequest) : base(rawRequest)

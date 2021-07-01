@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Logging;
 
 namespace GameStatus.Application
@@ -15,7 +16,7 @@ namespace GameStatus.Application
                 //create a instance of ServerManager class
                 new GSServerFactory().Start();
 
-                Console.Title = "UniSpyServer " + UniSpyServerFactoryBase.UniSpyVersion;
+                Console.Title = "UniSpyServer " + UniSpyServerFactory.UniSpyVersion;
             }
             catch (Exception e)
             {

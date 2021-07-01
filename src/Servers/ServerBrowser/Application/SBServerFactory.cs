@@ -2,18 +2,19 @@
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.UniSpyConfig;
 using QueryReport.Handler.SystemHandler;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace ServerBrowser.Application
 {
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class SBServerFactory : UniSpyServerFactoryBase
+    internal sealed class SBServerFactory : UniSpyServerFactory
     {
         public new static SBServer Server
         {
-            get => (SBServer)UniSpyServerFactoryBase.Server;
-            private set => UniSpyServerFactoryBase.Server = value;
+            get => (SBServer)UniSpyServerFactory.Server;
+            private set => UniSpyServerFactory.Server = value;
         }
         public SBServerFactory()
         {

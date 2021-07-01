@@ -1,5 +1,6 @@
 ﻿using PresenceConnectionManager.Network;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.UniSpyConfig;
 
 namespace PresenceConnectionManager.Application
@@ -7,12 +8,12 @@ namespace PresenceConnectionManager.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class PCMServerFactory : UniSpyServerFactoryBase
+    internal sealed class PCMServerFactory : UniSpyServerFactory
     {
         internal new static PCMServer Server
         {
-            get => (PCMServer)UniSpyServerFactoryBase.Server;
-            private set => UniSpyServerFactoryBase.Server = value;
+            get => (PCMServer)UniSpyServerFactory.Server;
+            private set => UniSpyServerFactory.Server = value;
         }
         /// <summary>
         /// Constructor

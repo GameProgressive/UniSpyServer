@@ -6,7 +6,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
 {
     public class NewUserResponse : PSPResponseBase
     {
-        public NewUserResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
+        public NewUserResponse(PSPRequestBase request, UniSpyResult result) : base(request, result)
         {
         }
 

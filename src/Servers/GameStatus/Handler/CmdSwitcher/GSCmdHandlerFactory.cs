@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
-    internal sealed class GSCmdHandlerFactory : UniSpyCmdHandlerFactoryBase
+    internal sealed class GSCmdHandlerFactory : UniSpyCmdHandlerFactory
     {
         public GSCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

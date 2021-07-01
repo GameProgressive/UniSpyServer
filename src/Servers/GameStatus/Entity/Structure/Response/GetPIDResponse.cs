@@ -9,7 +9,7 @@ namespace GameStatus.Entity.Structure.Response
     {
         private new GetPIDResult _result => (GetPIDResult)base._result;
         private new GetPIDRequest _request => (GetPIDRequest)base._request;
-        public GetPIDResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public GetPIDResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.General
     internal sealed class USRIPResponse : ChatResponseBase
     {
         private new USRIPResult _result => (USRIPResult)base._result;
-        public USRIPResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public USRIPResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
         public override void Build()

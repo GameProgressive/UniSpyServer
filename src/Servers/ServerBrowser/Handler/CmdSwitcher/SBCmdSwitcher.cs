@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    internal sealed class SBCmdSwitcher : UniSpyCmdSwitcherBase
+    internal sealed class SBCmdSwitcher : UniSpyCmdSwitcher
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
 

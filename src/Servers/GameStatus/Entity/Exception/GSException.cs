@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Exception
 {
-    public class GSException : UniSpyExceptionBase
+    public class GSException : UniSpyException
     {
         public GSException()
         {

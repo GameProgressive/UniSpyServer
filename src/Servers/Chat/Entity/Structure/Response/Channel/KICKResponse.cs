@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.Channel
 {
     internal sealed class KICKResponse : ChatResponseBase
     {
-        public KICKResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public KICKResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    internal abstract class QRResponseBase : UniSpyResponseBase
+    internal abstract class QRResponseBase : UniSpyResponse
     {
         protected new QRRequestBase _request => (QRRequestBase)base._request;
         protected new QRResultBase _result => (QRResultBase)base._result;
@@ -13,7 +13,7 @@ namespace QueryReport.Abstraction.BaseClass
             get => (byte[])base.SendingBuffer;
             protected set => base.SendingBuffer = value;
         }
-        protected QRResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        protected QRResponseBase(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
 

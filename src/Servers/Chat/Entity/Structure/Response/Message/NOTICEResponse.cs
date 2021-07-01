@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Response.Message
     {
         private new NOTICEResult _result => (NOTICEResult)base._result;
         private new NOTICERequest _request => (NOTICERequest)base._request;
-        public NOTICEResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public NOTICEResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
         {
         }
         public override void Build()

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyLib.Abstraction.BaseClass
+namespace UniSpyLib.Abstraction.BaseClass.Network
 {
     /// <summary>
     /// This class manages sessions that connect to this UniSpy distributed servers

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal class ChatRequestBase : UniSpyRequestBase
+    internal class ChatRequestBase : UniSpyRequest
     {
         /// <summary>
         /// True means there are no errors

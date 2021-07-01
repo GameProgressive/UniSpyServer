@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
     /// Because all errors are sent by SendGPError()
     /// so we if the error code != noerror we send it
     /// </summary>
-    internal abstract class PCMCmdHandlerBase : UniSpyCmdHandlerBase
+    internal abstract class PCMCmdHandlerBase : UniSpyCmdHandler
     {
         protected new PCMSession _session => (PCMSession)base._session;
         protected new PCMRequestBase _request => (PCMRequestBase)base._request;
