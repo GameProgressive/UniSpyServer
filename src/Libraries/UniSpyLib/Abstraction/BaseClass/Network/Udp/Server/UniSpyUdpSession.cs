@@ -19,21 +19,15 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             LastPacketReceivedTime = DateTime.Now;
         }
 
-        public bool SendAsync(byte[] buffer, long offset, long size) => Server.SendAsync(RemoteEndPoint, buffer, offset, size);
-        public bool SendAsync(string text) => Server.SendAsync(RemoteEndPoint, UniSpyEncoding.GetBytes(text));
-        public bool SendAsync(byte[] buffer) => Server.SendAsync(RemoteEndPoint, buffer);
-        public bool BaseSendAsync(byte[] buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
-        public bool BaseSendAsync(string buffer) => Server.BaseSendAsync(RemoteEndPoint, buffer);
-
         public bool SendAsync(object buffer)
         {
             if (buffer.GetType() == typeof(string))
             {
-                return SendAsync((string)buffer);
+                return Server.SendAsync(RemoteEndPoint, UniSpyEncoding.GetBytes((string)buffer));
             }
             else if (buffer.GetType() == typeof(byte[]))
             {
-                return SendAsync((byte[])buffer);
+                return Server.SendAsync(RemoteEndPoint, (byte[])buffer);
             }
             else
             {
@@ -45,11 +39,11 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         {
             if (buffer.GetType() == typeof(string))
             {
-                return BaseSendAsync((string)buffer);
+                return Server.BaseSendAsync(RemoteEndPoint, UniSpyEncoding.GetBytes((string)buffer));
             }
             else if (buffer.GetType() == typeof(byte[]))
             {
-                return BaseSendAsync((byte[])buffer);
+                return Server.BaseSendAsync(RemoteEndPoint, (byte[])buffer);
             }
             else
             {
