@@ -10,6 +10,6 @@ namespace WebServer.Network
         public WebServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
         }
-        protected override TcpSession CreateSession() { return new WebSession(this); }
+        protected override TcpSession CreateSession() => new WebSession(this);
     }
 }
