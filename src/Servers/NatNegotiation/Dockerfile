@@ -5,18 +5,18 @@ EXPOSE 27901/udp
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine3.12 AS build
 WORKDIR /src
-COPY ["src/Servers/NATNegotiation/NATNegotiation.csproj", "src/Servers/NATNegotiation/"]
+COPY ["src/Servers/NatNegotiation/NatNegotiation.csproj", "src/Servers/NatNegotiation/"]
 COPY ["src/Libraries/UniSpyLib/UniSpyLib.csproj", "src/Libraries/UniSpyLib/"]
-RUN dotnet restore "src/Servers/NATNegotiation/NATNegotiation.csproj"
+RUN dotnet restore "src/Servers/NatNegotiation/NatNegotiation.csproj"
 COPY . .
-WORKDIR "/src/src/Servers/NATNegotiation"
-RUN dotnet build "NATNegotiation.csproj" -c Release -o /app/build
+WORKDIR "/src/src/Servers/NatNegotiation"
+RUN dotnet build "NatNegotiation.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "NATNegotiation.csproj" -c Release -o /app/publish
+RUN dotnet publish "NatNegotiation.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 COPY ./common/UniSpyServer.cfg .
-ENTRYPOINT ["dotnet", "NATNegotiation.dll"]
+ENTRYPOINT ["dotnet", "NatNegotiation.dll"]
