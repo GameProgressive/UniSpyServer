@@ -32,10 +32,13 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Http.Server
                 throw new UniSpyException("The buffer type is invalid");
             }
         }
-        public new bool SendResponseAsync(HttpResponse response)
+        protected override void OnReceivedRequest(HttpRequest request)
         {
-            LogWriter.LogNetworkSending(RemoteIPEndPoint, response.Body);
-            return base.SendResponseAsync(response);
+            base.OnReceivedRequest(request);
+        }
+        protected virtual void OnRecievedRequest(UniSpyRequest request)
+        {
+
         }
         public bool SendAsync(object buffer)
         {

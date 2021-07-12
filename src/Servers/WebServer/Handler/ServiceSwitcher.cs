@@ -10,8 +10,10 @@ namespace WebServer.Handler
         }
 
         protected override void DeserializeRequests()
+        { 
+        }
+        protected override void DeserializeCmdHandlers()
         {
-            throw new System.NotImplementedException();
         }
     }
 }

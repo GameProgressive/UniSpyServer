@@ -7,9 +7,8 @@ namespace UniSpyLib.Abstraction.BaseClass
     {
         protected IUniSpySession _session { get; }
         protected IUniSpyRequest _request { get; }
-        protected IUniSpyResponse _response { get; set; }
-        protected object _responseBuffer { get; set; }
-        protected UniSpyResult _result { get; set; }
+        protected IUniSpyResponse? _response { get; set; }
+        protected UniSpyResult? _result { get; set; }
         public UniSpyCmdHandler(IUniSpySession session, IUniSpyRequest request)
         {
             _session = session;
@@ -38,14 +37,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 return;
             }
-            if (_response.SendingBuffer.GetType().Equals(typeof(byte[])))
-            {
-                _session.SendAsync((byte[])_response.SendingBuffer);
-            }
-            else if (_response.SendingBuffer.GetType().Equals(typeof(string)))
-            {
-                _session.SendAsync((string)_response.SendingBuffer);
-            }
+            _session.SendAsync(_response.SendingBuffer);
         }
     }
 }

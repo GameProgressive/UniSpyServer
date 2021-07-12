@@ -1,3 +1,4 @@
+using NetCoreServer;
 using UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
 
 namespace WebServer.Network
@@ -6,6 +7,10 @@ namespace WebServer.Network
     {
         public WebSession(UniSpyHttpServer server) : base(server)
         {
+        }
+        protected override void OnReceivedRequest(HttpRequest request)
+        {
+            
         }
     }
 }
