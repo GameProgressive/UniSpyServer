@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response.Buddy
     {
         private new StatusInfoResult _result => (StatusInfoResult)base._result;
 
-        public StatusInfoResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public StatusInfoResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         /// <summary>

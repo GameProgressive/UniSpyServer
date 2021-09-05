@@ -3,7 +3,7 @@ using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    internal sealed class NatifyResult : NNResultBase
+    internal sealed class NatifyResult : ResultBase
     {
         public NatifyResult()
         {

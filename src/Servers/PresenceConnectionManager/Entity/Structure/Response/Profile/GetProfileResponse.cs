@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
     internal sealed class GetProfileResponse : PCMResponseBase
     {
         private new GetProfileResult _result => (GetProfileResult)base._result;
-        public GetProfileResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public GetProfileResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         public override void Build()

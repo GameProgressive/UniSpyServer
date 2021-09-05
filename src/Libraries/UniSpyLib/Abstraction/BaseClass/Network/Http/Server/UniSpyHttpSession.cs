@@ -13,7 +13,29 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 
         public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
         public IPEndPoint RemoteIPEndPoint => (IPEndPoint)RemoteEndPoint;
-
+        protected override void OnReceivedRequest(HttpRequest request)
+        {
+            base.OnReceivedRequest(request);
+        }
+        protected virtual void OnRecievedRequest(UniSpyRequestBase request) { }
+        public bool SendAsync(object buffer)
+        {
+            var bufferType = buffer.GetType();
+            if (bufferType == typeof(HttpResponse))
+            {
+                SendResponseAsync((HttpResponse)buffer);
+                return true;
+            }
+            else if (bufferType == typeof(string))
+            {
+                SendResponseBodyAsync((string)buffer);
+                return true;
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
         public bool BaseSendAsync(object buffer)
         {
             var bufferType = buffer.GetType();
@@ -32,31 +54,16 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Http.Server
                 throw new UniSpyException("The buffer type is invalid");
             }
         }
-        protected override void OnReceivedRequest(HttpRequest request)
+        public bool Send(IUniSpyResponse response)
         {
-            base.OnReceivedRequest(request);
+            response.Build();
+            return SendAsync(response.SendingBuffer);
         }
-        protected virtual void OnRecievedRequest(UniSpyRequest request)
-        {
 
-        }
-        public bool SendAsync(object buffer)
+        public bool BaseSend(IUniSpyResponse response)
         {
-            var bufferType = buffer.GetType();
-            if (bufferType == typeof(HttpResponse))
-            {
-                SendResponseAsync((HttpResponse)buffer);
-                return true;
-            }
-            else if (bufferType == typeof(string))
-            {
-                SendResponseBodyAsync((string)buffer);
-                return true;
-            }
-            else
-            {
-                throw new UniSpyException("The buffer type is invalid");
-            }
+            response.Build();
+            return BaseSendAsync(response.SendingBuffer);
         }
     }
 }

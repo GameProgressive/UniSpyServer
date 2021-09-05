@@ -2,7 +2,7 @@
 
 namespace GameStatus.Abstraction.BaseClass
 {
-    internal abstract class GSResultBase : UniSpyResult
+    internal abstract class GSResultBase : UniSpyResultBase
     {
         public GSResultBase()
         {

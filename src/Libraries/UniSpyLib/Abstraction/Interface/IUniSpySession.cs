@@ -6,7 +6,7 @@ namespace UniSpyLib.Abstraction.Interface
     {
         EndPoint RemoteEndPoint { get; }
         IPEndPoint RemoteIPEndPoint { get; }
-        bool SendAsync(object buffer);
-        bool BaseSendAsync(object buffer);
+        bool Send(IUniSpyResponse response);
+        bool BaseSend(IUniSpyResponse response);
     }
 }

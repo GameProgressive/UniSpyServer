@@ -7,7 +7,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    internal abstract class PCMRequestBase : UniSpyRequest
+    internal abstract class PCMRequestBase : UniSpyRequestBase
     {
         public new string CommandName
         {

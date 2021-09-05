@@ -4,14 +4,15 @@ using NatNegotiation.Entity.Structure.Redis;
 using NatNegotiation.Entity.Structure.Request;
 using NatNegotiation.Entity.Structure.Response;
 using NatNegotiation.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
 using System;
 using UniSpyLib.Abstraction.Interface;
+using NatNegotiation.Entity.Contract;
+using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Handler.CmdHandler
 {
-    [Command((byte)0)]
-    internal sealed class InitHandler : NNCmdHandlerBase
+    [HandlerContract(RequestType.Init)]
+    internal sealed class InitHandler : CmdHandlerBase
     {
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result
@@ -29,7 +30,7 @@ namespace NatNegotiation.Handler.CmdHandler
             //TODO we get user infomation from redis
             var fullKey = new NatUserInfoRedisKey()
             {
-                ServerID = NNServerFactory.Server.ServerID,
+                ServerID = ServerFactory.Server.ServerID,
                 RemoteIPEndPoint = _session.RemoteIPEndPoint,
                 PortType = _request.PortType,
                 Cookie = _request.Cookie

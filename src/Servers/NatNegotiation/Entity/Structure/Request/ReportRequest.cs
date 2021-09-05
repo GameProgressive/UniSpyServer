@@ -1,14 +1,14 @@
 ﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Contract;
 using NatNegotiation.Entity.Enumerate;
 using System;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
 
 namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command((byte)13)]
-    internal sealed class ReportRequest : NNRequestBase
+    [RequestContract(RequestType.Report)]
+    internal sealed class ReportRequest : RequestBase
     {
         public NatPortType PortType { get; set; }
         public byte ClientIndex { get; set; }

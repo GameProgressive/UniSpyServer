@@ -3,10 +3,10 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace NatNegotiation.Abstraction.BaseClass
 {
-    public class NNResultBase : UniSpyResult
+    public class ResultBase : UniSpyResultBase
     {
         public NatPacketType? PacketType { get; set; }
-        public NNResultBase()
+        public ResultBase()
         {
         }
     }

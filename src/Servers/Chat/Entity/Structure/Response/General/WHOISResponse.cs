@@ -9,7 +9,7 @@ namespace Chat.Entity.Structure.Response.General
     internal sealed class WHOISResponse : ChatResponseBase
     {
         private new WHOISResult _result => (WHOISResult)base._result;
-        public WHOISResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public WHOISResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         public override void Build()

@@ -1,14 +1,15 @@
 ﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Contract;
+using NatNegotiation.Entity.Enumerate;
 using NatNegotiation.Entity.Structure.Request;
 using NatNegotiation.Entity.Structure.Response;
 using NatNegotiation.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace NatNegotiation.Handler.CmdHandler
 {
-    [Command((byte)10)]
-    internal sealed class AddressCheckHandler : NNCmdHandlerBase
+    [HandlerContract(RequestType.AddressCheck)]
+    internal sealed class AddressCheckHandler : CmdHandlerBase
     {
         private new AddressRequest _request => (AddressRequest)base._request;
 

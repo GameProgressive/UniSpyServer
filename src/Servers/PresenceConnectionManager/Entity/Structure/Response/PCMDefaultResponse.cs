@@ -6,7 +6,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
     internal sealed class PCMDefaultResponse : PCMResponseBase
     {
 
-        public PCMDefaultResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public PCMDefaultResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

@@ -10,15 +10,15 @@ namespace NatNegotiation.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class NNServerFactory : UniSpyServerFactory
+    internal sealed class ServerFactory : ServerFactoryBase
     {
-        public new static NNServer Server
+        public new static Server Server
         {
-            get => (NNServer)UniSpyServerFactory.Server;
-            private set => UniSpyServerFactory.Server = value;
+            get => (Server)ServerFactoryBase.Server;
+            private set => ServerFactoryBase.Server = value;
         }
 
-        public NNServerFactory()
+        public ServerFactory()
         {
         }
         /// <summary>
@@ -27,8 +27,6 @@ namespace NatNegotiation.Application
         public override void Start()
         {
             ShowUniSpyLogo();
-            LoadUniSpyRequests();
-            LoadUniSpyHandlers();
             ConnectRedis();
             LoadServerConfig();
             UniSpyJsonConverter.Initialize();
@@ -42,7 +40,7 @@ namespace NatNegotiation.Application
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new NNServer(cfg.ServerID, cfg.ListeningEndPoint);
+                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

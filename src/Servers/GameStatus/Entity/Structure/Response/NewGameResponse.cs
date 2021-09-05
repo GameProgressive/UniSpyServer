@@ -10,7 +10,7 @@ namespace GameStatus.Entity.Structure.Response
     {
         private new NewGameResult _result => (NewGameResult)base._result;
         private new NewGameRequest _request => (NewGameRequest)base._request;
-        public NewGameResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public NewGameResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

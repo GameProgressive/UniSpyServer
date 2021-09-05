@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Response.Message
     {
         private new UTMResult _result => (UTMResult)base._result;
         private new UTMRequest _request => (UTMRequest)base._request;
-        public UTMResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public UTMResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

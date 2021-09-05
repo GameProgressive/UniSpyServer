@@ -5,11 +5,11 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace NatNegotiation.Entity.Structure.Response
 {
-    internal sealed class ConnectResponse : NNResponseBase
+    internal sealed class ConnectResponse : ResponseBase
     {
         private new ConnectResult _result => (ConnectResult)base._result;
 
-        public ConnectResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public ConnectResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         public override void Build()

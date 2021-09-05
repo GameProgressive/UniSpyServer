@@ -4,9 +4,9 @@ using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace NatNegotiation.Network
 {
-    internal sealed class NNSessionManager : UniSpyUdpSessionManager
+    internal sealed class SessionManager : UniSpyUdpSessionManager
     {
-        public NNSessionManager()
+        public SessionManager()
         {
         }
     }

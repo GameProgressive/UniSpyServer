@@ -10,7 +10,7 @@ namespace GameStatus.Abstraction.BaseClass
     /// we only use selfdefine error code here
     /// so we do not need to send it to client
     /// </summary>
-    internal abstract class GSCmdHandlerBase : UniSpyCmdHandler
+    internal abstract class GSCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected new GSSession _session => (GSSession)base._session;
         protected new GSRequestBase _request => (GSRequestBase)base._request;

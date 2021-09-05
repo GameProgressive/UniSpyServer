@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.General
     internal sealed class LOGINResponse : ChatResponseBase
     {
         private new LOGINResult _result => (LOGINResult)base._result;
-        public LOGINResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public LOGINResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

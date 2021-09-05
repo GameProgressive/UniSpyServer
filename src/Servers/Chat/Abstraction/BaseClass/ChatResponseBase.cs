@@ -2,7 +2,7 @@
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal abstract class ChatResponseBase : UniSpyResponse
+    internal abstract class ChatResponseBase : UniSpyResponseBase
     {
         public new string SendingBuffer
         {
@@ -11,7 +11,7 @@ namespace Chat.Abstraction.BaseClass
         }
         protected new ChatResultBase _result => (ChatResultBase)base._result;
         protected new ChatRequestBase _request => (ChatRequestBase)base._request;
-        protected ChatResponseBase(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        protected ChatResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
     }

@@ -14,7 +14,7 @@ namespace ServerBrowser.Entity.Structure.Response
     internal sealed class ServerInfoResponse : ServerListUpdateOptionResponseBase
     {
         private new ServerInfoResult _result => (ServerInfoResult)base._result;
-        public ServerInfoResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public ServerInfoResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

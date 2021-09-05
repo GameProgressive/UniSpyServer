@@ -7,12 +7,12 @@ namespace CDKey.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class CDKeyServerFactory : UniSpyServerFactory
+    internal sealed class CDKeyServerFactory : ServerFactoryBase
     {
-        public static new CDKeyServer Server
+        public static new Server Server
         {
-            get => (CDKeyServer)UniSpyServerFactory.Server;
-            private set => UniSpyServerFactory.Server = value;
+            get => (Server)ServerFactoryBase.Server;
+            private set => ServerFactoryBase.Server = value;
         }
 
         public CDKeyServerFactory()
@@ -27,7 +27,7 @@ namespace CDKey.Application
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new CDKeyServer(cfg.ServerID, cfg.ListeningEndPoint);
+                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

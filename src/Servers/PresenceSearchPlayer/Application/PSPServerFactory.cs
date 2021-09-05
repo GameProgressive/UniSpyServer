@@ -8,12 +8,12 @@ namespace PresenceSearchPlayer
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class PSPServerFactory : UniSpyServerFactory
+    internal sealed class PSPServerFactory : ServerFactoryBase
     {
         public new static PSPServer Server
         {
-            get => (PSPServer)UniSpyServerFactory.Server;
-            private set => UniSpyServerFactory.Server = value;
+            get => (PSPServer)ServerFactoryBase.Server;
+            private set => ServerFactoryBase.Server = value;
         }
         /// <summary>
         /// Constructor

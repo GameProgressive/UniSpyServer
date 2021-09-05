@@ -17,9 +17,9 @@ namespace NatNegotiation.Application
             try
             {
                 //create a instance of ServerManager class
-                new NNServerFactory().Start();
+                new ServerFactory().Start();
 
-                Console.Title = "UniSpyServer " + UniSpyServerFactory.UniSpyVersion;
+                Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyException e)
             {

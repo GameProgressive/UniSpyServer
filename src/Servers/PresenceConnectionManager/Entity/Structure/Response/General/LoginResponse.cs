@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
     {
         private new LoginResult _result => (LoginResult)base._result;
         private new LoginRequest _request => (LoginRequest)base._request;
-        public LoginResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public LoginResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

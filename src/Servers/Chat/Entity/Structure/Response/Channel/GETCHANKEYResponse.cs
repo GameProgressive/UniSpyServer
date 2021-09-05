@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Response.Channel
     {
         private new GETCHANKEYResult _result => (GETCHANKEYResult)base._result;
         private new GETCHANKEYRequest _request => (GETCHANKEYRequest)base._request;
-        public GETCHANKEYResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public GETCHANKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

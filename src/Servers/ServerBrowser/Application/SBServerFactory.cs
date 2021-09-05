@@ -9,12 +9,12 @@ namespace ServerBrowser.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class SBServerFactory : UniSpyServerFactory
+    internal sealed class SBServerFactory : ServerFactoryBase
     {
         public new static SBServer Server
         {
-            get => (SBServer)UniSpyServerFactory.Server;
-            private set => UniSpyServerFactory.Server = value;
+            get => (SBServer)ServerFactoryBase.Server;
+            private set => ServerFactoryBase.Server = value;
         }
         public SBServerFactory()
         {

@@ -3,9 +3,9 @@ using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace NatNegotiation.Network
 {
-    internal sealed class NNSession : UniSpyUdpSession
+    internal sealed class Session : UniSpyUdpSession
     {
-        public NNSession(UniSpyUdpServer server, EndPoint endPoint) : base(server, endPoint)
+        public Session(UniSpyUdpServer server, EndPoint endPoint) : base(server, endPoint)
         {
         }
     }

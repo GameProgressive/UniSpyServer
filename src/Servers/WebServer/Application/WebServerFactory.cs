@@ -5,7 +5,7 @@ using UniSpyLib.UniSpyConfig;
 
 namespace WebServer.Abstraction.BaseClass
 {
-    internal class WebServerFacotry : UniSpyServerFactory
+    internal class WebServerFacotry : ServerFactoryBase
     {
         public WebServerFacotry()
         {

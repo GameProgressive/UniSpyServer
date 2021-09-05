@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Response.Message
     {
         private new ATMResult _result => (ATMResult)base._result;
         private new ATMRequest _request => (ATMRequest)base._request;
-        public ATMResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public ATMResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

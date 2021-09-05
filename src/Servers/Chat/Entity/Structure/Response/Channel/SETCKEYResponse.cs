@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Response.Channel
     {
         private new SETCKEYRequest _request => (SETCKEYRequest)base._request;
         private new SETCKEYResult _result => (SETCKEYResult)base._result;
-        public SETCKEYResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public SETCKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         public override void Build()

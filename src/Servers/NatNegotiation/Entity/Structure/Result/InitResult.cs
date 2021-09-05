@@ -4,7 +4,7 @@ using System.Net;
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    internal class InitResult : NNResultBase
+    internal class InitResult : ResultBase
     {
         public string LocalIP => ((IPEndPoint)LocalIPEndPoint).Address.ToString();
         public ushort LocalPort => (ushort)((IPEndPoint)LocalIPEndPoint).Port;

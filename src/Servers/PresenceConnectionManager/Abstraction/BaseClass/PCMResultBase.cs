@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    internal abstract class PCMResultBase : UniSpyResult
+    internal abstract class PCMResultBase : UniSpyResultBase
     {
         public PCMResultBase()
         {

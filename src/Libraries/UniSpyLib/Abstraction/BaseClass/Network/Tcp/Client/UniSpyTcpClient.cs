@@ -18,10 +18,10 @@ namespace UniSpyLib.Network.Tcp.Client
         public UniSpyTcpClient() : base
             (
                 ConfigManager.Config.Servers
-            .Where(s => s.ServerName == UniSpyServerFactory.ServerName)
+            .Where(s => s.ServerName == ServerFactoryBase.ServerName)
             .First().RemoteAddress
                , ConfigManager.Config.Servers
-            .Where(s => s.ServerName == UniSpyServerFactory.ServerName)
+            .Where(s => s.ServerName == ServerFactoryBase.ServerName)
             .First().RemotePort
             )
         {

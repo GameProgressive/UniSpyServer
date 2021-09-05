@@ -6,7 +6,7 @@ using UniSpyLib.Extensions;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    internal abstract class QRRequestBase : UniSpyRequest
+    internal abstract class QRRequestBase : UniSpyRequestBase
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
         public uint InstantKey { get; protected set; }

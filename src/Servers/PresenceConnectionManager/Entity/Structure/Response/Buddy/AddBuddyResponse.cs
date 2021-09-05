@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
     internal sealed class AddBuddyResponse : PCMResponseBase
     {
         private new AddBuddyResult _result => (AddBuddyResult)base._result;
-        public AddBuddyResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public AddBuddyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

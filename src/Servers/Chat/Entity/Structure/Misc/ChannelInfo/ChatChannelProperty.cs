@@ -123,8 +123,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             }
             if (result.Count() > 1)
             {
-                LogWriter.ToLog(LogEventLevel.Error,
-                    $"Multiple user with same nick name in channel {ChannelName}");
+                LogWriter.Error($"Multiple user with same nick name in channel {ChannelName}");
             }
         }
         private void AddChannelPassword(MODERequest cmd)

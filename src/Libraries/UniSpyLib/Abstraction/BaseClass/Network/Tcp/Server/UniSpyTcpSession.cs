@@ -19,6 +19,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         public EndPoint RemoteEndPoint => Socket.RemoteEndPoint;
         public IPEndPoint RemoteIPEndPoint => (IPEndPoint)Socket.RemoteEndPoint;
         public new UniSpyTcpServer Server => (UniSpyTcpServer)base.Server;
+
         public UniSpyTcpSession(UniSpyTcpServer server) : base(server)
         {
         }
@@ -93,13 +94,57 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
             var bufferType = buffer.GetType();
             if (bufferType == typeof(string))
             {
-
                 return BaseSendAsync((string)buffer);
             }
             else if (bufferType == typeof(byte[]))
             {
-                LogWriter.LogNetworkSending(RemoteIPEndPoint, (byte[])buffer);
                 return BaseSendAsync((byte[])buffer);
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
+
+        public bool Send(IUniSpyResponse response)
+        {
+            response.Build();
+            if (response.SendingBuffer == null)
+            {
+                throw new UniSpyException("SendingBuffer can not be null");
+            }
+            var bufferType = response.SendingBuffer.GetType();
+
+            if (bufferType == typeof(string))
+            {
+                return SendAsync((string)response.SendingBuffer);
+            }
+            else if (bufferType == typeof(byte[]))
+            {
+                return SendAsync((byte[])response.SendingBuffer);
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
+
+        public bool BaseSend(IUniSpyResponse response)
+        {
+            response.Build();
+            if (response.SendingBuffer == null)
+            {
+                throw new UniSpyException("SendingBuffer can not be null");
+            }
+            var bufferType = response.SendingBuffer.GetType();
+
+            if (bufferType == typeof(string))
+            {
+                return BaseSendAsync((string)response.SendingBuffer);
+            }
+            else if (bufferType == typeof(byte[]))
+            {
+                return BaseSendAsync((byte[])response.SendingBuffer);
             }
             else
             {

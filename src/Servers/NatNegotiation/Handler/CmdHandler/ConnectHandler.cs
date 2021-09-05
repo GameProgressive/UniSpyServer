@@ -5,17 +5,17 @@ using NatNegotiation.Entity.Structure.Redis;
 using NatNegotiation.Entity.Structure.Request;
 using NatNegotiation.Entity.Structure.Response;
 using NatNegotiation.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
-using Serilog.Events;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Logging;
+using NatNegotiation.Entity.Contract;
+using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Handler.CmdHandler
 {
-    [Command((byte)5)]
-    internal sealed class ConnectHandler : NNCmdHandlerBase
+    [HandlerContract(RequestType.Connect)]
+    internal sealed class ConnectHandler : CmdHandlerBase
     {
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result
@@ -72,8 +72,8 @@ namespace NatNegotiation.Handler.CmdHandler
                 _negotiator = negotiators.First();
                 _negotiatee = negotiatees.First();
 
-                LogWriter.ToLog(LogEventLevel.Information, $"Find negotiatee {_negotiatee.Value.RemoteEndPoint}");
-                LogWriter.ToLog(LogEventLevel.Information, $"Find negotiator {_negotiator.Value.RemoteEndPoint}");
+                LogWriter.Information($"Find negotiatee {_negotiatee.Value.RemoteEndPoint}");
+                LogWriter.Information($"Find negotiator {_negotiator.Value.RemoteEndPoint}");
 
                 var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
                 _responseToNegotiator = new ConnectResponse(
@@ -93,8 +93,8 @@ namespace NatNegotiation.Handler.CmdHandler
             }
             _responseToNegotiatee.Build();
             _responseToNegotiator.Build();
-            NNServerFactory.Server.SendAsync(_negotiator.Value.RemoteEndPoint, _responseToNegotiator.SendingBuffer);
-            NNServerFactory.Server.SendAsync(_negotiatee.Value.RemoteEndPoint, _responseToNegotiatee.SendingBuffer);
+            ServerFactory.Server.SendAsync(_negotiator.Value.RemoteEndPoint, _responseToNegotiator.SendingBuffer);
+            ServerFactory.Server.SendAsync(_negotiatee.Value.RemoteEndPoint, _responseToNegotiatee.SendingBuffer);
         }
 
     }

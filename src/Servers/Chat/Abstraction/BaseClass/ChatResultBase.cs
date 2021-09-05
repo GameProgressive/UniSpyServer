@@ -2,7 +2,7 @@
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal abstract class ChatResultBase : UniSpyResult
+    internal abstract class ChatResultBase : UniSpyResultBase
     {
         public string IRCErrorCode { get; set; }
 

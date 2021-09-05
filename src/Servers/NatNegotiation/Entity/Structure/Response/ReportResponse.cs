@@ -3,9 +3,9 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace NatNegotiation.Entity.Structure.Response
 {
-    internal sealed class ReportResponse : NNResponseBase
+    internal sealed class ReportResponse : ResponseBase
     {
-        public ReportResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public ReportResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
     }

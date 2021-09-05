@@ -5,7 +5,7 @@ using UniSpyLib.Extensions;
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    public class ConnectResult : NNResultBase
+    public class ConnectResult : ResultBase
     {
         public byte? GotYourData { get; set; }
         public byte? Finished { get; set; }

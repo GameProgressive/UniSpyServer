@@ -1,14 +1,15 @@
 ﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Contract;
+using NatNegotiation.Entity.Enumerate;
 using NatNegotiation.Entity.Structure.Request;
 using NatNegotiation.Entity.Structure.Response;
 using NatNegotiation.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace NatNegotiation.Handler.CmdHandler
 {
-    [Command((byte)12)]
-    internal sealed class NatifyHandler : NNCmdHandlerBase
+    [HandlerContract(RequestType.NatifyRequest)]
+    internal sealed class NatifyHandler : CmdHandlerBase
     {
         private new NatifyRequest _request => (NatifyRequest)base._request;
         public NatifyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

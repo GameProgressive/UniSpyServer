@@ -8,7 +8,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
     {
         private new CheckResult _result => (CheckResult)base._result;
 
-        public CheckResponse(PSPRequestBase request, UniSpyResult result) : base(request, result)
+        public CheckResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

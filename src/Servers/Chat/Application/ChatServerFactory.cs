@@ -8,12 +8,12 @@ namespace Chat.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class ChatServerFactory : UniSpyServerFactory
+    internal sealed class ChatServerFactory : ServerFactoryBase
     {
         public static new ChatServer Server
         {
-            get => (ChatServer)UniSpyServerFactory.Server;
-            private set => UniSpyServerFactory.Server = value;
+            get => (ChatServer)ServerFactoryBase.Server;
+            private set => ServerFactoryBase.Server = value;
         }
         /// <summary>
         /// Constructor

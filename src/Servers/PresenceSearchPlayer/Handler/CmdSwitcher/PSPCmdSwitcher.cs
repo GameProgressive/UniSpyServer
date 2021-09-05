@@ -31,7 +31,7 @@ namespace PresenceSearchPlayer.Handler.CmdSwitcher
         {
             if (_rawRequest[0] != '\\')
             {
-                LogWriter.ToLog(LogEventLevel.Error, "Invalid request recieved!");
+                LogWriter.Info("Invalid request recieved!");
                 return;
             }
 

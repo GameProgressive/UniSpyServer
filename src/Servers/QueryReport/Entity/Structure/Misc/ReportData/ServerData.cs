@@ -19,7 +19,7 @@ namespace QueryReport.Entity.Structure.ReportData
 
         public void Update(string serverData)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,
+            LogWriter.Debug(
                 StringExtensions.ReplaceUnreadableCharToHex(serverData));
             string[] keyValueArray = serverData.Split("\0");
 
@@ -35,7 +35,7 @@ namespace QueryReport.Entity.Structure.ReportData
 
                 if (tempKey == "")
                 {
-                    LogWriter.ToLog(LogEventLevel.Verbose, "Skiping empty key value");
+                    LogWriter.Verbose("Skiping empty key value");
                     continue;
                 }
 

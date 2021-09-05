@@ -8,7 +8,7 @@ namespace NatNegotiation.Abstraction.BaseClass
     /// <summary>
     /// NatNeg request base
     /// </summary>
-    public abstract class NNRequestBase : UniSpyRequest
+    public abstract class RequestBase : UniSpyRequestBase
     {
         public static readonly byte[] MagicData = { 0xfd, 0xfc, 0x1e, 0x66, 0x6a, 0xb2 };
         public static readonly int Size = 12;
@@ -23,10 +23,10 @@ namespace NatNegotiation.Abstraction.BaseClass
         public byte Version { get; set; }
         public uint Cookie { get; set; }
 
-        public NNRequestBase(byte[] rawRequest) : base(rawRequest)
+        public RequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
-        public NNRequestBase() { }
+        public RequestBase() { }
         public override void Parse()
         {
             if (RawRequest.Length < Size)

@@ -5,7 +5,7 @@ namespace Chat.Entity.Structure.Response
 {
     internal sealed class ChatDefaultResponse : ChatResponseBase
     {
-        public ChatDefaultResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public ChatDefaultResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

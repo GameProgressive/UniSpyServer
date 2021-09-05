@@ -5,7 +5,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 {
     internal sealed class NewProfileResponse : PCMResponseBase
     {
-        public NewProfileResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public NewProfileResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

@@ -20,7 +20,7 @@ namespace UniSpyLib.Extensions
     {
         public static bool SetKeyValue(string key, string value, RedisDataBaseNumber? dbNumber, TimeSpan? timeSpan = null)
         {
-            var redis = UniSpyServerFactory.Redis.GetDatabase((int)dbNumber);
+            var redis = ServerFactoryBase.Redis.GetDatabase((int)dbNumber);
             return redis.StringSet(key, value, timeSpan);
         }
 
@@ -32,7 +32,7 @@ namespace UniSpyLib.Extensions
         /// <returns></returns>
         public static string GetSpecificValue(string fullKey, RedisDataBaseNumber? dbNumber)
         {
-            var redis = UniSpyServerFactory.Redis.GetDatabase((int)dbNumber);
+            var redis = ServerFactoryBase.Redis.GetDatabase((int)dbNumber);
             var matchedKeys = GetMatchedKeys(fullKey, dbNumber);
             if (matchedKeys.Count == 0)
             {
@@ -50,7 +50,7 @@ namespace UniSpyLib.Extensions
 
         public static bool DeleteKeyValue(string key, RedisDataBaseNumber? dBNumber)
         {
-            var redis = UniSpyServerFactory.Redis.GetDatabase((int)dBNumber);
+            var redis = ServerFactoryBase.Redis.GetDatabase((int)dBNumber);
             return redis.KeyDelete(key);
         }
 
@@ -59,9 +59,9 @@ namespace UniSpyLib.Extensions
         {
             List<string> matchedKeys = new List<string>();
 
-            foreach (var end in UniSpyServerFactory.Redis.GetEndPoints())
+            foreach (var end in ServerFactoryBase.Redis.GetEndPoints())
             {
-                var server = UniSpyServerFactory.Redis.GetServer(end);
+                var server = ServerFactoryBase.Redis.GetServer(end);
                 foreach (var key in server.Keys((int)dbNumber))
                 {
                     matchedKeys.Add(key);
@@ -79,9 +79,9 @@ namespace UniSpyLib.Extensions
         {
             List<string> matchKeys = new List<string>();
 
-            foreach (var endPoint in UniSpyServerFactory.Redis.GetEndPoints())
+            foreach (var endPoint in ServerFactoryBase.Redis.GetEndPoints())
             {
-                var server = UniSpyServerFactory.Redis.GetServer(endPoint);
+                var server = ServerFactoryBase.Redis.GetServer(endPoint);
                 foreach (var key in server.Keys(database: (int)dbNumber, pattern: subKey))
                 {
                     matchKeys.Add(key);

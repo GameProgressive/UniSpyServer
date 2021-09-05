@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
         private new NicksResult _result => (NicksResult)base._result;
         private new NicksRequest _request => (NicksRequest)base._request;
 
-        internal NicksResponse(PSPRequestBase request, UniSpyResult result) : base(request, result)
+        internal NicksResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

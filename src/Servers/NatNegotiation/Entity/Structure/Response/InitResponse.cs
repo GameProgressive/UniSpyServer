@@ -7,11 +7,11 @@ using UniSpyLib.Extensions;
 
 namespace NatNegotiation.Entity.Structure.Response
 {
-    internal sealed class InitResponse : NNResponseBase
+    internal sealed class InitResponse : ResponseBase
     {
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result => (InitResult)base._result;
-        public InitResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public InitResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

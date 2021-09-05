@@ -11,12 +11,12 @@ namespace QueryReport.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class QRServerFactory : UniSpyServerFactory
+    internal sealed class QRServerFactory : ServerFactoryBase
     {
         public new static QRServer Server
         {
-            get => (QRServer)UniSpyServerFactory.Server;
-            private set => UniSpyServerFactory.Server = value;
+            get => (QRServer)ServerFactoryBase.Server;
+            private set => ServerFactoryBase.Server = value;
         }
         public QRServerFactory()
         {

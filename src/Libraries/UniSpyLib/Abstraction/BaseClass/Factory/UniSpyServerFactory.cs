@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UniSpyLib.Abstraction.BaseClass.Contract;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
@@ -11,12 +12,12 @@ using UniSpyLib.UniSpyConfig;
 
 namespace UniSpyLib.Abstraction.BaseClass.Factory
 {
-    public abstract class UniSpyServerFactory
+    public abstract class ServerFactoryBase
     {
         /// <summary>
         /// UniSpy server version
         /// </summary>
-        public static readonly string UniSpyVersion = "0.5.3";
+        public static readonly string UniSpyVersion = "0.5.6";
         public static readonly string ServerName = Assembly.GetEntryAssembly().GetName().Name;
         /// <summary>
         /// Redis connection
@@ -26,27 +27,17 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         /// A UniSpyServer instance
         /// </summary>
         public static IUniSpyServer Server { get; protected set; }
-        /// <summary>
-        /// The gamespy requests and UniSpy requets mapping dictionary
-        /// </summary>
-        public static Dictionary<object, Type> RequestMapping { get; private set; }
-        /// <summary>
-        /// The gamespy requests and UniSpy requets mapping dictionary
-        /// </summary>
-        public static Dictionary<object, Type> HandlerMapping { get; private set; }
-        public UniSpyServerFactory()
+        public ServerFactoryBase()
         {
         }
 
         public virtual void Start()
         {
-             ShowUniSpyLogo();
-             LoadUniSpyRequests();
-             LoadUniSpyHandlers();
-             ConnectMySql();
-             ConnectRedis();
-             LoadServerConfig();
-             UniSpyJsonConverter.Initialize();
+            ShowUniSpyLogo();
+            ConnectMySql();
+            ConnectRedis();
+            LoadServerConfig();
+            UniSpyJsonConverter.Initialize();
         }
 
         protected void LoadServerConfig()
@@ -127,46 +118,6 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
             Console.WriteLine(@" \___/|_||_|_|___/ .__/\_, |___/\___|_|  \_/\___|_|");
             Console.WriteLine(@"                 |_|   |__/ ");
             Console.WriteLine(@"Version: " + UniSpyVersion);
-        }
-        protected void LoadUniSpyRequests()
-        {
-            var requestNamespace = $"{this.GetType().Namespace.Split('.').First()}.Entity.Structure.Request";
-            RequestMapping =  LoadUniSpyComponents(requestNamespace);
-        }
-        protected void LoadUniSpyHandlers()
-        {
-            var handlerNamespace = $"{this.GetType().Namespace.Split('.').First()}.Handler.CmdHandler";
-            HandlerMapping =  LoadUniSpyComponents(handlerNamespace);
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="nspace"> namespace</param>
-        /// <returns></returns>
-        private static Dictionary<object, Type> LoadUniSpyComponents(string nspace)
-        {
-            var mapping = new Dictionary<object, Type>();
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                       .SelectMany(t => t.GetTypes()).Where(t => t.FullName.Contains(nspace)).ToList();
-
-            if (assemblies.Count() == 0)
-            {
-                throw new NotImplementedException("Components have not been implemented");
-            }
-            foreach (var assembly in assemblies)
-            {
-                var attr = (CommandAttribute)assembly.GetCustomAttributes()
-                                                     .FirstOrDefault(x => x.GetType() == typeof(CommandAttribute));
-                if (attr == null)
-                    continue;
-
-                if (mapping.ContainsKey(attr.Name))
-                {
-                    throw new ArgumentException($"Duplicate commands {attr.Name} for type {assembly.FullName}");
-                }
-                mapping.Add(attr.Name, assembly);
-            }
-            return mapping;
         }
     }
 }

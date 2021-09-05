@@ -31,13 +31,13 @@ namespace Chat.Handler.CommandSwitcher
                 }
                 else
                 {
-                    LogWriter.ToLog(LogEventLevel.Error, $"Unknown command {(string)_request.CommandName}!");
+                    LogWriter.Info($"Unknown command {(string)_request.CommandName}!");
                     return null;
                 }
             }
             else
             {
-                LogWriter.ToLog(LogEventLevel.Error, $"{(string)_request.CommandName}Handler not implemented!");
+                LogWriter.Info($"{(string)_request.CommandName}Handler not implemented!");
                 return null;
             }
         }

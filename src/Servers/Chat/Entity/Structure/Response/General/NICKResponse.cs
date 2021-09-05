@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.General
     internal sealed class NICKResponse : ChatResponseBase
     {
         private new NICKRequest _request => (NICKRequest)base._request;
-        public NICKResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public NICKResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         public override void Build()

@@ -4,9 +4,9 @@ using UniSpyLib.Extensions;
 
 namespace NatNegotiation.Entity.Structure.Request
 {
-    internal abstract class NNInitRequestBase : NNRequestBase
+    internal abstract class InitRequestBase : RequestBase
     {
-        public static new readonly int Size = NNRequestBase.Size + 9;
+        public static new readonly int Size = RequestBase.Size + 9;
 
         public NatPortType PortType { get; protected set; }
         public byte ClientIndex { get; protected set; }
@@ -14,7 +14,7 @@ namespace NatNegotiation.Entity.Structure.Request
         public string LocalIP { get; protected set; }
         public ushort LocalPort { get; protected set; }
 
-        public NNInitRequestBase(byte[] rawRequest) : base(rawRequest)
+        public InitRequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
 
@@ -24,17 +24,17 @@ namespace NatNegotiation.Entity.Structure.Request
         {
             base.Parse();
 
-            PortType = (NatPortType)RawRequest[NNRequestBase.Size];//
-            ClientIndex = RawRequest[NNRequestBase.Size + 1];//00
-            UseGamePort = RawRequest[NNRequestBase.Size + 2];//00
+            PortType = (NatPortType)RawRequest[RequestBase.Size];//
+            ClientIndex = RawRequest[RequestBase.Size + 1];//00
+            UseGamePort = RawRequest[RequestBase.Size + 2];//00
 
             LocalIP = HtonsExtensions.
                 BytesToIPString(
-                ByteTools.SubBytes(RawRequest, NNRequestBase.Size + 3, 4));
+                ByteTools.SubBytes(RawRequest, RequestBase.Size + 3, 4));
 
             LocalPort = HtonsExtensions.
                 BytesToUshortPort(
-                ByteTools.SubBytes(RawRequest, NNRequestBase.Size + 7, 2));
+                ByteTools.SubBytes(RawRequest, RequestBase.Size + 7, 2));
         }
     }
 }

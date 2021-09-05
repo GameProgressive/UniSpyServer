@@ -3,14 +3,14 @@ using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UniSpyTimer
+    public abstract class UniSpyTimerBase
     {
         protected static Timer _timer;
         /// <summary>
         /// Because every resource we manage is global
         /// so we do not parse any object to this class
         /// </summary>
-        public UniSpyTimer()
+        public UniSpyTimerBase()
         {
             //default settings
             _timer = new Timer

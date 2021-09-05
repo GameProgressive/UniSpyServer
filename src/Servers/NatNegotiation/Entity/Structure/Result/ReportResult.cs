@@ -3,7 +3,7 @@ using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    public class ReportResult : NNResultBase
+    public class ReportResult : ResultBase
     {
         public ReportResult()
         {

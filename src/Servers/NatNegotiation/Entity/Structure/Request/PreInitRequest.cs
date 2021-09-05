@@ -1,10 +1,11 @@
 ﻿using NatNegotiation.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+using NatNegotiation.Entity.Contract;
+using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command((byte)15)]
-    internal sealed class PreInitRequest : NNRequestBase
+    [RequestContract(RequestType.PreInit)]
+    internal sealed class PreInitRequest : RequestBase
     {
         public int CLientIndex { get; private set; }
         public int State { get; private set; }

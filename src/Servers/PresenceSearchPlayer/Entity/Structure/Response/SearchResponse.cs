@@ -8,7 +8,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
     {
         private new SearchResult _result => (SearchResult)base._result;
 
-        public SearchResponse(PSPRequestBase request, UniSpyResult result) : base(request, result)
+        public SearchResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

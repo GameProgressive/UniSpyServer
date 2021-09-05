@@ -5,9 +5,9 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace CDKey.Abstraction.BaseClass
 {
-    internal abstract class CDKeyCmdHandlerBase : UniSpyCmdHandler
+    internal abstract class CDKeyCmdHandlerBase : UniSpyCmdHandlerBase
     {
-        protected new CDKeySession _session => (CDKeySession)base._session;
+        protected new Session _session => (Session)base._session;
         protected new CDKeyRequestBase _request => (CDKeyRequestBase)base._request;
         protected new CDKeyResponseBase _response => (CDKeyResponseBase)base._response;
         protected new CDKeyResultBase _result

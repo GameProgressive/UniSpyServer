@@ -6,16 +6,13 @@ using UniSpyLib.Encryption;
 
 namespace CDKey.Network
 {
-    internal sealed class CDKeyServer : UniSpyUdpServer
+    internal sealed class Server : UniSpyUdpServer
     {
-        public CDKeyServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
+        public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
-            SessionManager = new CDKeySessionManager();
+            SessionManager = new SessionManager();
         }
-        protected override UniSpyUdpSession CreateSession(EndPoint endPoint) => new CDKeySession(this, endPoint);
-
-        protected override void OnReceived(UniSpyUdpSession session, string message)
-            => new CDKeyCmdSwitcher(session, message).Switch();
+        protected override UniSpyUdpSession CreateSession(EndPoint endPoint) => new Session(this, endPoint);
 
         protected override byte[] Decrypt(byte[] buffer)
         {

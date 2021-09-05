@@ -26,7 +26,7 @@ namespace UniSpyLib.Logging
 
         public static void SettngUpLogger()
         {
-            LoggerConfiguration logConfig = new LoggerConfiguration();
+            var logConfig = new LoggerConfiguration();
 
             switch (ConfigManager.Config.MinimumLogLevel)
             {
@@ -52,65 +52,32 @@ namespace UniSpyLib.Logging
             Log.Logger = logConfig
                 .WriteTo.Console(outputTemplate: "{Timestamp:[HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}")
                 .WriteTo.File(
-                path: $"Logs/[{UniSpyServerFactory.ServerName}]-.log",
+                path: $"Logs/[{ServerFactoryBase.ServerName}]-.log",
                 outputTemplate: "{Timestamp:[yyyy-MM-dd HH:mm:ss]} [{Level:u4}] {Message:}{NewLine}{Exception}",
                 rollingInterval: RollingInterval.Day)
                 .CreateLogger();
         }
-        /// <summary>
-        /// Convient to print log
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="message"></param>
-        public static void ToLog(LogEventLevel level, string message)
-        {
-            switch (level)
-            {
-                case LogEventLevel.Verbose:
-                    Log.Verbose(message);
-                    break;
-                case LogEventLevel.Information:
-                    Log.Information(message);
-                    break;
-                case LogEventLevel.Debug:
-                    Log.Debug(message);
-                    break;
-                case LogEventLevel.Error:
-                    Log.Error(message);
-                    break;
-                case LogEventLevel.Fatal:
-                    Log.Fatal(message);
-                    break;
-                case LogEventLevel.Warning:
-                    Log.Warning(message);
-                    break;
-            }
-        }
 
-        public static void ToLog(Exception e) => ToLog(LogEventLevel.Error, e.Message);
-        public static void ToLog(string message) => ToLog(LogEventLevel.Information, message);
-        public static void LogUnkownRequest(string data) => ToLog(LogEventLevel.Error, $"[Unknown] {data}");
-        public static void LogUnkownRequest(byte[] data)
-        => ToLog(LogEventLevel.Error, $"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
-        public static void LogCurrentClass(object param)
-        => ToLog(LogEventLevel.Verbose, $"[ => ] [{param.GetType().Name}]");
-        public static void LogNetworkMultiCast(string buffer)
-        => ToLog(LogEventLevel.Debug, $"[Muti] {StringExtensions.ReplaceUnreadableCharToHex(buffer)}");
-        public static void LogNetworkSending(IPEndPoint endPoint, byte[] buffer)
-        => LogNetworkTraffic("Send", endPoint, buffer);
-        public static void LogNetworkSending(IPEndPoint endPoint, string buffer)
-        => LogNetworkSending(endPoint, UniSpyEncoding.GetBytes(buffer));
-        public static void LogNetworkReceiving(IPEndPoint endPoint, byte[] buffer)
-        => LogNetworkTraffic("Recv", endPoint, buffer);
-        public static void LogNetworkReceiving(IPEndPoint endPoint, string buffer)
-        => LogNetworkReceiving(endPoint, UniSpyEncoding.GetBytes(buffer));
-        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer, long size)
-        => LogNetworkTraffic(type, endPoint, buffer.Take((int)size).ToArray());
-        private static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer)
-        => LogNetworkTraffic(type, endPoint, StringExtensions.ReplaceUnreadableCharToHex(buffer));
-        private static void LogNetworkTraffic(string type, IPEndPoint endPoint, string buffer)
-        => ToLog(LogEventLevel.Debug, $"[{type}] [{endPoint}] {buffer}");
-        public static void LogNetworkSpam(IPEndPoint endPoint)
-        => ToLog(LogEventLevel.Error, $"[Spam] [{endPoint}] spam we ignored!");
+        public static void Information(string message) => Log.Information(message);
+        public static void Verbose(string message) => Log.Verbose(message);
+        public static void Debug(string message) => Log.Debug(message);
+        public static void Error(string message) => Log.Error(message);
+        public static void Fatal(string message) => Log.Fatal(message);
+        public static void Waining(string message) => Log.Warning(message);
+
+        public static void ToLog(Exception e) => Error(e.Message);
+        public static void ToLog(string message) => Information(message);
+        public static void LogUnkownRequest(string data) => Error($"[Unknown] {data}");
+        public static void LogUnkownRequest(byte[] data) => Error($"[Unknown] {StringExtensions.ReplaceUnreadableCharToHex(data)}");
+        public static void LogCurrentClass(object param) => Verbose($"[ => ] [{param.GetType().Name}]");
+        public static void LogNetworkMultiCast(string buffer) => Debug($"[Muti] {StringExtensions.ReplaceUnreadableCharToHex(buffer)}");
+        public static void LogNetworkSending(IPEndPoint endPoint, byte[] buffer) => LogNetworkTraffic("Send", endPoint, buffer);
+        public static void LogNetworkSending(IPEndPoint endPoint, string buffer) => LogNetworkSending(endPoint, UniSpyEncoding.GetBytes(buffer));
+        public static void LogNetworkReceiving(IPEndPoint endPoint, byte[] buffer) => LogNetworkTraffic("Recv", endPoint, buffer);
+        public static void LogNetworkReceiving(IPEndPoint endPoint, string buffer) => LogNetworkReceiving(endPoint, UniSpyEncoding.GetBytes(buffer));
+        public static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer, long size) => LogNetworkTraffic(type, endPoint, buffer.Take((int)size).ToArray());
+        private static void LogNetworkTraffic(string type, IPEndPoint endPoint, byte[] buffer) => LogNetworkTraffic(type, endPoint, StringExtensions.ReplaceUnreadableCharToHex(buffer));
+        private static void LogNetworkTraffic(string type, IPEndPoint endPoint, string buffer) => Debug($"[{type}] [{endPoint}] {buffer}");
+        public static void LogNetworkSpam(IPEndPoint endPoint) => Error($"[Spam] [{endPoint}] spam we ignored!");
     }
 }

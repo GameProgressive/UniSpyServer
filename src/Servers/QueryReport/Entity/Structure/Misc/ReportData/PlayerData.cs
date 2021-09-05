@@ -18,8 +18,7 @@ namespace QueryReport.Entity.Structure.ReportData
 
         public void Update(string playerData)
         {
-            LogWriter.ToLog(LogEventLevel.Debug,
-            StringExtensions.ReplaceUnreadableCharToHex(playerData));
+            LogWriter.Debug(StringExtensions.ReplaceUnreadableCharToHex(playerData));
 
             //TODO check if each update contains all player information
             KeyValueList.Clear();

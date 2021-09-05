@@ -2,7 +2,7 @@
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class PSPResponseBase : UniSpyResponse
+    public abstract class PSPResponseBase : UniSpyResponseBase
     {
         protected new PSPResultBase _result
         {
@@ -18,7 +18,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             get => (string)base.SendingBuffer;
             protected set => base.SendingBuffer = value;
         }
-        protected PSPResponseBase(PSPRequestBase request, UniSpyResult result) : base(request, result)
+        protected PSPResponseBase(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
     }

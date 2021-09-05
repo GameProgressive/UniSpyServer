@@ -42,8 +42,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         /// <param name="endpoint"></param>
         /// <param name="sent"></param>
         protected override void OnSent(EndPoint endpoint, long sent) => ReceiveAsync();
-        protected virtual void OnReceived(UniSpyUdpSession session, string message) { }
-        protected virtual void OnReceived(UniSpyUdpSession session, byte[] message) => OnReceived(session, UniSpyEncoding.GetString(message));
+
 
         /// <summary>
         /// Send unencrypted data
@@ -53,14 +52,12 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         protected override void OnReceived(EndPoint endPoint, byte[] buffer, long offset, long size)
         {
             //even if we did not response we keep receive message
-            ReceiveAsync();
             UniSpyUdpSession session;
             if (SessionManager.SessionPool.ContainsKey((IPEndPoint)endPoint))
             {
-                IUniSpySession result;
-                SessionManager.SessionPool.TryGetValue((IPEndPoint)endPoint, out result);
-                session = (UniSpyUdpSession)result;
-                session.LastPacketReceivedTime = DateTime.Now;
+                IUniSpySession sess;
+                SessionManager.SessionPool.TryGetValue((IPEndPoint)endPoint, out sess);
+                session = (UniSpyUdpSession)sess;
             }
             else
             {
@@ -70,9 +67,11 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
             byte[] cipherText = buffer.Skip((int)offset).Take((int)size).ToArray();
             byte[] plainText = Decrypt(cipherText);
             LogWriter.LogNetworkReceiving(session.RemoteIPEndPoint, plainText);
-            OnReceived(session, plainText);
+            // WAINING!!!!!!: Do not change the sequence of ReceiveAsync()
+            ReceiveAsync();
+            session.OnReceived(plainText);
         }
-        public bool BaseSendAsync(EndPoint endPoint, string buffer) => BaseSendAsync(endPoint, UniSpyEncoding.GetBytes(buffer));
+        protected virtual void OnReceived(UniSpyUdpSession session, byte[] message) { }
         /// <summary>
         /// Send unencrypted data
         /// </summary>
@@ -103,5 +102,50 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         /// <param name="buffer">ciphertext</param>
         /// <returns>plaintext</returns>
         protected virtual byte[] Decrypt(byte[] buffer) => buffer;
+
+
+        public bool Send(EndPoint endpoint, IUniSpyResponse response)
+        {
+            response.Build();
+            if (response.SendingBuffer == null)
+            {
+                throw new UniSpyException("SendingBuffer can not be null");
+            }
+            var bufferType = response.SendingBuffer.GetType();
+            if (bufferType == typeof(string))
+            {
+                return SendAsync(endpoint, UniSpyEncoding.GetBytes((string)response.SendingBuffer));
+            }
+            else if (bufferType == typeof(byte[]))
+            {
+                return SendAsync(endpoint, (byte[])response.SendingBuffer);
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
+
+        public bool BaseSend(EndPoint endpoint, IUniSpyResponse response)
+        {
+            response.Build();
+            if (response.SendingBuffer == null)
+            {
+                throw new UniSpyException("SendingBuffer can not be null");
+            }
+            var bufferType = response.SendingBuffer.GetType();
+            if (bufferType == typeof(string))
+            {
+                return BaseSendAsync(endpoint, UniSpyEncoding.GetBytes((string)response.SendingBuffer));
+            }
+            else if (bufferType == typeof(byte[]))
+            {
+                return BaseSendAsync(endpoint, (byte[])response.SendingBuffer);
+            }
+            else
+            {
+                throw new UniSpyException("The buffer type is invalid");
+            }
+        }
     }
 }

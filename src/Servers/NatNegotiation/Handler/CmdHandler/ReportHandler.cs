@@ -6,17 +6,17 @@ using NatNegotiation.Entity.Structure.Redis;
 using NatNegotiation.Entity.Structure.Request;
 using NatNegotiation.Entity.Structure.Response;
 using NatNegotiation.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
 using System;
 using UniSpyLib.Abstraction.Interface;
+using NatNegotiation.Entity.Contract;
 
 namespace NatNegotiation.Handler.CmdHandler
 {
     /// <summary>
     /// Get nat neg result report success or fail
     /// </summary>
-    [Command((byte)13)]
-    internal sealed class ReportHandler : NNCmdHandlerBase
+    [HandlerContract(RequestType.Report)]
+    internal sealed class ReportHandler : CmdHandlerBase
     {
         private new ReportRequest _request => (ReportRequest)base._request;
         private new ReportResult _result
@@ -35,7 +35,7 @@ namespace NatNegotiation.Handler.CmdHandler
             //_userInfo.IsGotReportPacket = true;
             var fullKey = new NatUserInfoRedisKey()
             {
-                ServerID = NNServerFactory.Server.ServerID,
+                ServerID = ServerFactory.Server.ServerID,
                 RemoteIPEndPoint = _session.RemoteIPEndPoint,
                 PortType = _request.PortType,
                 Cookie = _request.Cookie

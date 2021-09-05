@@ -35,13 +35,13 @@ namespace PresenceConnectionManager.Handler.CommandSwitcher
 
                     var key = keyValues.Keys.First();
 
-                    if (!UniSpyServerFactory.RequestMapping.ContainsKey(key))
+                    if (!ServerFactoryBase.RequestMapping.ContainsKey(key))
                     {
                         LogWriter.LogUnkownRequest(_rawRequest);
                         throw new GPParseException($"Unknown request: {key}");
                     }
                     var request = (IUniSpyRequest)Activator.CreateInstance(
-                        UniSpyServerFactory.RequestMapping[key],
+                        ServerFactoryBase.RequestMapping[key],
                         _rawRequest);
 
                     request.Parse();

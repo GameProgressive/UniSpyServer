@@ -18,7 +18,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
 
         public override IUniSpyRequest Deserialize()
         {
-            if (_rawRequest.Take(6).SequenceEqual(NNRequestBase.MagicData))
+            if (_rawRequest.Take(6).SequenceEqual(RequestBase.MagicData))
             {
                 return new AdHocRequest(_rawRequest);
             }

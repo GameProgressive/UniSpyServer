@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.General
     internal sealed class CRYPTResponse : ChatResponseBase
     {
         private new CRYPTResult _result => (CRYPTResult)base._result;
-        public CRYPTResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public CRYPTResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
         public override void Build()

@@ -1,4 +1,6 @@
 ﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Contract;
+using NatNegotiation.Entity.Enumerate;
 using NatNegotiation.Entity.Structure.Request;
 using NatNegotiation.Entity.Structure.Response;
 using NatNegotiation.Entity.Structure.Result;
@@ -7,8 +9,8 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace NatNegotiation.Handler.CmdHandler
 {
-    [Command((byte)3)]
-    internal sealed class ErtAckHandler : NNCmdHandlerBase
+    [HandlerContract(RequestType.ErtAck)]
+    internal sealed class ErtAckHandler : CmdHandlerBase
     {
         private new ErtAckRequest _request => (ErtAckRequest)base._request;
         public ErtAckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

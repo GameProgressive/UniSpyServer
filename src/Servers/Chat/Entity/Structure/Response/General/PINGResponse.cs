@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.General
     internal sealed class PINGResponse : ChatResponseBase
     {
         private new PINGResult _result => (PINGResult)base._result;
-        public PINGResponse(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public PINGResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

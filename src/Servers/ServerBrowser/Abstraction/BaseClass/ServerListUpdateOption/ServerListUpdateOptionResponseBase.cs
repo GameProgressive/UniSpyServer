@@ -13,7 +13,7 @@ namespace ServerBrowser.Abstraction.BaseClass
         protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
         protected new ServerListUpdateOptionResultBase _result => (ServerListUpdateOptionResultBase)base._result;
         protected List<byte> _serverListData;
-        public ServerListUpdateOptionResponseBase(UniSpyRequest request, UniSpyResult result) : base(request, result)
+        public ServerListUpdateOptionResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
             _serverListData = new List<byte>();
         }

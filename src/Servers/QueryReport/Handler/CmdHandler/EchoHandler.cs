@@ -33,7 +33,7 @@ namespace QueryReport.Handler.CmdHandler
             var matchedKeys = GameServerInfoRedisOperator.GetMatchedKeys(searchKey);
             if (matchedKeys.Count() != 1)
             {
-                LogWriter.ToLog(LogEventLevel.Error, "Can not find game server");
+                LogWriter.Info("Can not find game server");
                 return;
             }
             //add recive echo packet on gameserverList

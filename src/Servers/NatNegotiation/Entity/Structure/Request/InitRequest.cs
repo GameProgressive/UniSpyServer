@@ -1,9 +1,10 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using NatNegotiation.Entity.Contract;
+using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Entity.Structure.Request
 {
-    [Command((byte)0)]
-    internal sealed class InitRequest : NNInitRequestBase
+    [RequestContract(RequestType.Init)]
+    internal sealed class InitRequest : InitRequestBase
     {
         public InitRequest(byte[] rawRequest) : base(rawRequest)
         {

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class SBCmdHandlerBase : UniSpyCmdHandler
+    internal abstract class SBCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected new SBRequestBase _request => (SBRequestBase)base._request;
         protected new SBSession _session => (SBSession)base._session;

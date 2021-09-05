@@ -2,7 +2,7 @@
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    internal sealed class NNDefaultResult : NNResultBase
+    internal sealed class NNDefaultResult : ResultBase
     {
         public NNDefaultResult()
         {

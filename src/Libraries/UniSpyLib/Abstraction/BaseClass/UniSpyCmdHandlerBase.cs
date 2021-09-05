@@ -3,13 +3,13 @@ using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UniSpyCmdHandler : IUniSpyHandler
+    public abstract class UniSpyCmdHandlerBase : IUniSpyHandler
     {
         protected IUniSpySession _session { get; }
         protected IUniSpyRequest _request { get; }
-        protected IUniSpyResponse? _response { get; set; }
-        protected UniSpyResult? _result { get; set; }
-        public UniSpyCmdHandler(IUniSpySession session, IUniSpyRequest request)
+        protected IUniSpyResponse _response { get; set; }
+        protected UniSpyResultBase _result { get; set; }
+        public UniSpyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request)
         {
             _session = session;
             _request = request;
@@ -17,11 +17,12 @@ namespace UniSpyLib.Abstraction.BaseClass
         }
 
         public abstract void Handle();
-
-
-        protected abstract void RequestCheck();
+        protected virtual void RequestCheck()
+        {
+            _request.Parse();
+        }
         protected abstract void DataOperation();
-        protected abstract void ResponseConstruct();
+        protected virtual void ResponseConstruct() { }
         /// <summary>
         /// The response process
         /// </summary>
@@ -31,13 +32,7 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 return;
             }
-            _response.Build();
-            // the SendingBuffer in default response is null
-            if (_response.SendingBuffer == null)
-            {
-                return;
-            }
-            _session.SendAsync(_response.SendingBuffer);
+            _session.Send(_response);
         }
     }
 }

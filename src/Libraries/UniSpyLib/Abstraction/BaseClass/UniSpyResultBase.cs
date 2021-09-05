@@ -2,9 +2,9 @@
 
 namespace UniSpyLib.Abstraction.BaseClass
 {
-    public abstract class UniSpyResult
+    public abstract class UniSpyResultBase
     {
-        public UniSpyResult()
+        public UniSpyResultBase()
         {
             LogWriter.LogCurrentClass(this);
         }

@@ -16,7 +16,7 @@ namespace Chat.Abstraction.BaseClass
     /// if error code bigger than noerror we need to process it in ConstructResponse()
     ///we also need to check the error code != noerror in ConstructResponse()
     /// </summary>
-    internal abstract class ChatCmdHandlerBase : UniSpyCmdHandler
+    internal abstract class ChatCmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected new ChatRequestBase _request => (ChatRequestBase)base._request;
         protected new ChatResponseBase _response

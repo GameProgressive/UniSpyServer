@@ -28,14 +28,14 @@ namespace Chat.Handler.CommandSwitcher
                 var request = Activator.CreateInstance(requestType, _rawRequest);
                 if (request == null)
                 {
-                    LogWriter.ToLog(LogEventLevel.Error, $"Unknown request {commandName}!");
+                    LogWriter.Info($"Unknown request {commandName}!");
                     return null;
                 }
                 return (IUniSpyRequest)request;
             }
             else
             {
-                LogWriter.ToLog(LogEventLevel.Error, $"Request: {commandName} not implemented!");
+                LogWriter.Info($"Request: {commandName} not implemented!");
                 return null;
             }
         }
