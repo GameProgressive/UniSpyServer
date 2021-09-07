@@ -7,7 +7,7 @@ namespace CDKey.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class CDKeyServerFactory : ServerFactoryBase
+    internal sealed class ServerFactory : ServerFactoryBase
     {
         public static new Server Server
         {
@@ -15,7 +15,7 @@ namespace CDKey.Application
             private set => ServerFactoryBase.Server = value;
         }
 
-        public CDKeyServerFactory()
+        public ServerFactory()
         {
         }
 

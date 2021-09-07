@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace CDKey.Entity.Structure.Response
 {
-    internal sealed class CDKeyDefaultResponse : CDKeyResponseBase
+    internal sealed class CDKeyDefaultResponse : ResponseBase
     {
         public CDKeyDefaultResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

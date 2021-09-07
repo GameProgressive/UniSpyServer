@@ -5,17 +5,17 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace CDKey.Abstraction.BaseClass
 {
-    internal abstract class CDKeyCmdHandlerBase : UniSpyCmdHandlerBase
+    internal abstract class CmdHandlerBase : UniSpyCmdHandlerBase
     {
         protected new Session _session => (Session)base._session;
-        protected new CDKeyRequestBase _request => (CDKeyRequestBase)base._request;
-        protected new CDKeyResponseBase _response => (CDKeyResponseBase)base._response;
-        protected new CDKeyResultBase _result
+        protected new RequestBase _request => (RequestBase)base._request;
+        protected new ResponseBase _response => (ResponseBase)base._response;
+        protected new ResultBase _result
         {
-            get => (CDKeyResultBase)base._result;
+            get => (ResultBase)base._result;
             set => base._result = value;
         }
-        public CDKeyCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public CmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new CDKeyDefaultResult();
         }

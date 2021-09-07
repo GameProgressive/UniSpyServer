@@ -16,7 +16,7 @@ namespace CDKey.Application
             try
             {
                 //create a instance of ServerManager class
-                new CDKeyServerFactory().Start();
+                new ServerFactory().Start();
 
                 Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
             }
