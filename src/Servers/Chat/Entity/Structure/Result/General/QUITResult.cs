@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Result.General
         public string LeaveReplySendingBuffer { get; set; }
         public string KickReplySendingBuffer { get; set; }
     }
-    internal sealed class QUITResult : ChatResultBase
+    internal sealed class QUITResult : ResultBase
     {
         public string QuiterPrefix { get; set; }
         public List<QUITDataModel> ChannelInfos { get; }

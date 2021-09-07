@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Result.Channel
 {
-    internal sealed class JOINResult : ChatResultBase
+    internal sealed class JOINResult : ResultBase
     {
         public string JoinerPrefix { get; set; }
         public string JoinerNickName { get; set; }

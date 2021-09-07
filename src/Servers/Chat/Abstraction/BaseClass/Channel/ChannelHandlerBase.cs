@@ -1,0 +1,26 @@
+﻿using Chat.Entity.Exception.IRC.General;
+using Chat.Entity.Structure.Misc.ChannelInfo;
+using UniSpyLib.Abstraction.Interface;
+
+namespace Chat.Abstraction.BaseClass
+{
+    internal abstract class ChannelHandlerBase : LogedInHandlerBase
+    {
+        protected ChatChannel _channel;
+        protected ChatChannelUser _user;
+        private new ChannelRequestBase _request => (ChannelRequestBase)base._request;
+        public ChannelHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        {
+        }
+
+        protected override void RequestCheck()
+        {
+            _channel = _session.UserInfo.GetJoinedChannelByName(_request.ChannelName);
+            _user = _channel.GetChannelUserBySession(_session);
+            if (_user == null)
+            {
+                throw new ChatIRCNoSuchNickException($"Can not find user with nickname: {_session.UserInfo.NickName} username: {_session.UserInfo.UserName}");
+            }
+        }
+    }
+}

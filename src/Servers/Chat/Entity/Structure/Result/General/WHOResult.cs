@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Result.General
         public string NickName { get; set; }
         public string Modes { get; set; }
     }
-    internal sealed class WHOResult : ChatResultBase
+    internal sealed class WHOResult : ResultBase
     {
         public List<WHODataModel> DataModels { get; }
         public WHOResult()

@@ -6,10 +6,10 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Message
 {
-    internal sealed class PRIVMSGResponse : ChatResponseBase
+    internal sealed class PRIVMSGResponse : ResponseBase
     {
         private new PRIVMSGResult _result => (PRIVMSGResult)base._result;
-        private new PRIVMSGRequest _request => (PRIVMSGRequest)base._request;
+        private new PrivateMsgRequest _request => (PrivateMsgRequest)base._request;
         public PRIVMSGResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }

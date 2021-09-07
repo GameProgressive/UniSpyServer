@@ -6,10 +6,10 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Message
 {
-    internal sealed class ATMResponse : ChatResponseBase
+    internal sealed class ATMResponse : ResponseBase
     {
         private new ATMResult _result => (ATMResult)base._result;
-        private new ATMRequest _request => (ATMRequest)base._request;
+        private new AboveTheTableMsgRequest _request => (AboveTheTableMsgRequest)base._request;
         public ATMResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }

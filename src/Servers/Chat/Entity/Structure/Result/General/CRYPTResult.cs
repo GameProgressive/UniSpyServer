@@ -3,7 +3,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Structure.Result.General
 {
-    internal sealed class CRYPTResult : ChatResultBase
+    internal sealed class CRYPTResult : ResultBase
     {
         public string ServerKey { get; }
         public string ClientKey { get; }

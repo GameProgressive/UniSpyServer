@@ -6,9 +6,9 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Channel
 {
-    internal sealed class SETCKEYResponse : ChatResponseBase
+    internal sealed class SETCKEYResponse : ResponseBase
     {
-        private new SETCKEYRequest _request => (SETCKEYRequest)base._request;
+        private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
         private new SETCKEYResult _result => (SETCKEYResult)base._result;
         public SETCKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

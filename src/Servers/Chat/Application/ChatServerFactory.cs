@@ -10,9 +10,9 @@ namespace Chat.Application
     /// </summary>
     internal sealed class ChatServerFactory : ServerFactoryBase
     {
-        public static new ChatServer Server
+        public static new Server Server
         {
-            get => (ChatServer)ServerFactoryBase.Server;
+            get => (Server)ServerFactoryBase.Server;
             private set => ServerFactoryBase.Server = value;
         }
         /// <summary>
@@ -31,7 +31,7 @@ namespace Chat.Application
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new ChatServer(cfg.ServerID, cfg.ListeningEndPoint);
+                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

@@ -7,9 +7,9 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace Chat.Entity.Structure.Response.General
 {
     //TODO check BuildChannelModesReply function
-    internal sealed class MODEResponse : ChatResponseBase
+    internal sealed class MODEResponse : ResponseBase
     {
-        private new MODERequest _request => (MODERequest)base._request;
+        private new ModeRequest _request => (ModeRequest)base._request;
         private new MODEResult _result => (MODEResult)base._result;
         public MODEResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

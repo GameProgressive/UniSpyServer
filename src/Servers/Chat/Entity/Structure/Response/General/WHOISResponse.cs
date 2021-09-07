@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class WHOISResponse : ChatResponseBase
+    internal sealed class WHOISResponse : ResponseBase
     {
         private new WHOISResult _result => (WHOISResult)base._result;
         public WHOISResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

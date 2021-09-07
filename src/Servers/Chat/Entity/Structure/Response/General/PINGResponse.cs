@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class PINGResponse : ChatResponseBase
+    internal sealed class PINGResponse : ResponseBase
     {
         private new PINGResult _result => (PINGResult)base._result;
         public PINGResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

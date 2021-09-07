@@ -6,14 +6,14 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Channel
 {
-    internal sealed class KICKResponse : ChatResponseBase
+    internal sealed class KICKResponse : ResponseBase
     {
         public KICKResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 
         private new KICKResult _result => (KICKResult)base._result;
-        private new KICKRequest _request => (KICKRequest)base._request;
+        private new KickRequest _request => (KickRequest)base._request;
 
         public override void Build()
         {

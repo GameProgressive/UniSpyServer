@@ -80,7 +80,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         }
 
-        public ChatChannelUser GetChannelUserBySession(ChatSession session)
+        public ChatChannelUser GetChannelUserBySession(Session session)
         {
             var result = Property.ChannelUsers.Where(u => u.UserInfo.Session.Equals(session));
             if (result.Count() == 1)
@@ -103,7 +103,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return false;
             }
         }
-        public bool IsUserBanned(ChatSession session)
+        public bool IsUserBanned(Session session)
         {
             if (Property.BanList.Where(u => u.UserInfo.Session.Id == session.Id).Count() == 1)
             {

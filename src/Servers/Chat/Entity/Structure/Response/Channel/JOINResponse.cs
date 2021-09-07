@@ -6,10 +6,10 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class JOINResponse : ChatResponseBase
+    internal sealed class JOINResponse : ResponseBase
     {
         private new JOINResult _result => (JOINResult)base._result;
-        private new JOINRequest _request => (JOINRequest)base._request;
+        private new JoinRequest _request => (JoinRequest)base._request;
         // public string SendingBufferOfChannelUsers { get; private set; }
         public JOINResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

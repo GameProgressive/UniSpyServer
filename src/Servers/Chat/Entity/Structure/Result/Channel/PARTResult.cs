@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Result.Channel
 {
-    internal sealed class PARTResult : ChatResultBase
+    internal sealed class PARTResult : ResultBase
     {
         public string LeaverIRCPrefix { get; set; }
         public bool IsChannelCreator { get; set; }

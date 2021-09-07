@@ -6,9 +6,9 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class WHOResponse : ChatResponseBase
+    internal sealed class WHOResponse : ResponseBase
     {
-        private new WHORequest _request => (WHORequest)base._request;
+        private new WhoRequest _request => (WhoRequest)base._request;
         private new WHOResult _result => (WHOResult)base._result;
         public WHOResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
@@ -22,10 +22,10 @@ namespace Chat.Entity.Structure.Response.General
             }
             switch (_request.RequestType)
             {
-                case WHOType.GetChannelUsersInfo:
+                case WhoRequestType.GetChannelUsersInfo:
                     SendingBuffer += BuildEndOfWhoReply(_result.DataModels[0].ChannelName);
                     break;
-                case WHOType.GetUserInfo:
+                case WhoRequestType.GetUserInfo:
                     SendingBuffer += BuildEndOfWhoReply(_result.DataModels[0].NickName);
                     break;
             }

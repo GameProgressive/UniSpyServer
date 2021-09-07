@@ -7,12 +7,12 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         public bool IsVoiceable { get; set; }
         public bool IsChannelCreator { get; set; }
         public bool IsChannelOperator { get; set; }
-        public ChatUserInfo UserInfo { get; private set; }
+        public UserInfo UserInfo { get; private set; }
         public Dictionary<string, string> UserKeyValue { get; private set; }
 
         public string BFlags => @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"];
 
-        public ChatChannelUser(ChatUserInfo userInfo)
+        public ChatChannelUser(UserInfo userInfo)
         {
             UserInfo = userInfo;
             UserKeyValue = new Dictionary<string, string>();

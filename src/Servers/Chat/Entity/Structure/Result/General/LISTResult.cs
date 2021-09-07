@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Result.General
         public string ChannelTopic { get; set; }
     }
 
-    internal sealed class LISTResult : ChatResultBase
+    internal sealed class LISTResult : ResultBase
     {
         public string UserIRCPrefix { get; set; }
         public List<LISTDataModel> ChannelInfoList { get; }

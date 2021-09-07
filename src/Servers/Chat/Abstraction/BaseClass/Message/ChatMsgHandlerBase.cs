@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal abstract class ChatMsgHandlerBase : ChatChannelHandlerBase
+    internal abstract class ChatMsgHandlerBase : ChannelHandlerBase
     {
         protected new ChatMsgRequestBase _request => (ChatMsgRequestBase)base._request;
         protected new ChatMsgResultBase _result

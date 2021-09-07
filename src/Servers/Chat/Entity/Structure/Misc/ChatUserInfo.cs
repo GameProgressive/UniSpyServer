@@ -4,11 +4,11 @@ using System.Collections.Concurrent;
 using System.Linq;
 namespace Chat.Entity.Structure.Misc
 {
-    internal sealed class ChatUserInfo
+    internal sealed class UserInfo
     {
         //indicates which channel this user is in
         public ConcurrentBag<ChatChannel> JoinedChannels { get; private set; }
-        public ChatSession Session { get; private set; }
+        public Session Session { get; private set; }
         // secure connection
         public GSPeerChatCTX ClientCTX { get; set; }
         public GSPeerChatCTX ServerCTX { get; private set; }
@@ -26,7 +26,7 @@ namespace Chat.Entity.Structure.Misc
         public string PublicIPAddress => Session.RemoteIPEndPoint.Address.ToString();
         public string IRCPrefix => $"{NickName}!{UserName}@{ChatConstants.ServerDomain}";
 
-        public ChatUserInfo(ChatSession session)
+        public UserInfo(Session session)
         {
             Session = session;
             ClientCTX = new GSPeerChatCTX();

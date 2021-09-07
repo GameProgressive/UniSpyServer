@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Result.Channel
 {
-    internal sealed class SETCKEYResult : ChatResultBase
+    internal sealed class SETCKEYResult : ResultBase
     {
         public bool IsSetOthersKeyValue { get; set; }
         public string NickName { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result.Channel
 {
-    internal sealed class GETKEYResult : ChatResultBase
+    internal sealed class GETKEYResult : ResultBase
     {
         public List<string> Flags { get; }
         /// <summary>

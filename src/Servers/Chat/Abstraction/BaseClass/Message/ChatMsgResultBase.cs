@@ -1,6 +1,6 @@
 namespace Chat.Abstraction.BaseClass.Message
 {
-    internal abstract class ChatMsgResultBase : ChatResultBase
+    internal abstract class ChatMsgResultBase : ResultBase
     {
         public string UserIRCPrefix { get; set; }
         public string TargetName { get; set; }

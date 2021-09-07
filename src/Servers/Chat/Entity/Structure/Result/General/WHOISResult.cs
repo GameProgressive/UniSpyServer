@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result.General
 {
-    internal sealed class WHOISResult : ChatResultBase
+    internal sealed class WHOISResult : ResultBase
     {
         public List<string> JoinedChannelName { get; }
         public string NickName { get; set; }

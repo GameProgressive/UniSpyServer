@@ -6,10 +6,10 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class GETCKEYResponse : ChatResponseBase
+    internal sealed class GETCKEYResponse : ResponseBase
     {
-        private new GETCKEYResult _result => (GETCKEYResult)base._result;
-        private new GETCKEYRequest _request => (GETCKEYRequest)base._request;
+        private new GetCKeyResult _result => (GetCKeyResult)base._result;
+        private new GetCKeyRequest _request => (GetCKeyRequest)base._request;
 
         public GETCKEYResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
