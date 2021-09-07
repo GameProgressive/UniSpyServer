@@ -1,6 +1,6 @@
 ﻿namespace QueryReport.Entity.Enumerate
 {
-    public enum QRErrorCode : uint
+    public enum ErrorCode : uint
     {
         General,
         /// <summary>

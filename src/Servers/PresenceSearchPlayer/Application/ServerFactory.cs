@@ -8,18 +8,18 @@ namespace PresenceSearchPlayer
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class PSPServerFactory : ServerFactoryBase
+    internal sealed class ServerFactory : ServerFactoryBase
     {
-        public new static PSPServer Server
+        public new static Server Server
         {
-            get => (PSPServer)ServerFactoryBase.Server;
+            get => (Server)ServerFactoryBase.Server;
             private set => ServerFactoryBase.Server = value;
         }
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public PSPServerFactory()
+        public ServerFactory()
         {
         }
 
@@ -31,7 +31,7 @@ namespace PresenceSearchPlayer
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new PSPServer(cfg.ServerID, cfg.ListeningEndPoint);
+                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

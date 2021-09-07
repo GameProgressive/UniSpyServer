@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
@@ -9,7 +10,8 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal sealed class ValidHandler : PSPCmdHandlerBase
+    [HandlerContract("valid")]
+    internal sealed class ValidHandler : CmdHandlerBase
     {
         private new ValidRequest _request => (ValidRequest)base._request;
         private new ValidResult _result

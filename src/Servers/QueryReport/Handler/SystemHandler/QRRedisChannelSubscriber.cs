@@ -12,13 +12,13 @@ using UniSpyLib.Entity.Structure;
 
 namespace QueryReport.Handler.SystemHandler
 {
-    public class QRRedisChannelSubscriber : UniSpyRedisChannelSubscriber<NATNegCookie>
+    public class QRRedisChannelSubscriber : UniSpyRedisChannelSubscriber<NatNegCookie>
     {
         public QRRedisChannelSubscriber() : base(UniSpyRedisChannelName.NatNegCookieChannel)
         {
         }
 
-        public override void ReceivedMessage(NATNegCookie message)
+        public override void ReceivedMessage(NatNegCookie message)
         {
             IPAddress address = IPAddress.Parse(message.GameServerRemoteIP);
             int port = int.Parse(message.GameServerRemotePort);
@@ -34,11 +34,11 @@ namespace QueryReport.Handler.SystemHandler
             {
                 NatNegMessage = message.NatNegMessage,
                 MessageKey = 0,
-                InstantKey = ((QRSession)session).InstantKey
+                InstantKey = ((Session)session).InstantKey
             };
             var request = new ClientMessageRequest()
             {
-                InstantKey = ((QRSession)session).InstantKey
+                InstantKey = ((Session)session).InstantKey
             };
             var response = new ClientMessageResponse(request, result);
             response.Build();

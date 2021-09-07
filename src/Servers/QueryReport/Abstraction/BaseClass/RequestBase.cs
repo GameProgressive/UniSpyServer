@@ -6,13 +6,13 @@ using UniSpyLib.Extensions;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    internal abstract class QRRequestBase : UniSpyRequestBase
+    internal abstract class RequestBase : UniSpyRequestBase
     {
         public static readonly byte[] MagicData = { 0xFE, 0XFD };
         public uint InstantKey { get; protected set; }
-        public new QRPacketType CommandName
+        public new PacketType CommandName
         {
-            get => (QRPacketType)base.CommandName;
+            get => (PacketType)base.CommandName;
             protected set => base.CommandName = value;
         }
         public new byte[] RawRequest
@@ -21,11 +21,11 @@ namespace QueryReport.Abstraction.BaseClass
             protected set => base.RawRequest = value;
         }
 
-        public QRRequestBase(object rawRequest) : base(rawRequest)
+        public RequestBase(object rawRequest) : base(rawRequest)
         {
         }
 
-        protected QRRequestBase()
+        protected RequestBase()
         {
         }
 
@@ -35,7 +35,7 @@ namespace QueryReport.Abstraction.BaseClass
             {
                 throw new QRException("Query report request is invalid.");
             }
-            CommandName = (QRPacketType)RawRequest[0];
+            CommandName = (PacketType)RawRequest[0];
             InstantKey = BitConverter.ToUInt32(ByteTools.SubBytes(RawRequest, 1, 4));
         }
     }

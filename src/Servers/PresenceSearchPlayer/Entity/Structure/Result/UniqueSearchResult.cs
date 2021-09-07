@@ -2,7 +2,7 @@
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class UniqueSearchResult : PSPResultBase
+    public class UniqueSearchResult : ResultBase
     {
         public bool IsUniquenickExist;
         public UniqueSearchResult()

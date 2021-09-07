@@ -14,7 +14,7 @@ namespace Chat.Abstraction.BaseClass
         {
             if (!_session.UserInfo.IsLoggedIn)
             {
-                LogWriter.Information("Please login first!");
+                LogWriter.Info("Please login first!");
                 return;
             }
 

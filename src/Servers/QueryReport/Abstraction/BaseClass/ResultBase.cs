@@ -3,10 +3,10 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Abstraction.BaseClass
 {
-    internal abstract class QRResultBase : UniSpyResultBase
+    internal abstract class ResultBase : UniSpyResultBase
     {
-        public QRPacketType? PacketType { get; protected set; }
-        public QRResultBase()
+        public PacketType? PacketType { get; protected set; }
+        public ResultBase()
         {
         }
     }

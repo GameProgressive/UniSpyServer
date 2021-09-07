@@ -5,7 +5,7 @@ using UniSpyLib.Encryption;
 
 namespace QueryReport.Entity.Structure.Response
 {
-    internal sealed class ChallengeResponse : QRResponseBase
+    internal sealed class ChallengeResponse : ResponseBase
     {
         private static string Message = "RetroSpy echo!";
 

@@ -9,7 +9,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
 {
-    internal sealed class KeepAliveHandler : QRCmdHandlerBase
+    internal sealed class KeepAliveHandler : CmdHandlerBase
     {
         private new QRDefaultRequest _request => (QRDefaultRequest)base._request;
         private new QRDefaultResult _result

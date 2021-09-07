@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
@@ -13,7 +14,8 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Search with uniquenick and namespace
     /// </summary>
-    internal sealed class SearchUniqueHandler : PSPCmdHandlerBase
+    [HandlerContract("searchunique")]
+    internal sealed class SearchUniqueHandler : CmdHandlerBase
     {
         private new SearchUniqueRequest _request => (SearchUniqueRequest)base._request;
         private new SearchUniqueResult _result

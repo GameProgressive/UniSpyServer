@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Entity.Structure.Response
 {
-    internal sealed class ClientMessageResponse : QRResponseBase
+    internal sealed class ClientMessageResponse : ResponseBase
     {
         private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
         private new ClientMessageResult _result => (ClientMessageResult)base._result;

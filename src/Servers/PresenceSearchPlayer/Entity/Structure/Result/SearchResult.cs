@@ -14,7 +14,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public uint NamespaceID;
     }
 
-    public class SearchResult : PSPResultBase
+    public class SearchResult : ResultBase
     {
         public List<SearchDataBaseModel> DataBaseResults;
         public SearchResult()

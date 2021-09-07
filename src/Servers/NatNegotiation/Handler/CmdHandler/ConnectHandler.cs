@@ -72,8 +72,8 @@ namespace NatNegotiation.Handler.CmdHandler
                 _negotiator = negotiators.First();
                 _negotiatee = negotiatees.First();
 
-                LogWriter.Information($"Find negotiatee {_negotiatee.Value.RemoteEndPoint}");
-                LogWriter.Information($"Find negotiator {_negotiator.Value.RemoteEndPoint}");
+                LogWriter.Info($"Find negotiatee {_negotiatee.Value.RemoteEndPoint}");
+                LogWriter.Info($"Find negotiator {_negotiator.Value.RemoteEndPoint}");
 
                 var request = new ConnectRequest { Version = _request.Version, Cookie = _request.Cookie };
                 _responseToNegotiator = new ConnectResponse(

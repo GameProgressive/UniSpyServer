@@ -2,9 +2,9 @@ using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace QueryReport.Network
 {
-    internal sealed class QRSessionManager : UniSpyUdpSessionManager
+    internal sealed class SessionManager : UniSpyUdpSessionManager
     {
-        public QRSessionManager()
+        public SessionManager()
         {
         }
     }

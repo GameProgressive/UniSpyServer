@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Structure.Exception;
 using PresenceSearchPlayer.Entity.Structure.Request;
@@ -11,7 +12,8 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal sealed class CheckHandler : PSPCmdHandlerBase
+    [HandlerContract("check")]
+    internal sealed class CheckHandler : CmdHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final

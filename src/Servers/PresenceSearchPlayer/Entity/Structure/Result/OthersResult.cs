@@ -14,7 +14,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public string Email;
     }
 
-    public class OthersResult : PSPResultBase
+    public class OthersResult : ResultBase
     {
         public List<OthersDatabaseModel> DatabaseResults { get; set; }
         public OthersResult()

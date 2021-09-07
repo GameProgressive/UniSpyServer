@@ -2,7 +2,7 @@
 
 namespace QueryReport.Entity.Structure.NATNeg
 {
-    public class NATNegCookie
+    public class NatNegCookie
     {
         public string GameServerRemoteIP { get; set; }
         public string GameServerRemotePort { get; set; }
@@ -10,7 +10,7 @@ namespace QueryReport.Entity.Structure.NATNeg
         public string GameName { get; set; }
         public byte[] NatNegMessage { get; set; }
 
-        public NATNegCookie()
+        public NatNegCookie()
         {
         }
     }

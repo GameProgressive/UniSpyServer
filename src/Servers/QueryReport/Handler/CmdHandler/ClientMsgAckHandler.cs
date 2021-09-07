@@ -6,7 +6,7 @@ namespace QueryReport.Handler.CmdHandler
     /// <summary>
     /// Client message acknowledgement handler
     /// </summary>
-    internal sealed class ClientMsgAckHandler : QRCmdHandlerBase
+    internal sealed class ClientMsgAckHandler : CmdHandlerBase
     {
         public ClientMsgAckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

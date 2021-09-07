@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
@@ -14,7 +15,8 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
-    internal sealed class NicksHandler : PSPCmdHandlerBase
+    [HandlerContract("nicks")]
+    internal sealed class NicksHandler : CmdHandlerBase
     {
         private new NicksResult _result
         {

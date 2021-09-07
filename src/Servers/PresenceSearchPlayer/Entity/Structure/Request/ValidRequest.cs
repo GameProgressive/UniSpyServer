@@ -1,10 +1,12 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal sealed class ValidRequest : PSPRequestBase
+    [RequestContract("valid")]
+    internal sealed class ValidRequest : RequestBase
     {
         public ValidRequest(string rawRequest) : base(rawRequest)
         {

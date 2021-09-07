@@ -8,7 +8,7 @@ using UniSpyLib.Encryption;
 
 namespace QueryReport.Entity.Structure.Request
 {
-    internal sealed class HeartBeatRequest : QRRequestBase
+    internal sealed class HeartBeatRequest : RequestBase
     {
         public string ServerData { get; private set; }
         public string PlayerData { get; private set; }

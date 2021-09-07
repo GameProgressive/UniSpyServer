@@ -5,12 +5,12 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Response
 {
-    internal sealed class NicksResponse : PSPResponseBase
+    internal sealed class NicksResponse : ResponseBase
     {
         private new NicksResult _result => (NicksResult)base._result;
         private new NicksRequest _request => (NicksRequest)base._request;
 
-        internal NicksResponse(PSPRequestBase request, UniSpyResultBase result) : base(request, result)
+        internal NicksResponse(RequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

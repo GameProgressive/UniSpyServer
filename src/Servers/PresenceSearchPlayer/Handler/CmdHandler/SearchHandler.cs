@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
 using PresenceSearchPlayer.Entity.Structure.Result;
@@ -18,7 +19,8 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    internal sealed class SearchHandler : PSPCmdHandlerBase
+    [HandlerContract("search")]
+    internal sealed class SearchHandler : CmdHandlerBase
     {
         private new SearchRequest _request => (SearchRequest)base._request;
 

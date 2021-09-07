@@ -3,10 +3,10 @@ using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace QueryReport.Network
 {
-    internal sealed class QRSession : UniSpyUdpSession
+    internal sealed class Session : UniSpyUdpSession
     {
         public uint InstantKey { get; set; }
-        public QRSession(UniSpyUdpServer server, EndPoint endPoint) : base(server, endPoint)
+        public Session(UniSpyUdpServer server, EndPoint endPoint) : base(server, endPoint)
         {
         }
     }

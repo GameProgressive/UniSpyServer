@@ -1,10 +1,12 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
 
-    internal sealed class UniqueSearchRequest : PSPRequestBase
+    [RequestContract("uniquesearch")]
+    internal sealed class UniqueSearchRequest : RequestBase
     {
         public string PreferredNick { get; private set; }
         public uint NamespaceID { get; private set; }

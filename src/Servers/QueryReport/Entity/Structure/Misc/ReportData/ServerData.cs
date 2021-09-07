@@ -10,11 +10,11 @@ namespace QueryReport.Entity.Structure.ReportData
     public class ServerData
     {
         public Dictionary<string, string> KeyValue { get; protected set; }
-        public GameServerServerStatus ServerStatus;
+        public GameServerStatus ServerStatus;
         public ServerData()
         {
             KeyValue = new Dictionary<string, string>();
-            ServerStatus = GameServerServerStatus.Normal;
+            ServerStatus = GameServerStatus.Normal;
         }
 
         public void Update(string serverData)
@@ -71,19 +71,19 @@ namespace QueryReport.Entity.Structure.ReportData
 
             if (KeyValue.ContainsKey("statechanged"))
             {
-                GameServerServerStatus status;
+                GameServerStatus status;
                 if (Enum.TryParse(KeyValue["statechanged"], out status))
                 {
                     ServerStatus = status;
                 }
                 else
                 {
-                    ServerStatus = GameServerServerStatus.Shutdown;
+                    ServerStatus = GameServerStatus.Shutdown;
                 }
             }
             else
             {
-                ServerStatus = GameServerServerStatus.Shutdown;
+                ServerStatus = GameServerStatus.Shutdown;
             }
         }
         public void UpdateDictionary(string key, string value)

@@ -1,6 +1,6 @@
 ﻿namespace QueryReport.Handler.SystemHandler.Encryption
 {
-    public class QREncryption
+    public class Encryption
     {
         public static byte GSValFunc(int reg)
         {

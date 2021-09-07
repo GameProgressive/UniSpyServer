@@ -2,7 +2,7 @@
 
 namespace QueryReport.Entity.Structure.Request
 {
-    internal sealed class ChallengeRequest : QRRequestBase
+    internal sealed class ChallengeRequest : RequestBase
     {
         public ChallengeRequest(byte[] rawRequest) : base(rawRequest)
         {

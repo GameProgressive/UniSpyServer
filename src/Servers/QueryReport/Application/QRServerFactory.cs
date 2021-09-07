@@ -13,9 +13,9 @@ namespace QueryReport.Application
     /// </summary>
     internal sealed class QRServerFactory : ServerFactoryBase
     {
-        public new static QRServer Server
+        public new static Server Server
         {
-            get => (QRServer)ServerFactoryBase.Server;
+            get => (Server)ServerFactoryBase.Server;
             private set => ServerFactoryBase.Server = value;
         }
         public QRServerFactory()
@@ -30,7 +30,7 @@ namespace QueryReport.Application
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new QRServer(cfg.ServerID, cfg.ListeningEndPoint);
+                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

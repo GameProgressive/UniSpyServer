@@ -6,7 +6,7 @@ using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class PSPRequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyRequestBase
     {
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
         public new string RawRequest
@@ -19,7 +19,7 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
             protected set => base.CommandName = value;
         }
         public ushort OperationID { get; protected set; }
-        public PSPRequestBase(string rawRequest) : base(rawRequest)
+        public RequestBase(string rawRequest) : base(rawRequest)
         {
             RequestKeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);
         }

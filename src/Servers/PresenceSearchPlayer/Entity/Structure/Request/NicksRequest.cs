@@ -1,10 +1,12 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal sealed class NicksRequest : PSPRequestBase
+    [RequestContract("nicks")]
+    internal sealed class NicksRequest : RequestBase
     {
         public NicksRequest(string rawRequest) : base(rawRequest)
         {

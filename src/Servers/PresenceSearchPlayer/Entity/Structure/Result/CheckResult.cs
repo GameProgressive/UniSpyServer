@@ -2,7 +2,7 @@
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class CheckResult : PSPResultBase
+    public class CheckResult : ResultBase
     {
         public uint ProfileID { get; set; }
         public CheckResult()

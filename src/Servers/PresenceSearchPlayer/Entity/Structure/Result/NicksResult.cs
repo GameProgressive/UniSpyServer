@@ -9,7 +9,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public string UniqueNick;
     }
 
-    public class NicksResult : PSPResultBase
+    public class NicksResult : ResultBase
     {
         public List<NicksDataModel> DataBaseResults;
         public bool IsRequireUniqueNicks { get; set; }

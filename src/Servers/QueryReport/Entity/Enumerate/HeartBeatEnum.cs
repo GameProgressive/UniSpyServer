@@ -7,7 +7,7 @@
         ServerData,
     }
 
-    public enum GameServerServerStatus
+    public enum GameServerStatus
     {
         Normal = 0,
         Update = 1,

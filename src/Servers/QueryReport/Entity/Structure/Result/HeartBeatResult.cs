@@ -5,14 +5,14 @@ using UniSpyLib.Extensions;
 
 namespace QueryReport.Entity.Structure.Result
 {
-    internal sealed class HeartBeatResult : QRResultBase
+    internal sealed class HeartBeatResult : ResultBase
     {
         public EndPoint RemoteEndPoint { private get; set; }
         public string RemoteIP => HtonsExtensions.EndPointToIP(RemoteEndPoint);
         public string RemotePort => HtonsExtensions.EndPointToPort(RemoteEndPoint);
         public HeartBeatResult()
         {
-            PacketType = QRPacketType.HeartBeat;
+            PacketType = Enumerate.PacketType.HeartBeat;
         }
     }
 }

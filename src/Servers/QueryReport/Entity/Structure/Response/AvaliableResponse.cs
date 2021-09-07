@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace QueryReport.Entity.Structure.Response
 {
-    internal sealed class AvaliableResponse : QRResponseBase
+    internal sealed class AvaliableResponse : ResponseBase
     {
         public static readonly byte[] ResponsePrefix = { 0xfe, 0xfd, 0x09, 0x00, 0x00, 0x00 };
 

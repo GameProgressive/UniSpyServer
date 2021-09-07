@@ -16,7 +16,7 @@ namespace ServerBrowser.Handler.CmdHandler
     {
         private new NatNegMsgRequest _request => (NatNegMsgRequest)base._request;
         private AdHocRequest _adHocRequest;
-        private NATNegCookie _natNegCookie;
+        private NatNegCookie _natNegCookie;
         private GameServerInfo _gameServer;
         public NatNegMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -50,7 +50,7 @@ namespace ServerBrowser.Handler.CmdHandler
         protected override void DataOperation()
         {
             //TODO check the if the remote endpoint is correct
-            _natNegCookie = new NATNegCookie
+            _natNegCookie = new NatNegCookie
             {
                 GameServerRemoteEndPoint = _gameServer.RemoteQueryReportIPEndPoint,
                 GameServerRemoteIP = _adHocRequest.TargetServerIP,

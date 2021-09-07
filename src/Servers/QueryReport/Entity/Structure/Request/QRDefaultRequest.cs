@@ -2,7 +2,7 @@
 
 namespace QueryReport.Entity.Structure.Request
 {
-    internal sealed class QRDefaultRequest : QRRequestBase
+    internal sealed class QRDefaultRequest : RequestBase
     {
         public QRDefaultRequest(object rawRequest) : base(rawRequest)
         {

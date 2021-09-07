@@ -1,11 +1,13 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal sealed class SearchUniqueRequest : PSPRequestBase
+    [RequestContract("searchunique")]
+    internal sealed class SearchUniqueRequest : RequestBase
     {
         public string Uniquenick { get; private set; }
         public List<uint> Namespaces { get; private set; }

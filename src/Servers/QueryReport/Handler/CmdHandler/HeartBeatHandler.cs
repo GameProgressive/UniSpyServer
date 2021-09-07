@@ -11,7 +11,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
 {
-    internal sealed class HeartBeatHandler : QRCmdHandlerBase
+    internal sealed class HeartBeatHandler : CmdHandlerBase
     {
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
         private GameServerInfo _gameServerInfo;
@@ -63,7 +63,7 @@ namespace QueryReport.Handler.CmdHandler
                 GameName = _request.GameName
             };
             _session.InstantKey = _request.InstantKey;
-            if (_gameServerInfo.ServerData.ServerStatus == GameServerServerStatus.Shutdown)
+            if (_gameServerInfo.ServerData.ServerStatus == GameServerStatus.Shutdown)
             {
                 GameServerInfoRedisOperator.DeleteKeyValue(fullKey);
             }

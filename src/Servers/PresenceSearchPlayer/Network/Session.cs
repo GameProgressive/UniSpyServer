@@ -3,15 +3,15 @@ using UniSpyLib.Network;
 using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace PresenceSearchPlayer.Network
 {
-    public sealed class PSPSession : UniSpyTcpSession
+    public sealed class Session : UniSpyTcpSession
     {
-        public PSPSession(PSPServer server) : base(server)
+        public Session(Server server) : base(server)
         {
         }
 
         protected override void OnReceived(string message)
         {
-            new PSPCmdSwitcher(this, message).Switch();
+            new CmdSwitcher(this, message).Switch();
         }
     }
 }

@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
 {
-    internal sealed class ClientMessageHandler : QRCmdHandlerBase
+    internal sealed class ClientMessageHandler : CmdHandlerBase
     {
         private new ClientMessageRequest _request => (ClientMessageRequest)base._request;
         public ClientMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

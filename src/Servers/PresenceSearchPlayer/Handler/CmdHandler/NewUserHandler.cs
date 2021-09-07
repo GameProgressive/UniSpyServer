@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Enumerator;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Exception.NewUser;
@@ -12,7 +13,8 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
-    public class NewUserHandler : PSPCmdHandlerBase
+    [HandlerContract("newuser")]
+    public class NewUserHandler : CmdHandlerBase
     {
         protected new NewUserRequest _request => (NewUserRequest)base._request;
 

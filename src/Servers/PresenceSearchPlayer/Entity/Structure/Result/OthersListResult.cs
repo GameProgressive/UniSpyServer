@@ -8,7 +8,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public uint ProfileID;
         public string Uniquenick;
     }
-    public class OthersListResult : PSPResultBase
+    public class OthersListResult : ResultBase
     {
         public List<OthersListDatabaseModel> DatabaseResults;
         public OthersListResult()

@@ -14,7 +14,7 @@ namespace PresenceSearchPlayer
             try
             {
                 //create a instance of ServerManager class
-                new PSPServerFactory().Start();
+                new ServerFactory().Start();
 
                 Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
             }

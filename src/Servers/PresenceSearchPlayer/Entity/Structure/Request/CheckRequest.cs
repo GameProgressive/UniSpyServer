@@ -1,10 +1,12 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal sealed class CheckRequest : PSPRequestBase
+    [RequestContract("check")]
+    internal sealed class CheckRequest : RequestBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         public CheckRequest(string rawRequest) : base(rawRequest)

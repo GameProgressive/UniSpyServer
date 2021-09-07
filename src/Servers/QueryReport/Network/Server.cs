@@ -7,12 +7,12 @@ using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace QueryReport.Network
 {
-    internal sealed class QRServer : UniSpyUdpServer
+    internal sealed class Server : UniSpyUdpServer
     {
         public QRRedisChannelSubscriber RedisChannelSubscriber { get; private set; }
-        public QRServer(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
+        public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
-            SessionManager = new QRSessionManager();
+            SessionManager = new SessionManager();
             RedisChannelSubscriber = new QRRedisChannelSubscriber();
         }
 
@@ -24,10 +24,10 @@ namespace QueryReport.Network
         }
 
         protected override UniSpyUdpSession CreateSession(EndPoint endPoint)
-            => new QRSession(this, endPoint);
+            => new Session(this, endPoint);
 
         protected override void OnReceived(UniSpyUdpSession session, byte[] message)
-            => new QRCmdSwitcher(session, message).Switch();
+            => new CmdSwitcher(session, message).Switch();
 
     }
 }

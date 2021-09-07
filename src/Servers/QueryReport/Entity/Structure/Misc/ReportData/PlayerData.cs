@@ -46,14 +46,14 @@ namespace QueryReport.Entity.Structure.ReportData
                     // update existed key value
                     if (keyValue.ContainsKey(tempKey))
                     {
-                        if (keyValue[tempKey] == tempValue)
-                        {
-                            //LogWriter.ToLog($"Ignoring same player key value {tempKey} : {tempValue}");
-                        }
-                        else
+                        if (keyValue[tempKey] != tempValue)
                         {
                             keyValue[tempKey] = tempValue;
                             //LogWriter.ToLog($"Updated player key value {tempKey} : {tempValue}");
+                        }
+                        else
+                        {
+                            //LogWriter.ToLog($"Ignoring same player key value {tempKey} : {tempValue}");
                         }
                     }
                     else

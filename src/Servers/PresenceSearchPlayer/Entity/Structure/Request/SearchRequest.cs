@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
@@ -11,7 +12,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         EmailSearch
     }
 
-    internal sealed class SearchRequest : PSPRequestBase
+    [RequestContract("search")]
+    internal sealed class SearchRequest : RequestBase
     {
         public int SkipNum { get; private set; }
         public SearchRequestType RequestType { get; private set; }

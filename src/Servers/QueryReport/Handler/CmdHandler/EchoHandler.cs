@@ -10,7 +10,7 @@ using UniSpyLib.Logging;
 
 namespace QueryReport.Handler.CmdHandler
 {
-    internal sealed class EchoHandler : QRCmdHandlerBase
+    internal sealed class EchoHandler : CmdHandlerBase
     {
         private new EchoResult _result
         {

@@ -1,9 +1,11 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    internal sealed class OthersRequest : PSPRequestBase
+    [RequestContract("others")]
+    internal sealed class OthersRequest : RequestBase
     {
         public OthersRequest(string rawRequest) : base(rawRequest)
         {

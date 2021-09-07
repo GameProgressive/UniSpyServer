@@ -1,10 +1,12 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
-    public class NewUserRequest : PSPRequestBase
+    [RequestContract("newuser")]
+    public class NewUserRequest : RequestBase
     {
         public uint ProductID { get; protected set; }
         public uint GamePort { get; protected set; }

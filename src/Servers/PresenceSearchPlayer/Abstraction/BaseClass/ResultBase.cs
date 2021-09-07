@@ -2,9 +2,9 @@
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class PSPResultBase : UniSpyResultBase
+    public abstract class ResultBase : UniSpyResultBase
     {
-        public PSPResultBase()
+        public ResultBase()
         {
         }
     }

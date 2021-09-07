@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,8 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
     //request: \otherslist\sesskey\<searcher's sesskey>\profileid\<searcher's pid>\numopids\<how many pid in his list>
     //\opids\|<opid1>|<opid2>|******\namespaceid\<>\gamename\<>\final\
-    internal sealed class OthersListRequest : PSPRequestBase
+    [RequestContract("otherslist")]
+    internal sealed class OthersListRequest : RequestBase
     {
         public List<uint> ProfileIDs { get; private set; }
         public uint NamespaceID { get; private set; }

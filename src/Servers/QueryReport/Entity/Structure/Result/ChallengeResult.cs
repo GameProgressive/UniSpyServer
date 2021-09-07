@@ -3,11 +3,11 @@ using QueryReport.Entity.Enumerate;
 
 namespace QueryReport.Entity.Structure.Result
 {
-    internal sealed class ChallengeResult : QRResultBase
+    internal sealed class ChallengeResult : ResultBase
     {
         public ChallengeResult()
         {
-            PacketType = QRPacketType.Challenge;
+            PacketType = Enumerate.PacketType.Challenge;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+using PresenceSearchPlayer.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Structure.Response;
@@ -14,7 +15,8 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// <summary>
     /// Get buddy's information
     /// </summary>
-    internal sealed class OthersHandler : PSPCmdHandlerBase
+    [HandlerContract("others")]
+    internal sealed class OthersHandler : CmdHandlerBase
     {
         private new OthersRequest _request => (OthersRequest)base._request;
 

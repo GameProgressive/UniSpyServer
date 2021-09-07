@@ -8,7 +8,7 @@ namespace QueryReport.Handler.CmdHandler
     /// <summary>
     /// AvailableCheckHandler
     /// </summary>
-    internal sealed class AvailableHandler : QRCmdHandlerBase
+    internal sealed class AvailableHandler : CmdHandlerBase
     {
         private new AvaliableRequest _request => (AvaliableRequest)base._request;
         private new QRDefaultResult _result

@@ -3,7 +3,7 @@ using QueryReport.Entity.Enumerate;
 
 namespace QueryReport.Entity.Structure.Result
 {
-    internal sealed class ClientMessageResult : QRResultBase
+    internal sealed class ClientMessageResult : ResultBase
     {
         public uint InstantKey { get; set; }
         public byte[] NatNegMessage { get; set; }
@@ -11,7 +11,7 @@ namespace QueryReport.Entity.Structure.Result
         public ClientMessageResult()
         {
             //we need to change packet type to client message then send
-            PacketType = QRPacketType.ClientMessage;
+            PacketType = Enumerate.PacketType.ClientMessage;
         }
     }
 }

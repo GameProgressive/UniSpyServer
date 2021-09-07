@@ -3,7 +3,7 @@ using QueryReport.Entity.Enumerate;
 
 namespace QueryReport.Entity.Structure.Request
 {
-    internal sealed class ClientMessageRequest : QRRequestBase
+    internal sealed class ClientMessageRequest : RequestBase
     {
         public new uint InstantKey
         {
