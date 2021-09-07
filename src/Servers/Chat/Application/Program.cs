@@ -18,10 +18,7 @@ namespace Chat.Application
                 new ChatServerFactory().Start();
 
             }
-            catch (UniSpyException e)
-            {
-                LogWriter.ToLog(e);
-            }
+
             catch (Exception e)
             {
                 LogWriter.ToLog(e);

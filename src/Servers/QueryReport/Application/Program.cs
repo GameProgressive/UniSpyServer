@@ -17,10 +17,7 @@ namespace QueryReport.Application
                 new QRServerFactory().Start();
 
             }
-            catch (UniSpyException e)
-            {
-                LogWriter.ToLog(e);
-            }
+
             catch (Exception e)
             {
                 LogWriter.ToLog(e);

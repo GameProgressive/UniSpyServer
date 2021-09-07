@@ -19,10 +19,7 @@ namespace CDKey.Application
                 new ServerFactory().Start();
 
             }
-            catch (UniSpyException e)
-            {
-                LogWriter.ToLog(e);
-            }
+
             catch (Exception e)
             {
                 LogWriter.ToLog(e);
