@@ -2,7 +2,7 @@
 
 namespace GameStatus.Entity.Structure.Result
 {
-    internal sealed class SetPDResult : GSResultBase
+    internal sealed class SetPDResult : ResultBase
     {
         public SetPDResult()
         {

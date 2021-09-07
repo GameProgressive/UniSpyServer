@@ -1,9 +1,12 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
-    internal sealed class NewGameRequest : GSRequestBase
+    [RequestContract("newgame")]
+
+    internal sealed class NewGameRequest : RequestBase
     {
         public bool IsClientLocalStorageAvailable { get; private set; }
         public string Challenge { get; private set; }

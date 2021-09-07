@@ -1,9 +1,11 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
-    internal sealed class UpdGameRequest : GSRequestBase
+    [RequestContract("updgame")]
+    internal sealed class UpdGameRequest : RequestBase
     {
         public uint ConnectionID { get; private set; }
         public bool IsDone { get; private set; }

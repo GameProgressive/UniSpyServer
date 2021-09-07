@@ -1,4 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
@@ -6,7 +7,8 @@ namespace GameStatus.Entity.Structure.Request
     /// <summary>
     /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */
     /// </summary>
-    internal sealed class AuthRequest : GSRequestBase
+    [RequestContract("auth")]
+    internal sealed class AuthRequest : RequestBase
     {
         public string GameName { get; private set; }
         public uint Port { get; private set; }

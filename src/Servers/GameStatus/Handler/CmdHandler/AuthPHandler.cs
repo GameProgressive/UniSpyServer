@@ -1,4 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Exception;
 using GameStatus.Entity.Structure.Request;
@@ -16,14 +17,11 @@ namespace GameStatus.Handler.CmdHandler
     /// because we are not gamespy
     /// so we do not check response string
     /// </summary>
-    internal sealed class AuthPHandler : GSCmdHandlerBase
+    [HandlerContract("authp")]
+    internal sealed class AuthPHandler : CmdHandlerBase
     {
         private new AuthPRequest _request => (AuthPRequest)base._request;
-        private new AuthPResult _result
-        {
-            get => (AuthPResult)base._result;
-            set => base._result = value;
-        }
+        private new AuthPResult _result { get => (AuthPResult)base._result; set => base._result = value; }
         public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new AuthPResult();

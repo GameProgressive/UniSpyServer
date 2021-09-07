@@ -2,7 +2,7 @@
 
 namespace GameStatus.Entity.Structure.Result
 {
-    internal sealed class AuthPResult : GSResultBase
+    internal sealed class AuthPResult : ResultBase
     {
         public uint ProfileID { get; set; }
         public AuthPResult()

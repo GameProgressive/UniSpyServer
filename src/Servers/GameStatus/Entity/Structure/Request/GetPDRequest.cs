@@ -1,4 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Exception;
 using System;
@@ -6,8 +7,8 @@ using System.Collections.Generic;
 
 namespace GameStatus.Entity.Structure.Request
 {
-
-    internal sealed class GetPDRequest : GSRequestBase
+    [RequestContract("getpd")]
+    internal sealed class GetPDRequest : RequestBase
     {
         public uint ProfileID { get; private set; }
         public PersistStorageType StorageType { get; private set; }

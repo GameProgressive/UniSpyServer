@@ -1,4 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Structure.Request;
 using GameStatus.Entity.Structure.Result;
 using System.Linq;
@@ -10,7 +11,8 @@ namespace GameStatus.Handler.CmdHandler
     /// <summary>
     /// Set persist storage data
     /// </summary>
-    internal sealed class SetPDHandler : GSCmdHandlerBase
+    [HandlerContract("setpd")]
+    internal sealed class SetPDHandler : CmdHandlerBase
     {
         private new SetPDRequest _request => (SetPDRequest)base._request;
         public SetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

@@ -4,12 +4,12 @@ using UniSpyLib.Encryption;
 using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace GameStatus.Network
 {
-    internal sealed class GSSession : UniSpyTcpSession
+    internal sealed class Session : UniSpyTcpSession
     {
 
         public GSPlayerInfo PlayerData { get; set; }
 
-        public GSSession(UniSpyTcpServer server) : base(server)
+        public Session(UniSpyTcpServer server) : base(server)
         {
             PlayerData = new GSPlayerInfo();
         }

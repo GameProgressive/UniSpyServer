@@ -1,11 +1,12 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
-
-    internal sealed class AuthPRequest : GSRequestBase
+    [RequestContract("authp")]
+    internal sealed class AuthPRequest : RequestBase
     {
         public AuthMethod RequestType { get; private set; }
         public uint ProfileID { get; private set; }

@@ -10,9 +10,9 @@ namespace GameStatus.Application
     /// </summary>
     internal sealed class GSServerFactory : ServerFactoryBase
     {
-        public static new GSServer Server
+        public static new Server Server
         {
-            get => (GSServer)ServerFactoryBase.Server;
+            get => (Server)ServerFactoryBase.Server;
             private set => ServerFactoryBase.Server = value;
         }        /// <summary>
                  /// Constructor
@@ -30,7 +30,7 @@ namespace GameStatus.Application
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new GSServer(cfg.ServerID, cfg.ListeningEndPoint);
+                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

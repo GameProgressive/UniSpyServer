@@ -6,7 +6,7 @@ using UniSpyLib.MiscMethod;
 
 namespace GameStatus.Abstraction.BaseClass
 {
-    internal abstract class GSRequestBase : UniSpyRequestBase
+    internal abstract class RequestBase : UniSpyRequestBase
     {
         public uint OperationID { get; protected set; }
         public new string CommandName
@@ -21,7 +21,7 @@ namespace GameStatus.Abstraction.BaseClass
         }
         public Dictionary<string, string> RequestKeyValues { get; protected set; }
 
-        public GSRequestBase(string rawRequest) : base(rawRequest)
+        public RequestBase(string rawRequest) : base(rawRequest)
         {
             RawRequest = rawRequest;
             RequestKeyValues = GameSpyUtils.ConvertToKeyValue(rawRequest);

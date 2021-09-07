@@ -1,11 +1,14 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Structure.Response;
 using GameStatus.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 
 namespace GameStatus.Handler.CmdHandler
 {
-    internal sealed class NewGameHandler : GSCmdHandlerBase
+    [HandlerContract("newgame")]
+
+    internal sealed class NewGameHandler : CmdHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"

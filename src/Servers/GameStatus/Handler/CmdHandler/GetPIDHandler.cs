@@ -1,4 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Exception;
 using GameStatus.Entity.Structure.Request;
 using GameStatus.Entity.Structure.Response;
@@ -10,7 +11,8 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace GameStatus.Handler.CmdHandler
 {
-    internal sealed class GetPIDHandler : GSCmdHandlerBase
+    [HandlerContract("getpid")]
+    internal sealed class GetPIDHandler : CmdHandlerBase
     {
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr

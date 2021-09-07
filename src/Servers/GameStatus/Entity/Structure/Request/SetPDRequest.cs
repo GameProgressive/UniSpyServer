@@ -1,4 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Enumerate;
 using GameStatus.Entity.Exception;
 using System;
@@ -9,7 +10,9 @@ namespace GameStatus.Entity.Structure.Request
     /// <summary>
     /// "\setpd\\pid\4\ptype\4\dindex\4\kv\\key1\value1\key2\value2\key3\value3\lid\2\length\5\data\final\"
     /// </summary>
-    internal sealed class SetPDRequest : GSRequestBase
+    [RequestContract("setpd")]
+    
+    internal sealed class SetPDRequest : RequestBase
     {
         public SetPDRequest(string request) : base(request)
         {

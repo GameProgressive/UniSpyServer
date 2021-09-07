@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Structure.Response
 {
-    internal sealed class UdpGameResponse : GSResponseBase
+    internal sealed class UdpGameResponse : ResponseBase
     {
         private new UpdGameRequest _request => (UpdGameRequest)base._request;
         private new UdpGameResult _result => (UdpGameResult)base._result;

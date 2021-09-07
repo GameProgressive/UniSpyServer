@@ -1,9 +1,11 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Exception;
 
 namespace GameStatus.Entity.Structure.Request
 {
-    internal sealed class GetPIDRequest : GSRequestBase
+    [RequestContract("getpid")]
+    internal sealed class GetPIDRequest : RequestBase
     {
         public string Nick { get; private set; }
         public string KeyHash { get; private set; }

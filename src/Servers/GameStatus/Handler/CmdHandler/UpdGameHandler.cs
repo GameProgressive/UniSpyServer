@@ -1,4 +1,5 @@
 ﻿using GameStatus.Abstraction.BaseClass;
+using GameStatus.Entity.Contract;
 using GameStatus.Entity.Structure.Result;
 using UniSpyLib.Abstraction.Interface;
 
@@ -7,7 +8,8 @@ namespace GameStatus.Handler.CmdHandler
     /// <summary>
     /// Handles game snapshot and update game data
     /// </summary>
-    internal sealed class UpdGameHandler : GSCmdHandlerBase
+    [HandlerContract("updgame")]
+    internal sealed class UpdGameHandler : CmdHandlerBase
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
