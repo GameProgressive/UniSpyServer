@@ -11,7 +11,7 @@ namespace ServerBrowser.Network
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
         public List<AdHocRequest> ServerMessageList { get; set; }
-        public SBEncryptionParameters EncParams { get; set; }
+        public EncryptionParameters EncParams { get; set; }
 
         public Session(UniSpyTcpServer server) : base(server)
         {
@@ -24,7 +24,7 @@ namespace ServerBrowser.Network
             SBEncryption enc;
             if (EncParams == null)
             {
-                EncParams = new SBEncryptionParameters();
+                EncParams = new EncryptionParameters();
                 enc = new SBEncryption(
                 GameSecretKey,
                 ClientChallenge,

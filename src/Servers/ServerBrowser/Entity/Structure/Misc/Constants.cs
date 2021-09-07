@@ -2,7 +2,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Misc
 {
-    internal sealed class SBConstants
+    internal sealed class Constants
     {
         internal const string LocalIP0 = "localip0";
         internal const string LocalIP1 = "localip1";
@@ -17,7 +17,7 @@ namespace ServerBrowser.Entity.Structure.Misc
         internal const string ServerChallenge = "0000000000";
         internal const ushort QueryReportDefaultPort = 6500;
         internal static byte[] HtonQueryReportDefaultPort
-        => ByteTools.GetBytes(SBConstants.QueryReportDefaultPort, true);
+        => ByteTools.GetBytes(Constants.QueryReportDefaultPort, true);
 
     }
 }

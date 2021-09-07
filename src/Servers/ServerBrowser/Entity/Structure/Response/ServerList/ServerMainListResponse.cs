@@ -44,13 +44,13 @@ namespace ServerBrowser.Entity.Structure.Packet.Response
                 BuildServerInfoHeader(_result.Flag, serverInfo);
                 foreach (var key in _request.Keys)
                 {
-                    _serverListData.Add(SBStringFlag.NTSStringFlag);
+                    _serverListData.Add(StringFlag.NTSStringFlag);
                     _serverListData.AddRange(UniSpyEncoding.GetBytes(serverInfo.ServerData.KeyValue[key]));
-                    _serverListData.Add(SBStringFlag.StringSpliter);
+                    _serverListData.Add(StringFlag.StringSpliter);
                 }
             }
             //after all server information is added we add the end flag
-            _serverListData.AddRange(SBStringFlag.AllServerEndFlag);
+            _serverListData.AddRange(StringFlag.AllServerEndFlag);
         }
 
         private bool IsSkipThisServer(GameServerInfo serverInfo)

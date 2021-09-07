@@ -36,10 +36,10 @@ namespace ServerBrowser.Entity.Structure.Response.ServerList
 
                 foreach (var key in _request.Keys)
                 {
-                    _serverListData.Add(SBStringFlag.NTSStringFlag);
+                    _serverListData.Add(StringFlag.NTSStringFlag);
                     var value = room.GetValuebyGameSpyDefinedName(key);
                     _serverListData.AddRange(UniSpyEncoding.GetBytes(value));
-                    _serverListData.Add(SBStringFlag.StringSpliter);
+                    _serverListData.Add(StringFlag.StringSpliter);
                 }
             }
         }

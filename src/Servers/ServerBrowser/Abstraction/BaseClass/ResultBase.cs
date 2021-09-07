@@ -2,9 +2,9 @@
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    public class SBResultBase : UniSpyResultBase
+    public class ResultBase : UniSpyResultBase
     {
-        public SBResultBase()
+        public ResultBase()
         {
         }
     }

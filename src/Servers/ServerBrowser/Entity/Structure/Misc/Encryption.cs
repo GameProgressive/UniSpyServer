@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using UniSpyLib.Encryption;
-
+using ServerBrowser.Entity.Structure.Misc;
 namespace ServerBrowser.Entity.Structure.Misc
 {
-    public class SBEncryptionParameters
+    public class EncryptionParameters
     {
         public byte[] Register = new byte[256];
         public byte Index0;
@@ -15,21 +15,21 @@ namespace ServerBrowser.Entity.Structure.Misc
 
     public class SBEncryption
     {
-        private SBEncryptionParameters _encParams;
+        private EncryptionParameters _encParams;
         private byte[] _clientChallenge = new byte[8];
         private byte[] _serverChallenge;
         private byte[] _secretKey;
-        public SBEncryption(string secretKey, string clientChallenge, SBEncryptionParameters encParam)
+        public SBEncryption(string secretKey, string clientChallenge, EncryptionParameters encParam)
         {
             // reference private filed to encParams
             _encParams = encParam;
             _clientChallenge = UniSpyEncoding.GetBytes(clientChallenge);
-            _serverChallenge = UniSpyEncoding.GetBytes(SBConstants.ServerChallenge);
+            _serverChallenge = UniSpyEncoding.GetBytes(Constants.ServerChallenge);
             _secretKey = UniSpyEncoding.GetBytes(secretKey);
             InitEncryptionAlgorithm();
         }
 
-        public SBEncryption(SBEncryptionParameters encParams)
+        public SBEncryption(EncryptionParameters encParams)
         {
             _encParams = encParams;
         }
@@ -206,8 +206,8 @@ namespace ServerBrowser.Entity.Structure.Misc
             var cryptHeader = new List<byte>();
             cryptHeader.Add(2 ^ 0xEC);
             cryptHeader.AddRange(new byte[] { 0, 0 });
-            cryptHeader.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
-            cryptHeader.AddRange(UniSpyEncoding.GetBytes(SBConstants.ServerChallenge));
+            cryptHeader.Add((byte)(Constants.ServerChallenge.Length ^ 0xEA));
+            cryptHeader.AddRange(UniSpyEncoding.GetBytes(Constants.ServerChallenge));
             return cryptHeader.ToArray();
         }
     }

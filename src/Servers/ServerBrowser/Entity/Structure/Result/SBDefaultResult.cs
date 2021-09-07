@@ -2,7 +2,7 @@
 
 namespace ServerBrowser.Entity.Structure.Result
 {
-    public class SBDefaultResult : SBResultBase
+    public class SBDefaultResult : ResultBase
     {
         public SBDefaultResult()
         {

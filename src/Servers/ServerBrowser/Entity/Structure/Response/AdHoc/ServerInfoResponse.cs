@@ -35,18 +35,18 @@ namespace ServerBrowser.Entity.Structure.Response
             foreach (var kv in _result.GameServerInfo.ServerData.KeyValue)
             {
                 _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                _serverListData.Add(SBStringFlag.StringSpliter);
+                _serverListData.Add(StringFlag.StringSpliter);
                 _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                _serverListData.Add(SBStringFlag.StringSpliter);
+                _serverListData.Add(StringFlag.StringSpliter);
             }
             foreach (var player in _result.GameServerInfo.PlayerData.KeyValueList)
             {
                 foreach (var kv in player)
                 {
                     _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                    _serverListData.Add(SBStringFlag.StringSpliter);
+                    _serverListData.Add(StringFlag.StringSpliter);
                     _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                    _serverListData.Add(SBStringFlag.StringSpliter);
+                    _serverListData.Add(StringFlag.StringSpliter);
                 }
             }
             foreach (var team in _result.GameServerInfo.TeamData.KeyValueList)
@@ -54,9 +54,9 @@ namespace ServerBrowser.Entity.Structure.Response
                 foreach (var kv in team)
                 {
                     _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Key));
-                    _serverListData.Add(SBStringFlag.StringSpliter);
+                    _serverListData.Add(StringFlag.StringSpliter);
                     _serverListData.AddRange(UniSpyEncoding.GetBytes(kv.Value));
-                    _serverListData.Add(SBStringFlag.StringSpliter);
+                    _serverListData.Add(StringFlag.StringSpliter);
                 }
             }
         }

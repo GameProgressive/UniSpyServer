@@ -8,7 +8,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class ServerListUpdateOptionResponseBase : SBResponseBase
+    internal abstract class ServerListUpdateOptionResponseBase : ResponseBase
     {
         protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
         protected new ServerListUpdateOptionResultBase _result => (ServerListUpdateOptionResultBase)base._result;
@@ -23,7 +23,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             //Add crypt header
             BuildCryptHeader();
             _serverListData.AddRange(_result.ClientRemoteIP);
-            _serverListData.AddRange(SBConstants.HtonQueryReportDefaultPort);
+            _serverListData.AddRange(Constants.HtonQueryReportDefaultPort);
         }
 
         protected void BuildCryptHeader()
@@ -34,8 +34,8 @@ namespace ServerBrowser.Abstraction.BaseClass
             #region message length?
             cryptHeader.AddRange(new byte[] { 0, 0 });
             #endregion
-            cryptHeader.Add((byte)(SBConstants.ServerChallenge.Length ^ 0xEA));
-            cryptHeader.AddRange(UniSpyEncoding.GetBytes(SBConstants.ServerChallenge));
+            cryptHeader.Add((byte)(Constants.ServerChallenge.Length ^ 0xEA));
+            cryptHeader.AddRange(UniSpyEncoding.GetBytes(Constants.ServerChallenge));
             _serverListData.AddRange(cryptHeader);
         }
 
@@ -134,7 +134,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             {
                 _serverListData.Add((byte)DataKeyType.String);
                 _serverListData.AddRange(UniSpyEncoding.GetBytes(key));
-                _serverListData.Add(SBStringFlag.StringSpliter);
+                _serverListData.Add(StringFlag.StringSpliter);
             }
         }
     }
