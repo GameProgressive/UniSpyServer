@@ -19,10 +19,6 @@ namespace PresenceConnectionManager.Application
 
                 Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
             }
-            catch (UniSpyException e)
-            {
-                LogWriter.ToLog(e);
-            }
             catch (Exception e)
             {
                 LogWriter.ToLog(e);

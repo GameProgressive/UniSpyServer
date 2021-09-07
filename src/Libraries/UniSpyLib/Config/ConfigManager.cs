@@ -1,23 +1,23 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
+using UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyLib.UniSpyConfig
 {
     public class ConfigManager
     {
 
-        public static UniSpyConfig Config { get; protected set; }
-
-        static ConfigManager()
+        public static UniSpyConfig Config => LoadConfigFile();
+        public static readonly string ConfigPath = @"UniSpyServer.cfg";
+        private static UniSpyConfig LoadConfigFile()
         {
-            LoadConfigFile();
-        }
-
-        private static void LoadConfigFile()
-        {
-            using (StreamReader fstream = File.OpenText(@"UniSpyServer.cfg"))
+            if (!File.Exists(ConfigPath))
             {
-                Config = JsonConvert.DeserializeObject<UniSpyConfig>(fstream.ReadToEnd());
+                throw new UniSpyException("Config file not found");
+            }
+            using (StreamReader fstream = File.OpenText(ConfigPath))
+            {
+                return JsonConvert.DeserializeObject<UniSpyConfig>(fstream.ReadToEnd());
             }
         }
     }
