@@ -1,5 +1,7 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using System.Linq;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
+using UniSpyLib.MiscMethod;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
@@ -12,7 +14,17 @@ namespace GameStatus.Handler.CmdSwitcher
         }
         protected override void ProcessRawRequest()
         {
-            throw new System.NotImplementedException();
+            if (_message[0] != '\\')
+            {
+                throw new UniSpyException("Invalid request");
+            }
+            string[] splitedRawRequests = _message.TrimStart('\\').Split('\\');
+            foreach (var rawRequest in splitedRawRequests)
+            {
+                var name = GameSpyUtils.ConvertToKeyValue(rawRequest).Keys.First();
+                _rawRequests.Add(name, rawRequest);
+            }
+
         }
     }
 }
