@@ -16,8 +16,6 @@ namespace PresenceConnectionManager.Application
             {
                 //create a instance of ServerManager class
                 new ServerFactory().Start();
-
-                Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
             }
             catch (Exception e)
             {

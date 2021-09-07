@@ -16,7 +16,6 @@ namespace ServerBrowser.Application
             {
                 new SBServerFactory().Start();
 
-                Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyException e)
             {

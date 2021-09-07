@@ -33,6 +33,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         public static IUniSpyServer Server { get; protected set; }
         public ServerFactoryBase()
         {
+            Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
         }
 
         public virtual void Start()

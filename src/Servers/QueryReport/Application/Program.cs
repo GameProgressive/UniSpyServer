@@ -16,7 +16,6 @@ namespace QueryReport.Application
                 //create a instance of ServerManager class
                 new QRServerFactory().Start();
 
-                Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
             }
             catch (UniSpyException e)
             {
