@@ -17,8 +17,8 @@ namespace NatNegotiation.Entity.Structure.Response
             base.Build();
             List<byte> data = new List<byte>();
             data.AddRange(SendingBuffer);
-            data.AddRange(_result.RemoteIPAddress);
-            data.AddRange(_result.RemotePort);
+            data.AddRange(_result.RemoteIPAddressBytes);
+            data.AddRange(_result.RemotePortBytes);
             data.Add((byte)_result.GotYourData);
             data.Add((byte)_result.Finished);
 

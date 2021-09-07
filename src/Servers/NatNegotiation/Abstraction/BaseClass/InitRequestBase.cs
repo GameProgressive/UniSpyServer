@@ -1,4 +1,7 @@
-﻿using NatNegotiation.Abstraction.BaseClass;
+﻿using System;
+using System.Linq;
+using System.Net;
+using NatNegotiation.Abstraction.BaseClass;
 using NatNegotiation.Entity.Enumerate;
 using UniSpyLib.Extensions;
 
@@ -13,28 +16,20 @@ namespace NatNegotiation.Entity.Structure.Request
         public byte UseGamePort { get; protected set; }
         public string LocalIP { get; protected set; }
         public ushort LocalPort { get; protected set; }
-
+        public IPEndPoint RemoteIPEndPoint { get; protected set; }
         public InitRequestBase(byte[] rawRequest) : base(rawRequest)
         {
         }
-
-
-
         public override void Parse()
         {
             base.Parse();
-
-            PortType = (NatPortType)RawRequest[RequestBase.Size];//
-            ClientIndex = RawRequest[RequestBase.Size + 1];//00
-            UseGamePort = RawRequest[RequestBase.Size + 2];//00
-
-            LocalIP = HtonsExtensions.
-                BytesToIPString(
-                ByteTools.SubBytes(RawRequest, RequestBase.Size + 3, 4));
-
-            LocalPort = HtonsExtensions.
-                BytesToUshortPort(
-                ByteTools.SubBytes(RawRequest, RequestBase.Size + 7, 2));
+            PortType = (NatPortType)RawRequest[12];
+            ClientIndex = RawRequest[13];
+            UseGamePort = RawRequest[14];
+            var ipBytes = RawRequest.Skip(15).Take(4).ToArray();
+            var portBytes = RawRequest.Skip(19).Take(2).ToArray();
+            var port = BitConverter.ToUInt16(portBytes);
+            RemoteIPEndPoint = new IPEndPoint(new IPAddress(ipBytes), port);
         }
     }
 }

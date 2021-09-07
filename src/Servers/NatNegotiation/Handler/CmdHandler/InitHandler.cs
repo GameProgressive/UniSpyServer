@@ -45,7 +45,7 @@ namespace NatNegotiation.Handler.CmdHandler
             _userInfo.InitRequestInfo = _request;
             _userInfo.LastPacketRecieveTime = DateTime.Now;
             NatUserInfoRedisOperator.SetKeyValue(fullKey, _userInfo);
-            _result.LocalIPEndPoint = _session.RemoteIPEndPoint;
+            _result.RemoteIPEndPoint = _session.RemoteIPEndPoint;
         }
 
         protected override void ResponseConstruct()

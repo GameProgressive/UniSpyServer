@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using NatNegotiation.Entity.Structure.Request;
 using UniSpyLib.Abstraction.BaseClass;
+using UniSpyLib.Extensions;
 
 namespace NatNegotiation.Abstraction.BaseClass
 {
@@ -18,8 +21,8 @@ namespace NatNegotiation.Abstraction.BaseClass
             data.Add((byte)_request.PortType);
             data.Add(_request.ClientIndex);
             data.Add(_request.UseGamePort);
-            data.AddRange(HtonsExtensions.IPStringToBytes(_result.LocalIP));
-            data.AddRange(HtonsExtensions.UshortPortToBytes(_result.LocalPort));
+            data.AddRange(_result.RemoteIPBytes);
+            data.AddRange(_result.RemotePortBytes);
             SendingBuffer = data.ToArray();
         }
     }

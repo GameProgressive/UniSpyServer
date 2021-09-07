@@ -1,5 +1,6 @@
 ﻿using NatNegotiation.Entity.Enumerate;
 using System;
+using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 
@@ -34,9 +35,9 @@ namespace NatNegotiation.Abstraction.BaseClass
                 return;
             }
 
-            Version = RawRequest[MagicData.Length];
-            CommandName = (NatPacketType)RawRequest[MagicData.Length + 1];
-            Cookie = BitConverter.ToUInt32(ByteTools.SubBytes(RawRequest, MagicData.Length + 2, 4));
+            Version = RawRequest[6];
+            CommandName = (NatPacketType)RawRequest[7];
+            Cookie = BitConverter.ToUInt32(RawRequest.Skip(8).Take(4).ToArray());
         }
     }
 }

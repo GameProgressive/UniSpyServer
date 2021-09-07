@@ -18,14 +18,5 @@ namespace NatNegotiation.Abstraction.BaseClass
         public CmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-        public override void Handle()
-        {
-            RequestCheck();
-            DataOperation();
-            ResponseConstruct();
-            Response();
-        }
-        protected override void DataOperation() { }
-        protected override void ResponseConstruct() { }
     }
 }
