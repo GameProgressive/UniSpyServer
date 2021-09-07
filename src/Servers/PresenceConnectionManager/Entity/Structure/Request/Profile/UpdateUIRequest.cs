@@ -1,9 +1,9 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    [Command("updateui")]
+    [RequestContract("updateui")]
     internal sealed class UpdateUIRequest : PCMRequestBase
     {
         public UpdateUIRequest(string rawRequest) : base(rawRequest)

@@ -10,9 +10,9 @@ namespace PresenceConnectionManager.Application
     /// </summary>
     internal sealed class PCMServerFactory : ServerFactoryBase
     {
-        internal new static PCMServer Server
+        internal new static Server Server
         {
-            get => (PCMServer)ServerFactoryBase.Server;
+            get => (Server)ServerFactoryBase.Server;
             private set => ServerFactoryBase.Server = value;
         }
         /// <summary>
@@ -31,7 +31,7 @@ namespace PresenceConnectionManager.Application
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new PCMServer(cfg.ServerID, cfg.ListeningEndPoint);
+                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

@@ -3,7 +3,7 @@ using System;
 
 namespace PresenceConnectionManager.Structure.Data
 {
-    internal sealed class PCMUserInfo
+    internal sealed class UserInfo
     {
         public const ushort SessionKey = 1111;
         public const string LoginTicket = "0000000000000000000000__";
@@ -15,7 +15,7 @@ namespace PresenceConnectionManager.Structure.Data
         public PCMUserStatus Status { get; set; }
         public PCMUserStatusInfo StatusInfo { get; set; }
 
-        public PCMUserInfo(Guid guid)
+        public UserInfo(Guid guid)
         {
             UserGuid = guid;
             CreatedTime = DateTime.Now;

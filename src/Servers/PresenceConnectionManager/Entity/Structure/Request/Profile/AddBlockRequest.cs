@@ -1,10 +1,11 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    [Command("addblock")]
+    [RequestContract("addblock")]
     internal sealed class AddBlockRequest : PCMRequestBase
     {
         public uint ProfileID;

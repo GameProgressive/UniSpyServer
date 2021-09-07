@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyLib.Abstraction.BaseClass;
@@ -7,7 +8,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
-    [Command("addbuddy")]
+    [HandlerContract("addbuddy")]
     internal sealed class AddBuddyHandler : PCMCmdHandlerBase
     {
         private new AddBuddyRequest _request => (AddBuddyRequest)base._request;

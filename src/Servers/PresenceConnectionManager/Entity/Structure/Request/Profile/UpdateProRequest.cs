@@ -1,14 +1,13 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Exception.General;
-
 using System;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    [Command("updatepro")]
+    [RequestContract("updatepro")]
     internal sealed class UpdateProRequest : PCMRequestBase
     {
         public UpdateProRequest(string rawRequest) : base(rawRequest)

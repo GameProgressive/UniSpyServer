@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// <summary>
     /// handles dell buddy request,remove friends from friends list
     /// </summary>
-    [Command("delbuddy")]
+    [HandlerContract("delbuddy")]
     internal sealed class DelBuddyHandler : PCMCmdHandlerBase
     {
         private new DelBuddyRequest _request => (DelBuddyRequest)base._request;

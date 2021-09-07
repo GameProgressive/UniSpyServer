@@ -1,10 +1,11 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    [Command("getprofile")]
+    [RequestContract("getprofile")]
     internal sealed class GetProfileRequest : PCMRequestBase
     {
         public uint ProfileID { get; private set; }

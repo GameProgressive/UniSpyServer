@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
@@ -7,7 +8,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    [Command("updatepro")]
+    [HandlerContract("updatepro")]
     internal sealed class UpdateProHandler : PCMCmdHandlerBase
     {
         private new UpdateProRequest _request => (UpdateProRequest)base._request;

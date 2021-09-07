@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
@@ -8,7 +9,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    [Command("registercdkey")]
+    [HandlerContract("registercdkey")]
     internal sealed class RegisterCDKeyHandler : PCMCmdHandlerBase
     {
         private new RegisterCDKeyRequest _request => (RegisterCDKeyRequest)base._request;

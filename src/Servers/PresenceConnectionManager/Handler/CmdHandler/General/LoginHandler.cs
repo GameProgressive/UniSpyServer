@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Response;
@@ -15,7 +16,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    [Command("login")]
+    [HandlerContract("login")]
     internal sealed class LoginHandler : PCMCmdHandlerBase
     {
         private new LoginRequest _request => (LoginRequest)base._request;

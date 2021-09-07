@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
 
@@ -7,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// <summary>
     /// Invite a user to a room or a game
     /// </summary>
-    [Command("inviteto")]
+    [RequestContract("inviteto")]
     internal sealed class InviteToRequest : PCMRequestBase
     {
         public uint ProductID { get; private set; }

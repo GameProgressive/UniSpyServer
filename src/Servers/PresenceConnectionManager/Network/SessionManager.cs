@@ -4,9 +4,9 @@ using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
 namespace PresenceConnectionManager.Network
 {
-    internal sealed class PCMSessionManager : UniSpyTcpSessionManager
+    internal sealed class SessionManager : UniSpyTcpSessionManager
     {
-        public PCMSessionManager()
+        public SessionManager()
         {
         }
     }

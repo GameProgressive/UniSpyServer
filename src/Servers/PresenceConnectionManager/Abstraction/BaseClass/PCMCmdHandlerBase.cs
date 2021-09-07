@@ -14,7 +14,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
     /// </summary>
     internal abstract class PCMCmdHandlerBase : UniSpyCmdHandlerBase
     {
-        protected new PCMSession _session => (PCMSession)base._session;
+        protected new Session _session => (Session)base._session;
         protected new PCMRequestBase _request => (PCMRequestBase)base._request;
         protected new PCMResultBase _result
         {

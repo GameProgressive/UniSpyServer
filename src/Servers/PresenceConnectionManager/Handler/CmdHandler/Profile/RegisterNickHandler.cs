@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceSearchPlayer.Entity.Exception.General;
 using System;
@@ -9,7 +10,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    [Command("registernick")]
+    [HandlerContract("registernick")]
     internal sealed class RegisterNickHandler : PCMCmdHandlerBase
     {
         private new RegisterNickRequest _request => (RegisterNickRequest)base._request;

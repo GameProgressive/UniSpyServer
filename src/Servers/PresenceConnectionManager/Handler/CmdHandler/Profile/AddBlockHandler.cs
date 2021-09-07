@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
@@ -7,7 +8,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    [Command("addblock")]
+    [HandlerContract("addblock")]
     internal sealed class AddBlockHandler : PCMCmdHandlerBase
     {
         private new AddBlockRequest _request => (AddBlockRequest)base._request;

@@ -1,10 +1,11 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    [Command("registernick")]
+    [RequestContract("registernick")]
     internal sealed class RegisterNickRequest : PCMRequestBase
     {
         public string UniqueNick { get; private set; }

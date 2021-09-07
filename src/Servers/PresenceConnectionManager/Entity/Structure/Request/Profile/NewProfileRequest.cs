@@ -1,10 +1,11 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
-    [Command("newprofile")]
+    [RequestContract("newprofile")]
     internal sealed class NewProfileRequest : PCMRequestBase
     {
         //create a new profile with new nick 

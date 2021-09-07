@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Misc;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
@@ -8,7 +9,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// <summary>
     /// Update a user's status information
     /// </summary>
-    [Command("statusinfo")]
+    [RequestContract("statusinfo")]
     internal sealed class StatusInfoRequest : PCMRequestBase
     {
         public bool IsGetStatusInfo { get; set; }

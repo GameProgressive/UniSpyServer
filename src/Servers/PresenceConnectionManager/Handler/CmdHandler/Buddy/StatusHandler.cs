@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyLib.Abstraction.BaseClass;
@@ -11,7 +12,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// </summary>
     internal sealed class StatusHandler : PCMCmdHandlerBase
     {
-        [Command("status")]
+        [HandlerContract("status")]
         private new StatusRequest _request => (StatusRequest)base._request;
         private new StatusResult _result
         {

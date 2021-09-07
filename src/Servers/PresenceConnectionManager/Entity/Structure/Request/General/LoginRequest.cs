@@ -1,11 +1,12 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    [Command("login")]
+    [RequestContract("login")]
     internal sealed class LoginRequest : PCMRequestBase
     {
         public string UserChallenge { get; private set; }

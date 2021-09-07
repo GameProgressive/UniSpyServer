@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
 
@@ -7,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// <summary>
     /// Delete a user from my friend list
     /// </summary>
-    [Command("delbuddy")]
+    [RequestContract("delbuddy")]
     internal sealed class DelBuddyRequest : PCMRequestBase
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\

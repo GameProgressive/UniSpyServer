@@ -1,10 +1,10 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
-    [Command("addbuddy")]
+    [RequestContract("addbuddy")]
     internal sealed class AddBuddyRequest : PCMRequestBase
     {
         public uint FriendProfileID { get; private set; }

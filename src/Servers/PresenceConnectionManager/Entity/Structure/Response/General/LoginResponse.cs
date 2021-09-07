@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
 
             //_session.UserData.SessionKey = _crc.ComputeChecksum(checkSumStr);
 
-            SendingBuffer = @"\lc\2\sesskey\" + PCMUserInfo.SessionKey;
+            SendingBuffer = @"\lc\2\sesskey\" + UserInfo.SessionKey;
             SendingBuffer += @"\proof\" + _result.ResponseProof;
             SendingBuffer += @"\userid\" + _result.DatabaseResults.UserID;
             SendingBuffer += @"\profileid\" + _result.DatabaseResults.ProfileID;
@@ -30,7 +30,7 @@ namespace PresenceConnectionManager.Entity.Structure.Response
             {
                 SendingBuffer += @"\uniquenick\" + _result.DatabaseResults.UniqueNick;
             }
-            SendingBuffer += $@"\lt\{PCMUserInfo.LoginTicket}";
+            SendingBuffer += $@"\lt\{UserInfo.LoginTicket}";
             SendingBuffer += $@"\id\{_request.OperationID}\final\";
         }
     }

@@ -63,7 +63,7 @@ namespace UniSpyLib.Logging
         public static void Debug(string message) => Log.Debug(message);
         public static void Error(string message) => Log.Error(message);
         public static void Fatal(string message) => Log.Fatal(message);
-        public static void Waining(string message) => Log.Warning(message);
+        public static void Warning(string message) => Log.Warning(message);
 
         public static void ToLog(Exception e) => Error(e.Message);
         public static void ToLog(string message) => Information(message);

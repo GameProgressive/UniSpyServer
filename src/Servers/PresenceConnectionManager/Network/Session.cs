@@ -2,7 +2,6 @@
 using PresenceConnectionManager.Handler.CommandSwitcher;
 using PresenceConnectionManager.Structure;
 using PresenceConnectionManager.Structure.Data;
-using Serilog.Events;
 using UniSpyLib.Logging;
 using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace PresenceConnectionManager.Network
@@ -13,15 +12,15 @@ namespace PresenceConnectionManager.Network
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    internal sealed class PCMSession : UniSpyTcpSession
+    internal sealed class Session : UniSpyTcpSession
     {
         /// <summary>
         /// Indicates the date and time this connection was created
         /// </summary>
-        public PCMUserInfo UserInfo;
-        public PCMSession(UniSpyTcpServer server) : base(server)
+        public UserInfo UserInfo;
+        public Session(UniSpyTcpServer server) : base(server)
         {
-            UserInfo = new PCMUserInfo(Id);
+            UserInfo = new UserInfo(Id);
         }
 
         protected override void OnConnected()
@@ -29,7 +28,7 @@ namespace PresenceConnectionManager.Network
             SendServerChallenge();
             base.OnConnected();
         }
-        protected override void OnReceived(string message) => new PCMCmdSwitcher(this, message).Switch();
+        protected override void OnReceived(string message) => new CmdSwitcher(this, message).Switch();
         public void SendServerChallenge()
         {
             // Only send the login challenge once
@@ -37,9 +36,7 @@ namespace PresenceConnectionManager.Network
             {
                 Disconnect();
                 // Throw the error                
-                LogWriter.ToLog(
-                    LogEventLevel.Warning,
-                    "The server challenge has already been sent. Cannot send another login challenge.");
+                LogWriter.Warning("The server challenge has already been sent. Cannot send another login challenge.");
             }
 
             UserInfo.BasicInfo.LoginStatus = LoginStatus.Processing;

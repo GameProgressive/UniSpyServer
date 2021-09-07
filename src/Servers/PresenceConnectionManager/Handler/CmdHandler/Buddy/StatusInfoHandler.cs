@@ -1,5 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Application;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Response.Buddy;
 using PresenceConnectionManager.Entity.Structure.Result.Buddy;
@@ -13,7 +14,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// <summary>
     /// TODO Status info should be stored in redis
     /// </summary>
-    [Command("statusinfo")]
+    [HandlerContract("statusinfo")]
     internal sealed class StatusInfoHandler : PCMCmdHandlerBase
     {
         private new StatusInfoRequest _request => (StatusInfoRequest)base._request;
@@ -32,9 +33,9 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         {
             if (_request.IsGetStatusInfo)
             {
-                var result = (PCMSession)PCMServerFactory.Server.SessionManager.SessionPool.Values
-                                .Where(session => ((PCMSession)session).UserInfo.BasicInfo.ProfileID == _request.ProfileID
-                                && ((PCMSession)session).UserInfo.BasicInfo.NamespaceID == _session.UserInfo.BasicInfo.NamespaceID)
+                var result = (Session)PCMServerFactory.Server.SessionManager.SessionPool.Values
+                                .Where(session => ((Session)session).UserInfo.BasicInfo.ProfileID == _request.ProfileID
+                                && ((Session)session).UserInfo.BasicInfo.NamespaceID == _session.UserInfo.BasicInfo.NamespaceID)
                                 .FirstOrDefault();
                 if (result != null)
                 {

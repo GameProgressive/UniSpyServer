@@ -21,8 +21,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         protected override void DataOperation()
         {
             var session = PCMServerFactory.Server.SessionManager.SessionPool.Values.Where(
-                u => ((PCMSession)u).UserInfo.BasicInfo.ProductID == _request.ProductID
-                && ((PCMSession)u).UserInfo.BasicInfo.ProfileID == _request.ProfileID).FirstOrDefault();
+                u => ((Session)u).UserInfo.BasicInfo.ProductID == _request.ProductID
+                && ((Session)u).UserInfo.BasicInfo.ProfileID == _request.ProfileID).FirstOrDefault();
 
             //user is offline
             if (session == null)

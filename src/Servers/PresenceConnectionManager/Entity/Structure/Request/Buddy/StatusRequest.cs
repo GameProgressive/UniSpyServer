@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Misc;
 using PresenceSearchPlayer.Entity.Exception.General;
@@ -9,7 +10,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// <summary>
     /// Update a user's status information
     /// </summary>
-    [Command("status")]
+    [RequestContract("status")]
     internal sealed class StatusRequest : PCMRequestBase
     {
         public PCMUserStatus Status { get; private set; }

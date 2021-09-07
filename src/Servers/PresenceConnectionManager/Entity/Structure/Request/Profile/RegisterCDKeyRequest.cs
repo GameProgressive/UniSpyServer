@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
 
@@ -7,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// <summary>
     /// \registercdkey\sesskey\<sesskey>\cdkeyenc\<cdkeyenc>\id\<id>\final\
     /// </summary>
-    [Command("registercdkey")]
+    [RequestContract("registercdkey")]
     internal sealed class RegisterCDKeyRequest : PCMRequestBase
     {
         public string CDKeyEnc { get; private set; }

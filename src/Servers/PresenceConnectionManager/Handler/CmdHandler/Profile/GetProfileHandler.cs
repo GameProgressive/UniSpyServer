@@ -1,4 +1,5 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request.Profile;
 using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
@@ -11,7 +12,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    [Command("getprofile")]
+    [HandlerContract("getprofile")]
     internal sealed class GetProfileHandler : PCMCmdHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\

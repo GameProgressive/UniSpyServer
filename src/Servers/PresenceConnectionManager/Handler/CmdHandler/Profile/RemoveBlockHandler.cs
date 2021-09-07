@@ -1,11 +1,12 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
+using PresenceConnectionManager.Entity.Contract;
 using System;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    [Command("removeblk")]
+    [HandlerContract("removeblk")]
     internal sealed class RemoveBlockHandler : PCMCmdHandlerBase
     {
         public RemoveBlockHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
