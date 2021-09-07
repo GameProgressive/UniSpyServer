@@ -5,13 +5,13 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {
-    internal sealed class NatNegMsgRequest : SBRequestBase
+    internal sealed class NatNegMsgRequest : RequestBase
     {
         public uint Cookie { get; set; }
         public byte[] NatNegMessage => RawRequest;
         public NatNegMsgRequest(object rawRequest) : base(rawRequest)
         {
-            CommandName = SBClientRequestType.NatNegRequest;
+            CommandName = RequestType.NatNegRequest;
         }
 
         public override void Parse()

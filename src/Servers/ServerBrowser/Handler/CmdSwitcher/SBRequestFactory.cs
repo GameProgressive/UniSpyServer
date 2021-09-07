@@ -23,18 +23,18 @@ namespace ServerBrowser.Handler.CommandSwitcher
                 return new AdHocRequest(_rawRequest);
             }
 
-            switch ((SBClientRequestType)_rawRequest[2])
+            switch ((RequestType)_rawRequest[2])
             {
-                case SBClientRequestType.ServerListRequest:
+                case RequestType.ServerListRequest:
                     return new ServerListRequest(_rawRequest);
-                case SBClientRequestType.ServerInfoRequest:
+                case RequestType.ServerInfoRequest:
                     return new AdHocRequest(_rawRequest);
-                case SBClientRequestType.SendMessageRequest:
+                case RequestType.SendMessageRequest:
                     //TODO Cryptorx's game use this command
                     return new AdHocRequest(_rawRequest);
-                case SBClientRequestType.PlayerSearchRequest:
+                case RequestType.PlayerSearchRequest:
                     return null;
-                case SBClientRequestType.MapLoopRequest:
+                case RequestType.MapLoopRequest:
                     return null;
                 default:
                     LogWriter.LogUnkownRequest(_rawRequest);

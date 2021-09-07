@@ -6,16 +6,16 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class SBCmdHandlerBase : UniSpyCmdHandlerBase
+    internal abstract class CmdHandlerBase : UniSpyCmdHandlerBase
     {
-        protected new SBRequestBase _request => (SBRequestBase)base._request;
-        protected new SBSession _session => (SBSession)base._session;
+        protected new RequestBase _request => (RequestBase)base._request;
+        protected new Session _session => (Session)base._session;
         protected new SBResultBase _result
         {
             get => (SBResultBase)base._result;
             set => base._result = value;
         }
-        public SBCmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public CmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new SBDefaultResult();
         }

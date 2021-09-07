@@ -10,7 +10,7 @@ namespace Chat.Handler.CmdHandler.General
     /// <summary>
     /// Get value of the channel user's key value of all channels
     /// </summary>
-    internal sealed class GETKEYHandler : ChatLogedInHandlerBase
+    internal sealed class GETKEYHandler : LogedInHandlerBase
     {
         private new GETKEYRequest _request => (GETKEYRequest)base._request;
         private new GETKEYResult _result

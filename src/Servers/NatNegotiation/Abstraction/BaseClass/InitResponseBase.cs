@@ -1,20 +1,15 @@
-﻿using NatNegotiation.Abstraction.BaseClass;
 using NatNegotiation.Entity.Structure.Request;
-using NatNegotiation.Entity.Structure.Result;
-using System.Collections.Generic;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
 
-namespace NatNegotiation.Entity.Structure.Response
+namespace NatNegotiation.Abstraction.BaseClass
 {
-    internal sealed class InitResponse : InitResponseBase
+    public abstract class InitResponseBase : ResponseBase
     {
-        private new InitRequest _request => (InitRequest)base._request;
-        private new InitResult _result => (InitResult)base._result;
-        public InitResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        private new InitRequestBase _request => (InitRequestBase)base._request;
+        private new InitResultBase _result => (InitResultBase)base._result;
+        public InitResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
-
         public override void Build()
         {
             base.Build();

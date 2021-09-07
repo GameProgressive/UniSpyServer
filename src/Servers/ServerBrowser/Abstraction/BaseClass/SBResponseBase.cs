@@ -8,7 +8,7 @@ namespace ServerBrowser.Abstraction.BaseClass
     /// </summary>
     internal abstract class SBResponseBase : UniSpyResponseBase
     {
-        protected new SBRequestBase _request => (SBRequestBase)base._request;
+        protected new RequestBase _request => (RequestBase)base._request;
         protected new SBResultBase _result => (SBResultBase)base._result;
         public new byte[] SendingBuffer
         {

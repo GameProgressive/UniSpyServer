@@ -18,6 +18,6 @@ namespace ServerBrowser.Network
             SessionManager = new SBSessionManager();
             RedisChannelSubscriber = new QRRedisChannelSubscriber();
         }
-        protected override TcpSession CreateSession() => new SBSession(this);
+        protected override TcpSession CreateSession() => new Session(this);
     }
 }

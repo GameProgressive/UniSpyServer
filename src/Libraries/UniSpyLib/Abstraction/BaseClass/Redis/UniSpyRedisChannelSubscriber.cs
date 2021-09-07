@@ -1,5 +1,4 @@
 ﻿using StackExchange.Redis;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace UniSpyLib.Abstraction.BaseClass.Redis

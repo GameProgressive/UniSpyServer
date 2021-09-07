@@ -4,9 +4,9 @@ using UniSpyLib.Logging;
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal abstract class ChatLogedInHandlerBase : ChatCmdHandlerBase
+    internal abstract class LogedInHandlerBase : ChatCmdHandlerBase
     {
-        public ChatLogedInHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public LogedInHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
 
@@ -14,7 +14,7 @@ namespace Chat.Abstraction.BaseClass
         {
             if (!_session.UserInfo.IsLoggedIn)
             {
-                LogWriter.Info("Please login first!");
+                LogWriter.Information("Please login first!");
                 return;
             }
 

@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal abstract class ChatChannelHandlerBase : ChatLogedInHandlerBase
+    internal abstract class ChatChannelHandlerBase : LogedInHandlerBase
     {
         protected ChatChannel _channel;
         protected ChatChannelUser _user;

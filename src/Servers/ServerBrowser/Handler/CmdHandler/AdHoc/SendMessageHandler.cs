@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CmdHandler
 {
-    internal sealed class SendMessageHandler : SBCmdHandlerBase
+    internal sealed class SendMessageHandler : CmdHandlerBase
     {
         private new AdHocRequest _request => (AdHocRequest)base._request;
         public SendMessageHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

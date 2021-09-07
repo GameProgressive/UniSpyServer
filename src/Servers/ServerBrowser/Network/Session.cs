@@ -6,19 +6,19 @@ using System.Linq;
 using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace ServerBrowser.Network
 {
-    internal sealed class SBSession : UniSpyTcpSession
+    internal sealed class Session : UniSpyTcpSession
     {
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }
         public List<AdHocRequest> ServerMessageList { get; set; }
         public SBEncryptionParameters EncParams { get; set; }
 
-        public SBSession(UniSpyTcpServer server) : base(server)
+        public Session(UniSpyTcpServer server) : base(server)
         {
             ServerMessageList = new List<AdHocRequest>();
         }
 
-        protected override void OnReceived(byte[] message) => new SBCmdSwitcher(this, message).Switch();
+        protected override void OnReceived(byte[] message) => new CmdSwitcher(this, message).Switch();
         protected override byte[] Encrypt(byte[] buffer)
         {
             SBEncryption enc;

@@ -18,7 +18,7 @@ namespace Chat.Handler.CmdHandler.Channel
     /// <summary>
     /// Game will only join one channel at one time
     /// </summary>
-    internal sealed class JOINHandler : ChatLogedInHandlerBase
+    internal sealed class JOINHandler : LogedInHandlerBase
     {
         private new JOINRequest _request => (JOINRequest)base._request;
         private new JOINResult _result

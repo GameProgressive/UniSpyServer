@@ -17,7 +17,7 @@ namespace Chat.Handler.CmdHandler.General
     /// Get a channel user's basic information
     /// same as WHOIS
     /// </summary>
-    internal sealed class WHOHandler : ChatLogedInHandlerBase
+    internal sealed class WHOHandler : LogedInHandlerBase
     {
         private new WHORequest _request => (WHORequest)base._request;
         private new WHOResult _result

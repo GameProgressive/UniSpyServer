@@ -1,7 +1,7 @@
 ﻿using ServerBrowser.Entity.Enumerate;
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class ServerListUpdateOptionRequestBase : SBRequestBase
+    internal abstract class ServerListUpdateOptionRequestBase : RequestBase
     {
         public byte RequestVersion { get; protected set; }
         public byte ProtocolVersion { get; protected set; }

@@ -4,16 +4,16 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class SBRequestBase : UniSpyRequestBase
+    internal abstract class RequestBase : UniSpyRequestBase
     {
         public int RequestLength { get; private set; }
         public new byte[] RawRequest => (byte[])base.RawRequest;
-        public new SBClientRequestType CommandName
+        public new RequestType CommandName
         {
-            get => (SBClientRequestType)base.CommandName;
+            get => (RequestType)base.CommandName;
             protected set => base.CommandName = value;
         }
-        public SBRequestBase(object rawRequest) : base(rawRequest)
+        public RequestBase(object rawRequest) : base(rawRequest)
         {
         }
 

@@ -8,7 +8,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.General
 {
-    internal sealed class QUITHandler : ChatLogedInHandlerBase
+    internal sealed class QUITHandler : LogedInHandlerBase
     {
         private new QUITRequest _request => (QUITRequest)base._request;
         private new QUITResult _result

@@ -6,7 +6,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {
-    internal sealed class AdHocRequest : SBRequestBase
+    internal sealed class AdHocRequest : RequestBase
     {
         /// <summary>
         /// The game server client search for
@@ -26,7 +26,7 @@ namespace ServerBrowser.Entity.Structure.Request
             //{
             //    return false;
             //}
-            CommandName = (SBClientRequestType)RawRequest[2];
+            CommandName = (RequestType)RawRequest[2];
 
             byte[] ip = ByteTools.SubBytes(RawRequest, 3, 4);
             byte[] port = ByteTools.SubBytes(RawRequest, 7, 2);

@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace ServerBrowser.Handler.CommandSwitcher
 {
-    public class SBCmdHandlerFactory : UniSpyCmdHandlerFactory
+    public class SBCmdHandlerFactory : UniSpyCmdHandlerBase
     {
         public SBCmdHandlerFactory(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -18,7 +18,7 @@ namespace ServerBrowser.Handler.CommandSwitcher
             //we do not need to handle GOA query because it is handled by game server
             switch (_request.CommandName)
             {
-                case SBClientRequestType.ServerListRequest:
+                case RequestType.ServerListRequest:
                     switch (((ServerListRequest)_request).UpdateOption)
                     {
                         case SBServerListUpdateOption.ServerNetworkInfoList:
@@ -36,17 +36,17 @@ namespace ServerBrowser.Handler.CommandSwitcher
                         default:
                             return null;
                     }
-                case SBClientRequestType.ServerInfoRequest:
+                case RequestType.ServerInfoRequest:
                     return new ServerInfoHandler(_session, _request);
-                case SBClientRequestType.PlayerSearchRequest:
+                case RequestType.PlayerSearchRequest:
                     goto default;
-                case SBClientRequestType.MapLoopRequest:
+                case RequestType.MapLoopRequest:
                     goto default;
-                case SBClientRequestType.SendMessageRequest:
+                case RequestType.SendMessageRequest:
                     //TODO
                     //Cryptorx's game use this command
                     return new SendMessageHandler(_session, _request);
-                case SBClientRequestType.NatNegRequest:
+                case RequestType.NatNegRequest:
                     return new NatNegMsgHandler(_session, _request);
                 default:
                     throw new NotImplementedException();

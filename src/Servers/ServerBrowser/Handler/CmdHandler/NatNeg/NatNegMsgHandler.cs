@@ -12,7 +12,7 @@ namespace ServerBrowser.Handler.CmdHandler
     /// <summary>
     /// we need forward this to game server
     /// </summary>
-    internal sealed class NatNegMsgHandler : SBCmdHandlerBase
+    internal sealed class NatNegMsgHandler : CmdHandlerBase
     {
         private new NatNegMsgRequest _request => (NatNegMsgRequest)base._request;
         private AdHocRequest _adHocRequest;

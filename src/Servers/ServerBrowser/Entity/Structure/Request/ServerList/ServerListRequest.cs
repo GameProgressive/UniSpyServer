@@ -20,7 +20,7 @@ namespace ServerBrowser.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-            CommandName = SBClientRequestType.ServerListRequest;
+            CommandName = RequestType.ServerListRequest;
             if (RequestLength != RawRequest.Length)
             {
                 throw new SBException("Server list request length is not correct.");

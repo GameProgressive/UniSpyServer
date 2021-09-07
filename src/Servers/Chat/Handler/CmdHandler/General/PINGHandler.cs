@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace Chat.Handler.CmdHandler.General
 {
-    internal sealed class PINGHandler : ChatLogedInHandlerBase
+    internal sealed class PINGHandler : LogedInHandlerBase
     {
         private new PINGRequest _request => (PINGRequest)base._request;
         private new PINGResult _result

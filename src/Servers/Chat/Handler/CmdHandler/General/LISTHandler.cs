@@ -9,7 +9,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.General
 {
     //todo unfinished
-    internal sealed class LISTHandler : ChatLogedInHandlerBase
+    internal sealed class LISTHandler : LogedInHandlerBase
     {
         private new LISTRequest _request => (LISTRequest)base._request;
         private new LISTResult _result

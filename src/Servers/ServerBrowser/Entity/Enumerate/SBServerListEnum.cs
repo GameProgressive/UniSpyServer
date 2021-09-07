@@ -1,6 +1,6 @@
 ﻿namespace ServerBrowser.Entity.Enumerate
 {
-    public enum SBClientRequestType
+    public enum RequestType
     {
         ServerListRequest,
         ServerInfoRequest,
