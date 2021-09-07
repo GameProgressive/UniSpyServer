@@ -33,7 +33,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
         {
             if (_request.IsGetStatusInfo)
             {
-                var result = (Session)PCMServerFactory.Server.SessionManager.SessionPool.Values
+                var result = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
                                 .Where(session => ((Session)session).UserInfo.BasicInfo.ProfileID == _request.ProfileID
                                 && ((Session)session).UserInfo.BasicInfo.NamespaceID == _session.UserInfo.BasicInfo.NamespaceID)
                                 .FirstOrDefault();

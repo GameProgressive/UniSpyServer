@@ -20,7 +20,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            var session = PCMServerFactory.Server.SessionManager.SessionPool.Values.Where(
+            var session = ServerFactory.Server.SessionManager.SessionPool.Values.Where(
                 u => ((Session)u).UserInfo.BasicInfo.ProductID == _request.ProductID
                 && ((Session)u).UserInfo.BasicInfo.ProfileID == _request.ProfileID).FirstOrDefault();
 

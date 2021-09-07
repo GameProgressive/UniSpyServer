@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class PCMServerFactory : ServerFactoryBase
+    internal sealed class ServerFactory : ServerFactoryBase
     {
         internal new static Server Server
         {
@@ -19,7 +19,7 @@ namespace PresenceConnectionManager.Application
         /// Constructor
         /// </summary>
         /// <param name="serverName">Server name in config file</param>
-        public PCMServerFactory()
+        public ServerFactory()
         {
         }
 
