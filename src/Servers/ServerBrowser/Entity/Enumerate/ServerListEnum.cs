@@ -1,6 +1,6 @@
 ﻿namespace ServerBrowser.Entity.Enumerate
 {
-    public enum RequestType
+    public enum RequestType : byte
     {
         ServerListRequest,
         ServerInfoRequest,
@@ -11,7 +11,7 @@
         NatNegRequest,
     }
 
-    public enum SBServerResponseType
+    public enum ResponseType
     {
         PushKeysMessage = 1,
         PushServerMessage,
@@ -21,13 +21,13 @@
         PlayerSearchMessage
     }
 
-    public enum SBProtocolVersion
+    public enum ProtocolVersion
     {
         ListProtocolVersion1 = 0,
         ListEncodingVersion = 3
     }
 
-    public enum SBServerListUpdateOption
+    public enum ServerListUpdateOption
     {
         /// <summary>
         /// This is used to tell server browser client want main server list (keys and values)

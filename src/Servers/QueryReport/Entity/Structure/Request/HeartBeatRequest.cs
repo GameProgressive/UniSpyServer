@@ -1,4 +1,5 @@
 ﻿using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.contract;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Exception;
 using System;
@@ -8,6 +9,7 @@ using UniSpyLib.Encryption;
 
 namespace QueryReport.Entity.Structure.Request
 {
+    [RequestContract(RequestType.HeartBeat)]
     internal sealed class HeartBeatRequest : RequestBase
     {
         public string ServerData { get; private set; }

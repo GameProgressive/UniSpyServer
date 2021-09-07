@@ -132,7 +132,7 @@ namespace ServerBrowser.Abstraction.BaseClass
             //then we add the keys
             foreach (var key in _request.Keys)
             {
-                _serverListData.Add((byte)SBKeyType.String);
+                _serverListData.Add((byte)DataKeyType.String);
                 _serverListData.AddRange(UniSpyEncoding.GetBytes(key));
                 _serverListData.Add(SBStringFlag.StringSpliter);
             }

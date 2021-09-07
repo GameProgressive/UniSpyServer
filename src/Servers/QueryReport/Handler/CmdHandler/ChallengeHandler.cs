@@ -1,4 +1,6 @@
 ﻿using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.contract;
+using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Exception;
 using QueryReport.Entity.Structure.Redis;
 using QueryReport.Entity.Structure.Request;
@@ -9,6 +11,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
 {
+    [HandlerContract(RequestType.Challenge)]
     internal sealed class ChallengeHandler : CmdHandlerBase
     {
         private GameServerInfo _gameServerInfo;

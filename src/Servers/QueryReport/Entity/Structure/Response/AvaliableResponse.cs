@@ -15,12 +15,12 @@ namespace QueryReport.Entity.Structure.Response
 
         public override void Build()
         {
-            List<byte> buffer = new List<byte>();
+            List<byte> data = new List<byte>();
 
-            buffer.AddRange(ResponsePrefix);
-            buffer.Add((byte)ServerAvailability.Available);
+            data.AddRange(ResponsePrefix);
+            data.Add((byte)ServerAvailability.Available);
             // NOTE: Change this if you want to make the server not avaliable.
-            SendingBuffer = buffer.ToArray();
+            SendingBuffer = data.ToArray();
         }
     }
 }

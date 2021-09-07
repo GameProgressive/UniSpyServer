@@ -53,15 +53,15 @@ namespace ServerBrowser.Entity.Structure.Request
             //gamespy send this in big endian, we need to convert to little endian
             Array.Reverse(byteUpdateOptions);
 
-            UpdateOption = (SBServerListUpdateOption)BitConverter.ToInt32(byteUpdateOptions);
+            UpdateOption = (ServerListUpdateOption)BitConverter.ToInt32(byteUpdateOptions);
 
-            if ((UpdateOption & SBServerListUpdateOption.AlternateSourceIP) != 0)
+            if ((UpdateOption & ServerListUpdateOption.AlternateSourceIP) != 0)
             {
                 SourceIP = UniSpyEncoding.GetBytes(remainData.Substring(0, 4));
                 remainData = remainData.Substring(7);
             }
 
-            if ((UpdateOption & SBServerListUpdateOption.LimitResultCount) != 0)
+            if ((UpdateOption & ServerListUpdateOption.LimitResultCount) != 0)
             {
                 MaxServers = ByteTools.ToInt32(remainData.Substring(0, 4), true);
             }

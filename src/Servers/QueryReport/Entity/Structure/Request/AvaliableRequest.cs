@@ -1,8 +1,11 @@
 ﻿using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.contract;
+using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Exception;
 
 namespace QueryReport.Entity.Structure.Request
 {
+    [RequestContract(RequestType.AvaliableCheck)]
     internal sealed class AvaliableRequest : RequestBase
     {
         public static readonly byte[] Prefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };

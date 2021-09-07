@@ -1,5 +1,6 @@
 ﻿using QueryReport.Abstraction.BaseClass;
 using QueryReport.Application;
+using QueryReport.Entity.contract;
 using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Redis;
 using QueryReport.Entity.Structure.Request;
@@ -11,6 +12,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
 {
+    [HandlerContract(RequestType.HeartBeat)]
     internal sealed class HeartBeatHandler : CmdHandlerBase
     {
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;

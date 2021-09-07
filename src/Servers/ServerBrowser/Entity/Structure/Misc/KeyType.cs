@@ -9,19 +9,19 @@ namespace ServerBrowser.Handler.SystemHandler.KeyType
     /// </summary>
     public class KeyTypeHandler
     {
-        public SBKeyType GetKeyType(string key, string value)
+        public Entity.Enumerate.DataKeyType GetKeyType(string key, string value)
         {
             if (IsByte(key, value))
             {
-                return SBKeyType.Byte;
+                return Entity.Enumerate.DataKeyType.Byte;
             }
             else if (IsShort(key, value))
             {
-                return SBKeyType.Short;
+                return Entity.Enumerate.DataKeyType.Short;
             }
             else
             {
-                return SBKeyType.String;
+                return Entity.Enumerate.DataKeyType.String;
             }
         }
 

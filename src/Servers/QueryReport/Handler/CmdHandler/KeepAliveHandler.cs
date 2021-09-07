@@ -1,22 +1,17 @@
 ﻿using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.contract;
+using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Exception;
 using QueryReport.Entity.Structure.Redis;
-using QueryReport.Entity.Structure.Request;
-using QueryReport.Entity.Structure.Result;
 using System;
 using System.Linq;
 using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdHandler
 {
+    [HandlerContract(RequestType.KeepAlive)]
     internal sealed class KeepAliveHandler : CmdHandlerBase
     {
-        private new QRDefaultRequest _request => (QRDefaultRequest)base._request;
-        private new QRDefaultResult _result
-        {
-            get => (QRDefaultResult)base._result;
-            set => base._result = value;
-        }
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

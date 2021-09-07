@@ -3,30 +3,19 @@
     public enum PlayerSearchOptions
     {
         SearchAllGames = 1,
-        SearchLeftSubstring,
+        SearchLeftSubstring = 2,
         SearchRightSubString = 4,
         SearchAnySubString = 8,
     }
 
-    public enum SBQueryType
+    public enum QueryType
     {
         Basic,
         Full,
         ICMP
     }
 
-    public enum SBErrorCode
-    {
-        Parse,
-        NoGroupRoomFound,
-        NoServersFound,
-        UnSupportedGame,
-        DataOperation,
-        Construct,
-        NoError
-    }
-
-    public enum SBKeyType
+    public enum DataKeyType
     {
         String,
         Byte,

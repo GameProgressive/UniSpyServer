@@ -20,7 +20,7 @@ namespace ServerBrowser.Entity.Structure.Response
 
         public override void Build()
         {
-            _serverListData.Add((byte)SBServerResponseType.PushServerMessage);
+            _serverListData.Add((byte)ResponseType.PushServerMessage);
             BuildServersInfo();
             // add message length here
             _serverListData.InsertRange(0, ByteTools.GetBytes((short)(_serverListData.Count + 2), true));

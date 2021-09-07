@@ -1,4 +1,6 @@
 ﻿using QueryReport.Abstraction.BaseClass;
+using QueryReport.Entity.contract;
+using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Structure.Request;
 using QueryReport.Entity.Structure.Response;
 using QueryReport.Entity.Structure.Result;
@@ -8,14 +10,10 @@ namespace QueryReport.Handler.CmdHandler
     /// <summary>
     /// AvailableCheckHandler
     /// </summary>
+    [HandlerContract(RequestType.AvaliableCheck)]
     internal sealed class AvailableHandler : CmdHandlerBase
     {
         private new AvaliableRequest _request => (AvaliableRequest)base._request;
-        private new QRDefaultResult _result
-        {
-            get => (QRDefaultResult)base._result;
-            set => base._result = value;
-        }
         public AvailableHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }

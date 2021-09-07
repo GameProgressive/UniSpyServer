@@ -11,7 +11,7 @@ namespace ServerBrowser.Abstraction.BaseClass
         public string DevGameName { get; protected set; }
         public string GameName { get; protected set; }
         public string ClientChallenge { get; protected set; }
-        public SBServerListUpdateOption UpdateOption { get; protected set; }
+        public ServerListUpdateOption UpdateOption { get; protected set; }
         public string[] Keys { get; protected set; }
         public string Filter { get; protected set; }
         public byte[] SourceIP { get; protected set; }
