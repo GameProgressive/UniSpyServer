@@ -1,5 +1,4 @@
 ﻿using QueryReport.Entity.Enumerate;
-using Serilog.Events;
 using System;
 using System.Collections.Generic;
 using UniSpyLib.Extensions;
@@ -16,9 +15,67 @@ namespace QueryReport.Entity.Structure.ReportData
             KeyValue = new Dictionary<string, string>();
             ServerStatus = GameServerStatus.Normal;
         }
+        public static Dictionary<string, string> GetKeyValue(string serverData)
+        {
+            Dictionary<string, string> keyValue = new Dictionary<string, string>();
 
+            string[] keyValueArray = serverData.Split("\0");
+
+            for (int i = 0; i < keyValueArray.Length; i += 2)
+            {
+                if (i + 2 > keyValueArray.Length)
+                {
+                    break;
+                }
+
+                string tempKey = keyValueArray[i];
+                string tempValue = keyValueArray[i + 1];
+
+                if (tempKey == "")
+                {
+                    LogWriter.Verbose("Skiping empty key value");
+                    continue;
+                }
+
+                if (keyValue.ContainsKey(keyValueArray[i]))
+                {
+                    // update exist value
+                    if (keyValue[tempKey] == tempValue)
+                    {
+                        //LogWriter.ToLog($"Ignoring same server key value {tempKey} : {tempValue}");
+                    }
+                    else
+                    {
+                        keyValue[tempKey] = tempValue;
+                        //LogWriter.ToLog($"Updated server key value {tempKey} : {tempValue}");
+                    }
+                }
+                else
+                {
+                    //LogWriter.ToLog($"Added new server key value {tempKey}:{tempValue}");
+                    keyValue.Add(tempKey, tempValue);
+                }
+            }
+            return keyValue;
+        }
         public void Update(string serverData)
         {
+            // var keyValue = GetKeyValue(serverData);
+            // foreach (var item in keyValue)
+            // {
+            //     if (KeyValue.ContainsKey(item.Key))
+            //     {
+            //         if (KeyValue[item.Key] != item.Value)
+            //         {
+            //             KeyValue[item.Key] = item.Value;
+            //         }
+            //     }
+            //     else
+            //     {
+            //         KeyValue.Add(item.Key, item.Value);
+            //     }
+            // }
+
             LogWriter.Debug(
                 StringExtensions.ReplaceUnreadableCharToHex(serverData));
             string[] keyValueArray = serverData.Split("\0");

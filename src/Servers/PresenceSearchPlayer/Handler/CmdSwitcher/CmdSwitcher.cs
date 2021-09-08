@@ -1,5 +1,4 @@
 ﻿using PresenceSearchPlayer.Entity.Exception.General;
-using Serilog.Events;
 using System;
 using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;

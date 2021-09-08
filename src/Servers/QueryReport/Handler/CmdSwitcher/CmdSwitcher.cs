@@ -1,4 +1,5 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using QueryReport.Entity.Enumerate;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace QueryReport.Handler.CmdSwitcher
@@ -15,7 +16,8 @@ namespace QueryReport.Handler.CmdSwitcher
             {
                 throw new UniSpyException("Invalid request");
             }
-            
+            var name = (RequestType)_message[0];
+            _rawRequests.Add(name, _message);
         }
     }
 }

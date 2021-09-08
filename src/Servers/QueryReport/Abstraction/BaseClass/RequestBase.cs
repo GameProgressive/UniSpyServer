@@ -1,6 +1,7 @@
 ﻿using QueryReport.Entity.Enumerate;
 using QueryReport.Entity.Exception;
 using System;
+using System.Linq;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Extensions;
 
@@ -36,7 +37,8 @@ namespace QueryReport.Abstraction.BaseClass
                 throw new QRException("Query report request is invalid.");
             }
             CommandName = (PacketType)RawRequest[0];
-            InstantKey = BitConverter.ToUInt32(ByteTools.SubBytes(RawRequest, 1, 4));
+            var instantKeyBytes = RawRequest.Skip(1).Take(4).ToArray();
+            InstantKey = BitConverter.ToUInt32(instantKeyBytes);
         }
     }
 }

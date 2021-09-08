@@ -1,5 +1,5 @@
-﻿using Serilog.Events;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Serilog.Events;
 
 namespace UniSpyLib.UniSpyConfig
 {

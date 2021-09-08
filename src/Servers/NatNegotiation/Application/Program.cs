@@ -1,5 +1,4 @@
-﻿using Serilog.Events;
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
