@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using NatNegotiation.Entity.Enumerate;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;

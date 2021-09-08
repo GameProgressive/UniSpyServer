@@ -4,7 +4,7 @@ using System.Net;
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    internal class InitResult : InitResultBase
+    internal sealed class InitResult : InitResultBase
     {
         public InitResult()
         {

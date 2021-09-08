@@ -12,10 +12,15 @@ namespace NatNegotiation.Handler.CmdHandler
     internal sealed class AddressCheckHandler : CmdHandlerBase
     {
         private new AddressRequest _request => (AddressRequest)base._request;
+        private new AddressResult _result { get => (AddressResult)base._result; set => base._result = value; }
 
         public AddressCheckHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new AddressResult();
+        }
+        protected override void DataOperation()
+        {
+            _result.RemoteIPEndPoint = _session.RemoteIPEndPoint;
         }
         protected override void ResponseConstruct()
         {

@@ -23,11 +23,8 @@ namespace QueryReport.Network
             return base.Start();
         }
 
-        protected override UniSpyUdpSession CreateSession(EndPoint endPoint)
-            => new Session(this, endPoint);
+        protected override UniSpyUdpSession CreateSession(EndPoint endPoint) => new Session(this, endPoint);
 
-        protected override void OnReceived(UniSpyUdpSession session, byte[] message)
-            => new CmdSwitcher(session, message).Switch();
 
     }
 }

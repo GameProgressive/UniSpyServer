@@ -18,11 +18,7 @@ namespace NatNegotiation.Handler.CmdHandler
     internal sealed class ConnectHandler : CmdHandlerBase
     {
         private new ConnectRequest _request => (ConnectRequest)base._request;
-        private new ConnectResult _result
-        {
-            get => (ConnectResult)base._result;
-            set => base._result = value;
-        }
+        private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
         private Dictionary<NatUserInfoRedisKey, NatUserInfo> _negotiatorPairs;
         private List<NatUserInfoRedisKey> _matchedKeys;
         private ConnectResponse _responseToNegotiator;

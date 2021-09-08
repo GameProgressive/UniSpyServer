@@ -1,8 +1,9 @@
-﻿using NatNegotiation.Entity.Enumerate;
+﻿using NatNegotiation.Abstraction.BaseClass;
+using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    internal class AddressResult : InitResult
+    internal sealed class AddressResult : InitResultBase
     {
         public AddressResult()
         {

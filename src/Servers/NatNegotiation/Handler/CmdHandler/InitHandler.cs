@@ -52,5 +52,16 @@ namespace NatNegotiation.Handler.CmdHandler
         {
             _response = new InitResponse(_request, _result);
         }
+        protected override void Response()
+        {
+            var request = new ConnectRequest
+            {
+                PortType = _request.PortType,
+                Version = _request.Version,
+                Cookie = _request.Cookie
+            };
+            new ConnectHandler(_session, request).Handle();
+            base.Response();
+        }
     }
 }

@@ -16,9 +16,5 @@ namespace NatNegotiation.Network
             new Session(this, endPoint);
 
         //TODO fix the natnegotiation for this architecture
-
-        protected override void OnReceived(UniSpyUdpSession session, byte[] message)
-        => new CmdSwitcher(session, message).Switch();
-
     }
 }
