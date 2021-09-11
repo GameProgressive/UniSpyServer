@@ -22,7 +22,7 @@ namespace Chat.Entity.Structure.Request
 
             if (_longParam == null)
             {
-                throw new ChatException("The keys and values are missing.");
+                throw new Exception.Exception("The keys and values are missing.");
             }
             KeyValues = StringExtensions.ConvertKVStringToDictionary(_longParam);
         }

@@ -6,8 +6,8 @@ namespace Chat.Abstraction.BaseClass
 {
     internal abstract class ChannelHandlerBase : LogedInHandlerBase
     {
-        protected ChatChannel _channel;
-        protected ChatChannelUser _user;
+        protected Channel _channel;
+        protected ChannelUser _user;
         private new ChannelRequestBase _request => (ChannelRequestBase)base._request;
         public ChannelHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

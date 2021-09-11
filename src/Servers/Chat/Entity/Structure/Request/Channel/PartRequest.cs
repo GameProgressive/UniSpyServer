@@ -22,7 +22,7 @@ namespace Chat.Entity.Structure.Request
             base.Parse();
             if (_longParam == null)
             {
-                throw new ChatException("The reason of living channel is missing.");
+                throw new Exception.Exception("The reason of living channel is missing.");
             }
             Reason = _longParam;
         }

@@ -24,7 +24,7 @@ namespace Chat.Handler.CmdHandler.Channel
             get => (KickResult)base._result;
             set => base._result = value;
         }
-        private ChatChannelUser _kickee;
+        private ChannelUser _kickee;
         public KickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new KickResult();
@@ -36,12 +36,12 @@ namespace Chat.Handler.CmdHandler.Channel
 
             if (!_user.IsChannelOperator)
             {
-                throw new ChatException("Kick operation failed because you are not channel operator.");
+                throw new Exception("Kick operation failed because you are not channel operator.");
             }
             _kickee = _channel.GetChannelUserByNickName(_request.KickeeNickName);
             if (_kickee != null)
             {
-                throw new ChatException($"Can not find kickee:{_request.KickeeNickName} in channel.");
+                throw new Exception($"Can not find kickee:{_request.KickeeNickName} in channel.");
             }
         }
         protected override void DataOperation()

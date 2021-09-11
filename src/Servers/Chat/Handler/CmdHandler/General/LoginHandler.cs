@@ -64,7 +64,7 @@ namespace Chat.Handler.CmdHandler.General
 
                 if (result.Count() != 1)
                 {
-                    throw new ChatException($"Can not find user with nickname:{_request.NickName} in database.");
+                    throw new Exception($"Can not find user with nickname:{_request.NickName} in database.");
                 }
                 _result.ProfileID = result.First().profileid;
                 _result.UserID = result.First().userid;
@@ -89,7 +89,7 @@ namespace Chat.Handler.CmdHandler.General
                              };
                 if (result.Count() != 1)
                 {
-                    throw new ChatException($"Can not find user with uniquenick:{_request.UniqueNick} in database.");
+                    throw new Exception($"Can not find user with uniquenick:{_request.UniqueNick} in database.");
                 }
                 _result.ProfileID = result.First().profileid;
                 _result.UserID = result.First().userid;

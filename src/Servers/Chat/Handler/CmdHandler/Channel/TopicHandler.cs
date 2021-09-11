@@ -26,7 +26,7 @@ namespace Chat.Handler.CmdHandler.Channel
         {
             if (!_user.IsChannelOperator)
             {
-                throw new ChatException("Edit topic failed because you are not channel operator.");
+                throw new Exception("Edit topic failed because you are not channel operator.");
             }
             switch (_request.RequestType)
             {

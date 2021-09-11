@@ -18,12 +18,12 @@ namespace Chat.Entity.Structure.Response.General
         public static string BuildChannelModeReply(string channelName, string modes)
         {
             var cmdParams = $"{channelName} {modes}";
-            return ChatIRCReplyBuilder.Build(ChatReplyName.MODE, cmdParams);
+            return IRCReplyBuilder.Build(ResponseName.Mode, cmdParams);
         }
 
         public static string BuildChannelUserModesReply(string nickName, string channelName, string modes)
         {
-            return ChatIRCReplyBuilder.Build(ChatReplyName.ChannelModels,
+            return IRCReplyBuilder.Build(ResponseName.ChannelModels,
                 $"{nickName} {channelName} {modes}");
         }
 

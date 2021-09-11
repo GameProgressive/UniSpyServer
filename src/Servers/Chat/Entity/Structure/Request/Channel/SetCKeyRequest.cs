@@ -23,7 +23,7 @@ namespace Chat.Entity.Structure.Request
             base.Parse();
             if (_longParam == null)
             {
-                throw new ChatException("The key value is missing from SETCKEY request.");
+                throw new Exception.Exception("The key value is missing from SETCKEY request.");
             }
 
             NickName = _cmdParams[1];

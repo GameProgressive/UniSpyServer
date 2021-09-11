@@ -21,7 +21,7 @@ namespace Chat.Entity.Structure.Request.General
 
             if (_longParam == null)
             {
-                throw new ChatException("Quit reason is missing.");
+                throw new Exception.Exception("Quit reason is missing.");
             }
 
             Reason = _longParam;

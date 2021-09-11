@@ -17,8 +17,8 @@ namespace Chat.Entity.Structure.Response.General
         }
         public static string BuildWelcomeReply(string nickName)
         {
-            return ChatIRCReplyBuilder.Build(
-                ChatReplyName.Welcome,
+            return IRCReplyBuilder.Build(
+                ResponseName.Welcome,
                 cmdParams: nickName,
                 tailing: "Welcome to RetrosSpy!");
         }

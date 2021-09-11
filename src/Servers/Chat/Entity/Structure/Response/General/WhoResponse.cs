@@ -35,15 +35,15 @@ namespace Chat.Entity.Structure.Response.General
             var cmdParams =
                 $"param1 {data.ChannelName} {data.UserName} " +
                 $"{data.PublicIPAddress} param5 {data.NickName} {data.Modes} param8";
-            return ChatIRCReplyBuilder.Build(ChatReplyName.WhoReply, cmdParams);
+            return IRCReplyBuilder.Build(ResponseName.WhoReply, cmdParams);
         }
 
         public static string BuildEndOfWhoReply(string name)
         {
             var cmdParams = $"param1 {name} param3";
             var tailing = "End of WHO.";
-            return ChatIRCReplyBuilder.Build(
-               ChatReplyName.EndOfWho,
+            return IRCReplyBuilder.Build(
+               ResponseName.EndOfWho,
                cmdParams,
                tailing);
         }

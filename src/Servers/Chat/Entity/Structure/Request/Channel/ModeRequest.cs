@@ -146,9 +146,9 @@ namespace Chat.Entity.Structure.Request
                         RequestType = ModeRequestType.SetChannelModes;
                     }
                 }
-                throw new ChatException("Unknown mode request type.");
+                throw new Exception.Exception("Unknown mode request type.");
             }
-            throw new ChatException("number of IRC parameters are incorrect.");
+            throw new Exception.Exception("number of IRC parameters are incorrect.");
         }
     }
 }

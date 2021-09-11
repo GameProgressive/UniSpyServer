@@ -21,7 +21,7 @@ namespace Chat.Entity.Structure.Request.General
 
             if (_cmdParams.Count != 2)
             {
-                throw new ChatException("The number of IRC cmd params in GETKEY request is incorrect.");
+                throw new Exception.Exception("The number of IRC cmd params in GETKEY request is incorrect.");
             }
 
             ChannelName = _cmdParams[0];

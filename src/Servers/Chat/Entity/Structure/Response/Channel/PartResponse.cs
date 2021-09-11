@@ -22,9 +22,9 @@ namespace Chat.Entity.Structure.Response.Channel
 
         public static string BuildPartReply(string userIRCPrefix, string channelName, string message)
         {
-            return ChatIRCReplyBuilder.Build(
+            return IRCReplyBuilder.Build(
                 userIRCPrefix,
-                ChatReplyName.PART,
+                ResponseName.Part,
                 channelName,
                 message);
         }

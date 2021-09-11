@@ -20,7 +20,7 @@ namespace Chat.Entity.Structure.Request.General
 
             if (_cmdParams.Count != 1)
             {
-                throw new ChatException("The number of IRC cmd params in GETKEY request is incorrect.");
+                throw new Exception.Exception("The number of IRC cmd params in GETKEY request is incorrect.");
             }
 
             NickName = _cmdParams[0];

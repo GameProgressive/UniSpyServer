@@ -14,8 +14,8 @@ namespace Chat.Entity.Structure.Response.General
         public override void Build()
         {
             var cmdParams = $"* {ChatConstants.ClientKey} {ChatConstants.ServerKey}";
-            SendingBuffer = ChatIRCReplyBuilder.Build(
-                ChatReplyName.SecureKey, cmdParams);
+            SendingBuffer = IRCReplyBuilder.Build(
+                ResponseName.SecureKey, cmdParams);
         }
     }
 }

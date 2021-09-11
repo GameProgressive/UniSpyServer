@@ -17,13 +17,13 @@ namespace Chat.Entity.Structure.Response.General
             foreach (var info in _result.ChannelInfoList)
             {
                 var cmdParams = $"param1 {info.ChannelName} {info.TotalChannelUsers} {info.ChannelTopic}";
-                SendingBuffer += ChatIRCReplyBuilder.Build(
+                SendingBuffer += IRCReplyBuilder.Build(
                     _result.UserIRCPrefix,
-                    ChatReplyName.ListStart,
+                    ResponseName.ListStart,
                     cmdParams,
                     null);
             }
-            SendingBuffer += ChatIRCReplyBuilder.Build(_result.UserIRCPrefix, ChatReplyName.ListEnd, null, null);
+            SendingBuffer += IRCReplyBuilder.Build(_result.UserIRCPrefix, ResponseName.ListEnd, null, null);
         }
     }
 }

@@ -29,9 +29,9 @@ namespace Chat.Abstraction.BaseClass
         //if we use this structure the error response should also write to _sendingBuffer
         protected override void HandleException(Exception ex)
         {
-            if (ex is ChatIRCException)
+            if (ex is IRCException)
             {
-                _session.SendAsync(((ChatIRCException)ex).ErrorResponse);
+                _session.SendAsync(((IRCException)ex).ErrorResponse);
             }
             else
             {

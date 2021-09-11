@@ -19,7 +19,7 @@ namespace Chat.Entity.Structure.Request.General
             base.Parse();
 
             if (_cmdParams.Count < 3)
-                throw new ChatException("The number of IRC params in CRYPT request is incorrect.");
+                throw new Exception.Exception("The number of IRC params in CRYPT request is incorrect.");
 
             VersionID = _cmdParams[1];
             GameName = _cmdParams[2];

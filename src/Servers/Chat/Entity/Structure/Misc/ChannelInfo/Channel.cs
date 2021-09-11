@@ -4,13 +4,13 @@ using UniSpyLib.Logging;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    internal sealed class ChatChannel
+    internal sealed class Channel
     {
-        public ChatChannelProperty Property { get; private set; }
+        public ChannelProperty Property { get; private set; }
 
-        public ChatChannel()
+        public Channel()
         {
-            Property = new ChatChannelProperty();
+            Property = new ChannelProperty();
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             LogWriter.LogNetworkMultiCast(message);
             return true;
         }
-        public bool MultiCastExceptSender(ChatChannelUser sender, string message)
+        public bool MultiCastExceptSender(ChannelUser sender, string message)
         {
             foreach (var user in Property.ChannelUsers)
             {
@@ -58,7 +58,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             nicks = nicks.Substring(0, nicks.Length - 1);
             return nicks;
         }
-        public void AddBindOnUserAndChannel(ChatChannelUser joiner)
+        public void AddBindOnUserAndChannel(ChannelUser joiner)
         {
             if (!Property.ChannelUsers.Contains(joiner))
                 Property.ChannelUsers.Add(joiner);
@@ -67,20 +67,20 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 joiner.UserInfo.JoinedChannels.Add(this);
 
         }
-        public void RemoveBindOnUserAndChannel(ChatChannelUser leaver)
+        public void RemoveBindOnUserAndChannel(ChannelUser leaver)
         {
             if (Property.ChannelUsers.Contains(leaver))
                 Property.ChannelUsers.TryTake(out leaver);
 
             if (leaver.UserInfo.JoinedChannels.Contains(this))
             {
-                ChatChannel channel = this;
+                Channel channel = this;
                 leaver.UserInfo.JoinedChannels.TryTake(out channel);
             }
 
         }
 
-        public ChatChannelUser GetChannelUserBySession(Session session)
+        public ChannelUser GetChannelUserBySession(Session session)
         {
             var result = Property.ChannelUsers.Where(u => u.UserInfo.Session.Equals(session));
             if (result.Count() == 1)
@@ -92,7 +92,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return null;
             }
         }
-        public bool IsUserBanned(ChatChannelUser user)
+        public bool IsUserBanned(ChannelUser user)
         {
             if (Property.BanList.Contains(user))
             {
@@ -114,11 +114,11 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return false;
             }
         }
-        public bool IsUserExisted(ChatChannelUser user)
+        public bool IsUserExisted(ChannelUser user)
         {
             return Property.ChannelUsers.Contains(user);
         }
-        public ChatChannelUser GetChannelUserByUserName(string username)
+        public ChannelUser GetChannelUserByUserName(string username)
         {
             var result = Property.ChannelUsers.Where(u => u.UserInfo.UserName == username);
             if (result.Count() == 1)
@@ -130,7 +130,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return null;
             }
         }
-        public ChatChannelUser GetChannelUserByNickName(string nickName)
+        public ChannelUser GetChannelUserByNickName(string nickName)
         {
             var result = Property.ChannelUsers.Where(u => u.UserInfo.NickName == nickName);
             if (result.Count() == 1)

@@ -25,12 +25,12 @@ namespace Chat.Entity.Structure.Request
 
             if (_cmdParams.Count != 2)
             {
-                throw new ChatException("number of IRC parameters are incorrect.");
+                throw new Exception.Exception("number of IRC parameters are incorrect.");
             }
             KickeeNickName = _cmdParams[1];
             if (_longParam == null)
             {
-                throw new ChatException("IRC long parameters is missing.");
+                throw new Exception.Exception("IRC long parameters is missing.");
             }
             Reason = _longParam;
         }

@@ -1,6 +1,6 @@
 ﻿namespace Chat.Entity.Structure.Misc
 {
-    internal sealed class ChatReplyName
+    internal sealed class ResponseName
     {
         public const string Welcome = "001";
         public const string UserIP = "302";
@@ -32,56 +32,56 @@
         /// <summary>
         /// Send a private message
         /// </summary>
-        public const string PRIVMSG = "PRIVMSG";
+        public const string PrivateMsg = "PRIVMSG";
         /// <summary>
         /// Send a notice message
         /// </summary>
-        public const string NOTICE = "NOTICE";
+        public const string Notice = "NOTICE";
         /// <summary>
         /// Send an under the table message
         /// </summary>
-        public const string UTM = "UTM";
+        public const string UnderTheTableMsg = "UTM";
         /// <summary>
         /// Send an above the table message
         /// </summary>
-        public const string ATM = "ATM";
-        public const string PING = "PING";
-        public const string PONG = "PONG";
+        public const string AboveTheTableMsg = "ATM";
+        public const string Ping = "PING";
+        public const string Pong = "PONG";
         /// <summary>
         /// Search with nickname
         /// </summary>
-        public const string NICK = "NICK";
+        public const string Nick = "NICK";
         /// <summary>
         /// Join a channel
         /// </summary>
-        public const string JOIN = "JOIN";
+        public const string Join = "JOIN";
         /// <summary>
         /// Leave a channel
         /// </summary>
-        public const string PART = "PART";
+        public const string Part = "PART";
         /// <summary>
         /// Kick a user from a channel
         /// </summary>
-        public const string KICK = "KICK";
+        public const string Kick = "KICK";
         /// <summary>
         /// Quit irc chat server
         /// </summary>
-        public const string QUIT = "QUIT";
+        public const string Quit = "QUIT";
 
-        public const string KILL = "KILL";
+        public const string Kill = "KILL";
         /// <summary>
         /// Change channel topic
         /// </summary>
-        public const string TOPIC = "TOPIC";
+        public const string ChannelTopic = "TOPIC";
         /// <summary>
         /// Change channel mode
         /// </summary>
-        public const string MODE = "MODE";
+        public const string Mode = "MODE";
 
-        public const string ERROR = "ERROR";
+        public const string Error = "ERROR";
         /// <summary>
         /// Invite a user to a channel
         /// </summary>
-        public const string INVITE = "INVITE";
+        public const string Invite = "INVITE";
     }
 }

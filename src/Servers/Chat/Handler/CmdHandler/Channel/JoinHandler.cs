@@ -33,8 +33,8 @@ namespace Chat.Handler.CmdHandler.Channel
             get => (JoinResponse)base._response;
             set => base._response = value;
         }
-        ChatChannel _channel;
-        ChatChannelUser _user;
+        Entity.Structure.Misc.ChannelInfo.Channel _channel;
+        ChannelUser _user;
         public JoinHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new JoinResult();
@@ -61,21 +61,21 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-            _user = new ChatChannelUser(_session.UserInfo);
+            _user = new ChannelUser(_session.UserInfo);
             if (ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
                 //join
                 if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
                 {
                     // we do not send anything to this user and users in this channel
-                    throw new ChatException($"User: {_user.UserInfo.NickName} is already joined the channel: {_request.ChannelName}");
+                    throw new Exception($"User: {_user.UserInfo.NickName} is already joined the channel: {_request.ChannelName}");
                 }
                 else
                 {
                     if (_channel.Property.ChannelMode.IsInviteOnly)
                     {
                         //invited only
-                        throw new ChatIRCChannelException("This is an invited only channel.", ChatIRCErrorCode.InviteOnlyChan, _request.ChannelName);
+                        throw new IRCChannelException("This is an invited only channel.", IRCErrorCode.InviteOnlyChan, _request.ChannelName);
                     }
                     if (_channel.IsUserBanned(_user))
                     {
@@ -90,7 +90,7 @@ namespace Chat.Handler.CmdHandler.Channel
                     //simple check for avoiding program crash
                     if (_channel.IsUserExisted(_user))
                     {
-                        throw new ChatException($"{_session.UserInfo.NickName} is already in channel {_request.ChannelName}");
+                        throw new Exception($"{_session.UserInfo.NickName} is already in channel {_request.ChannelName}");
                     }
                     _channel.AddBindOnUserAndChannel(_user);
 
@@ -99,7 +99,7 @@ namespace Chat.Handler.CmdHandler.Channel
             else
             {
                 //create
-                _channel = new ChatChannel();
+                _channel = new Entity.Structure.Misc.ChannelInfo.Channel();
                 if (IsPeerServer(_request.ChannelName))
                 {
                     _channel.Property.IsPeerServer = true;

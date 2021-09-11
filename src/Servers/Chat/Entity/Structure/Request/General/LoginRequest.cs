@@ -34,7 +34,7 @@ namespace Chat.Entity.Structure.Request.General
 
             if (!uint.TryParse(_cmdParams[0], out namespaceid))
             {
-                throw new ChatException("namespaceid format is incorrect.");
+                throw new Exception.Exception("namespaceid format is incorrect.");
             }
 
             NameSpaceID = namespaceid;
@@ -46,7 +46,7 @@ namespace Chat.Entity.Structure.Request.General
 
                 if (_longParam.Count(c => c == '@') != 2)
                 {
-                    throw new ChatException("The profile nick format is incorrect.");
+                    throw new Exception.Exception("The profile nick format is incorrect.");
                 }
 
                 int profilenickIndex = _longParam.IndexOf("@");

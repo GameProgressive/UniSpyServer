@@ -49,7 +49,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         private void GetChannelSpecificUserKeyValue()
         {
-            ChatChannelUser user = _channel.GetChannelUserByNickName(_request.NickName);
+            ChannelUser user = _channel.GetChannelUserByNickName(_request.NickName);
             if (user == null)
             {
                 throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName} in channels.");
@@ -57,12 +57,12 @@ namespace Chat.Handler.CmdHandler.Channel
             GetUserKeyValue(user);
         }
 
-        private void GetUserKeyValue(ChatChannelUser user)
+        private void GetUserKeyValue(ChannelUser user)
         {
             //we do not have key value so we do not construct getckey response
             if (user.UserKeyValue.Count == 0)
             {
-                throw new ChatException("User's key value are empty.");
+                throw new Exception("User's key value are empty.");
             }
 
             if (_request.Keys.Count == 1 && _request.Keys.Contains("b_flags"))

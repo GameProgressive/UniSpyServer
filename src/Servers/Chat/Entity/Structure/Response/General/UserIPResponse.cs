@@ -17,7 +17,7 @@ namespace Chat.Entity.Structure.Response.General
         }
         public static string BuildUserIPReply(string ip)
         {
-            return ChatIRCReplyBuilder.Build(ChatReplyName.UserIP, null, $"@{ip}");
+            return IRCReplyBuilder.Build(ResponseName.UserIP, null, $"@{ip}");
         }
 
 

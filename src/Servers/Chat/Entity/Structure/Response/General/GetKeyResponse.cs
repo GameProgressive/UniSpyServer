@@ -20,11 +20,11 @@ namespace Chat.Entity.Structure.Response.Channel
             foreach (var flag in _result.Flags)
             {
                 string cmdParams1 = $"param1 {_result.NickName} {_request.Cookie} {flag}";
-                SendingBuffer += ChatIRCReplyBuilder.Build(ChatReplyName.GetKey, cmdParams1);
+                SendingBuffer += IRCReplyBuilder.Build(ResponseName.GetKey, cmdParams1);
             }
             string cmdParams2 = $"param1 param2 {_request.Cookie} param4";
             string tailing = "End of GETKEY.";
-            SendingBuffer += ChatIRCReplyBuilder.Build(ChatReplyName.EndGetKey, cmdParams2, tailing);
+            SendingBuffer += IRCReplyBuilder.Build(ResponseName.EndGetKey, cmdParams2, tailing);
         }
     }
 }

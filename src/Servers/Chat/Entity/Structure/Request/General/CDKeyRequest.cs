@@ -17,7 +17,7 @@ namespace Chat.Entity.Structure.Request.General
         {
             base.Parse();
             if (_cmdParams.Count < 1)
-                throw new ChatException("The number of IRC cmdParams are incorrect.");
+                throw new Exception.Exception("The number of IRC cmdParams are incorrect.");
             CDKey = _cmdParams[0];
         }
     }

@@ -47,10 +47,10 @@ namespace Chat.Handler.CmdHandler.General
 
         private void GetChannelUsersInfo()
         {
-            ChatChannel channel;
+            Entity.Structure.Misc.ChannelInfo.Channel channel;
             if (!ChatChannelManager.GetChannel(_request.ChannelName, out channel))
             {
-                throw new ChatIRCChannelException($"The channel is not exist.", ChatIRCErrorCode.NoSuchChannel, _request.ChannelName);
+                throw new IRCChannelException($"The channel is not exist.", IRCErrorCode.NoSuchChannel, _request.ChannelName);
             }
             foreach (var user in channel.Property.ChannelUsers)
             {
@@ -80,7 +80,7 @@ namespace Chat.Handler.CmdHandler.General
             }
             foreach (var channel in session.UserInfo.JoinedChannels)
             {
-                ChatChannelUser user = channel.GetChannelUserBySession(session);
+                ChannelUser user = channel.GetChannelUserBySession(session);
                 var data = new WhoDataModel
                 {
                     ChannelName = channel.Property.ChannelName,

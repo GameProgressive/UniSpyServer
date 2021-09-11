@@ -17,9 +17,9 @@ namespace Chat.Entity.Structure.Response.Channel
         public override void Build()
         {
             var cmdParams = $"param1 {_result.ChannelName} {_request.Cookie} {_result.Values}";
-            SendingBuffer = ChatIRCReplyBuilder.Build(
+            SendingBuffer = IRCReplyBuilder.Build(
                 _result.ChannelUserIRCPrefix,
-                ChatReplyName.GetChanKey,
+                ResponseName.GetChanKey,
                 cmdParams,
                 null);
         }

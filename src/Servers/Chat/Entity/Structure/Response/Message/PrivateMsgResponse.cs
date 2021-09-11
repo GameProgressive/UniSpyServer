@@ -16,8 +16,8 @@ namespace Chat.Entity.Structure.Response.Message
 
         public override void Build()
         {
-            SendingBuffer = ChatIRCReplyBuilder.Build(_result.UserIRCPrefix,
-                                                      ChatReplyName.PRIVMSG,
+            SendingBuffer = IRCReplyBuilder.Build(_result.UserIRCPrefix,
+                                                      ResponseName.PrivateMsg,
                                                       _result.TargetName,
                                                       _request.Message);
         }

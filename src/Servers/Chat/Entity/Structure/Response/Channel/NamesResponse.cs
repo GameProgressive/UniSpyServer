@@ -23,16 +23,16 @@ namespace Chat.Entity.Structure.Response.Channel
         }
         public static string BuildNameReply(string nickName, string channelName, string nicksString)
         {
-            return ChatIRCReplyBuilder.Build(
-                    ChatReplyName.NameReply,
+            return IRCReplyBuilder.Build(
+                    ResponseName.NameReply,
                     $"{nickName} = {channelName}", nicksString);
         }
         public static string BuildEndOfNameReply(string nickName, string channelName)
         {
             string cmdParams = $"{nickName} {channelName}";
             string tailing = @"End of /NAMES list.";
-            return ChatIRCReplyBuilder.Build(
-                ChatReplyName.EndOfNames,
+            return IRCReplyBuilder.Build(
+                ResponseName.EndOfNames,
                 cmdParams,
                 tailing);
         }

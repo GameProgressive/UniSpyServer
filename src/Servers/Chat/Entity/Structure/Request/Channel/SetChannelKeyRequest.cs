@@ -21,7 +21,7 @@ namespace Chat.Entity.Structure.Request
 
             if (_longParam == null)
             {
-                throw new ChatException("Channel keys and values are missing.");
+                throw new Exception.Exception("Channel keys and values are missing.");
             }
             _longParam = _longParam.Substring(1);
 

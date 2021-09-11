@@ -19,7 +19,7 @@ namespace Chat.Entity.Structure.Response.Channel
         {
             var cmdParams = $"{_result.ChannelName} {_result.KickerNickName} {_result.KickeeNickName}";
 
-            SendingBuffer = ChatIRCReplyBuilder.Build(_result.KickerIRCPrefix, ChatReplyName.KICK, cmdParams, null);
+            SendingBuffer = IRCReplyBuilder.Build(_result.KickerIRCPrefix, ResponseName.Kick, cmdParams, null);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Chat.Entity.Structure.Response.General
 
         public override void Build()
         {
-            SendingBuffer = ChatIRCReplyBuilder.Build(_result.RequesterIRCPrefix, ChatReplyName.PONG, null, null);
+            SendingBuffer = IRCReplyBuilder.Build(_result.RequesterIRCPrefix, ResponseName.Pong, null, null);
         }
     }
 }

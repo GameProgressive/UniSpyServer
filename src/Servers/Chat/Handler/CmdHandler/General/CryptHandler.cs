@@ -31,7 +31,7 @@ namespace Chat.Handler.CmdHandler.General
             if (secretKey == null)
             {
                 _session.Disconnect();
-                throw new ChatException("secret key not found.");
+                throw new Exception("secret key not found.");
             }
             _session.UserInfo.GameSecretKey = secretKey;
             _session.UserInfo.GameName = _request.GameName;

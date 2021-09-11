@@ -22,7 +22,7 @@ namespace Chat.Entity.Structure.Request.General
 
             if (_cmdParams.Count == 0)
             {
-                throw new ChatException("Search filter is missing.");
+                throw new Exception.Exception("Search filter is missing.");
             }
             IsSearchingChannel = true;
             Filter = _cmdParams[0];

@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    internal sealed class ChatChannelUser
+    internal sealed class ChannelUser
     {
         public bool IsVoiceable { get; set; }
         public bool IsChannelCreator { get; set; }
@@ -12,7 +12,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
 
         public string BFlags => @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"];
 
-        public ChatChannelUser(UserInfo userInfo)
+        public ChannelUser(UserInfo userInfo)
         {
             UserInfo = userInfo;
             UserKeyValue = new Dictionary<string, string>();

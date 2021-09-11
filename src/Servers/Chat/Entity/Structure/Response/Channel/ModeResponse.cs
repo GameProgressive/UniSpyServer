@@ -21,13 +21,13 @@ namespace Chat.Entity.Structure.Response
             {
                 //channel modes reply
                 string cmdParams = $"{_result.ChannelName} {_result.ChannelModes}";
-                SendingBuffer = ChatIRCReplyBuilder.Build(ChatReplyName.MODE, cmdParams);
+                SendingBuffer = IRCReplyBuilder.Build(ResponseName.Mode, cmdParams);
             }
             else
             {
                 //channel user mode reply
                 string cmdParams = $"{_result.JoinerNickName} {_result.ChannelName} {_result.ChannelModes}";
-                SendingBuffer = ChatIRCReplyBuilder.Build(ChatReplyName.ChannelModels, cmdParams);
+                SendingBuffer = IRCReplyBuilder.Build(ResponseName.ChannelModels, cmdParams);
             }
         }
     }

@@ -7,11 +7,11 @@ namespace Chat.Entity.Structure.Misc
     internal sealed class UserInfo
     {
         //indicates which channel this user is in
-        public ConcurrentBag<ChatChannel> JoinedChannels { get; private set; }
+        public ConcurrentBag<Channel> JoinedChannels { get; private set; }
         public Session Session { get; private set; }
         // secure connection
-        public GSPeerChatCTX ClientCTX { get; set; }
-        public GSPeerChatCTX ServerCTX { get; private set; }
+        public PeerChatCTX ClientCTX { get; set; }
+        public PeerChatCTX ServerCTX { get; private set; }
         public string GameName { get; set; }
         public string NickName { get; set; }
         public string UserName { get; set; }
@@ -29,9 +29,9 @@ namespace Chat.Entity.Structure.Misc
         public UserInfo(Session session)
         {
             Session = session;
-            ClientCTX = new GSPeerChatCTX();
-            ServerCTX = new GSPeerChatCTX();
-            JoinedChannels = new ConcurrentBag<ChatChannel>();
+            ClientCTX = new PeerChatCTX();
+            ServerCTX = new PeerChatCTX();
+            JoinedChannels = new ConcurrentBag<Channel>();
             NameSpaceID = 0;
             IsUsingEncryption = false;
             IsQuietMode = false;
@@ -49,7 +49,7 @@ namespace Chat.Entity.Structure.Misc
                 return false;
             }
         }
-        public ChatChannel GetJoinedChannelByName(string channelName)
+        public Channel GetJoinedChannelByName(string channelName)
         {
             var result = JoinedChannels.Where(c => c.Property.ChannelName == channelName);
             if (result.Count() == 1)

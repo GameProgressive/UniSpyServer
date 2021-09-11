@@ -5,20 +5,20 @@ namespace Chat.Handler.SystemHandler.ChannelManage
 {
     internal sealed class ChatChannelManager
     {
-        public static ConcurrentDictionary<string, ChatChannel> Channels { get; private set; }
+        public static ConcurrentDictionary<string, Channel> Channels { get; private set; }
         static ChatChannelManager()
         {
-            Channels = new ConcurrentDictionary<string, ChatChannel>();
+            Channels = new ConcurrentDictionary<string, Channel>();
         }
         public void Start()
         {
             //start timer to check expired channel
         }
-        public static bool GetChannel(string name, out ChatChannel channel)
+        public static bool GetChannel(string name, out Channel channel)
         {
             return Channels.TryGetValue(name, out channel);
         }
-        public static bool AddChannel(string name, ChatChannel channel)
+        public static bool AddChannel(string name, Channel channel)
         {
             return Channels.TryAdd(name, channel);
         }
@@ -26,7 +26,7 @@ namespace Chat.Handler.SystemHandler.ChannelManage
         {
             return Channels.TryRemove(name, out _);
         }
-        public static bool RemoveChannel(ChatChannel channel)
+        public static bool RemoveChannel(Channel channel)
         {
             return RemoveChannel(channel.Property.ChannelName);
         }

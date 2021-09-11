@@ -15,7 +15,7 @@ namespace Chat.Abstraction.BaseClass
 
             if (_cmdParams.Count < 1)
             {
-                throw new ChatException("channel name is missing.");
+                throw new Exception("channel name is missing.");
             }
             ChannelName = _cmdParams[0];
         }

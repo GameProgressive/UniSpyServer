@@ -40,7 +40,7 @@ namespace Chat.Abstraction.BaseClass
 
             if (RawRequest.Where(r => r.Equals(':')).Count() > 2)
             {
-                throw new ChatException($"IRC request is invalid {RawRequest}");
+                throw new Entity.Exception.Exception($"IRC request is invalid {RawRequest}");
             }
 
             int indexOfColon = RawRequest.IndexOf(':');

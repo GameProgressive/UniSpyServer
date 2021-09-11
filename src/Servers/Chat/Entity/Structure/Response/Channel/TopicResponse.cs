@@ -14,11 +14,11 @@ namespace Chat.Entity.Structure.Response.Channel
 
         public static string BuildNoTopicReply(string channelName)
         {
-            return ChatIRCReplyBuilder.Build(ChatReplyName.NoTopic, channelName);
+            return IRCReplyBuilder.Build(ResponseName.NoTopic, channelName);
         }
         public static string BuildTopicReply(string channelName, string channelTopic)
         {
-            return ChatIRCReplyBuilder.Build(ChatReplyName.TOPIC, channelName, channelTopic);
+            return IRCReplyBuilder.Build(ResponseName.ChannelTopic, channelName, channelTopic);
         }
 
         public override void Build()

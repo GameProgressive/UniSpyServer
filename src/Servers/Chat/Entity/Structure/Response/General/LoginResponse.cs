@@ -14,8 +14,8 @@ namespace Chat.Entity.Structure.Response.General
 
         public override void Build()
         {
-            SendingBuffer = ChatIRCReplyBuilder.Build(
-                ChatReplyName.Login,
+            SendingBuffer = IRCReplyBuilder.Build(
+                ResponseName.Login,
                 cmdParams: $"* {_result.UserID} {_result.ProfileID}");
         }
     }

@@ -17,15 +17,15 @@ namespace Chat.Entity.Structure.Response.General
         public static string BuildGetCKeyReply(string nickname, string channelName, string cookie, string flags)
         {
             var cmdParams = $"* {channelName} {nickname} {cookie} {flags}";
-            return ChatIRCReplyBuilder.Build(ChatReplyName.GetCKey, cmdParams);
+            return IRCReplyBuilder.Build(ResponseName.GetCKey, cmdParams);
         }
 
         public static string BuildEndOfGetCKeyReply(string channelName, string cookie)
         {
             var cmdParams = $"param1 {channelName} {cookie}";
             var tailing = "End Of /GETCKEY.";
-            return ChatIRCReplyBuilder.Build(
-                ChatReplyName.EndGetCKey,
+            return IRCReplyBuilder.Build(
+                ResponseName.EndGetCKey,
                 cmdParams,
                 tailing);
         }
@@ -34,11 +34,11 @@ namespace Chat.Entity.Structure.Response.General
             SendingBuffer = "";
             foreach (var data in _result.DataResults)
             {
-                SendingBuffer += ChatIRCReplyBuilder.Build(ChatReplyName.GetCKey,
+                SendingBuffer += IRCReplyBuilder.Build(ResponseName.GetCKey,
                 $"* {data.NickName} {_result.ChannelName} {_request.Cookie} {data.UserValues}");
             }
 
-            SendingBuffer += ChatIRCReplyBuilder.Build(ChatReplyName.EndGetCKey,
+            SendingBuffer += IRCReplyBuilder.Build(ResponseName.EndGetCKey,
                  $"* {_result.ChannelName} {_request.Cookie}",
                  "End Of /GETCKEY.");
         }

@@ -31,7 +31,7 @@ namespace Chat.Handler.CmdHandler.Channel
         {
             if (!_user.IsChannelOperator)
             {
-                throw new ChatException("SETCHANKEY failed because you are not channel operator.");
+                throw new Exception("SETCHANKEY failed because you are not channel operator.");
             }
             _channel.Property.SetChannelKeyValue(_request.KeyValue);
             _result.ChannelName = _result.ChannelName;

@@ -27,7 +27,7 @@ namespace Chat.Entity.Structure.Request.General
             }
             else
             {
-                throw new ChatException("NICK request is invalid.");
+                throw new Exception.Exception("NICK request is invalid.");
             }
 
 

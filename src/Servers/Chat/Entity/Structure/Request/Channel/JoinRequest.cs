@@ -19,7 +19,7 @@ namespace Chat.Entity.Structure.Request
 
             if (_cmdParams.Count > 2)
             {
-                throw new ChatException("number of IRC parameters are incorrect.");
+                throw new Exception.Exception("number of IRC parameters are incorrect.");
             }
 
             if (_cmdParams.Count == 2)

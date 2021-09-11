@@ -7,29 +7,29 @@ using UniSpyLib.Logging;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    internal sealed class ChatChannelProperty
+    internal sealed class ChannelProperty
     {
         public string ChannelName { get; private set; }
         public uint MaxNumberUser { get; private set; }
-        public ChatChannelMode ChannelMode { get; set; }
+        public ChannelMode ChannelMode { get; set; }
         public DateTime ChannelCreatedTime { get; private set; }
-        public ConcurrentBag<ChatChannelUser> BanList { get; set; }
-        public ConcurrentBag<ChatChannelUser> ChannelUsers { get; set; }
+        public ConcurrentBag<ChannelUser> BanList { get; set; }
+        public ConcurrentBag<ChannelUser> ChannelUsers { get; set; }
         public string Password { get; set; }
         public Dictionary<string, string> ChannelKeyValue { get; private set; }
         public string ChannelTopic { get; set; }
         public bool IsPeerServer { get; set; }
 
-        public ChatChannelProperty()
+        public ChannelProperty()
         {
             ChannelCreatedTime = DateTime.Now;
-            ChannelMode = new ChatChannelMode();
+            ChannelMode = new ChannelMode();
             ChannelKeyValue = new Dictionary<string, string>();
-            BanList = new ConcurrentBag<ChatChannelUser>();
-            ChannelUsers = new ConcurrentBag<ChatChannelUser>();
+            BanList = new ConcurrentBag<ChannelUser>();
+            ChannelUsers = new ConcurrentBag<ChannelUser>();
         }
 
-        public void SetDefaultProperties(ChatChannelUser creator, JoinRequest cmd)
+        public void SetDefaultProperties(ChannelUser creator, JoinRequest cmd)
         {
             MaxNumberUser = 200;
             ChannelName = cmd.ChannelName;
@@ -43,7 +43,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
         /// </summary>
         /// <param name="changer"></param>
         /// <param name="cmd"></param>
-        public void SetProperties(ChatChannelUser changer, ModeRequest cmd)
+        public void SetProperties(ChannelUser changer, ModeRequest cmd)
         {
             switch (cmd.RequestType)
             {
@@ -102,7 +102,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             {
                 return;
             }
-            ChatChannelUser user = result.First();
+            ChannelUser user = result.First();
 
             if (BanList.Where(u => u.UserInfo.NickName == cmd.NickName).Count() == 1)
             {
@@ -116,7 +116,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             var result = BanList.Where(u => u.UserInfo.NickName == cmd.NickName);
             if (result.Count() == 1)
             {
-                ChatChannelUser user = result.First();
+                ChannelUser user = result.First();
                 BanList.TryTake(out user);
                 return;
             }
@@ -147,7 +147,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             {
                 return;
             }
-            ChatChannelUser user = result.First();
+            ChannelUser user = result.First();
 
             //if this user is already in operator we do not add it
             if (user.IsChannelOperator)
@@ -164,7 +164,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
             {
                 return;
             }
-            ChatChannelUser user = result.First();
+            ChannelUser user = result.First();
 
             if (user.IsChannelCreator)
             {
@@ -180,7 +180,7 @@ namespace Chat.Entity.Structure.Misc.ChannelInfo
                 return;
             }
 
-            ChatChannelUser user = result.First();
+            ChannelUser user = result.First();
 
             if (user.IsVoiceable)
             {

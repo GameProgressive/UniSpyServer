@@ -14,7 +14,7 @@ namespace Chat.Abstraction.BaseClass
             get => (MsgResultBase)base._result;
             set => base._result = value;
         }
-        protected ChatChannelUser _reciever;
+        protected ChannelUser _reciever;
         public MsgHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -38,7 +38,7 @@ namespace Chat.Abstraction.BaseClass
                     }
                     break;
                 default:
-                    throw new ChatException("Unknown chat message request type.");
+                    throw new Exception("Unknown chat message request type.");
             }
         }
         protected override void DataOperation()

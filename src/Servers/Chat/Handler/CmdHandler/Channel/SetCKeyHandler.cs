@@ -24,7 +24,7 @@ namespace Chat.Handler.CmdHandler.Channel
             get => (SetCKeyResult)base._result;
             set => base._result = value;
         }
-        ChatChannelUser _otherUser;
+        ChannelUser _otherUser;
         public SetCKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -36,7 +36,7 @@ namespace Chat.Handler.CmdHandler.Channel
             {
                 if (!_user.IsChannelOperator)
                 {
-                    throw new ChatException("SETCKEY failed because you are not channel operator.");
+                    throw new Exception("SETCKEY failed because you are not channel operator.");
                 }
                 _result.IsSetOthersKeyValue = true;
                 _otherUser = _channel.GetChannelUserByNickName(_request.NickName);

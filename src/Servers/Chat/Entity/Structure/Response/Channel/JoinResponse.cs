@@ -30,9 +30,9 @@ namespace Chat.Entity.Structure.Response.General
             //     SendingBufferOfChannelUsers += modeReply;
             // }
 
-            SendingBuffer = ChatIRCReplyBuilder.Build(
+            SendingBuffer = IRCReplyBuilder.Build(
                 _result.JoinerPrefix,
-                ChatReplyName.JOIN,
+                ResponseName.Join,
                 _request.ChannelName,
                  null);
         }

@@ -4,7 +4,8 @@ namespace WebServer.Abstraction
 {
     public abstract class RequestBase : UniSpyRequestBase
     {
-        protected RequestBase(object rawRequest) : base(rawRequest)
+        public new string RawRequest => (string)base.RawRequest;
+        public RequestBase(string rawRequest) : base(rawRequest)
         {
         }
     }

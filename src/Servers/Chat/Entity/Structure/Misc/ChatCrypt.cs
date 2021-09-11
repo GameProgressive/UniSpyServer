@@ -16,10 +16,10 @@ namespace Chat.Entity.Structure.Misc
         public const string NewDigitsCrypt = "qJ1h4N9cP3lzD0Ka";
         public const uint IPXorMask = 0xc3801dc7;
 
-        public static byte[] Handle(GSPeerChatCTX ctx, byte[] data)
+        public static byte[] Handle(PeerChatCTX ctx, byte[] data)
         {
-            byte num1 = ctx.GSPeerChat1;
-            byte num2 = ctx.GSPeerChat2;
+            byte num1 = ctx.Buffer1;
+            byte num2 = ctx.Buffer2;
             byte t;
             int datapos = 0;
             List<byte> buffer = new List<byte>();
@@ -27,18 +27,18 @@ namespace Chat.Entity.Structure.Misc
             while (size-- > 0)
             {
                 num1 = (byte)((num1 + 1) % 256);
-                num2 = (byte)((ctx.GSPeerChatCrypt[num1] + num2) % 256);
-                t = ctx.GSPeerChatCrypt[num1];
-                ctx.GSPeerChatCrypt[num1] = ctx.GSPeerChatCrypt[num2];
-                ctx.GSPeerChatCrypt[num2] = t;
-                t = (byte)((ctx.GSPeerChatCrypt[num2] + ctx.GSPeerChatCrypt[num1]) % 256);
-                data[datapos++] ^= ctx.GSPeerChatCrypt[t];
-                byte temp = (byte)(data[datapos++] ^ ctx.GSPeerChatCrypt[t]);
+                num2 = (byte)((ctx.SBox[num1] + num2) % 256);
+                t = ctx.SBox[num1];
+                ctx.SBox[num1] = ctx.SBox[num2];
+                ctx.SBox[num2] = t;
+                t = (byte)((ctx.SBox[num2] + ctx.SBox[num1]) % 256);
+                data[datapos++] ^= ctx.SBox[t];
+                byte temp = (byte)(data[datapos++] ^ ctx.SBox[t]);
                 buffer.Add(temp);
             }
 
-            ctx.GSPeerChat1 = num1;
-            ctx.GSPeerChat2 = num2;
+            ctx.Buffer1 = num1;
+            ctx.Buffer2 = num2;
             return buffer.ToArray();
         }
 
@@ -48,13 +48,13 @@ namespace Chat.Entity.Structure.Misc
         /// <param name="ctx"></param>
         /// <param name="chall"></param>
         /// <param name="gamekey"></param>
-        public static void Init(GSPeerChatCTX ctx, string challengeKey, string secretKey)
+        public static void Init(PeerChatCTX ctx, string challengeKey, string secretKey)
         {
             byte[] challengeBytes = UniSpyEncoding.GetBytes(challengeKey);
             byte[] secretKeyBytes = UniSpyEncoding.GetBytes(secretKey);
 
-            ctx.GSPeerChat1 = 0;
-            ctx.GSPeerChat2 = 0;
+            ctx.Buffer1 = 0;
+            ctx.Buffer2 = 0;
 
             int secretKeyIndex = 0;
             for (int i = 0; i < challengeBytes.Length; i++, secretKeyIndex++)
@@ -71,22 +71,22 @@ namespace Chat.Entity.Structure.Misc
 
             for (int i = 0; i < 256; i++, index1--)
             {
-                ctx.GSPeerChatCrypt[i] = index1;
+                ctx.SBox[i] = index1;
             }
 
             index1 = 0;
 
-            for (int i = 0, index2 = 0; i < ctx.GSPeerChatCrypt.Length; i++, index1++)
+            for (int i = 0, index2 = 0; i < ctx.SBox.Length; i++, index1++)
             {
                 if (index1 >= challengeBytes.Length)
                 {
                     index1 = 0;
                 }
 
-                index2 = (byte)((challengeBytes[index1] + ctx.GSPeerChatCrypt[i] + index2) % 256);
-                byte t = ctx.GSPeerChatCrypt[i];
-                ctx.GSPeerChatCrypt[i] = ctx.GSPeerChatCrypt[index2];
-                ctx.GSPeerChatCrypt[index2] = t;
+                index2 = (byte)((challengeBytes[index1] + ctx.SBox[i] + index2) % 256);
+                byte t = ctx.SBox[i];
+                ctx.SBox[i] = ctx.SBox[index2];
+                ctx.SBox[index2] = t;
             }
         }
 

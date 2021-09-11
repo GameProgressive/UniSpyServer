@@ -23,9 +23,9 @@ namespace Chat.Entity.Structure.Response
             }
             var cmdParams = $"param1 {_result.ChannelName} BCAST {flags}";
             SendingBuffer =
-                ChatIRCReplyBuilder.Build(
+                IRCReplyBuilder.Build(
                     _result.ChannelUserIRCPrefix,
-                    ChatReplyName.GetChanKey,
+                    ResponseName.GetChanKey,
                     cmdParams,
                     null);
         }

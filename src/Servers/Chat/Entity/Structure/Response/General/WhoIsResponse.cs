@@ -14,8 +14,8 @@ namespace Chat.Entity.Structure.Response.General
         }
         public override void Build()
         {
-            SendingBuffer = ChatIRCReplyBuilder.Build(
-                ChatReplyName.WhoIsUser,
+            SendingBuffer = IRCReplyBuilder.Build(
+                ResponseName.WhoIsUser,
                 cmdParams: $"{_result.NickName} {_result.Name} {_result.UserName} {_result.PublicIPAddress} *",
                 _result.UserName);
 
@@ -28,14 +28,14 @@ namespace Chat.Entity.Structure.Response.General
                     channelNames += $"@{name} ";
                 }
 
-                SendingBuffer += ChatIRCReplyBuilder.Build(
-                    ChatReplyName.WhoIsChannels,
+                SendingBuffer += IRCReplyBuilder.Build(
+                    ResponseName.WhoIsChannels,
                     $"{_result.NickName} {_result.Name}",
                     channelNames
                     );
 
-                SendingBuffer += ChatIRCReplyBuilder.Build(
-                    ChatReplyName.EndOfWhoIs,
+                SendingBuffer += IRCReplyBuilder.Build(
+                    ResponseName.EndOfWhoIs,
                     $"{_result.NickName} {_result.Name}",
                     "End of /WHOIS list."
                     );

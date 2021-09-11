@@ -30,12 +30,12 @@ namespace Chat.Entity.Structure.Request
 
             if (_cmdParams.Count != 4)
             {
-                throw new ChatException("number of IRC parameters are incorrect.");
+                throw new Exception.Exception("number of IRC parameters are incorrect.");
             }
 
             if (_longParam == null)
             {
-                throw new ChatException("IRC long parameter is incorrect.");
+                throw new Exception.Exception("IRC long parameter is incorrect.");
             }
 
             NickName = _cmdParams[1];
