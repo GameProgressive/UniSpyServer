@@ -13,7 +13,7 @@ namespace ServerBrowser.Application
 
             try
             {
-                new SBServerFactory().Start();
+                new ServerFactory().Start();
 
             }
 

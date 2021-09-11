@@ -59,7 +59,7 @@ namespace QueryReport.Handler.CmdHandler
         {
             var fullKey = new GameServerInfoRedisKey()
             {
-                ServerID = QRServerFactory.Server.ServerID,
+                ServerID = ServerFactory.Server.ServerID,
                 RemoteIPEndPoint = _session.RemoteIPEndPoint,
                 InstantKey = _request.InstantKey,
                 GameName = _request.GameName
@@ -102,7 +102,7 @@ namespace QueryReport.Handler.CmdHandler
 
             var fullKey = new GameServerInfoRedisKey()
             {
-                ServerID = QRServerFactory.Server.ServerID,
+                ServerID = ServerFactory.Server.ServerID,
                 RemoteIPEndPoint = _session.RemoteIPEndPoint,
                 GameName = _request.GameName,
                 InstantKey = _request.InstantKey

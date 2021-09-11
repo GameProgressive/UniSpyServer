@@ -1,14 +1,11 @@
 ﻿using System;
 using PresenceSearchPlayer.Entity.Exception.General;
-using PresenceSearchPlayer.Entity.Structure.Response;
-using PresenceSearchPlayer.Entity.Structure.Result;
 using PresenceSearchPlayer.Network;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {
         /// <summary>
         /// Be careful the return of query function should be List type,

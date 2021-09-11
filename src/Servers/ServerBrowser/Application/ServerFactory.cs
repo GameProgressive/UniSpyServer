@@ -9,14 +9,14 @@ namespace ServerBrowser.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class SBServerFactory : ServerFactoryBase
+    internal sealed class ServerFactory : ServerFactoryBase
     {
-        public new static SBServer Server
+        public new static Server Server
         {
-            get => (SBServer)ServerFactoryBase.Server;
+            get => (Server)ServerFactoryBase.Server;
             private set => ServerFactoryBase.Server = value;
         }
-        public SBServerFactory()
+        public ServerFactory()
         {
         }
 
@@ -28,7 +28,7 @@ namespace ServerBrowser.Application
         {
             if (cfg.ServerName == ServerName)
             {
-                Server = new SBServer(cfg.ServerID, cfg.ListeningEndPoint);
+                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
             }
         }
     }

@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     [RequestContract("login")]
-    internal sealed class LoginRequest : PCMRequestBase
+    internal sealed class LoginRequest : RequestBase
     {
         public string UserChallenge { get; private set; }
         public string Response { get; private set; }

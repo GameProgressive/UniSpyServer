@@ -9,7 +9,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal sealed class BuddyListHandler : PCMCmdHandlerBase
+    internal sealed class BuddyListHandler : CmdHandlerBase
     {
         private new BuddyListResult _result
         {

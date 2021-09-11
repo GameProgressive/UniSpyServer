@@ -61,7 +61,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void Response()
         {
-            SBServerFactory.Server.RedisChannelSubscriber.PublishMessage(_natNegCookie);
+            ServerFactory.Server.RedisChannelSubscriber.PublishMessage(_natNegCookie);
         }
     }
 }

@@ -2,17 +2,17 @@
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    internal abstract class PCMResponseBase : UniSpyResponseBase
+    internal abstract class ResponseBase : UniSpyResponseBase
     {
         protected new PCMResultBase _result => (PCMResultBase)base._result;
-        protected new PCMRequestBase _request => (PCMRequestBase)base._request;
+        protected new RequestBase _request => (RequestBase)base._request;
         public new string SendingBuffer
         {
             get => (string)base.SendingBuffer;
             protected set => base.SendingBuffer = value;
         }
 
-        protected PCMResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        protected ResponseBase(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
     }

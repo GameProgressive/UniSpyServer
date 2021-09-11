@@ -13,7 +13,7 @@ namespace QueryReport.Application
             try
             {
                 //create a instance of ServerManager class
-                new QRServerFactory().Start();
+                new ServerFactory().Start();
 
             }
 

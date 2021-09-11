@@ -11,14 +11,14 @@ namespace QueryReport.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class QRServerFactory : ServerFactoryBase
+    internal sealed class ServerFactory : ServerFactoryBase
     {
         public new static Server Server
         {
             get => (Server)ServerFactoryBase.Server;
             private set => ServerFactoryBase.Server = value;
         }
-        public QRServerFactory()
+        public ServerFactory()
         {
         }
 

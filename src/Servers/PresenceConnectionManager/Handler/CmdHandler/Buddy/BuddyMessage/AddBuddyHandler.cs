@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     [HandlerContract("addbuddy")]
-    internal sealed class AddBuddyHandler : PCMCmdHandlerBase
+    internal sealed class AddBuddyHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new AddBuddyRequest _request => (AddBuddyRequest)base._request;
 

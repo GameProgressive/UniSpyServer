@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// Update a user's status information
     /// </summary>
     [RequestContract("status")]
-    internal sealed class StatusRequest : PCMRequestBase
+    internal sealed class StatusRequest : RequestBase
     {
         public PCMUserStatus Status { get; private set; }
         public bool IsGetStatus { get; set; }

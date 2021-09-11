@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// <summary>
     /// TODO Status should be stored in redis
     /// </summary>
-    internal sealed class StatusHandler : PCMCmdHandlerBase
+    internal sealed class StatusHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         [HandlerContract("status")]
         private new StatusRequest _request => (StatusRequest)base._request;

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     [RequestContract("addblock")]
-    internal sealed class AddBlockRequest : PCMRequestBase
+    internal sealed class AddBlockRequest : RequestBase
     {
         public uint ProfileID;
         public AddBlockRequest(string rawRequest) : base(rawRequest)

@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    internal sealed class RegisterCDKeyResponse : PCMResponseBase
+    internal sealed class RegisterCDKeyResponse : ResponseBase
     {
         public RegisterCDKeyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

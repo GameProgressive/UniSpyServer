@@ -4,7 +4,7 @@ using PresenceConnectionManager.Entity.Contract;
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("updateui")]
-    internal sealed class UpdateUIRequest : PCMRequestBase
+    internal sealed class UpdateUIRequest : RequestBase
     {
         public UpdateUIRequest(string rawRequest) : base(rawRequest)
         {

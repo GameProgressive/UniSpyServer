@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     [RequestContract("logout")]
-    internal sealed class LogoutRequest : PCMRequestBase
+    internal sealed class LogoutRequest : RequestBase
     {
         public LogoutRequest(string rawRequest) : base(rawRequest)
         {

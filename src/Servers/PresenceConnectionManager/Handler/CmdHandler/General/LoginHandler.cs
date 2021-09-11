@@ -17,7 +17,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("login")]
-    internal sealed class LoginHandler : PCMCmdHandlerBase
+    internal sealed class LoginHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new LoginRequest _request => (LoginRequest)base._request;
         private new LoginResult _result

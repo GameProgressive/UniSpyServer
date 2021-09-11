@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("registernick")]
-    internal sealed class RegisterNickRequest : PCMRequestBase
+    internal sealed class RegisterNickRequest : RequestBase
     {
         public string UniqueNick { get; private set; }
         public string SessionKey { get; private set; }

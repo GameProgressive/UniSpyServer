@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("ka")]
-    internal sealed class KeepAliveHandler : PCMCmdHandlerBase
+    internal sealed class KeepAliveHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

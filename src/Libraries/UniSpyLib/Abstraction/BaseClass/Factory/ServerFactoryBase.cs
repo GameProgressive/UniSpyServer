@@ -1,9 +1,7 @@
-﻿using StackExchange.Redis;
+﻿using ConsoleTables;
+using StackExchange.Redis;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using UniSpyLib.Abstraction.BaseClass.Contract;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
@@ -48,7 +46,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         protected void LoadServerConfig()
         {
             //Add all servers
-            foreach (UniSpyServerConfig cfg in ConfigManager.Config.Servers)
+            foreach (var cfg in ConfigManager.Config.Servers)
             {
                 StartServer(cfg);
             }
@@ -57,7 +55,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
             {
                 Server.Start();
 
-                var table = new ConsoleTables.ConsoleTable("Server Name", "Listening Address", "Listening Port");
+                var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
                 table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
                 table.Write(ConsoleTables.Format.Alternative);
                 Console.WriteLine("Server successfully started!");

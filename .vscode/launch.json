@@ -15,7 +15,6 @@
             "stopAtEntry": false,
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-
         },
         {
             "name": "PSP",
@@ -102,11 +101,11 @@
             "stopAtEntry": false
         },
         {
-            "name": "WebServices",
+            "name": "WebServer",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build_web",
-            "program": "${workspaceRoot}/build/Debug/net5.0/WebServices.dll",
+            "program": "${workspaceRoot}/build/Debug/net5.0/WebServer.dll",
             "args": [],
             "cwd": "${workspaceRoot}/build/Debug/net5.0/",
             "console": "integratedTerminal",
@@ -127,7 +126,7 @@
             "configurations": [
                 "PCM",
                 "PSP",
-                "NATNeg",
+                "NatNeg",
                 "CDKey",
                 "Chat",
                 "QueryReport",
@@ -148,12 +147,12 @@
             "configurations": [
                 "PCM",
                 "PSP",
-                "NATNeg",
+                "NatNeg",
                 "CDKey",
                 "Chat",
                 "QueryReport",
                 "ServerBrowser",
-                "WebServices"
+                "WebService"
             ]
         },
         {
@@ -166,7 +165,7 @@
         {
             "name": "Sake servers",
             "configurations": [
-                "WebServices",
+                "WebService",
                 "PCM"
             ]
         }

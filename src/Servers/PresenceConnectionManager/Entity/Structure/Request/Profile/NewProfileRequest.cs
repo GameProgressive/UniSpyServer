@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("newprofile")]
-    internal sealed class NewProfileRequest : PCMRequestBase
+    internal sealed class NewProfileRequest : RequestBase
     {
         //create a new profile with new nick 
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"

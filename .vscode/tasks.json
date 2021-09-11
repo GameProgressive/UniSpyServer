@@ -132,7 +132,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/src/Servers/WebServices/WebServices.csproj",
+                "${workspaceFolder}/src/Servers/WebServer/WebServer.csproj",
                 "-o",
                 "${workspaceFolder}/build/Debug/net5.0/",
                 "/property:GenerateFullPaths=true",

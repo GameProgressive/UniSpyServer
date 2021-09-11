@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// \registercdkey\sesskey\<sesskey>\cdkeyenc\<cdkeyenc>\id\<id>\final\
     /// </summary>
     [RequestContract("registercdkey")]
-    internal sealed class RegisterCDKeyRequest : PCMRequestBase
+    internal sealed class RegisterCDKeyRequest : RequestBase
     {
         public string CDKeyEnc { get; private set; }
         public RegisterCDKeyRequest(string rawRequest) : base(rawRequest)

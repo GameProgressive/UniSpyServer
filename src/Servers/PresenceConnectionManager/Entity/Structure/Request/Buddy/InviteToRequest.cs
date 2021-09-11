@@ -9,7 +9,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// Invite a user to a room or a game
     /// </summary>
     [RequestContract("inviteto")]
-    internal sealed class InviteToRequest : PCMRequestBase
+    internal sealed class InviteToRequest : RequestBase
     {
         public uint ProductID { get; private set; }
         public uint ProfileID { get; private set; }

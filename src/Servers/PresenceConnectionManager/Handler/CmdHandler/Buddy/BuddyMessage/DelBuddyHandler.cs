@@ -13,7 +13,7 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// handles dell buddy request,remove friends from friends list
     /// </summary>
     [HandlerContract("delbuddy")]
-    internal sealed class DelBuddyHandler : PCMCmdHandlerBase
+    internal sealed class DelBuddyHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new DelBuddyRequest _request => (DelBuddyRequest)base._request;
         //delete friend in database then send bm_revoke message to friend

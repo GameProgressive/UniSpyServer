@@ -25,7 +25,7 @@ namespace QueryReport.Handler.SystemHandler
             var endPoint = new IPEndPoint(address, port);
 
             IUniSpySession session;
-            if (!QRServerFactory.Server.SessionManager.SessionPool.TryGetValue(endPoint, out session))
+            if (!ServerFactory.Server.SessionManager.SessionPool.TryGetValue(endPoint, out session))
             {
                 throw new QRException("Can not find game server in QR");
             }
@@ -42,7 +42,7 @@ namespace QueryReport.Handler.SystemHandler
             };
             var response = new ClientMessageResponse(request, result);
             response.Build();
-            QRServerFactory.Server.SendAsync(endPoint, response.SendingBuffer);
+            ServerFactory.Server.SendAsync(endPoint, response.SendingBuffer);
         }
     }
 }

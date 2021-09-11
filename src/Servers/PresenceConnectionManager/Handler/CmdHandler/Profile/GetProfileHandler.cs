@@ -13,7 +13,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("getprofile")]
-    internal sealed class GetProfileHandler : PCMCmdHandlerBase
+    internal sealed class GetProfileHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         // \getprofile\\sesskey\19150\profileid\2\id\2\final\
         private new GetProfileRequest _request => (GetProfileRequest)base._request;

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("getprofile")]
-    internal sealed class GetProfileRequest : PCMRequestBase
+    internal sealed class GetProfileRequest : RequestBase
     {
         public uint ProfileID { get; private set; }
         public string SessionKey { get; private set; }
