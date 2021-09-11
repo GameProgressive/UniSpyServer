@@ -8,17 +8,17 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Message
 {
     [HandlerContract("ATM")]
-    internal sealed class AboveTheTableMsgHandler : ChatMsgHandlerBase
+    internal sealed class AboveTheTableMsgHandler : MsgHandlerBase
     {
         new AboveTheTableMsgRequest _request => (AboveTheTableMsgRequest)base._request;
-        new ATMResult _result
+        new AboveTheTableMsgResult _result
         {
-            get => (ATMResult)base._result;
+            get => (AboveTheTableMsgResult)base._result;
             set => base._result = value;
         }
         public AboveTheTableMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new ATMResult();
+            _result = new AboveTheTableMsgResult();
         }
 
         protected override void ChannelMessageDataOpration()
@@ -33,7 +33,7 @@ namespace Chat.Handler.CmdHandler.Message
         }
         protected override void ResponseConstruct()
         {
-            _response = new ATMResponse(_request, _result);
+            _response = new AboveTheTableMsgResponse(_request, _result);
         }
     }
 }

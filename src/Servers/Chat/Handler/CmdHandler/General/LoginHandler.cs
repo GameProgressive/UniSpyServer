@@ -15,14 +15,14 @@ namespace Chat.Handler.CmdHandler.General
     {
 
         private new LoginRequest _request => (LoginRequest)base._request;
-        private new LOGINResult _result
+        private new LoginResult _result
         {
-            get => (LOGINResult)base._result;
+            get => (LoginResult)base._result;
             set => base._result = value;
         }
         public LoginHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new LOGINResult();
+            _result = new LoginResult();
         }
 
         protected override void RequestCheck()
@@ -98,7 +98,7 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void ResponseConstruct()
         {
-            _response = new LOGINResponse(_request, _result);
+            _response = new LoginResponse(_request, _result);
         }
     }
 }

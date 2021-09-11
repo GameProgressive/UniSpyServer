@@ -8,17 +8,13 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Message
 {
     [HandlerContract("PRIVMSG")]
-    internal sealed class PrivateMsgHandler : ChatMsgHandlerBase
+    internal sealed class PrivateMsgHandler : MsgHandlerBase
     {
         private new PrivateMsgRequest _request => (PrivateMsgRequest)base._request;
-        private new PRIVMSGResult _result
-        {
-            get => (PRIVMSGResult)base._result;
-            set => base._result = value;
-        }
+        private new PrivateMsgResult _result { get => (PrivateMsgResult)base._result; set => base._result = value; }
         public PrivateMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new PRIVMSGResult();
+            _result = new PrivateMsgResult();
         }
         protected override void DataOperation()
         {
@@ -54,7 +50,7 @@ namespace Chat.Handler.CmdHandler.Message
         }
         protected override void ResponseConstruct()
         {
-            _response = new PRIVMSGResponse(_request, _result);
+            _response = new PrivateMsgResponse(_request, _result);
         }
     }
 }

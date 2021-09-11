@@ -14,15 +14,15 @@ namespace Chat.Handler.CmdHandler.General
     internal sealed class ListHandler : LogedInHandlerBase
     {
         private new ListRequest _request => (ListRequest)base._request;
-        private new LISTResult _result
+        private new ListResult _result
         {
-            get => (LISTResult)base._result;
+            get => (ListResult)base._result;
             set => base._result = value;
         }
         //:irc.foonet.com 321 Pants Channel :Users  Name\r\n:irc.foonet.com 323 Pants :End of /LIST\r\n
         public ListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new LISTResult();
+            _result = new ListResult();
         }
         protected override void DataOperation()
         {
@@ -31,7 +31,7 @@ namespace Chat.Handler.CmdHandler.General
             {
                 //TODO
                 //add channel information here
-                LISTDataModel channelInfo = new LISTDataModel
+                ListDataModel channelInfo = new ListDataModel
                 {
                     ChannelName = channel.Property.ChannelName,
                     TotalChannelUsers = channel.Property.ChannelUsers.Count,
@@ -43,7 +43,7 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void ResponseConstruct()
         {
-            _response = new LISTResponse(_request, _result);
+            _response = new ListResponse(_request, _result);
         }
     }
 }

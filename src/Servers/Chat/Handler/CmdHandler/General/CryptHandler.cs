@@ -14,15 +14,15 @@ namespace Chat.Handler.CmdHandler.General
     internal sealed class CryptHandler : CmdHandlerBase
     {
         private new CryptRequest _request => (CryptRequest)base._request;
-        private new CRYPTResult _result
+        private new CryptResult _result
         {
-            get => (CRYPTResult)base._result;
+            get => (CryptResult)base._result;
             set => base._result = value;
         }
         // CRYPT des 1 gamename
         public CryptHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new CRYPTResult();
+            _result = new CryptResult();
         }
 
         protected override void DataOperation()

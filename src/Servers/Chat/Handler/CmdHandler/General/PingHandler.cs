@@ -11,9 +11,9 @@ namespace Chat.Handler.CmdHandler.General
     internal sealed class PingHandler : LogedInHandlerBase
     {
         private new PingRequest _request => (PingRequest)base._request;
-        private new PINGResult _result
+        private new PingResult _result
         {
-            get => (PINGResult)base._result;
+            get => (PingResult)base._result;
             set => base._result = value;
         }
         public PingHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
@@ -25,7 +25,7 @@ namespace Chat.Handler.CmdHandler.General
         }
         protected override void ResponseConstruct()
         {
-            _response = new PINGResponse(_request, _result);
+            _response = new PingResponse(_request, _result);
         }
     }
 }

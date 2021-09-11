@@ -13,15 +13,15 @@ namespace Chat.Handler.CmdHandler.General
     internal sealed class QuitHandler : LogedInHandlerBase
     {
         private new QuitRequest _request => (QuitRequest)base._request;
-        private new QUITResult _result
+        private new QuitResult _result
         {
-            get => (QUITResult)base._result;
+            get => (QuitResult)base._result;
             set => base._result = value;
         }
         // when a user disconnected with server we can call this function
         public QuitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new QUITResult();
+            _result = new QuitResult();
         }
 
         protected override void DataOperation()
@@ -34,7 +34,7 @@ namespace Chat.Handler.CmdHandler.General
                     continue;
                 }
                 _result.ChannelInfos.Add(
-                    new QUITDataModel
+                    new QuitDataModel
                     {
                         IsPeerServer = channel.Property.IsPeerServer,
                         IsChannelCreator = user.IsChannelCreator,

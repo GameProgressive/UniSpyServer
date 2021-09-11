@@ -90,7 +90,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new GETCKEYResponse(_request, _result);
+            _response = new GetCKeyResponse(_request, _result);
         }
     }
 }

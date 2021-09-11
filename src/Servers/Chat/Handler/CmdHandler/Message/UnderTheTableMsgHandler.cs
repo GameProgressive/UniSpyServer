@@ -8,17 +8,13 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Message
 {
     [HandlerContract("UTM")]
-    internal sealed class UnderTheTableMsgHandler : ChatMsgHandlerBase
+    internal sealed class UnderTheTableMsgHandler : MsgHandlerBase
     {
         private new UnderTheTableMsgRequest _request => (UnderTheTableMsgRequest)base._request;
-        private new UTMResult _result
-        {
-            get => (UTMResult)base._result;
-            set => base._result = value;
-        }
+        private new UnderTheTableMsgResult _result { get => (UnderTheTableMsgResult)base._result; set => base._result = value; }
         public UnderTheTableMsgHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new UTMResult();
+            _result = new UnderTheTableMsgResult();
         }
         protected override void ChannelMessageDataOpration()
         {
@@ -32,7 +28,7 @@ namespace Chat.Handler.CmdHandler.Message
         }
         protected override void ResponseConstruct()
         {
-            _response = new UTMResponse(_request, _result);
+            _response = new UnderTheTableMsgResponse(_request, _result);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Chat.Entity.Structure.Misc
 {
-    internal sealed class GSPeerChatCTX
+    internal sealed class CipherText
     {
         public byte GSPeerChat1;
         public byte GSPeerChat2;

@@ -34,7 +34,7 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public int? Connectiontype;
 
     }
-    internal sealed class GetProfileResult : PCMResultBase
+    internal sealed class GetProfileResult : ResultBase
     {
         public GetProfileDataModel UserProfile;
         public GetProfileResult()

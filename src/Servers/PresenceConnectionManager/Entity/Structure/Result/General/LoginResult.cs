@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public uint SubProfileID;
     }
 
-    internal sealed class LoginResult : PCMResultBase
+    internal sealed class LoginResult : ResultBase
     {
         public LogInDataModel DatabaseResults { get; set; }
         public string ResponseProof { get; set; }

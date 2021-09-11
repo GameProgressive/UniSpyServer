@@ -14,20 +14,20 @@ namespace Chat.Handler.CmdHandler.Channel
     internal sealed class KickHandler : ChannelHandlerBase
     {
         private new KickRequest _request => (KickRequest)base._request;
-        private new KICKResponse _response
+        private new KickResponse _response
         {
-            get => (KICKResponse)base._response;
+            get => (KickResponse)base._response;
             set => base._response = value;
         }
-        private new KICKResult _result
+        private new KickResult _result
         {
-            get => (KICKResult)base._result;
+            get => (KickResult)base._result;
             set => base._result = value;
         }
         private ChatChannelUser _kickee;
         public KickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new KICKResult();
+            _result = new KickResult();
         }
 
         protected override void RequestCheck()
@@ -54,7 +54,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new KICKResponse(_request, _result);
+            _response = new KickResponse(_request, _result);
         }
 
         protected override void Response()

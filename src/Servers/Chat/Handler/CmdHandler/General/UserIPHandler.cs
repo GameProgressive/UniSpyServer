@@ -12,14 +12,14 @@ namespace Chat.Handler.CmdHandler.General
     {
 
         private new UserIPRequest _request => (UserIPRequest)base._request;
-        private new USRIPResult _result
+        private new UserIPResult _result
         {
-            get => (USRIPResult)base._result;
+            get => (UserIPResult)base._result;
             set => base._result = value;
         }
         public UserIPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new USRIPResult();
+            _result = new UserIPResult();
         }
 
         protected override void DataOperation()
@@ -29,7 +29,7 @@ namespace Chat.Handler.CmdHandler.General
         }
         protected override void ResponseConstruct()
         {
-            _response = new USRIPResponse(_request, _result);
+            _response = new UserIPResponse(_request, _result);
         }
     }
 }

@@ -12,14 +12,14 @@ namespace Chat.Handler.CmdHandler.Channel
     internal sealed class TopicHandler : ChannelHandlerBase
     {
         private new TopicRequest _request => (TopicRequest)base._request;
-        private new TOPICResult _result
+        private new TopicResult _result
         {
-            get => (TOPICResult)base._result;
+            get => (TopicResult)base._result;
             set => base._result = value;
         }
         public TopicHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new TOPICResult();
+            _result = new TopicResult();
         }
 
         protected override void DataOperation()
@@ -41,7 +41,7 @@ namespace Chat.Handler.CmdHandler.Channel
         }
         protected override void ResponseConstruct()
         {
-            _response = new TOPICResponse(_request, _result);
+            _response = new TopicResponse(_request, _result);
         }
         protected override void Response()
         {

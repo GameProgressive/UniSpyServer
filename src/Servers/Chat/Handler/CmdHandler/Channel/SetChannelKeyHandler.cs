@@ -17,14 +17,14 @@ namespace Chat.Handler.CmdHandler.Channel
     internal sealed class SetChannelKeyHandler : ChannelHandlerBase
     {
         private new SetChannelKeyRequest _request => (SetChannelKeyRequest)base._request;
-        private new SETCHANKEYResult _result
+        private new SetChannelKeyResult _result
         {
-            get => (SETCHANKEYResult)base._result;
+            get => (SetChannelKeyResult)base._result;
             set => base._result = value;
         }
         public SetChannelKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new SETCHANKEYResult();
+            _result = new SetChannelKeyResult();
         }
 
         protected override void DataOperation()
@@ -40,7 +40,7 @@ namespace Chat.Handler.CmdHandler.Channel
         }
         protected override void ResponseConstruct()
         {
-            _response = new SETCHANKEYResponse(_request, _result);
+            _response = new SetChannelKeyResponse(_request, _result);
         }
     }
 }

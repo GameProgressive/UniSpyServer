@@ -8,17 +8,17 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Message
 {
     [HandlerContract("NOTICE")]
-    internal sealed class NoticeHandler : ChatMsgHandlerBase
+    internal sealed class NoticeHandler : MsgHandlerBase
     {
         private new NoticeRequest _request => (NoticeRequest)base._request;
-        private new NOTICEResult _result
+        private new NoticeResult _result
         {
-            get => (NOTICEResult)base._result;
+            get => (NoticeResult)base._result;
             set => base._result = value;
         }
         public NoticeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new NOTICEResult();
+            _result = new NoticeResult();
         }
 
         protected override void DataOperation()
@@ -29,7 +29,7 @@ namespace Chat.Handler.CmdHandler.Message
 
         protected override void ResponseConstruct()
         {
-            _response = new NOTICEResponse(_request, _result);
+            _response = new NoticeResponse(_request, _result);
         }
     }
 }

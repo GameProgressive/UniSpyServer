@@ -9,10 +9,10 @@ namespace Chat.Handler.CmdHandler.Channel
     [HandlerContract("NAMES")]
     internal sealed class NamesHandler : ChannelHandlerBase
     {
-        private new NAMESResult _result { get => (NAMESResult)base._result; set => base._result = value; }
+        private new NamesResult _result { get => (NamesResult)base._result; set => base._result = value; }
         public NamesHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new NAMESResult();
+            _result = new NamesResult();
         }
         protected override void DataOperation()
         {
@@ -22,7 +22,7 @@ namespace Chat.Handler.CmdHandler.Channel
         }
         protected override void ResponseConstruct()
         {
-            _response = new NAMESResponse(_request, _result);
+            _response = new NamesResponse(_request, _result);
         }
     }
 }

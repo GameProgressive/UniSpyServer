@@ -16,21 +16,21 @@ namespace Chat.Handler.CmdHandler.General
     internal sealed class WhoIsHandler : CmdHandlerBase
     {
         private new WhoIsRequest _request => (WhoIsRequest)base._request;
-        private new WHOISResult _result
+        private new WhoIsResult _result
         {
-            get => (WHOISResult)base._result;
+            get => (WhoIsResult)base._result;
             set => base._result = value;
         }
         private UserInfo _userInfo;
         public WhoIsHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new WHOISResult();
+            _result = new WhoIsResult();
         }
 
         protected override void RequestCheck()
         {
             // there only existed one nick name
-            var session = (Session)ChatServerFactory.Server.SessionManager.SessionPool.Values
+            var session = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
                  .Where(s => ((Session)s).UserInfo.NickName == _request.NickName)
                  .FirstOrDefault();
             if (session == null)
@@ -52,7 +52,7 @@ namespace Chat.Handler.CmdHandler.General
         }
         protected override void ResponseConstruct()
         {
-            _response = new WHOISResponse(_request, _result);
+            _response = new WhoIsResponse(_request, _result);
         }
 
 

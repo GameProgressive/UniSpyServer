@@ -15,14 +15,14 @@ namespace Chat.Handler.CmdHandler.General
     internal sealed class GetKeyHandler : LogedInHandlerBase
     {
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
-        private new GETKEYResult _result
+        private new GetKeyResult _result
         {
-            get => (GETKEYResult)base._result;
+            get => (GetKeyResult)base._result;
             set => base._result = value;
         }
         public GetKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new GETKEYResult();
+            _result = new GetKeyResult();
         }
 
         protected override void DataOperation()

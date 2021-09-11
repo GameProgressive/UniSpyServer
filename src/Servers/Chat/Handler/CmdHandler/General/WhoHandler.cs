@@ -22,14 +22,14 @@ namespace Chat.Handler.CmdHandler.General
     internal sealed class WhoHandler : LogedInHandlerBase
     {
         private new WhoRequest _request => (WhoRequest)base._request;
-        private new WHOResult _result
+        private new WhoResult _result
         {
-            get => (WHOResult)base._result;
+            get => (WhoResult)base._result;
             set => base._result = value;
         }
         public WhoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new WHOResult();
+            _result = new WhoResult();
         }
 
         protected override void DataOperation()
@@ -54,7 +54,7 @@ namespace Chat.Handler.CmdHandler.General
             }
             foreach (var user in channel.Property.ChannelUsers)
             {
-                var data = new WHODataModel
+                var data = new WhoDataModel
                 {
                     ChannelName = channel.Property.ChannelName,
                     UserName = user.UserInfo.UserName,
@@ -70,7 +70,7 @@ namespace Chat.Handler.CmdHandler.General
         /// </summary>
         private void GetUserInfo()
         {
-            var session = (Session)ChatServerFactory.Server.SessionManager.SessionPool.Values
+            var session = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
                 .Where(s => ((Session)s).UserInfo.NickName == _request.NickName)
                 .FirstOrDefault();
             if (session == null)
@@ -81,7 +81,7 @@ namespace Chat.Handler.CmdHandler.General
             foreach (var channel in session.UserInfo.JoinedChannels)
             {
                 ChatChannelUser user = channel.GetChannelUserBySession(session);
-                var data = new WHODataModel
+                var data = new WhoDataModel
                 {
                     ChannelName = channel.Property.ChannelName,
                     NickName = session.UserInfo.NickName,
@@ -94,7 +94,7 @@ namespace Chat.Handler.CmdHandler.General
         }
         protected override void ResponseConstruct()
         {
-            _response = new WHOResponse(_request, _result);
+            _response = new WhoResponse(_request, _result);
         }
     }
 }

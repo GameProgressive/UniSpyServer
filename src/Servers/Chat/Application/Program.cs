@@ -15,7 +15,7 @@ namespace Chat.Application
             try
             {
                 //create a instance of ServerManager class
-                new ChatServerFactory().Start();
+                new ServerFactory().Start();
 
             }
 

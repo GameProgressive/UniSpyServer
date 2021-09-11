@@ -23,21 +23,21 @@ namespace Chat.Handler.CmdHandler.Channel
     internal sealed class JoinHandler : LogedInHandlerBase
     {
         private new JoinRequest _request => (JoinRequest)base._request;
-        private new JOINResult _result
+        private new JoinResult _result
         {
-            get => (JOINResult)base._result;
+            get => (JoinResult)base._result;
             set => base._result = value;
         }
-        private new JOINResponse _response
+        private new JoinResponse _response
         {
-            get => (JOINResponse)base._response;
+            get => (JoinResponse)base._response;
             set => base._response = value;
         }
         ChatChannel _channel;
         ChatChannelUser _user;
         public JoinHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new JOINResult();
+            _result = new JoinResult();
         }
 
         //1.筛选出所要加入的频道，如果不存在则创建(select the channel that user want to join, if channel does not exist creating it)
@@ -134,7 +134,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new JOINResponse(_request, _result);
+            _response = new JoinResponse(_request, _result);
         }
 
         protected override void Response()

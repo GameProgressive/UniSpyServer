@@ -22,13 +22,13 @@ namespace Chat.Handler.CmdHandler.General
         {
             string newNickName = _request.NickName;
             uint count = 0;
-            if (ChatServerFactory.Server.SessionManager.SessionPool.Values.
+            if (ServerFactory.Server.SessionManager.SessionPool.Values.
                    Where(s => ((Session)s).UserInfo.NickName == newNickName)
                    .Count() == 1)
             {
                 while (true)
                 {
-                    if (ChatServerFactory.Server.SessionManager.SessionPool.Values.
+                    if (ServerFactory.Server.SessionManager.SessionPool.Values.
                         Where(s => ((Session)s).UserInfo.NickName == newNickName)
                         .Count() == 1)
                     {
@@ -52,7 +52,7 @@ namespace Chat.Handler.CmdHandler.General
         }
         protected override void ResponseConstruct()
         {
-            _response = new NICKResponse(_request, _result);
+            _response = new NickResponse(_request, _result);
         }
     }
 }

@@ -14,14 +14,14 @@ namespace Chat.Handler.CmdHandler.Channel
     internal sealed class ModeHandler : ChannelHandlerBase
     {
         private new ModeRequest _request => (ModeRequest)base._request;
-        private new MODEResult _result
+        private new ModeResult _result
         {
-            get => (MODEResult)base._result;
+            get => (ModeResult)base._result;
             set => base._result = value;
         }
         public ModeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new MODEResult();
+            _result = new ModeResult();
         }
 
         protected override void RequestCheck()
@@ -76,7 +76,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new MODEResponse(_request, _result);
+            _response = new ModeResponse(_request, _result);
         }
     }
 }

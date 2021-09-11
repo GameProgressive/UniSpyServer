@@ -19,9 +19,9 @@ namespace Chat.Handler.CmdHandler.Channel
     internal sealed class SetCKeyHandler : ChannelHandlerBase
     {
         private new SetCKeyRequest _request => (SetCKeyRequest)base._request;
-        private new SETCKEYResult _result
+        private new SetCKeyResult _result
         {
-            get => (SETCKEYResult)base._result;
+            get => (SetCKeyResult)base._result;
             set => base._result = value;
         }
         ChatChannelUser _otherUser;
@@ -65,7 +65,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new SETCKEYResponse(_request, _result);
+            _response = new SetCKeyResponse(_request, _result);
         }
 
         protected override void Response()

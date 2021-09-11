@@ -8,7 +8,7 @@ namespace Chat.Entity.Structure.Response.Channel
 {
     internal sealed class GetKeyResponse : ResponseBase
     {
-        private new GETKEYResult _result => (GETKEYResult)base._result;
+        private new GetKeyResult _result => (GetKeyResult)base._result;
         private new GetKeyRequest _request => (GetKeyRequest)base._request;
         public GetKeyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

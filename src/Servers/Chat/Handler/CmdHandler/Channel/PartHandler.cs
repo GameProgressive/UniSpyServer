@@ -13,19 +13,19 @@ namespace Chat.Handler.CmdHandler.Channel
     internal sealed class PartHandler : ChannelHandlerBase
     {
         private new PartRequest _request => (PartRequest)base._request;
-        private new PARTResponse _response
+        private new PartResponse _response
         {
-            get => (PARTResponse)base._response;
+            get => (PartResponse)base._response;
             set => base._response = value;
         }
-        private new PARTResult _result
+        private new PartResult _result
         {
-            get => (PARTResult)base._result;
+            get => (PartResult)base._result;
             set => base._result = value;
         }
         public PartHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new PARTResult();
+            _result = new PartResult();
         }
 
         protected override void DataOperation()
@@ -67,7 +67,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void ResponseConstruct()
         {
-            _response = new PARTResponse(_request, _result);
+            _response = new PartResponse(_request, _result);
         }
 
         protected override void Response()

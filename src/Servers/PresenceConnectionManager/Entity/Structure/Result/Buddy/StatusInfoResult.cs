@@ -3,7 +3,7 @@ using PresenceConnectionManager.Entity.Structure.Misc;
 
 namespace PresenceConnectionManager.Entity.Structure.Result.Buddy
 {
-    internal sealed class StatusInfoResult : PCMResultBase
+    internal sealed class StatusInfoResult : ResultBase
     {
         public uint ProfileID { get; set; }
         public uint ProductID { get; set; }
