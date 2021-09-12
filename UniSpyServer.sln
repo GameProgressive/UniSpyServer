@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31612.314
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PresenceConnectionManager", "src\Servers\PresenceConnectionManager\PresenceConnectionManager.csproj", "{2756723C-4071-4EEA-851D-A23C0019E43A}"
 EndProject
@@ -21,13 +21,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CDKey", "src\Servers\CDKey\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{3DC251C8-F841-4D22-81DB-A7D4D4C25F37}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyLib", "src\Libraries\UniSpyLib\UniSpyLib.csproj", "{5D63AEAE-0726-4A00-B85C-173BD60568AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyLib", "src\Libraries\UniSpyLib\UniSpyLib.csproj", "{5D63AEAE-0726-4A00-B85C-173BD60568AD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1EE5E825-4DDD-40BA-B81C-7FBC56BE5DBA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServer", "src\Servers\WebServer\WebServer.csproj", "{E659A9B4-9C55-4CB8-AD24-4789180192BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServer", "src\Servers\WebServer\WebServer.csproj", "{E659A9B4-9C55-4CB8-AD24-4789180192BC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NatNegotiation", "src\Servers\NatNegotiation\NatNegotiation.csproj", "{FAFFFC09-4F94-4DBC-811C-74169CC7F50A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NatNegotiation", "src\Servers\NatNegotiation\NatNegotiation.csproj", "{FAFFFC09-4F94-4DBC-811C-74169CC7F50A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +61,6 @@ Global
 		{C679E140-ED80-4D1E-BD94-C54C4158BDD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C679E140-ED80-4D1E-BD94-C54C4158BDD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C679E140-ED80-4D1E-BD94-C54C4158BDD5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CDB3EC25-B4DB-4914-8553-42D002AFF275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CDB3EC25-B4DB-4914-8553-42D002AFF275}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CDB3EC25-B4DB-4914-8553-42D002AFF275}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CDB3EC25-B4DB-4914-8553-42D002AFF275}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D63AEAE-0726-4A00-B85C-173BD60568AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D63AEAE-0726-4A00-B85C-173BD60568AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D63AEAE-0726-4A00-B85C-173BD60568AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,10 +69,6 @@ Global
 		{E659A9B4-9C55-4CB8-AD24-4789180192BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E659A9B4-9C55-4CB8-AD24-4789180192BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E659A9B4-9C55-4CB8-AD24-4789180192BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2B1F2080-F808-4052-9356-C3BAC1631AD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2B1F2080-F808-4052-9356-C3BAC1631AD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2B1F2080-F808-4052-9356-C3BAC1631AD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2B1F2080-F808-4052-9356-C3BAC1631AD5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FAFFFC09-4F94-4DBC-811C-74169CC7F50A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FAFFFC09-4F94-4DBC-811C-74169CC7F50A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FAFFFC09-4F94-4DBC-811C-74169CC7F50A}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -96,6 +86,8 @@ Global
 		{1E16BA28-F6EA-4D85-98FC-73475764D8EA} = {9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}
 		{C679E140-ED80-4D1E-BD94-C54C4158BDD5} = {9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}
 		{5D63AEAE-0726-4A00-B85C-173BD60568AD} = {3DC251C8-F841-4D22-81DB-A7D4D4C25F37}
+		{E659A9B4-9C55-4CB8-AD24-4789180192BC} = {9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}
+		{FAFFFC09-4F94-4DBC-811C-74169CC7F50A} = {9F19D8DE-3F11-44BB-BDDA-897FA2CBDB2E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F286A822-2C93-4C46-B8BA-FF1C4847B719}
