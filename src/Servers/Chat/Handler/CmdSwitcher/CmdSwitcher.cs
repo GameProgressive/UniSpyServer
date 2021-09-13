@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandSwitcher
     /// </summary>
     internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new string _message { get => (string)base._message; set => base._message = value; }
+        private new string _message => (string)base._message;
         private new Session _session => (Session)base._session;
         public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {

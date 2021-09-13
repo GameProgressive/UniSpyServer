@@ -152,7 +152,7 @@
                 "Chat",
                 "QueryReport",
                 "ServerBrowser",
-                "WebService"
+                "WebServer"
             ]
         },
         {
@@ -165,7 +165,7 @@
         {
             "name": "Sake servers",
             "configurations": [
-                "WebService",
+                "WebServer",
                 "PCM"
             ]
         }

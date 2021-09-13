@@ -108,6 +108,10 @@ namespace UniSpyLib.Abstraction.BaseClass
         {
             foreach (var request in _rawRequests)
             {
+                if (!_handlerMapping.ContainsKey(request.Key))
+                {
+                    LogWriter.Error($"request {request.Key} is not implemented");
+                }
                 _requests.Add((IUniSpyRequest)Activator.CreateInstance(_requestMapping[request.Key], request.Value));
             }
         }
@@ -116,6 +120,11 @@ namespace UniSpyLib.Abstraction.BaseClass
             foreach (var request in _requests)
             {
                 var requestName = request.GetType().GetCustomAttribute<RequestContractBase>().Name;
+                if (!_handlerMapping.ContainsKey(requestName))
+                {
+                    LogWriter.Error($"Handler {requestName} is not implemented");
+
+                }
                 var handler = (IUniSpyHandler)Activator.CreateInstance(_handlerMapping[requestName], _session, request);
 
                 if (handler == null)

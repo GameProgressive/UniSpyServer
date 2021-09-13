@@ -9,6 +9,7 @@ namespace WebServer.Network
     {
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
+            SessionManager = new SessionManager();
         }
         protected override TcpSession CreateSession() => new Session(this);
     }

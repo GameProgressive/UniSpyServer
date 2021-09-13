@@ -2,7 +2,6 @@
 using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
@@ -10,9 +9,9 @@ namespace PresenceConnectionManager.Handler.CmdHandler
     /// <summary>
     /// TODO Status should be stored in redis
     /// </summary>
-    internal sealed class StatusHandler : Abstraction.BaseClass.CmdHandlerBase
+    [HandlerContract("status")]
+    internal sealed class StatusHandler : CmdHandlerBase
     {
-        [HandlerContract("status")]
         private new StatusRequest _request => (StatusRequest)base._request;
         private new StatusResult _result
         {

@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Request.General
         NickAndEmailLogin,
     }
     [RequestContract("LOGIN")]
-    internal sealed class LoginRequest : RequestBase
+    public sealed class LoginRequest : RequestBase
     {
         public LoginRequest(string rawRequest) : base(rawRequest)
         {

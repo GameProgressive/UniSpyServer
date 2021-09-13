@@ -70,41 +70,6 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
         /// <returns>plaintext</returns>
         protected virtual byte[] Decrypt(byte[] buffer) => buffer;
 
-        public bool SendAsync(object buffer)
-        {
-            var bufferType = buffer.GetType();
-
-            if (bufferType == typeof(string))
-            {
-                return SendAsync((string)buffer);
-            }
-            else if (bufferType == typeof(byte[]))
-            {
-                return SendAsync((byte[])buffer);
-            }
-            else
-            {
-                throw new UniSpyException("The buffer type is invalid");
-            }
-        }
-
-        public bool BaseSendAsync(object buffer)
-        {
-            var bufferType = buffer.GetType();
-            if (bufferType == typeof(string))
-            {
-                return BaseSendAsync((string)buffer);
-            }
-            else if (bufferType == typeof(byte[]))
-            {
-                return BaseSendAsync((byte[])buffer);
-            }
-            else
-            {
-                throw new UniSpyException("The buffer type is invalid");
-            }
-        }
-
         public bool Send(IUniSpyResponse response)
         {
             response.Build();

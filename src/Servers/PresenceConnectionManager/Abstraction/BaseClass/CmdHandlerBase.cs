@@ -1,4 +1,5 @@
-﻿using PresenceConnectionManager.Entity.Structure.Response;
+﻿using System;
+using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
 using PresenceConnectionManager.Network;
 using PresenceSearchPlayer.Entity.Exception.General;
@@ -21,18 +22,16 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
         {
         }
 
-        public override void Handle()
+
+        protected override void HandleException(Exception ex)
         {
-            try
+            if (ex is GPException)
             {
-                RequestCheck();
-                DataOperation();
-                ResponseConstruct();
-                Response();
+                _session.SendAsync(((GPException)ex).ErrorResponse);
             }
-            catch (GPException e)
+            else
             {
-                _session.SendAsync(e.ErrorResponse);
+                base.HandleException(ex);
             }
         }
     }
