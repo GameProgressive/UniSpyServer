@@ -26,6 +26,7 @@ namespace Chat.Handler.CmdHandler.Channel
 
         protected override void RequestCheck()
         {
+            base.RequestCheck();
             switch (_request.RequestType)
             {
                 case ModeRequestType.EnableUserQuietFlag:

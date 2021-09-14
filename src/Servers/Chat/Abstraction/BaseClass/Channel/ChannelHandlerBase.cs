@@ -15,6 +15,7 @@ namespace Chat.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
+            base.RequestCheck();
             _channel = _session.UserInfo.GetJoinedChannelByName(_request.ChannelName);
             _user = _channel.GetChannelUserBySession(_session);
             if (_user == null)

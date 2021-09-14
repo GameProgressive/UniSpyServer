@@ -21,6 +21,7 @@ namespace Chat.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
+            base.RequestCheck();
             switch (_request.MessageType)
             {
                 case MessageType.ChannelMessage:

@@ -31,6 +31,7 @@ namespace Chat.Handler.CmdHandler.General
             //we decoded gamespy encoded password then get md5 of it 
             //_password = GameSpyUtils.DecodePassword(_request.PasswordHash);
             //_password = StringExtensions.GetMD5Hash(_password);
+            base.RequestCheck();
         }
 
         protected override void DataOperation()

@@ -23,10 +23,6 @@ namespace UniSpyLib.Abstraction.BaseClass
             {
                 RequestCheck();
                 DataOperation();
-                if (_result == null)
-                {
-                    return;
-                }
                 ResponseConstruct();
                 if (_response == null)
                 {

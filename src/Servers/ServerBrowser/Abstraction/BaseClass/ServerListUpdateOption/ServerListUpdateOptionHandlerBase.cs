@@ -20,6 +20,7 @@ namespace ServerBrowser.Abstraction.BaseClass
         }
         protected override void RequestCheck()
         {
+            base.RequestCheck();
             string secretKey = DataOperationExtensions
                 .GetSecretKey(_request.GameName);
             //we first check and get secrete key from database

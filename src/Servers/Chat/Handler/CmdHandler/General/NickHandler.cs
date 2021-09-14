@@ -20,6 +20,7 @@ namespace Chat.Handler.CmdHandler.General
 
         protected override void RequestCheck()
         {
+            base.RequestCheck();
             string newNickName = _request.NickName;
             uint count = 0;
             if (ServerFactory.Server.SessionManager.SessionPool.Values.

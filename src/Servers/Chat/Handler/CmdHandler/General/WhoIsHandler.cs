@@ -30,6 +30,7 @@ namespace Chat.Handler.CmdHandler.General
         protected override void RequestCheck()
         {
             // there only existed one nick name
+            base.RequestCheck();
             var session = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
                  .Where(s => ((Session)s).UserInfo.NickName == _request.NickName)
                  .FirstOrDefault();

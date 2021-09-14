@@ -33,6 +33,7 @@ namespace NatNegotiation.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
+            base.RequestCheck();
             var searchKey = new NatUserInfoRedisKey()
             {
                 PortType = _request.PortType,

@@ -24,6 +24,7 @@ namespace ServerBrowser.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
+            base.RequestCheck();
             if (_session.ServerMessageList.Count == 0)
             {
                 throw new SBException("There are no server messages in _session.ServerMessageList.");
