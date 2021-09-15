@@ -19,28 +19,28 @@ namespace NatNegotiation.Handler.CmdHandler
     {
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }
-        private Dictionary<NatUserInfoRedisKey, NatUserInfo> _negotiatorPairs;
-        private List<NatUserInfoRedisKey> _matchedKeys;
+        private Dictionary<UserInfoRedisKey, UserInfo> _negotiatorPairs;
+        private List<UserInfoRedisKey> _matchedKeys;
         private ConnectResponse _responseToNegotiator;
         private ConnectResponse _responseToNegotiatee;
-        private KeyValuePair<NatUserInfoRedisKey, NatUserInfo> _negotiator;
-        private KeyValuePair<NatUserInfoRedisKey, NatUserInfo> _negotiatee;
+        private KeyValuePair<UserInfoRedisKey, UserInfo> _negotiator;
+        private KeyValuePair<UserInfoRedisKey, UserInfo> _negotiatee;
         public ConnectHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new ConnectResult();
-            _negotiatorPairs = new Dictionary<NatUserInfoRedisKey, NatUserInfo>();
+            _negotiatorPairs = new Dictionary<UserInfoRedisKey, UserInfo>();
         }
 
         protected override void RequestCheck()
         {
             base.RequestCheck();
-            var searchKey = new NatUserInfoRedisKey()
+            var searchKey = new UserInfoRedisKey()
             {
                 PortType = _request.PortType,
                 Cookie = _request.Cookie
             };
 
-            _matchedKeys = NatUserInfoRedisOperator.GetMatchedKeys(searchKey);
+            _matchedKeys = UserInfoRedisOperator.GetMatchedKeys(searchKey);
             // because cookie is unique for each client we will only get 2 of keys
             if (_matchedKeys.Count != 2)
             {
@@ -53,7 +53,7 @@ namespace NatNegotiation.Handler.CmdHandler
         {
             foreach (var key in _matchedKeys)
             {
-                _negotiatorPairs.Add(key, NatUserInfoRedisOperator.GetSpecificValue(key));
+                _negotiatorPairs.Add(key, UserInfoRedisOperator.GetSpecificValue(key));
 
                 ////find negitiators and negotiatees by a same cookie
                 var negotiators = _negotiatorPairs.Where(s => s.Value.InitRequestInfo.ClientIndex == 0);

@@ -4,14 +4,14 @@ using System.Net;
 
 namespace NatNegotiation.Entity.Structure.Redis
 {
-    internal sealed class NatUserInfo
+    internal sealed class UserInfo
     {
         public IPEndPoint RemoteEndPoint { get; set; }
         public InitRequest InitRequestInfo { get; set; }
         public DateTime LastPacketRecieveTime;
         public int RetryNATNegotiationTime;
 
-        public NatUserInfo()
+        public UserInfo()
         {
         }
     }

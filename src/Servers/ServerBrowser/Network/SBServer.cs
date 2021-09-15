@@ -12,11 +12,11 @@ namespace ServerBrowser.Network
     /// </summary>
     internal sealed class Server : UniSpyTcpServer
     {
-        public QRRedisChannelSubscriber RedisChannelSubscriber { get; private set; }
+        public RedisChannelSubscriber RedisChannelSubscriber { get; private set; }
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
             SessionManager = new SBSessionManager();
-            RedisChannelSubscriber = new QRRedisChannelSubscriber();
+            RedisChannelSubscriber = new RedisChannelSubscriber();
         }
         protected override TcpSession CreateSession() => new Session(this);
     }

@@ -17,6 +17,15 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
         public UniSpyRedisKey()
         {
         }
+        public UniSpyRedisKey(RedisDataBaseNumber? databaseNumber, TimeSpan? expireTime)
+        {
+            DatabaseNumber = databaseNumber;
+            ExpireTime = expireTime;
+        }
+        public UniSpyRedisKey(RedisDataBaseNumber? databaseNumber)
+        {
+            DatabaseNumber = databaseNumber;
+        }
 
         private string BuildFullKey()
         {
@@ -33,6 +42,11 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
 
         private string BuildSearchKey()
         {
+            string searchKey = "";
+            foreach (var property in this.GetType().GetProperties())
+            {
+                searchKey = $"{searchKey}:{property.Name}={property.GetValue(this)}";
+            }
             var redisKey = JsonConvert.SerializeObject(this);
             redisKey = redisKey.Replace("{", "*").Replace("}", "*")
             .Replace(",", "*").Replace("\n", "");

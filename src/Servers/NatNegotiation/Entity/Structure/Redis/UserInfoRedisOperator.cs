@@ -2,7 +2,7 @@
 
 namespace NatNegotiation.Entity.Structure.Redis
 {
-    internal sealed class NatUserInfoRedisOperator : UniSpyRedisOperator<NatUserInfoRedisKey, NatUserInfo>
+    internal sealed class UserInfoRedisOperator : UniSpyRedisOperator<UserInfoRedisKey, UserInfo>
     {
     }
 }

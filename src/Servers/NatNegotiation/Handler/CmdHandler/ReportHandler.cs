@@ -24,7 +24,7 @@ namespace NatNegotiation.Handler.CmdHandler
             get => (ReportResult)base._result;
             set => base._result = value;
         }
-        private NatUserInfo _userInfo;
+        private UserInfo _userInfo;
         public ReportHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new ReportResult();
@@ -33,7 +33,7 @@ namespace NatNegotiation.Handler.CmdHandler
         protected override void DataOperation()
         {
             //_userInfo.IsGotReportPacket = true;
-            var fullKey = new NatUserInfoRedisKey()
+            var fullKey = new UserInfoRedisKey()
             {
                 ServerID = ServerFactory.Server.ServerID,
                 RemoteIPEndPoint = _session.RemoteIPEndPoint,
@@ -43,7 +43,7 @@ namespace NatNegotiation.Handler.CmdHandler
 
             try
             {
-                _userInfo = NatUserInfoRedisOperator.GetSpecificValue(fullKey);
+                _userInfo = UserInfoRedisOperator.GetSpecificValue(fullKey);
             }
             catch
             {
@@ -64,12 +64,12 @@ namespace NatNegotiation.Handler.CmdHandler
                 }
 
                 _userInfo.RetryNATNegotiationTime++;
-                NatUserInfoRedisOperator.SetKeyValue(fullKey, _userInfo);
+                UserInfoRedisOperator.SetKeyValue(fullKey, _userInfo);
             }
             else
             {
                 // natnegotiation successed we delete the negotiator
-                NatUserInfoRedisOperator.DeleteKeyValue(fullKey);
+                UserInfoRedisOperator.DeleteKeyValue(fullKey);
             }
         }
 

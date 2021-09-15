@@ -40,7 +40,8 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
             ConnectMySql();
             ConnectRedis();
             LoadServerConfig();
-            UniSpyJsonConverter.Initialize();
+            // we use attribute to describe the IPEndPoint property
+            // UniSpyJsonConverter.Initialize();
         }
 
         protected void LoadServerConfig()

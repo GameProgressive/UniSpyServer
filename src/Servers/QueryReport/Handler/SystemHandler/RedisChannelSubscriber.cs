@@ -12,23 +12,32 @@ using UniSpyLib.Entity.Structure;
 
 namespace QueryReport.Handler.SystemHandler
 {
-    public class QRRedisChannelSubscriber : UniSpyRedisChannelSubscriber<NatNegCookie>
+    public class RedisChannelSubscriber : UniSpyRedisChannelSubscriber<NatNegCookie>
     {
-        public QRRedisChannelSubscriber() : base(UniSpyRedisChannelName.NatNegCookieChannel)
+        public RedisChannelSubscriber() : base(UniSpyRedisChannelName.NatNegCookieChannel)
         {
         }
 
         public override void ReceivedMessage(NatNegCookie message)
         {
-            IPAddress address = IPAddress.Parse(message.GameServerRemoteIP);
+            var address = IPAddress.Parse(message.GameServerRemoteIP);
             int port = int.Parse(message.GameServerRemotePort);
             var endPoint = new IPEndPoint(address, port);
 
-            IUniSpySession session;
-            if (!ServerFactory.Server.SessionManager.SessionPool.TryGetValue(endPoint, out session))
+            if (!ServerFactory.Server.SessionManager.SessionPool.ContainsKey(message.GameServerRemoteEndPoint))
             {
                 throw new QRException("Can not find game server in QR");
             }
+            var session = ServerFactory.Server.SessionManager.SessionPool[message.GameServerRemoteEndPoint];
+            
+            // if (!ServerFactory.Server.SessionManager.SessionPool.TryGetValue(message.GameServerRemoteEndPoint, out session))
+            // {
+            //     throw new QRException("Can not find game server in QR");
+            // }
+            // if (!ServerFactory.Server.SessionManager.SessionPool.TryGetValue(endPoint, out session))
+            // {
+            //     throw new QRException("Can not find game server in QR");
+            // }
 
             var result = new ClientMessageResult
             {
