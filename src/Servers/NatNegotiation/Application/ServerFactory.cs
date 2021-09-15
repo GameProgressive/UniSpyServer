@@ -29,7 +29,6 @@ namespace NatNegotiation.Application
             ShowUniSpyLogo();
             ConnectRedis();
             LoadServerConfig();
-            UniSpyJsonConverter.Initialize();
         }
 
         /// <summary>
