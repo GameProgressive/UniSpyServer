@@ -7,24 +7,24 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
     public abstract class UniSpyRedisKey
     {
         [JsonIgnore]
-        public string RedisSearchKey => BuildSearchKey();
+        public string SearchKey => BuildSearchKey();
         [JsonIgnore]
-        public string RedisFullKey => BuildFullKey();
+        public string FullKey => BuildFullKey();
         [JsonIgnore]
-        public RedisDataBaseNumber? DatabaseNumber { get; protected set; }
+        public DbNumber? Db { get; protected set; }
         [JsonIgnore]
         public TimeSpan? ExpireTime { get; protected set; }
         public UniSpyRedisKey()
         {
         }
-        public UniSpyRedisKey(RedisDataBaseNumber? databaseNumber, TimeSpan? expireTime)
+        public UniSpyRedisKey(DbNumber? db, TimeSpan? expireTime)
         {
-            DatabaseNumber = databaseNumber;
+            Db = db;
             ExpireTime = expireTime;
         }
-        public UniSpyRedisKey(RedisDataBaseNumber? databaseNumber)
+        public UniSpyRedisKey(DbNumber? databaseNumber)
         {
-            DatabaseNumber = databaseNumber;
+            Db = databaseNumber;
         }
 
         private string BuildFullKey()
@@ -42,11 +42,11 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
 
         private string BuildSearchKey()
         {
-            string searchKey = "";
-            foreach (var property in this.GetType().GetProperties())
-            {
-                searchKey = $"{searchKey}:{property.Name}={property.GetValue(this)}";
-            }
+            // string searchKey = "";
+            // foreach (var property in this.GetType().GetProperties())
+            // {
+            //     searchKey = $"{searchKey}:{property.Name}={property.GetValue(this)}";
+            // }
             var redisKey = JsonConvert.SerializeObject(this);
             redisKey = redisKey.Replace("{", "*").Replace("}", "*")
             .Replace(",", "*").Replace("\n", "");

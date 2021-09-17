@@ -3,14 +3,14 @@ using UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace UniSpyLib.Abstraction.BaseClass.Redis
 {
-    public abstract class UniSpyRedisChannelSubscriber<T>
+    public abstract class UniSpyRedisChannel<T>
     {
         protected string _redisChannelName;
         /// <summary>
         /// Get all subscriber in Redis
         /// </summary>
         protected ISubscriber _subscriber => ServerFactoryBase.Redis.GetSubscriber();
-        public UniSpyRedisChannelSubscriber(string redisChannelName)
+        public UniSpyRedisChannel(string redisChannelName)
         {
             _redisChannelName = redisChannelName;
         }

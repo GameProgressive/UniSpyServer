@@ -3,19 +3,18 @@ using System.Linq;
 using System.Net;
 using NatNegotiation.Abstraction.BaseClass;
 using NatNegotiation.Entity.Enumerate;
-using UniSpyLib.Extensions;
+using UniSpyLib.MiscMethod;
 
 namespace NatNegotiation.Entity.Structure.Request
 {
     internal abstract class InitRequestBase : RequestBase
     {
         public static new readonly int Size = RequestBase.Size + 9;
-
         public NatPortType PortType { get; protected set; }
         public byte ClientIndex { get; protected set; }
         public byte UseGamePort { get; protected set; }
-        public string LocalIP { get; protected set; }
-        public ushort LocalPort { get; protected set; }
+
+        [Newtonsoft.Json.JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; protected set; }
         public InitRequestBase(byte[] rawRequest) : base(rawRequest)
         {

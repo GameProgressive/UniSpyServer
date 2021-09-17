@@ -33,7 +33,6 @@ namespace NatNegotiation.Handler.CmdHandler
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
             var searchKey = new UserInfoRedisKey()
             {
                 PortType = _request.PortType,
@@ -56,8 +55,8 @@ namespace NatNegotiation.Handler.CmdHandler
                 _negotiatorPairs.Add(key, UserInfoRedisOperator.GetSpecificValue(key));
 
                 ////find negitiators and negotiatees by a same cookie
-                var negotiators = _negotiatorPairs.Where(s => s.Value.InitRequestInfo.ClientIndex == 0);
-                var negotiatees = _negotiatorPairs.Where(s => s.Value.InitRequestInfo.ClientIndex == 1);
+                var negotiators = _negotiatorPairs.Where(s => s.Value.RequestInfo.ClientIndex == 0);
+                var negotiatees = _negotiatorPairs.Where(s => s.Value.RequestInfo.ClientIndex == 1);
 
                 if (negotiators.Count() != 1 || negotiatees.Count() != 1)
                 {

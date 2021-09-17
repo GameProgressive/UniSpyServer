@@ -18,7 +18,7 @@ namespace QueryReport.Entity.Structure.Redis
         public string GameName { get; set; }
         public GameServerInfoRedisKey()
         {
-            DatabaseNumber = RedisDataBaseNumber.GameServer;
+            Db = UniSpyLib.Extensions.DbNumber.GameServer;
         }
     }
 }

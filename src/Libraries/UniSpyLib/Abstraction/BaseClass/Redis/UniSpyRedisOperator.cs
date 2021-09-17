@@ -13,44 +13,34 @@ namespace UniSpyLib.Abstraction.BaseClass.Redis
     /// <typeparam name="TValue">The serialization type</typeparam>
     public abstract class UniSpyRedisOperator<TKey, TValue>
     {
-        /// <summary>
-        /// Give value to this inside child class.
-        /// </summary>
-        static UniSpyRedisOperator()
-        {
-        }
-
         public static bool SetKeyValue(UniSpyRedisKey key, TValue value)
         {
             var jsonStr = JsonConvert.SerializeObject(value);
-            return RedisExtensions.SetKeyValue(key.RedisFullKey, jsonStr, key.DatabaseNumber);
+            return RedisExtensions.SetKeyValue(key.FullKey, jsonStr, key.Db);
         }
 
         public static TValue GetSpecificValue(UniSpyRedisKey key)
         {
-            var value = RedisExtensions.GetSpecificValue(key.RedisFullKey, key.DatabaseNumber);
+            var value = RedisExtensions.GetSpecificValue(key.FullKey, key.Db);
             return value == null ? default(TValue) : JsonConvert.DeserializeObject<TValue>(value);
         }
 
         public static bool DeleteKeyValue(UniSpyRedisKey key)
         {
-            return RedisExtensions.DeleteKeyValue(key.RedisFullKey, key.DatabaseNumber);
+            return RedisExtensions.DeleteKeyValue(key.FullKey, key.Db);
         }
 
         public static List<TKey> GetMatchedKeys(UniSpyRedisKey key)
         {
-            var keyList = RedisExtensions.GetMatchedKeys(key.RedisSearchKey, key.DatabaseNumber);
-            List<TKey> keys = new List<TKey>();
-            foreach (var k in keyList)
-            {
-                keys.Add(JsonConvert.DeserializeObject<TKey>(k));
-            }
+            var rawKeys = RedisExtensions.GetMatchedKeys(key.SearchKey, key.Db);
+            var keys = new List<TKey>();
+            rawKeys.ForEach(k => keys.Add(JsonConvert.DeserializeObject<TKey>(k)));
             return keys;
         }
 
         public static Dictionary<TKey, TValue> GetMatchedKeyValues(UniSpyRedisKey key)
         {
-            var keyValuePairs = RedisExtensions.GetMatchedKeyValues(key.RedisSearchKey, key.DatabaseNumber);
+            var keyValuePairs = RedisExtensions.GetMatchedKeyValues(key.SearchKey, key.Db);
             var newDict = keyValuePairs.ToDictionary(
                 k => JsonConvert.DeserializeObject<TKey>(k.Key),
                 k => JsonConvert.DeserializeObject<TValue>(k.Value));

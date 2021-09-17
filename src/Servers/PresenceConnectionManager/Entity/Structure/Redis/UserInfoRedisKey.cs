@@ -5,14 +5,14 @@ using UniSpyLib.Extensions;
 
 namespace PresenceConnectionManager.Handler.SystemHandler.Redis
 {
-    internal sealed class PCMUserInfoRedisKey : UniSpyRedisKey
+    internal sealed class UserInfoRedisKey : UniSpyRedisKey
     {
         [JsonProperty(Order = -2)]
         public Guid ServerID { get; set; }
         public string SessionHashValue { get; set; }
-        public PCMUserInfoRedisKey()
+        public UserInfoRedisKey()
         {
-            DatabaseNumber = RedisDataBaseNumber.GamePresence;
+            Db = UniSpyLib.Extensions.DbNumber.GamePresence;
         }
     }
 }

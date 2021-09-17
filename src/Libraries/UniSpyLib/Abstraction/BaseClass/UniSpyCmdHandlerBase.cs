@@ -37,8 +37,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         }
         protected virtual void RequestCheck()
         {
-            if (_request != null)
-                _request.Parse();
+            _request.Parse();
         }
         protected virtual void DataOperation() { }
         protected virtual void ResponseConstruct() { }
@@ -51,7 +50,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         }
         protected virtual void HandleException(Exception ex)
         {
-            LogWriter.Error(ex.Message);
+            LogWriter.Error(ex.ToString());
         }
     }
 }

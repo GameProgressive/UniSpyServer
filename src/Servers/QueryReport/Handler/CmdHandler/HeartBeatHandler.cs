@@ -108,7 +108,7 @@ namespace QueryReport.Handler.CmdHandler
                 InstantKey = _request.InstantKey
             };
             //we check if the database have multiple game server if it contains
-            if (matchedKeys.Where(k => k.RedisFullKey == fullKey.RedisFullKey).Count() == 1)
+            if (matchedKeys.Where(k => k.FullKey == fullKey.FullKey).Count() == 1)
             {
                 _gameServerInfo = GameServerInfoRedisOperator.GetSpecificValue(fullKey);
             }

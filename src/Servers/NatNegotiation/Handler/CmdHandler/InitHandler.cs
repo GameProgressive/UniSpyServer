@@ -42,7 +42,7 @@ namespace NatNegotiation.Handler.CmdHandler
                 _userInfo = new UserInfo();
                 _userInfo.RemoteEndPoint = _session.RemoteIPEndPoint;
             }
-            _userInfo.InitRequestInfo = _request;
+            _userInfo.RequestInfo = _request;
             _userInfo.LastPacketRecieveTime = DateTime.Now;
             UserInfoRedisOperator.SetKeyValue(fullKey, _userInfo);
             _result.RemoteIPEndPoint = _session.RemoteIPEndPoint;
