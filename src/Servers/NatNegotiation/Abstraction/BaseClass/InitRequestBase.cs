@@ -9,7 +9,6 @@ namespace NatNegotiation.Entity.Structure.Request
 {
     internal abstract class InitRequestBase : RequestBase
     {
-        public static new readonly int Size = RequestBase.Size + 9;
         public NatPortType PortType { get; protected set; }
         public byte ClientIndex { get; protected set; }
         public byte UseGamePort { get; protected set; }

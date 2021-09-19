@@ -2,8 +2,7 @@
 
 namespace QueryReport.Entity.Structure.Redis
 {
-    public class GameServerInfoRedisOperator :
-        UniSpyRedisOperator<GameServerInfoRedisKey, GameServerInfo>
+    public class GameServerInfoRedisOperator : UniSpyRedisOperator<GameServerInfoRedisKey, GameServerInfo>
     {
         static GameServerInfoRedisOperator()
         {

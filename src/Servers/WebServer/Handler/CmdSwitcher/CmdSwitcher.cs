@@ -3,9 +3,10 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace WebServer.Handler
 {
-    internal class WebSwitcher : UniSpyCmdSwitcherBase
+    internal class CmdSwitcher : UniSpyCmdSwitcherBase
     {
-        public WebSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
+        private new string _message => (string)base._message;
+        public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
 

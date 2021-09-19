@@ -15,7 +15,7 @@ namespace ServerBrowser.Network
         public RedisChannelSubscriber RedisChannelSubscriber { get; private set; }
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
-            SessionManager = new SBSessionManager();
+            SessionManager = new SessionManager();
             RedisChannelSubscriber = new RedisChannelSubscriber();
         }
         protected override TcpSession CreateSession() => new Session(this);
