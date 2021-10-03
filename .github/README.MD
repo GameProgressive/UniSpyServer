@@ -1,8 +1,8 @@
 # UniSpy Server
 
 [![license](https://img.shields.io/github/license/GameProgressive/UniSpyServer.svg)](../LICENSE)
-![platforms](https://img.shields.io/badge/platform-win32%20%7C%20win64%20%7C%20linux%20%7C%20osx-brightgreen.svg)
 ![CIPass](https://github.com/GameProgressive/UniSpyServer/workflows/CI/badge.svg)\
+![platforms](https://img.shields.io/badge/platform-win32%20%7C%20win64%20%7C%20linux%20%7C%20osx-brightgreen.svg)\
 [![discord-banner](https://discord.com/api/guilds/512314008079171615/widget.png?style=banner2)](https://discord.gg/NpggYaD)
 
 UniSpy is a GameSpy Project that aims to create GameSpy services.
