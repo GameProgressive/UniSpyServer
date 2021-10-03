@@ -1,10 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 using WebServer.Abstraction;
 using WebServer.Entity.Contract;
 
@@ -24,17 +20,15 @@ namespace WebServer.Entity.Structure.Request
 
         public override void Parse()
         {
-            dynamic xelements = XElement.Parse(RawRequest);
-            XElement contentNode = xelements.FirstNode.FirstNode;
-            var gameId = contentNode.Descendants().Where(p => p.Name.LocalName == "gameid").First<XElement>().Value;
+            var gameId = _contentElement.Descendants().Where(p => p.Name.LocalName == "gameid").First().Value;
             GameId = uint.Parse(gameId);
-            var secretKey = contentNode.Descendants().Where(p => p.Name.LocalName == "secretKey").First<XElement>().Value;
+            var secretKey = _contentElement.Descendants().Where(p => p.Name.LocalName == "secretKey").First().Value;
             SecretKey = secretKey;
-            var loginTicket = contentNode.Descendants().Where(p => p.Name.LocalName == "loginTicket").First<XElement>().Value;
+            var loginTicket = _contentElement.Descendants().Where(p => p.Name.LocalName == "loginTicket").First().Value;
             LoginTicket = loginTicket;
-            var tableid = contentNode.Descendants().Where(p => p.Name.LocalName == "tableid").First<XElement>().Value;
+            var tableid = _contentElement.Descendants().Where(p => p.Name.LocalName == "tableid").First().Value;
             TableId = tableid;
-            var fieldsNode = contentNode.Descendants().Where(p => p.Name.LocalName == "fields").First<XElement>();
+            var fieldsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "fields").First();
             var fields = new List<FieldsObject>();
             foreach (XElement element in fieldsNode.Nodes())
             {
