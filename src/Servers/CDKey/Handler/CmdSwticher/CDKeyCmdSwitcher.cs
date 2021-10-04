@@ -6,7 +6,7 @@ namespace CDKey.Handler.CmdSwitcher
 {
     internal sealed class CDKeyCmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new string _message => (string)base._message;
+        private new string _rawRequest => (string)base._rawRequest;
 
         public CDKeyCmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
@@ -14,7 +14,7 @@ namespace CDKey.Handler.CmdSwitcher
 
         protected override void ProcessRawRequest()
         {
-            string[] commands = _message.Split(@"\r\n", StringSplitOptions.RemoveEmptyEntries);
+            string[] commands = _rawRequest.Split(@"\r\n", StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

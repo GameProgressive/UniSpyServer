@@ -10,8 +10,8 @@ namespace UniSpyLib.Abstraction.BaseClass
 {
     public abstract class CmdSwitcherBase
     {
-        protected object _message;
-        protected Dictionary<object, object> _rawRequests;
+        protected object _rawRequest;
+        protected Dictionary<object, object> _rawRequestsDict;
         protected IUniSpySession _session;
         protected List<IUniSpyRequest> _requests;
         protected List<IUniSpyHandler> _handlers;
@@ -31,10 +31,10 @@ namespace UniSpyLib.Abstraction.BaseClass
         public CmdSwitcherBase(IUniSpySession session, object rawRequest)
         {
             _session = session;
-            _message = rawRequest;
+            _rawRequest = rawRequest;
             _requests = new List<IUniSpyRequest>();
             _handlers = new List<IUniSpyHandler>();
-            _rawRequests = new Dictionary<object, object>();
+            _rawRequestsDict = new Dictionary<object, object>();
         }
 
         protected CmdSwitcherBase()
@@ -106,7 +106,7 @@ namespace UniSpyLib.Abstraction.BaseClass
         protected abstract void ProcessRawRequest();
         protected virtual void DeserializeRequests()
         {
-            foreach (var request in _rawRequests)
+            foreach (var request in _rawRequestsDict)
             {
                 _requests.Add((IUniSpyRequest)Activator.CreateInstance(_requestMapping[request.Key], request.Value));
             }

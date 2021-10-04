@@ -6,15 +6,15 @@ namespace ServerBrowser.Handler.CommandSwitcher
 {
     internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new byte[] _message => (byte[])base._message;
+        private new byte[] _rawRequest => (byte[])base._rawRequest;
 
         public CmdSwitcher(IUniSpySession session, byte[] rawRequest) : base(session, rawRequest)
         {
         }
         protected override void ProcessRawRequest()
         {
-            var name = (RequestType)_message[2];
-            _rawRequests.Add(name, _message);
+            var name = (RequestType)_rawRequest[2];
+            _cmdMapping.Add(name, _rawRequest);
         }
     }
 }

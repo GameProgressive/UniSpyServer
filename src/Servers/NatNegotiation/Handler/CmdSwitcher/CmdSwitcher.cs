@@ -9,14 +9,14 @@ namespace NatNegotiation.Handler.CmdSwitcher
 {
     internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new byte[] _message => (byte[])base._message;
+        private new byte[] _rawRequest => (byte[])base._rawRequest;
         public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
         protected override void ProcessRawRequest()
         {
-            var name = (RequestType)_message[7];
-            _rawRequests.Add(name, _message);
+            var name = (RequestType)_rawRequest[7];
+            _cmdMapping.Add(name, _rawRequest);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Chat.Handler.CommandSwitcher
     /// </summary>
     internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new string _message => (string)base._message;
+        private new string _rawRequest => (string)base._rawRequest;
         private new Session _session => (Session)base._session;
         public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
@@ -19,12 +19,12 @@ namespace Chat.Handler.CommandSwitcher
 
         protected override void ProcessRawRequest()
         {
-            string[] splitedRawRequests = _message.Replace("\r", "")
+            string[] splitedRawRequests = _rawRequest.Replace("\r", "")
                    .Split("\n", StringSplitOptions.RemoveEmptyEntries);
             foreach (var rawRequest in splitedRawRequests)
             {
                 var name = rawRequest.Trim(' ').Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList().First();
-                _rawRequests.Add(name, rawRequest);
+                _cmdMapping.Add(name, rawRequest);
             }
         }
     }

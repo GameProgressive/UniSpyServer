@@ -6,18 +6,19 @@ namespace QueryReport.Handler.CmdSwitcher
 {
     internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
-        private new byte[] _message => (byte[])base._message;
+        private new byte[] _rawRequest => (byte[])base._rawRequest;
         public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)
         {
         }
         protected override void ProcessRawRequest()
         {
-            if (_message.Length < 4)
+            var req = base._rawRequest as byte[];
+            if (_rawRequest.Length < 4)
             {
                 throw new UniSpyException("Invalid request");
             }
-            var name = (RequestType)_message[0];
-            _rawRequests.Add(name, _message);
+            var name = (RequestType)_rawRequest[0];
+            _cmdMapping.Add(name, _rawRequest);
         }
     }
 }
