@@ -1,5 +1,5 @@
 using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 using WebServer.Network;
 
 namespace WebServer.Application

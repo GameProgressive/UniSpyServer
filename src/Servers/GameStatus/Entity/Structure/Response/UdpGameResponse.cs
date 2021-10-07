@@ -8,7 +8,7 @@ namespace GameStatus.Entity.Structure.Response
 {
     internal sealed class UdpGameResponse : ResponseBase
     {
-        private new UpdGameRequest _request => (UpdGameRequest)base._request;
+        private new UpdateGameRequest _request => (UpdateGameRequest)base._request;
         private new UdpGameResult _result => (UdpGameResult)base._result;
         public UdpGameResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

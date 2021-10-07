@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Encryption;
 using UniSpyLib.Logging;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 using TcpClient = NetCoreServer.TcpClient;
 
 namespace UniSpyLib.Network.Tcp.Client

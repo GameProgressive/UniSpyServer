@@ -8,14 +8,14 @@ using System.Collections.Generic;
 namespace GameStatus.Entity.Structure.Request
 {
     [RequestContract("getpd")]
-    internal sealed class GetPDRequest : RequestBase
+    internal sealed class GetPlayerDataRequest : RequestBase
     {
         public uint ProfileID { get; private set; }
         public PersistStorageType StorageType { get; private set; }
         public uint DataIndex { get; private set; }
         public List<string> Keys { get; private set; }
         public bool GetAllDataFlag { get; private set; }
-        public GetPDRequest(string rawRequest) : base(rawRequest)
+        public GetPlayerDataRequest(string rawRequest) : base(rawRequest)
         {
             Keys = new List<string>();
         }

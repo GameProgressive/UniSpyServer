@@ -20,7 +20,7 @@ namespace GameStatus.Handler.CmdHandler
     [HandlerContract("authp")]
     internal sealed class AuthPHandler : CmdHandlerBase
     {
-        private new AuthPRequest _request => (AuthPRequest)base._request;
+        private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
         private new AuthPResult _result { get => (AuthPResult)base._result; set => base._result = value; }
         public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

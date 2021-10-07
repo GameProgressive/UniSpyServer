@@ -8,7 +8,7 @@ namespace GameStatus.Entity.Structure.Response
     internal sealed class GetPIDResponse : ResponseBase
     {
         private new GetPIDResult _result => (GetPIDResult)base._result;
-        private new GetPIDRequest _request => (GetPIDRequest)base._request;
+        private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
         public GetPIDResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }

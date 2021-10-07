@@ -17,7 +17,7 @@ namespace GameStatus.Handler.CmdHandler
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
         private uint _protileid;
-        private new GetPIDRequest _request => (GetPIDRequest)base._request;
+        private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
         private new GetPIDResult _result
         {
             get => (GetPIDResult)base._result;

@@ -13,7 +13,7 @@ namespace GameStatus.Application
             try
             {
                 //create a instance of ServerManager class
-                new GSServerFactory().Start();
+                new ServerFactory().Start();
 
             }
             catch (Exception e)

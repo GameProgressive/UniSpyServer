@@ -13,7 +13,6 @@ namespace GameStatus.Entity.Structure.Request
         public uint ConnectionID { get; private set; }
         public NewGameRequest(string rawRequest) : base(rawRequest)
         {
-            IsClientLocalStorageAvailable = false;
         }
         public override void Parse()
         {

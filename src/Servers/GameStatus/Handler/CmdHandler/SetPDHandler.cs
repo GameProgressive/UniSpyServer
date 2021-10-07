@@ -14,7 +14,7 @@ namespace GameStatus.Handler.CmdHandler
     [HandlerContract("setpd")]
     internal sealed class SetPDHandler : CmdHandlerBase
     {
-        private new SetPDRequest _request => (SetPDRequest)base._request;
+        private new SetPlayerDataRequest _request => (SetPlayerDataRequest)base._request;
         public SetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new SetPDResult();

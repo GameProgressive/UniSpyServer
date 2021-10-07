@@ -8,7 +8,7 @@ namespace GameStatus.Entity.Structure.Response
     internal sealed class AuthPResponse : ResponseBase
     {
         private new AuthPResult _result => (AuthPResult)base._result;
-        private new AuthPRequest _request => (AuthPRequest)base._request;
+        private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
         public AuthPResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }

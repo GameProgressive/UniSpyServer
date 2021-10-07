@@ -24,14 +24,8 @@ namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
         }
         public virtual void OnReceived(string message) { }
         public virtual void OnReceived(byte[] message) => OnReceived(UniSpyEncoding.GetString(message));
+        public bool Send(IUniSpyResponse response) => Server.Send(RemoteEndPoint, response);
+        public bool BaseSend(IUniSpyResponse response) => Server.BaseSend(RemoteEndPoint, response);
 
-        public bool Send(IUniSpyResponse response)
-        {
-            return Server.Send(RemoteEndPoint, response);
-        }
-        public bool BaseSend(IUniSpyResponse response)
-        {
-            return Server.BaseSend(RemoteEndPoint, response);
-        }
     }
 }

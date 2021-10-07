@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 
 namespace UniSpyLib.Logging
 {

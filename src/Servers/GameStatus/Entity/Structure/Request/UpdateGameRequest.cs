@@ -5,13 +5,13 @@ using GameStatus.Entity.Exception;
 namespace GameStatus.Entity.Structure.Request
 {
     [RequestContract("updgame")]
-    internal sealed class UpdGameRequest : RequestBase
+    internal sealed class UpdateGameRequest : RequestBase
     {
         public uint ConnectionID { get; private set; }
         public bool IsDone { get; private set; }
         public bool IsClientLocalStorageAvailable { get; private set; }
         public string GameData { get; private set; }
-        public UpdGameRequest(string rawRequest) : base(rawRequest)
+        public UpdateGameRequest(string rawRequest) : base(rawRequest)
         {
             IsClientLocalStorageAvailable = false;
             IsDone = false;

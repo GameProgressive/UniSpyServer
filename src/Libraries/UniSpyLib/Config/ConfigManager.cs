@@ -2,7 +2,7 @@
 using System.IO;
 using UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyLib.UniSpyConfig
+namespace UniSpyLib.Config
 {
     public class ConfigManager
     {

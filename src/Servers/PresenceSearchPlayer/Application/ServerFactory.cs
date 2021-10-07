@@ -1,7 +1,7 @@
 ﻿using PresenceSearchPlayer.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 
 namespace PresenceSearchPlayer
 {

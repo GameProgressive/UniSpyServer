@@ -11,7 +11,7 @@ namespace GameStatus.Handler.CmdHandler
     internal sealed class AuthHandler : CmdHandlerBase
     {
         //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
-        private new AuthRequest _request => (AuthRequest)base._request;
+        private new AuthGameRequest _request => (AuthGameRequest)base._request;
         private new AuthResult _result
         {
             get => (AuthResult)base._result;

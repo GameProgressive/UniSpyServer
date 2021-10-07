@@ -16,7 +16,7 @@ namespace GameStatus.Handler.CmdHandler
     internal sealed class GetPDHandler : CmdHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
-        private new GetPDRequest _request => (GetPDRequest)base._request;
+        private new GetPlayerDataRequest _request => (GetPlayerDataRequest)base._request;
         private new GetPDResult _result
         {
             get => (GetPDResult)base._result;

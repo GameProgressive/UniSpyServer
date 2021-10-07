@@ -5,8 +5,7 @@ using System.Reflection;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
-using UniSpyLib.MiscMethod;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 
 namespace UniSpyLib.Abstraction.BaseClass.Factory
 {
@@ -15,7 +14,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         /// <summary>
         /// UniSpy server version
         /// </summary>
-        public static readonly string UniSpyVersion = "0.5.7";
+        public static readonly string Version = "0.5.7";
         /// <summary>
         /// UniSpy server name
         /// </summary>
@@ -31,7 +30,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         public static IUniSpyServer Server { get; protected set; }
         public ServerFactoryBase()
         {
-            Console.Title = "UniSpyServer " + ServerFactoryBase.UniSpyVersion;
+            Console.Title = "UniSpyServer " + Version;
         }
 
         public virtual void Start()
@@ -40,10 +39,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
             ConnectMySql();
             ConnectRedis();
             LoadServerConfig();
-            // we use attribute to describe the IPEndPoint property
-            // UniSpyJsonConverter.Initialize();
         }
-
         protected void LoadServerConfig()
         {
             //Add all servers
@@ -52,10 +48,10 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
                 StartServer(cfg);
             }
 
-            if (Server != null) // asp.net web server does not implement a Server interface, therefore this code should not be called
+            if (Server != null)
+            // asp.net web server does not implement a Server interface, therefore this code should not be called
             {
                 Server.Start();
-
                 var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
                 table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
                 table.Write(ConsoleTables.Format.Alternative);
@@ -72,10 +68,10 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
 
         protected void ConnectRedis()
         {
+            var redisConfig = ConfigManager.Config.Redis;
             try
             {
-                Redis = ConnectionMultiplexer.Connect(
-                    $"{ConfigManager.Config.Redis.RemoteAddress}:{ConfigManager.Config.Redis.RemotePort}");
+                Redis = ConnectionMultiplexer.Connect($"{redisConfig.RemoteAddress}:{redisConfig.RemotePort}");
             }
             catch (Exception e)
             {
@@ -86,19 +82,20 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         protected void ConnectMySql()
         {
             //Determine which database is used and establish the database connection.
-            switch (ConfigManager.Config.Database.Type)
+            var dbConfig = ConfigManager.Config.Database;
+            switch (dbConfig.Type)
             {
                 case DatabaseType.MySql:
                     unispyContext.UniSpyMySqlConnStr =
-                    $"Server={ConfigManager.Config.Database.RemoteAddress};"
-                    + $"Database={ConfigManager.Config.Database.DatabaseName};"
-                    + $"Uid={ConfigManager.Config.Database.UserName};"
-                    + $"Pwd={ConfigManager.Config.Database.Password};"
-                    + $"Port={ConfigManager.Config.Database.RemotePort};"
-                    + $"SslMode={ConfigManager.Config.Database.SslMode};"
-                    + $"SslCert={ConfigManager.Config.Database.SslCert};"
-                    + $"SslKey={ConfigManager.Config.Database.SslKey};"
-                    + $"SslCa={ConfigManager.Config.Database.SslCa}";
+                    $"Server={dbConfig.RemoteAddress};"
+                    + $"Database={dbConfig.DatabaseName};"
+                    + $"Uid={dbConfig.UserName};"
+                    + $"Pwd={dbConfig.Password};"
+                    + $"Port={dbConfig.RemotePort};"
+                    + $"SslMode={dbConfig.SslMode};"
+                    + $"SslCert={dbConfig.SslCert};"
+                    + $"SslKey={dbConfig.SslKey};"
+                    + $"SslCa={dbConfig.SslCa}";
                     break;
             }
 
@@ -108,10 +105,10 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
             }
             catch (Exception e)
             {
-                throw new Exception($"Can not connect to {ConfigManager.Config.Database.Type}!", e);
+                throw new Exception($"Can not connect to {dbConfig.Type}!", e);
             }
 
-            Console.WriteLine($"Successfully connected to {ConfigManager.Config.Database.Type}!");
+            Console.WriteLine($"Successfully connected to {dbConfig.Type}!");
         }
         protected static void ShowUniSpyLogo()
         {
@@ -121,7 +118,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
             Console.WriteLine(@"| |_| | ' \| \__ \ '_ \ || \__ \/ -_) '_\ V / -_) '_|");
             Console.WriteLine(@" \___/|_||_|_|___/ .__/\_, |___/\___|_|  \_/\___|_|");
             Console.WriteLine(@"                 |_|   |__/ ");
-            Console.WriteLine(@"Version: " + UniSpyVersion);
+            Console.WriteLine(@"Version: " + Version);
         }
     }
 }

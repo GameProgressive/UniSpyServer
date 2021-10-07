@@ -6,7 +6,7 @@ using GameStatus.Entity.Exception;
 namespace GameStatus.Entity.Structure.Request
 {
     [RequestContract("authp")]
-    internal sealed class AuthPRequest : RequestBase
+    internal sealed class AuthPlayerRequest : RequestBase
     {
         public AuthMethod RequestType { get; private set; }
         public uint ProfileID { get; private set; }
@@ -15,7 +15,7 @@ namespace GameStatus.Entity.Structure.Request
         public string KeyHash { get; private set; }
         public string Nick { get; private set; }
 
-        public AuthPRequest(string rawRequest) : base(rawRequest)
+        public AuthPlayerRequest(string rawRequest) : base(rawRequest)
         {
         }
 

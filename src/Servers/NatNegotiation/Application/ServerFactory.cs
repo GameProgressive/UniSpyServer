@@ -3,7 +3,7 @@ using NatNegotiation.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.MiscMethod;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 
 namespace NatNegotiation.Application
 {

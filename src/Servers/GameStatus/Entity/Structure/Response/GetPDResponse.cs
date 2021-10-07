@@ -8,7 +8,7 @@ namespace GameStatus.Entity.Structure.Response
     internal sealed class GetPDResponse : ResponseBase
     {
         private new GetPDResult _result => (GetPDResult)base._result;
-        private new GetPDRequest _request => (GetPDRequest)base._request;
+        private new GetPlayerDataRequest _request => (GetPlayerDataRequest)base._request;
         public GetPDResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }

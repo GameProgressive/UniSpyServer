@@ -12,9 +12,9 @@ namespace GameStatus.Entity.Structure.Request
     /// </summary>
     [RequestContract("setpd")]
     
-    internal sealed class SetPDRequest : RequestBase
+    internal sealed class SetPlayerDataRequest : RequestBase
     {
-        public SetPDRequest(string request) : base(request)
+        public SetPlayerDataRequest(string request) : base(request)
         {
         }
         public uint ProfileID { get; private set; }

@@ -1,7 +1,7 @@
 ﻿using QueryReport.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.MiscMethod;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 using QueryReport.Handler.SystemHandler;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 

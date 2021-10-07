@@ -8,11 +8,11 @@ namespace GameStatus.Entity.Structure.Request
     /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */
     /// </summary>
     [RequestContract("auth")]
-    internal sealed class AuthRequest : RequestBase
+    internal sealed class AuthGameRequest : RequestBase
     {
         public string GameName { get; private set; }
         public uint Port { get; private set; }
-        public AuthRequest(string rawRequest) : base(rawRequest)
+        public AuthGameRequest(string rawRequest) : base(rawRequest)
         {
         }
 

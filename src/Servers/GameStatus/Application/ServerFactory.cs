@@ -1,14 +1,14 @@
 ﻿using GameStatus.Network;
 using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 
 namespace GameStatus.Application
 {
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class GSServerFactory : ServerFactoryBase
+    internal sealed class ServerFactory : ServerFactoryBase
     {
         public static new Server Server
         {
@@ -18,7 +18,7 @@ namespace GameStatus.Application
                  /// Constructor
                  /// </summary>
                  /// <param name="serverName">Server name in config file</param>
-        public GSServerFactory()
+        public ServerFactory()
         {
         }
 

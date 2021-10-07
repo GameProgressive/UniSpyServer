@@ -1,6 +1,6 @@
 ﻿using ServerBrowser.Network;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.UniSpyConfig;
+using UniSpyLib.Config;
 using QueryReport.Handler.SystemHandler;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 
