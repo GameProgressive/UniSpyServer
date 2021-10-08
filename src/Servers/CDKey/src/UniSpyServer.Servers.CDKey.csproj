@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyServer.Libraries.UniSpyLib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Entity\Structure\Request\" />

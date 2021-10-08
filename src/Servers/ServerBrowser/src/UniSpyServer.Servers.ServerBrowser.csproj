@@ -27,7 +27,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\QueryReport\src\UniSpyServer.Servers.QueryReport.csproj" />
         <ProjectReference Include="..\NatNegotiation\NatNegotiation.csproj" />
-        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
+        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyServer.Libraries.UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Handler\SystemHandler\" />

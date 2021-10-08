@@ -23,6 +23,6 @@
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
+        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyServer.Libraries.UniSpyLib.csproj" />
     </ItemGroup>
 </Project>

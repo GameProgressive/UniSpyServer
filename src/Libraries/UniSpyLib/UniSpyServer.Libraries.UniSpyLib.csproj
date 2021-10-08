@@ -24,11 +24,4 @@
     <ItemGroup>
         <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Abstraction\Interface\" />
-        <Folder Include="Entity\Enumerate\" />
-        <Folder Include="Abstraction\BaseClass\Network\" />
-        <Folder Include="Abstraction\BaseClass\Factory\" />
-        <Folder Include="Abstraction\BaseClass\Redis\" />
-    </ItemGroup>
 </Project>
