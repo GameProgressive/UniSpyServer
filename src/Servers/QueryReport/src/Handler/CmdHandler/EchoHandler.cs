@@ -38,11 +38,11 @@ namespace QueryReport.Handler.CmdHandler
             //add recive echo packet on gameserverList
 
             //we get the first key in matchedKeys
-            _result.GameServerInfo = GameServerInfoRedisOperator.GetSpecificValue(matchedKeys[0]);
+            _result.Info = GameServerInfoRedisOperator.GetSpecificValue(matchedKeys[0]);
 
-            _result.GameServerInfo.LastPacketReceivedTime = DateTime.Now;
+            _result.Info.LastPacketReceivedTime = DateTime.Now;
 
-            GameServerInfoRedisOperator.SetKeyValue(matchedKeys[0], _result.GameServerInfo);
+            GameServerInfoRedisOperator.SetKeyValue(matchedKeys[0], _result.Info);
         }
     }
 }

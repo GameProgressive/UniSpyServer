@@ -17,15 +17,6 @@
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Remove="Entity\Structure\QRGeneralData.cs" />
-        <Compile Remove="Handler\CommandHandler\HeartBeat\QRDBQuery.cs" />
-        <Compile Remove="Entity\Structure\Server\DedicatedServer.cs" />
-        <Compile Remove="Entity\Structure\Server\PeerServer.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Entity\Structure\Redis\" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
+        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
 </Project>

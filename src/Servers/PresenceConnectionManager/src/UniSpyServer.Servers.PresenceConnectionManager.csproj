@@ -17,25 +17,25 @@
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
-  
+
     <ItemGroup>
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     </ItemGroup>
     <ItemGroup>
-      <ProjectReference Include="..\PresenceSearchPlayer\PresenceSearchPlayer.csproj" />
-      <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
+        <ProjectReference Include="..\..\PresenceSearchPlayer\src\UniSpyServer.Servers.PresenceSearchPlayer.csproj" />
+        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Handler\SystemHandler\" />
-      <Folder Include="Entity\Structure\Result\Buddy\" />
-      <Folder Include="Entity\Structure\Result\General\" />
-      <Folder Include="Entity\Structure\Result\Profile\" />
-      <Folder Include="Entity\Structure\Response\Buddy\" />
-      <Folder Include="Entity\Structure\Response\Profile\" />
-      <Folder Include="Entity\Structure\Response\General\" />
-      <Folder Include="Entity\Structure\Misc\Status\" />
-      <Folder Include="Entity\Structure\Misc\Info\" />
-      <Folder Include="Handler\CmdHandler\Buddy\BuddyMessage\" />
-      <Folder Include="Entity\Structure\Redis\" />
+        <Folder Include="Handler\SystemHandler\" />
+        <Folder Include="Entity\Structure\Result\Buddy\" />
+        <Folder Include="Entity\Structure\Result\General\" />
+        <Folder Include="Entity\Structure\Result\Profile\" />
+        <Folder Include="Entity\Structure\Response\Buddy\" />
+        <Folder Include="Entity\Structure\Response\Profile\" />
+        <Folder Include="Entity\Structure\Response\General\" />
+        <Folder Include="Entity\Structure\Misc\Status\" />
+        <Folder Include="Entity\Structure\Misc\Info\" />
+        <Folder Include="Handler\CmdHandler\Buddy\BuddyMessage\" />
+        <Folder Include="Entity\Structure\Redis\" />
     </ItemGroup>
 </Project>

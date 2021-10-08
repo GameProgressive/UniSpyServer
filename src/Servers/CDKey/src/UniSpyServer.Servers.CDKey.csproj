@@ -3,12 +3,15 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <SignAssembly>false</SignAssembly>    
     <ApplicationIcon>..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
+    <Win32Resource />
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
+    <DockerfileContext>..\..\..</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
   </PropertyGroup>
 
@@ -17,8 +20,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QueryReport\QueryReport.csproj" />
-    <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
+    <Compile Remove="Entity\BaseClass\**" />
+    <EmbeddedResource Remove="Entity\BaseClass\**" />
+    <None Remove="Entity\BaseClass\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,14 +30,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Entity\Enumerate\" />
-    <Folder Include="Handler\CmdHandler\Message\" />
-    <Folder Include="Entity\Structure\Request\Channel\" />
-    <Folder Include="Entity\Structure\Request\Message\" />
-    <Folder Include="Entity\Structure\Response\Message\" />
-    <Folder Include="Entity\Structure\Result\Message\" />
-    <Folder Include="Abstraction\BaseClass\Channel\" />
-    <Folder Include="Abstraction\BaseClass\General\" />
-    <Folder Include="Abstraction\BaseClass\Message\" />
+    <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entity\Structure\Request\" />
+    <Folder Include="Entity\Structure\Response\" />
+    <Folder Include="Handler\SystemHandler\" />
   </ItemGroup>
 </Project>

@@ -3,15 +3,12 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <SignAssembly>false</SignAssembly>    
     <ApplicationIcon>..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
-    <Win32Resource />
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..\..</DockerfileContext>
+    <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
   </PropertyGroup>
 
@@ -20,21 +17,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Entity\BaseClass\**" />
-    <EmbeddedResource Remove="Entity\BaseClass\**" />
-    <None Remove="Entity\BaseClass\**" />
+    <ProjectReference Include="..\..\QueryReport\src\UniSpyServer.Servers.QueryReport.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\UniSpyLib\UniSpyLib.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Entity\Structure\Request\" />
-    <Folder Include="Entity\Structure\Response\" />
-    <Folder Include="Handler\SystemHandler\" />
   </ItemGroup>
 </Project>
