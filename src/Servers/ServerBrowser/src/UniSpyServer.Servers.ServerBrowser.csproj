@@ -8,13 +8,13 @@
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+        <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
         <NoStdLib>true</NoStdLib>
         <PlatformTarget>anycpu</PlatformTarget>
         <NoStdLib>true</NoStdLib>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+        <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="Handler\Switcher\**" />
@@ -22,12 +22,12 @@
         <None Remove="Handler\Switcher\**" />
     </ItemGroup>
     <ItemGroup>
-      <None Remove="Entity\Structure\Response\UpdateOptionResponse.cs~RFacb913f.TMP" />
+        <None Remove="Entity\Structure\Response\UpdateOptionResponse.cs~RFacb913f.TMP" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\QueryReport\src\UniSpyServer.Servers.QueryReport.csproj" />
-        <ProjectReference Include="..\NatNegotiation\NatNegotiation.csproj" />
-        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyServer.Libraries.UniSpyLib.csproj" />
+        <ProjectReference Include="..\..\NatNegotiation\src\UniSpyServer.Servers.NatNegotiation.csproj" />
+        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Handler\SystemHandler\" />

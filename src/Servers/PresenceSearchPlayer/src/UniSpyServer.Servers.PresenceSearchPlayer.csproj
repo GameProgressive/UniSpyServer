@@ -9,10 +9,10 @@
         <DockerfileContext>..\..</DockerfileContext>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+        <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+        <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <ItemGroup>
         <Compile Remove="Handler\CommandHandler\NewUser\**" />
@@ -23,7 +23,7 @@
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyServer.Libraries.UniSpyLib.csproj" />
+        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Abstraction\BaseClass\" />

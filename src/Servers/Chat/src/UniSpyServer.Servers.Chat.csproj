@@ -9,16 +9,16 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+    <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+    <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\QueryReport\src\UniSpyServer.Servers.QueryReport.csproj" />
-    <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyServer.Libraries.UniSpyLib.csproj" />
+    <ProjectReference Include="..\..\..\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

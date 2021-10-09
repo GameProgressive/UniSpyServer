@@ -12,10 +12,10 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+        <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-        <OutputPath>..\..\..\build\$(Configuration)</OutputPath>
+        <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
@@ -23,19 +23,6 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\PresenceSearchPlayer\src\UniSpyServer.Servers.PresenceSearchPlayer.csproj" />
-        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\UniSpyServer.Libraries.UniSpyLib.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Handler\SystemHandler\" />
-        <Folder Include="Entity\Structure\Result\Buddy\" />
-        <Folder Include="Entity\Structure\Result\General\" />
-        <Folder Include="Entity\Structure\Result\Profile\" />
-        <Folder Include="Entity\Structure\Response\Buddy\" />
-        <Folder Include="Entity\Structure\Response\Profile\" />
-        <Folder Include="Entity\Structure\Response\General\" />
-        <Folder Include="Entity\Structure\Misc\Status\" />
-        <Folder Include="Entity\Structure\Misc\Info\" />
-        <Folder Include="Handler\CmdHandler\Buddy\BuddyMessage\" />
-        <Folder Include="Entity\Structure\Redis\" />
+        <ProjectReference Include="..\..\..\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj" />
     </ItemGroup>
 </Project>

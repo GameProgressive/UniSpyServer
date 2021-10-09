@@ -5,7 +5,7 @@ EXPOSE 27901/udp
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine3.12 AS build
 WORKDIR /src
-COPY ["src/Servers/NatNegotiation/NatNegotiation.csproj", "src/Servers/NatNegotiation/"]
+COPY ["src/Servers/NatNegotiation/src/UniSpyServer.Servers.NatNegotiation.csproj", "src/Servers/NatNegotiation/"]
 COPY ["src/Libraries/UniSpyLib/UniSpyLib.csproj", "src/Libraries/UniSpyLib/"]
 RUN dotnet restore "src/Servers/NatNegotiation/NatNegotiation.csproj"
 COPY . .
