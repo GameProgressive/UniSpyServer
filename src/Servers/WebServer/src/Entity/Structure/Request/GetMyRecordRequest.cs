@@ -16,6 +16,7 @@ namespace WebServer.Entity.Structure.Request
         public List<FieldsObject> Fields { get; set; }
         public GetMyRecordRequest(string rawRequest) : base(rawRequest)
         {
+            Fields = new List<FieldsObject>();
         }
 
         public override void Parse()
@@ -29,10 +30,9 @@ namespace WebServer.Entity.Structure.Request
             var tableid = _contentElement.Descendants().Where(p => p.Name.LocalName == "tableid").First().Value;
             TableId = tableid;
             var fieldsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "fields").First();
-            var fields = new List<FieldsObject>();
             foreach (XElement element in fieldsNode.Nodes())
             {
-                fields.Add(new FieldsObject(element.Value, element.Name.LocalName));
+                Fields.Add(new FieldsObject(element.Value, element.Name.LocalName));
             }
         }
     }
