@@ -18,6 +18,8 @@ namespace ServerBrowser.Handler.CmdHandler
         }
         protected override void DataOperation()
         {
+            //todo check protocol version!!!!
+
             switch (_request.UpdateOption)
             {
                 case ServerListUpdateOption.ServerMainList:

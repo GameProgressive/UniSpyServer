@@ -20,12 +20,12 @@ namespace ServerBrowser.Abstraction.BaseClass
 
         public override void Build()
         {
+            //todo check protocol version to build response data
             //Add crypt header
             BuildCryptHeader();
             _serverListData.AddRange(_result.ClientRemoteIP);
             _serverListData.AddRange(Constants.HtonQueryReportDefaultPort);
         }
-
         protected void BuildCryptHeader()
         {
             // cryptHeader have 14 bytes, when we encrypt data we need skip the first 14 bytes
@@ -38,7 +38,6 @@ namespace ServerBrowser.Abstraction.BaseClass
             cryptHeader.AddRange(UniSpyEncoding.GetBytes(Constants.ServerChallenge));
             _serverListData.AddRange(cryptHeader);
         }
-
         protected abstract void BuildServersInfo();
         protected void BuildServerInfoHeader(GameServerFlags? flag, GameServerInfo serverInfo)
         {
@@ -78,7 +77,6 @@ namespace ServerBrowser.Abstraction.BaseClass
                 header.AddRange(bytesAddress);
             }
         }
-
         protected void CheckNonStandardPort(List<byte> header, GameServerInfo server)
         {
             ///only dedicated server have different query report port and host port
@@ -111,20 +109,17 @@ namespace ServerBrowser.Abstraction.BaseClass
                 }
             }
         }
-
         protected void CheckICMPSupport(List<byte> header, GameServerInfo server)
         {
             header[0] ^= (byte)GameServerFlags.ICMPIPFlag;
             byte[] address = HtonsExtensions.IPStringToBytes(server.RemoteQueryReportIP);
             header.AddRange(address);
         }
-
         protected void BuildUniqueValue()
         {
             //because we are using NTS string so we do not have any value here
             _serverListData.Add(0);
         }
-
         protected void BuildServerKeys()
         {
             //we add the total number of the requested keys
