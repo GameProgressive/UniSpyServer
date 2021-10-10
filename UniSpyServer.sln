@@ -9,75 +9,81 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Servers", "Servers", "{EBF1
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CDKey", "CDKey", "{E1FC2C30-1730-4354-A80D-28051FCE0A8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.CDKey", "src\Servers\CDKey\src\UniSpyServer.Servers.CDKey.csproj", "{D819E99A-297C-4415-94A8-584D96A411EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.CDKey", "src\Servers\CDKey\src\UniSpyServer.Servers.CDKey.csproj", "{D819E99A-297C-4415-94A8-584D96A411EB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Chat", "Chat", "{BC1F1EF3-7152-4284-9EDA-AAE8825388A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.Chat", "src\Servers\Chat\src\UniSpyServer.Servers.Chat.csproj", "{29BDDFB0-54FA-4057-BEC5-5B3DCD1DE212}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.Chat", "src\Servers\Chat\src\UniSpyServer.Servers.Chat.csproj", "{29BDDFB0-54FA-4057-BEC5-5B3DCD1DE212}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NatNegotiation", "NatNegotiation", "{09E88199-24C9-45BC-B043-7D636D4BCDF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.NatNegotiation", "src\Servers\NatNegotiation\src\UniSpyServer.Servers.NatNegotiation.csproj", "{8FCED8D1-D6CC-44BC-9CDA-9F0C1C786453}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.NatNegotiation", "src\Servers\NatNegotiation\src\UniSpyServer.Servers.NatNegotiation.csproj", "{8FCED8D1-D6CC-44BC-9CDA-9F0C1C786453}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GameStatus", "GameStatus", "{79343A9E-5F1A-490C-AA3F-68B1F03A8CEF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.GameStatus", "src\Servers\GameStatus\src\UniSpyServer.Servers.GameStatus.csproj", "{DCB6AB5F-4B6F-4B2D-83CB-F539DA614A5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.GameStatus", "src\Servers\GameStatus\src\UniSpyServer.Servers.GameStatus.csproj", "{DCB6AB5F-4B6F-4B2D-83CB-F539DA614A5E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PresenceConnectionManager", "PresenceConnectionManager", "{945EB98D-95C4-415B-8C00-C7682683FAA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.PresenceConnectionManager", "src\Servers\PresenceConnectionManager\src\UniSpyServer.Servers.PresenceConnectionManager.csproj", "{23683C7C-23E6-443C-AB41-3F28EA1B2FC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.PresenceConnectionManager", "src\Servers\PresenceConnectionManager\src\UniSpyServer.Servers.PresenceConnectionManager.csproj", "{23683C7C-23E6-443C-AB41-3F28EA1B2FC0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PresenceSearchPlayer", "PresenceSearchPlayer", "{17ABC2A8-9E3B-4CE1-AD13-A3780B0B07F0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.PresenceSearchPlayer", "src\Servers\PresenceSearchPlayer\src\UniSpyServer.Servers.PresenceSearchPlayer.csproj", "{0B1AA7F3-09C4-4D8B-AB54-D500BF0B2537}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.PresenceSearchPlayer", "src\Servers\PresenceSearchPlayer\src\UniSpyServer.Servers.PresenceSearchPlayer.csproj", "{0B1AA7F3-09C4-4D8B-AB54-D500BF0B2537}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QueryReport", "QueryReport", "{D9FA7414-F8AB-4195-A483-474BF96467E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.QueryReport", "src\Servers\QueryReport\src\UniSpyServer.Servers.QueryReport.csproj", "{2EE9F419-409D-4F43-A541-BBBAD6FEDCA2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.QueryReport", "src\Servers\QueryReport\src\UniSpyServer.Servers.QueryReport.csproj", "{2EE9F419-409D-4F43-A541-BBBAD6FEDCA2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServerBrowser", "ServerBrowser", "{520D01A8-B487-4B27-B33A-8ACB97F57BA5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.ServerBrowser", "src\Servers\ServerBrowser\src\UniSpyServer.Servers.ServerBrowser.csproj", "{B4049A31-CEC8-4310-957D-1FBCBBDEC413}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.ServerBrowser", "src\Servers\ServerBrowser\src\UniSpyServer.Servers.ServerBrowser.csproj", "{B4049A31-CEC8-4310-957D-1FBCBBDEC413}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebServer", "WebServer", "{79E8F708-7806-4EF5-A8D9-22AE31053124}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.WebServer", "src\Servers\WebServer\src\UniSpyServer.Servers.WebServer.csproj", "{4D8EA982-3285-4637-9010-310FCA5B254A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.WebServer", "src\Servers\WebServer\src\UniSpyServer.Servers.WebServer.csproj", "{4D8EA982-3285-4637-9010-310FCA5B254A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{65FFE452-DC8B-43C7-9749-33815202EE31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.CDKey.Test", "src\Servers\CDKey\test\UniSpyServer.Servers.CDKey.Test\UniSpyServer.Servers.CDKey.Test.csproj", "{97547BC0-435D-49D5-BFE2-01D245C3E73E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.CDKey.Test", "src\Servers\CDKey\test\UniSpyServer.Servers.CDKey.Test\UniSpyServer.Servers.CDKey.Test.csproj", "{97547BC0-435D-49D5-BFE2-01D245C3E73E}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2A23BC34-7F90-4C47-A636-9563224F9F2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.Chat.Test", "src\Servers\Chat\test\UniSpyServer.Servers.Chat.Test\UniSpyServer.Servers.Chat.Test.csproj", "{D065CD06-4296-416A-B47D-274D0B5F82E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.Chat.Test", "src\Servers\Chat\test\UniSpyServer.Servers.Chat.Test\UniSpyServer.Servers.Chat.Test.csproj", "{D065CD06-4296-416A-B47D-274D0B5F82E9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{B32D3C34-C968-4F00-BDF0-82B62E8AF7CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.NatNegotiation.Test", "src\Servers\NatNegotiation\test\UniSpyServer.Servers.NatNegotiation.Test\UniSpyServer.Servers.NatNegotiation.Test.csproj", "{381A72E9-DD7B-45CE-BCEC-D70DC3BEAAEC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.NatNegotiation.Test", "src\Servers\NatNegotiation\test\UniSpyServer.Servers.NatNegotiation.Test\UniSpyServer.Servers.NatNegotiation.Test.csproj", "{381A72E9-DD7B-45CE-BCEC-D70DC3BEAAEC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4E6EE63A-27A0-4346-BB40-2A62E594F329}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.PresenceConnectionManager.Test", "src\Servers\PresenceConnectionManager\test\UniSpyServer.Servers.PresenceConnectionManager.Test\UniSpyServer.Servers.PresenceConnectionManager.Test.csproj", "{EEDF9F97-98D4-465E-B8FB-0DDAE9219F72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.PresenceConnectionManager.Test", "src\Servers\PresenceConnectionManager\test\UniSpyServer.Servers.PresenceConnectionManager.Test\UniSpyServer.Servers.PresenceConnectionManager.Test.csproj", "{EEDF9F97-98D4-465E-B8FB-0DDAE9219F72}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{1E0B2778-2AF5-484F-9C5D-4D548705426E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.PresenceSearchPlayer.Test", "src\Servers\PresenceSearchPlayer\test\UniSpyServer.Servers.PresenceSearchPlayer.Test\UniSpyServer.Servers.PresenceSearchPlayer.Test.csproj", "{456B57D9-E3F7-46DF-AA27-5518C7647FD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.PresenceSearchPlayer.Test", "src\Servers\PresenceSearchPlayer\test\UniSpyServer.Servers.PresenceSearchPlayer.Test\UniSpyServer.Servers.PresenceSearchPlayer.Test.csproj", "{456B57D9-E3F7-46DF-AA27-5518C7647FD1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{A932C652-233D-4F16-B782-A7C24D5D59B2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.GameStatus.Test", "src\Servers\GameStatus\test\UniSpyServer.Servers.GameStatus.Test\UniSpyServer.Servers.GameStatus.Test.csproj", "{B267E37A-96A5-418D-9A86-76C19564D205}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.GameStatus.Test", "src\Servers\GameStatus\test\UniSpyServer.Servers.GameStatus.Test\UniSpyServer.Servers.GameStatus.Test.csproj", "{B267E37A-96A5-418D-9A86-76C19564D205}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{CD22A862-9E9E-434E-B591-1FC91FD90724}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.QueryReport.Test", "src\Servers\QueryReport\test\UniSpyServer.Servers.QueryReport.Test\UniSpyServer.Servers.QueryReport.Test.csproj", "{370CBE6A-76A2-4F49-BCD9-68FC79ED4171}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.QueryReport.Test", "src\Servers\QueryReport\test\UniSpyServer.Servers.QueryReport.Test\UniSpyServer.Servers.QueryReport.Test.csproj", "{370CBE6A-76A2-4F49-BCD9-68FC79ED4171}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{4D5A7F23-A6C1-4D27-A2C3-AEC24AC15038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.ServerBrowser.Test", "src\Servers\ServerBrowser\test\UniSpyServer.Servers.ServerBrowser.Test\UniSpyServer.Servers.ServerBrowser.Test.csproj", "{6017E174-2FC3-4BE9-9279-855BA7481AF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.ServerBrowser.Test", "src\Servers\ServerBrowser\test\UniSpyServer.Servers.ServerBrowser.Test\UniSpyServer.Servers.ServerBrowser.Test.csproj", "{6017E174-2FC3-4BE9-9279-855BA7481AF3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{722B3C7C-1C59-422E-A4F8-4B128B6F7E20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniSpyServer.Servers.WebServer.Test", "src\Servers\WebServer\test\UniSpyServer.Servers.WebServer.Test\UniSpyServer.Servers.WebServer.Test.csproj", "{E10E3BFC-F5C8-4E70-AC3C-1DC6743BD4D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Servers.WebServer.Test", "src\Servers\WebServer\test\UniSpyServer.Servers.WebServer.Test\UniSpyServer.Servers.WebServer.Test.csproj", "{E10E3BFC-F5C8-4E70-AC3C-1DC6743BD4D8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{FD5B4D88-8BDA-4513-BBA1-9F31B9D64BB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UniSpyLib", "UniSpyLib", "{6C7AD1A4-B96A-42D5-A582-92750BD5B30C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniSpyServer.Libraries.UniSpyLib", "src\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj", "{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -305,6 +311,21 @@ Global
 		{E10E3BFC-F5C8-4E70-AC3C-1DC6743BD4D8}.Release|x64.Build.0 = Release|Any CPU
 		{E10E3BFC-F5C8-4E70-AC3C-1DC6743BD4D8}.Release|x86.ActiveCfg = Release|Any CPU
 		{E10E3BFC-F5C8-4E70-AC3C-1DC6743BD4D8}.Release|x86.Build.0 = Release|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Debug|x64.Build.0 = Debug|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Debug|x86.Build.0 = Debug|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Release|x64.ActiveCfg = Release|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Release|x64.Build.0 = Release|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Release|x86.ActiveCfg = Release|Any CPU
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EBF19CC8-39E4-490E-8BAB-4B0C2FADAC98} = {641DEB14-12A9-468A-BB0F-65F87909DA16}
@@ -344,5 +365,11 @@ Global
 		{6017E174-2FC3-4BE9-9279-855BA7481AF3} = {4D5A7F23-A6C1-4D27-A2C3-AEC24AC15038}
 		{722B3C7C-1C59-422E-A4F8-4B128B6F7E20} = {79E8F708-7806-4EF5-A8D9-22AE31053124}
 		{E10E3BFC-F5C8-4E70-AC3C-1DC6743BD4D8} = {722B3C7C-1C59-422E-A4F8-4B128B6F7E20}
+		{FD5B4D88-8BDA-4513-BBA1-9F31B9D64BB5} = {641DEB14-12A9-468A-BB0F-65F87909DA16}
+		{6C7AD1A4-B96A-42D5-A582-92750BD5B30C} = {FD5B4D88-8BDA-4513-BBA1-9F31B9D64BB5}
+		{D902FBA8-5B07-452E-9A0B-3381D49ABB9B} = {6C7AD1A4-B96A-42D5-A582-92750BD5B30C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CE7AD0FF-F1D1-4E34-8DE8-FBB2E63AA49F}
 	EndGlobalSection
 EndGlobal
