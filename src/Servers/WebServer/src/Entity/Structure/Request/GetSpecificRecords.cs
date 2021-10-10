@@ -6,16 +6,18 @@ using WebServer.Entity.Contract;
 
 namespace WebServer.Entity.Structure.Request
 {
-    [RequestContract("GetMyRecords")]
-    public class GetMyRecordRequest : RequestBase
+    [RequestContract("GetSpecificRecords")]
+    public class GetSpecificRecordsRequest : RequestBase
     {
         public uint GameId { get; set; }
         public string SecretKey { get; set; }
         public string LoginTicket { get; set; }
         public string TableId { get; set; }
+        public List<FieldsObject> RecordIds { get; set; }
         public List<FieldsObject> Fields { get; set; }
-        public GetMyRecordRequest(string rawRequest) : base(rawRequest)
+        public GetSpecificRecordsRequest(string rawRequest) : base(rawRequest)
         {
+            RecordIds = new List<FieldsObject>();
             Fields = new List<FieldsObject>();
         }
 
@@ -29,6 +31,11 @@ namespace WebServer.Entity.Structure.Request
             LoginTicket = loginTicket;
             var tableid = _contentElement.Descendants().Where(p => p.Name.LocalName == "tableid").First().Value;
             TableId = tableid;
+            var recordidsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "recordids").First();
+            foreach (XElement element in recordidsNode.Nodes())
+            {
+                RecordIds.Add(new FieldsObject(element.Value, element.Name.LocalName));
+            }
             var fieldsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "fields").First();
             foreach (XElement element in fieldsNode.Nodes())
             {
