@@ -4,17 +4,18 @@ using System.Xml.Linq;
 using WebServer.Abstraction;
 using WebServer.Entity.Contract;
 
-namespace WebServer.Entity.Structure.Request
+namespace WebServer.Entity.Structure.Request.SakeRequest
 {
-    [RequestContract("DeleteRecord")]
-    public class DeleteRecordRequest : RequestBase
+    [RequestContract("RateRecord")]
+    public class RateRecordRequest : RequestBase
     {
         public uint GameId { get; set; }
         public string SecretKey { get; set; }
         public string LoginTicket { get; set; }
         public string TableId { get; set; }
         public string RecordId { get; set; }
-        public DeleteRecordRequest(string rawRequest) : base(rawRequest)
+        public string Rating { get; set; }
+        public RateRecordRequest(string rawRequest) : base(rawRequest)
         {
         }
 
@@ -30,6 +31,8 @@ namespace WebServer.Entity.Structure.Request
             TableId = tableid;
             var recordid = _contentElement.Descendants().Where(p => p.Name.LocalName == "recordid").First().Value;
             RecordId = recordid;
+            var rating = _contentElement.Descendants().Where(p => p.Name.LocalName == "rating").First().Value;
+            Rating = rating;
         }
     }
 }

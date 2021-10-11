@@ -4,7 +4,7 @@ using System.Xml.Linq;
 using WebServer.Abstraction;
 using WebServer.Entity.Contract;
 
-namespace WebServer.Entity.Structure.Request
+namespace WebServer.Entity.Structure.Request.SakeRequest
 {
     [RequestContract("GetMyRecords")]
     public class GetMyRecordsRequest : RequestBase

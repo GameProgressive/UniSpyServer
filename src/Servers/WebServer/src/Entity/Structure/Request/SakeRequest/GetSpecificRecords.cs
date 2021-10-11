@@ -4,21 +4,21 @@ using System.Xml.Linq;
 using WebServer.Abstraction;
 using WebServer.Entity.Contract;
 
-namespace WebServer.Entity.Structure.Request
+namespace WebServer.Entity.Structure.Request.SakeRequest
 {
-    [RequestContract("UpdateRecord")]
-    public class UpdateRecordRequest : RequestBase
+    [RequestContract("GetSpecificRecords")]
+    public class GetSpecificRecordsRequest : RequestBase
     {
         public uint GameId { get; set; }
         public string SecretKey { get; set; }
         public string LoginTicket { get; set; }
         public string TableId { get; set; }
-        public string RecordId { get; set; }
-
-        public List<FieldsObject> Values { get; set; }
-        public UpdateRecordRequest(string rawRequest) : base(rawRequest)
+        public List<FieldsObject> RecordIds { get; set; }
+        public List<FieldsObject> Fields { get; set; }
+        public GetSpecificRecordsRequest(string rawRequest) : base(rawRequest)
         {
-            Values = new List<FieldsObject>();
+            RecordIds = new List<FieldsObject>();
+            Fields = new List<FieldsObject>();
         }
 
         public override void Parse()
@@ -31,12 +31,15 @@ namespace WebServer.Entity.Structure.Request
             LoginTicket = loginTicket;
             var tableid = _contentElement.Descendants().Where(p => p.Name.LocalName == "tableid").First().Value;
             TableId = tableid;
-            var recordid = _contentElement.Descendants().Where(p => p.Name.LocalName == "recordid").First().Value;
-            RecordId = recordid;
-            var valuesNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "values").First();
-            foreach (XElement element in valuesNode.Nodes())
+            var recordidsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "recordids").First();
+            foreach (XElement element in recordidsNode.Nodes())
             {
-                Values.Add(new FieldsObject(element.Value, element.Name.LocalName));
+                RecordIds.Add(new FieldsObject(element.Value, element.Name.LocalName));
+            }
+            var fieldsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "fields").First();
+            foreach (XElement element in fieldsNode.Nodes())
+            {
+                Fields.Add(new FieldsObject(element.Value, element.Name.LocalName));
             }
         }
     }

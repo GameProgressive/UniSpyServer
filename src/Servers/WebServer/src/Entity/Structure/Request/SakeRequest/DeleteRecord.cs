@@ -4,20 +4,18 @@ using System.Xml.Linq;
 using WebServer.Abstraction;
 using WebServer.Entity.Contract;
 
-namespace WebServer.Entity.Structure.Request
+namespace WebServer.Entity.Structure.Request.SakeRequest
 {
-    [RequestContract("CreateRecord")]
-    public class CreateRecordRequest : RequestBase
+    [RequestContract("DeleteRecord")]
+    public class DeleteRecordRequest : RequestBase
     {
         public uint GameId { get; set; }
         public string SecretKey { get; set; }
         public string LoginTicket { get; set; }
         public string TableId { get; set; }
-
-        public List<FieldsObject> Values { get; set; }
-        public CreateRecordRequest(string rawRequest) : base(rawRequest)
+        public string RecordId { get; set; }
+        public DeleteRecordRequest(string rawRequest) : base(rawRequest)
         {
-            Values = new List<FieldsObject>();
         }
 
         public override void Parse()
@@ -30,11 +28,8 @@ namespace WebServer.Entity.Structure.Request
             LoginTicket = loginTicket;
             var tableid = _contentElement.Descendants().Where(p => p.Name.LocalName == "tableid").First().Value;
             TableId = tableid;
-            var valuesNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "values").First();
-            foreach (XElement element in valuesNode.Nodes())
-            {
-                Values.Add(new FieldsObject(element.Value, element.Name.LocalName));
-            }
+            var recordid = _contentElement.Descendants().Where(p => p.Name.LocalName == "recordid").First().Value;
+            RecordId = recordid;
         }
     }
 }
