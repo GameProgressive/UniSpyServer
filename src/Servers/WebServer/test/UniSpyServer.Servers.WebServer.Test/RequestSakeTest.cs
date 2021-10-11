@@ -6,6 +6,10 @@ namespace UniSpyServer.Servers.WebServer.RequestTest
     public class RequestSakeTest
     {
         //
+        // These are the SOAP requests of SAKE
+        // Endpoint: {FQDN}/sake/
+        //
+        //
         // These are the complete SOAP requests of "saketest"
         //
         [Fact]
