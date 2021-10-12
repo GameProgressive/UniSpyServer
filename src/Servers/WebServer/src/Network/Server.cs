@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
 
 namespace WebServer.Network
 {
-    internal class Server : UniSpyHttpServer
+    internal sealed class Server : UniSpyHttpServer
     {
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {
