@@ -3,7 +3,7 @@ using Xunit;
 using WebServer.Entity.Structure.Request.SakeRequest;
 namespace UniSpyServer.Servers.WebServer.RequestTest
 {
-    public class RequestSakeTest
+    public class SakeRequestsTest
     {
         //
         // These are the SOAP requests of SAKE

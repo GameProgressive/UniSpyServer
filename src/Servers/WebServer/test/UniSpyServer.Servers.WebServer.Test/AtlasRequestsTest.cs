@@ -3,7 +3,7 @@ using Xunit;
 using WebServer.Entity.Structure.Request.AtlasRequest;
 namespace UniSpyServer.Servers.WebServer.RequestTest
 {
-    public class RequestAtlasTest
+    public class AtlasRequestsTest
     {
         //
         // These are the SOAP requests of ATLAS (Competition)

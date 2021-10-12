@@ -3,7 +3,7 @@ using Xunit;
 using WebServer.Entity.Structure.Request.AuthRequest;
 namespace UniSpyServer.Servers.WebServer.RequestTest
 {
-    public class RequestAuthTest
+    public class AuthRequestsTest
     {
         //
         // These are the SOAP requests of AUTH

@@ -3,7 +3,7 @@ using Xunit;
 using WebServer.Entity.Structure.Request.RacingRequest;
 namespace UniSpyServer.Servers.WebServer.RequestTest
 {
-    public class RequestRacingTest
+    public class RacingRequestsTest
     {
         //
         // These are the SOAP requests of Race
