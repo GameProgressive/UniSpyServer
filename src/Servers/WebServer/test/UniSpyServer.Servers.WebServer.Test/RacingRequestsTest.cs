@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.WebServer.RequestTest
     public class RacingRequestsTest
     {
         //
-        // These are the SOAP requests of Race
+        // These are the SOAP requests of RACE
         // Endpoint: {FQDN}/RaceService/
         //
         [Fact]
