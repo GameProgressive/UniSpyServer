@@ -13,12 +13,12 @@ namespace WebServer.Entity.Structure.Request.SakeRequest
         public string SecretKey { get; set; }
         public string LoginTicket { get; set; }
         public string TableId { get; set; }
-        public List<FieldsObject> RecordIds { get; set; }
-        public List<FieldsObject> Fields { get; set; }
+        public List<FieldObject> RecordIds { get; set; }
+        public List<FieldObject> Fields { get; set; }
         public GetSpecificRecordsRequest(string rawRequest) : base(rawRequest)
         {
-            RecordIds = new List<FieldsObject>();
-            Fields = new List<FieldsObject>();
+            RecordIds = new List<FieldObject>();
+            Fields = new List<FieldObject>();
         }
 
         public override void Parse()
@@ -34,12 +34,12 @@ namespace WebServer.Entity.Structure.Request.SakeRequest
             var recordidsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "recordids").First();
             foreach (XElement element in recordidsNode.Nodes())
             {
-                RecordIds.Add(new FieldsObject(element.Value, element.Name.LocalName));
+                RecordIds.Add(new FieldObject(element.Value, element.Name.LocalName));
             }
             var fieldsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "fields").First();
             foreach (XElement element in fieldsNode.Nodes())
             {
-                Fields.Add(new FieldsObject(element.Value, element.Name.LocalName));
+                Fields.Add(new FieldObject(element.Value, element.Name.LocalName));
             }
         }
     }

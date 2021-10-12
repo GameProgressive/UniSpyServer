@@ -21,10 +21,10 @@ namespace WebServer.Entity.Structure.Request.SakeRequest
         public string OwnerIds { get; set; }
         public string CacheFlag { get; set; }
 
-        public List<FieldsObject> Fields { get; set; }
+        public List<FieldObject> Fields { get; set; }
         public SearchForRecordsRequest(string rawRequest) : base(rawRequest)
         {
-            Fields = new List<FieldsObject>();
+            Fields = new List<FieldObject>();
         }
 
         public override void Parse()
@@ -54,7 +54,7 @@ namespace WebServer.Entity.Structure.Request.SakeRequest
             var fieldsNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "fields").First();
             foreach (XElement element in fieldsNode.Nodes())
             {
-                Fields.Add(new FieldsObject(element.Value, element.Name.LocalName));
+                Fields.Add(new FieldObject(element.Value, element.Name.LocalName));
             }
         }
     }

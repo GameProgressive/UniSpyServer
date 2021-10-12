@@ -311,7 +311,7 @@ namespace UniSpyServer.Servers.WebServer.RequestTest
         //
         // TODO: Deserialization of RecordFields
         //
-        /*[Fact]
+        [Fact]
         public void UpdateRecord()
         {
             var rawRequest =
@@ -414,15 +414,15 @@ namespace UniSpyServer.Servers.WebServer.RequestTest
             Assert.Equal("test", request.TableId);
             Assert.Equal("158", request.RecordId);
 
-            Assert.Equal("score", request.Values[0].FieldName);
-            Assert.Equal("string", request.Values[0].FiledType);
-            Assert.Equal("recordid", request.Values[1].FieldName);
-            Assert.Equal("string", request.Values[1].FiledType);
-        }*/
+            // Assert.Equal("score", request.Values[0].FieldName);
+            // Assert.Equal("string", request.Values[0].FiledType);
+            // Assert.Equal("recordid", request.Values[1].FieldName);
+            // Assert.Equal("string", request.Values[1].FiledType);
+        }
         //
         // TODO: Deserialization of RecordFields
         //
-        /*[Fact]
+        [Fact]
         public void CreateRecord()
         {
             var rawRequest =
@@ -459,10 +459,10 @@ namespace UniSpyServer.Servers.WebServer.RequestTest
             Assert.Equal("xxxxxxxx_YYYYYYYYYY__", request.LoginTicket);
             Assert.Equal("test", request.TableId);
 
-            Assert.Equal("score", request.Values[0].FieldName);
-            Assert.Equal("string", request.Values[0].FiledType);
-            Assert.Equal("recordid", request.Values[1].FieldName);
-            Assert.Equal("string", request.Values[1].FiledType);
-        }*/
+            // Assert.Equal("score", request.Values[0].FieldName);
+            // Assert.Equal("string", request.Values[0].FiledType);
+            // Assert.Equal("recordid", request.Values[1].FieldName);
+            // Assert.Equal("string", request.Values[1].FiledType);
+        }
     }
 }
