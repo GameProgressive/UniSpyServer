@@ -16,10 +16,10 @@ namespace WebServer.Entity.Structure.Request.AuthRequest
         public string Email { get; set; }
         public string Uniquenick { get; set; }
         public string CDKey { get; set; }
-        public List<FieldsObject> Password { get; set; }
+        public List<FieldObject> Password { get; set; }
         public LoginProfileRequest(string rawRequest) : base(rawRequest)
         {
-            Password = new List<FieldsObject>();
+            Password = new List<FieldObject>();
         }
 
         public override void Parse()
@@ -41,7 +41,7 @@ namespace WebServer.Entity.Structure.Request.AuthRequest
             var passwordNode = _contentElement.Descendants().Where(p => p.Name.LocalName == "password").First();
             foreach (XElement element in passwordNode.Nodes())
             {
-                Password.Add(new FieldsObject(element.Value, element.Name.LocalName));
+                Password.Add(new FieldObject(element.Value, element.Name.LocalName));
             }
         }
     }

@@ -8,7 +8,7 @@ using WebServer.Handler;
 
 namespace WebServer.Network
 {
-    internal class Session : UniSpyHttpSession
+    internal sealed class Session : UniSpyHttpSession
     {
         public Session(UniSpyHttpServer server) : base(server)
         {
@@ -21,9 +21,9 @@ namespace WebServer.Network
             }
             var uri = new Uri(request.Url);
 
-            if (!WebRoutes.AvaliableRoutes.Contains(uri.LocalPath))
+            if (!WebEndpoints.AvailableEndpoints.Contains(uri.LocalPath))
             {
-                throw new UniSpyException($"Invalid webserver routes access: {uri.LocalPath}");
+                throw new UniSpyException($"Invalid webserver endpoint access: {uri.LocalPath}");
             }
 
             LogWriter.LogNetworkReceiving(RemoteIPEndPoint,
