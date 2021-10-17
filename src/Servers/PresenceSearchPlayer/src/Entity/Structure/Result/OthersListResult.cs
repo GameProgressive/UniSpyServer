@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class OthersListDatabaseModel
+    internal sealed class OthersListDatabaseModel
     {
         public uint ProfileID;
         public string Uniquenick;
     }
-    public class OthersListResult : ResultBase
+    internal sealed class OthersListResult : ResultBase
     {
         public List<OthersListDatabaseModel> DatabaseResults;
         public OthersListResult()

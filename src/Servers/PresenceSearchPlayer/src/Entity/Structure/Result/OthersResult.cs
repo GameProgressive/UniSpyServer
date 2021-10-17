@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class OthersDatabaseModel
+    internal sealed class OthersDatabaseModel
     {
         public uint Profileid;
         public string Nick;
@@ -14,7 +14,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public string Email;
     }
 
-    public class OthersResult : ResultBase
+    internal sealed class OthersResult : ResultBase
     {
         public List<OthersDatabaseModel> DatabaseResults { get; set; }
         public OthersResult()

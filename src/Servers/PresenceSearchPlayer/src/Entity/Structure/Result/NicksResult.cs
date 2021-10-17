@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class NicksDataModel
+    internal sealed class NicksDataModel
     {
         public string NickName;
         public string UniqueNick;
     }
 
-    public class NicksResult : ResultBase
+    internal sealed class NicksResult : ResultBase
     {
         public List<NicksDataModel> DataBaseResults;
         public bool IsRequireUniqueNicks { get; set; }

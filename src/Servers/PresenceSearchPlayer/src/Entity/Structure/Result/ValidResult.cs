@@ -2,7 +2,7 @@
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class ValidResult : ResultBase
+    internal sealed class ValidResult : ResultBase
     {
         public bool IsAccountValid;
         public ValidResult()

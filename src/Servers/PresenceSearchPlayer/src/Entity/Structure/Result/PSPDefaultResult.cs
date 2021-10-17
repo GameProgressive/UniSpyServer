@@ -2,7 +2,7 @@
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    public class PSPDefaultResult : ResultBase
+    internal sealed class PSPDefaultResult : ResultBase
     {
         public PSPDefaultResult()
         {
