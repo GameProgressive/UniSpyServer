@@ -13,7 +13,7 @@
   },
   "Redis": {
     "RemoteAddress": "127.0.0.1",
-    "RemotePort": "6666"
+    "RemotePort": "6379"
   },
   "Servers": [
     {

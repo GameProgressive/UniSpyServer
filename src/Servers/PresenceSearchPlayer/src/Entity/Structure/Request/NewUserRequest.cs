@@ -16,7 +16,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public bool HasCDKeyEncFlag { get; protected set; }
         public bool HasPartnerIDFlag { get; protected set; }
         public bool HasGamePortFlag { get; protected set; }
-
         public string Nick { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
@@ -31,7 +30,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-
             string md5Password;
             if (!PasswordEncoder.ProcessPassword(RequestKeyValues, out md5Password))
             {
@@ -43,7 +41,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             {
                 throw new GPParseException("nickname is missing.");
             }
-
             if (!RequestKeyValues.ContainsKey("email"))
             {
                 throw new GPParseException("email is missing.");
@@ -52,7 +49,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
             {
                 throw new GPParseException("email format is incorrect.");
             }
-
             Nick = RequestKeyValues["nick"];
             Email = RequestKeyValues["email"];
 
@@ -65,7 +61,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                     {
                         throw new GPParseException("namespaceid is incorrect.");
                     }
-
                     NamespaceID = namespaceID;
                 }
                 Uniquenick = RequestKeyValues["uniquenick"];
@@ -75,7 +70,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 
         private void ParseOtherInfo()
         {
-
             //parse other info
             if (RequestKeyValues.ContainsKey("partnerid"))
             {
@@ -87,28 +81,21 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 HasPartnerIDFlag = true;
                 PartnerID = partnerid;
             }
-
-
-
             if (RequestKeyValues.ContainsKey("productid"))
             {
                 uint productid;
                 if (!uint.TryParse(RequestKeyValues["productid"], out productid))
                 {
                     throw new GPParseException("productid is incorrect.");
-
                 }
                 HasProductIDFlag = true;
                 ProductID = productid;
             }
-
             if (RequestKeyValues.ContainsKey("gamename"))
             {
                 HasGameNameFlag = true;
                 GameName = RequestKeyValues["gamename"];
             }
-
-
             if (RequestKeyValues.ContainsKey("port"))
             {
                 uint port;
@@ -119,7 +106,6 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
                 HasGamePortFlag = true;
                 GamePort = port;
             }
-
             if (RequestKeyValues.ContainsKey("cdkeyenc"))
             {
                 HasCDKeyEncFlag = true;

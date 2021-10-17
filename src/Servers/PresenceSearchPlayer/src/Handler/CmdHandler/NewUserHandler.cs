@@ -14,11 +14,11 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     [HandlerContract("newuser")]
-    public class NewUserHandler : CmdHandlerBase
+    internal sealed class NewUserHandler : CmdHandlerBase
     {
-        protected new NewUserRequest _request => (NewUserRequest)base._request;
+        private new NewUserRequest _request => (NewUserRequest)base._request;
 
-        protected new NewUserResult _result
+        private new NewUserResult _result
         {
             get => (NewUserResult)base._result;
             set => base._result = value;
@@ -41,10 +41,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                 {
                     throw new GPDatabaseException("Unknown error occurs in database operation.", e);
                 }
-
-                //update other information
                 UpdateOtherInfo();
-
             }
         }
 
@@ -77,7 +74,6 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                 {
                     _result.SubProfile.Cdkeyenc = _request.CDKeyEnc;
                 }
-
                 db.Subprofiles.Update(_result.SubProfile);
                 db.SaveChanges();
             }
@@ -90,8 +86,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                 switch (NewUserStatus.CheckAccount)
                 {
                     case NewUserStatus.CheckAccount:
-                        var users = db.Users.Where(u => u.Email == _request.Email)
-                                                     .Select(u => u);
+                        var users = db.Users.Where(u => u.Email == _request.Email).Select(u => u);
                         if (users.Count() == 0)
                         {
                             goto case NewUserStatus.AccountNotExist;
@@ -103,7 +98,6 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         }
                         else
                         {
-                            // double user in database
                             throw new GPNewUserBadNickException("There are two same records in User table!");
                         }
 
@@ -132,13 +126,11 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                         }
                         else if (profiles.Count() == 1)
                         {
-                            //same nick name can not register two profiles
                             _result.Profile = profiles.First();
                             goto case NewUserStatus.ProfileExist;
                         }
                         else
                         {
-                            //there are two profiles we stop
                             throw new GPNewUserUniquenickInUseException("There are two same records in Profile table.");
                         }
 
@@ -152,9 +144,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                     //we do nothing here
 
                     case NewUserStatus.CheckSubProfile:
-                        var subProfiles = db.Subprofiles
-                            .Where(s => s.Profileid == _result.Profile.Profileid
-                            && s.Namespaceid == _request.NamespaceID);
+                        var subProfiles = db.Subprofiles.Where(s => s.Profileid == _result.Profile.Profileid && s.Namespaceid == _request.NamespaceID);
                         if (subProfiles.Count() == 0)
                         {
                             goto case NewUserStatus.SubProfileNotExist;
@@ -177,7 +167,6 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
                             Uniquenick = _request.Uniquenick,
                             Namespaceid = _request.NamespaceID
                         };
-
                         db.Subprofiles.Add(_result.SubProfile);
                         db.SaveChanges();
                         break;
