@@ -6,6 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database;
 using UniSpyLib.Database.DatabaseModel.MySql;
 using UniSpyLib.Config;
+using UniSpyLib.Logging;
 
 namespace UniSpyLib.Abstraction.BaseClass.Factory
 {
@@ -30,56 +31,30 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         public static IUniSpyServer Server { get; protected set; }
         public ServerFactoryBase()
         {
-            Console.Title = "UniSpyServer " + Version;
-        }
-
-        public virtual void Start()
-        {
-            ShowUniSpyLogo();
-            ConnectMySql();
-            ConnectRedis();
-            LoadServerConfig();
-        }
-        protected void LoadServerConfig()
-        {
-            //Add all servers
-            foreach (var cfg in ConfigManager.Config.Servers)
-            {
-                StartServer(cfg);
-            }
-
-            if (Server != null)
-            // asp.net web server does not implement a Server interface, therefore this code should not be called
-            {
-                Server.Start();
-                var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-                table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
-                table.Write(ConsoleTables.Format.Alternative);
-                Console.WriteLine("Server successfully started!");
-            }
+            Console.Title = "UniSpyServer v" + Version + " - " + ServerName;
         }
 
         /// <summary>
-        /// Over write the specific functions you want to start the server
-        /// You can start all servers if you want
+        /// Overwrite specific functions you want to start the server with
         /// </summary>
         /// <param name="cfg"></param>
         protected abstract void StartServer(UniSpyServerConfig cfg);
 
-        protected void ConnectRedis()
+        public virtual void Start()
         {
-            var redisConfig = ConfigManager.Config.Redis;
-            try
-            {
-                Redis = ConnectionMultiplexer.Connect($"{redisConfig.RemoteAddress}:{redisConfig.RemotePort}");
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Can not connect to Redis", e);
-            }
-            Console.WriteLine($"Successfully connected to Redis!");
+            ServerInfo();
+            ConnectDB();
+            ConnectRedis();
+            LoadServerConfig();
         }
-        protected void ConnectMySql()
+
+        protected static void ServerInfo()
+        {
+            LogWriter.Info(@"UniSpyServer version " + Version);
+            LogWriter.Info(@"Starting " + ServerName);
+        }
+
+        protected void ConnectDB()
         {
             //Determine which database is used and establish the database connection.
             var dbConfig = ConfigManager.Config.Database;
@@ -98,27 +73,44 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
                     + $"SslCa={dbConfig.SslCa}";
                     break;
             }
-
             try
             {
                 new unispyContext().Database.CanConnect();
             }
             catch (Exception e)
             {
-                throw new Exception($"Can not connect to {dbConfig.Type}!", e);
+                LogWriter.Fatal($"{dbConfig.Type}: Connection failed!" + e);
+            }
+            LogWriter.Info($"{dbConfig.Type}: Connected using Port: " + dbConfig.RemotePort);
+        }
+        protected void ConnectRedis()
+        {
+            var redisConfig = ConfigManager.Config.Redis;
+            try
+            {
+                Redis = ConnectionMultiplexer.Connect($"{redisConfig.RemoteAddress}:{redisConfig.RemotePort}");
+            }
+            catch (Exception e)
+            {
+                LogWriter.Fatal("Redis: Connection failed!" + e);
+            }
+            LogWriter.Info($"Redis: Connected using Port: " + redisConfig.RemotePort);
+        }
+        protected void LoadServerConfig()
+        {
+            //Add all servers
+            foreach (var cfg in ConfigManager.Config.Servers)
+            {
+                StartServer(cfg);
             }
 
-            Console.WriteLine($"Successfully connected to {dbConfig.Type}!");
+            if (Server != null)
+            {
+                Server.Start();
+                LogWriter.Info(@"Successfully started!");
+                LogWriter.Info(@"Listening on: " + Server.Endpoint.Address + ":" + Server.Endpoint.Port);
+            }
         }
-        protected static void ShowUniSpyLogo()
-        {
-            // the ascii art font name is "small"
-            Console.WriteLine(@" _   _      _ ___           ___ ");
-            Console.WriteLine(@"| | | |_ _ (_) __|_ __ _  _/ __| ___ _ ___ _____ _ _ ");
-            Console.WriteLine(@"| |_| | ' \| \__ \ '_ \ || \__ \/ -_) '_\ V / -_) '_|");
-            Console.WriteLine(@" \___/|_||_|_|___/ .__/\_, |___/\___|_|  \_/\___|_|");
-            Console.WriteLine(@"                 |_|   |__/ ");
-            Console.WriteLine(@"Version: " + Version);
-        }
+
     }
 }
