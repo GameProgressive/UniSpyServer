@@ -1,11 +1,8 @@
-﻿using PresenceSearchPlayer.Entity.Exception.General;
-using System;
+﻿using System;
 using System.Linq;
+using PresenceSearchPlayer.Entity.Exception.General;
 using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
-using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {

@@ -1,8 +1,8 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using System;
+using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceSearchPlayer.Entity.Exception.General;
-using System;
 using UniSpyLib.MiscMethod;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
@@ -47,10 +47,10 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
         {
             base.Parse();
 
-            if (KeyValues.ContainsKey("publicmask"))
+            if (RequestKeyValues.ContainsKey("publicmask"))
             {
                 PublicMasks mask;
-                if (!Enum.TryParse(KeyValues["publicmask"], out mask))
+                if (!Enum.TryParse(RequestKeyValues["publicmask"], out mask))
                 {
                     throw new GPParseException("publicmask format is incorrect.");
                 }
@@ -58,22 +58,22 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 PublicMask = mask;
             }
 
-            if (KeyValues.ContainsKey("firstname"))
+            if (RequestKeyValues.ContainsKey("firstname"))
             {
-                FirstName = KeyValues["firstname"];
+                FirstName = RequestKeyValues["firstname"];
                 HasFirstNameFlag = true;
             }
 
-            if (KeyValues.ContainsKey("lastname"))
+            if (RequestKeyValues.ContainsKey("lastname"))
             {
-                LastName = KeyValues["lastname"];
+                LastName = RequestKeyValues["lastname"];
                 HasLastNameFlag = true;
             }
 
-            if (KeyValues.ContainsKey("icquin"))
+            if (RequestKeyValues.ContainsKey("icquin"))
             {
                 uint icq;
-                if (!uint.TryParse(KeyValues["icquin"], out icq))
+                if (!uint.TryParse(RequestKeyValues["icquin"], out icq))
                 {
                     throw new GPParseException("icquin format is incorrect.");
                 }
@@ -82,17 +82,17 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             }
 
 
-            if (KeyValues.ContainsKey("homepage"))
+            if (RequestKeyValues.ContainsKey("homepage"))
             {
                 HasHomePageFlag = true;
-                HomePage = KeyValues["homepage"];
+                HomePage = RequestKeyValues["homepage"];
             }
 
-            if (KeyValues.ContainsKey("birthday"))
+            if (RequestKeyValues.ContainsKey("birthday"))
             {
                 int date;
 
-                if (int.TryParse(KeyValues["birthday"], out date))
+                if (int.TryParse(RequestKeyValues["birthday"], out date))
                 {
                     int d = ((date >> 24) & 0xFF);
                     ushort m = (ushort)((date >> 16) & 0xFF);
@@ -106,11 +106,11 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                     }
                 }
             }
-            if (KeyValues.ContainsKey("sex"))
+            if (RequestKeyValues.ContainsKey("sex"))
             {
                 byte sex;
 
-                if (!byte.TryParse(KeyValues["sex"], out sex))
+                if (!byte.TryParse(RequestKeyValues["sex"], out sex))
                 {
                     throw new GPParseException("sex format is incorrect.");
                 }
@@ -118,16 +118,16 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
                 Sex = sex;
             }
 
-            if (KeyValues.ContainsKey("zipcode"))
+            if (RequestKeyValues.ContainsKey("zipcode"))
             {
                 HasZipCode = true;
-                ZipCode = KeyValues["zipcode"];
+                ZipCode = RequestKeyValues["zipcode"];
             }
 
-            if (KeyValues.ContainsKey("countrycode"))
+            if (RequestKeyValues.ContainsKey("countrycode"))
             {
                 HasCountryCode = true;
-                CountryCode = KeyValues["countrycode"];
+                CountryCode = RequestKeyValues["countrycode"];
             }
         }
     }

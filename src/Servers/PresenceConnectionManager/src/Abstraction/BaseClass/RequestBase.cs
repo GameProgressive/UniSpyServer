@@ -21,7 +21,7 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
             get => (string)base.RawRequest;
             set => base.RawRequest = value;
         }
-        public Dictionary<string, string> KeyValues { get; protected set; }
+        public Dictionary<string, string> RequestKeyValues { get; protected set; }
 
         public RequestBase()
         {
@@ -33,13 +33,13 @@ namespace PresenceConnectionManager.Abstraction.BaseClass
 
         public override void Parse()
         {
-            KeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
-            CommandName = KeyValues.Keys.First();
+            RequestKeyValues = GameSpyUtils.ConvertToKeyValue(RawRequest);
+            CommandName = RequestKeyValues.Keys.First();
 
-            if (KeyValues.ContainsKey("id"))
+            if (RequestKeyValues.ContainsKey("id"))
             {
                 uint operationID;
-                if (!uint.TryParse(KeyValues["id"], out operationID))
+                if (!uint.TryParse(RequestKeyValues["id"], out operationID))
                 {
                     throw new GPParseException("namespaceid is invalid.");
                 }

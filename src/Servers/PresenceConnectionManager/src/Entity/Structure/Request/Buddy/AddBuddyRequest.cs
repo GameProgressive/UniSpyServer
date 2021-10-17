@@ -18,19 +18,19 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             base.Parse();
 
 
-            if (!KeyValues.ContainsKey("sesskey") || !KeyValues.ContainsKey("newprofileid") || !KeyValues.ContainsKey("reason"))
+            if (!RequestKeyValues.ContainsKey("sesskey") || !RequestKeyValues.ContainsKey("newprofileid") || !RequestKeyValues.ContainsKey("reason"))
             {
                 throw new GPParseException("addbuddy request is invalid.");
             }
 
             uint friendPID;
-            if (!uint.TryParse(KeyValues["newprofileid"], out friendPID))
+            if (!uint.TryParse(RequestKeyValues["newprofileid"], out friendPID))
             {
                 throw new GPParseException("newprofileid format is incorrect.");
             }
 
             FriendProfileID = friendPID;
-            AddReason = KeyValues["reason"];
+            AddReason = RequestKeyValues["reason"];
         }
     }
 }

@@ -1,20 +1,14 @@
 ﻿using System;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Logging;
 
 namespace PresenceConnectionManager.Application
 {
-    /// <summary>
-    /// This class represents a UniSpyServer program
-    /// </summary>
-    internal sealed class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
             try
             {
-                //create a instance of ServerManager class
                 new ServerFactory().Start();
             }
             catch (Exception e)

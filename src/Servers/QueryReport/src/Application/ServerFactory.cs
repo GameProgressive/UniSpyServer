@@ -1,13 +1,9 @@
 ﻿using QueryReport.Network;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.MiscMethod;
 using UniSpyLib.Config;
-using QueryReport.Handler.SystemHandler;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 
 namespace QueryReport.Application
 {
-
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
@@ -21,7 +17,6 @@ namespace QueryReport.Application
         public ServerFactory()
         {
         }
-
         /// <summary>
         /// Starts a specific server
         /// </summary>

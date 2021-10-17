@@ -1,7 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
@@ -19,17 +18,17 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             base.Parse();
 
 
-            if (!KeyValues.ContainsKey("sesskey"))
+            if (!RequestKeyValues.ContainsKey("sesskey"))
             {
                 throw new GPParseException("sesskey is missing.");
             }
 
-            if (!KeyValues.ContainsKey("uniquenick"))
+            if (!RequestKeyValues.ContainsKey("uniquenick"))
             {
                 throw new GPParseException("uniquenick is missing.");
             }
-            SessionKey = KeyValues["sesskey"];
-            UniqueNick = KeyValues["uniquenick"];
+            SessionKey = RequestKeyValues["sesskey"];
+            UniqueNick = RequestKeyValues["uniquenick"];
         }
     }
 }

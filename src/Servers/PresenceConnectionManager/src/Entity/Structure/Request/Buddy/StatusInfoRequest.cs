@@ -2,7 +2,6 @@
 using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Misc;
 using PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -34,48 +33,48 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         {
             base.Parse();
 
-            if (!KeyValues.ContainsKey("state")
-                || !KeyValues.ContainsKey("hostIp")
-                || !KeyValues.ContainsKey("hprivIp")
-                || !KeyValues.ContainsKey("qport")
-                || !KeyValues.ContainsKey("hport")
-                || !KeyValues.ContainsKey("sessflags")
-                || !KeyValues.ContainsKey("rechStatus")
-                || !KeyValues.ContainsKey("gameType")
-                || !KeyValues.ContainsKey("gameVariant")
-                || !KeyValues.ContainsKey("gameMapName"))
+            if (!RequestKeyValues.ContainsKey("state")
+                || !RequestKeyValues.ContainsKey("hostIp")
+                || !RequestKeyValues.ContainsKey("hprivIp")
+                || !RequestKeyValues.ContainsKey("qport")
+                || !RequestKeyValues.ContainsKey("hport")
+                || !RequestKeyValues.ContainsKey("sessflags")
+                || !RequestKeyValues.ContainsKey("rechStatus")
+                || !RequestKeyValues.ContainsKey("gameType")
+                || !RequestKeyValues.ContainsKey("gameVariant")
+                || !RequestKeyValues.ContainsKey("gameMapName"))
             {
                 throw new GPParseException("StatusInfo request is invalid.");
             }
 
-            StatusInfo.StatusState = KeyValues["state"];
-            StatusInfo.HostIP = KeyValues["hostIp"];
-            StatusInfo.HostPrivateIP = KeyValues["hprivIp"];
+            StatusInfo.StatusState = RequestKeyValues["state"];
+            StatusInfo.HostIP = RequestKeyValues["hostIp"];
+            StatusInfo.HostPrivateIP = RequestKeyValues["hprivIp"];
 
             int qport;
-            if (!int.TryParse(KeyValues["qport"], out qport))
+            if (!int.TryParse(RequestKeyValues["qport"], out qport))
             {
                 throw new GPParseException("qport format is incorrect.");
             }
             StatusInfo.QueryReportPort = qport;
             int hport;
-            if (int.TryParse(KeyValues["hport"], out hport))
+            if (int.TryParse(RequestKeyValues["hport"], out hport))
             {
                 throw new GPParseException("hport format is incorrect.");
             }
             StatusInfo.HostPort = hport;
 
             uint sessflags;
-            if (!uint.TryParse(KeyValues["sessflags"], out sessflags))
+            if (!uint.TryParse(RequestKeyValues["sessflags"], out sessflags))
             {
                 throw new GPParseException("sessflags format is incorrect.");
             }
             StatusInfo.SessionFlags = sessflags;
 
-            StatusInfo.RichStatus = KeyValues["rechStatus"];
-            StatusInfo.GameType = KeyValues["gameType"];
-            StatusInfo.GameVariant = KeyValues["gameVariant"];
-            StatusInfo.GameMapName = KeyValues["gameMapName"];
+            StatusInfo.RichStatus = RequestKeyValues["rechStatus"];
+            StatusInfo.GameType = RequestKeyValues["gameType"];
+            StatusInfo.GameVariant = RequestKeyValues["gameVariant"];
+            StatusInfo.GameMapName = RequestKeyValues["gameMapName"];
         }
     }
 }

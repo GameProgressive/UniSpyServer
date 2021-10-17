@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
 using UniSpyLib.Abstraction.BaseClass.Redis;
-using UniSpyLib.Extensions;
 
 namespace PresenceConnectionManager.Handler.SystemHandler.Redis
 {

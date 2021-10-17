@@ -4,13 +4,15 @@ namespace WebServer.Entity.Constant
 {
     public class WebEndpoints
     {
-        //Contains all the endpoints of the web server
+        //Contains all endpoints of the web server
         public static readonly List<string> AvailableEndpoints = new List<string>
         {
-            "/CompetitionService/CompetitionService.asmx",
+            "/motd/motd.asp",
+            "/motd/vercheck.asp",
             "/AuthService/AuthService.asmx",
-            "/RaceService/NintendoRacingService.asmx",
             "/SakeStorageServer/StorageServer.asmx",
+            "/CompetitionService/CompetitionService.asmx",
+            "/RaceService/NintendoRacingService.asmx",
         };
     }
 }

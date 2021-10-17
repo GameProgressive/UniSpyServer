@@ -17,7 +17,7 @@ namespace WebServer.Network
         {
             if (request.BodyLength < 10)
             {
-                throw new UniSpyException("Request body length invalid");
+                //throw new UniSpyException("Request body length invalid");
             }
             var uri = new Uri(request.Url);
 

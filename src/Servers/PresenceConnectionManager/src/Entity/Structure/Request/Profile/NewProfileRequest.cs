@@ -1,7 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
@@ -25,23 +24,23 @@ namespace PresenceConnectionManager.Entity.Structure.Request.Profile
             base.Parse();
 
 
-            if (KeyValues.ContainsKey("replace"))
+            if (RequestKeyValues.ContainsKey("replace"))
             {
-                if (!KeyValues.ContainsKey("oldnick") && !KeyValues.ContainsKey("nick"))
+                if (!RequestKeyValues.ContainsKey("oldnick") && !RequestKeyValues.ContainsKey("nick"))
                 {
                     throw new GPParseException("oldnick or nick is missing.");
                 }
-                OldNick = KeyValues["oldnick"];
-                NewNick = KeyValues["nick"];
+                OldNick = RequestKeyValues["oldnick"];
+                NewNick = RequestKeyValues["nick"];
                 IsReplaceNickName = true;
             }
             else
             {
-                if (!KeyValues.ContainsKey("nick"))
+                if (!RequestKeyValues.ContainsKey("nick"))
                 {
                     throw new GPParseException("nick is missing.");
                 }
-                NewNick = KeyValues["nick"];
+                NewNick = RequestKeyValues["nick"];
                 IsReplaceNickName = false;
             }
         }

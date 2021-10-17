@@ -1,7 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -21,13 +20,13 @@ namespace PresenceConnectionManager.Entity.Structure.Request
         {
             base.Parse();
 
-            if (!KeyValues.ContainsKey("delprofileid"))
+            if (!RequestKeyValues.ContainsKey("delprofileid"))
             {
                 throw new GPParseException("delprofileid is missing.");
             }
 
             uint deleteProfileID;
-            if (!uint.TryParse(KeyValues["delprofileid"], out deleteProfileID))
+            if (!uint.TryParse(RequestKeyValues["delprofileid"], out deleteProfileID))
             {
                 throw new GPParseException("delprofileid format is incorrect.");
             }

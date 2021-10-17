@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Threading.Tasks;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Logging;
 
 namespace GameStatus.Application
 {
-    internal static class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
             try
             {
-                //create a instance of ServerManager class
                 new ServerFactory().Start();
-
             }
             catch (Exception e)
             {

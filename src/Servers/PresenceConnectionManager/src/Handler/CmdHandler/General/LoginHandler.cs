@@ -4,20 +4,18 @@ using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Request;
 using PresenceConnectionManager.Entity.Structure.Response;
 using PresenceConnectionManager.Entity.Structure.Result;
-using PresenceConnectionManager.Handler.CmdHandler.General;
 using PresenceConnectionManager.Structure;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Entity.Exception.Login;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("login")]
-    internal sealed class LoginHandler : Abstraction.BaseClass.CmdHandlerBase
+    internal sealed class LoginHandler : CmdHandlerBase
     {
         private new LoginRequest _request => (LoginRequest)base._request;
         private new LoginResult _result

@@ -19,9 +19,6 @@ namespace UniSpyLib.Abstraction.BaseClass
         /// The gamespy requests and UniSpy requets mapping dictionary
         /// </summary>
         protected static Dictionary<object, Type> _requestMapping { get; private set; }
-        /// <summary>
-        /// The gamespy requests and UniSpy requets mapping dictionary
-        /// </summary>
         protected static Dictionary<object, Type> _handlerMapping { get; private set; }
         static UniSpyCmdSwitcherBase()
         {

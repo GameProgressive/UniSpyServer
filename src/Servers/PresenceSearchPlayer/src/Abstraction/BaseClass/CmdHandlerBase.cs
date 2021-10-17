@@ -1,11 +1,12 @@
 ﻿using System;
 using PresenceSearchPlayer.Entity.Exception.General;
 using PresenceSearchPlayer.Network;
+using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceSearchPlayer.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyCmdHandlerBase
     {
         /// <summary>
         /// Be careful the return of query function should be List type,
@@ -14,10 +15,10 @@ namespace PresenceSearchPlayer.Abstraction.BaseClass
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result { get => (ResultBase)base._result; set => base._result = value; }
-
         public CmdHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
+
         protected override void HandleException(Exception ex)
         {
             if (ex is GPException)

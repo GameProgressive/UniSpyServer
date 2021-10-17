@@ -1,13 +1,12 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Structure.Response;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("ka")]
-    internal sealed class KeepAliveHandler : Abstraction.BaseClass.CmdHandlerBase
+    internal sealed class KeepAliveHandler : CmdHandlerBase
     {
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -15,8 +14,8 @@ namespace PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            //we need to keep player cache online
-            //so their friends can find him
+            //we need to keep the player cache online
+            //so that other players can find the player
         }
 
         protected override void ResponseConstruct()

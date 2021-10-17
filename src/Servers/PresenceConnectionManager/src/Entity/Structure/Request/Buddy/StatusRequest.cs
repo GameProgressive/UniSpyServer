@@ -3,7 +3,6 @@ using PresenceConnectionManager.Entity.Contract;
 using PresenceConnectionManager.Entity.Enumerate;
 using PresenceConnectionManager.Entity.Structure.Misc;
 using PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -26,24 +25,24 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             base.Parse();
 
 
-            if (!KeyValues.ContainsKey("status"))
+            if (!RequestKeyValues.ContainsKey("status"))
                 throw new GPParseException("status is missing.");
 
-            if (!KeyValues.ContainsKey("statstring"))
+            if (!RequestKeyValues.ContainsKey("statstring"))
                 throw new GPParseException("statstring is missing.");
 
-            if (!KeyValues.ContainsKey("locstring"))
+            if (!RequestKeyValues.ContainsKey("locstring"))
                 throw new GPParseException("locstring is missing.");
 
             uint statusCode;
-            if (!uint.TryParse(KeyValues["status"], out statusCode))
+            if (!uint.TryParse(RequestKeyValues["status"], out statusCode))
             {
                 throw new GPParseException("status format is incorrect.");
             }
 
             Status.CurrentStatus = (GPStatusCode)statusCode;
-            Status.LocationString = KeyValues["locstring"];
-            Status.StatusString = KeyValues["statstring"];
+            Status.LocationString = RequestKeyValues["locstring"];
+            Status.StatusString = RequestKeyValues["statstring"];
         }
     }
 }

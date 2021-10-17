@@ -1,7 +1,6 @@
 ﻿using PresenceConnectionManager.Abstraction.BaseClass;
 using PresenceConnectionManager.Entity.Contract;
 using PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
@@ -21,12 +20,12 @@ namespace PresenceConnectionManager.Entity.Structure.Request
             base.Parse();
 
 
-            if (!KeyValues.ContainsKey("cdkeyenc"))
+            if (!RequestKeyValues.ContainsKey("cdkeyenc"))
             {
                 throw new GPParseException("cdkeyenc is missing.");
             }
 
-            CDKeyEnc = KeyValues["cdkeyenc"];
+            CDKeyEnc = RequestKeyValues["cdkeyenc"];
         }
     }
 }
