@@ -19,7 +19,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         /// UniSpy server name
         /// </summary>
         /// <returns></returns>
-        public static readonly string ServerName = Assembly.GetEntryAssembly().GetName().Name;
+        public static readonly string ServerName = Assembly.GetEntryAssembly().GetName().Name.Split(".")[2];
         /// <summary>
         /// Redis connection
         /// </summary>
