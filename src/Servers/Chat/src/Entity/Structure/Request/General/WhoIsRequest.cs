@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("WHOIS")]
-    internal sealed class WhoIsRequest : RequestBase
+    public sealed class WhoIsRequest : RequestBase
     {
         public WhoIsRequest(string rawRequest) : base(rawRequest)
         {

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Message
 {
-    internal sealed class UnderTheTableMsgResponse : ResponseBase
+    public sealed class UnderTheTableMsgResponse : ResponseBase
     {
         private new UnderTheTableMsgResult _result => (UnderTheTableMsgResult)base._result;
         private new UnderTheTableMsgRequest _request => (UnderTheTableMsgRequest)base._request;

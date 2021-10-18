@@ -7,7 +7,7 @@ using UniSpyLib.Logging;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    internal sealed class ChannelProperty
+    public sealed class ChannelProperty
     {
         public string ChannelName { get; private set; }
         public uint MaxNumberUser { get; private set; }

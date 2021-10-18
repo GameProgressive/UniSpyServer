@@ -40,7 +40,7 @@ namespace Chat.Entity.Structure.Request
         SetChannelModesWithUserLimit,
     }
     [RequestContract("MODE")]
-    internal sealed class ModeRequest : ChannelRequestBase
+    public sealed class ModeRequest : ChannelRequestBase
     {
         public ModeRequestType RequestType { get; set; }
         public string NickName { get; set; }

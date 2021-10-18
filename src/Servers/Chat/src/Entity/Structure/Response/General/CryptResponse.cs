@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class CryptResponse : ResponseBase
+    public sealed class CryptResponse : ResponseBase
     {
         private new CryptResult _result => (CryptResult)base._result;
         public CryptResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

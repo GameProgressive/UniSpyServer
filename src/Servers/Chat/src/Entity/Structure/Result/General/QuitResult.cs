@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result.General
 {
-    internal sealed record QuitDataModel
+    public sealed record QuitDataModel
     {
         public string ChannelName { get; set; }
         public bool IsPeerServer { get; set; }
@@ -12,7 +12,7 @@ namespace Chat.Entity.Structure.Result.General
         public string KickReplySendingBuffer { get; set; }
     }
     
-    internal sealed class QuitResult : ResultBase
+    public sealed class QuitResult : ResultBase
     {
         public string QuiterPrefix { get; set; }
         public List<QuitDataModel> ChannelInfos { get; }

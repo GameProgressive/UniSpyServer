@@ -5,7 +5,7 @@ namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("LOGINPREAUTH")]
 
-    internal sealed class LoginPreAuthRequest : RequestBase
+    public sealed class LoginPreAuthRequest : RequestBase
     {
         public LoginPreAuthRequest(string rawRequest) : base(rawRequest)
         {

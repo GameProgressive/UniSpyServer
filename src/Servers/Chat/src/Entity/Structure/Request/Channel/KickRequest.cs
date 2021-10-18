@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request
 {
     [RequestContract("KICK")]
-    internal sealed class KickRequest : ChannelRequestBase
+    public sealed class KickRequest : ChannelRequestBase
     {
         public new string ChannelName
         {

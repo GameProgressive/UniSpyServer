@@ -6,14 +6,14 @@ using UniSpyLib.Extensions;
 
 namespace Chat.Entity.Structure.Request
 {
-    internal enum GetKeyType
+    public enum GetKeyType
     {
         GetChannelAllUserKeyValue,
         GetChannelSpecificUserKeyValue
     }
-    
+
     [RequestContract("GETCKEY")]
-    internal sealed class GetCKeyRequest : ChannelRequestBase
+    public sealed class GetCKeyRequest : ChannelRequestBase
     {
         public string NickName { get; private set; }
         public string Cookie { get; private set; }

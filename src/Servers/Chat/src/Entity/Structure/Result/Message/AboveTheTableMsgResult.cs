@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Result.Message
 {
-    internal sealed class AboveTheTableMsgResult : MsgResultBase
+    public sealed class AboveTheTableMsgResult : MsgResultBase
     {
         public AboveTheTableMsgResult()
         {

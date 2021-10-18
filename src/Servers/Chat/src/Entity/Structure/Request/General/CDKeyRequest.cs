@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("CDKEY")]
-    internal sealed class CDKeyRequest : RequestBase
+    public sealed class CDKeyRequest : RequestBase
     {
         public CDKeyRequest(string rawRequest) : base(rawRequest)
         {

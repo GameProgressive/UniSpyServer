@@ -8,7 +8,7 @@ using UniSpyLib.Extensions;
 namespace Chat.Entity.Structure.Request.Channel
 {
     [RequestContract("GETCHANKEY")]
-    internal sealed class GetChannelKeyRequest : ChannelRequestBase
+    public sealed class GetChannelKeyRequest : ChannelRequestBase
     {
         public GetChannelKeyRequest(string rawRequest) : base(rawRequest)
         {

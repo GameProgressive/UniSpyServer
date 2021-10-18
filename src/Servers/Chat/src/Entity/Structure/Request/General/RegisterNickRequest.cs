@@ -4,7 +4,7 @@ using Chat.Entity.Contract;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("REGISTERNICK")]
-    internal sealed class RegisterNickRequest : RequestBase
+    public sealed class RegisterNickRequest : RequestBase
     {
         public RegisterNickRequest(string rawRequest) : base(rawRequest)
         {

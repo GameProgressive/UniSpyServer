@@ -4,7 +4,7 @@ using Chat.Entity.Contract;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("PONG")]
-    internal sealed class PongRequest : RequestBase
+    public sealed class PongRequest : RequestBase
     {
         public PongRequest(string rawRequest) : base(rawRequest)
         {

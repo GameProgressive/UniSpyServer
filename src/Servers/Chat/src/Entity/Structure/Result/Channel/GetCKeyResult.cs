@@ -4,12 +4,12 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result.Channel
 {
-    internal sealed class GETCKEYDataModel
+    public sealed class GETCKEYDataModel
     {
         public string NickName { get; set; }
         public string UserValues { get; set; }
     }
-    internal sealed class GetCKeyResult : ResultBase
+    public sealed class GetCKeyResult : ResultBase
     {
         public List<GETCKEYDataModel> DataResults { get; }
         public string ChannelName { get; set; }

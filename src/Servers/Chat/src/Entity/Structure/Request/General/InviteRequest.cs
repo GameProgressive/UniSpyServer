@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("INVITE")]
-    internal sealed class InviteRequest : RequestBase
+    public sealed class InviteRequest : RequestBase
     {
         public InviteRequest(string rawRequest) : base(rawRequest)
         {

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result.General
 {
-    internal sealed class ListDataModel
+    public sealed class ListDataModel
     {
         public string ChannelName { get; set; }
         public int TotalChannelUsers { get; set; }
         public string ChannelTopic { get; set; }
     }
 
-    internal sealed class ListResult : ResultBase
+    public sealed class ListResult : ResultBase
     {
         public string UserIRCPrefix { get; set; }
         public List<ListDataModel> ChannelInfoList { get; }

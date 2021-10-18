@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Exception
 {
-    internal sealed class Exception : UniSpyException
+    public sealed class Exception : UniSpyException
     {
         public Exception()
         {

@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("SETGROUP")]
-    internal sealed class SetGroupRequest : ChannelRequestBase
+    public sealed class SetGroupRequest : ChannelRequestBase
     {
         public SetGroupRequest(string rawRequest) : base(rawRequest)
         {

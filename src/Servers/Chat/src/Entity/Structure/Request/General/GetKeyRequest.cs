@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Request
     /// Retrieves a list of global key/value for a single user, or all users.
     /// </summary>
     [RequestContract("GETKEY")]
-    internal sealed class GetKeyRequest : RequestBase
+    public sealed class GetKeyRequest : RequestBase
     {
         public string NickName { get; private set; }
         public string Cookie { get; private set; }

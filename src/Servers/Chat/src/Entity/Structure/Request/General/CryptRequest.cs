@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("CRYPT")]
-    internal sealed class CryptRequest : RequestBase
+    public sealed class CryptRequest : RequestBase
     {
         public CryptRequest(string rawRequest) : base(rawRequest)
         {

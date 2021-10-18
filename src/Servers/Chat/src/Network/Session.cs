@@ -5,7 +5,7 @@ using Chat.Handler.CommandSwitcher;
 using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace Chat.Network
 {
-    internal sealed class Session : UniSpyTcpSession
+    public sealed class Session : UniSpyTcpSession
     {
         public UserInfo UserInfo { get; private set; }
         public Session(Server server) : base(server)

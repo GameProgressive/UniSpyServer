@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace Chat.Entity.Structure.Response
 {
     //TODO apply channel abstraction into this class
-    internal sealed class ModeResponse : ResponseBase
+    public sealed class ModeResponse : ResponseBase
     {
         public ModeResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

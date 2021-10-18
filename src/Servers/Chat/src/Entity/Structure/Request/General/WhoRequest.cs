@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Request.General
         GetUserInfo
     }
     [RequestContract("WHO")]
-    internal sealed class WhoRequest : RequestBase
+    public sealed class WhoRequest : RequestBase
     {
         public WhoRequest(string rawRequest) : base(rawRequest)
         {

@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Result.Channel
 {
-    internal sealed class KickResult : ResultBase
+    public sealed class KickResult : ResultBase
     {
         public string ChannelName { get; set; }
         public string KickerNickName { get; set; }

@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class UserIPResponse : ResponseBase
+    public sealed class UserIPResponse : ResponseBase
     {
         private new UserIPResult _result => (UserIPResult)base._result;
         public UserIPResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

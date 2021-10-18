@@ -2,7 +2,7 @@
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal abstract class ResponseBase : UniSpyResponseBase
+    public abstract class ResponseBase : UniSpyResponseBase
     {
         public new string SendingBuffer
         {

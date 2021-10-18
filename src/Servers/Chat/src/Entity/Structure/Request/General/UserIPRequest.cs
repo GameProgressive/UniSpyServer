@@ -4,7 +4,7 @@ using Chat.Entity.Contract;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("USRIP")]
-    internal sealed class UserIPRequest : RequestBase
+    public sealed class UserIPRequest : RequestBase
     {
         public UserIPRequest(string rawRequest) : base(rawRequest)
         {

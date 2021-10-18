@@ -6,7 +6,7 @@
         UserMessage
     }
 
-    internal class MsgRequestBase : ChannelRequestBase
+    public class MsgRequestBase : ChannelRequestBase
     {
         public MsgRequestBase(string rawRequest) : base(rawRequest)
         {

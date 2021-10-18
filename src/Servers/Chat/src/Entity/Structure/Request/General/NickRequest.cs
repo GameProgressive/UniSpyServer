@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("NICK")]
-    internal sealed class NickRequest : RequestBase
+    public sealed class NickRequest : RequestBase
     {
         public NickRequest(string rawRequest) : base(rawRequest)
         {

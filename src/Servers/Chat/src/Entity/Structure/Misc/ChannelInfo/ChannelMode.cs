@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    internal sealed class ChannelMode
+    public sealed class ChannelMode
     {
         //i - toggle the invite-only channel flag;
         public bool IsInviteOnly { get; private set; }

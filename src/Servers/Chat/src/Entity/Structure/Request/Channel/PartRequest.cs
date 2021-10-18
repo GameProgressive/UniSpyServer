@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request
 {
     [RequestContract("PART")]
-    internal sealed class PartRequest : ChannelRequestBase
+    public sealed class PartRequest : ChannelRequestBase
     {
         public new string ChannelName
         {

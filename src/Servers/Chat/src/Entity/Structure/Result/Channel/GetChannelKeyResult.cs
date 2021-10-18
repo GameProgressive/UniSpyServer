@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Result
 {
-    internal sealed class GetChannelKeyResult : ResultBase
+    public sealed class GetChannelKeyResult : ResultBase
     {
         public string ChannelUserIRCPrefix { get; set; }
         public string ChannelName { get; set; }

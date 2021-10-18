@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class GetCKeyResponse : ResponseBase
+    public sealed class GetCKeyResponse : ResponseBase
     {
         private new GetCKeyResult _result => (GetCKeyResult)base._result;
         private new GetCKeyRequest _request => (GetCKeyRequest)base._request;

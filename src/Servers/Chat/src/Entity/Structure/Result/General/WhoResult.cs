@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Chat.Entity.Structure.Result.General
 {
-    internal sealed class WhoDataModel
+    public sealed class WhoDataModel
     {
         public string ChannelName { get; set; }
         public string UserName { get; set; }
@@ -11,7 +11,7 @@ namespace Chat.Entity.Structure.Result.General
         public string NickName { get; set; }
         public string Modes { get; set; }
     }
-    internal sealed class WhoResult : ResultBase
+    public sealed class WhoResult : ResultBase
     {
         public List<WhoDataModel> DataModels { get; }
         public WhoResult()

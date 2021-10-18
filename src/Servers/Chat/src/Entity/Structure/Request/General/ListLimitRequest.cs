@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("LISTLIMIT")]
-    internal sealed class ListLimitRequest : RequestBase
+    public sealed class ListLimitRequest : RequestBase
     {
         public ListLimitRequest(string rawRequest) : base(rawRequest)
         {

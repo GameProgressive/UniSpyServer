@@ -10,7 +10,7 @@ namespace Chat.Entity.Structure.Request
     }
 
     [RequestContract("TOPIC")]
-    internal sealed class TopicRequest : ChannelRequestBase
+    public sealed class TopicRequest : ChannelRequestBase
     {
         public TopicRequest(string rawRequest) : base(rawRequest)
         {

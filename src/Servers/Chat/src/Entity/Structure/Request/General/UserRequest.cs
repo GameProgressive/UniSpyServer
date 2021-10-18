@@ -4,7 +4,7 @@ using Chat.Entity.Contract;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("USER")]
-    internal sealed class UserRequest : RequestBase
+    public sealed class UserRequest : RequestBase
     {
         public UserRequest(string rawRequest) : base(rawRequest)
         {

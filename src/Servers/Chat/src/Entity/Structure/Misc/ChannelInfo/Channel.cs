@@ -4,7 +4,7 @@ using UniSpyLib.Logging;
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    internal sealed class Channel
+    public sealed class Channel
     {
         public ChannelProperty Property { get; private set; }
 

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Message
 {
-    internal sealed class NoticeResponse : ResponseBase
+    public sealed class NoticeResponse : ResponseBase
     {
         private new NoticeResult _result => (NoticeResult)base._result;
         private new NoticeRequest _request => (NoticeRequest)base._request;

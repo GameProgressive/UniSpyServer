@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class NickResponse : ResponseBase
+    public sealed class NickResponse : ResponseBase
     {
         private new NickRequest _request => (NickRequest)base._request;
         public NickResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

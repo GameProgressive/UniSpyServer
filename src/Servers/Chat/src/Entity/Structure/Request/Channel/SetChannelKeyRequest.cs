@@ -7,7 +7,7 @@ using UniSpyLib.Extensions;
 namespace Chat.Entity.Structure.Request
 {
     [RequestContract("SETCHANKEY")]
-    internal sealed class SetChannelKeyRequest : ChannelRequestBase
+    public sealed class SetChannelKeyRequest : ChannelRequestBase
     {
         public Dictionary<string, string> KeyValue { get; private set; }
 

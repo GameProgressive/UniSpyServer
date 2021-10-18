@@ -2,7 +2,7 @@
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal class ChannelRequestBase : RequestBase
+    public class ChannelRequestBase : RequestBase
     {
         public string ChannelName { get; set; }
         public ChannelRequestBase() { }

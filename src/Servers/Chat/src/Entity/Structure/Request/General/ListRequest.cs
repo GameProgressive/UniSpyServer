@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("LIST")]
-    internal sealed class ListRequest : RequestBase
+    public sealed class ListRequest : RequestBase
     {
         public ListRequest(string rawRequest) : base(rawRequest)
         {

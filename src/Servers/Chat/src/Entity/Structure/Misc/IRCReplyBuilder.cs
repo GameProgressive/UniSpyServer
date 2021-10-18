@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Misc
 {
-    internal sealed class IRCReplyBuilder
+    public sealed class IRCReplyBuilder
     {
         #region advance irc reply builder
 

@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request.General
 {
     [RequestContract("QUIT")]
-    internal sealed class QuitRequest : RequestBase
+    public sealed class QuitRequest : RequestBase
     {
         public QuitRequest() { }
         public QuitRequest(string rawRequest) : base(rawRequest)

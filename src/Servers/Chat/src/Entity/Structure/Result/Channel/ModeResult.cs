@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Result.Channel
 {
-    internal sealed class ModeResult : ResultBase
+    public sealed class ModeResult : ResultBase
     {
         public string ChannelModes { get; set; }
         public string ChannelName { get; set; }

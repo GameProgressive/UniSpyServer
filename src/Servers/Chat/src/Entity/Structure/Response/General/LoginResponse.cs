@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class LoginResponse : ResponseBase
+    public sealed class LoginResponse : ResponseBase
     {
         private new LoginResult _result => (LoginResult)base._result;
         public LoginResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

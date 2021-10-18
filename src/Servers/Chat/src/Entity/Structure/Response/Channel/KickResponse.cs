@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.Channel
 {
-    internal sealed class KickResponse : ResponseBase
+    public sealed class KickResponse : ResponseBase
     {
         public KickResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

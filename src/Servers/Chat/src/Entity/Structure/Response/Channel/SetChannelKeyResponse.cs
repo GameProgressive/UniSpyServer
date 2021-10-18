@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response
 {
-    internal sealed class SetChannelKeyResponse : ChannelResponseBase
+    public sealed class SetChannelKeyResponse : ChannelResponseBase
     {
         private new SetChannelKeyRequest _request => (SetChannelKeyRequest)base._request;
         private new SetChannelKeyResult _result => (SetChannelKeyResult)base._result;

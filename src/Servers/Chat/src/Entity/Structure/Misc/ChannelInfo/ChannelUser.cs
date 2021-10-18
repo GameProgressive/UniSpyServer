@@ -2,7 +2,7 @@
 
 namespace Chat.Entity.Structure.Misc.ChannelInfo
 {
-    internal sealed class ChannelUser
+    public sealed class ChannelUser
     {
         public bool IsVoiceable { get; set; }
         public bool IsChannelCreator { get; set; }

@@ -9,7 +9,7 @@ namespace Chat.Entity.Structure.Misc
     /// Note: this is a csharp version of the peerchat algorithm created by aluigi.
     /// Original C implementation: http://aluigi.altervista.org/papers/gs_peerchat.h
     /// </summary>
-    internal sealed class ChatCrypt
+    public sealed class ChatCrypt
     {
         public const string DigitsHex = "0123456789abcdef";
         public const string DigitsCrypt = "aFl4uOD9sfWq1vGp";

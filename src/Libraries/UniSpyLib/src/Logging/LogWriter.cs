@@ -3,7 +3,6 @@ using Serilog.Events;
 using System;
 using System.Linq;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass;
 using UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyLib.Encryption;
 using UniSpyLib.Extensions;

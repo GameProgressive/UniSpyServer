@@ -5,7 +5,7 @@ using Chat.Entity.Exception;
 namespace Chat.Entity.Structure.Request
 {
     [RequestContract("JOIN")]
-    internal sealed class JoinRequest : ChannelRequestBase
+    public sealed class JoinRequest : ChannelRequestBase
     {
         public JoinRequest(string rawRequest) : base(rawRequest)
         {

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Structure.Response.General
 {
-    internal sealed class JoinResponse : ResponseBase
+    public sealed class JoinResponse : ResponseBase
     {
         private new JoinResult _result => (JoinResult)base._result;
         private new JoinRequest _request => (JoinRequest)base._request;
