@@ -8,7 +8,7 @@ namespace UniSpyLib.Config
     {
 
         public static UniSpyConfig Config => LoadConfigFile();
-        public static readonly string ConfigPath = @"UniSpyServer.json";
+        public static readonly string ConfigPath = @"UniSpyServerConfig.json";
         private static UniSpyConfig LoadConfigFile()
         {
             if (!File.Exists(ConfigPath))
