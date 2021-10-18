@@ -10,7 +10,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Response
         {
         }
 
-        protected new NewUserResult _result => (NewUserResult)base._result;
+        private new NewUserResult _result => (NewUserResult)base._result;
 
         public override void Build()
         {

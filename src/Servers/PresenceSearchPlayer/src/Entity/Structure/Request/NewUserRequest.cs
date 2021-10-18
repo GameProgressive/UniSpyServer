@@ -8,21 +8,21 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     [RequestContract("newuser")]
     internal sealed class NewUserRequest : RequestBase
     {
-        public uint ProductID { get; protected set; }
-        public uint GamePort { get; protected set; }
-        public string CDKeyEnc { get; protected set; }
-        public bool HasGameNameFlag { get; protected set; }
-        public bool HasProductIDFlag { get; protected set; }
-        public bool HasCDKeyEncFlag { get; protected set; }
-        public bool HasPartnerIDFlag { get; protected set; }
-        public bool HasGamePortFlag { get; protected set; }
+        public uint ProductID { get; private set; }
+        public uint GamePort { get; private set; }
+        public string CDKeyEnc { get; private set; }
+        public bool HasGameNameFlag { get; private set; }
+        public bool HasProductIDFlag { get; private set; }
+        public bool HasCDKeyEncFlag { get; private set; }
+        public bool HasPartnerIDFlag { get; private set; }
+        public bool HasGamePortFlag { get; private set; }
         public string Nick { get; private set; }
         public string Email { get; private set; }
         public string Password { get; private set; }
         public string Uniquenick { get; private set; }
         public uint PartnerID { get; private set; }
         public string GameName { get; private set; }
-        public uint NamespaceID { get; protected set; }
+        public uint NamespaceID { get; private set; }
         public NewUserRequest(string rawRequest) : base(rawRequest)
         {
         }
