@@ -1,9 +1,9 @@
 using System;
 using Xunit;
 
-namespace UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpyServer.Servers.PresenceConnectionManager.Test
 {
-    public class UnitTest1
+    public class RequestTest
     {
         [Fact]
         public void Test1()

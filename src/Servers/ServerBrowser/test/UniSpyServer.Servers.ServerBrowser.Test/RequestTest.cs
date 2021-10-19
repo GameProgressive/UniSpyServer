@@ -3,7 +3,7 @@ using Xunit;
 
 namespace UniSpyServer.Servers.ServerBrowser.Test
 {
-    public class RequestDeserializationTest
+    public class RequestTest
     {
         [Fact]
         public void ServerListRequestTest()

@@ -1,8 +1,9 @@
 using System;
 using Xunit;
-namespace UniSpyServer.Servers.QueryReport.Test
+
+namespace UniSpyServer.Servers.NatNegotiation.Test
 {
-    public class RequestDeserializationTest
+    public class RequestTest
     {
         [Fact]
         public void Test1()

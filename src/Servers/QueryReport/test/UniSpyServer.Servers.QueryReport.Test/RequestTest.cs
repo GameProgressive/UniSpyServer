@@ -1,9 +1,8 @@
 using System;
 using Xunit;
-
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test
+namespace UniSpyServer.Servers.QueryReport.Test
 {
-    public class UnitTest1
+    public class RequestTest
     {
         [Fact]
         public void Test1()
