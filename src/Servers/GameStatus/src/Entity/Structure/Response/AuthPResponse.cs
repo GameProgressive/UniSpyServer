@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Structure.Response
 {
-    internal sealed class AuthPResponse : ResponseBase
+    public sealed class AuthPResponse : ResponseBase
     {
         private new AuthPResult _result => (AuthPResult)base._result;
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;

@@ -6,7 +6,7 @@ namespace GameStatus.Entity.Structure.Request
 {
     [RequestContract("newgame")]
 
-    internal sealed class NewGameRequest : RequestBase
+    public sealed class NewGameRequest : RequestBase
     {
         public bool IsClientLocalStorageAvailable { get; private set; }
         public string Challenge { get; private set; }

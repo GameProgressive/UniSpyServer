@@ -10,7 +10,7 @@ namespace GameStatus.Abstraction.BaseClass
     /// we only use selfdefine error code here
     /// so we do not need to send it to client
     /// </summary>
-    internal abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;

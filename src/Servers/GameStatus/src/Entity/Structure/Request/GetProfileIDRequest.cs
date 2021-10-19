@@ -5,7 +5,7 @@ using GameStatus.Entity.Exception;
 namespace GameStatus.Entity.Structure.Request
 {
     [RequestContract("getpid")]
-    internal sealed class GetProfileIDRequest : RequestBase
+    public sealed class GetProfileIDRequest : RequestBase
     {
         public string Nick { get; private set; }
         public string KeyHash { get; private set; }

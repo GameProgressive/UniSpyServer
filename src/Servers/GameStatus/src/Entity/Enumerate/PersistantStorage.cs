@@ -1,6 +1,6 @@
 ﻿namespace GameStatus.Entity.Enumerate
 {
-    internal enum PersistStorageType : uint
+    public enum PersistStorageType : uint
     {
         /// <summary>
         /// Readable only by the authenticated client it belongs to, can only by set on the server

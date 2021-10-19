@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Structure.Response
 {
-    internal sealed class SetPDResponse : ResponseBase
+    public sealed class SetPDResponse : ResponseBase
     {
         private new SetPDResult _result => (SetPDResult)base._result;
         private new SetPlayerDataRequest _request => (SetPlayerDataRequest)base._request;

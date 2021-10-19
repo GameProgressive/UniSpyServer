@@ -2,7 +2,7 @@
 
 namespace GameStatus.Entity.Structure.Result
 {
-    internal sealed class GSDefaultResult : ResultBase
+    public sealed class GSDefaultResult : ResultBase
     {
         public GSDefaultResult()
         {

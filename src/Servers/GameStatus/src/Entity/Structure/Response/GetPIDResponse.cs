@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace GameStatus.Entity.Structure.Response
 {
-    internal sealed class GetPIDResponse : ResponseBase
+    public sealed class GetPIDResponse : ResponseBase
     {
         private new GetPIDResult _result => (GetPIDResult)base._result;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;

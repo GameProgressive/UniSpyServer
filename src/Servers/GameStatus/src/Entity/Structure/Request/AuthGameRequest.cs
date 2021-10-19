@@ -8,10 +8,10 @@ namespace GameStatus.Entity.Structure.Request
     /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */
     /// </summary>
     [RequestContract("auth")]
-    internal sealed class AuthGameRequest : RequestBase
+    public sealed class AuthGameRequest : RequestBase
     {
         public string GameName { get; private set; }
-        public uint Port { get; private set; }
+        public int Port { get; private set; }
         public AuthGameRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -19,8 +19,6 @@ namespace GameStatus.Entity.Structure.Request
         public override void Parse()
         {
             base.Parse();
-
-
             if (!RequestKeyValues.ContainsKey("gamename"))
             {
                 throw new GSException("gamename is missing.");
@@ -33,8 +31,8 @@ namespace GameStatus.Entity.Structure.Request
 
             if (RequestKeyValues.ContainsKey("port"))
             {
-                uint port;
-                if (!uint.TryParse(RequestKeyValues["port"], out port))
+                int port;
+                if (!int.TryParse(RequestKeyValues["port"], out port))
                 {
                     throw new GSException("port format is incorrect.");
                 }

@@ -2,7 +2,7 @@
 
 namespace GameStatus.Entity.Structure.Result
 {
-    internal sealed class UdpGameResult : ResultBase
+    public sealed class UdpGameResult : ResultBase
     {
         public UdpGameResult()
         {

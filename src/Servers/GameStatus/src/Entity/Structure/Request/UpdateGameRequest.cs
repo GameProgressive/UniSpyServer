@@ -5,7 +5,7 @@ using GameStatus.Entity.Exception;
 namespace GameStatus.Entity.Structure.Request
 {
     [RequestContract("updgame")]
-    internal sealed class UpdateGameRequest : RequestBase
+    public sealed class UpdateGameRequest : RequestBase
     {
         public uint ConnectionID { get; private set; }
         public bool IsDone { get; private set; }

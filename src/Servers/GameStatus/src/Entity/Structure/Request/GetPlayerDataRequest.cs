@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace GameStatus.Entity.Structure.Request
 {
     [RequestContract("getpd")]
-    internal sealed class GetPlayerDataRequest : RequestBase
+    public sealed class GetPlayerDataRequest : RequestBase
     {
         public uint ProfileID { get; private set; }
         public PersistStorageType StorageType { get; private set; }

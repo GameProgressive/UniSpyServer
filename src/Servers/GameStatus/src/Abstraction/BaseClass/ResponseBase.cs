@@ -2,7 +2,7 @@
 
 namespace GameStatus.Abstraction.BaseClass
 {
-    internal abstract class ResponseBase : UniSpyResponseBase
+    public abstract class ResponseBase : UniSpyResponseBase
     {
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result => (ResultBase)base._result;

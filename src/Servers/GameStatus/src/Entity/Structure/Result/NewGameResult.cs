@@ -2,7 +2,7 @@
 
 namespace GameStatus.Entity.Structure.Result
 {
-    internal sealed class NewGameResult : ResultBase
+    public sealed class NewGameResult : ResultBase
     {
         public NewGameResult()
         {
