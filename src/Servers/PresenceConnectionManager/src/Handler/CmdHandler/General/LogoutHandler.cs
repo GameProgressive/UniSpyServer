@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("logout")]
-    internal sealed class LogoutHandler : CmdHandlerBase
+    public sealed class LogoutHandler : CmdHandlerBase
     {
         public LogoutHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

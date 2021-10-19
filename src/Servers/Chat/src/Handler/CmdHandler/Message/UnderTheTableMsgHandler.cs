@@ -8,7 +8,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Message
 {
     [HandlerContract("UTM")]
-    internal sealed class UnderTheTableMsgHandler : MsgHandlerBase
+    public sealed class UnderTheTableMsgHandler : MsgHandlerBase
     {
         private new UnderTheTableMsgRequest _request => (UnderTheTableMsgRequest)base._request;
         private new UnderTheTableMsgResult _result { get => (UnderTheTableMsgResult)base._result; set => base._result = value; }

@@ -6,7 +6,7 @@ using System.Linq;
 using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 namespace ServerBrowser.Network
 {
-    internal sealed class Session : UniSpyTcpSession
+    public sealed class Session : UniSpyTcpSession
     {
         public string GameSecretKey { get; set; }
         public string ClientChallenge { get; set; }

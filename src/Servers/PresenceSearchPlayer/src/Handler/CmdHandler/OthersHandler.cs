@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// Get buddy's information
     /// </summary>
     [HandlerContract("others")]
-    internal sealed class OthersHandler : CmdHandlerBase
+    public sealed class OthersHandler : CmdHandlerBase
     {
         private new OthersRequest _request => (OthersRequest)base._request;
 

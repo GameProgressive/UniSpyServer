@@ -11,7 +11,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Channel
 {
     [HandlerContract("GETCKEY")]
-    internal sealed class GetCKeyHandler : ChannelHandlerBase
+    public sealed class GetCKeyHandler : ChannelHandlerBase
     {
         private new GetCKeyRequest _request => (GetCKeyRequest)base._request;
         private new GetCKeyResult _result

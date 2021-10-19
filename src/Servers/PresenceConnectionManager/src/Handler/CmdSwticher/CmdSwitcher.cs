@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Handler.CommandSwitcher
 {
-    internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
+    public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
         public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)

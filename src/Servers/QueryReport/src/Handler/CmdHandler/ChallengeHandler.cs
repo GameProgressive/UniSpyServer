@@ -12,7 +12,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.Challenge)]
-    internal sealed class ChallengeHandler : CmdHandlerBase
+    public sealed class ChallengeHandler : CmdHandlerBase
     {
         private GameServerInfo _gameServerInfo;
         private new ChallengeRequest _request => (ChallengeRequest)base._request;

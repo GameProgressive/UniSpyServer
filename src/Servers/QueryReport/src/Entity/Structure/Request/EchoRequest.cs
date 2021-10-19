@@ -5,7 +5,7 @@ using QueryReport.Entity.Enumerate;
 namespace QueryReport.Entity.Structure.Request
 {
     [RequestContract(RequestType.Echo)]
-    internal class EchoRequest : RequestBase
+    public class EchoRequest : RequestBase
     {
         public EchoRequest(object rawRequest) : base(rawRequest)
         {

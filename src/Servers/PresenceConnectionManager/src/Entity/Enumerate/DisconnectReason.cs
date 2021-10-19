@@ -1,6 +1,6 @@
 ﻿namespace PresenceConnectionManager.Entity.Enumerate
 {
-    internal enum DisconnectReason : int
+    public enum DisconnectReason : int
     {
         /// <summary>
         /// Client sends the "logout" command

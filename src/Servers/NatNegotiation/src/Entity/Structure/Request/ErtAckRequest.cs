@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 namespace NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.ErtAck)]
-    internal sealed class ErtAckRequest : InitRequestBase
+    public sealed class ErtAckRequest : InitRequestBase
     {
         public ErtAckRequest(byte[] rawRequest) : base(rawRequest)
         {

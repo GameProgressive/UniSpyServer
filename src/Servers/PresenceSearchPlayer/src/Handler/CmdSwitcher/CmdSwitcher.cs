@@ -7,7 +7,7 @@ using UniSpyLib.Logging;
 
 namespace PresenceSearchPlayer.Handler.CmdSwitcher
 {
-    internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
+    public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
         public CmdSwitcher(IUniSpySession session, string rawRequest) : base(session, rawRequest)

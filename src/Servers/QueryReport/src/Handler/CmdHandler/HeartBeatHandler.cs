@@ -13,7 +13,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.HeartBeat)]
-    internal sealed class HeartBeatHandler : CmdHandlerBase
+    public sealed class HeartBeatHandler : CmdHandlerBase
     {
         private new HeartBeatRequest _request => (HeartBeatRequest)base._request;
         private GameServerInfo _gameServerInfo;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace PresenceSearchPlayer.Entity.Structure.Result
 {
-    internal sealed class SearchUniqueDatabaseModel
+    public sealed class SearchUniqueDatabaseModel
     {
         public uint Profileid;
         public string Nick;
@@ -14,7 +14,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Result
         public uint NamespaceID;
     }
 
-    internal sealed class SearchUniqueResult : ResultBase
+    public sealed class SearchUniqueResult : ResultBase
     {
         public List<SearchUniqueDatabaseModel> DatabaseResults;
         public SearchUniqueResult()

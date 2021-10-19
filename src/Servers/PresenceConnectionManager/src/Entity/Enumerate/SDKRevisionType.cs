@@ -1,7 +1,7 @@
 ﻿
 namespace PresenceConnectionManager.Entity.Enumerate
 {
-    internal enum SDKRevisionType : uint
+    public enum SDKRevisionType : uint
     {
         Unknown = 0,
         /// <summary>

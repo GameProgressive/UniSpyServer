@@ -5,7 +5,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {
-    internal sealed class NatNegMsgRequest : RequestBase
+    public sealed class NatNegMsgRequest : RequestBase
     {
         public uint Cookie { get; set; }
         public byte[] NatNegMessage => RawRequest;

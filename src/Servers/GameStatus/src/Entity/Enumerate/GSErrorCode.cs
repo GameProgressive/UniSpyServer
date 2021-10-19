@@ -3,7 +3,7 @@
     /// <summary>
     /// In gamespy protocol there are no error response message
     /// from server to client, which mean we only need to make
-    /// internal error system.
+    /// public error system.
     /// </summary>
     public enum GSErrorCode
     {

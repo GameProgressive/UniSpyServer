@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ServerBrowser.Entity.Structure.Result
 {
-    internal class ServerMainListResult : ServerListUpdateOptionResultBase
+    public class ServerMainListResult : ServerListUpdateOptionResultBase
     {
         public List<GameServerInfo> GameServerInfos { get; set; }
         public ServerMainListResult()

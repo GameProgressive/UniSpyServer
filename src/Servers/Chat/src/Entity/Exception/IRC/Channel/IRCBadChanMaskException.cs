@@ -2,7 +2,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception.IRC.Channel
 {
-    internal sealed class IRCBadChanMaskException : IRCChannelException
+    public sealed class IRCBadChanMaskException : IRCChannelException
     {
         public IRCBadChanMaskException()
         {

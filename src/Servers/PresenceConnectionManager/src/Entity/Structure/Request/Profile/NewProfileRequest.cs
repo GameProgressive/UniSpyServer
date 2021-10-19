@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("newprofile")]
-    internal sealed class NewProfileRequest : RequestBase
+    public sealed class NewProfileRequest : RequestBase
     {
         //create a new profile with new nick 
         // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"

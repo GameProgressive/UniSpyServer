@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    internal abstract class CmdHandlerBase : UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyCmdHandlerBase
     {
         /// <summary>
         /// Because all errors are sent by SendGPError()

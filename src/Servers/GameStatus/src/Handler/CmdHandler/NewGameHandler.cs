@@ -8,7 +8,7 @@ namespace GameStatus.Handler.CmdHandler
 {
     [HandlerContract("newgame")]
 
-    internal sealed class NewGameHandler : CmdHandlerBase
+    public sealed class NewGameHandler : CmdHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"

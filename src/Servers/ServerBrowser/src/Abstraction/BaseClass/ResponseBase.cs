@@ -6,7 +6,7 @@ namespace ServerBrowser.Abstraction.BaseClass
     /// <summary>
     /// SB always need to response to client even there are no server or error occured
     /// </summary>
-    internal abstract class ResponseBase : UniSpyResponseBase
+    public abstract class ResponseBase : UniSpyResponseBase
     {
         protected new RequestBase _request => (RequestBase)base._request;
         protected new ResultBase _result => (ResultBase)base._result;

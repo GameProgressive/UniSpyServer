@@ -8,7 +8,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.General
 {
     [HandlerContract("USRIP")]
-    internal sealed class UserIPHandler : CmdHandlerBase
+    public sealed class UserIPHandler : CmdHandlerBase
     {
 
         private new UserIPRequest _request => (UserIPRequest)base._request;

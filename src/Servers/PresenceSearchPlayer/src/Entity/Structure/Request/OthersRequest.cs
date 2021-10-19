@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     [RequestContract("others")]
-    internal sealed class OthersRequest : RequestBase
+    public sealed class OthersRequest : RequestBase
     {
         public OthersRequest(string rawRequest) : base(rawRequest)
         {

@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response.Buddy
 {
-    internal sealed class StatusInfoResponse : ResponseBase
+    public sealed class StatusInfoResponse : ResponseBase
     {
         private new StatusInfoResult _result => (StatusInfoResult)base._result;
 

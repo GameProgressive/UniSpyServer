@@ -15,7 +15,7 @@ using NatNegotiation.Entity.Enumerate;
 namespace NatNegotiation.Handler.CmdHandler
 {
     [HandlerContract(RequestType.Connect)]
-    internal sealed class ConnectHandler : CmdHandlerBase
+    public sealed class ConnectHandler : CmdHandlerBase
     {
         private new ConnectRequest _request => (ConnectRequest)base._request;
         private new ConnectResult _result { get => (ConnectResult)base._result; set => base._result = value; }

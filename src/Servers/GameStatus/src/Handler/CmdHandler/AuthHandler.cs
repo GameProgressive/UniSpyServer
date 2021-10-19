@@ -8,7 +8,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace GameStatus.Handler.CmdHandler
 {
     [HandlerContract("auth")]
-    internal sealed class AuthHandler : CmdHandlerBase
+    public sealed class AuthHandler : CmdHandlerBase
     {
         //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
         private new AuthGameRequest _request => (AuthGameRequest)base._request;

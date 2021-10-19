@@ -4,7 +4,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal sealed class NewUserResult : ResultBase
+    public sealed class NewUserResult : ResultBase
     {
         public Users User;
         public Profiles Profile;

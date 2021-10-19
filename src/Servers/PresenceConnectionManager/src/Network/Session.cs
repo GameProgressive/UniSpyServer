@@ -12,7 +12,7 @@ namespace PresenceConnectionManager.Network
     /// create new user accounts, and fetch profile information
     /// <remarks>gpcm.gamespy.com</remarks>
     /// </summary>
-    internal sealed class Session : UniSpyTcpSession
+    public sealed class Session : UniSpyTcpSession
     {
         /// <summary>
         /// Indicates the date and time this connection was created

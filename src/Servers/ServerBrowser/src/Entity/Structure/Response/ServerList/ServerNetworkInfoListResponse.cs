@@ -7,7 +7,7 @@ namespace ServerBrowser.Entity.Structure.Response.ServerList
     /// <summary>
     /// Only get the servers IP
     /// </summary>
-    internal sealed class ServerNetworkInfoListResponse : ServerListUpdateOptionResponseBase
+    public sealed class ServerNetworkInfoListResponse : ServerListUpdateOptionResponseBase
     {
         public ServerNetworkInfoListResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {

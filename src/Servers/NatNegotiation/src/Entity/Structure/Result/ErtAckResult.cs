@@ -3,7 +3,7 @@ using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    internal sealed class ErtAckResult : InitResultBase
+    public sealed class ErtAckResult : InitResultBase
     {
         public ErtAckResult()
         {

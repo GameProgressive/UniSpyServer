@@ -7,7 +7,7 @@ using System.Linq;
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     [RequestContract("searchunique")]
-    internal sealed class SearchUniqueRequest : RequestBase
+    public sealed class SearchUniqueRequest : RequestBase
     {
         public string Uniquenick { get; private set; }
         public List<uint> Namespaces { get; private set; }

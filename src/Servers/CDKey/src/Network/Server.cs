@@ -6,7 +6,7 @@ using UniSpyLib.Encryption;
 
 namespace CDKey.Network
 {
-    internal sealed class Server : UniSpyUdpServer
+    public sealed class Server : UniSpyUdpServer
     {
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {

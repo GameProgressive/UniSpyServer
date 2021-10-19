@@ -11,7 +11,7 @@ namespace Chat.Handler.CmdHandler.General
 {
     //todo unfinished
     [HandlerContract("LIST")]
-    internal sealed class ListHandler : LogedInHandlerBase
+    public sealed class ListHandler : LogedInHandlerBase
     {
         private new ListRequest _request => (ListRequest)base._request;
         private new ListResult _result

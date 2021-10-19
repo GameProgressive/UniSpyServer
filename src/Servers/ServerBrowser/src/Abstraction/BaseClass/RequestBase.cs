@@ -4,7 +4,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class RequestBase : UniSpyRequestBase
+    public abstract class RequestBase : UniSpyRequestBase
     {
         public int RequestLength { get; private set; }
         public new byte[] RawRequest => (byte[])base.RawRequest;

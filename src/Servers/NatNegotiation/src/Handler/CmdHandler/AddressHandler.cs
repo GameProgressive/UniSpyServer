@@ -9,7 +9,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace NatNegotiation.Handler.CmdHandler
 {
     [HandlerContract(RequestType.AddressCheck)]
-    internal sealed class AddressCheckHandler : CmdHandlerBase
+    public sealed class AddressCheckHandler : CmdHandlerBase
     {
         private new AddressRequest _request => (AddressRequest)base._request;
         private new AddressResult _result { get => (AddressResult)base._result; set => base._result = value; }

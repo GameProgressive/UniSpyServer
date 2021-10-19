@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     [RequestContract("addbuddy")]
-    internal sealed class AddBuddyRequest : RequestBase
+    public sealed class AddBuddyRequest : RequestBase
     {
         public uint FriendProfileID { get; private set; }
         public string AddReason { get; private set; }

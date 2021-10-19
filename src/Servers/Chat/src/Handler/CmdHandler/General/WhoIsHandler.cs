@@ -13,7 +13,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.General
 {
     [HandlerContract("WHOIS")]
-    internal sealed class WhoIsHandler : CmdHandlerBase
+    public sealed class WhoIsHandler : CmdHandlerBase
     {
         private new WhoIsRequest _request => (WhoIsRequest)base._request;
         private new WhoIsResult _result

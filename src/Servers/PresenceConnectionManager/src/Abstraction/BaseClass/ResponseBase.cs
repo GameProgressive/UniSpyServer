@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    internal abstract class ResponseBase : UniSpyResponseBase
+    public abstract class ResponseBase : UniSpyResponseBase
     {
         protected new ResultBase _result => (ResultBase)base._result;
         protected new RequestBase _request => (RequestBase)base._request;

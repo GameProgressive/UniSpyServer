@@ -16,7 +16,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// Uses a email and namespaceid to find all nick in this account
     /// </summary>
     [HandlerContract("nicks")]
-    internal sealed class NicksHandler : CmdHandlerBase
+    public sealed class NicksHandler : CmdHandlerBase
     {
         private new NicksResult _result
         {

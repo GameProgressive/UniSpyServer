@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceSearchPlayer.Entity.Structure.Response
 {
-    internal sealed class OthersResponse : ResponseBase
+    public sealed class OthersResponse : ResponseBase
     {
         private new OthersResult _result => (OthersResult)base._result;
         public OthersResponse(RequestBase request, UniSpyResultBase result) : base(request, result)

@@ -12,7 +12,7 @@ namespace GameStatus.Handler.CmdHandler
     /// Set persist storage data
     /// </summary>
     [HandlerContract("setpd")]
-    internal sealed class SetPDHandler : CmdHandlerBase
+    public sealed class SetPDHandler : CmdHandlerBase
     {
         private new SetPlayerDataRequest _request => (SetPlayerDataRequest)base._request;
         public SetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

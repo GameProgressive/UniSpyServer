@@ -11,7 +11,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.General
 {
     [HandlerContract("NICK")]
-    internal sealed class NickHandler : CmdHandlerBase
+    public sealed class NickHandler : CmdHandlerBase
     {
         private new NickRequest _request => (NickRequest)base._request;
         public NickHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

@@ -7,7 +7,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
-    internal sealed class BlockListHandler : CmdHandlerBase
+    public sealed class BlockListHandler : CmdHandlerBase
     {
         private new BlockListResult _result
         {

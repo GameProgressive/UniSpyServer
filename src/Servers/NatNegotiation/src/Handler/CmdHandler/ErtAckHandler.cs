@@ -10,7 +10,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace NatNegotiation.Handler.CmdHandler
 {
     [HandlerContract(RequestType.ErtAck)]
-    internal sealed class ErtAckHandler : CmdHandlerBase
+    public sealed class ErtAckHandler : CmdHandlerBase
     {
         private new ErtAckRequest _request => (ErtAckRequest)base._request;
         private new ErtAckResult _result { get => (ErtAckResult)base._result; set => base._result = value; }

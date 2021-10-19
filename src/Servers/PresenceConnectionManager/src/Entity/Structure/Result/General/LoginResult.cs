@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal sealed class LogInDataModel
+    public sealed class LogInDataModel
     {
         public uint UserID;
         public uint ProfileID;
@@ -16,7 +16,7 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public uint SubProfileID;
     }
 
-    internal sealed class LoginResult : ResultBase
+    public sealed class LoginResult : ResultBase
     {
         public LogInDataModel DatabaseResults { get; set; }
         public string ResponseProof { get; set; }

@@ -3,7 +3,7 @@ using UniSpyLib.Logging;
 
 namespace PresenceSearchPlayer.Application
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {

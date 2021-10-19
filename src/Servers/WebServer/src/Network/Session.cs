@@ -8,7 +8,7 @@ using WebServer.Handler;
 
 namespace WebServer.Network
 {
-    internal sealed class Session : UniSpyHttpSession
+    public sealed class Session : UniSpyHttpSession
     {
         public Session(UniSpyHttpServer server) : base(server)
         {

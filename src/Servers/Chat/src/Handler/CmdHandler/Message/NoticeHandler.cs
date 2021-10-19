@@ -8,7 +8,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Message
 {
     [HandlerContract("NOTICE")]
-    internal sealed class NoticeHandler : MsgHandlerBase
+    public sealed class NoticeHandler : MsgHandlerBase
     {
         private new NoticeRequest _request => (NoticeRequest)base._request;
         private new NoticeResult _result

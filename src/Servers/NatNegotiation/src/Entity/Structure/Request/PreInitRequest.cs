@@ -5,7 +5,7 @@ using NatNegotiation.Entity.Enumerate;
 namespace NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.PreInit)]
-    internal sealed class PreInitRequest : RequestBase
+    public sealed class PreInitRequest : RequestBase
     {
         public int CLientIndex { get; private set; }
         public int State { get; private set; }

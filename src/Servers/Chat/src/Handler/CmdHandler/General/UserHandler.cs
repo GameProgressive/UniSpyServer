@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.General
 {
     [HandlerContract("USER")]
-    internal sealed class UserHandler : CmdHandlerBase
+    public sealed class UserHandler : CmdHandlerBase
     {
         private new UserRequest _request => (UserRequest)base._request;
         public UserHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

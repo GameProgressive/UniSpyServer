@@ -11,7 +11,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace Chat.Handler.CmdHandler.General
 {
     [HandlerContract("LOGIN")]
-    internal sealed class LoginHandler : CmdHandlerBase
+    public sealed class LoginHandler : CmdHandlerBase
     {
 
         private new LoginRequest _request => (LoginRequest)base._request;

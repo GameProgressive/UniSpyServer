@@ -6,7 +6,7 @@ using UniSpyLib.MiscMethod;
 namespace PresenceSearchPlayer.Entity.Structure.Request
 {
     [RequestContract("nicks")]
-    internal sealed class NicksRequest : RequestBase
+    public sealed class NicksRequest : RequestBase
     {
         public NicksRequest(string rawRequest) : base(rawRequest)
         {

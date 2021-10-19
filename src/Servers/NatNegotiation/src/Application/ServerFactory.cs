@@ -7,7 +7,7 @@ namespace NatNegotiation.Application
     /// <summary>
     /// A factory that creates instances of servers
     /// </summary>
-    internal sealed class ServerFactory : ServerFactoryBase
+    public sealed class ServerFactory : ServerFactoryBase
     {
         public new static Server Server
         {

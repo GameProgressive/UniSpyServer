@@ -12,7 +12,7 @@ using NatNegotiation.Entity.Enumerate;
 namespace NatNegotiation.Handler.CmdHandler
 {
     [HandlerContract(RequestType.Init)]
-    internal sealed class InitHandler : CmdHandlerBase
+    public sealed class InitHandler : CmdHandlerBase
     {
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result

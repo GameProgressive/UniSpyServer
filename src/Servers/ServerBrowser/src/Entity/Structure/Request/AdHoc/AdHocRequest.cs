@@ -6,7 +6,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {
-    internal sealed class AdHocRequest : RequestBase
+    public sealed class AdHocRequest : RequestBase
     {
         /// <summary>
         /// The game server client search for

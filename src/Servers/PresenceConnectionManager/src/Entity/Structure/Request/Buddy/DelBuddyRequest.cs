@@ -8,7 +8,7 @@ namespace PresenceConnectionManager.Entity.Structure.Request
     /// Delete a user from my friend list
     /// </summary>
     [RequestContract("delbuddy")]
-    internal sealed class DelBuddyRequest : RequestBase
+    public sealed class DelBuddyRequest : RequestBase
     {
         //\delbuddy\\sesskey\<>\delprofileid\<>\final\
         public uint DeleteProfileID { get; private set; }

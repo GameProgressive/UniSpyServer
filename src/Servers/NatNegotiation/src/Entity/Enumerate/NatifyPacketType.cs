@@ -1,6 +1,6 @@
 namespace NatNegotiation.Entity.Enumerate
 {
-    internal enum NatifyPacketType : byte
+    public enum NatifyPacketType : byte
     {
         PacketMap1a,
         PacketMap2,

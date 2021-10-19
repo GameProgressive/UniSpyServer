@@ -6,7 +6,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
 {
 
     [RequestContract("uniquesearch")]
-    internal sealed class UniqueSearchRequest : RequestBase
+    public sealed class UniqueSearchRequest : RequestBase
     {
         public string PreferredNick { get; private set; }
         public uint NamespaceID { get; private set; }

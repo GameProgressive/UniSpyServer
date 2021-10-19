@@ -11,7 +11,7 @@ using UniSpyLib.Extensions;
 namespace Chat.Handler.CmdHandler.General
 {
     [HandlerContract("CRYPT")]
-    internal sealed class CryptHandler : CmdHandlerBase
+    public sealed class CryptHandler : CmdHandlerBase
     {
         private new CryptRequest _request => (CryptRequest)base._request;
         private new CryptResult _result

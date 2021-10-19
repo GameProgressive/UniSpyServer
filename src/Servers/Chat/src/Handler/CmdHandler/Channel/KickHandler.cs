@@ -11,7 +11,7 @@ using UniSpyLib.Extensions;
 namespace Chat.Handler.CmdHandler.Channel
 {
     [HandlerContract("KICK")]
-    internal sealed class KickHandler : ChannelHandlerBase
+    public sealed class KickHandler : ChannelHandlerBase
     {
         private new KickRequest _request => (KickRequest)base._request;
         private new KickResponse _response

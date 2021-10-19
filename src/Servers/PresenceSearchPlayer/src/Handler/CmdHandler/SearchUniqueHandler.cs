@@ -15,7 +15,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
     /// Search with uniquenick and namespace
     /// </summary>
     [HandlerContract("searchunique")]
-    internal sealed class SearchUniqueHandler : CmdHandlerBase
+    public sealed class SearchUniqueHandler : CmdHandlerBase
     {
         private new SearchUniqueRequest _request => (SearchUniqueRequest)base._request;
         private new SearchUniqueResult _result

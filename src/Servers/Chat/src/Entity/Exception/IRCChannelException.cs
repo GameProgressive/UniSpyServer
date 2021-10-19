@@ -3,7 +3,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception
 {
-    internal class IRCChannelException : IRCException
+    public class IRCChannelException : IRCException
     {
         public string ChannelName { get; private set; }
         public override string ErrorResponse => IRCReplyBuilder.BuildChannelError(ErrorCode, ChannelName, Message);

@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("sdk")]
-    internal sealed class SDKRevisionHandler : CmdHandlerBase
+    public sealed class SDKRevisionHandler : CmdHandlerBase
     {
         private new LoginRequest _request => (LoginRequest)base._request;
         public SDKRevisionHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

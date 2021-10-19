@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace WebServer.Handler
 {
-    internal class CmdSwitcher : UniSpyCmdSwitcherBase
+    public class CmdSwitcher : UniSpyCmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
         public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)

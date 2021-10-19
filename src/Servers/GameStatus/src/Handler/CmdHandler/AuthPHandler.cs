@@ -18,7 +18,7 @@ namespace GameStatus.Handler.CmdHandler
     /// so we do not check response string
     /// </summary>
     [HandlerContract("authp")]
-    internal sealed class AuthPHandler : CmdHandlerBase
+    public sealed class AuthPHandler : CmdHandlerBase
     {
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
         private new AuthPResult _result { get => (AuthPResult)base._result; set => base._result = value; }

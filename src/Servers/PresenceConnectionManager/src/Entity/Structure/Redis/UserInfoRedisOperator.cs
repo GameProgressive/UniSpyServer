@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.BaseClass.Redis;
 
 namespace PresenceConnectionManager.Handler.SystemHandler.Redis
 {
-    internal sealed class UserInfoRedisOperator : UniSpyRedisOperator<UserInfoRedisKey, UserInfo>
+    public sealed class UserInfoRedisOperator : UniSpyRedisOperator<UserInfoRedisKey, UserInfo>
     {
     }
 }

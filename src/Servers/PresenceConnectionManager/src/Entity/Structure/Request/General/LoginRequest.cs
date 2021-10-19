@@ -6,7 +6,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     [RequestContract("login")]
-    internal sealed class LoginRequest : RequestBase
+    public sealed class LoginRequest : RequestBase
     {
         public string UserChallenge { get; private set; }
         public string Response { get; private set; }

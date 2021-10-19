@@ -13,7 +13,7 @@ namespace ServerBrowser.Handler.CmdHandler
     /// Get full rules for a server (for example, to get
     /// player information from a server that only has basic information so far)
     /// </summary>
-    internal sealed class ServerInfoHandler : CmdHandlerBase
+    public sealed class ServerInfoHandler : CmdHandlerBase
     {
         private new AdHocRequest _request => (AdHocRequest)base._request;
         private new ServerInfoResult _result

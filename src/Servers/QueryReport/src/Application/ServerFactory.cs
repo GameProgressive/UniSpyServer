@@ -7,7 +7,7 @@ namespace QueryReport.Application
     /// <summary>
     /// A factory that create the instance of servers
     /// </summary>
-    internal sealed class ServerFactory : ServerFactoryBase
+    public sealed class ServerFactory : ServerFactoryBase
     {
         public new static Server Server
         {

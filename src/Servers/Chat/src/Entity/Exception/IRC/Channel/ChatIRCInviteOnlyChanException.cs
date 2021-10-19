@@ -2,7 +2,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception.IRC.Channel
 {
-    internal sealed class ChatIRCInviteOnlyChanException : IRCChannelException
+    public sealed class ChatIRCInviteOnlyChanException : IRCChannelException
     {
         public ChatIRCInviteOnlyChanException()
         {

@@ -3,7 +3,7 @@ using QueryReport.Entity.Enumerate;
 
 namespace QueryReport.Entity.Structure.Result
 {
-    internal sealed class ClientMessageResult : ResultBase
+    public sealed class ClientMessageResult : ResultBase
     {
         public uint InstantKey { get; set; }
         public byte[] NatNegMessage { get; set; }

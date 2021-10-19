@@ -3,7 +3,7 @@ using UniSpyLib.Logging;
 
 namespace Chat.Abstraction.BaseClass
 {
-    internal abstract class LogedInHandlerBase : CmdHandlerBase
+    public abstract class LogedInHandlerBase : CmdHandlerBase
     {
         public LogedInHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

@@ -13,7 +13,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     [HandlerContract("check")]
-    internal sealed class CheckHandler : CmdHandlerBase
+    public sealed class CheckHandler : CmdHandlerBase
     {
         // \check\\nick\<nick>\email\<email>\partnerid\0\passenc\<passenc>\gamename\gmtest\final\
         //\cur\pid\<pid>\final

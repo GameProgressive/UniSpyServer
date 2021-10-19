@@ -13,7 +13,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace GameStatus.Handler.CmdHandler
 {
     [HandlerContract("getpd")]
-    internal sealed class GetPDHandler : CmdHandlerBase
+    public sealed class GetPDHandler : CmdHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
         private new GetPlayerDataRequest _request => (GetPlayerDataRequest)base._request;

@@ -20,7 +20,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     [HandlerContract("search")]
-    internal sealed class SearchHandler : CmdHandlerBase
+    public sealed class SearchHandler : CmdHandlerBase
     {
         private new SearchRequest _request => (SearchRequest)base._request;
 

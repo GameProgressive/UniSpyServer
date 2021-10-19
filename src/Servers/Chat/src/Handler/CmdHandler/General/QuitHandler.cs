@@ -10,7 +10,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.General
 {
     [HandlerContract("QUIT")]
-    internal sealed class QuitHandler : LogedInHandlerBase
+    public sealed class QuitHandler : LogedInHandlerBase
     {
         private new QuitRequest _request => (QuitRequest)base._request;
         private new QuitResult _result

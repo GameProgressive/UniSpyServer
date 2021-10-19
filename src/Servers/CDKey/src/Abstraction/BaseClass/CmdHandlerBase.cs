@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace CDKey.Abstraction.BaseClass
 {
-    internal abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;

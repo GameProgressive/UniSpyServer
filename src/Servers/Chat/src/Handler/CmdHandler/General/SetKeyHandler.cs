@@ -10,7 +10,7 @@ namespace Chat.Handler.CmdHandler.General
     /// set every channel key value on this user
     /// </summary>
     [HandlerContract("SETKEY")]
-    internal sealed class SetKeyHandler : LogedInHandlerBase
+    public sealed class SetKeyHandler : LogedInHandlerBase
     {
         private new SetKeyRequest _request => (SetKeyRequest)base._request;
         public SetKeyHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

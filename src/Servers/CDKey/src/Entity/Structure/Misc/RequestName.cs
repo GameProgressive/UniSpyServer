@@ -1,6 +1,6 @@
 ﻿namespace CDKey.Entity.Structure.Misc
 {
-    internal sealed class RequestName
+    public sealed class RequestName
     {
         /// <summary>
         /// Reauthenticate with server to determine whether a client is still online

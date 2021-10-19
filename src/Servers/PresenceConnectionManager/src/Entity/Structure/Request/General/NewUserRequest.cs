@@ -6,7 +6,7 @@ using UniSpyLib.MiscMethod;
 namespace PresenceConnectionManager.Entity.Structure.Request
 {
     [RequestContract("newuser")]
-    internal sealed class NewUserRequest : RequestBase
+    public sealed class NewUserRequest : RequestBase
     {
         public uint ProductID { get; private set; }
         public uint GamePort { get; private set; }

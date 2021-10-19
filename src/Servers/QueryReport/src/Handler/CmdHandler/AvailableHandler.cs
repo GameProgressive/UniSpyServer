@@ -11,7 +11,7 @@ namespace QueryReport.Handler.CmdHandler
     /// AvailableCheckHandler
     /// </summary>
     [HandlerContract(RequestType.AvaliableCheck)]
-    internal sealed class AvailableHandler : CmdHandlerBase
+    public sealed class AvailableHandler : CmdHandlerBase
     {
         private new AvaliableRequest _request => (AvaliableRequest)base._request;
         public AvailableHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

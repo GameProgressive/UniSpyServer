@@ -6,7 +6,7 @@ using UniSpyLib.Extensions;
 
 namespace QueryReport.Entity.Structure.Response
 {
-    internal sealed class HeartBeatResponse : ResponseBase
+    public sealed class HeartBeatResponse : ResponseBase
     {
         private new HeartBeatResult _result => (HeartBeatResult)base._result;
         private static readonly byte[] Challenge = { 0x54, 0x54, 0x54, 0x00, 0x00 };

@@ -2,7 +2,7 @@
 using UniSpyLib.Extensions;
 namespace ServerBrowser.Abstraction.BaseClass
 {
-    internal abstract class ServerListUpdateOptionHandlerBase : CmdHandlerBase
+    public abstract class ServerListUpdateOptionHandlerBase : CmdHandlerBase
     {
         protected new ServerListUpdateOptionRequestBase _request => (ServerListUpdateOptionRequestBase)base._request;
         protected new ServerListUpdateOptionResultBase _result

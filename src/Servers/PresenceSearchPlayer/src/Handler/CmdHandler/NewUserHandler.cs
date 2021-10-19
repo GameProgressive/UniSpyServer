@@ -14,7 +14,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     [HandlerContract("newuser")]
-    internal sealed class NewUserHandler : CmdHandlerBase
+    public sealed class NewUserHandler : CmdHandlerBase
     {
         private new NewUserRequest _request => (NewUserRequest)base._request;
 

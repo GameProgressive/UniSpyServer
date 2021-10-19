@@ -5,7 +5,7 @@ using UniSpyLib.MiscMethod;
 
 namespace GameStatus.Handler.CmdSwitcher
 {
-    internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
+    public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
         private new string _rawRequest => (string)base._rawRequest;
 

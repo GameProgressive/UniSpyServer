@@ -3,7 +3,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace Chat.Entity.Exception.IRC.General
 {
-    internal class IRCException : UniSpyException
+    public class IRCException : UniSpyException
     {
         public string ErrorCode { get; private set; }
         public virtual string ErrorResponse => IRCReplyBuilder.Build(ErrorCode);

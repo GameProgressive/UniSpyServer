@@ -3,7 +3,7 @@ using System;
 
 namespace PresenceConnectionManager.Structure.Data
 {
-    internal sealed class UserInfo
+    public sealed class UserInfo
     {
         public const ushort SessionKey = 1111;
         public const string LoginTicket = "0000000000000000000000__";

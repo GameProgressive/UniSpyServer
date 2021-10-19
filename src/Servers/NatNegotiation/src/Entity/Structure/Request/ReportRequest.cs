@@ -8,7 +8,7 @@ using UniSpyLib.Extensions;
 namespace NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.Report)]
-    internal sealed class ReportRequest : RequestBase
+    public sealed class ReportRequest : RequestBase
     {
         public NatPortType PortType { get; set; }
         public byte ClientIndex { get; set; }

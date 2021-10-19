@@ -1,6 +1,6 @@
 ﻿namespace CDKey.Handler.CmdHandler
 {
-    internal sealed class UONHandler
+    public sealed class UONHandler
     {
     }
 }

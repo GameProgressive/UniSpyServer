@@ -10,7 +10,7 @@ namespace ServerBrowser.Network
     /// This class emulates the master.gamespy.com TCP server on port 28910.
     /// This server is responisible for sending server lists to the online server browser in the game.
     /// </summary>
-    internal sealed class Server : UniSpyTcpServer
+    public sealed class Server : UniSpyTcpServer
     {
         public RedisChannelSubscriber RedisChannelSubscriber { get; private set; }
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)

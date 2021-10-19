@@ -11,7 +11,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceSearchPlayer.Handler.CmdHandler
 {
     [HandlerContract("valid")]
-    internal sealed class ValidHandler : CmdHandlerBase
+    public sealed class ValidHandler : CmdHandlerBase
     {
         private new ValidRequest _request => (ValidRequest)base._request;
         private new ValidResult _result

@@ -9,7 +9,7 @@ using UniSpyLib.Database.DatabaseModel.MySql;
 namespace PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("addblock")]
-    internal sealed class AddBlockHandler : Abstraction.BaseClass.CmdHandlerBase
+    public sealed class AddBlockHandler : Abstraction.BaseClass.CmdHandlerBase
     {
         private new AddBlockRequest _request => (AddBlockRequest)base._request;
         public AddBlockHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

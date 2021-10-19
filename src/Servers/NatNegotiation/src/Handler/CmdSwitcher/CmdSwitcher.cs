@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.Interface;
 
 namespace NatNegotiation.Handler.CmdSwitcher
 {
-    internal sealed class CmdSwitcher : UniSpyCmdSwitcherBase
+    public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {
         private new byte[] _rawRequest => (byte[])base._rawRequest;
         public CmdSwitcher(IUniSpySession session, object rawRequest) : base(session, rawRequest)

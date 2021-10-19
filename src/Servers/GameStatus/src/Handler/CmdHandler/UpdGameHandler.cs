@@ -9,7 +9,7 @@ namespace GameStatus.Handler.CmdHandler
     /// Handles game snapshot and update game data
     /// </summary>
     [HandlerContract("updgame")]
-    internal sealed class UpdGameHandler : CmdHandlerBase
+    public sealed class UpdGameHandler : CmdHandlerBase
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"

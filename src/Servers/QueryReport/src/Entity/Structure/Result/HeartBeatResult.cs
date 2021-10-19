@@ -5,7 +5,7 @@ using UniSpyLib.Extensions;
 
 namespace QueryReport.Entity.Structure.Result
 {
-    internal sealed class HeartBeatResult : ResultBase
+    public sealed class HeartBeatResult : ResultBase
     {
         public EndPoint RemoteEndPoint { private get; set; }
         public string RemoteIP => HtonsExtensions.EndPointToIP(RemoteEndPoint);

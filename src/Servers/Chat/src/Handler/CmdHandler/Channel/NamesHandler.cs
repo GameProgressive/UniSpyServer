@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Channel
 {
     [HandlerContract("NAMES")]
-    internal sealed class NamesHandler : ChannelHandlerBase
+    public sealed class NamesHandler : ChannelHandlerBase
     {
         private new NamesResult _result { get => (NamesResult)base._result; set => base._result = value; }
         public NamesHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)

@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal sealed class PCMDefaultResult : ResultBase
+    public sealed class PCMDefaultResult : ResultBase
     {
         public PCMDefaultResult()
         {

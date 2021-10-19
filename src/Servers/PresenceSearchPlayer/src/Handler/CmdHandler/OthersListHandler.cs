@@ -12,7 +12,7 @@ namespace PresenceSearchPlayer.Handler.CmdHandler
 {
 
     [HandlerContract("otherslist")]
-    internal sealed class OthersListHandler : CmdHandlerBase
+    public sealed class OthersListHandler : CmdHandlerBase
     {
         private new OthersListRequest _request => (OthersListRequest)base._request;
 

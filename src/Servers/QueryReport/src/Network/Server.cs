@@ -7,7 +7,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 namespace QueryReport.Network
 {
-    internal sealed class Server : UniSpyUdpServer
+    public sealed class Server : UniSpyUdpServer
     {
         public RedisChannelSubscriber RedisChannelSubscriber { get; private set; }
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)

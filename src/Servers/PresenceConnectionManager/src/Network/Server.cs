@@ -10,7 +10,7 @@ namespace PresenceConnectionManager.Network
     /// This server emulates the Gamespy Client Manager Server on port 29900.
     /// This class is responsible for managing the login process.
     /// </summary>
-    internal sealed class Server : UniSpyTcpServer
+    public sealed class Server : UniSpyTcpServer
     {
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
         {

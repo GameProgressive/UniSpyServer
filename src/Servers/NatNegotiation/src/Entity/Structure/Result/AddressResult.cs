@@ -3,7 +3,7 @@ using NatNegotiation.Entity.Enumerate;
 
 namespace NatNegotiation.Entity.Structure.Result
 {
-    internal sealed class AddressResult : InitResultBase
+    public sealed class AddressResult : InitResultBase
     {
         public AddressResult()
         {

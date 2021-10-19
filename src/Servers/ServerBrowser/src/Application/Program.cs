@@ -6,7 +6,7 @@ using UniSpyLib.Logging;
 
 namespace ServerBrowser.Application
 {
-    internal sealed class Program
+    public sealed class Program
     {
         static void Main(string[] args)
         {

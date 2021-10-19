@@ -6,7 +6,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace NatNegotiation.Entity.Structure.Response
 {
-    internal sealed class InitResponse : InitResponseBase
+    public sealed class InitResponse : InitResponseBase
     {
         private new InitRequest _request => (InitRequest)base._request;
         private new InitResult _result => (InitResult)base._result;

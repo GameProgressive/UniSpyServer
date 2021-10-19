@@ -7,7 +7,7 @@ using UniSpyLib.MiscMethod;
 
 namespace NatNegotiation.Entity.Structure.Request
 {
-    internal abstract class InitRequestBase : RequestBase
+    public abstract class InitRequestBase : RequestBase
     {
         public NatPortType PortType { get; protected set; }
         public byte ClientIndex { get; protected set; }

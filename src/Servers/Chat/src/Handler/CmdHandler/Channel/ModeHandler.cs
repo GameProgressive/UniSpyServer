@@ -11,7 +11,7 @@ namespace Chat.Handler.CmdHandler.Channel
     /// Get or set channel or user mode
     /// </summary>
     [HandlerContract("MODE")]
-    internal sealed class ModeHandler : ChannelHandlerBase
+    public sealed class ModeHandler : ChannelHandlerBase
     {
         private new ModeRequest _request => (ModeRequest)base._request;
         private new ModeResult _result

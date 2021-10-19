@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Abstraction.BaseClass
 {
-    internal abstract class ResultBase : UniSpyResultBase
+    public abstract class ResultBase : UniSpyResultBase
     {
         public ResultBase()
         {

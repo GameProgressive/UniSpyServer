@@ -2,21 +2,21 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Misc
 {
-    internal sealed class Constants
+    public sealed class Constants
     {
-        internal const string LocalIP0 = "localip0";
-        internal const string LocalIP1 = "localip1";
-        internal const string PrivatePort = "privateport";
-        internal const string HostPort = "hostport";
-        internal const string HostPortNumber = "6500";
+        public const string LocalIP0 = "localip0";
+        public const string LocalIP1 = "localip1";
+        public const string PrivatePort = "privateport";
+        public const string HostPort = "hostport";
+        public const string HostPortNumber = "6500";
         /// <summary>
         /// we are not gamespy,
         /// for simplicity we use hard coded challenge
         /// to reduce computation cost of our program
         /// </summary>
-        internal const string ServerChallenge = "0000000000";
-        internal const ushort QueryReportDefaultPort = 6500;
-        internal static byte[] HtonQueryReportDefaultPort
+        public const string ServerChallenge = "0000000000";
+        public const ushort QueryReportDefaultPort = 6500;
+        public static byte[] HtonQueryReportDefaultPort
         => ByteTools.GetBytes(Constants.QueryReportDefaultPort, true);
 
     }

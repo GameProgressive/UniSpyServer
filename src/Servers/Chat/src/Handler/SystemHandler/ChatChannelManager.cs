@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 
 namespace Chat.Handler.SystemHandler.ChannelManage
 {
-    internal sealed class ChatChannelManager
+    public sealed class ChatChannelManager
     {
         public static ConcurrentDictionary<string, Channel> Channels { get; private set; }
         static ChatChannelManager()

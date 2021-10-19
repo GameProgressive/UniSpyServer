@@ -5,7 +5,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    internal sealed class AddBuddyResponse : ResponseBase
+    public sealed class AddBuddyResponse : ResponseBase
     {
         private new AddBuddyResult _result => (AddBuddyResult)base._result;
         public AddBuddyResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)

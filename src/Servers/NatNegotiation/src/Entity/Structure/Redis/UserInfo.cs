@@ -5,7 +5,7 @@ using UniSpyLib.MiscMethod;
 
 namespace NatNegotiation.Entity.Structure.Redis
 {
-    internal sealed class UserInfo
+    public sealed class UserInfo
     {
         [Newtonsoft.Json.JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteEndPoint { get; set; }

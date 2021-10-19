@@ -2,7 +2,7 @@ using UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
 
 namespace WebServer.Network
 {
-    internal sealed class SessionManager : UniSpyHttpSessionManager
+    public sealed class SessionManager : UniSpyHttpSessionManager
     {
         public SessionManager()
         {

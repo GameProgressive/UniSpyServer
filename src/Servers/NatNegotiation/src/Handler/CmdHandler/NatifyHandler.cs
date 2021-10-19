@@ -9,7 +9,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace NatNegotiation.Handler.CmdHandler
 {
     [HandlerContract(RequestType.NatifyRequest)]
-    internal sealed class NatifyHandler : CmdHandlerBase
+    public sealed class NatifyHandler : CmdHandlerBase
     {
         private new NatifyRequest _request => (NatifyRequest)base._request;
         private new NatifyResult _result { get => (NatifyResult)base._result; set => base._result = value; }

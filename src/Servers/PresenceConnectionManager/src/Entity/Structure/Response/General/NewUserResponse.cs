@@ -4,7 +4,7 @@ using UniSpyLib.Abstraction.BaseClass;
 
 namespace PresenceConnectionManager.Entity.Structure.Response
 {
-    internal sealed class NewUserResponse : ResponseBase
+    public sealed class NewUserResponse : ResponseBase
     {
         private new NewUserResult _result => (NewUserResult)base._result;
         public NewUserResponse(RequestBase request, UniSpyResultBase result) : base(request, result)

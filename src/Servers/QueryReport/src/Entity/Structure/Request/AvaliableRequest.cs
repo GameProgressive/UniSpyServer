@@ -6,7 +6,7 @@ using QueryReport.Entity.Exception;
 namespace QueryReport.Entity.Structure.Request
 {
     [RequestContract(RequestType.AvaliableCheck)]
-    internal sealed class AvaliableRequest : RequestBase
+    public sealed class AvaliableRequest : RequestBase
     {
         public static readonly byte[] Prefix = { 0x09, 0x00, 0x00, 0x00, 0x00 };
         public static readonly byte Postfix = 0x00;

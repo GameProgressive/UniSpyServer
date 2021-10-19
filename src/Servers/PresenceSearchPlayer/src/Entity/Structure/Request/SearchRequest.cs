@@ -13,7 +13,7 @@ namespace PresenceSearchPlayer.Entity.Structure.Request
     }
 
     [RequestContract("search")]
-    internal sealed class SearchRequest : RequestBase
+    public sealed class SearchRequest : RequestBase
     {
         public int SkipNum { get; private set; }
         public SearchRequestType RequestType { get; private set; }

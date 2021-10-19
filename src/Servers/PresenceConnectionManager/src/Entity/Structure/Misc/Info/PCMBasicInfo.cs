@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Misc
 {
-    internal sealed class PCMBasicInfo
+    public sealed class PCMBasicInfo
     {
         public uint UserID { get; set; }
         public uint ProfileID { get; set; }

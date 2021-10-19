@@ -8,7 +8,7 @@ using UniSpyLib.Encryption;
 
 namespace ServerBrowser.Entity.Structure.Packet.Response
 {
-    internal sealed class ServerMainListResponse : ServerListUpdateOptionResponseBase
+    public sealed class ServerMainListResponse : ServerListUpdateOptionResponseBase
     {
         private new ServerListRequest _request => (ServerListRequest)base._request;
         private new ServerMainListResult _result => (ServerMainListResult)base._result;

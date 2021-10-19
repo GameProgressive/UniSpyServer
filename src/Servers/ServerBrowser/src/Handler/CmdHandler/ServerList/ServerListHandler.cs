@@ -11,7 +11,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace ServerBrowser.Handler.CmdHandler
 {
     [HandlerContract(RequestType.ServerListRequest)]
-    internal class ServerListHandler : ServerListUpdateOptionHandlerBase
+    public class ServerListHandler : ServerListUpdateOptionHandlerBase
     {
         public ServerListHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

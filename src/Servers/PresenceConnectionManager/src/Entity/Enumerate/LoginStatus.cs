@@ -1,6 +1,6 @@
 ﻿namespace PresenceConnectionManager.Entity.Enumerate
 {
-    internal enum LoginStatus
+    public enum LoginStatus
     {
         Connected,
         Processing,

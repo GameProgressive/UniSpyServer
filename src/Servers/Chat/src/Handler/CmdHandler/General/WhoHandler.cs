@@ -19,7 +19,7 @@ namespace Chat.Handler.CmdHandler.General
     /// same as WHOIS
     /// </summary>
     [HandlerContract("WHO")]
-    internal sealed class WhoHandler : LogedInHandlerBase
+    public sealed class WhoHandler : LogedInHandlerBase
     {
         private new WhoRequest _request => (WhoRequest)base._request;
         private new WhoResult _result

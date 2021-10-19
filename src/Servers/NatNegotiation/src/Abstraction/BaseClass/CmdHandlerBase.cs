@@ -10,7 +10,7 @@ namespace NatNegotiation.Abstraction.BaseClass
     /// because we are using self defined error code so we do not need
     /// to send it to client, when we detect errorCode != noerror we just log it
     /// </summary>
-    internal abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;

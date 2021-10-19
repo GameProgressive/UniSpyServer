@@ -5,7 +5,7 @@ using PresenceSearchPlayer.Entity.Exception.General;
 namespace PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("getprofile")]
-    internal sealed class GetProfileRequest : RequestBase
+    public sealed class GetProfileRequest : RequestBase
     {
         public uint ProfileID { get; private set; }
         public string SessionKey { get; private set; }

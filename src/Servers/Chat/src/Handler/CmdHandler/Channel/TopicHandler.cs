@@ -9,7 +9,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace Chat.Handler.CmdHandler.Channel
 {
     [HandlerContract("TOPIC")]
-    internal sealed class TopicHandler : ChannelHandlerBase
+    public sealed class TopicHandler : ChannelHandlerBase
     {
         private new TopicRequest _request => (TopicRequest)base._request;
         private new TopicResult _result

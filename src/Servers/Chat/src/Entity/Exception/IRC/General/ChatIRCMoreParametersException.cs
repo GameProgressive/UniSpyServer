@@ -2,7 +2,7 @@ using Chat.Entity.Structure.Misc;
 
 namespace Chat.Entity.Exception.IRC.General
 {
-    internal sealed class ChatIRCMoreParametersException : IRCException
+    public sealed class ChatIRCMoreParametersException : IRCException
     {
         public ChatIRCMoreParametersException()
         {

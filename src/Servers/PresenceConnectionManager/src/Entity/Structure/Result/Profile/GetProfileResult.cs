@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal sealed class GetProfileDataModel
+    public sealed class GetProfileDataModel
     {
         public string Nick;
         public uint ProfileID;
@@ -34,7 +34,7 @@ namespace PresenceConnectionManager.Entity.Structure.Result
         public int? Connectiontype;
 
     }
-    internal sealed class GetProfileResult : ResultBase
+    public sealed class GetProfileResult : ResultBase
     {
         public GetProfileDataModel UserProfile;
         public GetProfileResult()

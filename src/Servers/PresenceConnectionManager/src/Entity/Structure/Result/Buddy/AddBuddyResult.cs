@@ -2,7 +2,7 @@
 
 namespace PresenceConnectionManager.Entity.Structure.Result
 {
-    internal sealed class AddBuddyResult : ResultBase
+    public sealed class AddBuddyResult : ResultBase
     {
         public AddBuddyResult()
         {

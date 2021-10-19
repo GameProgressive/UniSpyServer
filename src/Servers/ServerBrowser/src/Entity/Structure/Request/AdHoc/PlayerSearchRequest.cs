@@ -5,7 +5,7 @@ using UniSpyLib.Extensions;
 
 namespace ServerBrowser.Entity.Structure.Request
 {
-    internal sealed class PlayerSearchRequest : RequestBase
+    public sealed class PlayerSearchRequest : RequestBase
     {
         public int SearchOption { get; private set; }
         public new int CommandName => SearchOption;

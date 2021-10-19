@@ -4,7 +4,7 @@ using UniSpyLib.Extensions;
 
 namespace PresenceConnectionManager.Structure
 {
-    internal sealed class LoginChallengeProof
+    public sealed class LoginChallengeProof
     {
         public const string ServerChallenge = "0000000000";
         public string UserData { get; private set; }

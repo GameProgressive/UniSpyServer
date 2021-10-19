@@ -10,7 +10,7 @@ using UniSpyLib.Abstraction.Interface;
 namespace QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.KeepAlive)]
-    internal sealed class KeepAliveHandler : CmdHandlerBase
+    public sealed class KeepAliveHandler : CmdHandlerBase
     {
         public KeepAliveHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {

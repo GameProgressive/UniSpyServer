@@ -16,7 +16,7 @@ namespace NatNegotiation.Handler.CmdHandler
     /// Get nat neg result report success or fail
     /// </summary>
     [HandlerContract(RequestType.Report)]
-    internal sealed class ReportHandler : CmdHandlerBase
+    public sealed class ReportHandler : CmdHandlerBase
     {
         private new ReportRequest _request => (ReportRequest)base._request;
         private new ReportResult _result

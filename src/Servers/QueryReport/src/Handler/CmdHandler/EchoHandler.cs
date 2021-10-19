@@ -12,7 +12,7 @@ using UniSpyLib.Logging;
 namespace QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.Echo)]
-    internal sealed class EchoHandler : CmdHandlerBase
+    public sealed class EchoHandler : CmdHandlerBase
     {
         private new EchoRequest _request => (EchoRequest)base._request;
         private new EchoResult _result { get => (EchoResult)base._result; set => base._result = value; }
