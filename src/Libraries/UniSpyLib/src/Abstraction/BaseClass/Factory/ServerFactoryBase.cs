@@ -43,7 +43,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
         public static IUniSpyServer Server { get; protected set; }
         public ServerFactoryBase()
         {
-            Console.Title = "UniSpyServer " + Version;
+            Console.Title = $"UniSpyServer  {Version} - {ServerName}";
         }
 
         public virtual void Start()
@@ -90,7 +90,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
             {
                 throw new Exception("Can not connect to Redis", e);
             }
-            Console.WriteLine($"Successfully connected to Redis!");
+            Console.WriteLine($"Successfully connected to Redis at {redisConfig.RemoteAddress}:{redisConfig.RemotePort}");
         }
         protected void ConnectMySql()
         {
@@ -121,7 +121,7 @@ namespace UniSpyLib.Abstraction.BaseClass.Factory
                 throw new Exception($"Can not connect to {dbConfig.Type}!", e);
             }
 
-            Console.WriteLine($"Successfully connected to {dbConfig.Type}!");
+            Console.WriteLine($"Successfully connected to {dbConfig.Type} at {dbConfig.RemoteAddress}:{dbConfig.RemotePort}");
         }
         protected static void ShowUniSpyLogo()
         {
