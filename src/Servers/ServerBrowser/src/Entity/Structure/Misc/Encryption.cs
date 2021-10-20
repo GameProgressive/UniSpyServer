@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using UniSpyLib.Encryption;
-using ServerBrowser.Entity.Structure.Misc;
-namespace ServerBrowser.Entity.Structure.Misc
+using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.ServerBrowser.Entity.Structure.Misc;
+namespace UniSpyServer.ServerBrowser.Entity.Structure.Misc
 {
     public class EncryptionParameters
     {

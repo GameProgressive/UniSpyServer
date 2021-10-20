@@ -1,9 +1,9 @@
-﻿using NatNegotiation.Handler.CmdSwitcher;
+﻿using UniSpyServer.NatNegotiation.Handler.CmdSwitcher;
 using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
-namespace NatNegotiation.Network
+namespace UniSpyServer.NatNegotiation.Network
 {
     public sealed class Server : UniSpyUdpServer
     {

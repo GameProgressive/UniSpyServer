@@ -1,16 +1,16 @@
-﻿using NatNegotiation.Abstraction.BaseClass;
-using NatNegotiation.Application;
-using NatNegotiation.Entity.Enumerate;
-using NatNegotiation.Entity.Exception;
-using NatNegotiation.Entity.Structure.Redis;
-using NatNegotiation.Entity.Structure.Request;
-using NatNegotiation.Entity.Structure.Response;
-using NatNegotiation.Entity.Structure.Result;
+﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.NatNegotiation.Application;
+using UniSpyServer.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.NatNegotiation.Entity.Exception;
+using UniSpyServer.NatNegotiation.Entity.Structure.Redis;
+using UniSpyServer.NatNegotiation.Entity.Structure.Request;
+using UniSpyServer.NatNegotiation.Entity.Structure.Response;
+using UniSpyServer.NatNegotiation.Entity.Structure.Result;
 using System;
-using UniSpyLib.Abstraction.Interface;
-using NatNegotiation.Entity.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.NatNegotiation.Entity.Contract;
 
-namespace NatNegotiation.Handler.CmdHandler
+namespace UniSpyServer.NatNegotiation.Handler.CmdHandler
 {
     /// <summary>
     /// Get nat neg result report success or fail

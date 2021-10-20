@@ -3,11 +3,11 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Encryption;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server
 {
     /// <summary>
     /// This is a template class that helps creating a TCP Session (formerly TCP stream)

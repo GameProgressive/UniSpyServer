@@ -1,11 +1,11 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
-using Chat.Entity.Structure.Request;
-using Chat.Entity.Structure.Response.Message;
-using Chat.Entity.Structure.Result.Message;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
+using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Response.Message;
+using UniSpyServer.Chat.Entity.Structure.Result.Message;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.Message
+namespace UniSpyServer.Chat.Handler.CmdHandler.Message
 {
     [HandlerContract("NOTICE")]
     public sealed class NoticeHandler : MsgHandlerBase

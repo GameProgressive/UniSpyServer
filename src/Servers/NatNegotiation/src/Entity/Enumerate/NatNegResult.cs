@@ -1,4 +1,4 @@
-namespace NatNegotiation.Entity.Enumerate
+namespace UniSpyServer.NatNegotiation.Entity.Enumerate
 {
     public enum NatNegResult
     {

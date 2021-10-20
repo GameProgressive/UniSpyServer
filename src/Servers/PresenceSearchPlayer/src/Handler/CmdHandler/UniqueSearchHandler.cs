@@ -1,15 +1,15 @@
-﻿using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Contract;
-using PresenceSearchPlayer.Entity.Exception.General;
-using PresenceSearchPlayer.Entity.Structure.Request;
-using PresenceSearchPlayer.Entity.Structure.Response;
-using PresenceSearchPlayer.Entity.Structure.Result;
+﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.PresenceSearchPlayer.Entity.Contract;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Request;
+using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Response;
+using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace PresenceSearchPlayer.Handler.CmdHandler
+namespace UniSpyServer.PresenceSearchPlayer.Handler.CmdHandler
 {
     [HandlerContract("uniquesearch")]
     public sealed class UniqueSearchHandler : CmdHandlerBase

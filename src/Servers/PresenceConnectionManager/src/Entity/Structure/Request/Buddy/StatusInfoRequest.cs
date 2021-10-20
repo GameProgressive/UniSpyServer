@@ -1,9 +1,9 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Contract;
-using PresenceConnectionManager.Entity.Structure.Misc;
-using PresenceSearchPlayer.Entity.Exception.General;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Misc;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace PresenceConnectionManager.Entity.Structure.Request
+namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Request
 {
     /// <summary>
     /// Update a user's status information

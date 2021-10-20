@@ -1,6 +1,6 @@
-﻿using GameStatus.Abstraction.BaseClass;
+﻿using UniSpyServer.GameStatus.Abstraction.BaseClass;
 
-namespace GameStatus.Entity.Structure.Result
+namespace UniSpyServer.GameStatus.Entity.Structure.Result
 {
     public sealed class AuthPResult : ResultBase
     {

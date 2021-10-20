@@ -1,10 +1,10 @@
-﻿using GameStatus.Entity.Exception;
+﻿using UniSpyServer.GameStatus.Entity.Exception;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.MiscMethod;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace GameStatus.Abstraction.BaseClass
+namespace UniSpyServer.GameStatus.Abstraction.BaseClass
 {
     public abstract class RequestBase : UniSpyRequestBase
     {

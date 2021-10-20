@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using QueryReport.Handler.CmdSwitcher;
-using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.QueryReport.Handler.CmdSwitcher;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
-namespace QueryReport.Network
+namespace UniSpyServer.QueryReport.Network
 {
     public sealed class Session : UniSpyUdpSession
     {

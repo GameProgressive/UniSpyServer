@@ -1,11 +1,11 @@
 ﻿using System;
-using Chat.Entity.Exception.IRC.General;
-using Chat.Entity.Structure.Response;
-using Chat.Network;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Chat.Entity.Structure.Response;
+using UniSpyServer.Chat.Network;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Abstraction.BaseClass
+namespace UniSpyServer.Chat.Abstraction.BaseClass
 {
     /// <summary>
     /// error code condition is complicated
@@ -17,7 +17,7 @@ namespace Chat.Abstraction.BaseClass
     /// if error code bigger than noerror we need to process it in ConstructResponse()
     ///we also need to check the error code != noerror in ConstructResponse()
     /// </summary>
-    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;

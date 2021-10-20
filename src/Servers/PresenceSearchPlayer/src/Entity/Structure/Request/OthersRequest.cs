@@ -1,8 +1,8 @@
-﻿using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Contract;
-using PresenceSearchPlayer.Entity.Exception.General;
+﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.PresenceSearchPlayer.Entity.Contract;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace PresenceSearchPlayer.Entity.Structure.Request
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure.Request
 {
     [RequestContract("others")]
     public sealed class OthersRequest : RequestBase

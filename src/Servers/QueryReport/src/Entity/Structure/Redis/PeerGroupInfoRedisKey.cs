@@ -1,14 +1,14 @@
-﻿using UniSpyLib.Abstraction.BaseClass.Redis;
-using UniSpyLib.Extensions;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.QueryReport.Entity.Structure.Redis
 {
     public class PeerGroupInfoRedisKey : UniSpyRedisKey
     {
         public string GameName { get; set; }
         public PeerGroupInfoRedisKey()
         {
-            Db = UniSpyLib.Extensions.DbNumber.PeerGroup;
+            Db = UniSpyServer.UniSpyLib.Extensions.DbNumber.PeerGroup;
         }
     }
 }

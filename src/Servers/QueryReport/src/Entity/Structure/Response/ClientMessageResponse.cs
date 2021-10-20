@@ -1,11 +1,11 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Structure.Request;
-using QueryReport.Entity.Structure.Result;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.Structure.Request;
+using UniSpyServer.QueryReport.Entity.Structure.Result;
 using System;
 using System.Collections.Generic;
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace QueryReport.Entity.Structure.Response
+namespace UniSpyServer.QueryReport.Entity.Structure.Response
 {
     public sealed class ClientMessageResponse : ResponseBase
     {

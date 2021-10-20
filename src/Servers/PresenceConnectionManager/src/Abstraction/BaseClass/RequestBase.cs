@@ -1,11 +1,11 @@
-﻿using PresenceSearchPlayer.Entity.Exception.General;
+﻿using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
-using UniSpyLib.MiscMethod;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass
+namespace UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass
 {
     public abstract class RequestBase : UniSpyRequestBase
     {

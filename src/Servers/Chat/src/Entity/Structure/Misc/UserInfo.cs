@@ -1,8 +1,8 @@
-﻿using Chat.Entity.Structure.Misc.ChannelInfo;
-using Chat.Network;
+﻿using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
+using UniSpyServer.Chat.Network;
 using System.Collections.Concurrent;
 using System.Linq;
-namespace Chat.Entity.Structure.Misc
+namespace UniSpyServer.Chat.Entity.Structure.Misc
 {
     public sealed class UserInfo
     {

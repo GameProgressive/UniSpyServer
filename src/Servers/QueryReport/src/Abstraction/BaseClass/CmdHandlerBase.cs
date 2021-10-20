@@ -1,12 +1,12 @@
-﻿using QueryReport.Entity.Structure.Response;
-using QueryReport.Entity.Structure.Result;
-using QueryReport.Network;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.QueryReport.Entity.Structure.Response;
+using UniSpyServer.QueryReport.Entity.Structure.Result;
+using UniSpyServer.QueryReport.Network;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace QueryReport.Abstraction.BaseClass
+namespace UniSpyServer.QueryReport.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;

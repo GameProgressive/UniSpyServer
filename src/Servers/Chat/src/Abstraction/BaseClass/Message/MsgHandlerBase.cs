@@ -1,10 +1,10 @@
-﻿using Chat.Abstraction.BaseClass.Message;
-using Chat.Entity.Exception;
-using Chat.Entity.Exception.IRC.General;
-using Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass.Message;
+using UniSpyServer.Chat.Entity.Exception;
+using UniSpyServer.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Abstraction.BaseClass
+namespace UniSpyServer.Chat.Abstraction.BaseClass
 {
     public abstract class MsgHandlerBase : ChannelHandlerBase
     {

@@ -1,7 +1,7 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Entity.Structure.Response
+namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Response
 {
     public sealed class RegisterNickResponse : ResponseBase
     {

@@ -1,13 +1,13 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.contract;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Exception;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.contract;
+using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.QueryReport.Entity.Exception;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Encryption;
 
-namespace QueryReport.Entity.Structure.Request
+namespace UniSpyServer.QueryReport.Entity.Structure.Request
 {
     [RequestContract(RequestType.HeartBeat)]
     public sealed class HeartBeatRequest : RequestBase

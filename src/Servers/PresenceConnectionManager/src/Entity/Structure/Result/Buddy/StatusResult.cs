@@ -1,7 +1,7 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Structure.Misc;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Misc;
 
-namespace PresenceConnectionManager.Entity.Structure.Result
+namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Result
 {
     public sealed class StatusResult : ResultBase
     {

@@ -1,9 +1,9 @@
-﻿using Chat.Entity.Structure.Misc;
-using Chat.Entity.Structure.Request.General;
-using Chat.Handler.CmdHandler.General;
-using Chat.Handler.CommandSwitcher;
-using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
-namespace Chat.Network
+﻿using UniSpyServer.Chat.Entity.Structure.Misc;
+using UniSpyServer.Chat.Entity.Structure.Request.General;
+using UniSpyServer.Chat.Handler.CmdHandler.General;
+using UniSpyServer.Chat.Handler.CommandSwitcher;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
+namespace UniSpyServer.Chat.Network
 {
     public sealed class Session : UniSpyTcpSession
     {

@@ -1,7 +1,7 @@
 ﻿using System;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace NatNegotiation.Application
+namespace UniSpyServer.NatNegotiation.Application
 {
     public class Program
     {

@@ -1,7 +1,7 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.Enumerate;
 
-namespace QueryReport.Entity.Structure.Result
+namespace UniSpyServer.QueryReport.Entity.Structure.Result
 {
     public sealed class ClientMessageResult : ResultBase
     {

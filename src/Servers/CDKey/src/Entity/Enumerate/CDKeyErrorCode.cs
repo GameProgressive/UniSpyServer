@@ -1,4 +1,4 @@
-﻿namespace CDKey.Entity.Enumerate
+﻿namespace UniSpyServer.CDkey.Entity.Enumerate
 {
     public enum CDKeyErrorCode
     {

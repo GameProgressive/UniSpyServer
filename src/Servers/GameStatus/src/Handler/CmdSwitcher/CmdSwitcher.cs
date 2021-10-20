@@ -1,9 +1,9 @@
 ﻿using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.MiscMethod;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace GameStatus.Handler.CmdSwitcher
+namespace UniSpyServer.GameStatus.Handler.CmdSwitcher
 {
     public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {

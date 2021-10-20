@@ -1,9 +1,9 @@
-﻿using ServerBrowser.Abstraction.BaseClass;
+﻿using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
 using System;
-using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace ServerBrowser.Entity.Structure.Request
+namespace UniSpyServer.ServerBrowser.Entity.Structure.Request
 {
     public sealed class PlayerSearchRequest : RequestBase
     {

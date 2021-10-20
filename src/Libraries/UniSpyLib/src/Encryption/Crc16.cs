@@ -1,4 +1,4 @@
-﻿namespace UniSpyLib.Encryption
+﻿namespace UniSpyServer.UniSpyLib.Encryption
 {
     public enum Crc16Mode : ushort
     {

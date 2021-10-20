@@ -1,4 +1,4 @@
-﻿namespace PresenceConnectionManager.Entity.Enumerate
+﻿namespace UniSpyServer.PresenceConnectionManager.Entity.Enumerate
 {
     /// <summary>
     /// This enumerator contains the masks used to hide certain informations.

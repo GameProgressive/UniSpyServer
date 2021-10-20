@@ -1,4 +1,4 @@
-﻿namespace QueryReport.Handler.SystemHandler.Encryption
+﻿namespace UniSpyServer.QueryReport.Handler.SystemHandler.Encryption
 {
     public class Encryption
     {

@@ -1,7 +1,7 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace PresenceConnectionManager.Abstraction.SystemHandler.Buddy
+namespace UniSpyServer.PresenceConnectionManager.Abstraction.SystemHandler.Buddy
 {
     public sealed class BuddyStatusInfoHandler : CmdHandlerBase
     {

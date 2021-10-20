@@ -1,8 +1,8 @@
 ﻿using System.Xml.Serialization;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyLib.Abstraction.BaseClass
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyRequestBase : IUniSpyRequest
     {

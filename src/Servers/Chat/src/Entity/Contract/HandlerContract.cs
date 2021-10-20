@@ -1,6 +1,6 @@
-using UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace Chat.Entity.Contract
+namespace UniSpyServer.Chat.Entity.Contract
 {
     public class HandlerContract : HandlerContractBase
     {

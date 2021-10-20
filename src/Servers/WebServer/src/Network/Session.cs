@@ -1,12 +1,12 @@
 using System;
 using NetCoreServer;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
-using UniSpyLib.Logging;
-using WebServer.Entity.Constant;
-using WebServer.Handler;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
+using UniSpyServer.UniSpyLib.Logging;
+using UniSpyServer.WebServer.Entity.Constant;
+using UniSpyServer.WebServer.Handler;
 
-namespace WebServer.Network
+namespace UniSpyServer.WebServer.Network
 {
     public sealed class Session : UniSpyHttpSession
     {

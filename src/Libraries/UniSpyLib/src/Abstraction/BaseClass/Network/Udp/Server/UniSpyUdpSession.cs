@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Encryption;
 
-namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
     /// <summary>
     /// A remote endpoint wrapper for UDP server which unifies the interface for <see cref="IUniSpySession"/>

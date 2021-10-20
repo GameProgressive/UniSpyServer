@@ -1,10 +1,10 @@
-﻿using GameStatus.Abstraction.BaseClass;
-using GameStatus.Entity.Contract;
-using GameStatus.Entity.Structure.Response;
-using GameStatus.Entity.Structure.Result;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.GameStatus.Abstraction.BaseClass;
+using UniSpyServer.GameStatus.Entity.Contract;
+using UniSpyServer.GameStatus.Entity.Structure.Response;
+using UniSpyServer.GameStatus.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace GameStatus.Handler.CmdHandler
+namespace UniSpyServer.GameStatus.Handler.CmdHandler
 {
     [HandlerContract("newgame")]
 

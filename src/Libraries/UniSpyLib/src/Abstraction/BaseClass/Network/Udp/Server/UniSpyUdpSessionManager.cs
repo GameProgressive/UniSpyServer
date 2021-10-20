@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Timers;
-using UniSpyLib.Logging;
-using UniSpyLib.Network;
+using UniSpyServer.UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Network;
 
-namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server
 {
     public abstract class UniSpyUdpSessionManager : UniSpySessionManager
     {

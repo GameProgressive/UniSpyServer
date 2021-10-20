@@ -1,6 +1,6 @@
-using Chat.Entity.Structure.Misc;
+using UniSpyServer.Chat.Entity.Structure.Misc;
 
-namespace Chat.Entity.Exception.IRC.Channel
+namespace UniSpyServer.Chat.Entity.Exception.IRC.Channel
 {
     public sealed class ChatIRCBadChannelKeyException : IRCChannelException
     {

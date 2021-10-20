@@ -1,4 +1,4 @@
-﻿namespace GameStatus.Entity.Enumerate
+﻿namespace UniSpyServer.GameStatus.Entity.Enumerate
 {
     /// <summary>
     /// In gamespy protocol there are no error response message

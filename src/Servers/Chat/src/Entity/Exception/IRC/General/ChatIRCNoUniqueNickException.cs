@@ -1,6 +1,6 @@
-using Chat.Entity.Structure.Misc;
+using UniSpyServer.Chat.Entity.Structure.Misc;
 
-namespace Chat.Entity.Exception.IRC.General
+namespace UniSpyServer.Chat.Entity.Exception.IRC.General
 {
     public sealed class ChatIRCNoUniqueNickException : IRCException
     {

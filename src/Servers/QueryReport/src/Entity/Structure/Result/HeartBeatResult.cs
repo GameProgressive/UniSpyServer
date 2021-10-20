@@ -1,9 +1,9 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.Enumerate;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.Enumerate;
 using System.Net;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace QueryReport.Entity.Structure.Result
+namespace UniSpyServer.QueryReport.Entity.Structure.Result
 {
     public sealed class HeartBeatResult : ResultBase
     {

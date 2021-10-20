@@ -1,8 +1,8 @@
 ﻿using NetCoreServer;
 using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
-namespace PresenceSearchPlayer.Network
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
+namespace UniSpyServer.PresenceSearchPlayer.Network
 {
     public sealed class Server : UniSpyTcpServer
     {

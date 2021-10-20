@@ -1,16 +1,16 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Application;
-using QueryReport.Entity.contract;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Structure.Redis;
-using QueryReport.Entity.Structure.Request;
-using QueryReport.Entity.Structure.Response;
-using QueryReport.Entity.Structure.Result;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Application;
+using UniSpyServer.QueryReport.Entity.contract;
+using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.QueryReport.Entity.Structure.Request;
+using UniSpyServer.QueryReport.Entity.Structure.Response;
+using UniSpyServer.QueryReport.Entity.Structure.Result;
 using System;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace QueryReport.Handler.CmdHandler
+namespace UniSpyServer.QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.HeartBeat)]
     public sealed class HeartBeatHandler : CmdHandlerBase

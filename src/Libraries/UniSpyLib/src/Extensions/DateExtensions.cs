@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UniSpyLib.Encryption
+namespace UniSpyServer.UniSpyLib.Encryption
 {
     public static class DateExtensions
     {

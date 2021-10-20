@@ -1,7 +1,7 @@
 ﻿using System;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace WebServer.Application
+namespace UniSpyServer.WebServer.Application
 {
     public class Program
     {

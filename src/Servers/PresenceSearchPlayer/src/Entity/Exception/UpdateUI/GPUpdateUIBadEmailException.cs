@@ -1,6 +1,6 @@
-using PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
 
-namespace PresenceSearchPlayer.Entity.Exception.UpdateUI
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.UpdateUI
 {
     public class GPUpdateUIBadEmailException : GPUpdateUIException
     {

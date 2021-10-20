@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Net;
 using Serilog.Events;
-using UniSpyLib.Database;
+using UniSpyServer.UniSpyLib.Database;
 
-namespace UniSpyLib.Config
+namespace UniSpyServer.UniSpyLib.Config
 {
     public class UniSpyConfig
     {

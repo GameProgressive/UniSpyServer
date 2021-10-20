@@ -1,7 +1,7 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace PresenceConnectionManager.Entity.Structure.Result
+namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Result
 {
     public sealed class BuddyListResult : ResultBase
     {

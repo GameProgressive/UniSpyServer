@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using UniSpyLib.Database.DatabaseModel.MySql;
-namespace UniSpyLib.Extensions
+using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
+namespace UniSpyServer.UniSpyLib.Extensions
 {
     public class DataOperationExtensions
     {

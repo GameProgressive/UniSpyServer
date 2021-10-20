@@ -1,12 +1,12 @@
-using QueryReport.Entity.Structure.Redis;
-using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure.Misc;
+using UniSpyServer.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.ServerBrowser.Entity.Structure.Misc;
 using System.Collections.Generic;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace ServerBrowser.Abstraction.BaseClass
+namespace UniSpyServer.ServerBrowser.Abstraction.BaseClass
 {
     public abstract class ServerListUpdateOptionResponseBase : ResponseBase
     {

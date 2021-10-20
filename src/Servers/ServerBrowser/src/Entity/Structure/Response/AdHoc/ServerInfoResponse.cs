@@ -1,12 +1,12 @@
-using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Enumerate;
-using ServerBrowser.Entity.Structure.Misc;
-using ServerBrowser.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
+using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.ServerBrowser.Entity.Structure.Misc;
+using UniSpyServer.ServerBrowser.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace ServerBrowser.Entity.Structure.Response
+namespace UniSpyServer.ServerBrowser.Entity.Structure.Response
 {
     /// <summary>
     /// Get a server's information

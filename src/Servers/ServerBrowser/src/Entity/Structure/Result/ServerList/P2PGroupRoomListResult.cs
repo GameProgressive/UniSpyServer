@@ -1,7 +1,7 @@
-﻿using QueryReport.Entity.Structure.Redis;
-using ServerBrowser.Abstraction.BaseClass;
+﻿using UniSpyServer.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
 
-namespace ServerBrowser.Entity.Structure.Result
+namespace UniSpyServer.ServerBrowser.Entity.Structure.Result
 {
     public sealed class P2PGroupRoomListResult : ServerListUpdateOptionResultBase
     {

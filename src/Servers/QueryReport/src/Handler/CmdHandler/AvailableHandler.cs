@@ -1,11 +1,11 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.contract;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Structure.Request;
-using QueryReport.Entity.Structure.Response;
-using QueryReport.Entity.Structure.Result;
-using UniSpyLib.Abstraction.Interface;
-namespace QueryReport.Handler.CmdHandler
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.contract;
+using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.QueryReport.Entity.Structure.Request;
+using UniSpyServer.QueryReport.Entity.Structure.Response;
+using UniSpyServer.QueryReport.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+namespace UniSpyServer.QueryReport.Handler.CmdHandler
 {
     /// <summary>
     /// AvailableCheckHandler

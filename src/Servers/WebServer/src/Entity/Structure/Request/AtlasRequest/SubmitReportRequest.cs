@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using WebServer.Abstraction;
-using WebServer.Entity.Contract;
+using UniSpyServer.WebServer.Abstraction;
+using UniSpyServer.WebServer.Entity.Contract;
 
-namespace WebServer.Entity.Structure.Request.AtlasRequest
+namespace UniSpyServer.WebServer.Entity.Structure.Request.AtlasRequest
 {
     [RequestContract("SubmitReport")]
     public class SubmitReportRequest : RequestBase

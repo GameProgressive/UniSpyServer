@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyLib.Abstraction.BaseClass.Redis
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
 {
     public abstract class UniSpyRedisKey
     {

@@ -1,4 +1,4 @@
-﻿namespace PresenceSearchPlayer.Entity.Enumerate
+﻿namespace UniSpyServer.PresenceSearchPlayer.Entity.Enumerate
 {
     public enum GPErrorCode : uint
     {
@@ -117,7 +117,7 @@
         RegisterUniquenickReserved,
         RegisterUniquenickBadNamespace,
 
-        // Register cdkey.
+        // Register UniSpyServer.CDkey.
         //////////////////
         RegisterCDKey = 0x1100,
         RegisterCDKeyBadKey,

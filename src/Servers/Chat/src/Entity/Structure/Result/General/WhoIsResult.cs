@@ -1,7 +1,7 @@
-﻿using Chat.Abstraction.BaseClass;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace Chat.Entity.Structure.Result.General
+namespace UniSpyServer.Chat.Entity.Structure.Result.General
 {
     public sealed class WhoIsResult : ResultBase
     {

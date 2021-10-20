@@ -1,8 +1,8 @@
-﻿using ServerBrowser.Entity.Enumerate;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
+﻿using UniSpyServer.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace ServerBrowser.Abstraction.BaseClass
+namespace UniSpyServer.ServerBrowser.Abstraction.BaseClass
 {
     public abstract class RequestBase : UniSpyRequestBase
     {

@@ -1,4 +1,4 @@
-﻿namespace Chat.Entity.Structure.Enumerate.Request
+﻿namespace UniSpyServer.Chat.Entity.Structure.Enumerate.Request
 {
     public enum ChatRequestType
     {

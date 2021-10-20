@@ -1,6 +1,6 @@
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace GameStatus.Entity.Exception
+namespace UniSpyServer.GameStatus.Entity.Exception
 {
     public class GSException : UniSpyException
     {

@@ -1,8 +1,8 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
 using System.Collections.Generic;
 
-namespace Chat.Entity.Structure.Result.Channel
+namespace UniSpyServer.Chat.Entity.Structure.Result.Channel
 {
     public sealed class GETCKEYDataModel
     {

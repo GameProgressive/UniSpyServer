@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ServerBrowser.Entity.Structure.Packet.Response
+namespace UniSpyServer.ServerBrowser.Entity.Structure.Packet.Response
 {
     public class AdHocResponse
     {

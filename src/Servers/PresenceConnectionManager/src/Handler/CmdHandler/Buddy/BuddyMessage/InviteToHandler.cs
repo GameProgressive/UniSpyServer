@@ -1,11 +1,11 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Application;
-using PresenceConnectionManager.Entity.Structure.Request;
-using PresenceConnectionManager.Network;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Application;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.PresenceConnectionManager.Network;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
 {
     /// <summary>
     /// This function sets which games the local profile can be invited to.

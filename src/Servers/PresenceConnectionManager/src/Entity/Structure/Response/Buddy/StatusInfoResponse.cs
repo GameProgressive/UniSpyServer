@@ -1,8 +1,8 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Structure.Result.Buddy;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Result.Buddy;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Entity.Structure.Response.Buddy
+namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Response.Buddy
 {
     public sealed class StatusInfoResponse : ResponseBase
     {

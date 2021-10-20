@@ -1,7 +1,7 @@
-using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
 
-namespace GameStatus.Network
+namespace UniSpyServer.GameStatus.Network
 {
     public sealed class SessionManager : UniSpyTcpSessionManager
     {

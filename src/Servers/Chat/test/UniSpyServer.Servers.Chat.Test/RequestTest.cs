@@ -1,10 +1,8 @@
 using System;
-using System.Linq;
-using Chat.Entity.Contract;
-using Chat.Entity.Structure.Request.General;
+using UniSpyServer.Chat.Entity.Structure.Request.General;
 using Xunit;
 
-namespace UniSpyServer.Servers.Chat.Test
+namespace UniSpyServer.Servers.UniSpyServer.Chat.Test
 {
     public class RequestTest
     {

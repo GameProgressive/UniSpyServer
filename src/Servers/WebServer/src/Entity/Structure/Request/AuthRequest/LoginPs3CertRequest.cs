@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using WebServer.Abstraction;
-using WebServer.Entity.Contract;
+using UniSpyServer.WebServer.Abstraction;
+using UniSpyServer.WebServer.Entity.Contract;
 
-namespace WebServer.Entity.Structure.Request.AuthRequest
+namespace UniSpyServer.WebServer.Entity.Structure.Request.AuthRequest
 {
     [RequestContract("LoginPs3Cert")]
     public class LoginPs3CertRequest : RequestBase

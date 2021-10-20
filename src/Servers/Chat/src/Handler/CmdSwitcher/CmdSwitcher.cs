@@ -1,10 +1,10 @@
-﻿using Chat.Network;
+﻿using UniSpyServer.Chat.Network;
 using System;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CommandSwitcher
+namespace UniSpyServer.Chat.Handler.CommandSwitcher
 {
     /// <summary>
     /// Process request to Commands

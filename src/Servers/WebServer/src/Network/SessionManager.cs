@@ -1,6 +1,6 @@
-using UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
 
-namespace WebServer.Network
+namespace UniSpyServer.WebServer.Network
 {
     public sealed class SessionManager : UniSpyHttpSessionManager
     {

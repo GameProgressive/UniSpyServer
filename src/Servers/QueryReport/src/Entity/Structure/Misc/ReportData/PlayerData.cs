@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Extensions;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace QueryReport.Entity.Structure.ReportData
+namespace UniSpyServer.QueryReport.Entity.Structure.ReportData
 {
     public class PlayerData
     {

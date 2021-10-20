@@ -1,13 +1,13 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Contract;
-using PresenceConnectionManager.Entity.Structure.Request;
-using PresenceSearchPlayer.Entity.Exception.General;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("registercdkey")]
     public sealed class RegisterCDKeyHandler : Abstraction.BaseClass.CmdHandlerBase

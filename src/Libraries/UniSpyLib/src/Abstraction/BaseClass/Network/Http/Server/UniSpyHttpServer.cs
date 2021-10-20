@@ -1,9 +1,9 @@
 using System;
 using System.Net;
 using NetCoreServer;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyLib.Abstraction.BaseClass.Network.Http.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
     public abstract class UniSpyHttpServer : HttpServer, IUniSpyServer
     {

@@ -1,6 +1,6 @@
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace ServerBrowser.Entity.Exception
+namespace UniSpyServer.ServerBrowser.Entity.Exception
 {
     public class SBException : UniSpyException
     {

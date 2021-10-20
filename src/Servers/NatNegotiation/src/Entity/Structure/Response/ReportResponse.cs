@@ -1,7 +1,7 @@
-﻿using NatNegotiation.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace NatNegotiation.Entity.Structure.Response
+namespace UniSpyServer.NatNegotiation.Entity.Structure.Response
 {
     public sealed class ReportResponse : ResponseBase
     {

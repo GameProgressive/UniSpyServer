@@ -1,12 +1,12 @@
-﻿using GameStatus.Abstraction.BaseClass;
-using GameStatus.Entity.Contract;
-using GameStatus.Entity.Structure.Request;
-using GameStatus.Entity.Structure.Result;
+﻿using UniSpyServer.GameStatus.Abstraction.BaseClass;
+using UniSpyServer.GameStatus.Entity.Contract;
+using UniSpyServer.GameStatus.Entity.Structure.Request;
+using UniSpyServer.GameStatus.Entity.Structure.Result;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace GameStatus.Handler.CmdHandler
+namespace UniSpyServer.GameStatus.Handler.CmdHandler
 {
     /// <summary>
     /// Set persist storage data

@@ -1,4 +1,4 @@
-﻿namespace CDKey.Handler.CmdHandler
+﻿namespace UniSpyServer.CDkey.Handler.CmdHandler
 {
     /// <summary>
     /// disconnect from cdkey server

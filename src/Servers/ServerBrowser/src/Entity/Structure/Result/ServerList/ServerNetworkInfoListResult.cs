@@ -1,4 +1,4 @@
-﻿namespace ServerBrowser.Entity.Structure.Result.ServerList
+﻿namespace UniSpyServer.ServerBrowser.Entity.Structure.Result.ServerList
 {
 
     public sealed class ServerNetworkInfoListResult : ServerMainListResult

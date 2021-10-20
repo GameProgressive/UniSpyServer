@@ -1,6 +1,6 @@
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace ServerBrowser.Entity.Structure.Misc
+namespace UniSpyServer.ServerBrowser.Entity.Structure.Misc
 {
     public sealed class Constants
     {

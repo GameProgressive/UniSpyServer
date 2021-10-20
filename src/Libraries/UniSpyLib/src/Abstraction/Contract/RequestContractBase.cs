@@ -1,6 +1,6 @@
 using System;
 
-namespace UniSpyLib.Abstraction.BaseClass.Contract
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract
 {
     /// <summary>
     /// Represents a discription for request data.

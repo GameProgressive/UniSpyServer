@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace UniSpyLib.Encryption
+namespace UniSpyServer.UniSpyLib.Encryption
 {
     public static class UniSpyEncoding
     {

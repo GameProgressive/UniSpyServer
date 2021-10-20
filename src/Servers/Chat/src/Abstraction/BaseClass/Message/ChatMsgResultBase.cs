@@ -1,4 +1,4 @@
-namespace Chat.Abstraction.BaseClass.Message
+namespace UniSpyServer.Chat.Abstraction.BaseClass.Message
 {
     public abstract class MsgResultBase : ResultBase
     {

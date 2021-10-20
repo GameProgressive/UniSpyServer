@@ -1,8 +1,8 @@
-﻿using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Structure.Request;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.ServerBrowser.Entity.Structure.Request;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace ServerBrowser.Handler.CmdHandler
+namespace UniSpyServer.ServerBrowser.Handler.CmdHandler
 {
     public sealed class SendMessageHandler : CmdHandlerBase
     {

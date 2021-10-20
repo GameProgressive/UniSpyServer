@@ -1,9 +1,9 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Contract;
-using PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("sdk")]
     public sealed class SDKRevisionHandler : CmdHandlerBase

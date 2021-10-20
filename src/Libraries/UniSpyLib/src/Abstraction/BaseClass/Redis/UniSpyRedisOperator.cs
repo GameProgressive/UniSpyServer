@@ -2,9 +2,9 @@
 using StackExchange.Redis;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyLib.Abstraction.BaseClass.Redis
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
 {
     /// <summary>
     /// This class uses generate type for easily convert Redis objects to your ideal objects.

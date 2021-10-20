@@ -1,7 +1,7 @@
 ﻿using StackExchange.Redis;
-using UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 
-namespace UniSpyLib.Abstraction.BaseClass.Redis
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis
 {
     public abstract class UniSpyRedisChannel<T>
     {

@@ -1,4 +1,4 @@
-﻿namespace Chat.Entity.Structure.Misc
+﻿namespace UniSpyServer.Chat.Entity.Structure.Misc
 {
     public sealed class ChatConstants
     {

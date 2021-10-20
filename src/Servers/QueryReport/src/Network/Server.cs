@@ -1,11 +1,11 @@
-﻿using QueryReport.Entity.Structure.Redis;
-using QueryReport.Handler.CmdSwitcher;
-using QueryReport.Handler.SystemHandler;
+﻿using UniSpyServer.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.QueryReport.Handler.CmdSwitcher;
+using UniSpyServer.QueryReport.Handler.SystemHandler;
 using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
-namespace QueryReport.Network
+namespace UniSpyServer.QueryReport.Network
 {
     public sealed class Server : UniSpyUdpServer
     {

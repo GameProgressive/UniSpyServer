@@ -1,11 +1,11 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
-using Chat.Entity.Structure.Request;
-using Chat.Entity.Structure.Response;
-using Chat.Entity.Structure.Result.Channel;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
+using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Response;
+using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.Channel
+namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
 {
     /// <summary>
     /// Get or set channel or user mode

@@ -1,7 +1,7 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.Misc;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Structure.Misc;
 
-namespace Chat.Entity.Structure.Result.General
+namespace UniSpyServer.Chat.Entity.Structure.Result.General
 {
     public sealed class CryptResult : ResultBase
     {

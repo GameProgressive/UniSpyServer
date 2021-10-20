@@ -1,8 +1,8 @@
 
 
-using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
-namespace Chat.Network
+namespace UniSpyServer.Chat.Network
 {
     public sealed class SessionManager : UniSpyTcpSessionManager
     {

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace WebServer.Entity.Structure
+namespace UniSpyServer.WebServer.Entity.Structure
 {
     public class SoapXElement : XElement
     {

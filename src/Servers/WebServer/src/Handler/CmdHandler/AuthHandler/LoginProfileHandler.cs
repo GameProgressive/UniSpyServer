@@ -1,7 +1,7 @@
-using UniSpyLib.Abstraction.Interface;
-using WebServer.Abstraction;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.WebServer.Abstraction;
 
-namespace WebServer.Handler.CmdHandler.AuthHandler
+namespace UniSpyServer.WebServer.Handler.CmdHandler.AuthHandler
 {
     public class LoginProfileHandler : CmdHandlerBase
     {

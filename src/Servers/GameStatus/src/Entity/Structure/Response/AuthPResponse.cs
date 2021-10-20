@@ -1,9 +1,9 @@
-﻿using GameStatus.Abstraction.BaseClass;
-using GameStatus.Entity.Structure.Request;
-using GameStatus.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.GameStatus.Abstraction.BaseClass;
+using UniSpyServer.GameStatus.Entity.Structure.Request;
+using UniSpyServer.GameStatus.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace GameStatus.Entity.Structure.Response
+namespace UniSpyServer.GameStatus.Entity.Structure.Response
 {
     public sealed class AuthPResponse : ResponseBase
     {

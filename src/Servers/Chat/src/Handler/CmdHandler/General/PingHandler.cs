@@ -1,11 +1,11 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
-using Chat.Entity.Structure.Request.General;
-using Chat.Entity.Structure.Response.General;
-using Chat.Entity.Structure.Result.General;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
+using UniSpyServer.Chat.Entity.Structure.Request.General;
+using UniSpyServer.Chat.Entity.Structure.Response.General;
+using UniSpyServer.Chat.Entity.Structure.Result.General;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.General
+namespace UniSpyServer.Chat.Handler.CmdHandler.General
 {
     [HandlerContract("PING")]
     public sealed class PingHandler : LogedInHandlerBase

@@ -1,10 +1,10 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Structure.Misc;
-using Chat.Entity.Structure.Request;
-using Chat.Entity.Structure.Result.Channel;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Structure.Misc;
+using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace Chat.Entity.Structure.Response.General
+namespace UniSpyServer.Chat.Entity.Structure.Response.General
 {
     public sealed class JoinResponse : ResponseBase
     {

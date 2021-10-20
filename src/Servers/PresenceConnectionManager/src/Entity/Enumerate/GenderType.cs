@@ -1,4 +1,4 @@
-﻿namespace PresenceConnectionManager.Entity.Enumerate
+﻿namespace UniSpyServer.PresenceConnectionManager.Entity.Enumerate
 {
     public enum GenderType : ushort
     {

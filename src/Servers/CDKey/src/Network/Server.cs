@@ -1,10 +1,10 @@
-﻿using CDKey.Handler.CmdSwitcher;
+﻿using UniSpyServer.CDkey.Handler.CmdSwitcher;
 using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
-using UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Encryption;
 
-namespace CDKey.Network
+namespace UniSpyServer.CDkey.Network
 {
     public sealed class Server : UniSpyUdpServer
     {

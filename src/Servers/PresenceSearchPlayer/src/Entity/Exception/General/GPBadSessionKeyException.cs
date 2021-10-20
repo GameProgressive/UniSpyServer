@@ -1,6 +1,6 @@
-using PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
 
-namespace PresenceSearchPlayer.Entity.Exception.General
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.General
 {
     public class GPBadSessionKeyException : GPException
     {

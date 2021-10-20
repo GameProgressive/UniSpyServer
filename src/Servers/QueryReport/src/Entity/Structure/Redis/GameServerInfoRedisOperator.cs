@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.BaseClass.Redis;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 
-namespace QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.QueryReport.Entity.Structure.Redis
 {
     public class GameServerInfoRedisOperator : UniSpyRedisOperator<GameServerInfoRedisKey, GameServerInfo>
     {

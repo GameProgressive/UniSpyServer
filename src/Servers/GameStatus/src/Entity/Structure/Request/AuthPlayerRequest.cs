@@ -1,9 +1,9 @@
-﻿using GameStatus.Abstraction.BaseClass;
-using GameStatus.Entity.Contract;
-using GameStatus.Entity.Enumerate;
-using GameStatus.Entity.Exception;
+﻿using UniSpyServer.GameStatus.Abstraction.BaseClass;
+using UniSpyServer.GameStatus.Entity.Contract;
+using UniSpyServer.GameStatus.Entity.Enumerate;
+using UniSpyServer.GameStatus.Entity.Exception;
 
-namespace GameStatus.Entity.Structure.Request
+namespace UniSpyServer.GameStatus.Entity.Structure.Request
 {
     [RequestContract("authp")]
     public sealed class AuthPlayerRequest : RequestBase

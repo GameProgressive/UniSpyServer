@@ -3,12 +3,12 @@ using Serilog.Events;
 using System;
 using System.Linq;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.Encryption;
-using UniSpyLib.Extensions;
-using UniSpyLib.Config;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Config;
 
-namespace UniSpyLib.Logging
+namespace UniSpyServer.UniSpyLib.Logging
 {
 
     /// <summary>

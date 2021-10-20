@@ -1,11 +1,11 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.contract;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Structure.Request;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.contract;
+using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.QueryReport.Entity.Structure.Request;
 using System;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace QueryReport.Handler.CmdHandler
+namespace UniSpyServer.QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.ClientMessage)]
     public sealed class ClientMessageHandler : CmdHandlerBase

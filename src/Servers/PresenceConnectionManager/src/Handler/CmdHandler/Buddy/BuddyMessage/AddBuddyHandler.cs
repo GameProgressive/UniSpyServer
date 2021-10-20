@@ -1,11 +1,11 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Contract;
-using PresenceConnectionManager.Entity.Structure.Request;
-using PresenceConnectionManager.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
 {
     //\addbuddy\\sesskey\<>\newprofileid\<>\reason\<>\final\
     [HandlerContract("addbuddy")]

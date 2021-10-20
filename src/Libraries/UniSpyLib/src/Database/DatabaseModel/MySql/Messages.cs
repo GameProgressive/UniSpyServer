@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UniSpyLib.Database.DatabaseModel.MySql
+namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
 {
     public partial class Messages
     {

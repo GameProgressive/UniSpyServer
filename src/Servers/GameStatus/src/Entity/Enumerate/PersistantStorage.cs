@@ -1,4 +1,4 @@
-﻿namespace GameStatus.Entity.Enumerate
+﻿namespace UniSpyServer.GameStatus.Entity.Enumerate
 {
     public enum PersistStorageType : uint
     {

@@ -1,20 +1,20 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
-using Chat.Entity.Exception;
-using Chat.Entity.Exception.IRC.Channel;
-using Chat.Entity.Exception.IRC.General;
-using Chat.Entity.Structure.Misc;
-using Chat.Entity.Structure.Misc.ChannelInfo;
-using Chat.Entity.Structure.Request;
-using Chat.Entity.Structure.Request.General;
-using Chat.Entity.Structure.Response.General;
-using Chat.Entity.Structure.Result.Channel;
-using Chat.Handler.SystemHandler.ChannelManage;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
+using UniSpyServer.Chat.Entity.Exception;
+using UniSpyServer.Chat.Entity.Exception.IRC.Channel;
+using UniSpyServer.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Chat.Entity.Structure.Misc;
+using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
+using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Request.General;
+using UniSpyServer.Chat.Entity.Structure.Response.General;
+using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+using UniSpyServer.Chat.Handler.SystemHandler.ChannelManage;
 using System.Collections.Generic;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace Chat.Handler.CmdHandler.Channel
+namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
 {
     /// <summary>
     /// Game will only join one channel at one time

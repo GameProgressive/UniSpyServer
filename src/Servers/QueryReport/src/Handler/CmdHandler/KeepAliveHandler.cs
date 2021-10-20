@@ -1,13 +1,13 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.contract;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Exception;
-using QueryReport.Entity.Structure.Redis;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.contract;
+using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.QueryReport.Entity.Exception;
+using UniSpyServer.QueryReport.Entity.Structure.Redis;
 using System;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace QueryReport.Handler.CmdHandler
+namespace UniSpyServer.QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.KeepAlive)]
     public sealed class KeepAliveHandler : CmdHandlerBase

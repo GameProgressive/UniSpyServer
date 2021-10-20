@@ -1,8 +1,8 @@
-﻿using Chat.Network;
+﻿using UniSpyServer.Chat.Network;
 using System.Linq;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace Chat.Entity.Structure.Misc.ChannelInfo
+namespace UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo
 {
     public sealed class Channel
     {

@@ -1,10 +1,10 @@
-﻿using NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.NatNegotiation.Entity.Enumerate;
 using System;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace NatNegotiation.Abstraction.BaseClass
+namespace UniSpyServer.NatNegotiation.Abstraction.BaseClass
 {
     /// <summary>
     /// NatNeg request base

@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Encryption;
 
-namespace UniSpyLib.Extensions
+namespace UniSpyServer.UniSpyLib.Extensions
 {
     public static class StringExtensions
     {

@@ -1,16 +1,16 @@
-﻿using GameStatus.Abstraction.BaseClass;
-using GameStatus.Entity.Contract;
-using GameStatus.Entity.Structure.Request;
-using GameStatus.Entity.Structure.Response;
-using GameStatus.Entity.Structure.Result;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.GameStatus.Abstraction.BaseClass;
+using UniSpyServer.GameStatus.Entity.Contract;
+using UniSpyServer.GameStatus.Entity.Structure.Request;
+using UniSpyServer.GameStatus.Entity.Structure.Response;
+using UniSpyServer.GameStatus.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace GameStatus.Handler.CmdHandler
+namespace UniSpyServer.GameStatus.Handler.CmdHandler
 {
     [HandlerContract("auth")]
     public sealed class AuthHandler : CmdHandlerBase
     {
-        //UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyLib.Encryption.Crc16(UniSpyLib.Encryption.Crc16Mode.Standard);
+        //UniSpyServer.UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyServer.UniSpyLib.Encryption.Crc16(UniSpyServer.UniSpyLib.Encryption.Crc16Mode.Standard);
         private new AuthGameRequest _request => (AuthGameRequest)base._request;
         private new AuthResult _result
         {

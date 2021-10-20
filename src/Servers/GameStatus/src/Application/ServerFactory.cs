@@ -1,8 +1,8 @@
-﻿using GameStatus.Network;
-using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.Config;
+﻿using UniSpyServer.GameStatus.Network;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Config;
 
-namespace GameStatus.Application
+namespace UniSpyServer.GameStatus.Application
 {
     /// <summary>
     /// A factory that creates instances of servers

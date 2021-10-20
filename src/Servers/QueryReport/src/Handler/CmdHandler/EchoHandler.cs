@@ -1,15 +1,15 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.contract;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Structure.Redis;
-using QueryReport.Entity.Structure.Request;
-using QueryReport.Entity.Structure.Result;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.contract;
+using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.QueryReport.Entity.Structure.Request;
+using UniSpyServer.QueryReport.Entity.Structure.Result;
 using System;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace QueryReport.Handler.CmdHandler
+namespace UniSpyServer.QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.Echo)]
     public sealed class EchoHandler : CmdHandlerBase

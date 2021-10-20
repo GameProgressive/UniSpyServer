@@ -1,8 +1,8 @@
-﻿using NatNegotiation.Abstraction.BaseClass;
-using NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.NatNegotiation.Entity.Enumerate;
 using System.Net;
 
-namespace NatNegotiation.Entity.Structure.Result
+namespace UniSpyServer.NatNegotiation.Entity.Structure.Result
 {
     public sealed class InitResult : InitResultBase
     {

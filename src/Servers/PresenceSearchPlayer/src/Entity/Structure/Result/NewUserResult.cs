@@ -1,8 +1,8 @@
-﻿using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Contract;
-using UniSpyLib.Database.DatabaseModel.MySql;
+﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.PresenceSearchPlayer.Entity.Contract;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace PresenceSearchPlayer.Entity.Structure.Result
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure.Result
 {
     public sealed class NewUserResult : ResultBase
     {

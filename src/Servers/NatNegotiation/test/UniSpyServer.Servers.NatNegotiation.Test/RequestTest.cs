@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace UniSpyServer.Servers.NatNegotiation.Test
+namespace UniSpyServer.Servers.UniSpyServer.NatNegotiation.Test
 {
     public class RequestTest
     {

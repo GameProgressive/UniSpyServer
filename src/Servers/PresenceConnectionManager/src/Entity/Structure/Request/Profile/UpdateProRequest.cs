@@ -1,11 +1,11 @@
 ﻿using System;
-using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Contract;
-using PresenceConnectionManager.Entity.Enumerate;
-using PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyLib.MiscMethod;
+using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.PresenceConnectionManager.Entity.Enumerate;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace PresenceConnectionManager.Entity.Structure.Request.Profile
+namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("updatepro")]
     public sealed class UpdateProRequest : RequestBase

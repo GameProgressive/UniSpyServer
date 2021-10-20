@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
-using UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 using System.Linq;
 using System.Reflection;
 
-namespace UniSpyLib.Abstraction.BaseClass
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public abstract class UniSpyCmdSwitcherBase
     {

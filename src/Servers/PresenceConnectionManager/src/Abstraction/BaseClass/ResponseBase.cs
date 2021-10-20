@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Abstraction.BaseClass
+namespace UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass
 {
     public abstract class ResponseBase : UniSpyResponseBase
     {

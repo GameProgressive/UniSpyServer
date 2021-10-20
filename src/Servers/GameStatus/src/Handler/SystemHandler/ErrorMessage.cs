@@ -1,6 +1,6 @@
-﻿using GameStatus.Entity.Enumerate;
+﻿using UniSpyServer.GameStatus.Entity.Enumerate;
 
-namespace GameStatus.Handler.SystemHandler
+namespace UniSpyServer.GameStatus.Handler.SystemHandler
 {
     public sealed class ErrorMessage
     {

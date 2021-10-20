@@ -1,7 +1,7 @@
-using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace PresenceSearchPlayer.Entity.Exception.AddBuddy
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.AddBuddy
 {
     public class GPAddBuddyBadNewException : GPException
     {

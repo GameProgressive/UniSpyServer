@@ -1,8 +1,8 @@
 using System.Xml.Serialization;
-using UniSpyLib.Abstraction.BaseClass;
-using WebServer.Abstraction;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.WebServer.Abstraction;
 
-namespace WebServer.Entity.Structure.Response
+namespace UniSpyServer.WebServer.Entity.Structure.Response
 {
     public class GetMyRecordResponse : ResponseBase
     {

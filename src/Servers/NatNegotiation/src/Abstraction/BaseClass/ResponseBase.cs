@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 // ReSharper disable All
 
-namespace NatNegotiation.Abstraction.BaseClass
+namespace UniSpyServer.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class ResponseBase : UniSpyResponseBase
     {

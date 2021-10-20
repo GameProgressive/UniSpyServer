@@ -1,8 +1,8 @@
 ﻿using System;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace CDKey.Handler.CmdSwitcher
+namespace UniSpyServer.CDkey.Handler.CmdSwitcher
 {
     public sealed class CDKeyCmdSwitcher : UniSpyCmdSwitcherBase
     {

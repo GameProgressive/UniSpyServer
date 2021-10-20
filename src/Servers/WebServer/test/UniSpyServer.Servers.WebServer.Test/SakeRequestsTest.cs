@@ -1,7 +1,7 @@
 using System;
 using Xunit;
-using WebServer.Entity.Structure.Request.SakeRequest;
-namespace UniSpyServer.Servers.WebServer.RequestTest
+using UniSpyServer.WebServer.Entity.Structure.Request.SakeRequest;
+namespace UniSpyServer.Servers.UniSpyServer.WebServer.RequestTest
 {
     public class SakeRequestsTest
     {

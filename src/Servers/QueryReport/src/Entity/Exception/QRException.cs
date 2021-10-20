@@ -1,6 +1,6 @@
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace QueryReport.Entity.Exception
+namespace UniSpyServer.QueryReport.Entity.Exception
 {
     public sealed class QRException : UniSpyException
     {

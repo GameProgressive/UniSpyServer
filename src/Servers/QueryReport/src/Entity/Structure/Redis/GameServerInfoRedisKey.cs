@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Redis;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.QueryReport.Entity.Structure.Redis
 {
     public class GameServerInfoRedisKey : UniSpyRedisKey
     {
@@ -18,7 +18,7 @@ namespace QueryReport.Entity.Structure.Redis
         public string GameName { get; set; }
         public GameServerInfoRedisKey()
         {
-            Db = UniSpyLib.Extensions.DbNumber.GameServer;
+            Db = UniSpyServer.UniSpyLib.Extensions.DbNumber.GameServer;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PresenceSearchPlayer.Enumerate
+﻿namespace UniSpyServer.PresenceSearchPlayer.Enumerate
 {
     public enum GPEnum : uint
     {

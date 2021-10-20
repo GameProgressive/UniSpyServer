@@ -1,6 +1,6 @@
-using PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
 
-namespace PresenceSearchPlayer.Entity.Exception.NewUser
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.NewUser
 {
     public class GPNewUserUniquenickInvalidException : GPNewUserException
     {

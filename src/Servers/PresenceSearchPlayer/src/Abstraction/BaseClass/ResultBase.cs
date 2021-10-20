@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace PresenceSearchPlayer.Abstraction.BaseClass
+namespace UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass
 {
     public abstract class ResultBase : UniSpyResultBase
     {

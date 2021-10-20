@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Encryption;
 
-namespace GameStatus.Entity.Structure.Misc
+namespace UniSpyServer.GameStatus.Entity.Structure.Misc
 {
     public class GSEncryption
     {

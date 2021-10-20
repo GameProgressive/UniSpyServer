@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyLib.MiscMethod
+namespace UniSpyServer.UniSpyLib.MiscMethod
 {
     public static class GameSpyUtils
     {

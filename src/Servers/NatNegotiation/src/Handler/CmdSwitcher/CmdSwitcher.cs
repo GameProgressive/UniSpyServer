@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Text;
-using NatNegotiation.Entity.Enumerate;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace NatNegotiation.Handler.CmdSwitcher
+namespace UniSpyServer.NatNegotiation.Handler.CmdSwitcher
 {
     public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {

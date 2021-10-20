@@ -1,4 +1,4 @@
-﻿namespace PresenceSearchPlayer.Entity.Structure
+﻿namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure
 {
     public class PSPRequestName
     {

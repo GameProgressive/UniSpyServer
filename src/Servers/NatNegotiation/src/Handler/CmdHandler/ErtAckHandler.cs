@@ -1,13 +1,13 @@
-﻿using NatNegotiation.Abstraction.BaseClass;
-using NatNegotiation.Entity.Contract;
-using NatNegotiation.Entity.Enumerate;
-using NatNegotiation.Entity.Structure.Request;
-using NatNegotiation.Entity.Structure.Response;
-using NatNegotiation.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.NatNegotiation.Entity.Contract;
+using UniSpyServer.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.NatNegotiation.Entity.Structure.Request;
+using UniSpyServer.NatNegotiation.Entity.Structure.Response;
+using UniSpyServer.NatNegotiation.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace NatNegotiation.Handler.CmdHandler
+namespace UniSpyServer.NatNegotiation.Handler.CmdHandler
 {
     [HandlerContract(RequestType.ErtAck)]
     public sealed class ErtAckHandler : CmdHandlerBase

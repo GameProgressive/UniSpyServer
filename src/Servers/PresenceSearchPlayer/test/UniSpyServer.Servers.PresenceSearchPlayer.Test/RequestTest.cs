@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace UniSpyServer.Servers.PresenceSearchPlayer.Test
+namespace UniSpyServer.Servers.UniSpyServer.PresenceSearchPlayer.Test
 {
     public class RequestTest
     {

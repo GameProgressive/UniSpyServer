@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
-using UniSpyLib.Abstraction.BaseClass.Redis;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 
-namespace PresenceConnectionManager.Handler.SystemHandler.Redis
+namespace UniSpyServer.PresenceConnectionManager.Handler.SystemHandler.Redis
 {
     public sealed class UserInfoRedisKey : UniSpyRedisKey
     {
@@ -11,7 +11,7 @@ namespace PresenceConnectionManager.Handler.SystemHandler.Redis
         public string SessionHashValue { get; set; }
         public UserInfoRedisKey()
         {
-            Db = UniSpyLib.Extensions.DbNumber.GamePresence;
+            Db = UniSpyServer.UniSpyLib.Extensions.DbNumber.GamePresence;
         }
     }
 }

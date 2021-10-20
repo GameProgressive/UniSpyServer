@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Network;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network;
 
-namespace UniSpyLib.Abstraction.Interface
+namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
     public interface IUniSpyServer
     {

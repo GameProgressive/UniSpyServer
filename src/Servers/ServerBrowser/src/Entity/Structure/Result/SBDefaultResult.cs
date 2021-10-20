@@ -1,6 +1,6 @@
-﻿using ServerBrowser.Abstraction.BaseClass;
+﻿using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
 
-namespace ServerBrowser.Entity.Structure.Result
+namespace UniSpyServer.ServerBrowser.Entity.Structure.Result
 {
     public class SBDefaultResult : ResultBase
     {

@@ -1,11 +1,11 @@
-﻿using CDKey.Entity.Structure.Result;
-using CDKey.Network;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.CDkey.Entity.Structure.Result;
+using UniSpyServer.CDkey.Network;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace CDKey.Abstraction.BaseClass
+namespace UniSpyServer.CDkey.Abstraction.BaseClass
 {
-    public abstract class CmdHandlerBase : UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
+    public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {
         protected new Session _session => (Session)base._session;
         protected new RequestBase _request => (RequestBase)base._request;

@@ -1,6 +1,6 @@
-using UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace PresenceSearchPlayer.Entity.Contract
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Contract
 {
     public class HandlerContract : HandlerContractBase
     {

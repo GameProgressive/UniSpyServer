@@ -1,11 +1,11 @@
-﻿using NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.NatNegotiation.Entity.Enumerate;
 using Newtonsoft.Json;
 using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Redis;
-using UniSpyLib.MiscMethod;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace NatNegotiation.Entity.Structure.Redis
+namespace UniSpyServer.NatNegotiation.Entity.Structure.Redis
 {
     public class UserInfoRedisKey : UniSpyRedisKey
     {
@@ -17,7 +17,7 @@ namespace NatNegotiation.Entity.Structure.Redis
         public uint Cookie { get; set; }
         public UserInfoRedisKey()
         {
-            Db = UniSpyLib.Extensions.DbNumber.NatNeg;
+            Db = UniSpyServer.UniSpyLib.Extensions.DbNumber.NatNeg;
         }
     }
 }

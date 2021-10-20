@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.Encryption;
-using UniSpyLib.Logging;
-using UniSpyLib.Config;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Config;
 using TcpClient = NetCoreServer.TcpClient;
 
-namespace UniSpyLib.Network.Tcp.Client
+namespace UniSpyServer.UniSpyLib.Network.Tcp.Client
 {
 
     public abstract class UniSpyTcpClient : TcpClient

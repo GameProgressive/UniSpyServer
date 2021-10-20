@@ -1,5 +1,4 @@
-using System;
-using GameStatus.Entity.Structure.Request;
+using UniSpyServer.GameStatus.Entity.Structure.Request;
 using Xunit;
 
 namespace UniSpyServer.Servers.GameStatus.Test

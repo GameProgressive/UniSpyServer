@@ -1,8 +1,8 @@
-﻿using QueryReport.Entity.Structure.Redis;
+﻿using UniSpyServer.QueryReport.Entity.Structure.Redis;
 using System.Collections.Generic;
 using System.Net;
 
-namespace ServerBrowser.Handler.CmdHandler.ServerList.GetServers.Filter
+namespace UniSpyServer.ServerBrowser.Handler.CmdHandler.ServerList.GetServers.Filter
 {
     public class ServerFilter
     {

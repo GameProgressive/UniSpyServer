@@ -1,6 +1,6 @@
 using System;
 
-namespace UniSpyLib.Abstraction.BaseClass
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
 {
     public class UniSpyException : Exception
     {

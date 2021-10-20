@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace Chat.Abstraction.BaseClass
+namespace UniSpyServer.Chat.Abstraction.BaseClass
 {
     public abstract class ResponseBase : UniSpyResponseBase
     {

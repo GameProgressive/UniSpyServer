@@ -1,17 +1,17 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Contract;
-using PresenceSearchPlayer.Entity.Enumerator;
-using PresenceSearchPlayer.Entity.Exception.General;
-using PresenceSearchPlayer.Entity.Exception.NewUser;
-using PresenceConnectionManager.Entity.Structure.Request;
-using PresenceConnectionManager.Entity.Structure.Response;
-using PresenceConnectionManager.Entity.Structure.Result;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.PresenceSearchPlayer.Entity.Enumerator;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.NewUser;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Response;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Result;
 using System;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace PresenceConnectionManager.Handler.CmdHandler.General
+namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler.General
 {
     [HandlerContract("newuser")]
     public sealed class NewUserHandler : CmdHandlerBase

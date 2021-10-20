@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace UniSpyLib.Database.DatabaseModel.MySql
+namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
 {
     public partial class unispyContext : DbContext
     {

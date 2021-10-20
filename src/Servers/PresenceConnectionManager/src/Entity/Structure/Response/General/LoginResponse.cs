@@ -1,11 +1,11 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Enumerate;
-using PresenceConnectionManager.Entity.Structure.Request;
-using PresenceConnectionManager.Entity.Structure.Result;
-using PresenceConnectionManager.Structure.Data;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Enumerate;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpyServer.PresenceConnectionManager.Structure.Data;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace PresenceConnectionManager.Entity.Structure.Response
+namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Response
 {
     public sealed class LoginResponse : ResponseBase
     {

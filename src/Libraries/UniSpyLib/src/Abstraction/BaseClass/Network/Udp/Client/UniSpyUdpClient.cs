@@ -3,7 +3,7 @@ using System.Net;
 using System.Net.Sockets;
 using UdpClient = NetCoreServer.UdpClient;
 
-namespace UniSpyLib.Abstraction.BaseClass.Network.Udp.Client
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Client
 {
     public class UniSpyUdpClient : UdpClient
     {

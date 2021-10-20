@@ -1,7 +1,7 @@
-using NatNegotiation.Entity.Enumerate;
-using UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace NatNegotiation.Entity.Contract
+namespace UniSpyServer.NatNegotiation.Entity.Contract
 {
     public class RequestContract : RequestContractBase
     {

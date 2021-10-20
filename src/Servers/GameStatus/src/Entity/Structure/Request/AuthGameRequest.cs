@@ -1,8 +1,8 @@
-﻿using GameStatus.Abstraction.BaseClass;
-using GameStatus.Entity.Contract;
-using GameStatus.Entity.Exception;
+﻿using UniSpyServer.GameStatus.Abstraction.BaseClass;
+using UniSpyServer.GameStatus.Entity.Contract;
+using UniSpyServer.GameStatus.Entity.Exception;
 
-namespace GameStatus.Entity.Structure.Request
+namespace UniSpyServer.GameStatus.Entity.Structure.Request
 {
     /// <summary>
     /// Request: //auth\\gamename\%s\response\%s\port\%d\id\1 */

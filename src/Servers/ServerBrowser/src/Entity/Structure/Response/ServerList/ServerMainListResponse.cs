@@ -1,12 +1,12 @@
-﻿using QueryReport.Entity.Structure.Redis;
-using ServerBrowser.Abstraction.BaseClass;
-using ServerBrowser.Entity.Structure.Misc;
-using ServerBrowser.Entity.Structure.Request;
-using ServerBrowser.Entity.Structure.Result;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Encryption;
+﻿using UniSpyServer.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.ServerBrowser.Entity.Structure.Misc;
+using UniSpyServer.ServerBrowser.Entity.Structure.Request;
+using UniSpyServer.ServerBrowser.Entity.Structure.Result;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Encryption;
 
-namespace ServerBrowser.Entity.Structure.Packet.Response
+namespace UniSpyServer.ServerBrowser.Entity.Structure.Packet.Response
 {
     public sealed class ServerMainListResponse : ServerListUpdateOptionResponseBase
     {

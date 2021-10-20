@@ -1,4 +1,4 @@
-namespace UniSpyLib.Entity.Enumerate
+namespace UniSpyServer.UniSpyLib.Entity.Enumerate
 {
     public enum UniSpyErrorCode : uint
     {

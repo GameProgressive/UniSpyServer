@@ -1,15 +1,15 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Application;
-using PresenceConnectionManager.Entity.Contract;
-using PresenceConnectionManager.Entity.Structure.Request;
-using PresenceConnectionManager.Entity.Structure.Response.Buddy;
-using PresenceConnectionManager.Entity.Structure.Result.Buddy;
-using PresenceConnectionManager.Network;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Application;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Response.Buddy;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Result.Buddy;
+using UniSpyServer.PresenceConnectionManager.Network;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
 {
     /// <summary>
     /// TODO Status info should be stored in redis

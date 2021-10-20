@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.BaseClass.Redis;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 
-namespace NatNegotiation.Entity.Structure.Redis
+namespace UniSpyServer.NatNegotiation.Entity.Structure.Redis
 {
     public sealed class UserInfoRedisOperator : UniSpyRedisOperator<UserInfoRedisKey, UserInfo>
     {

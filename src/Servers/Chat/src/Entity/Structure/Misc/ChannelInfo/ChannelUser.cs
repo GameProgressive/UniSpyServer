@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Chat.Entity.Structure.Misc.ChannelInfo
+namespace UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo
 {
     public sealed class ChannelUser
     {

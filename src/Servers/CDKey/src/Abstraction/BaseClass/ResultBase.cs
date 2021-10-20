@@ -1,6 +1,6 @@
-﻿using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace CDKey.Abstraction.BaseClass
+namespace UniSpyServer.CDkey.Abstraction.BaseClass
 {
     public abstract class ResultBase : UniSpyResultBase
     {

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyLib.MiscMethod
+namespace UniSpyServer.UniSpyLib.MiscMethod
 {
     public class PasswordEncoder
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace UniSpyLib.MiscMethod
+namespace UniSpyServer.UniSpyLib.MiscMethod
 {
     public class GameSpyRandom
     {

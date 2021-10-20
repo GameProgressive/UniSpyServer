@@ -1,7 +1,7 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Contract;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
 
-namespace PresenceConnectionManager.Entity.Structure.Request
+namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Request
 {
     [RequestContract("ka")]
     public sealed class KeepAliveRequest : RequestBase

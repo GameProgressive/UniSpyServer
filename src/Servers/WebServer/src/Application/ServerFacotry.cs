@@ -1,8 +1,8 @@
-using WebServer.Network;
-using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.Config;
+using UniSpyServer.WebServer.Network;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Config;
 
-namespace WebServer.Application
+namespace UniSpyServer.WebServer.Application
 {
     /// <summary>
     /// A factory that creates instances of servers

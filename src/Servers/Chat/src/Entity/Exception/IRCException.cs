@@ -1,7 +1,7 @@
-using Chat.Entity.Structure.Misc;
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Structure.Misc;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace Chat.Entity.Exception.IRC.General
+namespace UniSpyServer.Chat.Entity.Exception.IRC.General
 {
     public class IRCException : UniSpyException
     {

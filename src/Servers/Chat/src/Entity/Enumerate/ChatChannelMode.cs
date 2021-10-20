@@ -1,4 +1,4 @@
-﻿namespace Chat.Entity.Enumerate
+﻿namespace UniSpyServer.Chat.Entity.Enumerate
 {
     public enum ChatChannelMode
     {

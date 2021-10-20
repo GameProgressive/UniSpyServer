@@ -1,7 +1,7 @@
-using PresenceSearchPlayer.Entity.Enumerate;
-using PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace PresenceSearchPlayer.Entity.Exception.Login
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.Login
 {
     public class GPLoginBadPreAuthException : GPException
     {

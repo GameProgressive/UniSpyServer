@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace ServerBrowser.Application
+namespace UniSpyServer.ServerBrowser.Application
 {
     public sealed class Program
     {

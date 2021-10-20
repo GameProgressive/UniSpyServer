@@ -1,10 +1,10 @@
 ﻿using NetCoreServer;
 using System;
 using System.Net;
-using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
 //GPCM represents GameSpy Connection Manager
-namespace PresenceConnectionManager.Network
+namespace UniSpyServer.PresenceConnectionManager.Network
 {
     /// <summary>
     /// This server emulates the Gamespy Client Manager Server on port 29900.

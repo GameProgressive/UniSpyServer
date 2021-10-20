@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass.Redis;
-using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.QueryReport.Entity.Structure.Redis
 {
     public sealed class PeerGroupInfoRedisOperator :
         UniSpyRedisOperator<PeerGroupInfoRedisKey, PeerGroupInfo>

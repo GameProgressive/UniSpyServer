@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace QueryReport.Abstraction.BaseClass
+namespace UniSpyServer.QueryReport.Abstraction.BaseClass
 {
     public abstract class ResponseBase : UniSpyResponseBase
     {

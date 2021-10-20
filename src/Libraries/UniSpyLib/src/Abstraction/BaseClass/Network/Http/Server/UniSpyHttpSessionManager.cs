@@ -1,4 +1,4 @@
-namespace UniSpyLib.Abstraction.BaseClass.Network.Http.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
     public class UniSpyHttpSessionManager : UniSpySessionManager
     {

@@ -1,11 +1,11 @@
-﻿using NatNegotiation.Abstraction.BaseClass;
-using NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.NatNegotiation.Entity.Enumerate;
 using System;
 using System.Linq;
 using System.Net;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace NatNegotiation.Entity.Structure.Result
+namespace UniSpyServer.NatNegotiation.Entity.Structure.Result
 {
     public class ConnectResult : ResultBase
     {

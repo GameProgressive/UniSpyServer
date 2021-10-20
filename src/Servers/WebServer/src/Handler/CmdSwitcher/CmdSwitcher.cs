@@ -1,9 +1,9 @@
 using System;
 using System.Xml.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace WebServer.Handler
+namespace UniSpyServer.WebServer.Handler
 {
     public class CmdSwitcher : UniSpyCmdSwitcherBase
     {

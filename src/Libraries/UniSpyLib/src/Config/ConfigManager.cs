@@ -1,8 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyLib.Config
+namespace UniSpyServer.UniSpyLib.Config
 {
     public class ConfigManager
     {

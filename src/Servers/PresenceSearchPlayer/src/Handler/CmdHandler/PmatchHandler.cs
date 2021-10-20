@@ -1,9 +1,9 @@
-﻿//using UniSpyLib.Common;
-//using PresenceSearchPlayer.Enumerate;
+﻿//using UniSpyServer.UniSpyLib.Common;
+//using UniSpyServer.PresenceSearchPlayer.Enumerate;
 //using System;
 //using System.Collections.Generic;
 
-//namespace PresenceSearchPlayer.Handler.CommandHandler.Pmatch
+//namespace UniSpyServer.PresenceSearchPlayer.Handler.CommandHandler.Pmatch
 //{
 //    /// <summary>
 //    /// Search the all players in specific game

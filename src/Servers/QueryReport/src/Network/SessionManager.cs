@@ -1,6 +1,6 @@
-using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
-namespace QueryReport.Network
+namespace UniSpyServer.QueryReport.Network
 {
     public sealed class SessionManager : UniSpyUdpSessionManager
     {

@@ -1,7 +1,7 @@
-using ServerBrowser.Entity.Enumerate;
-using UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace ServerBrowser.Entity.Contract
+namespace UniSpyServer.ServerBrowser.Entity.Contract
 {
     public class HandlerContract : HandlerContractBase
     {

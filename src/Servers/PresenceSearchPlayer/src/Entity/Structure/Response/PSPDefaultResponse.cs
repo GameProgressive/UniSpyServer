@@ -1,7 +1,7 @@
-﻿using PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace PresenceSearchPlayer.Entity.Structure.Response
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure.Response
 {
     public sealed class PSPDefaultResponse : ResponseBase
     {

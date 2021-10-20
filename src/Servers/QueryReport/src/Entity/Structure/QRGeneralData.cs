@@ -1,6 +1,6 @@
 ﻿// using System.Collections.Generic;
 
-// namespace QueryReport.Entity.Structure
+// namespace UniSpyServer.QueryReport.Entity.Structure
 // {
 //     public class GameServerInfo
 //     {

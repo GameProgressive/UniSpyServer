@@ -1,4 +1,4 @@
-﻿namespace GameStatus.Entity.Structure.Misc
+﻿namespace UniSpyServer.GameStatus.Entity.Structure.Misc
 {
     public class GSConstants
     {

@@ -1,8 +1,8 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
-using Chat.Entity.Exception;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
+using UniSpyServer.Chat.Entity.Exception;
 
-namespace Chat.Entity.Structure.Request.General
+namespace UniSpyServer.Chat.Entity.Structure.Request.General
 {
     public enum WhoRequestType
     {

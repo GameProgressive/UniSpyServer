@@ -1,7 +1,7 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
 
-namespace Chat.Entity.Structure.Request.Message
+namespace UniSpyServer.Chat.Entity.Structure.Request.Message
 {
     [RequestContract("ATM")]
     public sealed class AboveTheTableMsgRequest : MsgRequestBase

@@ -1,13 +1,13 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
-using Chat.Entity.Structure.Request;
-using Chat.Entity.Structure.Response.Channel;
-using Chat.Entity.Structure.Result.Channel;
-using Chat.Handler.SystemHandler.ChannelManage;
-using QueryReport.Entity.Structure.Redis;
-using UniSpyLib.Abstraction.Interface;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
+using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Response.Channel;
+using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+using UniSpyServer.Chat.Handler.SystemHandler.ChannelManage;
+using UniSpyServer.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace Chat.Handler.CmdHandler.Channel
+namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
 {
     [HandlerContract("PART")]
     public sealed class PartHandler : ChannelHandlerBase

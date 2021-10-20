@@ -1,9 +1,9 @@
 using System.Net;
 using NetCoreServer;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyLib.Abstraction.BaseClass.Network.Http.Server
+namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server
 {
     public abstract class UniSpyHttpSession : HttpSession, IUniSpySession
     {

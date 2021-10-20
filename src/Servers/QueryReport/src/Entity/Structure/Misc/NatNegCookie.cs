@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace QueryReport.Entity.Structure.NATNeg
+namespace UniSpyServer.QueryReport.Entity.Structure.NATNeg
 {
     public class NatNegCookie
     {

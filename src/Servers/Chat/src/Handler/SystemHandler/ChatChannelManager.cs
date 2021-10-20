@@ -1,7 +1,7 @@
-﻿using Chat.Entity.Structure.Misc.ChannelInfo;
+﻿using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
 using System.Collections.Concurrent;
 
-namespace Chat.Handler.SystemHandler.ChannelManage
+namespace UniSpyServer.Chat.Handler.SystemHandler.ChannelManage
 {
     public sealed class ChatChannelManager
     {

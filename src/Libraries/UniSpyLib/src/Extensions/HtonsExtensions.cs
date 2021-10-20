@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace UniSpyLib.Extensions
+namespace UniSpyServer.UniSpyLib.Extensions
 {
     public class HtonsExtensions
     {

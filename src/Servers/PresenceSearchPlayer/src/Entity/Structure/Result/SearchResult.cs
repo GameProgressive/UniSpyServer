@@ -1,7 +1,7 @@
-﻿using PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace PresenceSearchPlayer.Entity.Structure.Result
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure.Result
 {
     public sealed class SearchDataBaseModel
     {

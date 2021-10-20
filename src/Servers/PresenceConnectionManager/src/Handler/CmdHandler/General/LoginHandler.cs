@@ -1,18 +1,18 @@
-﻿using PresenceConnectionManager.Abstraction.BaseClass;
-using PresenceConnectionManager.Entity.Contract;
-using PresenceConnectionManager.Entity.Enumerate;
-using PresenceConnectionManager.Entity.Structure.Request;
-using PresenceConnectionManager.Entity.Structure.Response;
-using PresenceConnectionManager.Entity.Structure.Result;
-using PresenceConnectionManager.Structure;
-using PresenceSearchPlayer.Entity.Exception.General;
-using PresenceSearchPlayer.Entity.Exception.Login;
+﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.PresenceConnectionManager.Entity.Enumerate;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Response;
+using UniSpyServer.PresenceConnectionManager.Entity.Structure.Result;
+using UniSpyServer.PresenceConnectionManager.Structure;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.Login;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.Interface;
-using UniSpyLib.Database.DatabaseModel.MySql;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("login")]
     public sealed class LoginHandler : CmdHandlerBase

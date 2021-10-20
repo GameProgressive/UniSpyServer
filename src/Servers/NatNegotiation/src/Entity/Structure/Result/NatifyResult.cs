@@ -1,7 +1,7 @@
-﻿using NatNegotiation.Abstraction.BaseClass;
-using NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.NatNegotiation.Entity.Enumerate;
 
-namespace NatNegotiation.Entity.Structure.Result
+namespace UniSpyServer.NatNegotiation.Entity.Structure.Result
 {
     public sealed class NatifyResult : InitResultBase
     {

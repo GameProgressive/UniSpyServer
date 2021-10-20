@@ -1,6 +1,6 @@
-﻿using Chat.Entity.Exception;
+﻿using UniSpyServer.Chat.Entity.Exception;
 
-namespace Chat.Abstraction.BaseClass
+namespace UniSpyServer.Chat.Abstraction.BaseClass
 {
     public class ChannelRequestBase : RequestBase
     {

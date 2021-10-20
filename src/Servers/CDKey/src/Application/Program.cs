@@ -1,7 +1,7 @@
 ﻿using System;
-using UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Logging;
 
-namespace CDKey.Application
+namespace UniSpyServer.CDkey.Application
 {
     public class Program
     {

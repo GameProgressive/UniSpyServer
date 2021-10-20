@@ -1,9 +1,9 @@
-﻿using NatNegotiation.Entity.Structure.Request;
+﻿using UniSpyServer.NatNegotiation.Entity.Structure.Request;
 using System;
 using System.Net;
-using UniSpyLib.MiscMethod;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace NatNegotiation.Entity.Structure.Redis
+namespace UniSpyServer.NatNegotiation.Entity.Structure.Redis
 {
     public sealed class UserInfo
     {

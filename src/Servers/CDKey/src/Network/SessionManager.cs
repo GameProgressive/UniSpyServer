@@ -1,7 +1,7 @@
-using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
 
-namespace CDKey.Network
+namespace UniSpyServer.CDkey.Network
 {
     public sealed class SessionManager : UniSpyUdpSessionManager
     {

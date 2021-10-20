@@ -1,7 +1,7 @@
-using CDKey.Abstraction.BaseClass;
-using UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.CDkey.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace CDKey.Entity.Structure.Response
+namespace UniSpyServer.CDkey.Entity.Structure.Response
 {
     public sealed class CDKeyDefaultResponse : ResponseBase
     {

@@ -1,11 +1,11 @@
-﻿using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Exception;
+﻿using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.QueryReport.Entity.Exception;
 using System;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace QueryReport.Abstraction.BaseClass
+namespace UniSpyServer.QueryReport.Abstraction.BaseClass
 {
     public abstract class RequestBase : UniSpyRequestBase
     {

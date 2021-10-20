@@ -1,8 +1,8 @@
-﻿using CDKey.Network;
-using UniSpyLib.Abstraction.BaseClass.Factory;
-using UniSpyLib.Config;
+﻿using UniSpyServer.CDkey.Network;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Config;
 
-namespace CDKey.Application
+namespace UniSpyServer.CDkey.Application
 {
     /// <summary>
     /// A factory that creates instances of servers

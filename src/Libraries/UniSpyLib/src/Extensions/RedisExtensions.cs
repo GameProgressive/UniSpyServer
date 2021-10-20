@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using UniSpyLib.Abstraction.BaseClass.Factory;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 
-namespace UniSpyLib.Extensions
+namespace UniSpyServer.UniSpyLib.Extensions
 {
-    public enum DbNumber
+    public enum DbNumber : int
     {
         PeerGroup = 0,
         GameServer = 1,

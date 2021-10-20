@@ -1,9 +1,9 @@
-﻿using QueryReport.Abstraction.BaseClass;
-using QueryReport.Entity.contract;
-using QueryReport.Entity.Enumerate;
-using QueryReport.Entity.Exception;
+﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.QueryReport.Entity.contract;
+using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.QueryReport.Entity.Exception;
 
-namespace QueryReport.Entity.Structure.Request
+namespace UniSpyServer.QueryReport.Entity.Structure.Request
 {
     [RequestContract(RequestType.AvaliableCheck)]
     public sealed class AvaliableRequest : RequestBase

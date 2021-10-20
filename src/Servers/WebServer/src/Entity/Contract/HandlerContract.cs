@@ -1,6 +1,6 @@
-using UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace WebServer.Entity.Contract
+namespace UniSpyServer.WebServer.Entity.Contract
 {
     public class HandlerContract : HandlerContractBase
     {

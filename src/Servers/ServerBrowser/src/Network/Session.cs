@@ -1,10 +1,10 @@
-﻿using ServerBrowser.Entity.Structure.Misc;
-using ServerBrowser.Entity.Structure.Request;
-using ServerBrowser.Handler.CommandSwitcher;
+﻿using UniSpyServer.ServerBrowser.Entity.Structure.Misc;
+using UniSpyServer.ServerBrowser.Entity.Structure.Request;
+using UniSpyServer.ServerBrowser.Handler.CommandSwitcher;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
-namespace ServerBrowser.Network
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
+namespace UniSpyServer.ServerBrowser.Network
 {
     public sealed class Session : UniSpyTcpSession
     {

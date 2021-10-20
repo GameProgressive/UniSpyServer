@@ -1,4 +1,4 @@
-﻿namespace UniSpyLib.Abstraction.Interface
+﻿namespace UniSpyServer.UniSpyLib.Abstraction.Interface
 {
     public interface IUniSpyResponse
     {

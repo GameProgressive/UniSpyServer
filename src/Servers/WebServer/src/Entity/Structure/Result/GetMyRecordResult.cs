@@ -1,7 +1,7 @@
 using System.Xml.Serialization;
-using WebServer.Abstraction;
+using UniSpyServer.WebServer.Abstraction;
 
-namespace WebServer.Entity.Structure.Result
+namespace UniSpyServer.WebServer.Entity.Structure.Result
 {
     [XmlRoot("GetMyRecordsResponse", Namespace = "http://gamespy.net/sake")]
     public class GetMyRecordResult : ResultBase

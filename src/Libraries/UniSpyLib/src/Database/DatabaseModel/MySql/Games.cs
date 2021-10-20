@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UniSpyLib.Database.DatabaseModel.MySql
+namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
 {
     public partial class Games
     {

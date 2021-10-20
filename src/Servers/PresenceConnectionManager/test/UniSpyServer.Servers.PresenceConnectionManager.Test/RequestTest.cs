@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Test
+namespace UniSpyServer.Servers.UniSpyServer.PresenceConnectionManager.Test
 {
     public class RequestTest
     {

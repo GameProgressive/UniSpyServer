@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using NatNegotiation.Handler.CmdSwitcher;
-using UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.NatNegotiation.Handler.CmdSwitcher;
+using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
-namespace NatNegotiation.Network
+namespace UniSpyServer.NatNegotiation.Network
 {
     public sealed class Session : UniSpyUdpSession
     {

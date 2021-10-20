@@ -1,10 +1,10 @@
-﻿using PresenceSearchPlayer.Abstraction.BaseClass;
-using PresenceSearchPlayer.Entity.Contract;
-using PresenceSearchPlayer.Entity.Exception.General;
+﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.PresenceSearchPlayer.Entity.Contract;
+using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PresenceSearchPlayer.Entity.Structure.Request
+namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure.Request
 {
     [RequestContract("searchunique")]
     public sealed class SearchUniqueRequest : RequestBase

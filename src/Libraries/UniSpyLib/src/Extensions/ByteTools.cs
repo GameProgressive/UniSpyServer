@@ -2,7 +2,7 @@
 using System.Net;
 using System.Text;
 
-namespace UniSpyLib.Extensions
+namespace UniSpyServer.UniSpyLib.Extensions
 {
     public static class ByteTools
     {

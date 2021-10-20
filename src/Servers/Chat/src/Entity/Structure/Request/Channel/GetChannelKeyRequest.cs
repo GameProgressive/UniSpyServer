@@ -1,11 +1,11 @@
-﻿using Chat.Abstraction.BaseClass;
-using Chat.Entity.Contract;
-using Chat.Entity.Exception;
+﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+using UniSpyServer.Chat.Entity.Contract;
+using UniSpyServer.Chat.Entity.Exception;
 using System.Collections.Generic;
 using System.Linq;
-using UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.Extensions;
 
-namespace Chat.Entity.Structure.Request.Channel
+namespace UniSpyServer.Chat.Entity.Structure.Request.Channel
 {
     [RequestContract("GETCHANKEY")]
     public sealed class GetChannelKeyRequest : ChannelRequestBase
