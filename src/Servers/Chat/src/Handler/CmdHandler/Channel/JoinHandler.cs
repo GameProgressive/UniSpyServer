@@ -5,16 +5,16 @@ using UniSpyServer.Chat.Entity.Exception.IRC.Channel;
 using UniSpyServer.Chat.Entity.Exception.IRC.General;
 using UniSpyServer.Chat.Entity.Structure.Misc;
 using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Chat.Entity.Structure.Response.General;
 using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+using UniSpyServer.Chat.Handler.CmdHandler.Channel;
 using UniSpyServer.Chat.Handler.SystemHandler.ChannelManage;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
+namespace UniSpyServer.Chat.Entity.Structure.Response.Channel
 {
     /// <summary>
     /// Game will only join one channel at one time
@@ -68,7 +68,7 @@ namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
                 if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
                 {
                     // we do not send anything to this user and users in this channel
-                    throw new Exception($"User: {_user.UserInfo.NickName} is already joined the channel: {_request.ChannelName}");
+                    throw new Exception.Exception($"User: {_user.UserInfo.NickName} is already joined the channel: {_request.ChannelName}");
                 }
                 else
                 {
@@ -90,7 +90,7 @@ namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
                     //simple check for avoiding program crash
                     if (_channel.IsUserExisted(_user))
                     {
-                        throw new Exception($"{_session.UserInfo.NickName} is already in channel {_request.ChannelName}");
+                        throw new Exception.Exception($"{_session.UserInfo.NickName} is already in channel {_request.ChannelName}");
                     }
                     _channel.AddBindOnUserAndChannel(_user);
 

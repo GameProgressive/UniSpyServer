@@ -1,7 +1,7 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using UniSpyServer.Chat.Entity.Contract;
 using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Request.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Chat.Handler.CmdHandler.General

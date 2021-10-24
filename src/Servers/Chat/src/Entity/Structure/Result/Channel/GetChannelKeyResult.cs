@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 
-namespace UniSpyServer.Chat.Entity.Structure.Result
+namespace UniSpyServer.Chat.Entity.Structure.Result.Channel
 {
     public sealed class GetChannelKeyResult : ResultBase
     {

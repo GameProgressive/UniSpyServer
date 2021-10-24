@@ -4,7 +4,7 @@ using UniSpyServer.Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Chat.Entity.Structure.Request
+namespace UniSpyServer.Chat.Entity.Structure.Request.Channel
 {
     [RequestContract("SETCKEY")]
     public sealed class SetCKeyRequest : ChannelRequestBase

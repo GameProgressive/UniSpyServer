@@ -16,6 +16,10 @@ namespace UniSpyServer.Chat.Entity.Structure.Request.General
         {
             base.Parse();
 
+            if (_longParam == null)
+            {
+                throw new Exception.Exception("Echo message is missing.");
+            }
 
             EchoMessage = _longParam;
         }

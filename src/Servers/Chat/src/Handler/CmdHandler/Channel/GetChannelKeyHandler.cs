@@ -2,7 +2,7 @@
 using UniSpyServer.Chat.Entity.Contract;
 using UniSpyServer.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Chat.Entity.Structure.Response.Channel;
-using UniSpyServer.Chat.Entity.Structure.Result;
+using UniSpyServer.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Chat.Handler.CmdHandler.Channel

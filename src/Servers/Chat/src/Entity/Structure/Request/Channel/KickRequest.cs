@@ -1,8 +1,7 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception;
 
-namespace UniSpyServer.Chat.Entity.Structure.Request
+namespace UniSpyServer.Chat.Entity.Structure.Request.Channel
 {
     [RequestContract("KICK")]
     public sealed class KickRequest : ChannelRequestBase

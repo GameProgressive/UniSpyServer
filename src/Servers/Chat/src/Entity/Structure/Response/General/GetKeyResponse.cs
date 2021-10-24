@@ -1,10 +1,10 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using UniSpyServer.Chat.Entity.Structure.Misc;
-using UniSpyServer.Chat.Entity.Structure.Request;
-using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+using UniSpyServer.Chat.Entity.Structure.Request.General;
+using UniSpyServer.Chat.Entity.Structure.Result.General;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.Chat.Entity.Structure.Response.Channel
+namespace UniSpyServer.Chat.Entity.Structure.Response.General
 {
     public sealed class GetKeyResponse : ResponseBase
     {

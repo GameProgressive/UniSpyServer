@@ -1,4 +1,5 @@
 ﻿using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Request.Channel;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

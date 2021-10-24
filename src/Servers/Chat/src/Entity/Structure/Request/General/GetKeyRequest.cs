@@ -4,7 +4,7 @@ using UniSpyServer.Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Chat.Entity.Structure.Request
+namespace UniSpyServer.Chat.Entity.Structure.Request.General
 {
     /// <summary>
     /// Retrieves a list of global key/value for a single user, or all users.

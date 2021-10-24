@@ -1,10 +1,9 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Chat.Entity.Structure.Request
+namespace UniSpyServer.Chat.Entity.Structure.Request.Channel
 {
     [RequestContract("SETCHANKEY")]
     public sealed class SetChannelKeyRequest : ChannelRequestBase

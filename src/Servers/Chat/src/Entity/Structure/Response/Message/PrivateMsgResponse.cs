@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using UniSpyServer.Chat.Entity.Structure.Misc;
-using UniSpyServer.Chat.Entity.Structure.Request;
+using UniSpyServer.Chat.Entity.Structure.Request.Message;
 using UniSpyServer.Chat.Entity.Structure.Result.Message;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 

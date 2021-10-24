@@ -16,7 +16,6 @@ namespace UniSpyServer.Chat.Entity.Structure.Request.General
         {
             base.Parse();
 
-
             if (_cmdParams.Count != 1)
             {
                 throw new Exception.Exception("The number of IRC cmd params in GETKEY request is incorrect.");

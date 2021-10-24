@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Extensions;

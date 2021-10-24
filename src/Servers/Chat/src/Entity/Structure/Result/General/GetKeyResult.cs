@@ -1,7 +1,7 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace UniSpyServer.Chat.Entity.Structure.Result.Channel
+namespace UniSpyServer.Chat.Entity.Structure.Result.General
 {
     public sealed class GetKeyResult : ResultBase
     {
