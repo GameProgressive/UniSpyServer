@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Chat.Abstraction.BaseClass;
 using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
 
@@ -14,6 +13,7 @@ namespace UniSpyServer.Chat.Entity.Structure.Request.General
     {
         public string NickName { get; private set; }
         public string Cookie { get; private set; }
+        public string UnkownCmdParam { get; private set; }
         public List<string> Keys { get; private set; }
         public GetKeyRequest(string rawRequest) : base(rawRequest)
         {
@@ -23,7 +23,7 @@ namespace UniSpyServer.Chat.Entity.Structure.Request.General
         public override void Parse()
         {
             base.Parse();
-            if (_cmdParams.Count < 3)
+            if (_cmdParams.Count < 2)
             {
                 throw new Exception.Exception("The number of IRC cmd params in GETKEY request is incorrect.");
             }
@@ -35,6 +35,7 @@ namespace UniSpyServer.Chat.Entity.Structure.Request.General
 
             NickName = _cmdParams[0];
             Cookie = _cmdParams[1];
+            UnkownCmdParam = _cmdParams[2];
 
             _longParam = _longParam.Substring(0, _longParam.Length - 2);
 

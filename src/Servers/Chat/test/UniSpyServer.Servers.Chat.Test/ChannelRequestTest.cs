@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
     {
         //FIXME:
         /*[Fact]
-        public void GetChannelKeyRequestTest()
+        public void GetChannelKey()
         {
             var rawRequest = "GETCHANKEY XXXX";
             var request = new GetChannelKeyRequest(rawRequest);
@@ -20,7 +20,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
 
         //FIXME:
         [Fact]
-        public void JoinRequestTest()
+        public void Join()
         {
             var rawRequest = "JOIN #istanbul";
             var request = new JoinRequest(rawRequest);
@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
 
         // TODO: add _longParam
         /*[Fact]
-        public void KickRequestTest()
+        public void Kick()
         {
             var rawRequest = "KICK SpyGuy Spam";
             var request = new KickRequest(rawRequest);

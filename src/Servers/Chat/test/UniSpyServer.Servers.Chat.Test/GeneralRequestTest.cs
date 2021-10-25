@@ -6,7 +6,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
     public class GeneralRequestTest
     {
         [Fact]
-        public void CDKeyRequestTest()
+        public void CDKey()
         {
             var rawRequest = "CDKEY XXXX-XXXX-XXXX-XXXX";
             var request = new CDKeyRequest(rawRequest);
@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }
 
         [Fact]
-        public void CryptRequestTest()
+        public void Crypt()
         {
             var rawRequest = "CRYPT des 1 gmtest";
             var request = new CryptRequest(rawRequest);
@@ -25,7 +25,28 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }
 
         [Fact]
-        public void InviteRequestTest()
+        public void GetKey()
+        {
+            var rawRequest = @"GETKEY SpyGuy 004 0 :\b_firewall\b_profileid\b_ipaddress\b_publicip\b_privateip\b_authresponse\b_gamever\b_val" + "\r\n"; // \r\n CRLF
+            var request = new GetKeyRequest(rawRequest);
+            request.Parse();
+            Assert.Equal("SpyGuy", request.NickName);
+            Assert.Equal("004", request.Cookie);
+            Assert.Equal("0", request.UnkownCmdParam);
+            Assert.Equal("b_firewall", request.Keys[0]);
+            Assert.Equal("b_profileid", request.Keys[1]);
+            Assert.Equal("b_ipaddress", request.Keys[2]);
+            Assert.Equal("b_publicip", request.Keys[3]);
+            Assert.Equal("b_privateip", request.Keys[4]);
+            Assert.Equal("b_authresponse", request.Keys[5]);
+            Assert.Equal("b_gamever", request.Keys[6]);
+            Assert.Equal("b_val", request.Keys[7]);
+        }
+
+        // TODO: add GetUdpRelayRequest
+
+        [Fact]
+        public void Invite()
         {
             var rawRequest = "INVITE TestRoom Spyguy";
             var request = new InviteRequest(rawRequest);
@@ -35,7 +56,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }
 
         [Fact]
-        public void ListLimitRequestTest()
+        public void ListLimit()
         {
             var rawRequest = "LISTLIMIT 5 Test";
             var request = new ListLimitRequest(rawRequest);
@@ -45,7 +66,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }
 
         [Fact]
-        public void ListRequestTest()
+        public void List()
         {
             var rawRequest = "LIST Test";
             var request = new ListRequest(rawRequest);
@@ -57,7 +78,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }
 
         [Fact]
-        public void LoginPreAuthRequestTest()
+        public void LoginPreAuth()
         {
             var rawRequest = "LOGINPREAUTH XXXXXXXXXX YYYYYYYYYY";
             var request = new LoginPreAuthRequest(rawRequest);
@@ -65,13 +86,10 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
             Assert.Equal("XXXXXXXXXX", request.AuthToken);
             Assert.Equal("YYYYYYYYYY", request.PartnerChallenge);
         }
-        // TODO: add GetKeyRequest
-
-        // TODO: add GetUdpRelayRequest
 
         // FIXME:
         /*[Fact]
-        public void LoginRequestTest()
+        public void Login()
         {
             var rawRequest = "LOGIN 1 SpyGuy spyguy@gamespy.com SpyGuy XXXXXXXXXX";
             var request = new LoginRequest(rawRequest);
@@ -86,7 +104,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         // TODO: add NamesRequest
 
         [Fact]
-        public void NickRequestTest()
+        public void Nick()
         {
             var rawRequest = "NICK Wiz";
             var request = new NickRequest(rawRequest);
@@ -98,7 +116,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
 
         // FIXME:
         /*[Fact]
-        public void PongRequestTest()
+        public void Pong()
         {
             var rawRequest = "PONG test";
             var request = new PongRequest(rawRequest);
@@ -108,7 +126,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
 
         // FIXME:
         /*[Fact]
-        public void QuitRequestTest()
+        public void Quit()
         {
             var rawRequest = "QUIT Bye";
             var request = new QuitRequest(rawRequest);
@@ -117,7 +135,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }*/
 
         [Fact]
-        public void RegisterNickRequestTest()
+        public void RegisterNick()
         {
             var rawRequest = "REGISTERNICK 1 SpyGuy XXXX-XXXX-XXXX-XXXX";
             var request = new RegisterNickRequest(rawRequest);
@@ -128,7 +146,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }
 
         [Fact]
-        public void SetGroupRequestTest()
+        public void SetGroup()
         {
             var rawRequest = "SETGROUP Test";
             var request = new SetGroupRequest(rawRequest);
@@ -141,7 +159,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         // TODO: add UserIPRequest
 
         [Fact]
-        public void UserRequestTest()
+        public void User()
         {
             var rawRequest = "USER pants1 127.0.0.1 peerchat.gamespy.com :pants2";
             var request = new UserRequest(rawRequest);
@@ -153,7 +171,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }
 
         [Fact]
-        public void WhoIsRequestTest()
+        public void WhoIs()
         {
             var rawRequest = "WHOIS SpyGuy";
             var request = new WhoIsRequest(rawRequest);
@@ -162,7 +180,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         }
 
         [Fact]
-        public void WhoRequestTest()
+        public void Who()
         {
             var rawRequest = "WHO SpyGuy";
             var request = new WhoRequest(rawRequest);
