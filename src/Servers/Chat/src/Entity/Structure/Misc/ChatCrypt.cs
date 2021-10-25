@@ -4,9 +4,9 @@ using UniSpyServer.UniSpyLib.Encryption;
 namespace UniSpyServer.Chat.Entity.Structure.Misc
 {
     /// <summary>
-    /// This class is used to encrypt and decrypt the data for peerchat.
+    /// This class is used to encrypt and decrypt the data for Chat.
     /// 
-    /// Note: this is a csharp version of the peerchat algorithm created by aluigi.
+    /// Note: this is a C-sharp version of the peerchat algorithm created by aluigi.
     /// Original C implementation: http://aluigi.altervista.org/papers/gs_peerchat.h
     /// </summary>
     public sealed class ChatCrypt
@@ -24,6 +24,7 @@ namespace UniSpyServer.Chat.Entity.Structure.Misc
             int datapos = 0;
             List<byte> buffer = new List<byte>();
             long size = data.Length;
+
             while (size-- > 0)
             {
                 num1 = (byte)((num1 + 1) % 256);
@@ -32,7 +33,6 @@ namespace UniSpyServer.Chat.Entity.Structure.Misc
                 ctx.SBox[num1] = ctx.SBox[num2];
                 ctx.SBox[num2] = t;
                 t = (byte)((ctx.SBox[num2] + ctx.SBox[num1]) % 256);
-                data[datapos++] ^= ctx.SBox[t];
                 byte temp = (byte)(data[datapos++] ^ ctx.SBox[t]);
                 buffer.Add(temp);
             }
@@ -89,7 +89,6 @@ namespace UniSpyServer.Chat.Entity.Structure.Misc
                 ctx.SBox[index2] = t;
             }
         }
-
 
         public static bool EncodeIP()
         {
