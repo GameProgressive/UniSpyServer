@@ -19,14 +19,20 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         // TODO: add GetCKeyRequest
 
         //FIXME:
-        /*[Fact]
+        [Fact]
         public void JoinRequestTest()
         {
-            var rawRequest = "JOIN XXXXX";
+            var rawRequest = "JOIN #istanbul";
             var request = new JoinRequest(rawRequest);
             request.Parse();
-            Assert.Equal("XXXXX", request.Password);
-        }*/
+            Assert.Equal("#istanbul", request.ChannelName);
+
+            rawRequest = "JOIN #istanbul password";
+            request = new JoinRequest(rawRequest);
+            request.Parse();
+            Assert.Equal("#istanbul", request.ChannelName);
+            Assert.Equal("password", request.Password);
+        }
 
         // TODO: add _longParam
         /*[Fact]

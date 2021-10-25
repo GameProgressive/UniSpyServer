@@ -18,11 +18,11 @@ namespace UniSpyServer.GameStatus.Handler.CmdHandler
     /// so we do not check response string
     /// </summary>
     [HandlerContract("authp")]
-    public sealed class AuthPHandler : CmdHandlerBase
+    public sealed class AuthPlayerHandler : CmdHandlerBase
     {
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
         private new AuthPResult _result { get => (AuthPResult)base._result; set => base._result = value; }
-        public AuthPHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public AuthPlayerHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
             _result = new AuthPResult();
         }

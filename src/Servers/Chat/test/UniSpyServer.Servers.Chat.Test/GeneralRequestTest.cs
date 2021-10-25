@@ -24,10 +24,6 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
             Assert.Equal("gmtest", request.GameName);
         }
 
-        // TODO: add GetKeyRequest
-
-        // TODO: add GetUdpRelayRequest
-
         [Fact]
         public void InviteRequestTest()
         {
@@ -69,6 +65,9 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
             Assert.Equal("XXXXXXXXXX", request.AuthToken);
             Assert.Equal("YYYYYYYYYY", request.PartnerChallenge);
         }
+        // TODO: add GetKeyRequest
+
+        // TODO: add GetUdpRelayRequest
 
         // FIXME:
         /*[Fact]
@@ -144,13 +143,13 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
         [Fact]
         public void UserRequestTest()
         {
-            var rawRequest = "USER SpyGuy MyPC MyServer";
+            var rawRequest = "USER pants1 127.0.0.1 peerchat.gamespy.com :pants2";
             var request = new UserRequest(rawRequest);
             request.Parse();
-            Assert.Equal("SpyGuy", request.UserName);
-            Assert.Equal("MyPC", request.Hostname);
-            Assert.Equal("MyServer", request.ServerName);
-            //TODO: add _longParam to Assert.Equal("SpyGuy", request.Name);
+            Assert.Equal("pants1", request.UserName);
+            Assert.Equal("pants2", request.Name);
+            Assert.Equal("127.0.0.1", request.Hostname);
+            Assert.Equal("peerchat.gamespy.com", request.ServerName);
         }
 
         [Fact]

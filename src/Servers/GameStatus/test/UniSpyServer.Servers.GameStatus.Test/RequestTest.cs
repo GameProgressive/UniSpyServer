@@ -1,4 +1,5 @@
 using UniSpyServer.GameStatus.Entity.Structure.Request;
+using UniSpyServer.GameStatus.Handler.CmdHandler;
 using Xunit;
 
 namespace UniSpyServer.Servers.GameStatus.Test
@@ -13,6 +14,7 @@ namespace UniSpyServer.Servers.GameStatus.Test
             request.Parse();
             Assert.Equal("crysis2", request.GameName);
             Assert.Equal(30, request.Port);
+            Assert.Equal((uint)1, request.OperationID);
         }
     }
 }
