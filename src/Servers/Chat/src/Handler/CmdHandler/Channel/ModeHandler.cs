@@ -21,12 +21,11 @@ namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
         }
         public ModeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new ModeResult();
         }
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
+
             switch (_request.RequestType)
             {
                 case ModeRequestType.EnableUserQuietFlag:
@@ -34,13 +33,17 @@ namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
                     //we do not need to find user and its channel here
                     break;
                 default:
-                    base.RequestCheck();
+                    if (_request.RawRequest != null)
+                    {
+                        base.RequestCheck();
+                    }
                     break;
             }
         }
 
         protected override void DataOperation()
         {
+            _result = new ModeResult();
             switch (_request.RequestType)
             {
                 case ModeRequestType.EnableUserQuietFlag:

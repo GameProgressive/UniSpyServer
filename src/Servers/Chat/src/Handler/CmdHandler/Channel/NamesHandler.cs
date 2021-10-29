@@ -12,10 +12,17 @@ namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
         private new NamesResult _result { get => (NamesResult)base._result; set => base._result = value; }
         public NamesHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new NamesResult();
+        }
+        protected override void RequestCheck()
+        {
+            if (_request.RawRequest != null)
+            {
+                base.RequestCheck();
+            }
         }
         protected override void DataOperation()
         {
+            _result = new NamesResult();
             _result.AllChannelUserNick = _channel.GetAllUsersNickString();
             _result.ChannelName = _channel.Property.ChannelName;
             _result.RequesterNickName = _user.UserInfo.NickName;
