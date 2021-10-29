@@ -15,8 +15,8 @@ namespace WebServer.Handler.CmdHandler
         protected override void DataOperation()
         {
             base.DataOperation();
-            var jsonStr = JsonConvert.SerializeObject(_request.Values);
-            File.WriteAllText(_sakeFilePath, jsonStr);
+            // var jsonStr = JsonConvert.SerializeObject(_request.Values);
+            // File.WriteAllText(_sakeFilePath, jsonStr);
         }
     }
 }
