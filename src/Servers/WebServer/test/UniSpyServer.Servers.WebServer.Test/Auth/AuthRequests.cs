@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Servers.WebServer.Test.Request
+﻿namespace UniSpyServer.Servers.WebServer.Test.Auth
 {
     public class AuthRequests
     {

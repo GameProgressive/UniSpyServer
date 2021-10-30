@@ -1,9 +1,9 @@
 using System;
 using Xunit;
 using UniSpyServer.WebServer.Entity.Structure.Request.AuthRequest;
-using UniSpyServer.Servers.WebServer.Test.Request;
+using UniSpyServer.Servers.WebServer.Test.Auth;
 
-namespace UniSpyServer.Servers.UniSpyServer.WebServer.Test.RequestTest
+namespace UniSpyServer.Servers.UniSpyServer.WebServer.Test.Auth
 {
     public class AuthRequestsTest
     {
