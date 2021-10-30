@@ -1,7 +1,8 @@
 using Xunit;
 using UniSpyServer.Chat.Entity.Structure.Request.Channel;
+using UniSpyServer.Servers.Chat.Test.Channel;
 
-namespace UniSpyServer.Servers.UniSpyServer.Chat.Test.RequestTest
+namespace UniSpyServer.Servers.Chat.Test.Channel
 {
     public class ChannelRequestTest
     {
@@ -22,13 +23,11 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.Test.RequestTest
         [Fact]
         public void Join()
         {
-            var rawRequest = "JOIN #istanbul";
-            var request = new JoinRequest(rawRequest);
+            var request = new JoinRequest(ChannelRequests.Join);
             request.Parse();
             Assert.Equal("#istanbul", request.ChannelName);
 
-            rawRequest = "JOIN #istanbul password";
-            request = new JoinRequest(rawRequest);
+            request = new JoinRequest(ChannelRequests.JoinWithPass);
             request.Parse();
             Assert.Equal("#istanbul", request.ChannelName);
             Assert.Equal("password", request.Password);
@@ -38,8 +37,7 @@ namespace UniSpyServer.Servers.UniSpyServer.Chat.Test.RequestTest
         /*[Fact]
         public void Kick()
         {
-            var rawRequest = "KICK SpyGuy Spam";
-            var request = new KickRequest(rawRequest);
+            var request = new KickRequest(ChannelRequests.Kick);
             request.Parse();
             Assert.Equal("SpyGuy", request.KickeeNickName);
             Assert.Equal("Spam", request.Reason);
