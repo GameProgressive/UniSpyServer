@@ -4,7 +4,7 @@ using UniSpyServer.WebServer.Entity.Structure.Request.SakeRequest;
 using WebServer.Handler.CmdHandler;
 using Xunit;
 
-namespace UniSpyServer.Servers.UniSpyServer.WebServer.HandlerTest
+namespace UniSpyServer.Servers.UniSpyServer.WebServer.Test.HandlerTest
 {
     public class TestSession : IUniSpySession
     {

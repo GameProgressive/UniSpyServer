@@ -1,7 +1,7 @@
 using Xunit;
 using UniSpyServer.Chat.Entity.Structure.Request.Channel;
 
-namespace UniSpyServer.Servers.UniSpyServer.Chat.RequestTest
+namespace UniSpyServer.Servers.UniSpyServer.Chat.Test.RequestTest
 {
     public class MessageRequestTest
     {
