@@ -3,9 +3,8 @@ using Xunit;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using WebServer.Handler.CmdHandler;
 using UniSpyServer.WebServer.Entity.Structure.Request.SakeRequest;
-using UniSpyServer.Servers.WebServer.Test.Sake;
 
-namespace UniSpyServer.Servers.UniSpyServer.WebServer.Test.Sake
+namespace UniSpyServer.Servers.WebServer.Test.Sake
 {
     public class TestSession : IUniSpySession
     {
