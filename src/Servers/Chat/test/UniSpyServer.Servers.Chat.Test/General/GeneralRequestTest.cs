@@ -1,6 +1,5 @@
 using Xunit;
 using UniSpyServer.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Servers.Chat.Test.General;
 
 namespace UniSpyServer.Servers.Chat.Test.General
 {
