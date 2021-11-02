@@ -23,11 +23,12 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
     }
     public class SakeHandlerTest
     {
+        private static readonly TestSession _session = new TestSession();
         [Fact]
         public void CreateRecordTest()
         {
             var request = new CreateRecordRequest(SakeRequests.CreateRecord);
-            var handler = new CreateRecordHandler(new TestSession(), request);
+            var handler = new CreateRecordHandler(_session, request);
             handler.Handle();
             //When
 
