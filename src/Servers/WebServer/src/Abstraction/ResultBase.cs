@@ -1,6 +1,6 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.WebServer.Abstraction
+namespace UniSpyServer.Servers.WebServer.Abstraction
 {
     public abstract class ResultBase : UniSpyResultBase
     {

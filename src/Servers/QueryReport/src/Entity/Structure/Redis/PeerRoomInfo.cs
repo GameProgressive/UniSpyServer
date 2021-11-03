@@ -1,7 +1,7 @@
 ﻿using System;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace UniSpyServer.QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 {
     public class PeerRoomInfo
     {

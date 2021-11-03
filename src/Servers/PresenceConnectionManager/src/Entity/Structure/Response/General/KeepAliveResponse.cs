@@ -1,7 +1,7 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Response
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response
 {
     public sealed class KeepAliveResponse : ResponseBase
     {

@@ -1,10 +1,10 @@
-﻿using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.ServerBrowser.Entity.Enumerate;
+﻿using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.ServerBrowser.Entity.Structure.Request
+namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
     public sealed class AdHocRequest : RequestBase
     {

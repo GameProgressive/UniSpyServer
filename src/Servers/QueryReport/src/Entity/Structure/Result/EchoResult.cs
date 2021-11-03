@@ -1,7 +1,7 @@
-﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.QueryReport.Entity.Structure.Redis;
+﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
 
-namespace UniSpyServer.QueryReport.Entity.Structure.Result
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Result
 {
     public sealed class EchoResult : ResultBase
     {

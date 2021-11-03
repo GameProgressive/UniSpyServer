@@ -1,9 +1,9 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.PresenceConnectionManager.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Response
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response
 {
     public sealed class GetProfileResponse : ResponseBase
     {

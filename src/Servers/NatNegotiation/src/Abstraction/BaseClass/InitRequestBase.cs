@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Net;
-using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.MiscMethod;
 
-namespace UniSpyServer.NatNegotiation.Entity.Structure.Request
+namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
     public abstract class InitRequestBase : RequestBase
     {

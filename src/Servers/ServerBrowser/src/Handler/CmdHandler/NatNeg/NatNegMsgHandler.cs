@@ -1,13 +1,13 @@
-﻿using UniSpyServer.QueryReport.Entity.Structure.NATNeg;
-using UniSpyServer.QueryReport.Entity.Structure.Redis;
-using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.ServerBrowser.Application;
-using UniSpyServer.ServerBrowser.Entity.Exception;
-using UniSpyServer.ServerBrowser.Entity.Structure.Request;
+﻿using UniSpyServer.Servers.QueryReport.Entity.Structure.NATNeg;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.Servers.ServerBrowser.Application;
+using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.ServerBrowser.Handler.CmdHandler
+namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
     /// <summary>
     /// we need forward this to game server

@@ -1,8 +1,8 @@
-﻿using UniSpyServer.Chat.Network;
+﻿using UniSpyServer.Servers.Chat.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Config;
 
-namespace UniSpyServer.Chat.Application
+namespace UniSpyServer.Servers.Chat.Application
 {
     /// <summary>
     /// A factory that creates instances of servers

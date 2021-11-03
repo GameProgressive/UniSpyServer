@@ -1,6 +1,6 @@
-﻿using UniSpyServer.GameStatus.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.GameStatus.Abstraction.BaseClass;
 
-namespace UniSpyServer.GameStatus.Entity.Structure.Result
+namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Result
 {
     public sealed class NewGameResult : ResultBase
     {

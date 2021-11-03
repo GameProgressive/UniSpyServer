@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.PresenceConnectionManager.Entity.Enumerate
+﻿namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate
 {
     /// <summary>
     /// This enumation defins the supported login method for the users.

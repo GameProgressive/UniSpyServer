@@ -1,6 +1,6 @@
-using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.NewProfile
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewProfile
 {
     public class GPNewProfileBadNickException : GPNewProfileException
     {

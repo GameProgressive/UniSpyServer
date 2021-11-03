@@ -1,12 +1,12 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.PresenceConnectionManager.Entity.Contract;
-using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request.Profile;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Profile;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("updatepro")]
     public sealed class UpdateProHandler : Abstraction.BaseClass.CmdHandlerBase

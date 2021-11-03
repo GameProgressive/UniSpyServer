@@ -1,6 +1,6 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 
-namespace UniSpyServer.Chat.Entity.Structure.Redis
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Redis
 {
     /// <summary>
     /// When a local channel is created the user message will send to redis channel

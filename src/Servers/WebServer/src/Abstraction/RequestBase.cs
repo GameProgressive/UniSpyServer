@@ -2,7 +2,7 @@ using System.IO;
 using System.Xml.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.WebServer.Abstraction
+namespace UniSpyServer.Servers.WebServer.Abstraction
 {
     public abstract class RequestBase : UniSpyRequestBase
     {

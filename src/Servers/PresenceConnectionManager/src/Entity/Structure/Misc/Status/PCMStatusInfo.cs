@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Misc
+﻿namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
 {
     /// <summary>
     /// This status info class is for new SDK version

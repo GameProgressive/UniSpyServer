@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
-namespace UniSpyServer.ServerBrowser.Abstraction.BaseClass
+namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
     public abstract class ServerListUpdateOptionHandlerBase : CmdHandlerBase
     {

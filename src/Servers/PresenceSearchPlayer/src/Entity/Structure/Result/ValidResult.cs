@@ -1,6 +1,6 @@
-﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure.Result
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result
 {
     public sealed class ValidResult : ResultBase
     {

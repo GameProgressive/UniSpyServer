@@ -1,8 +1,8 @@
-﻿using UniSpyServer.ServerBrowser.Entity.Enumerate;
+﻿using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.ServerBrowser.Handler.CommandSwitcher
+namespace UniSpyServer.Servers.ServerBrowser.Handler.CommandSwitcher
 {
     public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {

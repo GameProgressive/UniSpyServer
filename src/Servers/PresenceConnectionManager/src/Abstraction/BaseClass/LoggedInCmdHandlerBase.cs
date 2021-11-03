@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass
+namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
 {
     public abstract class LoggedInCmdHandlerBase : CmdHandlerBase
     {

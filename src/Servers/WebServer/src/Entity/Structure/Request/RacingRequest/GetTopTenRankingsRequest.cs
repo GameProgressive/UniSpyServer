@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using UniSpyServer.WebServer.Abstraction;
-using UniSpyServer.WebServer.Entity.Contract;
+using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpyServer.Servers.WebServer.Entity.Contract;
 
-namespace UniSpyServer.WebServer.Entity.Structure.Request.RacingRequest
+namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.RacingRequest
 {
     [RequestContract("GetTopTenRankings")]
     public class GetTopTenRankingsRequest : RequestBase

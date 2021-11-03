@@ -1,12 +1,12 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Chat.Entity.Structure.Response.General;
-using UniSpyServer.Chat.Entity.Structure.Result.General;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Chat.Handler.CmdHandler.General
+namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
     /// <summary>
     /// Get value of the channel user's key value of all channels

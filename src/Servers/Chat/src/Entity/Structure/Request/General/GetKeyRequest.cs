@@ -1,9 +1,9 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Chat.Entity.Structure.Request.General
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
     /// <summary>
     /// Retrieves a list of global key/value for a single user, or all users.

@@ -1,8 +1,8 @@
 ﻿
-using UniSpyServer.NatNegotiation.Entity.Contract;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.NatNegotiation.Entity.Structure.Request
+namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.AddressCheck)]
     public sealed class AddressRequest : InitRequestBase

@@ -1,6 +1,6 @@
-﻿using UniSpyServer.PresenceConnectionManager.Entity.Enumerate;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 
-namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Misc
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc
 {
     public sealed class PCMBasicInfo
     {

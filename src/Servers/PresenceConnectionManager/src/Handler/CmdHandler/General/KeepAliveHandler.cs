@@ -1,9 +1,9 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.PresenceConnectionManager.Entity.Contract;
-using UniSpyServer.PresenceConnectionManager.Entity.Structure.Response;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("ka")]
     public sealed class KeepAliveHandler : CmdHandlerBase

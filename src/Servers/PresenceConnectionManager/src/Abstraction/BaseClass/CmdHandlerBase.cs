@@ -1,10 +1,10 @@
 ﻿using System;
-using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
-using UniSpyServer.PresenceConnectionManager.Network;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.Servers.PresenceConnectionManager.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass
+namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass
 {
     public abstract class CmdHandlerBase : UniSpyCmdHandlerBase
     {

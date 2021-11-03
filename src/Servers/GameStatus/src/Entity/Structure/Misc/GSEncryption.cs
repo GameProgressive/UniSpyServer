@@ -2,7 +2,7 @@
 using System.Linq;
 using UniSpyServer.UniSpyLib.Encryption;
 
-namespace UniSpyServer.GameStatus.Entity.Structure.Misc
+namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Misc
 {
     public class GSEncryption
     {

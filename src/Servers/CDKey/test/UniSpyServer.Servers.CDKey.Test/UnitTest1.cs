@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace UniSpyServer.Servers.UniSpyServer.CDkey.Test
+namespace UniSpyServer.Servers.UniSpyServer.Servers.CDkey.Test
 {
     public class UnitTest1
     {

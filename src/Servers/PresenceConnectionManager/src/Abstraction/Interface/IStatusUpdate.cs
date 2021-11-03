@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.PresenceConnectionManager.Abstraction.Interface
+﻿namespace UniSpyServer.Servers.PresenceConnectionManager.Abstraction.Interface
 {
     public interface IFriendStatusUpdate
     {

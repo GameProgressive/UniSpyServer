@@ -1,6 +1,6 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 
-namespace UniSpyServer.Chat.Entity.Structure.Result.Channel
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel
 {
     public sealed class TopicResult : ResultBase
     {

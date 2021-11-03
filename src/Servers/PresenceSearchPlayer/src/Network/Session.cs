@@ -1,7 +1,7 @@
-﻿using UniSpyServer.PresenceSearchPlayer.Handler.CmdSwitcher;
+﻿using UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdSwitcher;
 using UniSpyServer.UniSpyLib.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
-namespace UniSpyServer.PresenceSearchPlayer.Network
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Network
 {
     public sealed class Session : UniSpyTcpSession
     {

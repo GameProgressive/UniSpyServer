@@ -1,6 +1,6 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.NatNegotiation.Entity.Exception
+namespace UniSpyServer.Servers.NatNegotiation.Entity.Exception
 {
     public class NNException : UniSpyException
     {

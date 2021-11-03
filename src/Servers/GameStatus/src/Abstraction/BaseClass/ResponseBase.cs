@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.GameStatus.Abstraction.BaseClass
+namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
 {
     public abstract class ResponseBase : UniSpyResponseBase
     {

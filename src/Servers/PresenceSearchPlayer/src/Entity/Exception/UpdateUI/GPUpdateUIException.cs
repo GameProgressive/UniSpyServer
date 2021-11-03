@@ -1,7 +1,7 @@
-using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
-using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.UpdateUI
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.UpdateUI
 {
     public class GPUpdateUIException : GPException
     {

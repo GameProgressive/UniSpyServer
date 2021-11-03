@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.ServerBrowser.Abstraction.BaseClass
+namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
 
     /// <summary>

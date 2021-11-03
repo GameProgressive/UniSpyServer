@@ -1,18 +1,18 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Application;
-using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception;
-using UniSpyServer.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Chat.Entity.Structure.Misc;
-using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Chat.Entity.Structure.Response.General;
-using UniSpyServer.Chat.Entity.Structure.Result.General;
-using UniSpyServer.Chat.Handler.SystemHandler.ChannelManage;
-using UniSpyServer.Chat.Network;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Application;
+using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Exception;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
+using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
+using UniSpyServer.Servers.Chat.Network;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-namespace UniSpyServer.Chat.Handler.CmdHandler.General
+namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
     /// <summary>
     /// Get a channel user's basic information

@@ -1,8 +1,8 @@
-﻿using UniSpyServer.PresenceConnectionManager.Network;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Config;
 
-namespace UniSpyServer.PresenceConnectionManager.Application
+namespace UniSpyServer.Servers.PresenceConnectionManager.Application
 {
     /// <summary>
     /// A factory that creates instances of servers

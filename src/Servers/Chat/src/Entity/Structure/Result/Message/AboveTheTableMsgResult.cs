@@ -1,6 +1,6 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass.Message;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass.Message;
 
-namespace UniSpyServer.Chat.Entity.Structure.Result.Message
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.Message
 {
     public sealed class AboveTheTableMsgResult : MsgResultBase
     {

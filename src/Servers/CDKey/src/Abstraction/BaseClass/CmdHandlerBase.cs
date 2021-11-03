@@ -1,9 +1,9 @@
-﻿using UniSpyServer.CDkey.Entity.Structure.Result;
-using UniSpyServer.CDkey.Network;
+﻿using UniSpyServer.Servers.CDkey.Entity.Structure.Result;
+using UniSpyServer.Servers.CDkey.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.CDkey.Abstraction.BaseClass
+namespace UniSpyServer.Servers.CDkey.Abstraction.BaseClass
 {
     public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {

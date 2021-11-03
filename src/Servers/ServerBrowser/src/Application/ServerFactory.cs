@@ -1,10 +1,10 @@
-﻿using UniSpyServer.ServerBrowser.Network;
+﻿using UniSpyServer.Servers.ServerBrowser.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Config;
-using UniSpyServer.QueryReport.Handler.SystemHandler;
+using UniSpyServer.Servers.QueryReport.Handler.SystemHandler;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 
-namespace UniSpyServer.ServerBrowser.Application
+namespace UniSpyServer.Servers.ServerBrowser.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

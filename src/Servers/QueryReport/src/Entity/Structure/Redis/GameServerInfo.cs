@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
-using UniSpyServer.QueryReport.Entity.Structure.ReportData;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.ReportData;
 using System;
 using System.Net;
 
-namespace UniSpyServer.QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 {
     /// <summary>
     /// This is the server 

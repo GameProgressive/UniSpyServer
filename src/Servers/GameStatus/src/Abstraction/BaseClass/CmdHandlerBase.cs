@@ -1,10 +1,10 @@
-﻿using UniSpyServer.GameStatus.Entity.Structure.Response;
-using UniSpyServer.GameStatus.Entity.Structure.Result;
-using UniSpyServer.GameStatus.Network;
+﻿using UniSpyServer.Servers.GameStatus.Entity.Structure.Response;
+using UniSpyServer.Servers.GameStatus.Entity.Structure.Result;
+using UniSpyServer.Servers.GameStatus.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.GameStatus.Abstraction.BaseClass
+namespace UniSpyServer.Servers.GameStatus.Abstraction.BaseClass
 {
     /// <summary>
     /// we only use selfdefine error code here

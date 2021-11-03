@@ -1,8 +1,8 @@
 ﻿using System.Net;
-using UniSpyServer.CDkey.Handler.CmdSwitcher;
+using UniSpyServer.Servers.CDkey.Handler.CmdSwitcher;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
-namespace UniSpyServer.CDkey.Network
+namespace UniSpyServer.Servers.CDkey.Network
 {
     public sealed class Session : UniSpyUdpSession
     {

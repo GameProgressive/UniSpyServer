@@ -1,9 +1,9 @@
-﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Request;
-using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure.Response
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response
 {
     public sealed class NicksResponse : ResponseBase
     {

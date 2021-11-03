@@ -1,7 +1,7 @@
 ﻿using System;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.QueryReport.Application
+namespace UniSpyServer.Servers.QueryReport.Application
 {
     public class Program
     {

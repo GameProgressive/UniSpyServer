@@ -3,7 +3,7 @@ using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace UniSpyServer.QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 {
     public sealed class PeerGroupInfoRedisOperator :
         UniSpyRedisOperator<PeerGroupInfoRedisKey, PeerGroupInfo>

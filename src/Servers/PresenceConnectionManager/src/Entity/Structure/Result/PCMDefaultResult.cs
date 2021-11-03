@@ -1,6 +1,6 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 
-namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Result
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result
 {
     public sealed class PCMDefaultResult : ResultBase
     {

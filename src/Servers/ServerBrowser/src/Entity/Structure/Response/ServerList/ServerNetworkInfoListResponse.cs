@@ -1,8 +1,8 @@
-﻿using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using System;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.ServerBrowser.Entity.Structure.Response.ServerList
+namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerList
 {
     /// <summary>
     /// Only get the servers IP

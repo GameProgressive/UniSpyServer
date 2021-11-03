@@ -1,9 +1,9 @@
-﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.NatNegotiation.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.NatNegotiation.Entity.Structure.Response
+namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response
 {
     public sealed class ConnectResponse : ResponseBase
     {

@@ -1,8 +1,8 @@
-﻿using UniSpyServer.QueryReport.Entity.Enumerate;
+﻿using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.QueryReport.Handler.CmdSwitcher
+namespace UniSpyServer.Servers.QueryReport.Handler.CmdSwitcher
 {
     public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {

@@ -1,11 +1,11 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Structure.Request.Message;
-using UniSpyServer.Chat.Entity.Structure.Response.Message;
-using UniSpyServer.Chat.Entity.Structure.Result.Message;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response.Message;
+using UniSpyServer.Servers.Chat.Entity.Structure.Result.Message;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Chat.Handler.CmdHandler.Message
+namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
 {
     [HandlerContract("PRIVMSG")]
     public sealed class PrivateMsgHandler : MsgHandlerBase

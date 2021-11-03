@@ -1,7 +1,7 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 
-namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Request.Profile
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("updateui")]
     public sealed class UpdateUIRequest : RequestBase

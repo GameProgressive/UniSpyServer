@@ -1,11 +1,11 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.Chat.Entity.Structure.Response.Channel;
-using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
+using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
+namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
     // Sets channel key/values.
     // If user is NULL or "", the keys will be set on the channel.

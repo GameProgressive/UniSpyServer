@@ -1,5 +1,5 @@
-﻿using UniSpyServer.ServerBrowser.Entity.Enumerate;
-namespace UniSpyServer.ServerBrowser.Abstraction.BaseClass
+﻿using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
+namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
     public abstract class ServerListUpdateOptionRequestBase : RequestBase
     {

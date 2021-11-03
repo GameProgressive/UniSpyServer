@@ -1,13 +1,13 @@
-﻿using UniSpyServer.NatNegotiation.Application;
-using UniSpyServer.NatNegotiation.Entity.Structure.Redis;
-using UniSpyServer.NatNegotiation.Entity.Structure.Response;
-using UniSpyServer.NatNegotiation.Entity.Structure.Result;
-using UniSpyServer.NatNegotiation.Network;
+﻿using UniSpyServer.Servers.NatNegotiation.Application;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
+using UniSpyServer.Servers.NatNegotiation.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.LinqToRedis;
 
-namespace UniSpyServer.NatNegotiation.Abstraction.BaseClass
+namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
     /// <summary>
     /// because we are using self defined error code so we do not need

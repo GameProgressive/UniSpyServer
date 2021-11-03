@@ -1,6 +1,6 @@
 using System;
 using Xunit;
-namespace UniSpyServer.Servers.UniSpyServer.QueryReport.Test
+namespace UniSpyServer.Servers.UniSpyServer.Servers.QueryReport.Test
 {
     public class RequestTest
     {

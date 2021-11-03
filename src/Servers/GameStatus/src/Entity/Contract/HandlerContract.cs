@@ -1,5 +1,5 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
-namespace UniSpyServer.GameStatus.Entity.Contract
+namespace UniSpyServer.Servers.GameStatus.Entity.Contract
 {
     public class HandlerContract : HandlerContractBase
     {

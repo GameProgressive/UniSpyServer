@@ -1,18 +1,18 @@
-using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.NatNegotiation.Application;
-using UniSpyServer.NatNegotiation.Entity.Exception;
-using UniSpyServer.NatNegotiation.Entity.Structure.Redis;
-using UniSpyServer.NatNegotiation.Entity.Structure.Request;
-using UniSpyServer.NatNegotiation.Entity.Structure.Response;
-using UniSpyServer.NatNegotiation.Entity.Structure.Result;
+using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Application;
+using UniSpyServer.Servers.NatNegotiation.Entity.Exception;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
-using UniSpyServer.NatNegotiation.Entity.Contract;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.NatNegotiation.Handler.CmdHandler
+namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
     [HandlerContract(RequestType.Connect)]
     public sealed class ConnectHandler : CmdHandlerBase

@@ -1,8 +1,8 @@
-﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.PresenceSearchPlayer.Entity.Contract;
-using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Structure.Request
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
 {
     public enum SearchRequestType
     {

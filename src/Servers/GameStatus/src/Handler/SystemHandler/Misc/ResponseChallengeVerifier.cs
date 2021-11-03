@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.GameStatus.Handler.CmdHandler.SystemHandler.Misc
+﻿namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler.SystemHandler.Misc
 {
     public class ResponseChallengeVerifier
     {

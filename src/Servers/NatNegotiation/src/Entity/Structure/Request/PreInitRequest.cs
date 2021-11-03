@@ -1,8 +1,8 @@
-﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.NatNegotiation.Entity.Contract;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.NatNegotiation.Entity.Structure.Request
+namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.PreInit)]
     public sealed class PreInitRequest : RequestBase

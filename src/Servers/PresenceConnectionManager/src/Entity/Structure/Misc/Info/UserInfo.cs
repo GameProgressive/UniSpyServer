@@ -1,7 +1,7 @@
-﻿using UniSpyServer.PresenceConnectionManager.Entity.Structure.Misc;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc;
 using System;
 
-namespace UniSpyServer.PresenceConnectionManager.Structure.Data
+namespace UniSpyServer.Servers.PresenceConnectionManager.Structure.Data
 {
     public sealed class UserInfo
     {

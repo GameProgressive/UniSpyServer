@@ -1,5 +1,5 @@
 using Xunit;
-using UniSpyServer.WebServer.Entity.Structure.Request.SakeRequest;
+using UniSpyServer.Servers.WebServer.Entity.Structure.Request.SakeRequest;
 
 namespace UniSpyServer.Servers.WebServer.Test.Sake
 {

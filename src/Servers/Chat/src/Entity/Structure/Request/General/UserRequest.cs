@@ -1,7 +1,7 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
 
-namespace UniSpyServer.Chat.Entity.Structure.Request.General
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
     [RequestContract("USER")]
     public sealed class UserRequest : RequestBase

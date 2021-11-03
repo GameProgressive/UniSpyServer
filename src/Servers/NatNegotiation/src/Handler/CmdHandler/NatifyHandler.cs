@@ -1,12 +1,12 @@
-﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.NatNegotiation.Entity.Contract;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.NatNegotiation.Entity.Structure.Request;
-using UniSpyServer.NatNegotiation.Entity.Structure.Response;
-using UniSpyServer.NatNegotiation.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Response;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.NatNegotiation.Handler.CmdHandler
+namespace UniSpyServer.Servers.NatNegotiation.Handler.CmdHandler
 {
     [HandlerContract(RequestType.NatifyRequest)]
     public sealed class NatifyHandler : CmdHandlerBase

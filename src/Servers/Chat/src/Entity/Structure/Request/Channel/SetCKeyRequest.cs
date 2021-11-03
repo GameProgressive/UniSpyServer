@@ -1,10 +1,10 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Chat.Entity.Structure.Request.Channel
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {
     [RequestContract("SETCKEY")]
     public sealed class SetCKeyRequest : ChannelRequestBase

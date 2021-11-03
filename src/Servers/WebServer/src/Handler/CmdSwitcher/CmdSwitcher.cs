@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.WebServer.Handler
+namespace UniSpyServer.Servers.WebServer.Handler
 {
     public class CmdSwitcher : UniSpyCmdSwitcherBase
     {

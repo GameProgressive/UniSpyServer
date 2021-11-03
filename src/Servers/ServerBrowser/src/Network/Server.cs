@@ -1,10 +1,10 @@
 ﻿using NetCoreServer;
-using UniSpyServer.QueryReport.Handler.SystemHandler;
+using UniSpyServer.Servers.QueryReport.Handler.SystemHandler;
 using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
 
-namespace UniSpyServer.ServerBrowser.Network
+namespace UniSpyServer.Servers.ServerBrowser.Network
 {
     /// <summary>
     /// This class emulates the master.gamespy.com TCP server on port 28910.

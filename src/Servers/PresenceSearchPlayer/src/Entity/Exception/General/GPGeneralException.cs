@@ -1,7 +1,7 @@
-using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.General
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General
 {
     public class GPException : UniSpyException
     {

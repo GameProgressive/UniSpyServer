@@ -1,11 +1,11 @@
 ﻿using System;
-using UniSpyServer.Chat.Entity.Exception.IRC.General;
-using UniSpyServer.Chat.Entity.Structure.Response;
-using UniSpyServer.Chat.Network;
+using UniSpyServer.Servers.Chat.Entity.Exception.IRC.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response;
+using UniSpyServer.Servers.Chat.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Chat.Abstraction.BaseClass
+namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {
     /// <summary>
     /// error code condition is complicated

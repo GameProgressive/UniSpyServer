@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.PresenceConnectionManager.Entity.Structure
+﻿namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure
 {
     public sealed class PCMRequestName
     {

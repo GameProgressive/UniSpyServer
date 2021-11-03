@@ -1,8 +1,8 @@
 using System.Net;
 using Xunit;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using WebServer.Handler.CmdHandler;
-using UniSpyServer.WebServer.Entity.Structure.Request.SakeRequest;
+using UniSpyServer.Servers.WebServer.Handler.CmdHandler;
+using UniSpyServer.Servers.WebServer.Entity.Structure.Request.SakeRequest;
 
 namespace UniSpyServer.Servers.WebServer.Test.Sake
 {
