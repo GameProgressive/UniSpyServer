@@ -1,6 +1,6 @@
-using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.UpdatePro
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.UpdatePro
 {
     public class GPUpdateProBadNickException : GPUpdateProException
     {

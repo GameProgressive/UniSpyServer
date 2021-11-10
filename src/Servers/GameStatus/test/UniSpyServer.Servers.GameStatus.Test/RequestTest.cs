@@ -1,5 +1,5 @@
-using UniSpyServer.GameStatus.Entity.Structure.Request;
-using UniSpyServer.GameStatus.Handler.CmdHandler;
+using UniSpyServer.Servers.GameStatus.Entity.Structure.Request;
+using UniSpyServer.Servers.GameStatus.Handler.CmdHandler;
 using Xunit;
 
 namespace UniSpyServer.Servers.GameStatus.Test

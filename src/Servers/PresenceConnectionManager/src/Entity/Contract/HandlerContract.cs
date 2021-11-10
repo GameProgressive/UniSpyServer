@@ -1,6 +1,6 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace UniSpyServer.PresenceConnectionManager.Entity.Contract
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract
 {
     public class HandlerContract : HandlerContractBase
     {

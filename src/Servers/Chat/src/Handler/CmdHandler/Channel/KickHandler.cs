@@ -1,14 +1,14 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception;
-using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Chat.Entity.Structure.Request.Channel;
-using UniSpyServer.Chat.Entity.Structure.Response.Channel;
-using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Exception;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
+using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Chat.Handler.CmdHandler.Channel
+namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
     [HandlerContract("KICK")]
     public sealed class KickHandler : ChannelHandlerBase

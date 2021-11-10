@@ -1,10 +1,10 @@
-﻿using UniSpyServer.QueryReport.Entity.Enumerate;
+﻿using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using System;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.QueryReport.Entity.Structure.ReportData
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.ReportData
 {
     public class ServerData
     {

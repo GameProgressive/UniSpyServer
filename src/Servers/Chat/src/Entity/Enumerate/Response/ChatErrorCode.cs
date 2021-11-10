@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.Chat.Entity.Structure
+﻿namespace UniSpyServer.Servers.Chat.Entity.Structure
 {
     public enum ChatErrorCode
     {

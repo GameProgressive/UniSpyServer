@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace UniSpyServer.ServerBrowser.Handler.SystemHandler.Filter
+namespace UniSpyServer.Servers.ServerBrowser.Handler.SystemHandler.Filter
 {
     public class GroupFilter
     {

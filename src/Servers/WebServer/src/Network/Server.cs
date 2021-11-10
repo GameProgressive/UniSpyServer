@@ -3,7 +3,7 @@ using System.Net;
 using NetCoreServer;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Http.Server;
 
-namespace UniSpyServer.WebServer.Network
+namespace UniSpyServer.Servers.WebServer.Network
 {
     public sealed class Server : UniSpyHttpServer
     {

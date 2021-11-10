@@ -1,12 +1,12 @@
-﻿using UniSpyServer.Chat.Entity.Structure.Request;
-using UniSpyServer.Chat.Entity.Structure.Request.Channel;
+﻿using UniSpyServer.Servers.Chat.Entity.Structure.Request;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
     public sealed class ChannelProperty
     {

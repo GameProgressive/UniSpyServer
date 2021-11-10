@@ -1,8 +1,8 @@
-﻿using UniSpyServer.GameStatus.Entity.Structure.Misc;
-using UniSpyServer.GameStatus.Handler.CmdSwitcher;
+﻿using UniSpyServer.Servers.GameStatus.Entity.Structure.Misc;
+using UniSpyServer.Servers.GameStatus.Handler.CmdSwitcher;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
-namespace UniSpyServer.GameStatus.Network
+namespace UniSpyServer.Servers.GameStatus.Network
 {
     public sealed class Session : UniSpyTcpSession
     {

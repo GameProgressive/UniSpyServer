@@ -1,13 +1,13 @@
-﻿using UniSpyServer.QueryReport.Entity.Structure.Redis;
-using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.ServerBrowser.Entity.Exception;
-using UniSpyServer.ServerBrowser.Entity.Structure.Request;
-using UniSpyServer.ServerBrowser.Entity.Structure.Response;
-using UniSpyServer.ServerBrowser.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.ServerBrowser.Handler.CmdHandler
+namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
     /// <summary>
     /// Get full rules for a server (for example, to get

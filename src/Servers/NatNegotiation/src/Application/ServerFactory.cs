@@ -1,8 +1,8 @@
-﻿using UniSpyServer.NatNegotiation.Network;
+﻿using UniSpyServer.Servers.NatNegotiation.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Config;
 
-namespace UniSpyServer.NatNegotiation.Application
+namespace UniSpyServer.Servers.NatNegotiation.Application
 {
     /// <summary>
     /// A factory that creates instances of servers

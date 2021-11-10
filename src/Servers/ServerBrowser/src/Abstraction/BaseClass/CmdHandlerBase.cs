@@ -1,10 +1,10 @@
-﻿using UniSpyServer.ServerBrowser.Entity.Structure.Response;
-using UniSpyServer.ServerBrowser.Entity.Structure.Result;
-using UniSpyServer.ServerBrowser.Network;
+﻿using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;
+using UniSpyServer.Servers.ServerBrowser.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.ServerBrowser.Abstraction.BaseClass
+namespace UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass
 {
     public abstract class CmdHandlerBase : UniSpyServer.UniSpyLib.Abstraction.BaseClass.UniSpyCmdHandlerBase
     {

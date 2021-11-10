@@ -1,8 +1,8 @@
-﻿using UniSpyServer.NatNegotiation.Entity.Contract;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.NatNegotiation.Entity.Structure.Request
+namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.NatifyRequest)]
     public sealed class NatifyRequest : InitRequestBase

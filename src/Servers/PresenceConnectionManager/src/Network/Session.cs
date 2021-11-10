@@ -1,10 +1,10 @@
-﻿using UniSpyServer.PresenceConnectionManager.Entity.Enumerate;
-using UniSpyServer.PresenceConnectionManager.Handler.CommandSwitcher;
-using UniSpyServer.PresenceConnectionManager.Structure;
-using UniSpyServer.PresenceConnectionManager.Structure.Data;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceConnectionManager.Handler.CommandSwitcher;
+using UniSpyServer.Servers.PresenceConnectionManager.Structure;
+using UniSpyServer.Servers.PresenceConnectionManager.Structure.Data;
 using UniSpyServer.UniSpyLib.Logging;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Tcp.Server;
-namespace UniSpyServer.PresenceConnectionManager.Network
+namespace UniSpyServer.Servers.PresenceConnectionManager.Network
 {
     /// <summary>
     /// Gamespy Client Manager

@@ -1,6 +1,6 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.Chat.Entity.Exception
+namespace UniSpyServer.Servers.Chat.Entity.Exception
 {
     public sealed class Exception : UniSpyException
     {

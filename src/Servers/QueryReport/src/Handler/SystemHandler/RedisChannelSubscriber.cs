@@ -1,16 +1,16 @@
-using UniSpyServer.QueryReport.Application;
-using UniSpyServer.QueryReport.Entity.Exception;
-using UniSpyServer.QueryReport.Entity.Structure.NATNeg;
-using UniSpyServer.QueryReport.Entity.Structure.Request;
-using UniSpyServer.QueryReport.Entity.Structure.Response;
-using UniSpyServer.QueryReport.Entity.Structure.Result;
-using UniSpyServer.QueryReport.Network;
+using UniSpyServer.Servers.QueryReport.Application;
+using UniSpyServer.Servers.QueryReport.Entity.Exception;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.NATNeg;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
+using UniSpyServer.Servers.QueryReport.Network;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Entity.Structure;
 
-namespace UniSpyServer.QueryReport.Handler.SystemHandler
+namespace UniSpyServer.Servers.QueryReport.Handler.SystemHandler
 {
     public class RedisChannelSubscriber : UniSpyRedisChannel<NatNegCookie>
     {

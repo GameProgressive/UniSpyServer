@@ -1,7 +1,7 @@
-using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
-using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.Status
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.Status
 {
     public class GPStatusException : GPException
     {

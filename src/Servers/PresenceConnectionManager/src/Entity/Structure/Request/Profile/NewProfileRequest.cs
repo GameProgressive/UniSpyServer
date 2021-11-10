@@ -1,8 +1,8 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.PresenceConnectionManager.Entity.Contract;
-using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Request.Profile
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("newprofile")]
     public sealed class NewProfileRequest : RequestBase

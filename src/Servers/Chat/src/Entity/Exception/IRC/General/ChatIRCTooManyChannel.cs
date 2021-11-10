@@ -1,5 +1,5 @@
-using UniSpyServer.Chat.Entity.Structure.Misc;
-namespace UniSpyServer.Chat.Entity.Exception.IRC.General
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
+namespace UniSpyServer.Servers.Chat.Entity.Exception.IRC.General
 {
     public sealed class ChatIRCTooManyChannels : IRCException
     {

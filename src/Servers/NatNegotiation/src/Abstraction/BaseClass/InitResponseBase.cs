@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using UniSpyServer.NatNegotiation.Entity.Structure.Request;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.NatNegotiation.Abstraction.BaseClass
+namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class InitResponseBase : ResponseBase
     {

@@ -2,7 +2,7 @@
 
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 
-namespace UniSpyServer.NatNegotiation.Network
+namespace UniSpyServer.Servers.NatNegotiation.Network
 {
     public sealed class SessionManager : UniSpyUdpSessionManager
     {

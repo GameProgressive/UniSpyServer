@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.PresenceConnectionManager.Entity.Structure.Data
+﻿namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Data
 {
     public class PCMProfileInfo
     {

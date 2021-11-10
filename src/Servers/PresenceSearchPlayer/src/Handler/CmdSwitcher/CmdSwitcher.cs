@@ -1,11 +1,11 @@
-﻿using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+﻿using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using System;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.PresenceSearchPlayer.Handler.CmdSwitcher
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdSwitcher
 {
     public sealed class CmdSwitcher : UniSpyCmdSwitcherBase
     {

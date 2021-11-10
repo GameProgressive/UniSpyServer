@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using UniSpyServer.WebServer.Abstraction;
-using UniSpyServer.WebServer.Entity.Contract;
+using UniSpyServer.Servers.WebServer.Abstraction;
+using UniSpyServer.Servers.WebServer.Entity.Contract;
 
-namespace UniSpyServer.WebServer.Entity.Structure.Request.SakeRequest
+namespace UniSpyServer.Servers.WebServer.Entity.Structure.Request.SakeRequest
 {
     [RequestContract("GetSpecificRecords")]
     public class GetSpecificRecordsRequest : SakeRequestBase

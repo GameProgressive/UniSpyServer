@@ -1,12 +1,12 @@
-﻿using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.ServerBrowser.Entity.Enumerate;
-using UniSpyServer.ServerBrowser.Entity.Exception;
+﻿using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
 using System;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.ServerBrowser.Entity.Structure.Request
+namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Request
 {
     /// <summary>
     /// ServerList also called ServerRule in GameSpy SDK

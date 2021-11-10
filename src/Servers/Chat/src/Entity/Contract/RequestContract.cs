@@ -1,6 +1,6 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace UniSpyServer.Chat.Entity.Contract
+namespace UniSpyServer.Servers.Chat.Entity.Contract
 {
     public class RequestContract : RequestContractBase
     {

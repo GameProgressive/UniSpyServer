@@ -1,6 +1,6 @@
-using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.General
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General
 {
     public class GPForcedDisconnectException : GPException
     {

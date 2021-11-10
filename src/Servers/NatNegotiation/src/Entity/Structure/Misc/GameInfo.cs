@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.NatNegotiation.Entity.Structure
+﻿namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure
 {
     public class GameInfo
     {

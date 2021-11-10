@@ -1,8 +1,8 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-using UniSpyServer.WebServer.Network;
+using UniSpyServer.Servers.WebServer.Network;
 
-namespace UniSpyServer.WebServer.Abstraction
+namespace UniSpyServer.Servers.WebServer.Abstraction
 {
     public abstract class CmdHandlerBase : UniSpyCmdHandlerBase
     {

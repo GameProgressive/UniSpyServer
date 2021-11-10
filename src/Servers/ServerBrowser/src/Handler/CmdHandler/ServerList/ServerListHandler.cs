@@ -1,14 +1,14 @@
 using System.Linq;
-using UniSpyServer.ServerBrowser.Entity.Contract;
-using UniSpyServer.QueryReport.Entity.Structure.Redis;
-using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
-using UniSpyServer.ServerBrowser.Entity.Enumerate;
-using UniSpyServer.ServerBrowser.Entity.Exception;
-using UniSpyServer.ServerBrowser.Entity.Structure.Packet.Response;
-using UniSpyServer.ServerBrowser.Entity.Structure.Response.ServerList;
-using UniSpyServer.ServerBrowser.Entity.Structure.Result;
+using UniSpyServer.Servers.ServerBrowser.Entity.Contract;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
+using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
+using UniSpyServer.Servers.ServerBrowser.Entity.Exception;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Packet.Response;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Response.ServerList;
+using UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
-namespace UniSpyServer.ServerBrowser.Handler.CmdHandler
+namespace UniSpyServer.Servers.ServerBrowser.Handler.CmdHandler
 {
     [HandlerContract(RequestType.ServerListRequest)]
     public class ServerListHandler : ServerListUpdateOptionHandlerBase

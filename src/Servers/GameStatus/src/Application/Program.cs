@@ -1,7 +1,7 @@
 ﻿using System;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.GameStatus.Application
+namespace UniSpyServer.Servers.GameStatus.Application
 {
     public class Program
     {

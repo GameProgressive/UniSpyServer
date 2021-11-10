@@ -1,7 +1,7 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace UniSpyServer.Chat.Entity.Structure.Result.General
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Result.General
 {
     public sealed class WhoDataModel
     {

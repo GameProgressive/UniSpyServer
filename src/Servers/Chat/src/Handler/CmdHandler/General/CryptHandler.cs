@@ -1,14 +1,14 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Exception;
-using UniSpyServer.Chat.Entity.Structure.Misc;
-using UniSpyServer.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Chat.Entity.Structure.Response.General;
-using UniSpyServer.Chat.Entity.Structure.Result.General;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Exception;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response.General;
+using UniSpyServer.Servers.Chat.Entity.Structure.Result.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.Chat.Handler.CmdHandler.General
+namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
     [HandlerContract("CRYPT")]
     public sealed class CryptHandler : CmdHandlerBase

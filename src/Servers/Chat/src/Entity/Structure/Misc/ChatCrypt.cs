@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Encryption;
 
-namespace UniSpyServer.Chat.Entity.Structure.Misc
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
 {
     /// <summary>
     /// This class is used to encrypt and decrypt the data for Chat.

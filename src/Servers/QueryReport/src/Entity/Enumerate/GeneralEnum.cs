@@ -1,4 +1,4 @@
-﻿namespace UniSpyServer.QueryReport.Entity.Enumerate
+﻿namespace UniSpyServer.Servers.QueryReport.Entity.Enumerate
 {
     public enum RequestType : byte
     {

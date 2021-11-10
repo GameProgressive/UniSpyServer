@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace UniSpyServer.Servers.UniSpyServer.ServerBrowser.Test
+namespace UniSpyServer.Servers.UniSpyServer.Servers.ServerBrowser.Test
 {
     public class RequestTest
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using UniSpyServer.UniSpyLib.Extensions;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.QueryReport.Entity.Structure.ReportData
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.ReportData
 {
     public class PlayerData
     {

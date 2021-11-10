@@ -1,15 +1,15 @@
-﻿using UniSpyServer.QueryReport.Abstraction.BaseClass;
-using UniSpyServer.QueryReport.Entity.contract;
-using UniSpyServer.QueryReport.Entity.Enumerate;
-using UniSpyServer.QueryReport.Entity.Exception;
-using UniSpyServer.QueryReport.Entity.Structure.Redis;
-using UniSpyServer.QueryReport.Entity.Structure.Request;
-using UniSpyServer.QueryReport.Entity.Structure.Response;
-using UniSpyServer.QueryReport.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.QueryReport.Abstraction.BaseClass;
+using UniSpyServer.Servers.QueryReport.Entity.contract;
+using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.Entity.Exception;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Request;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Response;
+using UniSpyServer.Servers.QueryReport.Entity.Structure.Result;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.QueryReport.Handler.CmdHandler
+namespace UniSpyServer.Servers.QueryReport.Handler.CmdHandler
 {
     [HandlerContract(RequestType.Challenge)]
     public sealed class ChallengeHandler : CmdHandlerBase

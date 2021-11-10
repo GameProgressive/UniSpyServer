@@ -1,8 +1,8 @@
-﻿using UniSpyServer.QueryReport.Network;
+﻿using UniSpyServer.Servers.QueryReport.Network;
 using UniSpyServer.UniSpyLib.Config;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 
-namespace UniSpyServer.QueryReport.Application
+namespace UniSpyServer.Servers.QueryReport.Application
 {
     /// <summary>
     /// A factory that create the instance of servers

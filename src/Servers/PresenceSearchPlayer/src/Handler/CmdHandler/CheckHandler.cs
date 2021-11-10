@@ -1,16 +1,16 @@
-﻿using UniSpyServer.PresenceSearchPlayer.Abstraction.BaseClass;
-using UniSpyServer.PresenceSearchPlayer.Entity.Contract;
-using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
-using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Exception;
-using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Request;
-using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Response;
-using UniSpyServer.PresenceSearchPlayer.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.PresenceSearchPlayer.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Exception;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Response;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Result;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace UniSpyServer.PresenceSearchPlayer.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 {
     [HandlerContract("check")]
     public sealed class CheckHandler : CmdHandlerBase

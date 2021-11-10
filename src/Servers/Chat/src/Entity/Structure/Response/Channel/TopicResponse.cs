@@ -1,9 +1,9 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Structure.Misc;
-using UniSpyServer.Chat.Entity.Structure.Result.Channel;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
+using UniSpyServer.Servers.Chat.Entity.Structure.Result.Channel;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.Chat.Entity.Structure.Response.Channel
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
 {
     public sealed class TopicResponse : ResponseBase
     {

@@ -1,8 +1,8 @@
 using System;
 using System.Net;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 
-namespace UniSpyServer.NatNegotiation.Abstraction.BaseClass
+namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
     public abstract class InitResultBase : ResultBase
     {

@@ -1,7 +1,7 @@
-using UniSpyServer.QueryReport.Entity.Enumerate;
+using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace UniSpyServer.QueryReport.Entity.contract
+namespace UniSpyServer.Servers.QueryReport.Entity.contract
 {
     public class HandlerContract : HandlerContractBase
     {

@@ -1,7 +1,7 @@
-﻿using UniSpyServer.Chat.Entity.Structure.Request.Channel;
+﻿using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using System.Collections.Generic;
 
-namespace UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
     public sealed class ChannelMode
     {

@@ -1,8 +1,8 @@
-﻿using UniSpyServer.PresenceSearchPlayer.Network;
+﻿using UniSpyServer.Servers.PresenceSearchPlayer.Network;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Config;
 
-namespace UniSpyServer.PresenceSearchPlayer.Application
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
 {
     /// <summary>
     /// A factory that creates instances of servers

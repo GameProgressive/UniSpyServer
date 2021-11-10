@@ -1,7 +1,7 @@
 ﻿using System;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.Chat.Application
+namespace UniSpyServer.Servers.Chat.Application
 {
     public class Program
     {

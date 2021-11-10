@@ -1,10 +1,10 @@
-﻿using UniSpyServer.Chat.Abstraction.BaseClass;
-using UniSpyServer.Chat.Entity.Contract;
-using UniSpyServer.Chat.Entity.Structure.Misc.ChannelInfo;
-using UniSpyServer.Chat.Entity.Structure.Request.General;
+﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+using UniSpyServer.Servers.Chat.Entity.Contract;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.Chat.Handler.CmdHandler.General
+namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 {
     /// <summary>
     /// set every channel key value on this user

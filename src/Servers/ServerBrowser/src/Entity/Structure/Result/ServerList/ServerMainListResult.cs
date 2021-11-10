@@ -1,8 +1,8 @@
-﻿using UniSpyServer.QueryReport.Entity.Structure.Redis;
-using UniSpyServer.ServerBrowser.Abstraction.BaseClass;
+﻿using UniSpyServer.Servers.QueryReport.Entity.Structure.Redis;
+using UniSpyServer.Servers.ServerBrowser.Abstraction.BaseClass;
 using System.Collections.Generic;
 
-namespace UniSpyServer.ServerBrowser.Entity.Structure.Result
+namespace UniSpyServer.Servers.ServerBrowser.Entity.Structure.Result
 {
     public class ServerMainListResult : ServerListUpdateOptionResultBase
     {

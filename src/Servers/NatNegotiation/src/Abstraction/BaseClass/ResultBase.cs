@@ -1,7 +1,7 @@
-﻿using UniSpyServer.NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.NatNegotiation.Abstraction.BaseClass
+namespace UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass
 {
     public class ResultBase : UniSpyResultBase
     {

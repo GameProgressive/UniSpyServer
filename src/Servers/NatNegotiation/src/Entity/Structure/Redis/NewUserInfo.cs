@@ -1,14 +1,14 @@
 using System;
 using System.Net;
-using UniSpyServer.NatNegotiation.Application;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.NatNegotiation.Entity.Structure.Request;
+using UniSpyServer.Servers.NatNegotiation.Application;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
+using UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request;
 using Newtonsoft.Json;
 using StackExchange.Redis;
 using UniSpyServer.UniSpyLib.MiscMethod;
 using UniSpyServer.LinqToRedis;
 
-namespace UniSpyServer.NatNegotiation.Entity.Structure.Redis
+namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Redis
 {
     public record NewUserInfo : RedisKeyValueObject
     {

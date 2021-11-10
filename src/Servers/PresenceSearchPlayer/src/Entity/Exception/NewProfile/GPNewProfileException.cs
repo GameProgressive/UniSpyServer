@@ -1,7 +1,7 @@
-using UniSpyServer.PresenceSearchPlayer.Entity.Enumerate;
-using UniSpyServer.PresenceSearchPlayer.Entity.Exception.General;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Enumerate;
+using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Exception.NewProfile
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.NewProfile
 {
     public class GPNewProfileException : GPException
     {

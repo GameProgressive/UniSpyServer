@@ -4,7 +4,7 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory;
 using UniSpyServer.UniSpyLib.Logging;
 
-namespace UniSpyServer.ServerBrowser.Application
+namespace UniSpyServer.Servers.ServerBrowser.Application
 {
     public sealed class Program
     {

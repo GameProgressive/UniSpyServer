@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.CDkey.Abstraction.BaseClass
+namespace UniSpyServer.Servers.CDkey.Abstraction.BaseClass
 {
     public abstract class ResponseBase : UniSpyResponseBase
     {

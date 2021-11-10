@@ -1,13 +1,13 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.PresenceConnectionManager.Entity.Structure.Request;
-using UniSpyServer.PresenceConnectionManager.Entity.Structure.Response;
-using UniSpyServer.PresenceConnectionManager.Entity.Structure.Result;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using System.Linq;
 using System.Threading.Tasks;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 
-namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
     public sealed class BuddyListHandler : CmdHandlerBase
     {

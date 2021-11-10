@@ -1,10 +1,10 @@
-﻿using UniSpyServer.Chat.Entity.Exception;
+﻿using UniSpyServer.Servers.Chat.Entity.Exception;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
-namespace UniSpyServer.Chat.Abstraction.BaseClass
+namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 {
     public class RequestBase : UniSpyRequestBase
     {

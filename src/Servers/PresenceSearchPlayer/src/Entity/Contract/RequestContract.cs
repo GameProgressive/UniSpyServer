@@ -1,6 +1,6 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
 
-namespace UniSpyServer.PresenceSearchPlayer.Entity.Contract
+namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Contract
 {
     public class RequestContract : RequestContractBase
     {

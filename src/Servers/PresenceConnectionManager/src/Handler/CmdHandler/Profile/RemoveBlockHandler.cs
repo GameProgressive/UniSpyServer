@@ -1,10 +1,10 @@
-﻿using UniSpyServer.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.PresenceConnectionManager.Entity.Contract;
+﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using System;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.PresenceConnectionManager.Handler.CmdHandler
+namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 {
     [HandlerContract("removeblk")]
     public sealed class RemoveBlockHandler : Abstraction.BaseClass.CmdHandlerBase

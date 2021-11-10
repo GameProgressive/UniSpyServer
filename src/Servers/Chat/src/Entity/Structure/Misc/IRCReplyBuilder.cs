@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UniSpyServer.Chat.Entity.Structure.Misc
+namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
 {
     public sealed class IRCReplyBuilder
     {

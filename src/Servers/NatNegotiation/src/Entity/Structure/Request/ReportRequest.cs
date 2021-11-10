@@ -1,11 +1,11 @@
-﻿using UniSpyServer.NatNegotiation.Abstraction.BaseClass;
-using UniSpyServer.NatNegotiation.Entity.Contract;
-using UniSpyServer.NatNegotiation.Entity.Enumerate;
+﻿using UniSpyServer.Servers.NatNegotiation.Abstraction.BaseClass;
+using UniSpyServer.Servers.NatNegotiation.Entity.Contract;
+using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
 using System;
 using UniSpyServer.UniSpyLib.Encryption;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.NatNegotiation.Entity.Structure.Request
+namespace UniSpyServer.Servers.NatNegotiation.Entity.Structure.Request
 {
     [RequestContract(RequestType.Report)]
     public sealed class ReportRequest : RequestBase

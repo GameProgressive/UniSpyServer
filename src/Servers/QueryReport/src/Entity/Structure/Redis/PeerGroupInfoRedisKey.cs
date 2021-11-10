@@ -1,7 +1,7 @@
 ﻿using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyServer.UniSpyLib.Extensions;
 
-namespace UniSpyServer.QueryReport.Entity.Structure.Redis
+namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 {
     public class PeerGroupInfoRedisKey : UniSpyRedisKey
     {

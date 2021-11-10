@@ -2,7 +2,7 @@
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
-namespace UniSpyServer.CDkey.Handler.CmdSwitcher
+namespace UniSpyServer.Servers.CDkey.Handler.CmdSwitcher
 {
     public sealed class CDKeyCmdSwitcher : UniSpyCmdSwitcherBase
     {
