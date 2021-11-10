@@ -1,22 +1,20 @@
-FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine3.13 AS base
+FROM mcr.microsoft.com/dotnet/runtime:6.0 AS base
 WORKDIR /app
-EXPOSE 29900
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine3.12 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Servers/PresenceConnectionManager/PresenceConnectionManager.csproj", "src/Servers/PresenceConnectionManager/"]
-COPY ["src/Libraries/UniSpyLib/UniSpyLib.csproj", "src/Libraries/UniSpyLib/"]
-COPY ["src/Servers/PresenceSearchPlayer/PresenceSearchPlayer.csproj", "src/Servers/PresenceSearchPlayer/"]
-RUN dotnet restore "src/Servers/PresenceConnectionManager/PresenceConnectionManager.csproj"
+COPY ["src/Servers/PresenceConnectionManager/src/UniSpyServer.Servers.PresenceConnectionManager.csproj", "src/Servers/PresenceConnectionManager/src/"]
+COPY ["src/Libraries/UniSpyLib/src/UniSpyServer.Libraries.UniSpyLib.csproj", "src/Libraries/UniSpyLib/src/"]
+COPY ["src/Servers/PresenceSearchPlayer/src/UniSpyServer.Servers.PresenceSearchPlayer.csproj", "src/Servers/PresenceSearchPlayer/src/"]
+RUN dotnet restore "src/Servers/PresenceConnectionManager/src/UniSpyServer.Servers.PresenceConnectionManager.csproj"
 COPY . .
-WORKDIR "/src/src/Servers/PresenceConnectionManager"
-RUN dotnet build "PresenceConnectionManager.csproj" -c Release -o /app/build
+WORKDIR "/src/src/Servers/PresenceConnectionManager/src"
+RUN dotnet build "UniSpyServer.Servers.PresenceConnectionManager.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "PresenceConnectionManager.csproj" -c Release -o /app/publish
+RUN dotnet publish "UniSpyServer.Servers.PresenceConnectionManager.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./common/UniSpyServer.cfg .
-ENTRYPOINT ["dotnet", "PresenceConnectionManager.dll"]
+ENTRYPOINT ["dotnet", "UniSpyServer.Servers.PresenceConnectionManager.dll"]

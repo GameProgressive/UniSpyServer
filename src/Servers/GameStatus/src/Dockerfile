@@ -1,21 +1,19 @@
-FROM mcr.microsoft.com/dotnet/runtime:5.0-alpine3.13 AS base
+FROM mcr.microsoft.com/dotnet/runtime:6.0 AS base
 WORKDIR /app
-EXPOSE 29920
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine3.12 AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["src/Servers/GameStatus/GameStatus.csproj", "src/Servers/GameStatus/"]
-COPY ["src/Libraries/UniSpyLib/UniSpyLib.csproj", "src/Libraries/UniSpyLib/"]
-RUN dotnet restore "src/Servers/GameStatus/GameStatus.csproj"
+COPY ["src/Servers/GameStatus/src/UniSpyServer.Servers.GameStatus.csproj", "src/Servers/GameStatus/src/"]
+COPY ["src/Libraries/UniSpyLib/src/UniSpyServer.Libraries.UniSpyLib.csproj", "src/Libraries/UniSpyLib/src/"]
+RUN dotnet restore "src/Servers/GameStatus/src/UniSpyServer.Servers.GameStatus.csproj"
 COPY . .
-WORKDIR "/src/src/Servers/GameStatus"
-RUN dotnet build "GameStatus.csproj" -c Release -o /app/build
+WORKDIR "/src/src/Servers/GameStatus/src"
+RUN dotnet build "UniSpyServer.Servers.GameStatus.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "GameStatus.csproj" -c Release -o /app/publish
+RUN dotnet publish "UniSpyServer.Servers.GameStatus.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY ./common/UniSpyServer.cfg .
-ENTRYPOINT ["dotnet", "GameStatus.dll"]
+ENTRYPOINT ["dotnet", "UniSpyServer.Servers.GameStatus.dll"]
