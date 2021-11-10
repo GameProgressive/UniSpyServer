@@ -31,7 +31,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql(UniSpyMySqlConnStr, x => x.ServerVersion("10.4.11-mariadb"));
+                optionsBuilder.UseMySql(UniSpyMySqlConnStr, ServerVersion.AutoDetect(UniSpyMySqlConnStr));
             }
         }
 
@@ -47,11 +47,11 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Friend request.");
 
                 entity.HasIndex(e => e.Addrequestid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Profileid)
-                    .HasName("profileid");
+                    .HasDatabaseName("profileid");
 
                 entity.Property(e => e.Addrequestid)
                     .HasColumnName("addrequestid")
@@ -71,7 +71,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(255)")
                     .HasDefaultValueSql("''")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Syncrequested)
                     .IsRequired()
@@ -79,7 +79,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(255)")
                     .HasDefaultValueSql("''")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Targetid)
                     .HasColumnName("targetid")
@@ -102,11 +102,11 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Block list.");
 
                 entity.HasIndex(e => e.Blockid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Profileid)
-                    .HasName("profileid");
+                    .HasDatabaseName("profileid");
 
                 entity.Property(e => e.Blockid)
                     .HasColumnName("blockid")
@@ -141,11 +141,11 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Friend list.");
 
                 entity.HasIndex(e => e.Friendid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Profileid)
-                    .HasName("profileid");
+                    .HasDatabaseName("profileid");
 
                 entity.Property(e => e.Friendid)
                     .HasColumnName("friendid")
@@ -180,7 +180,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Game list.");
 
                 entity.HasIndex(e => e.Gameid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.Property(e => e.Gameid)
@@ -192,7 +192,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("description")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Disabled).HasColumnName("disabled");
 
@@ -201,13 +201,13 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("gamename")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Secretkey)
                     .HasColumnName("secretkey")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
             });
 
             modelBuilder.Entity<Grouplist>(entity =>
@@ -220,10 +220,10 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Old games use grouplist to create their game rooms.");
 
                 entity.HasIndex(e => e.Gameid)
-                    .HasName("gameid");
+                    .HasDatabaseName("gameid");
 
                 entity.HasIndex(e => e.GroupID)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.Property(e => e.GroupID)
@@ -239,7 +239,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("roomname")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.HasOne(d => d.Game)
                     .WithMany(p => p.Grouplist)
@@ -258,7 +258,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Friend messages.");
 
                 entity.HasIndex(e => e.Messageid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.Property(e => e.Messageid)
@@ -280,7 +280,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("message")
                     .HasColumnType("varchar(200)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Namespaceid)
                     .HasColumnName("namespaceid")
@@ -302,7 +302,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Partner information, these information are used for authentication and login.");
 
                 entity.HasIndex(e => e.Partnerid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.Property(e => e.Partnerid)
@@ -314,7 +314,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("partnername")
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
             });
 
             modelBuilder.Entity<Profiles>(entity =>
@@ -327,11 +327,11 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("User profiles.");
 
                 entity.HasIndex(e => e.Profileid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.HasIndex(e => e.Userid)
-                    .HasName("userid");
+                    .HasDatabaseName("userid");
 
                 entity.Property(e => e.Profileid)
                     .HasColumnName("profileid")
@@ -346,7 +346,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("'0'")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Birthday)
                     .HasColumnName("birthday")
@@ -372,7 +372,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("city")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Connectiontype)
                     .HasColumnName("connectiontype")
@@ -385,7 +385,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(3)")
                     .HasDefaultValueSql("'1'")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Cpubrandid)
                     .HasColumnName("cpubrandid")
@@ -401,14 +401,14 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("''")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Homepage)
                     .HasColumnName("homepage")
                     .HasColumnType("varchar(75)")
                     .HasDefaultValueSql("'rspy.org'")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Icquin)
                     .HasColumnName("icquin")
@@ -436,7 +436,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("''")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Latitude)
                     .HasColumnName("latitude")
@@ -447,7 +447,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(127)")
                     .HasDefaultValueSql("''")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Longitude)
                     .HasColumnName("longitude")
@@ -468,7 +468,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("''")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Occupationid)
                     .HasColumnName("occupationid")
@@ -507,7 +507,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(50)")
                     .HasDefaultValueSql("'I love RetroSpy'")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Status)
                     .HasColumnName("status")
@@ -518,13 +518,13 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("streeaddr")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Streetaddr)
                     .HasColumnName("streetaddr")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Subscription)
                     .HasColumnName("subscription")
@@ -542,7 +542,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("videocard1string")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Videocard2ram)
                     .HasColumnName("videocard2ram")
@@ -552,14 +552,14 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("videocard2string")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Zipcode)
                     .HasColumnName("zipcode")
                     .HasColumnType("varchar(10)")
                     .HasDefaultValueSql("'00000'")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Profiles)
@@ -575,10 +575,10 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Old games use pstorage to store game data.");
 
                 entity.HasIndex(e => e.Profileid)
-                    .HasName("profileid");
+                    .HasDatabaseName("profileid");
 
                 entity.HasIndex(e => e.Pstorageid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.Property(e => e.Pstorageid)
@@ -590,7 +590,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnType("varchar(200)")
                     .HasDefaultValueSql("''")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Dindex)
                     .HasColumnName("dindex")
@@ -618,7 +618,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("Sake storage system.");
 
                 entity.HasIndex(e => e.Sakestorageid)
-                    .HasName("sakestorageid")
+                    .HasDatabaseName("sakestorageid")
                     .IsUnique();
 
                 entity.Property(e => e.Sakestorageid)
@@ -630,7 +630,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("tableid")
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
             });
 
             modelBuilder.Entity<Subprofiles>(entity =>
@@ -643,10 +643,10 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("User subprofiles.");
 
                 entity.HasIndex(e => e.Profileid)
-                    .HasName("profileid");
+                    .HasDatabaseName("profileid");
 
                 entity.HasIndex(e => e.Subprofileid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.Property(e => e.Subprofileid)
@@ -657,13 +657,13 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("authtoken")
                     .HasColumnType("varchar(255)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Cdkeyenc)
                     .HasColumnName("cdkeyenc")
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Firewall)
                     .HasColumnName("firewall")
@@ -673,7 +673,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("gamename")
                     .HasColumnType("text")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Namespaceid)
                     .HasColumnName("namespaceid")
@@ -700,7 +700,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("uniquenick")
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.HasOne(d => d.Profile)
                     .WithMany(p => p.Subprofiles)
@@ -719,7 +719,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                 entity.HasComment("User account information.");
 
                 entity.HasIndex(e => e.Userid)
-                    .HasName("id")
+                    .HasDatabaseName("id")
                     .IsUnique();
 
                 entity.Property(e => e.Userid)
@@ -740,7 +740,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("email")
                     .HasColumnType("varchar(50)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Emailverified)
                     .IsRequired()
@@ -751,7 +751,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("lastip")
                     .HasColumnType("varchar(16)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
 
                 entity.Property(e => e.Lastonline)
                     .HasColumnName("lastonline")
@@ -764,7 +764,7 @@ namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
                     .HasColumnName("password")
                     .HasColumnType("varchar(32)")
                     .HasCharSet("utf8mb4")
-                    .HasCollation("utf8mb4_general_ci");
+                    .UseCollation("utf8mb4_general_ci");
             });
 
             OnModelCreatingPartial(modelBuilder);
