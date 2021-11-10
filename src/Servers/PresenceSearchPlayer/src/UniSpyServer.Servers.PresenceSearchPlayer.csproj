@@ -2,11 +2,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <NoWin32Manifest>true</NoWin32Manifest>
         <ApplicationIcon>..\..\..\..\common\Icon\UniSpy_Logo.ico</ApplicationIcon>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-        <DockerfileContext>..\..</DockerfileContext>
+        <DockerfileContext>..\..\..\..</DockerfileContext>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
         <OutputPath>..\..\..\..\build\$(Configuration)</OutputPath>
@@ -20,7 +20,7 @@
         <None Remove="Handler\CommandHandler\NewUser\**" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\..\..\Libraries\UniSpyLib\src\UniSpyServer.Libraries.UniSpyLib.csproj" />
