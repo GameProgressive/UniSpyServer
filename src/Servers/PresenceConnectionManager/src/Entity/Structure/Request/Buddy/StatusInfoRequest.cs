@@ -3,7 +3,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
     /// <summary>
     /// Update a user's status information
@@ -15,7 +15,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
 
         #region Get buddy status info
         public uint ProfileID { get; set; }
-        public uint NameSpaceID { get; set; }
+        public uint NamespaceID { get; set; }
         #endregion
         public PCMUserStatusInfo StatusInfo { get; private set; }
 

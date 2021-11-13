@@ -1,6 +1,6 @@
 ﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Profile;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass;

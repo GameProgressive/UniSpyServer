@@ -2,13 +2,13 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
     [RequestContract("addbuddy")]
     public sealed class AddBuddyRequest : RequestBase
     {
         public uint FriendProfileID { get; private set; }
-        public string AddReason { get; private set; }
+        public string Reason { get; private set; }
         public AddBuddyRequest(string rawRequest) : base(rawRequest)
         {
         }
@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             }
 
             FriendProfileID = friendPID;
-            AddReason = RequestKeyValues["reason"];
+            Reason = RequestKeyValues["reason"];
         }
     }
 }
