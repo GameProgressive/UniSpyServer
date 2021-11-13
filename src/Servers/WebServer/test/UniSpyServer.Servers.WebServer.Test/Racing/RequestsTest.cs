@@ -3,7 +3,7 @@ using UniSpyServer.Servers.WebServer.Entity.Structure.Request.RacingRequest;
 
 namespace UniSpyServer.Servers.WebServer.Test.Racing
 {
-    public class RacingRequestsTest
+    public class RequestsTest
     {
         //
         // These are the SOAP requests of RACE
@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Racing
         [Fact]
         public void GetContestData()
         {
-            var request = new GetContestDataRequest(RacingRequests.GetContestData);
+            var request = new GetContestDataRequest(RawRequests.GetContestData);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("0", request.RegionId.ToString());
@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Racing
         [Fact]
         public void GetFriendRankings()
         {
-            var request = new GetFriendRankingsRequest(RacingRequests.GetFriendRankings);
+            var request = new GetFriendRankingsRequest(RawRequests.GetFriendRankings);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("0", request.RegionId.ToString());
@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Racing
         [Fact]
         public void GetRegionalData()
         {
-            var request = new GetRegionalDataRequest(RacingRequests.GetRegionalData);
+            var request = new GetRegionalDataRequest(RawRequests.GetRegionalData);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("0", request.RegionId.ToString());
@@ -39,7 +39,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Racing
         [Fact]
         public void GetTenAboveRankings()
         {
-            var request = new GetTenAboveRankingsRequest(RacingRequests.GetTenAboveRankings);
+            var request = new GetTenAboveRankingsRequest(RawRequests.GetTenAboveRankings);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("0", request.RegionId.ToString());
@@ -49,7 +49,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Racing
         [Fact]
         public void GetTopTenRankings()
         {
-            var request = new GetTopTenRankingsRequest(RacingRequests.GetTopTenRankings);
+            var request = new GetTopTenRankingsRequest(RawRequests.GetTopTenRankings);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("0", request.RegionId.ToString());
@@ -58,7 +58,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Racing
         [Fact]
         public void SubmitGhost()
         {
-            var request = new SubmitGhostRequest(RacingRequests.SubmitGhost);
+            var request = new SubmitGhostRequest(RawRequests.SubmitGhost);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("0", request.RegionId.ToString());
@@ -70,7 +70,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Racing
         [Fact]
         public void SubmitScores()
         {
-            var request = new SubmitScoresRequest(RacingRequests.SubmitScores);
+            var request = new SubmitScoresRequest(RawRequests.SubmitScores);
             request.Parse();
             Assert.Equal("0", request.GameData.ToString());
             Assert.Equal("0", request.RegionId.ToString());

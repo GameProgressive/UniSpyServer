@@ -1,6 +1,6 @@
 ﻿namespace UniSpyServer.Servers.WebServer.Test.Racing
 {
-    public class RacingRequests
+    public class RawRequests
     {
         public const string GetContestData =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>

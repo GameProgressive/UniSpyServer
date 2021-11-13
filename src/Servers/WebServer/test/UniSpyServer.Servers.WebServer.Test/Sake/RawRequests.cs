@@ -1,6 +1,6 @@
 ﻿namespace UniSpyServer.Servers.WebServer.Test.Sake
 {
-    public class SakeRequests
+    public class RawRequests
     {
         public const string GetRecordLimit =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>

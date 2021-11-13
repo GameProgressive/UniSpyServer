@@ -3,7 +3,7 @@ using UniSpyServer.Servers.WebServer.Entity.Structure.Request.SakeRequest;
 
 namespace UniSpyServer.Servers.WebServer.Test.Sake
 {
-    public class SakeRequestsTest
+    public class RequestsTest
     {
         //
         // These are the SOAP requests of SAKE
@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void GetRecordLimit()
         {
-            var request = new GetRecordLimitRequest(SakeRequests.GetRecordLimit);
+            var request = new GetRecordLimitRequest(RawRequests.GetRecordLimit);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);
@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void RateRecord()
         {
-            var request = new RateRecordRequest(SakeRequests.RateRecord);
+            var request = new RateRecordRequest(RawRequests.RateRecord);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);
@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void GetRandomRecords()
         {
-            var request = new GetRandomRecordsRequest(SakeRequests.GetRandomRecords);
+            var request = new GetRandomRecordsRequest(RawRequests.GetRandomRecords);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);
@@ -49,7 +49,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void GetSpecificRecords()
         {
-            var request = new GetSpecificRecordsRequest(SakeRequests.GetSpecificRecords);
+            var request = new GetSpecificRecordsRequest(RawRequests.GetSpecificRecords);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);
@@ -73,7 +73,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void GetMyRecords()
         {
-            var request = new GetMyRecordsRequest(SakeRequests.GetMyRecords);
+            var request = new GetMyRecordsRequest(RawRequests.GetMyRecords);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);
@@ -111,7 +111,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void SearchForRecords()
         {
-            var request = new SearchForRecordsRequest(SakeRequests.SearchForRecords);
+            var request = new SearchForRecordsRequest(RawRequests.SearchForRecords);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);
@@ -132,7 +132,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void DeleteRecord()
         {
-            var request = new DeleteRecordRequest(SakeRequests.DeleteRecord);
+            var request = new DeleteRecordRequest(RawRequests.DeleteRecord);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);
@@ -146,7 +146,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void UpdateRecord()
         {
-            var request = new UpdateRecordRequest(SakeRequests.UpdateRecord);
+            var request = new UpdateRecordRequest(RawRequests.UpdateRecord);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);
@@ -165,7 +165,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Sake
         [Fact]
         public void CreateRecord()
         {
-            var request = new CreateRecordRequest(SakeRequests.CreateRecord);
+            var request = new CreateRecordRequest(RawRequests.CreateRecord);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("XXXXXX", request.SecretKey);

@@ -10,7 +10,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
     {
         public uint ProductID { get; private set; }
         public uint GamePort { get; private set; }
-        public string CDKeyEnc { get; private set; }
+        public string CDKey { get; private set; }
         public bool HasGameNameFlag { get; private set; }
         public bool HasProductIDFlag { get; private set; }
         public bool HasCDKeyEncFlag { get; private set; }
@@ -106,10 +106,10 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Entity.Structure.Request
                 HasGamePortFlag = true;
                 GamePort = port;
             }
-            if (RequestKeyValues.ContainsKey("cdkeyenc"))
+            if (RequestKeyValues.ContainsKey("cdkey"))
             {
                 HasCDKeyEncFlag = true;
-                CDKeyEnc = RequestKeyValues["cdkeyenc"];
+                CDKey = RequestKeyValues["cdkey"];
             }
         }
     }

@@ -1,8 +1,8 @@
-﻿namespace UniSpyServer.Servers.WebServer.Test.Atlas
+﻿namespace UniSpyServer.Servers.WebServer.Test.Auth
 {
-    public class AtlasRequests
+    public class RawRequests
     {
-        public const string CreateMatchlessSession =
+        public const string LoginProfile =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
             <SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
                 xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
@@ -10,15 +10,22 @@
                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
                 xmlns:ns1=""http://gamespy.net/sake"">
                 <SOAP-ENV:Body>
-                    <ns1:CreateMatchlessSession>
-                        <ns1:certificate>XXXXXX</ns1:certificate>
-                        <ns1:proof>XXXXXX</ns1:proof>
+                    <ns1:LoginProfile>
+                        <ns1:version>1</ns1:version>
                         <ns1:gameid>0</ns1:gameid>
-                    </ns1:CreateMatchlessSession>
+                        <ns1:partnercode>0</ns1:partnercode>
+                        <ns1:namespaceid>0</ns1:namespaceid>
+                        <ns1:email>spyguy@unispy.org</ns1:email>
+                        <ns1:uniquenick>spyguy</ns1:uniquenick>
+                        <ns1:cdkey>XXXXXXXXXXX</ns1:cdkey>
+                        <ns1:password>
+                            <ns1:Value>XXXXXXXXXXX</ns1:Value>
+                        </ns1:password>
+                    </ns1:LoginProfile>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>";
 
-        public const string CreateSession =
+        public const string LoginPs3Cert =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
             <SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
                 xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
@@ -26,15 +33,15 @@
                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
                 xmlns:ns1=""http://gamespy.net/sake"">
                 <SOAP-ENV:Body>
-                    <ns1:CreateSession>
-                        <ns1:certificate>XXXXXX</ns1:certificate>
-                        <ns1:proof>XXXXXX</ns1:proof>
+                    <ns1:LoginPs3Cert>
                         <ns1:gameid>0</ns1:gameid>
-                    </ns1:CreateSession>
+                        <ns1:partnercode>0</ns1:partnercode>
+                        <ns1:ps3cert>0</ns1:ps3cert>
+                    </ns1:LoginPs3Cert>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>";
 
-        public const string SetReportIntention =
+        public const string LoginRemoteAuth =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
             <SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
                 xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
@@ -42,18 +49,18 @@
                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
                 xmlns:ns1=""http://gamespy.net/sake"">
                 <SOAP-ENV:Body>
-                    <ns1:SetReportIntention>
-                        <ns1:certificate>XXXXXX</ns1:certificate>
-                        <ns1:proof>XXXXXX</ns1:proof>
-                        <ns1:csid>0</ns1:csid>
-                        <ns1:ccid>0</ns1:ccid>
+                    <ns1:LoginRemoteAuth>
+                        <ns1:version>1</ns1:version>
                         <ns1:gameid>0</ns1:gameid>
-                        <ns1:authoritative>XXXXXX</ns1:authoritative>
-                    </ns1:SetReportIntention>
+                        <ns1:partnercode>0</ns1:partnercode>
+                        <ns1:namespaceid>0</ns1:namespaceid>
+                        <ns1:authtoken>XXXXXXXXXXX</ns1:authtoken>
+                        <ns1:challenge>XXXXXXXXXXX</ns1:challenge>
+                    </ns1:LoginRemoteAuth>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>";
 
-        public const string SubmitReport =
+        public const string LoginUniqueNick =
             @"<?xml version=""1.0"" encoding=""UTF-8""?>
             <SOAP-ENV:Envelope xmlns:SOAP-ENV=""http://schemas.xmlsoap.org/soap/envelope/""
                 xmlns:SOAP-ENC=""http://schemas.xmlsoap.org/soap/encoding/""
@@ -61,14 +68,15 @@
                 xmlns:xsd=""http://www.w3.org/2001/XMLSchema""
                 xmlns:ns1=""http://gamespy.net/sake"">
                 <SOAP-ENV:Body>
-                    <ns1:SubmitReport>
-                        <ns1:certificate>XXXXXX</ns1:certificate>
-                        <ns1:proof>XXXXXX</ns1:proof>
-                        <ns1:csid>0</ns1:csid>
-                        <ns1:ccid>0</ns1:ccid>
-                        <ns1:gameid>0</ns1:gameid>
-                        <ns1:authoritative>XXXXXX</ns1:authoritative>
-                    </ns1:SubmitReport>
+                    <ns1:LoginUniqueNick>
+                        <ns1:version>1</ns1:version>
+                        <ns1:partnercode>0</ns1:partnercode>
+                        <ns1:namespaceid>0</ns1:namespaceid>
+                        <ns1:uniquenick>spyguy</ns1:uniquenick>
+                        <ns1:password>
+                            <ns1:Value>XXXXXXXXXXX</ns1:Value>
+                        </ns1:password>
+                    </ns1:LoginUniqueNick>
                 </SOAP-ENV:Body>
             </SOAP-ENV:Envelope>";
     }

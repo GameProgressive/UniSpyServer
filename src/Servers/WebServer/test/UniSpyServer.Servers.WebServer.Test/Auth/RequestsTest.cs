@@ -3,7 +3,7 @@ using UniSpyServer.Servers.WebServer.Entity.Structure.Request.AuthRequest;
 
 namespace UniSpyServer.Servers.WebServer.Test.Auth
 {
-    public class AuthRequestsTest
+    public class RequestsTest
     {
         //
         // These are the SOAP requests of AUTH
@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
         [Fact]
         public void LoginProfile()
         {
-            var request = new LoginProfileRequest(AuthRequests.LoginProfile);
+            var request = new LoginProfileRequest(RawRequests.LoginProfile);
             request.Parse();
             Assert.Equal("1", request.Version.ToString());
             Assert.Equal("0", request.GameId.ToString());
@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
         [Fact]
         public void LoginPs3Cert()
         {
-            var request = new LoginPs3CertRequest(AuthRequests.LoginPs3Cert);
+            var request = new LoginPs3CertRequest(RawRequests.LoginPs3Cert);
             request.Parse();
             Assert.Equal("0", request.GameId.ToString());
             Assert.Equal("0", request.PartnerCode.ToString());
@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
         [Fact]
         public void LoginRemoteAuth()
         {
-            var request = new LoginRemoteAuthRequest(AuthRequests.LoginRemoteAuth);
+            var request = new LoginRemoteAuthRequest(RawRequests.LoginRemoteAuth);
             request.Parse();
             Assert.Equal("1", request.Version.ToString());
             Assert.Equal("0", request.GameId.ToString());
@@ -48,7 +48,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Auth
         [Fact]
         public void LoginUniqueNick()
         {
-            var request = new LoginUniqueNickRequest(AuthRequests.LoginUniqueNick);
+            var request = new LoginUniqueNickRequest(RawRequests.LoginUniqueNick);
             request.Parse();
             Assert.Equal("1", request.Version.ToString());
             Assert.Equal("0", request.PartnerCode.ToString());

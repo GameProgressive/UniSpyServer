@@ -3,7 +3,7 @@ using UniSpyServer.Servers.WebServer.Entity.Structure.Request.AtlasRequest;
 
 namespace UniSpyServer.Servers.WebServer.Test.Atlas
 {
-    public class AtlasRequestsTest
+    public class RequestsTest
     {
         //
         // These are the SOAP requests of ATLAS (Competition)
@@ -12,7 +12,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Atlas
         [Fact]
         public void CreateMatchlessSession()
         {
-            var request = new CreateMatchlessSessionRequest(AtlasRequests.CreateMatchlessSession);
+            var request = new CreateMatchlessSessionRequest(RawRequests.CreateMatchlessSession);
             request.Parse();
             Assert.Equal("XXXXXX", request.Certificate);
             Assert.Equal("XXXXXX", request.Proof);
@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Atlas
         [Fact]
         public void CreateSession()
         {
-            var request = new CreateSessionRequest(AtlasRequests.CreateSession);
+            var request = new CreateSessionRequest(RawRequests.CreateSession);
             request.Parse();
             Assert.Equal("XXXXXX", request.Certificate);
             Assert.Equal("XXXXXX", request.Proof);
@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Atlas
         [Fact]
         public void SetReportIntention()
         {
-            var request = new SetReportIntentionRequest(AtlasRequests.SetReportIntention);
+            var request = new SetReportIntentionRequest(RawRequests.SetReportIntention);
             request.Parse();
             Assert.Equal("XXXXXX", request.Certificate);
             Assert.Equal("XXXXXX", request.Proof);
@@ -42,7 +42,7 @@ namespace UniSpyServer.Servers.WebServer.Test.Atlas
         [Fact]
         public void SubmitReport()
         {
-            var request = new SubmitReportRequest(AtlasRequests.SubmitReport);
+            var request = new SubmitReportRequest(RawRequests.SubmitReport);
             request.Parse();
             Assert.Equal("XXXXXX", request.Certificate);
             Assert.Equal("XXXXXX", request.Proof);

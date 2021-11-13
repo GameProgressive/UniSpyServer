@@ -72,7 +72,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
                 if (_request.HasCDKeyEncFlag)
                 {
-                    _result.SubProfile.Cdkeyenc = _request.CDKeyEnc;
+                    _result.SubProfile.Cdkeyenc = _request.CDKey;
                 }
                 db.Subprofiles.Update(_result.SubProfile);
                 db.SaveChanges();
