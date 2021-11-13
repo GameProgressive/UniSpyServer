@@ -32,7 +32,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             try
             {
-                switch (_request.LoginType)
+                switch (_request.Type)
                 {
                     case LoginType.NickEmail:
                         NickEmailLogin();
@@ -72,8 +72,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
             LoginChallengeProof proofData = new LoginChallengeProof(
                             _request.UserData,
-                            _request.LoginType,
-                            _request.PartnerID,
+                            (LoginType)_request.Type,
+                            (uint)_request.PartnerID,
                             LoginChallengeProof.ServerChallenge,
                             _request.UserChallenge,
                             _result.DatabaseResults.PasswordHash);
@@ -91,17 +91,17 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             base.Response();
             //Arves is correct we need to check this
-            switch (_request.LoginType)
+            switch (_request.Type)
             {
                 case LoginType.NickEmail:
                     _session.UserInfo.BasicInfo.Nick = _request.Nick;
                     _session.UserInfo.BasicInfo.Email = _request.Email;
-                    _session.UserInfo.BasicInfo.NamespaceID = _request.NamespaceID;
+                    _session.UserInfo.BasicInfo.NamespaceID = (uint)_request.NamespaceID;
                     _session.UserInfo.BasicInfo.UniqueNick = _result.DatabaseResults.UniqueNick;
                     break;
                 case LoginType.UniquenickNamespaceID:
                     _session.UserInfo.BasicInfo.UniqueNick = _request.UniqueNick;
-                    _session.UserInfo.BasicInfo.NamespaceID = _request.NamespaceID;
+                    _session.UserInfo.BasicInfo.NamespaceID = (uint)_request.NamespaceID;
                     break;
                 case LoginType.AuthToken:
                     _session.UserInfo.BasicInfo.AuthToken = _request.AuthToken;
@@ -114,7 +114,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
             _session.UserInfo.BasicInfo.UserID = _result.DatabaseResults.UserID;
             _session.UserInfo.BasicInfo.ProfileID = _result.DatabaseResults.ProfileID;
             _session.UserInfo.BasicInfo.SubProfileID = _result.DatabaseResults.SubProfileID;
-            _session.UserInfo.BasicInfo.ProductID = _request.ProductID;
+            _session.UserInfo.BasicInfo.ProductID = (uint)_request.ProductID;
             _session.UserInfo.BasicInfo.GameName = _request.GameName;
             _session.UserInfo.BasicInfo.GamePort = _request.GamePort;
             _session.UserInfo.BasicInfo.LoginStatus = LoginStatus.Completed;
@@ -234,8 +234,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         {
             LoginChallengeProof proofData = new LoginChallengeProof(
                 _request.UserData,
-                _request.LoginType,
-                _request.PartnerID,
+                (LoginType)_request.Type,
+                (uint)_request.PartnerID,
                _request.UserChallenge,
                LoginChallengeProof.ServerChallenge,
                _result.DatabaseResults.PasswordHash);

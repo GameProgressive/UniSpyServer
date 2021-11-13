@@ -12,13 +12,13 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         public string Response { get; private set; }
         public string UniqueNick { get; private set; }
         public string UserData { get; private set; }
-        public uint NamespaceID { get; private set; }
+        public uint? NamespaceID { get; private set; }
         public string AuthToken { get; private set; }
         public string Nick { get; private set; }
         public string Email { get; private set; }
-        public uint ProductID { get; private set; }
-        public LoginType LoginType { get; private set; }
-        public SDKRevisionType SDKRevisionType { get; private set; }
+        public uint? ProductID { get; private set; }
+        public LoginType? Type { get; private set; }
+        public SDKRevisionType? SDKRevisionType { get; private set; }
 
         public LoginRequest(string rawRequest) : base(rawRequest)
         {
@@ -47,20 +47,20 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                 {
                     throw new GPParseException("namespaceid format is incorrect");
                 }
-                LoginType = LoginType.UniquenickNamespaceID;
+                Type = LoginType.UniquenickNamespaceID;
                 UniqueNick = RequestKeyValues["uniquenick"];
                 UserData = UniqueNick;
                 NamespaceID = namespaceID;
             }
             else if (RequestKeyValues.ContainsKey("authtoken"))
             {
-                LoginType = LoginType.AuthToken;
+                Type = LoginType.AuthToken;
                 AuthToken = RequestKeyValues["authtoken"];
                 UserData = AuthToken;
             }
             else if (RequestKeyValues.ContainsKey("user"))
             {
-                LoginType = LoginType.NickEmail;
+                Type = LoginType.NickEmail;
                 UserData = RequestKeyValues["user"];
 
                 int Pos = UserData.IndexOf('@');
@@ -91,12 +91,34 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         }
 
         public int? GamePort { get; private set; }
-        public uint PartnerID { get; private set; }
+        public uint? UserID { get; private set; }
+        public uint? ProfileID { get; private set; }
+        public uint? PartnerID { get; private set; }
         public string GameName { get; private set; }
-        public QuietModeType QuietModeFlags { get; private set; }
+        public QuietModeType? QuietModeFlags { get; private set; }
+        public string Firewall { get; private set; }
 
         private void ParseOtherData()
         {
+            if (RequestKeyValues.ContainsKey("userid"))
+            {
+                uint userID;
+                if (!uint.TryParse(RequestKeyValues["userid"], out userID))
+                {
+                    throw new GPParseException("partnerid format is incorrect");
+                }
+                UserID = userID;
+
+            }
+            if (RequestKeyValues.ContainsKey("profileid"))
+            {
+                uint profileID;
+                if (!uint.TryParse(RequestKeyValues["profileid"], out profileID))
+                {
+                    throw new GPParseException("profileid format is incorrect");
+                }
+                ProfileID = profileID;
+            }
             if (RequestKeyValues.ContainsKey("partnerid"))
             {
                 uint partnerID;
@@ -142,6 +164,12 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
                 }
                 ProductID = productID;
             }
+
+            if (RequestKeyValues.ContainsKey("firewall"))
+            {
+                Firewall = RequestKeyValues["firewall"];
+            }
+
             if (RequestKeyValues.ContainsKey("quiet"))
             {
                 uint quiet;
