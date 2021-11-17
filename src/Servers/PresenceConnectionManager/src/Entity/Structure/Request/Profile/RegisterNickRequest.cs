@@ -17,17 +17,16 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         {
             base.Parse();
 
-
             if (!RequestKeyValues.ContainsKey("sesskey"))
             {
-                throw new GPParseException("sesskey is missing.");
+                throw new GPParseException("sesskey is missing");
             }
+            SessionKey = RequestKeyValues["sesskey"];
 
             if (!RequestKeyValues.ContainsKey("uniquenick"))
             {
-                throw new GPParseException("uniquenick is missing.");
+                throw new GPParseException("uniquenick is missing");
             }
-            SessionKey = RequestKeyValues["sesskey"];
             UniqueNick = RequestKeyValues["uniquenick"];
         }
     }

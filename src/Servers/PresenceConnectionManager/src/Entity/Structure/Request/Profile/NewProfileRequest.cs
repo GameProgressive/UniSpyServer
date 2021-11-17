@@ -7,22 +7,23 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
     [RequestContract("newprofile")]
     public sealed class NewProfileRequest : RequestBase
     {
-        //create a new profile with new nick 
-        // @"  \newprofile\sesskey\<>\nick\<>\id\1\final\"
-        //replace a existed nick with new nick
-        //@"  \newprofile\sesskey\<>\nick\<>\replace\1\oldnick\<>\id\1\final\"
-
         public NewProfileRequest(string rawRequest) : base(rawRequest)
         {
         }
 
-        public string OldNick { get; private set; }
-        public string NewNick { get; private set; }
         public bool IsReplaceNickName { get; private set; }
+        public string SessionKey { get; private set; }
+        public string NewNick { get; private set; }
+        public string OldNick { get; private set; }
         public override void Parse()
         {
             base.Parse();
 
+            if (!RequestKeyValues.ContainsKey("sesskey"))
+            {
+                throw new GPParseException("sesskey is missing");
+            }
+            SessionKey = RequestKeyValues["sesskey"];
 
             if (RequestKeyValues.ContainsKey("replace"))
             {

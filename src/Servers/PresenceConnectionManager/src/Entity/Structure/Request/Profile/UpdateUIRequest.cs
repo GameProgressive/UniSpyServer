@@ -4,9 +4,9 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Profile
 {
     [RequestContract("updateui")]
-    public sealed class UpdateUIRequest : RequestBase
+    public sealed class UpdateUiRequest : RequestBase
     {
-        public UpdateUIRequest(string rawRequest) : base(rawRequest)
+        public UpdateUiRequest(string rawRequest) : base(rawRequest)
         {
         }
 

@@ -17,7 +17,6 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
         {
             base.Parse();
 
-
             if (!RequestKeyValues.ContainsKey("profileid"))
             {
                 throw new GPParseException("profileid is missing");

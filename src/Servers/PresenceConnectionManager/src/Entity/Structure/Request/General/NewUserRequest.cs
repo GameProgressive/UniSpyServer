@@ -40,6 +40,8 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             {
                 throw new GPParseException("nickname is missing.");
             }
+            Nick = RequestKeyValues["nick"];
+
             if (!RequestKeyValues.ContainsKey("email"))
             {
                 throw new GPParseException("email is missing.");
@@ -48,7 +50,6 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Reques
             {
                 throw new GPParseException("email format is incorrect.");
             }
-            Nick = RequestKeyValues["nick"];
             Email = RequestKeyValues["email"];
 
             if (RequestKeyValues.ContainsKey("uniquenick") && RequestKeyValues.ContainsKey("namespaceid"))

@@ -1,6 +1,6 @@
 ﻿namespace UniSpyServer.Servers.PresenceConnectionManager.Test.Buddy
 {
-    public class BuddyRequests
+    public static class BuddyRequests
     {
         public const string AddBuddy = @"\addbuddy\\sesskey\0\newprofileid\0\reason\test\final\";
 
