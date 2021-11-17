@@ -2,7 +2,7 @@
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
     /// <summary>
     /// Delete a user from my friend list

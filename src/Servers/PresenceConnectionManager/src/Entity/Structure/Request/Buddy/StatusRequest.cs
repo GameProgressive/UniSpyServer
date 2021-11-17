@@ -4,7 +4,7 @@ using UniSpyServer.Servers.PresenceConnectionManager.Entity.Enumerate;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Misc;
 using UniSpyServer.Servers.PresenceSearchPlayer.Entity.Exception.General;
 
-namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request
+namespace UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Buddy
 {
     /// <summary>
     /// Update a user's status information

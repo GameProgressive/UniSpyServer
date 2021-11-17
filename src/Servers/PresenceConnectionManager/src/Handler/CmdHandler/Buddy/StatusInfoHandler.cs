@@ -1,7 +1,7 @@
 ﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
 using UniSpyServer.Servers.PresenceConnectionManager.Application;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Contract;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response.Buddy;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result.Buddy;
 using UniSpyServer.Servers.PresenceConnectionManager.Network;

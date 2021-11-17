@@ -1,5 +1,5 @@
 ﻿using UniSpyServer.Servers.PresenceConnectionManager.Abstraction.BaseClass;
-using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request;
+using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Request.Buddy;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Response;
 using UniSpyServer.Servers.PresenceConnectionManager.Entity.Structure.Result;
 using System.Linq;
@@ -48,7 +48,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
                 var request = new StatusInfoRequest
                 {
                     ProfileID = profileID,
-                    NameSpaceID = _session.UserInfo.BasicInfo.NamespaceID,
+                    NamespaceID = _session.UserInfo.BasicInfo.NamespaceID,
                     IsGetStatusInfo = true
                 };
                 new StatusInfoHandler(_session, request).Handle();
