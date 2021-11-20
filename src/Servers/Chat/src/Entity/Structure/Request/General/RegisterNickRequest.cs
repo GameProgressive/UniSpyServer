@@ -17,7 +17,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         {
             base.Parse();
 
-
             NamespaceID = _cmdParams[0];
             UniqueNick = _cmdParams[1];
             CDKey = _cmdParams[2];

@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
-using UniSpyServer.Servers.Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
 
@@ -9,6 +8,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     [RequestContract("SETCKEY")]
     public sealed class SetCKeyRequest : ChannelRequestBase
     {
+        public string Channel { get; private set; }
+
         public string NickName { get; private set; }
 
         public Dictionary<string, string> KeyValues { get; private set; }
@@ -21,11 +22,18 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         public override void Parse()
         {
             base.Parse();
-            if (_longParam == null)
+
+            if (_cmdParams == null)
             {
-                throw new Exception.Exception("The key value is missing from SETCKEY request.");
+                throw new Exception.Exception("The cmdParams from SETCKEY request are missing.");
             }
 
+            if (_longParam == null)
+            {
+                throw new Exception.Exception("The longParam from SETCKEY request is missing.");
+            }
+
+            Channel = _cmdParams[0];
             NickName = _cmdParams[1];
 
             _longParam = _longParam.Substring(1);

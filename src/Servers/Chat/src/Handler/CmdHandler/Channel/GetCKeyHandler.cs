@@ -30,10 +30,10 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         {
             switch (_request.RequestType)
             {
-                case GetKeyType.GetChannelAllUserKeyValue:
+                case GetKeyReqeustType.GetChannelAllUserKeyValue:
                     GetChannelAllUserKeyValue();
                     break;
-                case GetKeyType.GetChannelSpecificUserKeyValue:
+                case GetKeyReqeustType.GetChannelSpecificUserKeyValue:
                     GetChannelSpecificUserKeyValue();
                     break;
             }

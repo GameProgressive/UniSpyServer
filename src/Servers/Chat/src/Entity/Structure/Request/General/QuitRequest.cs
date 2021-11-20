@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
-using UniSpyServer.Servers.Chat.Entity.Exception;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {

@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
             if (!_user.IsChannelOperator)
             {
-                throw new Exception("Kick operation failed because you are not channel operator.");
+                throw new Exception("The Kick operation failed, because you are not channel operator.");
             }
             _kickee = _channel.GetChannelUserByNickName(_request.KickeeNickName);
             if (_kickee != null)

@@ -1,6 +1,5 @@
 ﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
-using UniSpyServer.Servers.Chat.Entity.Exception;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
@@ -16,15 +15,12 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         {
         }
 
-        //TODO becareful there are channel name
+        public WhoRequestType RequestType { get; private set; }
         public string ChannelName { get; private set; }
         public string NickName { get; private set; }
-
-        public WhoRequestType RequestType { get; private set; }
         public override void Parse()
         {
             base.Parse();
-
 
             if (_cmdParams.Count != 1)
             {
@@ -35,12 +31,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
             {
                 RequestType = WhoRequestType.GetChannelUsersInfo;
                 ChannelName = _cmdParams[0];
+                return;
             }
-            else
-            {
-                RequestType = WhoRequestType.GetUserInfo;
-                NickName = _cmdParams[0];
-            }
+
+            RequestType = WhoRequestType.GetUserInfo;
+            NickName = _cmdParams[0];
         }
     }
 }

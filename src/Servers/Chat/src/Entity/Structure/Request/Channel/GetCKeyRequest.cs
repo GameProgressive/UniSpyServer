@@ -6,7 +6,7 @@ using UniSpyServer.UniSpyLib.Extensions;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {
-    public enum GetKeyType
+    public enum GetKeyReqeustType
     {
         GetChannelAllUserKeyValue,
         GetChannelSpecificUserKeyValue
@@ -15,10 +15,12 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     [RequestContract("GETCKEY")]
     public sealed class GetCKeyRequest : ChannelRequestBase
     {
+        public GetKeyReqeustType RequestType { get; private set; }
+        public string Channel { get; private set; }
         public string NickName { get; private set; }
         public string Cookie { get; private set; }
+        public string UnkownCmdParam { get; private set; }
         public List<string> Keys { get; private set; }
-        public GetKeyType RequestType { get; private set; }
         public GetCKeyRequest(string rawRequest) : base(rawRequest)
         {
             Keys = new List<string>();
@@ -30,26 +32,28 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 
             if (_cmdParams.Count != 4)
             {
-                throw new Exception.Exception("number of IRC parameters are incorrect.");
+                throw new Exception.Exception("The number of IRC parameters are incorrect.");
             }
 
             if (_longParam == null)
             {
-                throw new Exception.Exception("IRC long parameter is incorrect.");
+                throw new Exception.Exception("The IRC long parameter is incorrect.");
             }
 
             NickName = _cmdParams[1];
 
             if (NickName == "*")
             {
-                RequestType = GetKeyType.GetChannelAllUserKeyValue;
+                RequestType = GetKeyReqeustType.GetChannelAllUserKeyValue;
             }
             else
             {
-                RequestType = GetKeyType.GetChannelSpecificUserKeyValue;
+                RequestType = GetKeyReqeustType.GetChannelSpecificUserKeyValue;
             }
 
+            Channel = _cmdParams[0];
             Cookie = _cmdParams[2];
+            UnkownCmdParam = _cmdParams[3];
 
             Keys = StringExtensions.ConvertKeyStrToList(_longParam);
         }

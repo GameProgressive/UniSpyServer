@@ -1,11 +1,10 @@
 ﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
-using UniSpyServer.Servers.Chat.Entity.Exception;
 using System.Linq;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
-    public enum LoginType
+    public enum LoginReqeustType
     {
         UniqueNickLogin,
         NickAndEmailLogin,
@@ -17,8 +16,8 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         {
         }
 
-        public LoginType RequestType { get; private set; }
-        public uint NameSpaceID { get; private set; }
+        public LoginReqeustType ReqeustType { get; private set; }
+        public uint NamespaceID { get; private set; }
         public string NickName { get; private set; }
         public string Email { get; private set; }
         public string UniqueNick { get; private set; }
@@ -28,20 +27,16 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         {
             base.Parse();
 
-
-
             uint namespaceid;
-
             if (!uint.TryParse(_cmdParams[0], out namespaceid))
             {
-                throw new Exception.Exception("namespaceid format is incorrect.");
+                throw new Exception.Exception("The namespaceid format is incorrect.");
             }
-
-            NameSpaceID = namespaceid;
+            NamespaceID = namespaceid;
 
             if (_cmdParams[1] == "*")
             {
-                RequestType = LoginType.NickAndEmailLogin;
+                ReqeustType = LoginReqeustType.NickAndEmailLogin;
                 PasswordHash = _cmdParams[2];
 
                 if (_longParam.Count(c => c == '@') != 2)
@@ -50,16 +45,14 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
                 }
 
                 int profilenickIndex = _longParam.IndexOf("@");
-
                 NickName = _longParam.Substring(0, profilenickIndex);
                 Email = _longParam.Substring(profilenickIndex + 1);
+                return;
             }
-            else
-            {
-                RequestType = LoginType.UniqueNickLogin;
-                UniqueNick = _cmdParams[1];
-                PasswordHash = _cmdParams[2];
-            }
+
+            ReqeustType = LoginReqeustType.UniqueNickLogin;
+            UniqueNick = _cmdParams[1];
+            PasswordHash = _cmdParams[2];
         }
     }
 }

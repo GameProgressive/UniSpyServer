@@ -22,15 +22,18 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         {
             base.Parse();
 
-            if (_cmdParams.Count != 2)
+            if (_cmdParams.Count != 1)
             {
-                throw new Exception.Exception("number of IRC parameters are incorrect.");
+                throw new Exception.Exception("The number of IRC parameters are incorrect.");
             }
-            KickeeNickName = _cmdParams[1];
+
+            KickeeNickName = _cmdParams[0];
+
             if (_longParam == null)
             {
-                throw new Exception.Exception("IRC long parameters is missing.");
+                throw new Exception.Exception("The IRC long parameters is missing.");
             }
+
             Reason = _longParam;
         }
     }

@@ -36,12 +36,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            switch (_request.RequestType)
+            switch (_request.ReqeustType)
             {
-                case LoginType.NickAndEmailLogin:
+                case LoginReqeustType.NickAndEmailLogin:
                     NickAndEmailLogin();
                     break;
-                case LoginType.UniqueNickLogin:
+                case LoginReqeustType.UniqueNickLogin:
                     UniqueNickLogin();
                     break;
             }
@@ -79,7 +79,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                              join p in db.Profiles on n.Profileid equals p.Profileid
                              join u in db.Users on p.Userid equals u.Userid
                              where n.Uniquenick == _request.UniqueNick
-                             && n.Namespaceid == _request.NameSpaceID
+                             && n.Namespaceid == _request.NamespaceID
                              select new
                              {
                                  userid = u.Userid,

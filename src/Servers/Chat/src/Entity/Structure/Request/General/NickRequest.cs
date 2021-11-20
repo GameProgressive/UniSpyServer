@@ -19,15 +19,16 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
             if (_cmdParams != null)
             {
                 NickName = _cmdParams[0];
+                return;
             }
-            else if (_longParam != null)
+
+            if (_longParam != null)
             {
                 NickName = _longParam;
+                return;
             }
-            else
-            {
-                throw new Exception.Exception("NICK request is invalid.");
-            }
+            
+            throw new Exception.Exception("NICK request is invalid.");
         }
     }
 }

@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.Chat.Test.General
         {
             var request = new GetKeyRequest(GeneralRequests.GetKey);
             request.Parse();
-            Assert.Equal("SpyGuy", request.NickName);
+            Assert.Equal("spyguy", request.NickName);
             Assert.Equal("004", request.Cookie);
             Assert.Equal("0", request.UnkownCmdParam);
             Assert.Equal("b_firewall", request.Keys[0]);
@@ -40,15 +40,20 @@ namespace UniSpyServer.Servers.Chat.Test.General
             Assert.Equal("b_val", request.Keys[7]);
         }
 
-        // TODO: add GetUdpRelayRequest
+        [Fact(Skip = "No reqeust")]
+        public void GetUdpRelay()
+        {
+            var request = new GetUdpRelayRequest(GeneralRequests.GetUdpRelay);
+            request.Parse();
+        }
 
         [Fact]
         public void Invite()
         {
             var request = new InviteRequest(GeneralRequests.Invite);
             request.Parse();
-            Assert.Equal("TestRoom", request.ChannelName);
-            Assert.Equal("Spyguy", request.UserName);
+            Assert.Equal("test", request.ChannelName);
+            Assert.Equal("spyguy", request.UserName);
         }
 
         [Fact]
@@ -57,7 +62,7 @@ namespace UniSpyServer.Servers.Chat.Test.General
             var request = new ListLimitRequest(GeneralRequests.ListLimit);
             request.Parse();
             Assert.Equal("5", request.MaxNumberOfChannels.ToString());
-            Assert.Equal("Test", request.Filter);
+            Assert.Equal("test", request.Filter);
         }
 
         [Fact]
@@ -65,10 +70,7 @@ namespace UniSpyServer.Servers.Chat.Test.General
         {
             var request = new ListRequest(GeneralRequests.List);
             request.Parse();
-            // TODO: Implement IsSearchingChannel and IsSearchingUser
-            //Assert.True(request.IsSearchingChannel);
-            //Assert.True(request.IsSearchingUser);
-            Assert.Equal("Test", request.Filter);
+            Assert.Equal("test", request.Filter);
         }
 
         [Fact]
@@ -76,60 +78,78 @@ namespace UniSpyServer.Servers.Chat.Test.General
         {
             var request = new LoginPreAuthRequest(GeneralRequests.LoginPreAuth);
             request.Parse();
-            Assert.Equal("XXXXXXXXXX", request.AuthToken);
-            Assert.Equal("YYYYYYYYYY", request.PartnerChallenge);
+            Assert.Equal("xxxxx", request.AuthToken);
+            Assert.Equal("yyyyy", request.PartnerChallenge);
         }
 
-        // FIXME:
-        /*[Fact]
-        public void Login()
+        [Fact]
+        public void LoginNickAndEmail()
         {
-            var request = new LoginRequest(GeneralRequests.Login);
+            var request = new LoginRequest(GeneralRequests.LoginNickAndEmail);
             request.Parse();
-            Assert.Equal("1", request.NameSpaceID.ToString());
-            Assert.Equal("SpyGuy", request.NickName);
-            Assert.Equal("spyguy@gamespy.com", request.Email);
-            Assert.Equal("SpyGuy", request.UniqueNick);
-            Assert.Equal("XXXXXXXXXX", request.PasswordHash);
-        }*/
+            Assert.Equal(LoginReqeustType.NickAndEmailLogin, request.ReqeustType);
+            Assert.Equal("0", request.NamespaceID.ToString());
+            Assert.Equal("spyguy", request.NickName);
+            Assert.Equal("xxxxx", request.PasswordHash);
+            Assert.Equal("spyguy@unispy.org", request.Email);
+        }
 
-        // TODO: add NamesRequest
+        [Fact]
+        public void LoginUniqueNick()
+        {
+            var request = new LoginRequest(GeneralRequests.LoginUniqueNick);
+            request.Parse();
+            Assert.Equal(LoginReqeustType.UniqueNickLogin, request.ReqeustType);
+            Assert.Equal("0", request.NamespaceID.ToString());
+            Assert.Equal("spyguy", request.UniqueNick);
+            Assert.Equal("xxxxx", request.PasswordHash);
+        }
+
+        [Fact(Skip = "No reqeust")]
+        public void Names()
+        {
+            var request = new NamesRequest(GeneralRequests.Names);
+            request.Parse();
+        }
 
         [Fact]
         public void Nick()
         {
             var request = new NickRequest(GeneralRequests.Nick);
             request.Parse();
-            Assert.Equal("Wiz", request.NickName);
+            Assert.Equal("spyguy", request.NickName);
         }
 
-        // TODO: add PingRequest
+        [Fact(Skip = "No reqeust")]
+        public void Ping()
+        {
+            var request = new PingRequest(GeneralRequests.Ping);
+            request.Parse();
+        }
 
-        // FIXME:
-        /*[Fact]
+        [Fact]
         public void Pong()
         {
             var request = new PongRequest(GeneralRequests.Pong);
             request.Parse();
-            Assert.Equal("test", request.EchoMessage);   
-        }*/
+            Assert.Equal("Pong!", request.EchoMessage);
+        }
 
-        // FIXME:
-        /*[Fact]
+        [Fact]
         public void Quit()
         {
             var request = new QuitRequest(GeneralRequests.Quit);
             request.Parse();
-            Assert.Equal("Bye", request.Reason);
-        }*/
+            Assert.Equal("Later!", request.Reason);
+        }
 
         [Fact]
         public void RegisterNick()
         {
             var request = new RegisterNickRequest(GeneralRequests.RegisterNick);
             request.Parse();
-            Assert.Equal("1", request.NamespaceID);
-            Assert.Equal("SpyGuy", request.UniqueNick);
+            Assert.Equal("0", request.NamespaceID);
+            Assert.Equal("spyguy", request.UniqueNick);
             Assert.Equal("XXXX-XXXX-XXXX-XXXX", request.CDKey);
         }
 
@@ -138,22 +158,32 @@ namespace UniSpyServer.Servers.Chat.Test.General
         {
             var request = new SetGroupRequest(GeneralRequests.SetGroup);
             request.Parse();
-            Assert.Equal("Test", request.GroupName);
+            Assert.Equal("test", request.GroupName);
         }
 
-        // TODO: add SetKeyRequest
+        [Fact(Skip = "TODO: add test")]
+        public void SetKey()
+        {
+            var request = new SetKeyRequest(GeneralRequests.SetKey);
+            request.Parse();
+        }
 
-        // TODO: add UserIPRequest
+        [Fact(Skip = "No reqeust")]
+        public void UserIP()
+        {
+            var request = new UserIPRequest(GeneralRequests.UserIP);
+            request.Parse();
+        }
 
         [Fact]
         public void User()
         {
             var request = new UserRequest(GeneralRequests.User);
             request.Parse();
-            Assert.Equal("pants1", request.UserName);
-            Assert.Equal("pants2", request.Name);
+            Assert.Equal("spyguy", request.UserName);
             Assert.Equal("127.0.0.1", request.Hostname);
-            Assert.Equal("peerchat.gamespy.com", request.ServerName);
+            Assert.Equal("peerchat.unispy.org", request.ServerName);
+            Assert.Equal("spyguy2", request.Name);
         }
 
         [Fact]
@@ -161,17 +191,25 @@ namespace UniSpyServer.Servers.Chat.Test.General
         {
             var request = new WhoIsRequest(GeneralRequests.WhoIs);
             request.Parse();
-            Assert.Equal("SpyGuy", request.NickName);
+            Assert.Equal("spyguy", request.NickName);
         }
 
         [Fact]
-        public void Who()
+        public void WhoChannelUsersInfo()
         {
-            var request = new WhoRequest(GeneralRequests.Who);
+            var request = new WhoRequest(GeneralRequests.WhoChannelUsersInfo);
             request.Parse();
-            //Assert.Equal("a", request.ChannelName);
-            Assert.Equal("SpyGuy", request.NickName);
-            // TODO: add WhoRequestType to Assert
+            Assert.Equal(WhoRequestType.GetChannelUsersInfo, request.RequestType);
+            Assert.Equal("#room", request.ChannelName);
+        }
+
+        [Fact]
+        public void WhoUserInfo()
+        {
+            var request = new WhoRequest(GeneralRequests.WhoUserInfo);
+            request.Parse();
+            Assert.Equal(WhoRequestType.GetUserInfo, request.RequestType);
+            Assert.Equal("spyguy", request.NickName);
         }
     }
 }

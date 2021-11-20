@@ -12,10 +12,17 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
     [RequestContract("TOPIC")]
     public sealed class TopicRequest : ChannelRequestBase
     {
+        public new string ChannelName
+        {
+            get => base.ChannelName;
+            set => base.ChannelName = value;
+        }
+        public TopicRequest() { }
         public TopicRequest(string rawRequest) : base(rawRequest)
         {
         }
 
+        public string Channel { get; private set; }
         public string ChannelTopic { get; private set; }
         public TopicRequestType RequestType { get; private set; }
 
@@ -26,12 +33,11 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
             if (_longParam == null)
             {
                 RequestType = TopicRequestType.GetChannelTopic;
+                return;
             }
-            else
-            {
-                RequestType = TopicRequestType.SetChannelTopic;
-                ChannelTopic = _longParam;
-            }
+
+            RequestType = TopicRequestType.SetChannelTopic;
+            ChannelTopic = _longParam;
         }
     }
 }

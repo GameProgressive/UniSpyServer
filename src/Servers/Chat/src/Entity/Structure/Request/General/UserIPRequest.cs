@@ -13,8 +13,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         public override void Parse()
         {
             base.Parse();
-
-
             // USRIP content is empty!
         }
     }

@@ -18,7 +18,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
         {
             base.Parse();
 
-
             AuthToken = _cmdParams[0];
             PartnerChallenge = _cmdParams[1];
         }
