@@ -1,4 +1,5 @@
-﻿using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
+﻿using System;
+using UniSpyServer.Servers.Chat.Entity.Structure.Misc;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
 using UniSpyServer.Servers.Chat.Handler.CommandSwitcher;
@@ -22,7 +23,6 @@ namespace UniSpyServer.Servers.Chat.Network
             new QuitHandler(this, request).Handle();
             base.OnDisconnected();
         }
-
         protected override byte[] Encrypt(byte[] buffer)
         {
             if (UserInfo.IsUsingEncryption)
