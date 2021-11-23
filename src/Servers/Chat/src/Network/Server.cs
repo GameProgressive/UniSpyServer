@@ -12,6 +12,5 @@ namespace UniSpyServer.Servers.Chat.Network
         }
 
         protected override TcpSession CreateSession() => new Session(this);
-
     }
 }

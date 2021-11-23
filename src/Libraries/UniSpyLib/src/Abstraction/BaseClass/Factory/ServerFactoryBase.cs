@@ -6,6 +6,7 @@ using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Database;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 using UniSpyServer.UniSpyLib.Config;
+using System.Linq;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
 {
@@ -19,20 +20,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         /// UniSpy server name
         /// </summary>
         /// <returns></returns>
-        public static string ServerName
-        {
-            get
-            {
-                try
-                {
-                    return Assembly.GetEntryAssembly().GetName().Name.Split(".")[2];
-                }
-                catch
-                {
-                    return "test";
-                }
-            }
-        }
+        public static string ServerName { get; protected set; }
         /// <summary>
         /// Redis connection
         /// </summary>
@@ -43,11 +31,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         public static IUniSpyServer Server { get; protected set; }
         public ServerFactoryBase()
         {
-            Console.Title = $"UniSpyServer  {Version} - {ServerName}";
         }
 
         public virtual void Start()
         {
+            Console.Title = $"UniSpyServer  {Version} - {ServerName}";
             ShowUniSpyLogo();
             ConnectMySql();
             ConnectRedis();
@@ -55,29 +43,23 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         }
         protected void LoadServerConfig()
         {
-            //Add all servers
-            foreach (var cfg in ConfigManager.Config.Servers)
-            {
-                StartServer(cfg);
-            }
+            var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
+            var type = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{ServerName}.Network.Server");
 
-            if (Server != null)
+            Server = (IUniSpyServer)Activator.CreateInstance(type, cfg.ServerID, cfg.ListeningEndPoint);
+
+            if (Server == null)
+            {
+                throw new Exception("Server created failed");
+            }
             // asp.net web server does not implement a Server interface, therefore this code should not be called
-            {
-                Server.Start();
-                var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
-                table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
-                table.Write(ConsoleTables.Format.Alternative);
-                Console.WriteLine("Server successfully started!");
-            }
-        }
+            Server.Start();
+            var table = new ConsoleTable("Server Name", "Listening Address", "Listening Port");
+            table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
+            table.Write(ConsoleTables.Format.Alternative);
+            Console.WriteLine("Server successfully started!");
 
-        /// <summary>
-        /// Over write the specific functions you want to start the server
-        /// You can start all servers if you want
-        /// </summary>
-        /// <param name="cfg"></param>
-        protected abstract void StartServer(UniSpyServerConfig cfg);
+        }
 
         protected void ConnectRedis()
         {

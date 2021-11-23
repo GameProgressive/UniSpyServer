@@ -9,24 +9,10 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Application
     /// </summary>
     public sealed class ServerFactory : ServerFactoryBase
     {
-        public new static Server Server
+        public new static Server Server  =>  (Server)ServerFactoryBase.Server;
+        public ServerFactory(): base()
         {
-            get => (Server)ServerFactoryBase.Server;
-            private set => ServerFactoryBase.Server = value;
-        }
-        public ServerFactory()
-        {
-        }
-        /// <summary>
-        /// Starts a specific server
-        /// </summary>
-        /// <param name="cfg">The configuration of the specific server to be run</param>
-        protected override void StartServer(UniSpyServerConfig cfg)
-        {
-            if (cfg.ServerName == ServerName)
-            {
-                Server = new Server(cfg.ServerID, cfg.ListeningEndPoint);
-            }
+            ServerName = "PresenceSearchPlayer";
         }
     }
 }
