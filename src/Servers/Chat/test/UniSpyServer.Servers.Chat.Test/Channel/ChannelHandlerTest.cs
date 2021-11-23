@@ -12,8 +12,6 @@ namespace UniSpyServer.Servers.Chat.Test
 
         public ChannelHandlerTest()
         {
-            // _serverFactory = new ServerFactory();
-            // _serverFactory.Start();
         }
         [Fact]
         public void JoinTest()

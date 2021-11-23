@@ -44,7 +44,8 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         protected void LoadServerConfig()
         {
             var cfg = ConfigManager.Config.Servers.Where(s => s.ServerName == ServerName).First();
-            var type = Assembly.GetEntryAssembly().GetType($"UniSpyServer.Servers.{ServerName}.Network.Server");
+            var assembly = Assembly.Load($"UniSpyServer.Servers.{ServerName}");
+            var type = assembly.GetType($"UniSpyServer.Servers.{ServerName}.Network.Server");
 
             Server = (IUniSpyServer)Activator.CreateInstance(type, cfg.ServerID, cfg.ListeningEndPoint);
 
