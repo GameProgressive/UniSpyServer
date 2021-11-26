@@ -13,8 +13,9 @@ using UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 
-namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
+namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 {
     /// <summary>
     /// Game will only join one channel at one time
@@ -68,7 +69,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
                 if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
                 {
                     // we do not send anything to this user and users in this channel
-                    throw new Exception.Exception($"User: {_user.UserInfo.NickName} is already joined the channel: {_request.ChannelName}");
+                    throw new Exception($"User: {_user.UserInfo.NickName} is already joined the channel: {_request.ChannelName}");
                 }
                 else
                 {
@@ -90,7 +91,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel
                     //simple check for avoiding program crash
                     if (_channel.IsUserExisted(_user))
                     {
-                        throw new Exception.Exception($"{_session.UserInfo.NickName} is already in channel {_request.ChannelName}");
+                        throw new Exception($"{_session.UserInfo.NickName} is already in channel {_request.ChannelName}");
                     }
                     _channel.AddBindOnUserAndChannel(_user);
 
