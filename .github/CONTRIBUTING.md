@@ -66,16 +66,18 @@ The scope should be the name of the UniSpy server/service/lib that is affected.
 
 List of supported scopes:
 
-* **unispylib**
-* **cdkey**
-* **chat**
-* **gs**
-* **natneg**
-* **pcm**
-* **psp**
-* **qr**
-* **sb**
-* **ws**
+| Scope       | Project                       |
+| :---------: | :---------------------------: |
+| **unispylib** | UniSpyServer.Libraries.UniSpyLib               |
+| **cdkey**     | UniSpyServer.Servers.CDKey                     |
+| **chat**      | UniSpyServer.Servers.Chat                      |
+| **gs**        | UniSpyServer.Servers.GameStatus                |
+| **natneg**    | UniSpyServer.Servers.NatNegotiation            |
+| **pcm**       | UniSpyServer.Servers.PresenceConnectionManager |
+| **psp**       | UniSpyServer.Servers.PresenceSearchPlayer      |
+| **qr**        | UniSpyServer.Servers.QueryReport               |
+| **sb**        | UniSpyServer.Servers.ServerBrowser             |
+| **ws**        | UniSpyServer.Servers.WebServer                 |
 
 Exceptions to the rule are:
 
