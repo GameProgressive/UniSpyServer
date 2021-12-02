@@ -7,7 +7,7 @@ using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
 using UniSpyServer.Servers.Chat.Network;
 using Xunit;
 
-namespace UniSpyServer.Servers.Chat.Test
+namespace UniSpyServer.Servers.Chat.Test.Channel
 {
     public class ChannelHandlerTest
     {
@@ -18,7 +18,7 @@ namespace UniSpyServer.Servers.Chat.Test
             _serverFactory.Start();
         }
         [Fact]
-        public void JoinTest()
+        public void JoinHandleTest()
         {
             var session1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
             var session2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
