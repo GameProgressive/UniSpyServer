@@ -1,26 +1,18 @@
-using System;
 using System.Linq;
-using System.Net;
 using UniSpyServer.Servers.Chat.Application;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.General;
-using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
-using UniSpyServer.Servers.Chat.Handler.CommandSwitcher;
 using UniSpyServer.Servers.Chat.Network;
-using UniSpyServer.Servers.Chat.Test.General;
 using Xunit;
 
-namespace UniSpyServer.Servers.Chat.Test
+namespace UniSpyServer.Servers.Chat.Test.Channel
 {
     public class ChannelHandlerTest
     {
-        public ChannelHandlerTest()
-        {
-        }
         [Fact]
-        public void JoinTest()
+        public void JoinHandleTest()
         {
             var factory = new ServerFactory();
             factory.Start();
@@ -45,8 +37,8 @@ namespace UniSpyServer.Servers.Chat.Test
             nick2Handler.Handle();
             join1Handler.Handle();
             join2Handler.Handle();
-            Assert.Equal(1, session1.UserInfo.JoinedChannels.Count);
-            Assert.Equal(1, session2.UserInfo.JoinedChannels.Count);
+            Assert.Single(session1.UserInfo.JoinedChannels);
+            Assert.Single(session2.UserInfo.JoinedChannels);
             Assert.Equal("#GSP!room!testr", session1.UserInfo.JoinedChannels.First().Property.ChannelName);
             Assert.Equal("#GSP!room!testr", session2.UserInfo.JoinedChannels.First().Property.ChannelName);
             Assert.True(session1.UserInfo.IsJoinedChannel("#GSP!room!testr"));

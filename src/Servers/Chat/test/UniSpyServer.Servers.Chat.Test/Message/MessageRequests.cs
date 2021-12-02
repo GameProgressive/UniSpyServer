@@ -2,12 +2,12 @@
 {
     public class MessageRequests
     {
-        public const string AboveTheTableMsg = "\r\n";
+        public const string AboveTheTableMsg = "";
 
-        public const string Notice = "\r\n";
+        public const string Notice = "";
 
-        public const string PrivateMsg = "\r\n";
+        public const string PrivateMsg = "";
 
-        public const string UnderTheTableMsg = "\r\n";
+        public const string UnderTheTableMsg = "";
     }
 }
