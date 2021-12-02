@@ -24,7 +24,7 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             Assert.Equal("000", request.Cookie);
             Assert.Equal("0", request.UnkownCmdParam);
             Assert.Equal("username", request.Keys[0]);
-            Assert.Equal("b_flags[0D][0A]", request.Keys[1]);
+            Assert.Equal("b_flags", request.Keys[1]);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             Assert.Equal("000", request.Cookie);
             Assert.Equal("0", request.UnkownCmdParam);
             Assert.Equal("username", request.Keys[0]);
-            Assert.Equal("b_flags[0D][0A]", request.Keys[1]);
+            Assert.Equal("b_flags", request.Keys[1]);
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             Dictionary<string, string> dict1 = new Dictionary<string, string> 
             {
                 { 
-                    "b_flags", "sh[0D][0A]" 
+                    "b_flags", "sh" 
                 } 
             };
             Assert.Equal("#GSP!room!test", request.Channel);
