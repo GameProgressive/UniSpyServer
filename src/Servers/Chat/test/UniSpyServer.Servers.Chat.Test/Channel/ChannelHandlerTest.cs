@@ -6,6 +6,9 @@ using UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel;
 using UniSpyServer.Servers.Chat.Handler.CmdHandler.General;
 using UniSpyServer.Servers.Chat.Network;
 using Xunit;
+using UniSpyServer.LinqToRedis;
+using UniSpyServer.Servers.Chat.Handler.CmdHandler.Message;
+using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
 
 namespace UniSpyServer.Servers.Chat.Test.Channel
 {
@@ -23,7 +26,14 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             var session1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
             var session2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
         }
-
+        [Fact]
+        public void ChannelMsgTest()
+        {
+            var session1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
+            var session2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
+            var privMsgReq = new PrivateMsgRequest("PRIVMSG $*.fi :Server tolsun.oulu.fi rebooting.");
+            var privMsgHandler = new PrivateMsgHandler(session1, privMsgReq);
+        }
         public Session SingleJoinTest(string userName = "unispy", string nickName = "unispy", string channelName = "#GSP!room!test")
         {
             var session = new Session(ServerFactory.Server);

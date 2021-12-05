@@ -1,5 +1,6 @@
 using Xunit;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Message;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.Chat.Test.Message
 {
@@ -20,11 +21,14 @@ namespace UniSpyServer.Servers.Chat.Test.Message
             request.Parse();
         }
 
-        [Fact(Skip = "TODO: add tests")]
+        [Fact]
         public void PrivateMsg()
         {
             var request = new PrivateMsgRequest(MessageRequests.PrivateMsg);
             request.Parse();
+            Assert.Equal(MessageType.ChannelMessage, request.MessageType);
+            Assert.Null(request.NickName);
+            Assert.Equal("#GSP!room!test", request.ChannelName);
         }
 
         [Fact(Skip = "TODO: add tests")]

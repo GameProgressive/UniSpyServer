@@ -6,7 +6,7 @@
 
         public const string Notice = "";
 
-        public const string PrivateMsg = "";
+        public const string PrivateMsg = "PRIVMSG #GSP!room!test :Server tolsun.oulu.fi rebooting.";
 
         public const string UnderTheTableMsg = "";
     }
