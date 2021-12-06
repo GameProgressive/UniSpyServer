@@ -2,11 +2,9 @@
 {
     public class ChannelRequests
     {
-        public const string GetChannelKey = "GETCHANKEY XXXX";
-
-        public const string GetCKeyChannelSpecificUser = "GETCKEY #GSP!room!test spyguy 000 0 :\\username\\b_flags";
-
-        public const string GetCKeyChannelAllUser = "GETCKEY #GSP!room!test * 000 0 :\\username\\b_flags";
+        public const string GetChannelKey = "GETCHANKEY #GSP!room!test 0000 0 :\\username\\nickname\0";
+        public const string GetCKeyChannelSpecificUser = "GETCKEY #GSP!room!test spyguy 0000 0 :\\username\\nickname\0";
+        public const string GetCKeyChannelAllUser = "GETCKEY #GSP!room!test * 0000 0 :\\username\\nickname\0";
 
         public const string Join = "JOIN #GSP!room!test";
 
@@ -14,13 +12,14 @@
 
         public const string Kick = "KICK spyguy :Spam";
 
-        public const string Mode = "MODE #GSP!room!test +l 2";
+        public const string ModeChannel = "MODE #GSP!room!test +l 2";
+        public const string ModeUser = "MODE spyguy +s";
 
         public const string Part = "PART #GSP!room!test :test";
 
-        public const string SetChannelKey = "SETCHANNELKEY";
+        public const string SetChannelKey = "SETCHANNELKEY #GSP!room!test 0000 0:\\b_flags\\sh\0";
 
-        public const string SetCKey = "SETCKEY #GSP!room!test spyguy :\\b_flags\\sh";
+        public const string SetCKey = "SETCKEY #GSP!room!test spyguy 0000 0:\\b_flags\\sh\0";
 
         public const string TopicGetChannelTopic = "TOPIC #GSP!room!test";
 

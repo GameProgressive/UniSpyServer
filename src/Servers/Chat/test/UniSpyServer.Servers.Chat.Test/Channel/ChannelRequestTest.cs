@@ -6,12 +6,15 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
 {
     public class ChannelRequestTest
     {
-        [Fact(Skip = "Unit test is broken")]
+        [Fact]
         public void GetChannelKey()
         {
             var request = new GetChannelKeyRequest(ChannelRequests.GetChannelKey);
             request.Parse();
-            Assert.Equal("XXXX", request.Cookie);
+            Assert.Equal("#GSP!room!test", request.ChannelName);
+            Assert.Equal("0000", request.Cookie);
+            Assert.Equal("username", request.Keys[0]);
+            Assert.Equal("nickname", request.Keys[1]);
         }
 
         [Fact]
@@ -20,11 +23,11 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             var request = new GetCKeyRequest(ChannelRequests.GetCKeyChannelSpecificUser);
             request.Parse();
             Assert.Equal(GetKeyReqeustType.GetChannelSpecificUserKeyValue, request.RequestType);
+            Assert.Equal("#GSP!room!test", request.ChannelName);
             Assert.Equal("spyguy", request.NickName);
-            Assert.Equal("000", request.Cookie);
-            Assert.Equal("0", request.UnkownCmdParam);
+            Assert.Equal("0000", request.Cookie);
             Assert.Equal("username", request.Keys[0]);
-            Assert.Equal("b_flags", request.Keys[1]);
+            Assert.Equal("nickname", request.Keys[1]);
         }
 
         [Fact]
@@ -33,10 +36,10 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             var request = new GetCKeyRequest(ChannelRequests.GetCKeyChannelAllUser);
             request.Parse();
             Assert.Equal(GetKeyReqeustType.GetChannelAllUserKeyValue, request.RequestType);
-            Assert.Equal("000", request.Cookie);
-            Assert.Equal("0", request.UnkownCmdParam);
+            Assert.Equal("#GSP!room!test", request.ChannelName);
+            Assert.Equal("0000", request.Cookie);
             Assert.Equal("username", request.Keys[0]);
-            Assert.Equal("b_flags", request.Keys[1]);
+            Assert.Equal("nickname", request.Keys[1]);
         }
 
         [Fact]
@@ -61,12 +64,12 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             Assert.Equal("Spam", request.Reason);
         }
 
-        [Fact(Skip = "TODO: add tests")]
+        [Fact]
         public void Mode()
         {
-            var request = new ModeRequest(ChannelRequests.Mode);
+            var request = new ModeRequest(ChannelRequests.ModeChannel);
             request.Parse();
-            Assert.Equal(ModeRequestType.SetChannelModesWithUserLimit, request.RequestType);
+            Assert.Equal(ModeRequestType.AddChannelUserLimits, request.RequestType);
             Assert.Equal("#GSP!room!test", request.ChannelName);
             Assert.Equal("+l", request.ModeFlag);
             Assert.Equal((uint)2, request.LimitNumber);
@@ -92,11 +95,11 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
         {
             var request = new SetCKeyRequest(ChannelRequests.SetCKey);
             request.Parse();
-            Dictionary<string, string> dict1 = new Dictionary<string, string> 
+            Dictionary<string, string> dict1 = new Dictionary<string, string>
             {
-                { 
-                    "b_flags", "sh" 
-                } 
+                {
+                    "b_flags", "sh"
+                }
             };
             Assert.Equal("#GSP!room!test", request.Channel);
             Assert.Equal("spyguy", request.NickName);

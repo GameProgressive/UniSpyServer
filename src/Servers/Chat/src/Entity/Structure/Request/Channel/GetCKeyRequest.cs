@@ -3,6 +3,7 @@ using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Exception;
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Extensions;
+using System.Linq;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 {
@@ -19,7 +20,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
         public string Channel { get; private set; }
         public string NickName { get; private set; }
         public string Cookie { get; private set; }
-        public string UnkownCmdParam { get; private set; }
         public List<string> Keys { get; private set; }
         public GetCKeyRequest(string rawRequest) : base(rawRequest)
         {
@@ -53,9 +53,13 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 
             Channel = _cmdParams[0];
             Cookie = _cmdParams[2];
-            UnkownCmdParam = _cmdParams[3];
 
-            Keys = StringExtensions.ConvertKeyStrToList(_longParam);
+            if (!_longParam.Contains("\0") && !_longParam.Contains("\\"))
+            {
+                throw new Exception.Exception("The key provide is incorrect.");
+            }
+
+            Keys = _longParam.TrimStart('\\').TrimEnd('\0').Split("\\").ToList();
         }
     }
 }

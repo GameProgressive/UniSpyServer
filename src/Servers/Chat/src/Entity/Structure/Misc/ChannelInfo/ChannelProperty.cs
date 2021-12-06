@@ -30,10 +30,10 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             ChannelUsers = new ConcurrentBag<ChannelUser>();
         }
 
-        public void SetDefaultProperties(ChannelUser creator, JoinRequest cmd)
+        public void SetDefaultProperties(ChannelUser creator, JoinRequest request)
         {
             MaxNumberUser = 200;
-            ChannelName = cmd.ChannelName;
+            ChannelName = request.ChannelName;
             ChannelMode.SetDefaultModes();
         }
 
@@ -44,77 +44,77 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// </summary>
         /// <param name="changer"></param>
         /// <param name="cmd"></param>
-        public void SetProperties(ChannelUser changer, ModeRequest cmd)
+        public void SetProperties(ChannelUser changer, ModeRequest request)
         {
-            switch (cmd.RequestType)
+            switch (request.RequestType)
             {
                 case ModeRequestType.AddChannelUserLimits:
-                    AddChannelUserLimits(cmd);
+                    AddChannelUserLimits(request);
                     break;
                 case ModeRequestType.RemoveChannelUserLimits:
-                    RemoveChannelUserLimits(cmd);
+                    RemoveChannelUserLimits(request);
                     break;
                 case ModeRequestType.AddBanOnUser:
-                    AddBanOnUser(cmd);
+                    AddBanOnUser(request);
                     break;
                 case ModeRequestType.RemoveBanOnUser:
-                    RemoveBanOnUser(cmd);
+                    RemoveBanOnUser(request);
                     break;
                 case ModeRequestType.AddChannelPassword:
-                    AddChannelPassword(cmd);
+                    AddChannelPassword(request);
                     break;
                 case ModeRequestType.RemoveChannelPassword:
-                    RemoveChannelPassword(cmd);
+                    RemoveChannelPassword(request);
                     break;
                 case ModeRequestType.AddChannelOperator:
-                    AddChannelOperator(cmd);
+                    AddChannelOperator(request);
                     break;
                 case ModeRequestType.RemoveChannelOperator:
-                    RemoveChannelOperator(cmd);
+                    RemoveChannelOperator(request);
                     break;
                 case ModeRequestType.EnableUserVoicePermission:
-                    EnableUserVoicePermission(cmd);
+                    EnableUserVoicePermission(request);
                     break;
                 case ModeRequestType.DisableUserVoicePermission:
-                    DisableUserVoicePermission(cmd);
+                    DisableUserVoicePermission(request);
                     break;
                 case ModeRequestType.SetChannelModesWithUserLimit:
-                    AddChannelUserLimits(cmd);
+                    AddChannelUserLimits(request);
                     goto default;
                 default:
-                    ChannelMode.ChangeModes(cmd);
+                    ChannelMode.ChangeModes(request);
                     break;
             }
         }
 
-        private void AddChannelUserLimits(ModeRequest cmd)
+        private void AddChannelUserLimits(ModeRequest request)
         {
-            MaxNumberUser = cmd.LimitNumber;
+            MaxNumberUser = request.LimitNumber;
         }
 
-        private void RemoveChannelUserLimits(ModeRequest cmd)
+        private void RemoveChannelUserLimits(ModeRequest request)
         {
             MaxNumberUser = 200;
         }
-        private void AddBanOnUser(ModeRequest cmd)
+        private void AddBanOnUser(ModeRequest request)
         {
-            var result = ChannelUsers.Where(u => u.UserInfo.NickName == cmd.NickName);
+            var result = ChannelUsers.Where(u => u.UserInfo.NickName == request.NickName);
             if (result.Count() != 1)
             {
                 return;
             }
             ChannelUser user = result.First();
 
-            if (BanList.Where(u => u.UserInfo.NickName == cmd.NickName).Count() == 1)
+            if (BanList.Where(u => u.UserInfo.NickName == request.NickName).Count() == 1)
             {
                 return;
             }
 
             BanList.Add(user);
         }
-        private void RemoveBanOnUser(ModeRequest cmd)
+        private void RemoveBanOnUser(ModeRequest request)
         {
-            var result = BanList.Where(u => u.UserInfo.NickName == cmd.NickName);
+            var result = BanList.Where(u => u.UserInfo.NickName == request.NickName);
             if (result.Count() == 1)
             {
                 ChannelUser user = result.First();
@@ -126,24 +126,24 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 LogWriter.Error($"Multiple user with same nick name in channel {ChannelName}");
             }
         }
-        private void AddChannelPassword(ModeRequest cmd)
+        private void AddChannelPassword(ModeRequest request)
         {
             if (Password == null)
             {
-                Password = cmd.Password;
+                Password = request.Password;
             }
         }
-        private void RemoveChannelPassword(ModeRequest cmd)
+        private void RemoveChannelPassword(ModeRequest request)
         {
-            if (Password == cmd.Password)
+            if (Password == request.Password)
             {
                 Password = null;
             }
         }
-        private void AddChannelOperator(ModeRequest cmd)
+        private void AddChannelOperator(ModeRequest request)
         {
             // check whether this user is in this channel
-            var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
+            var result = ChannelUsers.Where(u => u.UserInfo.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -158,9 +158,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             user.IsChannelOperator = true;
         }
 
-        private void RemoveChannelOperator(ModeRequest cmd)
+        private void RemoveChannelOperator(ModeRequest request)
         {
-            var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
+            var result = ChannelUsers.Where(u => u.UserInfo.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -173,9 +173,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             }
         }
 
-        private void EnableUserVoicePermission(ModeRequest cmd)
+        private void EnableUserVoicePermission(ModeRequest request)
         {
-            var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
+            var result = ChannelUsers.Where(u => u.UserInfo.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;
@@ -189,9 +189,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             }
 
         }
-        private void DisableUserVoicePermission(ModeRequest cmd)
+        private void DisableUserVoicePermission(ModeRequest request)
         {
-            var result = ChannelUsers.Where(u => u.UserInfo.UserName == cmd.UserName);
+            var result = ChannelUsers.Where(u => u.UserInfo.UserName == request.UserName);
             if (result.Count() != 1)
             {
                 return;

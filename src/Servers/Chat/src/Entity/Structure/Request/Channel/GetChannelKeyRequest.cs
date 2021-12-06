@@ -31,9 +31,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
 
             Cookie = _cmdParams[1];
 
-            _longParam = _longParam.Substring(0, _longParam.Length - 2);
-
-            Keys = StringExtensions.ConvertKeyStrToList(_longParam);
+            Keys = _longParam.TrimStart('\\').TrimEnd('\0').Split("\\").ToList();
         }
     }
 }
