@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
             //search player data in database;
             Dictionary<string, string> keyValues;
 
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var result = from ps in db.Pstorage
                              where ps.Ptype == (uint)_request.StorageType

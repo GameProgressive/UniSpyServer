@@ -22,7 +22,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 _result.ProfileIdList = db.Blocked
                     .Where(f => f.Profileid == _session.UserInfo.BasicInfo.ProfileID

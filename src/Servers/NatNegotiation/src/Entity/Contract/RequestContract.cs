@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.NatNegotiation.Entity.Enumerate;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.Contract;
 
 namespace UniSpyServer.Servers.NatNegotiation.Entity.Contract
 {

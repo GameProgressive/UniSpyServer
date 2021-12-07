@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
 using UniSpyServer.UniSpyLib.Logging;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.Contract;
 using System.Linq;
 using System.Reflection;
 

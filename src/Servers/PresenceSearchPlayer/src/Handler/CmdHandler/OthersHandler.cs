@@ -34,7 +34,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new unispyContext())
+                using (var db = new UnispyContext())
                 {
                     var result = from b in db.Friends
                                  where b.Profileid == _request.ProfileID && b.Namespaceid == _request.NamespaceID

@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.ServerBrowser.Entity.Enumerate;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.Contract;
 
 namespace UniSpyServer.Servers.ServerBrowser.Entity.Contract
 {

@@ -2,9 +2,11 @@
 using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.Contract;
 
 namespace UniSpyServer.Servers.NatNegotiation.Network
 {
+    [ServerName("NatNegotiation")]
     public sealed class Server : UniSpyUdpServer
     {
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)

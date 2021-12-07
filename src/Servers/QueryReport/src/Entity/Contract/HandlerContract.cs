@@ -1,5 +1,5 @@
 using UniSpyServer.Servers.QueryReport.Entity.Enumerate;
-using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract;
+using UniSpyServer.UniSpyLib.Abstraction.Contract;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.contract
 {

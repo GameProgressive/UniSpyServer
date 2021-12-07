@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 try
                 {
@@ -47,7 +47,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
         private void UpdateOtherInfo()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
 
                 if (_request.HasPartnerIDFlag)
@@ -81,7 +81,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
         private void DatabaseOperationByType()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 switch (NewUserStatus.CheckAccount)
                 {

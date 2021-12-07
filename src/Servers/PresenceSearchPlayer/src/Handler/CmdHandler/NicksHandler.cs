@@ -33,7 +33,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
         {
             try
             {
-                using (var db = new unispyContext())
+                using (var db = new UnispyContext())
                 {
                     var result = from u in db.Users
                                  join p in db.Profiles on u.Userid equals p.Userid

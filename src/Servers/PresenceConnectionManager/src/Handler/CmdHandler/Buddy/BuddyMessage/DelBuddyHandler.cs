@@ -23,7 +23,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var result = from friend in db.Friends
                              where friend.Profileid == _request.DeleteProfileID

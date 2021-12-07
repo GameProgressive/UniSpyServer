@@ -6,7 +6,7 @@ namespace UniSpyServer.UniSpyLib.Extensions
     {
         public static string GetSecretKey(string gameName)
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var result = from p in db.Games
                              where p.Gamename == gameName

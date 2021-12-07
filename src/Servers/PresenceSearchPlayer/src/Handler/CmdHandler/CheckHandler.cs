@@ -31,7 +31,7 @@ namespace UniSpyServer.Servers.PresenceSearchPlayer.Handler.CmdHandler
 
         protected override void DataOperation()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 if (db.Users.Where(e => e.Email == _request.Email).Count() < 1)
                 {

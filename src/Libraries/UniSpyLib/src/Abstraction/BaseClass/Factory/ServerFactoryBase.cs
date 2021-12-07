@@ -7,6 +7,7 @@ using UniSpyServer.UniSpyLib.Database;
 using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 using UniSpyServer.UniSpyLib.Config;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
 {
@@ -31,6 +32,11 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         public static IUniSpyServer Server { get; protected set; }
         public ServerFactoryBase()
         {
+        }
+        private List<string> _availableServers = new List<string>();
+        public ServerFactoryBase(List<string> servers)
+        {
+            _availableServers = servers;
         }
 
         public virtual void Start()
@@ -59,7 +65,6 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             table.AddRow(ServerName, Server.Endpoint.Address, Server.Endpoint.Port);
             table.Write(ConsoleTables.Format.Alternative);
             Console.WriteLine("Server successfully started!");
-
         }
 
         protected void ConnectRedis()
@@ -67,7 +72,7 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
             var redisConfig = ConfigManager.Config.Redis;
             try
             {
-                Redis = ConnectionMultiplexer.Connect($"{redisConfig.RemoteAddress}:{redisConfig.RemotePort}");
+                Redis = ConnectionMultiplexer.Connect(redisConfig.ConnectionString);
             }
             catch (Exception e)
             {
@@ -79,25 +84,9 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Factory
         {
             //Determine which database is used and establish the database connection.
             var dbConfig = ConfigManager.Config.Database;
-            switch (dbConfig.Type)
-            {
-                case DatabaseType.MySql:
-                    unispyContext.UniSpyMySqlConnStr =
-                    $"Server={dbConfig.RemoteAddress};"
-                    + $"Database={dbConfig.DatabaseName};"
-                    + $"Uid={dbConfig.UserName};"
-                    + $"Pwd={dbConfig.Password};"
-                    + $"Port={dbConfig.RemotePort};"
-                    + $"SslMode={dbConfig.SslMode};"
-                    + $"SslCert={dbConfig.SslCert};"
-                    + $"SslKey={dbConfig.SslKey};"
-                    + $"SslCa={dbConfig.SslCa}";
-                    break;
-            }
-
             try
             {
-                new unispyContext().Database.CanConnect();
+                new UnispyContext().Database.CanConnect();
             }
             catch (Exception e)
             {

@@ -15,6 +15,16 @@ namespace UniSpyServer.UniSpyLib.Config
     }
     public class UniSpyDatabaseConfig
     {
+        public string ConnectionString =>
+                    $"Server={RemoteAddress};"
+                    + $"Database={DatabaseName};"
+                    + $"Uid={UserName};"
+                    + $"Pwd={Password};"
+                    + $"Port={RemotePort};"
+                    + $"SslMode={SslMode};"
+                    + $"SslCert={SslCert};"
+                    + $"SslKey={SslKey};"
+                    + $"SslCa={SslCa}";
         public DatabaseType Type;
         public string RemoteAddress;
         public int RemotePort;
@@ -28,6 +38,7 @@ namespace UniSpyServer.UniSpyLib.Config
     }
     public class UniSpyRedisConfig
     {
+        public string ConnectionString => $"{RemoteAddress}:{RemotePort}";
         public string RemoteAddress;
         public int RemotePort;
     }

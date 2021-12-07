@@ -126,7 +126,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
         private void NickEmailLogin()
         {
             //Check email existence
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var email = from u in db.Users
                             where u.Email == _request.Email
@@ -169,7 +169,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         private void UniquenickLogin()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var info = from n in db.Subprofiles
                            join p in db.Profiles on n.Profileid equals p.Profileid
@@ -200,7 +200,7 @@ namespace UniSpyServer.Servers.PresenceConnectionManager.Handler.CmdHandler
 
         private void AuthtokenLogin()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var info = from u in db.Users
                            join p in db.Profiles on u.Userid equals p.Userid

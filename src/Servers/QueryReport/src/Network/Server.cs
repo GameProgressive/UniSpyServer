@@ -4,9 +4,11 @@ using UniSpyServer.Servers.QueryReport.Handler.SystemHandler;
 using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
+using UniSpyServer.UniSpyLib.Abstraction.Contract;
 
 namespace UniSpyServer.Servers.QueryReport.Network
 {
+    [ServerName("QueryReport")]
     public sealed class Server : UniSpyUdpServer
     {
         public RedisChannelSubscriber RedisChannelSubscriber { get; private set; }

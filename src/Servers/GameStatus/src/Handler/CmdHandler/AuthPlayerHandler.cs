@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         {
             //search database for user's password
             //We do not store user's plaintext password, so we can not check this response
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 switch (_request.RequestType)
                 {
@@ -60,7 +60,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 
         private void FindProfileByAuthtoken()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var result = from s in db.Subprofiles
                              where s.Authtoken == _request.AuthToken
@@ -74,7 +74,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         }
         private void FindProfileByProfileid()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var result = from p in db.Profiles
                              where p.Profileid == _request.ProfileID
@@ -88,7 +88,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
         }
         private void FrindProfileByCDKeyHash()
         {
-            using (var db = new unispyContext())
+            using (var db = new UnispyContext())
             {
                 var result = from s in db.Subprofiles
                              join p in db.Profiles on s.Profileid equals p.Profileid

@@ -1,15 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using UniSpyServer.UniSpyLib.Config;
 
 namespace UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql
 {
-    public partial class unispyContext : DbContext
+    public partial class UnispyContext : DbContext
     {
-        public static string UniSpyMySqlConnStr;
-        public unispyContext()
+        public static readonly string UniSpyMySqlConnStr = ConfigManager.Config.Database.ConnectionString;
+        public UnispyContext()
         {
         }
 
-        public unispyContext(DbContextOptions<unispyContext> options)
+        public UnispyContext(DbContextOptions<UnispyContext> options)
             : base(options)
         {
         }

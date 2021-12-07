@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass.Contract
+namespace UniSpyServer.UniSpyLib.Abstraction.Contract
 {
     public abstract class CmdContractBase : Attribute
     {

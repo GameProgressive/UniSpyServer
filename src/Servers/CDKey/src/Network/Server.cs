@@ -3,9 +3,11 @@ using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Network.Udp.Server;
 using UniSpyServer.UniSpyLib.Encryption;
+using UniSpyServer.UniSpyLib.Abstraction.Contract;
 
 namespace UniSpyServer.Servers.CDkey.Network
 {
+    [ServerName("CDKey")]
     public sealed class Server : UniSpyUdpServer
     {
         public Server(Guid serverID, IPEndPoint endpoint) : base(serverID, endpoint)
