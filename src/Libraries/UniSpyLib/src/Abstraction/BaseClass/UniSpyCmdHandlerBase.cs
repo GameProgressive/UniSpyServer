@@ -37,7 +37,10 @@ namespace UniSpyServer.UniSpyLib.Abstraction.BaseClass
         }
         protected virtual void RequestCheck()
         {
-            _request.Parse();
+            if (_request.RawRequest != null)
+            {
+                _request.Parse();
+            }
         }
         protected virtual void DataOperation() { }
         protected virtual void ResponseConstruct() { }

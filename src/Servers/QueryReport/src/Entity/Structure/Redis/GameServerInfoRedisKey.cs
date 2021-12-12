@@ -3,6 +3,7 @@ using System;
 using System.Net;
 using UniSpyServer.UniSpyLib.Abstraction.BaseClass.Redis;
 using UniSpyServer.UniSpyLib.Extensions;
+using UniSpyServer.UniSpyLib.MiscMethod;
 
 namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
 {
@@ -11,6 +12,7 @@ namespace UniSpyServer.Servers.QueryReport.Entity.Structure.Redis
         [JsonProperty(Order = -2, NullValueHandling = NullValueHandling.Ignore)]
         public Guid? ServerID { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        [JsonConverter(typeof(IPEndPointConverter))]
         public IPEndPoint RemoteIPEndPoint { get; set; }
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public uint? InstantKey { get; set; }

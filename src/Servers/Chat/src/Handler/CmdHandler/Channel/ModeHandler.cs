@@ -23,23 +23,19 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         {
         }
 
-        protected override void RequestCheck()
-        {
+        // protected override void RequestCheck()
+        // {
 
-            switch (_request.RequestType)
-            {
-                case ModeRequestType.EnableUserQuietFlag:
-                case ModeRequestType.DisableUserQuietFlag:
-                    //we do not need to find user and its channel here
-                    break;
-                default:
-                    if (_request.RawRequest != null)
-                    {
-                        base.RequestCheck();
-                    }
-                    break;
-            }
-        }
+        //     switch (_request.RequestType)
+        //     {
+        //         case ModeRequestType.EnableUserQuietFlag:
+        //         case ModeRequestType.DisableUserQuietFlag:
+        //             //we do not need to find user and its channel here
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        // }
 
         protected override void DataOperation()
         {

@@ -13,23 +13,15 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     public sealed class PartHandler : ChannelHandlerBase
     {
         private new PartRequest _request => (PartRequest)base._request;
-        private new PartResponse _response
-        {
-            get => (PartResponse)base._response;
-            set => base._response = value;
-        }
-        private new PartResult _result
-        {
-            get => (PartResult)base._result;
-            set => base._result = value;
-        }
+        private new PartResponse _response { get => (PartResponse)base._response; set => base._response = value; }
+        private new PartResult _result { get => (PartResult)base._result; set => base._result = value; }
         public PartHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new PartResult();
         }
 
         protected override void DataOperation()
         {
+            _result = new PartResult();
             _result.LeaverIRCPrefix = _user.UserInfo.IRCPrefix;
             _result.ChannelName = _channel.Property.ChannelName;
             if (_channel.Property.IsPeerServer && _user.IsChannelCreator)
@@ -90,7 +82,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 GameServerInfoRedisOperator.DeleteKeyValue(searchKey);
             }
             // remove channel in ChannelManager
-            ChatChannelManager.RemoveChannel(_channel);
+            ChannelManager.RemoveChannel(_channel);
         }
     }
 }

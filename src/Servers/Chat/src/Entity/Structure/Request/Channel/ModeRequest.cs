@@ -123,7 +123,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel
                         break;
                     default:
                         throw new Exception.Exception("Unknown mode request type.");
-
                 }
             }
             else

@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         protected override void DataOperation()
         {
             //add list response header
-            foreach (var channel in ChatChannelManager.Channels.Values)
+            foreach (var channel in ChannelManager.Channels.Values)
             {
                 //TODO
                 //add channel information here

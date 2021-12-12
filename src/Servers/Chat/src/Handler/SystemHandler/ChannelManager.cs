@@ -3,10 +3,10 @@ using System.Collections.Concurrent;
 
 namespace UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage
 {
-    public sealed class ChatChannelManager
+    public sealed class ChannelManager
     {
         public static ConcurrentDictionary<string, Channel> Channels { get; private set; }
-        static ChatChannelManager()
+        static ChannelManager()
         {
             Channels = new ConcurrentDictionary<string, Channel>();
         }

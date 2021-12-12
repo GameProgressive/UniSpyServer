@@ -63,7 +63,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         protected override void DataOperation()
         {
             _user = new ChannelUser(_session.UserInfo);
-            if (ChatChannelManager.GetChannel(_request.ChannelName, out _channel))
+            // if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
+            // {
+            //     // this is for not making game crash
+            //     // if user is in this channel and we send the channel info back
+            // }
+            if (ChannelManager.GetChannel(_request.ChannelName, out _channel))
             {
                 //join
                 if (_session.UserInfo.IsJoinedChannel(_request.ChannelName))
@@ -80,11 +85,11 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     }
                     if (_channel.IsUserBanned(_user))
                     {
-                        throw new ChatIRCBannedFromChanException($"You are banned from this channel:{_request.ChannelName}.", _request.ChannelName);
+                        throw new IRCBannedFromChanException($"You are banned from this channel:{_request.ChannelName}.", _request.ChannelName);
                     }
                     if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
                     {
-                        throw new ChatIRCChannelIsFullException($"The channel:{_request.ChannelName} you are join is full.", _request.ChannelName);
+                        throw new IRCChannelIsFullException($"The channel:{_request.ChannelName} you are join is full.", _request.ChannelName);
                     }
                     //if all pass, it mean  we excute join channel
                     _user.SetDefaultProperties(false);
@@ -108,7 +113,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 _user.SetDefaultProperties(true);
                 _channel.Property.SetDefaultProperties(_user, _request);
                 _channel.AddBindOnUserAndChannel(_user);
-                ChatChannelManager.AddChannel(_request.ChannelName, _channel);
+                ChannelManager.AddChannel(_request.ChannelName, _channel);
             }
 
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
@@ -119,6 +124,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
         private bool IsPeerServer(string name)
         {
+            // TODO! check the room name by search the name on the official room name in database
             string[] buffer = name.Split('!', System.StringSplitOptions.RemoveEmptyEntries);
             if (buffer.Length != 3)
             {

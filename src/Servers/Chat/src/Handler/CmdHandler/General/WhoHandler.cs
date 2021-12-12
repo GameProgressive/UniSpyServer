@@ -48,7 +48,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         private void GetChannelUsersInfo()
         {
             Entity.Structure.Misc.ChannelInfo.Channel channel;
-            if (!ChatChannelManager.GetChannel(_request.ChannelName, out channel))
+            if (!ChannelManager.GetChannel(_request.ChannelName, out channel))
             {
                 throw new IRCChannelException($"The channel is not exist.", IRCErrorCode.NoSuchChannel, _request.ChannelName);
             }

@@ -13,13 +13,6 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         public NamesHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
-        protected override void RequestCheck()
-        {
-            if (_request.RawRequest != null)
-            {
-                base.RequestCheck();
-            }
-        }
         protected override void DataOperation()
         {
             _result = new NamesResult();
