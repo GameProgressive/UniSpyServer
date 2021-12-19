@@ -64,14 +64,15 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
         protected override void Response()
         {
-            _response.Build();
             if (_channel.Property.IsPeerServer && _user.IsChannelCreator)
             {
                 // we do nothing here, becase we kicked all user
             }
             else
             {
-                _session.SendAsync(_response.SendingBuffer);
+                //broadcast to all user in channel
+                _channel.MultiCastExceptSender(_user, _response);
+
                 // remove serverInfo in Redis
                 var searchKey = new GameServerInfoRedisKey()
                 {
@@ -82,7 +83,10 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 GameServerInfoRedisOperator.DeleteKeyValue(searchKey);
             }
             // remove channel in ChannelManager
-            ChannelManager.RemoveChannel(_channel);
+            if (_channel.Property.ChannelUsers.Count == 0)
+            {
+                ChannelManager.RemoveChannel(_channel);
+            }
         }
     }
 }

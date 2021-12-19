@@ -66,14 +66,13 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
         protected override void Response()
         {
             // response can not be null!
-            _response.Build();
             switch (_request.MessageType)
             {
                 case MessageType.ChannelMessage:
-                    _channel.MultiCastExceptSender(_user, (string)_response.SendingBuffer);
+                    _channel.MultiCastExceptSender(_user, _response);
                     break;
                 case MessageType.UserMessage:
-                    _reciever.UserInfo.Session.SendAsync((string)_response.SendingBuffer);
+                    _reciever.UserInfo.Session.Send(_response);
                     break;
             }
         }

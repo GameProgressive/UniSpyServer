@@ -16,9 +16,15 @@ namespace UniSpyServer.Servers.Chat.Network
         protected override void OnReceived(string message) => new CmdSwitcher(this, message).Switch();
         protected override void OnDisconnected()
         {
+            // user is not join any channel so we 
+            // do not need to clean up anything
+            if (UserInfo.JoinedChannels.Count == 0)
+            {
+                return;
+            }
             var request = new QuitRequest()
             {
-                Reason = "Server Host leaves channel"
+                Reason = "User disconnected"
             };
             new QuitHandler(this, request).Handle();
             base.OnDisconnected();

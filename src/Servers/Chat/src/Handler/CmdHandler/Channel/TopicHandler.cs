@@ -45,14 +45,13 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         }
         protected override void Response()
         {
-            _response.Build();
             switch (_request.RequestType)
             {
                 case TopicRequestType.GetChannelTopic:
-                    _session.SendAsync((string)_response.SendingBuffer);
+                    _session.Send(_response);
                     break;
                 case TopicRequestType.SetChannelTopic:
-                    _channel.MultiCast((string)_response.SendingBuffer);
+                    _channel.MultiCast(_response);
                     break;
             }
         }

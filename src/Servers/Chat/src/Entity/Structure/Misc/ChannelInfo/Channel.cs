@@ -1,6 +1,7 @@
 ﻿using UniSpyServer.Servers.Chat.Network;
 using System.Linq;
 using UniSpyServer.UniSpyLib.Logging;
+using UniSpyServer.UniSpyLib.Abstraction.Interface;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
@@ -18,16 +19,16 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// except the sender
         /// </summary>
         /// <returns></returns>
-        public bool MultiCast(string message)
+        public bool MultiCast(IUniSpyResponse message)
         {
             foreach (var user in Property.ChannelUsers)
             {
-                user.UserInfo.Session.SendAsync(message);
+                user.UserInfo.Session.Send(message);
             }
-            LogWriter.LogNetworkMultiCast(message);
+            LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
             return true;
         }
-        public bool MultiCastExceptSender(ChannelUser sender, string message)
+        public bool MultiCastExceptSender(ChannelUser sender, IUniSpyResponse message)
         {
             foreach (var user in Property.ChannelUsers)
             {
@@ -35,7 +36,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 {
                     continue;
                 }
-                user.UserInfo.Session.SendAsync(message);
+                user.UserInfo.Session.Send(message);
             }
 
             return true;
@@ -69,9 +70,12 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         }
         public void RemoveBindOnUserAndChannel(ChannelUser leaver)
         {
+            //!! we should use ConcurrentDictionary here
+            //!! FIXME: when removing user from channel, 
+            //!! we should do more checks on user not only just TryTake()
             if (Property.ChannelUsers.Contains(leaver))
+                // !! we takeout wrong user from channel
                 Property.ChannelUsers.TryTake(out leaver);
-
             if (leaver.UserInfo.JoinedChannels.Contains(this))
             {
                 Channel channel = this;

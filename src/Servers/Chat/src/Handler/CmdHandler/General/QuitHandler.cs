@@ -13,15 +13,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
     public sealed class QuitHandler : LogedInHandlerBase
     {
         private new QuitRequest _request => (QuitRequest)base._request;
-        private new QuitResult _result
-        {
-            get => (QuitResult)base._result;
-            set => base._result = value;
-        }
         // when a user disconnected with server we can call this function
         public QuitHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new QuitResult();
         }
 
         protected override void DataOperation()
@@ -33,27 +27,10 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 {
                     continue;
                 }
-                _result.ChannelInfos.Add(
-                    new QuitDataModel
-                    {
-                        IsPeerServer = channel.Property.IsPeerServer,
-                        IsChannelCreator = user.IsChannelCreator,
-                        ChannelName = channel.Property.ChannelName,
-
-                    });
-            }
-        }
-
-        protected override void Response()
-        {
-            _response.Build();
-
-            foreach (var channelInfo in _result.ChannelInfos)
-            {
                 // we create a PARTHandler to handle our quit request
                 var partRequest = new PartRequest()
                 {
-                    ChannelName = channelInfo.ChannelName,
+                    ChannelName = channel.Property.ChannelName,
                     Reason = _request.Reason
                 };
                 new PartHandler(_session, partRequest).Handle();
