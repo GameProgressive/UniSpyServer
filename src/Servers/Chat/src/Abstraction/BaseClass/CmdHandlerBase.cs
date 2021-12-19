@@ -38,6 +38,13 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                 base.HandleException(ex);
             }
         }
+        protected override void RequestCheck()
+        {
+            if (_request.RawRequest != null)
+            {
+                base.RequestCheck();
+            }
+        }
         protected override void Response()
         {
             if (_session.UserInfo.IsQuietMode)
