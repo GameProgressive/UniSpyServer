@@ -2,6 +2,7 @@
 using System.Linq;
 using UniSpyServer.UniSpyLib.Logging;
 using UniSpyServer.UniSpyLib.Abstraction.Interface;
+using System.Collections.Generic;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
@@ -21,22 +22,22 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         /// <returns></returns>
         public bool MultiCast(IUniSpyResponse message)
         {
-            foreach (var user in Property.ChannelUsers)
+            foreach (var kv in Property.ChannelUsers)
             {
-                user.UserInfo.Session.Send(message);
+                kv.Value.UserInfo.Session.Send(message);
             }
             LogWriter.LogNetworkMultiCast((string)message.SendingBuffer);
             return true;
         }
         public bool MultiCastExceptSender(ChannelUser sender, IUniSpyResponse message)
         {
-            foreach (var user in Property.ChannelUsers)
+            foreach (var kv in Property.ChannelUsers)
             {
-                if (user.UserInfo.Session.Id == sender.UserInfo.Session.Id)
+                if (kv.Value.UserInfo.Session.Id == sender.UserInfo.Session.Id)
                 {
                     continue;
                 }
-                user.UserInfo.Session.Send(message);
+                kv.Value.UserInfo.Session.Send(message);
             }
 
             return true;
@@ -44,15 +45,15 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public string GetAllUsersNickString()
         {
             string nicks = "";
-            foreach (var user in Property.ChannelUsers)
+            foreach (var kv in Property.ChannelUsers)
             {
-                if (user.IsChannelCreator)
+                if (kv.Value.IsChannelCreator)
                 {
-                    nicks += "@" + user.UserInfo.NickName + " ";
+                    nicks += "@" + kv.Value.UserInfo.NickName + " ";
                 }
                 else
                 {
-                    nicks += user.UserInfo.NickName + " ";
+                    nicks += kv.Value.UserInfo.NickName + " ";
                 }
             }
             //if user equals last user in channel we do not add space after it
@@ -61,11 +62,17 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         }
         public void AddBindOnUserAndChannel(ChannelUser joiner)
         {
-            if (!Property.ChannelUsers.Contains(joiner))
-                Property.ChannelUsers.Add(joiner);
+            // !! we can not directly use the Contains() method that ConcurrentDictionary or 
+            // !! ConcurrentBag provide because it will not work properly.
+            if (!Property.ChannelUsers.Keys.Contains(joiner.UserInfo.NickName))
+            {
+                Property.ChannelUsers.TryAdd(joiner.UserInfo.NickName, joiner);
+            }
 
-            if (!joiner.UserInfo.JoinedChannels.Contains(this))
-                joiner.UserInfo.JoinedChannels.Add(this);
+            if (!joiner.UserInfo.JoinedChannels.Keys.Contains(this.Property.ChannelName))
+            {
+                joiner.UserInfo.JoinedChannels.TryAdd(this.Property.ChannelName, this);
+            }
 
         }
         public void RemoveBindOnUserAndChannel(ChannelUser leaver)
@@ -73,20 +80,26 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             //!! we should use ConcurrentDictionary here
             //!! FIXME: when removing user from channel, 
             //!! we should do more checks on user not only just TryTake()
-            if (Property.ChannelUsers.Contains(leaver))
-                // !! we takeout wrong user from channel
-                Property.ChannelUsers.TryTake(out leaver);
-            if (leaver.UserInfo.JoinedChannels.Contains(this))
+            if (Property.ChannelUsers.Keys.Contains(leaver.UserInfo.NickName))
+            // !! we takeout wrong user from channel
             {
-                Channel channel = this;
-                leaver.UserInfo.JoinedChannels.TryTake(out channel);
+                var kv = new KeyValuePair<string, ChannelUser>(
+                    leaver.UserInfo.NickName,
+                    Property.ChannelUsers[leaver.UserInfo.NickName]);
+                Property.ChannelUsers.TryRemove(kv);
+            }
+
+            if (leaver.UserInfo.JoinedChannels.Keys.Contains(this.Property.ChannelName))
+            {
+                var kv = new KeyValuePair<string, Channel>(this.Property.ChannelName, this);
+                leaver.UserInfo.JoinedChannels.TryRemove(kv);
             }
 
         }
 
         public ChannelUser GetChannelUserBySession(Session session)
         {
-            var result = Property.ChannelUsers.Where(u => u.UserInfo.Session.Equals(session));
+            var result = Property.ChannelUsers.Values.Where(u => u.UserInfo.Session.Id == session.Id);
             if (result.Count() == 1)
             {
                 return result.First();
@@ -98,48 +111,36 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         }
         public bool IsUserBanned(ChannelUser user)
         {
-            if (Property.BanList.Contains(user))
-            {
-                return true;
-            }
-            else
+            if (!Property.BanList.Keys.Contains(user.UserInfo.NickName))
             {
                 return false;
             }
+            if (Property.BanList[user.UserInfo.NickName].UserInfo.Session.Id != user.UserInfo.Session.Id)
+            {
+                return false;
+            }
+            return true;
         }
         public bool IsUserBanned(Session session)
         {
-            if (Property.BanList.Where(u => u.UserInfo.Session.Id == session.Id).Count() == 1)
+            if (Property.BanList.Keys.Contains(session.UserInfo.NickName))
             {
-                return true;
+                var resultUser = Property.BanList[session.UserInfo.NickName];
+                if (resultUser.UserInfo.Session.Id == session.Id)
+                {
+                    return true;
+                }
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
-        public bool IsUserExisted(ChannelUser user)
-        {
-            return Property.ChannelUsers.Contains(user);
-        }
-        public ChannelUser GetChannelUserByUserName(string username)
-        {
-            var result = Property.ChannelUsers.Where(u => u.UserInfo.UserName == username);
-            if (result.Count() == 1)
-            {
-                return result.First();
-            }
-            else
-            {
-                return null;
-            }
-        }
+        public bool IsUserExisted(ChannelUser user) => Property.ChannelUsers.Keys.Contains(user.UserInfo.NickName);
+
         public ChannelUser GetChannelUserByNickName(string nickName)
         {
-            var result = Property.ChannelUsers.Where(u => u.UserInfo.NickName == nickName);
-            if (result.Count() == 1)
+            if (Property.ChannelUsers.Keys.Contains(nickName))
             {
-                return result.First();
+                return Property.ChannelUsers[nickName];
             }
             else
             {

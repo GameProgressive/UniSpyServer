@@ -29,11 +29,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         }
         public WhoHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new WhoResult();
         }
 
         protected override void DataOperation()
         {
+            _result = new WhoResult();
+
             switch (_request.RequestType)
             {
                 case WhoRequestType.GetChannelUsersInfo:
@@ -52,7 +53,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             {
                 throw new IRCChannelException($"The channel is not exist.", IRCErrorCode.NoSuchChannel, _request.ChannelName);
             }
-            foreach (var user in channel.Property.ChannelUsers)
+            foreach (var user in channel.Property.ChannelUsers.Values)
             {
                 var data = new WhoDataModel
                 {
@@ -78,7 +79,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 throw new ChatIRCNoSuchNickException($"Can not find user with nickname:{_request.NickName}.");
 
             }
-            foreach (var channel in session.UserInfo.JoinedChannels)
+            foreach (var channel in session.UserInfo.JoinedChannels.Values)
             {
                 ChannelUser user = channel.GetChannelUserBySession(session);
                 var data = new WhoDataModel

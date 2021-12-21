@@ -24,11 +24,12 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         private UserInfo _userInfo;
         public WhoIsHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new WhoIsResult();
         }
 
         protected override void RequestCheck()
         {
+            _result = new WhoIsResult();
+
             // there only existed one nick name
             base.RequestCheck();
             var session = (Session)ServerFactory.Server.SessionManager.SessionPool.Values
@@ -46,7 +47,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             _result.Name = _userInfo.Name;
             _result.UserName = _userInfo.UserName;
             _result.PublicIPAddress = _userInfo.PublicIPAddress;
-            foreach (var channel in _userInfo.JoinedChannels)
+            foreach (var channel in _userInfo.JoinedChannels.Values)
             {
                 _result.JoinedChannelName.Add(channel.Property.ChannelName);
             }

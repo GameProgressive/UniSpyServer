@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
         protected override void DataOperation()
         {
             _result.NickName = _session.UserInfo.NickName;
-            foreach (var channel in _session.UserInfo.JoinedChannels)
+            foreach (var channel in _session.UserInfo.JoinedChannels.Values)
             {
                 var user = channel.GetChannelUserByNickName(_request.NickName);
                 if (user == null)

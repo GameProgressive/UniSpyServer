@@ -41,7 +41,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
         private void GetChannelAllUserKeyValue()
         {
-            foreach (var user in _channel.Property.ChannelUsers)
+            foreach (var user in _channel.Property.ChannelUsers.Values)
             {
                 GetUserKeyValue(user);
             }

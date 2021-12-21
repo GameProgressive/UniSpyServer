@@ -19,7 +19,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
 
         protected override void DataOperation()
         {
-            foreach (var channel in _session.UserInfo.JoinedChannels)
+            foreach (var channel in _session.UserInfo.JoinedChannels.Values)
             {
                 ChannelUser user = channel.GetChannelUserBySession(_session);
                 //if (user==null)

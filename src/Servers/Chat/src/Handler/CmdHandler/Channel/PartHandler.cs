@@ -38,7 +38,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 //      };
                 //      new KICKHandler(_session, kickRequest).Handle();
                 //  });
-                foreach (var user in _channel.Property.ChannelUsers)
+                foreach (var user in _channel.Property.ChannelUsers.Values)
                 {
                     // We create a new KICKHandler to handle KICK operation for us
                     var kickRequest = new KickRequest

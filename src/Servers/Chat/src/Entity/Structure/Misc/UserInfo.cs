@@ -7,7 +7,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
     public sealed class UserInfo
     {
         //indicates which channel this user is in
-        public ConcurrentBag<Channel> JoinedChannels { get; private set; }
+        public ConcurrentDictionary<string, Channel> JoinedChannels { get; private set; }
         public Session Session { get; private set; }
         // secure connection
         public PeerChatCTX ClientCTX { get; set; }
@@ -31,30 +31,20 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
             Session = session;
             ClientCTX = new PeerChatCTX();
             ServerCTX = new PeerChatCTX();
-            JoinedChannels = new ConcurrentBag<Channel>();
+            JoinedChannels = new();
             NameSpaceID = 0;
             IsUsingEncryption = false;
             IsQuietMode = false;
             IsLoggedIn = false;
         }
 
-        public bool IsJoinedChannel(string channelName)
-        {
-            if (JoinedChannels.Where(c => c.Property.ChannelName == channelName).Count() == 1)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
+        public bool IsJoinedChannel(string channelName) => JoinedChannels.Keys.Contains(channelName);
+
         public Channel GetJoinedChannelByName(string channelName)
         {
-            var result = JoinedChannels.Where(c => c.Property.ChannelName == channelName);
-            if (result.Count() == 1)
+            if (JoinedChannels.Keys.Contains(channelName))
             {
-                return result.First();
+                return JoinedChannels[channelName];
             }
             else
             {
