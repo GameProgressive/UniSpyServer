@@ -40,7 +40,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc
 
         public bool IsJoinedChannel(string channelName) => JoinedChannels.Keys.Contains(channelName);
 
-        public Channel GetJoinedChannelByName(string channelName)
+        public Channel GetJoinedChannel(string channelName)
         {
             if (JoinedChannels.Keys.Contains(channelName))
             {

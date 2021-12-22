@@ -20,12 +20,13 @@
         {
             base.Parse();
 
-            if (_cmdParams[0].Contains("#"))
+            if (ChannelName.Contains("#"))
             {
                 MessageType = MessageType.ChannelMessage;
             }
             else
             {
+                // todo check if there need user message
                 MessageType = MessageType.UserMessage;
                 ChannelName = null;
                 NickName = _cmdParams[0];

@@ -21,7 +21,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
 
         protected override void RequestCheck()
         {
-            base.RequestCheck();
+            // base.RequestCheck();
             switch (_request.MessageType)
             {
                 case MessageType.ChannelMessage:

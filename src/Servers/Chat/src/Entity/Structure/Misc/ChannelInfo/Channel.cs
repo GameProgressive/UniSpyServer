@@ -99,15 +99,7 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 
         public ChannelUser GetChannelUserBySession(Session session)
         {
-            var result = Property.ChannelUsers.Values.Where(u => u.UserInfo.Session.Id == session.Id);
-            if (result.Count() == 1)
-            {
-                return result.First();
-            }
-            else
-            {
-                return null;
-            }
+            return Property.ChannelUsers.Values.Where(u => u.UserInfo.Session.Id == session.Id).FirstOrDefault();
         }
         public bool IsUserBanned(ChannelUser user)
         {

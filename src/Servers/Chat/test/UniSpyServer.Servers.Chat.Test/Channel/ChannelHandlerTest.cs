@@ -30,8 +30,9 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
         {
             var session1 = SingleJoinTest("unispy1", "unispy1", "#GSP!room!test");
             var session2 = SingleJoinTest("unispy2", "unispy2", "#GSP!room!test");
-            var privMsgReq = new PrivateMsgRequest("PRIVMSG $*.fi :Server tolsun.oulu.fi rebooting.");
+            var privMsgReq = new PrivateMsgRequest("PRIVMSG #GSP!room!test :hello this is a test.");
             var privMsgHandler = new PrivateMsgHandler(session1, privMsgReq);
+            privMsgHandler.Handle();
         }
         public Session SingleJoinTest(string userName = "unispy", string nickName = "unispy", string channelName = "#GSP!room!test")
         {
@@ -47,9 +48,9 @@ namespace UniSpyServer.Servers.Chat.Test.Channel
             userHandler.Handle();
             nickHandler.Handle();
             // we know the endpoint object is not set, so System.NullReferenceException will be thrown
-            Assert.Throws<System.NullReferenceException>(() => joinHandler.Handle());
+            joinHandler.Handle();
             Assert.Equal(1, session.UserInfo.JoinedChannels.Count);
-            Assert.Equal(true, session.UserInfo.JoinedChannels.Keys.Contains(channelName));
+            Assert.True(session.UserInfo.JoinedChannels.Keys.Contains(channelName));
             Assert.True(session.UserInfo.IsJoinedChannel(channelName));
             return session;
         }
