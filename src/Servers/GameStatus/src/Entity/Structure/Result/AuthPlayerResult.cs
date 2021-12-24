@@ -2,10 +2,10 @@
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Result
 {
-    public sealed class AuthPResult : ResultBase
+    public sealed class AuthPlayerResult : ResultBase
     {
         public uint ProfileID { get; set; }
-        public AuthPResult()
+        public AuthPlayerResult()
         {
         }
     }

@@ -12,16 +12,16 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
     [HandlerContract("getpid")]
-    public sealed class GetPIDHandler : CmdHandlerBase
+    public sealed class GetProfileIDHandler : CmdHandlerBase
     {
         //request \getpid\\nick\%s\keyhash\%s\lid\%d
         //response \getpidr
         private uint _protileid;
         private new GetProfileIDRequest _request => (GetProfileIDRequest)base._request;
-        private new GetPIDResult _result{ get => (GetPIDResult)base._result; set => base._result = value; }
-        public GetPIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        private new GetProfileIDResult _result{ get => (GetProfileIDResult)base._result; set => base._result = value; }
+        public GetProfileIDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new GetPIDResult();
+            _result = new GetProfileIDResult();
         }
         protected override void DataOperation()
         {

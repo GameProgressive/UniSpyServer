@@ -9,13 +9,13 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// Handles game snapshot and update game data
     /// </summary>
     [HandlerContract("updgame")]
-    public sealed class UpdGameHandler : CmdHandlerBase
+    public sealed class UpdateGameDataHandler : CmdHandlerBase
     {
         //old request "\updgame\\sesskey\%d\done\%d\gamedata\%s"
         //new request "\updgame\\sesskey\%d\connid\%d\done\%d\gamedata\%s"
-        public UpdGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public UpdateGameDataHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new UdpGameResult();
+            _result = new UpdateGameResult();
         }
         protected override void RequestCheck()
         {

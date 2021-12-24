@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Result
 {
-    public sealed class GetPDResult : ResultBase
+    public sealed class GetPlayerDataResult : ResultBase
     {
         public Dictionary<string, string> KeyValues { get; set; }
-        public GetPDResult()
+        public GetPlayerDataResult()
         {
         }
     }

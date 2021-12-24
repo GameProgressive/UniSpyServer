@@ -21,10 +21,10 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     public sealed class AuthPlayerHandler : CmdHandlerBase
     {
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
-        private new AuthPResult _result { get => (AuthPResult)base._result; set => base._result = value; }
+        private new AuthPlayerResult _result { get => (AuthPlayerResult)base._result; set => base._result = value; }
         public AuthPlayerHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new AuthPResult();
+            _result = new AuthPlayerResult();
         }
         protected override void DataOperation()
         {
@@ -54,7 +54,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new AuthPResponse(_request, _result);
+            _response = new AuthPlayerResponse(_request, _result);
             //we did not store the plaintext of user password so we do not need to check this
         }
 

@@ -12,12 +12,12 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     /// Set persist storage data
     /// </summary>
     [HandlerContract("setpd")]
-    public sealed class SetPDHandler : CmdHandlerBase
+    public sealed class SetPlayerDataHandler : CmdHandlerBase
     {
         private new SetPlayerDataRequest _request => (SetPlayerDataRequest)base._request;
-        public SetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        public SetPlayerDataHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new SetPDResult();
+            _result = new SetPlayerDataResult();
         }
 
         protected override void DataOperation()

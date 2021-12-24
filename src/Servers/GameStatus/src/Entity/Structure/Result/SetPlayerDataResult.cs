@@ -2,9 +2,9 @@
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Result
 {
-    public sealed class GSDefaultResult : ResultBase
+    public sealed class SetPlayerDataResult : ResultBase
     {
-        public GSDefaultResult()
+        public SetPlayerDataResult()
         {
         }
     }

@@ -2,10 +2,9 @@
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Result
 {
-    public sealed class GetPIDResult : ResultBase
+    public sealed class UpdateGameResult : ResultBase
     {
-        public uint ProfileID { get; set; }
-        public GetPIDResult()
+        public UpdateGameResult()
         {
         }
     }

@@ -8,14 +8,14 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
     [HandlerContract("newgame")]
 
-    public sealed class NewGameHandler : CmdHandlerBase
+    public sealed class CreateNewGameDataHandler : CmdHandlerBase
     {
         // "\newgame\\sesskey\%d\challenge\%d";
         //"\newgame\\connid\%d\sesskey\%d"
-        private new NewGameResult _result{ get => (NewGameResult)base._result; set => base._result = value; }
-        public NewGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        private new CreateNewGameDataResult _result{ get => (CreateNewGameDataResult)base._result; set => base._result = value; }
+        public CreateNewGameDataHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new NewGameResult();
+            _result = new CreateNewGameDataResult();
         }
 
         protected override void DataOperation()

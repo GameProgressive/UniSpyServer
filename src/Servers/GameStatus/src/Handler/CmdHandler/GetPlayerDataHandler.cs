@@ -13,14 +13,14 @@ using UniSpyServer.UniSpyLib.Database.DatabaseModel.MySql;
 namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 {
     [HandlerContract("getpd")]
-    public sealed class GetPDHandler : CmdHandlerBase
+    public sealed class GetPlayerDataHandler : CmdHandlerBase
     {
         //\getpd\\pid\%d\ptype\%d\dindex\%d\keys\%s\lid\%d
         private new GetPlayerDataRequest _request => (GetPlayerDataRequest)base._request;
-        private new GetPDResult _result{ get => (GetPDResult)base._result; set => base._result = value; }
-        public GetPDHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
+        private new GetPlayerDataResult _result{ get => (GetPlayerDataResult)base._result; set => base._result = value; }
+        public GetPlayerDataHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new GetPDResult();
+            _result = new GetPlayerDataResult();
         }
         protected override void DataOperation()
         {
@@ -68,7 +68,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new GetPDResponse(_request, _result);
+            _response = new GetPlayerDataResponse(_request, _result);
         }
     }
 }

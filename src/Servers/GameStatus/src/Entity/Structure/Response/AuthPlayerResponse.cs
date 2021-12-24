@@ -5,11 +5,11 @@ using UniSpyServer.UniSpyLib.Abstraction.BaseClass;
 
 namespace UniSpyServer.Servers.GameStatus.Entity.Structure.Response
 {
-    public sealed class AuthPResponse : ResponseBase
+    public sealed class AuthPlayerResponse : ResponseBase
     {
-        private new AuthPResult _result => (AuthPResult)base._result;
+        private new AuthPlayerResult _result => (AuthPlayerResult)base._result;
         private new AuthPlayerRequest _request => (AuthPlayerRequest)base._request;
-        public AuthPResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
+        public AuthPlayerResponse(UniSpyRequestBase request, UniSpyResultBase result) : base(request, result)
         {
         }
 

@@ -12,10 +12,10 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
     {
         //UniSpyServer.UniSpyLib.Encryption.Crc16 _crc16 = new UniSpyServer.UniSpyLib.Encryption.Crc16(UniSpyServer.UniSpyLib.Encryption.Crc16Mode.Standard);
         private new AuthGameRequest _request => (AuthGameRequest)base._request;
-        private new AuthResult _result{ get => (AuthResult)base._result; set => base._result = value; }
+        private new AuthGameResult _result{ get => (AuthGameResult)base._result; set => base._result = value; }
         public AuthGameHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
-            _result = new AuthResult();
+            _result = new AuthGameResult();
         }
         protected override void DataOperation()
         {
@@ -26,7 +26,7 @@ namespace UniSpyServer.Servers.GameStatus.Handler.CmdHandler
 
         protected override void ResponseConstruct()
         {
-            _response = new AuthResponse(_request, _result);
+            _response = new AuthGameResponse(_request, _result);
         }
     }
 }
