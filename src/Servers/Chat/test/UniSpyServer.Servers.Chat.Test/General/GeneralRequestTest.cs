@@ -76,7 +76,7 @@ namespace UniSpyServer.Servers.Chat.Test.General
         [Fact]
         public void LoginPreAuth()
         {
-            var request = new LoginPreAuthRequest(GeneralRequests.LoginPreAuth);
+            var request = new LoginPreAuth(GeneralRequests.LoginPreAuth);
             request.Parse();
             Assert.Equal("xxxxx", request.AuthToken);
             Assert.Equal("yyyyy", request.PartnerChallenge);

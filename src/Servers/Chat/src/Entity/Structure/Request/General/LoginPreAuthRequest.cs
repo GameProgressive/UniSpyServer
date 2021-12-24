@@ -5,9 +5,9 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Request.General
 {
     [RequestContract("LOGINPREAUTH")]
 
-    public sealed class LoginPreAuthRequest : RequestBase
+    public sealed class LoginPreAuth : RequestBase
     {
-        public LoginPreAuthRequest(string rawRequest) : base(rawRequest)
+        public LoginPreAuth(string rawRequest) : base(rawRequest)
         {
         }
 
