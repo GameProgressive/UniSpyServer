@@ -45,7 +45,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             _result.PublicIPAddress = _userInfo.PublicIPAddress;
             foreach (var channel in _userInfo.JoinedChannels.Values)
             {
-                _result.JoinedChannelName.Add(channel.Property.ChannelName);
+                _result.JoinedChannelName.Add(channel.Name);
             }
         }
         protected override void ResponseConstruct()

@@ -23,8 +23,8 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
         {
             _result = new PartResult();
             _result.LeaverIRCPrefix = _user.UserInfo.IRCPrefix;
-            _result.ChannelName = _channel.Property.ChannelName;
-            if (_channel.Property.IsPeerServer && _user.IsChannelCreator)
+            _result.ChannelName = _channel.Name;
+            if (_channel.IsPeerServer && _user.IsChannelCreator)
             {
                 // Parallel.ForEach(_channel.ChannelUsers, (user) =>
                 //  {
@@ -33,18 +33,18 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 //     var kickRequest = new KICKRequest
                 //      {
                 //          NickName = user.UserInfo.NickName,
-                //          ChannelName = _channel.Property.ChannelName,
+                //          ChannelName = _channel.ChannelName,
                 //          Reason = "Server Hoster leaves channel"
                 //      };
                 //      new KICKHandler(_session, kickRequest).Handle();
                 //  });
-                foreach (var user in _channel.Property.ChannelUsers.Values)
+                foreach (var user in _channel.Users.Values)
                 {
                     // We create a new KICKHandler to handle KICK operation for us
                     var kickRequest = new KickRequest
                     {
                         KickeeNickName = user.UserInfo.NickName,
-                        ChannelName = _channel.Property.ChannelName,
+                        ChannelName = _channel.Name,
                         Reason = _request.Reason
                     };
                     new KickHandler(_session, kickRequest).Handle();
@@ -64,7 +64,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
         protected override void Response()
         {
-            if (_channel.Property.IsPeerServer && _user.IsChannelCreator)
+            if (_channel.IsPeerServer && _user.IsChannelCreator)
             {
                 // we do nothing here, becase we kicked all user
             }
@@ -83,7 +83,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 GameServerInfoRedisOperator.DeleteKeyValue(searchKey);
             }
             // remove channel in ChannelManager
-            if (_channel.Property.ChannelUsers.Count == 0)
+            if (_channel.Users.Count == 0)
             {
                 ChannelManager.RemoveChannel(_channel);
             }

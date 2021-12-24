@@ -27,7 +27,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
         }
         protected override void ChannelMessageDataOpration()
         {
-            if (!_channel.Property.ChannelMode.IsModeratedChannel)
+            if (!_channel.Mode.IsModeratedChannel)
             {
                 return;
             }
@@ -46,7 +46,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Message
                 return;
             }
             _result.IsBroadcastMessage = true;
-            _result.TargetName = _channel.Property.ChannelName;
+            _result.TargetName = _channel.Name;
         }
         protected override void ResponseConstruct()
         {

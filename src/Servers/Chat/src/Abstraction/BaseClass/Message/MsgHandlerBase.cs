@@ -9,7 +9,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
     public abstract class MsgHandlerBase : ChannelHandlerBase
     {
         protected new MsgRequestBase _request => (MsgRequestBase)base._request;
-        protected new MsgResultBase _result{ get => (MsgResultBase)base._result; set => base._result = value; }
+        protected new MsgResultBase _result { get => (MsgResultBase)base._result; set => base._result = value; }
         protected ChannelUser _reciever;
         public MsgHandlerBase(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.Chat.Abstraction.BaseClass
                         if (_reciever == null)
                         {
                             throw new ChatIRCNoSuchNickException(
-                                $"No nickname: {_request.NickName} found in channel: {_channel.Property.ChannelName}.");
+                                $"No nickname: {_request.NickName} found in channel: {_channel.Name}.");
                         }
                     }
                     break;

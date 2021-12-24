@@ -29,9 +29,9 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 //add channel information here
                 ListDataModel channelInfo = new ListDataModel
                 {
-                    ChannelName = channel.Property.ChannelName,
-                    TotalChannelUsers = channel.Property.ChannelUsers.Count,
-                    ChannelTopic = channel.Property.ChannelTopic
+                    ChannelName = channel.Name,
+                    TotalChannelUsers = channel.Users.Count,
+                    ChannelTopic = channel.Topic
                 };
                 _result.ChannelInfoList.Add(channelInfo);
             }

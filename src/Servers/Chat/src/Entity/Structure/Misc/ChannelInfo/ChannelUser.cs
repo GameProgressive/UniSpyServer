@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
@@ -11,7 +12,25 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public Dictionary<string, string> UserKeyValue { get; private set; }
 
         public string BFlags => @"\" + UserInfo.UserName + @"\" + UserKeyValue["b_flags"];
+        public string Modes
+        {
+            get
+            {
+                var buffer = new StringBuilder();
 
+                if (IsChannelOperator)
+                {
+                    buffer.Append("@");
+                }
+
+                if (IsVoiceable)
+                {
+                    buffer.Append("+");
+                }
+
+                return buffer.ToString();
+            }
+        }
         public ChannelUser(UserInfo userInfo)
         {
             UserInfo = userInfo;
@@ -64,21 +83,5 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             return values;
         }
 
-        public string GetUserModes()
-        {
-            string buffer = "";
-
-            if (IsChannelOperator)
-            {
-                buffer += "@";
-            }
-
-            if (IsVoiceable)
-            {
-                buffer += "+";
-            }
-
-            return buffer;
-        }
     }
 }

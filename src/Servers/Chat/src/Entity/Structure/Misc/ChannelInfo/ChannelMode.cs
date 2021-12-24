@@ -1,5 +1,6 @@
 ﻿using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using System.Collections.Generic;
+using System.Text;
 
 namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
 {
@@ -17,7 +18,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
         public bool IsAllowExternalMessage { get; private set; }
         //t - toggle the topic settable by channel operator only flag;
         public bool IsTopicOnlySetByChannelOperator { get; private set; }
-
         /// <summary>
         /// default constructor
         /// </summary>
@@ -63,7 +63,6 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
                 SetModeByFlag(f);
             }
         }
-
         private void SetModeByFlag(string flag)
         {
             //XiXpXsXmXnXtXlXe
@@ -111,39 +110,40 @@ namespace UniSpyServer.Servers.Chat.Entity.Structure.Misc.ChannelInfo
             }
         }
 
-        public string GetChannelMode()
+        public override string ToString()
         {
-            string buffer = "+";
+
+            var buffer = new StringBuilder();
+
+            buffer.Append("+");
             if (IsInviteOnly)
             {
-                buffer += "i";
+                buffer.Append("i");
             }
             if (IsPrivateChannel)
             {
-                buffer += "p";
+                buffer.Append("p");
             }
             if (IsSecretChannel)
             {
-                buffer += "s";
+                buffer.Append("s");
             }
             if (IsModeratedChannel)
             {
-                buffer += "m";
+                buffer.Append("m");
             }
             if (IsAllowExternalMessage)
             {
-                buffer += "n";
+                buffer.Append("n");
             }
             if (IsTopicOnlySetByChannelOperator)
             {
-                buffer += "t";
+                buffer.Append("t");
             }
 
             //response is like +nt
-            return buffer;
+            return buffer.ToString();
         }
-
-
         public static bool ConvertModeFlagToBool(string cmd)
         {
             if (cmd.Contains('+'))

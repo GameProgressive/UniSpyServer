@@ -46,7 +46,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
 
         protected override void DataOperation()
         {
-            _result.ChannelName = _channel.Property.ChannelName;
+            _result.ChannelName = _channel.Name;
             if (_result.IsSetOthersKeyValue)
             {
                 _otherUser.UpdateUserKeyValues(_request.KeyValues);

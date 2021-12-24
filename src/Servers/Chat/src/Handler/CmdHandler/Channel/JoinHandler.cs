@@ -70,7 +70,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 }
                 else
                 {
-                    if (_channel.Property.ChannelMode.IsInviteOnly)
+                    if (_channel.Mode.IsInviteOnly)
                     {
                         //invited only
                         throw new IRCChannelException("This is an invited only channel.", IRCErrorCode.InviteOnlyChan, _request.ChannelName);
@@ -79,7 +79,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     {
                         throw new IRCBannedFromChanException($"You are banned from this channel:{_request.ChannelName}.", _request.ChannelName);
                     }
-                    if (_channel.Property.ChannelUsers.Count >= _channel.Property.MaxNumberUser)
+                    if (_channel.Users.Count >= _channel.MaxNumberUser)
                     {
                         throw new IRCChannelIsFullException($"The channel:{_request.ChannelName} you are join is full.", _request.ChannelName);
                     }
@@ -97,20 +97,23 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             else
             {
                 //create
-                _channel = new Entity.Structure.Misc.ChannelInfo.Channel();
                 if (IsPeerServer(_request.ChannelName))
                 {
-                    _channel.Property.IsPeerServer = true;
+                    _channel.IsPeerServer = true;
+                    _channel = new Entity.Structure.Misc.ChannelInfo.Channel(_request.ChannelName, _user);
+                }
+                else
+                {
+                    _channel = new Entity.Structure.Misc.ChannelInfo.Channel(_request.ChannelName);
                 }
                 _user.SetDefaultProperties(true);
-                _channel.Property.SetDefaultProperties(_user, _request.ChannelName);
                 _channel.AddBindOnUserAndChannel(_user);
                 ChannelManager.AddChannel(_request.ChannelName, _channel);
             }
 
             _result.AllChannelUserNicks = _channel.GetAllUsersNickString();
             _result.JoinerNickName = _session.UserInfo.NickName;
-            _result.ChannelModes = _channel.Property.ChannelMode.GetChannelMode();
+            _result.ChannelModes = _channel.Mode.ToString();
             _result.JoinerPrefix = _session.UserInfo.IRCPrefix;
         }
 

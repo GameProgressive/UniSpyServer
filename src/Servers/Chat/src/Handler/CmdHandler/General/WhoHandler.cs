@@ -49,15 +49,15 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
             {
                 throw new IRCChannelException($"The channel is not exist.", IRCErrorCode.NoSuchChannel, _request.ChannelName);
             }
-            foreach (var user in channel.Property.ChannelUsers.Values)
+            foreach (var user in channel.Users.Values)
             {
                 var data = new WhoDataModel
                 {
-                    ChannelName = channel.Property.ChannelName,
+                    ChannelName = channel.Name,
                     UserName = user.UserInfo.UserName,
                     NickName = user.UserInfo.NickName,
                     PublicIPAddress = user.UserInfo.Session.RemoteIPEndPoint.Address.ToString(),
-                    Modes = user.GetUserModes()
+                    Modes = user.Modes
                 };
                 _result.DataModels.Add(data);
             }
@@ -80,11 +80,11 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 var user = channel.GetChannelUserBySession(session);
                 var data = new WhoDataModel
                 {
-                    ChannelName = channel.Property.ChannelName,
+                    ChannelName = channel.Name,
                     NickName = session.UserInfo.NickName,
                     UserName = session.UserInfo.UserName,
                     PublicIPAddress = session.RemoteIPEndPoint.Address.ToString(),
-                    Modes = user.GetUserModes()
+                    Modes = user.Modes
                 };
                 _result.DataModels.Add(data);
             }

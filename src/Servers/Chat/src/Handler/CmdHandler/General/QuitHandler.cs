@@ -30,7 +30,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.General
                 // we create a PARTHandler to handle our quit request
                 var partRequest = new PartRequest()
                 {
-                    ChannelName = channel.Property.ChannelName,
+                    ChannelName = channel.Name,
                     Reason = _request.Reason
                 };
                 new PartHandler(_session, partRequest).Handle();

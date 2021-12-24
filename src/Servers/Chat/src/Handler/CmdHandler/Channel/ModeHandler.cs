@@ -1,4 +1,5 @@
-﻿using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
+﻿using System;
+using UniSpyServer.Servers.Chat.Abstraction.BaseClass;
 using UniSpyServer.Servers.Chat.Entity.Contract;
 using UniSpyServer.Servers.Chat.Entity.Structure.Request.Channel;
 using UniSpyServer.Servers.Chat.Entity.Structure.Response.Channel;
@@ -14,7 +15,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
     public sealed class ModeHandler : ChannelHandlerBase
     {
         private new ModeRequest _request => (ModeRequest)base._request;
-        private new ModeResult _result{ get => (ModeResult)base._result; set => base._result = value; }
+        private new ModeResult _result { get => (ModeResult)base._result; set => base._result = value; }
         public ModeHandler(IUniSpySession session, IUniSpyRequest request) : base(session, request)
         {
         }
@@ -51,23 +52,20 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                     _result.JoinerNickName = _request.NickName;
                     goto case ModeRequestType.GetChannelModes;
                 case ModeRequestType.GetChannelModes:
-                    _result.ChannelModes = _channel.Property.ChannelMode.GetChannelMode();
-                    _result.ChannelName = _channel.Property.ChannelName;
+                    _result.ChannelModes = _channel.Mode.ToString();
+                    _result.ChannelName = _channel.Name;
                     break;
+                case ModeRequestType.GetBannedUsers:
+                    //TODO
+                    throw new NotImplementedException();
                 default:
-                    ProcessOtherModeRequest();
+                    //we check if the user is operator in channel
+                    if (_user.IsChannelOperator)
+                    {
+                        _channel.SetProperties(_user, _request);
+                    }
                     break;
             }
-        }
-
-        private void ProcessOtherModeRequest()
-        {
-            //we check if the user is operator in channel
-            if (!_user.IsChannelOperator)
-            {
-                return;
-            }
-            _channel.Property.SetProperties(_user, _request);
         }
 
         protected override void ResponseConstruct()

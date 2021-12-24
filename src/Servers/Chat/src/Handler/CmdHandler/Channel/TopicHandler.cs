@@ -29,11 +29,11 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
                 case TopicRequestType.GetChannelTopic:
                     break;
                 case TopicRequestType.SetChannelTopic:
-                    _channel.Property.ChannelTopic = _request.ChannelTopic;
+                    _channel.Topic = _request.ChannelTopic;
                     break;
             }
-            _result.ChannelName = _channel.Property.ChannelName;
-            _result.ChannelTopic = _channel.Property.ChannelTopic;
+            _result.ChannelName = _channel.Name;
+            _result.ChannelTopic = _channel.Topic;
         }
         protected override void ResponseConstruct()
         {

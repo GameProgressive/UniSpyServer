@@ -29,7 +29,7 @@ namespace UniSpyServer.Servers.Chat.Handler.CmdHandler.Channel
             {
                 throw new Exception("SETCHANKEY failed because you are not channel operator.");
             }
-            _channel.Property.SetChannelKeyValue(_request.KeyValue);
+            _channel.SetChannelKeyValue(_request.KeyValue);
             _result.ChannelName = _result.ChannelName;
             _result.ChannelUserIRCPrefix = _user.UserInfo.IRCPrefix;
 

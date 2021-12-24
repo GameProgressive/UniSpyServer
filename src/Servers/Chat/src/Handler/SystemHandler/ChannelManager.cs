@@ -28,7 +28,7 @@ namespace UniSpyServer.Servers.Chat.Handler.SystemHandler.ChannelManage
         }
         public static bool RemoveChannel(Channel channel)
         {
-            return RemoveChannel(channel.Property.ChannelName);
+            return RemoveChannel(channel.Name);
         }
     }
 }
